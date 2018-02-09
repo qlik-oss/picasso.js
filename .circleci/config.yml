@@ -67,9 +67,9 @@ jobs:
       - run:
           name: Integration test
           command: npm run test:integration:local
-      - run:
-          name: Publish coverage to code climate
-          command: npm run test:unit:coverage:publish
+      # - run:
+      #     name: Publish coverage to code climate
+      #     command: npm run test:unit:coverage:publish
 
       # Store artifacts
       - store_artifacts:
