@@ -15,6 +15,7 @@
     "jsdoc": "3.4.3",
     "jsdoc-json": "^2.0.0",
     "jsdoc2spec": "^0.6.0",
+    "marked": "^0.3.12",
     "rimraf": "^2.5.4",
     "striptags": "2.1.1"
   }
