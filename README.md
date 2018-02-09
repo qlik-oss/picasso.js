@@ -1,5 +1,4 @@
-[![Build status](https://circleci.com/gh/qlik-trial/picasso.js.svg?style=shield&circle-token=b2d43b9cac73c7cad1637e2c2e435d7786b3ae8f)](https://circleci.com/gh/qlik-trial/picasso.js)
-[![Test Coverage](https://codeclimate.com/repos/59a6c382541122029c0011ce/badges/1283e4d0c3b6981599f2/coverage.svg)](https://codeclimate.com/repos/59a6c382541122029c0011ce/coverage)
+[![CircleCI](https://circleci.com/gh/qlik-oss/picasso.js.svg?style=shield)](https://circleci.com/gh/qlik-oss/picasso.js)
 
 ![picasso.js](docs/assets/picassojs.png)
 
