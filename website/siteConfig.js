@@ -15,6 +15,7 @@ const siteConfig = {
   headerIcon: 'img/picassojs.svg',
   disableHeaderTitle: true,
   footerIcon: 'img/picassojs.svg',
+  gaTrackingId: 'UA-113818093-1',
   favicon: 'img/favicon.png',
   colors: {
     primaryColor: '#333',
