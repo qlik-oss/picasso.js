@@ -1,0 +1,78 @@
+<html lang="en"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Reference lines · picasso.js</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta property="og:title" content="Reference lines · picasso.js"/><meta property="og:type" content="website"/><meta property="og:url" content="https://qlik-oss.github.io/picasso.js/index.html"/><meta property="og:description" content="A component that renders reference line(s) according to configuration"/><link rel="shortcut icon" href="/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="/js/picasso.min.js"></script><script type="text/javascript" src="/js/landing.js"></script><script type="text/javascript" src="/js/tutorial.js"></script><link rel="stylesheet" href="/css/main.css"/></head><body class="sideNavVisible"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/picassojs.svg"/></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li><a href="/docs/installation.html" target="_self">Docs</a></li><li><a href="/docs/tutorial.html" target="_self">Tutorial</a></li><li><a href="https://github.com/qlik-oss/picasso.js" target="_self">GitHub</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1>Reference lines</h1></header><article><div><span><p>A component that renders reference line(s) according to configuration</p>
+<h2><a class="anchor" aria-hidden="true" name="component-settings"></a><a href="#component-settings" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Component settings</h2>
+<pre><code class="hljs css js">{
+  <span class="hljs-attr">style</span>: {  <span class="hljs-comment">// Optional</span>
+    <span class="hljs-comment">// x coordinate</span>
+    oob: {  <span class="hljs-comment">// Optional</span>
+      <span class="hljs-comment">// Style for out of bounds object (oob)</span>
+      show: <span class="hljs-literal">true</span>, <span class="hljs-comment">// Show out of bounds items // Optional</span>
+      type: <span class="hljs-comment">/* string */</span>, <span class="hljs-comment">// EXPERIMENTAL:  Set this to 'arc' for an experimental out of bounds shape (only works with SVG) // Optional</span>
+      width: <span class="hljs-number">10</span>, <span class="hljs-comment">// Width of the out of bounds object // Optional</span>
+      fill: <span class="hljs-string">'#1A1A1A'</span>, <span class="hljs-comment">// Fill color of the OOB object // Optional</span>
+      stroke: <span class="hljs-string">'transparent'</span>, <span class="hljs-comment">// Stroke of the OOB object // Optional</span>
+      strokeWidth: <span class="hljs-number">0</span>, <span class="hljs-comment">// Stroke width of the OOB object // Optional</span>
+      opacity: <span class="hljs-number">1</span>, <span class="hljs-comment">// Opacity of the OOB object // Optional</span>
+      text: <span class="hljs-string">'refline-generic-text'</span>, <span class="hljs-comment">// Text configuration for out of bounds // Optional</span>
+      triangle: <span class="hljs-string">'refline-generic-object'</span>, <span class="hljs-comment">// The triangle in OOB // Optional</span>
+      padding: {  <span class="hljs-comment">// Optional</span>
+        <span class="hljs-comment">// Padding on X</span>
+        x: <span class="hljs-number">28</span>, <span class="hljs-comment">// Padding on X // Optional</span>
+        y: <span class="hljs-number">5</span>, <span class="hljs-comment">// Padding on X // Optional</span>
+      },
+    },
+    <span class="hljs-attr">line</span>: <span class="hljs-string">'refline-line'</span>, <span class="hljs-comment">// Generic style for lines // Optional</span>
+    label: <span class="hljs-string">'refline-line-label'</span>, <span class="hljs-comment">// Generic style for labels // Optional</span>
+  },
+  <span class="hljs-attr">lines</span>: { 
+    <span class="hljs-comment">// X &amp; Y Lines</span>
+    x: [  <span class="hljs-comment">// Optional</span>
+      : <span class="hljs-comment">/* reflines-x */</span>,
+    ],
+    <span class="hljs-attr">y</span>: [  <span class="hljs-comment">// Optional</span>
+      : <span class="hljs-comment">/* reflines-y */</span>,
+    ],
+  },
+  generic-text: { 
+    <span class="hljs-attr">text</span>: <span class="hljs-string">''</span>, <span class="hljs-comment">// Text (if applicable) // Optional</span>
+    fontSize: <span class="hljs-string">'12px'</span>, <span class="hljs-comment">// Font size (if applicable) // Optional</span>
+    fontFamily: <span class="hljs-string">'Arial'</span>, <span class="hljs-comment">// Font family // Optional</span>
+    fill: <span class="hljs-string">'#fff'</span>, <span class="hljs-comment">// Fill color // Optional</span>
+    stroke: <span class="hljs-string">'transparent'</span>, <span class="hljs-comment">// Stroke // Optional</span>
+    strokeWidth: <span class="hljs-number">0</span>, <span class="hljs-comment">// Stroke width // Optional</span>
+    opacity: <span class="hljs-number">1</span>, <span class="hljs-comment">// Opacity // Optional</span>
+  },
+  <span class="hljs-attr">line</span>: { 
+    <span class="hljs-attr">value</span>: <span class="hljs-comment">/* number */</span>, <span class="hljs-comment">// The value of the reference line. If a scale is specified, it is applied.</span>
+    scale: <span class="hljs-comment">/* Scale */</span>, <span class="hljs-comment">// Scale to use (if undefined will use normalized value 0-1) // Optional</span>
+    line: <span class="hljs-string">'refline-generic-object'</span>, <span class="hljs-comment">// The style of the line // Optional</span>
+    label: <span class="hljs-string">'refline-line-label'</span>, <span class="hljs-comment">// The label style of the line // Optional</span>
+  },
+  line-label: { 
+    <span class="hljs-attr">padding</span>: <span class="hljs-number">5</span>, <span class="hljs-comment">// Padding inside the label</span>
+    text: <span class="hljs-string">''</span>, <span class="hljs-comment">// Text // Optional</span>
+    fontSize: <span class="hljs-string">'12px'</span>, <span class="hljs-comment">// Font size // Optional</span>
+    fontFamily: <span class="hljs-string">'Arial'</span>, <span class="hljs-comment">// Font family // Optional</span>
+    stroke: <span class="hljs-string">'transparent'</span>, <span class="hljs-comment">// Stroke // Optional</span>
+    strokeWidth: <span class="hljs-number">0</span>, <span class="hljs-comment">// Stroke width // Optional</span>
+    opacity: <span class="hljs-number">1</span>, <span class="hljs-comment">// Opacity // Optional</span>
+    align: <span class="hljs-number">0</span>,  <span class="hljs-comment">// Optional</span>
+    vAlign: <span class="hljs-number">0</span>,  <span class="hljs-comment">// Optional</span>
+    maxWidth: <span class="hljs-number">1</span>, <span class="hljs-comment">// The maximum relative width to the width of the rendering area (see maxWidthPx below aswell) // Optional</span>
+    maxWidthPx: <span class="hljs-number">9999</span>, <span class="hljs-comment">// The maximum width in pixels. // Optional</span>
+    background: <span class="hljs-string">'refline-line-label-background'</span>, <span class="hljs-comment">// The background style (rect behind text) // Optional</span>
+  },
+  line-label-background: { 
+    <span class="hljs-attr">fill</span>: <span class="hljs-string">'#fff'</span>, <span class="hljs-comment">// Fill color // Optional</span>
+    stroke: <span class="hljs-string">'transparent'</span>, <span class="hljs-comment">// Stroke // Optional</span>
+    strokeWidth: <span class="hljs-number">0</span>, <span class="hljs-comment">// Stroke width // Optional</span>
+    opacity: <span class="hljs-number">0.5</span>, <span class="hljs-comment">// Opacity // Optional</span>
+  },
+  generic-object: { 
+    <span class="hljs-attr">fill</span>: <span class="hljs-string">'#fff'</span>, <span class="hljs-comment">// Fill color // Optional</span>
+    stroke: <span class="hljs-string">'transparent'</span>, <span class="hljs-comment">// Stroke // Optional</span>
+    strokeWidth: <span class="hljs-number">0</span>, <span class="hljs-comment">// Stroke width // Optional</span>
+    opacity: <span class="hljs-number">1</span>, <span class="hljs-comment">// Opacity // Optional</span>
+  },
+}
+</code></pre>
+</span></div></article></div><div class="docs-prevnext"></div></div></div></div><footer class="nav-footer" id="footer"><section class="sitemap"><div><h5>Docs</h5><a href="/docs/installation.html">Getting Started</a><a href="/docs/tutorial.html">Tutorial</a></div><div><h5> </h5><div class="footerIcons"><a href="https://github.com/qlik-oss/picasso.js"><img src="/img/GitHub-Mark-Light-120px-plus.png" alt="GitHub" width="25" height="25"/></a><a href="http://qlikbranch-slack-invite.herokuapp.com/"><img src="/img/Slack_Mark_Monochrome_White.svg" alt="Join us on Slack" width="50" height="50"/></a></div></div></section><a href="https://github.com/qlik-oss/" target="_blank" class="qlikOpenSource"><img src="/img/QlikLogo-White.png" alt="Qlik Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2018 QlikTech International AB.</section></footer></div><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script></body></html>

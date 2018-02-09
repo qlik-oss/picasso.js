@@ -1,0 +1,381 @@
+<html lang="en"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>data-brush · picasso.js</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta property="og:title" content="data-brush · picasso.js"/><meta property="og:type" content="website"/><meta property="og:url" content="https://qlik-oss.github.io/picasso.js/index.html"/><meta property="og:description" content="# Brush"/><link rel="shortcut icon" href="/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="/js/picasso.min.js"></script><script type="text/javascript" src="/js/landing.js"></script><script type="text/javascript" src="/js/tutorial.js"></script><link rel="stylesheet" href="/css/main.css"/></head><body class="sideNavVisible"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/picassojs.svg"/></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li><a href="/docs/installation.html" target="_self">Docs</a></li><li><a href="/docs/tutorial.html" target="_self">Tutorial</a></li><li><a href="https://github.com/qlik-oss/picasso.js" target="_self">GitHub</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1>data-brush</h1></header><article><div><span><h1><a class="anchor" aria-hidden="true" name="brush"></a><a href="#brush" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Brush</h1>
+<p>An interface to track brushed values between data source input and visual output.</p>
+<h2><a class="anchor" aria-hidden="true" name="a-name-events-href-events-a-events"></a><a href="#a-name-events-href-events-a-events" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><a name='events' href='#events'># </a> Events</h2>
+<p>Three types of events are emitted:</p>
+<pre><code class="hljs css js">brush.on(<span class="hljs-string">'start'</span>, () =&gt; {
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'started'</span>)
+});
+
+brush.on(<span class="hljs-string">'update'</span>, () =&gt; {
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'updated'</span>)
+});
+
+brush.on(<span class="hljs-string">'end'</span>, () =&gt; {
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'ended'</span>)
+});
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" name="a-name-interceptions-href-interceptions-a-manipulation-interceptions"></a><a href="#a-name-interceptions-href-interceptions-a-manipulation-interceptions" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><a name='interceptions' href='#interceptions'># </a> Manipulation interceptions</h2>
+<p>Some of the manipulation methods can be intercepted and have their data filtered before being handled further; this could be useful when, for example, it is desirable to block certain values from being brushed.</p>
+<h3><a class="anchor" aria-hidden="true" name="block-certain-values-from-getting-added"></a><a href="#block-certain-values-from-getting-added" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Block certain values from getting added</h3>
+<p>Values can be blocked from being added to the brush by intercepting the <code>add-values</code> event and filtering out the unwanted values.
+The following will remove the value 'Bike':</p>
+<pre><code class="hljs css js">brush.intercept(<span class="hljs-string">'add-values'</span>, items =&gt; {
+  <span class="hljs-keyword">return</span> items.filter(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> item.value !== <span class="hljs-string">'Bike'</span>);
+});
+</code></pre>
+<p>The values returned from the interceptor are used as the argument to the next interceptor in the chain:</p>
+<pre><code class="hljs css js">brush.intercept(<span class="hljs-string">'add-values'</span>, items =&gt; {
+  <span class="hljs-comment">// items === [{ key: 'products', value: 'Cars' }]</span>
+  <span class="hljs-keyword">return</span> items.concat([{ <span class="hljs-attr">key</span>: <span class="hljs-string">'products'</span>, <span class="hljs-string">'Always me'</span> }]);
+});
+</code></pre>
+<p>When calling <code>addValues</code>, the interceptors above will be called, which will remove 'Bike' and add 'Always me':</p>
+<pre><code class="hljs css js">brush.addValues([
+  { <span class="hljs-attr">key</span>: <span class="hljs-string">'products'</span>, <span class="hljs-string">'Bike'</span> },
+  { <span class="hljs-attr">key</span>: <span class="hljs-string">'products'</span>, <span class="hljs-string">'Cars'</span> }
+]);
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" name="api-reference"></a><a href="#api-reference" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>API reference</h2>
+<p><a name='brush.start' href='#brush.start'># </a><em>brush</em>.<strong>start</strong>()</p>
+<p>Starts this brush context</p>
+<p>Starts this brush context and emits a 'start' event if it is not already started.</p>
+<p><a name='brush.end' href='#brush.end'># </a><em>brush</em>.<strong>end</strong>()</p>
+<p>Ends this brush context</p>
+<p>Ends this brush context and emits an 'end' event if it is not already ended.</p>
+<p><a name='brush.isActive' href='#brush.isActive'># </a><em>brush</em>.<strong>isActive</strong>() <em>:boolean</em></p>
+<table>
+<thead>
+<tr><th>Name(s)</th><th>Type(s)</th><th>Description</th><th>Optional</th><th>Default value</th></tr>
+</thead>
+<tbody>
+<tr><td>Returns</td><td><em>boolean</em></td><td>No</td><td>...</td><td>...</td></tr>
+</tbody>
+</table>
+<p>Checks if this brush is activated</p>
+<p>Returns true if started, false otherwise</p>
+<p><a name='brush.clear' href='#brush.clear'># </a><em>brush</em>.<strong>clear</strong>()</p>
+<p>Clears this brush context</p>
+<p><a name='brush.brushes' href='#brush.brushes'># </a><em>brush</em>.<strong>brushes</strong>() <em>:object</em></p>
+<table>
+<thead>
+<tr><th>Name(s)</th><th>Type(s)</th><th>Description</th><th>Optional</th><th>Default value</th></tr>
+</thead>
+<tbody>
+<tr><td>Returns</td><td><em>object</em></td><td>No</td><td>...</td><td>...</td></tr>
+</tbody>
+</table>
+<p>Returns all brushes within this context</p>
+<p><a name='brush.addValue' href='#brush.addValue'># </a><em>brush</em>.<strong>addValue</strong>(key <em>:string</em>, value <em>:string | number</em>)</p>
+<table>
+<thead>
+<tr><th>Name(s)</th><th>Type(s)</th><th>Description</th><th>Optional</th><th>Default value</th></tr>
+</thead>
+<tbody>
+<tr><td>key</td><td><em>string</em></td><td>An identifier that represents the data source of the value</td><td>No</td><td>No</td></tr>
+<tr><td>value</td><td><em>string | number</em></td><td>The value to add</td><td>No</td><td>No</td></tr>
+</tbody>
+</table>
+<p>Adds a primitive value to this brush context</p>
+<p>If this brush context is not started, a 'start' event is emitted.
+If the state of the brush changes, ie. if the added value does not already exist, an 'update' event is emitted.</p>
+<pre><code class="hljs css js">brush.addValue(<span class="hljs-string">'countries'</span>, <span class="hljs-string">'Sweden'</span>);
+brush.addValue(<span class="hljs-string">'/qHyperCube/qDimensionInfo/0'</span>, <span class="hljs-number">3</span>);
+</code></pre>
+<p><a name='brush.addValues' href='#brush.addValues'># </a><em>brush</em>.<strong>addValues</strong>(items <em>:Array&lt;object&gt;</em>)</p>
+<table>
+<thead>
+<tr><th>Name(s)</th><th>Type(s)</th><th>Description</th><th>Optional</th><th>Default value</th></tr>
+</thead>
+<tbody>
+<tr><td>items</td><td><em>Array&lt;object&gt;</em></td><td>Items to add</td><td>No</td><td>No</td></tr>
+</tbody>
+</table>
+<p>No description</p>
+<p><a name='brush.setValues' href='#brush.setValues'># </a><em>brush</em>.<strong>setValues</strong>(items <em>:Array&lt;object&gt;</em>)</p>
+<table>
+<thead>
+<tr><th>Name(s)</th><th>Type(s)</th><th>Description</th><th>Optional</th><th>Default value</th></tr>
+</thead>
+<tbody>
+<tr><td>items</td><td><em>Array&lt;object&gt;</em></td><td>Items to set</td><td>No</td><td>No</td></tr>
+</tbody>
+</table>
+<p>No description</p>
+<p><a name='brush.removeValue' href='#brush.removeValue'># </a><em>brush</em>.<strong>removeValue</strong>(key <em>:string</em>, value <em>:string | number</em>)</p>
+<table>
+<thead>
+<tr><th>Name(s)</th><th>Type(s)</th><th>Description</th><th>Optional</th><th>Default value</th></tr>
+</thead>
+<tbody>
+<tr><td>key</td><td><em>string</em></td><td>An identifier that represents the data source of the value</td><td>No</td><td>No</td></tr>
+<tr><td>value</td><td><em>string | number</em></td><td>The value to remove</td><td>No</td><td>No</td></tr>
+</tbody>
+</table>
+<p>Removes a primitive values from this brush context</p>
+<p>If the state of the brush changes, ie. if the removed value does exist, an 'update' event is emitted.</p>
+<pre><code class="hljs css js">brush.removeValue(<span class="hljs-string">'countries'</span>, <span class="hljs-string">'Sweden'</span>);
+</code></pre>
+<p><a name='brush.removeValues' href='#brush.removeValues'># </a><em>brush</em>.<strong>removeValues</strong>(items <em>:Array&lt;object&gt;</em>)</p>
+<table>
+<thead>
+<tr><th>Name(s)</th><th>Type(s)</th><th>Description</th><th>Optional</th><th>Default value</th></tr>
+</thead>
+<tbody>
+<tr><td>items</td><td><em>Array&lt;object&gt;</em></td><td>Items to remove</td><td>No</td><td>No</td></tr>
+</tbody>
+</table>
+<p>No description</p>
+<p><a name='brush.addAndRemoveValues' href='#brush.addAndRemoveValues'># </a><em>brush</em>.<strong>addAndRemoveValues</strong>(addItems <em>:Array&lt;object&gt;</em>, removeItems <em>:Array&lt;object&gt;</em>)</p>
+<table>
+<thead>
+<tr><th>Name(s)</th><th>Type(s)</th><th>Description</th><th>Optional</th><th>Default value</th></tr>
+</thead>
+<tbody>
+<tr><td>addItems</td><td><em>Array&lt;object&gt;</em></td><td>Items to add</td><td>No</td><td>No</td></tr>
+<tr><td>removeItems</td><td><em>Array&lt;object&gt;</em></td><td>Items to remove</td><td>No</td><td>No</td></tr>
+</tbody>
+</table>
+<p>Add and remove values in a single operation
+almost the same as calling addValues and removeValues but only triggers one 'update' event</p>
+<p>If the state of the brush changes, an 'update' event is emitted.</p>
+<p><a name='brush.toggleValue' href='#brush.toggleValue'># </a><em>brush</em>.<strong>toggleValue</strong>(key <em>:string</em>, value <em>:string | number</em>)</p>
+<table>
+<thead>
+<tr><th>Name(s)</th><th>Type(s)</th><th>Description</th><th>Optional</th><th>Default value</th></tr>
+</thead>
+<tbody>
+<tr><td>key</td><td><em>string</em></td><td>An identifier that represents the data source of the value</td><td>No</td><td>No</td></tr>
+<tr><td>value</td><td><em>string | number</em></td><td>The value to toggle</td><td>No</td><td>No</td></tr>
+</tbody>
+</table>
+<p>Toggles a primitive value in this brush context</p>
+<p>If the given value exist in this brush context, it will be removed. If it does not exist it will be added.</p>
+<pre><code class="hljs css js">brush.toggleValue(<span class="hljs-string">'countries'</span>, <span class="hljs-string">'Sweden'</span>);
+</code></pre>
+<p><a name='brush.toggleValues' href='#brush.toggleValues'># </a><em>brush</em>.<strong>toggleValues</strong>(items <em>:Array&lt;object&gt;</em>)</p>
+<table>
+<thead>
+<tr><th>Name(s)</th><th>Type(s)</th><th>Description</th><th>Optional</th><th>Default value</th></tr>
+</thead>
+<tbody>
+<tr><td>items</td><td><em>Array&lt;object&gt;</em></td><td>Items to toggle</td><td>No</td><td>No</td></tr>
+</tbody>
+</table>
+<p>No description</p>
+<p><a name='brush.containsValue' href='#brush.containsValue'># </a><em>brush</em>.<strong>containsValue</strong>(key <em>:string</em>, value <em>:string | number</em>) <em>:boolean</em></p>
+<table>
+<thead>
+<tr><th>Name(s)</th><th>Type(s)</th><th>Description</th><th>Optional</th><th>Default value</th></tr>
+</thead>
+<tbody>
+<tr><td>key</td><td><em>string</em></td><td>An identifier that represents the data source of the value</td><td>No</td><td>No</td></tr>
+<tr><td>value</td><td><em>string | number</em></td><td>The value to check for</td><td>No</td><td>No</td></tr>
+<tr><td>Returns</td><td><em>boolean</em></td><td>No</td><td>...</td><td>...</td></tr>
+</tbody>
+</table>
+<p>Checks if a certain value exists in this brush context</p>
+<p>Returns true if the values exists for the provided key, returns false otherwise.</p>
+<pre><code class="hljs css js">brush.addValue(<span class="hljs-string">'countries'</span>, <span class="hljs-string">'Sweden'</span>);
+brush.containsValue(<span class="hljs-string">'countries'</span>, <span class="hljs-string">'Sweden'</span>); <span class="hljs-comment">// true</span>
+brush.toggleValue(<span class="hljs-string">'countries'</span>, <span class="hljs-string">'Sweden'</span>); <span class="hljs-comment">// remove 'Sweden'</span>
+brush.containsValue(<span class="hljs-string">'countries'</span>, <span class="hljs-string">'Sweden'</span>); <span class="hljs-comment">// false</span>
+</code></pre>
+<p><a name='brush.addRange' href='#brush.addRange'># </a><em>brush</em>.<strong>addRange</strong>(key <em>:string</em>, range <em>:object</em>)</p>
+<table>
+<thead>
+<tr><th>Name(s)</th><th>Type(s)</th><th>Description</th><th>Optional</th><th>Default value</th></tr>
+</thead>
+<tbody>
+<tr><td>key</td><td><em>string</em></td><td>An identifier that represents the data source of the range</td><td>No</td><td>No</td></tr>
+<tr><td>range</td><td><em>object</em></td><td>The range to add to this brush</td><td>No</td><td>No</td></tr>
+</tbody>
+</table>
+<p>Adds a numeric range to this brush context</p>
+<pre><code class="hljs css js">brush.addRange(<span class="hljs-string">'Sales'</span>, { <span class="hljs-attr">min</span>: <span class="hljs-number">20</span>, <span class="hljs-attr">max</span>: <span class="hljs-number">50</span> });
+</code></pre>
+<p><a name='brush.addRanges' href='#brush.addRanges'># </a><em>brush</em>.<strong>addRanges</strong>(items <em>:Array&lt;object&gt;</em>)</p>
+<table>
+<thead>
+<tr><th>Name(s)</th><th>Type(s)</th><th>Description</th><th>Optional</th><th>Default value</th></tr>
+</thead>
+<tbody>
+<tr><td>items</td><td><em>Array&lt;object&gt;</em></td><td>Items containing the ranges to remove</td><td>No</td><td>No</td></tr>
+</tbody>
+</table>
+<p>No description</p>
+<p><a name='brush.removeRange' href='#brush.removeRange'># </a><em>brush</em>.<strong>removeRange</strong>(key <em>:string</em>, range <em>:object</em>)</p>
+<table>
+<thead>
+<tr><th>Name(s)</th><th>Type(s)</th><th>Description</th><th>Optional</th><th>Default value</th></tr>
+</thead>
+<tbody>
+<tr><td>key</td><td><em>string</em></td><td>An identifier that represents the data source of the range</td><td>No</td><td>No</td></tr>
+<tr><td>range</td><td><em>object</em></td><td>The range to remove from this brush</td><td>No</td><td>No</td></tr>
+</tbody>
+</table>
+<p>Removes a numeric range from this brush context</p>
+<p><a name='brush.removeRanges' href='#brush.removeRanges'># </a><em>brush</em>.<strong>removeRanges</strong>(items <em>:Array&lt;object&gt;</em>)</p>
+<table>
+<thead>
+<tr><th>Name(s)</th><th>Type(s)</th><th>Description</th><th>Optional</th><th>Default value</th></tr>
+</thead>
+<tbody>
+<tr><td>items</td><td><em>Array&lt;object&gt;</em></td><td>Items containing the ranges to remove</td><td>No</td><td>No</td></tr>
+</tbody>
+</table>
+<p>No description</p>
+<p><a name='brush.setRange' href='#brush.setRange'># </a><em>brush</em>.<strong>setRange</strong>(key <em>:string</em>, range <em>:object</em>)</p>
+<table>
+<thead>
+<tr><th>Name(s)</th><th>Type(s)</th><th>Description</th><th>Optional</th><th>Default value</th></tr>
+</thead>
+<tbody>
+<tr><td>key</td><td><em>string</em></td><td>An identifier that represents the data source of the range</td><td>No</td><td>No</td></tr>
+<tr><td>range</td><td><em>object</em></td><td>The range to set on this brush</td><td>No</td><td>No</td></tr>
+</tbody>
+</table>
+<p>Sets a numeric range to this brush context</p>
+<p>Overwrites any active ranges identified by `key`</p>
+<p><a name='brush.setRanges' href='#brush.setRanges'># </a><em>brush</em>.<strong>setRanges</strong>(items <em>:Array&lt;object&gt;</em>)</p>
+<table>
+<thead>
+<tr><th>Name(s)</th><th>Type(s)</th><th>Description</th><th>Optional</th><th>Default value</th></tr>
+</thead>
+<tbody>
+<tr><td>items</td><td><em>Array&lt;object&gt;</em></td><td>Items containing the ranges to set</td><td>No</td><td>No</td></tr>
+</tbody>
+</table>
+<p>No description</p>
+<p><a name='brush.toggleRange' href='#brush.toggleRange'># </a><em>brush</em>.<strong>toggleRange</strong>(key <em>:string</em>, range <em>:object</em>)</p>
+<table>
+<thead>
+<tr><th>Name(s)</th><th>Type(s)</th><th>Description</th><th>Optional</th><th>Default value</th></tr>
+</thead>
+<tbody>
+<tr><td>key</td><td><em>string</em></td><td>An identifier that represents the data source of the range</td><td>No</td><td>No</td></tr>
+<tr><td>range</td><td><em>object</em></td><td>The range to toggle in this brush</td><td>No</td><td>No</td></tr>
+</tbody>
+</table>
+<p>Toggles a numeric range in this brush context</p>
+<p>Removes the range if it's already contained within the given identifier,
+otherwise the given range is added to the brush.</p>
+<p><a name='brush.toggleRanges' href='#brush.toggleRanges'># </a><em>brush</em>.<strong>toggleRanges</strong>(items <em>:Array&lt;object&gt;</em>)</p>
+<table>
+<thead>
+<tr><th>Name(s)</th><th>Type(s)</th><th>Description</th><th>Optional</th><th>Default value</th></tr>
+</thead>
+<tbody>
+<tr><td>items</td><td><em>Array&lt;object&gt;</em></td><td>Items containing the ranges to toggle</td><td>No</td><td>No</td></tr>
+</tbody>
+</table>
+<p>No description</p>
+<p><a name='brush.containsRangeValue' href='#brush.containsRangeValue'># </a><em>brush</em>.<strong>containsRangeValue</strong>(key <em>:string</em>, value <em>:number</em>) <em>:boolean</em></p>
+<table>
+<thead>
+<tr><th>Name(s)</th><th>Type(s)</th><th>Description</th><th>Optional</th><th>Default value</th></tr>
+</thead>
+<tbody>
+<tr><td>key</td><td><em>string</em></td><td>An identifier that represents the data source of the value</td><td>No</td><td>No</td></tr>
+<tr><td>value</td><td><em>number</em></td><td>The value to check for</td><td>No</td><td>No</td></tr>
+<tr><td>Returns</td><td><em>boolean</em></td><td>No</td><td>...</td><td>...</td></tr>
+</tbody>
+</table>
+<p>Checks if a value is contained within a range in this brush context</p>
+<p>Returns true if the values exists for the provided key, returns false otherwise.</p>
+<pre><code class="hljs css js">brush.addRange(<span class="hljs-string">'Sales'</span>, { <span class="hljs-attr">min</span>: <span class="hljs-number">10</span>, <span class="hljs-attr">max</span>: <span class="hljs-number">50</span> });
+brush.containsRangeValue(<span class="hljs-string">'Sales'</span>, <span class="hljs-number">30</span>); <span class="hljs-comment">// true</span>
+brush.containsRangeValue(<span class="hljs-string">'Sales'</span>, <span class="hljs-number">5</span>); <span class="hljs-comment">// false</span>
+</code></pre>
+<p><a name='brush.containsRange' href='#brush.containsRange'># </a><em>brush</em>.<strong>containsRange</strong>(key <em>:string</em>, range <em>:object</em>) <em>:boolean</em></p>
+<table>
+<thead>
+<tr><th>Name(s)</th><th>Type(s)</th><th>Description</th><th>Optional</th><th>Default value</th></tr>
+</thead>
+<tbody>
+<tr><td>key</td><td><em>string</em></td><td>An identifier that represents the data source of the value</td><td>No</td><td>No</td></tr>
+<tr><td>range</td><td><em>object</em></td><td>The range to check for</td><td>No</td><td>No</td></tr>
+<tr><td>Returns</td><td><em>boolean</em></td><td>No</td><td>...</td><td>...</td></tr>
+</tbody>
+</table>
+<p>Checks if a range segment is contained within this brush context</p>
+<p>Returns true if the range segment exists for the provided key, returns false otherwise.</p>
+<pre><code class="hljs css js">brush.addRange(<span class="hljs-string">'Sales'</span>, { <span class="hljs-attr">min</span>: <span class="hljs-number">10</span>, <span class="hljs-attr">max</span>: <span class="hljs-number">50</span> });
+brush.containsRange(<span class="hljs-string">'Sales'</span>, { <span class="hljs-attr">min</span>: <span class="hljs-number">15</span>, <span class="hljs-attr">max</span>: <span class="hljs-number">20</span> }); <span class="hljs-comment">// true - the range segment is fully contained within [10, 50]</span>
+brush.containsRange(<span class="hljs-string">'Sales'</span>, { <span class="hljs-attr">min</span>: <span class="hljs-number">5</span>, <span class="hljs-attr">max</span>: <span class="hljs-number">20</span> }); <span class="hljs-comment">// false - part of the range segment is outside [10, 50]</span>
+brush.containsRange(<span class="hljs-string">'Sales'</span>, { <span class="hljs-attr">min</span>: <span class="hljs-number">30</span>, <span class="hljs-attr">max</span>: <span class="hljs-number">80</span> }); <span class="hljs-comment">// false - part of the range segment is outside [10, 50]</span>
+</code></pre>
+<p><a name='brush.intercept' href='#brush.intercept'># </a><em>brush</em>.<strong>intercept</strong>(name <em>:string</em>, ic <em>:function</em>)</p>
+<table>
+<thead>
+<tr><th>Name(s)</th><th>Type(s)</th><th>Description</th><th>Optional</th><th>Default value</th></tr>
+</thead>
+<tbody>
+<tr><td>name</td><td><em>string</em></td><td>Name of the event to intercept</td><td>No</td><td>No</td></tr>
+<tr><td>ic</td><td><em>function</em></td><td>Handler to call before event is triggered</td><td>No</td><td>No</td></tr>
+</tbody>
+</table>
+<p>Adds an event interceptor</p>
+<pre><code class="hljs css js">brush.intercept(<span class="hljs-string">'add-values'</span>, items =&gt; {
+ <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'about to add the following items'</span>, items);
+ <span class="hljs-keyword">return</span> items;
+});
+</code></pre>
+<p><a name='brush.removeInterceptor' href='#brush.removeInterceptor'># </a><em>brush</em>.<strong>removeInterceptor</strong>(name <em>:string</em>, ic <em>:function</em>)</p>
+<table>
+<thead>
+<tr><th>Name(s)</th><th>Type(s)</th><th>Description</th><th>Optional</th><th>Default value</th></tr>
+</thead>
+<tbody>
+<tr><td>name</td><td><em>string</em></td><td>Name of the event to intercept</td><td>No</td><td>No</td></tr>
+<tr><td>ic</td><td><em>function</em></td><td>Handler to remove</td><td>No</td><td>No</td></tr>
+</tbody>
+</table>
+<p>Removes an interceptor</p>
+<p><a name='brush.removeAllInterceptors' href='#brush.removeAllInterceptors'># </a><em>brush</em>.<strong>removeAllInterceptors</strong>([name <em>:string</em>])</p>
+<table>
+<thead>
+<tr><th>Name(s)</th><th>Type(s)</th><th>Description</th><th>Optional</th><th>Default value</th></tr>
+</thead>
+<tbody>
+<tr><td>name</td><td><em>string</em></td><td>Name of the event to remove interceptors for. If not provided, removes all interceptors.</td><td>Yes</td><td>No</td></tr>
+</tbody>
+</table>
+<p>Removes all interceptors</p>
+<p><a name='brush.addKeyAlias' href='#brush.addKeyAlias'># </a><em>brush</em>.<strong>addKeyAlias</strong>(key <em>:string</em>, alias <em>:string</em>)</p>
+<table>
+<thead>
+<tr><th>Name(s)</th><th>Type(s)</th><th>Description</th><th>Optional</th><th>Default value</th></tr>
+</thead>
+<tbody>
+<tr><td>key</td><td><em>string</em></td><td>Value to be replaced</td><td>No</td><td>No</td></tr>
+<tr><td>alias</td><td><em>string</em></td><td>Value to replace key with</td><td>No</td><td>No</td></tr>
+</tbody>
+</table>
+<p>Adds an alias to the given key</p>
+<pre><code class="hljs css js">brush.addKeyAlias(<span class="hljs-string">'BadFieldName'</span>, <span class="hljs-string">'Region'</span>);
+brush.addValue(<span class="hljs-string">'BadFieldName'</span>, <span class="hljs-string">'Sweden'</span>); <span class="hljs-comment">// 'BadFieldName' will be stored as 'Region'</span>
+brush.containsValue(<span class="hljs-string">'Region'</span>, <span class="hljs-string">'Sweden'</span>); <span class="hljs-comment">// true</span>
+brush.containsValue(<span class="hljs-string">'BadFieldName'</span>, <span class="hljs-string">'Sweden'</span>); <span class="hljs-comment">// true</span>
+</code></pre>
+<p><a name='brush.removeKeyAlias' href='#brush.removeKeyAlias'># </a><em>brush</em>.<strong>removeKeyAlias</strong>(key <em>:string</em>)</p>
+<table>
+<thead>
+<tr><th>Name(s)</th><th>Type(s)</th><th>Description</th><th>Optional</th><th>Default value</th></tr>
+</thead>
+<tbody>
+<tr><td>key</td><td><em>string</em></td><td>Value to remove as alias</td><td>No</td><td>No</td></tr>
+</tbody>
+</table>
+<p>Removes an alias</p>
+<p>This will only remove the key to alias mapping for new manipulations of the brush,
+no changes will be made to the current state of this brush.</p>
+<pre><code class="hljs css js">brush.removeKeyAlias(<span class="hljs-string">'BadFieldName'</span>);
+</code></pre>
+<p><strong>Events</strong></p>
+<p><a name='event.brush.start' href='#event.brush.start'># </a> event: <code>'start'</code> ()</p>
+<p>Triggered when this brush is activated</p>
+<p><a name='event.brush.update' href='#event.brush.update'># </a> event: <code>'update'</code> (added <em>:Array&lt;object&gt;</em>, removed <em>:Array&lt;object&gt;</em>)</p>
+<p>Triggered when this brush is updated</p>
+<p><a name='event.brush.end' href='#event.brush.end'># </a> event: <code>'end'</code> ()</p>
+<p>Triggered when this brush is deactivated</p>
+</span></div></article></div><div class="docs-prevnext"></div></div></div></div><footer class="nav-footer" id="footer"><section class="sitemap"><div><h5>Docs</h5><a href="/docs/installation.html">Getting Started</a><a href="/docs/tutorial.html">Tutorial</a></div><div><h5> </h5><div class="footerIcons"><a href="https://github.com/qlik-oss/picasso.js"><img src="/img/GitHub-Mark-Light-120px-plus.png" alt="GitHub" width="25" height="25"/></a><a href="http://qlikbranch-slack-invite.herokuapp.com/"><img src="/img/Slack_Mark_Monochrome_White.svg" alt="Join us on Slack" width="50" height="50"/></a></div></div></section><a href="https://github.com/qlik-oss/" target="_blank" class="qlikOpenSource"><img src="/img/QlikLogo-White.png" alt="Qlik Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2018 QlikTech International AB.</section></footer></div><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script></body></html>

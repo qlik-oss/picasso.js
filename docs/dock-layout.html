@@ -1,0 +1,128 @@
+<html lang="en"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Dock layout · picasso.js</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta property="og:title" content="Dock layout · picasso.js"/><meta property="og:type" content="website"/><meta property="og:url" content="https://qlik-oss.github.io/picasso.js/index.html"/><meta property="og:description" content="The dock layout is the engine that controls how different components are positioned and whether a component is rendered or not, depending on available space, that is, the responsiveness."/><link rel="shortcut icon" href="/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="/js/picasso.min.js"></script><script type="text/javascript" src="/js/landing.js"></script><script type="text/javascript" src="/js/tutorial.js"></script><link rel="stylesheet" href="/css/main.css"/></head><body class="sideNavVisible"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/picassojs.svg"/></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li><a href="/docs/installation.html" target="_self">Docs</a></li><li><a href="/docs/tutorial.html" target="_self">Tutorial</a></li><li><a href="https://github.com/qlik-oss/picasso.js" target="_self">GitHub</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>General</span></h2></div><div class="navGroups"><div class="navGroup navGroupActive"><h3>Getting started</h3><ul><li class="navListItem"><a class="navItem" href="/docs/installation.html">Installation</a></li><li class="navListItem"><a class="navItem" href="/docs/chart.html">Chart</a></li><li class="navListItem"><a class="navItem" href="/docs/data.html">Data</a></li><li class="navListItem"><a class="navItem" href="/docs/components.html">Components</a></li></ul></div><div class="navGroup navGroupActive"><h3>General</h3><ul><li class="navListItem"><a class="navItem" href="/docs/scales.html">Scales</a></li><li class="navListItem"><a class="navItem" href="/docs/brushing.html">Brushing in components</a></li><li class="navListItem"><a class="navItem" href="/docs/interaction.html">Interaction</a></li><li class="navListItem"><a class="navItem" href="/docs/formatters.html">Formatting</a></li><li class="navListItem navListItemActive"><a class="navItem navItemActive" href="/docs/dock-layout.html">Dock layout</a></li></ul></div><div class="navGroup navGroupActive"><h3>Scales</h3><ul><li class="navListItem"><a class="navItem" href="/docs/scale-linear.html">Linear</a></li><li class="navListItem"><a class="navItem" href="/docs/scale-band.html">Band</a></li><li class="navListItem"><a class="navItem" href="/docs/scale-categorical-color.html">Categorical color</a></li><li class="navListItem"><a class="navItem" href="/docs/scale-sequential-color.html">Sequential color</a></li><li class="navListItem"><a class="navItem" href="/docs/scale-threshold-color.html">Threshold color</a></li></ul></div><div class="navGroup navGroupActive"><h3>Components</h3><ul><li class="navListItem"><a class="navItem" href="/docs/component-axis.html">Axis</a></li><li class="navListItem"><a class="navItem" href="/docs/component-grid-line.html">Grid</a></li><li class="navListItem"><a class="navItem" href="/docs/component-point.html">Point</a></li><li class="navListItem"><a class="navItem" href="/docs/component-box.html">Box</a></li><li class="navListItem"><a class="navItem" href="/docs/component-line.html">Line area</a></li><li class="navListItem"><a class="navItem" href="/docs/component-pie.html">Pie</a></li><li class="navListItem"><a class="navItem" href="/docs/component-legend-cat.html">Categorical legend</a></li><li class="navListItem"><a class="navItem" href="/docs/component-legend-seq.html">Sequential legend</a></li><li class="navListItem"><a class="navItem" href="/docs/component-text.html">Text</a></li><li class="navListItem"><a class="navItem" href="/docs/component-labels.html">Labels</a></li><li class="navListItem"><a class="navItem" href="/docs/component-brush-area-dir.html">Brush area</a></li><li class="navListItem"><a class="navItem" href="/docs/component-brush-lasso.html">Brush lasso</a></li><li class="navListItem"><a class="navItem" href="/docs/component-brush-range.html">Brush range</a></li></ul></div><div class="navGroup navGroupActive"><h3>Plugins</h3><ul><li class="navListItem"><a class="navItem" href="/docs/plugin-q.html">q</a></li><li class="navListItem"><a class="navItem" href="/docs/plugin-hammer.html">Hammer</a></li></ul></div></div></section></div><script>
+          var toggler = document.getElementById('navToggler');
+          var nav = document.getElementById('docsNav');
+          toggler.onclick = function() {
+            nav.classList.toggle('docsSliderActive');
+          };
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1>Dock layout</h1></header><article><div><span><p>The dock layout is the engine that controls how different components are positioned and whether a component is rendered or not, depending on available space, that is, the responsiveness.</p>
+<p>There are 5 different layout areas, with the <code>center</code> area being the primary one. It is typically where the visual components are positioned. On each side of the center area, there is another area on which a component can be positioned (docked). They are referred to as <code>top</code>, <code>bottom</code>, <code>left</code> and <code>right</code>.</p>
+<p><img src="/img/dock-area.png" alt="Dock area"></p>
+<p>Most components should handle any of the 5 different areas, but it may make more sense for certain components to be primarily either in the center or at the sides.</p>
+<h2><a class="anchor" aria-hidden="true" name="scaling"></a><a href="#scaling" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Scaling</h2>
+<h3><a class="anchor" aria-hidden="true" name="size-physical-size"></a><a href="#size-physical-size" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Size (physical size)</h3>
+<p>The default physical size is equal to that of the container (element) for the chart.</p>
+<p>By explicitly setting a size, it is possible to override both width and height of the container. Either width or height, or both can be specified.</p>
+<p>The input value is specified as a number and represents the size in pixels.</p>
+<p><strong>Example</strong></p>
+<pre><code class="hljs css js">dockLayout: {
+  <span class="hljs-attr">size</span>: {
+    <span class="hljs-attr">width</span>: <span class="hljs-number">100</span>,
+    <span class="hljs-attr">height</span>: <span class="hljs-number">100</span>
+  }
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" name="logical-size"></a><a href="#logical-size" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Logical size</h3>
+<p>Logical size represents the size given to the dock layout to work with. If the logical size is different than the physical size (size of the container or the size property), then scaling is applied to the components to fit into the physical size.</p>
+<p>The default logical size is equal to the physical size.</p>
+<p>The input value is specified as a number and represents the size in pixels.</p>
+<p><strong>Example</strong></p>
+<pre><code class="hljs css js">dockLayout: {
+  <span class="hljs-attr">logicalSize</span>: {
+    <span class="hljs-attr">width</span>: <span class="hljs-number">150</span>,
+    <span class="hljs-attr">height</span>: <span class="hljs-number">150</span>,
+    <span class="hljs-attr">preserveAspectRatio</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-attr">align</span>: <span class="hljs-number">0.5</span>
+  }
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" name="responsiveness"></a><a href="#responsiveness" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Responsiveness</h2>
+<p>Each component can tell the layout engine that they require a certain amount of space, where the direction of the space required is the perpendicular axis of the dock area, given that <code>left</code>/ <code>right</code> area has a main axis of Y and <code>top</code>/<code>bottom</code> main axis is X.</p>
+<p>The arrow demonstrates the direction in which a component requests space for each dock area. Note that components docked in the center area have no impact on the space available, which is instead determined by the amount of space occupied by components docked at the sides.</p>
+<p><img src="/img/dock-area-direction.png" alt="Dock area"></p>
+<p>The responsive engine has two ways to determine if a component should be rendered or not. The first way is to compare the space required by a component to the logical space available. If not enough space is available, the component is discarded and the engine moves on to process the next component. The second way is to define a minimum layout mode, this is currently the only way to discard a component docked in the center area.</p>
+<h3><a class="anchor" aria-hidden="true" name="limiting-space-required-by-the-center-area"></a><a href="#limiting-space-required-by-the-center-area" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Limiting space required by the center area</h3>
+<p>Each of the side areas can take a certain amount of space from the center area. If there is not enough space available for the center area, either in vertical or horizontal direction, the layout engine must remove one or more of the components docked at the side.</p>
+<p>It is possible to control the amount of space required by the center area with properties. By setting <code>minWidthRatio</code> and/or <code>minHeightRatio</code> to a value between 0 and 1, the available size is set as a ratio of the logical size. With 1 meaning all logical size will go the center area, as such no components docked at the side will be rendered. 0 means that components docked at the side take as much space as needed from the center area.</p>
+<p>When configured with either <code>minWidth/minHeight</code> or <code>minWidthRatio/minHeightRatio</code>, the minimum required space of the center area is set to that size. However the center area can never be larger than logical size and will clamp to logical size. If <code>minWidth</code> and <code>minWidthRatio</code> are set, the absolute size from <code>minWidth</code> has precedence over <code>minWidthRatio</code>.</p>
+<p><strong>Example</strong></p>
+<pre><code class="hljs css js">dockLayout: {
+  <span class="hljs-attr">center</span>: {
+    <span class="hljs-attr">minWidthRatio</span>: <span class="hljs-number">0.5</span>,
+    <span class="hljs-attr">minHeightRatio</span>: <span class="hljs-number">0.5</span>,
+    <span class="hljs-attr">minWidth</span>: <span class="hljs-number">10</span>,
+    <span class="hljs-attr">minHeight</span>: <span class="hljs-number">10</span>
+  }
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" name="minimum-layout-mode"></a><a href="#minimum-layout-mode" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Minimum layout mode</h3>
+<p>The minimum layout mode is a way to tell the layout engine that a component should be discarded if the logical size is below a certain threshold in width or height.</p>
+<p><strong>Example</strong></p>
+<pre><code class="hljs css js">dockLayout: {
+  <span class="hljs-attr">layoutMode</span>: {
+    <span class="hljs-attr">S</span>: { <span class="hljs-attr">width</span>: <span class="hljs-number">150</span>, <span class="hljs-attr">height</span>: <span class="hljs-number">150</span> }
+    L: { <span class="hljs-attr">width</span>: <span class="hljs-number">300</span>, <span class="hljs-attr">height</span>: <span class="hljs-number">300</span> }
+  }
+}
+
+<span class="hljs-comment">// in the component definition</span>
+{
+  <span class="hljs-attr">type</span>: <span class="hljs-string">'my-component'</span>,
+  <span class="hljs-attr">minimumLayoutMode</span>: <span class="hljs-string">'S'</span>,
+  settings...
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" name="chart-instance-configuration"></a><a href="#chart-instance-configuration" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Chart instance configuration</h2>
+<p>The following properties are available in the chart settings definition:</p>
+<pre><code class="hljs css js">{
+  <span class="hljs-attr">size</span>: {  <span class="hljs-comment">// Optional</span>
+    <span class="hljs-comment">// Physical size. Defaults to the container element.</span>
+    width: <span class="hljs-comment">/* number */</span>, <span class="hljs-comment">// Width in pixels // Optional</span>
+    height: <span class="hljs-comment">/* number */</span>, <span class="hljs-comment">// Height in pixels // Optional</span>
+  },
+  <span class="hljs-attr">logicalSize</span>: {  <span class="hljs-comment">// Optional</span>
+    <span class="hljs-comment">// Logical size</span>
+    width: <span class="hljs-comment">/* number */</span>, <span class="hljs-comment">// Width in pixels // Optional</span>
+    height: <span class="hljs-comment">/* number */</span>, <span class="hljs-comment">// Height in pixels // Optional</span>
+    preserveAspectRatio: <span class="hljs-literal">false</span>, <span class="hljs-comment">// If true, takes the smallest ratio of width/height between logical and physical size ( physical / logical ) // Optional</span>
+    align: <span class="hljs-number">0.5</span>, <span class="hljs-comment">// Normalized value between 0-1. Defines how the space around the scaled axis is spread in the container, with 0.5 meaning the spread is equal on both sides. Only applicable if preserveAspectRatio is set to true // Optional</span>
+  },
+  <span class="hljs-attr">center</span>: {  <span class="hljs-comment">// Optional</span>
+    <span class="hljs-comment">// Define how much space the center dock area requires</span>
+    minWidthRatio: <span class="hljs-number">0.5</span>, <span class="hljs-comment">// Value between 0 and 1 // Optional</span>
+    minHeightRatio: <span class="hljs-number">0.5</span>, <span class="hljs-comment">// Value between 0 and 1 // Optional</span>
+    minWidth: <span class="hljs-comment">/* number */</span>, <span class="hljs-comment">// Width in pixels // Optional</span>
+    minHeight: <span class="hljs-comment">/* number */</span>, <span class="hljs-comment">// Height in pixels // Optional</span>
+  },
+  <span class="hljs-attr">layoutModes</span>: <span class="hljs-comment">/* object&lt;string, {width: number, height: number}&gt; */</span>, <span class="hljs-comment">// Dictionary with named sizes // Optional</span>
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" name="component-instance-configuration"></a><a href="#component-instance-configuration" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Component instance configuration</h2>
+<p>The following dock properties are available in the component definition:</p>
+<ul>
+<li><code>dock</code> <em>string</em>. Dock setting. Any of <code>top</code> | <code>right</code> | <code>bottom</code> | <code>left</code></li>
+<li><code>show</code> <em>boolean</em>. True if component should be rendered.</li>
+<li><code>displayOrder</code> <em>number</em>. The order in which components are rendered (similar to css z-index).</li>
+<li><code>prioOrder</code> <em>number</em>. The order in which components are docked from the center area.</li>
+<li><code>minimumLayoutMode</code> <em>string</em>.</li>
+</ul>
+<p><strong>Example</strong></p>
+<pre><code class="hljs css js">components: [{
+  <span class="hljs-attr">type</span>: <span class="hljs-string">'my-component'</span>,
+  <span class="hljs-attr">show</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">dock</span>: <span class="hljs-string">'left'</span>,
+  <span class="hljs-attr">displayOrder</span>: <span class="hljs-number">0</span>,
+  <span class="hljs-attr">prioOrder</span>: <span class="hljs-number">0</span>,
+  <span class="hljs-attr">minimumLayoutMode</span>: <span class="hljs-string">'S'</span>,
+}]
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" name="working-with-displayorder"></a><a href="#working-with-displayorder" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Working with <code>displayOrder</code></h3>
+<p>The <code>displayOrder</code> property is used by the layout engine to lay out components. Components are interpreted in the ascending order of the <code>displayOrder</code> value. The layout engine applies the value in two ways: the first is the order in which components are rendererd, and the second is the area components are laid out in when they have a direction, that is, docked to either top, bottom, left or right.</p>
+<p>If docked at the same area, the component with a higher <code>displayOrder</code> will be rendered on top of the component with a lower <code>displayOrder</code>. It can be seen as defining a z-index. A lower <code>displayOrder</code> also means that a component will be laid out first in a given direction, that is, laid out closer to the central area (non-directional area) than a component with a higher <code>displayOrder</code>. It can, in this case, be seen as the x-index or y-index.</p>
+<p>In the example below, all docking areas have two components with a <code>displayOrder</code> of 0 and 1. Notice how the center area only displays the component with <code>displayOrder</code> 1, which is the z-index in action.</p>
+<p><img src="/img/display-order.png" alt="displayOrder"></p>
+<h3><a class="anchor" aria-hidden="true" name="working-with-prioorder"></a><a href="#working-with-prioorder" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Working with <code>prioOrder</code></h3>
+<p>The <code>prioOrder</code> property is used to define the order in which components are added to the layout engine; this is done before any components are laid out. When there is not enough space to add any more components to a given area, all components not already added are then discarded. The value of <code>prioOrder</code> is in ascending order, such that a lower value is added to the layout engine first.</p>
+<h2><a class="anchor" aria-hidden="true" name="component-flowchart"></a><a href="#component-flowchart" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Component flowchart</h2>
+<p>The following diagram shows the order in which components flow through the layout engine.</p>
+<p><img src="/img/dock-process-flow.png" alt="flow"></p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="formatters.html">← Formatting</a><a class="docs-next button" href="scale-linear.html">Linear →</a></div></div></div></div><footer class="nav-footer" id="footer"><section class="sitemap"><div><h5>Docs</h5><a href="/docs/installation.html">Getting Started</a><a href="/docs/tutorial.html">Tutorial</a></div><div><h5> </h5><div class="footerIcons"><a href="https://github.com/qlik-oss/picasso.js"><img src="/img/GitHub-Mark-Light-120px-plus.png" alt="GitHub" width="25" height="25"/></a><a href="http://qlikbranch-slack-invite.herokuapp.com/"><img src="/img/Slack_Mark_Monochrome_White.svg" alt="Join us on Slack" width="50" height="50"/></a></div></div></section><a href="https://github.com/qlik-oss/" target="_blank" class="qlikOpenSource"><img src="/img/QlikLogo-White.png" alt="Qlik Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2018 QlikTech International AB.</section></footer></div><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script></body></html>

@@ -1,0 +1,210 @@
+<html lang="en"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Tutorial · picasso.js</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta property="og:title" content="Tutorial · picasso.js"/><meta property="og:type" content="website"/><meta property="og:url" content="https://qlik-oss.github.io/picasso.js/index.html"/><meta property="og:description" content="## Overview"/><link rel="shortcut icon" href="/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="/js/picasso.min.js"></script><script type="text/javascript" src="/js/landing.js"></script><script type="text/javascript" src="/js/tutorial.js"></script><link rel="stylesheet" href="/css/main.css"/></head><body class="sideNavVisible"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/picassojs.svg"/></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li><a href="/docs/installation.html" target="_self">Docs</a></li><li><a href="/docs/tutorial.html" target="_self">Tutorial</a></li><li><a href="https://github.com/qlik-oss/picasso.js" target="_self">GitHub</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1>Tutorial</h1></header><article><div><span><h2><a class="anchor" aria-hidden="true" name="overview"></a><a href="#overview" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Overview</h2>
+<p>In this tutorial we will introduce some of the basic concepts in picasso.js by creating a bubble chart:</p>
+<div id='tutorial-result' class='tutorial-chart'></div>
+<h2><a class="anchor" aria-hidden="true" name="instantiating-a-chart"></a><a href="#instantiating-a-chart" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Instantiating a chart</h2>
+<p>In order to instantiate a chart, we need three things:</p>
+<ul>
+<li>An <code>HTMLElement</code> to place the chart in</li>
+<li>A simple data set</li>
+<li>Settings that define the visual components and data encodings</li>
+</ul>
+<pre><code class="hljs css js">picasso.chart({
+  <span class="hljs-attr">element</span>: <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'#container'</span>),
+  <span class="hljs-attr">data</span>: [{
+    <span class="hljs-attr">type</span>: <span class="hljs-string">'matrix'</span>,
+    <span class="hljs-attr">data</span>: [
+      [<span class="hljs-string">'Year'</span>, <span class="hljs-string">'Month'</span>, <span class="hljs-string">'Sales'</span>, <span class="hljs-string">'Margin'</span>],
+      [<span class="hljs-string">'2010'</span>, <span class="hljs-string">'Jan'</span>, <span class="hljs-number">1106</span>, <span class="hljs-number">7</span>],
+      [<span class="hljs-string">'2010'</span>, <span class="hljs-string">'Feb'</span>, <span class="hljs-number">5444</span>, <span class="hljs-number">53</span>],
+      [<span class="hljs-string">'2010'</span>, <span class="hljs-string">'Mar'</span>, <span class="hljs-number">147</span>, <span class="hljs-number">64</span>],
+      [<span class="hljs-string">'2010'</span>, <span class="hljs-string">'Apr'</span>, <span class="hljs-number">7499</span>, <span class="hljs-number">47</span>],
+      [<span class="hljs-string">'2010'</span>, <span class="hljs-string">'May'</span>, <span class="hljs-number">430</span>, <span class="hljs-number">62</span>],
+      [<span class="hljs-string">'2010'</span>, <span class="hljs-string">'June'</span>, <span class="hljs-number">9735</span>, <span class="hljs-number">13</span>],
+      [<span class="hljs-string">'2010'</span>, <span class="hljs-string">'July'</span>, <span class="hljs-number">7435</span>, <span class="hljs-number">15</span>],
+      [<span class="hljs-string">'2011'</span>, <span class="hljs-string">'Jan'</span>, <span class="hljs-number">1482</span>, <span class="hljs-number">45</span>],
+      [<span class="hljs-string">'2011'</span>, <span class="hljs-string">'Feb'</span>, <span class="hljs-number">2659</span>, <span class="hljs-number">76</span>],
+      [<span class="hljs-string">'2011'</span>, <span class="hljs-string">'Mar'</span>, <span class="hljs-number">1261</span>, <span class="hljs-number">73</span>],
+      [<span class="hljs-string">'2011'</span>, <span class="hljs-string">'Apr'</span>, <span class="hljs-number">3085</span>, <span class="hljs-number">56</span>],
+      [<span class="hljs-string">'2011'</span>, <span class="hljs-string">'May'</span>, <span class="hljs-number">3035</span>, <span class="hljs-number">91</span>],
+      [<span class="hljs-string">'2011'</span>, <span class="hljs-string">'June'</span>, <span class="hljs-number">7691</span>, <span class="hljs-number">88</span>],
+      [<span class="hljs-string">'2011'</span>, <span class="hljs-string">'July'</span>, <span class="hljs-number">3012</span>, <span class="hljs-number">81</span>],
+      [<span class="hljs-string">'2012'</span>, <span class="hljs-string">'Jan'</span>, <span class="hljs-number">7980</span>, <span class="hljs-number">61</span>],
+      [<span class="hljs-string">'2012'</span>, <span class="hljs-string">'Feb'</span>, <span class="hljs-number">2564</span>, <span class="hljs-number">22</span>],
+      [<span class="hljs-string">'2012'</span>, <span class="hljs-string">'Mar'</span>, <span class="hljs-number">7957</span>, <span class="hljs-number">98</span>],
+      [<span class="hljs-string">'2012'</span>, <span class="hljs-string">'Apr'</span>, <span class="hljs-number">5809</span>, <span class="hljs-number">1</span>],
+      [<span class="hljs-string">'2012'</span>, <span class="hljs-string">'May'</span>, <span class="hljs-number">429</span>, <span class="hljs-number">2</span>],
+      [<span class="hljs-string">'2012'</span>, <span class="hljs-string">'June'</span>, <span class="hljs-number">6757</span>, <span class="hljs-number">77</span>],
+      [<span class="hljs-string">'2012'</span>, <span class="hljs-string">'July'</span>, <span class="hljs-number">9415</span>, <span class="hljs-number">92</span>]
+    ]
+  }],
+  <span class="hljs-attr">settings</span>: {
+    <span class="hljs-attr">scales</span>: {},
+    <span class="hljs-attr">components</span>: []
+  }
+})
+</code></pre>
+<p>The target <code>element</code> needs to have a <code>width</code> and <code>height</code> defined, the chart will adapt itself to its size.</p>
+<p>We define a <code>matrix</code> data set - a 2D-array containing the fields <em>Year</em>, <em>Month</em>, <em>Sales</em> and <em>Margin</em>.</p>
+<h2><a class="anchor" aria-hidden="true" name="scales"></a><a href="#scales" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Scales</h2>
+<p>Scales are essential in picasso.js as they are the key to mapping data to visual properties - they can be used to encode almost any visual property; position, size, color, stroke, opacity, shape etc.</p>
+<p>Scales are defined as an object map where the key represents the scale's id:</p>
+<pre><code class="hljs css js">scales: {
+  <span class="hljs-attr">s</span>: {
+    <span class="hljs-attr">data</span>: {
+      <span class="hljs-attr">field</span>: <span class="hljs-string">'Sales'</span>
+    }
+  },
+  <span class="hljs-attr">m</span>: {
+    <span class="hljs-attr">data</span>: {
+      <span class="hljs-attr">field</span>: <span class="hljs-string">'Margin'</span>
+    }
+  }
+}
+</code></pre>
+<p>Here we define scales <em>s</em> and <em>m</em> which take their data from the fields <em>Sales</em> and <em>Margin</em> respectively.</p>
+<p>Which <code>type</code> of scale is created is usually detected automatically based on the meta information of the provided field(s) - if the field only constains strings, it will be a <em>band</em> scale, otherwise a <em>linear</em> scale is created by default.</p>
+<p><a href="/docs/scales.html">More on scales</a></p>
+<h2><a class="anchor" aria-hidden="true" name="components"></a><a href="#components" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Components</h2>
+<p>Components are the visual parts of the chart, this is where we add axis, legends, grid-lines etc.</p>
+<p>Which component to use is specified by its <code>type</code>, and each <code>type</code> usually has its own custom settings based on its purpose.</p>
+<p><a href="/docs/components.html">More on components</a></p>
+<h3><a class="anchor" aria-hidden="true" name="adding-axes"></a><a href="#adding-axes" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Adding axes</h3>
+<p>Let's add an <em>x</em> and <em>y</em> axis:</p>
+<pre><code class="hljs css js">components: [{
+  <span class="hljs-attr">type</span>: <span class="hljs-string">'axis'</span>,
+  <span class="hljs-attr">scale</span>: <span class="hljs-string">'s'</span>,
+  <span class="hljs-attr">dock</span>: <span class="hljs-string">'left'</span>
+}, {
+  <span class="hljs-attr">type</span>: <span class="hljs-string">'axis'</span>,
+  <span class="hljs-attr">scale</span>: <span class="hljs-string">'m'</span>,
+  <span class="hljs-attr">dock</span>: <span class="hljs-string">'bottom'</span>
+}]
+</code></pre>
+<p>An <code>axis</code> requires a <code>scale</code> value which references one of the <code>scales</code> defined earlier.</p>
+<p>In addition, the axes are docked to the <code>left</code> and <code>bottom</code> respectively.</p>
+<div id='tutorial-axis' class='tutorial-chart'></div>
+<p><a href="/docs/component-axis.html">More on axis</a></p>
+<p><a href="/docs/dock-layout.html">More on dock layout</a></p>
+<h3><a class="anchor" aria-hidden="true" name="adding-points"></a><a href="#adding-points" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Adding points</h3>
+<p>Now let's add the <code>point</code> component:</p>
+<pre><code class="hljs css js">components: [{
+  <span class="hljs-attr">type</span>: <span class="hljs-string">'point'</span>,
+  <span class="hljs-attr">data</span>: {
+    <span class="hljs-attr">extract</span>: {
+      <span class="hljs-attr">field</span>: <span class="hljs-string">'Month'</span>,
+      <span class="hljs-attr">props</span>: {
+        <span class="hljs-attr">y</span>: { <span class="hljs-attr">field</span>: <span class="hljs-string">'Sales'</span> },
+        <span class="hljs-attr">mar</span>: { <span class="hljs-attr">field</span>: <span class="hljs-string">'Margin'</span> }
+      }
+    }
+  }
+}]
+</code></pre>
+<p>We want to use this component to draw a bubble for each row in the previously provided data set, and we want to map <em>Margin</em> to the <em>x</em> position while <em>Sales</em> is mapped to <em>y</em>.</p>
+<p>To do this, we first define a <code>data</code> object where we extract the <em>Month</em> value for each row, and define that <em>Sales</em> and <em>Margin</em> should be mapped to the arbitrary properties <code>y</code> and <code>mar</code> for each data item.</p>
+<p>Next we define the visual properties for this component through its <code>settings</code> object:</p>
+<pre><code class="hljs css js">components: [{
+  <span class="hljs-attr">type</span>: <span class="hljs-string">'point'</span>,
+  <span class="hljs-attr">data</span>: { ... },
+  <span class="hljs-attr">settings</span>: {
+    <span class="hljs-attr">x</span>: { <span class="hljs-attr">scale</span>: <span class="hljs-string">'m'</span>, <span class="hljs-attr">ref</span>: <span class="hljs-string">'mar'</span> },
+    <span class="hljs-attr">y</span>: { <span class="hljs-attr">scale</span>: <span class="hljs-string">'s'</span> },
+    <span class="hljs-attr">size</span>: <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> <span class="hljs-built_in">Math</span>.random(),
+    <span class="hljs-attr">opacity</span>: <span class="hljs-number">0.8</span>
+  }
+}]
+</code></pre>
+<p>There are three ways to define the value for a visual property:</p>
+<ul>
+<li><p>An object containing a reference to a <code>scale</code> and an extracted data value</p>
+<p>For the <code>x</code> position we use <code>m</code> as scale and reference the <code>mar</code> property in the extracted item. In cases when the visual property has the same name as the data property there is no need to set an explicit <code>ref</code>, as is the case with <code>y</code>.</p></li>
+<li><p>A function, which is executed once per data item</p>
+<p>The <code>size</code> of each bubble will be randomized between 0-1</p></li>
+<li><p>A constant</p>
+<p>The <code>opacity</code> for all bubbles is set to <code>0.8</code></p></li>
+</ul>
+<p>Most of the numerical properties in picasso are relative and defined as a value between 0-1, the primary reason for this is to ensure responsiveness as the chart is resized.</p>
+<div id='tutorial-points' class='tutorial-chart'></div>
+<p><a href="/docs/component-point.html">More on the point component</a></p>
+<p><a href="/docs/data.html">More on data</a></p>
+<h3><a class="anchor" aria-hidden="true" name="coloring"></a><a href="#coloring" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Coloring</h3>
+<p>Adding coloring based on data works very much the same way as the other encodings seen so far.</p>
+<p>Let's first extract the <em>Year</em> values to create a color scale:</p>
+<pre><code class="hljs css js">scales: {
+  <span class="hljs-attr">col</span>: {
+    <span class="hljs-attr">data</span>: { <span class="hljs-attr">extract</span>: { <span class="hljs-attr">field</span>: <span class="hljs-string">'Year'</span> } },
+    <span class="hljs-attr">type</span>: <span class="hljs-string">'color'</span>
+  }
+}
+</code></pre>
+<p>Then attach a <code>fill</code> property to the data items in the <code>point</code> component:</p>
+<pre><code class="hljs css js">props: {
+  <span class="hljs-attr">fill</span>: { <span class="hljs-attr">field</span>: <span class="hljs-string">'Year'</span> }
+}
+</code></pre>
+<p>Define which scale to use for the <code>fill</code> property of the bubbles:</p>
+<pre><code class="hljs css js">settings: {
+  <span class="hljs-attr">fill</span>: { <span class="hljs-attr">scale</span>: <span class="hljs-string">'col'</span> }
+}
+</code></pre>
+<p>And finally add a legend component in order to see the <em>Year</em> each color represents:</p>
+<pre><code class="hljs css js">components: [{
+  <span class="hljs-attr">type</span>: <span class="hljs-string">'legend-cat'</span>,
+  <span class="hljs-attr">scale</span>: <span class="hljs-string">'col'</span>,
+  <span class="hljs-attr">dock</span>: <span class="hljs-string">'top'</span>
+}]
+</code></pre>
+<div id='tutorial-coloring' class='tutorial-chart'></div>
+<h2><a class="anchor" aria-hidden="true" name="brushing-and-linking"></a><a href="#brushing-and-linking" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Brushing and linking</h2>
+<p><em>Brushing and linking</em> is an old concept in interactive visualizations which, in its most basic form, allows a user to highlight data points in one chart, and automatically see linked and/or associated data points in another.</p>
+<p>To enable brushing for a component we add a <code>brush</code> definition:</p>
+<pre><code class="hljs css js">components: [{
+  <span class="hljs-attr">type</span>: <span class="hljs-string">'point'</span>,
+  <span class="hljs-attr">brush</span>: {
+    <span class="hljs-attr">trigger</span>: [{
+      <span class="hljs-attr">contexts</span>: [<span class="hljs-string">'highlight'</span>],
+      <span class="hljs-attr">on</span>: <span class="hljs-string">'tap'</span>,
+      <span class="hljs-attr">action</span>: <span class="hljs-string">'toggle'</span>,
+      <span class="hljs-attr">data</span>: [<span class="hljs-string">'fill'</span>]
+    }],
+    <span class="hljs-attr">consume</span>: [{
+      <span class="hljs-attr">context</span>: <span class="hljs-string">'highlight'</span>,
+      <span class="hljs-attr">style</span>: {
+        <span class="hljs-attr">inactive</span>: {
+          <span class="hljs-attr">opacity</span>: <span class="hljs-number">0.4</span>
+        }
+      }
+    }]
+  },
+  <span class="hljs-attr">settings</span>: {...},
+  <span class="hljs-attr">data</span>: {...}
+}]
+</code></pre>
+<p><code>trigger</code>s define the type of interaction that modifies the brushed data values, while <code>consume</code> defines how to style the affected data points.</p>
+<p>Since the <code>point</code> component contains data from multiple fields, we use the <code>data</code> property to limit what to brush on. So whenever we click on a bubble, whatever field was used to populate the <code>'fill'</code> property will also be the one we brush on.</p>
+<p>Multiple brushes can be triggered and consumed, which ones is identified by providing the name of the <code>context</code> to use.</p>
+<p>We can add almost the same definition to the legend:</p>
+<pre><code class="hljs css js">components: [{
+  <span class="hljs-attr">type</span>: <span class="hljs-string">'legend-cat'</span>,
+  <span class="hljs-attr">brush</span>: {
+    <span class="hljs-attr">trigger</span>: [{
+      <span class="hljs-attr">contexts</span>: [<span class="hljs-string">'highlight'</span>],
+      <span class="hljs-attr">on</span>: <span class="hljs-string">'tap'</span>,
+      <span class="hljs-attr">action</span>: <span class="hljs-string">'toggle'</span>
+    }],
+    <span class="hljs-attr">consume</span>: [{
+      <span class="hljs-attr">context</span>: <span class="hljs-string">'highlight'</span>,
+      <span class="hljs-attr">style</span>: {
+        <span class="hljs-attr">inactive</span>: {
+          <span class="hljs-attr">opacity</span>: <span class="hljs-number">0.4</span>
+        }
+      }
+    }]
+  }
+}]
+</code></pre>
+<p>The only difference here is the missing <code>data</code> limitation, which is not needed since the legend only contains data from the <em>Year</em> field.</p>
+<p>Now clicking in either the legend or on the bubbles will highlight the brushed <em>Year</em> in the legend, and the bubbles associated with the brushed <em>Year</em>.</p>
+<div id='tutorial-brushing' class='tutorial-chart'></div>
+<p><a href="/docs/brushing.html">More on brushing</a></p>
+</span></div></article></div><div class="docs-prevnext"></div></div></div></div><footer class="nav-footer" id="footer"><section class="sitemap"><div><h5>Docs</h5><a href="/docs/installation.html">Getting Started</a><a href="/docs/tutorial.html">Tutorial</a></div><div><h5> </h5><div class="footerIcons"><a href="https://github.com/qlik-oss/picasso.js"><img src="/img/GitHub-Mark-Light-120px-plus.png" alt="GitHub" width="25" height="25"/></a><a href="http://qlikbranch-slack-invite.herokuapp.com/"><img src="/img/Slack_Mark_Monochrome_White.svg" alt="Join us on Slack" width="50" height="50"/></a></div></div></section><a href="https://github.com/qlik-oss/" target="_blank" class="qlikOpenSource"><img src="/img/QlikLogo-White.png" alt="Qlik Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2018 QlikTech International AB.</section></footer></div><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script></body></html>

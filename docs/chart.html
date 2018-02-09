@@ -1,0 +1,165 @@
+<html lang="en"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Chart · picasso.js</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta property="og:title" content="Chart · picasso.js"/><meta property="og:type" content="website"/><meta property="og:url" content="https://qlik-oss.github.io/picasso.js/index.html"/><meta property="og:description" content="## Render a chart"/><link rel="shortcut icon" href="/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="/js/picasso.min.js"></script><script type="text/javascript" src="/js/landing.js"></script><script type="text/javascript" src="/js/tutorial.js"></script><link rel="stylesheet" href="/css/main.css"/></head><body class="sideNavVisible"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/picassojs.svg"/></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li><a href="/docs/installation.html" target="_self">Docs</a></li><li><a href="/docs/tutorial.html" target="_self">Tutorial</a></li><li><a href="https://github.com/qlik-oss/picasso.js" target="_self">GitHub</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Getting started</span></h2></div><div class="navGroups"><div class="navGroup navGroupActive"><h3>Getting started</h3><ul><li class="navListItem"><a class="navItem" href="/docs/installation.html">Installation</a></li><li class="navListItem navListItemActive"><a class="navItem navItemActive" href="/docs/chart.html">Chart</a></li><li class="navListItem"><a class="navItem" href="/docs/data.html">Data</a></li><li class="navListItem"><a class="navItem" href="/docs/components.html">Components</a></li></ul></div><div class="navGroup navGroupActive"><h3>General</h3><ul><li class="navListItem"><a class="navItem" href="/docs/scales.html">Scales</a></li><li class="navListItem"><a class="navItem" href="/docs/brushing.html">Brushing in components</a></li><li class="navListItem"><a class="navItem" href="/docs/interaction.html">Interaction</a></li><li class="navListItem"><a class="navItem" href="/docs/formatters.html">Formatting</a></li><li class="navListItem"><a class="navItem" href="/docs/dock-layout.html">Dock layout</a></li></ul></div><div class="navGroup navGroupActive"><h3>Scales</h3><ul><li class="navListItem"><a class="navItem" href="/docs/scale-linear.html">Linear</a></li><li class="navListItem"><a class="navItem" href="/docs/scale-band.html">Band</a></li><li class="navListItem"><a class="navItem" href="/docs/scale-categorical-color.html">Categorical color</a></li><li class="navListItem"><a class="navItem" href="/docs/scale-sequential-color.html">Sequential color</a></li><li class="navListItem"><a class="navItem" href="/docs/scale-threshold-color.html">Threshold color</a></li></ul></div><div class="navGroup navGroupActive"><h3>Components</h3><ul><li class="navListItem"><a class="navItem" href="/docs/component-axis.html">Axis</a></li><li class="navListItem"><a class="navItem" href="/docs/component-grid-line.html">Grid</a></li><li class="navListItem"><a class="navItem" href="/docs/component-point.html">Point</a></li><li class="navListItem"><a class="navItem" href="/docs/component-box.html">Box</a></li><li class="navListItem"><a class="navItem" href="/docs/component-line.html">Line area</a></li><li class="navListItem"><a class="navItem" href="/docs/component-pie.html">Pie</a></li><li class="navListItem"><a class="navItem" href="/docs/component-legend-cat.html">Categorical legend</a></li><li class="navListItem"><a class="navItem" href="/docs/component-legend-seq.html">Sequential legend</a></li><li class="navListItem"><a class="navItem" href="/docs/component-text.html">Text</a></li><li class="navListItem"><a class="navItem" href="/docs/component-labels.html">Labels</a></li><li class="navListItem"><a class="navItem" href="/docs/component-brush-area-dir.html">Brush area</a></li><li class="navListItem"><a class="navItem" href="/docs/component-brush-lasso.html">Brush lasso</a></li><li class="navListItem"><a class="navItem" href="/docs/component-brush-range.html">Brush range</a></li></ul></div><div class="navGroup navGroupActive"><h3>Plugins</h3><ul><li class="navListItem"><a class="navItem" href="/docs/plugin-q.html">q</a></li><li class="navListItem"><a class="navItem" href="/docs/plugin-hammer.html">Hammer</a></li></ul></div></div></section></div><script>
+          var toggler = document.getElementById('navToggler');
+          var nav = document.getElementById('docsNav');
+          toggler.onclick = function() {
+            nav.classList.toggle('docsSliderActive');
+          };
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1>Chart</h1></header><article><div><span><h2><a class="anchor" aria-hidden="true" name="render-a-chart"></a><a href="#render-a-chart" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Render a chart</h2>
+<p>The <code>picasso.chart</code> function will create and render a chart.</p>
+<h3><a class="anchor" aria-hidden="true" name="picassochartdefinition"></a><a href="#picassochartdefinition" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>picasso.chart(definition)</code></h3>
+<ul>
+<li><code>definition</code> Object
+<ul>
+<li><code>element</code> HTMLElement. The element to render the chart into.</li>
+<li><code>data</code> Object. The data to render. <a href="/docs/data.html">More</a>.</li>
+<li><code>settings</code> Object. The element to render the chart into.
+<ul>
+<li><code>components</code> Array - The element to render the chart into. <a href="/docs/components.html">More</a>.</li>
+<li><code>scales</code> Object (optional). Scales to use when rendering. <a href="/docs/scales.html">More</a>.</li>
+<li><code>formatters</code> Object (optional). Formatters that can be referenced from other components. <a href="/docs/formatters.html">More</a>.</li>
+<li><code>dockLayout</code> Object (optional). Layout behavior and responsiveness. <a href="/docs/dock-layout.html">More</a>.</li>
+</ul></li>
+<li><code>created</code> Function (optional). Lifecycle hook.</li>
+<li><code>beforeMount</code> Function (optional). Lifecycle hook.</li>
+<li><code>mounted</code> Function (optional). Lifecycle hook.</li>
+<li><code>beforeRender</code> Function (optional). Lifecycle hook.</li>
+<li><code>beforeUpdate</code> Function (optional). Lifecycle hook.</li>
+<li><code>updated</code> Function (optional). Lifecycle hook.</li>
+<li><code>beforeDestroy</code> Function (optional). Lifecycle hook.</li>
+<li><code>destroyed</code> Function (optional). Lifecycle hook.</li>
+</ul></li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" name="chart-lifecycle-hooks"></a><a href="#chart-lifecycle-hooks" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Chart lifecycle hooks</h2>
+<p>Use the lifecycle hooks to add and remove functionality when certain events are triggered.</p>
+<p>If you have used frameworks such as React or VueJS, you are familiar with the lifecycle concept. There are basically three use cases:</p>
+<p><strong>Rendering a chart the first time</strong></p>
+<p>This will trigger lifecycle events in the following order:</p>
+<p><code>created -&gt; beforeRender -&gt; beforeMount -&gt; mounted</code></p>
+<p><strong>Updating a chart</strong></p>
+<p>This will trigger lifecycle events in the following order:</p>
+<p><code>beforeUpdate -&gt; beforeRender -&gt; updated</code></p>
+<p><strong>Tearing down a chart</strong></p>
+<p>This will trigger lifecycle events in the following order:</p>
+<p><code>beforeDestroy -&gt; destroyed</code></p>
+<h3><a class="anchor" aria-hidden="true" name="created"></a><a href="#created" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>created()</code></h3>
+<p>Called when the chart has been created. Use to initialize state variables that should be bound to the chart instance.</p>
+<pre><code class="hljs css js">picasso.chart({
+  created() {
+    <span class="hljs-keyword">this</span>.dataPage = <span class="hljs-number">1</span>;
+  }
+});
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" name="beforemount"></a><a href="#beforemount" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>beforeMount()</code></h3>
+<p>Called before the chart has been mounted. Use to set initial state that server rendered charts may not need.</p>
+<pre><code class="hljs css js">picasso.chart({
+  beforeMount() {
+    <span class="hljs-keyword">this</span>.clickCount = <span class="hljs-number">0</span>;
+  }
+});
+</code></pre>
+<p><em>This hook is client-side only</em></p>
+<h3><a class="anchor" aria-hidden="true" name="mountedelement"></a><a href="#mountedelement" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>mounted(element)</code></h3>
+<ul>
+<li><code>element</code> HTMLElement - The element the chart was rendered in.</li>
+</ul>
+<p>Called after the chart has been mounted. Use to bind custom event handlers or other operations requiring the element.</p>
+<pre><code class="hljs css js">picasso.chart({
+  mounted(element) {
+    <span class="hljs-comment">// Bind a tap listener using the Touche library (https://github.com/stoffeastrom/touche)</span>
+    Touche(element).tap({
+        <span class="hljs-attr">options</span>: {
+            <span class="hljs-attr">areaThreshold</span>: <span class="hljs-number">5</span>
+        },
+        <span class="hljs-attr">end</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e, data</span>) </span>{
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"tap"</span>);
+        }
+    });
+  }
+});
+</code></pre>
+<p><em>This hook is client-side only</em></p>
+<h3><a class="anchor" aria-hidden="true" name="beforerender"></a><a href="#beforerender" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>beforeRender()</code></h3>
+<p>Called before the chart has been rendered. Use to initialize state variables that should be bound to the chart instance.</p>
+<pre><code class="hljs css js">picasso.chart({
+  beforeRender() {
+    <span class="hljs-keyword">this</span>.dataPage = <span class="hljs-number">1</span>;
+  }
+});
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" name="beforeupdate"></a><a href="#beforeupdate" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>beforeUpdate()</code></h3>
+<p>Called before the chart will be updated. Use to initialize state variables that should be bound to the chart instance.</p>
+<pre><code class="hljs css js">picasso.chart({
+  beforeUpdate() {
+    <span class="hljs-keyword">this</span>.dataPage = <span class="hljs-number">1</span>;
+  }
+});
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" name="updated"></a><a href="#updated" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>updated()</code></h3>
+<p>Called when the chart has been updated. Use to initialize state variables that should be bound to the chart instance.</p>
+<pre><code class="hljs css js">picasso.chart({
+  updated() {
+    <span class="hljs-keyword">this</span>.dataPage = <span class="hljs-number">1</span>;
+  }
+});
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" name="beforedestroy"></a><a href="#beforedestroy" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>beforeDestroy()</code></h3>
+<p>Called before the chart has been destroyed. Use to unbind custom event listeners and do cleanup work requiring the element.</p>
+<pre><code class="hljs css js">picasso.chart({
+  beforeDestroy() {
+    <span class="hljs-keyword">this</span>.dataPage = <span class="hljs-number">1</span>;
+  }
+});
+</code></pre>
+<p><em>This hook is client-side only</em></p>
+<h3><a class="anchor" aria-hidden="true" name="destroyed"></a><a href="#destroyed" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>destroyed()</code></h3>
+<p>Called when the chart has been destroyed. At this point all event handlers have been unbound and references to elements are not available.</p>
+<pre><code class="hljs css js">chart({
+  destroyed() {
+    <span class="hljs-keyword">this</span>. = <span class="hljs-number">1</span>;
+  }
+});
+</code></pre>
+<p><em>This hook is client-side only</em></p>
+<h2><a class="anchor" aria-hidden="true" name="chart-instance-functions"></a><a href="#chart-instance-functions" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Chart instance functions</h2>
+<h3><a class="anchor" aria-hidden="true" name="instanceupdate-data-settings"></a><a href="#instanceupdate-data-settings" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>instance.update({ data, settings })</code></h3>
+<p>Update a chart with new <code>data</code> and / or <code>settings</code>. Will trigger updates of all chart components.</p>
+<pre><code class="hljs css js"><span class="hljs-keyword">const</span> chartInstance = picasso.chart({ <span class="hljs-comment">/* ... */</span> });
+chartInstance.update({
+  <span class="hljs-attr">settings</span>: newSettings,
+
+});
+</code></pre>
+<p><em>Note that you should not use arrow functions to let the <code>this</code> context inside methods to be bound to the instance</em></p>
+<h2><a class="anchor" aria-hidden="true" name="example"></a><a href="#example" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h2>
+<pre><code class="hljs css js"><span class="hljs-keyword">const</span> chartInstance = picasso.chart({
+  <span class="hljs-attr">element</span>: <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'chart-container'</span>),
+  <span class="hljs-attr">data</span>: { ... },
+  <span class="hljs-attr">settings</span>: {
+    <span class="hljs-attr">scales</span>: {
+      <span class="hljs-attr">x</span>: {
+        <span class="hljs-attr">data</span>: { <span class="hljs-attr">extract</span>: { <span class="hljs-attr">field</span>: <span class="hljs-string">"Products"</span> } }
+      },
+      <span class="hljs-attr">y</span>: {
+        <span class="hljs-attr">data</span>: { <span class="hljs-attr">extract</span>: { <span class="hljs-attr">field</span>: <span class="hljs-string">"Year"</span> } }
+      }
+    },
+    <span class="hljs-attr">components</span>: [{
+      <span class="hljs-attr">type</span>: <span class="hljs-string">"point"</span>,
+      <span class="hljs-attr">settings</span>: {
+        <span class="hljs-attr">fill</span>: <span class="hljs-string">'red'</span>
+      }
+    }]
+  },
+  <span class="hljs-attr">created</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Chart was created'</span>);
+  },
+  <span class="hljs-attr">mounted</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Chart was mounted'</span>);
+  }
+});
+
+chartInstance.update({
+  <span class="hljs-attr">data</span>: { <span class="hljs-comment">/* . */</span> }
+});
+</code></pre>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="installation.html">← Installation</a><a class="docs-next button" href="data.html">Data →</a></div></div></div></div><footer class="nav-footer" id="footer"><section class="sitemap"><div><h5>Docs</h5><a href="/docs/installation.html">Getting Started</a><a href="/docs/tutorial.html">Tutorial</a></div><div><h5> </h5><div class="footerIcons"><a href="https://github.com/qlik-oss/picasso.js"><img src="/img/GitHub-Mark-Light-120px-plus.png" alt="GitHub" width="25" height="25"/></a><a href="http://qlikbranch-slack-invite.herokuapp.com/"><img src="/img/Slack_Mark_Monochrome_White.svg" alt="Join us on Slack" width="50" height="50"/></a></div></div></section><a href="https://github.com/qlik-oss/" target="_blank" class="qlikOpenSource"><img src="/img/QlikLogo-White.png" alt="Qlik Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2018 QlikTech International AB.</section></footer></div><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script></body></html>

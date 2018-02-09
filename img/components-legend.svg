@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="116px" height="127px" viewBox="0 0 116 127" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
+    <title>Legend</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Components" transform="translate(-473.000000, -3.000000)">
+            <g id="Legend" transform="translate(473.000000, 0.000000)">
+                <text id="Color-by-quarter" font-family="OpenSans-Bold, Open Sans" font-size="13" font-weight="bold" line-spacing="16" fill="#696969">
+                    <tspan x="0" y="14">Color by quarter</tspan>
+                </text>
+                <text id="The-cold-one" font-family="Helvetica" font-size="12" font-weight="normal" fill="#9B9B9B">
+                    <tspan x="28" y="47">The cold one</tspan>
+                </text>
+                <rect id="Rectangle" fill="#68B4FF" x="0" y="34" width="16" height="16"></rect>
+                <text id="There’s-hope" font-family="Helvetica" font-size="12" font-weight="normal" fill="#9B9B9B">
+                    <tspan x="28" y="71">There’s hope</tspan>
+                </text>
+                <rect id="Rectangle" fill="#FFD65D" x="0" y="58" width="16" height="16"></rect>
+                <text id="Summer-is-here" font-family="Helvetica" font-size="12" font-weight="normal" line-spacing="12" fill="#9B9B9B">
+                    <tspan x="28" y="97">Summer is here</tspan>
+                </text>
+                <rect id="Rectangle" fill="#72F26A" x="0" y="82" width="16" height="16"></rect>
+                <text id="It’s-falling-leaves" font-family="Helvetica" font-size="12" font-weight="normal" fill="#9B9B9B">
+                    <tspan x="28" y="113">It’s falling leaves</tspan>
+                    <tspan x="28" y="127">everywhere</tspan>
+                </text>
+                <rect id="Rectangle" fill="#C48941" x="0" y="106" width="16" height="16"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

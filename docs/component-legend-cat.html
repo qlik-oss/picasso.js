@@ -1,0 +1,78 @@
+<html lang="en"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Categorical legend · picasso.js</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta property="og:title" content="Categorical legend · picasso.js"/><meta property="og:type" content="website"/><meta property="og:url" content="https://qlik-oss.github.io/picasso.js/index.html"/><meta property="og:description" content="A component that renders a static categorical color legend"/><link rel="shortcut icon" href="/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="/js/picasso.min.js"></script><script type="text/javascript" src="/js/landing.js"></script><script type="text/javascript" src="/js/tutorial.js"></script><link rel="stylesheet" href="/css/main.css"/></head><body class="sideNavVisible"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/picassojs.svg"/></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li><a href="/docs/installation.html" target="_self">Docs</a></li><li><a href="/docs/tutorial.html" target="_self">Tutorial</a></li><li><a href="https://github.com/qlik-oss/picasso.js" target="_self">GitHub</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Components</span></h2></div><div class="navGroups"><div class="navGroup navGroupActive"><h3>Getting started</h3><ul><li class="navListItem"><a class="navItem" href="/docs/installation.html">Installation</a></li><li class="navListItem"><a class="navItem" href="/docs/chart.html">Chart</a></li><li class="navListItem"><a class="navItem" href="/docs/data.html">Data</a></li><li class="navListItem"><a class="navItem" href="/docs/components.html">Components</a></li></ul></div><div class="navGroup navGroupActive"><h3>General</h3><ul><li class="navListItem"><a class="navItem" href="/docs/scales.html">Scales</a></li><li class="navListItem"><a class="navItem" href="/docs/brushing.html">Brushing in components</a></li><li class="navListItem"><a class="navItem" href="/docs/interaction.html">Interaction</a></li><li class="navListItem"><a class="navItem" href="/docs/formatters.html">Formatting</a></li><li class="navListItem"><a class="navItem" href="/docs/dock-layout.html">Dock layout</a></li></ul></div><div class="navGroup navGroupActive"><h3>Scales</h3><ul><li class="navListItem"><a class="navItem" href="/docs/scale-linear.html">Linear</a></li><li class="navListItem"><a class="navItem" href="/docs/scale-band.html">Band</a></li><li class="navListItem"><a class="navItem" href="/docs/scale-categorical-color.html">Categorical color</a></li><li class="navListItem"><a class="navItem" href="/docs/scale-sequential-color.html">Sequential color</a></li><li class="navListItem"><a class="navItem" href="/docs/scale-threshold-color.html">Threshold color</a></li></ul></div><div class="navGroup navGroupActive"><h3>Components</h3><ul><li class="navListItem"><a class="navItem" href="/docs/component-axis.html">Axis</a></li><li class="navListItem"><a class="navItem" href="/docs/component-grid-line.html">Grid</a></li><li class="navListItem"><a class="navItem" href="/docs/component-point.html">Point</a></li><li class="navListItem"><a class="navItem" href="/docs/component-box.html">Box</a></li><li class="navListItem"><a class="navItem" href="/docs/component-line.html">Line area</a></li><li class="navListItem"><a class="navItem" href="/docs/component-pie.html">Pie</a></li><li class="navListItem navListItemActive"><a class="navItem navItemActive" href="/docs/component-legend-cat.html">Categorical legend</a></li><li class="navListItem"><a class="navItem" href="/docs/component-legend-seq.html">Sequential legend</a></li><li class="navListItem"><a class="navItem" href="/docs/component-text.html">Text</a></li><li class="navListItem"><a class="navItem" href="/docs/component-labels.html">Labels</a></li><li class="navListItem"><a class="navItem" href="/docs/component-brush-area-dir.html">Brush area</a></li><li class="navListItem"><a class="navItem" href="/docs/component-brush-lasso.html">Brush lasso</a></li><li class="navListItem"><a class="navItem" href="/docs/component-brush-range.html">Brush range</a></li></ul></div><div class="navGroup navGroupActive"><h3>Plugins</h3><ul><li class="navListItem"><a class="navItem" href="/docs/plugin-q.html">q</a></li><li class="navListItem"><a class="navItem" href="/docs/plugin-hammer.html">Hammer</a></li></ul></div></div></section></div><script>
+          var toggler = document.getElementById('navToggler');
+          var nav = document.getElementById('docsNav');
+          toggler.onclick = function() {
+            nav.classList.toggle('docsSliderActive');
+          };
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1>Categorical legend</h1></header><article><div><span><p>A component that renders a static categorical color legend</p>
+<h2><a class="anchor" aria-hidden="true" name="overflow"></a><a href="#overflow" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Overflow</h2>
+<p>When all the items in the legend don't fit in the designated space, a navigation component will be added to the legend, which will make it possible to navigate to items currently not in view.</p>
+<p>The navigation contains two &lt;button&gt; elements whose content can be modified through the <code>navigation</code> setting.</p>
+<pre><code class="hljs css js">navigation: {
+  <span class="hljs-attr">class</span>: {
+    <span class="hljs-string">'my-button'</span>: <span class="hljs-literal">true</span>
+  },
+  <span class="hljs-attr">content</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">h, state</span>) </span>{
+    <span class="hljs-keyword">return</span> h(<span class="hljs-string">'span'</span>, {
+      <span class="hljs-attr">class</span>: {
+        [<span class="hljs-string">`arrow-<span class="hljs-subst">${state.direction<span class="hljs-string">`}]: true
+      }
+    })
+  }
+}
+</span></span></span></code></pre>
+<h2><a class="anchor" aria-hidden="true" name="events"></a><a href="#events" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Events</h2>
+<p>When the legend overflows, it is also possible to navigate by emitting events on the legend:</p>
+<h3><a class="anchor" aria-hidden="true" name="next-event"></a><a href="#next-event" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>next</code> event</h3>
+<p>Scroll to the next item.</p>
+<pre><code class="hljs css js">picassoInstance.component(<span class="hljs-string">'&lt;key value of legend-cat&gt;'</span>).emit(<span class="hljs-string">'next'</span>);
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" name="prev-event"></a><a href="#prev-event" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>prev</code> event</h3>
+<p>Scroll to the previous item.</p>
+<pre><code class="hljs css js">picassoInstance.component(<span class="hljs-string">'&lt;key value of legend-cat&gt;'</span>).emit(<span class="hljs-string">'prev'</span>);
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" name="scroll-event"></a><a href="#scroll-event" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>scroll</code> event</h3>
+<p>Trigger a manual scroll by passing the amount of pixels as a parameter.</p>
+<p>This event is to allow mousewheel scroll and scroll on panning.</p>
+<pre><code class="hljs css js">picassoInstance.component(<span class="hljs-string">'&lt;key value of legend-cat&gt;'</span>).emit(<span class="hljs-string">'scroll'</span>, <span class="hljs-number">20</span>);
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" name="api-reference"></a><a href="#api-reference" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>API Reference</h2>
+<pre><code class="hljs css js">{
+  scale: /* string */,
+  type: 'legend-cat',
+  settings: { 
+    layout: {  // Optional
+      size: 1, // Maximum number of columns (vertical) or rows (horizontal) // Optional
+      direction: 'ltr', // Layout direction. Either `'ltr'` or `'rtl'` // Optional
+    },
+    item: {  // Optional
+      // Settings applied per item
+      show: true, // Whether to show the current item // Optional
+      label: {  // Optional
+        wordBreak: 'none', // Word break rule, how to apply line break if label text overflows its maxWidth property. Either `'break-word'` or `'break-all'` // Optional
+        maxLines: 2, // Max number of lines allowed if label is broken into multiple lines (only applicable with wordBreak) // Optional
+        maxWidth: 136, // Maximum width of label, in px // Optional
+      },
+      shape: {  // Optional
+        type: 'square', // Optional
+        size: 12, // Optional
+      },
+    },
+    title: {  // Optional
+      show: true, // Whether to show the title // Optional
+      text: /* string */, // Title text. Defaults to the title of the provided data field // Optional
+      anchor: 'start', // Horizontal alignment of the text. Allowed values are `'start'`, `'middle'` and `'end'`
+      wordBreak: 'none', // Word break rule, how to apply line break if label text overflows its maxWidth property. Either `'break-word'` or `'break-all'` // Optional
+      maxLines: 2, // Max number of lines allowed if label is broken into multiple lines, is only appled when `wordBreak` is not set to `'none'` // Optional
+      maxWidth: 156, // Maximum width of title, in px // Optional
+    },
+    navigation: {  // Optional
+      button: {  // Optional
+        class: /* object&lt;string, boolean&gt; */, // Optional
+        content: /* function */,
+      },
+    },
+  },
+}
+</code></pre>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="component-pie.html">← Pie</a><a class="docs-next button" href="component-legend-seq.html">Sequential legend →</a></div></div></div></div><footer class="nav-footer" id="footer"><section class="sitemap"><div><h5>Docs</h5><a href="/docs/installation.html">Getting Started</a><a href="/docs/tutorial.html">Tutorial</a></div><div><h5> </h5><div class="footerIcons"><a href="https://github.com/qlik-oss/picasso.js"><img src="/img/GitHub-Mark-Light-120px-plus.png" alt="GitHub" width="25" height="25"/></a><a href="http://qlikbranch-slack-invite.herokuapp.com/"><img src="/img/Slack_Mark_Monochrome_White.svg" alt="Join us on Slack" width="50" height="50"/></a></div></div></section><a href="https://github.com/qlik-oss/" target="_blank" class="qlikOpenSource"><img src="/img/QlikLogo-White.png" alt="Qlik Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2018 QlikTech International AB.</section></footer></div><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script></body></html>

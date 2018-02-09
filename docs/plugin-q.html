@@ -1,0 +1,250 @@
+<html lang="en"><head><meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>q · picasso.js</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta property="og:title" content="q · picasso.js"/><meta property="og:type" content="website"/><meta property="og:url" content="https://qlik-oss.github.io/picasso.js/index.html"/><meta property="og:description" content="The `q` plugin registers a `q` dataset type that makes it a bit easier to extract data from a hypercube. It also contains a brush helper that can be used to find appropriate selections in the underlying data engine."/><link rel="shortcut icon" href="/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script type="text/javascript" src="/js/picasso.min.js"></script><script type="text/javascript" src="/js/landing.js"></script><script type="text/javascript" src="/js/tutorial.js"></script><link rel="stylesheet" href="/css/main.css"/></head><body class="sideNavVisible"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/picassojs.svg"/></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li><a href="/docs/installation.html" target="_self">Docs</a></li><li><a href="/docs/tutorial.html" target="_self">Tutorial</a></li><li><a href="https://github.com/qlik-oss/picasso.js" target="_self">GitHub</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Plugins</span></h2></div><div class="navGroups"><div class="navGroup navGroupActive"><h3>Getting started</h3><ul><li class="navListItem"><a class="navItem" href="/docs/installation.html">Installation</a></li><li class="navListItem"><a class="navItem" href="/docs/chart.html">Chart</a></li><li class="navListItem"><a class="navItem" href="/docs/data.html">Data</a></li><li class="navListItem"><a class="navItem" href="/docs/components.html">Components</a></li></ul></div><div class="navGroup navGroupActive"><h3>General</h3><ul><li class="navListItem"><a class="navItem" href="/docs/scales.html">Scales</a></li><li class="navListItem"><a class="navItem" href="/docs/brushing.html">Brushing in components</a></li><li class="navListItem"><a class="navItem" href="/docs/interaction.html">Interaction</a></li><li class="navListItem"><a class="navItem" href="/docs/formatters.html">Formatting</a></li><li class="navListItem"><a class="navItem" href="/docs/dock-layout.html">Dock layout</a></li></ul></div><div class="navGroup navGroupActive"><h3>Scales</h3><ul><li class="navListItem"><a class="navItem" href="/docs/scale-linear.html">Linear</a></li><li class="navListItem"><a class="navItem" href="/docs/scale-band.html">Band</a></li><li class="navListItem"><a class="navItem" href="/docs/scale-categorical-color.html">Categorical color</a></li><li class="navListItem"><a class="navItem" href="/docs/scale-sequential-color.html">Sequential color</a></li><li class="navListItem"><a class="navItem" href="/docs/scale-threshold-color.html">Threshold color</a></li></ul></div><div class="navGroup navGroupActive"><h3>Components</h3><ul><li class="navListItem"><a class="navItem" href="/docs/component-axis.html">Axis</a></li><li class="navListItem"><a class="navItem" href="/docs/component-grid-line.html">Grid</a></li><li class="navListItem"><a class="navItem" href="/docs/component-point.html">Point</a></li><li class="navListItem"><a class="navItem" href="/docs/component-box.html">Box</a></li><li class="navListItem"><a class="navItem" href="/docs/component-line.html">Line area</a></li><li class="navListItem"><a class="navItem" href="/docs/component-pie.html">Pie</a></li><li class="navListItem"><a class="navItem" href="/docs/component-legend-cat.html">Categorical legend</a></li><li class="navListItem"><a class="navItem" href="/docs/component-legend-seq.html">Sequential legend</a></li><li class="navListItem"><a class="navItem" href="/docs/component-text.html">Text</a></li><li class="navListItem"><a class="navItem" href="/docs/component-labels.html">Labels</a></li><li class="navListItem"><a class="navItem" href="/docs/component-brush-area-dir.html">Brush area</a></li><li class="navListItem"><a class="navItem" href="/docs/component-brush-lasso.html">Brush lasso</a></li><li class="navListItem"><a class="navItem" href="/docs/component-brush-range.html">Brush range</a></li></ul></div><div class="navGroup navGroupActive"><h3>Plugins</h3><ul><li class="navListItem navListItemActive"><a class="navItem navItemActive" href="/docs/plugin-q.html">q</a></li><li class="navListItem"><a class="navItem" href="/docs/plugin-hammer.html">Hammer</a></li></ul></div></div></section></div><script>
+          var toggler = document.getElementById('navToggler');
+          var nav = document.getElementById('docsNav');
+          toggler.onclick = function() {
+            nav.classList.toggle('docsSliderActive');
+          };
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1>q</h1></header><article><div><span><p>The <code>q</code> plugin registers a <code>q</code> dataset type that makes it a bit easier to extract data from a hypercube. It also contains a brush helper that can be used to find appropriate selections in the underlying data engine.</p>
+<h2><a class="anchor" aria-hidden="true" name="q-dataset"></a><a href="#q-dataset" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>q</code> dataset</h2>
+<p>This dataset type understands the QIX hypercube format and its internals, making it a bit easier to traverse and extract values from an otherwise complex structure.</p>
+<h3><a class="anchor" aria-hidden="true" name="usage"></a><a href="#usage" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h3>
+<pre><code class="hljs css js"><span class="hljs-keyword">const</span> ds = picasso.data(<span class="hljs-string">'q'</span>)({
+  <span class="hljs-attr">key</span>: <span class="hljs-string">'qHyperCube'</span>, <span class="hljs-comment">// path to the hypercube from the layout</span>
+  data: layout.qHypercube
+});
+</code></pre>
+<p>Dimensions, measures, attribute expressions and attribute dimensions are all recognized as fields and can be found using either the path or the title of the field:</p>
+<pre><code class="hljs css js"><span class="hljs-keyword">const</span> f = ds.field(<span class="hljs-string">'Sales'</span>);
+<span class="hljs-keyword">const</span> ff = ds.field(<span class="hljs-string">'qDimensionInfo/1/qAttrDimInfo/2'</span>);
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" name="extracting-data-values"></a><a href="#extracting-data-values" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Extracting data values</h3>
+<p>Assuming we have a hypercube containing dimensions <em>Year</em> and <em>Month</em>, a measure <em>Sales</em> and an attribute expression on the first dimension containing color values:</p>
+<pre><code class="hljs css js"><span class="hljs-comment">// hypercube stub</span>
+{
+  <span class="hljs-attr">qDimensionInfo</span>: [
+    { <span class="hljs-attr">qFallbackTitle</span>: <span class="hljs-string">'Year'</span>, <span class="hljs-attr">qAttrDimInfo</span>: [{ <span class="hljs-attr">qFallbackTitle</span>: <span class="hljs-string">'color'</span> }, <span class="hljs-comment">/* ... */</span>], <span class="hljs-comment">/* ... */</span> },
+    { <span class="hljs-attr">qFallbackTitle</span>: <span class="hljs-string">'Month'</span>, <span class="hljs-comment">/* ... */</span>  }
+  ],
+  <span class="hljs-attr">qMeasureInfo</span>: [
+    { <span class="hljs-attr">qFallbackTitle</span>: <span class="hljs-string">'# products'</span>, <span class="hljs-comment">/* ... */</span>  }
+  ]
+}
+</code></pre>
+<p>In a <em>straight</em> hypercube the <code>qMatrix</code> might look like this:</p>
+<pre><code class="hljs css js">[
+  [
+    { <span class="hljs-string">"qText"</span>: <span class="hljs-string">"2011"</span>, <span class="hljs-string">"qNum"</span>: <span class="hljs-number">2011</span>, <span class="hljs-string">"qElemNumber"</span>: <span class="hljs-number">0</span>, <span class="hljs-string">"qState"</span>: <span class="hljs-string">"O"</span>, <span class="hljs-string">"qAttrExps"</span>: { <span class="hljs-string">"qValues"</span>: [{<span class="hljs-string">"qText"</span>: <span class="hljs-string">"red"</span>, <span class="hljs-string">"qNum"</span>: <span class="hljs-string">"NaN"</span> }] } },
+    { <span class="hljs-string">"qText"</span>: <span class="hljs-string">"Jan"</span>, <span class="hljs-string">"qNum"</span>: <span class="hljs-number">1</span>, <span class="hljs-string">"qElemNumber"</span>: <span class="hljs-number">0</span>, <span class="hljs-string">"qState"</span>: <span class="hljs-string">"S"</span>,  <span class="hljs-string">"qAttrDims"</span>: { <span class="hljs-string">"qValues"</span>: [{ <span class="hljs-string">"qText"</span>: <span class="hljs-string">"Jan"</span>, <span class="hljs-string">"qElemNo"</span>: <span class="hljs-number">0</span> }] } },
+    { <span class="hljs-string">"qText"</span>: <span class="hljs-string">"61"</span>, <span class="hljs-string">"qNum"</span>: <span class="hljs-number">61</span>, <span class="hljs-string">"qElemNumber"</span>: <span class="hljs-number">0</span>, <span class="hljs-string">"qState"</span>: <span class="hljs-string">"L"</span> }
+  ],
+  [
+    { <span class="hljs-string">"qText"</span>: <span class="hljs-string">"2011"</span>, <span class="hljs-string">"qNum"</span>: <span class="hljs-number">2011</span>, <span class="hljs-string">"qElemNumber"</span>: <span class="hljs-number">0</span>, <span class="hljs-string">"qState"</span>: <span class="hljs-string">"O"</span>, <span class="hljs-string">"qAttrExps"</span>: { <span class="hljs-string">"qValues"</span>: [{<span class="hljs-string">"qText"</span>: <span class="hljs-string">"blue"</span>, <span class="hljs-string">"qNum"</span>: <span class="hljs-string">"NaN"</span> }] } },
+    { <span class="hljs-string">"qText"</span>: <span class="hljs-string">"Feb"</span>, <span class="hljs-string">"qNum"</span>: <span class="hljs-number">2</span>, <span class="hljs-string">"qElemNumber"</span>: <span class="hljs-number">1</span>, <span class="hljs-string">"qState"</span>: <span class="hljs-string">"S"</span>, <span class="hljs-string">"qAttrDims"</span>: { <span class="hljs-string">"qValues"</span>: [{<span class="hljs-string">"qText"</span>: <span class="hljs-string">"Feb"</span>, <span class="hljs-string">"qElemNo"</span>: <span class="hljs-number">1</span> }] } },
+    { <span class="hljs-string">"qText"</span>: <span class="hljs-string">"62"</span>, <span class="hljs-string">"qNum"</span>: <span class="hljs-number">62</span>, <span class="hljs-string">"qElemNumber"</span>: <span class="hljs-number">0</span>, <span class="hljs-string">"qState"</span>: <span class="hljs-string">"L"</span> }
+  ],
+  [
+    { <span class="hljs-string">"qText"</span>: <span class="hljs-string">"2012"</span>,<span class="hljs-string">"qNum"</span>: <span class="hljs-number">2012</span>, <span class="hljs-string">"qElemNumber"</span>: <span class="hljs-number">1</span>, <span class="hljs-string">"qState"</span>: <span class="hljs-string">"O"</span>, <span class="hljs-string">"qAttrExps"</span>: { <span class="hljs-string">"qValues"</span>: [{<span class="hljs-string">"qText"</span>: <span class="hljs-string">"red"</span>, <span class="hljs-string">"qNum"</span>: <span class="hljs-string">"NaN"</span> }] } },
+    { <span class="hljs-string">"qText"</span>: <span class="hljs-string">"Jan"</span>, <span class="hljs-string">"qNum"</span>: <span class="hljs-number">1</span>, <span class="hljs-string">"qElemNumber"</span>: <span class="hljs-number">0</span>, <span class="hljs-string">"qState"</span>: <span class="hljs-string">"S"</span>, <span class="hljs-string">"qAttrDims"</span>: { <span class="hljs-string">"qValues"</span>: [{<span class="hljs-string">"qText"</span>: <span class="hljs-string">"Jan"</span>, <span class="hljs-string">"qElemNo"</span>: <span class="hljs-number">0</span>}] } },
+    { <span class="hljs-string">"qText"</span>: <span class="hljs-string">"88"</span>, <span class="hljs-string">"qNum"</span>: <span class="hljs-number">88</span>, <span class="hljs-string">"qElemNumber"</span>: <span class="hljs-number">0</span>, <span class="hljs-string">"qState"</span>: <span class="hljs-string">"L"</span> }
+  ],
+  [
+    { <span class="hljs-string">"qText"</span>: <span class="hljs-string">"2012"</span>, <span class="hljs-string">"qNum"</span>: <span class="hljs-number">2012</span>, <span class="hljs-string">"qElemNumber"</span>: <span class="hljs-number">1</span>, <span class="hljs-string">"qState"</span>: <span class="hljs-string">"O"</span>, <span class="hljs-string">"qAttrExps"</span>: { <span class="hljs-string">"qValues"</span>: [{<span class="hljs-string">"qText"</span>: <span class="hljs-string">"blue"</span>, <span class="hljs-string">"qNum"</span>: <span class="hljs-string">"NaN"</span> }] } },
+    { <span class="hljs-string">"qText"</span>: <span class="hljs-string">"Feb"</span>, <span class="hljs-string">"qNum"</span>: <span class="hljs-number">2</span>, <span class="hljs-string">"qElemNumber"</span>: <span class="hljs-number">1</span>, <span class="hljs-string">"qState"</span>: <span class="hljs-string">"S"</span>, <span class="hljs-string">"qAttrDims"</span>: { <span class="hljs-string">"qValues"</span>: [{<span class="hljs-string">"qText"</span>: <span class="hljs-string">"Feb"</span>,<span class="hljs-string">"qElemNo"</span>: <span class="hljs-number">1</span>}] } },
+    { <span class="hljs-string">"qText"</span>: <span class="hljs-string">"76"</span>, <span class="hljs-string">"qNum"</span>: <span class="hljs-number">76</span>, <span class="hljs-string">"qElemNumber"</span>: <span class="hljs-number">0</span>, <span class="hljs-string">"qState"</span>: <span class="hljs-string">"L"</span> }
+  ]
+</code></pre>
+<p>We can extract the unique <em>Month</em> values using:</p>
+<pre><code class="hljs css js">ds.extract({
+  <span class="hljs-attr">field</span>: <span class="hljs-string">'Month'</span>,
+  <span class="hljs-attr">trackBy</span>: <span class="hljs-function"><span class="hljs-params">v</span> =&gt;</span> v.qElemNumber
+});
+
+<span class="hljs-comment">// output</span>
+[
+  { <span class="hljs-attr">value</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">label</span>: <span class="hljs-string">'Jan'</span>, <span class="hljs-attr">source</span>: { <span class="hljs-attr">key</span>: <span class="hljs-string">'qHyperCube'</span>, <span class="hljs-attr">field</span>: <span class="hljs-string">'qDimensionInfo/1'</span> } },
+  { <span class="hljs-attr">value</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">label</span>: <span class="hljs-string">'Feb'</span>, <span class="hljs-attr">source</span>: { <span class="hljs-attr">key</span>: <span class="hljs-string">'qHyperCube'</span>, <span class="hljs-attr">field</span>: <span class="hljs-string">'qDimensionInfo/1'</span> } }
+]
+</code></pre>
+<p>and attach aggregated properties on each item using <code>props</code>:</p>
+<pre><code class="hljs css js">ds.extract({
+  <span class="hljs-attr">field</span>: <span class="hljs-string">'Month'</span>,
+  <span class="hljs-attr">trackBy</span>: <span class="hljs-function"><span class="hljs-params">v</span> =&gt;</span> v.qElemNumber
+  props: {
+    <span class="hljs-attr">years</span>: { <span class="hljs-attr">field</span>: <span class="hljs-string">'Year'</span>, <span class="hljs-attr">value</span>: <span class="hljs-function"><span class="hljs-params">v</span> =&gt;</span> v.qText, <span class="hljs-attr">reduce</span>: <span class="hljs-function"><span class="hljs-params">values</span> =&gt;</span> values.join(<span class="hljs-string">' - '</span>) },
+    <span class="hljs-attr">color</span>: { <span class="hljs-attr">field</span>: <span class="hljs-string">'color'</span>, <span class="hljs-attr">value</span>: <span class="hljs-function"><span class="hljs-params">v</span> =&gt;</span> v.qText },
+    <span class="hljs-attr">products</span>: { <span class="hljs-attr">field</span>: <span class="hljs-string">'# products'</span>, <span class="hljs-attr">reduce</span>: <span class="hljs-string">'sum'</span> }
+  }
+});
+
+<span class="hljs-comment">// output</span>
+[
+  {
+    <span class="hljs-attr">value</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">label</span>: <span class="hljs-string">'Jan'</span>, <span class="hljs-attr">source</span>: { <span class="hljs-attr">key</span>: <span class="hljs-string">'qHyperCube'</span>, <span class="hljs-attr">field</span>: <span class="hljs-string">'qDimensionInfo/1'</span> },
+    <span class="hljs-attr">years</span>: { <span class="hljs-attr">value</span>: <span class="hljs-string">'2011 - 2012'</span>, <span class="hljs-attr">source</span>: { <span class="hljs-attr">key</span>: <span class="hljs-string">'qHyperCube'</span>, <span class="hljs-attr">field</span>: <span class="hljs-string">'qDimensionInfo/0'</span> } }
+    color: { <span class="hljs-attr">value</span>: <span class="hljs-string">'red'</span>, <span class="hljs-attr">source</span>: { <span class="hljs-attr">key</span>: <span class="hljs-string">'qHyperCube'</span>, <span class="hljs-attr">field</span>: <span class="hljs-string">'qDimensionInfo/0/qAttrExprInfo/0'</span> } }
+    products: { <span class="hljs-attr">value</span>: <span class="hljs-number">149</span>, <span class="hljs-attr">source</span>: { <span class="hljs-attr">key</span>: <span class="hljs-string">'qHyperCube'</span>, <span class="hljs-attr">field</span>: <span class="hljs-string">'qMeasureInfo/0'</span> } }
+  },
+  {
+    <span class="hljs-attr">value</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">label</span>: <span class="hljs-string">'Feb'</span>, <span class="hljs-attr">source</span>: { <span class="hljs-attr">key</span>: <span class="hljs-string">'qHyperCube'</span>, <span class="hljs-attr">field</span>: <span class="hljs-string">'qDimensionInfo/1'</span> },
+    <span class="hljs-attr">years</span>: { <span class="hljs-attr">value</span>: <span class="hljs-string">'2011 - 2012'</span>, <span class="hljs-attr">source</span>: { <span class="hljs-attr">key</span>: <span class="hljs-string">'qHyperCube'</span>, <span class="hljs-attr">field</span>: <span class="hljs-string">'qDimensionInfo/0'</span> } }
+    color: { <span class="hljs-attr">value</span>: <span class="hljs-string">'blue'</span>, <span class="hljs-attr">source</span>: { <span class="hljs-attr">key</span>: <span class="hljs-string">'qHyperCube'</span>, <span class="hljs-attr">field</span>: <span class="hljs-string">'qDimensionInfo/0/qAttrExprInfo/0'</span> } }
+    products: { <span class="hljs-attr">value</span>: <span class="hljs-number">138</span>, <span class="hljs-attr">source</span>: { <span class="hljs-attr">key</span>: <span class="hljs-string">'qHyperCube'</span>, <span class="hljs-attr">field</span>: <span class="hljs-string">'qMeasureInfo/0'</span> } }
+  }
+]
+</code></pre>
+<p>The default <code>value</code> accessor for a field depends on the field type and the <code>qMode</code>property of the hypercube:</p>
+<ul>
+<li>For measures and attribute expressions: <code>cell =&gt; cell.qNum</code> or <code>cell =&gt; cell.qValue</code></li>
+<li>For dimensions and attribute dimensions: <code>cell =&gt; cell.qElemNumber</code> or <code>cell =&gt; cell.qElemNo</code></li>
+</ul>
+<p>The default <code>reduce</code> function is <code>avg</code> for measures and <code>first</code> for dimensions.</p>
+<h2><a class="anchor" aria-hidden="true" name="qix-selections-helper"></a><a href="#qix-selections-helper" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>QIX selections helper</h2>
+<p>The QIX selections helper provides a mapping from brushed data points to suitable QIX selections.</p>
+<h3><a class="anchor" aria-hidden="true" name="by-dimension-value"></a><a href="#by-dimension-value" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>By dimension value</h3>
+<p>Brushing dimension values is done by adding the value of <code>qElemNumber</code> to the brush, and providing the path to the relevant dimension:</p>
+<pre><code class="hljs css js"><span class="hljs-keyword">const</span> b = chart.brush(<span class="hljs-string">'selection'</span>);
+b.addValue(<span class="hljs-string">'qHyperCube/qDimensionInfo/2'</span>, <span class="hljs-number">4</span>);
+b.addValue(<span class="hljs-string">'qHyperCube/qDimensionInfo/2'</span>, <span class="hljs-number">7</span>);
+</code></pre>
+<p>Calling <code>q.brush</code> with the above instance generates relevant QIX methods and parameters to apply a selection to:</p>
+<pre><code class="hljs css js"><span class="hljs-keyword">const</span> selection = picasso.q.brush(b)[<span class="hljs-number">0</span>];
+<span class="hljs-comment">// {</span>
+<span class="hljs-comment">//   method: 'selectHyperCubeValues',</span>
+<span class="hljs-comment">//   params: [</span>
+<span class="hljs-comment">//     '/qHyperCubeDef', // path to hypercube to apply selection to</span>
+<span class="hljs-comment">//     2, // dimension column</span>
+<span class="hljs-comment">//     [4, 7], // qElemNumbers</span>
+<span class="hljs-comment">//     false</span>
+<span class="hljs-comment">//   ]</span>
+<span class="hljs-comment">// }</span>
+</code></pre>
+<p>The selection can then be applied to a QIX model:</p>
+<pre><code class="hljs css js">model[selection.method](...selection.params);
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" name="by-measure-range"></a><a href="#by-measure-range" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>By measure range</h3>
+<p>Brushing measure ranges:</p>
+<pre><code class="hljs css js"><span class="hljs-keyword">const</span> b = chart.brush(<span class="hljs-string">'selection'</span>);
+b.addRange(<span class="hljs-string">'qHyperCube/qMeasureInfo/2'</span>, { <span class="hljs-attr">min</span>: <span class="hljs-number">13</span>, <span class="hljs-attr">max</span>: <span class="hljs-number">35</span> });
+
+<span class="hljs-keyword">const</span> selection = picasso.q.brush(b)[<span class="hljs-number">0</span>];
+<span class="hljs-comment">// {</span>
+<span class="hljs-comment">//   method: 'rangeSelectHyperCubeValues',</span>
+<span class="hljs-comment">//   params: ['/qHyperCubeDef', [</span>
+<span class="hljs-comment">//     {</span>
+<span class="hljs-comment">//       qMeasureIx: 2,</span>
+<span class="hljs-comment">//       qRange: { qMin: 13, qMax: 35, qMinIncEq: true, qMaxInclEq: true }</span>
+<span class="hljs-comment">//     }</span>
+<span class="hljs-comment">//   ]]</span>
+<span class="hljs-comment">// }</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" name="by-dimension-range"></a><a href="#by-dimension-range" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>By dimension range</h3>
+<p>Brushing dimension ranges:</p>
+<pre><code class="hljs css js"><span class="hljs-keyword">const</span> b = chart.brush(<span class="hljs-string">'selection'</span>);
+b.addRange(<span class="hljs-string">'qHyperCube/qDimensionInfo/1'</span>, { <span class="hljs-attr">min</span>: <span class="hljs-number">13</span>, <span class="hljs-attr">max</span>: <span class="hljs-number">35</span> });
+
+<span class="hljs-keyword">const</span> selection = picasso.q.brush(b)[<span class="hljs-number">0</span>];
+<span class="hljs-comment">// {</span>
+<span class="hljs-comment">//   method: 'selectHyperCubeContinuousRange',</span>
+<span class="hljs-comment">//   params: ['/qHyperCubeDef', [</span>
+<span class="hljs-comment">//     {</span>
+<span class="hljs-comment">//       qDimIx: 1,</span>
+<span class="hljs-comment">//       qRange: { qMin: 13, qMax: 35, qMinIncEq: true, qMaxInclEq: false }</span>
+<span class="hljs-comment">//     }</span>
+<span class="hljs-comment">//   ]]</span>
+<span class="hljs-comment">// }</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" name="by-row-indices"></a><a href="#by-row-indices" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>By row indices</h3>
+<p>Brushing by table row index and column:</p>
+<pre><code class="hljs css js"><span class="hljs-keyword">const</span> b = chart.brush(<span class="hljs-string">'selection'</span>);
+b.addValue(<span class="hljs-string">'qHyperCube/qDimensionInfo/1'</span>, <span class="hljs-number">10</span>);
+b.addValue(<span class="hljs-string">'qHyperCube/qDimensionInfo/1'</span>, <span class="hljs-number">13</span>);
+b.addValue(<span class="hljs-string">'qHyperCube/qDimensionInfo/0'</span>, <span class="hljs-number">11</span>);
+b.addValue(<span class="hljs-string">'qHyperCube/qDimensionInfo/0'</span>, <span class="hljs-number">17</span>);
+</code></pre>
+<p>In the above case, rows <code>10</code> and <code>13</code> have been brushed on dimension <code>1</code>, and rows <code>11</code> and <code>17</code> on dimension <code>0</code>.
+To extract the relevant information, <code>byCells</code> is enabled:</p>
+<pre><code class="hljs css js"><span class="hljs-keyword">const</span> selection = picasso.q.brush(b, { <span class="hljs-attr">byCells</span>: <span class="hljs-literal">true</span> })[<span class="hljs-number">0</span>];
+<span class="hljs-comment">// {</span>
+<span class="hljs-comment">//   method: 'selectHyperCubeCells',</span>
+<span class="hljs-comment">//   params: [</span>
+<span class="hljs-comment">//     '/qHyperCubeDef',</span>
+<span class="hljs-comment">//     [10, 13], // row indices in hypercube</span>
+<span class="hljs-comment">//     [1, 0] // column indices in hypercube</span>
+<span class="hljs-comment">//   ]</span>
+<span class="hljs-comment">// }</span>
+</code></pre>
+<p>Row indices are used from the first dimension that adds a value to a brush,  <code>qDimensionInfo/1</code>, in the case above.
+To use values from another dimension, <code>primarySource</code> should be set:</p>
+<pre><code class="hljs css js"><span class="hljs-keyword">const</span> selection = picasso.q.brush(b, {
+  <span class="hljs-attr">byCells</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">primarySource</span>: <span class="hljs-string">'qHyperCube/qDimensionInfo/0'</span>
+})[<span class="hljs-number">0</span>];
+<span class="hljs-comment">// {</span>
+<span class="hljs-comment">//   method: 'selectHyperCubeCells',</span>
+<span class="hljs-comment">//   params: [</span>
+<span class="hljs-comment">//     '/qHyperCubeDef',</span>
+<span class="hljs-comment">//     [11, 17], // row indices in hypercube</span>
+<span class="hljs-comment">//     [1, 0] // column indices in hypercube</span>
+<span class="hljs-comment">//   ]</span>
+<span class="hljs-comment">// }</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" name="by-attribute-dimension"></a><a href="#by-attribute-dimension" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>By attribute dimension</h3>
+<p>Brush on attribute dimension values:</p>
+<pre><code class="hljs css js"><span class="hljs-keyword">const</span> b = chart.brush(<span class="hljs-string">'selection'</span>);
+b.addValue(<span class="hljs-string">'qHyperCube/qDimensionInfo/2/qAttrDimInfo/3'</span>, <span class="hljs-number">6</span>);
+b.addValue(<span class="hljs-string">'qHyperCube/qDimensionInfo/2/qAttrDimInfo/3'</span>, <span class="hljs-number">9</span>);
+
+<span class="hljs-keyword">const</span> selection = picasso.q.brush(b)[<span class="hljs-number">0</span>];
+<span class="hljs-comment">// {</span>
+<span class="hljs-comment">//   method: 'selectHyperCubeValues',</span>
+<span class="hljs-comment">//   params: [</span>
+<span class="hljs-comment">//     '/qHyperCubeDef/qDimensions/2/qAttributeDimensions/3', // path to hypercube to apply selection to</span>
+<span class="hljs-comment">//     0, // dimension column in attribute dimension table</span>
+<span class="hljs-comment">//     [6, 9], // qElemNumbers</span>
+<span class="hljs-comment">//     false</span>
+<span class="hljs-comment">//   ]</span>
+<span class="hljs-comment">// }</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" name="by-attribute-expression-range"></a><a href="#by-attribute-expression-range" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>By attribute expression range</h3>
+<p>Brush on attribute expression range:</p>
+<pre><code class="hljs css js"><span class="hljs-keyword">const</span> b = chart.brush(<span class="hljs-string">'selection'</span>);
+b.addRange(<span class="hljs-string">'qHyperCube/qMeasureInfo/1/qAttrExprInfo/2'</span>, { <span class="hljs-attr">min</span>: <span class="hljs-number">11</span>, <span class="hljs-attr">max</span>: <span class="hljs-number">21</span> });
+</code></pre>
+<p>QIX selections on attribute expressions are similar to selections on measure ranges. In this case however, the index of the measure
+is derived from the number of measures and attribute expressions that exist in the hypercube. Therefore, to calculate
+the index, <code>layout</code> containing the hypercube needs to be provided as a parameter:</p>
+<pre><code class="hljs css js"><span class="hljs-keyword">const</span> selection = picasso.q.brush(b, {}, layout)[<span class="hljs-number">0</span>];
+<span class="hljs-comment">// {</span>
+<span class="hljs-comment">//   method: 'rangeSelectHyperCubeValues',</span>
+<span class="hljs-comment">//   params: ['/qHyperCubeDef', [</span>
+<span class="hljs-comment">//     {</span>
+<span class="hljs-comment">//       qMeasureIx: 7,</span>
+<span class="hljs-comment">//       qRange: { qMin: 11, qMax: 21, qMinIncEq: true, qMaxInclEq: true }</span>
+<span class="hljs-comment">//     }</span>
+<span class="hljs-comment">//   ]]</span>
+<span class="hljs-comment">// }</span>
+</code></pre>
+<p>Assuming a <code>layout</code> of:</p>
+<pre><code class="hljs css js">{
+  <span class="hljs-attr">qHyperCube</span>: {
+    <span class="hljs-attr">qDimensionInfo</span>: [
+      { <span class="hljs-attr">qAttrExprInfo</span>: [{}] }
+    ],
+    <span class="hljs-attr">qMeasureInfo</span>: [
+      { <span class="hljs-attr">qAttrExprInfo</span>: [{}, {}] },
+      { <span class="hljs-attr">qAttrExprInfo</span>: [{}, {}, {<span class="hljs-comment">/* this is the one */</span> }] }
+    ]
+  }
+}
+</code></pre>
+<p>then <code>qMeasureIx</code> is calculated as follows:</p>
+<ul>
+<li>number of measures: <code>2</code></li>
+<li>total number of attribute expressions in all dimensions: <code>1</code></li>
+<li>total number of attribute expressions in measures preceding the one specified: <code>2</code> (from first measure)</li>
+<li>the actual index of the specified attribute expression: <code>2</code></li>
+</ul>
+<p>which results in <code>2 + 1 + 2 + 2 = 7</code></p>
+<h2><a class="anchor" aria-hidden="true" name="formatting"></a><a href="#formatting" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Formatting</h2>
+<p>The <code>q</code> plugin comes bundled with a <a href="/docs/formatters.html">formatter</a> attached the to data <code>field</code>. To use it, no configuration other then using the <a href="/docs/plugin-q.html#q-dataset">q-dataset</a> is required.</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="component-brush-range.html">← Brush range</a><a class="docs-next button" href="plugin-hammer.html">Hammer →</a></div></div></div></div><footer class="nav-footer" id="footer"><section class="sitemap"><div><h5>Docs</h5><a href="/docs/installation.html">Getting Started</a><a href="/docs/tutorial.html">Tutorial</a></div><div><h5> </h5><div class="footerIcons"><a href="https://github.com/qlik-oss/picasso.js"><img src="/img/GitHub-Mark-Light-120px-plus.png" alt="GitHub" width="25" height="25"/></a><a href="http://qlikbranch-slack-invite.herokuapp.com/"><img src="/img/Slack_Mark_Monochrome_White.svg" alt="Join us on Slack" width="50" height="50"/></a></div></div></section><a href="https://github.com/qlik-oss/" target="_blank" class="qlikOpenSource"><img src="/img/QlikLogo-White.png" alt="Qlik Open Source" width="170" height="45"/></a><section class="copyright">Copyright © 2018 QlikTech International AB.</section></footer></div><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script></body></html>
