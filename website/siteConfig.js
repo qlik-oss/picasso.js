@@ -3,7 +3,7 @@ const baseUrl = '/';
 const siteConfig = {
   title: 'picasso.js',
   tagline: 'Make Pablo proud',
-  url: 'https://qlik-oss.github.io/picasso.js',
+  url: 'http://picassojs.com',
   baseUrl,
   projectName: 'picasso.js',
   organizationName: 'qlik-oss',
