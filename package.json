@@ -1,12 +1,8 @@
 {
-  "license": "ISC",
-  "private": true,
-  "publishConfig": {
-    "registry": "https://qliktech.jfrog.io/qliktech/api/npm/npm-local/"
-  },
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "ssh://git@github.com:qlik-trial/picasso.js.git"
+    "url": "ssh://git@github.com:qlik-oss/picasso.js.git"
   },
   "scripts": {
     "bootstrap": "lerna bootstrap",
