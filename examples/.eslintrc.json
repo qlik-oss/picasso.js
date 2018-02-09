@@ -1,0 +1,19 @@
+{
+  "root": true,
+  "env": {
+    "browser": true
+  },
+  "globals": {
+    "picasso": false,
+    "picassoQ": false,
+    "picData": false
+  },
+  "parserOptions": {
+    "sourceType": "script",
+    "ecmaVersion": 5,
+    "ecmaFeatures": {
+      "impliedStrict": true
+    }
+  },
+  "rules": {}
+}

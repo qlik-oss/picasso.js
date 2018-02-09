@@ -1,0 +1,33 @@
+{
+  "name": "picasso-plugin-q",
+  "version": "0.5.0",
+  "description": "QIX plugin for picasso.js",
+  "license": "MIT",
+  "author": "QlikTech International AB",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qlik-oss/picasso.js.git"
+  },
+  "files": [
+    "/dist"
+  ],
+  "main": "dist/picasso-q.min.js",
+  "module": "src/index.js",
+  "scripts": {
+    "build": "npxc rollup -c ../../rollup.config.js --name picassoQ --environment BUILD:production",
+    "build:dev": "npxc rollup -c ../../rollup.config.js --name picassoQ",
+    "build:watch": "npxc rollup -c ../../rollup.config.js --name picassoQ -w",
+    "lint": "npxc eslint src test",
+    "test": "npm run test:unit",
+    "test:unit": "npxc aw -c aw.config.js",
+    "test:unit:watch": "npm run test:unit -- -w",
+    "test:unit:coverage": "npm run test:unit -- --coverage"
+  },
+  "devDependencies": {
+    "d3-hierarchy": "^1.1.5",
+    "d3-scale": "^1.0.7",
+    "extend": "^3.0.0",
+    "npxc": "^0.0.3",
+    "number-format.js": "^1.1.10"
+  }
+}

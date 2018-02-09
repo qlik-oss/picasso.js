@@ -1,0 +1,63 @@
+{
+  "name": "picasso.js",
+  "version": "0.5.0",
+  "description": "A charting library streamlined for building visualizations for the Qlik Sense Analytics platform.",
+  "license": "MIT",
+  "author": "QlikTech International AB",
+  "keywords": [
+    "chart",
+    "data",
+    "visualization",
+    "picasso",
+    "analytics"
+  ],
+  "bugs": {
+    "url": "https://github.com/qlik-oss/picasso.js/issues"
+  },
+  "homepage": "https://github.com/qlik-oss.github.io/picasso.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qlik-oss/picasso.js.git"
+  },
+  "files": [
+    "/dist"
+  ],
+  "main": "dist/picasso.min.js",
+  "module": "src/index.js",
+  "scripts": {
+    "build": "npxc rollup -c ../../rollup.config.js --environment BUILD:production",
+    "build:dev": "npxc rollup -c ../../rollup.config.js",
+    "build:watch": "npxc rollup -c ../../rollup.config.js -w",
+    "lint": "npxc eslint src test",
+    "lint:fix": "npm run lint -- --fix",
+    "lint:recommended": "npm run lint -- --config .eslintrc-recommended.json",
+    "test": "npm run test:unit",
+    "test:coverage": "npm run test:unit:coverage && npm run test:component:coverage",
+    "test:unit": "npxc aw -c aw.config.unit.js",
+    "test:unit:watch": "npm run test:unit -- -w",
+    "test:unit:coverage": "npxc aw -c  aw.config.unit.coverage.js",
+    "test:component": "npxc aw -c aw.config.comp.js",
+    "test:component:coverage": "npxc aw -c aw.config.comp.coverage.js",
+    "test:integration:local": "npxc webdriver-manager update --versions.chrome 2.34 --gecko false && npxc aw protractor -c aw.config.js --require babel-register --require babel-helpers",
+    "fixture:server": "npxc aw serve -c aw.webserver.config.js",
+    "version": "node scripts/version.js"
+  },
+  "devDependencies": {
+    "d3-ease": "^1.0.3",
+    "d3-format": "^1.0.2",
+    "d3-hierarchy": "^1.1.5",
+    "d3-interpolate": "^1.1.5",
+    "d3-scale": "^1.0.0",
+    "d3-shape": "^1.0.6",
+    "d3-time-format": "^2.0.2",
+    "extend": "^3.0.0",
+    "hammerjs": "^2.0.8",
+    "jsdoc": "^3.4.0",
+    "node-event-emitter": "0.0.1",
+    "npxc": "^0.0.3",
+    "rimraf": "^2.5.2",
+    "snabbdom": "^0.5.4",
+    "test-utils": "*",
+    "path2d-polyfill": "^0.1.0"
+  }
+}

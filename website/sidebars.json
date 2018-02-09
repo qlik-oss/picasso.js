@@ -1,0 +1,43 @@
+{
+  "docs": {
+    "Getting started": [
+      "installation",
+      "chart",
+      "data",
+      "components"
+    ],
+    "General": [
+      "scales",
+      "brushing",
+      "interaction",
+      "formatters",
+      "dock-layout"
+    ],
+    "Scales": [
+      "scale-linear",
+      "scale-band",
+      "scale-categorical-color",
+      "scale-sequential-color",
+      "scale-threshold-color"
+    ],
+    "Components": [
+      "component-axis",
+      "component-grid-line",
+      "component-point",
+      "component-box",
+      "component-line",
+      "component-pie",
+      "component-legend-cat",
+      "component-legend-seq",
+      "component-text",
+      "component-labels",
+      "component-brush-area-dir",
+      "component-brush-lasso",
+      "component-brush-range"
+    ],
+    "Plugins": [
+      "plugin-q",
+      "plugin-hammer"
+    ]
+  }
+}

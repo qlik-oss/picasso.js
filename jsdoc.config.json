@@ -1,0 +1,15 @@
+{
+	"tags": {
+		"dictionaries": ["jsdoc"]
+	},
+	"source": {
+		"includePattern": "\\.js$"
+	},
+	"templates": {
+		"cleverLinks": false,
+        "monospaceLinks": true,
+		"default": {
+			"outputSourceFiles": false
+		}
+	}
+}

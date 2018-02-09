@@ -1,0 +1,3 @@
+{
+  "extends": "../../test-utils/.eslintrc.json"
+}

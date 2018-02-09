@@ -1,0 +1,25 @@
+{
+  "env": {
+    "test": {
+      "sourceMaps": "inline",
+      "retainLines": true,
+      "presets": [
+        [
+          "es2015"
+        ]
+      ],
+      "plugins": [
+        "transform-object-rest-spread",
+        [
+          "istanbul",
+          {
+            "exclude": [
+              "**/test/**",
+              "**/dist/**"
+            ]
+          }
+        ]
+      ]
+    }
+  }
+}

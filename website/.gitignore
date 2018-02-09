@@ -1,0 +1,9 @@
+node_modules
+.DS_Store
+translated_docs
+build
+
+static/js/picasso.min.js
+
+i18n/*
+!i18n/en.json

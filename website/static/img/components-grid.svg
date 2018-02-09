@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="360px" height="260px" viewBox="0 0 360 260" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
+    <title>Chart grid</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="square">
+        <g id="Components" transform="translate(-86.000000, 1.000000)">
+            <g id="Chart-grid" transform="translate(86.000000, 30.000000)">
+                <path d="M0.498611158,228.5 L360.511392,228.5" id="Line" stroke="#DFDFDF"></path>
+                <path d="M0.498611158,171.5 L360.511392,171.5" id="Line-Copy" stroke="#DFDFDF"></path>
+                <path d="M0.498611158,115.5 L360.511392,115.5" id="Line-Copy-2" stroke="#DFDFDF"></path>
+                <path d="M0.498611158,58.5 L360.511392,58.5" id="Line-Copy-3" stroke="#DFDFDF"></path>
+                <path d="M0.498611158,1.5 L360.511392,1.5" id="Line-Copy-4" stroke="#DFDFDF"></path>
+            </g>
+        </g>
+    </g>
+</svg>

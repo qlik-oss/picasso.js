@@ -1,0 +1,31 @@
+{
+  "root": true,
+  "env": {
+    "node": true
+  },
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 6,
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
+  },
+  "extends": "airbnb/base",
+  "rules": {
+	// Temporary rules
+    "max-len": 0,
+    "no-bitwise": 0,
+    "no-restricted-properties": 0,
+    "no-restricted-syntax": 0,
+    "no-param-reassign": 0,
+    "no-underscore-dangle": 0,
+    "one-var": 0,
+    "prefer-const": 0,
+	// Overrides
+    "no-continue": 0,
+    "import/no-extraneous-dependencies": [2, { "devDependencies": true }],
+    "no-plusplus": 0,
+    "comma-dangle": [2, "never"],
+    "curly": [2, "all"]
+  }
+}

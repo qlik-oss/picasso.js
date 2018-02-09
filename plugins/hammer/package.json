@@ -1,0 +1,27 @@
+{
+  "name": "picasso-plugin-hammer",
+  "version": "0.5.0",
+  "description": "Hammer JS interaction plugin for picasso.js",
+  "license": "MIT",
+  "author": "QlikTech International AB",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qlik-oss/picasso.js.git"
+  },
+  "files": [
+    "/dist"
+  ],
+  "main": "dist/picasso-hammer.min.js",
+  "module": "src/index.js",
+  "scripts": {
+    "build": "npxc rollup -c ../../rollup.config.js --name picassoHammer --environment BUILD:production",
+    "build:dev": "npxc rollup -c ../../rollup.config.js --name picassoHammer",
+    "build:watch": "npxc rollup -c ../../rollup.config.js --name picassoHammer -w",
+    "lint": "npxc eslint src test",
+    "test": "npxc aw -c aw.config.js"
+  },
+  "devDependencies": {
+    "npxc": "^0.0.3",
+    "test-utils": "*"
+  }
+}
