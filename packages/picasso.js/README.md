@@ -1,13 +1,3 @@
-[![CircleCI](https://circleci.com/gh/qlik-oss/picasso.js.svg?style=shield)](https://circleci.com/gh/qlik-oss/picasso.js)
-
-![picasso.js](docs/assets/picassojs.png)
-
-A charting library streamlined for building visualizations for the Qlik Sense Analytics platform.
-
-![Examples](website/static/img/examples.png)
-
-## Getting started
-
 ### Installing
 
 ```sh
@@ -57,10 +47,6 @@ picasso.chart({
 });
 ```
 
-![Bubbles](website/static/img/bubbles.png)
+![Bubbles](../../website/static/img/bubbles.png)
 
-## [More examples](http://picassojs.com/examples.html)
-
-## Contributing
-
-Please follow the instructions in our [contributing guide](./.github/CONTRIBUTING.md).
+[See more examples](http://picassojs.com)
