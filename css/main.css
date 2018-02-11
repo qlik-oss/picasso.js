@@ -2098,6 +2098,43 @@ footer .sitemap {
   max-width: 680px;
 }
 
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -40px;
+}
+
+.cell {
+  flex: 1 1 auto;
+  flex-basis: 250px;
+  margin: 20px 40px 20px 0;
+}
+
+.card {
+  box-shadow: 0 0 12px rgba(200, 200, 200, 0.2);
+  box-sizing: border-box;
+  overflow: hidden;
+  font-size: 0.8em;
+  text-align: center;
+}
+
+.card a div {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50%;
+  padding-top: 50%;
+}
+
+.card h3 {
+  font-weight: 400;
+  font-size: 1.2em;
+}
+
+.card .info {
+  padding: 10px;
+  text-align: left;
+}
+
 @media only screen and (min-device-width: 360px) and (max-device-width: 736px) {
   .components {
     left: 0;
