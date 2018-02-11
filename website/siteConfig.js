@@ -6,6 +6,7 @@ const siteConfig = {
   url: 'http://picassojs.com',
   baseUrl,
   projectName: 'picasso.js',
+  cname: 'picassojs.com',
   organizationName: 'qlik-oss',
   headerLinks: [
     { doc: 'installation', label: 'Docs' },
