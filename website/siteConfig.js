@@ -11,6 +11,7 @@ const siteConfig = {
   headerLinks: [
     { doc: 'installation', label: 'Docs' },
     { doc: 'tutorial', label: 'Tutorial' },
+    { page: 'examples', label: 'Examples' },
     { href: 'https://github.com/qlik-oss/picasso.js', label: 'GitHub' }
   ],
   headerIcon: 'img/picassojs.svg',

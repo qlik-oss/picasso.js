@@ -9,7 +9,8 @@ class Footer extends React.Component {
 
   pageUrl(doc, language) {
     const baseUrl = this.props.config.baseUrl;
-    return baseUrl + (language ? language + '/' : '') + doc;
+    return baseUrl + doc;
+    // return baseUrl + (language ? language + '/' : '') + doc;
   }
 
   render() {
@@ -24,6 +25,9 @@ class Footer extends React.Component {
             </a>
             <a href={this.docUrl('tutorial.html', this.props.language)}>
               Tutorial
+            </a>
+            <a href={this.pageUrl('examples.html', this.props.language)}>
+              Examples
             </a>
           </div>
           <div>
