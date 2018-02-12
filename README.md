@@ -4,7 +4,7 @@
 
 A charting library streamlined for building visualizations for the Qlik Sense Analytics platform.
 
-[![Examples](website/static/img/examples.png)](http://picassojs.com/examples)
+[![Examples](website/static/img/examples.png)](https://picassojs.com/examples)
 
 ## Getting started
 
@@ -59,7 +59,7 @@ picasso.chart({
 
 ![Bubbles](website/static/img/bubbles.png)
 
-## [More examples](http://picassojs.com/examples.html)
+## [More examples](https://picassojs.com/examples.html)
 
 ## Contributing
 
