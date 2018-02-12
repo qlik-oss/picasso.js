@@ -2,7 +2,22 @@
 title: q
 ---
 
-The `q` plugin registers a `q` dataset type that makes it a bit easier to extract data from a hypercube. It also contains a brush helper that can be used to find appropriate selections in the underlying data engine.
+The `q` plugin registers a `q` dataset type that makes it a bit easier to extract data from a QIX hypercube. It also contains a brush helper that can be used to find appropriate selections in the underlying data engine.
+
+## Installation
+
+```sh
+npm install picasso-plugin-q
+```
+
+### Register plugin
+
+```js
+import picasso from 'picasso.js';
+import picassoQ from 'picasso-plugin-q';
+
+picasso.use(pluginQ); // register
+```
 
 ## `q` dataset
 
@@ -132,10 +147,10 @@ b.addValue('qHyperCube/qDimensionInfo/2', 4);
 b.addValue('qHyperCube/qDimensionInfo/2', 7);
 ```
 
-Calling `q.brush` with the above instance generates relevant QIX methods and parameters to apply a selection to:
+Calling `picassoQ.selections` with the above instance generates relevant QIX methods and parameters to apply a selection to:
 
 ```js
-const selection = picasso.q.brush(b)[0];
+const selection = picassoQ.selections(b)[0];
 // {
 //   method: 'selectHyperCubeValues',
 //   params: [
@@ -161,7 +176,7 @@ Brushing measure ranges:
 const b = chart.brush('selection');
 b.addRange('qHyperCube/qMeasureInfo/2', { min: 13, max: 35 });
 
-const selection = picasso.q.brush(b)[0];
+const selection = picassoQ.selections(b)[0];
 // {
 //   method: 'rangeSelectHyperCubeValues',
 //   params: ['/qHyperCubeDef', [
@@ -181,7 +196,7 @@ Brushing dimension ranges:
 const b = chart.brush('selection');
 b.addRange('qHyperCube/qDimensionInfo/1', { min: 13, max: 35 });
 
-const selection = picasso.q.brush(b)[0];
+const selection = picassoQ.selections(b)[0];
 // {
 //   method: 'selectHyperCubeContinuousRange',
 //   params: ['/qHyperCubeDef', [
@@ -209,7 +224,7 @@ In the above case, rows `10` and `13` have been brushed on dimension `1`, and ro
 To extract the relevant information, `byCells` is enabled:
 
 ```js
-const selection = picasso.q.brush(b, { byCells: true })[0];
+const selection = picassoQ.selections(b, { byCells: true })[0];
 // {
 //   method: 'selectHyperCubeCells',
 //   params: [
@@ -224,7 +239,7 @@ Row indices are used from the first dimension that adds a value to a brush,  `qD
 To use values from another dimension, `primarySource` should be set:
 
 ```js
-const selection = picasso.q.brush(b, {
+const selection = picassoQ.selections(b, {
   byCells: true,
   primarySource: 'qHyperCube/qDimensionInfo/0'
 })[0];
@@ -247,7 +262,7 @@ const b = chart.brush('selection');
 b.addValue('qHyperCube/qDimensionInfo/2/qAttrDimInfo/3', 6);
 b.addValue('qHyperCube/qDimensionInfo/2/qAttrDimInfo/3', 9);
 
-const selection = picasso.q.brush(b)[0];
+const selection = picassoQ.selections(b)[0];
 // {
 //   method: 'selectHyperCubeValues',
 //   params: [
@@ -273,7 +288,7 @@ is derived from the number of measures and attribute expressions that exist in t
 the index, `layout` containing the hypercube needs to be provided as a parameter:
 
 ```js
-const selection = picasso.q.brush(b, {}, layout)[0];
+const selection = picassoQ.selections(b, {}, layout)[0];
 // {
 //   method: 'rangeSelectHyperCubeValues',
 //   params: ['/qHyperCubeDef', [
