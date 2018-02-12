@@ -14,11 +14,11 @@
     var timer = null;
 
     window.addEventListener('scroll', function(e) {
-      if (scrollPosY === window.scrollY) {
+      if (scrollPosY === Math.max(0, window.scrollY)) {
         return;
       }
 
-      scrollPosY = window.scrollY;
+      scrollPosY = Math.max(0, window.scrollY);
 
       if (!timer) {
         timer = window.requestAnimationFrame(function () {
