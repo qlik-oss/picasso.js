@@ -49,6 +49,7 @@ class Footer extends React.Component {
                   height="50"
                 />
               </a>
+              <a className="github-button" href="https://github.com/qlik-oss/picasso.js" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star qlik-oss/picasso.js on GitHub">Star</a>
             </div>
           </div>
         </section>

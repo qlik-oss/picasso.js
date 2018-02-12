@@ -21,9 +21,13 @@ function pageUrl(page, language) {
 
 class Button extends React.Component {
   render() {
+    let className = "button";
+    if (this.props.scream) {
+      className += ' scream';
+    }
     return (
       <div className="pluginWrapper buttonWrapper">
-        <a className="button" href={this.props.href} target={this.props.target}>
+        <a className={className} href={this.props.href} target={this.props.target}>
           {this.props.children}
         </a>
       </div>
@@ -87,6 +91,10 @@ class HomeSplash extends React.Component {
     return (
       <SplashContainer>
         <Logo img_src={imgUrl('picassojs.svg')} />
+        <PromoSection>
+          <Button href={docUrl('installation.html')}>Get started</Button>
+          <Button href={pageUrl('examples.html')} scream="true">Examples</Button>
+        </PromoSection>
       </SplashContainer>
     );
   }
