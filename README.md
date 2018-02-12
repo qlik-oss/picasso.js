@@ -4,7 +4,7 @@
 
 A charting library streamlined for building visualizations for the Qlik Sense Analytics platform.
 
-![Examples](website/static/img/examples.png)
+[![Examples](website/static/img/examples.png)](http://picassojs.com/examples)
 
 ## Getting started
 
