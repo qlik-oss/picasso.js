@@ -64,7 +64,7 @@ const examples = [{
   title: 'Gantt chart',
   img: 'https://static.observableusercontent.com/thumbnail/0d55ea2782981434f7811221aa572eab64ae545d24dc36ac779227d68e33c0a2.jpg',
   links: {
-    observable: 'https://beta.observablehq.com/@miralemd/picasso-js-gantt-chart'
+    observable: 'https://beta.observablehq.com/@miralemd/picassojs-gantt-chart'
   },
   tags: {
     chart: ['gantt'],
@@ -94,7 +94,7 @@ const examples = [{
   title: 'Area chart',
   img: 'https://static.observableusercontent.com/thumbnail/0631aeab3ab2a2f6127036a5dd1e4c82c4b99838509c39a21cc6e8b82a45726f.jpg',
   links: {
-    observable: 'https://beta.observablehq.com/@miralemd/picasso-js-are-chart'
+    observable: 'https://beta.observablehq.com/@miralemd/picasso-js-area-chart'
   },
   tags: {
     chart: ['area'],
