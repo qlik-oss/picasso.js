@@ -50,9 +50,24 @@ footer {
 }
 
 .homeContainer .button {
-  color: #fff;
+  color: #e8ffe9;
   border: 0;
-  background: linear-gradient(90deg, #ff0090 0%, #ff5200 100%)
+  background: rgba(71, 179, 141, 0.71);
+  border-radius: 4px;
+  padding: 1em 2em;
+  box-shadow: 0 0px 8px rgba(0, 50, 0, 0.1);
+  transition: all 0.1s ease-out;
+  position: relative;
+  top: 0;
+}
+
+.homeContainer .button.scream {
+  background: linear-gradient(90deg, rgba(255, 107, 63, 0.85) 0%, rgba(255, 59, 114, 0.85) 100%)
+}
+
+.homeContainer .button:hover {
+  box-shadow: 0 6px 18px rgba(0, 50, 0, 0.1);
+  top: -1px;
 }
 
 .homeContainer::before {
@@ -65,14 +80,17 @@ footer {
   position: absolute;
   width: 100%;
 }
-/*
-.fixedHeaderContainer {
-  background: linear-gradient(135deg, #9ecc4c 0%, #45B3B2 100%);
-}
-*/
+
 .homeContainer .homeWrapper {
-  padding: 6em 10px;
+  padding: 3em 10px;
+}
+
+.homeContainer .homeWrapper .logo {
   opacity: 0.8;
+}
+
+.promoSection {
+  top: 1em;
 }
 
 .container .wrapper h2 {
