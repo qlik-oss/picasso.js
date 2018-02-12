@@ -1,25 +1,30 @@
-> HammerJS has to be loaded to be able to use this plugin so that the Hammer variable is
-available on the global namespace
+# `picasso-plugin-hammer`
 
-# `hammer` interaction component
+A plugin that binds events using HammerJS.
 
-A interaction component that binds events using HammerJS.
-This plugin provides an api for binding HammerJS recognizers to the chart element
-in a declaritive way. The documentation for the Hammer API is available [here](http://hammerjs.github.io/api/)
+This plugin provides an API for binding HammerJS recognizers to the chart element
+in a declarative way. The documentation for the Hammer API is available [here](http://hammerjs.github.io/api/)
 
-## How to use
+## Installation
 
 ```sh
 npm install picasso-plugin-hammer
 ```
 
+### Register plugin
+
 ```js
 import picassoHammer from 'picasso-plugin-hammer';
+import picasso from 'picasso.js';
 
 picasso.use(picassoHammer);
 ```
 
-## Hammer interaction settings
+> [HammerJS](http://hammerjs.github.io/api/) has to be loaded to be able to use this plugin so that the Hammer variable is available on the global namespace.
+
+## Usage
+
+### Hammer interaction settings
 
 ```js
 interactions: [{
@@ -30,7 +35,7 @@ interactions: [{
     return true;
   },
   gestures: [{
-    type: 'Pan', // required - Point out which hammer recognizer that should be used
+    type: 'Pan', // required - Point out which hammer recognizer should be used
     options: { // optional - Options for hammer Pan recognizer
       /**
       * Determines if this gestures should be enabled or not, Runs every event loop that Hammer processes
@@ -38,11 +43,11 @@ interactions: [{
       enable: function() {
         this.chart /*...*/;
       },
-      event: 'thePan', // optional - name the event this gestures should trigger defaults to 'pan' in this case
+      event: 'thePan', // optional - name the event this gestures should trigger; defaults to 'pan' in this case
       ... // Pan options are described here http://hammerjs.github.io/recognizer-pan/
     },
-    recognizeWith: 'otherEvent1 otherEvent2', // space separated list of recognizers that should run simultaneously. The name is the event name specified in the options of the gesture (or the default name)
-    requireFailure: 'otherEvent', // space separated list of recognizers that needs to fail before this one gets recognized. The name is the event name specified in the options of the gesture (or the default name)
+    recognizeWith: 'otherEvent1 otherEvent2', // space-separated list of recognizers that should run simultaneously. The name is the event name specified in the options of the gesture (or the default name)
+    requireFailure: 'otherEvent', // space-separated list of recognizers that needs to fail before this one gets recognized. The name is the event name specified in the options of the gesture (or the default name)
     events: {
       /**
       * When hammer recognizes that a pan gesture begins the event specified in
@@ -53,7 +58,7 @@ interactions: [{
       },
       /**
       * When hammer recognizes a pan gesture the event specified in the options object
-      * above with is emitted.
+      * above is emitted.
       */
       thePan: function(e) {
         // handle event for panning
@@ -69,7 +74,8 @@ interactions: [{
   }]
 }]
 ```
-## Another example
+
+### Another example
 
 ```js
 interactions: [{
