@@ -1,6 +1,6 @@
 {
   "name": "picasso.js",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "A charting library streamlined for building visualizations for the Qlik Sense Analytics platform.",
   "license": "MIT",
   "author": "QlikTech International AB",
@@ -55,9 +55,9 @@
     "jsdoc": "^3.4.0",
     "node-event-emitter": "0.0.1",
     "npxc": "^0.0.3",
+    "path2d-polyfill": "^0.1.0",
     "rimraf": "^2.5.2",
     "snabbdom": "^0.5.4",
-    "test-utils": "*",
-    "path2d-polyfill": "^0.1.0"
+    "test-utils": "*"
   }
 }
