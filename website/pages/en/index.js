@@ -123,16 +123,18 @@ const Components = props => (
           <div><span><p>Components are the visual building blocks that make up the chart, by combining them in various forms virtually any chart can be created. A bar chart, for example, consists of a bar layer, a continuous and a discrete axis. Add a line layer and you have a combo chart. Want a line chart with four axes? - Not a problem.</p></span></div>
         </div>
         <div className="blockImage blockComposition">
-          <div className="components state-0" id="threed-chart">
-            <div className="layer c-grid"><img src={imgUrl("components-grid.svg")}/></div>
-            <div className="layer c-bars"><img src={imgUrl("components-bars.svg")}/></div>
-            <div className="layer c-labels"><img src={imgUrl("components-labels.svg")}/></div>
-            <div className="layer c-reference"><img src={imgUrl("components-reference.svg")}/></div>
-            <div className="layer c-legend"><img src={imgUrl("components-legend.svg")}/></div>
-            <div className="layer c-discrete"><img src={imgUrl("components-discrete.svg")}/></div>
-            <div className="layer c-continuous"><img src={imgUrl("components-continuous.svg")}/></div>
-            <div className="layer c-v-title"><img src={imgUrl("components-v-title.svg")}/></div>
-            <div className="layer c-h-title"><img src={imgUrl("components-h-title.svg")}/></div>
+          <div className="blockComposition-inner">
+            <div className="components state-0" id="threed-chart">
+              <div className="layer c-grid"><img src={imgUrl("components-grid.svg")}/></div>
+              <div className="layer c-bars"><img src={imgUrl("components-bars.svg")}/></div>
+              <div className="layer c-labels"><img src={imgUrl("components-labels.svg")}/></div>
+              <div className="layer c-reference"><img src={imgUrl("components-reference.svg")}/></div>
+              <div className="layer c-legend"><img src={imgUrl("components-legend.svg")}/></div>
+              <div className="layer c-discrete"><img src={imgUrl("components-discrete.svg")}/></div>
+              <div className="layer c-continuous"><img src={imgUrl("components-continuous.svg")}/></div>
+              <div className="layer c-v-title"><img src={imgUrl("components-v-title.svg")}/></div>
+              <div className="layer c-h-title"><img src={imgUrl("components-h-title.svg")}/></div>
+            </div>
           </div>
         </div>
       </div>

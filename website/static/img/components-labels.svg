@@ -7,22 +7,22 @@
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="Components" transform="translate(-86.000000, 0.000000)">
             <g id="Bar-labels" transform="translate(86.000000, 0.000000)">
-                <text id="8" font-family="ArialMT, Arial" font-size="12" font-weight="normal" fill="#828282">
+                <text id="8" font-family="Arial" font-size="12" font-weight="normal" fill="#828282">
                     <tspan x="329" y="203">8</tspan>
                 </text>
-                <text id="11" font-family="ArialMT, Arial" font-size="12" font-weight="normal" fill="#828282">
+                <text id="11" font-family="Arial" font-size="12" font-weight="normal" fill="#828282">
                     <tspan x="264" y="187">11</tspan>
                 </text>
-                <text id="16" font-family="ArialMT, Arial" font-size="12" font-weight="normal" fill="#828282">
+                <text id="16" font-family="Arial" font-size="12" font-weight="normal" fill="#828282">
                     <tspan x="204" y="156">16</tspan>
                 </text>
-                <text id="23" font-family="ArialMT, Arial" font-size="12" font-weight="normal" fill="#828282">
+                <text id="23" font-family="Arial" font-size="12" font-weight="normal" fill="#828282">
                     <tspan x="142" y="123">23</tspan>
                 </text>
-                <text id="37" font-family="ArialMT, Arial" font-size="12" font-weight="normal" fill="#828282">
+                <text id="37" font-family="Arial" font-size="12" font-weight="normal" fill="#828282">
                     <tspan x="81" y="44">37</tspan>
                 </text>
-                <text id="42" font-family="ArialMT, Arial" font-size="12" font-weight="normal" fill="#828282">
+                <text id="42" font-family="Arial" font-size="12" font-weight="normal" fill="#828282">
                     <tspan x="20" y="11">42</tspan>
                 </text>
             </g>

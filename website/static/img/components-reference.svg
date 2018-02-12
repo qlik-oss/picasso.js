@@ -8,7 +8,7 @@
         <g id="Components" transform="translate(-86.000000, 0.000000)">
             <g id="Refline" transform="translate(86.000000, 108.000000)">
                 <path d="M0.498611158,13.5 L360.511392,13.5" id="Line-Copy-2" stroke="#DFDFDF" stroke-linecap="square" stroke-dasharray="2,4"></path>
-                <text id="Above-me-is-good-to" font-family="ArialMT, Arial" font-size="12" font-weight="normal" fill="#C0C0C0">
+                <text id="Above-me-is-good-to" font-family="Arial" font-size="12" font-weight="normal" fill="#C0C0C0">
                     <tspan x="234.917969" y="11">Above me is good to be</tspan>
                 </text>
             </g>
