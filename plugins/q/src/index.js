@@ -8,4 +8,5 @@ export default function initialize(picasso) {
   // picasso.scale('qTime', qTime);
 }
 
-initialize.qBrushHelper = qBrushHelper;
+initialize.qBrushHelper = qBrushHelper; // deprecated
+initialize.selections = qBrushHelper;

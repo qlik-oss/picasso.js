@@ -87,7 +87,6 @@ footer {
 }
 
 .mainContainer > .container:first-child .wrapper {
-  border-radius: 4px;
   box-shadow: 0px -10px 12px -6px rgba(100, 100, 100, 0.2);
   background: #fff;
 }
@@ -137,7 +136,22 @@ nav.toc .toggleNav .navGroup, nav.toc .toggleNav .navGroup.navGroupActive {
 }
 
 .blockComposition {
-  height: 300px;
+  overflow: hidden;
+  margin-right: 0 !important;
+}
+
+.blockComposition-inner {
+  height: 310px;
+  width: 500px;
+}
+
+.imageAlignSide .blockImage {
+  align-self: flex-end;
+  flex: 1 1 270px;
+}
+
+.imageAlignSide .blockContent {
+  flex: 4 1;
 }
 
 .components .layer {
@@ -310,21 +324,29 @@ footer .sitemap {
 .gallery {
   display: flex;
   flex-wrap: wrap;
-  margin-right: -40px;
+  margin-right: -20px;
 }
 
 .cell {
   flex: 1 1 auto;
   flex-basis: 250px;
-  margin: 20px 40px 20px 0;
+  margin: 20px 20px 20px 0;
 }
 
 .card {
-  box-shadow: 0 0 12px rgba(200, 200, 200, 0.2);
+  box-shadow: 0 0 12px rgba(200, 200, 200, 0.4);
   box-sizing: border-box;
   overflow: hidden;
   font-size: 0.8em;
   text-align: center;
+  transition: all 0.1s ease-out;
+  position: relative;
+  top: 0;
+}
+
+.card:hover {
+  box-shadow: 0 6px 24px rgba(200, 200, 200, 0.6);
+  top: -2px;
 }
 
 .card a div {
@@ -362,5 +384,17 @@ footer .sitemap {
 @media only screen and (min-width: 1500px) {
   .wrapper {
     max-width: 1200px;
+  }
+}
+
+@media only screen and (min-width: 1138px) {
+  .mainContainer > .container:first-child .wrapper {
+    border-radius: 4px;
+  }
+}
+
+@media (max-width: 375px) {
+  .logo {
+    display: block;
   }
 }

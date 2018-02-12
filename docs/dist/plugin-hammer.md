@@ -2,24 +2,31 @@
 title: Hammer
 ---
 
-An interaction component that binds events using [HammerJS](http://hammerjs.github.io/api/).
+A plugin that binds events using HammerJS.
+
 This plugin provides an API for binding HammerJS recognizers to the chart element
-in a declarative way. The documentation for the Hammer API is available [here](http://hammerjs.github.io/api/).
+in a declarative way. The documentation for the Hammer API is available [here](http://hammerjs.github.io/api/)
 
-**Note** [HammerJS](http://hammerjs.github.io/api/) has to be loaded to be able to use this plugin so that the Hammer variable is
-available on the global namespace
+## Installation
 
-## Usage
+```sh
+npm install picasso-plugin-hammer
+```
 
-Register the hammerjs module:
+### Register plugin
 
 ```js
 import picassoHammer from 'picasso-plugin-hammer';
+import picasso from 'picasso.js';
 
 picasso.use(picassoHammer);
 ```
 
-...and it becomes available as an `interactions` component.
+> [HammerJS](http://hammerjs.github.io/api/) has to be loaded to be able to use this plugin so that the Hammer variable is available on the global namespace.
+
+## Usage
+
+### Hammer interaction settings
 
 ```js
 interactions: [{

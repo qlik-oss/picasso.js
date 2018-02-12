@@ -7,7 +7,7 @@
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="Components" transform="translate(-473.000000, -3.000000)">
             <g id="Legend" transform="translate(473.000000, 0.000000)">
-                <text id="Color-by-quarter" font-family="OpenSans-Bold, Open Sans" font-size="13" font-weight="bold" line-spacing="16" fill="#696969">
+                <text id="Color-by-quarter" font-family="Arial" font-size="13" font-weight="bold" line-spacing="16" fill="#696969">
                     <tspan x="0" y="14">Color by quarter</tspan>
                 </text>
                 <text id="The-cold-one" font-family="Helvetica" font-size="12" font-weight="normal" fill="#9B9B9B">
