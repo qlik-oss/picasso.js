@@ -1,16 +1,17 @@
 version: 2
 
-jobs:
-  build:
-    working_directory: ~/picassojs
+defaults: &defaults
+  working_directory: ~/picassojs
     # Available images https://hub.docker.com/r/circleci/node/tags/
-    docker:
-      - image: circleci/node:8.9.4-browsers
-    branches:
-      ignore: gh-pages
+  docker:
+    - image: circleci/node:8.9.4-browsers
+
+jobs:
+  install:
+    <<: *defaults
     steps:
       - checkout
-
+      
       # Restore caches
       - restore_cache:
           key: v1-cache-{{ checksum "package-lock.json" }}
@@ -24,13 +25,21 @@ jobs:
           key: v1-cache-docs-{{ checksum "docs/package-lock.json" }}
       - restore_cache:
           key: v1-cache-site-{{ checksum "website/package-lock.json" }}
-
-      # Build all
+      
+      - run: npm install
+      - run: npm run bootstrap
       - run:
-          name: Build all
-          command: ./scripts/build-all.sh
+          name: docs
+          command: |
+            cd ./docs
+            npm install
+      - run:
+          name: website
+          command: |
+            cd ./website
+            npm install
 
-      ## Save to cache
+    ## Save to cache
       - save_cache:
           key: v1-cache-{{ checksum "package-lock.json" }}
           paths:
@@ -55,39 +64,119 @@ jobs:
           key: v1-cache-site-{{ checksum "website/package-lock.json" }}
           paths:
             - ./website/node_modules
-      
-      # Code validation
-      - run:
-          name: Lint
-          command: npm run lint
-      - run:
-          name: Unit test
-          command: npm run test:unit:coverage
-      - run:
-          name: Component test
-          command: npm run test:component:coverage
-      - run:
-          name: Integration test
-          command: npm run test:integration:local
-      # - run:
-      #     name: Publish coverage to code climate
-      #     command: npm run test:unit:coverage:publish
-
-      # Store artifacts
+          
       - store_artifacts:
           path: package.json
+
+      - persist_to_workspace:
+          root: ~/picassojs
+          paths:
+            - .
+
+  build:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/picassojs
+      - run: npm run build
       - store_artifacts:
           path: packages/picasso.js/dist
       - store_artifacts:
           path: plugins/q/dist
       - store_artifacts:
           path: plugins/hammer/dist
+      - persist_to_workspace:
+          root: ~/picassojs
+          paths:
+            - packages/*/dist
+            - plugins/*/dist
+
+  build-dev:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/picassojs
+      - run: npm run build:dev
       - store_artifacts:
-          path: website/build
+          path: packages/picasso.js/dist
+      - store_artifacts:
+          path: plugins/q/dist
+      - store_artifacts:
+          path: plugins/hammer/dist
+
+  docs-website:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/picassojs
+      - run: npm run docs
+      - run:
+          name: website
+          command: |
+            cd ./website
+            npm build
       - store_artifacts:
           path: docs/spec.json
       - store_artifacts:
-          path: coverage
-      - store_artifacts:
-          path: packages/picasso.js/test/integration/artifacts
+          path: website/build
 
+  lint:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/picassojs
+      - run: npm run lint
+    
+  test-unit:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/picassojs
+      - run: npm run test:unit:coverage
+      - run: 
+          name: Publish coverage
+          command: npm run test:unit:coverage:publish || echo "Unable to publish code coverage"
+      - store_artifacts:
+          path: coverage
+
+  test-component:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/picassojs
+      - run: npm run test:component:coverage
+
+  test-integration:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/picassojs
+      - run: npm run test:integration:local
+
+
+workflows:
+  version: 2
+  build-all:
+    jobs:
+      - install
+      - build:
+          requires:
+            - install
+      - build-dev:
+          requires:
+            - install
+      - docs-website:
+          requires:
+            - install
+      - lint:
+          requires:
+            - build
+      - test-unit:
+          requires:
+            - build
+      - test-component:
+          requires:
+            - build
+      - test-integration:
+          requires:
+            - build
