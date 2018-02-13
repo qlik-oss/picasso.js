@@ -38,11 +38,6 @@ jobs:
           command: |
             cd ./website
             npm install
-      - run:
-          name: path2d-polyfill
-          command: |
-            cd ./packages/path2d-polyfill
-            npm run build
 
     ## Save to cache
       - save_cache:
@@ -93,7 +88,8 @@ jobs:
       - persist_to_workspace:
           root: ~/picassojs
           paths:
-            - packages/picasso.js/dist
+            - packages/*/dist
+            - plugins/*/dist
 
   build-dev:
     <<: *defaults
@@ -174,13 +170,13 @@ workflows:
             - install
       - lint:
           requires:
-            - install
+            - build
       - test-unit:
           requires:
-            - install
+            - build
       - test-component:
           requires:
-            - install
+            - build
       - test-integration:
           requires:
             - build
