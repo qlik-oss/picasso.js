@@ -3,6 +3,7 @@ const baseUrl = '/';
 const siteConfig = {
   title: 'picasso.js',
   tagline: 'Turn your data into a visual masterpiece',
+  disableTitleTagline: true,
   url: 'https://picassojs.com',
   baseUrl,
   projectName: 'picasso.js',
@@ -17,6 +18,7 @@ const siteConfig = {
   headerIcon: 'img/picassojs.svg',
   disableHeaderTitle: true,
   footerIcon: 'img/picassojs.svg',
+  ogImage: 'img/picassojs.png',
   gaTrackingId: 'UA-113818093-1',
   favicon: 'img/favicon.png',
   colors: {
