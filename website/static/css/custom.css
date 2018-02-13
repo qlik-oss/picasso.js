@@ -62,11 +62,20 @@ code {
 }
 
 .homeContainer .homeWrapper {
-  padding: 3em 10px;
+  padding: 3em 10px 0 10px
 }
 
 .homeContainer .homeWrapper .logo {
   opacity: 0.8;
+}
+
+.projectTitle {
+  color: #ffffff;
+  opacity: 0.8;
+}
+
+.projectTitle > small {
+  margin-bottom: 0;
 }
 
 .promoSection {
