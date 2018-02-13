@@ -30,9 +30,7 @@ const siteConfig = {
   customDocsPath: './docs/dist',
   scripts: [
     'https://buttons.github.io/buttons.js',
-    `${baseUrl}js/picasso.min.js`,
-    `${baseUrl}js/landing.js`,
-    `${baseUrl}js/tutorial.js`
+    `${baseUrl}js/landing.js`
   ],
   repoUrl: 'https://github.com/qlik-oss/picasso.js',
   twitter: true
