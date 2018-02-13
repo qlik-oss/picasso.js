@@ -1,4 +1,6 @@
 const React = require('react');
+const CompLibrary = require('../../core/CompLibrary.js');
+const MarkdownBlock = CompLibrary.MarkdownBlock; /* Used to read markdown */
 
 const examples = [{
   title: 'Scatter plot',
@@ -199,6 +201,9 @@ const items = examples.map(Sample).concat([0, 1, 2].map(Empty));
 const Category = props => (
   <div className="category">
     <h2>{props.title}</h2>
+    <MarkdownBlock>
+    The majority of the following examples are [reactive notebooks](https://beta.observablehq.com/@mbostock/introduction-to-notebooks) - a powerful new way of creating interactive documents.
+    </MarkdownBlock>
     <div className="gallery">
       {props.children}
     </div>
