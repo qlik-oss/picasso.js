@@ -5,8 +5,6 @@ defaults: &defaults
     # Available images https://hub.docker.com/r/circleci/node/tags/
   docker:
     - image: circleci/node:8.9.4-browsers
-  branches:
-      ignore: gh-pages
 
 jobs:
   install:
@@ -153,6 +151,8 @@ jobs:
 
 workflows:
   version: 2
+  branches:
+      ignore: gh-pages
   build-all:
     jobs:
       - install
