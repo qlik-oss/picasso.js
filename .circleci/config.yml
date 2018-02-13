@@ -8,10 +8,6 @@ defaults: &defaults
   branches:
       ignore: gh-pages
 
-attach_root: &attach_root
-  attach_workspace:
-    at: ~/picassojs
-
 jobs:
   install:
     <<: *defaults
@@ -82,7 +78,8 @@ jobs:
   build:
     <<: *defaults
     steps:
-      <<: *attach_root
+      - attach_workspace:
+          at: ~/picassojs
       - run: npm run build
       - store_artifacts:
           path: packages/picasso.js/dist
@@ -94,7 +91,8 @@ jobs:
   build-dev:
     <<: *defaults
     steps:
-      <<: *attach_root
+      - attach_workspace:
+          at: ~/picassojs
       - run: npm run build:dev
       - store_artifacts:
           path: packages/picasso.js/dist
@@ -106,7 +104,8 @@ jobs:
   docs-website:
     <<: *defaults
     steps:
-      <<: *attach_root
+      - attach_workspace:
+          at: ~/picassojs
       - run: npm run docs
       - run:
           name: website
@@ -121,13 +120,15 @@ jobs:
   lint:
     <<: *defaults
     steps:
-      <<: *attach_root
+      - attach_workspace:
+          at: ~/picassojs
       - run: npm run lint
     
   test-unit:
     <<: *defaults
     steps:
-      <<: *attach_root
+      - attach_workspace:
+          at: ~/picassojs
       - run: npm run test:unit:coverage
       - run: 
           name: Publish coverage
@@ -138,13 +139,15 @@ jobs:
   test-component:
     <<: *defaults
     steps:
-      <<: *attach_root
+      - attach_workspace:
+          at: ~/picassojs
       - run: npm run test:component:coverage
 
   test-integration:
     <<: *defaults
     steps:
-      <<: *attach_root
+      - attach_workspace:
+          at: ~/picassojs
       - run: npm run test:integration:local
 
 
