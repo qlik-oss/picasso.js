@@ -151,8 +151,6 @@ jobs:
 
 workflows:
   version: 2
-  branches:
-      ignore: gh-pages
   build-all:
     jobs:
       - install
