@@ -90,6 +90,10 @@ jobs:
           path: plugins/q/dist
       - store_artifacts:
           path: plugins/hammer/dist
+      - persist_to_workspace:
+          root: ~/picassojs
+          paths:
+            - packages/picasso.js/dist
 
   build-dev:
     <<: *defaults
@@ -179,4 +183,4 @@ workflows:
             - install
       - test-integration:
           requires:
-            - install
+            - build
