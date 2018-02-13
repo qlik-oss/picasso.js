@@ -2,7 +2,7 @@ const baseUrl = '/';
 
 const siteConfig = {
   title: 'picasso.js',
-  tagline: 'Make Pablo proud',
+  tagline: 'Turn your data into a visual masterpiece',
   url: 'https://picassojs.com',
   baseUrl,
   projectName: 'picasso.js',

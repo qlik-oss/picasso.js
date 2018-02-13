@@ -91,6 +91,9 @@ class HomeSplash extends React.Component {
     return (
       <SplashContainer>
         <Logo img_src={imgUrl('picassojs.svg')} />
+        <h2 className="projectTitle">
+          <small>Turn your data into a visual masterpiece</small>
+        </h2>
         <PromoSection>
           <Button href={docUrl('installation.html')}>Get started</Button>
           <Button href={pageUrl('examples.html')} scream="true">Examples</Button>
