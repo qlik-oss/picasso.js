@@ -8,7 +8,7 @@ defaults: &defaults
   branches:
       ignore: gh-pages
 
-attach_workspace: &attach_root
+attach_root: &attach_root
   attach_workspace:
     at: ~/picassojs
 
