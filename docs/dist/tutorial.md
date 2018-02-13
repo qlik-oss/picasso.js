@@ -7,7 +7,13 @@ id: tutorial
 
 In this tutorial we will introduce some of the basic concepts in picasso.js by creating a bubble chart:
 
-<div id='tutorial-result' class='tutorial-chart'></div>
+<iframe width="100%" height="400" src="//jsfiddle.net/nqo2dsrs/5/embedded/result,js/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+## How to follow along
+
+The easiest way to follow along is to start with this [jsfiddle stub](https://jsfiddle.net/nqo2dsrs/1/). It contains the basic setup of HTML, CSS and and some data, and allows us to focus only on the JavaScript.
+
+The result of each step is also embedded so that you can tweak each example.
 
 ## Instantiating a chart
 
@@ -113,7 +119,7 @@ An `axis` requires a `scale` value which references one of the `scales` defined 
 
 In addition, the axes are docked to the `left` and `bottom` respectively.
 
-<div id='tutorial-axis' class='tutorial-chart'></div>
+<iframe width="100%" height="400" src="//jsfiddle.net/nqo2dsrs/2/embedded/result,js/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 [More on axis](/docs/component-axis.html)
 
@@ -171,7 +177,7 @@ There are three ways to define the value for a visual property:
 
 Most of the numerical properties in picasso are relative and defined as a value between 0-1, the primary reason for this is to ensure responsiveness as the chart is resized.
 
-<div id='tutorial-points' class='tutorial-chart'></div>
+<iframe width="100%" height="400" src="//jsfiddle.net/nqo2dsrs/3/embedded/result,js/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 [More on the point component](/docs/component-point.html)
 
@@ -218,7 +224,7 @@ components: [{
 }]
 ```
 
-<div id='tutorial-coloring' class='tutorial-chart'></div>
+<iframe width="100%" height="400" src="//jsfiddle.net/nqo2dsrs/4/embedded/result,js/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 ## Brushing and linking
 
@@ -283,6 +289,16 @@ The only difference here is the missing `data` limitation, which is not needed s
 
 Now clicking in either the legend or on the bubbles will highlight the brushed _Year_ in the legend, and the bubbles associated with the brushed _Year_.
 
-<div id='tutorial-brushing' class='tutorial-chart'></div>
+<iframe width="100%" height="400" src="//jsfiddle.net/nqo2dsrs/5/embedded/result,js/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 [More on brushing](/docs/brushing.html)
+
+## What's next?
+
+- You can continue fiddling with this example by e.g:
+  - Replacing `fill` with a `stroke` and `strokeWidth`
+  - Set the `shape` to something else than `'circle'`
+  - Change which field to color by
+    - by changing the `col` scale to use `'Month'` instead of `'Year'`
+    - and `fill: { field: 'Month' }` to `fill: { field: 'Year' }`
+- Play around with more [examples](/examples.html)
