@@ -38,6 +38,11 @@ jobs:
           command: |
             cd ./website
             npm install
+      - run:
+        name: path2d-polyfill
+        command: |
+          cd ./packages/path2d-polyfill
+          npm run build
 
     ## Save to cache
       - save_cache:
