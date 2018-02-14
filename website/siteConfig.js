@@ -35,7 +35,14 @@ const siteConfig = {
     `${baseUrl}js/landing.js`
   ],
   repoUrl: 'https://github.com/qlik-oss/picasso.js',
-  twitter: true
+  twitter: true,
+  algolia: {
+    apiKey: '3acaf839e39f2abc9d53e17093978fe3',
+    indexName: 'picassojs',
+    algoliaOptions: {
+      hitsPerPage: 7
+    }
+  }
 };
 
 module.exports = siteConfig;
