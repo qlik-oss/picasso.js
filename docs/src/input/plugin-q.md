@@ -16,7 +16,7 @@ npm install picasso-plugin-q
 import picasso from 'picasso.js';
 import picassoQ from 'picasso-plugin-q';
 
-picasso.use(pluginQ); // register
+picasso.use(picassoQ); // register
 ```
 
 ## `q` dataset
@@ -28,7 +28,7 @@ This dataset type understands the QIX hypercube format and its internals, making
 ```js
 const ds = picasso.data('q')({
   key: 'qHyperCube', // path to the hypercube from the layout
-  data: layout.qHypercube
+  data: layout.qHyperCube
 });
 ```
 
