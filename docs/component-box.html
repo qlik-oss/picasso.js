@@ -132,8 +132,8 @@ can be accessed these from a function created for the fill of the box.</p>
       <span class="hljs-attr">scale</span>: <span class="hljs-string">'y'</span>
     },
     <span class="hljs-attr">box</span>: {
-      <span class="hljs-attr">fill</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
-        <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.data.open.value &gt; <span class="hljs-keyword">this</span>.data.close.value ? <span class="hljs-string">'green'</span> : <span class="hljs-string">'red'</span>;
+      <span class="hljs-attr">fill</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">d</span>) </span>{
+        <span class="hljs-keyword">return</span> d.datum.open.value &gt; d.datum.close.value ? <span class="hljs-string">'green'</span> : <span class="hljs-string">'red'</span>;
       }
     }
   }

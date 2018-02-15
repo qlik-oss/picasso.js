@@ -188,9 +188,8 @@ data: {
 <p>the following definitions in a components settings will all result in the same <code>x</code> value:</p>
 <pre><code class="hljs css js">{
   <span class="hljs-attr">x</span>: { <span class="hljs-attr">ref</span>: <span class="hljs-string">"x"</span> } <span class="hljs-comment">// reference the 'x' value in the mapped data</span>
-  x: { <span class="hljs-attr">ref</span>: <span class="hljs-string">"x"</span>, <span class="hljs-attr">fn</span>: (d) { <span class="hljs-keyword">return</span> d.value; } }, <span class="hljs-comment">// the referenced data property 'x' in sent in as the first parameter in the callback</span>
-  x: { <span class="hljs-attr">fn</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{ <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.data.x.value; } }, <span class="hljs-comment">// the mapped data can be accessed through 'this.data'</span>
-  x: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{ <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.data.x.value; } <span class="hljs-comment">// the mapped data can be accessed through 'this.data'</span>
+  x: { <span class="hljs-attr">fn</span>: <span class="hljs-function"><span class="hljs-params">d</span> =&gt;</span> d.datum.x.value }, <span class="hljs-comment">// the mapped data can be accessed through 'd.datum'</span>
+  x: <span class="hljs-function"><span class="hljs-params">d</span> =&gt;</span> d.datum.x.value
 }
 </code></pre>
 <h3><a class="anchor" aria-hidden="true" name="scale-usage"></a><a href="#scale-usage" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Scale usage</h3>
@@ -203,8 +202,7 @@ data: {
 <p>the following definitions will all result in the same <code>x</code> value:</p>
 <pre><code class="hljs css js">{
   <span class="hljs-attr">x</span>: { <span class="hljs-attr">ref</span>: <span class="hljs-string">"x"</span>, <span class="hljs-attr">scale</span>: <span class="hljs-string">"linX"</span> }, <span class="hljs-comment">// automatically sends value 'x' through the scale and returns the scaled value</span>
-  x: { <span class="hljs-attr">ref</span>: <span class="hljs-string">"x"</span>, <span class="hljs-attr">scale</span>: <span class="hljs-string">"linX"</span>, <span class="hljs-attr">fn</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">d</span>) </span>{ <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.scale(d) } }, <span class="hljs-comment">// the referenced 'scale' is accessible in the callback's 'this' context</span>
-  x: { <span class="hljs-attr">scale</span>: <span class="hljs-string">"linX"</span>, <span class="hljs-attr">fn</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">d</span>) </span>{ <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.scale(<span class="hljs-keyword">this</span>.data.x.value) } }
+  x: { <span class="hljs-attr">scale</span>: <span class="hljs-string">"linX"</span>, <span class="hljs-attr">fn</span>: <span class="hljs-function"><span class="hljs-params">d</span> =&gt;</span> d.scale(d.datum.x.value) } <span class="hljs-comment">// the referenced 'scale' is accessible through 'd.scale'</span>
 }
 </code></pre>
 <h3><a class="anchor" aria-hidden="true" name="more-expressiveness"></a><a href="#more-expressiveness" aria-hidden="true" class="hash-link" ><svg aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>More expressiveness</h3>
@@ -212,9 +210,7 @@ data: {
 <pre><code class="hljs css js">{
   <span class="hljs-attr">fill</span>: {
     <span class="hljs-attr">scale</span>: <span class="hljs-string">"linX"</span>,
-    <span class="hljs-attr">fn</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{ <span class="hljs-comment">// color the maximum value red</span>
-      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.scale.max() &gt;= <span class="hljs-keyword">this</span>.data.x.value ? <span class="hljs-string">"red"</span> : <span class="hljs-string">"grey"</span>;
-    }
+    <span class="hljs-attr">fn</span>: <span class="hljs-function"><span class="hljs-params">d</span> =&gt;</span> (b.scale.max() &gt;= d.datum.x.value ? <span class="hljs-string">"red"</span> : <span class="hljs-string">"grey"</span>) <span class="hljs-comment">// color the maximum value red</span>
   }
 }
 </code></pre>
