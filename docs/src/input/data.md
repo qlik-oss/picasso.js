@@ -230,9 +230,8 @@ the following definitions in a components settings will all result in the same `
 ```js
 {
   x: { ref: "x" } // reference the 'x' value in the mapped data
-  x: { ref: "x", fn: (d) { return d.value; } }, // the referenced data property 'x' in sent in as the first parameter in the callback
-  x: { fn: function() { return this.data.x.value; } }, // the mapped data can be accessed through 'this.data'
-  x: function () { return this.data.x.value; } // the mapped data can be accessed through 'this.data'
+  x: { fn: d => d.datum.x.value }, // the mapped data can be accessed through 'd.datum'
+  x: d => d.datum.x.value
 }
 ```
 
@@ -253,8 +252,7 @@ the following definitions will all result in the same `x` value:
 ```js
 {
   x: { ref: "x", scale: "linX" }, // automatically sends value 'x' through the scale and returns the scaled value
-  x: { ref: "x", scale: "linX", fn: function(d) { return this.scale(d) } }, // the referenced 'scale' is accessible in the callback's 'this' context
-  x: { scale: "linX", fn: function(d) { return this.scale(this.data.x.value) } }
+  x: { scale: "linX", fn: d => d.scale(d.datum.x.value) } // the referenced 'scale' is accessible through 'd.scale'
 }
 ```
 
@@ -266,9 +264,7 @@ Since all mapped data is accessible in property callbacks, the values can be use
 {
   fill: {
     scale: "linX",
-    fn: function() { // color the maximum value red
-      return this.scale.max() >= this.data.x.value ? "red" : "grey";
-    }
+    fn: d => (b.scale.max() >= d.datum.x.value ? "red" : "grey") // color the maximum value red
   }
 }
 ```
