@@ -96,41 +96,37 @@ export function normalizeSettings(settings, defaults, chart) {
   return defs;
 }
 
-export function resolveForItem(item, normalized, dataContext) {
+export function resolveForItem(context, normalized) {
   const ret = {};
   const keys = Object.keys(normalized);
   const len = keys.length;
-  const fallbackData = item;
+  const fallbackData = context.datum;
+  const datum = context.datum;
+  const dataContext = context.data && context.data.items;
+  const idx = dataContext ? dataContext.indexOf(datum) : -1;
   for (let i = 0; i < len; i++) {
     const key = keys[i];
     const normalizedProp = normalized[key];
-    const exists = typeof normalizedProp !== 'undefined';
+    const exists = typeof datum === 'object' && typeof normalizedProp !== 'undefined';
     const hasExplicitDataProp = exists && typeof normalizedProp.ref === 'string';
-    const hasImplicitDataProp = exists && key in item;
-    const propData = hasExplicitDataProp ? item[normalizedProp.ref] : hasImplicitDataProp ? item[key] : fallbackData; // eslint-disable-line
+    const hasImplicitDataProp = exists && key in datum;
+    const propData = hasExplicitDataProp ? datum[normalizedProp.ref] : hasImplicitDataProp ? datum[key] : fallbackData; // eslint-disable-line
     if (isPrimitive(normalizedProp)) {
       ret[key] = normalizedProp;
     } else if (exists && normalizedProp.fn) { // callback function
-      const fnContext = {
-        data: item
-      };
       if (normalizedProp.scale) {
-        fnContext.scale = normalizedProp.scale;
+        context.scale = normalizedProp.scale;
       }
-      const idx = dataContext ? dataContext.indexOf(item) : -1;
-      ret[key] = normalizedProp.fn.call(
-        fnContext,
-        hasExplicitDataProp && item ? item[normalizedProp.ref] : undefined,
-        idx,
-        dataContext
-      );
+      ret[key] = normalizedProp.fn.call(null, context, idx);
     } else if (exists && normalizedProp.scale && propData) {
       ret[key] = normalizedProp.scale(propData.value);
       if (normalizedProp.scale.bandwidth) {
         ret[key] += normalizedProp.scale.bandwidth() / 2;
       }
-    } else if (hasExplicitDataProp) {
+    } else if (hasExplicitDataProp && propData) {
       ret[key] = propData.value;
+    } else if (normalizedProp.fn) {
+      ret[key] = normalizedProp.fn.call(null, context, idx);
     } else {
       ret[key] = normalizedProp;
     }

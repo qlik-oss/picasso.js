@@ -1,13 +1,13 @@
 import settingsResolver from '../../../../src/core/component/settings-resolver';
 
-describe('', () => {
+describe('settings resolver', () => {
   let res;
   let normalizeSettings;
   let resolveForItem;
   let updateScaleSize;
   beforeEach(() => {
     normalizeSettings = (...args) => [...args].join('-');
-    resolveForItem = (datum, norm) => ({ norm, datum });
+    resolveForItem = ({ datum, data, resources }, norm) => ({ norm, datum, data });
     updateScaleSize = sinon.stub();
     res = settingsResolver({
       chart: 'c'

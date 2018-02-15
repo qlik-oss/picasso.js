@@ -104,19 +104,19 @@ describe('property-resolver', () => {
     it('should resolve fn callback with context', () => {
       const normalized = {
         strokeWidth: {
-          fn: function fn() { return this.scale(this.data.tjocklek); },
+          fn: function fn(b) { return b.scale(b.datum.tjocklek); },
           scale: v => v * 2
         }
       };
-      const resolved = resolveForItem({ tjocklek: 3 }, normalized);
+      const resolved = resolveForItem({ datum: { tjocklek: 3 } }, normalized);
       expect(resolved).to.eql({ strokeWidth: 6 });
     });
 
     it('should resolve fn callback with parameters', () => {
       const normalized = {
-        strokeWidth: { ref: 'stroke', fn: d => d.tjocklek }
+        strokeWidth: { ref: 'stroke', fn: d => d.datum.stroke.tjocklek }
       };
-      const resolved = resolveForItem({ stroke: { tjocklek: 3 } }, normalized);
+      const resolved = resolveForItem({ datum: { stroke: { tjocklek: 3 } } }, normalized);
       expect(resolved).to.eql({ strokeWidth: 3 });
     });
   });

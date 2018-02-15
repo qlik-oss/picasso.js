@@ -11,19 +11,73 @@ export default function complexResolver({ keys, data, defaultSettings, style, se
     minor: settings.orientation === 'vertical' ? width : height
   };
 
-  if (!Array.isArray(keys) || !data || !Array.isArray(data.items)) {
-    return [];
+  const majorSettings = settings.major;
+
+  let majorResolved;
+
+  if (typeof majorSettings === 'object' && typeof majorSettings.ref === 'object' && (typeof majorSettings.ref.start !== 'undefined' && typeof majorSettings.ref.end !== 'undefined')) {
+    // temporary backwards compatibility
+    majorResolved = resolver.resolve({
+      data,
+      defaults: {
+        start: 0,
+        end: 1
+      },
+      scaled,
+      settings: extend(true, {}, {
+        binStart: { scale: settings.major.scale, ref: settings.major.ref.start },
+        binEnd: { scale: settings.major.scale, ref: settings.major.ref.end }
+      })
+    });
+  } else if (typeof majorSettings === 'object' && (typeof majorSettings.binStart !== 'undefined' && typeof majorSettings.binEnd !== 'undefined')) {
+    majorResolved = resolver.resolve({
+      data,
+      defaults: {
+        start: 0,
+        end: 1
+      },
+      scaled,
+      settings: extend(true, {}, {
+        binStart: { scale: settings.major.scale, ref: 'binStart' },
+        binEnd: { scale: settings.major.scale, ref: 'binEnd' }
+      }, settings.major)
+    });
+  } else {
+    majorResolved = resolver.resolve({
+      data,
+      scaled,
+      defaults: {
+        major: 0.5
+      },
+      settings: {
+        major: settings.major
+      }
+    });
   }
 
-  let key;
-  let ext = {};
+  const minorSettings = settings.minor || {};
 
-  let resolved = resolver.resolve({
+  const minorResolved = resolver.resolve({
     data,
-    defaults,
-    settings,
-    scaled
+    defaults: {
+      start: 0,
+      end: 1
+    },
+    scaled,
+    settings: extend(true, {}, {
+      start: { scale: minorSettings.scale, ref: 'start' },
+      end: { scale: minorSettings.scale, ref: 'end' },
+      min: { scale: minorSettings.scale, ref: 'min' },
+      max: { scale: minorSettings.scale, ref: 'max' },
+      med: { scale: minorSettings.scale, ref: 'med' }
+    }, minorSettings)
   });
+
+  let key;
+  let ext = {
+    major: majorResolved,
+    minor: minorResolved
+  };
 
   for (let ki = 0, len = keys.length; ki < len; ki++) {
     key = keys[ki];
@@ -32,12 +86,8 @@ export default function complexResolver({ keys, data, defaultSettings, style, se
       defaults: defaults[key],
       settings: settings[key],
       scaled
-    }).items || [];
-
-    for (let i = 0, extlen = ext[key].length; i < extlen; i++) {
-      resolved.items[i][key] = ext[key][i];
-    }
+    });
   }
 
-  return resolved;
+  return ext;
 }

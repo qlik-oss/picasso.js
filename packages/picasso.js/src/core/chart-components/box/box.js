@@ -26,7 +26,7 @@ const DEFAULT_DATA_SETTINGS = {
     stroke: '#000',
     strokeWidth: 1,
     width: 1,
-    maxWidthPx: 100,
+    maxWidthPx: undefined,
     minWidthPx: 1,
     minHeightPx: 1
   }
@@ -73,11 +73,15 @@ const component = {
 
     const { settings, items } = resolved;
 
-    const majorRef = this.settings.settings.major ? this.settings.settings.major.ref || '' : '';
-    const majorStartRef = typeof majorRef === 'object' ? this.settings.settings.major.ref.start : null;
-    const majorEndRef = typeof majorRef === 'object' ? this.settings.settings.major.ref.end : null;
-
-    const shapes = buildShapes({ items, settings, width, height, flipXY, majorStartRef, majorEndRef });
+    const shapes = buildShapes({
+      items,
+      settings,
+      width,
+      height,
+      flipXY,
+      resolved,
+      keys: dataKeys
+    });
 
     return shapes;
   }
