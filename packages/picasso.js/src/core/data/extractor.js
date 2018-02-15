@@ -40,7 +40,7 @@ export default function extract(dataConfig, data = {}, opts = {}) {
           return;
         }
         extracted.items.push(...s.extract(cfg));
-        if (cfg.field) {
+        if (typeof cfg.field !== 'undefined') {
           sourceFields.push(s.field(cfg.field));
         }
       });

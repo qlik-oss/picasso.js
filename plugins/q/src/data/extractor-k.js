@@ -100,7 +100,7 @@ export default function extract(config, dataset, cache, util) {
   const cfgs = Array.isArray(config) ? config : [config];
   let dataItems = [];
   cfgs.forEach((cfg) => {
-    if (cfg.field) {
+    if (typeof cfg.field !== 'undefined') {
       const cube = dataset.raw();
       const sourceKey = dataset.key();
       const f = typeof cfg.field === 'object' ? cfg.field : dataset.field(cfg.field);
