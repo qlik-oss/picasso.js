@@ -77,7 +77,6 @@ describe('box component', () => {
     const xScale = v => v;
     xScale.bandwidth = () => 0.5;
     const yScale = v => v;
-    yScale.bandwidth = () => 0.5;
     chart.scale.withArgs('x').returns(xScale);
     chart.scale.withArgs('y').returns(yScale);
 
@@ -112,7 +111,6 @@ describe('box component', () => {
             },
             fill: '#fff',
             height: 40,
-            maxWidthPx: 100,
             minHeightPx: 1,
             minWidthPx: 1,
             show: true,
@@ -277,7 +275,6 @@ describe('box component', () => {
     const xScale = v => v;
     xScale.bandwidth = () => 0.5;
     const yScale = v => v;
-    yScale.bandwidth = () => 0.5;
     chart.scale.withArgs('x').returns(xScale);
     chart.scale.withArgs('y').returns(yScale);
 
@@ -304,7 +301,6 @@ describe('box component', () => {
             },
             fill: '#fff',
             height: 120,
-            maxWidthPx: 100,
             minHeightPx: 1,
             minWidthPx: 1,
             show: true,
@@ -345,7 +341,6 @@ describe('box component', () => {
     const xScale = v => v;
     xScale.bandwidth = () => 0.5;
     const yScale = v => v;
-    yScale.bandwidth = () => 0.5;
     chart.scale.withArgs('x').returns(xScale);
     chart.scale.withArgs('y').returns(yScale);
 
@@ -372,7 +367,6 @@ describe('box component', () => {
             },
             fill: '#fff',
             height: 80,
-            maxWidthPx: 100,
             minHeightPx: 1,
             minWidthPx: 1,
             show: true,
@@ -418,7 +412,6 @@ describe('box component', () => {
     const xScale = v => v;
     xScale.bandwidth = () => 0.5;
     const yScale = v => v;
-    yScale.bandwidth = () => 0.5;
     chart.scale.withArgs('x').returns(xScale);
     chart.scale.withArgs('y').returns(yScale);
 
@@ -449,7 +442,6 @@ describe('box component', () => {
             },
             fill: '#fff',
             height: 40,
-            maxWidthPx: 100,
             minHeightPx: 1,
             minWidthPx: 1,
             show: true,
@@ -516,7 +508,8 @@ describe('box component', () => {
         major: { scale: 'x', ref: 'self' },
         minor: { scale: 'y' },
         box: {
-          stroke: '#f00'
+          stroke: '#f00',
+          maxWidthPx: 100
         },
         whisker: {
           show: false
@@ -574,7 +567,6 @@ describe('box component', () => {
     xScale.bandwidth = () => 0.2;
 
     const yScale = v => (v - 0.2) / 0.6;
-
     chart.scale.withArgs('x').returns(xScale);
     chart.scale.withArgs('y').returns(yScale);
 

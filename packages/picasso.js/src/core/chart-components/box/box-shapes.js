@@ -100,47 +100,57 @@ export function horizontalLine({ item, key, position, width, boxCenter, rendwidt
   });
 }
 
-export function buildShapes({ items, settings, width, height, flipXY, majorStartRef, majorEndRef }) {
-  if (!settings || !settings.major || !settings.major.scale || !settings.minor || !settings.minor.scale) {
-    return [];
-  }
+export function buildShapes({
+  width,
+  height,
+  flipXY,
+  resolved,
+  keys
+}) {
+  // if (!settings || !settings.major || !settings.major.scale || !settings.minor || !settings.minor.scale) {
+  //   return [];
+  // }
 
   const output = [];
 
-  const major = settings.major.scale;
-  const minor = settings.minor.scale;
+  let major = null;
+  const items = resolved.major.items;
 
   for (let i = 0, len = items.length; i < len; i++) {
     const d = items[i].data;
     let children = [];
 
-    let majorVal = items[i].major || items[i].majorStart;
+    let majorVal = null;
+    let majorEndVal = null;
 
-    if (majorStartRef) {
-      majorVal = major && d[majorStartRef] ? major(d[majorStartRef].value) : majorVal;
+    if (typeof resolved.major.settings.binStart !== 'undefined') { // if start and end is defined
+      majorVal = resolved.major.items[i].binStart;
+      majorEndVal = resolved.major.items[i].binEnd;
+      major = resolved.major.settings.binStart.scale;
+    } else {
+      major = resolved.major.settings.major.scale;
+      majorVal = major ? resolved.major.items[i].major : 0;
     }
 
-    let majorEndVal = major && d[majorEndRef] ? major(d[majorEndRef].value) : null;
-
     let bandwidth = 0;
-    if (major.bandwidth) {
+    if (!major) {
+      bandwidth = 1;
+    } else if (major.bandwidth) {
       bandwidth = major.bandwidth();
       majorVal -= (bandwidth / 2);
     } else {
       bandwidth = majorEndVal - majorVal;
     }
 
-    let item = extend({}, items[i], {
+    let item = extend({}, {
       major: majorVal,
-      majorEnd: majorEndVal,
-      min: minor && 'min' in d ? minor(d.min.value) : null,
-      max: minor && 'max' in d ? minor(d.max.value) : null,
-      start: minor && 'start' in d ? minor(d.start.value) : null,
-      end: minor && 'end' in d ? minor(d.end.value) : null,
-      med: minor && 'med' in d ? minor(d.med.value) : null
-    });
+      majorEnd: majorEndVal
+    }, resolved.minor.items[i]);
 
-    const boxWidth = bandwidth * item.box.width;
+    keys.forEach(key => (item[key] = resolved[key].items[i]));
+
+    const maxMajorWidth = flipXY ? height : width;
+    const boxWidth = Math.min(bandwidth * item.box.width, isNaN(item.box.maxWidthPx) ? maxMajorWidth : item.box.maxWidthPx / maxMajorWidth);
     const boxPadding = (bandwidth - boxWidth) / 2;
     const boxCenter = boxPadding + item.major + (boxWidth / 2);
 

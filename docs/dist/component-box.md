@@ -149,8 +149,8 @@ Example:
       scale: 'y'
     },
     box: {
-      fill: function() {
-        return this.data.open.value > this.data.close.value ? 'green' : 'red';
+      fill: function(d) {
+        return d.datum.open.value > d.datum.close.value ? 'green' : 'red';
       }
     }
   }

@@ -122,7 +122,7 @@ describe('point component', () => {
       shapeFn,
       data: ['a'],
       settings: {
-        shape() { return this.data.value; },
+        shape(b) { return b.datum.value; },
         label: () => 'etikett',
         fill: () => 'red',
         stroke: () => 'blue',
@@ -178,15 +178,15 @@ describe('point component', () => {
         m3: 1.2
       }],
       settings: {
-        shape: { ref: 'value', fn: s => s.shape },
-        label: { ref: 'value', fn: s => s.text },
-        fill() { return this.data.value.fill; },
-        stroke: { ref: 'value', fn: s => `stroke:${s.fill}` },
-        strokeWidth: { ref: 'value', fn: v => v.m1 },
-        strokeDasharray: { ref: 'value', fn: s => s.text },
-        opacity: { ref: 'value', fn: v => v.m1 / 10 },
-        x: { fn() { return this.data.value.m2; } },
-        y: { ref: 'value', fn: v => v.m3 },
+        shape: { ref: 'value', fn: s => s.datum.value.shape },
+        label: { ref: 'value', fn: s => s.datum.value.text },
+        fill(b) { return b.datum.value.fill; },
+        stroke: { ref: 'value', fn: s => `stroke:${s.datum.value.fill}` },
+        strokeWidth: { ref: 'value', fn: v => v.datum.value.m1 },
+        strokeDasharray: { ref: 'value', fn: s => s.datum.value.text },
+        opacity: { ref: 'value', fn: v => v.datum.value.m1 / 10 },
+        x: { fn(b) { return b.datum.value.m2; } },
+        y: { ref: 'value', fn: v => v.datum.value.m3 },
         size: { ref: 'value', fn: (v, i) => i },
         sizeLimits: {
           minRelExtent: 0.2,
@@ -250,8 +250,8 @@ describe('point component', () => {
       shapeFn,
       data: [0, 0.4, 1],
       settings: {
-        x: { scale: 'whatever', ref: 'value', fn: v => v },
-        size: { ref: 'value', fn: v => v },
+        x: { scale: 'whatever', ref: 'value', fn: v => v.datum.value },
+        size: { ref: 'value', fn: v => v.datum.value },
         sizeLimits: {
           maxRelDiscrete: 2,
           minRelDiscrete: 0.5,

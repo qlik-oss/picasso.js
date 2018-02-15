@@ -18,6 +18,11 @@ export default function (resources, deps = externals) {
   }) {
     const norm = cache.norm = deps.normalizeSettings(settings, defaults, resources.chart);
 
+    const res = {
+      scale: resources.chart.scale,
+      formatter: resources.chart.formatter
+    };
+
     if (scaled) {
       Object.keys(scaled).forEach((key) => {
         if (norm[key]) {
@@ -30,12 +35,21 @@ export default function (resources, deps = externals) {
 
     if (data && Array.isArray(data.items)) {
       for (let i = 0, len = data.items.length; i < len; i++) {
-        let obj = deps.resolveForItem(data.items[i], cache.norm, data.items);
+        const context = {
+          datum: data.items[i],
+          data,
+          resources: res
+        };
+        let obj = deps.resolveForItem(context, cache.norm);
         obj.data = data.items[i];
         resolved.push(obj);
       }
     } else {
-      let obj = deps.resolveForItem(data, cache.norm);
+      const context = {
+        data,
+        resources: res
+      };
+      let obj = deps.resolveForItem(context, cache.norm);
       return {
         settings: cache.norm,
         item: obj

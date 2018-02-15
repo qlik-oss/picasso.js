@@ -5,10 +5,8 @@ describe('box resolver', () => {
   describe('complexResolver', () => {
     it('should resolve compelex settings objects correctly', () => {
       const resolver = settingsResolver({
-        resources: {
-          chart: {
-            scale: () => {}
-          }
+        chart: {
+          scale: () => {}
         }
       });
 
@@ -32,8 +30,8 @@ describe('box resolver', () => {
       let settings = {
         box: {
           fill: () => 'green',
-          dataBoundColor: function dataBoundColor() {
-            return `dark${this.data.dataBoundColor}`;
+          dataBoundColor: function dataBoundColor(b) {
+            return `dark${b.datum.dataBoundColor}`;
           }
         }
       };
@@ -56,23 +54,19 @@ describe('box resolver', () => {
         resolver
       });
 
-      expect(results.items).to.be.an('array');
-      expect(results.items.length).to.be.equal(1);
-      expect(results.items[0]).to.be.eql({
-        box: {
-          fill: 'green',
-          stroke: 'orange',
-          strokeWidth: 1,
-          dataBoundColor: 'darkyellow',
-          data: { dataBoundColor: 'yellow' }
-        },
-        line: {
-          strokeWidth: 3,
-          data: { dataBoundColor: 'yellow' }
-        },
-        data: {
-          dataBoundColor: 'yellow'
-        }
+      expect(results.major.items).to.be.an('array');
+      expect(results.major.items.length).to.be.equal(1);
+      expect(results.box.items[0]).to.eql({
+        fill: 'green',
+        stroke: 'orange',
+        strokeWidth: 1,
+        dataBoundColor: 'darkyellow',
+        data: { dataBoundColor: 'yellow' }
+      });
+
+      expect(results.line.items[0]).to.eql({
+        strokeWidth: 3,
+        data: { dataBoundColor: 'yellow' }
       });
     });
   });

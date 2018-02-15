@@ -44,7 +44,7 @@ describe('line component', () => {
       settings: {
         coordinates: {
           major(a, i) { return i; },
-          minor() { return this.data.value; }
+          minor(b) { return b.datum.value; }
         },
         layers: {},
         orientation: 'vertical'
@@ -72,7 +72,7 @@ describe('line component', () => {
       settings: {
         coordinates: {
           major(a, i) { return i; },
-          minor() { return this.data.value; }
+          minor(b) { return b.datum.value; }
         },
         layers: {}
       }
@@ -106,7 +106,7 @@ describe('line component', () => {
       settings: {
         coordinates: {
           major(a, i) { return i % 3; },
-          minor() { return this.data.value; }
+          minor(b) { return b.datum.value; }
         },
         layers: {
           line: { show: false },
@@ -148,8 +148,8 @@ describe('line component', () => {
         settings: {
           coordinates: {
             major(a, i) { return i % 3; },
-            minor() { return this.data.value; },
-            minor0() { return this.data.value - 1; }
+            minor(b) { return b.datum.value; },
+            minor0(b) { return b.datum.value - 1; }
           },
           layers: {
             line: {},
@@ -209,7 +209,7 @@ describe('line component', () => {
         settings: {
           coordinates: {
             major(a, i) { return i % 3; },
-            minor() { return this.data.value; },
+            minor(b) { return b.datum.value; },
             layerId(a, i) { return i < 3 ? 1 : 2; } // first 3 points belong to layer 1, the rest to layer 2
           },
           layers: {
