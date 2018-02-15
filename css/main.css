@@ -2216,3 +2216,93 @@ footer .sitemap {
     display: block;
   }
 }
+
+.navSearchWrapper {
+  max-width: 50%;
+}
+
+/* #### Search menu #### */
+.navSearchWrapper .aa-dropdown-menu {
+  border: 0px solid rgba(123, 123, 123, 0.1);
+  box-shadow: 0px 0px 10px 0px rgba(123, 123, 123, 0.5);
+  background-color: #fff;
+}
+
+/* Main category headers */
+.navSearchWrapper .aa-dropdown-menu .algolia-docsearch-suggestion--category-header {
+  background-color: rgba(123, 123, 123, 0.05);
+  color: #888;
+  font-weight: 600;
+}
+
+/* Highlighted search terms */
+.navSearchWrapper .aa-dropdown-menu .algolia-docsearch-suggestion--highlight {
+  border-bottom: 2px solid #45B3B2;
+  font-weight: normal;
+  color: #888;
+}
+
+/* Highligted search terms, in the main category headers */
+.navSearchWrapper .aa-dropdown-menu .algolia-docsearch-suggestion--category-header .algolia-docsearch-suggestion--highlight  {
+  border-bottom: 2px solid #45B3B2;
+  font-weight: bold;
+  background-color: transparent;
+  color: #888;
+}
+
+/* Right column cells */
+.navSearchWrapper .aa-dropdown-menu .algolia-docsearch-suggestion--content {
+  color: #888;
+  background-color: #fff;
+  border: none;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+/* Currently selected suggestion */
+.navSearchWrapper .aa-dropdown-menu .aa-cursor .algolia-docsearch-suggestion--content {
+  background-color: rgba(123,123,123, 0.05);
+  border: none;
+}
+
+/* Algolia footer */
+.navSearchWrapper .aa-dropdown-menu .algolia-docsearch-footer {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background-color: #fff;
+  height: 18px;
+  border: none;
+}
+
+/* Bottom border of each suggestion */
+.navSearchWrapper .aa-dropdown-menu .algolia-docsearch-suggestion {
+  background-color: #fff;
+  border: none;
+}
+
+/* Left column, with secondary category header */
+.navSearchWrapper .aa-dropdown-menu .algolia-docsearch-suggestion--subcategory-column {
+  background-color: #fff;
+  color: #aaa;
+  font-weight: 600;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border: none;
+}
+/* Left column, with secondary category header - highlight */
+.navSearchWrapper .aa-dropdown-menu .algolia-docsearch-suggestion--subcategory-column .algolia-docsearch-suggestion--highlight {
+  color: #aaa;
+  font-weight: 600;
+}
+
+/* Right column, with secondary category title - highlight */
+.navSearchWrapper .aa-dropdown-menu .algolia-docsearch-suggestion--title .algolia-docsearch-suggestion--highlight {
+  font-weight: 600;
+  color: #888;
+}
+
+/* Right column, with secondary category title */
+.navSearchWrapper .aa-dropdown-menu .algolia-docsearch-suggestion--title {
+  font-weight: 600;
+  color: #888;
+}
