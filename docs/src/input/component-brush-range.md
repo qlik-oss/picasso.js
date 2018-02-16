@@ -40,7 +40,9 @@ const param = {
   center: {
     x: 1,
     y: 2
-  }
+  },
+  deltaX: 0,
+  deltaY: 0
 };
 
 compInstance.emit('rangeStart', param);
