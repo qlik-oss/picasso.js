@@ -78,6 +78,11 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/picassojs
+      # Force restore cache here to enable symlinked packages
+      - restore_cache:
+          key: v1-cache-picasso.js-{{ checksum "packages/picasso.js/package-lock.json" }}
+      - restore_cache:
+          key: v1-cache-hammer-{{ checksum "plugins/hammer/package-lock.json" }}
       - run: npm run build
       - store_artifacts:
           path: packages/picasso.js/dist
@@ -96,6 +101,11 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/picassojs
+      # Force restore cache here to enable symlinked packages
+      - restore_cache:
+          key: v1-cache-picasso.js-{{ checksum "packages/picasso.js/package-lock.json" }}
+      - restore_cache:
+          key: v1-cache-hammer-{{ checksum "plugins/hammer/package-lock.json" }}
       - run: npm run build:dev
       - store_artifacts:
           path: packages/picasso.js/dist
