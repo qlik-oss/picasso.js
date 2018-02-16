@@ -36,6 +36,17 @@ code {
   margin-left: 5px;
 }
 
+@media only screen and (max-width: 735px) {
+  .slidingNav .reactNavSearchWrapper {
+    padding-left: 0;
+  }
+  
+  .slidingNav .reactNavSearchWrapper input#search_input_react {
+    font-size: 16px; /* needs to be at least 16px for iOS not to zoom */
+  }
+}
+
+
 .homeContainer .button {
   color: #e8ffe9;
   border: 0;
