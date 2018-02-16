@@ -55,9 +55,9 @@
     "jsdoc": "^3.4.0",
     "node-event-emitter": "0.0.1",
     "npxc": "^0.0.3",
-    "path2d-polyfill": "^0.1.0",
+    "path2d-polyfill": "../path2d-polyfill",
     "rimraf": "^2.5.2",
     "snabbdom": "^0.5.4",
-    "test-utils": "*"
+    "test-utils": "../test-utils"
   }
 }

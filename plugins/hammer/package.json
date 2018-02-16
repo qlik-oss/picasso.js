@@ -22,6 +22,6 @@
   },
   "devDependencies": {
     "npxc": "^0.0.3",
-    "test-utils": "*"
+    "test-utils": "../../packages/test-utils"
   }
 }
