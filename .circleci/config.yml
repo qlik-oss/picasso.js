@@ -6,6 +6,13 @@ defaults: &defaults
   docker:
     - image: circleci/node:8.9.4-browsers
 
+restore_cache: &restore_cache
+  # Force restore cache here to enable symlinked packages
+  restore_cache:
+    key: v1-cache-picasso.js-{{ checksum "packages/picasso.js/package-lock.json" }}
+  restore_cache:
+    key: v1-cache-hammer-{{ checksum "plugins/hammer/package-lock.json" }}
+
 jobs:
   install:
     <<: *defaults
@@ -79,10 +86,7 @@ jobs:
       - attach_workspace:
           at: ~/picassojs
       # Force restore cache here to enable symlinked packages
-      - restore_cache:
-          key: v1-cache-picasso.js-{{ checksum "packages/picasso.js/package-lock.json" }}
-      - restore_cache:
-          key: v1-cache-hammer-{{ checksum "plugins/hammer/package-lock.json" }}
+      - <<: *restore_cache
       - run: npm run build
       - store_artifacts:
           path: packages/picasso.js/dist
@@ -102,10 +106,7 @@ jobs:
       - attach_workspace:
           at: ~/picassojs
       # Force restore cache here to enable symlinked packages
-      - restore_cache:
-          key: v1-cache-picasso.js-{{ checksum "packages/picasso.js/package-lock.json" }}
-      - restore_cache:
-          key: v1-cache-hammer-{{ checksum "plugins/hammer/package-lock.json" }}
+      - <<: *restore_cache
       - run: npm run build:dev
       - store_artifacts:
           path: packages/picasso.js/dist
@@ -135,6 +136,8 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/picassojs
+      # Force restore cache here to enable symlinked packages
+      - <<: *restore_cache
       - run: npm run lint
     
   test-unit:
@@ -142,6 +145,8 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/picassojs
+      # Force restore cache here to enable symlinked packages
+      - <<: *restore_cache
       - run: npm run test:unit:coverage
       - run: 
           name: Publish coverage
@@ -154,6 +159,8 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/picassojs
+      # Force restore cache here to enable symlinked packages
+      - <<: *restore_cache
       - run: npm run test:component:coverage
 
   test-integration:
@@ -161,6 +168,8 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/picassojs
+      # Force restore cache here to enable symlinked packages
+      - <<: *restore_cache
       - run: npm run test:integration:local
 
 
