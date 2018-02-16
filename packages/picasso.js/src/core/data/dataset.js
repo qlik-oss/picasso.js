@@ -13,7 +13,7 @@ const filters = {
   numeric: values => values.filter(v => typeof v === 'number' && !isNaN(v))
 };
 
-function createFields(matrix, { cache }) {
+function createFields(matrix, { cache, key }) {
   if (!matrix) {
     return;
   }
@@ -31,6 +31,7 @@ function createFields(matrix, { cache }) {
     // TODO Deal with tags
 
     cache.fields.push(field({
+      source: key,
       title: headers[i],
       values,
       min,
@@ -102,7 +103,8 @@ function ds({
   };
 
   createFields(data, {
-    cache
+    cache,
+    key
   });
 
   return dataset;
