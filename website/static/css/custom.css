@@ -324,6 +324,11 @@ nav.toc .toggleNav .navGroup, nav.toc .toggleNav .navGroup.navGroupActive {
   opacity: 1;
 }
 
+.footerIcons a i {
+  font-size: 25px;
+  padding: 0 10px 0 0;
+}
+
 footer .sitemap {
   max-width: 680px;
 }

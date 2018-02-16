@@ -34,6 +34,9 @@ const siteConfig = {
     'https://buttons.github.io/buttons.js',
     `${baseUrl}js/landing.js`
   ],
+  stylesheets: [
+    'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'
+  ],
   repoUrl: 'https://github.com/qlik-oss/picasso.js',
   twitter: true,
   algolia: {
