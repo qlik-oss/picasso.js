@@ -31,26 +31,16 @@ class Footer extends React.Component {
             </a>
           </div>
           <div>
-            <h5>&nbsp;</h5>
-            <div className="footerIcons">
-              <a href="https://github.com/qlik-oss/picasso.js">
-                <img
-                  src={this.props.config.baseUrl + 'img/GitHub-Mark-Light-120px-plus.png'}
-                  alt="GitHub"
-                  width="25"
-                  height="25"
-                />
-              </a>
-              <a href="http://qlikbranch-slack-invite.herokuapp.com/">
-                <img
-                  src={this.props.config.baseUrl + 'img/Slack_Mark_Monochrome_White.svg'}
-                  alt="Join us on Slack"
-                  width="50"
-                  height="50"
-                />
-              </a>
-              <a className="github-button" href="https://github.com/qlik-oss/picasso.js" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star qlik-oss/picasso.js on GitHub">Star</a>
-            </div>
+            <h5>Links</h5>
+            <a href="http://qlikbranch-slack-invite.herokuapp.com/">
+              <i className="fa fa-slack"></i> Slack
+            </a>
+            <a href="https://twitter.com/picassodotjs">
+              <i className="fa fa-twitter"></i> Twitter
+            </a>
+            <a href="https://github.com/qlik-oss/picasso.js">
+              <i className="fa fa-github"></i> GitHub
+            </a>
           </div>
         </section>
 

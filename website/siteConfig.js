@@ -13,7 +13,9 @@ const siteConfig = {
     { doc: 'installation', label: 'Docs' },
     { doc: 'tutorial', label: 'Tutorial' },
     { page: 'examples', label: 'Examples' },
-    { href: 'https://github.com/qlik-oss/picasso.js', label: 'GitHub' }
+    { search: true },
+    { href: 'https://github.com/qlik-oss/picasso.js', label: '\uf09b' },
+    { href: 'https://twitter.com/picassodotjs', label: '\uf099' }
   ],
   headerIcon: 'img/picassojs.svg',
   disableHeaderTitle: true,
@@ -33,6 +35,9 @@ const siteConfig = {
   scripts: [
     'https://buttons.github.io/buttons.js',
     `${baseUrl}js/landing.js`
+  ],
+  stylesheets: [
+    'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'
   ],
   repoUrl: 'https://github.com/qlik-oss/picasso.js',
   twitter: true,

@@ -29,6 +29,24 @@ code {
   background: rgba(255, 255, 255, 0.2);
 }
 
+.navigationSlider .slidingNav ul li a[href^="http"] {
+  font-family: FontAwesome;
+  font-size: 1.3em;
+  padding: 0 5px;
+  margin-left: 5px;
+}
+
+@media only screen and (max-width: 735px) {
+  .slidingNav .reactNavSearchWrapper {
+    padding-left: 0;
+  }
+  
+  .slidingNav .reactNavSearchWrapper input#search_input_react {
+    font-size: 16px; /* needs to be at least 16px for iOS not to zoom */
+  }
+}
+
+
 .homeContainer .button {
   color: #e8ffe9;
   border: 0;
@@ -324,6 +342,11 @@ nav.toc .toggleNav .navGroup, nav.toc .toggleNav .navGroup.navGroupActive {
   opacity: 1;
 }
 
+.footerIcons a i {
+  font-size: 25px;
+  padding: 0 10px 0 0;
+}
+
 footer .sitemap {
   max-width: 680px;
 }
@@ -408,6 +431,8 @@ footer .sitemap {
 
 .navSearchWrapper {
   max-width: 50%;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 /* #### Search menu #### */
