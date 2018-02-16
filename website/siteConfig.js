@@ -13,7 +13,9 @@ const siteConfig = {
     { doc: 'installation', label: 'Docs' },
     { doc: 'tutorial', label: 'Tutorial' },
     { page: 'examples', label: 'Examples' },
-    { href: 'https://github.com/qlik-oss/picasso.js', label: 'GitHub' }
+    { search: true },
+    { href: 'https://github.com/qlik-oss/picasso.js', label: '\uf09b' },
+    { href: 'https://twitter.com/picassodotjs', label: '\uf099' }
   ],
   headerIcon: 'img/picassojs.svg',
   disableHeaderTitle: true,
