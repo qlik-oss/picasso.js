@@ -78,6 +78,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/picassojs
+      - run: npm run bootstrap
       - run: npm run build
       - store_artifacts:
           path: packages/picasso.js/dist
@@ -96,6 +97,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/picassojs
+      - run: npm run bootstrap
       - run: npm run build:dev
       - store_artifacts:
           path: packages/picasso.js/dist
@@ -125,6 +127,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/picassojs
+      - run: npm run bootstrap
       - run: npm run lint
     
   test-unit:
@@ -132,6 +135,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/picassojs
+      - run: npm run bootstrap
       - run: npm run test:unit:coverage
       - run: 
           name: Publish coverage
@@ -144,6 +148,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/picassojs
+      - run: npm run bootstrap
       - run: npm run test:component:coverage
 
   test-integration:
@@ -151,6 +156,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/picassojs
+      - run: npm run bootstrap
       - run: npm run test:integration:local
 
 
