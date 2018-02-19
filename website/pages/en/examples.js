@@ -189,7 +189,7 @@ const brushing = [{
 
 const miscellaneous = [{
   title: 'Create your own component',
-  // img: 'https://static.observableusercontent.com/thumbnail/5e1a7c14d664914d5bc612e049c1abefde3e35196556638911568401ce9efd80.jpg',
+  img: 'https://static.observableusercontent.com/thumbnail/b0401bb5dd2ea51a500d0d591ff3af782f7ba469de610e77061d59e8b60ce253.jpg',
   links: {
     observable: 'https://beta.observablehq.com/@cbt1/picasso-js-creating-your-own-tooltip-component'
   },
