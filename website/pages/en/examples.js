@@ -1,8 +1,9 @@
 const React = require('react');
 const CompLibrary = require('../../core/CompLibrary.js');
+
 const MarkdownBlock = CompLibrary.MarkdownBlock; /* Used to read markdown */
 
-const examples = [{
+const charts = [{
   title: 'Scatter plot',
   img: 'https://static.observableusercontent.com/thumbnail/9fd6dd828f1d41ed2a0f160b5cf41ff55d0e251f7fab5486b510e23ac0afad78.jpg',
   links: {
@@ -80,7 +81,7 @@ const examples = [{
   },
   tags: {
     chart: ['bullet'],
-    component: ['box', , 'point', 'axis']
+    component: ['box', 'point', 'axis']
   }
 }, {
   title: 'Line chart',
@@ -154,7 +155,7 @@ const examples = [{
   }
 }, {
   title: 'Pie chart',
-  img: 'https://static.observableusercontent.com/thumbnail/8e794094be02b6710b688e90aa2dc53310caa0ca5eaa5ed1779932cf1cf60187.jpg',
+  img: 'https://static.observableusercontent.com/thumbnail/7426180005620b7ca5407c3f8c0991d68bdc121a26f9e7f2fe6beea58b53b8eb.jpg',
   links: {
     observable: 'https://beta.observablehq.com/@miralemd/picasso-js-pie-chart'
   },
@@ -164,13 +165,37 @@ const examples = [{
   }
 }, {
   title: 'Donut chart',
-  img: 'https://static.observableusercontent.com/thumbnail/549bda6fc8959d05eb72b4fe62602fcff44aa36f6570e18f63870266a97935d1.jpg',
+  img: 'https://static.observableusercontent.com/thumbnail/eba4e49ad7af12d00c79e9a4d63e740a128e70a1b01ce983cf88538403bf435c.jpg',
   links: {
     observable: 'https://beta.observablehq.com/@miralemd/picasso-js-donut-chart'
   },
   tags: {
     chart: ['pie'],
     component: ['pie']
+  }
+}];
+
+const brushing = [{
+  title: 'Lasso',
+  img: 'https://static.observableusercontent.com/thumbnail/5e1a7c14d664914d5bc612e049c1abefde3e35196556638911568401ce9efd80.jpg',
+  links: {
+    observable: 'https://beta.observablehq.com/@cbt1/picasso-js-lasso-brushing'
+  },
+  tags: {
+    chart: ['scatter'],
+    component: ['point', 'axis', 'brushing', 'lasso']
+  }
+}];
+
+const miscellaneous = [{
+  title: 'Create your own component',
+  img: 'https://static.observableusercontent.com/thumbnail/b0401bb5dd2ea51a500d0d591ff3af782f7ba469de610e77061d59e8b60ce253.jpg',
+  links: {
+    observable: 'https://beta.observablehq.com/@cbt1/picasso-js-creating-your-own-tooltip-component'
+  },
+  tags: {
+    chart: ['bar'],
+    component: ['component']
   }
 }];
 
@@ -190,25 +215,25 @@ const Sample = props => (
       </div>
     </div>
   </div>
-)
+);
 
-const Empty = props => (
+const Empty = () => (
   <div className="cell"></div>
-)
-
-const items = examples.map(Sample).concat([0, 1, 2].map(Empty));
+);
 
 const Category = props => (
   <div className="category">
     <h2>{props.title}</h2>
-    <MarkdownBlock>
-    The majority of the following examples are [reactive notebooks](https://beta.observablehq.com/@mbostock/introduction-to-notebooks) - a powerful new way of creating interactive documents.
-    </MarkdownBlock>
     <div className="gallery">
       {props.children}
     </div>
   </div>
-)
+);
+
+function generateGrid(items) {
+  const emptyGridItems = [1000, 1001, 1002].map(Empty);
+  return items.map(Sample).concat(emptyGridItems);
+}
 
 class Examples extends React.Component {
   render() {
@@ -217,8 +242,13 @@ class Examples extends React.Component {
         <div className="container mainContainer">
           <div className="wrapper">
             <div className="post">
-              <header class="postHeader"><h1>Examples</h1></header>
-              <Category title="Charts" children={items}/>
+              <header className="postHeader"><h1>Examples</h1></header>
+              <MarkdownBlock>
+                The majority of the following examples are [reactive notebooks](https://beta.observablehq.com/@mbostock/introduction-to-notebooks) - a powerful new way of creating interactive documents.
+              </MarkdownBlock>
+              <Category title="Charts">{generateGrid(charts)}</Category>
+              <Category title="Brushing">{generateGrid(brushing)}</Category>
+              <Category title="Miscellaneous">{generateGrid(miscellaneous)}</Category>
             </div>
           </div>
         </div>
