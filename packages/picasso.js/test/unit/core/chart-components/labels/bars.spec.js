@@ -301,5 +301,69 @@ describe('labeling - bars', () => {
         fontFamily: 'simpsons'
       });
     });
+
+    it('should skip node if outside container', () => {
+      const settings = {
+        direction: () => 'right',
+        align: 0.4,
+        justify: 0.8,
+        labels: [{
+          placements: [{ position: 'inside', justify: 0.2, align: 0.5, fill: () => 'red' }],
+          label: () => 'etikett'
+        }]
+      };
+      const nodes = [{
+        localBounds: { x: -100, y: -200, width: 40, height: 50 }
+      }];
+      renderer.measureText.returns({ width: 20, height: 10 });
+      let labels = bars({
+        settings,
+        chart,
+        nodes,
+        rect: { x: 0, y: 0, width: 100, height: 200 },
+        renderer,
+        style: {
+          label: {
+            fontSize: '16px',
+            fontFamily: 'simpsons',
+            fill: 'yellow'
+          }
+        }
+      });
+
+      expect(labels).to.be.empty;
+    });
+
+    it('should skip node if label is falsy', () => {
+      const settings = {
+        direction: () => 'right',
+        align: 0.4,
+        justify: 0.8,
+        labels: [{
+          placements: [{ position: 'inside', justify: 0.2, align: 0.5, fill: () => 'red' }],
+          label: () => ''
+        }]
+      };
+      const nodes = [{
+        localBounds: { x: 10, y: 20, width: 40, height: 50 }
+      }];
+      renderer.measureText.returns({ width: 20, height: 10 });
+      let labels = bars({
+        settings,
+        chart,
+        nodes,
+        rect: { x: 0, y: 0, width: 100, height: 200 },
+        renderer,
+        style: {
+          label: {
+            fontSize: '16px',
+            fontFamily: 'simpsons',
+            fill: 'yellow'
+          }
+        }
+      });
+
+      expect(labels).to.be.empty;
+    });
   });
 });

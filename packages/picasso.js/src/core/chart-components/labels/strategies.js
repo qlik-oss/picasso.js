@@ -276,10 +276,13 @@ export function precalculate({
   let lblStng;
   let direction;
 
-  for (let i = 0, len = nodes.length; i < len; i++) {
+  for (let i = 0; i < nodes.length; i++) {
     node = nodes[i];
     bounds = node.localBounds;
     if (!collisions.testRectRect(bounds, rect)) {
+      // Remove node if outside rendering container
+      nodes.splice(i, 1);
+      i--;
       continue;
     }
     texts[i] = [];
@@ -289,6 +292,9 @@ export function precalculate({
       lblStng = labelSettings[j];
       text = typeof lblStng.label === 'function' ? lblStng.label(arg, i) : '';
       if (!text) {
+        // Remove node if there is no label
+        nodes.splice(i, 1);
+        i--;
         continue; // eslint-ignore-line
       }
       direction = typeof settings.direction === 'function' ? settings.direction(arg, i) : settings.direction || 'up';
