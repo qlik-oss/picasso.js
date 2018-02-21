@@ -11,8 +11,8 @@ The `picasso.chart` function will create and render a chart.
 * `definition` Object
   * `element` HTMLElement. The element to render the chart into.
   * `data` Object. The data to render. [More](./data.md).
-  * `settings` Object. The element to render the chart into.
-    * `components` Array - The element to render the chart into. [More](./components.md).
+  * `settings` Object.
+    * `components` Array. [More](./components.md).
     * `scales` Object (optional). Scales to use when rendering. [More](./scales.md).
     * `formatters` Object (optional). Formatters that can be referenced from other components. [More](./formatters.md).
     * `dockLayout` Object (optional). Layout behavior and responsiveness. [More](./dock-layout.md).
