@@ -440,17 +440,21 @@ function componentFactory(definition, options = {}) {
 
   fn.getBrushedShapes = function getBrushedShapes(context, mode, props) {
     const shapes = [];
-    if (settings.brush && settings.brush.trigger) {
+    if (settings.brush && settings.brush.consume) {
       const brusher = chart.brush(context);
       const sceneNodes = rend.findShapes('*');
-      settings.brush.trigger.forEach((b) => {
-        sceneNodes.forEach((node) => {
-          const nodeData = node.data;
-          if (nodeData && brusher.containsMappedData(nodeData, props || b.data, mode)) {
-            shapes.push(node);
+      settings.brush.consume
+        .filter(t => t.context === context)
+        .forEach((consume) => {
+          for (let i = 0; i < sceneNodes.length; i++) {
+            const node = sceneNodes[i];
+            if (node.data && brusher.containsMappedData(node.data, props || consume.data, mode)) {
+              shapes.push(node);
+              sceneNodes.splice(i, 1);
+              i--;
+            }
           }
         });
-      });
     }
     return shapes;
   };

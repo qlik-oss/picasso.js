@@ -120,4 +120,73 @@ describe('Component', () => {
   it('should call lifecycle methods with correct context when updating with partial data', () => {
   });
   */
+
+  describe('getBrushedShapes', () => {
+    let instance;
+    let config;
+    let shapes;
+
+    beforeEach(() => {
+      shapes = [{ data: 0 }, { data: 1 }, { data: 2 }];
+      renderer.findShapes = () => shapes;
+      chart.brush = () => ({ containsMappedData: d => d === 1 || d === 2 });
+      config = {
+        brush: {
+          consume: [
+            {
+              context: 'test'
+            }
+          ]
+        }
+      };
+
+      instance = createAndRenderComponent(config);
+    });
+
+    it('should only return shapes within the same context', () => {
+      const rNoMatch = instance.getBrushedShapes('unknown');
+      expect(rNoMatch).to.be.empty;
+
+      const rMatch = instance.getBrushedShapes('test');
+      expect(rMatch).to.deep.equal([{ data: 1 }, { data: 2 }]);
+    });
+
+    it('should not return duplicate shapes', () => {
+      // Config two brush listeners on the same context
+      config.brush.consume.push({ context: 'test' });
+
+      instance = createAndRenderComponent(config);
+      expect(instance.getBrushedShapes('test')).to.deep.equal([{ data: 1 }, { data: 2 }]);
+    });
+
+    it('should use data props parameter if submitted', () => {
+      shapes.forEach((s, i) => {
+        s.data = { x: i };
+      });
+      const spy = sinon.spy();
+      chart.brush = () => ({
+        containsMappedData: spy
+      });
+
+      instance = createAndRenderComponent(config);
+      instance.getBrushedShapes('test', 'xor', ['x']);
+      expect(spy).to.have.been.calledWith({ x: 0 }, ['x'], 'xor');
+    });
+
+    it('should fallback to brush data property if data props parameter is omitted', () => {
+      shapes.forEach((s, i) => {
+        s.data = { x: i };
+      });
+      const spy = sinon.spy();
+      chart.brush = () => ({
+        containsMappedData: spy
+      });
+
+      config.brush.consume = [{ context: 'test', data: ['x'] }];
+
+      instance = createAndRenderComponent(config);
+      instance.getBrushedShapes('test', 'xor');
+      expect(spy).to.have.been.calledWith({ x: 0 }, ['x'], 'xor');
+    });
+  });
 });
