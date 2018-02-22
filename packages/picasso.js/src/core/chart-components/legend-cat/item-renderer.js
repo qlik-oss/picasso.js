@@ -6,7 +6,7 @@ import symbolFactory from '../../symbols';
 function placeTextInRect(rect, label, opts) {
   const textMetrics = opts.textMetrics;
 
-  if (rect.width < opts.fontSize || rect.height < textMetrics.height) {
+  if (rect.height < textMetrics.height) {
     return false;
   }
 
