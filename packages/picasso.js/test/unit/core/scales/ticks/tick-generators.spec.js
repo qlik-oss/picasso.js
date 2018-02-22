@@ -1,6 +1,6 @@
-import { continuousDefaultSettings } from '../../../../../src/core/scales/ticks/default-settings';
+import extend from 'extend';
 import { looseDistanceBasedGenerator } from '../../../../../src/core/scales/ticks/tick-generators';
-import linear from '../../../../../src/core/scales/linear';
+import linear, { DEFAULT_TICKS_SETTINGS, DEFAULT_MINORTICKS_SETTINGS } from '../../../../../src/core/scales/linear';
 import band from '../../../../../src/core/scales/band';
 import formatter from '../../../../../src/core/formatter';
 
@@ -12,7 +12,7 @@ describe('Tick generators', () => {
 
   describe('continues tick generator', () => {
     beforeEach(() => {
-      settings = continuousDefaultSettings();
+      settings = extend(true, {}, { ticks: DEFAULT_TICKS_SETTINGS, minorTicks: DEFAULT_MINORTICKS_SETTINGS });
       settings.paddingStart = 0;
       settings.paddingEnd = 10;
       settings.minorTicks = {

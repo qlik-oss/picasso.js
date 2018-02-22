@@ -83,6 +83,16 @@ describe('Linear data scale', () => {
       expect(dataScale.domain()).to.deep.equal([-555, 555]);
     });
 
+    it('should expose data and resources as context in callback functions', () => {
+      const resources = {
+        a: 1
+      };
+      const spy = sinon.spy();
+      settings.min = spy;
+      dataScale = linear(settings, fields, resources);
+      expect(spy).to.have.been.calledWith({ data: fields, resources });
+    });
+
     describe('Invert', () => {
       it('should be possible to invert the scale using a boolean', () => {
         settings.invert = true;

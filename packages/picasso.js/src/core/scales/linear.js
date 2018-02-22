@@ -3,10 +3,9 @@ import extend from 'extend';
 
 import { notNumber } from '../utils/is-number';
 import { generateContinuousTicks } from './ticks/tick-generators';
-import { continuousDefaultSettings } from './ticks/default-settings';
-import resolveSettings from './property-resolver';
+import resolveSettings from './settings-resolver';
 
-const DEFAULT_SETTINGS = {
+export const DEFAULT_SETTINGS = {
   min: NaN,
   max: NaN,
   expand: NaN,
@@ -14,17 +13,17 @@ const DEFAULT_SETTINGS = {
   invert: false
 };
 
-// const DEFAULT_TICKS_SETTINGS = {
-//   tight: false,
-//   forceBounds: false,
-//   values: [],
-//   count: NaN,
-//   distance: 100
-// };
+export const DEFAULT_TICKS_SETTINGS = {
+  tight: false,
+  forceBounds: false,
+  values: undefined,
+  count: NaN,
+  distance: 100
+};
 
-// const DEFAULT_MINORTICKS_SETTINGS = {
-//   count: NaN
-// };
+export const DEFAULT_MINORTICKS_SETTINGS = {
+  count: NaN
+};
 
 /**
  * @typedef {object} scale--linear
@@ -100,10 +99,13 @@ function initNormScale(normScale, scale) {
  * @return { linear }
  */
 
-export default function scaleLinear(settings, data, deps) {
+export default function scaleLinear(settings = {}, data = {}, resources = {}) {
   const d3Scale = d3ScaleLinear();
   const normScale = { instance: null, invert: false };
+  let ticksStngs;
+  let minorTicksStngs;
   let tickCache;
+
   /**
    * @alias linear
    * @private
@@ -173,7 +175,8 @@ export default function scaleLinear(settings, data, deps) {
   fn.ticks = function ticks(input) {
     if (input !== null && typeof input === 'object') {
       input.settings = input.settings || {};
-      input.settings = extend(true, continuousDefaultSettings(), settings, input.settings);
+      // TODO Discontinue support for custom ticks settings as argument
+      input.settings = extend(true, {}, { ticks: ticksStngs, minorTicks: minorTicksStngs }, input.settings);
       input.scale = fn;
       tickCache = generateContinuousTicks(input);
       return tickCache;
@@ -339,7 +342,10 @@ export default function scaleLinear(settings, data, deps) {
   };
 
   if (settings) {
-    const stgns = resolveSettings(settings, DEFAULT_SETTINGS, { data, resources: deps });
+    const ctx = { data, resources };
+    const stgns = resolveSettings(settings, DEFAULT_SETTINGS, ctx);
+    ticksStngs = resolveSettings(settings.ticks, DEFAULT_TICKS_SETTINGS, ctx);
+    minorTicksStngs = resolveSettings(settings.minorTicks, DEFAULT_MINORTICKS_SETTINGS, ctx);
     const { mini, maxi } = getMinMax(stgns, data ? data.fields : []);
 
     fn.domain([mini, maxi]);
