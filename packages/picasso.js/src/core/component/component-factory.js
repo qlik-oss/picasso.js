@@ -13,7 +13,7 @@ import {
 
 const isReservedProperty = prop => [
   'on', 'preferredSize', 'created', 'beforeMount', 'mounted', 'resize',
-  'beforeUpdate', 'updated', 'beforeRender', 'render', 'beforeDestroy',
+  'beforeUpdate', 'updated', 'beforeRender', 'render', 'beforeUnmount', 'beforeDestroy',
   'destroyed', 'defaultSettings', 'data', 'settings', 'formatter',
   'scale', 'chart', 'dockConfig', 'mediator', 'style', 'resolver', 'registries'
 ].some(name => name === prop);
@@ -207,6 +207,7 @@ function componentFactory(definition, options = {}) {
   const created = createCallback('created');
   const beforeMount = createCallback('beforeMount');
   const mounted = createCallback('mounted');
+  const beforeUnmount = createCallback('beforeUnmount');
   const beforeUpdate = createCallback('beforeUpdate');
   const updated = createCallback('updated');
   const beforeRender = createCallback('beforeRender');
@@ -524,6 +525,7 @@ function componentFactory(definition, options = {}) {
       bs.cleanUp();
     });
     brushStylers.length = 0;
+    beforeUnmount();
   };
 
   fn.onBrushTap = (e) => {

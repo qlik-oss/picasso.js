@@ -21,10 +21,11 @@ describe('legend-cat', () => {
       },
       title: {}
     });
-    componentFixture.mocks().registries.renderer.withArgs('svg').returns(() => ({
+    const renderer = {
       size: () => {},
       render: () => {}
-    }));
+    };
+    componentFixture.mocks().registries.renderer.returns(() => renderer);
     h = sandbox.stub();
     domRenderer = {
       size: () => {},
@@ -102,6 +103,6 @@ describe('legend-cat', () => {
       inner: { x: 10, y: 20, width: 30, height: 200 }
     });
 
-    expect(h.callCount).to.equal(5);
+    expect(h.callCount).to.equal(10);
   });
 });
