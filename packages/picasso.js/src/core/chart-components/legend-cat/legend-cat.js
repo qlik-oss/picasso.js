@@ -103,8 +103,6 @@ const component = {
     }
   },
   mounted(renderElement) {
-    this.navigationRenderer.renderer = this.registries.renderer('dom')();
-    this.titleRenderer.renderer = this.registries.renderer('svg')();
     if (renderElement && renderElement.parentElement) {
       this.navigationRenderer.renderer.appendTo(renderElement.parentElement);
       this.titleRenderer.renderer.appendTo(renderElement.parentElement);
@@ -117,6 +115,10 @@ const component = {
     this.titleRenderer.render({
       rect: this.state.views.layout.title
     });
+  },
+  beforeUnmount() {
+    this.navigationRenderer.renderer.clear();
+    this.titleRenderer.renderer.clear();
   },
   on: {
     panstart() {
@@ -165,6 +167,8 @@ const component = {
     });
     this.navigationRenderer = navigationRendererFactory(this);
     this.titleRenderer = titleRendererFactory(this);
+    this.navigationRenderer.renderer = this.registries.renderer('dom')();
+    this.titleRenderer.renderer = this.registries.renderer()();
     update(this);
   },
   preferredSize(obj) {
@@ -178,6 +182,10 @@ const component = {
   },
   render() {
     return render(this);
+  },
+  beforeDestroy() {
+    this.navigationRenderer.renderer.destroy();
+    this.titleRenderer.renderer.destroy();
   }
 };
 
