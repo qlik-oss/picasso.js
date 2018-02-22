@@ -4,8 +4,27 @@ import extend from 'extend';
 import { notNumber } from '../utils/is-number';
 import { generateContinuousTicks } from './ticks/tick-generators';
 import { continuousDefaultSettings } from './ticks/default-settings';
+import resolveSettings from './property-resolver';
 
-const AVAILABLE_SETTINGS = ['min', 'max', 'expand', 'include', 'invert'];
+const DEFAULT_SETTINGS = {
+  min: NaN,
+  max: NaN,
+  expand: NaN,
+  include: [],
+  invert: false
+};
+
+// const DEFAULT_TICKS_SETTINGS = {
+//   tight: false,
+//   forceBounds: false,
+//   values: [],
+//   count: NaN,
+//   distance: 100
+// };
+
+// const DEFAULT_MINORTICKS_SETTINGS = {
+//   count: NaN
+// };
 
 /**
  * @typedef {object} scale--linear
@@ -24,28 +43,6 @@ const AVAILABLE_SETTINGS = ['min', 'max', 'expand', 'include', 'invert'];
  * @property {number} [min] - Set an explicit minimum value
  * @property {number} [max] - Set an explicit maximum value
  */
-
-/*
-function applyFormat(formatter) {
-  return typeof formatter === 'undefined' ? t => t : t => formatter(t);
-}
-*/
-
-function evalSetting(settings, fields, name) {
-  if (typeof settings[name] === 'function') {
-    return settings[name](fields);
-  }
-
-  return settings[name];
-}
-
-function generateSettings(settings, fields) {
-  const calcSettings = {};
-  AVAILABLE_SETTINGS.forEach((s) => {
-    calcSettings[s] = evalSetting(settings, fields, s);
-  });
-  return calcSettings;
-}
 
 function getMinMax(settings, fields) {
   const min = +settings.min;
@@ -103,11 +100,10 @@ function initNormScale(normScale, scale) {
  * @return { linear }
  */
 
-export default function scaleLinear(settings, data) {
+export default function scaleLinear(settings, data, deps) {
   const d3Scale = d3ScaleLinear();
   const normScale = { instance: null, invert: false };
   let tickCache;
-
   /**
    * @alias linear
    * @private
@@ -343,7 +339,7 @@ export default function scaleLinear(settings, data) {
   };
 
   if (settings) {
-    const stgns = generateSettings(settings, data ? data.fields : []);
+    const stgns = resolveSettings(settings, DEFAULT_SETTINGS, { data, resources: deps });
     const { mini, maxi } = getMinMax(stgns, data ? data.fields : []);
 
     fn.domain([mini, maxi]);
