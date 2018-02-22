@@ -183,17 +183,21 @@ describe('labeling - bars', () => {
     let chart;
     let findPlacement;
     let placer;
+
     beforeEach(() => {
       chart = {};
       findPlacement = sinon.stub();
       placer = sinon.stub();
     });
+
     it('should skip label when text is falsy', () => {
       let labels = placeInBars({
         chart,
-        nodes: [{}],
-        texts: [['']],
-        directions: ['up']
+        targetNodes: [{
+          node: {},
+          texts: [''],
+          direction: 'up'
+        }]
       }, findPlacement, placer);
       expect(findPlacement.callCount).to.equal(0);
       expect(labels.length).to.equal(0);
@@ -203,12 +207,14 @@ describe('labeling - bars', () => {
       findPlacement.returns({});
       let labels = placeInBars({
         chart,
-        nodes: [{}],
-        texts: [['a']],
-        measurements: [[]],
-        labelSettings: [{}],
-        placementSettings: [{}],
-        directions: ['up']
+        targetNodes: [{
+          node: {},
+          texts: ['a'],
+          measurements: [],
+          labelSettings: [{}],
+          placementSettings: [{}],
+          direction: 'up'
+        }]
       }, findPlacement, placer);
       expect(placer.callCount).to.equal(0);
       expect(labels.length).to.equal(0);
@@ -227,12 +233,14 @@ describe('labeling - bars', () => {
       placer = (a, b, c) => [a, b, c];
       let labels = placeInBars({
         chart,
-        nodes: [{}],
-        texts: [['a']],
-        measurements: [[2]],
-        labelSettings: [{ fontSize: '11px', fontFamily: 'bb' }],
-        placementSettings: [{}],
-        directions: ['right'],
+        targetNodes: [{
+          node: {},
+          texts: ['a'],
+          measurements: [2],
+          labelSettings: [{ fontSize: '11px', fontFamily: 'bb' }],
+          placementSettings: [{}],
+          direction: 'right'
+        }],
         collectiveOrientation: 'h'
       }, findPlacement, placer);
       expect(labels).to.eql([['bounds', 'a', {
