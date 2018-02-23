@@ -21,7 +21,8 @@
     "test": "npm run test:unit",
     "test:unit": "npxc aw -c aw.config.js",
     "test:unit:watch": "npm run test:unit -- -w",
-    "test:unit:coverage": "npm run test:unit -- --coverage"
+    "test:unit:coverage": "npm run test:unit -- --coverage",
+    "prepublishOnly": "rm -rf dist && npm run build && npm run build:dev"
   },
   "devDependencies": {
     "d3-hierarchy": "^1.1.5",

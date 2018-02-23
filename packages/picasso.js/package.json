@@ -40,7 +40,8 @@
     "test:component:coverage": "npxc aw -c aw.config.comp.coverage.js",
     "test:integration:local": "npxc webdriver-manager update --versions.chrome 2.34 --gecko false && npxc aw protractor -c aw.config.js --require babel-register --require babel-helpers",
     "fixture:server": "npxc aw serve -c aw.webserver.config.js",
-    "version": "node scripts/version.js"
+    "version": "node scripts/version.js && git add src/about.js",
+    "prepublishOnly": "rm -rf dist && npm run build && npm run build:dev"
   },
   "devDependencies": {
     "d3-ease": "^1.0.3",
