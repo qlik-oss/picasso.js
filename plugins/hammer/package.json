@@ -18,7 +18,8 @@
     "build:dev": "npxc rollup -c ../../rollup.config.js --name picassoHammer",
     "build:watch": "npxc rollup -c ../../rollup.config.js --name picassoHammer -w",
     "lint": "npxc eslint src test",
-    "test": "npxc aw -c aw.config.js"
+    "test": "npxc aw -c aw.config.js",
+    "prepublishOnly": "rm -rf dist && npm run build && npm run build:dev"
   },
   "devDependencies": {
     "npxc": "^0.0.3",

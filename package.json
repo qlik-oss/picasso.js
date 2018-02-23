@@ -33,7 +33,7 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-mocha": "^4.7.0",
     "extend": "^3.0.0",
-    "lerna": "^2.5.1",
+    "lerna": "^2.9.0",
     "protractor": "^5.2.1",
     "rimraf": "^2.5.2",
     "rollup": "^0.43.0",
