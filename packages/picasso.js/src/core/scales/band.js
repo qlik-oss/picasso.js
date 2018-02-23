@@ -69,6 +69,7 @@ export default function scaleBand(settings = {}, data = {}) {
     if (values.indexOf(v) === -1) {
       values.push(v);
       labels.push(labelFn(items[i]));
+      domainToDataMapping[v] = i;
     }
   }
 
