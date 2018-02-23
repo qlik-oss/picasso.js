@@ -46,6 +46,14 @@ describe('OrdinalScale', () => {
       expect(scale('C')).to.equal(2 / 3);
     });
 
+    it('should return mapped datum values', () => {
+      items = ['A', 'B', 'C'].map(v => ({ value: v, id: v }));
+      scale = band(settings, { fields: [], items });
+      expect(scale.datum('B')).to.eql({
+        value: 'B', id: 'B'
+      });
+    });
+
     describe('with maxPxStep', () => {
       it('with start align should adjust correctly', () => {
         items = ['A', 'B'].map(v => ({ value: v, id: v }));
