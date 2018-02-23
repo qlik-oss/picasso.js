@@ -161,52 +161,43 @@ export function findBestPlacement({
 
 export function placeInBars({
   chart,
-  nodes,
-  // stngs,
-  placementSettings,
-  labelSettings,
-  measurements,
-  texts,
-  directions,
+  targetNodes,
   rect,
   fitsHorizontally,
   collectiveOrientation
 }, findPlacement = findBestPlacement,
   placer = placeTextInRect) {
   const labels = [];
-  // const textPlacementFn = collectiveOrientation === 'h' || fitsHorizontally ? placeTextInRect : placeTextInRect;
   let label;
+  let target;
   let node;
   let text;
   let justify;
   let bounds;
   let fill;
-  // let testBounds;
   let measured;
   let direction;
   let lblStngs;
-  let nodeTexts;
   let placement;
   let placements;
-  // let p;
   let arg;
   let orientation;
 
-  for (let i = 0, len = nodes.length; i < len; i++) {
+  for (let i = 0, len = targetNodes.length; i < len; i++) {
     bounds = null;
-    node = nodes[i];
+    target = targetNodes[i];
+    node = target.node;
     arg = cbContext(node, chart);
-    nodeTexts = texts[i];
-    direction = directions[i];
+    direction = target.direction;
     orientation = direction === 'left' || direction === 'right' ? 'h' : 'v';
-    for (let j = 0; j < nodeTexts.length; j++) {
-      text = nodeTexts[j];
+    for (let j = 0; j < target.texts.length; j++) {
+      text = target.texts[j];
       if (!text) {
         continue;
       }
 
-      lblStngs = labelSettings[j];
-      measured = measurements[i][j];
+      lblStngs = target.labelSettings[j];
+      measured = target.measurements[j];
       placements = lblStngs.placements;
 
       const bestPlacement = findPlacement({
@@ -217,7 +208,7 @@ export function placeInBars({
         node,
         orientation,
         placements,
-        placementSettings: placementSettings[j],
+        placementSettings: target.placementSettings[j],
         rect
       });
 
@@ -260,13 +251,13 @@ export function precalculate({
   rect,
   chart,
   labelSettings,
+  placementSettings,
   settings,
   renderer
 }) {
-  const measurements = [];
-  const texts = [];
   const labelStruct = {};
-  const directions = [];
+  const targetNodes = [];
+  let target;
   let fitsHorizontally = true;
   let hasHorizontalDirection = false;
   let node;
@@ -276,15 +267,23 @@ export function precalculate({
   let lblStng;
   let direction;
 
-  for (let i = 0, len = nodes.length; i < len; i++) {
+  for (let i = 0; i < nodes.length; i++) {
     node = nodes[i];
     bounds = node.localBounds;
     if (!collisions.testRectRect(bounds, rect)) {
       continue;
     }
-    texts[i] = [];
-    measurements[i] = [];
     let arg = cbContext(node, chart);
+
+    target = {
+      node,
+      texts: [],
+      measurements: [],
+      labelSettings: [],
+      placementSettings: []
+      // direction: 'up'
+    };
+
     for (let j = 0; j < labelSettings.length; j++) {
       lblStng = labelSettings[j];
       text = typeof lblStng.label === 'function' ? lblStng.label(arg, i) : '';
@@ -299,17 +298,19 @@ export function precalculate({
       labelStruct.text = text;
 
       measured = renderer.measureText(labelStruct);
-      measurements[i][j] = measured;
-      texts[i][j] = text;
-      directions[i] = direction;
+      target.measurements.push(measured);
+      target.texts.push(text);
+      target.labelSettings.push(lblStng);
+      target.placementSettings.push(placementSettings[j]);
+      target.direction = direction;
       fitsHorizontally = fitsHorizontally && measured.width <= (bounds.width - (PADDING * 2));
     }
+
+    targetNodes.push(target);
   }
 
   return {
-    measurements,
-    texts,
-    directions,
+    targetNodes,
     fitsHorizontally,
     hasHorizontalDirection
   };
@@ -363,29 +364,23 @@ export function bars({
   );
 
   const {
-    texts,
-    measurements,
     fitsHorizontally,
     hasHorizontalDirection,
-    directions
+    targetNodes
   } = precalculate({
     nodes,
     chart,
     renderer,
     settings,
     rect,
-    labelSettings
+    labelSettings,
+    placementSettings
   });
 
   return placer({
     chart,
-    nodes,
-    texts,
-    directions,
-    measurements,
+    targetNodes,
     stngs: settings,
-    placementSettings,
-    labelSettings,
     rect,
     fitsHorizontally,
     collectiveOrientation: hasHorizontalDirection ? 'h' : 'v'
