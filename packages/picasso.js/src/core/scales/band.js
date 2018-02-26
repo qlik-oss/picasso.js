@@ -21,8 +21,8 @@ export const DEFAULT_SETTINGS = {
  * @property {number} [align] - {@link https://github.com/d3/d3-scale#band_align}
  * @property {boolean} [invert=false] - Invert the output range
  * @property {number} [maxPxStep] - Explicitly limit the bandwidth to a pixel value
- * @property {function} [label] - Label function
- * @property {function} [value] - Value function
+ * @property {function} [label] - Callback label function, applied on each datum
+ * @property {function} [value] - Callback value function, applied on each datum
  */
 
  /**
