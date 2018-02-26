@@ -73,7 +73,7 @@ export default function scaleSequentialColor(settings = {}, data = {}, resources
   const [min, max] = minmax(stgns, data ? data.fields : []);
   const num = isDomain ? stgns.domain.length : -1;
   const DEFAULT_COLORS = resources.theme ? resources.theme.palette('sequential', num > 0 ? num : 2) : [];
-  // TODO BREAKING CHANGE, arg passed to range function has changed
+
   const range = isRange ? stgns.range : DEFAULT_COLORS;
   fn.range(stgns.invert ? range.slice().reverse() : range.slice());
   fn.domain(isDomain ? stgns.domain : generateDomain(fn.range(), min, max));

@@ -34,8 +34,8 @@ export default function ordinal(settings = {}, data = {}, resources = {}) {
   const labelFn = typeof settings.label === 'function' ? settings.label : d => d.datum.label;
   const items = data.items || [];
   const domainToDataMapping = {};
-  let values = [];
-  let labels = [];
+  const values = [];
+  const labels = [];
 
   for (let i = 0; i < items.length; i++) {
     const arg = extend({ datum: items[i] }, ctx);
@@ -51,16 +51,12 @@ export default function ordinal(settings = {}, data = {}, resources = {}) {
 
   fn.labels = () => labels;
 
-  fn.label = (domainValue) => {
-    const idx = values.indexOf(domainValue);
-    return labels[idx];
-  };
+  fn.label = domainValue => labels[values.indexOf(domainValue)];
 
   fn.datum = domainValue => items[domainToDataMapping[domainValue]];
 
   fn.range(stgns.range);
 
-  // TODO BREAKING CHANGE domain requires a length > 0
   if (Array.isArray(stgns.domain) && stgns.domain.length) {
     fn.domain(stgns.domain);
   } else {

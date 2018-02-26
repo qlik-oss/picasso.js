@@ -127,7 +127,7 @@ export default function scaleThresholdColor(settings = {}, data = {}, resources 
   const [min, max] = minmax(stgns, fields);
   const num = isDomain ? stgns.domain.length : -1;
   const DEFAULT_COLORS = resources.theme ? resources.theme.palette('sequential', num > 0 ? num : 2) : [];
-  // TODO BREAKING CHANGE, now defaults to the theme range if range prop is an empty array
+
   let range = isRange ? stgns.range : DEFAULT_COLORS;
   let domain = [];
 
