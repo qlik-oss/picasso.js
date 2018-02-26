@@ -2,6 +2,15 @@ import { interpolateRgb } from 'd3-interpolate';
 import extend from 'extend';
 import minmax from '../../utils/min-max';
 import linear from '../linear';
+import resolveSettings from '../settings-resolver';
+
+const DEFAULT_SETTINGS = {
+  domain: [],
+  range: [],
+  invert: false,
+  min: NaN,
+  max: NaN
+};
 
 function generateDomain(range, min, max) {
   const len = range.length;
@@ -45,8 +54,11 @@ function generateDomain(range, min, max) {
  * });
  */
 
-export default function scaleSequentialColor(settings = {}, data = {}, { theme } = {}) {
-  const s = linear(settings, data, {}).clamp(true).interpolate(interpolateRgb);
+export default function scaleSequentialColor(settings = {}, data = {}, resources = {}) {
+  const s = linear(settings, data, resources).clamp(true).interpolate(interpolateRgb);
+  const stgns = resolveSettings(settings, DEFAULT_SETTINGS, { data, resources });
+  const isDomain = Array.isArray(stgns.domain) && stgns.domain.length;
+  const isRange = Array.isArray(stgns.range) && stgns.range.length;
 
   /**
    * @alias sequentialColor
@@ -58,12 +70,13 @@ export default function scaleSequentialColor(settings = {}, data = {}, { theme }
   const fn = s;
 
   extend(true, fn, s);
-  const [min, max] = minmax(settings, data ? data.fields : []);
-  const num = settings.domain ? settings.domain.length : -1;
-  const DEFAULT_COLORS = theme ? theme.palette('sequential', num > 0 ? num : 2) : [];
-  const range = typeof settings.range === 'function' ? settings.range(data, { theme }) : settings.range || DEFAULT_COLORS;
-  fn.range(settings.invert ? range.slice().reverse() : range.slice());
-  fn.domain(settings.domain || generateDomain(fn.range(), min, max));
+  const [min, max] = minmax(stgns, data ? data.fields : []);
+  const num = isDomain ? stgns.domain.length : -1;
+  const DEFAULT_COLORS = resources.theme ? resources.theme.palette('sequential', num > 0 ? num : 2) : [];
+  // TODO BREAKING CHANGE, arg passed to range function has changed
+  const range = isRange ? stgns.range : DEFAULT_COLORS;
+  fn.range(stgns.invert ? range.slice().reverse() : range.slice());
+  fn.domain(isDomain ? stgns.domain : generateDomain(fn.range(), min, max));
 
   return fn;
 }

@@ -2,8 +2,18 @@ import { scaleThreshold, scaleLinear } from 'd3-scale';
 import { notNumber } from '../../utils/is-number';
 import minmax from '../../utils/min-max';
 import sequential from './sequential';
+import resolveSettings from '../settings-resolver';
 
 // const DEFAULT_COLORS = ['rgb(180,221,212)', 'rgb(34, 83, 90)'];
+
+const DEFAULT_SETTINGS = {
+  domain: [],
+  range: [],
+  invert: false,
+  min: NaN,
+  max: NaN,
+  nice: false
+};
 
 function generateDomain(range, min, max) {
   const len = range.length;
@@ -37,8 +47,8 @@ function generateRange(domain, colors, min, max) {
 
 function generateNiceDomain(range, min, max) {
   const numPoints = range.length === 2 ? 10 : Math.max(1, range.length);
-  const lin = scaleLinear().domain([min, max]).nice([numPoints]);
-  const domain = lin.ticks([numPoints]);
+  const lin = scaleLinear().domain([min, max]).nice(numPoints);
+  const domain = lin.ticks(numPoints);
 
   if (!range || !range.length) {
     return domain;
@@ -91,8 +101,11 @@ function generateNiceDomain(range, min, max) {
  * t.range(); // Generates from colors and domain: ['rgb(0,0,0)','rgb(85,85,85)','rgb(170,170,170)','rgb(255,255,255)']
  */
 
-export default function scaleThresholdColor(settings = {}, data = {}, { theme } = {}) {
+export default function scaleThresholdColor(settings = {}, data = {}, resources = {}) {
   const d3Scale = scaleThreshold();
+  const stgns = resolveSettings(settings, DEFAULT_SETTINGS, { data, resources });
+  const isDomain = Array.isArray(stgns.domain) && stgns.domain.length;
+  const isRange = Array.isArray(stgns.range) && stgns.range.length;
 
   /**
    * @alias thresholdColor
@@ -111,11 +124,20 @@ export default function scaleThresholdColor(settings = {}, data = {}, { theme } 
 
   const fields = data.fields;
 
-  const [min, max] = minmax(settings, fields);
-  const num = settings.domain ? settings.domain.length : -1;
-  const DEFAULT_COLORS = theme.palette('sequential', num > 0 ? num : 2);
-  let range = settings.range || DEFAULT_COLORS;
-  let domain = settings.domain || (settings.nice ? generateNiceDomain(range, min, max) : [min + ((max - min) / 2)]);
+  const [min, max] = minmax(stgns, fields);
+  const num = isDomain ? stgns.domain.length : -1;
+  const DEFAULT_COLORS = resources.theme ? resources.theme.palette('sequential', num > 0 ? num : 2) : [];
+  // TODO BREAKING CHANGE, now defaults to the theme range if range prop is an empty array
+  let range = isRange ? stgns.range : DEFAULT_COLORS;
+  let domain = [];
+
+  if (isDomain) {
+    domain = stgns.domain;
+  } else if (stgns.nice) {
+    domain = generateNiceDomain(range, min, max);
+  } else {
+    domain = [min + ((max - min) / 2)];
+  }
 
   if (range.length > domain.length + 1) {
     // Generate limits from range
@@ -127,8 +149,7 @@ export default function scaleThresholdColor(settings = {}, data = {}, { theme } 
 
   fn.data = () => data;
 
-  fn.range(range);
-  fn.range(settings.invert ? fn.range().reverse() : fn.range());
+  fn.range(stgns.invert ? range.slice().reverse() : range);
   fn.domain(domain);
 
   return fn;

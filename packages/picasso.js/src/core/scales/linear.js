@@ -102,8 +102,10 @@ function initNormScale(normScale, scale) {
 export default function scaleLinear(settings = {}, data = {}, resources = {}) {
   const d3Scale = d3ScaleLinear();
   const normScale = { instance: null, invert: false };
-  let ticksStngs;
-  let minorTicksStngs;
+  const ctx = { data, resources };
+  const stgns = resolveSettings(settings, DEFAULT_SETTINGS, ctx);
+  stgns.ticks = resolveSettings(settings.ticks, DEFAULT_TICKS_SETTINGS, ctx);
+  stgns.minorTicks = resolveSettings(settings.minorTicks, DEFAULT_MINORTICKS_SETTINGS, ctx);
   let tickCache;
 
   /**
@@ -176,7 +178,7 @@ export default function scaleLinear(settings = {}, data = {}, resources = {}) {
     if (input !== null && typeof input === 'object') {
       input.settings = input.settings || {};
       // TODO Discontinue support for custom ticks settings as argument
-      input.settings = extend(true, {}, { ticks: ticksStngs, minorTicks: minorTicksStngs }, input.settings);
+      input.settings = extend(true, {}, stgns, input.settings);
       input.scale = fn;
       tickCache = generateContinuousTicks(input);
       return tickCache;
@@ -303,7 +305,7 @@ export default function scaleLinear(settings = {}, data = {}, resources = {}) {
   };
 
   fn.copy = function copy() {
-    const cop = scaleLinear(settings, data);
+    const cop = scaleLinear(settings, data, resources);
     cop.domain(fn.domain());
     cop.range(fn.range());
     cop.clamp(d3Scale.clamp());
@@ -341,17 +343,11 @@ export default function scaleLinear(settings = {}, data = {}, resources = {}) {
     return normScale.instance.invert(t);
   };
 
-  if (settings) {
-    const ctx = { data, resources };
-    const stgns = resolveSettings(settings, DEFAULT_SETTINGS, ctx);
-    ticksStngs = resolveSettings(settings.ticks, DEFAULT_TICKS_SETTINGS, ctx);
-    minorTicksStngs = resolveSettings(settings.minorTicks, DEFAULT_MINORTICKS_SETTINGS, ctx);
-    const { mini, maxi } = getMinMax(stgns, data ? data.fields : []);
+  const { mini, maxi } = getMinMax(stgns, data ? data.fields : []);
 
-    fn.domain([mini, maxi]);
-    fn.range(stgns.invert ? [1, 0] : [0, 1]);
-    normScale.invert = stgns.invert;
-  }
+  fn.domain([mini, maxi]);
+  fn.range(stgns.invert ? [1, 0] : [0, 1]);
+  normScale.invert = stgns.invert;
 
   return fn;
 }

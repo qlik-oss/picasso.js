@@ -40,7 +40,7 @@ describe('Sequential', () => {
       settings.min = 'oops';
       settings.max = 'ooooops';
       seq = sequential(settings);
-      expect(seq.domain()).to.deep.equal([NaN, NaN]);
+      expect(seq.domain()).to.deep.equal([0, 1]);
     });
 
     it('only fields', () => {
