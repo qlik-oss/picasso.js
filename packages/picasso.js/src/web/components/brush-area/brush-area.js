@@ -1,12 +1,20 @@
 import extend from 'extend';
-import { add } from '../../../core/math/vector';
 
 function getPoint(rendererBounds, event) {
-  const eventOffsetX = event.center.x;
-  const eventOffsetY = event.center.y;
+  let x;
+  let y;
+
+  if (typeof event.center === 'object') {
+    x = event.center.x;
+    y = event.center.y;
+  } else {
+    x = event.clientX;
+    y = event.clientY;
+  }
+
   return {
-    x: eventOffsetX - rendererBounds.left,
-    y: eventOffsetY - rendererBounds.top
+    x: x - rendererBounds.left,
+    y: y - rendererBounds.top
   };
 }
 
@@ -47,8 +55,10 @@ function toRect(state) {
 
 function doAreaBrush(ctx) {
   if (ctx.state.active) {
-    ctx.state.start = add(ctx.state.start, ctx.state.componentDelta);
-    ctx.state.end = add(ctx.state.end, ctx.state.componentDelta);
+    ctx.state.start.x += ctx.state.componentDelta.x;
+    ctx.state.start.y += ctx.state.componentDelta.y;
+    ctx.state.end.x += ctx.state.componentDelta.x;
+    ctx.state.end.y += ctx.state.componentDelta.y;
 
     const shapes = ctx.chart.shapesAt(toRect(ctx.state), { components: ctx.state.brushConfig });
     ctx.chart.brushFromShapes(shapes, { components: ctx.state.brushConfig });
