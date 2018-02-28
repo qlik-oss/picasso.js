@@ -185,6 +185,17 @@ const brushing = [{
     chart: ['scatter'],
     component: ['point', 'axis', 'brushing', 'lasso']
   }
+},
+{
+  title: 'Range',
+  img: 'https://static.observableusercontent.com/thumbnail/21a9e87652967dee0b20487fc9a2ce28e300db7875d27f9089a04ac7bed2941a.jpg',
+  links: {
+    observable: 'https://beta.observablehq.com/@cbt1/picasso-js-range-brushing'
+  },
+  tags: {
+    chart: ['bar'],
+    component: ['bar', 'axis', 'brushing', 'range']
+  }
 }];
 
 const miscellaneous = [{
@@ -196,6 +207,17 @@ const miscellaneous = [{
   tags: {
     chart: ['bar'],
     component: ['component']
+  }
+},
+{
+  title: 'Labeling bars',
+  img: 'https://static.observableusercontent.com/thumbnail/ccd8e0af792b69ed24bacdc507c9d24438c6e224ce69d227f3fa5e0e8ae1451f.jpg',
+  links: {
+    observable: 'https://beta.observablehq.com/@miralemd/picasso-js-labeling-bars'
+  },
+  tags: {
+    chart: ['bar'],
+    component: ['component', 'labeling', 'label']
   }
 }];
 
