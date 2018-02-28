@@ -13,6 +13,7 @@ import labelsComponent from '../core/chart-components/labels';
 import categoricalLegend from '../core/chart-components/legend-cat';
 import sequentialLegend from '../core/chart-components/legend-seq';
 import lineComponent from '../core/chart-components/line';
+import brushAreaComponent from '../web/components/brush-area';
 
 export default [
   boxComponent,
@@ -29,5 +30,6 @@ export default [
   labelsComponent,
   categoricalLegend,
   sequentialLegend,
-  lineComponent
+  lineComponent,
+  brushAreaComponent
 ];
