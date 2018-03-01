@@ -28,20 +28,12 @@ function getBrushConfig(settings) {
     }));
 }
 
-function endBrush(state, chart) {
+function doEndBrush(state, chart) {
   state.brushConfig.forEach((config) => {
     config.contexts.forEach((context) => {
       chart.brush(context).end();
     });
   });
-}
-
-function getComponentDelta(chart, rendererBounds) {
-  const chartBounds = chart.element.getBoundingClientRect();
-  return {
-    x: rendererBounds.left - chartBounds.left,
-    y: rendererBounds.top - chartBounds.top
-  };
 }
 
 function toRect(start, end) {
@@ -55,14 +47,14 @@ function toRect(start, end) {
 
 function doAreaBrush(ctx) {
   if (ctx.state.active) {
-    const r = ctx.renderer.size();
+    const rect = ctx.renderer.size();
     const start = {
-      x: ctx.state.start.x + r.x,
-      y: ctx.state.start.y + r.y
+      x: ctx.state.start.x + rect.x,
+      y: ctx.state.start.y + rect.y
     };
     const end = {
-      x: ctx.state.end.x + r.x,
-      y: ctx.state.end.y + r.y
+      x: ctx.state.end.x + rect.x,
+      y: ctx.state.end.y + rect.y
     };
 
     const shapes = ctx.chart.shapesAt(toRect(start, end), { components: ctx.state.brushConfig });
@@ -85,7 +77,7 @@ function resetState() {
 }
 
 const definition = {
-  require: ['chart', 'renderer', 'settings'],
+  require: ['chart', 'renderer'],
   defaultSettings: {
     displayOrder: 99,
     settings: {
@@ -119,19 +111,15 @@ const definition = {
     this.state.active = true;
     this.state.brushConfig = getBrushConfig(this.settings);
     this.state.rendererBounds = this.renderer.element().getBoundingClientRect();
-    this.state.componentDelta = getComponentDelta(this.chart, this.state.rendererBounds);
-    const p = getPoint(this.state.rendererBounds, e);
 
-    this.state.start = p;
+    this.state.start = getPoint(this.state.rendererBounds, e);
   },
   move(e) {
     if (!this.state.active) {
       return;
     }
 
-    const p = getPoint(this.state.rendererBounds, e);
-
-    this.state.end = p;
+    this.state.end = getPoint(this.state.rendererBounds, e);
 
     doAreaBrush(this);
     render(this);
@@ -148,7 +136,7 @@ const definition = {
     if (!this.state.active) {
       return;
     }
-    endBrush(this.state, this.chart);
+    doEndBrush(this.state, this.chart);
     this.state = resetState();
     this.renderer.render([]);
   }
