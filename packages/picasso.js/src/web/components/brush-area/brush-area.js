@@ -44,30 +44,35 @@ function getComponentDelta(chart, rendererBounds) {
   };
 }
 
-function toRect(state) {
+function toRect(start, end) {
   return {
-    x: state.start.x,
-    y: state.start.y,
-    width: state.end.x - state.start.x,
-    height: state.end.y - state.start.y
+    x: start.x,
+    y: start.y,
+    width: end.x - start.x,
+    height: end.y - start.y
   };
 }
 
 function doAreaBrush(ctx) {
   if (ctx.state.active) {
-    ctx.state.start.x += ctx.state.componentDelta.x;
-    ctx.state.start.y += ctx.state.componentDelta.y;
-    ctx.state.end.x += ctx.state.componentDelta.x;
-    ctx.state.end.y += ctx.state.componentDelta.y;
+    const r = ctx.renderer.size();
+    const start = {
+      x: ctx.state.start.x + r.x,
+      y: ctx.state.start.y + r.y
+    };
+    const end = {
+      x: ctx.state.end.x + r.x,
+      y: ctx.state.end.y + r.y
+    };
 
-    const shapes = ctx.chart.shapesAt(toRect(ctx.state), { components: ctx.state.brushConfig });
+    const shapes = ctx.chart.shapesAt(toRect(start, end), { components: ctx.state.brushConfig });
     ctx.chart.brushFromShapes(shapes, { components: ctx.state.brushConfig });
   }
 }
 
 function render(ctx) {
   ctx.renderer.render([
-    extend({ type: 'rect' }, toRect(ctx.state), ctx.style.area)
+    extend({ type: 'rect' }, toRect(ctx.state.start, ctx.state.end), ctx.style.area)
   ]);
 }
 
