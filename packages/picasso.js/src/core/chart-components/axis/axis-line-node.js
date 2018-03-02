@@ -4,16 +4,18 @@ function appendStyle(struct, buildOpts) {
   extend(struct, buildOpts.style);
   const halfWidth = struct.strokeWidth / 2;
 
+  console.log(struct)
+  console.log(buildOpts)
   if (buildOpts.align === 'top') {
     struct.y1 -= halfWidth;
     struct.y2 -= halfWidth;
   } else if (buildOpts.align === 'bottom') {
     struct.y1 += halfWidth;
     struct.y2 += halfWidth;
-  } else if (buildOpts.align === 'left') {
+  } else if (buildOpts.align === 'left' || struct.align === 'right') {
     struct.x1 -= halfWidth;
     struct.x2 -= halfWidth;
-  } else if (buildOpts.align === 'right') {
+  } else if (buildOpts.align === 'right' && struct.align !== 'right') {
     struct.x1 += halfWidth;
     struct.x2 += halfWidth;
   }
