@@ -1,8 +1,26 @@
 import extend from 'extend';
 import NarrowPhaseCollision from '../../../core/math/narrow-phase-collision';
 
+/**
+ * @typedef {object} component--brush-area-brush
+ * @property {string} key - Component key
+ * @property {string[]} [contexts='areaBrush'] - Name of the brushing contexts to affect
+ * @property {string[]} [data=['']] - The mapped data properties to add to the brush
+ * @property {string} [action='set'] - Type of action to respond with
+ */
+
+/**
+  * @typedef {object}
+  * @alias component--brush-area-settings
+  */
 const DEFAULT_SETTINGS = {
+  /**
+   * @type {object}
+   */
   brush: {
+    /**
+   * @type {Array<component--brush-area-brush>}
+   */
     components: []
   }
 };
@@ -68,6 +86,7 @@ function getBrushConfig(settings) {
 
 /**
  * End all active brush contexts.
+ * @private
  * @param {oject} state
  * @param {object} chart - Chart instance
  */
@@ -102,6 +121,7 @@ function toRect(p0, p1) {
 
 /**
  * Perform a brush on the given area.
+ * @private
  * @param {object} ctx
  */
 function doAreaBrush(ctx) {
@@ -165,6 +185,7 @@ const definition = {
     this.state.boundingRect = this.renderer.element().getBoundingClientRect();
     const p = getLocalPoint(this, e, false);
 
+    // Require event to be inside the component bounds
     if (!NarrowPhaseCollision.testRectPoint({ x: 0, y: 0, width: this.rect.width, height: this.rect.height }, p)) {
       return;
     }
