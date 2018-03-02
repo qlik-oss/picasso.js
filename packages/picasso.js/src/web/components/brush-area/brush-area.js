@@ -1,6 +1,21 @@
 import extend from 'extend';
+import NarrowPhaseCollision from '../../../core/math/narrow-phase-collision';
 
-function getPoint(rendererBounds, event) {
+const DEFAULT_SETTINGS = {
+  brush: {
+    components: []
+  }
+};
+
+/**
+ * Transform the incoming event into point in the local coordinate system. That is the coordinate system of the component.
+ * @private
+ * @param {object} ctx - Context
+ * @param {object} event - Incoming event, either native event or hammer event
+ * @param {boolean} clamp - True to clamp the point inside the component bounds
+ * @returns {point}
+ */
+function getLocalPoint(ctx, event, clamp = true) {
   let x;
   let y;
 
@@ -12,12 +27,35 @@ function getPoint(rendererBounds, event) {
     y = event.clientY;
   }
 
+  const localX = x - ctx.state.boundingRect.left;
+  const localY = y - ctx.state.boundingRect.top;
+
   return {
-    x: x - rendererBounds.left,
-    y: y - rendererBounds.top
+    x: clamp ? Math.max(0, Math.min(localX, ctx.rect.width)) : localX,
+    y: clamp ? Math.max(0, Math.min(localY, ctx.rect.height)) : localY
   };
 }
 
+/**
+ * Transform a local point into a point in the chart coordinate system.
+ * @private
+ * @param {object} ctx - Context
+ * @param {object} p - Point to transform
+ * @returns {point}
+ */
+function localToChartPoint(ctx, p) {
+  return {
+    x: p.x + ctx.rect.x,
+    y: p.y + ctx.rect.y
+  };
+}
+
+/**
+ * Extract and apply default brush configuration.
+ * @private
+ * @param {object} settings
+ * @returns {object[]} An Array of brush configurations
+ */
 function getBrushConfig(settings) {
   return settings.settings.brush.components.map(b => (
     {
@@ -28,6 +66,11 @@ function getBrushConfig(settings) {
     }));
 }
 
+/**
+ * End all active brush contexts.
+ * @param {oject} state
+ * @param {object} chart - Chart instance
+ */
 function doEndBrush(state, chart) {
   state.brushConfig.forEach((config) => {
     config.contexts.forEach((context) => {
@@ -36,26 +79,35 @@ function doEndBrush(state, chart) {
   });
 }
 
-function toRect(start, end) {
+/**
+ * Convert two points into a rectangle.
+ * @private
+ * @param {point} p0
+ * @param {point} p1
+ * @returns {rect}
+ */
+function toRect(p0, p1) {
+  const xMin = Math.min(p0.x, p1.x);
+  const yMin = Math.min(p0.y, p1.y);
+  const xMax = Math.max(p0.x, p1.x);
+  const yMax = Math.max(p0.y, p1.y);
+
   return {
-    x: start.x,
-    y: start.y,
-    width: end.x - start.x,
-    height: end.y - start.y
+    x: xMin,
+    y: yMin,
+    width: xMax - xMin,
+    height: yMax - yMin
   };
 }
 
+/**
+ * Perform a brush on the given area.
+ * @param {object} ctx
+ */
 function doAreaBrush(ctx) {
   if (ctx.state.active) {
-    const rect = ctx.renderer.size();
-    const start = {
-      x: ctx.state.start.x + rect.x,
-      y: ctx.state.start.y + rect.y
-    };
-    const end = {
-      x: ctx.state.end.x + rect.x,
-      y: ctx.state.end.y + rect.y
-    };
+    const start = localToChartPoint(ctx, ctx.state.start);
+    const end = localToChartPoint(ctx, ctx.state.end);
 
     const shapes = ctx.chart.shapesAt(toRect(start, end), { components: ctx.state.brushConfig });
     ctx.chart.brushFromShapes(shapes, { components: ctx.state.brushConfig });
@@ -80,11 +132,7 @@ const definition = {
   require: ['chart', 'renderer'],
   defaultSettings: {
     displayOrder: 99,
-    settings: {
-      brush: {
-        components: []
-      }
-    },
+    settings: DEFAULT_SETTINGS,
     style: {
       area: '$selection-area-target'
     }
@@ -106,20 +154,31 @@ const definition = {
   created() {
     this.state = resetState();
   },
+  preferredSize() {
+    return 0;
+  },
   render() {},
+  beforeRender({ size }) {
+    this.rect = size;
+  },
   start(e) {
-    this.state.active = true;
-    this.state.brushConfig = getBrushConfig(this.settings);
-    this.state.rendererBounds = this.renderer.element().getBoundingClientRect();
+    this.state.boundingRect = this.renderer.element().getBoundingClientRect();
+    const p = getLocalPoint(this, e, false);
 
-    this.state.start = getPoint(this.state.rendererBounds, e);
+    if (!NarrowPhaseCollision.testRectPoint({ x: 0, y: 0, width: this.rect.width, height: this.rect.height }, p)) {
+      return;
+    }
+
+    this.state.brushConfig = getBrushConfig(this.settings);
+    this.state.start = getLocalPoint(this, e);
+    this.state.active = true;
   },
   move(e) {
     if (!this.state.active) {
       return;
     }
 
-    this.state.end = getPoint(this.state.rendererBounds, e);
+    this.state.end = getLocalPoint(this, e);
 
     doAreaBrush(this);
     render(this);
