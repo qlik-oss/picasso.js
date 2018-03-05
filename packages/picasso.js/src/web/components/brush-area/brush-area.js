@@ -92,9 +92,11 @@ function getBrushConfig(settings) {
  */
 function doEndBrush(state, chart) {
   state.brushConfig.forEach((config) => {
-    config.contexts.forEach((context) => {
-      chart.brush(context).end();
-    });
+    if (Array.isArray(config.contexts)) {
+      config.contexts.forEach((context) => {
+        chart.brush(context).end();
+      });
+    }
   });
 }
 

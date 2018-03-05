@@ -91,16 +91,17 @@ describe('Brush Area', () => {
       components: [
         {
           key: 'test',
-          context: 'test'
+          contexts: ['test']
         },
         {
           key: 'test2',
-          context: 'test2'
+          contexts: ['test2']
         }
       ]
     };
     const spy = sandbox.spy();
-    componentFixture.mocks().chart.brush = () => ({ end: spy });
+    const stub = sandbox.stub().returns({ end: spy });
+    componentFixture.mocks().chart.brush = stub;
     instance = componentFixture.simulateCreate(brushAreaDir, config);
     componentFixture.simulateRender(container);
     instance.def.start(nativeEvent(10, 20));
@@ -108,6 +109,8 @@ describe('Brush Area', () => {
     componentFixture.getRenderOutput();
 
     expect(spy).to.have.been.calledTwice;
+    expect(stub.firstCall).to.have.been.calledWith('test');
+    expect(stub.secondCall).to.have.been.calledWith('test2');
   });
 
   it('should brush in chart coordinate system', () => {
