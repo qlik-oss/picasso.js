@@ -73,7 +73,7 @@ const DEFAULT_DISCRETE_SETTINGS = {
     /** Toggle line on/off
     * @type {boolean=} */
     show: false,
-    /** If Horizontal Axis is aligned left but you want the line to align right 
+    /** If Horizontal Axis is aligned left but you want the line to align right
     * @type {string=} */
     align: 'right'
   },
@@ -152,7 +152,7 @@ const DEFAULT_CONTINUOUS_SETTINGS = {
     /** Toggle line on/off
     * @type {boolean=} */
     show: true,
-    /** If Horizontal Axis is aligned left but you want the line to align right 
+    /** If Horizontal Axis is aligned left but you want the line to align right
     * @type {string=} */
     align: 'right'
   },
