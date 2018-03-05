@@ -4,8 +4,8 @@ import NarrowPhaseCollision from '../../../core/math/narrow-phase-collision';
 /**
  * @typedef {object} component--brush-area-brush
  * @property {string} key - Component key
- * @property {string[]} [contexts='areaBrush'] - Name of the brushing contexts to affect
- * @property {string[]} [data=['']] - The mapped data properties to add to the brush
+ * @property {string[]} [contexts] - Name of the brushing contexts to affect
+ * @property {string[]} [data] - The mapped data properties to add to the brush
  * @property {string} [action='set'] - Type of action to respond with
  */
 
@@ -78,8 +78,8 @@ function getBrushConfig(settings) {
   return settings.settings.brush.components.map(b => (
     {
       key: b.key,
-      contexts: b.contexts || ['areaBrush'],
-      data: b.data || [''],
+      contexts: b.contexts,
+      data: b.data,
       action: b.action || 'set'
     }));
 }

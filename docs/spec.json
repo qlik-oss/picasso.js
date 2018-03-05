@@ -4515,7 +4515,6 @@
         "contexts": {
           "description": "Name of the brushing contexts to affect",
           "optional": true,
-          "defaultValue": "'areaBrush'",
           "kind": "array",
           "items": {
             "type": "string"
@@ -4524,7 +4523,6 @@
         "data": {
           "description": "The mapped data properties to add to the brush",
           "optional": true,
-          "defaultValue": "['']",
           "kind": "array",
           "items": {
             "type": "string"
