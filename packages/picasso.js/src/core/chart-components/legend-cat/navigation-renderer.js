@@ -86,6 +86,11 @@ function render(renderer, {
 
   const buttonSize = 32;
 
+  const order = isVertical ? ['right', 'left'] : ['down', 'up'];
+  if (isRtl) {
+    order.reverse();
+  }
+
   const nodes = [h('div', {
     style: {
       position: 'relative',
@@ -98,7 +103,7 @@ function render(renderer, {
   }, [btn(h, {
     size: buttonSize,
     isActive: hasNext,
-    direction: isVertical ? (isRtl ? 'left' : 'right') : 'down', // eslint-disable-line no-nested-ternary
+    direction: order[0],
     attrs: {
       'data-action': 'next',
       'data-component-key': legend.settings.key
@@ -107,7 +112,7 @@ function render(renderer, {
   }), btn(h, {
     size: buttonSize,
     isActive: hasPrev,
-    direction: isVertical ? (isRtl ? 'right' : 'left') : 'up', // eslint-disable-line no-nested-ternary
+    direction: order[1],
     attrs: {
       'data-action': 'prev',
       'data-component-key': legend.settings.key
