@@ -29,8 +29,10 @@ const maxAccessor = v => v.max();
  * ]); // [-5, 4]
  */
 export default function minmax(settings, arr) {
-  const definedMin = settings && typeof settings.min !== 'undefined';
-  const definedMax = settings && typeof settings.max !== 'undefined';
+  // const definedMin = settings && typeof settings.min !== 'undefined';
+  // const definedMax = settings && typeof settings.max !== 'undefined';
+  const definedMin = settings && !isNaN(settings.min);
+  const definedMax = settings && !isNaN(settings.max);
 
   let min = definedMin ? +settings.min : 0;
   let max = definedMax ? +settings.max : 1;

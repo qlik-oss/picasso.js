@@ -1,14 +1,16 @@
+import extend from 'extend';
 import { scaleBand as d3ScaleBand } from 'd3-scale';
 import { generateDiscreteTicks } from './ticks/tick-generators';
+import resolveSettings from './settings-resolver';
 
-const AVAILABLE_SETTINGS = [
-  'padding',
-  'paddingOuter',
-  'paddingInner',
-  'align',
-  'invert',
-  'maxPxStep'
-];
+export const DEFAULT_SETTINGS = {
+  padding: 0,
+  paddingInner: NaN,
+  paddingOuter: NaN,
+  align: 0.5,
+  invert: false,
+  maxPxStep: NaN
+};
 
 /**
  * @typedef {object} scale--band
@@ -19,23 +21,9 @@ const AVAILABLE_SETTINGS = [
  * @property {number} [align] - {@link https://github.com/d3/d3-scale#band_align}
  * @property {boolean} [invert=false] - Invert the output range
  * @property {number} [maxPxStep] - Explicitly limit the bandwidth to a pixel value
+ * @property {function} [label] - Callback label function, applied on each datum
+ * @property {function} [value] - Callback value function, applied on each datum
  */
-
-function evalSetting(settings, fields, name) {
-  if (typeof settings[name] === 'function') {
-    return settings[name](fields);
-  }
-
-  return settings[name];
-}
-
-function generateSettings(settings, fields) {
-  const calcSettings = {};
-  AVAILABLE_SETTINGS.forEach((s) => {
-    calcSettings[s] = evalSetting(settings, fields, s);
-  });
-  return calcSettings;
-}
 
  /**
  * @alias scaleBand
@@ -47,7 +35,7 @@ function generateSettings(settings, fields) {
  * @return { band }
  */
 
-export default function scaleBand(settings = {}, data = {}) {
+export default function scaleBand(settings = {}, data = {}, resources = {}) {
   /**
    * An augmented {@link https://github.com/d3/d3-scale#_band|d3 band scale}
    * @alias band
@@ -57,21 +45,12 @@ export default function scaleBand(settings = {}, data = {}) {
    * @return { number }
    */
   const band = d3ScaleBand();
-
-  const valueFn = typeof settings.value === 'function' ? settings.value : d => d.value;
-  const labelFn = typeof settings.label === 'function' ? settings.label : d => d.label;
+  const ctx = { data, resources };
+  const stgns = resolveSettings(settings, DEFAULT_SETTINGS, ctx);
   const items = data.items || [];
   const domainToDataMapping = {};
-  let values = [];
-  let labels = [];
-  for (let i = 0; i < items.length; i++) {
-    let v = valueFn(items[i]);
-    if (values.indexOf(v) === -1) {
-      values.push(v);
-      labels.push(labelFn(items[i]));
-      domainToDataMapping[v] = i;
-    }
-  }
+  const values = [];
+  const labels = [];
 
   // I would like to define this outside of scaleBand but it cause the documentation to be in the wrong order
   function augmentScaleBand(band, settings) { // eslint-disable-line no-shadow
@@ -108,8 +87,6 @@ export default function scaleBand(settings = {}, data = {}) {
   }
   augmentScaleBand(band, settings);
 
-  const stgns = generateSettings(settings || {}, data.fields);
-
   /**
    * if required creates a new scale with a restricted range
    * so that step size is at most maxPxStep
@@ -139,6 +116,19 @@ export default function scaleBand(settings = {}, data = {}) {
     return newBand;
   };
 
+  const valueFn = typeof settings.value === 'function' ? settings.value : d => d.datum.value;
+  const labelFn = typeof settings.label === 'function' ? settings.label : d => d.datum.label;
+
+  for (let i = 0; i < items.length; i++) {
+    const arg = extend({ datum: items[i] }, ctx);
+    const v = valueFn(arg, i);
+    if (values.indexOf(v) === -1) {
+      values.push(v);
+      labels.push(labelFn(arg, i));
+      domainToDataMapping[v] = i;
+    }
+  }
+
   band.domain(values);
   band.range(stgns.invert ? [1, 0] : [0, 1]);
 
@@ -146,6 +136,6 @@ export default function scaleBand(settings = {}, data = {}) {
   if (!isNaN(stgns.paddingInner)) { band.paddingInner(stgns.paddingInner); }
   if (!isNaN(stgns.paddingOuter)) { band.paddingOuter(stgns.paddingOuter); }
   band.align(isNaN(stgns.align) ? 0.5 : stgns.align);
-  // }
+
   return band;
 }

@@ -43,7 +43,7 @@ describe('Threshold', () => {
       settings.min = 'oops';
       settings.max = 'ooooops';
       ths = threshold(settings, {}, { theme });
-      expect(ths.domain()).to.deep.equal([NaN]);
+      expect(ths.domain()).to.deep.equal([0.5]);
       expect(ths.range()).to.deep.equal(defaultColors);
     });
 
@@ -120,7 +120,7 @@ describe('Threshold', () => {
         max: 7.2,
         range: []
       }, {}, { theme });
-      expect(ths.domain()).to.deep.equal([0]);
+      expect(ths.domain()).to.deep.equal([2]);
     });
 
     it('when range is of length 2 ', () => {
@@ -203,6 +203,8 @@ describe('Threshold', () => {
         min: -1,
         max: 20
       }, {}, { theme });
+
+      expect(ths.domain()).to.deep.equal([-10, 10]);
       expect(ths.range()).to.deep.equal(['rgb(0, 0, 0)', 'rgb(128, 128, 128)', 'rgb(255, 255, 255)']);
     });
 

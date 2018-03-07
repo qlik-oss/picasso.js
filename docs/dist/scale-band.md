@@ -38,6 +38,8 @@ picasso.chart({
   align: /* number */, // {@link https://github.com/d3/d3-scale#band_align} // Optional
   invert: false, // Invert the output range // Optional
   maxPxStep: /* number */, // Explicitly limit the bandwidth to a pixel value // Optional
+  label: /* function */, // Callback label function, applied on each datum // Optional
+  value: /* function */, // Callback value function, applied on each datum // Optional
 }
 ```
 
