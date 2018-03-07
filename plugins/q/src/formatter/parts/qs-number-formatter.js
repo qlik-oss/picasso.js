@@ -4,10 +4,6 @@ function escapeRegExp(str) {
   return str.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&');
 }
 
-/*
-* Created by Miralem Drek (mek)
-* Re-formatted and fitted into picasso by Hannes Lindquist (bge)
-*/
 const SIprefixes = {
     3: 'k',
     6: 'M',
@@ -34,7 +30,8 @@ const SIprefixes = {
   hex = /^\(hex\)/i,
   bin = /^\(bin\)/i,
   rom = /^\(rom\)/i,
-  functional = /^(\(rom\)|\(bin\)|\(hex\)|\(dec\)|\(oct\)|\(r(0[2-9]|[12]\d|3[0-6])\))/i;
+  functional = /^(\(rom\)|\(bin\)|\(hex\)|\(dec\)|\(oct\)|\(r(0[2-9]|[12]\d|3[0-6])\))/i,
+  prec = /#|0/g;
 
 function formatRadix(value, fradix, pattern, decimal) {
   value = value.toString(fradix);
@@ -128,6 +125,24 @@ function createRegExp(thousand, decimal) {
   return new RegExp(`(?:[#0]+${thousand})?[#0]+(?:${decimal}[#0]+)?`);
 }
 
+function getAbbreviations(localeInfo, listSeparator) {
+  if (!localeInfo || !localeInfo.qNumericalAbbreviation) {
+    return SIprefixes;
+  }
+
+  const abbreviations = {};
+  let abbrs = localeInfo.qNumericalAbbreviation.split(listSeparator);
+
+  abbrs.forEach((abbreviation) => {
+    let abbreviationTuple = abbreviation.split(':');
+    if (abbreviationTuple.length === 2) {
+      abbreviations[abbreviationTuple[0]] = abbreviationTuple[1];
+    }
+  });
+
+  return abbreviations;
+}
+
 function preparePattern(o, t, d) {
   let parts,
     lastPart,
@@ -181,9 +196,16 @@ function preparePattern(o, t, d) {
   temp = numericPattern.match(/#/g);
   temp = temp ? temp.length : 0;
 
+  const splitPattern = pattern.split(decTemp);
+  let matchPrecisionResult;
+  if (splitPattern[1]) {
+    matchPrecisionResult = splitPattern[1].match(prec);
+  }
+
   o.prefix = prefix || '';
   o.postfix = postfix || '';
   o.pattern = pattern;
+  o.maxPrecision = matchPrecisionResult ? matchPrecisionResult.length : 2;
   o.percentage = percentage.test(pattern);
   o.numericPattern = numericPattern || '';
   o.numericRegex = new RegExp(`${escape(t, null, true)}|${escape(d, null, true)}`, 'g');
@@ -210,6 +232,12 @@ class NumberFormatter {
     this.thousandDelimiter = thousand || ',';
     this.decimalDelimiter = decimal || '.';
     this.type = type || 'numeric';
+
+    // FIXME qListSep?
+    // this.patternSeparator = this.localeInfo && this.localeInfo.qListSep ? this.localeInfo.qListSep : ';';
+    this.patternSeparator = ';';
+
+    this.abbreviations = getAbbreviations(localeInfo, this.patternSeparator);
 
     this.prepare();
   }
@@ -296,11 +324,7 @@ class NumberFormatter {
     };
     prep = this._prepared;
 
-    // TODO FIXME qListSep?
-    // const patternSeparator = this.localeInfo && this.localeInfo.qListSep ? this.localeInfo.qListSep : ';';
-    const patternSeparator = ';';
-
-    pattern = pattern.split(patternSeparator);
+    pattern = pattern.split(this.patternSeparator);
     prep.positive.pattern = pattern[0];
     prep.negative.pattern = pattern[1];
     prep.zero.pattern = pattern[2];
@@ -374,11 +398,39 @@ class NumberFormatter {
       }
 
       if (prep.abbreviate) {
+        const abbrArray = Object.keys(this.abbreviations).map(key => parseInt(key, 10)).sort((a, b) => a - b);
+        let lowerAbbreviation;
+        let upperAbbreviation = abbrArray[0];
+        i = 0;
         exponent = Number(Number(value).toExponential().split('e')[1]);
-        exponent -= (exponent % 3);
-        if (exponent in SIprefixes) {
-          abbr = SIprefixes[exponent];
-          value /= Math.pow(10, exponent);
+
+        while (upperAbbreviation <= exponent && i < abbrArray.length) {
+          i++;
+          upperAbbreviation = abbrArray[i];
+        }
+
+        if (i > 0) {
+          lowerAbbreviation = abbrArray[i - 1];
+        }
+
+        let suggestedAbbrExponent;
+
+        // value and lower abbreviation is for values above 10, use the lower (move to the left <==)
+        if ((lowerAbbreviation && exponent > 0 && lowerAbbreviation > 0)) {
+          suggestedAbbrExponent = lowerAbbreviation;
+        // value and lower abbreviation is for values below 0.1 (move to the right ==>)
+        } else if ((exponent < 0 && lowerAbbreviation < 0) || !lowerAbbreviation) {
+          // upper abbreviation is also for values below 0.1 and precision allows for using the upper abbreviation(move to the right ==>)
+          if (upperAbbreviation < 0 && (upperAbbreviation - exponent) <= prep.maxPrecision) {
+            suggestedAbbrExponent = upperAbbreviation;
+          // lower abbrevaition is smaller than exponent and we can't get away with not abbreviating
+          } else if (lowerAbbreviation <= exponent && !(upperAbbreviation > 0 && -exponent <= prep.maxPrecision)) {  // (move to left <==)
+            suggestedAbbrExponent = lowerAbbreviation;
+          }
+        }
+        if (suggestedAbbrExponent) {
+          abbr = this.abbreviations[suggestedAbbrExponent];
+          value /= Math.pow(10, suggestedAbbrExponent);
         }
       }
 
