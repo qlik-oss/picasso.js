@@ -201,6 +201,7 @@ export function renderer(sceneFn = sceneFactory) {
     if (el) {
       el.width = el.width;
     }
+    scene = null;
 
     return canvasRenderer;
   };
