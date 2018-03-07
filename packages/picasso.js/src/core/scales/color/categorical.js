@@ -1,4 +1,16 @@
 import ordinal from '../ordinal';
+import resolveSettings from '../settings-resolver';
+
+const DEFAULT_SETTINGS = {
+  domain: [],
+  range: [],
+  unknown: undefined
+};
+
+const DEFAULT_EXPLICIT_SETTINGS = {
+  domain: [],
+  range: []
+};
 
 /**
  * @typedef {object} scale--categorical-color
@@ -19,42 +31,45 @@ import ordinal from '../ordinal';
  * @param { dataset } [dataset]
  * @return { ordinal }
  */
-export default function scaleCategorical(settings = {}, dataset = {}, { theme } = {}) {
-  const s = ordinal(settings, dataset);
+export default function scaleCategorical(settings = {}, data = {}, resources = {}) {
+  const s = ordinal(settings, data, resources);
+  const theme = resources.theme;
+  const stgns = resolveSettings(settings, DEFAULT_SETTINGS, { data, resources });
+  stgns.explicit = resolveSettings(settings.explicit, DEFAULT_EXPLICIT_SETTINGS, { data, resources });
 
   let range;
-  if (!settings.range) {
+  if (!Array.isArray(stgns.range) || stgns.range.length === 0) {
     range = theme ? theme.palette('categorical', s.domain().length).slice() : [];
   } else {
-    range = settings.range.slice();
+    range = stgns.range.slice();
   }
-  if (settings.unknown) {
-    s.unknown(settings.unknown);
+
+  if (stgns.unknown) {
+    s.unknown(stgns.unknown);
   } else if (theme && theme.palette('unknown')) {
     let un = theme.palette('unknown');
     s.unknown(un[0]);
   }
-  if (settings.explicit && settings.explicit.domain) {
-    let domain = s.domain().slice();
-    let explicitDomain = (settings.explicit.domain || []);
-    if (explicitDomain.length) {
-      // duplicate range values to cover entire domain
-      let numCopies = Math.floor(domain.length / range.length);
-      for (let i = 1; i < numCopies + 1; i *= 2) {
-        range = range.concat(range);
-      }
-      // inject explicit colors
-      let explicitRange = (settings.explicit.range || []);
-      const order = explicitDomain.map((d, i) => [domain.indexOf(d), d, explicitRange[i]]).sort((a, b) => a[0] - b[0]);
-      order.forEach((v) => {
-        const idx = domain.indexOf(v[1]);
-        if (idx !== -1) {
-          range.splice(idx, 0, v[2]);
-        }
-      });
-      // cutoff excess range values
-      range.length = domain.length;
+
+  if (Array.isArray(stgns.explicit.domain) && stgns.explicit.domain.length) {
+    const domain = s.domain().slice();
+    const explicitDomain = stgns.explicit.domain;
+    // duplicate range values to cover entire domain
+    const numCopies = Math.floor(domain.length / range.length);
+    for (let i = 1; i < numCopies + 1; i *= 2) {
+      range = range.concat(range);
     }
+    // inject explicit colors
+    const explicitRange = Array.isArray(stgns.explicit.range) ? stgns.explicit.range : [];
+    const order = explicitDomain.map((d, i) => [domain.indexOf(d), d, explicitRange[i]]).sort((a, b) => a[0] - b[0]);
+    order.forEach((v) => {
+      const idx = domain.indexOf(v[1]);
+      if (idx !== -1) {
+        range.splice(idx, 0, v[2]);
+      }
+    });
+    // cutoff excess range values
+    range.length = domain.length;
   }
   s.range(range);
 

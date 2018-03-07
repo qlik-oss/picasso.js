@@ -64,7 +64,7 @@ export function create(options, d, deps) {
 
   if (deps.scale.has(type)) {
     s = deps.scale.get(type);
-    s = s(options, data, deps);
+    s = s(options, data, { theme: deps.theme, logger: deps.logger });
     s.type = type;
   }
   return s;

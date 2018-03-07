@@ -1,18 +1,23 @@
 import extend from 'extend';
-import bandScale from './band';
+import bandScale, { DEFAULT_SETTINGS } from './band';
+import resolveSettings from './settings-resolver';
 
-function keyGen(node, valueFn) {
+const DEFAULT_TICKS_SETTINGS = {
+  depth: 0
+};
+
+function keyGen(node, valueFn, ctx) {
   return node.ancestors()
-    .map(a => valueFn(a.data))
+    .map(a => valueFn(extend({ datum: a.data }, ctx)))
     .reverse()
     .slice(1) // Delete root node
     .toString();
 }
 
-function flattenTree(rootNode, settings) {
-  const ticksDepth = typeof settings.ticks === 'object' ? settings.ticks.depth : null;
-  const valueFn = typeof settings.value === 'function' ? settings.value : d => d.value;
-  const labelFn = typeof settings.label === 'function' ? settings.label : valueFn;
+function flattenTree(rootNode, settings, ctx) {
+  const ticksDepth = settings.ticks.depth;
+  const valueFn = settings.value;
+  const labelFn = settings.label;
   const values = [];
   const labels = [];
   const items = {};
@@ -24,10 +29,10 @@ function flattenTree(rootNode, settings) {
 
   rootNode.eachAfter((node) => {
     if (node.depth > 0) {
-      const key = keyGen(node, valueFn);
+      const key = keyGen(node, valueFn, ctx);
       const leaves = node.leaves() || [node]; // If leaf node returns itself
-      const value = valueFn(node.data);
-      const label = labelFn(node.data);
+      const value = valueFn(extend({ datum: node.data }, ctx));
+      const label = labelFn(extend({ datum: node.data }, ctx));
       const isBranch = Array.isArray(node.children);
 
       const item = {
@@ -35,8 +40,8 @@ function flattenTree(rootNode, settings) {
         count: leaves.length,
         value,
         label,
-        leftEdge: keyGen(leaves[0], valueFn),
-        rightEdge: keyGen(leaves[Math.max(leaves.length - 1, 0)], valueFn),
+        leftEdge: keyGen(leaves[0], valueFn, ctx),
+        rightEdge: keyGen(leaves[Math.max(leaves.length - 1, 0)], valueFn, ctx),
         node
         // isTick: ticksDepth === null ? !isBranch : node.depth === ticksDepth
       };
@@ -49,7 +54,7 @@ function flattenTree(rootNode, settings) {
         labels.push(label);
       }
 
-      if ((ticksDepth === null && !isBranch) || node.depth === ticksDepth) {
+      if ((ticksDepth <= 0 && !isBranch) || node.depth === ticksDepth) {
         ticks.push(item);
       }
 
@@ -85,10 +90,16 @@ function flattenTree(rootNode, settings) {
  * @return { h-band }
  */
 
-export default function scaleHierarchicalBand(settings = {}, data = {}) {
-  let bandInstance = bandScale(settings);
+export default function scaleHierarchicalBand(settings = {}, data = {}, resources = {}) {
+  const ctx = { data, resources };
+  const stgns = resolveSettings(settings, DEFAULT_SETTINGS, ctx);
+  stgns.ticks = resolveSettings(settings.ticks, DEFAULT_TICKS_SETTINGS, ctx);
+  stgns.value = typeof settings.value === 'function' ? settings.value : d => d.datum.value;
+  stgns.label = typeof settings.label === 'function' ? settings.label : d => d.datum.value;
 
-  const { values, labels, items, ticks } = flattenTree(data.root, settings);
+  let bandInstance = bandScale(stgns);
+
+  const { values, labels, items, ticks } = flattenTree(data.root, stgns, ctx);
 
   /**
    * @alias h-band
@@ -101,7 +112,7 @@ export default function scaleHierarchicalBand(settings = {}, data = {}) {
     const strVal = String(val);
     const item = items[strVal];
     if (item) {
-      return bandInstance(settings.invert ? item.rightEdge : item.leftEdge);
+      return bandInstance(stgns.invert ? item.rightEdge : item.leftEdge);
     }
 
     return bandInstance(strVal);
@@ -157,7 +168,7 @@ export default function scaleHierarchicalBand(settings = {}, data = {}) {
     return null;
   };
 
-  hBand.copy = () => scaleHierarchicalBand(settings, data);
+  hBand.copy = () => scaleHierarchicalBand(settings, data, resources);
 
   /**
    * @return { Object[] } Labels for each leaf node

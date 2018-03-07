@@ -132,7 +132,7 @@ describe('legend layout', () => {
       it('should not show title', () => {
         expect(boxes.title).to.eql({
           x: 193,
-          y: 7,
+          y: 22,
           width: 0,
           height: 19
         });
@@ -150,7 +150,7 @@ describe('legend layout', () => {
       it('should position content to the right', () => {
         expect(boxes.content).to.eql({
           x: 7 + 17 + 7,
-          y: 7,
+          y: 22,
           width: 200 - 31 - 7,
           height: 86
         });

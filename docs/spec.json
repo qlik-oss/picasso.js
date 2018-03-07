@@ -3657,6 +3657,16 @@
           "description": "Explicitly limit the bandwidth to a pixel value",
           "optional": true,
           "type": "number"
+        },
+        "label": {
+          "description": "Callback label function, applied on each datum",
+          "optional": true,
+          "type": "function"
+        },
+        "value": {
+          "description": "Callback value function, applied on each datum",
+          "optional": true,
+          "type": "function"
         }
       }
     },

@@ -79,9 +79,11 @@ export default function layout(rect, display, orientation, {
     itemRenderer.parallelize(availableExtentForItems, isPreliminary ? undefined : availableSpreadForItems);
 
     const navigationSize = itemRenderer.extent() > availableExtentForItems ? navigationRenderer.extent() : 0;
+    const spread = itemRenderer.spread();
+    const navigationSpread = navigationSize ? navigationRenderer.spread() : 0;
     content = {
       x: title.x + title.width + (title.width ? display.spacing : 0),
-      y: paddedRect.y,
+      y: paddedRect.y + Math.max(0, (navigationSpread - spread) / 2),
       width: paddedRect.width - navigationSize - title.width - (navigationSize ? display.spacing : 0) - (title.width ? display.spacing : 0),
       height: availableSpreadForItems
     };
@@ -92,13 +94,15 @@ export default function layout(rect, display, orientation, {
       height: paddedRect.height
     };
 
+    title.y = content.y;
+
     const isRtl = itemRenderer.direction() === 'rtl';
     if (isRtl) { // switch title, content and navigation
       navigation.x = paddedRect.x;
       content.x = navigation.x + navigation.width + (navigation.width ? display.spacing : 0);
       title.x = content.x + content.width + (title.width ? display.spacing : 0);
     }
-    preferredSize = Math.max(title.height, navigationSize ? navigationRenderer.spread() : 0, itemRenderer.spread());
+    preferredSize = Math.max(title.height, navigationSpread, itemRenderer.spread());
     // }
   } else {
     // |------------|
