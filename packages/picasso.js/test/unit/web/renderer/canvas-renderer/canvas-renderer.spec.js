@@ -42,6 +42,27 @@ describe('canvas renderer', () => {
     expect(r.render()).to.equal(true);
   });
 
+  it('should not render if scene and size has not changed', () => {
+    r.appendTo(element('div'));
+    scene.returns({
+      children: [],
+      equals: () => true
+    });
+    expect(r.render()).to.equal(true);
+    expect(r.render()).to.equal(false);
+  });
+
+  it('should render if scene has been cleared', () => {
+    r.appendTo(element('div'));
+    scene.returns({
+      children: [],
+      equals: () => true
+    });
+    expect(r.render()).to.equal(true);
+    r.clear();
+    expect(r.render()).to.equal(true);
+  });
+
   it('should return zero size when canvas is not initiated', () => {
     expect(r.size()).to.deep.equal({ x: 0, y: 0, width: 0, height: 0, scaleRatio: { x: 1, y: 1 }, margin: { left: 0, top: 0 } });
   });
