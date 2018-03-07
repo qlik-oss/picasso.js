@@ -1,6 +1,57 @@
 import q from '../../src/data/dataset';
 
-describe('magic', () => {
+describe('q-data', () => {
+  describe('create field', () => {
+    const cube = {
+      qSize: { qcx: 3, qcy: 20 },
+      qDimensionInfo: [
+        {
+          qFallbackTitle: 'A'
+        }
+      ],
+      qMeasureInfo: [
+        {},
+        {},
+        {
+          qFallbackTitle: 'C',
+          qNumFormat: {
+            qType: 'M',
+            qFmt: '$#_00'
+          },
+          qAttrExprInfo: [{}, {
+            qFallbackTitle: 'm attr expr title',
+            qNumFormat: {
+              qType: 'M',
+              qFmt: '€#_00'
+            }
+          }]
+        }
+      ],
+      qDataPages: [{ qMatrix: [] }]
+    };
+
+    const d = q({
+      key: 'nyckel',
+      data: cube,
+      config: {
+        localeInfo: {
+          qDecimalSep: '_'
+        }
+      }
+    });
+
+    it('should pass localeInfo to field', () => {
+      let f = d.field('qMeasureInfo/2');
+      const form = f.formatter();
+      expect(form(300)).to.eql('$300_00');
+    });
+
+    it('should pass localeInfo to attribute field', () => {
+      let f = d.field('qMeasureInfo/2/qAttrExprInfo/1');
+      const form = f.formatter();
+      expect(form(300)).to.eql('€300_00');
+    });
+  });
   describe('find field', () => {
     const cube = {
       qSize: { qcx: 3, qcy: 20 },
