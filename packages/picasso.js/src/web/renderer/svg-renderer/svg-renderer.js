@@ -116,6 +116,7 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
     if (!group) {
       return svg;
     }
+    scene = null;
     const g = group.cloneNode(false);
     el.replaceChild(g, group);
     group = g;

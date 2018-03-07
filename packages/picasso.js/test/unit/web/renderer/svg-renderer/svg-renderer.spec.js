@@ -127,6 +127,16 @@ describe('svg renderer', () => {
       svg.appendTo(element('div'));
       expect(svg.render).to.not.throw();
     });
+
+    it('should not render if scene and size has not changed', () => {
+      svg.appendTo(element('div'));
+      scene.returns({
+        children: [],
+        equals: () => true
+      });
+      expect(svg.render()).to.equal(true);
+      expect(svg.render()).to.equal(false);
+    });
   });
 
   describe('clear', () => {
@@ -139,6 +149,17 @@ describe('svg renderer', () => {
       svg.clear();
 
       expect(svg.root().children.length).to.equal(0);
+    });
+
+    it('should render if scene has been cleared', () => {
+      svg.appendTo(element('div'));
+      scene.returns({
+        children: [],
+        equals: () => true
+      });
+      expect(svg.render()).to.equal(true);
+      svg.clear();
+      expect(svg.render()).to.equal(true);
     });
   });
 

@@ -283,6 +283,28 @@ describe('numberFormat', () => {
           expect(f(0.0001)).to.equal('0.1m');
         });
 
+        it('should support custom abbreviations', () => {
+          let localeInfo = {
+            qNumericalAbbreviation: '-6:u;-3:x;2:h;6:test'
+          };
+          f = formatter('#,###.0A', ',', '', '', localeInfo);
+
+          expect(f(0)).to.equal('0.0');
+          expect(f(1)).to.equal('1.0');
+          expect(f(10000000)).to.equal('10.0test');
+          expect(f(100)).to.equal('1.0h');
+          expect(f(100000)).to.equal('1,000.0h');
+
+          f = formatter('#.###A', ',', '', '', localeInfo);
+          expect(f(1234567, '#.###A')).to.equal('1.235test');
+
+          f = formatter('#.#A', ',', '', '', localeInfo);
+          expect(f(0.0001, '#.#A')).to.equal('0.1x');
+          expect(f(0.00001, '#.#A')).to.equal('10u');
+          expect(f(0.0000001, '#.#A')).to.equal('0.1u');
+          expect(f(1005)).to.equal('10.1h');
+        });
+
         it('should support percentage', () => {
           f = formatter('0.0%');
 
