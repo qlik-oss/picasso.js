@@ -27,7 +27,12 @@ export default function componentFactoryFixture() {
     };
 
     rendererMock = {
-      size: rect => ({ width: rect.width || 100, height: rect.height || 100 }),
+      size: rect => ({
+        x: rect.x || 0,
+        y: rect.y || 0,
+        width: rect.width || 100,
+        height: rect.height || 100
+      }),
       render: (nodes) => { rendererOutput = nodes; },
       appendTo: () => {},
       measureText: ({ text }) => ({

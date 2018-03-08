@@ -4515,6 +4515,53 @@
       ],
       "entries": {}
     },
+    "component--brush-area-brush": {
+      "kind": "object",
+      "entries": {
+        "key": {
+          "description": "Component key",
+          "type": "string"
+        },
+        "contexts": {
+          "description": "Name of the brushing contexts to affect",
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "data": {
+          "description": "The mapped data properties to add to the brush",
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "action": {
+          "description": "Type of action to respond with",
+          "optional": true,
+          "defaultValue": "'set'",
+          "type": "string"
+        }
+      }
+    },
+    "component--brush-area-settings": {
+      "kind": "object",
+      "entries": {
+        "brush": {
+          "kind": "object",
+          "entries": {
+            "components": {
+              "kind": "array",
+              "items": {
+                "type": "#/definitions/component--brush-area-brush"
+              }
+            }
+          }
+        }
+      }
+    },
     "component--brush-area-dir-settings": {
       "kind": "object",
       "entries": {
