@@ -4,11 +4,11 @@ title: Scales
 
 Scales are an essential part of most vizualizations and picasso.js comes bundled with a couple of them.
 
-The scales in picasso.js are augmented [d3 scales](https://github.com/d3/d3-scale), where the main difference is tigher integration with [data](data.md).
+The scales in picasso.js are augmented [d3 scales](https://github.com/d3/d3-scale), where the main difference is tighter integration with [data](data.md).
 
 ## Using scales
 
-Scales are used indirectly via the `picasso.chart` API. Where the `chart` API instantiate the scales. This approach allows [components](components.md) to use a scale instances by reference. It also possible to access via the chart instance API.
+Scales are used indirectly via the `picasso.chart` API. Where the `chart` API instantiate the scales. This approach allows [components](components.md) to use a scale instances by reference. It's also possible to access via the chart instance API.
 
 ```js
 const chartInstance = picasso.chart({
