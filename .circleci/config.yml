@@ -158,7 +158,13 @@ jobs:
           at: ~/picassojs
       - run: npm run bootstrap
       - run: npm run test:integration:local
-
+      
+  deploy:
+    <<: *defaults
+    steps:
+      - run:
+          name: Deploy to S3 ...
+          command: aws s3 sync website/build/ s3://picassojssite/ --delete
 
 workflows:
   version: 2
@@ -186,3 +192,9 @@ workflows:
       - test-integration:
           requires:
             - build
+      - deploy:
+          requires:
+            - docs-website
+          filters:
+            branches:
+              only: axelssonHakan-patch-1
