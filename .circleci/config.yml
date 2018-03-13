@@ -161,7 +161,7 @@ jobs:
       
   deploy:
     docker:
-      - image: circleci/awscli:latest
+      - image: cibuilds/aws:1.14.38
     working_directory: ~/picassojs
     steps:
       - run:
