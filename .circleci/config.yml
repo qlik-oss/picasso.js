@@ -164,6 +164,8 @@ jobs:
       - image: cibuilds/aws:1.14.38
     working_directory: ~/picassojs
     steps:
+      - attach_workspace:
+          at: ~/picassojs
       - run:
           name: Deploy to S3 ...
           command: aws s3 sync website/build/ s3://picassojssite/ --delete
