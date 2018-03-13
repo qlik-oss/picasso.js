@@ -121,6 +121,10 @@ jobs:
           path: docs/spec.json
       - store_artifacts:
           path: website/build
+      - persist_to_workspace:
+          root: workspace
+          paths:
+            - website/build/
 
   lint:
     <<: *defaults
@@ -165,10 +169,10 @@ jobs:
     working_directory: ~/picassojs
     steps:
       - attach_workspace:
-          at: ~/picassojs
+          at: /tmp/workspace
       - run:
           name: Deploy to S3 ...
-          command: aws s3 sync website/build/ s3://picassojssite/ --delete
+          command: aws s3 sync /tmp/workspace/picasso.js/ s3://picassojssite/ --delete
 
 workflows:
   version: 2
