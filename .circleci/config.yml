@@ -122,7 +122,7 @@ jobs:
       - store_artifacts:
           path: website/build
       - persist_to_workspace:
-          root: workspace
+          root: ~/picassojs
           paths:
             - website/build/
 
@@ -169,10 +169,10 @@ jobs:
     working_directory: ~/picassojs
     steps:
       - attach_workspace:
-          at: /tmp/workspace
+          at: ~/picassojs
       - run:
           name: Deploy to S3 ...
-          command: aws s3 sync /tmp/workspace/picasso.js/ s3://picassojssite/ --delete
+          command: aws s3 sync /website/build/picassojs/ s3://picassojssite/ --delete
 
 workflows:
   version: 2
@@ -203,6 +203,10 @@ workflows:
       - deploy:
           requires:
             - docs-website
+            - lint
+            - test-unit
+            - test-component
+            - test-integration
           filters:
             branches:
               only: axelssonHakan-patch-1
