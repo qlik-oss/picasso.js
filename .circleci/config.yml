@@ -172,7 +172,7 @@ jobs:
           at: ~/picassojs
       - run:
           name: Deploy to S3 ...
-          command: aws s3 sync /website/build/picasso.js/ s3://picassojssite/ --delete
+          command: aws s3 sync website/build/picasso.js/ s3://picassojssite/ --delete
 
 workflows:
   version: 2
