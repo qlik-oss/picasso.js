@@ -209,4 +209,4 @@ workflows:
             - test-integration
           filters:
             branches:
-              only: axelssonHakan-patch-1
+              only: master
