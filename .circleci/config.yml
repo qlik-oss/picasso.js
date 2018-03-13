@@ -163,7 +163,7 @@ jobs:
       - run: npm run bootstrap
       - run: npm run test:integration:local
       
-  deploy:
+  deploy-docs:
     docker:
       - image: cibuilds/aws:1.14.38
     working_directory: ~/picassojs
@@ -172,7 +172,7 @@ jobs:
           at: ~/picassojs
       - run:
           name: Deploy to S3 ...
-          command: aws s3 sync /website/build/picassojs/ s3://picassojssite/ --delete
+          command: aws s3 sync /website/build/picasso.js/ s3://picassojssite/ --delete
 
 workflows:
   version: 2
@@ -200,7 +200,7 @@ workflows:
       - test-integration:
           requires:
             - build
-      - deploy:
+      - deploy-docs:
           requires:
             - docs-website
             - lint
