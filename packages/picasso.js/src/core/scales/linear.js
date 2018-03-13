@@ -3,9 +3,27 @@ import extend from 'extend';
 
 import { notNumber } from '../utils/is-number';
 import { generateContinuousTicks } from './ticks/tick-generators';
-import { continuousDefaultSettings } from './ticks/default-settings';
+import resolveSettings from './settings-resolver';
 
-const AVAILABLE_SETTINGS = ['min', 'max', 'expand', 'include', 'invert'];
+export const DEFAULT_SETTINGS = {
+  min: NaN,
+  max: NaN,
+  expand: NaN,
+  include: [],
+  invert: false
+};
+
+export const DEFAULT_TICKS_SETTINGS = {
+  tight: false,
+  forceBounds: false,
+  values: undefined,
+  count: NaN,
+  distance: 100
+};
+
+export const DEFAULT_MINORTICKS_SETTINGS = {
+  count: NaN
+};
 
 /**
  * @typedef {object} scale--linear
@@ -24,28 +42,6 @@ const AVAILABLE_SETTINGS = ['min', 'max', 'expand', 'include', 'invert'];
  * @property {number} [min] - Set an explicit minimum value
  * @property {number} [max] - Set an explicit maximum value
  */
-
-/*
-function applyFormat(formatter) {
-  return typeof formatter === 'undefined' ? t => t : t => formatter(t);
-}
-*/
-
-function evalSetting(settings, fields, name) {
-  if (typeof settings[name] === 'function') {
-    return settings[name](fields);
-  }
-
-  return settings[name];
-}
-
-function generateSettings(settings, fields) {
-  const calcSettings = {};
-  AVAILABLE_SETTINGS.forEach((s) => {
-    calcSettings[s] = evalSetting(settings, fields, s);
-  });
-  return calcSettings;
-}
 
 function getMinMax(settings, fields) {
   const min = +settings.min;
@@ -103,9 +99,13 @@ function initNormScale(normScale, scale) {
  * @return { linear }
  */
 
-export default function scaleLinear(settings, data) {
+export default function scaleLinear(settings = {}, data = {}, resources = {}) {
   const d3Scale = d3ScaleLinear();
   const normScale = { instance: null, invert: false };
+  const ctx = { data, resources };
+  const stgns = resolveSettings(settings, DEFAULT_SETTINGS, ctx);
+  stgns.ticks = resolveSettings(settings.ticks, DEFAULT_TICKS_SETTINGS, ctx);
+  stgns.minorTicks = resolveSettings(settings.minorTicks, DEFAULT_MINORTICKS_SETTINGS, ctx);
   let tickCache;
 
   /**
@@ -177,7 +177,8 @@ export default function scaleLinear(settings, data) {
   fn.ticks = function ticks(input) {
     if (input !== null && typeof input === 'object') {
       input.settings = input.settings || {};
-      input.settings = extend(true, continuousDefaultSettings(), settings, input.settings);
+      // TODO Discontinue support for custom ticks settings as argument
+      input.settings = extend(true, {}, stgns, input.settings);
       input.scale = fn;
       tickCache = generateContinuousTicks(input);
       return tickCache;
@@ -304,7 +305,7 @@ export default function scaleLinear(settings, data) {
   };
 
   fn.copy = function copy() {
-    const cop = scaleLinear(settings, data);
+    const cop = scaleLinear(settings, data, resources);
     cop.domain(fn.domain());
     cop.range(fn.range());
     cop.clamp(d3Scale.clamp());
@@ -342,14 +343,11 @@ export default function scaleLinear(settings, data) {
     return normScale.instance.invert(t);
   };
 
-  if (settings) {
-    const stgns = generateSettings(settings, data ? data.fields : []);
-    const { mini, maxi } = getMinMax(stgns, data ? data.fields : []);
+  const { mini, maxi } = getMinMax(stgns, data ? data.fields : []);
 
-    fn.domain([mini, maxi]);
-    fn.range(stgns.invert ? [1, 0] : [0, 1]);
-    normScale.invert = stgns.invert;
-  }
+  fn.domain([mini, maxi]);
+  fn.range(stgns.invert ? [1, 0] : [0, 1]);
+  normScale.invert = stgns.invert;
 
   return fn;
 }

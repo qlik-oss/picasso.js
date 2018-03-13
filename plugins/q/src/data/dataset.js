@@ -28,7 +28,8 @@ function createAttrFields(idx, d, {
   pages,
   fieldExtractor,
   key,
-  fieldKey
+  fieldKey,
+  localeInfo
 }) {
   if (d.qAttrDimInfo) {
     cache.attributeDimensionFields[idx] = d.qAttrDimInfo.map((attrDim, i) => (attrDim ? field({
@@ -38,7 +39,8 @@ function createAttrFields(idx, d, {
       cube,
       pages,
       fieldExtractor,
-      value: v => v.qElemNo
+      value: v => v.qElemNo,
+      localeInfo
     }) : undefined));
   }
   if (d.qAttrExprInfo) {
@@ -48,14 +50,16 @@ function createAttrFields(idx, d, {
       key: `${fieldKey}/qAttrExprInfo/${i}`,
       cube,
       pages,
-      fieldExtractor
+      fieldExtractor,
+      localeInfo
     }) : undefined));
   }
 }
 
 export default function q({
   key,
-  data
+  data,
+  config = {}
 } = {}) {
   const cache = {
     attributeDimensionFields: [],
@@ -105,9 +109,10 @@ export default function q({
       key: fieldKey,
       cube,
       pages,
-      fieldExtractor
+      fieldExtractor,
+      localeInfo: config.localeInfo
     }));
-    createAttrFields(i, d, { cache, cube, pages, fieldExtractor, key, fieldKey });
+    createAttrFields(i, d, { cache, cube, pages, fieldExtractor, key, fieldKey, localeInfo: config.localeInfo });
   });
 
   cube.qMeasureInfo.forEach((d, i) => {
@@ -118,9 +123,10 @@ export default function q({
       key: fieldKey,
       cube,
       pages,
-      fieldExtractor
+      fieldExtractor,
+      localeInfo: config.localeInfo
     }));
-    createAttrFields(dimensions.length + i, d, { cache, cube, pages, fieldExtractor, key, fieldKey });
+    createAttrFields(dimensions.length + i, d, { cache, cube, pages, fieldExtractor, key, fieldKey, localeInfo: config.localeInfo });
   });
 
   return dataset;

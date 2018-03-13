@@ -7,8 +7,8 @@ import extend from 'extend';
 export default function complexResolver({ keys, data, defaultSettings, style, settings, width, height, resolver }) {
   const defaults = extend(true, {}, defaultSettings || {}, style || {});
   const scaled = {
-    major: settings.orientation === 'vertical' ? height : width,
-    minor: settings.orientation === 'vertical' ? width : height
+    major: settings.orientation === 'horizontal' ? height : width,
+    minor: settings.orientation === 'horizontal' ? width : height
   };
 
   const majorSettings = settings.major;

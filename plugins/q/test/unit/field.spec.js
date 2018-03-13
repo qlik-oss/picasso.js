@@ -11,12 +11,17 @@ describe('q-field', () => {
         qTags: ['a', 'b'],
         qFallbackTitle: 'TITLE',
         qNumFormat: {
-          qType: 'M'
+          qType: 'M',
+          qFmt: '$#-###A'
         }
       },
       id: 'unique',
       cube: { qMode: mode || 'S' },
-      fieldExtractor: fe
+      fieldExtractor: fe,
+      localeInfo: {
+        qThousandSep: '-',
+        qNumericalAbbreviation: '3:x'
+      }
     };
   }
   function mField(mode, fe) {
@@ -103,6 +108,12 @@ describe('q-field', () => {
       let f = mField();
       const form = f.formatter();
       expect(typeof form).to.eql('function');
+    });
+
+    it('should take localeInfo into account when formatting', () => {
+      let f = mField();
+      const form = f.formatter();
+      expect(form(3000000)).to.eql('$3-000x');
     });
 
     it('should have a default reducer of "avg" for a measure', () => {

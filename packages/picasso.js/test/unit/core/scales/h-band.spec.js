@@ -27,8 +27,7 @@ describe('Hierarchical band scale', () => {
       })
     };
 
-    settings = {
-    };
+    settings = {};
   });
 
   describe('domain', () => {
@@ -143,7 +142,7 @@ describe('Hierarchical band scale', () => {
   });
 
   describe('ticks', () => {
-    it('should return ticks for each leaf node', () => {
+    it('should by default return ticks for each leaf node', () => {
       scale = hBand(settings, data);
       const ticks = scale.ticks();
       expect(ticks).to.be.of.length(5);
@@ -177,6 +176,25 @@ describe('Hierarchical band scale', () => {
       expect(ticks[4].start).to.approximately(0.833, 0.001);
       expect(ticks[4].position).to.approximately(0.916, 0.001);
       expect(ticks[4].end).to.approximately(0.999, 0.001);
+    });
+
+    it('should return ticks at depth', () => {
+      settings.ticks = { depth: 1 };
+      scale = hBand(settings, data);
+      const ticks = scale.ticks();
+      expect(ticks).to.be.of.length(2);
+
+      expect(ticks[0].label).to.equal('left');
+      expect(ticks[0].data.value).to.equal('left');
+      expect(ticks[0].start).to.approximately(0, 0.001);
+      expect(ticks[0].position).to.approximately(0.25, 0.001);
+      expect(ticks[0].end).to.approximately(0.5, 0.001);
+
+      expect(ticks[1].label).to.equal('right');
+      expect(ticks[1].data.value).to.equal('right');
+      expect(ticks[1].start).to.approximately(0.666, 0.001);
+      expect(ticks[1].position).to.approximately(0.833, 0.001);
+      expect(ticks[1].end).to.approximately(1, 0.001);
     });
   });
 

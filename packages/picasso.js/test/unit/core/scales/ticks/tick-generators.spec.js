@@ -1,6 +1,6 @@
-import { continuousDefaultSettings } from '../../../../../src/core/scales/ticks/default-settings';
+import extend from 'extend';
 import { looseDistanceBasedGenerator } from '../../../../../src/core/scales/ticks/tick-generators';
-import linear from '../../../../../src/core/scales/linear';
+import linear, { DEFAULT_TICKS_SETTINGS, DEFAULT_MINORTICKS_SETTINGS } from '../../../../../src/core/scales/linear';
 import band from '../../../../../src/core/scales/band';
 import formatter from '../../../../../src/core/formatter';
 
@@ -12,7 +12,7 @@ describe('Tick generators', () => {
 
   describe('continues tick generator', () => {
     beforeEach(() => {
-      settings = continuousDefaultSettings();
+      settings = extend(true, {}, { ticks: DEFAULT_TICKS_SETTINGS, minorTicks: DEFAULT_MINORTICKS_SETTINGS });
       settings.paddingStart = 0;
       settings.paddingEnd = 10;
       settings.minorTicks = {
@@ -303,7 +303,11 @@ describe('Tick generators', () => {
     });
 
     it('should generate ticks by data', () => {
-      scale = band({ value: d => d, label: d => d }, { items: data });
+      scale = band({
+        value: d => d.datum,
+        label: d => d.datum },
+        { items: data }
+      );
       scale.range([0, 1]);
       const ticks = scale.ticks();
       const expected = [
@@ -316,14 +320,15 @@ describe('Tick generators', () => {
 
     it('should support duplicate labels by separating values and labels', () => {
       scale = band({
-        value: item => item.id.value,
-        label: item => item.value
+        value: item => item.datum.id.value,
+        label: item => item.datum.value
       },
         { items: [
           { value: 'alpha', id: { value: 'd1' } },
           { value: 'alpha', id: { value: 'd2' } },
           { value: 'beta', id: { value: 'd3' } }
-        ] });
+        ] }
+      );
       scale.range([0, 1]);
 
       const ticks = scale.ticks();
