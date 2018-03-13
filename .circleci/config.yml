@@ -160,7 +160,9 @@ jobs:
       - run: npm run test:integration:local
       
   deploy:
-    <<: *defaults
+    docker:
+      - image: circleci/awscli:latest
+    working_directory: ~/picassojs
     steps:
       - run:
           name: Deploy to S3 ...
