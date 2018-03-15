@@ -14,9 +14,9 @@
   "main": "dist/picasso-hammer.min.js",
   "module": "src/index.js",
   "scripts": {
-    "build": "npxc rollup -c ../../rollup.config.js --name picassoHammer --environment BUILD:production",
-    "build:dev": "npxc rollup -c ../../rollup.config.js --name picassoHammer",
-    "build:watch": "npxc rollup -c ../../rollup.config.js --name picassoHammer -w",
+    "build": "npxc rollup -c ../../rollup.config.js --name picassoHammer",
+    "build:dev": "npm run build",
+    "build:watch": "npm run build -- -w",
     "lint": "npxc eslint src test",
     "test": "npxc aw -c aw.config.js",
     "prepublishOnly": "rm -rf dist && npm run build && npm run build:dev"

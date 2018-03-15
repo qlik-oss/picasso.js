@@ -4,9 +4,9 @@
   "description": "Path2D polyfill",
   "private": true,
   "scripts": {
-    "build": "npxc rollup -c ../../rollup.config.js --name path2dPolyfill --environment BUILD:production",
-    "build:dev": "npxc rollup -c ../../rollup.config.js --name path2dPolyfill",
-    "build:watch": "npxc rollup -c ../../rollup.config.js --name path2dPolyfill -w",
+    "build": "npxc rollup -c ../../rollup.config.js --name path2dPolyfill",
+    "build:dev": "npm run build",
+    "build:watch": "npm run build -- -w",
     "lint": "npxc eslint src test",
     "test:unit": "npxc aw -c aw.config.js",
     "test:unit:watch": "npm run test:unit -- -w",

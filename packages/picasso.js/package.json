@@ -25,9 +25,9 @@
   "main": "dist/picasso.min.js",
   "module": "src/index.js",
   "scripts": {
-    "build": "npxc rollup -c ../../rollup.config.js --environment BUILD:production",
-    "build:dev": "npxc rollup -c ../../rollup.config.js",
-    "build:watch": "npxc rollup -c ../../rollup.config.js -w",
+    "build": "npxc rollup -c ../../rollup.config.js",
+    "build:dev": "npm run build",
+    "build:watch": "npm run build -- -w",
     "lint": "npxc eslint src test",
     "lint:fix": "npm run lint -- --fix",
     "lint:recommended": "npm run lint -- --config .eslintrc-recommended.json",

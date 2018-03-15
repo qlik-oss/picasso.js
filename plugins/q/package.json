@@ -14,9 +14,9 @@
   "main": "dist/picasso-q.min.js",
   "module": "src/index.js",
   "scripts": {
-    "build": "npxc rollup -c ../../rollup.config.js --name picassoQ --environment BUILD:production",
-    "build:dev": "npxc rollup -c ../../rollup.config.js --name picassoQ",
-    "build:watch": "npxc rollup -c ../../rollup.config.js --name picassoQ -w",
+    "build": "npxc rollup -c ../../rollup.config.js --name picassoQ",
+    "build:dev": "npm run build",
+    "build:watch": "npm run build -- -w",
     "lint": "npxc eslint src test",
     "test": "npm run test:unit",
     "test:unit": "npxc aw -c aw.config.js",
