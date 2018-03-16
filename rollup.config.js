@@ -25,6 +25,7 @@ const config = {
   format: 'umd',
   sourceMap: true,
   plugins: [
+    clean(),
     resolve({ jsnext: true, preferBuiltins: false }),
     babel({
       exclude: 'node_modules/**',
@@ -32,8 +33,7 @@ const config = {
       plugins: ['external-helpers']
     }),
     commonjs(),
-    filesize(),
-    clean()
+    filesize()
   ]
 };
 
