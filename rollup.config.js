@@ -6,6 +6,7 @@ import babel from 'rollup-plugin-babel';
 import uglify from 'rollup-plugin-uglify';
 import filesize from 'rollup-plugin-filesize';
 import license from 'rollup-plugin-license';
+import clean from 'rollup-plugin-clean';
 
 import path from 'path';
 
@@ -31,7 +32,8 @@ const config = {
       plugins: ['external-helpers']
     }),
     commonjs(),
-    filesize()
+    filesize(),
+    clean()
   ]
 };
 

@@ -11,7 +11,7 @@
   "files": [
     "/dist"
   ],
-  "main": "dist/picasso-hammer.min.js",
+  "main": "dist/picasso-hammer.js",
   "module": "src/index.js",
   "scripts": {
     "build": "npxc rollup -c ../../rollup.config.js --name picassoHammer",

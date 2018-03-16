@@ -14,7 +14,7 @@
   "files": [
     "/dist"
   ],
-  "main": "dist/path2d-polyfill.min.js",
+  "main": "dist/path2d-polyfill.js",
   "module": "src/index.js",
   "devDependencies": {
     "npxc": "^0.0.3"

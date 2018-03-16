@@ -22,7 +22,7 @@
   "files": [
     "/dist"
   ],
-  "main": "dist/picasso.min.js",
+  "main": "dist/picasso.js",
   "module": "src/index.js",
   "scripts": {
     "build": "npxc rollup -c ../../rollup.config.js",
