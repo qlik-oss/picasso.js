@@ -92,11 +92,23 @@ function getTicks(ctx, majorScale) {
 function initState(ctx) {
   const isVertical = ctx.settings.dock !== 'top' && ctx.settings.dock !== 'bottom';
   const titleStgns = ctx.stgns.title;
+
+  const fillScale = ctx.chart.scale(ctx.stgns.fill);
+  const majorScale = ctx.chart.scale(ctx.stgns.major);
+  const tickValues = getTicks(ctx, majorScale);
+  const tickAnchor = resolveTickAnchor(ctx.settings);
+
+  if (typeof titleStgns.text === 'undefined') {
+    const fields = majorScale.data().fields;
+    titleStgns.text = fields && fields[0] ? fields[0].title() : '';
+  }
+
   const titleTextMetrics = ctx.renderer.measureText({
     text: titleStgns.text,
     fontSize: titleStgns.fontSize,
     fontFamily: titleStgns.fontFamily
   });
+
   const titleTextBounds = ctx.renderer.textBounds({
     text: titleStgns.text,
     fontSize: titleStgns.fontSize,
@@ -107,11 +119,6 @@ function initState(ctx) {
     hyphens: titleStgns.hyphens,
     lineHeight: titleStgns.lineHeight
   });
-
-  const fillScale = ctx.chart.scale(ctx.stgns.fill);
-  const majorScale = ctx.chart.scale(ctx.stgns.major);
-  const tickValues = getTicks(ctx, majorScale);
-  const tickAnchor = resolveTickAnchor(ctx.settings);
 
   const state = {
     isVertical,
@@ -230,7 +237,7 @@ const legendDef = {
       },
       title: {
         show: true,
-        text: '',
+        text: undefined,
         fill: '#595959',
         fontSize: '12px',
         fontFamily: 'Arial',
