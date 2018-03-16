@@ -116,11 +116,15 @@ jobs:
           name: website
           command: |
             cd ./website
-            npm build
+            npm run build
       - store_artifacts:
           path: docs/spec.json
       - store_artifacts:
           path: website/build
+      - persist_to_workspace:
+          root: ~/picassojs
+          paths:
+            - website/build/
 
   lint:
     <<: *defaults
@@ -158,7 +162,17 @@ jobs:
           at: ~/picassojs
       - run: npm run bootstrap
       - run: npm run test:integration:local
-
+      
+  deploy-docs:
+    docker:
+      - image: cibuilds/aws:1.14.38
+    working_directory: ~/picassojs
+    steps:
+      - attach_workspace:
+          at: ~/picassojs
+      - run:
+          name: Deploy to S3 ...
+          command: aws s3 sync website/build/picasso.js/ s3://picassojs.com/ --delete
 
 workflows:
   version: 2
@@ -186,3 +200,15 @@ workflows:
       - test-integration:
           requires:
             - build
+      - deploy-docs:
+          requires:
+            - docs-website
+            - lint
+            - test-unit
+            - test-component
+            - test-integration
+          filters:
+            branches:
+              only: master
+            tags:
+              only: /^v.*/
