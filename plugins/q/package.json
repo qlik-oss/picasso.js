@@ -15,7 +15,6 @@
   "module": "src/index.js",
   "scripts": {
     "build": "npxc rollup -c ../../rollup.config.js --name picassoQ",
-    "build:dev": "npm run build",
     "build:watch": "npm run build -- -w",
     "lint": "npxc eslint src test",
     "test": "npm run test:unit",

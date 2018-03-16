@@ -15,9 +15,11 @@ const hasName = process.argv.indexOf('--name') + 1 || process.argv.indexOf('-n')
 const name = hasName ? process.argv[hasName] : 'picasso';
 const fileName = name.replace(/([A-Z])/g, (m, s) => `-${s.toLowerCase()}`);
 
+const isWatch = process.argv.indexOf('--w') + 1 || process.argv.indexOf('-w') + 1;
+
 const config = {
   entry: 'src/index.js',
-  dest: `dist/${fileName}.min.js`,
+  dest: `dist/${fileName}.js`,
   moduleName: name,
   format: 'umd',
   sourceMap: true,
@@ -29,10 +31,13 @@ const config = {
       plugins: ['external-helpers']
     }),
     commonjs(),
-    filesize(),
-    uglify()
+    filesize()
   ]
 };
+
+if (!isWatch) {
+  config.plugins.push(uglify());
+}
 
 config.plugins.push(license({
   banner: `
