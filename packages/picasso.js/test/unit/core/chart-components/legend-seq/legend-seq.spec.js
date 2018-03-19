@@ -6,7 +6,7 @@ import linearScale from '../../../../../src/core/scales/linear';
 describe('Legend Sequential', () => {
   const ticksSelector = '[id="legend-seq-ticks"] text';
   const tickFillBoundarySelector = '[id="legend-seq-ticks"] rect';
-  const titleSelector = '[text="testing"]';
+  const titleSelector = '.legend-title';
   let componentFixture;
   let userDef;
   let container;
@@ -48,7 +48,7 @@ describe('Legend Sequential', () => {
     chartMock.scale.withArgs('fillScale').returns(seqScale);
     const linScale = linearScale();
     linScale.data = () => ({
-      fields: [{ formatter: () => undefined }]
+      fields: [{ formatter: () => undefined, title: () => 'scaleTitle' }]
     });
     chartMock.scale.withArgs('majorScale').returns(linScale);
   });
@@ -81,7 +81,8 @@ describe('Legend Sequential', () => {
     expect(title).to.include({
       x: 5,
       y: 10,
-      anchor: 'start'
+      anchor: 'start',
+      text: 'testing'
     });
 
     expect(gradientNode).to.include({
@@ -89,6 +90,22 @@ describe('Legend Sequential', () => {
       y: 15,
       width: 15,
       height: 35
+    });
+
+    expect(componentFixture.simulateLayout(container)).to.equal(31);
+  });
+
+  it('should support titles from scales', () => {
+    userDef.settings.title = {};
+    render();
+
+    const title = componentFixture.findNodes(titleSelector)[0];
+
+    expect(title).to.include({
+      x: 5,
+      y: 10,
+      anchor: 'start',
+      text: 'scaleTitle'
     });
 
     expect(componentFixture.simulateLayout(container)).to.equal(31);
