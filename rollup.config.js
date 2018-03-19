@@ -6,24 +6,26 @@ import babel from 'rollup-plugin-babel';
 import uglify from 'rollup-plugin-uglify';
 import filesize from 'rollup-plugin-filesize';
 import license from 'rollup-plugin-license';
+import clean from 'rollup-plugin-clean';
 
 import path from 'path';
 
 const pkg = require(path.join(process.cwd(), 'package.json')); // eslint-disable-line
 
-const isProduction = process.env.BUILD === 'production';
-
 const hasName = process.argv.indexOf('--name') + 1 || process.argv.indexOf('-n') + 1;
 const name = hasName ? process.argv[hasName] : 'picasso';
 const fileName = name.replace(/([A-Z])/g, (m, s) => `-${s.toLowerCase()}`);
+
+const isWatch = process.argv.indexOf('--watch') + 1 || process.argv.indexOf('-w') + 1;
 
 const config = {
   entry: 'src/index.js',
   dest: `dist/${fileName}.js`,
   moduleName: name,
   format: 'umd',
-  sourceMap: !isProduction,
+  sourceMap: true,
   plugins: [
+    clean(),
     resolve({ jsnext: true, preferBuiltins: false }),
     babel({
       exclude: 'node_modules/**',
@@ -35,8 +37,7 @@ const config = {
   ]
 };
 
-if (isProduction) {
-  config.dest = config.dest.replace(/js$/, 'min.js');
+if (!isWatch) {
   config.plugins.push(uglify());
 }
 
