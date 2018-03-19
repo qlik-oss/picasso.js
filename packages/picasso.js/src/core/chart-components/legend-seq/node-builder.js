@@ -50,7 +50,7 @@ export function createTitleNode(ctx) {
   }
 
   const node = {
-    id: 'legend-title',
+    tag: 'legend-title',
     type: 'text',
     x,
     y: Math.min(y, state.rect.y + state.rect.height),
