@@ -196,7 +196,7 @@ function initState(ctx) {
  * @property {number} [tick.padding=5] - padding in pixels to the legend node
  * @property {object} [title] - Title settings
  * @property {boolean} [title.show=true] - Toggle title on/off
- * @property {string} [title.text=''] - The value of the title
+ * @property {string} [title.text=''] - Title text. Defaults to the title of the provided data field
  * @property {string} [title.fill='#595959']
  * @property {string} [title.fontSize='12px']
  * @property {string} [title.fontFamily='Arial']
