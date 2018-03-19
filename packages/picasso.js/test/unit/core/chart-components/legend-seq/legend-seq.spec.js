@@ -6,7 +6,7 @@ import linearScale from '../../../../../src/core/scales/linear';
 describe('Legend Sequential', () => {
   const ticksSelector = '[id="legend-seq-ticks"] text';
   const tickFillBoundarySelector = '[id="legend-seq-ticks"] rect';
-  const titleSelector = '[tag="legend-title"]';
+  const titleSelector = '.legend-title';
   let componentFixture;
   let userDef;
   let container;
