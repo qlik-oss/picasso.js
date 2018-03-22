@@ -94,6 +94,9 @@ export function styler(obj, { context, data, style }) {
       nodes[i].__style = nodes[i].__style || {};
       styleProps.forEach((s) => {
         nodes[i].__style[s] = nodes[i][s]; // store original value
+        if (s in inactive) {
+          nodes[i][s] = inactive[s];
+        }
       });
     }
     globalActivation = true;

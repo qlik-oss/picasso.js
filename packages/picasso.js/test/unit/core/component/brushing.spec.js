@@ -284,6 +284,17 @@ describe('Brushing', () => {
       });
     });
 
+    it('start should inactive all nodes', () => {
+      styler(dummyComponent, consume);
+      brusherStub.trigger('start');
+
+      dummyComponent.renderer.render.args[0][0].forEach((node) => {
+        expect(node.style).to.deep.equal({
+          fill: 'inactiveFill'
+        });
+      });
+    });
+
     it('end should restore all original styling values', () => {
       styler(dummyComponent, consume);
       brusherStub.trigger('start');
@@ -370,7 +381,7 @@ describe('Brushing', () => {
 
       const output = dummyComponent.renderer.render.args[0][0];
       expect(output[0].stroke).to.equal('doNotUpdate'); // No data attr
-      expect(output[0].fill).to.equal('doNotUpdate');
+      expect(output[0].fill).to.equal('inactiveFill');
       expect(output[1].fill).to.equal('inactiveFill'); // Inactive
     });
   });
