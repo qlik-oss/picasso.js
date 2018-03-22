@@ -289,9 +289,7 @@ describe('Brushing', () => {
       brusherStub.trigger('start');
 
       dummyComponent.renderer.render.args[0][0].forEach((node) => {
-        expect(node.style).to.deep.equal({
-          fill: 'inactiveFill'
-        });
+        expect(node.fill).to.deep.equal('inactiveFill');
       });
     });
 
