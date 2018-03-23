@@ -129,7 +129,6 @@ export default function resolveSettings(comp) {
     }
   } else {
     const labels = comp.scale.labels ? comp.scale.labels() : null;
-    const labelFn = typeof comp.scale.label === 'function' ? comp.scale.label : null;
     data.items = domain.map((d, idx) => {
       let datum = comp.scale.datum ? extend({}, comp.scale.datum(d)) : { value: d };
       if (comp.scale.datum) {
@@ -137,8 +136,8 @@ export default function resolveSettings(comp) {
         datum.value = d;
       }
 
-      if (labelFn) {
-        datum.label = labelFn(d);
+      if (comp.scale.label) {
+        datum.label = comp.scale.label(d);
       } else if (labels) {
         datum.label = labels[idx];
       }
