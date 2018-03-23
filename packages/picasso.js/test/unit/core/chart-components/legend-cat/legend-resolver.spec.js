@@ -68,8 +68,9 @@ describe('legend-resolver', () => {
 
   describe('resolveSettings', () => {
     let resolved;
+    let settings;
     beforeEach(() => {
-      resolved = resolveSettings({
+      settings = {
         scale: {
           data: () => ({ fields: [{}] }),
           domain: () => ['a', 'b'],
@@ -96,8 +97,11 @@ describe('legend-resolver', () => {
         resolver: {
           resolve: x => x // return param - a simple way to test what params are passed in (and avoid spies)
         }
-      });
+      };
+
+      resolved = resolveSettings(settings);
     });
+
     it('should resolve labels per datum', () => {
       expect(resolved.labels).to.eql({
         data: { items: [{ value: 'a' }, { value: 'b' }] },
@@ -112,6 +116,24 @@ describe('legend-resolver', () => {
         },
         settings: { font: 'Arial' }
       });
+    });
+
+    it('should resolve labels by `label` function if available', () => {
+      settings.scale.label = d => `label ${d}`;
+      settings.scale.domain = () => ['b', 'a'];
+      resolved = resolveSettings(settings);
+
+      expect(resolved.labels.data.items[0]).to.eql({ value: 'b', label: 'label b' });
+      expect(resolved.labels.data.items[1]).to.eql({ value: 'a', label: 'label a' });
+    });
+
+    it('should resolve labels by `labels` function if available', () => {
+      settings.scale.labels = () => ['1', '2']; // Resolved by index
+      settings.scale.domain = () => ['b', 'a'];
+      resolved = resolveSettings(settings);
+
+      expect(resolved.labels.data.items[0]).to.eql({ value: 'b', label: '1' });
+      expect(resolved.labels.data.items[1]).to.eql({ value: 'a', label: '2' });
     });
 
     it('should resolve items per datum', () => {
