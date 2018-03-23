@@ -129,15 +129,20 @@ export default function resolveSettings(comp) {
     }
   } else {
     const labels = comp.scale.labels ? comp.scale.labels() : null;
+    const labelFn = typeof comp.scale.label === 'function' ? comp.scale.label : null;
     data.items = domain.map((d, idx) => {
       let datum = comp.scale.datum ? extend({}, comp.scale.datum(d)) : { value: d };
       if (comp.scale.datum) {
         datum = extend({}, comp.scale.datum(d));
         datum.value = d;
       }
-      if (labels) {
+
+      if (labelFn) {
+        datum.label = labelFn(d);
+      } else if (labels) {
         datum.label = labels[idx];
       }
+
       return datum;
     });
   }
