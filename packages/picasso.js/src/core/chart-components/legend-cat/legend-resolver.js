@@ -135,9 +135,13 @@ export default function resolveSettings(comp) {
         datum = extend({}, comp.scale.datum(d));
         datum.value = d;
       }
-      if (labels) {
+
+      if (comp.scale.label) {
+        datum.label = comp.scale.label(d);
+      } else if (labels) {
         datum.label = labels[idx];
       }
+
       return datum;
     });
   }

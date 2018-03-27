@@ -11,18 +11,17 @@
   "files": [
     "/dist"
   ],
-  "main": "dist/picasso-q.min.js",
+  "main": "dist/picasso-q.js",
   "module": "src/index.js",
   "scripts": {
-    "build": "npxc rollup -c ../../rollup.config.js --name picassoQ --environment BUILD:production",
-    "build:dev": "npxc rollup -c ../../rollup.config.js --name picassoQ",
-    "build:watch": "npxc rollup -c ../../rollup.config.js --name picassoQ -w",
+    "build": "npxc rollup -c ../../rollup.config.js --name picassoQ",
+    "build:watch": "npm run build -- -w",
     "lint": "npxc eslint src test",
     "test": "npm run test:unit",
     "test:unit": "npxc aw -c aw.config.js",
     "test:unit:watch": "npm run test:unit -- -w",
     "test:unit:coverage": "npm run test:unit -- --coverage",
-    "prepublishOnly": "rm -rf dist && npm run build && npm run build:dev"
+    "prepublishOnly": "rm -rf dist && npm run build"
   },
   "devDependencies": {
     "d3-hierarchy": "^1.1.5",
