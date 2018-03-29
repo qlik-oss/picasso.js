@@ -110,11 +110,15 @@ function createDisplayPoints(dataPoints, { x, y, width, height }, pointSize, sha
       stroke: s.stroke,
       strokeWidth: s.strokeWidth,
       strokeDasharray: s.strokeDasharray,
-      opacity: s.opacity
+      opacity: s.opacity,
+      href: (s.shape === 'image' && p.href) ? p.href : null,
+      width: (s.shape === 'image' && p.width) ? p.width : null,
+      height: (s.shape === 'image' && p.height) ? p.height : null,
     };
     if (s === p.errorShape) {
       shapeSpec.width = s.width;
     }
+
     const shape = shapeFn(shapeSpec);
 
     shape.data = p.data;
@@ -155,7 +159,7 @@ const component = {
     const limits = extend({}, SIZE_LIMITS, this.settings.settings.sizeLimits);
     const points = resolved.items;
     const pointSize = getPointSizeLimits(resolved.settings.x, resolved.settings.y, width, height, limits);
-    return createDisplayPoints(points, this.rect, pointSize, this.settings.shapeFn || shapeFactory);
+    return createDisplayPoints(points, this.rect, pointSize, shapeFactory || this.settings.shapeFn);
   }
 };
 
