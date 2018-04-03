@@ -127,6 +127,12 @@ export default function resolveSettings(comp) {
       }
       data.items.push(it);
     }
+
+    const orientation = comp.settings.dock === 'top' || comp.settings.dock === 'bottom' ? 'horizontal' : 'vertical';
+
+    if (orientation === 'vertical') {
+      data.items = data.items.reverse();
+    }
   } else {
     const labels = comp.scale.labels ? comp.scale.labels() : null;
     data.items = domain.map((d, idx) => {
