@@ -93,6 +93,23 @@ describe('q-data-extractor-k', () => {
 
     dataset.field.withArgs('qDimensionInfo/1/qAttrExprInfo/1').returns(attrExprField);
 
+    it('should return empty array when root node is missing or empty', () => {
+      const m = extract({
+        field: 'qDimensionInfo/0'
+      }, {
+        key: () => 'cube',
+        raw: () => ({
+          qMode: 'K',
+          qDimensionInfo: [{ qStateCounts: {}, qAttrDimInfo: [{}, {}] }],
+          qMeasureInfo: [],
+          qStackedDataPages: [{ qData: [] }]
+        }),
+        field: sinon.stub()
+      }, {}, deps);
+
+      expect(m).to.eql([]);
+    });
+
     it('should return dim field values based on default field accessor', () => {
       const m = extract({
         field: 'qDimensionInfo/0'
