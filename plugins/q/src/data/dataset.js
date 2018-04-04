@@ -6,7 +6,7 @@ import field from './field';
 
 function hierarchy(config = {}, dataset, cache, deps) {
   const cube = dataset.raw();
-  if (!cube.qMode === 'K') {
+  if (cube.qMode !== 'K') {
     return null;
   }
   return augmentH(config, dataset, cache, deps);
