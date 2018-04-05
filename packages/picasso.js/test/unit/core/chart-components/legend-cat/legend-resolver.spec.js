@@ -60,8 +60,8 @@ describe('legend-resolver', () => {
     });
     expect(resolved.labels).to.eql({
       items: [
-        { data: { label: '$5 - < $7', value: [5, 7], source: { key: 'measure' } } },
-        { data: { label: '$2 - < $5', value: [2, 5], source: { key: 'measure' } } }
+        { data: { label: '$2 - < $5', value: [2, 5], source: { key: 'measure' } } },
+        { data: { label: '$5 - < $7', value: [5, 7], source: { key: 'measure' } } }
       ]
     });
   });
