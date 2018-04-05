@@ -131,7 +131,7 @@ export default function resolveSettings(comp) {
     const orientation = comp.settings.dock === 'top' || comp.settings.dock === 'bottom' ? 'horizontal' : 'vertical';
 
     if (orientation === 'vertical') {
-      data.data = data.items.reverse();
+      data.items.reverse();
     }
   } else {
     const labels = comp.scale.labels ? comp.scale.labels() : null;
@@ -209,6 +209,7 @@ export default function resolveSettings(comp) {
 
     if (orientation === 'vertical') {
       items.items.reverse().forEach(range);
+      items.items.reverse();
     } else {
       items.items.forEach(range);
     }
