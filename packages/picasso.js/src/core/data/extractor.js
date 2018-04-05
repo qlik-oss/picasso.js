@@ -94,5 +94,8 @@ export default function extract(dataConfig, data = {}, opts = {}) {
   if (dataConfig && dataConfig.stack) {
     stack(extracted, dataConfig.stack, data.dataset);
   }
+  if (dataConfig && !Array.isArray(dataConfig) && typeof dataConfig.sort === 'function' && extracted.items) {
+    extracted.items = extracted.items.sort(dataConfig.sort);
+  }
   return extracted;
 }
