@@ -140,6 +140,20 @@ data: {
 }
 ```
 
+### Sorting
+
+A `sort` function can be used to sort the _extracted_ data items:
+
+```js
+data: {
+  extract: [{
+    source: 'Products',
+    field: 'Product',
+  }],
+  sort: (a, b) => a.label > b.label ? -1 : 1 // sort descending
+}
+```
+
 ### Stacking
 
 Extracted items can be stacked using a `stack` configuration:
