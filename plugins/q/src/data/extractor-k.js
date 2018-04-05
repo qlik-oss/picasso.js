@@ -102,13 +102,16 @@ export default function extract(config, dataset, cache, util) {
   cfgs.forEach((cfg) => {
     if (typeof cfg.field !== 'undefined') {
       const cube = dataset.raw();
+      const rootPath = '/qStackedDataPages/*/qData';
+      const root = picker(rootPath, cube);
+      if (!root || !root[0]) {
+        return;
+      }
       const sourceKey = dataset.key();
       const f = typeof cfg.field === 'object' ? cfg.field : dataset.field(cfg.field);
       const { props, main } = util.normalizeConfig(cfg, dataset);
       const propsArr = Object.keys(props);
-      const rootPath = '/qStackedDataPages/*/qData';
       if (!cache.tree) {
-        const root = picker(rootPath, cube);
         cache.tree = hierarchy(root[0], node => node.qSubNodes);
       }
       const itemDepthObject = getFieldDepth(f, { cube, cache });

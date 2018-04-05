@@ -183,4 +183,17 @@ describe('extract data', () => {
       expect(d).to.equal('my collection');
     });
   });
+
+  describe('with sort config', () => {
+    it('should sort values', () => {
+      expect(extract({
+        items: ['A', 'B', 'C'],
+        sort: (a, b) => (b.value > a.value ? 1 : -1)
+      }).items).to.eql([
+        { value: 'C', label: 'C' },
+        { value: 'B', label: 'B' },
+        { value: 'A', label: 'A' }
+      ]);
+    });
+  });
 });
