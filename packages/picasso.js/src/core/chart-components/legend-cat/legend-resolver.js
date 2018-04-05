@@ -205,7 +205,13 @@ export default function resolveSettings(comp) {
   }
 
   if (comp.scale.type === 'threshold-color') {
-    items.items.forEach(range);
+    const orientation = comp.settings.dock === 'top' || comp.settings.dock === 'bottom' ? 'horizontal' : 'vertical';
+
+    if (orientation === 'vertical') {
+      items.items.reverse().forEach(range);
+    } else {
+      items.items.forEach(range);
+    }
   }
 
   return {
