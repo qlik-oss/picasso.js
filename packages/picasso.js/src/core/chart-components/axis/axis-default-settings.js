@@ -72,7 +72,10 @@ const DEFAULT_DISCRETE_SETTINGS = {
   line: {
     /** Toggle line on/off
     * @type {boolean=} */
-    show: false
+    show: false,
+    /** If Horizontal Axis is aligned left but you want the line to align right
+    * @type {string=} */
+    align: 'right'
   },
   /** Padding in direction perpendicular to the axis
     * @type {number=} */
@@ -148,7 +151,10 @@ const DEFAULT_CONTINUOUS_SETTINGS = {
   line: {
     /** Toggle line on/off
     * @type {boolean=} */
-    show: true
+    show: true,
+    /** If Horizontal Axis is aligned left but you want the line to align right
+    * @type {string=} */
+    align: 'right'
   },
   /** Padding in direction perpendicular to the axis
     * @type {number=} */

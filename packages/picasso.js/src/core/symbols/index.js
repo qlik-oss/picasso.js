@@ -9,6 +9,7 @@ import star from './star';
 import nPolygon from './n-polygon';
 import cross from './cross';
 import bar from './bar';
+import image from './image';
 import registry from '../utils/registry';
 
 const reg = registry();
@@ -23,6 +24,7 @@ reg.add('star', star);
 reg.add('n-polygon', nPolygon);
 reg.add('cross', cross);
 reg.add('bar', bar);
+reg.add('image', image);
 
 function createRectCollider({ x, y, size }) {
   const r = size / 2;
