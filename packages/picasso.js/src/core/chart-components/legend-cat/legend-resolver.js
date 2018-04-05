@@ -127,6 +127,12 @@ export default function resolveSettings(comp) {
       }
       data.items.push(it);
     }
+
+    const orientation = comp.settings.dock === 'top' || comp.settings.dock === 'bottom' ? 'horizontal' : 'vertical';
+
+    if (orientation === 'vertical') {
+      data.items.reverse();
+    }
   } else {
     const labels = comp.scale.labels ? comp.scale.labels() : null;
     data.items = domain.map((d, idx) => {
@@ -199,7 +205,14 @@ export default function resolveSettings(comp) {
   }
 
   if (comp.scale.type === 'threshold-color') {
-    items.items.forEach(range);
+    const orientation = comp.settings.dock === 'top' || comp.settings.dock === 'bottom' ? 'horizontal' : 'vertical';
+
+    if (orientation === 'vertical') {
+      items.items.reverse().forEach(range);
+      items.items.reverse();
+    } else {
+      items.items.forEach(range);
+    }
   }
 
   return {
