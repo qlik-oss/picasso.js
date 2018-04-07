@@ -64,13 +64,13 @@ interactions: [
       },
       events: {
         rangestart: function(e) {
-          this.component('my-brush-range-component').emit('rangeStart', e);
+          this.chart.component('my-brush-range-component').emit('rangeStart', e);
         },
         rangemove: function(e) {
-          this.component('my-brush-range-component').emit('rangeMove', e);
+          this.chart.component('my-brush-range-component').emit('rangeMove', e);
         },
         rangend: function(e) {
-          this.component('my-brush-range-component').emit('rangeEnd', e);
+          this.chart.component('my-brush-range-component').emit('rangeEnd', e);
         }
       }
     }]
