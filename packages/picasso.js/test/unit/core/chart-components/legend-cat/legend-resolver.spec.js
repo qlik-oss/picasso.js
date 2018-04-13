@@ -39,7 +39,7 @@ describe('legend-resolver', () => {
       scale: {
         type: 'threshold-color',
         data: () => ({ fields: [{
-          key: () => 'measure',
+          id: () => 'measure',
           formatter: () => (v => `$${v}`)
         }] }),
         domain: () => [2, 5, 7]
@@ -60,8 +60,8 @@ describe('legend-resolver', () => {
     });
     expect(resolved.labels).to.eql({
       items: [
-        { data: { label: '$5 - < $7', value: [5, 7], source: { key: 'measure' } } },
-        { data: { label: '$2 - < $5', value: [2, 5], source: { key: 'measure' } } }
+        { data: { label: '$5 - < $7', value: [5, 7], source: { field: 'measure' } } },
+        { data: { label: '$2 - < $5', value: [2, 5], source: { field: 'measure' } } }
       ]
     });
   });

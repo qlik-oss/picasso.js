@@ -122,7 +122,7 @@ export default function resolveSettings(comp) {
       };
       if (sourceField) {
         it.source = {
-          key: sourceField.key()
+          field: sourceField.id()
         };
       }
       data.items.push(it);
