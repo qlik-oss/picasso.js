@@ -18,7 +18,7 @@ navigation: {
   content: function(h, state) {
     return h('span', {
       class: {
-        [`arrow-${state.direction`}]: true
+        [`arrow-${state.direction}`]: true
       }
     })
   }

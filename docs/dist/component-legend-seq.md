@@ -136,7 +136,7 @@ chartSettings = {
   title: {  // Optional
     // Title settings
     show: true, // Toggle title on/off // Optional
-    text: '', // The value of the title // Optional
+    text: '', // Title text. Defaults to the title of the provided data field // Optional
     fill: '#595959', // Optional
     fontSize: '12px', // Optional
     fontFamily: 'Arial', // Optional
