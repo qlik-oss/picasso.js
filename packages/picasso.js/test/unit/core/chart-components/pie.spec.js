@@ -44,8 +44,38 @@ describe('pie', () => {
       stroke: '#ccc',
       strokeWidth: 1,
       opacity: 1,
-      data: { value: 1, label: '1' }
+      data: { value: 1, label: '1' },
+      desc: {
+        share: 1
+      }
     });
+  });
+
+  it('should set share metadata', () => {
+    componentFixture.mocks().theme.style.returns({});
+    const config = {
+      data: [1, 2, 3, 4]
+    };
+
+    componentFixture.simulateCreate(component, config);
+    rendered = componentFixture.simulateRender(opts);
+
+    expect(rendered[0].desc.share).to.equal(0.1);
+    expect(rendered[1].desc.share).to.equal(0.2);
+    expect(rendered[2].desc.share).to.equal(0.3);
+    expect(rendered[3].desc.share).to.equal(0.4);
+  });
+
+  it('should filter negative and NaN values', () => {
+    componentFixture.mocks().theme.style.returns({});
+    const config = {
+      data: [1, NaN, 2, -1, 3, 4]
+    };
+
+    componentFixture.simulateCreate(component, config);
+    rendered = componentFixture.simulateRender(opts);
+
+    expect(rendered.map(r => r.data.value)).to.deep.equal([1, 2, 3, 4]);
   });
 
   describe('arcValue', () => {
@@ -55,7 +85,7 @@ describe('pie', () => {
       })).to.equal(4);
     });
 
-    it('should pioritize .arc', () => {
+    it('should prioritize .arc', () => {
       expect(arcValue({
         slice: {
           arc: ''
