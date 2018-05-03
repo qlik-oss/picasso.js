@@ -1,9 +1,11 @@
 import {
-  bars
+  bars,
+  slices
 } from './strategies';
 
 const strategies = {
-  bar: bars
+  bar: bars,
+  slice: slices
 };
 
 /**

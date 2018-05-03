@@ -109,7 +109,14 @@ function createDisplayPies(arcData, { x, y, width, height }, slices, sum) {
     const offset = slice.offset ? offsetSlice(centroid, slice.offset, or, ir) : { x: 0, y: 0 };
     slice.transform = `translate(${offset.x}, ${offset.y}) translate(${center.x}, ${center.y})`;
     slice.desc = {
-      share: a.value / sum
+      share: a.value / sum,
+      slice: {
+        start: a.startAngle,
+        end: a.endAngle,
+        innerRadius: ir,
+        outerRadius: or,
+        offset: { x: center.x + offset.x, y: center.y + offset.y }
+      }
     };
 
     return slice;

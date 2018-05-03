@@ -5,7 +5,7 @@ import {
   placeInBars,
   findBestPlacement,
   bars
-} from '../../../../../src/core/chart-components/labels/strategies';
+} from '../../../../../../src/core/chart-components/labels/strategies/bars';
 
 function place(position, direction) {
   return getBarRect({

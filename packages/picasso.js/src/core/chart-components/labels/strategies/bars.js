@@ -1,5 +1,5 @@
 import extend from 'extend';
-import collisions from '../../math/narrow-phase-collision';
+import collisions from '../../../math/narrow-phase-collision';
 
 const LINE_HEIGHT = 1.5;
 const PADDING = 4;
