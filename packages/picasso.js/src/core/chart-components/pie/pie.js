@@ -90,7 +90,7 @@ function offsetSlice(centroid, offset, outerRadius, innerRadius) {
   return { x: vx * offset * diff, y: vy * offset * diff };
 }
 
-function createDisplayPies(arcData, { x, y, width, height }, slices) {
+function createDisplayPies(arcData, { x, y, width, height }, slices, sum) {
   const arcGen = arc();
   const center = { x: x + (width / 2), y: y + (height / 2) };
   const innerRadius = (Math.min(width, height) / 2);
@@ -108,6 +108,10 @@ function createDisplayPies(arcData, { x, y, width, height }, slices) {
     const centroid = arcGen.centroid(a);
     const offset = slice.offset ? offsetSlice(centroid, slice.offset, or, ir) : { x: 0, y: 0 };
     slice.transform = `translate(${offset.x}, ${offset.y}) translate(${center.x}, ${center.y})`;
+    slice.desc = {
+      share: a.value / sum
+    };
+
     return slice;
   });
 }
@@ -141,21 +145,36 @@ const pieComponent = {
   },
   render({ data }) {
     const arcValues = [];
+    const slices = [];
     const stngs = this.settings.settings;
     const { items } = this.resolver.resolve({
       data,
       defaults: extend({}, DEFAULT_DATA_SETTINGS.slice, this.style.slice),
       settings: stngs.slice
     });
+
+    let sum = 0;
     for (let i = 0, len = items.length; i < len; i++) {
-      arcValues.push(arcValue(stngs, items[i]));
+      const val = arcValue(stngs, items[i]);
+      if (val > 0) {
+        arcValues.push(val);
+        slices.push(items[i]);
+        sum += val;
+      }
     }
+
     const pieGen = pie().sortValues(null);
     pieGen.startAngle(stngs.startAngle);
     pieGen.endAngle(stngs.endAngle);
     pieGen.padAngle(stngs.padAngle);
     const arcData = pieGen(arcValues);
-    return createDisplayPies(arcData, extend({}, this.rect, { x: 0, y: 0 }), items);
+
+    return createDisplayPies(
+      arcData,
+      extend({}, this.rect, { x: 0, y: 0 }),
+      slices,
+      sum
+    );
   }
 };
 
