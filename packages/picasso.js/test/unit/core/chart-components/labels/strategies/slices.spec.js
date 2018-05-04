@@ -17,7 +17,7 @@ describe('labeling - slices', () => {
           innerRadius: 0,
           outerRadius: 15
         },
-        position: 'inside',
+        position: 'into',
         padding: 1,
         measured: { width: 6, height: 4 }
       })).to.eql({
@@ -37,7 +37,7 @@ describe('labeling - slices', () => {
           innerRadius: 0,
           outerRadius: 15
         },
-        position: 'inside',
+        position: 'into',
         padding: 1,
         measured: { width: 6, height: 4 }
       })).to.eql({
@@ -57,7 +57,7 @@ describe('labeling - slices', () => {
           innerRadius: 15,
           outerRadius: 20
         },
-        position: 'opposite',
+        position: 'inside',
         padding: 1,
         measured: { width: 6, height: 4 }
       })).to.eql({
@@ -77,7 +77,7 @@ describe('labeling - slices', () => {
           innerRadius: 0,
           outerRadius: 15
         },
-        position: 'inside',
+        position: 'into',
         padding: 1,
         measured: { width: 6, height: 4 }
       })).to.eql(null);
@@ -98,7 +98,7 @@ describe('labeling - slices', () => {
       const settings = {
         direction: () => 'vertical',
         labels: [{
-          placements: [{ position: 'inside', fill: () => 'red' }],
+          placements: [{ position: 'into', fill: () => 'red' }],
           label: () => 'etikett'
         }]
       };
@@ -133,7 +133,7 @@ describe('labeling - slices', () => {
         text: 'etikett',
         maxWidth: 20,
         x: 15,
-        y: 25,
+        y: 64,
         fill: 'red',
         anchor: 'start',
         baseline: 'middle',
@@ -146,7 +146,7 @@ describe('labeling - slices', () => {
       const settings = {
         direction: () => 'right',
         labels: [{
-          placements: [{ position: 'inside', fill: () => 'red' }],
+          placements: [{ position: 'into', fill: () => 'red' }],
           label: () => ''
         }]
       };
