@@ -141,24 +141,6 @@ function getRotatedInsideSliceRect({ slice, measured, padding }) {
   return bounds;
 }
 
-function getFullCircleRect({ innerRadius, outerRadius, measured, padding }) {
-  let { width, height } = measured;
-  let r = innerRadius !== 0 ? innerRadius : outerRadius;
-  let h = (height / 2) + padding;
-  let maxWidth = 2 * (Math.sqrt((r * r) + (h * h)) - padding);
-  width = Math.min(width, maxWidth);
-
-  if (width <= 0) { return null; }
-
-  let bounds = {
-    x: -width / 2,
-    y: -height / 2,
-    width,
-    height
-  };
-  return bounds;
-}
-
 function cbContext(node, chart) {
   return {
     node,
@@ -201,47 +183,37 @@ export function getSliceRect({ slice, direction, position, padding, measured }) 
   } = slice;
 
   let bounds;
-  if (start + (Math.PI * 2) === end) {
-    // TODO: fix case where there are multiple labels.
-    bounds = getFullCircleRect({
-      innerRadius,
-      outerRadius,
-      measured,
-      padding
-    });
-  } else {
-    let s;
-    switch (position) {
-      case 'into':
-        s = {
-          start,
-          end,
-          innerRadius,
-          outerRadius
-        };
-        if (direction === 'rotate') {
-          bounds = getRotatedInsideSliceRect({ slice: s, measured, padding });
-        } else {
-          bounds = getHorizontalInsideSliceRect({ slice: s, measured, padding });
-        }
-        break;
-      case 'inside':
-        s = {
-          start,
-          end,
-          innerRadius: 0,
-          outerRadius: innerRadius
-        };
-        if (direction === 'rotate') {
-          bounds = getRotatedInsideSliceRect({ slice: s, measured, padding });
-        } else {
-          bounds = getHorizontalInsideSliceRect({ slice: s, measured, padding });
-        }
-        break;
-      case 'outside':
-      default:
-        throw new Error('not implemented');
-    }
+  let s;
+  switch (position) {
+    case 'into':
+      s = {
+        start,
+        end,
+        innerRadius,
+        outerRadius
+      };
+      if (direction === 'rotate') {
+        bounds = getRotatedInsideSliceRect({ slice: s, measured, padding });
+      } else {
+        bounds = getHorizontalInsideSliceRect({ slice: s, measured, padding });
+      }
+      break;
+    case 'inside':
+      s = {
+        start,
+        end,
+        innerRadius: 0,
+        outerRadius: innerRadius
+      };
+      if (direction === 'rotate') {
+        bounds = getRotatedInsideSliceRect({ slice: s, measured, padding });
+      } else {
+        bounds = getHorizontalInsideSliceRect({ slice: s, measured, padding });
+      }
+      break;
+    case 'outside':
+    default:
+      throw new Error('not implemented');
   }
   if (bounds) {
     bounds.x += offset.x;
