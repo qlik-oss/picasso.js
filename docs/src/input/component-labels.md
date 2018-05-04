@@ -65,13 +65,13 @@ components: [
 
 ### `slices`
 
-A strategy used primarily for labeling the slices in a pie chart, donut chart or similar.
+A strategy used primarily for labelling the slices in a pie chart, donut chart or similar.
 
-There are two possible positions 'inside' & 'into' & 'outside'.
-The default is 'into', 'inside' is only usable in donut chart & 'outside' is not implemened yet.
+There are three possible positions 'inside', 'into' and 'outside'.
+The default is 'into', 'inside' is only usable in donut chart and 'outside' is not implemented yet.
 
-There is also two different directions 'horizontal' & 'rotated'.
-'horizontal' is the default and has the disadvantage that is the entrie label doesn't fit is is not shown.
+There are also two different directions 'horizontal' and 'rotated'.
+'horizontal' is the default and has the disadvantage that is the entire label doesn't fit is not shown.
 'rotated' place the label along the slice either from the inside out or outside in depending on the angle. And it does support ellipsing labels that don't fit.
 
 ![Slices labeling strategy](/img/slice-labels.png)
