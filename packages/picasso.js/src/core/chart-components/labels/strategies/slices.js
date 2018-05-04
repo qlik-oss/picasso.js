@@ -212,7 +212,7 @@ export function getSliceRect({ slice, direction, position, padding, measured }) 
   } else {
     let s;
     switch (position) {
-      case 'inside':
+      case 'into':
         s = {
           start,
           end,
@@ -225,7 +225,7 @@ export function getSliceRect({ slice, direction, position, padding, measured }) 
           bounds = getHorizontalInsideSliceRect({ slice: s, measured, padding });
         }
         break;
-      case 'opposite':
+      case 'inside':
         s = {
           start,
           end,
@@ -291,7 +291,7 @@ function findBestPlacement({
  * @property {Array<object>} labels
  * @property {string|function} labels[].label - The text value
  * @property {Array<object>} labels[].placements
- * @property {string} labels[].placements[].position - 'inside' | 'outside' | 'opposite' (outside is not implmented yet)
+ * @property {string} [labels[].placements[].position='into'] - 'inside' | 'into' | 'outside' (outside is not implmented yet)
  * @property {string} [labels[].placements[].fill='#333'] - Color of the label
  */
 
@@ -308,7 +308,8 @@ export function slices({
     fontSize: 12,
     fontFamily: 'Arial',
     fill: '#333',
-    padding: 4
+    padding: 4,
+    position: 'into'
   }, style.label);
 
   defaults.fontSize = parseInt(defaults.fontSize, 10);
