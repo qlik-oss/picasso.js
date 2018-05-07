@@ -63,6 +63,68 @@ components: [
 ]
 ```
 
+### `slices`
+
+A strategy used primarily for labelling the slices in a pie chart, donut chart or similar.
+
+There are three possible positions 'inside', 'into' and 'outside'.
+The default is 'into', 'inside' is only usable in donut chart and 'outside' is not implemented yet.
+
+There are also two different directions 'horizontal' and 'rotated'.
+'horizontal' is the default and has the disadvantage that is the entire label doesn't fit is not shown.
+'rotated' place the label along the slice either from the inside out or outside in depending on the angle. And it does support ellipsing labels that don't fit.
+
+![Slices labeling strategy](/img/slice-labels.png)
+
+#### Example
+
+```js
+componenst: [
+  {
+    type: 'pie',
+    key: 'pie',
+    displayOrder: 1,
+    /* ... */
+  },
+  {
+    type: 'labels',
+    displayOrder: 2 // must be larger than the displayOrder for the 'pie' component
+    settings: {
+      sources: [{
+        component: 'pie',
+        selector: 'path', // select all 'path' shapes from the 'pie' component
+        strategy: {
+          type: 'slice', // the strategy type
+          settings: {
+            direction: 'horizontal',
+            fontFamily: 'Helvetica',
+            fontSize: 14,
+            labels: [{
+              label({ data }) { // dimension label
+                return data ? data.label : '';
+              },
+              placements: [
+                {
+                  position: 'info',
+                  fill: ({ data }) => { return '#333'; } // select a color contrasting the containing slice
+                }
+              ]
+            }, { // data label
+              label({ data }) {
+                return data ? data.arc.label : '';
+              },
+              placements: [
+                { position: 'inside', fill: '#fff' }
+              ]
+            } ]
+          }
+        }
+      }]
+    }
+  }
+]
+```
+
 ## API Reference
 
 ### Settings
@@ -84,3 +146,7 @@ settings: {
 #### Bar strategy
 
 {{>struct definitions.component--labels.definitions.label-strategy}}
+
+#### Slice strategy
+
+{{>struct definitions.component--labels.definitions.slice-label-strategy}}
