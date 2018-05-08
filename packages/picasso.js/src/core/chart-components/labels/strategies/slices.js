@@ -141,6 +141,63 @@ function getRotatedInsideSliceRect({ slice, measured, padding }) {
   return bounds;
 }
 
+
+function getRotatedOusideSliceRect({ slice, measured, padding, view }) {
+  let { start, end, outerRadius, offset } = slice;
+  let r = outerRadius + padding;
+  let size = end - start;
+  if (size < Math.PI) {
+    let minR = ((measured.height / 2) + padding) / Math.tan(size / 2);
+    if (minR > r) {
+      return null;
+    }
+  }
+  let middle = (start + end) / 2;
+  let PI2 = Math.PI * 2;
+  middle = ((middle % PI2) + PI2) % PI2; // normalize
+  let x = Math.sin(middle) * r;
+  let y = -Math.cos(middle) * r;
+
+  let maxWidth = measured.width;
+  let v = middle % Math.PI;
+  if (v > Math.PI / 2) {
+    v = Math.PI - v;
+  }
+  if (Math.cos(v) > 0.001) {
+    let edge = y < 0 ? view.y : view.y + view.height;
+    let d = Math.abs(edge - offset.y);
+    let w = (d / Math.cos(v)) - (Math.tan(v) * (measured.height / 2)) - (padding * 2) - outerRadius;
+    if (w < maxWidth) {
+      maxWidth = w;
+    }
+  }
+  if (Math.sin(v) > 0.001) {
+    let edge = x < 0 ? view.x : view.x + view.width;
+    let d = Math.abs(edge - offset.x);
+    let w = (d / Math.sin(v)) - ((measured.height / 2) / Math.tan(v)) - (padding * 2) - outerRadius;
+    if (w < maxWidth) {
+      maxWidth = w;
+    }
+  }
+
+  if (maxWidth <= 0) { return 0; }
+
+  let bounds = {
+    x,
+    y,
+    width: maxWidth,
+    height: 0
+  };
+  if (middle < Math.PI) {
+    bounds.angle = middle - (Math.PI / 2);
+    bounds.anchor = 'start';
+  } else {
+    bounds.angle = middle + (Math.PI / 2);
+    bounds.anchor = 'end';
+  }
+  return bounds;
+}
+
 function cbContext(node, chart) {
   return {
     node,
@@ -173,12 +230,11 @@ function placeTextOnPoint(rect, text, opts) {
   return label;
 }
 
-export function getSliceRect({ slice, direction, position, padding, measured }) {
+export function getSliceRect({ slice, direction, position, padding, measured, view }) {
   let {
     start,
     end,
     innerRadius,
-    outerRadius,
     offset
   } = slice;
 
@@ -186,16 +242,10 @@ export function getSliceRect({ slice, direction, position, padding, measured }) 
   let s;
   switch (position) {
     case 'into':
-      s = {
-        start,
-        end,
-        innerRadius,
-        outerRadius
-      };
       if (direction === 'rotate') {
-        bounds = getRotatedInsideSliceRect({ slice: s, measured, padding });
+        bounds = getRotatedInsideSliceRect({ slice, measured, padding });
       } else {
-        bounds = getHorizontalInsideSliceRect({ slice: s, measured, padding });
+        bounds = getHorizontalInsideSliceRect({ slice, measured, padding });
       }
       break;
     case 'inside':
@@ -212,6 +262,12 @@ export function getSliceRect({ slice, direction, position, padding, measured }) 
       }
       break;
     case 'outside':
+      if (direction === 'rotate') {
+        bounds = getRotatedOusideSliceRect({ slice, measured, padding, view });
+      } else {
+        // bounds = getHorizontalOusideSliceRect({ slice: s, measured, padding });
+      }
+      break;
     default:
       throw new Error('not implemented');
   }
