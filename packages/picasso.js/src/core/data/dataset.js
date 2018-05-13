@@ -87,11 +87,39 @@ function createFields({ source, data, cache, config }) {
   }
 }
 
+const dsv = ({ data, config }) => {
+  const rows = data.split('\n');
+  const row0 = rows[0];
+  const row1 = rows[1];
+  let delimiter = ',';
+  if (config && config.parse && config.parse.delimiter) {
+    delimiter = config.parse.delimiter;
+  } else if (row0) { // guess delimiter
+    const guesses = [/,/, /\t/, /;/];
+    for (let i = 0; i < guesses.length; i++) {
+      const d = guesses[i];
+      if (row0 && row1) {
+        if (d.test(row0) && d.test(row1) && row0.split(d).length === row1.split(d).length) {
+          delimiter = d;
+          break;
+        }
+      } else if (d.test(row0)) {
+        delimiter = d;
+      }
+    }
+  }
+  return rows.map(row => row.split(delimiter));
+};
+
 const parseData = ({ source, data, cache, config }) => {
   if (!data) {
     return;
   }
   let dd = data;
+
+  if (typeof dd === 'string') { // assume dsv
+    dd = dsv({ data, config });
+  }
 
   if (!Array.isArray(dd)) {
     return; // warn?
