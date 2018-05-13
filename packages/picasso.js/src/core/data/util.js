@@ -3,7 +3,13 @@ export function findField(query, { cache }) {
     return cache.fields[query];
   }
 
-  // Find by title
+  // Find by key first
+  for (let i = 0; i < cache.fields.length; i++) {
+    if (cache.fields[i].key() === query) {
+      return cache.fields[i];
+    }
+  }
+  // find by title
   for (let i = 0; i < cache.fields.length; i++) {
     if (cache.fields[i].title() === query) {
       return cache.fields[i];

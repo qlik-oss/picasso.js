@@ -1,4 +1,4 @@
-import resolve from './json-path-resolver';
+import extend from 'extend';
 import field from './field';
 import extract from './extractor-matrix';
 
@@ -13,35 +13,85 @@ const filters = {
   numeric: values => values.filter(v => typeof v === 'number' && !isNaN(v))
 };
 
-function createFields(matrix, { cache, key }) {
-  if (!matrix) {
-    return;
+function createFields({ source, data, cache }) {
+  let headers;
+  if (Array.isArray(data[0])) { // assume 2d matrix of data
+    headers = data[0]; // assume headers are in first row TODO - add headers config
+  } else {
+    headers = Object.keys(data[0]);
   }
-  const headers = matrix[0]; // assume headers are in first row TODO - add headers config
 
-  const content = matrix.slice(1);
+  const flds = headers.map(h => ({
+    key: h,
+    title: h
+  }));
 
-  headers.forEach((a, i) => {
-    const values = resolve(`//${i}`, content);
+  let fieldValues;
+  let content = data;
+  if (Array.isArray(data[0])) {
+    fieldValues = flds.map(() => []);
+    content = data.slice(1);
+  } else {
+    fieldValues = {};
+    flds.forEach((f) => { fieldValues[f.key] = []; });
+  }
+
+  for (let r = 0; r < content.length; r++) {
+    const row = content[r];
+    if (!row) {
+      continue;
+    }
+    if (Array.isArray(row)) {
+      for (let c = 0; c < flds.length; c++) {
+        fieldValues[c].push(row[c]);
+      }
+    } else {
+      for (let c = 0; c < flds.length; c++) {
+        fieldValues[flds[c].key].push(row[flds[c].key]);
+      }
+    }
+  }
+  const fv = Array.isArray(fieldValues) ? (i => fieldValues[i]) : (i => fieldValues[flds[i].key]);
+  for (let c = 0; c < flds.length; c++) {
+    const values = fv(c);
     const numericValues = filters.numeric(values);
     const isMeasure = numericValues.length > 0;
     const type = isMeasure ? 'measure' : 'dimension';
     const min = isMeasure ? Math.min(...numericValues) : NaN;
     const max = isMeasure ? Math.max(...numericValues) : NaN;
-    // TODO Deal with tags
 
-    cache.fields.push(field({
-      source: key,
-      title: headers[i],
+    cache.fields.push(field(extend({
+      source,
+      key: c,
+      title: flds[c].title,
       values,
       min,
       max,
-      type,
-      value: v => v,
-      label: v => v
+      type
+    }, flds[c]), {
+      value: flds[c].value,
+      label: flds[c].label
     }));
-  });
+  }
 }
+
+const parseData = ({ source, data, cache, config }) => {
+  if (!data) {
+    return;
+  }
+  let dd = data;
+
+  if (!Array.isArray(dd)) {
+    return; // warn?
+  }
+
+  createFields({
+    data: dd,
+    cache,
+    source,
+    config
+  });
+};
 
 /**
  * Create a new dataset with default settings
@@ -50,7 +100,8 @@ function createFields(matrix, { cache, key }) {
  */
 function ds({
   key,
-  data
+  data,
+  config
 } = {}) {
   const cache = {
     fields: []
@@ -94,7 +145,7 @@ function ds({
      * @param {data-extract-config} config
      * @returns {Array<datum-extract>}
      */
-    extract: config => extract(config, dataset, cache),
+    extract: cfg => extract(cfg, dataset, cache),
 
     /**
      * @returns {null}
@@ -102,9 +153,8 @@ function ds({
     hierarchy: () => null
   };
 
-  createFields(data, {
-    cache,
-    key
+  parseData({
+    key, data, config, cache
   });
 
   return dataset;
