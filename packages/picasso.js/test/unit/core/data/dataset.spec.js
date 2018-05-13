@@ -19,7 +19,33 @@ describe('dataset', () => {
     });
   });
 
-  describe('field()', () => {
+  describe('object array', () => {
+    let d;
+    before(() => {
+      const data = [
+        { product: 'Cars', sales: 56 },
+        { product: 'Bikes', sales: 34 },
+        { product: 'Shoes', sales: 23 }
+      ];
+      d = dataset({
+        data
+      });
+    });
+
+    it('should find product field', () => {
+      const f = d.field(0);
+      expect(f.title()).to.equal('product');
+      expect(f.items()).to.eql(['Cars', 'Bikes', 'Shoes']);
+    });
+
+    it('should find sales field', () => {
+      const f = d.field('sales');
+      expect(f.title()).to.equal('sales');
+      expect(f.items()).to.eql([56, 34, 23]);
+    });
+  });
+
+  describe('2d matrix', () => {
     let d;
     before(() => {
       const data = [

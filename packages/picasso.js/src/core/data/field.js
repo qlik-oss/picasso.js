@@ -3,9 +3,17 @@ import formatterFn from '../formatter';
 
 // TODO - decide whether usage of .call() is appropriate when invoking accessors, if yes then arrow functions are not allowed!
 
+const getFormatter = (data) => {
+  if (typeof data.formatter === 'function') {
+    return data.formatter();
+  }
+  const f = data.formatter || {};
+  return formatterFn(f.type || 'd3-number')(f.format || '');
+};
+
 const accessors = {
-  id: data => `${data.source}/${data.title}`,
-  key: data => data.title,
+  id: data => `${data.source}/${data.key || data.title}`,
+  key: data => String(data.key || data.title),
   tags: data => data.tags,
   min: data => data.min,
   max: data => data.max,
@@ -14,7 +22,7 @@ const accessors = {
   values: data => data.values,
   value: v => v,
   label: v => v,
-  formatter: data => ((data.formatter && data.formatter()) || formatterFn('d3-number')(''))
+  formatter: data => getFormatter(data)
 };
 
 /**
