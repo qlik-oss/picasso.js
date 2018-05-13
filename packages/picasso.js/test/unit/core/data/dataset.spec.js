@@ -224,4 +224,66 @@ describe('dataset', () => {
       expect(f.items()).to.eql([56, 59]);
     });
   });
+
+  describe('dsv with explicit delimiter', () => {
+    let d;
+    before(() => {
+      const data = 'Product|Sales\nCars|56\nBikes|34';
+      d = dataset({
+        data,
+        config: {
+          parse: { delimiter: '|' }
+        }
+      });
+    });
+
+    it('should find product field', () => {
+      const f = d.field(0);
+      expect(f.title()).to.equal('Product');
+      expect(f.items()).to.eql(['Cars', 'Bikes']);
+    });
+
+    it('should find sales field', () => {
+      const f = d.field('Sales');
+      expect(f.title()).to.equal('Sales');
+      expect(f.items()).to.eql(['56', '34']);
+    });
+  });
+
+  describe('dsv with guessed delimiter', () => {
+    it('comma (,)', () => {
+      const d = dataset({
+        data: 'Product,Sales\nCars,56\nBikes,34'
+      });
+      const f = d.field(0);
+      expect(f.title()).to.equal('Product');
+      expect(f.items()).to.eql(['Cars', 'Bikes']);
+    });
+
+    it('semicolon (;)', () => {
+      const d = dataset({
+        data: 'Pro,d\tuct;Sales\nCars;56\nBikes;34'
+      });
+      const f = d.field(0);
+      expect(f.title()).to.equal('Pro,d\tuct');
+      expect(f.items()).to.eql(['Cars', 'Bikes']);
+    });
+
+    it('tab (\\t)', () => {
+      const d = dataset({
+        data: 'Pro,duct\tSales\nCars\t56\nBikes\t34'
+      });
+      const f = d.field(0);
+      expect(f.title()).to.equal('Pro,duct');
+      expect(f.items()).to.eql(['Cars', 'Bikes']);
+    });
+
+    it('; with header only', () => {
+      const d = dataset({
+        data: 'Product;Sales'
+      });
+      const f = d.field(0);
+      expect(f.title()).to.equal('Product');
+    });
+  });
 });
