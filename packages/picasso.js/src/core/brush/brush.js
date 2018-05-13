@@ -7,24 +7,25 @@ import valueCollection from './value-collection';
 
 function add({
   items,
-  values,
+  collection,
   vc
 }) {
   const changedMap = {};
   const changed = [];
   let key;
-  let value;
+  let values;
 
   for (let i = 0, num = items.length; i < num; i++) {
     key = items[i].key;
-    value = items[i].value;
-    if (!values[key]) {
-      values[key] = vc();
+    if (!collection[key]) {
+      collection[key] = vc();
     }
-
-    if (values[key].add(value)) {
-      changedMap[key] = changedMap[key] || [];
-      changedMap[key].push(value);
+    values = items[i].values || [items[i].value];
+    for (let vi = 0; vi < values.length; vi++) {
+      if (collection[key].add(values[vi])) {
+        changedMap[key] = changedMap[key] || [];
+        changedMap[key].push(values[vi]);
+      }
     }
   }
 
@@ -39,19 +40,24 @@ function add({
 
 function remove({
   items,
-  values
+  collection
 }) {
   const changedMap = {};
   const changed = [];
   let key;
-  let value;
+  let values;
 
   for (let i = 0, num = items.length; i < num; i++) {
     key = items[i].key;
-    value = items[i].value;
-    if (values[key] && values[key].remove(value)) {
-      changedMap[key] = changedMap[key] || [];
-      changedMap[key].push(value);
+    if (!collection[key]) {
+      continue;
+    }
+    values = items[i].values || [items[i].value];
+    for (let vi = 0; vi < values.length; vi++) {
+      if (collection[key].remove(values[vi])) {
+        changedMap[key] = changedMap[key] || [];
+        changedMap[key].push(values[vi]);
+      }
     }
   }
 
@@ -67,18 +73,19 @@ function remove({
 function collectUnique(items) {
   const filteredSet = {};
   let key;
-  let value;
+  let values;
 
   for (let i = 0, num = items.length; i < num; i++) {
     key = items[i].key;
-    value = items[i].value;
+    values = items[i].values || [items[i].value];
     if (!filteredSet[key]) {
       filteredSet[key] = [];
     }
-    const idx = filteredSet[key].indexOf(value);
-
-    if (idx === -1) {
-      filteredSet[key].push(value);
+    for (let vi = 0; vi < values.length; vi++) {
+      const idx = filteredSet[key].indexOf(values[vi]);
+      if (idx === -1) {
+        filteredSet[key].push(values[vi]);
+      }
     }
   }
 
@@ -257,7 +264,14 @@ function updateRange(items, action, {
     if (!ranges[key]) {
       ranges[key] = rc();
     }
-    changed = ranges[key][action](item.range) || changed;
+    if (action === 'set') {
+      changed = ranges[key][action](item.ranges || item.range) || changed;
+    } else {
+      const rangeValues = item.ranges || [item.range];
+      for (let i = 0; i < rangeValues.length; i++) {
+        changed = ranges[key][action](rangeValues[i]) || changed;
+      }
+    }
   });
 
   return changed;
@@ -282,12 +296,116 @@ export default function brush({
     toggleRanges: []
   };
 
+  const getState = () => {
+    const state = {
+      values: {},
+      ranges: {}
+    };
+    Object.keys(values).forEach((key) => { state.values[key] = values[key].values(); });
+    Object.keys(ranges).forEach((key) => { state.ranges[key] = ranges[key].ranges(); });
+    return state;
+  };
+
+  const links = {
+    ls: [],
+    clear() {
+      this.ls.forEach(b => b.clear());
+    },
+    start() {
+      this.ls.forEach(b => b.start());
+    },
+    end() {
+      this.ls.forEach(b => b.end());
+    },
+    update() {
+      const s = getState();
+      this.ls.forEach(b => b._state(s));
+    },
+    updateValues() {
+      const s = getState();
+      this.ls.forEach(b => b._state({
+        values: s.values
+      }));
+    },
+    updateRanges() {
+      const s = getState();
+      this.ls.forEach(b => b._state({
+        ranges: s.ranges
+      }));
+    }
+  };
+
   /**
    * A brush context
    * @alias brush
    * @interface
    */
   const fn = {};
+
+  /**
+   * Link this brush to another brush instance.
+   *
+   * When linked, the `target` will receive updates whenever this brush changes.
+   * @param {brush} target - The brush instance to link to
+   */
+  fn.link = (target) => {
+    if (fn === target) {
+      throw new Error('Can\'t link to self');
+    }
+    links.ls.push(target);
+    target._state(getState());
+  };
+
+  fn._state = (s) => {
+    if (!s) {
+      return getState();
+    }
+    if (s.values) {
+      const arr = [];
+      Object.keys(s.values).forEach((key) => {
+        if (!values[key] || s.values[key].join(';') !== values[key].toString()) {
+          arr.push({
+            key,
+            values: s.values[key]
+          });
+        }
+      });
+      Object.keys(values).forEach((key) => {
+        if (!s.values[key]) {
+          arr.push({
+            key,
+            values: []
+          });
+        }
+      });
+      if (arr.length) {
+        fn.setValues(arr);
+      }
+    }
+    if (s.ranges) {
+      const arr = [];
+      Object.keys(s.ranges).forEach((key) => {
+        if (!ranges[key] || s.ranges[key].join(';') !== ranges[key].toString()) {
+          arr.push({
+            key,
+            ranges: s.ranges[key]
+          });
+        }
+      });
+      Object.keys(ranges).forEach((key) => {
+        if (!s.ranges[key]) {
+          arr.push({
+            key,
+            ranges: []
+          });
+        }
+      });
+      if (arr.length) {
+        fn.setRanges(arr);
+      }
+    }
+    return undefined;
+  };
 
   /**
    * Starts this brush context
@@ -299,6 +417,7 @@ export default function brush({
     if (!activated) {
       activated = true;
       fn.emit('start');
+      links.start();
     }
   };
 
@@ -316,6 +435,7 @@ export default function brush({
     ranges = {};
     values = {};
     fn.emit('end');
+    links.end();
   };
 
   /**
@@ -336,6 +456,7 @@ export default function brush({
     values = {};
     if (hasChanged) {
       fn.emit('update', [], removed); // TODO - do not emit update if state hasn't changed
+      links.clear();
     }
   };
 
@@ -385,7 +506,7 @@ export default function brush({
     const its = intercept(interceptors.addValues, items, aliases);
     const added = add({
       vc,
-      values,
+      collection: values,
       items: its
     });
 
@@ -397,6 +518,7 @@ export default function brush({
         fn.emit('start');
       }
       fn.emit('update', added, []);
+      links.updateValues();
     }
   };
 
@@ -419,6 +541,7 @@ export default function brush({
         fn.emit('start');
       }
       fn.emit('update', changed[0], changed[1]);
+      links.updateValues();
     }
   };
 
@@ -442,7 +565,7 @@ export default function brush({
   fn.removeValues = (items) => {
     const its = intercept(interceptors.removeValues, items, aliases);
     const removed = remove({
-      values,
+      collection: values,
       items: its
     });
 
@@ -450,6 +573,7 @@ export default function brush({
 
     if (removed.length) {
       fn.emit('update', [], removed);
+      links.updateValues();
       // TODO - emit 'end' event if there are no remaining active brushes
     }
   };
@@ -468,11 +592,11 @@ export default function brush({
     const removeIts = intercept(interceptors.removeValues, removeItems, aliases);
     const added = add({
       vc,
-      values,
+      collection: values,
       items: addIts
     });
     const removed = remove({
-      values,
+      collection: values,
       items: removeIts
     });
 
@@ -485,6 +609,7 @@ export default function brush({
         fn.emit('start');
       }
       fn.emit('update', added, removed);
+      links.updateValues();
     }
   };
 
@@ -521,6 +646,7 @@ export default function brush({
         fn.emit('start');
       }
       fn.emit('update', toggled[0], toggled[1]);
+      links.updateValues();
     }
   };
 
@@ -583,6 +709,7 @@ export default function brush({
       fn.emit('start');
     }
     fn.emit('update', [], []);
+    links.updateRanges();
   };
 
   /**
@@ -618,6 +745,7 @@ export default function brush({
       fn.emit('start');
     }
     fn.emit('update', [], []);
+    links.updateRanges();
   };
 
   /**
@@ -655,6 +783,7 @@ export default function brush({
       fn.emit('start');
     }
     fn.emit('update', [], []);
+    links.updateRanges();
   };
 
   /**
@@ -693,6 +822,7 @@ export default function brush({
       fn.emit('start');
     }
     fn.emit('update', [], []);
+    links.updateRanges();
   };
 
   /**

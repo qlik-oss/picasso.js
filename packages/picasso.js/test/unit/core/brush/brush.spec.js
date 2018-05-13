@@ -115,7 +115,8 @@ describe('brush', () => {
     let bb;
     beforeEach(() => {
       v = {
-        add: sandbox.stub()
+        add: sandbox.stub(),
+        values: sandbox.stub()
       };
       vcc = sandbox.stub().returns(v);
       bb = brush({ vc: vcc, rc: noop });
@@ -166,7 +167,8 @@ describe('brush', () => {
     beforeEach(() => {
       v = {
         remove: sandbox.stub(),
-        add: sandbox.stub()
+        add: sandbox.stub(),
+        values: sandbox.stub()
       };
       vcc = sandbox.stub().returns(v);
       bb = brush({ vc: vcc, rc: noop });
@@ -205,7 +207,7 @@ describe('brush', () => {
       let rcc;
       let bb;
       beforeEach(() => {
-        v = {};
+        v = { ranges: sandbox.stub() };
         v[action] = sandbox.stub();
         rcc = sandbox.stub().returns(v);
         bb = brush({ rc: rcc, vc: noop });
@@ -758,7 +760,8 @@ describe('brush', () => {
     beforeEach(() => {
       v = {
         remove: sandbox.stub(),
-        add: sandbox.stub()
+        add: sandbox.stub(),
+        values: sandbox.stub()
       };
       vcc = sandbox.stub().returns(v);
       bb = brush({ vc: vcc, rc: noop });
@@ -816,6 +819,53 @@ describe('brush', () => {
       expect(v.add).to.have.been.calledWith('Car');
       expect(v.remove).to.have.been.calledWith('Bike');
       expect(cb.callCount).to.equal(0);
+    });
+  });
+
+  describe('link', () => {
+    it('should throw when linking to itself', () => {
+      const source = brush();
+      const fn = () => {
+        source.link(source);
+      };
+      expect(fn).to.throw();
+    });
+
+    it('target should maintain same state as source', () => {
+      const source = brush();
+      const target = brush();
+      source.link(target);
+      source.setValues([{ key: 'region', values: ['E'] }]);
+      expect(source._state()).to.eql(target._state());
+      source.addValue('region', 'A');
+      source.addValue('region', 'B');
+      expect(source._state()).to.eql(target._state());
+      source.toggleValue('region', 'C');
+      expect(source._state()).to.eql(target._state());
+      source.removeValue('region', 'B');
+      expect(source._state()).to.eql(target._state());
+      source.setRange('sales', { min: 10, max: 15 });
+      expect(source._state()).to.eql(target._state());
+      source.addRange('sales', { min: 8, max: 15 });
+      expect(source._state()).to.eql(target._state());
+      source.removeRange('sales', { min: 9, max: 12 });
+      expect(source._state()).to.eql(target._state());
+      source.toggleRange('sales', { min: 20, max: 22 });
+      expect(source._state()).to.eql(target._state());
+      source.clear();
+      expect(source._state()).to.eql(target._state());
+    });
+
+    it('should hook into same state', () => {
+      const source = brush();
+      source.addValue('region', 'A');
+      source.addValue('region', 'B');
+      source.toggleValue('region', 'C');
+      source.removeValue('region', 'B');
+
+      const target = brush();
+      source.link(target);
+      expect(source._state()).to.eql(target._state());
     });
   });
 });
