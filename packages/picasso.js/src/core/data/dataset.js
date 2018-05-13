@@ -13,31 +13,43 @@ const filters = {
   numeric: values => values.filter(v => typeof v === 'number' && !isNaN(v))
 };
 
-function createFields({ source, data, cache }) {
+function createFields({ source, data, cache, config }) {
   let headers;
+  let content = data;
+  const parse = config && config.parse;
   if (Array.isArray(data[0])) { // assume 2d matrix of data
-    headers = data[0]; // assume headers are in first row TODO - add headers config
+    if (parse && parse.headers === false) {
+      headers = data[0].map((v, i) => i);
+    } else {
+      headers = data[0];
+      content = data.slice(1);
+    }
   } else {
     headers = Object.keys(data[0]);
   }
 
-  const flds = headers.map(h => ({
-    key: h,
-    title: h
-  }));
+  const rowFn = !!parse && typeof parse.row === 'function' && parse.row;
+  let flds = headers;
+
+  if (parse && typeof parse.fields === 'function') {
+    flds = parse.fields(flds.slice());
+  } else {
+    flds = headers.map(h => ({
+      key: h,
+      title: h
+    }));
+  }
 
   let fieldValues;
-  let content = data;
   if (Array.isArray(data[0])) {
     fieldValues = flds.map(() => []);
-    content = data.slice(1);
   } else {
     fieldValues = {};
     flds.forEach((f) => { fieldValues[f.key] = []; });
   }
 
   for (let r = 0; r < content.length; r++) {
-    const row = content[r];
+    const row = rowFn ? rowFn(content[r], r, flds) : content[r];
     if (!row) {
       continue;
     }
