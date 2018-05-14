@@ -60,13 +60,27 @@ Brushes can be controlled programatically by accessing a certain brush from the 
 
 ```js
 const pic = picasso.chart(...);
-const highlighter = pic.brush('highlight');
-highlighter.addValue('products', 'Bike');
+const highlighter = pic.brush('highlight'); // get brush instance
+highlighter.addValue('products', 'Bike'); // highlight 'Bike'
 ```
 
 when `addValue` is called, components that are _consuming_ the _highlight_ brushing context will react automatically and apply the specified style.
 
-## Scenarios
+## Brushing and linking
+
+All components using a _trigger_ or _consume_ configuration will automatically be linked within the same chart. To link brushes from two different chart instances, use `link`:
+
+```js
+const scatter = picasso.chart(/* */);
+const bars = picasso.chart(/* */);
+scatter.brush('select').link(bars.brush('highlight'));
+```
+
+Now, whenever a value is brushed in the `scatter` instance, the same values will also be brushed in the `bars` instance:
+
+![Brushing and linking](/img/brush-link.gif)
+
+## Examples
 
 **Scenario**: Tapping on a data point in a component should activate a brush called _highlight_, add the relevant data to the brush, and finally highlight the point in the component.
 

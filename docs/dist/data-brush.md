@@ -54,6 +54,16 @@ brush.addValues([
 
 ## API reference
 
+<a name='brush.link' href='#brush.link'># </a>*brush*.**link**(target *:#/definitions/brush*)
+
+|Name(s)|Type(s)|Description|Optional|Default value|
+|-------|-------|-----------|--------|-------------|
+| target |  *#/definitions/brush*  | The brush instance to link to | No | No |
+
+Link this brush to another brush instance.
+
+When linked, the &#x60;target&#x60; will receive updates whenever this brush changes.
+
 <a name='brush.start' href='#brush.start'># </a>*brush*.**start**()
 
 

@@ -129,6 +129,17 @@
       "kind": "interface",
       "params": [],
       "entries": {
+        "link": {
+          "description": "Link this brush to another brush instance.\n\nWhen linked, the `target` will receive updates whenever this brush changes.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "target",
+              "description": "The brush instance to link to",
+              "type": "#/definitions/brush"
+            }
+          ]
+        },
         "start": {
           "description": "Starts this brush context\n\nStarts this brush context and emits a 'start' event if it is not already started.",
           "kind": "function",
@@ -1487,6 +1498,80 @@
                               "optional": true,
                               "defaultValue": 0.5,
                               "type": "number"
+                            },
+                            "fill": {
+                              "description": "Color of the label",
+                              "optional": true,
+                              "defaultValue": "'#333'",
+                              "type": "string"
+                            }
+                          },
+                          "kind": "object"
+                        }
+                      }
+                    },
+                    "kind": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "slices-label-strategy": {
+          "kind": "object",
+          "entries": {
+            "settings": {
+              "kind": "object",
+              "entries": {
+                "direction": {
+                  "description": "The direction of the text: 'horizontal' or 'rotated'.",
+                  "optional": true,
+                  "defaultValue": "'horizontal'",
+                  "kind": "union",
+                  "items": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "function"
+                    }
+                  ]
+                },
+                "fontFamily": {
+                  "optional": true,
+                  "defaultValue": "'Arial'",
+                  "type": "string"
+                },
+                "fontSize": {
+                  "optional": true,
+                  "defaultValue": 12,
+                  "type": "number"
+                },
+                "labels": {
+                  "kind": "array",
+                  "items": {
+                    "entries": {
+                      "label": {
+                        "description": "The text value",
+                        "kind": "union",
+                        "items": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "function"
+                          }
+                        ]
+                      },
+                      "placements": {
+                        "kind": "array",
+                        "items": {
+                          "entries": {
+                            "position": {
+                              "description": "'inside' | 'into' | 'outside' (outside is not implmented yet)",
+                              "optional": true,
+                              "defaultValue": "'into'",
+                              "type": "string"
                             },
                             "fill": {
                               "description": "Color of the label",
