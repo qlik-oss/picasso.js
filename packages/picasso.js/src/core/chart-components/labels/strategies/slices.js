@@ -93,6 +93,8 @@ function getHorizontalInsideSliceRect({ slice, padding, measured }) {
 
   if (!bounds) { return null; }
 
+  bounds.baseline = 'top';
+
   let startLine = { x1: 0, y1: 0, x2: Math.sin(start) * outerRadius, y2: -Math.cos(start) * outerRadius };
   if (collisions.testRectLine(bounds, startLine)) { return null; }
   let endLine = { x1: 0, y1: 0, x2: Math.sin(end) * outerRadius, y2: -Math.cos(end) * outerRadius };
@@ -129,7 +131,7 @@ function getRotatedInsideSliceRect({ slice, measured, padding }) {
     x: Math.sin(middle) * r,
     y: -Math.cos(middle) * r,
     width: maxWidth,
-    height: 0
+    height: measured.height
   };
   if (middle < Math.PI) {
     bounds.angle = middle - (Math.PI / 2);
@@ -186,13 +188,50 @@ function getRotatedOusideSliceRect({ slice, measured, padding, view }) {
     x,
     y,
     width: maxWidth,
-    height: 0
+    height: measured.height
   };
   if (middle < Math.PI) {
     bounds.angle = middle - (Math.PI / 2);
     bounds.anchor = 'start';
   } else {
     bounds.angle = middle + (Math.PI / 2);
+    bounds.anchor = 'end';
+  }
+  return bounds;
+}
+
+function getHorizontalOusideSliceRect({ slice, measured, padding, view }) {
+  let { start, end, outerRadius, offset } = slice;
+  let r = outerRadius + padding + (measured.height / 2);
+
+  let middle = (start + end) / 2;
+  let PI2 = Math.PI * 2;
+  middle = ((middle % PI2) + PI2) % PI2; // normalize
+  let maxWidth = measured.width;
+  let x = Math.sin(middle) * r;
+  let y = -Math.cos(middle) * r;
+
+  if (middle < Math.PI) {
+    let w = Math.abs((view.x + view.width) - (x + offset.x));
+    if (w < maxWidth) {
+      maxWidth = w;
+    }
+  } else {
+    let w = Math.abs(view.x - (x + offset.x));
+    if (w < maxWidth) {
+      maxWidth = w;
+    }
+  }
+
+  let bounds = {
+    x,
+    y,
+    width: maxWidth,
+    height: measured.height
+  };
+  if (middle < Math.PI) {
+    bounds.anchor = 'start';
+  } else {
     bounds.anchor = 'end';
   }
   return bounds;
@@ -214,7 +253,7 @@ function placeTextOnPoint(rect, text, opts) {
     text,
     maxWidth: rect.width,
     x: rect.x,
-    y: rect.y + (rect.height / 2),
+    y: rect.y + (rect.baseline === 'top' ? rect.height / 2 : 0),
     fill: opts.fill,
     anchor: rect.anchor || 'start',
     baseline: 'middle',
@@ -265,7 +304,7 @@ export function getSliceRect({ slice, direction, position, padding, measured, vi
       if (direction === 'rotate') {
         bounds = getRotatedOusideSliceRect({ slice, measured, padding, view });
       } else {
-        // bounds = getHorizontalOusideSliceRect({ slice: s, measured, padding });
+        bounds = getHorizontalOusideSliceRect({ slice, measured, padding, view });
       }
       break;
     default:
@@ -354,6 +393,8 @@ export function slices({
 
   const labelStruct = {};
   const labels = [];
+  let firstOutsideBounds = null;
+  let previousOutsideBounds = null;
 
   for (let i = 0, len = nodes.length; i < len; i++) {
     let node = nodes[i];
@@ -386,6 +427,18 @@ export function slices({
       let placement = bestPlacement.placement;
 
       if (bounds && placement) {
+        if (placement.position === 'outside') {
+          if (!firstOutsideBounds) {
+            firstOutsideBounds = bounds;
+          } else if (firstOutsideBounds.anchor === bounds.anchor && collisions.testRectRect(firstOutsideBounds, bounds)) {
+            continue;
+          }
+          if (previousOutsideBounds && previousOutsideBounds.anchor === bounds.anchor && collisions.testRectRect(previousOutsideBounds, bounds)) {
+            continue;
+          }
+          previousOutsideBounds = bounds;
+        }
+
         let fill = typeof placement.fill === 'function' ? placement.fill(arg, i) : placement.fill;
 
         let label = placer(bounds, text, {
