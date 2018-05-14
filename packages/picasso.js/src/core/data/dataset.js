@@ -1,4 +1,4 @@
-import resolve from './json-path-resolver';
+import extend from 'extend';
 import field from './field';
 import extract from './extractor-matrix';
 
@@ -13,35 +13,125 @@ const filters = {
   numeric: values => values.filter(v => typeof v === 'number' && !isNaN(v))
 };
 
-function createFields(matrix, { cache, key }) {
-  if (!matrix) {
-    return;
+function createFields({ source, data, cache, config }) {
+  let headers;
+  let content = data;
+  const parse = config && config.parse;
+  if (Array.isArray(data[0])) { // assume 2d matrix of data
+    if (parse && parse.headers === false) {
+      headers = data[0].map((v, i) => i);
+    } else {
+      headers = data[0];
+      content = data.slice(1);
+    }
+  } else {
+    headers = Object.keys(data[0]);
   }
-  const headers = matrix[0]; // assume headers are in first row TODO - add headers config
 
-  const content = matrix.slice(1);
+  const rowFn = !!parse && typeof parse.row === 'function' && parse.row;
+  let flds = headers;
 
-  headers.forEach((a, i) => {
-    const values = resolve(`//${i}`, content);
+  if (parse && typeof parse.fields === 'function') {
+    flds = parse.fields(flds.slice());
+  } else {
+    flds = headers.map(h => ({
+      key: h,
+      title: h
+    }));
+  }
+
+  let fieldValues;
+  if (Array.isArray(data[0])) {
+    fieldValues = flds.map(() => []);
+  } else {
+    fieldValues = {};
+    flds.forEach((f) => { fieldValues[f.key] = []; });
+  }
+
+  for (let r = 0; r < content.length; r++) {
+    const row = rowFn ? rowFn(content[r], r, flds) : content[r];
+    if (!row) {
+      continue;
+    }
+    if (Array.isArray(row)) {
+      for (let c = 0; c < flds.length; c++) {
+        fieldValues[c].push(row[c]);
+      }
+    } else {
+      for (let c = 0; c < flds.length; c++) {
+        fieldValues[flds[c].key].push(row[flds[c].key]);
+      }
+    }
+  }
+  const fv = Array.isArray(fieldValues) ? (i => fieldValues[i]) : (i => fieldValues[flds[i].key]);
+  for (let c = 0; c < flds.length; c++) {
+    const values = fv(c);
     const numericValues = filters.numeric(values);
     const isMeasure = numericValues.length > 0;
     const type = isMeasure ? 'measure' : 'dimension';
     const min = isMeasure ? Math.min(...numericValues) : NaN;
     const max = isMeasure ? Math.max(...numericValues) : NaN;
-    // TODO Deal with tags
 
-    cache.fields.push(field({
-      source: key,
-      title: headers[i],
+    cache.fields.push(field(extend({
+      source,
+      key: c,
+      title: flds[c].title,
       values,
       min,
       max,
-      type,
-      value: v => v,
-      label: v => v
+      type
+    }, flds[c]), {
+      value: flds[c].value,
+      label: flds[c].label
     }));
-  });
+  }
 }
+
+const dsv = ({ data, config }) => {
+  const rows = data.split('\n');
+  const row0 = rows[0];
+  const row1 = rows[1];
+  let delimiter = ',';
+  if (config && config.parse && config.parse.delimiter) {
+    delimiter = config.parse.delimiter;
+  } else if (row0) { // guess delimiter
+    const guesses = [/,/, /\t/, /;/];
+    for (let i = 0; i < guesses.length; i++) {
+      const d = guesses[i];
+      if (row0 && row1) {
+        if (d.test(row0) && d.test(row1) && row0.split(d).length === row1.split(d).length) {
+          delimiter = d;
+          break;
+        }
+      } else if (d.test(row0)) {
+        delimiter = d;
+      }
+    }
+  }
+  return rows.map(row => row.split(delimiter));
+};
+
+const parseData = ({ source, data, cache, config }) => {
+  if (!data) {
+    return;
+  }
+  let dd = data;
+
+  if (typeof dd === 'string') { // assume dsv
+    dd = dsv({ data, config });
+  }
+
+  if (!Array.isArray(dd)) {
+    return; // warn?
+  }
+
+  createFields({
+    data: dd,
+    cache,
+    source,
+    config
+  });
+};
 
 /**
  * Create a new dataset with default settings
@@ -50,7 +140,8 @@ function createFields(matrix, { cache, key }) {
  */
 function ds({
   key,
-  data
+  data,
+  config
 } = {}) {
   const cache = {
     fields: []
@@ -94,7 +185,7 @@ function ds({
      * @param {data-extract-config} config
      * @returns {Array<datum-extract>}
      */
-    extract: config => extract(config, dataset, cache),
+    extract: cfg => extract(cfg, dataset, cache),
 
     /**
      * @returns {null}
@@ -102,9 +193,8 @@ function ds({
     hierarchy: () => null
   };
 
-  createFields(data, {
-    cache,
-    key
+  parseData({
+    key, data, config, cache
   });
 
   return dataset;

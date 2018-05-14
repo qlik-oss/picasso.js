@@ -24,7 +24,11 @@ The `key` is an identifier for the provided data sets and is used when specifyin
 
 The `type` refers to one of the registered data parsers and ultimately decides how to interpret the provided data.
 
-The default `type` is a `'matrix'`, which is just a 2D array with headers on the first row:
+The default `type` is `'matrix'`, which can handle a few different common formats:
+
+**2d array:**
+
+A 2d array where the first row is assumed to contain the field values:
 
 ```js
 type: 'matrix',
@@ -32,8 +36,70 @@ data: [
   ['Year', 'Sales'],
   ['2015', 56],
   ['2016', 49]
-  ...
 ]
+```
+
+**Object array:**
+
+An array of objects:
+
+```js
+type: 'matrix',
+data: [
+  { year: '2015', sales: 56 },
+  { year: '2016', sales: 49 }
+]
+```
+
+**DSV:**
+
+A string of delimiter-separated values:
+
+```js
+type: 'matrix',
+data: 'year,sales\n2015,56\n2016,49'
+```
+
+The delimiter is automatically detected if any of `,` (comma), `\t` (tab) or `;` (semicolon).
+
+### Configuration
+
+The provided data can be further configured to provide additional info about the fields and to properly parse values into numbers, dates and other types:
+
+```js
+type: 'matrix',
+data: [
+  { year: '2015', sales: 56 },
+  { year: '2016', sales: 49 }
+],
+config: {
+  parse: {
+    delimiter: ':', // specify delimiter for dsv string
+    fields(flds) { // provide more info about fields
+      return [{
+        key: 'year',
+        title: 'Year'
+      }, {
+        key: 'sales',
+        title: 'Sales',
+        formatter: {
+          type: 'd3-number',
+          pattern: '$.2f'
+        }
+      }, {
+        key: 'rand',
+        title: 'Some random values'
+      }]
+    },
+    row(d, i, flds) { // parse rows of data
+      return {
+        year: new Date(+d.year, 0, 1),
+        sales: d.sales,
+        rand: Math.random()
+      };
+    }
+  }
+}
 ```
 
 ## Providing data to components

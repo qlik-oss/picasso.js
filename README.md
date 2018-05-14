@@ -20,7 +20,7 @@ npm install picasso.js
 import picasso from 'picasso.js';
 
 picasso.chart({
-  element: document.querySelector('#container'),
+  element: document.querySelector('#container'), // container must have a width and height specified
   settings: {
     scales: {
       budget: { max: 5000, min: 0 },
@@ -47,9 +47,9 @@ picasso.chart({
           {sales: 9873, margin: 0.9, budget: 3453},
         ],
         settings: {
-          x: { scale: 'budget', fn() { return this.scale(this.data.value.budget); } },
-          y: { scale: 'sales', fn() { return this.scale(this.data.value.sales); } },
-          size() { return this.data.value.margin; },
+          x: { scale: 'budget', fn: d => d.scale(d.datum.value.budget) },
+          y: { scale: 'sales', fn: d => d.scale(d.datum.value.sales) },
+          size: d => d.datum.value.margin,
         }
       }
     ]
