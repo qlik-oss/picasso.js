@@ -5,7 +5,9 @@ import {
   VERTICAL
 } from './brush-range-const';
 
-function buildLine({ h, isVertical, value, pos, align, borderHit, state }) {
+function buildLine({
+  h, isVertical, value, pos, align, borderHit, state
+}) {
   const isAlignStart = align !== 'end';
   const alignStart = { left: '0', top: '0' };
   const alignEnd = { right: '0', bottom: '0' };
@@ -54,19 +56,22 @@ function buildLine({ h, isVertical, value, pos, align, borderHit, state }) {
   }, [
     // line
     h('div', {
-      style: extend({
-        backgroundColor: state.style.line.stroke,
-        position: 'absolute',
-        height: isVertical ? `${1}px` : '100%',
-        width: isVertical ? '100%' : `${1}px`
-      },
+      style: extend(
+        {
+          backgroundColor: state.style.line.stroke,
+          position: 'absolute',
+          height: isVertical ? `${1}px` : '100%',
+          width: isVertical ? '100%' : `${1}px`
+        },
         alignStyle
       )
     })
   ]);
 }
 
-function buildBubble({ h, isVertical, label, otherValue, idx, pos, align, state }) {
+function buildBubble({
+  h, isVertical, label, otherValue, idx, pos, align, state
+}) {
   const isAlignStart = align !== 'end';
   const isOutside = state.settings.bubbles.placement === 'outside';
   let outside = 'none';
@@ -121,7 +126,9 @@ function buildBubble({ h, isVertical, label, otherValue, idx, pos, align, state 
   ]);
 }
 
-function buildArea({ h, isVertical, top, height, color, on, opacity }) {
+function buildArea({
+  h, isVertical, top, height, color, on, opacity
+}) {
   return h('div', {
     style: {
       backgroundColor: color,
@@ -137,7 +144,9 @@ function buildArea({ h, isVertical, top, height, color, on, opacity }) {
   }, []);
 }
 
-export default function buildRange({ borderHit, els, isVertical, state, vStart, vEnd, idx }) {
+export default function buildRange({
+  borderHit, els, isVertical, state, vStart, vEnd, idx
+}) {
   let targetOffset = 0;
   if (state.targetRect) {
     targetOffset = isVertical ? state.targetRect.y : state.targetRect.x;

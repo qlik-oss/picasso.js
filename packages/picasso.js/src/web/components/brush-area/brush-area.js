@@ -188,7 +188,9 @@ const definition = {
     const p = getLocalPoint(this, e, false);
 
     // Require event to be inside the component bounds
-    if (!NarrowPhaseCollision.testRectPoint({ x: 0, y: 0, width: this.rect.width, height: this.rect.height }, p)) {
+    if (!NarrowPhaseCollision.testRectPoint({
+      x: 0, y: 0, width: this.rect.width, height: this.rect.height
+    }, p)) {
       return;
     }
 

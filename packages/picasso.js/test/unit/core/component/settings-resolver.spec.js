@@ -7,7 +7,7 @@ describe('settings resolver', () => {
   let updateScaleSize;
   beforeEach(() => {
     normalizeSettings = (...args) => [...args].join('-');
-    resolveForItem = ({ datum, data, resources }, norm) => ({ norm, datum, data });
+    resolveForItem = ({ datum, data }, norm) => ({ norm, datum, data });
     updateScaleSize = sinon.stub();
     res = settingsResolver({
       chart: 'c'

@@ -15,6 +15,4 @@ function circle(options) {
   };
 }
 
-export {
-  circle as default
-};
+export { circle as default };

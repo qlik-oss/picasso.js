@@ -78,7 +78,9 @@ describe('Brushing', () => {
         renderer: {
           itemsAt: sinon.stub().returns([]),
           element: () => ({
-            getBoundingClientRect: sinon.stub().returns({ left: 0, top: 0, width: 100, height: 100 })
+            getBoundingClientRect: sinon.stub().returns({
+              left: 0, top: 0, width: 100, height: 100
+            })
           })
         },
         chart: {
@@ -251,8 +253,8 @@ describe('Brushing', () => {
         },
         trigger: function trigger(key) {
           this.listeners
-          .filter(listener => typeof listener[key] !== 'undefined')
-          .forEach(listener => listener[key]());
+            .filter(listener => typeof listener[key] !== 'undefined')
+            .forEach(listener => listener[key]());
         }
       };
       brusherStub.containsMappedData.onCall(0).returns(false); // Do not match first node but all after
@@ -316,32 +318,30 @@ describe('Brushing', () => {
     });
 
     it('update should apply styling values only to shape nodes', () => {
-      nodes.push(
-        {
-          type: 'container',
-          stroke: 'doNotUpdate',
-          fill: 'doNotUpdate',
-          children: [
-            {
-              type: 'circle',
-              fill: 'yellow',
-              stroke: 'updateThis',
-              data: data[0]
-            },
-            {
-              type: 'container',
-              children: [
-                {
-                  type: 'line',
-                  fill: 'yellow',
-                  stroke: 'updateThis',
-                  data: data[0]
-                }
-              ]
-            }
-          ]
-        }
-      );
+      nodes.push({
+        type: 'container',
+        stroke: 'doNotUpdate',
+        fill: 'doNotUpdate',
+        children: [
+          {
+            type: 'circle',
+            fill: 'yellow',
+            stroke: 'updateThis',
+            data: data[0]
+          },
+          {
+            type: 'container',
+            children: [
+              {
+                type: 'line',
+                fill: 'yellow',
+                stroke: 'updateThis',
+                data: data[0]
+              }
+            ]
+          }
+        ]
+      });
       styler(dummyComponent, consume);
       brusherStub.trigger('start');
       brusherStub.trigger('update');

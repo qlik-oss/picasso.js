@@ -88,7 +88,7 @@ describe('Component', () => {
         key2: false
       },
       data: []
-    };*/
+    }; */
 
     createAndRenderComponent();
 

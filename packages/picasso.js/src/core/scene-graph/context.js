@@ -62,6 +62,4 @@ function contextFactory(whitelist = []) {
   return context;
 }
 
-export {
-  contextFactory as default
-};
+export { contextFactory as default };

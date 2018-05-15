@@ -114,7 +114,9 @@ function createDisplayLayers(layers, {
 }) {
   const nodes = [];
   layers.forEach((layer) => {
-    const { lineObj, layerObj, areaObj, points } = layer;
+    const {
+      lineObj, layerObj, areaObj, points
+    } = layer;
 
     const areaGenerator = area();
     let lineGenerator;
@@ -191,7 +193,9 @@ function resolve({
   for (let i = 0; i < coordinates.items.length; i++) {
     let p = coordinates.items[i];
     let lid = p.layerId;
-    layerIds[lid] = layerIds[lid] || { order: numLines++, id: lid, items: [], firstPoint: p.data };
+    layerIds[lid] = layerIds[lid] || {
+      order: numLines++, id: lid, items: [], firstPoint: p.data
+    };
     layerIds[lid].items.push(p);
   }
 

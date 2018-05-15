@@ -13,7 +13,9 @@ describe('Node Selector', () => {
       expect(token).to.deep.equal([
         [{ type: 'type', value: 'Circle' }],
         [{ type: 'type', value: 'foo' }],
-        [{ type: 'attr', value: '[color="red"]', attribute: 'color', operator: '=', attributeValue: 'red' }],
+        [{
+          type: 'attr', value: '[color="red"]', attribute: 'color', operator: '=', attributeValue: 'red'
+        }],
         [{ type: 'universal', value: '*' }]
       ]);
     });
@@ -36,7 +38,9 @@ describe('Node Selector', () => {
       expect(token).to.deep.equal([
         [
           { type: 'type', value: 'Circle' },
-          { type: 'attr', value: '[fill]', attribute: 'fill', operator: UNDEF, attributeValue: UNDEF }
+          {
+            type: 'attr', value: '[fill]', attribute: 'fill', operator: UNDEF, attributeValue: UNDEF
+          }
         ]
       ]);
     });
@@ -61,21 +65,27 @@ describe('Node Selector', () => {
       it('should support attribute existance', () => {
         const token = tokenize('[wohoo]');
         expect(token).to.deep.equal([
-          [{ type: 'attr', value: '[wohoo]', attribute: 'wohoo', operator: UNDEF, attributeValue: UNDEF }]
+          [{
+            type: 'attr', value: '[wohoo]', attribute: 'wohoo', operator: UNDEF, attributeValue: UNDEF
+          }]
         ]);
       });
 
       it('should support attribute value', () => {
         const token = tokenize('[color="red"]');
         expect(token).to.deep.equal([
-          [{ type: 'attr', value: '[color="red"]', attribute: 'color', operator: '=', attributeValue: 'red' }]
+          [{
+            type: 'attr', value: '[color="red"]', attribute: 'color', operator: '=', attributeValue: 'red'
+          }]
         ]);
       });
 
       it('should support empty attribute value', () => {
         const token = tokenize('[color=""]');
         expect(token).to.deep.equal([
-          [{ type: 'attr', value: '[color=""]', attribute: 'color', operator: '=', attributeValue: '' }]
+          [{
+            type: 'attr', value: '[color=""]', attribute: 'color', operator: '=', attributeValue: ''
+          }]
         ]);
       });
 
@@ -83,11 +93,19 @@ describe('Node Selector', () => {
         const token = tokenize('[fill][color="blue"][stroke!="red"] [foo="woo"]');
         expect(token).to.deep.equal([
           [
-            { type: 'attr', value: '[fill]', attribute: 'fill', operator: UNDEF, attributeValue: UNDEF },
-            { type: 'attr', value: '[color="blue"]', attribute: 'color', operator: '=', attributeValue: 'blue' },
-            { type: 'attr', value: '[stroke!="red"]', attribute: 'stroke', operator: '!=', attributeValue: 'red' },
+            {
+              type: 'attr', value: '[fill]', attribute: 'fill', operator: UNDEF, attributeValue: UNDEF
+            },
+            {
+              type: 'attr', value: '[color="blue"]', attribute: 'color', operator: '=', attributeValue: 'blue'
+            },
+            {
+              type: 'attr', value: '[stroke!="red"]', attribute: 'stroke', operator: '!=', attributeValue: 'red'
+            },
             { type: ' ', value: ' ' },
-            { type: 'attr', value: '[foo="woo"]', attribute: 'foo', operator: '=', attributeValue: 'woo' }
+            {
+              type: 'attr', value: '[foo="woo"]', attribute: 'foo', operator: '=', attributeValue: 'woo'
+            }
           ]
         ]);
       });
@@ -162,7 +180,9 @@ describe('Node Selector', () => {
         c2.attrs.color = 'foo';
         r1.attrs.color = 'wooo';
         const result = filter(
-          { type: 'attr', value: '[color]', attribute: 'color', operator: UNDEF, attributeValue: UNDEF },
+          {
+            type: 'attr', value: '[color]', attribute: 'color', operator: UNDEF, attributeValue: UNDEF
+          },
           [c1, c2, c3, t1, r1]
         );
         expect(result).to.deep.equal([c2, r1]);
@@ -174,7 +194,9 @@ describe('Node Selector', () => {
         c3.attrs.color = 'blue';
         r1.attrs.color = 'red';
         const result = filter(
-          { type: 'attr', value: '[color]', attribute: 'color', operator: '=', attributeValue: 'red' },
+          {
+            type: 'attr', value: '[color]', attribute: 'color', operator: '=', attributeValue: 'red'
+          },
           [c1, c2, c3, t1, r1]
         );
         expect(result).to.deep.equal([c2, r1]);
@@ -187,7 +209,9 @@ describe('Node Selector', () => {
         r1.attrs.color = 'red';
         t1.attrs.color = 'yellow';
         const result = filter(
-          { type: 'attr', value: '[color]', attribute: 'color', operator: '!=', attributeValue: 'red' },
+          {
+            type: 'attr', value: '[color]', attribute: 'color', operator: '!=', attributeValue: 'red'
+          },
           [c1, c2, c3, t1, r1]
         );
         expect(result).to.deep.equal([c1, c3, t1]);

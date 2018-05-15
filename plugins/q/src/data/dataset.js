@@ -112,7 +112,9 @@ export default function q({
       fieldExtractor,
       localeInfo: config.localeInfo
     }));
-    createAttrFields(i, d, { cache, cube, pages, fieldExtractor, key, fieldKey, localeInfo: config.localeInfo });
+    createAttrFields(i, d, {
+      cache, cube, pages, fieldExtractor, key, fieldKey, localeInfo: config.localeInfo
+    });
   });
 
   cube.qMeasureInfo.forEach((d, i) => {
@@ -126,7 +128,9 @@ export default function q({
       fieldExtractor,
       localeInfo: config.localeInfo
     }));
-    createAttrFields(dimensions.length + i, d, { cache, cube, pages, fieldExtractor, key, fieldKey, localeInfo: config.localeInfo });
+    createAttrFields(dimensions.length + i, d, {
+      cache, cube, pages, fieldExtractor, key, fieldKey, localeInfo: config.localeInfo
+    });
   });
 
   return dataset;

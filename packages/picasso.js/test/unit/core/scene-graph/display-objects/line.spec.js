@@ -48,7 +48,9 @@ describe('Line', () => {
   describe('Set', () => {
     it('should set correct values', () => {
       line = createLine(shape);
-      line.set({ x1: 10, y1: 20, x2: 100, y2: 200, collider: { type: 'rect' } });
+      line.set({
+        x1: 10, y1: 20, x2: 100, y2: 200, collider: { type: 'rect' }
+      });
       expect(line.attrs.x1).to.be.equal(10);
       expect(line.attrs.y1).to.be.equal(20);
       expect(line.attrs.x2).to.be.equal(100);
@@ -80,7 +82,9 @@ describe('Line', () => {
   describe('BoundingRect', () => {
     it('should handle default values', () => {
       line = createLine(shape);
-      expect(line.boundingRect()).to.deep.equal({ x: 0, y: 0, width: 0, height: 0 });
+      expect(line.boundingRect()).to.deep.equal({
+        x: 0, y: 0, width: 0, height: 0
+      });
     });
 
     it('should return correct value without transformation', () => {
@@ -89,7 +93,9 @@ describe('Line', () => {
       shape.x2 = 100;
       shape.y2 = 200;
       line = createLine(shape);
-      expect(line.boundingRect()).to.deep.equal({ x: 10, y: 20, width: 90, height: 180 });
+      expect(line.boundingRect()).to.deep.equal({
+        x: 10, y: 20, width: 90, height: 180
+      });
     });
 
     it('should return correct value with a scale transformation', () => {
@@ -100,7 +106,9 @@ describe('Line', () => {
       shape.transform = 'scale(2, 3)';
       line = createLine(shape);
       line.resolveLocalTransform();
-      expect(line.boundingRect(true)).to.deep.equal({ x: 2, y: 6, width: 4, height: 6 });
+      expect(line.boundingRect(true)).to.deep.equal({
+        x: 2, y: 6, width: 4, height: 6
+      });
     });
 
     it('should return correct value with a translate transformation', () => {
@@ -111,7 +119,9 @@ describe('Line', () => {
       shape.transform = 'translate(1, 2)';
       line = createLine(shape);
       line.resolveLocalTransform();
-      expect(line.boundingRect(true)).to.deep.equal({ x: 2, y: 4, width: 2, height: 2 });
+      expect(line.boundingRect(true)).to.deep.equal({
+        x: 2, y: 4, width: 2, height: 2
+      });
     });
 
     it('should return correct value with a rotate transformation', () => {
@@ -123,7 +133,9 @@ describe('Line', () => {
       line = createLine(shape);
       line.resolveLocalTransform();
       // TODO Should height/width be zero on a axis aligned line? Account for EPSILON?
-      expect(line.boundingRect(true)).to.deep.equal({ x: 2.1213203435596424, y: 0.7071067811865477, width: 2.8284271247461903, height: 1 });
+      expect(line.boundingRect(true)).to.deep.equal({
+        x: 2.1213203435596424, y: 0.7071067811865477, width: 2.8284271247461903, height: 1
+      });
     });
 
     it('should return correct value with a negative vector direction', () => {
@@ -132,7 +144,9 @@ describe('Line', () => {
       shape.x2 = -3;
       shape.y2 = -4;
       line = createLine(shape);
-      expect(line.boundingRect()).to.deep.equal({ x: -3, y: -4, width: 2, height: 2 });
+      expect(line.boundingRect()).to.deep.equal({
+        x: -3, y: -4, width: 2, height: 2
+      });
     });
   });
 
@@ -254,7 +268,9 @@ describe('Line', () => {
       shape.transform = 'translate(1, 2)';
       line = createLine(shape);
       line.resolveLocalTransform();
-      const rect = { x: 1, y: 5, width: 1, height: 1 };
+      const rect = {
+        x: 1, y: 5, width: 1, height: 1
+      };
 
       expect(line.intersectsRect(rect)).to.equal(true);
     });
@@ -269,7 +285,9 @@ describe('Line', () => {
       shape.transform = 'translate(1, 2)';
       line = createLine(shape);
       line.resolveLocalTransform();
-      const l = { x1: 1, y1: 5, x2: 2, y2: 5 };
+      const l = {
+        x1: 1, y1: 5, x2: 2, y2: 5
+      };
 
       expect(line.intersectsLine(l)).to.equal(true);
     });

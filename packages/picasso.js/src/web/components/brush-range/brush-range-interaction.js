@@ -50,7 +50,9 @@ function findActive(state, value, limits) {
   state.active = activeRange;
 }
 
-export function startArea({ state, e, renderer, ranges, targetSize }) {
+export function startArea({
+  state, e, renderer, ranges, targetSize
+}) {
   if (state.started) {
     return;
   }
@@ -154,7 +156,9 @@ export function startArea({ state, e, renderer, ranges, targetSize }) {
   }
 }
 
-export function start({ state, e, renderer, ranges, targetSize }) {
+export function start({
+  state, e, renderer, ranges, targetSize
+}) {
   if (state.started) {
     return;
   }

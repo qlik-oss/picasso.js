@@ -51,9 +51,15 @@ describe('straight mapping', () => {
       props: { text: { value: v => `(${v})` } }
     }, dataset);
     expect(m).to.eql([
-      { value: 'SE', label: 'SE', source: { field: 'fkey', key: 'nyckel' }, text: { value: '(SE)', label: '(SE)', source: { field: 'fkey', key: 'nyckel' } } },
-      { value: 'IT', label: 'IT', source: { field: 'fkey', key: 'nyckel' }, text: { value: '(IT)', label: '(IT)', source: { field: 'fkey', key: 'nyckel' } } },
-      { value: 'SE', label: 'SE', source: { field: 'fkey', key: 'nyckel' }, text: { value: '(SE)', label: '(SE)', source: { field: 'fkey', key: 'nyckel' } } }
+      {
+        value: 'SE', label: 'SE', source: { field: 'fkey', key: 'nyckel' }, text: { value: '(SE)', label: '(SE)', source: { field: 'fkey', key: 'nyckel' } }
+      },
+      {
+        value: 'IT', label: 'IT', source: { field: 'fkey', key: 'nyckel' }, text: { value: '(IT)', label: '(IT)', source: { field: 'fkey', key: 'nyckel' } }
+      },
+      {
+        value: 'SE', label: 'SE', source: { field: 'fkey', key: 'nyckel' }, text: { value: '(SE)', label: '(SE)', source: { field: 'fkey', key: 'nyckel' } }
+      }
     ]);
   });
 
@@ -99,9 +105,15 @@ describe('straight mapping', () => {
       }
     }, dataset);
     expect(m).to.eql([
-      { value: 'SE', label: 'SE', source: { field: 'fkey', key: 'nyckel' }, num: { value: 3, label: '3', source: { field: 'fkey2', key: 'nyckel' } } },
-      { value: 'IT', label: 'IT', source: { field: 'fkey', key: 'nyckel' }, num: { value: 7, label: '7', source: { field: 'fkey2', key: 'nyckel' } } },
-      { value: 'SE', label: 'SE', source: { field: 'fkey', key: 'nyckel' }, num: { value: 2, label: '2', source: { field: 'fkey2', key: 'nyckel' } } }
+      {
+        value: 'SE', label: 'SE', source: { field: 'fkey', key: 'nyckel' }, num: { value: 3, label: '3', source: { field: 'fkey2', key: 'nyckel' } }
+      },
+      {
+        value: 'IT', label: 'IT', source: { field: 'fkey', key: 'nyckel' }, num: { value: 7, label: '7', source: { field: 'fkey2', key: 'nyckel' } }
+      },
+      {
+        value: 'SE', label: 'SE', source: { field: 'fkey', key: 'nyckel' }, num: { value: 2, label: '2', source: { field: 'fkey2', key: 'nyckel' } }
+      }
     ]);
   });
 

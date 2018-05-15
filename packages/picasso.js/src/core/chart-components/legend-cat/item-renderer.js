@@ -181,8 +181,8 @@ export function itemize({
 
     item = {
       symbol: {
-         // can't create a displayObject here due to need to wiggle the center position of the symbol later on,
-         // just store the object needed later on
+        // can't create a displayObject here due to need to wiggle the center position of the symbol later on,
+        // just store the object needed later on
         meta: sourceSymbols[i]
       },
       label: {

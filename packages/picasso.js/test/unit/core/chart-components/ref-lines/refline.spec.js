@@ -60,7 +60,9 @@ describe('reference lines', () => {
     };
 
     createAndRenderComponent({
-      inner: { x: 37, y: 0, width: 870, height: 813 },
+      inner: {
+        x: 37, y: 0, width: 870, height: 813
+      },
       config
     });
 
@@ -87,7 +89,9 @@ describe('reference lines', () => {
     };
 
     createAndRenderComponent({
-      inner: { x: 37, y: 0, width: 870, height: 813 },
+      inner: {
+        x: 37, y: 0, width: 870, height: 813
+      },
       config
     });
 
@@ -125,57 +129,57 @@ describe('reference lines', () => {
     chart.scale.withArgs({ scale: 'y' }).returns(yScale);
 
     createAndRenderComponent({
-      inner: { x: 37, y: 0, width: 870, height: 813 },
+      inner: {
+        x: 37, y: 0, width: 870, height: 813
+      },
       config
     });
 
-    expect(rendererOutput).to.deep.equal(
-      [
-        {
-          flipXY: false,
-          stroke: 'green',
-          strokeWidth: 2,
-          type: 'line',
-          x1: 261,
-          x2: 261,
-          y1: 0,
-          y2: 813
-        },
-        {
-          fill: '#fff',
-          height: 44,
-          opacity: 0.5,
-          stroke: 'transparent',
-          strokeWidth: 0,
-          type: 'rect',
-          width: 189,
-          x: 72,
-          y: 769
-        },
-        {
-          anchor: 'start',
-          fill: 'green',
-          fontFamily: 'Arial',
-          fontSize: '20px',
-          maxWidth: 97,
-          opacity: 1,
-          text: 'اسم عربي',
-          type: 'text',
-          x: 82,
-          y: 799
-        },
-        {
-          fill: 'green',
-          fontFamily: 'Arial',
-          fontSize: '20px',
-          opacity: 1,
-          text: ' (0.3)',
-          type: 'text',
-          x: 182,
-          y: 799
-        }
-      ]
-    );
+    expect(rendererOutput).to.deep.equal([
+      {
+        flipXY: false,
+        stroke: 'green',
+        strokeWidth: 2,
+        type: 'line',
+        x1: 261,
+        x2: 261,
+        y1: 0,
+        y2: 813
+      },
+      {
+        fill: '#fff',
+        height: 44,
+        opacity: 0.5,
+        stroke: 'transparent',
+        strokeWidth: 0,
+        type: 'rect',
+        width: 189,
+        x: 72,
+        y: 769
+      },
+      {
+        anchor: 'start',
+        fill: 'green',
+        fontFamily: 'Arial',
+        fontSize: '20px',
+        maxWidth: 97,
+        opacity: 1,
+        text: 'اسم عربي',
+        type: 'text',
+        x: 82,
+        y: 799
+      },
+      {
+        fill: 'green',
+        fontFamily: 'Arial',
+        fontSize: '20px',
+        opacity: 1,
+        text: ' (0.3)',
+        type: 'text',
+        x: 182,
+        y: 799
+      }
+    ]);
   });
 
   it('should render basic line with label on Y without scale', () => {
@@ -208,47 +212,47 @@ describe('reference lines', () => {
     chart.scale.withArgs({ scale: 'y' }).returns(yScale);
 
     createAndRenderComponent({
-      inner: { x: 37, y: 0, width: 870, height: 813 },
+      inner: {
+        x: 37, y: 0, width: 870, height: 813
+      },
       config
     });
 
-    expect(rendererOutput).to.deep.equal(
-      [
-        {
-          flipXY: true,
-          stroke: 'green',
-          strokeWidth: 2,
-          type: 'line',
-          x1: 0,
-          x2: 870,
-          y1: 244,
-          y2: 244
-        },
-        {
-          fill: '#fff',
-          height: 44,
-          opacity: 0.5,
-          stroke: 'transparent',
-          strokeWidth: 0,
-          type: 'rect',
-          width: 117,
-          x: 0,
-          y: 244
-        },
-        {
-          anchor: 'start',
-          fill: 'green',
-          fontFamily: 'Arial',
-          fontSize: '20px',
-          maxWidth: 97,
-          opacity: 1,
-          text: 'asdftest',
-          type: 'text',
-          x: 10,
-          y: 274
-        }
-      ]
-    );
+    expect(rendererOutput).to.deep.equal([
+      {
+        flipXY: true,
+        stroke: 'green',
+        strokeWidth: 2,
+        type: 'line',
+        x1: 0,
+        x2: 870,
+        y1: 244,
+        y2: 244
+      },
+      {
+        fill: '#fff',
+        height: 44,
+        opacity: 0.5,
+        stroke: 'transparent',
+        strokeWidth: 0,
+        type: 'rect',
+        width: 117,
+        x: 0,
+        y: 244
+      },
+      {
+        anchor: 'start',
+        fill: 'green',
+        fontFamily: 'Arial',
+        fontSize: '20px',
+        maxWidth: 97,
+        opacity: 1,
+        text: 'asdftest',
+        type: 'text',
+        x: 10,
+        y: 274
+      }
+    ]);
   });
 
   it('vAlign 0, align 1, default values and different text test', () => {
@@ -275,47 +279,47 @@ describe('reference lines', () => {
     chart.scale.withArgs({ scale: 'y' }).returns(yScale);
 
     createAndRenderComponent({
-      inner: { x: 37, y: 0, width: 870, height: 813 },
+      inner: {
+        x: 37, y: 0, width: 870, height: 813
+      },
       config
     });
 
-    expect(rendererOutput).to.deep.equal(
-      [
-        {
-          flipXY: true,
-          stroke: '#000',
-          strokeWidth: 1,
-          type: 'line',
-          x1: -0.5,
-          x2: 869.5,
-          y1: 243.5,
-          y2: 243.5
-        },
-        {
-          fill: '#fff',
-          height: 24,
-          opacity: 0.5,
-          stroke: 'transparent',
-          strokeWidth: 0,
-          type: 'rect',
-          width: 54,
-          x: 816,
-          y: 219
-        },
-        {
-          anchor: 'start',
-          fill: '#000',
-          fontFamily: 'Arial',
-          fontSize: '12px',
-          maxWidth: 44,
-          opacity: 1,
-          text: 'QwErTy',
-          type: 'text',
-          x: 821,
-          y: 235.8
-        }
-      ]
-    );
+    expect(rendererOutput).to.deep.equal([
+      {
+        flipXY: true,
+        stroke: '#000',
+        strokeWidth: 1,
+        type: 'line',
+        x1: -0.5,
+        x2: 869.5,
+        y1: 243.5,
+        y2: 243.5
+      },
+      {
+        fill: '#fff',
+        height: 24,
+        opacity: 0.5,
+        stroke: 'transparent',
+        strokeWidth: 0,
+        type: 'rect',
+        width: 54,
+        x: 816,
+        y: 219
+      },
+      {
+        anchor: 'start',
+        fill: '#000',
+        fontFamily: 'Arial',
+        fontSize: '12px',
+        maxWidth: 44,
+        opacity: 1,
+        text: 'QwErTy',
+        type: 'text',
+        x: 821,
+        y: 235.8
+      }
+    ]);
   });
 
   it('should bind data for oob values', () => {
@@ -343,56 +347,56 @@ describe('reference lines', () => {
     chart.scale.withArgs({ scale: 'y' }).returns(yScale);
 
     createAndRenderComponent({
-      inner: { x: 0, y: 0, width: 100, height: 200 },
+      inner: {
+        x: 0, y: 0, width: 100, height: 200
+      },
       config
     });
 
-    expect(rendererOutput).to.deep.equal(
-      [
-        {
-          type: 'circle',
-          cy: 162,
-          cx: 15,
-          r: 10,
-          stroke: 'transparent',
-          fill: '#1A1A1A',
-          strokeWidth: 0,
-          opacity: 1,
-          data: [
-            {
-              label: 'QwErTy',
-              value: 10
-            },
-            {
-              label: 'Oops.. I did it again',
-              value: 20
-            }
-          ]
-        },
-        {
-          type: 'text',
-          text: 2,
-          x: 11,
-          y: 166,
-          fontFamily: 'Arial',
-          fontSize: '13px',
-          stroke: 'transparent',
-          fill: '#fff',
-          strokeWidth: 0,
-          opacity: 1
-        },
-        {
-          type: 'path',
-          d: '\n    M 7.5 173.25\n    L 22.5 173.25\n    L 15 180.75 Z\n  ',
-          x: 15,
-          y: 162,
-          stroke: 'transparent',
-          fill: '#4D4D4D',
-          strokeWidth: 0,
-          opacity: 1
-        }
-      ]
-    );
+    expect(rendererOutput).to.deep.equal([
+      {
+        type: 'circle',
+        cy: 162,
+        cx: 15,
+        r: 10,
+        stroke: 'transparent',
+        fill: '#1A1A1A',
+        strokeWidth: 0,
+        opacity: 1,
+        data: [
+          {
+            label: 'QwErTy',
+            value: 10
+          },
+          {
+            label: 'Oops.. I did it again',
+            value: 20
+          }
+        ]
+      },
+      {
+        type: 'text',
+        text: 2,
+        x: 11,
+        y: 166,
+        fontFamily: 'Arial',
+        fontSize: '13px',
+        stroke: 'transparent',
+        fill: '#fff',
+        strokeWidth: 0,
+        opacity: 1
+      },
+      {
+        type: 'path',
+        d: '\n    M 7.5 173.25\n    L 22.5 173.25\n    L 15 180.75 Z\n  ',
+        x: 15,
+        y: 162,
+        stroke: 'transparent',
+        fill: '#4D4D4D',
+        strokeWidth: 0,
+        opacity: 1
+      }
+    ]);
   });
 
   it('should bind data for oob values without a label', () => {
@@ -411,50 +415,50 @@ describe('reference lines', () => {
     chart.scale.withArgs({ scale: 'y' }).returns(yScale);
 
     createAndRenderComponent({
-      inner: { x: 0, y: 0, width: 100, height: 200 },
+      inner: {
+        x: 0, y: 0, width: 100, height: 200
+      },
       config
     });
 
-    expect(rendererOutput).to.deep.equal(
-      [
-        {
-          type: 'circle',
-          cy: 162,
-          cx: 15,
-          r: 10,
-          stroke: 'transparent',
-          fill: '#1A1A1A',
-          strokeWidth: 0,
-          opacity: 1,
-          data: [
-            {
-              value: 10
-            }
-          ]
-        },
-        {
-          type: 'text',
-          text: 1,
-          x: 11,
-          y: 166,
-          fontFamily: 'Arial',
-          fontSize: '13px',
-          stroke: 'transparent',
-          fill: '#fff',
-          strokeWidth: 0,
-          opacity: 1
-        },
-        {
-          type: 'path',
-          d: '\n    M 7.5 173.25\n    L 22.5 173.25\n    L 15 180.75 Z\n  ',
-          x: 15,
-          y: 162,
-          stroke: 'transparent',
-          fill: '#4D4D4D',
-          strokeWidth: 0,
-          opacity: 1
-        }
-      ]
-    );
+    expect(rendererOutput).to.deep.equal([
+      {
+        type: 'circle',
+        cy: 162,
+        cx: 15,
+        r: 10,
+        stroke: 'transparent',
+        fill: '#1A1A1A',
+        strokeWidth: 0,
+        opacity: 1,
+        data: [
+          {
+            value: 10
+          }
+        ]
+      },
+      {
+        type: 'text',
+        text: 1,
+        x: 11,
+        y: 166,
+        fontFamily: 'Arial',
+        fontSize: '13px',
+        stroke: 'transparent',
+        fill: '#fff',
+        strokeWidth: 0,
+        opacity: 1
+      },
+      {
+        type: 'path',
+        d: '\n    M 7.5 173.25\n    L 22.5 173.25\n    L 15 180.75 Z\n  ',
+        x: 15,
+        y: 162,
+        stroke: 'transparent',
+        fill: '#4D4D4D',
+        strokeWidth: 0,
+        opacity: 1
+      }
+    ]);
   });
 });

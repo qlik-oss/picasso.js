@@ -79,6 +79,4 @@ const loggerFn = ({
   };
 };
 
-export {
-  loggerFn as default
-};
+export { loggerFn as default };

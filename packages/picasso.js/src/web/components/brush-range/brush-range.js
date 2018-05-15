@@ -174,7 +174,7 @@ function resolveTarget(ctx) {
  * @property {string} [target.fillSelector] - Target a subset of the selector as fill area. Only applicable if `selector` property is set
  */
 
- /**
+/**
  * @typedef {object} component--brush-range-style
  * @property {object} [bubble]
  * @property {string} [bubble.fontSize]

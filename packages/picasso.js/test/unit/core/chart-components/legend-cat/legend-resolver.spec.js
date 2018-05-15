@@ -38,10 +38,12 @@ describe('legend-resolver', () => {
     const resolved = resolveSettings({
       scale: {
         type: 'threshold-color',
-        data: () => ({ fields: [{
-          id: () => 'measure',
-          formatter: () => (v => `$${v}`)
-        }] }),
+        data: () => ({
+          fields: [{
+            id: () => 'measure',
+            formatter: () => (v => `$${v}`)
+          }]
+        }),
         domain: () => [2, 5, 7]
       },
       settings: {

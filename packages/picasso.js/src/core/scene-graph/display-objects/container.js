@@ -52,7 +52,9 @@ export default class Container extends DisplayObject {
     for (let i = 0; i < num; i++) {
       reCalcBoundingRect(this, this.children[i], includeTransform);
     }
-    return extend({ x: 0, y: 0, width: 0, height: 0 }, this._boundingRect);
+    return extend({
+      x: 0, y: 0, width: 0, height: 0
+    }, this._boundingRect);
   }
 
   bounds(includeTransform = false) {
@@ -71,7 +73,9 @@ export default class Container extends DisplayObject {
 
     if (this._collider && this._collider.type === 'bounds') {
       reCalcBoundingRect(this, c, true);
-      const opts = extend({ type: 'bounds', x: 0, y: 0, width: 0, height: 0 }, this._boundingRect);
+      const opts = extend({
+        type: 'bounds', x: 0, y: 0, width: 0, height: 0
+      }, this._boundingRect);
       super.collider(opts);
     }
 
@@ -86,7 +90,9 @@ export default class Container extends DisplayObject {
       for (let i = 0; i < num; i++) {
         reCalcBoundingRect(this, children[i], true);
       }
-      const opts = extend({ type: 'bounds', x: 0, y: 0, width: 0, height: 0 }, this._boundingRect);
+      const opts = extend({
+        type: 'bounds', x: 0, y: 0, width: 0, height: 0
+      }, this._boundingRect);
       super.collider(opts);
     }
 

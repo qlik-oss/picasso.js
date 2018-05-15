@@ -129,6 +129,4 @@ function tween({
   return tweener;
 }
 
-export {
-  tween as default
-};
+export { tween as default };

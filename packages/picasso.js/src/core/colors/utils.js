@@ -20,8 +20,7 @@ const utils = {
       const inputDomain = colors.domain();
 
       cssColors = inputDomain.map(d =>
-   colors(d)
-).join();
+        colors(d)).join();
     } else if (colors.constructor === Array) {
       cssColors = colors;
     }

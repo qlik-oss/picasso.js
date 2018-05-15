@@ -9,7 +9,9 @@ import {
 
 function place(position, direction) {
   return getBarRect({
-    bar: { x: 10, y: 40, width: 20, height: 30 },
+    bar: {
+      x: 10, y: 40, width: 20, height: 30
+    },
     view: { width: 200, height: 100 },
     direction,
     position,
@@ -20,27 +22,45 @@ function place(position, direction) {
 describe('labeling - bars', () => {
   describe('bar rects', () => {
     it('inside', () => {
-      expect(place('inside')).to.eql({ x: 12, y: 42, width: 16, height: 26 });
+      expect(place('inside')).to.eql({
+        x: 12, y: 42, width: 16, height: 26
+      });
     });
 
     it('outside-up/opposite-down', () => {
-      expect(place('outside', 'up')).to.eql({ x: 12, y: 2, width: 16, height: 36 });
-      expect(place('opposite', 'down')).to.eql({ x: 12, y: 2, width: 16, height: 36 });
+      expect(place('outside', 'up')).to.eql({
+        x: 12, y: 2, width: 16, height: 36
+      });
+      expect(place('opposite', 'down')).to.eql({
+        x: 12, y: 2, width: 16, height: 36
+      });
     });
 
     it('outside-down/opposite-up', () => {
-      expect(place('outside', 'down')).to.eql({ x: 12, y: 72, width: 16, height: 26 });
-      expect(place('opposite', 'up')).to.eql({ x: 12, y: 72, width: 16, height: 26 });
+      expect(place('outside', 'down')).to.eql({
+        x: 12, y: 72, width: 16, height: 26
+      });
+      expect(place('opposite', 'up')).to.eql({
+        x: 12, y: 72, width: 16, height: 26
+      });
     });
 
     it('outside-right/opposite-left', () => {
-      expect(place('outside', 'right')).to.eql({ x: 32, y: 42, width: 166, height: 26 });
-      expect(place('opposite', 'left')).to.eql({ x: 32, y: 42, width: 166, height: 26 });
+      expect(place('outside', 'right')).to.eql({
+        x: 32, y: 42, width: 166, height: 26
+      });
+      expect(place('opposite', 'left')).to.eql({
+        x: 32, y: 42, width: 166, height: 26
+      });
     });
 
     it('outside-left/opposite-right', () => {
-      expect(place('outside', 'left')).to.eql({ x: 2, y: 42, width: 6, height: 26 });
-      expect(place('opposite', 'right')).to.eql({ x: 2, y: 42, width: 6, height: 26 });
+      expect(place('outside', 'left')).to.eql({
+        x: 2, y: 42, width: 6, height: 26
+      });
+      expect(place('opposite', 'right')).to.eql({
+        x: 2, y: 42, width: 6, height: 26
+      });
     });
   });
 
@@ -62,7 +82,9 @@ describe('labeling - bars', () => {
 
     it('should wiggle a bit', () => {
       const label = placeTextInRect(
-        { x: 5, y: 30, width: 100, height: 200 },
+        {
+          x: 5, y: 30, width: 100, height: 200
+        },
         'a',
         { align: 0.25, fontSize: 12, textMetrics: { height: 10, width: 20 } }
       );
@@ -71,7 +93,9 @@ describe('labeling - bars', () => {
 
     it('should justify a bit', () => {
       const label = placeTextInRect(
-        { x: 5, y: 30, width: 100, height: 200 },
+        {
+          x: 5, y: 30, width: 100, height: 200
+        },
         'a',
         { justify: 0.4, fontSize: 12, textMetrics: { height: 24, width: 40 } }
       );
@@ -80,9 +104,13 @@ describe('labeling - bars', () => {
 
     it('should rotate the label', () => {
       const label = placeTextInRect(
-        { x: 5, y: 30, width: 100, height: 200 },
+        {
+          x: 5, y: 30, width: 100, height: 200
+        },
         'a',
-        { rotate: true, align: 0, justify: 0.0, fontSize: 12, textMetrics: { height: 24, width: 40 } }
+        {
+          rotate: true, align: 0, justify: 0.0, fontSize: 12, textMetrics: { height: 24, width: 40 }
+        }
       );
       expect(label.transform).to.equal('rotate(-90, 21, 30)');
     });
@@ -96,10 +124,18 @@ describe('labeling - bars', () => {
       { position: 'meh' }
     ];
     const rects = {
-      inside: { x: 10, y: 20, width: 1, height: 2 },
-      outside: { x: 10, y: 20, width: 5, height: 30 },
-      biggest: { x: 10, y: 20, width: 400, height: 300 },
-      meh: { x: 10, y: 20, width: 10, height: 20 }
+      inside: {
+        x: 10, y: 20, width: 1, height: 2
+      },
+      outside: {
+        x: 10, y: 20, width: 5, height: 30
+      },
+      biggest: {
+        x: 10, y: 20, width: 400, height: 300
+      },
+      meh: {
+        x: 10, y: 20, width: 10, height: 20
+      }
     };
     const barRect = opts => rects[opts.position];
     beforeEach(() => {
@@ -271,19 +307,25 @@ describe('labeling - bars', () => {
         align: 0.4,
         justify: 0.8,
         labels: [{
-          placements: [{ position: 'inside', justify: 0.2, align: 0.5, fill: () => 'red' }],
+          placements: [{
+            position: 'inside', justify: 0.2, align: 0.5, fill: () => 'red'
+          }],
           label: () => 'etikett'
         }]
       };
       const nodes = [{
-        localBounds: { x: 10, y: 20, width: 40, height: 50 }
+        localBounds: {
+          x: 10, y: 20, width: 40, height: 50
+        }
       }];
       renderer.measureText.returns({ width: 20, height: 10 });
       let labels = bars({
         settings,
         chart,
         nodes,
-        rect: { x: 0, y: 0, width: 100, height: 200 },
+        rect: {
+          x: 0, y: 0, width: 100, height: 200
+        },
         renderer,
         style: {
           label: {
@@ -316,19 +358,25 @@ describe('labeling - bars', () => {
         align: 0.4,
         justify: 0.8,
         labels: [{
-          placements: [{ position: 'inside', justify: 0.2, align: 0.5, fill: () => 'red' }],
+          placements: [{
+            position: 'inside', justify: 0.2, align: 0.5, fill: () => 'red'
+          }],
           label: () => 'etikett'
         }]
       };
       const nodes = [{
-        localBounds: { x: -100, y: -200, width: 40, height: 50 }
+        localBounds: {
+          x: -100, y: -200, width: 40, height: 50
+        }
       }];
       renderer.measureText.returns({ width: 20, height: 10 });
       let labels = bars({
         settings,
         chart,
         nodes,
-        rect: { x: 0, y: 0, width: 100, height: 200 },
+        rect: {
+          x: 0, y: 0, width: 100, height: 200
+        },
         renderer,
         style: {
           label: {
@@ -348,19 +396,25 @@ describe('labeling - bars', () => {
         align: 0.4,
         justify: 0.8,
         labels: [{
-          placements: [{ position: 'inside', justify: 0.2, align: 0.5, fill: () => 'red' }],
+          placements: [{
+            position: 'inside', justify: 0.2, align: 0.5, fill: () => 'red'
+          }],
           label: () => ''
         }]
       };
       const nodes = [{
-        localBounds: { x: 10, y: 20, width: 40, height: 50 }
+        localBounds: {
+          x: 10, y: 20, width: 40, height: 50
+        }
       }];
       renderer.measureText.returns({ width: 20, height: 10 });
       let labels = bars({
         settings,
         chart,
         nodes,
-        rect: { x: 0, y: 0, width: 100, height: 200 },
+        rect: {
+          x: 0, y: 0, width: 100, height: 200
+        },
         renderer,
         style: {
           label: {

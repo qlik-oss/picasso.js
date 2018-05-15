@@ -32,6 +32,4 @@ function saltire(options) {
   };
 }
 
-export {
-  saltire as default
-};
+export { saltire as default };

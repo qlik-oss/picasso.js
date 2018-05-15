@@ -9,11 +9,17 @@ import NarrowPhaseCollision from '../math/narrow-phase-collision';
  * @private
  */
 class GeoRect {
-  constructor({ x = 0, y = 0, width = 0, height = 0, minWidth = 0, minHeight = 0 } = {}) {
-    this.set({ x, y, width, height, minWidth, minHeight });
+  constructor({
+    x = 0, y = 0, width = 0, height = 0, minWidth = 0, minHeight = 0
+  } = {}) {
+    this.set({
+      x, y, width, height, minWidth, minHeight
+    });
   }
 
-  set({ x = 0, y = 0, width = 0, height = 0, minWidth = 0, minHeight = 0 } = {}) {
+  set({
+    x = 0, y = 0, width = 0, height = 0, minWidth = 0, minHeight = 0
+  } = {}) {
     this.type = 'rect';
 
     if (width >= 0) {

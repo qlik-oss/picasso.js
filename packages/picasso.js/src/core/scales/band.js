@@ -25,7 +25,7 @@ export const DEFAULT_SETTINGS = {
  * @property {function} [value] - Callback value function, applied on each datum
  */
 
- /**
+/**
  * @alias scaleBand
  * @memberof picasso
  * @private

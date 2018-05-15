@@ -44,11 +44,15 @@ describe('Axis size calculator', () => {
     scale.ticks = sinon.stub().returns(ticks);
     scale.bandwidth = sinon.stub().returns(1 / ticks.length);
     isDiscrete = false;
-    rect = { x: 0, y: 0, height: 100, width: 100 };
+    rect = {
+      x: 0, y: 0, height: 100, width: 100
+    };
     const data = null;
     const formatter = null;
     const measureText = ({ text = '' }) => ({ width: text.toString().length, height: 5 });
-    sizeFn = r => calcRequiredSize({ settings, rect: r, scale, data, formatter, measureText, isDiscrete, state });
+    sizeFn = r => calcRequiredSize({
+      settings, rect: r, scale, data, formatter, measureText, isDiscrete, state
+    });
   });
 
   it('axis with no visible component have a margin of 10', () => {
@@ -61,11 +65,11 @@ describe('Axis size calculator', () => {
     settings.align = 'left';
     settings.labels.show = true;
     let size = sizeFn(rect);
-    expect(size.size).to.equals(16 /* = 10(margin) + 4(label padding) + 2(text size)*/);
+    expect(size.size).to.equals(16 /* = 10(margin) + 4(label padding) + 2(text size) */);
 
     ticks[0].label = 'AAAAAA';
     size = sizeFn(rect);
-    expect(size.size).to.equals(20 /* = 10(margin) + 4(label padding) + 6(text size)*/);
+    expect(size.size).to.equals(20 /* = 10(margin) + 4(label padding) + 6(text size) */);
   });
 
   it('the size of a vertical axis should depend on maxGlyhpCount if set', () => {
@@ -74,11 +78,11 @@ describe('Axis size calculator', () => {
     settings.labels.show = true;
     settings.labels.maxGlyphCount = 3;
     let size = sizeFn(rect);
-    expect(size.size).to.equals(17 /* = 10(margin) + 4(label padding) + 3(text size)*/);
+    expect(size.size).to.equals(17 /* = 10(margin) + 4(label padding) + 3(text size) */);
 
     ticks[0].label = 'AAAAAA';
     size = sizeFn(rect);
-    expect(size.size).to.equals(17 /* = 10(margin) + 4(label padding) + 3(text size)*/);
+    expect(size.size).to.equals(17 /* = 10(margin) + 4(label padding) + 3(text size) */);
   });
 
   it("the size of a horizontal axis don't depend on text length", () => {
@@ -220,7 +224,9 @@ describe('Axis size calculator', () => {
         scale.ticks = sinon.stub().returns([]);
         const size = sizeFn(rect);
         expect(size.size).to.equal(14); // Return the size of padding, ticks, margin but not the label size
-        expect(size.edgeBleed).to.deep.equal({ left: 10, top: 0, right: 0, bottom: 0 }); // left is paddingEnd
+        expect(size.edgeBleed).to.deep.equal({
+          left: 10, top: 0, right: 0, bottom: 0
+        }); // left is paddingEnd
       });
 
       it('maxLengthPx', () => {

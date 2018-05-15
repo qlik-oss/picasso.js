@@ -33,7 +33,7 @@ function hammer(chart, mediator, element) {
    * @private
    */
   function setDefaultSettings(newSettings) {
-    key = newSettings.key;
+    key = newSettings.key; //eslint-disable-line
     settings = newSettings;
     instance = { chart, mediator, settings };
     settings.gestures = settings.gestures || [];

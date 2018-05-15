@@ -59,7 +59,9 @@ export function alignmentToNumber(align) {
  * @param {object[]} items - Array of all items (for collision detection)
  * @ignore
  */
-export function createLineWithLabel({ chart, blueprint, renderer, p, settings, items }) {
+export function createLineWithLabel({
+  chart, blueprint, renderer, p, settings, items
+}) {
   let doesNotCollide = true;
   let line = false;
   let rect = false;

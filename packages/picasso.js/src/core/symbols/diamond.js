@@ -23,6 +23,4 @@ function diamond(options) {
   };
 }
 
-export {
-  diamond as default
-};
+export { diamond as default };

@@ -5,9 +5,7 @@ const componentRegistry = registry();
 
 // TODO - mixins?
 
-export {
-  componentRegistry as default
-};
+export { componentRegistry as default };
 
 // export default function componentFactory(parentRegistry) {
 //   const reg = registry(parentRegistry);

@@ -64,23 +64,35 @@ describe('canvas renderer', () => {
   });
 
   it('should return zero size when canvas is not initiated', () => {
-    expect(r.size()).to.deep.equal({ x: 0, y: 0, width: 0, height: 0, scaleRatio: { x: 1, y: 1 }, margin: { left: 0, top: 0 } });
+    expect(r.size()).to.deep.equal({
+      x: 0, y: 0, width: 0, height: 0, scaleRatio: { x: 1, y: 1 }, margin: { left: 0, top: 0 }
+    });
   });
 
   it('should return size when called', () => {
-    r.size({ x: 50, y: 100, width: 200, height: 400, scaleRatio: { x: 3, y: 4 }, margin: { left: 5, top: 6 } });
-    expect(r.size()).to.deep.equal({ x: 50, y: 100, width: 200, height: 400, scaleRatio: { x: 3, y: 4 }, margin: { left: 5, top: 6 } });
+    r.size({
+      x: 50, y: 100, width: 200, height: 400, scaleRatio: { x: 3, y: 4 }, margin: { left: 5, top: 6 }
+    });
+    expect(r.size()).to.deep.equal({
+      x: 50, y: 100, width: 200, height: 400, scaleRatio: { x: 3, y: 4 }, margin: { left: 5, top: 6 }
+    });
   });
 
   it('should ignore NaN values and fallback to default size value', () => {
-    r.size({ x: undefined, y: undefined, width: undefined, height: undefined, scaleRatio: { x: undefined, y: undefined }, margin: { left: undefined, top: undefined } });
-    expect(r.size()).to.deep.equal({ x: 0, y: 0, width: 0, height: 0, scaleRatio: { x: 1, y: 1 }, margin: { left: 0, top: 0 } });
+    r.size({
+      x: undefined, y: undefined, width: undefined, height: undefined, scaleRatio: { x: undefined, y: undefined }, margin: { left: undefined, top: undefined }
+    });
+    expect(r.size()).to.deep.equal({
+      x: 0, y: 0, width: 0, height: 0, scaleRatio: { x: 1, y: 1 }, margin: { left: 0, top: 0 }
+    });
   });
 
   it('should attach to given position in the container', () => {
     scene.returns({ children: [] });
     r.appendTo(element('div'));
-    r.size({ x: 50, y: 100, width: 200, height: 400 });
+    r.size({
+      x: 50, y: 100, width: 200, height: 400
+    });
     r.render();
 
     const el = r.element();
@@ -130,7 +142,9 @@ describe('canvas renderer', () => {
 
     it('should return shapes at a point', () => {
       r.appendTo(element('div'));
-      r.size({ x: 100, y: 100, width: 400, height: 400 });
+      r.size({
+        x: 100, y: 100, width: 400, height: 400
+      });
       r.render(items);
 
       const shapes = r.itemsAt({ x: 120, y: 135 });
@@ -150,19 +164,27 @@ describe('canvas renderer', () => {
 
     it('should return shapes at a line', () => {
       r.appendTo(element('div'));
-      r.size({ x: 100, y: 100, width: 400, height: 400 });
+      r.size({
+        x: 100, y: 100, width: 400, height: 400
+      });
       r.render(items);
 
-      const shapes = r.itemsAt({ x1: 130, x2: 130, y1: 0, y2: 320 });
+      const shapes = r.itemsAt({
+        x1: 130, x2: 130, y1: 0, y2: 320
+      });
       expect(shapes.length).to.equal(2);
     });
 
     it('should return shapes at a rect', () => {
       r.appendTo(element('div'));
-      r.size({ x: 100, y: 100, width: 400, height: 400 });
+      r.size({
+        x: 100, y: 100, width: 400, height: 400
+      });
       r.render(items);
 
-      const shapes = r.itemsAt({ x: 100, y: 100, width: 50, height: 50 });
+      const shapes = r.itemsAt({
+        x: 100, y: 100, width: 50, height: 50
+      });
       expect(shapes.length).to.equal(1);
     });
   });
@@ -182,7 +204,9 @@ describe('canvas renderer', () => {
     };
     scene.returns({ children: [] });
     r.appendTo(div);
-    r.size({ x: 50, y: 100, width: 200, height: 400 });
+    r.size({
+      x: 50, y: 100, width: 200, height: 400
+    });
 
     const ctxStub = sandbox.stub(div.children[0], 'getContext');
     ctxStub.returns({ webkitBackingStorePixelRatio: 2 });
@@ -199,7 +223,9 @@ describe('canvas renderer', () => {
   it('should apply a scale ratio', () => {
     const div = element('div');
     const scaleRatio = { x: 2, y: 3 };
-    const size = { x: 50, y: 100, width: 200, height: 400, scaleRatio };
+    const size = {
+      x: 50, y: 100, width: 200, height: 400, scaleRatio
+    };
     const inputShapes = [{ type: 'container' }];
     const expectedInputShapes = {
       items: [
@@ -231,7 +257,9 @@ describe('canvas renderer', () => {
     const div = element('div');
     const scaleRatio = { x: 2, y: 3 };
     const dpiScale = 2;
-    const size = { x: 50, y: 100, width: 200, height: 400, scaleRatio };
+    const size = {
+      x: 50, y: 100, width: 200, height: 400, scaleRatio
+    };
     const inputShapes = [{ type: 'container' }];
     const expectedInputShapes = {
       items: [

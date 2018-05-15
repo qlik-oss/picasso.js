@@ -129,7 +129,7 @@ class NarrowPhaseCollision {
     return dist <= Math.pow(circle.r, 2) && isPointOnLine(p1, p2, pointOnLine);
   }
 
-   /**
+  /**
    * Test if a Circle collide with another Circle. If so, returns true and false otherwise.
    * Both circles muse have a radius greater then 0.
    * @param {object} circle
@@ -489,6 +489,4 @@ class NarrowPhaseCollision {
 }
 
 
-export {
-  NarrowPhaseCollision as default
-};
+export { NarrowPhaseCollision as default };

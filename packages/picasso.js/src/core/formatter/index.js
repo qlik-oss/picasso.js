@@ -7,6 +7,4 @@ const formatterRegistry = registry();
 formatterRegistry('d3-number', d3NumberFormatter);
 formatterRegistry('d3-time', d3TimeFormatter);
 
-export {
-  formatterRegistry as default
-};
+export { formatterRegistry as default };

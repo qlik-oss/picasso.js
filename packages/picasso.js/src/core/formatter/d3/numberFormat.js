@@ -15,7 +15,7 @@ export default function formatter(pattern, thousand, decimal) {
     return d3format(value);
   }
 
-   /**
+  /**
     * Set the locale for the formatter
     *
     * @param  {Object} args   Locale object for formatting
@@ -42,7 +42,7 @@ export default function formatter(pattern, thousand, decimal) {
   }
   reset();
 
-   /**
+  /**
     * Format a value according to a specific pattern
     * that is not the one specified in the constructor
     *
@@ -61,7 +61,7 @@ export default function formatter(pattern, thousand, decimal) {
     return locale.format(p)(v);
   };
 
-   /**
+  /**
    * Change the pattern on existing formatter
    *
    * @param  {String} p     Pattern (optional)

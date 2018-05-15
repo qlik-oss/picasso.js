@@ -1,9 +1,7 @@
 import { tree as treeFactory } from './svg-tree';
 import { svgNs } from './svg-nodes';
 import sceneFactory from '../../../core/scene-graph/scene';
-import {
-  onLineBreak
-} from '../../text-manipulation';
+import { onLineBreak } from '../../text-manipulation';
 import {
   resetGradients,
   onGradient,

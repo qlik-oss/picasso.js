@@ -25,7 +25,7 @@ export default function formatter(pattern) { // eslint-disable-line import/prefe
     return d3format(value);
   }
 
-   /**
+  /**
     * Format a value according to a specific pattern
     * that is not the one specified in the constructor
     *

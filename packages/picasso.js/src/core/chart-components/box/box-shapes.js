@@ -3,7 +3,9 @@ import { resolveDiff } from './box-math';
 
 import { isNumber } from '../../utils/is-number';
 
-export function box({ item, boxWidth, boxPadding, rendwidth, rendheight, flipXY }) {
+export function box({
+  item, boxWidth, boxPadding, rendwidth, rendheight, flipXY
+}) {
   let x = 'x';
   let y = 'y';
   let width = 'width';
@@ -20,7 +22,9 @@ export function box({ item, boxWidth, boxPadding, rendwidth, rendheight, flipXY 
     calcheight = rendwidth;
   }
 
-  const { actualDiff, actualLow } = resolveDiff({ start: item.start, end: item.end, minPx: item.box.minHeightPx, maxPx: calcheight });
+  const { actualDiff, actualLow } = resolveDiff({
+    start: item.start, end: item.end, minPx: item.box.minHeightPx, maxPx: calcheight
+  });
 
   return extend({}, item.box, {
     type: 'rect',
@@ -35,7 +39,9 @@ export function box({ item, boxWidth, boxPadding, rendwidth, rendheight, flipXY 
   });
 }
 
-export function verticalLine({ item, from, to, boxCenter, rendwidth, rendheight, flipXY }) {
+export function verticalLine({
+  item, from, to, boxCenter, rendwidth, rendheight, flipXY
+}) {
   let x1 = 'x1';
   let y1 = 'y1';
   let x2 = 'x2';
@@ -65,7 +71,9 @@ export function verticalLine({ item, from, to, boxCenter, rendwidth, rendheight,
   });
 }
 
-export function horizontalLine({ item, key, position, width, boxCenter, rendwidth, rendheight, flipXY }) {
+export function horizontalLine({
+  item, key, position, width, boxCenter, rendwidth, rendheight, flipXY
+}) {
   let x1 = 'x1';
   let y1 = 'y1';
   let x2 = 'x2';
@@ -158,30 +166,42 @@ export function buildShapes({
     const rendheight = height;
 
     if (item.box.show && isNumber(item.start) && isNumber(item.end)) {
-      children.push(box({ item, boxWidth, boxPadding, rendwidth, rendheight, flipXY }));
+      children.push(box({
+        item, boxWidth, boxPadding, rendwidth, rendheight, flipXY
+      }));
     }
 
     if (item.line.show && isNumber(item.min) && isNumber(item.start)) {
-      children.push(verticalLine({ item, from: item.min, to: item.start, boxCenter, rendwidth, rendheight, flipXY }));
+      children.push(verticalLine({
+        item, from: item.min, to: item.start, boxCenter, rendwidth, rendheight, flipXY
+      }));
     }
 
     if (item.line.show && isNumber(item.max) && isNumber(item.end)) {
-      children.push(verticalLine({ item, from: item.max, to: item.end, boxCenter, rendwidth, rendheight, flipXY }));
+      children.push(verticalLine({
+        item, from: item.max, to: item.end, boxCenter, rendwidth, rendheight, flipXY
+      }));
     }
 
     if (item.median.show && isNumber(item.med)) {
-      children.push(horizontalLine({ item, key: 'median', position: item.med, width: boxWidth, boxCenter, rendwidth, rendheight, flipXY }));
+      children.push(horizontalLine({
+        item, key: 'median', position: item.med, width: boxWidth, boxCenter, rendwidth, rendheight, flipXY
+      }));
     }
 
     if (item.whisker.show) {
       const whiskerWidth = boxWidth * item.whisker.width;
 
       if (isNumber(item.min)) {
-        children.push(horizontalLine({ item, key: 'whisker', position: item.min, width: whiskerWidth, boxCenter, rendwidth, rendheight, flipXY }));
+        children.push(horizontalLine({
+          item, key: 'whisker', position: item.min, width: whiskerWidth, boxCenter, rendwidth, rendheight, flipXY
+        }));
       }
 
       if (isNumber(item.max)) {
-        children.push(horizontalLine({ item, key: 'whisker', position: item.max, width: whiskerWidth, boxCenter, rendwidth, rendheight, flipXY }));
+        children.push(horizontalLine({
+          item, key: 'whisker', position: item.max, width: whiskerWidth, boxCenter, rendwidth, rendheight, flipXY
+        }));
       }
     }
 

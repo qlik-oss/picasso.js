@@ -212,7 +212,8 @@ function polyFillPath2D(window) {
             s[3] + x,
             s[4] + y,
             s[5] + x,
-            s[6] + y);
+            s[6] + y
+          );
           cpx = s[3] + x; // Last control point
           cpy = s[4] + y;
           x += s[5];

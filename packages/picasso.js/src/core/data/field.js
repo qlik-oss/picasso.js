@@ -1,4 +1,4 @@
-/* eslint no-return-assign: 0*/
+/* eslint no-return-assign: 0 */
 import formatterFn from '../formatter';
 
 // TODO - decide whether usage of .call() is appropriate when invoking accessors, if yes then arrow functions are not allowed!

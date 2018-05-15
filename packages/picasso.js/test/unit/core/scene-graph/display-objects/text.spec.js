@@ -3,7 +3,9 @@ import Text, { create as createText } from '../../../../../src/core/scene-graph/
 describe('Text', () => {
   let node;
   let def;
-  const mockedBounds = { x: 0, y: 0, width: 50, height: 100 };
+  const mockedBounds = {
+    x: 0, y: 0, width: 50, height: 100
+  };
   const textBoundsMock = (args) => {
     mockedBounds.x = args.x;
     mockedBounds.x += args.dx || 0;
@@ -55,7 +57,9 @@ describe('Text', () => {
   describe('BoundingRect', () => {
     it('should handle default values', () => {
       node = createText();
-      expect(node.boundingRect()).to.deep.equal({ x: 0, y: 0, width: 0, height: 0 });
+      expect(node.boundingRect()).to.deep.equal({
+        x: 0, y: 0, width: 0, height: 0
+      });
     });
 
     it('should use textBounds function if supplied', () => {
@@ -65,7 +69,9 @@ describe('Text', () => {
       def.dy = 4;
       def.textBoundsFn = textBoundsMock;
       node = createText(def);
-      expect(node.boundingRect()).to.deep.equal({ x: 4, y: 6, width: 50, height: 100 });
+      expect(node.boundingRect()).to.deep.equal({
+        x: 4, y: 6, width: 50, height: 100
+      });
     });
 
     it('should use boundingRect attribute if supplied', () => {
@@ -73,7 +79,9 @@ describe('Text', () => {
       def.y = 2;
       def.dx = 3;
       def.dy = 4;
-      def.boundingRect = { x: 1, y: 2, width: 3, height: 4 };
+      def.boundingRect = {
+        x: 1, y: 2, width: 3, height: 4
+      };
       node = createText(def);
       expect(node.boundingRect()).to.deep.equal(def.boundingRect);
     });
@@ -87,7 +95,9 @@ describe('Text', () => {
       def.transform = 'scale(2, 3)';
       node = createText(def);
       node.resolveLocalTransform();
-      expect(node.boundingRect(true)).to.deep.equal({ x: 8, y: 18, width: 100, height: 300 });
+      expect(node.boundingRect(true)).to.deep.equal({
+        x: 8, y: 18, width: 100, height: 300
+      });
     });
 
     it('should return correct value with a translate transform', () => {
@@ -99,7 +109,9 @@ describe('Text', () => {
       def.transform = 'translate(1, 2)';
       node = createText(def);
       node.resolveLocalTransform();
-      expect(node.boundingRect(true)).to.deep.equal({ x: 5, y: 8, width: 50, height: 100 });
+      expect(node.boundingRect(true)).to.deep.equal({
+        x: 5, y: 8, width: 50, height: 100
+      });
     });
 
     it('should return correct value with a rotate transformation', () => {
@@ -126,7 +138,9 @@ describe('Text', () => {
       def.dy = -4;
       def.textBoundsFn = textBoundsMock;
       node = createText(def);
-      expect(node.boundingRect()).to.deep.equal({ x: -4, y: -6, width: 50, height: 100 });
+      expect(node.boundingRect()).to.deep.equal({
+        x: -4, y: -6, width: 50, height: 100
+      });
     });
   });
 
@@ -161,7 +175,9 @@ describe('Text', () => {
       def.y = 2;
       def.dx = 3;
       def.dy = 4;
-      def.boundingRect = { x: 4, y: 6, width: 50, height: 100 };
+      def.boundingRect = {
+        x: 4, y: 6, width: 50, height: 100
+      };
       node = createText(def);
       expect(node.bounds()).to.deep.equal([
         { x: 4, y: 6 },
@@ -176,7 +192,9 @@ describe('Text', () => {
       def.y = 2;
       def.dx = 3;
       def.dy = 4;
-      def.boundingRect = { x: 4, y: 6, width: 50, height: 100 };
+      def.boundingRect = {
+        x: 4, y: 6, width: 50, height: 100
+      };
       def.transform = 'scale(2, 3)';
       node = createText(def);
       node.resolveLocalTransform();
@@ -193,7 +211,9 @@ describe('Text', () => {
       def.y = 2;
       def.dx = 3;
       def.dy = 4;
-      def.boundingRect = { x: 4, y: 6, width: 50, height: 100 };
+      def.boundingRect = {
+        x: 4, y: 6, width: 50, height: 100
+      };
       def.transform = 'translate(1, 2)';
       node = createText(def);
       node.resolveLocalTransform();
@@ -210,7 +230,9 @@ describe('Text', () => {
       def.y = 2;
       def.dx = 3;
       def.dy = 4;
-      def.boundingRect = { x: 4, y: 6, width: 50, height: 100 };
+      def.boundingRect = {
+        x: 4, y: 6, width: 50, height: 100
+      };
       def.transform = 'rotate(90)';
       node = createText(def);
       node.resolveLocalTransform();

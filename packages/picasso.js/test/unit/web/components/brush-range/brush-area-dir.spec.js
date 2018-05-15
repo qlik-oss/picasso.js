@@ -15,8 +15,12 @@ describe('Brush Area Directional', () => {
 
   beforeEach(() => {
     size = {
-      inner: { x: 0, y: 0, width: 100, height: 150 },
-      outer: { x: 0, y: 0, width: 100, height: 150 }
+      inner: {
+        x: 0, y: 0, width: 100, height: 150
+      },
+      outer: {
+        x: 0, y: 0, width: 100, height: 150
+      }
     };
 
     global.document = {

@@ -22,7 +22,9 @@ describe('line', () => {
 
       truthys = [true, {}, [], 1, -1, 3.14, -3.14, 'foo'];
 
-      line = { x1: 1, x2: 10, y1: 2, y2: 20 };
+      line = {
+        x1: 1, x2: 10, y1: 2, y2: 20
+      };
     });
 
     afterEach(() => {

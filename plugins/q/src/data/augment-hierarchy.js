@@ -1,6 +1,4 @@
-import {
-  hierarchy
-} from 'd3-hierarchy';
+import { hierarchy } from 'd3-hierarchy';
 
 import picker from '../json-path-resolver';
 

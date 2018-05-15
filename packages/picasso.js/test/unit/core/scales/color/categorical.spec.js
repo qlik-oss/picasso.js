@@ -2,9 +2,11 @@ import categorical from '../../../../../src/core/scales/color/categorical';
 
 describe('categorical', () => {
   it('should return greyish color for unknown values (default)', () => {
-    let s = categorical({}, {}, { theme: {
-      palette: name => (name === 'unknown' ? ['#d2d2d2'] : [])
-    } });
+    let s = categorical({}, {}, {
+      theme: {
+        palette: name => (name === 'unknown' ? ['#d2d2d2'] : [])
+      }
+    });
     expect(s()).to.equal('#d2d2d2');
   });
 
@@ -17,9 +19,11 @@ describe('categorical', () => {
 
   it('should return default range from theme', () => {
     const defaultColors = ['fancy'];
-    let s = categorical({}, {}, { theme: {
-      palette: name => (name === 'categorical' ? defaultColors : [])
-    } });
+    let s = categorical({}, {}, {
+      theme: {
+        palette: name => (name === 'categorical' ? defaultColors : [])
+      }
+    });
     expect(s.range()).to.eql(defaultColors);
   });
 

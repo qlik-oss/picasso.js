@@ -62,9 +62,9 @@ export default function layout(rect, display, orientation, {
     //   }
     //   preferredSize = title.height + Math.max(navigationRenderer.spread(), itemRenderer.spread());
     // } else {
-      // |-----|------------|-----|
-      // |title|content     | nav |
-      // |-----|------------|-----|
+    // |-----|------------|-----|
+    // |title|content     | nav |
+    // |-----|------------|-----|
 
     title = {
       x: paddedRect.x,

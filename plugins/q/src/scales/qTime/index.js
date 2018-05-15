@@ -1,7 +1,5 @@
 import extend from 'extend';
-import {
-  scaleLinear as d3ScaleLinear
-} from 'd3-scale';
+import { scaleLinear as d3ScaleLinear } from 'd3-scale';
 import resolveLevels from './resolve-levels';
 import tickGenerator from './tick-generator';
 

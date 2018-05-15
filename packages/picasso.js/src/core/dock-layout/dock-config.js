@@ -142,6 +142,4 @@ function dockConfig(settings = {}) {
   return fn;
 }
 
-export {
-  dockConfig as default
-};
+export { dockConfig as default };

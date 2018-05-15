@@ -71,7 +71,9 @@ function pad(bounds, padding) {
   bounds.height -= (padding * 2);
 }
 
-export function getBarRect({ bar, view, direction, position, padding = PADDING }) {
+export function getBarRect({
+  bar, view, direction, position, padding = PADDING
+}) {
   const bounds = {};
   extend(bounds, bar);
 
@@ -159,14 +161,16 @@ export function findBestPlacement({
   return { bounds, placement };
 }
 
-export function placeInBars({
-  chart,
-  targetNodes,
-  rect,
-  fitsHorizontally,
-  collectiveOrientation
-}, findPlacement = findBestPlacement,
-  placer = placeTextInRect) {
+export function placeInBars(
+  {
+    chart,
+    targetNodes,
+    rect,
+    fitsHorizontally,
+    collectiveOrientation
+  }, findPlacement = findBestPlacement,
+  placer = placeTextInRect
+) {
   const labels = [];
   let label;
   let target;
@@ -354,14 +358,11 @@ export function bars({
   defaults.fontSize = parseInt(defaults.fontSize, 10);
 
   const labelSettings = settings.labels.map(labelSetting =>
-    extend({}, defaults, settings, labelSetting)
-  );
+    extend({}, defaults, settings, labelSetting));
 
   const placementSettings = settings.labels.map(labelSetting =>
     labelSetting.placements.map(placement =>
-      extend({}, defaults, settings, labelSetting, placement)
-    )
-  );
+      extend({}, defaults, settings, labelSetting, placement)));
 
   const {
     fitsHorizontally,

@@ -48,7 +48,9 @@ describe('Rect', () => {
   describe('Set', () => {
     it('should set correct values', () => {
       rect = createRect(shape);
-      rect.set({ x: 99, y: 999, width: 1337, height: 101, collider: { type: 'circle' } });
+      rect.set({
+        x: 99, y: 999, width: 1337, height: 101, collider: { type: 'circle' }
+      });
       expect(rect.attrs.x).to.be.equal(99);
       expect(rect.attrs.y).to.be.equal(999);
       expect(rect.attrs.width).to.be.equal(1337);
@@ -78,7 +80,9 @@ describe('Rect', () => {
   describe('BoundingRect', () => {
     it('should handle default values', () => {
       rect = createRect(shape);
-      expect(rect.boundingRect()).to.deep.equal({ x: 0, y: 0, width: 0, height: 0 });
+      expect(rect.boundingRect()).to.deep.equal({
+        x: 0, y: 0, width: 0, height: 0
+      });
     });
 
     it('should return correct value without transformation', () => {
@@ -87,7 +91,9 @@ describe('Rect', () => {
       shape.width = 15;
       shape.height = 25;
       rect = createRect(shape);
-      expect(rect.boundingRect()).to.deep.equal({ x: 10, y: 20, width: 15, height: 25 });
+      expect(rect.boundingRect()).to.deep.equal({
+        x: 10, y: 20, width: 15, height: 25
+      });
     });
 
     it('should return correct value with a scale transformation', () => {
@@ -98,7 +104,9 @@ describe('Rect', () => {
       shape.transform = 'scale(2, 3)';
       rect = createRect(shape);
       rect.resolveLocalTransform();
-      expect(rect.boundingRect(true)).to.deep.equal({ x: 20, y: 60, width: 30, height: 75 });
+      expect(rect.boundingRect(true)).to.deep.equal({
+        x: 20, y: 60, width: 30, height: 75
+      });
     });
 
     it('should return correct value with a translate transformation', () => {
@@ -109,7 +117,9 @@ describe('Rect', () => {
       shape.transform = 'translate(1, 2)';
       rect = createRect(shape);
       rect.resolveLocalTransform();
-      expect(rect.boundingRect(true)).to.deep.equal({ x: 11, y: 22, width: 15, height: 25 });
+      expect(rect.boundingRect(true)).to.deep.equal({
+        x: 11, y: 22, width: 15, height: 25
+      });
     });
 
     it('should return correct value with a rotate transformation', () => {
@@ -120,7 +130,9 @@ describe('Rect', () => {
       shape.transform = 'rotate(-45)';
       rect = createRect(shape);
       rect.resolveLocalTransform();
-      expect(rect.boundingRect(true)).to.deep.equal({ x: 21.213203435596427, y: -3.535533905932734, width: 28.284271247461902, height: 28.2842712474619 });
+      expect(rect.boundingRect(true)).to.deep.equal({
+        x: 21.213203435596427, y: -3.535533905932734, width: 28.284271247461902, height: 28.2842712474619
+      });
     });
 
     it('should return correct value with a negative vector direction', () => {
@@ -129,7 +141,9 @@ describe('Rect', () => {
       shape.width = 15;
       shape.height = 25;
       rect = createRect(shape);
-      expect(rect.boundingRect()).to.deep.equal({ x: -10, y: -20, width: 15, height: 25 });
+      expect(rect.boundingRect()).to.deep.equal({
+        x: -10, y: -20, width: 15, height: 25
+      });
     });
   });
 
@@ -251,7 +265,9 @@ describe('Rect', () => {
       rect = createRect(shape);
       rect.resolveLocalTransform();
 
-      expect(rect.intersectsLine({ x1: 15, y1: 30, x2: 16, y2: 31 })).to.equal(true);
+      expect(rect.intersectsLine({
+        x1: 15, y1: 30, x2: 16, y2: 31
+      })).to.equal(true);
     });
   });
 
@@ -265,7 +281,9 @@ describe('Rect', () => {
       rect = createRect(shape);
       rect.resolveLocalTransform();
 
-      expect(rect.intersectsRect({ x: 15, y: 30, width: 1, height: 1 })).to.equal(true);
+      expect(rect.intersectsRect({
+        x: 15, y: 30, width: 1, height: 1
+      })).to.equal(true);
     });
   });
 

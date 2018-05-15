@@ -91,7 +91,7 @@ function initNormScale(normScale, scale) {
   normScale.instance.clamp(true);
   normScale.instance.range(normScale.invert ? [1, 0] : [0, 1]);
 }
- /**
+/**
  * @alias scaleLinear
  * @private
  * @param { object } settings

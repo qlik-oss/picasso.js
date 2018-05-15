@@ -90,7 +90,9 @@ function offsetSlice(centroid, offset, outerRadius, innerRadius) {
   return { x: vx * offset * diff, y: vy * offset * diff };
 }
 
-function createDisplayPies(arcData, { x, y, width, height }, slices, sum) {
+function createDisplayPies(arcData, {
+  x, y, width, height
+}, slices, sum) {
   const arcGen = arc();
   const center = { x: x + (width / 2), y: y + (height / 2) };
   const innerRadius = (Math.min(width, height) / 2);
@@ -145,7 +147,9 @@ const pieComponent = {
     data: {}
   },
   created() {
-    this.rect = { x: 0, y: 0, width: 0, height: 0 };
+    this.rect = {
+      x: 0, y: 0, width: 0, height: 0
+    };
   },
   beforeRender(opts) {
     this.rect = opts.size;

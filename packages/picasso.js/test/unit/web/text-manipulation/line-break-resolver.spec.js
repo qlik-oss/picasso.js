@@ -1,6 +1,4 @@
-import {
-  onLineBreak
-} from '../../../../src/web/text-manipulation';
+import { onLineBreak } from '../../../../src/web/text-manipulation';
 
 describe('Line Break Resolver', () => {
   describe('onLineBreak', () => {

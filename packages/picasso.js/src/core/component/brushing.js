@@ -232,7 +232,9 @@ export function brushFromSceneNodes({
   });
 }
 
-export function resolveEvent({ collisions, t, config, action }) {
+export function resolveEvent({
+  collisions, t, config, action
+}) {
   let brushCollisions = [];
   let resolved = false;
 
@@ -307,11 +309,15 @@ function resolveAction(action, e, def) {
 export function resolveTapEvent({ e, t, config }) {
   const collisions = resolveCollisions(e, t, config.renderer);
 
-  return resolveEvent({ collisions, t, config, action: resolveAction(t.action, e, 'toggle') });
+  return resolveEvent({
+    collisions, t, config, action: resolveAction(t.action, e, 'toggle')
+  });
 }
 
 export function resolveOverEvent({ e, t, config }) {
   const collisions = resolveCollisions(e, t, config.renderer);
 
-  return resolveEvent({ collisions, t, config, action: resolveAction(t.action, e, 'set') });
+  return resolveEvent({
+    collisions, t, config, action: resolveAction(t.action, e, 'set')
+  });
 }

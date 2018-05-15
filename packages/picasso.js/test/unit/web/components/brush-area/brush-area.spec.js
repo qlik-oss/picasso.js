@@ -26,7 +26,9 @@ describe('Brush Area', () => {
   let rendererSpy;
 
   beforeEach(() => {
-    rect = { x: 1, y: 2, width: 100, height: 200 };
+    rect = {
+      x: 1, y: 2, width: 100, height: 200
+    };
     container = {
       inner: rect,
       outer: rect

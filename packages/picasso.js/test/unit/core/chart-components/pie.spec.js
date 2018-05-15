@@ -8,7 +8,9 @@ describe('pie', () => {
 
   beforeEach(() => {
     opts = {
-      inner: { x: 10, y: 20, width: 100, height: 200 }
+      inner: {
+        x: 10, y: 20, width: 100, height: 200
+      }
     };
     componentFixture = componentFactoryFixture();
   });

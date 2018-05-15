@@ -12,7 +12,9 @@ describe('legend-cat', () => {
 
   beforeEach(() => {
     opts = {
-      inner: { x: 10, y: 20, width: 100, height: 200 }
+      inner: {
+        x: 10, y: 20, width: 100, height: 200
+      }
     };
     componentFixture = componentFactoryFixture();
     componentFixture.mocks().theme.style.returns({
@@ -55,9 +57,13 @@ describe('legend-cat', () => {
       type: 'container',
       data: d,
       children: [
-        { type: 'rect', fill: '-1-', x: 0, y: 0, width: 12, height: 12, data: d }
+        {
+          type: 'rect', fill: '-1-', x: 0, y: 0, width: 12, height: 12, data: d
+        }
       ],
-      collider: { x: 0, y: 0, width: 25, height: 12, type: 'rect' }
+      collider: {
+        x: 0, y: 0, width: 25, height: 12, type: 'rect'
+      }
     });
 
     expect(renderedItems[0].children[1]).to.containSubset({ // label
@@ -73,8 +79,12 @@ describe('legend-cat', () => {
 
     componentFixture.simulateCreate(component, config);
     const size = componentFixture.simulateLayout({
-      inner: { width: 100, height: 200, x: 10, y: 20 },
-      outer: { width: 101, height: 201, x: 11, y: 21 }
+      inner: {
+        width: 100, height: 200, x: 10, y: 20
+      },
+      outer: {
+        width: 101, height: 201, x: 11, y: 21
+      }
     });
 
     expect(size).to.equal(25 + 16);
@@ -100,7 +110,9 @@ describe('legend-cat', () => {
 
     componentFixture.simulateCreate(component, config);
     componentFixture.simulateRender({
-      inner: { x: 10, y: 20, width: 30, height: 200 }
+      inner: {
+        x: 10, y: 20, width: 30, height: 200
+      }
     });
 
     expect(h.callCount).to.equal(10);

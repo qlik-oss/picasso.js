@@ -4,43 +4,61 @@ describe('Colors', () => {
   describe('HSL', () => {
     it('should handle hsl values', () => {
       const c = color('hsl(180,100%,50%)');
-      expect(c).to.deep.equal({ h: 180, s: 1, l: 0.5, a: 1 });
+      expect(c).to.deep.equal({
+        h: 180, s: 1, l: 0.5, a: 1
+      });
     });
 
     it('should handle hsla values', () => {
       const c = color('hsla(180, 100% ,50%, 0.5)');
-      expect(c).to.deep.equal({ h: 180, s: 1, l: 0.5, a: 0.5 });
+      expect(c).to.deep.equal({
+        h: 180, s: 1, l: 0.5, a: 0.5
+      });
     });
 
     it('should normalize angle values', () => {
       let c = color('hsla(-120, 100% ,50%, 0.5)');
-      expect(c).to.deep.equal({ h: 240, s: 1, l: 0.5, a: 0.5 });
+      expect(c).to.deep.equal({
+        h: 240, s: 1, l: 0.5, a: 0.5
+      });
 
       c = color('hsla(480, 100% ,50%, 0.5)');
-      expect(c).to.deep.equal({ h: 120, s: 1, l: 0.5, a: 0.5 });
+      expect(c).to.deep.equal({
+        h: 120, s: 1, l: 0.5, a: 0.5
+      });
     });
 
     it('should clip percentage values', () => {
       const c = color('hsla(180, 101% ,101%, 1)');
-      expect(c).to.deep.equal({ h: 180, s: 1, l: 1, a: 1 });
+      expect(c).to.deep.equal({
+        h: 180, s: 1, l: 1, a: 1
+      });
     });
 
     it('should clip negative percentage values', () => {
       const c = color('hsla(180, -1% ,-1%, 1)');
-      expect(c).to.deep.equal({ h: 180, s: 0, l: 0, a: 1 });
+      expect(c).to.deep.equal({
+        h: 180, s: 0, l: 0, a: 1
+      });
     });
 
     it('should clip alpha value', () => {
       const c = color('hsla(255, 100%, 50%, 10.10)');
-      expect(c).to.deep.equal({ h: 255, s: 1, l: 0.5, a: 1 });
+      expect(c).to.deep.equal({
+        h: 255, s: 1, l: 0.5, a: 1
+      });
     });
 
     it('should allow decimal values and round to nearest integer', () => {
       let c = color('hsla(180.6, 11.6% , 19.6%, 1)');
-      expect(c).to.deep.equal({ h: 181, s: 0.12, l: 0.2, a: 1 });
+      expect(c).to.deep.equal({
+        h: 181, s: 0.12, l: 0.2, a: 1
+      });
 
       c = color('hsl(180.6, 11.6% , 19.6%)');
-      expect(c).to.deep.equal({ h: 181, s: 0.12, l: 0.2, a: 1 });
+      expect(c).to.deep.equal({
+        h: 181, s: 0.12, l: 0.2, a: 1
+      });
     });
 
     it('should not allow saturation and lightness values without a percentage character', () => {
@@ -69,90 +87,130 @@ describe('Colors', () => {
 
     it('should handle whitespace', () => {
       let c = color(' hsla( 120 , 100% , 50% , 0.5 ) ');
-      expect(c).to.deep.equal({ h: 120, s: 1, l: 0.5, a: 0.5 });
+      expect(c).to.deep.equal({
+        h: 120, s: 1, l: 0.5, a: 0.5
+      });
 
       c = color(' hsla( 80 , 100% , 50% , 0.5 ) ');
-      expect(c).to.deep.equal({ h: 80, s: 1, l: 0.5, a: 0.5 });
+      expect(c).to.deep.equal({
+        h: 80, s: 1, l: 0.5, a: 0.5
+      });
     });
   });
 
   describe('RGB', () => {
     it('should handle rgb numerical values', () => {
       const c = color('rgb(3,33,99)');
-      expect(c).to.deep.equal({ r: 3, g: 33, b: 99, a: 1 });
+      expect(c).to.deep.equal({
+        r: 3, g: 33, b: 99, a: 1
+      });
     });
 
     it('should handle rgba numerical values', () => {
       const c = color('rgba(3,33,99,0.1)');
-      expect(c).to.deep.equal({ r: 3, g: 33, b: 99, a: 0.1 });
+      expect(c).to.deep.equal({
+        r: 3, g: 33, b: 99, a: 0.1
+      });
     });
 
     it('should handle rgb percentage values', () => {
       const c = color('rgb(3%,33%,99%)');
-      expect(c).to.deep.equal({ r: 8, g: 84, b: 252, a: 1 });
+      expect(c).to.deep.equal({
+        r: 8, g: 84, b: 252, a: 1
+      });
     });
 
     it('should handle rgba percentage values', () => {
       const c = color('rgba(3%,33%,99%,0.5)');
-      expect(c).to.deep.equal({ r: 8, g: 84, b: 252, a: 0.5 });
+      expect(c).to.deep.equal({
+        r: 8, g: 84, b: 252, a: 0.5
+      });
     });
 
     it('should clip numerical values', () => {
       let c = color('rgba(256,256,256,1)');
-      expect(c).to.deep.equal({ r: 255, g: 255, b: 255, a: 1 });
+      expect(c).to.deep.equal({
+        r: 255, g: 255, b: 255, a: 1
+      });
 
       c = color('rgb(256,256,256)');
-      expect(c).to.deep.equal({ r: 255, g: 255, b: 255, a: 1 });
+      expect(c).to.deep.equal({
+        r: 255, g: 255, b: 255, a: 1
+      });
     });
 
     it('should clip negative numerical values', () => {
       let c = color('rgba(-1,-1,-1,1)');
-      expect(c).to.deep.equal({ r: 0, g: 0, b: 0, a: 1 });
+      expect(c).to.deep.equal({
+        r: 0, g: 0, b: 0, a: 1
+      });
 
       c = color('rgb(-1,-1,-1)');
-      expect(c).to.deep.equal({ r: 0, g: 0, b: 0, a: 1 });
+      expect(c).to.deep.equal({
+        r: 0, g: 0, b: 0, a: 1
+      });
     });
 
     it('should clip percentage values', () => {
       let c = color('rgba(101%,101%,101%,1)');
-      expect(c).to.deep.equal({ r: 255, g: 255, b: 255, a: 1 });
+      expect(c).to.deep.equal({
+        r: 255, g: 255, b: 255, a: 1
+      });
 
       c = color('rgb(101%,101%,101%)');
-      expect(c).to.deep.equal({ r: 255, g: 255, b: 255, a: 1 });
+      expect(c).to.deep.equal({
+        r: 255, g: 255, b: 255, a: 1
+      });
     });
 
     it('should clip alpha value', () => {
       const c = color('rgba(255, 255, 255, 10.10)');
-      expect(c).to.deep.equal({ r: 255, g: 255, b: 255, a: 1 });
+      expect(c).to.deep.equal({
+        r: 255, g: 255, b: 255, a: 1
+      });
     });
 
     it('should handle numerical boundry values', () => {
       let c = color('rgb(255,255,255)');
-      expect(c).to.deep.equal({ r: 255, g: 255, b: 255, a: 1 });
+      expect(c).to.deep.equal({
+        r: 255, g: 255, b: 255, a: 1
+      });
 
       c = color('rgb(0, 0, 0)');
-      expect(c).to.deep.equal({ r: 0, g: 0, b: 0, a: 1 });
+      expect(c).to.deep.equal({
+        r: 0, g: 0, b: 0, a: 1
+      });
     });
 
     it('should handle percentage boundry values', () => {
       let c = color('rgb(100%,100%,100%)');
-      expect(c).to.deep.equal({ r: 255, g: 255, b: 255, a: 1 });
+      expect(c).to.deep.equal({
+        r: 255, g: 255, b: 255, a: 1
+      });
 
       c = color('rgb(0%,0%,0%)');
-      expect(c).to.deep.equal({ r: 0, g: 0, b: 0, a: 1 });
+      expect(c).to.deep.equal({
+        r: 0, g: 0, b: 0, a: 1
+      });
     });
 
     it('should handle whitespace', () => {
       let c = color(' rgb( 100% , 100% , 100% ) ');
-      expect(c).to.deep.equal({ r: 255, g: 255, b: 255, a: 1 });
+      expect(c).to.deep.equal({
+        r: 255, g: 255, b: 255, a: 1
+      });
 
       c = color(' rgba( 255 , 255 , 255 , 1 ) ');
-      expect(c).to.deep.equal({ r: 255, g: 255, b: 255, a: 1 });
+      expect(c).to.deep.equal({
+        r: 255, g: 255, b: 255, a: 1
+      });
     });
 
     it('should clip negative alpha values', () => {
       const c = color('rgba(255,255,255,-1)');
-      expect(c).to.deep.equal({ r: 255, g: 255, b: 255, a: 0 });
+      expect(c).to.deep.equal({
+        r: 255, g: 255, b: 255, a: 0
+      });
     });
 
     it('should not allow non-digit characters', () => {
@@ -189,22 +247,30 @@ describe('Colors', () => {
   describe('Hex', () => {
     it('should handle six digit hex values', () => {
       const c = color('#4682B4');
-      expect(c).to.deep.equal({ r: 70, g: 130, b: 180, a: 1 });
+      expect(c).to.deep.equal({
+        r: 70, g: 130, b: 180, a: 1
+      });
     });
 
     it('should handle three digit hex values', () => {
       const c = color('#abc');
-      expect(c).to.deep.equal({ r: 170, g: 187, b: 204, a: 1 });
+      expect(c).to.deep.equal({
+        r: 170, g: 187, b: 204, a: 1
+      });
     });
 
     it('should handle white space before and after three digit hex values', () => {
       const c = color('   #4682B4   ');
-      expect(c).to.deep.equal({ r: 70, g: 130, b: 180, a: 1 });
+      expect(c).to.deep.equal({
+        r: 70, g: 130, b: 180, a: 1
+      });
     });
 
     it('should handle white space before and after six digit hex values', () => {
       const c = color('   #abc   ');
-      expect(c).to.deep.equal({ r: 170, g: 187, b: 204, a: 1 });
+      expect(c).to.deep.equal({
+        r: 170, g: 187, b: 204, a: 1
+      });
     });
 
     it('should not match six digit hex values without #', () => {
@@ -234,27 +300,37 @@ describe('Colors', () => {
   describe('Key words', () => {
     it('should handle key words', () => {
       const c = color('red');
-      expect(c).to.deep.equal({ r: 255, g: 0, b: 0, a: 1 });
+      expect(c).to.deep.equal({
+        r: 255, g: 0, b: 0, a: 1
+      });
     });
 
     it('should handle key words', () => {
       const c = color('green');
-      expect(c).to.deep.equal({ r: 0, g: 128, b: 0, a: 1 });
+      expect(c).to.deep.equal({
+        r: 0, g: 128, b: 0, a: 1
+      });
     });
 
     it('should handle extended key words', () => {
       const c = color('chocolate');
-      expect(c).to.deep.equal({ r: 210, g: 105, b: 30, a: 1 });
+      expect(c).to.deep.equal({
+        r: 210, g: 105, b: 30, a: 1
+      });
     });
 
     it('should handle white space before and after key words', () => {
       const c = color('   red   ');
-      expect(c).to.deep.equal({ r: 255, g: 0, b: 0, a: 1 });
+      expect(c).to.deep.equal({
+        r: 255, g: 0, b: 0, a: 1
+      });
     });
 
     it('should handle case in key words', () => {
       const c = color('RED');
-      expect(c).to.deep.equal({ r: 255, g: 0, b: 0, a: 1 });
+      expect(c).to.deep.equal({
+        r: 255, g: 0, b: 0, a: 1
+      });
     });
   });
 

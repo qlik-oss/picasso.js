@@ -84,15 +84,13 @@ describe('Style resolver', () => {
   it('should fallback throught functions', () => {
     const result = resolveStyle({ stroke: 'default' }, settings, 'style.line');
     const output = [0, 1, 2].map(item =>
-      result.stroke.fn(undefined, null, item)
-    );
+      result.stroke.fn(undefined, null, item));
     expect(output).to.deep.equal(['style.line.stroke', 'style.stroke', 'stroke']);
   });
   it('should possibly return null', () => {
     const result = resolveStyle({ otherThing: 'default' }, settings, 'style.whisker');
     const output = [0, 1, 2].map(item =>
-      result.otherThing.fn(undefined, null, item)
-    );
+      result.otherThing.fn(undefined, null, item));
     expect(output).to.deep.equal(['thing', null, null]);
   });
   it('should return explicitly set null values', () => {

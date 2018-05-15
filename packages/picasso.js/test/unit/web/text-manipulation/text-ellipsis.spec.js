@@ -1,6 +1,4 @@
-import {
-  ellipsText
-} from '../../../../src/web/text-manipulation';
+import { ellipsText } from '../../../../src/web/text-manipulation';
 
 describe('Text Manipulation', () => {
   describe('ellips text', () => {
@@ -8,7 +6,9 @@ describe('Text Manipulation', () => {
     let textNode;
 
     beforeEach(() => {
-      textNode = { text: 'test', 'font-size': 13, 'font-family': 'Arial', maxWidth: 5 };
+      textNode = {
+        text: 'test', 'font-size': 13, 'font-family': 'Arial', maxWidth: 5
+      };
     });
 
     it('should ellips text until it is below max width', () => {

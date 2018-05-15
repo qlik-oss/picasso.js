@@ -97,7 +97,9 @@ describe('labeling - slices', () => {
         position: 'outside',
         padding: 1,
         measured: { width: 6, height: 4 },
-        view: { x: -50, y: -50, width: 100, height: 100 }
+        view: {
+          x: -50, y: -50, width: 100, height: 100
+        }
       });
       expect(bounds).property('anchor').to.equal('start');
       expect(bounds).property('angle').to.equal(0);
@@ -121,7 +123,9 @@ describe('labeling - slices', () => {
         position: 'into',
         padding: 1,
         measured: { width: 6, height: 4 },
-        view: { x: -50, y: -50, width: 100, height: 100 }
+        view: {
+          x: -50, y: -50, width: 100, height: 100
+        }
       });
       expect(bounds).property('anchor').to.equal('end');
       expect(bounds).property('angle').to.equal(0);
@@ -254,7 +258,9 @@ describe('labeling - slices', () => {
           chart,
           nodes,
           renderer,
-          rect: { x: 0, y: 0, height: 50, width: 50 },
+          rect: {
+            x: 0, y: 0, height: 50, width: 50
+          },
           style: {
             label: {
               fontSize: '16px',

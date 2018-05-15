@@ -3,17 +3,15 @@ import Matrix from '../math/matrix';
 import resolveTransform from './transform-resolver';
 import contextFactory from './context';
 
-const styleContext = contextFactory(
-  [
-    'stroke',
-    'fill',
-    'strokeWidth',
-    'opacity',
-    'fontFamily',
-    'fontSize',
-    'baseline'
-  ]
-);
+const styleContext = contextFactory([
+  'stroke',
+  'fill',
+  'strokeWidth',
+  'opacity',
+  'fontFamily',
+  'fontSize',
+  'baseline'
+]);
 
 function doEvent(state, listeners) {
   if (!Array.isArray(listeners)) {

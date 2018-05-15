@@ -23,9 +23,13 @@ describe('Scroll api', () => {
 
   it('keep old value if not updated', () => {
     scroll.update({ min: 100, max: 200, viewSize: 10 });
-    expect(scroll.getState()).to.deep.equals({ start: 100, viewSize: 10, min: 100, max: 200 });
+    expect(scroll.getState()).to.deep.equals({
+      start: 100, viewSize: 10, min: 100, max: 200
+    });
     scroll.update({ viewSize: 20 });
-    expect(scroll.getState()).to.deep.equals({ start: 100, viewSize: 20, min: 100, max: 200 });
+    expect(scroll.getState()).to.deep.equals({
+      start: 100, viewSize: 20, min: 100, max: 200
+    });
   });
 
   it('trigger update event on viewSize change', () => {

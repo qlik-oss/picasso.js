@@ -19,7 +19,9 @@ describe('Tick generators', () => {
         count: 0
       };
       scale = linear();
-      input = { settings, distance: 100, scale, formatter: d3formatter };
+      input = {
+        settings, distance: 100, scale, formatter: d3formatter
+      };
     });
 
     describe('formatting', () => {
@@ -303,31 +305,42 @@ describe('Tick generators', () => {
     });
 
     it('should generate ticks by data', () => {
-      scale = band({
-        value: d => d.datum,
-        label: d => d.datum },
+      scale = band(
+        {
+          value: d => d.datum,
+          label: d => d.datum
+        },
         { items: data }
       );
       scale.range([0, 1]);
       const ticks = scale.ticks();
       const expected = [
-        { position: 0 + (scale.bandwidth() / 2), label: 'd1', data: 'd1', start: 0, end: 0 + scale.bandwidth() },
-        { position: (1 / 3) + (scale.bandwidth() / 2), label: 'd2', data: 'd2', start: (1 / 3), end: (1 / 3) + scale.bandwidth() },
-        { position: (2 / 3) + (scale.bandwidth() / 2), label: 'd3', data: 'd3', start: (2 / 3), end: (2 / 3) + scale.bandwidth() }
+        {
+          position: 0 + (scale.bandwidth() / 2), label: 'd1', data: 'd1', start: 0, end: 0 + scale.bandwidth()
+        },
+        {
+          position: (1 / 3) + (scale.bandwidth() / 2), label: 'd2', data: 'd2', start: (1 / 3), end: (1 / 3) + scale.bandwidth()
+        },
+        {
+          position: (2 / 3) + (scale.bandwidth() / 2), label: 'd3', data: 'd3', start: (2 / 3), end: (2 / 3) + scale.bandwidth()
+        }
       ];
       expect(ticks).to.deep.equal(expected);
     });
 
     it('should support duplicate labels by separating values and labels', () => {
-      scale = band({
-        value: item => item.datum.id.value,
-        label: item => item.datum.value
-      },
-        { items: [
-          { value: 'alpha', id: { value: 'd1' } },
-          { value: 'alpha', id: { value: 'd2' } },
-          { value: 'beta', id: { value: 'd3' } }
-        ] }
+      scale = band(
+        {
+          value: item => item.datum.id.value,
+          label: item => item.datum.value
+        },
+        {
+          items: [
+            { value: 'alpha', id: { value: 'd1' } },
+            { value: 'alpha', id: { value: 'd2' } },
+            { value: 'beta', id: { value: 'd3' } }
+          ]
+        }
       );
       scale.range([0, 1]);
 

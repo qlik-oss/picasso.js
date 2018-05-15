@@ -72,7 +72,7 @@ export function detectRtlSvgSupport(ns, ownerDoc) {
     }
   }
   detected = true;
-}*/
+} */
 
 export function flipTextAnchor(value, dir) {
   if (dir === 'rtl') {

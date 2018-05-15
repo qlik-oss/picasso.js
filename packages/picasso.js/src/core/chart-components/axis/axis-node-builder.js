@@ -95,7 +95,9 @@ export function filterOverlappingLabels(labels, ticks) {
   }
 }
 
-function discreteCalcMaxTextRect({ measureText, settings, innerRect, scale, tilted, layered, tick }) {
+function discreteCalcMaxTextRect({
+  measureText, settings, innerRect, scale, tilted, layered, tick
+}) {
   const h = measureText({
     text: 'M',
     fontSize: settings.labels.fontSize,
@@ -121,7 +123,9 @@ function discreteCalcMaxTextRect({ measureText, settings, innerRect, scale, tilt
   return textRect;
 }
 
-function continuousCalcMaxTextRect({ measureText, settings, innerRect, ticks, tilted, layered }) {
+function continuousCalcMaxTextRect({
+  measureText, settings, innerRect, ticks, tilted, layered
+}) {
   const h = measureText({
     text: 'M',
     fontSize: settings.labels.fontSize,
@@ -145,7 +149,9 @@ function continuousCalcMaxTextRect({ measureText, settings, innerRect, ticks, ti
   return textRect;
 }
 
-function getStepSizeFn({ innerRect, scale, settings, tick }) {
+function getStepSizeFn({
+  innerRect, scale, settings, tick
+}) {
   const size = settings.align === 'top' || settings.align === 'bottom' ? innerRect.width : innerRect.height;
   const bandwidth = tickBandwidth(scale, tick);
   return size * bandwidth;
@@ -166,7 +172,9 @@ export default function nodeBuilder(isDiscrete) {
     return discrete;
   }
 
-  function build({ settings, scale, innerRect, outerRect, measureText, ticks, state, textBounds }) {
+  function build({
+    settings, scale, innerRect, outerRect, measureText, ticks, state, textBounds
+  }) {
     const nodes = [];
     const major = majorTicks(ticks);
     const minor = minorTicks(ticks);
@@ -202,11 +210,15 @@ export default function nodeBuilder(isDiscrete) {
       buildOpts.paddingEnd = settings.paddingEnd;
       buildOpts.textBounds = textBounds;
       const tickFn = (tick) => {
-        const maxSize = calcMaxTextRectFn({ measureText, settings, innerRect, ticks, scale, tilted, layered, tick });
+        const maxSize = calcMaxTextRectFn({
+          measureText, settings, innerRect, ticks, scale, tilted, layered, tick
+        });
         buildOpts.maxWidth = maxSize.width;
         buildOpts.maxHeight = maxSize.height;
         buildOpts.textRect = calcActualTextRect({ tick, measureText, style: buildOpts.style });
-        buildOpts.stepSize = getStepSizeFn({ innerRect, scale, ticks, settings, tick });
+        buildOpts.stepSize = getStepSizeFn({
+          innerRect, scale, ticks, settings, tick
+        });
       };
 
       let labelNodes = [];

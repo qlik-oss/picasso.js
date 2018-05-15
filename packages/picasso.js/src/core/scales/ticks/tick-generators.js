@@ -57,7 +57,9 @@ function appendMinorTicks(majorTicks, minorCount, scale) {
 * @param  {Number} [unitDivider=100]   Number to divide distance with
 * @return {Array}               Array of ticks
 */
-export function looseDistanceBasedGenerator({ distance, scale, minorCount = 0, unitDivider = 100, formatter = undefined }) {
+export function looseDistanceBasedGenerator({
+  distance, scale, minorCount = 0, unitDivider = 100, formatter = undefined
+}) {
   const step = !notNumber(unitDivider) && !notNumber(distance) ? Math.max(distance / unitDivider, 2) : 2;
   const count = Math.min(1000, Math.round(step)); // safe guard against huge numbers
   let majorTicks = scale.ticks(count);
@@ -93,7 +95,9 @@ export function looseDistanceBasedGenerator({ distance, scale, minorCount = 0, u
 * @param  {Number} [unitDivider=100]   Number to divide distance with
 * @return {Array}               Array of ticks
 */
-export function tightDistanceBasedGenerator({ distance, scale, minorCount = 0, unitDivider = 100, formatter = undefined }) {
+export function tightDistanceBasedGenerator({
+  distance, scale, minorCount = 0, unitDivider = 100, formatter = undefined
+}) {
   const step = !notNumber(unitDivider) && !notNumber(distance) ? Math.max(distance / unitDivider, 2) : 2;
   const count = Math.min(1000, Math.round(step)); // safe guard against huge numbers
   const n = count > 10 ? 10 : count;
@@ -118,7 +122,9 @@ export function tightDistanceBasedGenerator({ distance, scale, minorCount = 0, u
   });
 }
 
-function ticksByCount({ count, minorCount, scale, formatter }) {
+function ticksByCount({
+  count, minorCount, scale, formatter
+}) {
   return scale
     .ticks(((count - 1) * minorCount) + count)
     .map((tick, i) => {
@@ -187,7 +193,9 @@ function forceTicksAtBounds(ticks, scale, formatter) {
   }
 }
 
-export function generateContinuousTicks({ settings, scale, distance, formatter }) {
+export function generateContinuousTicks({
+  settings, scale, distance, formatter
+}) {
   let ticks;
   const minorCount = settings.minorTicks && !notNumber(settings.minorTicks.count) ? Math.min(100, settings.minorTicks.count) : 0;
 
@@ -196,7 +204,9 @@ export function generateContinuousTicks({ settings, scale, distance, formatter }
     ticks = ticksByValue({ values, scale: scale.copy(), formatter });
   } else if (!notNumber(settings.ticks.count)) {
     const count = Math.min(1000, settings.ticks.count);
-    ticks = ticksByCount({ count, minorCount, scale: scale.copy(), formatter });
+    ticks = ticksByCount({
+      count, minorCount, scale: scale.copy(), formatter
+    });
   } else {
     const tickGen = settings.ticks.tight ? tightDistanceBasedGenerator : looseDistanceBasedGenerator;
     ticks = tickGen({

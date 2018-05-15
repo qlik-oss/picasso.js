@@ -92,7 +92,7 @@ class GeoPolygon {
     return NarrowPhaseCollision.testCirclePolygon(circle, this);
   }
 
-   /**
+  /**
    * @param {point[]} points - Line start and end point as an array of points
    * @returns {boolean} True if there is an intersection, false otherwise
    */

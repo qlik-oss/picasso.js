@@ -1,6 +1,4 @@
-import {
-  hierarchy
-} from 'd3-hierarchy';
+import { hierarchy } from 'd3-hierarchy';
 import hBand from '../../../../src/core/scales/h-band';
 
 

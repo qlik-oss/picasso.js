@@ -22,7 +22,9 @@ describe('rect', () => {
 
       truthys = [true, {}, [], 1, -1, 3.14, -3.14, 'foo'];
 
-      rect = { x: 1, y: 2, width: 10, height: 20 };
+      rect = {
+        x: 1, y: 2, width: 10, height: 20
+      };
     });
 
     afterEach(() => {
