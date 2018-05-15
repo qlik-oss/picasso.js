@@ -7,7 +7,7 @@ describe('canvas renderer', () => {
     scene;
 
   beforeEach(() => {
-    sandbox = sinon.sandbox.create();
+    sandbox = sinon.createSandbox();
     scene = sandbox.stub();
     r = renderer(scene);
   });

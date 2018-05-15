@@ -15,7 +15,7 @@ describe('text-metrics', () => {
     };
 
     beforeEach(() => {
-      sandbox = sinon.sandbox.create();
+      sandbox = sinon.createSandbox();
 
       canvasContextMock = {
         font: '',

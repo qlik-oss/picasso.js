@@ -10,7 +10,7 @@ export default function componentFactoryFixture() {
   let mediatorMock;
   let themeMock;
   let registriesMock;
-  const sandbox = sinon.sandbox.create();
+  const sandbox = sinon.createSandbox();
   const container = elementMock();
 
   const fn = function func() {

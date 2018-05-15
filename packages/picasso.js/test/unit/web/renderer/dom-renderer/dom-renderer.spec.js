@@ -6,7 +6,7 @@ describe('dom renderer', () => {
   let rend;
 
   beforeEach(() => {
-    sandbox = sinon.sandbox.create();
+    sandbox = sinon.createSandbox();
     rend = renderer({
       createElement: element,
       createTextNode: text => text

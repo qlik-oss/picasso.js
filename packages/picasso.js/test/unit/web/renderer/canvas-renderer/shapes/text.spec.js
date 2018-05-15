@@ -8,7 +8,7 @@ describe('text', () => {
       text;
 
     beforeEach(() => {
-      sandbox = sinon.sandbox.create();
+      sandbox = sinon.createSandbox();
 
       g = {
         beginPath: sandbox.spy(),

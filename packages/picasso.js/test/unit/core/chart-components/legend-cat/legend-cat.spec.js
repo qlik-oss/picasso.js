@@ -7,7 +7,7 @@ describe('legend-cat', () => {
   let componentFixture;
   let opts;
   let domRenderer;
-  const sandbox = sinon.sandbox.create();
+  const sandbox = sinon.createSandbox();
   let h;
 
   beforeEach(() => {

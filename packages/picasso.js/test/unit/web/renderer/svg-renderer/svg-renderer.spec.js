@@ -10,7 +10,7 @@ describe('svg renderer', () => {
     scene;
 
   beforeEach(() => {
-    sandbox = sinon.sandbox.create();
+    sandbox = sinon.createSandbox();
     treeRenderer = {
       render: sandbox.spy()
     };
