@@ -6,46 +6,44 @@ import babel from 'rollup-plugin-babel';
 import uglify from 'rollup-plugin-uglify';
 import filesize from 'rollup-plugin-filesize';
 import license from 'rollup-plugin-license';
-import clean from 'rollup-plugin-clean';
-
+import rimraf from 'rimraf';
 import path from 'path';
 
-const pkg = require(path.join(process.cwd(), 'package.json')); // eslint-disable-line
+const cwd = process.cwd();
+const { name, version, main } = require(path.join(cwd, 'package.json')); // eslint-disable-line
+const production = process.env.NODE_ENV === 'production';
+const basename = path.basename(main);
+const dir = path.dirname(main);
+const umdName = basename.replace(/-([a-z])/g, (m, p1) => p1.toUpperCase()).split('.js').join('');
 
-const hasName = process.argv.indexOf('--name') + 1 || process.argv.indexOf('-n') + 1;
-const name = hasName ? process.argv[hasName] : 'picasso';
-const fileName = name.replace(/([A-Z])/g, (m, s) => `-${s.toLowerCase()}`);
-
-const isWatch = process.argv.indexOf('--watch') + 1 || process.argv.indexOf('-w') + 1;
+rimraf.sync(dir);
 
 const config = {
-  entry: 'src/index.js',
-  dest: `dist/${fileName}.js`,
-  moduleName: name,
-  format: 'umd',
-  sourceMap: true,
+  input: 'src/index.js',
+  cache: true,
+  output: {
+    file: `${main}`,
+    name: umdName,
+    format: 'umd',
+    sourcemap: true
+  },
   plugins: [
-    clean(),
     resolve({ jsnext: true, preferBuiltins: false }),
+    commonjs(),
     babel({
       exclude: 'node_modules/**',
       presets: [['es2015', { modules: false }]],
       plugins: ['external-helpers']
     }),
-    commonjs(),
-    filesize()
+    ...(production ? [uglify()] : []),
+    filesize(),
+    license({
+      banner: `
+        ${name} v${version}
+        Copyright (c) ${new Date().getFullYear()} QlikTech International AB
+      `
+    })
   ]
 };
-
-if (!isWatch) {
-  config.plugins.push(uglify());
-}
-
-config.plugins.push(license({
-  banner: `
-    ${pkg.name} v${pkg.version}
-    Copyright (c) ${new Date().getFullYear()} QlikTech International AB
-  `
-}));
 
 export default config;
