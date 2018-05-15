@@ -79,7 +79,7 @@ jobs:
       - attach_workspace:
           at: ~/picassojs
       - run: npm run bootstrap
-      - run: npm run build
+      - run: NODE_ENV=production npm run build
       - store_artifacts:
           path: packages/picasso.js/dist
       - store_artifacts:
@@ -98,7 +98,7 @@ jobs:
       - attach_workspace:
           at: ~/picassojs
       - run: npm run bootstrap
-      - run: npm run build:dev
+      - run: npm run build
       - store_artifacts:
           path: packages/picasso.js/dist
       - store_artifacts:
