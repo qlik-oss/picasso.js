@@ -9,6 +9,13 @@
     "expect": false,
     "sinon": false
   },
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 8,
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
+  },
   "plugins": [
     "mocha"
   ],

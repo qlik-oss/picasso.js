@@ -24,8 +24,8 @@ function moveTo(elm, offset) {
  * @param {WebElement} elm WebElement to click on
  * @param {Object} offset offset from top-left corner of WebElement
  */
-export function clickAt(elm, offset) {
-  moveTo(elm, offset)
+export async function clickAt(elm, offset) {
+  await moveTo(elm, offset)
     .click()
     .perform();
 }
@@ -35,8 +35,8 @@ export function clickAt(elm, offset) {
  * @param {WebElement} elm WebElement to hover over
  * @param {Object} offset offset from top-left corner of WebElement
  */
-export function hoverAt(elm, offset) {
-  moveTo(elm, offset)
+export async function hoverAt(elm, offset) {
+  await moveTo(elm, offset)
     .perform();
 }
 
@@ -44,14 +44,14 @@ export function hoverAt(elm, offset) {
  * Click on the center position of a shape
  * @param {Object} shape Scene Object Model
  */
-export function clickOnShape(shape) {
-  clickAt(shape.element, shape.bounds);
+export async function clickOnShape(shape) {
+  await clickAt(shape.element, shape.bounds);
 }
 
 /**
  * Hover over the center position of a shape
  * @param {Object} shape Scene Object Model
  */
-export function hoverOverShape(shape) {
-  hoverAt(shape.element, shape.bounds);
+export async function hoverOverShape(shape) {
+  await hoverAt(shape.element, shape.bounds);
 }
