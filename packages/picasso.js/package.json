@@ -37,7 +37,7 @@
     "test:unit:coverage": "aw -c  aw.config.unit.coverage.js",
     "test:component": "aw -c aw.config.comp.js",
     "test:component:coverage": "aw -c aw.config.comp.coverage.js",
-    "test:integration:local": "webdriver-manager update --versions.chrome 2.34 --gecko false && aw protractor -c aw.config.js --require babel-register --require babel-helpers",
+    "test:integration:local": "webdriver-manager update --versions.chrome 2.38 --gecko false && aw protractor -c aw.config.js --require babel-register --require babel-helpers",
     "fixture:server": "aw serve -c aw.webserver.config.js",
     "version": "node scripts/version.js && git add src/about.js",
     "prepublishOnly": "rm -rf dist && npm run build"
