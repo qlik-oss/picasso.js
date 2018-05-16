@@ -1,6 +1,7 @@
 import extend from 'extend';
 
 const LINE_HEIGHT = 1.2;
+const CIRCLE_FACTOR = 0.9;
 
 function cbContext(node, chart) {
   return {
@@ -42,15 +43,12 @@ export function placeTextInRect(rect, text, opts) {
 }
 
 function getRectFromCircle({ cx, cy, r }) {
-  let halfSide = r / Math.SQRT2;
   return {
-    x: cx - halfSide,
-    y: cy - halfSide,
-    width: 2 * halfSide,
-    height: 2 * halfSide
+    type: 'circle',
+    bounds: { cx, cy, r }
   };
 }
-function getSliceRect(slice) {
+function getSliceBounds(slice) {
   let { start, end, innerRadius, outerRadius, offset } = slice;
   if (start + (2 * Math.PI) !== end) { return null; }
   let r = innerRadius !== 0 ? innerRadius : outerRadius;
@@ -59,16 +57,16 @@ function getSliceRect(slice) {
 
 function getBounds(node) {
   if (node.desc && node.desc.slice) {
-    return getSliceRect(node.desc.slice);
+    return getSliceBounds(node.desc.slice);
   }
   if (node.type === 'circle') {
     return getRectFromCircle(node.attrs);
   }
   if (node.type === 'rect') {
-    return node.bounds;
+    return { type: 'rect', bounds: node.bounds };
   }
   // defualt to node.bounds ?
-  return null;
+  return { type: null, bounds: null };
 }
 
 /**
@@ -119,7 +117,7 @@ export function rows({
     let node = nodes[i];
     let arg = cbContext(node, chart);
 
-    let bounds = getBounds(node);
+    let { type, bounds } = getBounds(node);
     if (!bounds) {
       continue;
     }
@@ -128,6 +126,7 @@ export function rows({
     let measurements = [];
     let texts = [];
 
+    let maxHeight = type === 'circle' ? 2 * bounds.r * CIRCLE_FACTOR : bounds.height;
     totalHeight += rowSettings.padding;
     let j;
     for (j = 0; j < labelSettings.length; j++) {
@@ -142,24 +141,43 @@ export function rows({
       labelStruct.text = text;
       let measured = renderer.measureText(labelStruct);
       totalHeight += measured.height + lblStngs.padding;
-      if (totalHeight > bounds.height) { break; }
+      if (totalHeight > maxHeight) { break; }
       texts.push(text);
       measurements.push(measured);
     }
 
     const labelCount = j;
-    const wiggleHeight = Math.max(0, bounds.height - totalHeight);
-    let yOffset = rowSettings.justify * wiggleHeight;
+    const wiggleHeight = Math.max(0, maxHeight - totalHeight);
+    let currentY;
+    if (type === 'circle') {
+      currentY = bounds.cy - (bounds.r * CIRCLE_FACTOR);
+    } else {
+      currentY = bounds.y;
+    }
+    currentY += (rowSettings.justify * wiggleHeight) + rowSettings.padding;
 
     for (j = 0; j < labelCount; j++) {
       let lblStngs = labelSettings[j];
-      let rect = {
-        x: bounds.x + rowSettings.padding,
-        y: bounds.y + yOffset + rowSettings.padding,
-        width: bounds.width - (2 * rowSettings.padding),
-        height: measurements[j].height
-      };
-      yOffset += measurements[j].height + rowSettings.padding;
+      let rect;
+      if (type === 'circle') {
+        let maxYDistToCenter = Math.max(Math.abs(currentY - bounds.cy), Math.abs((currentY + measurements[j].height) - bounds.cy));
+        let halfWidth = Math.sqrt((bounds.r * bounds.r) - (maxYDistToCenter * maxYDistToCenter));
+        rect = {
+          x: (bounds.cx - halfWidth) + rowSettings.padding,
+          y: currentY,
+          width: (2 * halfWidth) - (2 * rowSettings.padding),
+          height: measurements[j].height
+        };
+      } else {
+        rect = {
+          x: bounds.x + rowSettings.padding,
+          y: currentY,
+          width: bounds.width - (2 * rowSettings.padding),
+          height: measurements[j].height
+        };
+      }
+
+      currentY += measurements[j].height + rowSettings.padding;
       let fill = typeof lblStngs.fill === 'function' ? lblStngs.fill(arg, i) : lblStngs.fill;
       let label = placer(rect, texts[j], {
         fill,
