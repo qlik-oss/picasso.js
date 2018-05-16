@@ -48,6 +48,4 @@ function resolve(path, obj) {
   return container;
 }
 
-export {
-  resolve as default
-};
+export { resolve as default };

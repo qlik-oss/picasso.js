@@ -9,7 +9,7 @@ describe('brush', () => {
   let rcf;
   let b;
   before(() => {
-    sandbox = sinon.sandbox.create();
+    sandbox = sinon.createSandbox();
     // mock value collection
     vc = () => {};
     vc.add = sandbox.stub();

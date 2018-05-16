@@ -8,7 +8,9 @@ describe('line component', () => {
 
   beforeEach(() => {
     opts = {
-      inner: { x: 10, y: 20, width: 200, height: 100 }
+      inner: {
+        x: 10, y: 20, width: 200, height: 100
+      }
     };
     componentFixture = componentFactoryFixture();
   });

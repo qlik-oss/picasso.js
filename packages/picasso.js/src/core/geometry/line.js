@@ -6,11 +6,17 @@ import NarrowPhaseCollision from '../math/narrow-phase-collision';
  * @private
  */
 class GeoLine {
-  constructor({ x1 = 0, y1 = 0, x2 = 0, y2 = 0, tolerance = 0 } = {}) {
-    this.set({ x1, y1, x2, y2, tolerance });
+  constructor({
+    x1 = 0, y1 = 0, x2 = 0, y2 = 0, tolerance = 0
+  } = {}) {
+    this.set({
+      x1, y1, x2, y2, tolerance
+    });
   }
 
-  set({ x1 = 0, y1 = 0, x2 = 0, y2 = 0, tolerance = 0 } = {}) {
+  set({
+    x1 = 0, y1 = 0, x2 = 0, y2 = 0, tolerance = 0
+  } = {}) {
     this.type = 'line';
     this.x1 = x1;
     this.y1 = y1;

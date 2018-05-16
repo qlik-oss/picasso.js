@@ -100,9 +100,9 @@ class Matrix {
     }
     if (Array.isArray(value)) { // matrix multiplication
       m = [
-            [0, 0, 0],
-            [0, 0, 0],
-            [0, 0, 0]
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0]
       ];
       for (i = 0; i < this._elements.length; i++) { // row
         for (j = 0; j < this._elements[i].length; j++) { // column

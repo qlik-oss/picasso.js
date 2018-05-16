@@ -6,11 +6,17 @@ import NarrowPhaseCollision from '../math/narrow-phase-collision';
  * @private
  */
 class GeoCircle {
-  constructor({ cx = 0, cy = 0, r = 0, minRadius = 0 } = {}) {
-    this.set({ cx, cy, r, minRadius });
+  constructor({
+    cx = 0, cy = 0, r = 0, minRadius = 0
+  } = {}) {
+    this.set({
+      cx, cy, r, minRadius
+    });
   }
 
-  set({ cx = 0, cy = 0, r = 0, minRadius = 0 } = {}) {
+  set({
+    cx = 0, cy = 0, r = 0, minRadius = 0
+  } = {}) {
     this.type = 'circle';
     this.cx = cx;
     this.cy = cy;

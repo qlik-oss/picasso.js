@@ -26,21 +26,17 @@ function resolve(path, obj) {
       if (arr[i] && arr[i].indexOf('...') !== -1) {
         const minMax = arr[i].split('...');
         container = container.filter((v, i2) =>
-          i2 >= +minMax[0] && i2 <= +minMax[1]
-        );
+          i2 >= +minMax[0] && i2 <= +minMax[1]);
       } else if (arr[i]) {
         const allowedIndexes = arr[i].split(',');
         container = container.filter((v, i2) => allowedIndexes.indexOf(`${i2}`) !== -1);
       }
       return container.map(v =>
-        resolve(arr.slice(i + 1).join('/'), v)
-      );
+        resolve(arr.slice(i + 1).join('/'), v));
     }
   }
 
   return container;
 }
 
-export {
-  resolve as default
-};
+export { resolve as default };

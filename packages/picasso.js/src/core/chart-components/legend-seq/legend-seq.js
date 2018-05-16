@@ -49,7 +49,9 @@ function resolveTitleAnchor(settings) {
 }
 
 function initRect(ctx, size) {
-  const rect = { x: 0, y: 0, width: 0, height: 0 };
+  const rect = {
+    x: 0, y: 0, width: 0, height: 0
+  };
   const padding = ctx.stgns.padding;
   rect.x = padding.left;
   rect.y = padding.top;

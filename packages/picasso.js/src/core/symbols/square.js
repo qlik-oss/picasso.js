@@ -15,6 +15,4 @@ function square(options) {
   };
 }
 
-export {
-  square as default
-};
+export { square as default };

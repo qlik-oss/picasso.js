@@ -1,6 +1,4 @@
-import {
-  scaleTime as d3ScaleTime
-} from 'd3-scale';
+import { scaleTime as d3ScaleTime } from 'd3-scale';
 import { createFromMetaInfo } from '../../formatter';
 import { QlikTimeToDate } from '../../formatter/timeFormat';
 

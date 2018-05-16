@@ -47,6 +47,4 @@ function themeFn(style = {}, palettes = []) {
   return theme;
 }
 
-export {
-  themeFn as default
-};
+export { themeFn as default };

@@ -128,7 +128,7 @@ function getBubbleLabel(state, value, range) {
  * @property {string} [target.component] - Render matching overlay on target component
  */
 
- /**
+/**
  * @typedef {object} component--brush-area-dir-style
  * @property {object} [bubble]
  * @property {string} [bubble.fontSize]
@@ -170,7 +170,9 @@ const brushAreaDirectionalComponent = {
     areaClear(e) { this.clear(e); }
   },
   created() {
-    this.rect = { x: 0, y: 0, width: 0, height: 0 };
+    this.rect = {
+      x: 0, y: 0, width: 0, height: 0
+    };
     this.state = {};
   },
   beforeRender(opts) {

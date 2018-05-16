@@ -91,7 +91,7 @@ describe('picasso.js', () => {
 
   describe('Chart lifecycle', () => {
     it('should call mounted function', () => {
-      const mountedFn = sinon.sandbox.stub();
+      const mountedFn = sinon.stub();
       const element = createElement();
 
       picasso.chart({
@@ -109,7 +109,7 @@ describe('picasso.js', () => {
     });
 
     it('should call updated function', () => {
-      const updatedFn = sinon.sandbox.stub();
+      const updatedFn = sinon.stub();
       const element = createElement();
 
       const chart = picasso.chart({
@@ -124,7 +124,7 @@ describe('picasso.js', () => {
     });
 
     it('should bind event listener', () => {
-      const clickFn = sinon.sandbox.stub();
+      const clickFn = sinon.stub();
       const element = createElement();
 
       picasso.chart({

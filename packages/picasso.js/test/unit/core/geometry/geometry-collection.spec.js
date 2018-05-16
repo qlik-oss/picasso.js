@@ -11,8 +11,12 @@ describe('GeometryCollection', () => {
 
     it('should accept an array of geometries', () => {
       c = new GeometryCollection([
-        { type: 'rect', x: 0, y: 0, width: 10, height: 10 },
-        { type: 'circle', cx: 0, cy: 0, r: 10 }
+        {
+          type: 'rect', x: 0, y: 0, width: 10, height: 10
+        },
+        {
+          type: 'circle', cx: 0, cy: 0, r: 10
+        }
       ]);
       expect(c.geometries).to.be.of.length(2);
     });
@@ -22,8 +26,12 @@ describe('GeometryCollection', () => {
     it('should accept an array of geometries', () => {
       c = new GeometryCollection();
       c.set([
-        { type: 'rect', x: 0, y: 0, width: 10, height: 10 },
-        { type: 'circle', cx: 0, cy: 0, r: 10 }
+        {
+          type: 'rect', x: 0, y: 0, width: 10, height: 10
+        },
+        {
+          type: 'circle', cx: 0, cy: 0, r: 10
+        }
       ]);
       expect(c.geometries).to.be.of.length(2);
     });
@@ -37,9 +45,15 @@ describe('GeometryCollection', () => {
 
     beforeEach(() => {
       c = new GeometryCollection([
-        { type: 'rect', x: 0, y: 0, width: 10, height: 10 },
-        { type: 'circle', cx: 100, cy: 100, r: 10 },
-        { type: 'circle', cx: 0, cy: 0, r: 10 }
+        {
+          type: 'rect', x: 0, y: 0, width: 10, height: 10
+        },
+        {
+          type: 'circle', cx: 100, cy: 100, r: 10
+        },
+        {
+          type: 'circle', cx: 0, cy: 0, r: 10
+        }
       ]);
     });
 

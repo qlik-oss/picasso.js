@@ -96,7 +96,7 @@ class RgbaColor {
     return this.toString();
   }
 
-    /**
+  /**
    * Returns a hex string representation of this color.
    * @return { String } In format #000000
    */

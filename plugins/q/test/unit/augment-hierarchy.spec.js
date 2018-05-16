@@ -1,7 +1,5 @@
 import q from '../../src/data/dataset';
-import {
-  getPropsInfo
-} from '../../../../packages/picasso.js/src/core/data/util';
+import { getPropsInfo } from '../../../../packages/picasso.js/src/core/data/util';
 
 describe('augment-hierarchy', () => {
   before(() => {
@@ -36,19 +34,56 @@ describe('augment-hierarchy', () => {
               qRow: 7,
               qValue: 'NaN',
               qSubNodes: [
-                { qText: 'total: $666', qElemNo: -1, qValue: 666, qType: 'T' },
-                { qText: 'a1', qElemNo: 0, qRow: 8, qValue: 123, qSubNodes: [{ qValue: 45, qElemNo: 0, qRow: 8, qText: '$45.00', qAttrExps: { qValues: [{}, { qText: 'redish', qNum: 'NaN' }] } }] },
-                { qText: 'a2', qElemNo: 3, qRow: 9, qValue: 135, qSubNodes: [{ qValue: 32, qElemNo: 0, qRow: 9, qText: '$32.00', qAttrExps: { qValues: [{}, { qText: 'white', qNum: false }] } }] }
-              ] },
+                {
+                  qText: 'total: $666', qElemNo: -1, qValue: 666, qType: 'T'
+                },
+                {
+                  qText: 'a1',
+                  qElemNo: 0,
+                  qRow: 8,
+                  qValue: 123,
+                  qSubNodes: [{
+                    qValue: 45, qElemNo: 0, qRow: 8, qText: '$45.00', qAttrExps: { qValues: [{}, { qText: 'redish', qNum: 'NaN' }] }
+                  }]
+                },
+                {
+                  qText: 'a2',
+                  qElemNo: 3,
+                  qRow: 9,
+                  qValue: 135,
+                  qSubNodes: [{
+                    qValue: 32, qElemNo: 0, qRow: 9, qText: '$32.00', qAttrExps: { qValues: [{}, { qText: 'white', qNum: false }] }
+                  }]
+                }
+              ]
+            },
             {
               qText: 'Beta',
               qElemNo: 3,
               qRow: 10,
               qValue: 2,
               qSubNodes: [
-                { qText: 'total: $667', qElemNo: -1, qRow: 11, qValue: 667, qType: 'T' },
-                { qText: 'b1', qElemNo: 7, qRow: 12, qValue: 345, qSubNodes: [{ qValue: 13, qElemNo: 0, qRow: 12, qText: '$13.00', qAttrExps: { qValues: [{}, { qText: 'red', qNum: 987 }] } }] },
-                { qText: 'b3', qElemNo: 9, qRow: 13, qValue: 276, qSubNodes: [{ qValue: 17, qElemNo: 0, qRow: 13, qText: '$17.00', qAttrExps: { qValues: [{}, { qText: 'green', qNum: 'NaN' }] } }] }
+                {
+                  qText: 'total: $667', qElemNo: -1, qRow: 11, qValue: 667, qType: 'T'
+                },
+                {
+                  qText: 'b1',
+                  qElemNo: 7,
+                  qRow: 12,
+                  qValue: 345,
+                  qSubNodes: [{
+                    qValue: 13, qElemNo: 0, qRow: 12, qText: '$13.00', qAttrExps: { qValues: [{}, { qText: 'red', qNum: 987 }] }
+                  }]
+                },
+                {
+                  qText: 'b3',
+                  qElemNo: 9,
+                  qRow: 13,
+                  qValue: 276,
+                  qSubNodes: [{
+                    qValue: 17, qElemNo: 0, qRow: 13, qText: '$17.00', qAttrExps: { qValues: [{}, { qText: 'green', qNum: 'NaN' }] }
+                  }]
+                }
               ]
             }
           ]

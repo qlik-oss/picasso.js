@@ -16,9 +16,7 @@ scaleRegistry('sequential-color', sequential);
 scaleRegistry('threshold-color', threshold);
 scaleRegistry('categorical-color', categorical);
 
-export {
-  scaleRegistry as default
-};
+export { scaleRegistry as default };
 
 function getTypeFromMeta(fields) {
   const types = fields.map(field => (field.type() === 'dimension' ? 'band' : 'linear'));

@@ -24,7 +24,9 @@ function flattenTree(rootNode, settings, ctx) {
   const ticks = [];
   let expando = 0;
   if (!rootNode) {
-    return { values, labels, items, ticks };
+    return {
+      values, labels, items, ticks
+    };
   }
 
   rootNode.eachAfter((node) => {
@@ -67,7 +69,9 @@ function flattenTree(rootNode, settings, ctx) {
     values.splice(-spill);
   }
 
-  return { values, labels, items, ticks };
+  return {
+    values, labels, items, ticks
+  };
 }
 
 /**
@@ -80,7 +84,7 @@ function flattenTree(rootNode, settings, ctx) {
  * @property {boolean} [invert=false] - Invert the output range
  */
 
- /**
+/**
   * Hierarchical band scale, that is an augmented band scale, that takes hierarchical data as input
  * @alias scaleHierarchicalBand
  * @private
@@ -99,7 +103,9 @@ export default function scaleHierarchicalBand(settings = {}, data = {}, resource
 
   let bandInstance = bandScale(stgns);
 
-  const { values, labels, items, ticks } = flattenTree(data.root, stgns, ctx);
+  const {
+    values, labels, items, ticks
+  } = flattenTree(data.root, stgns, ctx);
 
   /**
    * @alias h-band

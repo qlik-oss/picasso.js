@@ -97,6 +97,4 @@ function create() {
   return renderer;
 }
 
-export {
-  create as default
-};
+export { create as default };

@@ -424,7 +424,7 @@ class NumberFormatter {
           if (upperAbbreviation < 0 && (upperAbbreviation - exponent) <= prep.maxPrecision) {
             suggestedAbbrExponent = upperAbbreviation;
           // lower abbrevaition is smaller than exponent and we can't get away with not abbreviating
-          } else if (lowerAbbreviation <= exponent && !(upperAbbreviation > 0 && -exponent <= prep.maxPrecision)) {  // (move to left <==)
+          } else if (lowerAbbreviation <= exponent && !(upperAbbreviation > 0 && -exponent <= prep.maxPrecision)) { // (move to left <==)
             suggestedAbbrExponent = lowerAbbreviation;
           }
         }

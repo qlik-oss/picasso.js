@@ -110,6 +110,4 @@ function native(chart, mediator, element) {
   };
 }
 
-export {
-  native as default
-};
+export { native as default };

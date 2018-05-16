@@ -1,8 +1,12 @@
 import buildTick from '../../../../../src/core/chart-components/axis/axis-tick-node';
 
 describe('Axis Tick Node', () => {
-  const innerRect = { x: 0, y: 0, width: 0, height: 0 };
-  const outerRect = { x: 0, y: 0, width: 0, height: 0 };
+  const innerRect = {
+    x: 0, y: 0, width: 0, height: 0
+  };
+  const outerRect = {
+    x: 0, y: 0, width: 0, height: 0
+  };
 
   beforeEach(() => {
     innerRect.width = 50;

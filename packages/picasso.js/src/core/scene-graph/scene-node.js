@@ -65,7 +65,9 @@ function colliderToShape(node, dpi) {
  */
 class SceneNode {
   constructor(node) {
-    this._bounds = node.boundingRect ? (withTransform = true) => node.boundingRect(withTransform) : () => ({ x: 0, y: 0, width: 0, height: 0 });
+    this._bounds = node.boundingRect ? (withTransform = true) => node.boundingRect(withTransform) : () => ({
+      x: 0, y: 0, width: 0, height: 0
+    });
     this._attrs = node.attrs;
     this._type = node.type;
     this._data = node.data;

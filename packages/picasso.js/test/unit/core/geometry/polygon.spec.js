@@ -80,15 +80,17 @@ describe('GeoPolygon', () => {
 
     it('should remove any duplicate sibling vertices', () => {
       polygon = create();
-      polygon.set({ vertices: [
-        { x: 0, y: 0 },
-        { x: 0, y: 0 }, // Remove
-        { x: 10, y: 0 },
-        { x: 0, y: 10 },
-        { x: 10, y: 0 }, // Do not remove
-        { x: 10, y: 0 }, // Remove
-        { x: 0, y: 0 }
-      ] });
+      polygon.set({
+        vertices: [
+          { x: 0, y: 0 },
+          { x: 0, y: 0 }, // Remove
+          { x: 10, y: 0 },
+          { x: 0, y: 10 },
+          { x: 10, y: 0 }, // Do not remove
+          { x: 10, y: 0 }, // Remove
+          { x: 0, y: 0 }
+        ]
+      });
       expect(polygon.vertices).to.deep.equal([
         { x: 0, y: 0 },
         { x: 10, y: 0 },
@@ -111,11 +113,13 @@ describe('GeoPolygon', () => {
     });
 
     it('should handle negative points', () => {
-      polygon = create({ vertices: [
-        { x: -20, y: -10 },
-        { x: 0, y: -10 },
-        { x: 20, y: 10 }
-      ] });
+      polygon = create({
+        vertices: [
+          { x: -20, y: -10 },
+          { x: 0, y: -10 },
+          { x: 20, y: 10 }
+        ]
+      });
       expect(polygon.bounds()).to.deep.equal([
         { x: -20, y: -10 },
         { x: 20, y: -10 },
@@ -216,7 +220,9 @@ describe('GeoPolygon', () => {
 
     describe('intersectsLine', () => {
       it('should intersect line', () => {
-        const line = { x1: 25, y1: 20, x2: 25, y2: 10 }; // Both points inside polygon
+        const line = {
+          x1: 25, y1: 20, x2: 25, y2: 10
+        }; // Both points inside polygon
         polygon = create({ vertices: convexPolygon });
         expect(polygon.intersectsLine(lineToPoints(line))).to.equal(true);
       });
@@ -224,7 +230,9 @@ describe('GeoPolygon', () => {
 
     describe('intersectsRect', () => {
       it('should intersect rect', () => {
-        const rect = { x: 25, y: 10, width: 6, height: 6 };
+        const rect = {
+          x: 25, y: 10, width: 6, height: 6
+        };
         polygon = create({ vertices: convexPolygon });
         expect(polygon.intersectsRect(rectToPoints(rect))).to.equal(true);
       });

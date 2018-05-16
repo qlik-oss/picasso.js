@@ -15,7 +15,7 @@ describe('text-metrics', () => {
     };
 
     beforeEach(() => {
-      sandbox = sinon.sandbox.create();
+      sandbox = sinon.createSandbox();
 
       canvasContextMock = {
         font: '',
@@ -161,47 +161,61 @@ describe('text-metrics', () => {
       describe('no line-break', () => {
         it('should return correct bounds', () => {
           bounds = textBounds(node, textMeasureMock);
-          expect(bounds).to.deep.equal({ x: 1, y: 1.25, width: 4, height: 1 });
+          expect(bounds).to.deep.equal({
+            x: 1, y: 1.25, width: 4, height: 1
+          });
         });
 
         it('with anchor middle', () => {
           node.anchor = 'middle';
           bounds = textBounds(node, textMeasureMock);
-          expect(bounds).to.deep.equal({ x: -1, y: 1.25, width: 4, height: 1 });
+          expect(bounds).to.deep.equal({
+            x: -1, y: 1.25, width: 4, height: 1
+          });
         });
 
         it('with anchor end', () => {
           node.anchor = 'end';
           bounds = textBounds(node, textMeasureMock);
-          expect(bounds).to.deep.equal({ x: -3, y: 1.25, width: 4, height: 1 });
+          expect(bounds).to.deep.equal({
+            x: -3, y: 1.25, width: 4, height: 1
+          });
         });
 
         it('without x and y', () => {
           node.x = undefined;
           node.y = undefined;
           bounds = textBounds(node, textMeasureMock);
-          expect(bounds).to.deep.equal({ x: 0, y: -0.75, width: 4, height: 1 });
+          expect(bounds).to.deep.equal({
+            x: 0, y: -0.75, width: 4, height: 1
+          });
         });
 
         it('with dx and dy', () => {
           node.dx = 3;
           node.dy = 4;
           bounds = textBounds(node, textMeasureMock);
-          expect(bounds).to.deep.equal({ x: 4, y: 5.25, width: 4, height: 1 });
+          expect(bounds).to.deep.equal({
+            x: 4, y: 5.25, width: 4, height: 1
+          });
         });
 
         it('with fontSize and fontFamily', () => {
           node.fontSize = 2;
           node.fontFamily = 3;
           bounds = textBounds(node, textMeasureMock);
-          expect(bounds).to.deep.equal({ x: 1, y: -0.25, width: 8, height: 3 });
+          expect(bounds).to.deep.equal({
+            x: 1, y: -0.25, width: 8, height: 3
+          });
         });
 
         it('with font-size and font-family', () => {
           node['font-size'] = 2;
           node['font-family'] = 3;
           bounds = textBounds(node, textMeasureMock);
-          expect(bounds).to.deep.equal({ x: 1, y: -0.25, width: 8, height: 3 });
+          expect(bounds).to.deep.equal({
+            x: 1, y: -0.25, width: 8, height: 3
+          });
         });
 
         it('with baseline', () => {
@@ -209,7 +223,9 @@ describe('text-metrics', () => {
           node['font-family'] = 3;
           node['dominant-baseline'] = 'ideographic';
           bounds = textBounds(node, textMeasureMock);
-          expect(bounds).to.deep.equal({ x: 1, y: -2.25, width: 40, height: 3 });
+          expect(bounds).to.deep.equal({
+            x: 1, y: -2.25, width: 40, height: 3
+          });
         });
       });
 
@@ -218,7 +234,9 @@ describe('text-metrics', () => {
           it('no other affecting properties', () => {
             node.wordBreak = 'break-all';
             bounds = textBounds(node, textMeasureMock);
-            expect(bounds).to.deep.equal({ x: 1, y: 1.25, width: 4, height: 1.2 });
+            expect(bounds).to.deep.equal({
+              x: 1, y: 1.25, width: 4, height: 1.2
+            });
           });
 
           it('with maxWidth, lineHeight and maxLines', () => {
@@ -227,7 +245,9 @@ describe('text-metrics', () => {
             node.lineHeight = 10;
             node.maxLines = 2;
             bounds = textBounds(node, textMeasureMock);
-            expect(bounds).to.deep.equal({ x: 1, y: 1.25, width: 1, height: 20 });
+            expect(bounds).to.deep.equal({
+              x: 1, y: 1.25, width: 1, height: 20
+            });
           });
         });
       });

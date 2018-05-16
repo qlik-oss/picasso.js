@@ -21,8 +21,12 @@ export default class Rect extends DisplayObject {
   }
 
   set(v = {}) {
-    const { x = 0, y = 0, width = 0, height = 0, collider } = v;
-    const opts = extend({ type: 'rect', x, y, width, height }, collider);
+    const {
+      x = 0, y = 0, width = 0, height = 0, collider
+    } = v;
+    const opts = extend({
+      type: 'rect', x, y, width, height
+    }, collider);
 
     super.set(v);
     super.collider(opts);

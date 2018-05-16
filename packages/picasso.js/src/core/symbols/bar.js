@@ -34,6 +34,4 @@ function bar(options) {
   return rect;
 }
 
-export {
-  bar as default
-};
+export { bar as default };

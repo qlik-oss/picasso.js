@@ -32,10 +32,31 @@ describe('q-data-extractor-k', () => {
               qRow: 7,
               qValue: 'NaN',
               qSubNodes: [
-                { qText: '$666', qElemNo: -1, qValue: 666, qType: 'T', qAttrExps: { qValues: [{}, { qText: 'exp-666' }] } },
-                { qText: 'a1', qElemNo: 0, qRow: 8, qValue: 123, qAttrExps: { qValues: [{}, { qText: 'exp-a1' }] }, qSubNodes: [{ qValue: 45, qElemNo: 0, qRow: 8, qText: '$45.00', qAttrExps: { qValues: [{}, { qText: 'redish', qNum: 'NaN' }] } }] },
-                { qText: 'a2', qElemNo: 3, qRow: 9, qValue: 135, qAttrExps: { qValues: [{}, { qText: 'exp-a2' }] }, qSubNodes: [{ qValue: 32, qElemNo: 0, qRow: 9, qText: '$32.00', qAttrExps: { qValues: [{}, { qText: 'white', qNum: false }] } }] }
-              ] },
+                {
+                  qText: '$666', qElemNo: -1, qValue: 666, qType: 'T', qAttrExps: { qValues: [{}, { qText: 'exp-666' }] }
+                },
+                {
+                  qText: 'a1',
+                  qElemNo: 0,
+                  qRow: 8,
+                  qValue: 123,
+                  qAttrExps: { qValues: [{}, { qText: 'exp-a1' }] },
+                  qSubNodes: [{
+                    qValue: 45, qElemNo: 0, qRow: 8, qText: '$45.00', qAttrExps: { qValues: [{}, { qText: 'redish', qNum: 'NaN' }] }
+                  }]
+                },
+                {
+                  qText: 'a2',
+                  qElemNo: 3,
+                  qRow: 9,
+                  qValue: 135,
+                  qAttrExps: { qValues: [{}, { qText: 'exp-a2' }] },
+                  qSubNodes: [{
+                    qValue: 32, qElemNo: 0, qRow: 9, qText: '$32.00', qAttrExps: { qValues: [{}, { qText: 'white', qNum: false }] }
+                  }]
+                }
+              ]
+            },
             {
               qText: 'Beta',
               qAttrDims: { qValues: [{}, { qText: 'BetaDimAttr' }] },
@@ -43,9 +64,29 @@ describe('q-data-extractor-k', () => {
               qRow: 10,
               qValue: 2,
               qSubNodes: [
-                { qText: '$667', qElemNo: -1, qRow: 11, qValue: 667, qType: 'T', qAttrExps: { qValues: [{}, { qText: 'exp-667' }] } },
-                { qText: 'b1', qElemNo: 7, qRow: 12, qValue: 345, qAttrExps: { qValues: [{}, { qText: 'exp-b1' }] }, qSubNodes: [{ qValue: 13, qElemNo: 0, qRow: 12, qText: '$13.00', qAttrExps: { qValues: [{}, { qText: 'red', qNum: 987 }] } }] },
-                { qText: 'b3', qElemNo: 9, qRow: 13, qValue: 276, qAttrExps: { qValues: [{}, { qText: 'exp-b2' }] }, qSubNodes: [{ qValue: 17, qElemNo: 0, qRow: 13, qText: '$17.00', qAttrExps: { qValues: [{}, { qText: 'green', qNum: 'NaN' }] } }] }
+                {
+                  qText: '$667', qElemNo: -1, qRow: 11, qValue: 667, qType: 'T', qAttrExps: { qValues: [{}, { qText: 'exp-667' }] }
+                },
+                {
+                  qText: 'b1',
+                  qElemNo: 7,
+                  qRow: 12,
+                  qValue: 345,
+                  qAttrExps: { qValues: [{}, { qText: 'exp-b1' }] },
+                  qSubNodes: [{
+                    qValue: 13, qElemNo: 0, qRow: 12, qText: '$13.00', qAttrExps: { qValues: [{}, { qText: 'red', qNum: 987 }] }
+                  }]
+                },
+                {
+                  qText: 'b3',
+                  qElemNo: 9,
+                  qRow: 13,
+                  qValue: 276,
+                  qAttrExps: { qValues: [{}, { qText: 'exp-b2' }] },
+                  qSubNodes: [{
+                    qValue: 17, qElemNo: 0, qRow: 13, qText: '$17.00', qAttrExps: { qValues: [{}, { qText: 'green', qNum: 'NaN' }] }
+                  }]
+                }
               ]
             }
           ]
@@ -61,9 +102,15 @@ describe('q-data-extractor-k', () => {
     };
 
     const fields = [
-      { title: () => 'a', value: d => d.qElemNo, label: d => d.qText, key: () => 'qDimensionInfo/0', reduce: values => values.join(', '), formatter: () => (v => `<${v}>`) },
-      { title: () => 'b', value: d => d.qElemNo, label: d => d.qText, key: () => 'qDimensionInfo/1', reduce: values => values.join(', '), formatter: () => (v => `<${v}>`) },
-      { title: () => 'c', value: d => d.qValue, label: d => d.qText, key: () => 'qMeasureInfo/0', reduce: values => values.join(', '), formatter: () => (v => `£${v}`) }
+      {
+        title: () => 'a', value: d => d.qElemNo, label: d => d.qText, key: () => 'qDimensionInfo/0', reduce: values => values.join(', '), formatter: () => (v => `<${v}>`)
+      },
+      {
+        title: () => 'b', value: d => d.qElemNo, label: d => d.qText, key: () => 'qDimensionInfo/1', reduce: values => values.join(', '), formatter: () => (v => `<${v}>`)
+      },
+      {
+        title: () => 'c', value: d => d.qValue, label: d => d.qText, key: () => 'qMeasureInfo/0', reduce: values => values.join(', '), formatter: () => (v => `£${v}`)
+      }
     ];
 
     const dataset = {
@@ -498,8 +545,12 @@ describe('q-data-extractor-k', () => {
               qRow: 7,
               qValue: 'NaN',
               qSubNodes: [
-                { qText: 'Sales', qElemNo: 0, qValue: 453, qType: 'P', qMaxPos: 34, qSubNodes: [{ qText: 'Sales-a1' }, { qText: 'Sales-a2' }] },
-                { qText: 'Margin', qElemNo: 1, qValue: 0.34, qType: 'P', qMaxPos: 0.7, qSubNodes: [{ qText: 'Margin-a1' }, { qText: 'Margin-a2' }] }
+                {
+                  qText: 'Sales', qElemNo: 0, qValue: 453, qType: 'P', qMaxPos: 34, qSubNodes: [{ qText: 'Sales-a1' }, { qText: 'Sales-a2' }]
+                },
+                {
+                  qText: 'Margin', qElemNo: 1, qValue: 0.34, qType: 'P', qMaxPos: 0.7, qSubNodes: [{ qText: 'Margin-a1' }, { qText: 'Margin-a2' }]
+                }
               ]
             },
             {
@@ -508,8 +559,12 @@ describe('q-data-extractor-k', () => {
               qRow: 10,
               qValue: 2,
               qSubNodes: [
-                { qText: 'Sales', qElemNo: 0, qValue: 342, qType: 'P', qMaxPos: 24, qSubNodes: [{ qText: 'Sales-b1' }, { qText: 'Sales-b2' }] },
-                { qText: 'Margin', qElemNo: 1, qValue: 0.67, qType: 'P', qMaxPos: 0.5, qSubNodes: [{ qText: 'Margin-b1' }, { qText: 'Margin-b2' }] }
+                {
+                  qText: 'Sales', qElemNo: 0, qValue: 342, qType: 'P', qMaxPos: 24, qSubNodes: [{ qText: 'Sales-b1' }, { qText: 'Sales-b2' }]
+                },
+                {
+                  qText: 'Margin', qElemNo: 1, qValue: 0.67, qType: 'P', qMaxPos: 0.5, qSubNodes: [{ qText: 'Margin-b1' }, { qText: 'Margin-b2' }]
+                }
               ]
             }
           ]
@@ -526,10 +581,18 @@ describe('q-data-extractor-k', () => {
     };
 
     const fields = [
-      { title: () => 'a', value: d => d.qElemNo, key: () => 'qDimensionInfo/0', formatter: () => (v => `<${v}>`) },
-      { title: () => 'b', value: d => d.qElemNo, key: () => 'qDimensionInfo/1', reduce: values => values.join(', '), formatter: () => (v => `<${v}>`) },
-      { title: () => 'c', value: d => d.qValue, label: d => d.qText, key: () => 'qMeasureInfo/0', formatter: () => (v => `£${v}`) },
-      { title: () => 'd', value: d => d.qValue, label: d => d.qText, key: () => 'qMeasureInfo/1', formatter: () => (v => `£${v}`) }
+      {
+        title: () => 'a', value: d => d.qElemNo, key: () => 'qDimensionInfo/0', formatter: () => (v => `<${v}>`)
+      },
+      {
+        title: () => 'b', value: d => d.qElemNo, key: () => 'qDimensionInfo/1', reduce: values => values.join(', '), formatter: () => (v => `<${v}>`)
+      },
+      {
+        title: () => 'c', value: d => d.qValue, label: d => d.qText, key: () => 'qMeasureInfo/0', formatter: () => (v => `£${v}`)
+      },
+      {
+        title: () => 'd', value: d => d.qValue, label: d => d.qText, key: () => 'qMeasureInfo/1', formatter: () => (v => `£${v}`)
+      }
     ];
 
     const dataset = {
@@ -648,9 +711,15 @@ describe('q-data-extractor-k', () => {
     };
 
     const fields = [
-      { title: () => '=aggr(...)', value: d => d.qElemNo, key: () => 'qDimensionInfo/0', formatter: () => (() => '') },
-      { title: () => 'Product Group', value: d => d.qElemNo, key: () => 'qDimensionInfo/1', formatter: () => (() => '') },
-      { title: () => '=aggr(....)', value: d => d.qValue, key: () => 'qMeasureInfo/0', formatter: () => (() => '') }
+      {
+        title: () => '=aggr(...)', value: d => d.qElemNo, key: () => 'qDimensionInfo/0', formatter: () => (() => '')
+      },
+      {
+        title: () => 'Product Group', value: d => d.qElemNo, key: () => 'qDimensionInfo/1', formatter: () => (() => '')
+      },
+      {
+        title: () => '=aggr(....)', value: d => d.qValue, key: () => 'qMeasureInfo/0', formatter: () => (() => '')
+      }
     ];
 
     const dataset = {
@@ -727,23 +796,23 @@ describe('q-data-extractor-k', () => {
   // });
 
   // describe.skip('with offset pages', () => {
-    // const page = {
-    //   qArea: { qLeft: 0, qTop: 5, qWidth: 2, qHeight: 3 },
-    //   qMatrix: [
-    //     [{}, { qNum: 3, qText: 'tre', qElemNumber: 1 }],
-    //     [{}, { qNum: 7, qText: 'sju', qElemNumber: 2 }],
-    //     [{}, { qNum: 1, qText: 'ett', qElemNumber: 3 }]
-    //   ]
-    // };
+  // const page = {
+  //   qArea: { qLeft: 0, qTop: 5, qWidth: 2, qHeight: 3 },
+  //   qMatrix: [
+  //     [{}, { qNum: 3, qText: 'tre', qElemNumber: 1 }],
+  //     [{}, { qNum: 7, qText: 'sju', qElemNumber: 2 }],
+  //     [{}, { qNum: 1, qText: 'ett', qElemNumber: 3 }]
+  //   ]
+  // };
 
-    // const page2 = {
-    //   qArea: { qLeft: 7, qTop: 25, qWidth: 2, qHeight: 3 },
-    //   qMatrix: [
-    //     [{}, { qNum: 2, qText: 'två', qElemNumber: 1 }],
-    //     [{}, { qNum: 6, qText: 'sex', qElemNumber: 2 }],
-    //     [{}, { qNum: 3, qText: 'tre', qElemNumber: 3 }]
-    //   ]
-    // };
+  // const page2 = {
+  //   qArea: { qLeft: 7, qTop: 25, qWidth: 2, qHeight: 3 },
+  //   qMatrix: [
+  //     [{}, { qNum: 2, qText: 'två', qElemNumber: 1 }],
+  //     [{}, { qNum: 6, qText: 'sex', qElemNumber: 2 }],
+  //     [{}, { qNum: 3, qText: 'tre', qElemNumber: 3 }]
+  //   ]
+  // };
   //   const dd = {
   //     meta: {
   //       qMin: 1,

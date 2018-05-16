@@ -1,12 +1,8 @@
-import {
-  hierarchy
-} from 'd3-hierarchy';
+import { hierarchy } from 'd3-hierarchy';
 
 import picker from '../json-path-resolver';
 
-import {
-  treeAccessor
-} from './util';
+import { treeAccessor } from './util';
 
 const DIM_RX = /^qDimensionInfo(?:\/(\d+))?/;
 const M_RX = /^qMeasureInfo\/(\d+)/;
@@ -81,10 +77,10 @@ function datumExtract(propCfg, cell, {
   key
 }) {
   const datum = {
-    value: typeof propCfg.value === 'function' ? propCfg.value(cell) : typeof propCfg.value !== 'undefined' ? propCfg.value : cell  // eslint-disable-line no-nested-ternary
+    value: typeof propCfg.value === 'function' ? propCfg.value(cell) : typeof propCfg.value !== 'undefined' ? propCfg.value : cell // eslint-disable-line no-nested-ternary
   };
 
-  datum.label = typeof propCfg.label === 'function' ? propCfg.label(cell) : typeof propCfg.label !== 'undefined' ? String(propCfg.label) : String(datum.value);  // eslint-disable-line no-nested-ternary
+  datum.label = typeof propCfg.label === 'function' ? propCfg.label(cell) : typeof propCfg.label !== 'undefined' ? String(propCfg.label) : String(datum.value); // eslint-disable-line no-nested-ternary
 
   if (propCfg.field) {
     datum.source = {

@@ -94,7 +94,9 @@ describe('Display Object', () => {
   describe('getItemsFrom', () => {
     beforeEach(() => {
       _displayObject.set({ fill: 'me' });
-      _displayObject.collider({ type: 'rect', x: 0, y: 0, width: 100, height: 100 });
+      _displayObject.collider({
+        type: 'rect', x: 0, y: 0, width: 100, height: 100
+      });
     });
 
     it('should return a collision with it self, if it contains point', () => {
@@ -108,7 +110,9 @@ describe('Display Object', () => {
     });
 
     it('should return a collision with it self, if it intersects line', () => {
-      const shape = { x1: 50, y1: 50, x2: 100, y2: 100 };
+      const shape = {
+        x1: 50, y1: 50, x2: 100, y2: 100
+      };
       const collisions = _displayObject.getItemsFrom(shape);
       expect(collisions).to.be.of.length(1);
       expect(collisions[0]).to.be.an.instanceof(Collision);
@@ -118,7 +122,9 @@ describe('Display Object', () => {
     });
 
     it('should return a collision with it self, if it intersects rect', () => {
-      const shape = { x: 50, y: 50, width: 100, height: 100 };
+      const shape = {
+        x: 50, y: 50, width: 100, height: 100
+      };
       const collisions = _displayObject.getItemsFrom(shape);
       expect(collisions).to.be.of.length(1);
       expect(collisions[0]).to.be.an.instanceof(Collision);
@@ -140,7 +146,9 @@ describe('Display Object', () => {
 
   describe('containsPoint', () => {
     beforeEach(() => {
-      _displayObject.collider({ type: 'rect', x: 0, y: 0, width: 100, height: 100 });
+      _displayObject.collider({
+        type: 'rect', x: 0, y: 0, width: 100, height: 100
+      });
     });
 
     it('should return a true if it contains point', () => {
@@ -156,39 +164,53 @@ describe('Display Object', () => {
 
   describe('intersectsLine', () => {
     beforeEach(() => {
-      _displayObject.collider({ type: 'rect', x: 0, y: 0, width: 100, height: 100 });
+      _displayObject.collider({
+        type: 'rect', x: 0, y: 0, width: 100, height: 100
+      });
     });
 
     it('should return a true if it intersect line', () => {
-      const r = _displayObject.intersectsLine({ x1: 50, y1: 50, x2: 100, y2: 100 });
+      const r = _displayObject.intersectsLine({
+        x1: 50, y1: 50, x2: 100, y2: 100
+      });
       expect(r).to.equal(true);
     });
 
     it('should return a false if it doesnt intersect line', () => {
-      const r = _displayObject.intersectsLine({ x1: -50, y1: -50, x2: -100, y2: -100 });
+      const r = _displayObject.intersectsLine({
+        x1: -50, y1: -50, x2: -100, y2: -100
+      });
       expect(r).to.equal(false);
     });
   });
 
   describe('intersectsRect', () => {
     beforeEach(() => {
-      _displayObject.collider({ type: 'rect', x: 0, y: 0, width: 100, height: 100 });
+      _displayObject.collider({
+        type: 'rect', x: 0, y: 0, width: 100, height: 100
+      });
     });
 
     it('should return a true if it intersect rect', () => {
-      const r = _displayObject.intersectsRect({ x: 50, y: 50, width: 100, height: 100 });
+      const r = _displayObject.intersectsRect({
+        x: 50, y: 50, width: 100, height: 100
+      });
       expect(r).to.equal(true);
     });
 
     it('should return a false if it doesnt intersect rect', () => {
-      const r = _displayObject.intersectsRect({ x: -50, y: -50, width: 1, height: 1 });
+      const r = _displayObject.intersectsRect({
+        x: -50, y: -50, width: 1, height: 1
+      });
       expect(r).to.equal(false);
     });
   });
 
   describe('intersectsCircle', () => {
     beforeEach(() => {
-      _displayObject.collider({ type: 'rect', x: 0, y: 0, width: 100, height: 100 });
+      _displayObject.collider({
+        type: 'rect', x: 0, y: 0, width: 100, height: 100
+      });
     });
 
     it('should return a true if it intersect circle', () => {

@@ -15,7 +15,9 @@ describe('box shapes', () => {
       const boxWidth = 0.5;
       const boxPadding = 0;
 
-      let result = box({ item, boxWidth, boxPadding, rendwidth: 100, rendheight: 100, flipXY: false });
+      let result = box({
+        item, boxWidth, boxPadding, rendwidth: 100, rendheight: 100, flipXY: false
+      });
 
       expect(result).to.eql({
         minHeightPx: 1,
@@ -31,7 +33,9 @@ describe('box shapes', () => {
       });
 
 
-      result = box({ item, boxWidth, boxPadding, rendwidth: 200, rendheight: 100, flipXY: false });
+      result = box({
+        item, boxWidth, boxPadding, rendwidth: 200, rendheight: 100, flipXY: false
+      });
 
       expect(result).to.eql({
         minHeightPx: 1,
@@ -46,7 +50,9 @@ describe('box shapes', () => {
         }
       });
 
-      result = box({ item, boxWidth, boxPadding, rendwidth: 100, rendheight: 100, flipXY: true });
+      result = box({
+        item, boxWidth, boxPadding, rendwidth: 100, rendheight: 100, flipXY: true
+      });
 
       expect(result).to.eql({
         minHeightPx: 1,
@@ -62,7 +68,9 @@ describe('box shapes', () => {
       });
 
       item.data = { test: true };
-      result = box({ item, boxWidth, boxPadding, rendwidth: 200, rendheight: 100, flipXY: true });
+      result = box({
+        item, boxWidth, boxPadding, rendwidth: 200, rendheight: 100, flipXY: true
+      });
 
       expect(result).to.eql({
         minHeightPx: 1,
@@ -89,7 +97,9 @@ describe('box shapes', () => {
         }
       };
 
-      let result = verticalLine({ item, from: 0.25, to: 0.75, boxCenter: 0.5, rendwidth: 100, rendheight: 100, flipXY: false });
+      let result = verticalLine({
+        item, from: 0.25, to: 0.75, boxCenter: 0.5, rendwidth: 100, rendheight: 100, flipXY: false
+      });
 
       expect(result).to.eql({
         strokeWidth: 1,
@@ -104,7 +114,9 @@ describe('box shapes', () => {
         }
       });
 
-      result = verticalLine({ item, from: 0.25, to: 0.75, boxCenter: 0.5, rendwidth: 200, rendheight: 100, flipXY: false });
+      result = verticalLine({
+        item, from: 0.25, to: 0.75, boxCenter: 0.5, rendwidth: 200, rendheight: 100, flipXY: false
+      });
 
       expect(result).to.eql({
         strokeWidth: 1,
@@ -120,7 +132,9 @@ describe('box shapes', () => {
       });
 
       item.data = { id: 3 };
-      result = verticalLine({ item, from: 0.25, to: 0.75, boxCenter: 0.5, rendwidth: 200, rendheight: 100, flipXY: true });
+      result = verticalLine({
+        item, from: 0.25, to: 0.75, boxCenter: 0.5, rendwidth: 200, rendheight: 100, flipXY: true
+      });
 
       expect(result).to.eql({
         strokeWidth: 1,
@@ -150,7 +164,9 @@ describe('box shapes', () => {
         }
       };
 
-      let result = horizontalLine({ item, key: 'med', position: 0.5, width: 0.5, boxCenter: 0.5, rendwidth: 100, rendheight: 100, flipXY: false });
+      let result = horizontalLine({
+        item, key: 'med', position: 0.5, width: 0.5, boxCenter: 0.5, rendwidth: 100, rendheight: 100, flipXY: false
+      });
 
       expect(result).to.eql({
         stroke: 'black',
@@ -169,7 +185,9 @@ describe('box shapes', () => {
         }
       });
 
-      result = horizontalLine({ item, key: 'low', position: 0.5, width: 0.5, boxCenter: 0.5, rendwidth: 200, rendheight: 100, flipXY: false });
+      result = horizontalLine({
+        item, key: 'low', position: 0.5, width: 0.5, boxCenter: 0.5, rendwidth: 200, rendheight: 100, flipXY: false
+      });
 
       expect(result).to.eql({
         stroke: 'red',
@@ -189,7 +207,9 @@ describe('box shapes', () => {
       });
 
       item.data = { origin: 'test' };
-      result = horizontalLine({ item, key: 'med', position: 0.5, width: 0.5, boxCenter: 0.5, rendwidth: 200, rendheight: 100, flipXY: true });
+      result = horizontalLine({
+        item, key: 'med', position: 0.5, width: 0.5, boxCenter: 0.5, rendwidth: 200, rendheight: 100, flipXY: true
+      });
 
       expect(result).to.eql({
         stroke: 'black',

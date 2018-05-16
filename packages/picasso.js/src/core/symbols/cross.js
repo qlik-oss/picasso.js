@@ -44,6 +44,4 @@ function cross(options) {
   };
 }
 
-export {
-  cross as default
-};
+export { cross as default };

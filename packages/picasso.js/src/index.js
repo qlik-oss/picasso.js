@@ -169,6 +169,4 @@ components.forEach(p.use);
 renderers.forEach(p.use);
 scales.forEach(p.use);
 
-export {
-  p as default
-};
+export { p as default };

@@ -12,8 +12,12 @@ function createTick(start, end) {
 }
 
 describe('Axis Label Node', () => {
-  const innerRect = { x: 0, y: 0, width: 0, height: 0 };
-  const outerRect = { x: 0, y: 0, width: 0, height: 0 };
+  const innerRect = {
+    x: 0, y: 0, width: 0, height: 0
+  };
+  const outerRect = {
+    x: 0, y: 0, width: 0, height: 0
+  };
   const textRect = { width: 10, height: 10 };
   const measureTextMock = ({ text }) => ({ width: text.length, height: 1 });
 

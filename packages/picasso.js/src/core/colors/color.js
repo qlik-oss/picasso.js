@@ -1,6 +1,6 @@
 const creators = [];
 
- /**
+/**
   * Color instantiator
   * @private
   * @param { ...Object } ...c The color representation, can be any type that is recognized by a registered color instantiator

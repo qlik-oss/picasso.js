@@ -55,7 +55,9 @@ function directionTriangle(x, y, r, d = 'bottom') {
  * @param {object[]} items - Array of all items (for collision detection)
  * @ignore
  */
-export function oobManager({ blueprint, oob, settings, items }) {
+export function oobManager({
+  blueprint, oob, settings, items
+}) {
   const oobKeys = Object.keys(oob);
   let style = settings.style.oob || {};
 

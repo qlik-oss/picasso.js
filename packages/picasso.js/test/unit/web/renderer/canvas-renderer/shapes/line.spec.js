@@ -9,7 +9,7 @@ describe('line', () => {
       line;
 
     beforeEach(() => {
-      sandbox = sinon.sandbox.create();
+      sandbox = sinon.createSandbox();
 
       g = {
         beginPath: sandbox.spy(),
@@ -22,7 +22,9 @@ describe('line', () => {
 
       truthys = [true, {}, [], 1, -1, 3.14, -3.14, 'foo'];
 
-      line = { x1: 1, x2: 10, y1: 2, y2: 20 };
+      line = {
+        x1: 1, x2: 10, y1: 2, y2: 20
+      };
     });
 
     afterEach(() => {
@@ -59,7 +61,7 @@ describe('line', () => {
 
     it('should fire stroke if stroke condition is truthy', () => {
       truthys.forEach((value) => {
-        g.stroke.reset();
+        g.stroke.resetHistory();
 
         render(line, { g, doStroke: value });
 

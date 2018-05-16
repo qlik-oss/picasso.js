@@ -83,9 +83,24 @@ describe('q-brush', () => {
       expect(selections[0].params).to.eql([
         '/qHyperCubeDef',
         [
-          { qMeasureIx: 3, qRange: { qMin: 13, qMax: 17, qMinInclEq: true, qMaxInclEq: true } },
-          { qMeasureIx: 3, qRange: { qMin: 4, qMax: 9, qMinInclEq: true, qMaxInclEq: true } },
-          { qMeasureIx: 1, qRange: { qMin: -13, qMax: 6, qMinInclEq: true, qMaxInclEq: true } }
+          {
+            qMeasureIx: 3,
+            qRange: {
+              qMin: 13, qMax: 17, qMinInclEq: true, qMaxInclEq: true
+            }
+          },
+          {
+            qMeasureIx: 3,
+            qRange: {
+              qMin: 4, qMax: 9, qMinInclEq: true, qMaxInclEq: true
+            }
+          },
+          {
+            qMeasureIx: 1,
+            qRange: {
+              qMin: -13, qMax: 6, qMinInclEq: true, qMaxInclEq: true
+            }
+          }
         ],
         [],
         true
@@ -120,9 +135,24 @@ describe('q-brush', () => {
       expect(selections[0].params).to.eql([
         '/qHyperCubeDef',
         [
-          { qDimIx: 1, qRange: { qMin: 11, qMax: 23, qMinInclEq: true, qMaxInclEq: false } },
-          { qDimIx: 1, qRange: { qMin: 3, qMax: 8, qMinInclEq: true, qMaxInclEq: false } },
-          { qDimIx: 2, qRange: { qMin: -3, qMax: 1, qMinInclEq: true, qMaxInclEq: false } }
+          {
+            qDimIx: 1,
+            qRange: {
+              qMin: 11, qMax: 23, qMinInclEq: true, qMaxInclEq: false
+            }
+          },
+          {
+            qDimIx: 1,
+            qRange: {
+              qMin: 3, qMax: 8, qMinInclEq: true, qMaxInclEq: false
+            }
+          },
+          {
+            qDimIx: 2,
+            qRange: {
+              qMin: -3, qMax: 1, qMinInclEq: true, qMaxInclEq: false
+            }
+          }
         ]
       ]);
     });

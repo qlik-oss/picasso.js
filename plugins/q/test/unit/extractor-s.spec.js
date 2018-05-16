@@ -7,7 +7,9 @@ import {
 
 describe('extractor-s', () => {
   const page = {
-    qArea: { qLeft: 0, qTop: 5, qWidth: 3, qHeight: 3 },
+    qArea: {
+      qLeft: 0, qTop: 5, qWidth: 3, qHeight: 3
+    },
     qMatrix: [
       [{}, { qNum: 3, qText: 'tre', qElemNumber: 1 }, { qValue: 53, qText: '$53' }],
       [{}, { qNum: 7, qText: 'sju', qElemNumber: 2 }, { qValue: 57, qText: '$57' }],
@@ -16,7 +18,9 @@ describe('extractor-s', () => {
   };
 
   const page2 = {
-    qArea: { qLeft: 7, qTop: 25, qWidth: 2, qHeight: 3 },
+    qArea: {
+      qLeft: 7, qTop: 25, qWidth: 2, qHeight: 3
+    },
     qMatrix: [
       [{}, { qNum: 2, qText: 'två', qElemNumber: 1 }],
       [{}, { qNum: 6, qText: 'sex', qElemNumber: 2 }],
@@ -32,9 +36,15 @@ describe('extractor-s', () => {
   };
 
   const fields = [
-    { title: () => 'Dim1', value: d => d.qElemNumber, label: d => d.qText, key: () => 'qDimensionInfo/0' },
-    { title: () => 'Dim2', value: d => d.qElemNumber, label: d => d.qText, key: () => 'qDimensionInfo/1' },
-    { title: () => 'Meas1', value: d => d.qValue, label: d => d.qText, key: () => 'qMeasureInfo/0' }
+    {
+      title: () => 'Dim1', value: d => d.qElemNumber, label: d => d.qText, key: () => 'qDimensionInfo/0'
+    },
+    {
+      title: () => 'Dim2', value: d => d.qElemNumber, label: d => d.qText, key: () => 'qDimensionInfo/1'
+    },
+    {
+      title: () => 'Meas1', value: d => d.qValue, label: d => d.qText, key: () => 'qMeasureInfo/0'
+    }
   ];
 
   const dataset = {
@@ -136,9 +146,27 @@ describe('extractor-s', () => {
       field: 'Dim2'
     }, dataset, { fields }, deps);
     expect(m).to.eql([
-      { value: { qNum: 3, qText: 'tre', qElemNumber: 1, qRow: 5 }, label: 'tre', source: { field: 'qDimensionInfo/1', key: 'hyper' } },
-      { value: { qNum: 7, qText: 'sju', qElemNumber: 2, qRow: 6 }, label: 'sju', source: { field: 'qDimensionInfo/1', key: 'hyper' } },
-      { value: { qNum: 1, qText: 'ett', qElemNumber: 3, qRow: 7 }, label: 'ett', source: { field: 'qDimensionInfo/1', key: 'hyper' } }
+      {
+        value: {
+          qNum: 3, qText: 'tre', qElemNumber: 1, qRow: 5
+        },
+        label: 'tre',
+        source: { field: 'qDimensionInfo/1', key: 'hyper' }
+      },
+      {
+        value: {
+          qNum: 7, qText: 'sju', qElemNumber: 2, qRow: 6
+        },
+        label: 'sju',
+        source: { field: 'qDimensionInfo/1', key: 'hyper' }
+      },
+      {
+        value: {
+          qNum: 1, qText: 'ett', qElemNumber: 3, qRow: 7
+        },
+        label: 'ett',
+        source: { field: 'qDimensionInfo/1', key: 'hyper' }
+      }
     ]);
   });
 
@@ -162,19 +190,25 @@ describe('extractor-s', () => {
 
     expect(m).to.eql([
       {
-        value: { qNum: 3, qText: 'tre', qElemNumber: 1, qRow: 5 },
+        value: {
+          qNum: 3, qText: 'tre', qElemNumber: 1, qRow: 5
+        },
         label: 'tre',
         source: { field: 'qDimensionInfo/1', key: 'hyper' },
         text: { value: 'tre', label: 'tre', source: { field: 'qDimensionInfo/1', key: 'hyper' } }
       },
       {
-        value: { qNum: 7, qText: 'sju', qElemNumber: 2, qRow: 6 },
+        value: {
+          qNum: 7, qText: 'sju', qElemNumber: 2, qRow: 6
+        },
         label: 'sju',
         source: { field: 'qDimensionInfo/1', key: 'hyper' },
         text: { value: 'sju', label: 'sju', source: { field: 'qDimensionInfo/1', key: 'hyper' } }
       },
       {
-        value: { qNum: 1, qText: 'ett', qElemNumber: 3, qRow: 7 },
+        value: {
+          qNum: 1, qText: 'ett', qElemNumber: 3, qRow: 7
+        },
         label: 'ett',
         source: { field: 'qDimensionInfo/1', key: 'hyper' },
         text: { value: 'ett', label: 'ett', source: { field: 'qDimensionInfo/1', key: 'hyper' } }
@@ -237,19 +271,25 @@ describe('extractor-s', () => {
     }, dataset, { fields }, deps);
     expect(m).to.eql([
       {
-        value: { qNum: 3, qText: 'tre', qElemNumber: 1, qRow: 5 },
+        value: {
+          qNum: 3, qText: 'tre', qElemNumber: 1, qRow: 5
+        },
         label: 'tre',
         source: { field: 'qDimensionInfo/1', key: 'hyper' },
         num: { value: 54, label: '$53', source: { field: 'qMeasureInfo/0', key: 'hyper' } }
       },
       {
-        value: { qNum: 7, qText: 'sju', qElemNumber: 2, qRow: 6 },
+        value: {
+          qNum: 7, qText: 'sju', qElemNumber: 2, qRow: 6
+        },
         label: 'sju',
         source: { field: 'qDimensionInfo/1', key: 'hyper' },
         num: { value: 58, label: '$57', source: { field: 'qMeasureInfo/0', key: 'hyper' } }
       },
       {
-        value: { qNum: 1, qText: 'ett', qElemNumber: 3, qRow: 7 },
+        value: {
+          qNum: 1, qText: 'ett', qElemNumber: 3, qRow: 7
+        },
         label: 'ett',
         source: { field: 'qDimensionInfo/1', key: 'hyper' },
         num: { value: 52, label: '$51', source: { field: 'qMeasureInfo/0', key: 'hyper' } }
@@ -272,7 +312,9 @@ describe('extractor-s', () => {
       qDimensionInfo: [{ qStateCounts: {} }],
       qMeasureInfo: [{}],
       qDataPages: [{
-        qArea: { qLeft: 0, qTop: 5, qWidth: 2, qHeight: 3 },
+        qArea: {
+          qLeft: 0, qTop: 5, qWidth: 2, qHeight: 3
+        },
         qMatrix: [
           [{ qNum: 3, qText: 'tre', qElemNumber: 1 }, { qNum: 34 }],
           [{ qNum: 5, qText: 'fem', qElemNumber: 1 }, { qNum: 36 }],
@@ -299,7 +341,9 @@ describe('extractor-s', () => {
         label: v => v.qText
       },
       props: {
-        item: { value: d => d, label: v => v.qText, field: meField, source: { key: ds.key(), field: meField.key() } }
+        item: {
+          value: d => d, label: v => v.qText, field: meField, source: { key: ds.key(), field: meField.key() }
+        }
       }
     });
     const m = extract({
@@ -309,8 +353,12 @@ describe('extractor-s', () => {
     expect(m).to.eql([
       {
         value: [
-          { qNum: 3, qText: 'tre', qElemNumber: 1, qRow: 5 },
-          { qNum: 5, qText: 'fem', qElemNumber: 1, qRow: 6 }
+          {
+            qNum: 3, qText: 'tre', qElemNumber: 1, qRow: 5
+          },
+          {
+            qNum: 5, qText: 'fem', qElemNumber: 1, qRow: 6
+          }
         ],
         label: '<>',
         source: { field: 'dimension1', key: 'nyckel' },
@@ -320,18 +368,22 @@ describe('extractor-s', () => {
             { qNum: 36, qRow: 6 }
           ],
           label: '£',
-          source: { field: 'measure1', key: 'nyckel' } }
+          source: { field: 'measure1', key: 'nyckel' }
+        }
       },
       {
         value: [
-          { qNum: 1, qText: 'ett', qElemNumber: 3, qRow: 7 }
+          {
+            qNum: 1, qText: 'ett', qElemNumber: 3, qRow: 7
+          }
         ],
         label: '<>',
         source: { field: 'dimension1', key: 'nyckel' },
         item: {
           value: [{ qNum: 38, qRow: 7 }],
           label: '£',
-          source: { field: 'measure1', key: 'nyckel' } }
+          source: { field: 'measure1', key: 'nyckel' }
+        }
       }
     ]);
   });
@@ -351,7 +403,9 @@ describe('extractor-s', () => {
       qDimensionInfo: [{ qStateCounts: {} }],
       qMeasureInfo: [],
       qDataPages: [{
-        qArea: { qLeft: 0, qTop: 5, qWidth: 2, qHeight: 3 },
+        qArea: {
+          qLeft: 0, qTop: 5, qWidth: 2, qHeight: 3
+        },
         qMatrix: [
           [{ qNum: 3, qText: 'tre', qElemNumber: 1 }, { qNum: 34 }],
           [{ qNum: 5, qText: 'fem', qElemNumber: 1 }, { qNum: 36 }],
@@ -430,7 +484,9 @@ describe('extractor-s', () => {
       qDimensionInfo: [{ qStateCounts: {} }],
       qMeasureInfo: [],
       qDataPages: [{
-        qArea: { qLeft: 0, qTop: 5, qWidth: 3, qHeight: 3 },
+        qArea: {
+          qLeft: 0, qTop: 5, qWidth: 3, qHeight: 3
+        },
         qMatrix: [
           [{ qNum: 3, qText: 'tre', qElemNumber: 1 }, { qNum: 34 }, { qNum: -20 }],
           [{ qNum: 5, qText: 'fem', qElemNumber: 1 }, { qNum: 36 }, { qNum: -30 }],
@@ -519,7 +575,9 @@ describe('extractor-s', () => {
       qDimensionInfo: [{ qStateCounts: {} }],
       qMeasureInfo: [],
       qDataPages: [{
-        qArea: { qLeft: 0, qTop: 5, qWidth: 3, qHeight: 3 },
+        qArea: {
+          qLeft: 0, qTop: 5, qWidth: 3, qHeight: 3
+        },
         qMatrix: [
           [{ qNum: 3, qText: 'tre', qElemNumber: 1 }, { qNum: 34 }, { qNum: -20 }],
           [{ qNum: 5, qText: 'fem', qElemNumber: 1 }, { qNum: 36 }, { qNum: -30 }],
@@ -608,12 +666,16 @@ describe('extractor-s', () => {
     }, dataset, { fields }, deps);
     expect(m).to.eql([
       {
-        value: { qNum: 3, qText: 'tre', qElemNumber: 1, qRow: 5 },
+        value: {
+          qNum: 3, qText: 'tre', qElemNumber: 1, qRow: 5
+        },
         label: 'tre',
         source: { field: 'qDimensionInfo/1', key: 'hyper' }
       },
       {
-        value: { qNum: 1, qText: 'ett', qElemNumber: 3, qRow: 7 },
+        value: {
+          qNum: 1, qText: 'ett', qElemNumber: 3, qRow: 7
+        },
         label: 'ett',
         source: { field: 'qDimensionInfo/1', key: 'hyper' }
       }

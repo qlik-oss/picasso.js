@@ -10,7 +10,7 @@ describe('svg renderer', () => {
     scene;
 
   beforeEach(() => {
-    sandbox = sinon.sandbox.create();
+    sandbox = sinon.createSandbox();
     treeRenderer = {
       render: sandbox.spy()
     };
@@ -86,7 +86,9 @@ describe('svg renderer', () => {
     it('should attach to given position in the container', () => {
       scene.returns(s);
       svg.appendTo(element('div'));
-      svg.size({ x: 50, y: 100, width: 200, height: 400, scaleRatio: { x: 1, y: 1 } });
+      svg.size({
+        x: 50, y: 100, width: 200, height: 400, scaleRatio: { x: 1, y: 1 }
+      });
       svg.render(items);
 
       const el = svg.element();
@@ -99,7 +101,9 @@ describe('svg renderer', () => {
 
     it('should scale from logical size to physical size', () => {
       const scaleRatio = { x: 2, y: 3 };
-      const size = { x: 50, y: 100, width: 200, height: 400, scaleRatio };
+      const size = {
+        x: 50, y: 100, width: 200, height: 400, scaleRatio
+      };
       const expectedInputShapes = [
         {
           type: 'container',
@@ -211,7 +215,9 @@ describe('svg renderer', () => {
 
     it('should return shapes at a point', () => {
       svg.appendTo(element('div'));
-      svg.size({ x: 100, y: 100, width: 400, height: 400 });
+      svg.size({
+        x: 100, y: 100, width: 400, height: 400
+      });
       svg.render(items);
 
       const shapes = svg.itemsAt({ x: 120, y: 135 });
@@ -231,19 +237,27 @@ describe('svg renderer', () => {
 
     it('should return shapes at a line', () => {
       svg.appendTo(element('div'));
-      svg.size({ x: 100, y: 100, width: 400, height: 400 });
+      svg.size({
+        x: 100, y: 100, width: 400, height: 400
+      });
       svg.render(items);
 
-      const shapes = svg.itemsAt({ x1: 130, x2: 130, y1: 0, y2: 320 });
+      const shapes = svg.itemsAt({
+        x1: 130, x2: 130, y1: 0, y2: 320
+      });
       expect(shapes.length).to.equal(2);
     });
 
     it('should return shapes at a rect', () => {
       svg.appendTo(element('div'));
-      svg.size({ x: 100, y: 100, width: 400, height: 400 });
+      svg.size({
+        x: 100, y: 100, width: 400, height: 400
+      });
       svg.render(items);
 
-      const shapes = svg.itemsAt({ x: 100, y: 100, width: 50, height: 50 });
+      const shapes = svg.itemsAt({
+        x: 100, y: 100, width: 50, height: 50
+      });
       expect(shapes.length).to.equal(1);
     });
   });
@@ -251,13 +265,21 @@ describe('svg renderer', () => {
   describe('size', () => {
     it('should return current size if no parameters are given', () => {
       svg.appendTo(element('div'));
-      svg.size({ x: 50, y: 100, width: 200, height: 400, scaleRatio: { x: 2, y: 3 }, margin: { top: 4, left: 5 } });
-      expect(svg.size()).to.deep.equal({ x: 50, y: 100, width: 200, height: 400, scaleRatio: { x: 2, y: 3 }, margin: { top: 4, left: 5 } });
+      svg.size({
+        x: 50, y: 100, width: 200, height: 400, scaleRatio: { x: 2, y: 3 }, margin: { top: 4, left: 5 }
+      });
+      expect(svg.size()).to.deep.equal({
+        x: 50, y: 100, width: 200, height: 400, scaleRatio: { x: 2, y: 3 }, margin: { top: 4, left: 5 }
+      });
     });
 
     it('should ignore NaN values and fallback to default size value', () => {
-      svg.size({ x: undefined, y: undefined, width: undefined, height: undefined, scaleRatio: { x: undefined, y: undefined }, margin: { top: undefined, left: undefined } });
-      expect(svg.size()).to.deep.equal({ x: 0, y: 0, width: 0, height: 0, scaleRatio: { x: 1, y: 1 }, margin: { top: 0, left: 0 } });
+      svg.size({
+        x: undefined, y: undefined, width: undefined, height: undefined, scaleRatio: { x: undefined, y: undefined }, margin: { top: undefined, left: undefined }
+      });
+      expect(svg.size()).to.deep.equal({
+        x: 0, y: 0, width: 0, height: 0, scaleRatio: { x: 1, y: 1 }, margin: { top: 0, left: 0 }
+      });
     });
   });
 });

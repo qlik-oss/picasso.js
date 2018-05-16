@@ -17,7 +17,9 @@ describe('box component', () => {
       extract: sinon.stub()
     };
     opts = {
-      inner: { x: 10, y: 20, width: 100, height: 200 }
+      inner: {
+        x: 10, y: 20, width: 100, height: 200
+      }
     };
 
     componentFixture = componentFactoryFixture();
@@ -556,7 +558,9 @@ describe('box component', () => {
     ];
 
     opts = {
-      inner: { x: 0, y: 0, width: 200, height: 20 }
+      inner: {
+        x: 0, y: 0, width: 200, height: 20
+      }
     };
 
     chart.dataset().extract.returns(dataset);

@@ -1,5 +1,5 @@
 import { onLineBreak } from './line-break-resolver';
-import { ellipsText } from './text-ellipsis';
+import ellipsText from './text-ellipsis';
 import {
   measureText,
   textBounds

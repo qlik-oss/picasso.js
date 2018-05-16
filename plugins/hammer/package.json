@@ -14,14 +14,13 @@
   "main": "dist/picasso-hammer.js",
   "module": "src/index.js",
   "scripts": {
-    "build": "npxc rollup -c ../../rollup.config.js --name picassoHammer",
+    "build": "rollup -c ../../rollup.config.js",
     "build:watch": "npm run build -- -w",
-    "lint": "npxc eslint src test",
-    "test": "npxc aw -c aw.config.js",
+    "lint": "eslint src test",
+    "test": "aw -c aw.config.js",
     "prepublishOnly": "rm -rf dist && npm run build"
   },
   "devDependencies": {
-    "npxc": "^0.0.3",
-    "test-utils": "../../packages/test-utils"
+    "test-utils": "0.0.1"
   }
 }

@@ -44,7 +44,9 @@ describe('Circle', () => {
   describe('Set', () => {
     it('should set correct values', () => {
       circle = createCircle(shape);
-      circle.set({ cx: 99, cy: 999, r: 9, collider: { type: 'rect' } });
+      circle.set({
+        cx: 99, cy: 999, r: 9, collider: { type: 'rect' }
+      });
       expect(circle.attrs.cx).to.be.equal(99);
       expect(circle.attrs.cy).to.be.equal(999);
       expect(circle.attrs.r).to.be.equal(9);
@@ -93,7 +95,9 @@ describe('Circle', () => {
   describe('BoundingRect', () => {
     it('should handle default values', () => {
       circle = createCircle(shape);
-      expect(circle.boundingRect()).to.deep.equal({ x: 0, y: 0, width: 0, height: 0 });
+      expect(circle.boundingRect()).to.deep.equal({
+        x: 0, y: 0, width: 0, height: 0
+      });
     });
 
     it('should return correct value for a circle without transformation', () => {
@@ -101,7 +105,9 @@ describe('Circle', () => {
       shape.cy = 20;
       shape.r = 5;
       circle = createCircle(shape);
-      expect(circle.boundingRect()).to.deep.equal({ x: 5, y: 15, width: 10, height: 10 });
+      expect(circle.boundingRect()).to.deep.equal({
+        x: 5, y: 15, width: 10, height: 10
+      });
     });
 
     it('should return correct value for a circle with a scale transformation', () => {
@@ -111,7 +117,9 @@ describe('Circle', () => {
       shape.transform = 'scale(2, 3)';
       circle = createCircle(shape);
       circle.resolveLocalTransform();
-      expect(circle.boundingRect(true)).to.deep.equal({ x: 10, y: 45, width: 20, height: 30 });
+      expect(circle.boundingRect(true)).to.deep.equal({
+        x: 10, y: 45, width: 20, height: 30
+      });
     });
 
     it('should return correct value for a circle with a translate transformation', () => {
@@ -121,7 +129,9 @@ describe('Circle', () => {
       shape.transform = 'translate(5, 10)';
       circle = createCircle(shape);
       circle.resolveLocalTransform();
-      expect(circle.boundingRect(true)).to.deep.equal({ x: 10, y: 25, width: 10, height: 10 });
+      expect(circle.boundingRect(true)).to.deep.equal({
+        x: 10, y: 25, width: 10, height: 10
+      });
     });
 
     it('should return correct value for a circle with a rotate transformation', () => {
@@ -131,7 +141,9 @@ describe('Circle', () => {
       shape.transform = 'rotate(-45)';
       circle = createCircle(shape);
       circle.resolveLocalTransform();
-      expect(circle.boundingRect(true)).to.deep.equal({ x: 14.14213562373095, y: 1.7763568394002505e-15, width: 14.14213562373095, height: 14.14213562373095 });
+      expect(circle.boundingRect(true)).to.deep.equal({
+        x: 14.14213562373095, y: 1.7763568394002505e-15, width: 14.14213562373095, height: 14.14213562373095
+      });
     });
 
     it('should return correct value for a circle with a negative vector direction', () => {
@@ -139,7 +151,9 @@ describe('Circle', () => {
       shape.cy = -20;
       shape.r = 5;
       circle = createCircle(shape);
-      expect(circle.boundingRect()).to.deep.equal({ x: -15, y: -25, width: 10, height: 10 });
+      expect(circle.boundingRect()).to.deep.equal({
+        x: -15, y: -25, width: 10, height: 10
+      });
     });
   });
 
@@ -254,7 +268,9 @@ describe('Circle', () => {
       circle = createCircle(shape);
       circle.resolveLocalTransform();
 
-      expect(circle.intersectsLine({ x1: 15, y1: 30, x2: 16, y2: 31 })).to.equal(true);
+      expect(circle.intersectsLine({
+        x1: 15, y1: 30, x2: 16, y2: 31
+      })).to.equal(true);
     });
   });
 
@@ -267,7 +283,9 @@ describe('Circle', () => {
       circle = createCircle(shape);
       circle.resolveLocalTransform();
 
-      expect(circle.intersectsRect({ x: 15, y: 30, width: 1, height: 1 })).to.equal(true);
+      expect(circle.intersectsRect({
+        x: 15, y: 30, width: 1, height: 1
+      })).to.equal(true);
     });
   });
 

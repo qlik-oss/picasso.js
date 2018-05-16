@@ -1,7 +1,7 @@
 import DisplayObject from './display-object';
 import NodeContainer from '../node-container';
 
- /**
+/**
  * @typedef {object} gradient-def
  * @property {string} type
  * @property {object[]} stops

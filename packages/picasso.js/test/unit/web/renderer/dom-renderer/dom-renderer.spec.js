@@ -6,7 +6,7 @@ describe('dom renderer', () => {
   let rend;
 
   beforeEach(() => {
-    sandbox = sinon.sandbox.create();
+    sandbox = sinon.createSandbox();
     rend = renderer({
       createElement: element,
       createTextNode: text => text
@@ -113,13 +113,21 @@ describe('dom renderer', () => {
   describe('size', () => {
     it('should return current size if no parameters are given', () => {
       rend.appendTo(element('div'));
-      rend.size({ x: 50, y: 100, width: 200, height: 400, scaleRatio: { x: 2, y: 3 }, margin: { top: 4, left: 5 } });
-      expect(rend.size()).to.deep.equal({ x: 50, y: 100, width: 200, height: 400, scaleRatio: { x: 2, y: 3 }, margin: { top: 4, left: 5 } });
+      rend.size({
+        x: 50, y: 100, width: 200, height: 400, scaleRatio: { x: 2, y: 3 }, margin: { top: 4, left: 5 }
+      });
+      expect(rend.size()).to.deep.equal({
+        x: 50, y: 100, width: 200, height: 400, scaleRatio: { x: 2, y: 3 }, margin: { top: 4, left: 5 }
+      });
     });
 
     it('should ignore NaN values and fallback to default size value', () => {
-      rend.size({ x: undefined, y: undefined, width: undefined, height: undefined, scaleRatio: { x: undefined, y: undefined }, margin: { top: undefined, left: undefined } });
-      expect(rend.size()).to.deep.equal({ x: 0, y: 0, width: 0, height: 0, scaleRatio: { x: 1, y: 1 }, margin: { top: 0, left: 0 } });
+      rend.size({
+        x: undefined, y: undefined, width: undefined, height: undefined, scaleRatio: { x: undefined, y: undefined }, margin: { top: undefined, left: undefined }
+      });
+      expect(rend.size()).to.deep.equal({
+        x: 0, y: 0, width: 0, height: 0, scaleRatio: { x: 1, y: 1 }, margin: { top: 0, left: 0 }
+      });
     });
   });
 });

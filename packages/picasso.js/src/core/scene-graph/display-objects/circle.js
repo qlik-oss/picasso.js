@@ -17,8 +17,12 @@ export default class Circle extends DisplayObject {
   }
 
   set(v = {}) {
-    const { cx = 0, cy = 0, r = 0, collider } = v;
-    const opts = extend({ type: 'circle', cx, cy, r }, collider);
+    const {
+      cx = 0, cy = 0, r = 0, collider
+    } = v;
+    const opts = extend({
+      type: 'circle', cx, cy, r
+    }, collider);
 
     super.set(v);
     super.collider(opts);
@@ -43,7 +47,9 @@ export default class Circle extends DisplayObject {
 
   bounds(includeTransform = false) {
     // TODO Handle Circle bounds correctly for a circle transformed to an non axis aligned ellipse/circle
-    const { cx, cy, r: rX, r: rY } = this.attrs;
+    const {
+      cx, cy, r: rX, r: rY
+    } = this.attrs;
     const x = cx - rX;
     const y = cy - rY;
     let w = rX * 2;

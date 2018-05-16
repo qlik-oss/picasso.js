@@ -12,7 +12,7 @@ export default function qField({
   localeInfo,
   fieldExtractor,
   value
- } = {}) {
+} = {}) {
   let values;
 
   const type = ('qStateCounts' in meta || 'qSize' in meta) ? 'dimension' : 'measure';

@@ -115,7 +115,8 @@ function chartFn(definition, context) {
    * @alias chart
    * @interface
    */
-  const instance = extend({},
+  const instance = extend(
+    {},
     definition,
     chartMixins.filter(mixinName => !isReservedProperty(mixinName))
   );

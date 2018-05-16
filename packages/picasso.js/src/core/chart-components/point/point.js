@@ -13,7 +13,7 @@ const DEFAULT_ERROR_SETTINGS = {
   }
 };
 
- /**
+/**
   * @typedef {object}
   * @alias component--point.settings
   */
@@ -46,7 +46,7 @@ const DEFAULT_DATA_SETTINGS = {
   strokeDasharray: ''
 };
 
- /**
+/**
   * @typedef {object}
   * @alias component--point.settings.sizeLimits
   */
@@ -91,13 +91,16 @@ function getPointSizeLimits(x, y, width, height, limits) {
   let minSizePx = Math.min(xSpacePx.value * limits[xSpacePx.isBandwidth ? 'minRelDiscrete' : 'minRelExtent'], ySpacePx.value * limits[ySpacePx.isBandwidth ? 'minRelDiscrete' : 'minRelExtent']);
   const min = Math.max(1, Math.floor(minSizePx));
   const max = Math.max(1, Math.floor(maxSizePx));
-  return { min, max, maxGlobal: limits.maxPx, minGlobal: limits.minPx };
+  return {
+    min, max, maxGlobal: limits.maxPx, minGlobal: limits.minPx
+  };
 }
 
-function createDisplayPoints(dataPoints, { x, y, width, height }, pointSize, shapeFn) {
+function createDisplayPoints(dataPoints, {
+  width, height
+}, pointSize, shapeFn) {
   return dataPoints.filter(p =>
-   !isNaN(p.x + p.y)
-  ).map((p) => {
+    !isNaN(p.x + p.y)).map((p) => {
     const s = notNumber(p.size) ? DEFAULT_ERROR_SETTINGS.errorShape : p;
     const size = pointSize.min + (s.size * (pointSize.max - pointSize.min));
     const shapeSpec = {
@@ -136,7 +139,9 @@ const component = {
     }
   },
   created() {
-    this.rect = { x: 0, y: 0, width: 0, height: 0 };
+    this.rect = {
+      x: 0, y: 0, width: 0, height: 0
+    };
   },
   beforeRender(opts) {
     this.rect = opts.size;

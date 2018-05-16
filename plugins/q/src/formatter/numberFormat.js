@@ -13,7 +13,7 @@ export default function formatter(pattern, thousand, decimal, qType, localeInfo)
     return qformat.formatValue(value);
   }
 
-   /**
+  /**
     * Format a value according to a specific pattern
     * that is not the one specified in the constructor
     *
@@ -27,7 +27,7 @@ export default function formatter(pattern, thousand, decimal, qType, localeInfo)
     return qformat.format(v, p, t, d);
   };
 
-   /**
+  /**
     * Change the pattern on existing formatter
     *
     * @param  {String} p     Pattern (optional)
@@ -52,7 +52,7 @@ export default function formatter(pattern, thousand, decimal, qType, localeInfo)
     d3format = locale.format( pattern );
 
     return this;
-  };*/
+  }; */
 
   return format;
 }

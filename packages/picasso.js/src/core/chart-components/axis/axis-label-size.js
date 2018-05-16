@@ -133,7 +133,9 @@ function isToLarge({
   });
 }
 
-export function getClampedValue({ value, maxValue, minValue, range, modifier }) {
+export function getClampedValue({
+  value, maxValue, minValue, range, modifier
+}) {
   if (!isNaN(range) && !isNaN(modifier)) {
     value = range * modifier;
   }
@@ -159,7 +161,9 @@ export default function getSize({
   state
 }) {
   let size = 0;
-  const edgeBleed = { left: 0, top: 0, right: 0, bottom: 0 };
+  const edgeBleed = {
+    left: 0, top: 0, right: 0, bottom: 0
+  };
   const {
     maxLengthPx: maxValue,
     minLengthPx: minValue
@@ -186,14 +190,18 @@ export default function getSize({
     };
 
     if (isDiscrete && horizontal && settings.labels.mode === 'auto') {
-      if (shouldAutoTilt({ majorTicks, measure, rect, state, settings })) {
+      if (shouldAutoTilt({
+        majorTicks, measure, rect, state, settings
+      })) {
         state.labels.activeMode = 'tilted';
       } else {
         state.labels.activeMode = 'horizontal';
       }
     }
 
-    if (isDiscrete && state.labels.activeMode !== 'tilted' && isToLarge({ rect, state, majorTicks, measure, horizontal })) {
+    if (isDiscrete && state.labels.activeMode !== 'tilted' && isToLarge({
+      rect, state, majorTicks, measure, horizontal
+    })) {
       const toLargeSize = Math.max(rect.width, rect.height); // used to hide the axis
       return { size: toLargeSize, isToLarge: true };
     }
@@ -247,7 +255,9 @@ export default function getSize({
       const bleedDir = extendLeft ? 'left' : 'right';
       edgeBleed[bleedDir] = bleedSize;
 
-      if (isDiscrete && isTiltedLabelOverlapping({ majorTicks, measureText, rect, bleedSize, angle: settings.labels.tiltAngle })) {
+      if (isDiscrete && isTiltedLabelOverlapping({
+        majorTicks, measureText, rect, bleedSize, angle: settings.labels.tiltAngle
+      })) {
         return { size: Math.max(rect.width, rect.height), isToLarge: true };
       }
     }

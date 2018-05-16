@@ -4,7 +4,9 @@ import extend from 'extend';
  * Resolve a complex object using the built-in resolver from this.resolver in component
  * @ignore
  */
-export default function complexResolver({ keys, data, defaultSettings, style, settings, width, height, resolver }) {
+export default function complexResolver({
+  keys, data, defaultSettings, style, settings, width, height, resolver
+}) {
   const defaults = extend(true, {}, defaultSettings || {}, style || {});
   const scaled = {
     major: settings.orientation === 'horizontal' ? height : width,

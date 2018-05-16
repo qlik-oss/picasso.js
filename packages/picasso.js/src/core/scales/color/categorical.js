@@ -22,7 +22,7 @@ const DEFAULT_EXPLICIT_SETTINGS = {
  * @property {string[]} [explicit.range[]] - Output range
  */
 
- /**
+/**
  * An ordinal scale with the output range set to default colors, as defined by *scaleCategorical.range*
  * @alias scaleCategorical
  * @private

@@ -43,7 +43,7 @@ export default function formatter(pattern, qtype = 'TS', localeInfo = null) {
     return qformat.format(value);
   }
 
-   /**
+  /**
     * Format a value according to a specific pattern
     * that is not the one specified in the constructor
     *

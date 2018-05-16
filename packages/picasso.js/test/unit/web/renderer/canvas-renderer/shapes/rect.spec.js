@@ -9,7 +9,7 @@ describe('rect', () => {
       rect;
 
     beforeEach(() => {
-      sandbox = sinon.sandbox.create();
+      sandbox = sinon.createSandbox();
 
       g = {
         beginPath: sandbox.spy(),
@@ -22,7 +22,9 @@ describe('rect', () => {
 
       truthys = [true, {}, [], 1, -1, 3.14, -3.14, 'foo'];
 
-      rect = { x: 1, y: 2, width: 10, height: 20 };
+      rect = {
+        x: 1, y: 2, width: 10, height: 20
+      };
     });
 
     afterEach(() => {
@@ -52,7 +54,7 @@ describe('rect', () => {
 
     it('should fire fill if fill condition is truthy', () => {
       falsys.forEach((value) => {
-        g.fill.reset();
+        g.fill.resetHistory();
 
         render(rect, { g, doFill: value, doStroke: false });
 
@@ -70,7 +72,7 @@ describe('rect', () => {
 
     it('should fire stroke if stroke condition is truthy', () => {
       truthys.forEach((value) => {
-        g.stroke.reset();
+        g.stroke.resetHistory();
 
         render(rect, { g, doFill: false, doStroke: value });
 

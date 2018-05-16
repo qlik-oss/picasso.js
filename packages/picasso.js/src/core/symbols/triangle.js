@@ -38,6 +38,4 @@ function triangle(options) {
   };
 }
 
-export {
-  triangle as default
-};
+export { triangle as default };

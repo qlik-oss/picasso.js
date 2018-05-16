@@ -42,6 +42,4 @@ function create(config, d, opts, extractor = extract) {
   return fn;
 }
 
-export {
-  create as default
-};
+export { create as default };

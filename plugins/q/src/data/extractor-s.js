@@ -58,10 +58,10 @@ function datumExtract(propCfg, cell, {
   key
 }) {
   const datum = {
-    value: typeof propCfg.value === 'function' ? propCfg.value(cell) : typeof propCfg.value !== 'undefined' ? propCfg.value : cell  // eslint-disable-line no-nested-ternary
+    value: typeof propCfg.value === 'function' ? propCfg.value(cell) : typeof propCfg.value !== 'undefined' ? propCfg.value : cell // eslint-disable-line no-nested-ternary
   };
 
-  datum.label = typeof propCfg.label === 'function' ? propCfg.label(cell) : typeof propCfg.label !== 'undefined' ? String(propCfg.label) : String(datum.value);  // eslint-disable-line no-nested-ternary
+  datum.label = typeof propCfg.label === 'function' ? propCfg.label(cell) : typeof propCfg.label !== 'undefined' ? String(propCfg.label) : String(datum.value); // eslint-disable-line no-nested-ternary
 
   if (propCfg.field) {
     datum.source = {
@@ -163,9 +163,9 @@ export default function extract(config, dataset, cache, util) {
               const fieldValues = ret[prop].map(v => v.value);
               const fieldLabels = ret[prop].map(v => v.label);
               ret[prop] = {
-                value: typeof p.value === 'function' ? p.value(fieldValues) : typeof p.value !== 'undefined' ? p.value : fieldValues  // eslint-disable-line no-nested-ternary
+                value: typeof p.value === 'function' ? p.value(fieldValues) : typeof p.value !== 'undefined' ? p.value : fieldValues // eslint-disable-line no-nested-ternary
               };
-              ret[prop].label = typeof p.label === 'function' ? p.label(fieldLabels) : typeof p.label !== 'undefined' ? String(p.label) : String(ret[prop].value);  // eslint-disable-line no-nested-ternary
+              ret[prop].label = typeof p.label === 'function' ? p.label(fieldLabels) : typeof p.label !== 'undefined' ? String(p.label) : String(ret[prop].value); // eslint-disable-line no-nested-ternary
             }
           });
 

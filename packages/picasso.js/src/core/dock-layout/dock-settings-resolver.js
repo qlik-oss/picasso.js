@@ -8,8 +8,12 @@ function roundRect(rect) {
 }
 
 function getRect(container, settings) {
-  const containerRect = { x: 0, y: 0, width: 0, height: 0 };
-  const logicalContainerRect = { x: 0, y: 0, width: 0, height: 0 };
+  const containerRect = {
+    x: 0, y: 0, width: 0, height: 0
+  };
+  const logicalContainerRect = {
+    x: 0, y: 0, width: 0, height: 0
+  };
 
   // Check input object for size
   if (typeof container.getBoundingClientRect === 'function') {

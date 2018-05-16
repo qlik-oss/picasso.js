@@ -139,7 +139,11 @@ cfg = {
 */
 export function getPropsInfo(cfg, dataset) {
   // console.log('222', cfg);
-  const { main } = normalizeProperties(cfg, dataset, { main: { value: cfg.value, label: cfg.label, reduce: cfg.reduce, filter: cfg.filter } }, {});
+  const { main } = normalizeProperties(cfg, dataset, {
+    main: {
+      value: cfg.value, label: cfg.label, reduce: cfg.reduce, filter: cfg.filter
+    }
+  }, {});
   const props = normalizeProperties(cfg, dataset, cfg.props || {}, main);
   return { props, main };
 }

@@ -1,19 +1,32 @@
 {
   "env": {
-  "browser": false,
-  "node": true,
-    "mocha": true
+    "browser": false,
+    "node": true,
+    "mocha": true,
+    "protractor": true
   },
   "globals": {
     "chai": false,
     "expect": false,
     "sinon": false
   },
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 8,
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
+  },
   "plugins": [
     "mocha"
   ],
   "rules": {
-    "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": true
+      }
+    ],
     "mocha/no-exclusive-tests": "error",
     "no-unused-expressions": 0
   }

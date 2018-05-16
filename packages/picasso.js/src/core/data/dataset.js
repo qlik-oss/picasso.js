@@ -13,7 +13,9 @@ const filters = {
   numeric: values => values.filter(v => typeof v === 'number' && !isNaN(v))
 };
 
-function createFields({ source, data, cache, config }) {
+function createFields({
+  source, data, cache, config
+}) {
   let headers;
   let content = data;
   const parse = config && config.parse;
@@ -111,7 +113,9 @@ const dsv = ({ data, config }) => {
   return rows.map(row => row.split(delimiter));
 };
 
-const parseData = ({ source, data, cache, config }) => {
+const parseData = ({
+  source, data, cache, config
+}) => {
   if (!data) {
     return;
   }
@@ -206,9 +210,7 @@ ds.util = {
   track
 };
 
-export {
-  ds as default
-};
+export { ds as default };
 
 /**
  * @typedef {object} data-extract-config

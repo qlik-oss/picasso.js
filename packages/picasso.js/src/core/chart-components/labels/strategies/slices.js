@@ -74,7 +74,9 @@ function getRectFromCircleIntersection({ radius, size, angle }) {
 }
 
 function getHorizontalInsideSliceRect({ slice, padding, measured }) {
-  let { start, end, innerRadius, outerRadius } = slice;
+  let {
+    start, end, innerRadius, outerRadius
+  } = slice;
   let middle = (start + end) / 2;
 
   let size = {
@@ -95,9 +97,13 @@ function getHorizontalInsideSliceRect({ slice, padding, measured }) {
 
   bounds.baseline = 'top';
 
-  let startLine = { x1: 0, y1: 0, x2: Math.sin(start) * outerRadius, y2: -Math.cos(start) * outerRadius };
+  let startLine = {
+    x1: 0, y1: 0, x2: Math.sin(start) * outerRadius, y2: -Math.cos(start) * outerRadius
+  };
   if (collisions.testRectLine(bounds, startLine)) { return null; }
-  let endLine = { x1: 0, y1: 0, x2: Math.sin(end) * outerRadius, y2: -Math.cos(end) * outerRadius };
+  let endLine = {
+    x1: 0, y1: 0, x2: Math.sin(end) * outerRadius, y2: -Math.cos(end) * outerRadius
+  };
   if (collisions.testRectLine(bounds, endLine)) { return null; }
   let circle = { cx: 0, cy: 0, r: innerRadius };
   if (collisions.testCircleRect(circle, bounds)) { return null; }
@@ -109,7 +115,9 @@ function getHorizontalInsideSliceRect({ slice, padding, measured }) {
 
 // TODO: this case can support a justify setting
 function getRotatedInsideSliceRect({ slice, measured, padding }) {
-  let { start, end, innerRadius, outerRadius } = slice;
+  let {
+    start, end, innerRadius, outerRadius
+  } = slice;
 
   let maxWidth = outerRadius - innerRadius - (padding * 2);
   let size = end - start;
@@ -144,8 +152,12 @@ function getRotatedInsideSliceRect({ slice, measured, padding }) {
 }
 
 
-function getRotatedOusideSliceRect({ slice, measured, padding, view }) {
-  let { start, end, outerRadius, offset } = slice;
+function getRotatedOusideSliceRect({
+  slice, measured, padding, view
+}) {
+  let {
+    start, end, outerRadius, offset
+  } = slice;
   let r = outerRadius + padding;
   let size = end - start;
   if (size < Math.PI) {
@@ -200,8 +212,12 @@ function getRotatedOusideSliceRect({ slice, measured, padding, view }) {
   return bounds;
 }
 
-function getHorizontalOusideSliceRect({ slice, measured, padding, view }) {
-  let { start, end, outerRadius, offset } = slice;
+function getHorizontalOusideSliceRect({
+  slice, measured, padding, view
+}) {
+  let {
+    start, end, outerRadius, offset
+  } = slice;
   let r = outerRadius + padding + (measured.height / 2);
 
   let middle = (start + end) / 2;
@@ -269,7 +285,9 @@ function placeTextOnPoint(rect, text, opts) {
   return label;
 }
 
-export function getSliceRect({ slice, direction, position, padding, measured, view }) {
+export function getSliceRect({
+  slice, direction, position, padding, measured, view
+}) {
   let {
     start,
     end,
@@ -302,9 +320,13 @@ export function getSliceRect({ slice, direction, position, padding, measured, vi
       break;
     case 'outside':
       if (direction === 'rotate') {
-        bounds = getRotatedOusideSliceRect({ slice, measured, padding, view });
+        bounds = getRotatedOusideSliceRect({
+          slice, measured, padding, view
+        });
       } else {
-        bounds = getHorizontalOusideSliceRect({ slice, measured, padding, view });
+        bounds = getHorizontalOusideSliceRect({
+          slice, measured, padding, view
+        });
       }
       break;
     default:
@@ -319,7 +341,6 @@ export function getSliceRect({ slice, direction, position, padding, measured, vi
 
 function findBestPlacement({
   direction,
-  lblStngs,
   measured,
   node,
   placementSettings,
@@ -362,15 +383,17 @@ function findBestPlacement({
  * @property {string} [labels[].placements[].fill='#333'] - Color of the label
  */
 
-export function slices({
-  settings,
-  chart,
-  nodes,
-  rect,
-  renderer,
-  style
-}, findPlacement = findBestPlacement,
-  placer = placeTextOnPoint) {
+export function slices(
+  {
+    settings,
+    chart,
+    nodes,
+    rect,
+    renderer,
+    style
+  }, findPlacement = findBestPlacement,
+  placer = placeTextOnPoint
+) {
   const defaults = extend({
     fontSize: 12,
     fontFamily: 'Arial',
@@ -382,14 +405,11 @@ export function slices({
   defaults.fontSize = parseInt(defaults.fontSize, 10);
 
   const labelSettings = settings.labels.map(labelSetting =>
-    extend({}, defaults, settings, labelSetting)
-  );
+    extend({}, defaults, settings, labelSetting));
 
   const placementSettings = settings.labels.map(labelSetting =>
     labelSetting.placements.map(placement =>
-      extend({}, defaults, settings, labelSetting, placement)
-    )
-  );
+      extend({}, defaults, settings, labelSetting, placement)));
 
   const labelStruct = {};
   const labels = [];

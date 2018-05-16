@@ -34,10 +34,10 @@ function resolveAlign(align, dock) {
  * @param {object} context - The component context
  */
 function resolveLocalSettings({
-    state,
-    style,
-    settings
-  }) {
+  state,
+  style,
+  settings
+}) {
   const defaultStgns = extend(true, {}, state.isDiscrete ? DEFAULT_DISCRETE_SETTINGS : DEFAULT_CONTINUOUS_SETTINGS, style);
   const localStgns = extend(true, {}, defaultStgns, settings.settings);
 
@@ -86,8 +86,12 @@ const axisComponent = {
         activeMode: 'horizontal'
       },
       ticks: [],
-      innerRect: { width: 0, height: 0, x: 0, y: 0 },
-      outerRect: { width: 0, height: 0, x: 0, y: 0 },
+      innerRect: {
+        width: 0, height: 0, x: 0, y: 0
+      },
+      outerRect: {
+        width: 0, height: 0, x: 0, y: 0
+      },
       defaultDock: undefined,
       concreteNodeBuilder: undefined,
       settings: undefined

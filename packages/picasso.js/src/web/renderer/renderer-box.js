@@ -12,13 +12,15 @@
  * @property {number} [margin.top] - Top margin
  */
 
-  /**
+/**
  * Create the renderer box
  * @private
  * @param {renderer-container-def} [opts]
  * @returns {renderer-container-def} A svg renderer instance
  */
-export default function createRendererBox({ x, y, width, height, scaleRatio, margin } = {}) {
+export default function createRendererBox({
+  x, y, width, height, scaleRatio, margin
+} = {}) {
   const box = {
     x: 0,
     y: 0,

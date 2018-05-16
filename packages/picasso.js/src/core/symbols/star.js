@@ -44,6 +44,4 @@ function star(options) {
   };
 }
 
-export {
-  star as default
-};
+export { star as default };

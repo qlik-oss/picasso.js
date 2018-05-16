@@ -43,14 +43,26 @@ describe('Ticks', () => {
   });
 
   it('should produce nice ticks', () => {
-    expect(ticks.generateTicks(0, 1)).to.deep.equal({ start: 0, end: 1, ticks: [0, 1], nfrac: 0 });
-    expect(ticks.generateTicks(-1.2, 5, 4)).to.deep.equal({ start: -5, end: 5, ticks: [-5, 0, 5], nfrac: 0 });
-    expect(ticks.generateTicks(-1.2, 5, 4, true)).to.deep.equal({ start: -2, end: 6, ticks: [-2, 0, 2, 4, 6], nfrac: 0 });
+    expect(ticks.generateTicks(0, 1)).to.deep.equal({
+      start: 0, end: 1, ticks: [0, 1], nfrac: 0
+    });
+    expect(ticks.generateTicks(-1.2, 5, 4)).to.deep.equal({
+      start: -5, end: 5, ticks: [-5, 0, 5], nfrac: 0
+    });
+    expect(ticks.generateTicks(-1.2, 5, 4, true)).to.deep.equal({
+      start: -2, end: 6, ticks: [-2, 0, 2, 4, 6], nfrac: 0
+    });
   });
 
   it('should produce nice ticks with negative range', () => {
-    expect(ticks.generateTicks(1, 0)).to.deep.equal({ start: 1, end: 0, ticks: [1, 0], nfrac: 0 });
-    expect(ticks.generateTicks(5, -1.2, 4)).to.deep.equal({ start: 5, end: -5, ticks: [5, 0, -5], nfrac: 0 });
-    expect(ticks.generateTicks(5, -1.2, 4, true)).to.deep.equal({ start: 6, end: -2, ticks: [6, 4, 2, 0, -2], nfrac: 0 });
+    expect(ticks.generateTicks(1, 0)).to.deep.equal({
+      start: 1, end: 0, ticks: [1, 0], nfrac: 0
+    });
+    expect(ticks.generateTicks(5, -1.2, 4)).to.deep.equal({
+      start: 5, end: -5, ticks: [5, 0, -5], nfrac: 0
+    });
+    expect(ticks.generateTicks(5, -1.2, 4, true)).to.deep.equal({
+      start: 6, end: -2, ticks: [6, 4, 2, 0, -2], nfrac: 0
+    });
   });
 });

@@ -67,7 +67,9 @@ export default function scrollApi() {
      * @return {object} with min, max, start & viewSize
      */
     getState() {
-      return { min, max, start, viewSize };
+      return {
+        min, max, start, viewSize
+      };
     }
   };
 

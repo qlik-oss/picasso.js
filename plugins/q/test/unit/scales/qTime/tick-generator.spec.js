@@ -1,6 +1,4 @@
-import {
-  scaleLinear
-} from 'd3-scale';
+import { scaleLinear } from 'd3-scale';
 import tickGenerator from '../../../../src/scales/qTime/tick-generator';
 
 describe('qTime - Tick generator', () => {

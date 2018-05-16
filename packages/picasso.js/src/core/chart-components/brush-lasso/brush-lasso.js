@@ -173,7 +173,9 @@ function resetState() {
     rendererBounds: null,
     componentDelta: null,
     brushConfig: null,
-    lineBrushShape: { x1: 0, y1: 0, x2: 0, y2: 0 } // Keep a single shape instance to avoid instantiating a new object on each lookup
+    lineBrushShape: {
+      x1: 0, y1: 0, x2: 0, y2: 0
+    } // Keep a single shape instance to avoid instantiating a new object on each lookup
   };
 }
 

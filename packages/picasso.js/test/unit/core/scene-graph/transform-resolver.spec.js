@@ -3,7 +3,7 @@ import resolveTransform from '../../../../src/core/scene-graph/transform-resolve
 describe('Transform resolver', () => {
   let g,
     transform,
-    sandbox = sinon.sandbox.create();
+    sandbox = sinon.createSandbox();
 
   beforeEach(() => {
     g = {

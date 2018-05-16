@@ -20,6 +20,4 @@ function line(options) {
   };
 }
 
-export {
-  line as default
-};
+export { line as default };

@@ -31,6 +31,4 @@ function nPolygon(options) {
   };
 }
 
-export {
-  nPolygon as default
-};
+export { nPolygon as default };

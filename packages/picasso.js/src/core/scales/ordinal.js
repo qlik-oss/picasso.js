@@ -1,6 +1,4 @@
-import {
-  scaleOrdinal
-} from 'd3-scale';
+import { scaleOrdinal } from 'd3-scale';
 import extend from 'extend';
 import resolveSettings from './settings-resolver';
 
@@ -9,7 +7,7 @@ const DEFAULT_SETTINGS = {
   range: []
 };
 
- /**
+/**
  * @alias scaleOrdinal
  * @private
  * @param { Object } settings

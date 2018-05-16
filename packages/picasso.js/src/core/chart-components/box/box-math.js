@@ -20,7 +20,9 @@ export function cap(min, max, value) {
  * @param {number} params.maxPx Maximum number of pixels, i.e. the width or height
  * @ignore
  */
-export function resolveDiff({ start, end, minPx = 0.1, maxPx = 1 }) {
+export function resolveDiff({
+  start, end, minPx = 0.1, maxPx = 1
+}) {
   const high = Math.max(start, end);
   const low = Math.min(start, end);
   const highModified = cap(-0.1, 1.2, high);

@@ -103,7 +103,9 @@ function reduceLayoutRect(logicalContainerRect, components, hiddenComponents, se
     width: logicalContainerRect.width,
     height: logicalContainerRect.height
   };
-  const edgeBleed = { left: 0, right: 0, top: 0, bottom: 0 };
+  const edgeBleed = {
+    left: 0, right: 0, top: 0, bottom: 0
+  };
 
   const sortedComponents = components.slice();
   sortedComponents.sort((a, b) => a.config.prioOrder() - b.config.prioOrder()); // lower prioOrder will have higher prio
@@ -162,8 +164,12 @@ function boundingBox(rects) {
 }
 
 function positionComponents(components, logicalContainerRect, reducedRect, containerRect) {
-  const vRect = { x: reducedRect.x, y: reducedRect.y, width: reducedRect.width, height: reducedRect.height };
-  const hRect = { x: reducedRect.x, y: reducedRect.y, width: reducedRect.width, height: reducedRect.height };
+  const vRect = {
+    x: reducedRect.x, y: reducedRect.y, width: reducedRect.width, height: reducedRect.height
+  };
+  const hRect = {
+    x: reducedRect.x, y: reducedRect.y, width: reducedRect.width, height: reducedRect.height
+  };
 
   const referencedComponents = {};
 

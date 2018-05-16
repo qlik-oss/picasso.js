@@ -9,7 +9,7 @@ describe('circle', () => {
       circle;
 
     beforeEach(() => {
-      sandbox = sinon.sandbox.create();
+      sandbox = sinon.createSandbox();
 
       g = {
         beginPath: sandbox.spy(),
@@ -60,7 +60,7 @@ describe('circle', () => {
 
     it('should fire fill if fill condition is truthy', () => {
       truthys.forEach((value) => {
-        g.fill.reset();
+        g.fill.resetHistory();
 
         render(circle, { g, doFill: value, doStroke: false });
 
@@ -78,7 +78,7 @@ describe('circle', () => {
 
     it('should fire stroke if stroke condition is truthy', () => {
       truthys.forEach((value) => {
-        g.stroke.reset();
+        g.stroke.resetHistory();
 
         render(circle, { g, doFill: false, doStroke: value });
 

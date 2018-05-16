@@ -26,7 +26,9 @@ describe('Brush Area', () => {
   let rendererSpy;
 
   beforeEach(() => {
-    rect = { x: 1, y: 2, width: 100, height: 200 };
+    rect = {
+      x: 1, y: 2, width: 100, height: 200
+    };
     container = {
       inner: rect,
       outer: rect
@@ -129,7 +131,7 @@ describe('Brush Area', () => {
 
   it('should require `start` event before `move` event', () => {
     instance = componentFixture.simulateCreate(brushAreaDir, config);
-    rendererSpy.reset();
+    rendererSpy.resetHistory();
     instance.def.move(nativeEvent(10, 20));
 
     expect(rendererSpy).to.not.have.been.called;
@@ -137,7 +139,7 @@ describe('Brush Area', () => {
 
   it('should require `start` event before `end` event', () => {
     instance = componentFixture.simulateCreate(brushAreaDir, config);
-    rendererSpy.reset();
+    rendererSpy.resetHistory();
     instance.def.end(nativeEvent(10, 20)); // If started, would render empty nodes
 
     expect(rendererSpy).to.not.have.been.called;
@@ -145,7 +147,7 @@ describe('Brush Area', () => {
 
   it('should require `start` event before `cancel` event', () => {
     instance = componentFixture.simulateCreate(brushAreaDir, config);
-    rendererSpy.reset();
+    rendererSpy.resetHistory();
     instance.def.cancel(nativeEvent(10, 20)); // If started, would render empty nodes
 
     expect(rendererSpy).to.not.have.been.called;
@@ -154,7 +156,7 @@ describe('Brush Area', () => {
   it('should require to be inside the component container on `start` event', () => {
     instance = componentFixture.simulateCreate(brushAreaDir, config);
     componentFixture.simulateRender(container);
-    rendererSpy.reset();
+    rendererSpy.resetHistory();
     instance.def.start(nativeEvent(1000, 2000));
     instance.def.move(nativeEvent(10, 20)); // If started, would render here
 

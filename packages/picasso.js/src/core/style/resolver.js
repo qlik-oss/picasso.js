@@ -81,6 +81,4 @@ function resolve(style, references) {
   return res(style, references, []);
 }
 
-export {
-  resolve as default
-};
+export { resolve as default };

@@ -109,9 +109,9 @@ describe('legend-item-renderer', () => {
     });
 
     it('should not overflow allowd spread', () => {
-       // 20 in row height + 4 spacing should fit two rows and result in 3 columns (parallels)
-       // 3 columns = 10 * 3 + 2 * 4 = 38
-       // limit spread to < 38 should limit the parallels to 2
+      // 20 in row height + 4 spacing should fit two rows and result in 3 columns (parallels)
+      // 3 columns = 10 * 3 + 2 * 4 = 38
+      // limit spread to < 38 should limit the parallels to 2
       expect(parallelize(48, 37, {
         items: [1, 2, 3, 4, 5, 6],
         layout: { size: 5, margin: { vertical: 4 } },
@@ -132,14 +132,20 @@ describe('legend-item-renderer', () => {
             maxItemBounds: { width: 20, height: 10 }
           }
         };
-        rendered = getItemsToRender({
-          viewRect: { x: 0, y: 0, width: 100, height: 20 }
-        },
-        { x: 0, y: -12, width: 100, height: 400 }, { // rows start at -12 and increase by 15 => -12, 3, 18, 33
-          itemized,
-          create: ({ x, y, item }) => ({ item: { x, y, label: item } }),
-          parallels: 2
-        });
+        rendered = getItemsToRender(
+          {
+            viewRect: {
+              x: 0, y: 0, width: 100, height: 20
+            }
+          },
+          {
+            x: 0, y: -12, width: 100, height: 400
+          }, { // rows start at -12 and increase by 15 => -12, 3, 18, 33
+            itemized,
+            create: ({ x, y, item }) => ({ item: { x, y, label: item } }),
+            parallels: 2
+          }
+        );
       });
 
       it('should position items in two columns', () => {
@@ -163,8 +169,12 @@ describe('legend-item-renderer', () => {
           }
         };
         rendered = getItemsToRender({
-          viewRect: { x: 0, y: 0, width: 30, height: 100 }
-        }, { x: -22, y: 0, width: 200, height: 400 }, { // columns start at -22 and increase by 26 => -22, 4, 30, 56
+          viewRect: {
+            x: 0, y: 0, width: 30, height: 100
+          }
+        }, {
+          x: -22, y: 0, width: 200, height: 400
+        }, { // columns start at -22 and increase by 26 => -22, 4, 30, 56
           itemized,
           create: ({ x, y, item }) => ({ item: { x, y, label: item } }),
           parallels: 2

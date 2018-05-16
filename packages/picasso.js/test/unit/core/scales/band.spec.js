@@ -169,5 +169,5 @@ describe('OrdinalScale', () => {
     scale.domain(['Jan', 'Apr', 'Qct', 'Dec']).range(['Q1', 'Q2', 'Q3', 'Q4']);
     expect(scale.start).to.equal('Jan');
     expect(scale.end).to.equal('Dec');
-  });*/
+  }); */
 });

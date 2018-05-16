@@ -98,6 +98,4 @@ function stacked(data, config, ds) {
   data.fields.push(field);
 }
 
-export {
-  stacked as default
-};
+export { stacked as default };

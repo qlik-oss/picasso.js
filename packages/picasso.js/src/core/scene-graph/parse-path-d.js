@@ -41,7 +41,9 @@ function arcToPoints(s, startX, startY) {
     return points;
   }
 
-  ({ cx, cy, rx, ry, sweepAngle, startAngle } = arcToCenter(rx, ry, rotation, largeArcFlag, sweepFlag, endX, endY, startX, startY));
+  ({
+    cx, cy, rx, ry, sweepAngle, startAngle
+  } = arcToCenter(rx, ry, rotation, largeArcFlag, sweepFlag, endX, endY, startX, startY));
 
   // Approximation of perimeter
   const p = Math.abs(sweepAngle * Math.sqrt((Math.pow(rx, 2) + Math.pow(ry, 2)) / 2));
@@ -275,6 +277,4 @@ function pathToPoints(path) {
   return segments;
 }
 
-export {
-  pathToPoints as default
-};
+export { pathToPoints as default };

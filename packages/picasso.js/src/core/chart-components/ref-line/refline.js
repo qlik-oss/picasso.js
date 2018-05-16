@@ -230,13 +230,17 @@ const refLineComponent = {
 
       if (show) {
         // Create line with labels
-        createLineWithLabel({ chart: this.chart, blueprint: this.blueprint, renderer: this.renderer, p, settings, items });
+        createLineWithLabel({
+          chart: this.chart, blueprint: this.blueprint, renderer: this.renderer, p, settings, items
+        });
       }
     });
 
     // Handle out of bounds
     if (settings.style.oob.show) {
-      oobManager({ blueprint: this.blueprint, oob, settings, items });
+      oobManager({
+        blueprint: this.blueprint, oob, settings, items
+      });
     }
 
     return items;
