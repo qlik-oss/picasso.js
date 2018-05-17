@@ -101,28 +101,28 @@ function createDisplayPoints(dataPoints, {
 }, pointSize, shapeFn) {
   return dataPoints.filter(p =>
     !isNaN(p.x + p.y)).map((p) => {
-    const s = notNumber(p.size) ? DEFAULT_ERROR_SETTINGS.errorShape : p;
-    const size = pointSize.min + (s.size * (pointSize.max - pointSize.min));
-    const shapeSpec = {
-      type: s.shape === 'rect' ? 'square' : s.shape,
-      label: p.label,
-      x: p.x * width,
-      y: p.y * height,
-      fill: s.fill,
-      size: Math.min(pointSize.maxGlobal, Math.max(pointSize.minGlobal, size)),
-      stroke: s.stroke,
-      strokeWidth: s.strokeWidth,
-      strokeDasharray: s.strokeDasharray,
-      opacity: s.opacity
-    };
-    if (s === p.errorShape) {
-      shapeSpec.width = s.width;
-    }
-    const shape = shapeFn(shapeSpec);
+      const s = notNumber(p.size) ? DEFAULT_ERROR_SETTINGS.errorShape : p;
+      const size = pointSize.min + (s.size * (pointSize.max - pointSize.min));
+      const shapeSpec = {
+        type: s.shape === 'rect' ? 'square' : s.shape,
+        label: p.label,
+        x: p.x * width,
+        y: p.y * height,
+        fill: s.fill,
+        size: Math.min(pointSize.maxGlobal, Math.max(pointSize.minGlobal, size)),
+        stroke: s.stroke,
+        strokeWidth: s.strokeWidth,
+        strokeDasharray: s.strokeDasharray,
+        opacity: s.opacity
+      };
+      if (s === p.errorShape) {
+        shapeSpec.width = s.width;
+      }
+      const shape = shapeFn(shapeSpec);
 
-    shape.data = p.data;
-    return shape;
-  });
+      shape.data = p.data;
+      return shape;
+    });
 }
 
 const component = {
