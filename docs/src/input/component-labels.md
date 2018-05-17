@@ -125,6 +125,61 @@ componenst: [
 ]
 ```
 
+### `rows`
+
+A strategy used to place multiple rows of text (that can be styled differently) in a shape.
+
+Currently it supports shapes of type 'rect' and 'circle'.
+As a special case it detects 360-degree pie slices are treated as circles.
+
+Use align, justify & padding to control the placement labels in the shape. The text is ellipsed if necessary.
+
+#### Example
+
+```js
+componenst: [
+  {
+    type: 'rows',
+    key: 'rects',
+    displayOrder: 1,
+    /* ... */
+  },
+  {
+    type: 'labels',
+    displayOrder: 2 // must be larger than the displayOrder for the 'rects' component
+    settings: {
+      sources: [{
+        component: 'rects',
+        selector: 'rect', // select all 'rect' shapes from the 'rects'
+        strategy: {
+          type: 'rows', // the strategy type
+          settings: {
+            fontFamily: 'Helvetica',
+            fontSize: 14,
+            fill: ({ data }) => { return '#333'; }, // select a color contrasting the containing shape
+            padding: 4,
+            justify: 0.5,
+            align: 0.5,
+            labels: [{
+              fontSize: 24, // change this label to a larger font size
+              label({ data }) { // dimension label
+                return data ? data.label : '';
+              }
+            }, { // data label
+              label({ data }) {
+                return data ? data.value.label : '';
+              }
+            } ]
+          }
+        }
+      }]
+    }
+  }
+]
+```
+
+![Rows labeling strategy](/img/rows-labels.png)
+
 ## API Reference
 
 ### Settings

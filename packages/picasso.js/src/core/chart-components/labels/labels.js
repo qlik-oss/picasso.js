@@ -1,12 +1,4 @@
-import {
-  bars,
-  slices
-} from './strategies';
-
-const strategies = {
-  bar: bars,
-  slice: slices
-};
+import strategies from './strategies';
 
 /**
  * @typedef {object} component--labels
