@@ -1,6 +1,4 @@
-import {
-  rows
-} from '../../../../../../src/core/chart-components/labels/strategies/rows';
+import { rows } from '../../../../../../src/core/chart-components/labels/strategies/rows';
 
 describe('labeling - rows', () => {
   describe('rows strategy', () => {
@@ -23,7 +21,12 @@ describe('labeling - rows', () => {
       };
       const nodes = [{
         type: 'rect',
-        bounds: { x: 0, y: 0, width: 100, height: 100 }
+        bounds: {
+          x: 0,
+          y: 0,
+          width: 100,
+          height: 100
+        }
       }];
       renderer.measureText.returns({ width: 20, height: 10 });
       let labels = rows({
@@ -118,7 +121,12 @@ describe('labeling - rows', () => {
       };
       const nodes = [{
         type: 'rect',
-        bounds: { x: 0, y: 0, width: 100, height: 100 }
+        bounds: {
+          x: 0,
+          y: 0,
+          width: 100,
+          height: 100
+        }
       }];
       renderer.measureText.returns({ width: 20, height: 10 });
       let labels = rows({
@@ -144,7 +152,12 @@ describe('labeling - rows', () => {
       };
       const nodes = [{
         type: 'rect',
-        bounds: { x: 0, y: 0, width: 20, height: 20 }
+        bounds: {
+          x: 0,
+          y: 0,
+          width: 20,
+          height: 20
+        }
       }];
       renderer.measureText.returns({ width: 20, height: 10 });
       let labels = rows({

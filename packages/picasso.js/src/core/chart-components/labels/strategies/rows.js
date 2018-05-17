@@ -49,7 +49,13 @@ function getRectFromCircle({ cx, cy, r }) {
   };
 }
 function getSliceBounds(slice) {
-  let { start, end, innerRadius, outerRadius, offset } = slice;
+  let {
+    start,
+    end,
+    innerRadius,
+    outerRadius,
+    offset
+  } = slice;
   if (start + (2 * Math.PI) !== end) { return null; }
   let r = innerRadius !== 0 ? innerRadius : outerRadius;
   return getRectFromCircle({ cx: offset.x, cy: offset.y, r });
@@ -107,8 +113,7 @@ export function rows({
   const rowSettings = extend({}, defaults, settings);
 
   const labelSettings = settings.labels.map(labelSetting =>
-    extend({}, rowSettings, labelSetting)
-  );
+    extend({}, rowSettings, labelSetting));
 
   const labelStruct = {};
   const labels = [];

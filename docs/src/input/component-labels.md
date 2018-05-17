@@ -130,7 +130,7 @@ componenst: [
 A strategy used to place multiple rows of text (that can be styled differently) in a shape.
 
 Currently it supports shapes of type 'rect' and 'circle'.
-As a special case it detects 360 degree pie slices are treated as circles.
+As a special case it detects 360-degree pie slices are treated as circles.
 
 Use align, justify & padding to control the placement labels in the shape. The text is ellipsed if necessary.
 
