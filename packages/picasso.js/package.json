@@ -54,7 +54,7 @@
     "hammerjs": "^2.0.8",
     "jsdoc": "^3.5.5",
     "node-event-emitter": "0.0.1",
-    "path2d-polyfill": "0.1.0",
+    "path2d-polyfill": "0.1.2",
     "rimraf": "^2.6.2",
     "snabbdom": "^0.7.1",
     "test-utils": "0.0.1"

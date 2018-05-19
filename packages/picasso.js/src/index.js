@@ -1,3 +1,4 @@
+import 'path2d-polyfill';
 import extend from 'extend';
 import about from './about';
 
@@ -6,7 +7,6 @@ import {
   renderer
 } from './core';
 
-import './web';
 
 import {
   components,
