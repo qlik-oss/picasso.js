@@ -7,8 +7,7 @@
   "commands": {
     "publish": {
       "ignore": [
-        "test-utils",
-        "path2d-polyfill"
+        "test-utils"
       ]
     }
   },
