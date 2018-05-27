@@ -3,7 +3,7 @@
   "info": {
     "name": "picasso.js",
     "description": "A charting library streamlined for building visualizations for the Qlik Sense Analytics platform.",
-    "version": "0.7.0",
+    "version": "0.8.0",
     "license": "MIT"
   },
   "entries": {
@@ -1508,6 +1508,74 @@
                           },
                           "kind": "object"
                         }
+                      }
+                    },
+                    "kind": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "rows-label-strategy": {
+          "kind": "object",
+          "entries": {
+            "settings": {
+              "kind": "object",
+              "entries": {
+                "fontFamily": {
+                  "optional": true,
+                  "defaultValue": "'Arial'",
+                  "type": "string"
+                },
+                "fontSize": {
+                  "optional": true,
+                  "defaultValue": 12,
+                  "type": "number"
+                },
+                "justify": {
+                  "optional": true,
+                  "defaultValue": 0.5,
+                  "type": "number"
+                },
+                "padding": {
+                  "optional": true,
+                  "defaultValue": 4,
+                  "type": "number"
+                },
+                "labels": {
+                  "kind": "array",
+                  "items": {
+                    "entries": {
+                      "label": {
+                        "description": "The text value",
+                        "kind": "union",
+                        "items": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "function"
+                          }
+                        ]
+                      },
+                      "align": {
+                        "optional": true,
+                        "defaultValue": 0.5,
+                        "type": "number"
+                      },
+                      "fill": {
+                        "optional": true,
+                        "defaultValue": "'#333'",
+                        "kind": "union",
+                        "items": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "function"
+                          }
+                        ]
                       }
                     },
                     "kind": "object"

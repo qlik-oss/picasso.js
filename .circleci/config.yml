@@ -11,7 +11,7 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      
+
       # Restore caches
       - restore_cache:
           key: v1-cache-{{ checksum "package-lock.json" }}
@@ -25,19 +25,9 @@ jobs:
           key: v1-cache-docs-{{ checksum "docs/package-lock.json" }}
       - restore_cache:
           key: v1-cache-site-{{ checksum "website/package-lock.json" }}
-      
+
       - run: npm install
       - run: npm run bootstrap
-      - run:
-          name: docs
-          command: |
-            cd ./docs
-            npm install
-      - run:
-          name: website
-          command: |
-            cd ./website
-            npm install
 
     ## Save to cache
       - save_cache:
@@ -64,7 +54,7 @@ jobs:
           key: v1-cache-site-{{ checksum "website/package-lock.json" }}
           paths:
             - ./website/node_modules
-          
+
       - store_artifacts:
           path: package.json
 
@@ -78,8 +68,8 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/picassojs
-      - run: npm run bootstrap
-      - run: NODE_ENV=production npm run build
+      - run: npm run link
+      - run: npm run build
       - store_artifacts:
           path: packages/picasso.js/dist
       - store_artifacts:
@@ -91,32 +81,15 @@ jobs:
           paths:
             - packages/*/dist
             - plugins/*/dist
-
-  build-dev:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: ~/picassojs
-      - run: npm run bootstrap
-      - run: npm run build
-      - store_artifacts:
-          path: packages/picasso.js/dist
-      - store_artifacts:
-          path: plugins/q/dist
-      - store_artifacts:
-          path: plugins/hammer/dist
+            - docs/dist
+            - docs/spec.json
 
   docs-website:
     <<: *defaults
     steps:
       - attach_workspace:
           at: ~/picassojs
-      - run: npm run docs
-      - run:
-          name: website
-          command: |
-            cd ./website
-            npm run build
+      - run: npm run build:website
       - store_artifacts:
           path: docs/spec.json
       - store_artifacts:
@@ -131,15 +104,15 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/picassojs
-      - run: npm run bootstrap
+      - run: npm run link
       - run: npm run lint
-    
+
   test-unit:
     <<: *defaults
     steps:
       - attach_workspace:
           at: ~/picassojs
-      - run: npm run bootstrap
+      - run: npm run link
       - run: npm run test:unit:coverage
       - run: 
           name: Publish coverage
@@ -152,7 +125,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/picassojs
-      - run: npm run bootstrap
+      - run: npm run link
       - run: npm run test:component:coverage
 
   test-integration:
@@ -160,9 +133,9 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/picassojs
-      - run: npm run bootstrap
+      - run: npm run link
       - run: npm run test:integration:local
-      
+
   deploy-docs:
     docker:
       - image: cibuilds/aws:1.14.38
@@ -182,22 +155,19 @@ workflows:
       - build:
           requires:
             - install
-      - build-dev:
-          requires:
-            - install
-      - docs-website:
-          requires:
-            - install
       - lint:
           requires:
-            - build
+            - install
       - test-unit:
           requires:
-            - build
+            - install
       - test-component:
           requires:
-            - build
+            - install
       - test-integration:
+          requires:
+            - build
+      - docs-website:
           requires:
             - build
       - deploy-docs:

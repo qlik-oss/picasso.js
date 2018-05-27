@@ -1,16 +1,14 @@
-"use strict"; // eslint-disable-line
-
-const rimraf = require('rimraf'); // eslint-disable-line import/no-unresolved
-const handlebars = require('handlebars'); // eslint-disable-line import/no-unresolved
-require('handlebars-helpers')({ handlebars }); // eslint-disable-line import/no-unresolved
+const rimraf = require('rimraf');
 const fs = require('fs');
 const path = require('path');
 const spec = require('./spec.json');
 
-const glob = require('glob'); // eslint-disable-line import/no-unresolved
+const glob = require('glob');
+const handlebars = require('handlebars');
+require('handlebars-helpers')({ handlebars });
 
 function log(msg) {
-  console.log(msg);// eslint-disable-line no-console
+  console.log(msg);
 }
 
 log('Generating docs...');
@@ -94,7 +92,7 @@ function compileMarkdownFiles(jsdocdata) {
       jsdocdata._post = [];
       jsdocdata._title = title;
 
-      log(`Processing file ${relativePath}`);
+      // log(`Processing file ${relativePath}`);
 
       let output = template(jsdocdata);
 
@@ -142,9 +140,7 @@ handlebars.registerHelper('anchor', (...args) => {
   name = encodeURIComponent(name);
   spec._registry = spec._registry || [];
   spec._registry.push(name);
-  return new handlebars.SafeString(
-    `<a name='${name}' href='#${name}'># </a>`
-  );
+  return new handlebars.SafeString(`<a name='${name}' href='#${name}'># </a>`);
 });
 
 handlebars.registerHelper('no', v => v || 'No');
@@ -200,7 +196,7 @@ handlebars.registerHelper('sample', (node) => {
 });
 
 handlebars.registerHelper('helperMissing', (context) => {
-  log(`Template defines {{ ${context.name} }}, but not provided in context`);
+  // log(`Template defines {{ ${context.name} }}, but not provided in context`);
   return '';
 });
 

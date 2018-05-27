@@ -1,22 +1,18 @@
 {
-  "name": "jsdoc-test",
-  "version": "1.0.0",
-  "description": "",
+  "name": "docs",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Documentation source",
   "scripts": {
-    "docs": "jsdoc -r ../packages/picasso.js/src -p ../packages/picasso.js/package.json -X | jsdoc2spec -c ./spec.config.js && node gen"
+    "build": "jsdoc -r ../packages/picasso.js/src -p ../packages/picasso.js/package.json -X | jsdoc2spec -c ./spec.config.js && node gen"
   },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "babel-register": "^6.18.0",
+  "devDependencies": {
     "glob": "^7.1.1",
     "handlebars": "^4.0.6",
     "handlebars-helpers": "0.7.5",
     "jsdoc": "3.4.3",
-    "jsdoc-json": "^2.0.0",
     "jsdoc2spec": "^0.6.0",
     "marked": "^0.3.12",
-    "rimraf": "^2.5.4",
     "striptags": "2.1.1"
   }
 }

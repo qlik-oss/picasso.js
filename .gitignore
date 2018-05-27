@@ -10,7 +10,6 @@ dist/
 coverage/
 test/unit/coverage/
 test/component/coverage/
-docs/api
 **/test/integration/artifacts/diff/
 **/test/integration/artifacts/regression/
 **/test/integration/artifacts/screenshots/
