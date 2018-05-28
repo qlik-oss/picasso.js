@@ -112,7 +112,7 @@ export function getBarRect({
 export function findBestPlacement({
   direction,
   fitsHorizontally,
-  lblStngs,
+  // lblStngs,
   measured,
   node,
   orientation,
@@ -149,10 +149,7 @@ export function findBestPlacement({
   }
 
   // fallback strategy - place the text in the largest rectangle
-  if (orientation === 'v' && !fitsHorizontally && !bounds && largest.height > lblStngs.fontSize * 2) {
-    bounds = largest;
-    p = boundaries.indexOf(bounds);
-  } else if (orientation === 'h' && !bounds && largest.height > lblStngs.fontSize * 2) {
+  if (!bounds) {
     bounds = largest;
     p = boundaries.indexOf(bounds);
   }
