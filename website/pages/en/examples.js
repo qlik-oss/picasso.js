@@ -221,8 +221,8 @@ const miscellaneous = [{
   }
 }];
 
-const Sample = props => (
-  <div className="cell">
+const Sample = (props, idx) => (
+  <div className="cell" key={idx}>
     <div className="card">
       <a href={props.links.observable} target="_blank">
         <div style={{
@@ -239,8 +239,8 @@ const Sample = props => (
   </div>
 );
 
-const Empty = () => (
-  <div className="cell"></div>
+const Empty = (v) => (
+  <div className="cell" key={v}></div>
 );
 
 const Category = props => (

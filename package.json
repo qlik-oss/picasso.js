@@ -6,17 +6,19 @@
   },
   "scripts": {
     "bootstrap": "lerna bootstrap --hoist",
-    "build": "lerna run build",
-    "build:dev": "lerna run build:dev",
+    "build": "NODE_ENV=production lerna run build --concurrency 99",
+    "build:dev": "lerna run build --concurrency 99",
     "build:watch": "lerna run build:watch --stream --no-sort --concurrency 99",
+    "build:website": "cd website && npm install && npm run build",
     "bump": "lerna publish --skip-npm --skip-git --ignore=test-utils",
+    "clean": "lerna clean",
     "lint": "lerna run lint",
+    "link": "lerna link",
     "test": "lerna run test --ignore=test-utils",
     "test:component:coverage": "aw -c aw.config.comp.coverage.js",
     "test:integration:local": "lerna run test:integration:local",
     "test:unit:coverage": "aw -c aw.config.unit.coverage.js",
-    "test:unit:coverage:publish": "codeclimate-test-reporter < coverage/unit/lcov.info",
-    "docs": "cd docs && npm run docs"
+    "test:unit:coverage:publish": "codeclimate-test-reporter < coverage/unit/lcov.info"
   },
   "devDependencies": {
     "after-work.js": "^4.2.0",

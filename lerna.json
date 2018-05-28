@@ -1,13 +1,15 @@
 {
-  "lerna": "2.9.0",
+  "lerna": "2.11.0",
   "packages": [
     "packages/*",
-    "plugins/*"
+    "plugins/*",
+    "docs"
   ],
   "commands": {
     "publish": {
       "ignore": [
-        "test-utils"
+        "test-utils",
+        "docs"
       ]
     }
   },

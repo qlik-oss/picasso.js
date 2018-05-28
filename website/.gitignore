@@ -3,7 +3,5 @@ node_modules
 translated_docs
 build
 
-static/js/picasso.min.js
-
 i18n/*
 !i18n/en.json
