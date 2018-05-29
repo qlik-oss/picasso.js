@@ -209,8 +209,8 @@ describe('q-brush', () => {
       let v = extractFieldFromId('/qHyperCube/qDimensionInfo/3');
       expect(v).to.eql({
         path: '/qHyperCubeDef',
-        index: 3,
-        type: 'dimension'
+        dimensionIdx: 3,
+        measureIdx: -1
       });
     });
 
@@ -218,8 +218,8 @@ describe('q-brush', () => {
       let v = extractFieldFromId('/qHyperCube/qMeasureInfo/2');
       expect(v).to.eql({
         path: '/qHyperCubeDef',
-        index: 2,
-        type: 'measure'
+        dimensionIdx: -1,
+        measureIdx: 2
       });
     });
 
@@ -227,8 +227,8 @@ describe('q-brush', () => {
       let v = extractFieldFromId('/qHyperCube/qDimensionInfo/2/qAttrDimInfo/5');
       expect(v).to.eql({
         path: '/qHyperCubeDef/qDimensions/2/qAttributeDimensions/5',
-        index: 0,
-        type: 'dimension'
+        dimensionIdx: 0,
+        measureIdx: -1
       });
     });
 
@@ -236,8 +236,8 @@ describe('q-brush', () => {
       let v = extractFieldFromId('/qHyperCube/qDimensionInfo/2/qAttrDimInfo/5/3');
       expect(v).to.eql({
         path: '/qHyperCubeDef/qDimensions/2/qAttributeDimensions/5',
-        index: 3,
-        type: 'dimension'
+        dimensionIdx: 3,
+        measureIdx: -1
       });
     });
 
@@ -245,8 +245,8 @@ describe('q-brush', () => {
       let v = extractFieldFromId('/qHyperCube/qMeasureInfo/2/qAttrDimInfo/4');
       expect(v).to.eql({
         path: '/qHyperCubeDef/qMeasures/2/qAttributeDimensions/4',
-        index: 0,
-        type: 'dimension'
+        dimensionIdx: 0,
+        measureIdx: -1
       });
     });
 
@@ -254,8 +254,8 @@ describe('q-brush', () => {
       let v = extractFieldFromId('qHyperCube/qMeasureInfo/2/qAttrDimInfo/4/3');
       expect(v).to.eql({
         path: '/qHyperCubeDef/qMeasures/2/qAttributeDimensions/4',
-        index: 3,
-        type: 'dimension'
+        dimensionIdx: 3,
+        measureIdx: -1
       });
     });
 
@@ -268,8 +268,8 @@ describe('q-brush', () => {
       });
       expect(v).to.eql({
         path: '/qHyperCubeDef',
-        index: 7,
-        type: 'measure'
+        dimensionIdx: -1,
+        measureIdx: 7
       });
     });
 
@@ -282,9 +282,88 @@ describe('q-brush', () => {
       });
       expect(v).to.eql({
         path: '/qHyperCubeDef',
-        index: 6,
-        type: 'measure'
+        measureIdx: 6,
+        dimensionIdx: -1
       });
+    });
+
+    it('should map measure layout value on dimension to params', () => {
+      let v = extractFieldFromId('/qTreeData/qDimensionInfo/3/qMeasureInfo/2');
+      expect(v).to.eql({
+        path: '/qTreeDataDef',
+        dimensionIdx: 3,
+        measureIdx: 2
+      });
+    });
+
+    // TODO - figure out how this hould work
+    it.skip('should map attribute expression layout value to params (on dimension)', () => {
+      let v = extractFieldFromId('/qTreeData/qDimensionInfo/1/qAttrExprInfo/1', {
+        qTreeData: {
+          qDimensionInfo: [
+            { qMeasureInfo: [{}, { qAttrExprInfo: [{}, {}] }], qAttrExprInfo: [{}, {}] },
+            { qMeasureInfo: [], qAttrExprInfo: [{}, { /* target */ }, {}] }
+          ]
+        }
+      });
+      expect(v).to.eql({
+        path: '/qTreeDataDef',
+        measureIdx: 6,
+        dimensionIdx: -1
+      });
+    });
+  });
+
+  describe('multiRangeSelectTreeDataValues', () => {
+    beforeEach(() => {
+      brush.brushes.returns([{
+        id: '/qTreeData/qDimensionInfo/1/qMeasureInfo/2',
+        type: 'range',
+        brush: {
+          ranges: () => [{ min: 13, max: 17 }, { min: 4, max: 9 }]
+        }
+      }, {
+        id: '/qTreeData/qDimensionInfo/2/qMeasureInfo/1',
+        type: 'range',
+        brush: {
+          ranges: () => [{ min: -13, max: 6 }]
+        }
+      }]);
+    });
+
+    it('should have method="multiRangeSelectTreeDataValues"', () => {
+      const selections = qBrush(brush);
+      expect(selections[0].method).to.equal('multiRangeSelectTreeDataValues');
+    });
+
+    it('should have valid params', () => {
+      const selections = qBrush(brush);
+      expect(selections[0].params).to.eql([
+        '/qTreeDataDef',
+        [
+          {
+            qMeasureIx: 2,
+            qDimensionIx: 1,
+            qRange: {
+              qMin: 13, qMax: 17, qMinInclEq: true, qMaxInclEq: true
+            }
+          },
+          {
+            qMeasureIx: 2,
+            qDimensionIx: 1,
+            qRange: {
+              qMin: 4, qMax: 9, qMinInclEq: true, qMaxInclEq: true
+            }
+          },
+          {
+            qMeasureIx: 1,
+            qDimensionIx: 2,
+            qRange: {
+              qMin: -13, qMax: 6, qMinInclEq: true, qMaxInclEq: true
+            }
+          }
+        ]
+      ]);
     });
   });
 });

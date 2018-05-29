@@ -2,98 +2,86 @@ import resolve from '../json-path-resolver';
 
 const LAYOUT_TO_PROP = [
   ['qHyperCube', 'qHyperCubeDef'],
+  ['qTreeData', 'qTreeDataDef'],
   ['qDimensionInfo', 'qDimensions'],
   ['qMeasureInfo', 'qMeasures'],
   ['qAttrDimInfo', 'qAttributeDimensions'],
   ['qAttrExprInfo', 'qAttributeExpressions']
 ];
 
-
 const DIM_RX = /\/qDimensionInfo(?:\/(\d+))?/;
 const M_RX = /\/qMeasureInfo\/(\d+)/;
 const ATTR_DIM_RX = /\/qAttrDimInfo\/(\d+)(?:\/(\d+))?/;
 const ATTR_EXPR_RX = /\/qAttrExprInfo\/(\d+)/;
+const HC_RX = /\/?qHyperCube/;
+const TD_RX = /\/?qTreeData/;
+
+const SHORTEN_HC = path => `${path.substr(0, path.indexOf('/qHyperCubeDef') + 14)}`; // 14 = length of '/qHyperCubeDef'
+const SHORTEN_TD = path => `${path.substr(0, path.indexOf('/qTreeDataDef') + 13)}`; // 13 = length of '/qTreeDataDef'
 
 export function extractFieldFromId(id, layout) {
-  let isDimension = false;
-  let index = 0;
   let path = id;
-  const pathToHC = `${path.substr(0, path.indexOf('qHyperCube') + 10)}`; // 10 = length of 'qHyperCube'
+  let dimensionIdx = -1;
+  let measureIdx = -1;
+  let pathToCube = '';
+  let shortenizer = p => p;
+  if (HC_RX.test(id)) {
+    pathToCube = `${path.substr(0, path.indexOf('qHyperCube') + 10)}`; // 10 = length of 'qHyperCube'
+    shortenizer = SHORTEN_HC;
+  } else if (TD_RX.test(id)) {
+    pathToCube = `${path.substr(0, path.indexOf('qTreeData') + 9)}`; // 9 = length of 'qTreeData'
+    shortenizer = SHORTEN_TD;
+  }
 
   let shortenPath = true;
 
   if (DIM_RX.test(id)) {
-    index = +DIM_RX.exec(id)[1];
-    const attr = id.replace(DIM_RX, '');
-    isDimension = true;
-    if (ATTR_DIM_RX.test(attr)) {
-      index = 0; // default to 0
-      const attrDimColIdx = +ATTR_DIM_RX.exec(path)[2];
-      if (!isNaN(attrDimColIdx)) { // use column index if specified
-        index = attrDimColIdx;
-        path = path.replace(/\/\d+$/, '');
-      }
-      shortenPath = false;
-    } else if (ATTR_EXPR_RX.test(attr)) {
-      // attrIdx depends on number of measures + number of attr expressions
-      // in dimensions before this one
-      let attrIdx = 0;
-      if (layout) {
-        const hc = resolve(pathToHC, layout);
+    dimensionIdx = +DIM_RX.exec(id)[1];
+  }
 
-        // offset by number of measures
-        attrIdx += hc.qMeasureInfo.length;
+  if (M_RX.test(id)) {
+    measureIdx = +M_RX.exec(id)[1];
+  }
 
-        // offset by total number of attr expr in dimensions
-        // (assuming attr expr in dimensions are ordered first)
-        attrIdx = hc.qDimensionInfo
-          .slice(0, index)
-          .reduce((v, dim) => v + dim.qAttrExprInfo.length, attrIdx);
-
-        // offset by the actual column value for the attribute expression itself
-        attrIdx += +ATTR_EXPR_RX.exec(path)[1];
-
-        index = attrIdx;
-        isDimension = false;
-      }
+  if (ATTR_DIM_RX.test(id)) {
+    measureIdx = -1;
+    dimensionIdx = 0;
+    const attrCol = +ATTR_DIM_RX.exec(path)[2];
+    if (!isNaN(attrCol)) {
+      dimensionIdx = attrCol;
+      path = path.replace(/\/\d+$/, '');
     }
-  } else if (M_RX.test(id)) {
-    index = +M_RX.exec(id)[1];
-    isDimension = false;
-    const attr = id.replace(M_RX, '');
-    if (ATTR_DIM_RX.test(attr)) {
-      index = 0; // default to 0
-      const attrDimColIdx = +ATTR_DIM_RX.exec(path)[2];
-      if (!isNaN(attrDimColIdx)) { // use column index if specified
-        index = attrDimColIdx;
-        path = path.replace(/\/\d+$/, '');
-      }
-      shortenPath = false;
-      isDimension = true;
-    } else if (ATTR_EXPR_RX.test(attr)) {
-      // depends on number of measures + number of attr expressions
-      // in dimensions and measures before this one
-      let attrIdx = 0;
-      if (layout) {
-        const hc = resolve(pathToHC, layout);
+    shortenPath = false;
+  }
 
-        // offset by number of measures
-        attrIdx += hc.qMeasureInfo.length;
+  if (ATTR_EXPR_RX.test(id)) {
+    // depends on number of measures + number of attr expressions
+    // in dimensions and measures before this one
+    const offset = measureIdx;
+    measureIdx = 0;
+    if (layout) {
+      const hc = resolve(pathToCube, layout);
 
-        // offset by total number of attr expr in dimensions
-        // (assuming attr expr in dimensions are ordered first)
-        attrIdx = hc.qDimensionInfo.reduce((v, dim) => v + dim.qAttrExprInfo.length, attrIdx);
+      // offset by number of measures
+      measureIdx += (hc.qMeasureInfo || []).length;
 
+      // offset by total number of attr expr in dimensions
+      // (assuming attr expr in dimensions are ordered first)
+      if (dimensionIdx > -1) {
+        measureIdx = hc.qDimensionInfo
+          .slice(0, dimensionIdx)
+          .reduce((v, dim) => v + dim.qAttrExprInfo.length, measureIdx);
+        dimensionIdx = -1;
+      } else {
+        measureIdx = hc.qDimensionInfo.reduce((v, dim) => v + dim.qAttrExprInfo.length, measureIdx);
         // offset by total number of attr expr in measures before 'index'
-        attrIdx = hc.qMeasureInfo
-          .slice(0, index)
-          .reduce((v, meas) => v + meas.qAttrExprInfo.length, attrIdx);
-
-        // offset by the actual column value for the attribute expression itself
-        attrIdx += +ATTR_EXPR_RX.exec(path)[1];
-
-        index = attrIdx;
+        measureIdx = hc.qMeasureInfo
+          .slice(0, offset)
+          .reduce((v, meas) => v + meas.qAttrExprInfo.length, measureIdx);
       }
+
+      // offset by the actual column value for the attribute expression itself
+      measureIdx += +ATTR_EXPR_RX.exec(path)[1];
     }
   }
 
@@ -102,7 +90,7 @@ export function extractFieldFromId(id, layout) {
   });
 
   if (shortenPath) {
-    path = `${path.substr(0, path.indexOf('/qHyperCubeDef') + 14)}`; // 14 = length of '/qHyperCubeDef'
+    path = shortenizer(path);
   }
 
   if (path && path[0] !== '/') {
@@ -110,9 +98,9 @@ export function extractFieldFromId(id, layout) {
   }
 
   return {
-    index,
-    path,
-    type: isDimension ? 'dimension' : 'measure'
+    measureIdx,
+    dimensionIdx,
+    path
   };
 }
 
@@ -136,18 +124,19 @@ export default function qBrush(brush, opts = {}, layout) {
   let hasValues = false;
   brush.brushes().forEach((b) => {
     const info = extractFieldFromId(b.id, layout);
-    if (b.type === 'range' && info.type === 'measure') {
+    if (b.type === 'range' && info.measureIdx > -1 && info.dimensionIdx > -1) {
       const ranges = b.brush.ranges();
       if (ranges.length) {
         hasValues = true;
-        if (!methods.rangeSelectHyperCubeValues) {
-          methods.rangeSelectHyperCubeValues = {
+        if (!methods.multiRangeSelectTreeDataValues) {
+          methods.multiRangeSelectTreeDataValues = {
             path: info.path,
             ranges: []
           };
         }
-        ranges.forEach(range => methods.rangeSelectHyperCubeValues.ranges.push({
-          qMeasureIx: info.index,
+        ranges.forEach(range => methods.multiRangeSelectTreeDataValues.ranges.push({
+          qMeasureIx: info.measureIdx,
+          qDimensionIx: info.dimensionIdx,
           qRange: {
             qMin: range.min,
             qMax: range.max,
@@ -156,51 +145,73 @@ export default function qBrush(brush, opts = {}, layout) {
           }
         }));
       }
-    }
-    if (b.type === 'range' && info.type === 'dimension') {
-      const ranges = b.brush.ranges();
-      if (ranges.length) {
-        hasValues = true;
-        if (!methods.selectHyperCubeContinuousRange) {
-          methods.selectHyperCubeContinuousRange = {
-            path: info.path,
-            ranges: []
-          };
-        }
-        ranges.forEach(range => methods.selectHyperCubeContinuousRange.ranges.push({
-          qDimIx: info.index,
-          qRange: {
-            qMin: range.min,
-            qMax: range.max,
-            qMinInclEq: true,
-            qMaxInclEq: false
+    } else {
+      if (b.type === 'range' && info.measureIdx > -1) {
+        const ranges = b.brush.ranges();
+        if (ranges.length) {
+          hasValues = true;
+          if (!methods.rangeSelectHyperCubeValues) {
+            methods.rangeSelectHyperCubeValues = {
+              path: info.path,
+              ranges: []
+            };
           }
-        }));
+          ranges.forEach(range => methods.rangeSelectHyperCubeValues.ranges.push({
+            qMeasureIx: info.measureIdx,
+            qRange: {
+              qMin: range.min,
+              qMax: range.max,
+              qMinInclEq: true,
+              qMaxInclEq: true
+            }
+          }));
+        }
       }
-    }
-    if (b.type === 'value' && info.type === 'dimension') {
-      if (byCells) {
-        if (!methods.selectHyperCubeCells) {
-          methods.selectHyperCubeCells = {
-            path: info.path,
-            cols: []
-          };
+      if (b.type === 'range' && info.dimensionIdx > -1) {
+        const ranges = b.brush.ranges();
+        if (ranges.length) {
+          hasValues = true;
+          if (!methods.selectHyperCubeContinuousRange) {
+            methods.selectHyperCubeContinuousRange = {
+              path: info.path,
+              ranges: []
+            };
+          }
+          ranges.forEach(range => methods.selectHyperCubeContinuousRange.ranges.push({
+            qDimIx: info.dimensionIdx,
+            qRange: {
+              qMin: range.min,
+              qMax: range.max,
+              qMinInclEq: true,
+              qMaxInclEq: false
+            }
+          }));
         }
+      }
+      if (b.type === 'value' && info.dimensionIdx > -1) {
+        if (byCells) {
+          if (!methods.selectHyperCubeCells) {
+            methods.selectHyperCubeCells = {
+              path: info.path,
+              cols: []
+            };
+          }
 
-        methods.selectHyperCubeCells.cols.push(info.index);
-        if (b.id === primarySource || (!primarySource && !methods.selectHyperCubeCells.values)) {
-          methods.selectHyperCubeCells.values = b.brush.values()
-            .map(s => +s)
-            .filter(v => !isNaN(v));
-          hasValues = !!methods.selectHyperCubeCells.values.length;
+          methods.selectHyperCubeCells.cols.push(info.dimensionIdx);
+          if (b.id === primarySource || (!primarySource && !methods.selectHyperCubeCells.values)) {
+            methods.selectHyperCubeCells.values = b.brush.values()
+              .map(s => +s)
+              .filter(v => !isNaN(v));
+            hasValues = !!methods.selectHyperCubeCells.values.length;
+          }
+        } else {
+          const values = b.brush.values().map(s => +s).filter(v => !isNaN(v));
+          hasValues = !!values.length;
+          selections.push({
+            params: [info.path, info.dimensionIdx, values, false],
+            method: 'selectHyperCubeValues'
+          });
         }
-      } else {
-        const values = b.brush.values().map(s => +s).filter(v => !isNaN(v));
-        hasValues = !!values.length;
-        selections.push({
-          params: [info.path, info.index, values, false],
-          method: 'selectHyperCubeValues'
-        });
       }
     }
   });
@@ -234,6 +245,13 @@ export default function qBrush(brush, opts = {}, layout) {
         methods.selectHyperCubeCells.values,
         methods.selectHyperCubeCells.cols
       ]
+    });
+  }
+
+  if (methods.multiRangeSelectTreeDataValues) {
+    selections.push({
+      method: 'multiRangeSelectTreeDataValues',
+      params: [methods.multiRangeSelectTreeDataValues.path, methods.multiRangeSelectTreeDataValues.ranges]
     });
   }
 

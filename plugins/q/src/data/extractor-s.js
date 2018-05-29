@@ -9,18 +9,10 @@ export function getFieldAccessor(field, page, deps) {
   let attrIdx = -1;
   let attrDimIdx = -1;
   if (fieldIdx === -1) {
-    for (let i = 0; i < cache.attributeDimensionFields.length; i++) {
-      attrDimIdx = cache.attributeDimensionFields[i] ? cache.attributeDimensionFields[i].indexOf(field) : -1;
-      if (attrDimIdx !== -1) {
-        fieldIdx = i;
-        break;
-      }
-    }
-  }
-  if (fieldIdx === -1) {
-    for (let i = 0; i < cache.attributeExpressionFields.length; i++) {
-      attrIdx = cache.attributeExpressionFields[i] ? cache.attributeExpressionFields[i].indexOf(field) : -1;
-      if (attrIdx !== -1) {
+    for (let i = 0; i < cache.wrappedFields.length; i++) {
+      attrDimIdx = cache.wrappedFields[i].attrDims.map(v => v.instance).indexOf(field);
+      attrIdx = cache.wrappedFields[i].attrExps.map(v => v.instance).indexOf(field);
+      if (attrDimIdx !== -1 || attrIdx !== -1) {
         fieldIdx = i;
         break;
       }

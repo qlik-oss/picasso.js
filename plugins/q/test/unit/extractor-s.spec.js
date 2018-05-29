@@ -1,4 +1,5 @@
 import extract, { getFieldAccessor } from '../../src/data/extractor-s';
+import q from '../../src/data/dataset';
 
 import {
   collect,
@@ -11,9 +12,9 @@ describe('extractor-s', () => {
       qLeft: 0, qTop: 5, qWidth: 3, qHeight: 3
     },
     qMatrix: [
-      [{}, { qNum: 3, qText: 'tre', qElemNumber: 1 }, { qValue: 53, qText: '$53' }],
-      [{}, { qNum: 7, qText: 'sju', qElemNumber: 2 }, { qValue: 57, qText: '$57' }],
-      [{}, { qNum: 1, qText: 'ett', qElemNumber: 3 }, { qValue: 51, qText: '$51' }]
+      [{}, { qNum: 3, qText: 'tre', qElemNumber: 1 }, { qNum: 53, qText: '$53' }],
+      [{}, { qNum: 7, qText: 'sju', qElemNumber: 2 }, { qNum: 57, qText: '$57' }],
+      [{}, { qNum: 1, qText: 'ett', qElemNumber: 3 }, { qNum: 51, qText: '$51' }]
     ]
   };
 
@@ -30,28 +31,35 @@ describe('extractor-s', () => {
 
   const cube = {
     qMode: 'S',
-    qDimensionInfo: [{ label: 'A', qStateCounts: {} }, { label: 'B', qStateCounts: {} }],
-    qMeasureInfo: [{ label: 'M', qMin: 1, qMax: 2 }],
+    qDimensionInfo: [{ qFallbackTitle: 'Dim1', label: 'A', qStateCounts: {} }, { qFallbackTitle: 'Dim2', label: 'B', qStateCounts: {} }],
+    qMeasureInfo: [{ label: 'Meas1', qMin: 1, qMax: 2 }],
     qDataPages: [page, page2]
   };
 
-  const fields = [
-    {
-      title: () => 'Dim1', value: d => d.qElemNumber, label: d => d.qText, key: () => 'qDimensionInfo/0'
-    },
-    {
-      title: () => 'Dim2', value: d => d.qElemNumber, label: d => d.qText, key: () => 'qDimensionInfo/1'
-    },
-    {
-      title: () => 'Meas1', value: d => d.qValue, label: d => d.qText, key: () => 'qMeasureInfo/0'
-    }
-  ];
+  // const fields = [
+  //   {
+  //     title: () => 'Dim1', value: d => d.qElemNumber, label: d => d.qText, key: () => 'qDimensionInfo/0'
+  //   },
+  //   {
+  //     title: () => 'Dim2', value: d => d.qElemNumber, label: d => d.qText, key: () => 'qDimensionInfo/1'
+  //   },
+  //   {
+  //     title: () => 'Meas1', value: d => d.qValue, label: d => d.qText, key: () => 'qMeasureInfo/0'
+  //   }
+  // ];
 
-  const dataset = {
-    raw: () => cube,
-    key: () => 'hyper',
-    field: sinon.stub()
-  };
+  // const dataset = {
+  //   raw: () => cube,
+  //   key: () => 'hyper',
+  //   field: sinon.stub()
+  // };
+
+  const dataset = q({
+    key: 'hyper',
+    data: cube
+  });
+
+  const cache = dataset._cache();
 
   let deps;
   beforeEach(() => {
@@ -62,9 +70,11 @@ describe('extractor-s', () => {
     };
   });
 
-  dataset.field.withArgs('Dim1').returns(fields[0]);
-  dataset.field.withArgs('Dim2').returns(fields[1]);
-  dataset.field.withArgs('qMeasureInfo/0').returns(fields[2]);
+  // const fieldInstances = dataset.fields();
+
+  // dataset.field.withArgs('Dim1').returns(fields[0]);
+  // dataset.field.withArgs('Dim2').returns(fields[1]);
+  // dataset.field.withArgs('qMeasureInfo/0').returns(fields[2]);
 
   it('should return dim field values based on default field accessor', () => {
     deps.normalizeConfig.returns({
@@ -77,7 +87,7 @@ describe('extractor-s', () => {
     });
     const m = extract({
       field: 'Dim2'
-    }, dataset, { fields }, deps);
+    }, dataset, cache, deps);
     expect(m).to.eql([
       { value: 1, label: 'tre', source: { field: 'qDimensionInfo/1', key: 'hyper' } },
       { value: 2, label: 'sju', source: { field: 'qDimensionInfo/1', key: 'hyper' } },
@@ -89,17 +99,18 @@ describe('extractor-s', () => {
     deps.normalizeConfig.returns({
       main: {
         field: dataset.field('qMeasureInfo/0'),
-        value: dataset.field('qMeasureInfo/0').value
+        value: dataset.field('qMeasureInfo/0').value,
+        label: dataset.field('qMeasureInfo/0').label
       },
       props: {}
     });
     const m = extract({
       field: 'qMeasureInfo/0'
-    }, dataset, { fields }, deps);
+    }, dataset, cache, deps);
     expect(m).to.eql([
-      { value: 53, label: '53', source: { field: 'qMeasureInfo/0', key: 'hyper' } },
-      { value: 57, label: '57', source: { field: 'qMeasureInfo/0', key: 'hyper' } },
-      { value: 51, label: '51', source: { field: 'qMeasureInfo/0', key: 'hyper' } }
+      { value: 53, label: '$53', source: { field: 'qMeasureInfo/0', key: 'hyper' } },
+      { value: 57, label: '$57', source: { field: 'qMeasureInfo/0', key: 'hyper' } },
+      { value: 51, label: '$51', source: { field: 'qMeasureInfo/0', key: 'hyper' } }
     ]);
   });
 
@@ -122,7 +133,7 @@ describe('extractor-s', () => {
       field: 'qMeasureInfo/0'
     }, {
       field: 'Dim2'
-    }], dataset, { fields }, deps);
+    }], dataset, cache, deps);
     expect(m).to.eql([
       { value: 53, label: '53', source: { field: 'qMeasureInfo/0', key: 'hyper' } },
       { value: 57, label: '57', source: { field: 'qMeasureInfo/0', key: 'hyper' } },
@@ -144,7 +155,7 @@ describe('extractor-s', () => {
     });
     const m = extract({
       field: 'Dim2'
-    }, dataset, { fields }, deps);
+    }, dataset, cache, deps);
     expect(m).to.eql([
       {
         value: {
@@ -186,7 +197,7 @@ describe('extractor-s', () => {
     });
     const m = extract({
       field: 'Dim2'
-    }, dataset, { fields }, deps);
+    }, dataset, cache, deps);
 
     expect(m).to.eql([
       {
@@ -229,7 +240,7 @@ describe('extractor-s', () => {
     });
     const m = extract({
       field: 'Dim2'
-    }, dataset, { fields }, deps);
+    }, dataset, cache, deps);
     expect(m).to.eql([
       {
         value: 'foo',
@@ -263,12 +274,12 @@ describe('extractor-s', () => {
         value: v => v
       },
       props: {
-        num: { value: d => d.qValue + 1, field: dataset.field('qMeasureInfo/0'), label: v => v.qText }
+        num: { value: d => d.qNum + 1, field: dataset.field('qMeasureInfo/0'), label: v => v.qText }
       }
     });
     const m = extract({
       field: 'Dim2'
-    }, dataset, { fields }, deps);
+    }, dataset, cache, deps);
     expect(m).to.eql([
       {
         value: {
@@ -663,7 +674,7 @@ describe('extractor-s', () => {
     });
     const m = extract({
       field: 'Dim2'
-    }, dataset, { fields }, deps);
+    }, dataset, cache, deps);
     expect(m).to.eql([
       {
         value: {
@@ -683,10 +694,13 @@ describe('extractor-s', () => {
   });
 
   describe('getFieldAccessor', () => {
-    const cache = {
+    const localCache = {
       fields: [{}, {}, {}],
-      attributeDimensionFields: [[{}], [{}, {}]],
-      attributeExpressionFields: [[], [], [{}, {}]]
+      wrappedFields: [
+        { attrDims: [], attrExps: [] },
+        { attrDims: [{}, { instance: {} }], attrExps: [] },
+        { attrDims: [], attrExps: [{}, { instance: {} }] }
+      ]
     };
 
     it('should return -1 when field is falsy', () => {
@@ -695,24 +709,24 @@ describe('extractor-s', () => {
     });
 
     it('should return -1 if field is out of bounds', () => {
-      const f = cache.fields[1];
+      const f = localCache.fields[1];
       const acc = getFieldAccessor(f, {
         qArea: { qLeft: 2 }
-      }, { cache });
+      }, { cache: localCache });
       expect(acc).to.equal(-1);
     });
 
     it('should return a field accessor for the second column', () => {
-      const f = cache.fields[2];
+      const f = localCache.fields[2];
       const row = ['a', 'b'];
       const acc = getFieldAccessor(f, {
         qArea: { qLeft: 1 }
-      }, { cache });
+      }, { cache: localCache });
       expect(acc(row)).to.equal('b');
     });
 
     it('should return a field accessor for an attribute dimension', () => {
-      const f = cache.attributeDimensionFields[1][1];
+      const f = localCache.wrappedFields[1].attrDims[1].instance;
       const row = ['a', {
         qAttrDims: {
           qValues: [{}, 'target']
@@ -720,12 +734,12 @@ describe('extractor-s', () => {
       }];
       const acc = getFieldAccessor(f, {
         qArea: { qLeft: 0 }
-      }, { cache });
+      }, { cache: localCache });
       expect(acc(row)).to.equal('target');
     });
 
     it('should return a field accessor for an attribute expression', () => {
-      const f = cache.attributeExpressionFields[2][1];
+      const f = localCache.wrappedFields[2].attrExps[1].instance;
       const row = ['a', {
         qAttrExps: {
           qValues: [{}, 'exp']
@@ -733,7 +747,7 @@ describe('extractor-s', () => {
       }];
       const acc = getFieldAccessor(f, {
         qArea: { qLeft: 1 }
-      }, { cache });
+      }, { cache: localCache });
       expect(acc(row)).to.equal('exp');
     });
   });

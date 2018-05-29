@@ -5,11 +5,11 @@ import picker from '../json-path-resolver';
 import { treeAccessor } from './util';
 
 const DIM_RX = /^qDimensionInfo(?:\/(\d+))?/;
-const M_RX = /^qMeasureInfo\/(\d+)/;
+const M_RX = /^\/?qMeasureInfo\/(\d+)/;
 const ATTR_EXPR_RX = /\/qAttrExprInfo\/(\d+)/;
 const ATTR_DIM_RX = /\/qAttrDimInfo\/(\d+)/;
 
-function getFieldDepth(field, { cube }) {
+export function getFieldDepth(field, { cube }) {
   if (!field) {
     return -1;
   }
@@ -20,15 +20,27 @@ function getFieldDepth(field, { cube }) {
   let attrDimIdx = -1;
   let fieldDepth = -1;
   let pseudoMeasureIndex = -1;
-  let remainder;
+  let measureIdx = -1;
+  let remainder = key;
 
-  if (DIM_RX.test(key)) {
+  const treeOrder = cube.qEffectiveInterColumnSortOrder;
+
+  if (DIM_RX.test(remainder)) {
     isFieldDimension = true;
-    fieldIdx = +DIM_RX.exec(key)[1];
+    fieldIdx = +DIM_RX.exec(remainder)[1];
     remainder = key.replace(DIM_RX, '');
-  } else if (M_RX.test(key)) {
-    pseudoMeasureIndex = +M_RX.exec(key)[1];
-    remainder = key.replace(M_RX, '');
+  }
+
+  if (M_RX.test(remainder)) {
+    if (cube.qMode === 'K') {
+      pseudoMeasureIndex = +M_RX.exec(remainder)[1];
+    } else if (treeOrder && treeOrder.indexOf(-1) !== -1) {
+      pseudoMeasureIndex = +M_RX.exec(remainder)[1];
+      measureIdx = 0;
+    } else {
+      measureIdx = +M_RX.exec(remainder)[1];
+    }
+    remainder = remainder.replace(M_RX, '');
   }
 
   if (remainder) {
@@ -39,26 +51,32 @@ function getFieldDepth(field, { cube }) {
     }
   }
 
-  const treeOrder = cube.qEffectiveInterColumnSortOrder;
-
   if (isFieldDimension) {
     fieldDepth = treeOrder ? treeOrder.indexOf(fieldIdx) : fieldIdx;
   } else if (treeOrder && treeOrder.indexOf(-1) !== -1) { // if pseudo dimension exists in sort order
     fieldDepth = treeOrder.indexOf(-1); // depth of pesudodimension
   } else { // assume measure is at the bottom of the tree
-    fieldDepth = cube.qDimensionInfo.length;
+    fieldDepth = cube.qDimensionInfo.length - (cube.qMode === 'K' ? 0 : 1);
   }
 
   return {
     fieldDepth: fieldDepth + 1, // +1 due to root node
     pseudoMeasureIndex,
+    measureIdx,
     attrDimIdx,
     attrIdx
   };
 }
 
-function getFieldAccessor(sourceDepthObject, targetDepthObject, prop) {
-  let nodeFn = treeAccessor(sourceDepthObject.fieldDepth, targetDepthObject.fieldDepth, prop, targetDepthObject.pseudoMeasureIndex);
+function getFieldAccessor(sourceDepthObject, targetDepthObject) {
+  let nodeFn = treeAccessor(sourceDepthObject.fieldDepth, targetDepthObject.fieldDepth, targetDepthObject.pseudoMeasureIndex);
+  let valueFn;
+
+  if (targetDepthObject.measureIdx >= 0) {
+    valueFn = node => node.data.qValues[targetDepthObject.measureIdx];
+  } else {
+    valueFn = node => node.data;
+  }
   let attrFn;
 
   if (targetDepthObject.attrDimIdx >= 0) {
@@ -69,7 +87,8 @@ function getFieldAccessor(sourceDepthObject, targetDepthObject, prop) {
 
   return {
     nodeFn,
-    attrFn
+    attrFn,
+    valueFn
   };
 }
 
@@ -98,7 +117,8 @@ export default function extract(config, dataset, cache, util) {
   cfgs.forEach((cfg) => {
     if (typeof cfg.field !== 'undefined') {
       const cube = dataset.raw();
-      const rootPath = '/qStackedDataPages/*/qData';
+      const rootPath = cube.qMode === 'K' ? '/qStackedDataPages/*/qData' : '/qTreeDataPages/*';
+      const childNodes = cube.qMode === 'K' ? 'qSubNodes' : 'qNodes';
       const root = picker(rootPath, cube);
       if (!root || !root[0]) {
         return;
@@ -108,17 +128,11 @@ export default function extract(config, dataset, cache, util) {
       const { props, main } = util.normalizeConfig(cfg, dataset);
       const propsArr = Object.keys(props);
       if (!cache.tree) {
-        cache.tree = hierarchy(root[0], node => node.qSubNodes);
+        cache.tree = hierarchy(root[0], node => node[childNodes]);
       }
       const itemDepthObject = getFieldDepth(f, { cube, cache });
-      const { nodeFn, attrFn } = getFieldAccessor({ fieldDepth: 0 }, itemDepthObject);
+      const { nodeFn, attrFn, valueFn } = getFieldAccessor({ fieldDepth: 0 }, itemDepthObject);
 
-      const track = !!cfg.trackBy;
-      const trackType = typeof cfg.trackBy;
-      const tracker = {};
-      const trackedItems = [];
-
-      const items = nodeFn(cache.tree);
       propsArr.forEach((prop) => {
         const pCfg = props[prop];
         const arr = pCfg.fields ? pCfg.fields : [pCfg];
@@ -128,17 +142,25 @@ export default function extract(config, dataset, cache, util) {
               p.isSame = true;
             } else {
               const depthObject = getFieldDepth(p.field, { cube, cache });
-              const accessors = getFieldAccessor(itemDepthObject, depthObject, 'data');
+              const accessors = getFieldAccessor(itemDepthObject, depthObject);
               p.accessor = accessors.nodeFn;
+              p.valueAccessor = accessors.valueFn;
               p.attrAccessor = accessors.attrFn;
             }
           }
         });
       });
+
+      const track = !!cfg.trackBy;
+      const trackType = typeof cfg.trackBy;
+      const tracker = {};
+      const trackedItems = [];
+
+      const items = nodeFn(cache.tree);
       const mapped = [];
       for (let i = 0; i < items.length; i++) {
         const item = items[i];
-        const itemData = attrFn ? attrFn(item.data) : item.data;
+        const itemData = attrFn ? attrFn(valueFn(item)) : valueFn(item);
         const exclude = main.filter && !main.filter(itemData);
         if (exclude) {
           continue;
@@ -163,6 +185,7 @@ export default function extract(config, dataset, cache, util) {
               if (p.accessor) {
                 value = p.accessor(item);
                 if (Array.isArray(value)) { // propably descendants
+                  value = value.map(p.valueAccessor);
                   if (p.attrAccessor) {
                     value = value.map(p.attrAccessor);
                   }
@@ -172,7 +195,7 @@ export default function extract(config, dataset, cache, util) {
                   }
                   value = p.reduce ? p.reduce(value) : value;
                 } else {
-                  value = p.attrAccessor ? p.attrAccessor(value) : value;
+                  value = p.attrAccessor ? p.attrAccessor(p.valueAccessor(value)) : p.valueAccessor(value);
                 }
               } else {
                 value = itemData;
