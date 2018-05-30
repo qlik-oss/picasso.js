@@ -77,6 +77,7 @@ export default function renderer(opts = {}) {
       el.parentElement.removeChild(el);
     }
     el = null;
+    vnode = null;
   };
 
   dom.size = (inner) => {
