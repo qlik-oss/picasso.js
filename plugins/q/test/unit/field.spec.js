@@ -3,7 +3,7 @@
 import qField from '../../src/data/field';
 
 describe('q-field', () => {
-  function struct(mode, fe) {
+  function struct(mode, fe, type) {
     return {
       meta: {
         qMin: 1,
@@ -15,6 +15,7 @@ describe('q-field', () => {
           qFmt: '$#-###A'
         }
       },
+      type,
       id: 'unique',
       cube: { qMode: mode || 'S' },
       fieldExtractor: fe,
@@ -25,17 +26,17 @@ describe('q-field', () => {
     };
   }
   function mField(mode, fe) {
-    return qField(struct(mode, fe));
+    return qField(struct(mode, fe, 'measure'));
   }
 
   function dimField(mode, fe) {
-    let def = struct(mode, fe);
+    let def = struct(mode, fe, 'dimension');
     def.meta.qStateCounts = {};
     return qField(def);
   }
 
   function attrDimField(mode, fe) {
-    let def = struct(mode, fe);
+    let def = struct(mode, fe, 'dimension');
     def.meta.qSize = {};
     return qField(def);
   }

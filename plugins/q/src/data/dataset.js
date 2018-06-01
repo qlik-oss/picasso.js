@@ -1,6 +1,6 @@
 import augmentH from './augment-hierarchy';
-import kExtractor from './extractor-k';
 import SExtractor from './extractor-s';
+import TExtractor from './extractor-t';
 import { findField } from './util';
 import field from './field';
 
@@ -12,48 +12,21 @@ function hierarchy(config = {}, dataset, cache, deps) {
   return augmentH(config, dataset, cache, deps);
 }
 
-function extractData(cfg, dataset, cache, deps) {
-  const cube = dataset.raw();
-  if (cube.qMode === 'K') {
-    return kExtractor(cfg, dataset, cache, deps);
-  } else if (cube.qMode === 'S') {
-    return SExtractor(cfg, dataset, cache, deps);
-  }
-  return [];
-}
-
-function createAttrFields(idx, d, {
-  cache,
-  cube,
-  pages,
-  fieldExtractor,
-  key,
-  fieldKey,
-  localeInfo
-}) {
-  if (d.qAttrDimInfo) {
-    cache.attributeDimensionFields[idx] = d.qAttrDimInfo.map((attrDim, i) => (attrDim ? field({
-      meta: attrDim,
-      id: `${key}/${fieldKey}/qAttrDimInfo/${i}`,
-      key: `${fieldKey}/qAttrDimInfo/${i}`,
-      cube,
-      pages,
-      fieldExtractor,
-      value: v => v.qElemNo,
-      localeInfo
-    }) : undefined));
-  }
-  if (d.qAttrExprInfo) {
-    cache.attributeExpressionFields[idx] = d.qAttrExprInfo.map((attrExpr, i) => (attrExpr ? field({
-      meta: attrExpr,
-      id: `${key}/${fieldKey}/qAttrExprInfo/${i}`,
-      key: `${fieldKey}/qAttrExprInfo/${i}`,
-      cube,
-      pages,
-      fieldExtractor,
-      localeInfo
-    }) : undefined));
-  }
+function createFields(path, obj, prefix, parentKey, opts) {
+  return (obj[path] || []).map((meta, i) => {
+    const fieldKey = `${parentKey ? `${parentKey}/` : ''}${path}/${i}`;
+    const f = {
+      instance: field(Object.assign({
+        id: `${prefix ? `${prefix}/` : ''}${fieldKey}`,
+        key: fieldKey,
+        meta
+      }, opts))
+    };
+    f.attrDims = createFields('qAttrDimInfo', meta, prefix, fieldKey, Object.assign({}, opts, { value: v => v.qElemNo, type: 'dimension' }));
+    f.attrExps = createFields('qAttrExprInfo', meta, prefix, fieldKey, Object.assign({}, opts, { value: v => v.qNum, type: 'measure' }));
+    f.measures = createFields('qMeasureInfo', meta, prefix, fieldKey, Object.assign({}, opts, { value: v => v.qValue, type: 'measure' }));
+    return f;
+  });
 }
 
 export default function q({
@@ -62,76 +35,70 @@ export default function q({
   config = {}
 } = {}) {
   const cache = {
-    attributeDimensionFields: [],
-    attributeExpressionFields: [],
-    fields: []
+    fields: [],
+    wrappedFields: [],
+    allFields: []
   };
 
   const cube = data;
-
-  if (!cube.qDimensionInfo) { // assume old data format
-    throw new Error('The data input is not recognized as a hypercube');
+  if (!cube) {
+    throw new Error('Missing "data" input');
   }
 
-  const pages = cube.qMode === 'K' ? cube.qStackedDataPages : cube.qDataPages;
+  if (!cube.qDimensionInfo) {
+    throw new Error('The "data" input is not recognized as a hypercube');
+  }
 
   const deps = q.util;
+
+  const opts = {
+    cache,
+    cube,
+    localeInfo: config.localeInfo,
+    fieldExtractor: null,
+    pages: null
+  };
 
   const dataset = {
     key: () => key,
     raw: () => cube,
-    field: query => findField(query, {
-      cache,
-      cube,
-      pages
-    }),
+    field: query => findField(query, opts),
     fields: () => cache.fields.slice(),
-    extract: extractionConfig => extractData(extractionConfig, dataset, cache, deps),
-    hierarchy: hierarchyConfig => hierarchy(hierarchyConfig, dataset, cache, deps)
+    extract: extractionConfig => opts.extractor(extractionConfig, dataset, cache, deps),
+    hierarchy: hierarchyConfig => hierarchy(hierarchyConfig, dataset, cache, deps),
+    _cache: () => cache
   };
 
-  let fieldExtractor;
-
-  if (cube.qMode === 'K') {
-    fieldExtractor = f => kExtractor({ field: f }, dataset, cache, deps);
+  if (cube.qMode === 'K' || cube.qMode === 'T' || (!cube.qMode && cube.qNodesOnDim)) {
+    opts.extractor = TExtractor;
+    opts.pages = cube.qMode === 'K' ? cube.qStackedDataPages : cube.qTreeDataPages;
   } else if (cube.qMode === 'S') {
-    fieldExtractor = f => SExtractor({ field: f }, dataset, cache, deps);
+    opts.extractor = SExtractor;
+    opts.pages = cube.qDataPages;
   } else {
-    fieldExtractor = () => []; // TODO - throw unsupported error?
+    opts.ectractor = () => []; // TODO - throw unsupported error?
   }
 
-  const dimensions = cube.qDimensionInfo;
-  dimensions.forEach((d, i) => {
-    const fieldKey = `qDimensionInfo/${i}`;
-    cache.fields.push(field({
-      meta: d,
-      id: `${key}/${fieldKey}`,
-      key: fieldKey,
-      cube,
-      pages,
-      fieldExtractor,
-      localeInfo: config.localeInfo
-    }));
-    createAttrFields(i, d, {
-      cache, cube, pages, fieldExtractor, key, fieldKey, localeInfo: config.localeInfo
-    });
-  });
+  opts.fieldExtractor = f => opts.extractor({ field: f }, dataset, cache, deps);
 
-  cube.qMeasureInfo.forEach((d, i) => {
-    const fieldKey = `qMeasureInfo/${i}`;
-    cache.fields.push(field({
-      meta: d,
-      id: `${key}/${fieldKey}`,
-      key: fieldKey,
-      cube,
-      pages,
-      fieldExtractor,
-      localeInfo: config.localeInfo
-    }));
-    createAttrFields(dimensions.length + i, d, {
-      cache, cube, pages, fieldExtractor, key, fieldKey, localeInfo: config.localeInfo
+  const dimAcc = cube.qMode === 'S' ? (d => d.qElemNumber) : undefined;
+  const measAcc = cube.qMode === 'S' ? (d => d.qNum) : undefined;
+
+  cache.wrappedFields.push(...createFields('qDimensionInfo', cube, key, '', Object.assign({}, opts, { value: dimAcc, type: 'dimension' })));
+  cache.wrappedFields.push(...createFields('qMeasureInfo', cube, key, '', Object.assign({}, opts, { value: measAcc, type: 'measure' })));
+
+  cache.fields = cache.wrappedFields.map(f => f.instance);
+
+  const traverse = (arr) => {
+    arr.forEach((f) => {
+      cache.allFields.push(f.instance);
+      traverse(f.measures);
+      traverse(f.attrDims);
+      traverse(f.attrExps);
     });
-  });
+  };
+
+  traverse(cache.wrappedFields);
 
   return dataset;
 }

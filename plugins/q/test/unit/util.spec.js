@@ -9,14 +9,6 @@ describe('treeAccessor', () => {
     expect(a(node)).to.eql(node);
   });
 
-  it('should return prop when specified when depths are same', () => {
-    let node = {
-      text: 'A'
-    };
-    const a = treeAccessor(4, 4, 'text');
-    expect(a(node)).to.eql('A');
-  });
-
   it('should return ancestor when targetDepth is shallower than sourceDepth', () => {
     let node = {
       parent: {
