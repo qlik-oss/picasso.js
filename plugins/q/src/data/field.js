@@ -1,22 +1,17 @@
 import { createFromMetaInfo } from '../formatter';
 
-// const tagsFn = d => d.qTags;
-const elemNoFn = cube => (cube.qMode === 'S' ? (d => d.qElemNumber) : (d => d.qElemNo));
-const measureValue = cube => (cube.qMode === 'S' ? (d => d.qNum) : (d => d.qValue));
-
 export default function qField({
   meta,
   id,
   key,
-  cube,
   localeInfo,
   fieldExtractor,
-  value
+  value,
+  type
 } = {}) {
   let values;
 
-  const type = ('qStateCounts' in meta || 'qSize' in meta) ? 'dimension' : 'measure';
-  const valueFn = value || (type === 'dimension' ? elemNoFn(cube) : measureValue(cube));
+  const valueFn = value || (type === 'dimension' ? (d => d.qElemNo) : (d => d.qValue));
   const labelFn = d => d.qText || '';
   const reduce = type === 'dimension' ? 'first' : 'avg';
   const formatter = createFromMetaInfo(meta, localeInfo);
