@@ -1,4 +1,4 @@
-import { h, patch } from './vdom';
+import { h, render } from 'preact';
 import createRendererBox from '../renderer-box';
 import create from '../index';
 
@@ -46,12 +46,7 @@ export default function renderer(opts = {}) {
 
     const node = h('div', {}, Array.isArray(nodes) ? nodes : [nodes]);
 
-    if (vnode) {
-      patch(vnode, node);
-    } else {
-      patch(el, node);
-    }
-    vnode = node;
+    vnode = render(node, el, vnode);
 
     return true;
   };

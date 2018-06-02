@@ -54,8 +54,8 @@
     "jsdoc": "^3.5.5",
     "node-event-emitter": "0.0.1",
     "path2d-polyfill": "0.2.1",
+    "preact": "^8.2.9",
     "rimraf": "^2.6.2",
-    "snabbdom": "^0.7.1",
     "test-utils": "0.0.1"
   }
 }
