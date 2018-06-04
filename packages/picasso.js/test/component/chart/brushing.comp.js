@@ -16,6 +16,38 @@ function simulateClick(elm, down, up = down) {
   });
 }
 
+function simulateTap(elm, down, up = down) {
+  let didPreventDefault = false;
+  elm.trigger('touchstart', {
+    type: 'touchstart',
+    touches: [{
+      clientX: down.x,
+      clientY: down.y,
+    }],
+    changedTouches: [{
+      clientX: down.x,
+      clientY: down.y,
+    }],
+  });
+  elm.trigger('touchend', {
+    type: 'touchend',
+    touches: [],
+    changedTouches: [{
+      clientX: down.x,
+      clientY: down.y,
+    }],
+    preventDefault: () => {
+      didPreventDefault = true;
+    }
+  });
+  return didPreventDefault;
+}
+
+function simulateTouchSupport(elm) {
+  elm.ontouchstart = true;
+  elm.ontouchend = true;
+}
+
 describe('Brushing', () => {
   let data;
   let settings;
@@ -316,6 +348,87 @@ describe('Brushing', () => {
         expect(inactiveShapes).to.be.of.length(1);
         expect(activeShapes[0].attrs).to.deep.equal(texts[0].attrs);
       });
+    });
+
+    describe('touch', () => {
+      beforeEach(() => {
+        simulateTouchSupport(element);
+      });
+
+      it('tap', () => {
+        settings.components.push(pointMarker);
+        data = [
+          ['Product', 'Cost'],
+          ['Cars', 1]
+        ];
+
+        const instance = chart({
+          element,
+          data: { data },
+          settings
+        });
+
+        const c1 = instance.findShapes('circle')[0];
+        simulateTap(instance.element, {
+          x: c1.attrs.cx,
+          y: c1.attrs.cy
+        });
+        const activeShapes = instance.getAffectedShapes('test');
+
+        expect(activeShapes).to.be.of.length(1);
+      });
+
+      it('do preventDefault on when disableTriggers is not set', () => {
+        p.component('custom-not-set', {
+          render() { return [] },
+        });
+
+        const customComponent = {
+          type: 'custom-not-set',
+        };
+
+        settings.components.push(customComponent);
+
+        const instance = chart({
+          element,
+          data: { data },
+          settings
+        });
+
+        const didPreventDefault = simulateTap(instance.element, {
+          x: 50,
+          y: 50
+        });
+
+        expect(didPreventDefault).eql(true);
+      });
+
+      it('no preventDefault when disableTriggers is set to true', () => {
+        p.component('custom-disableTriggers', {
+          disableTriggers: true,
+          render() { return [] },
+        });
+
+        const customComponent = {
+          type: 'custom-disableTriggers',
+        };
+
+        settings.components.push(customComponent);
+
+        const instance = chart({
+          element,
+          data: { data },
+          settings
+        });
+
+        const didPreventDefault = simulateTap(instance.element, {
+          x: 50,
+          y: 50
+        });
+
+        expect(didPreventDefault).eql(false);
+      });
+
     });
   });
 });
