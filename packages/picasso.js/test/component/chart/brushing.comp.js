@@ -378,13 +378,17 @@ describe('Brushing', () => {
         expect(activeShapes).to.be.of.length(1);
       });
 
-      it('do preventDefault on when disableTriggers is not set', () => {
+      it('do brush & preventDefault on when disableTriggers is not set', () => {
         p.component('custom-not-set', {
-          render() { return [] },
+          render() {
+            const data = { source: { key: 'k', field: 'f' }, value: 'v' };
+            return [{ type: 'circle', cx: 50, cy: 50, r: 50, data }]
+          },
         });
 
         const customComponent = {
           type: 'custom-not-set',
+          brush,
         };
 
         settings.components.push(customComponent);
@@ -395,22 +399,29 @@ describe('Brushing', () => {
           settings
         });
 
+        const c1 = instance.findShapes('circle')[0];
         const didPreventDefault = simulateTap(instance.element, {
-          x: 50,
-          y: 50
+          x: c1.attrs.cx,
+          y: c1.attrs.cy
         });
+        const activeShapes = instance.getAffectedShapes('test');
 
+        expect(activeShapes).to.be.of.length(1);
         expect(didPreventDefault).eql(true);
       });
 
-      it('no preventDefault when disableTriggers is set to true', () => {
+      it('do not brush or preventDefault when disableTriggers is set to true', () => {
         p.component('custom-disableTriggers', {
           disableTriggers: true,
-          render() { return [] },
+          render() {
+            const data = { source: { key: 'k', field: 'f' }, value: 'v' };
+            return [{ type: 'circle', cx: 50, cy: 50, r: 50, data }]
+          },
         });
 
         const customComponent = {
           type: 'custom-disableTriggers',
+          brush,
         };
 
         settings.components.push(customComponent);
@@ -421,11 +432,14 @@ describe('Brushing', () => {
           settings
         });
 
+        const c1 = instance.findShapes('circle')[0];
         const didPreventDefault = simulateTap(instance.element, {
-          x: 50,
-          y: 50
+          x: c1.attrs.cx,
+          y: c1.attrs.cy
         });
+        const activeShapes = instance.getAffectedShapes('test');
 
+        expect(activeShapes).to.be.of.length(0);
         expect(didPreventDefault).eql(false);
       });
 
