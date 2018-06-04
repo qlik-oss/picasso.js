@@ -293,8 +293,8 @@ function chartFn(definition, context) {
     const tp = { x: x - br.left, y: y - br.top };
     const ret = [];
     visibleComponents.forEach((c) => {
-      const r = c.instance.getRect();
-      if (NarrowPhaseCollision.testRectPoint(r, tp)) {
+      const { x, y, scaledWidth: width, scaledHeight: height } = c.instance.size();
+      if (NarrowPhaseCollision.testRectPoint({ x, y, width, height }, tp)) {
         ret.push(c);
       }
     });
