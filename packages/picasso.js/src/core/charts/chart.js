@@ -332,14 +332,17 @@ function chartFn(definition, context) {
     };
 
     const onBrushTap = (e) => {
+      const comps = eventInfo.comps || componentsFromPoint(e);
+      if (comps.every(c => c.instance.def.disableTriggers)) {
+        return;
+      }
+
       if (e.type === 'touchend') {
         e.preventDefault();
       }
       if (!isValidTapEvent(e, eventInfo)) {
         return;
       }
-
-      const comps = eventInfo.comps || componentsFromPoint(e);
 
       for (let i = comps.length - 1; i >= 0; i--) {
         const comp = comps[i];
