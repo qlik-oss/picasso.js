@@ -22,19 +22,19 @@ function simulateTap(elm, down, up = down) {
     type: 'touchstart',
     touches: [{
       clientX: down.x,
-      clientY: down.y,
+      clientY: down.y
     }],
     changedTouches: [{
       clientX: down.x,
-      clientY: down.y,
-    }],
+      clientY: down.y
+    }]
   });
   elm.trigger('touchend', {
     type: 'touchend',
     touches: [],
     changedTouches: [{
-      clientX: down.x,
-      clientY: down.y,
+      clientX: up.x,
+      clientY: up.y
     }],
     preventDefault: () => {
       didPreventDefault = true;
@@ -381,14 +381,16 @@ describe('Brushing', () => {
       it('do brush & preventDefault on when disableTriggers is not set', () => {
         p.component('custom-not-set', {
           render() {
-            const data = { source: { key: 'k', field: 'f' }, value: 'v' };
-            return [{ type: 'circle', cx: 50, cy: 50, r: 50, data }]
-          },
+            const pointData = { source: { key: 'k', field: 'f' }, value: 'v' };
+            return [{
+              type: 'circle', cx: 50, cy: 50, r: 50, data: pointData
+            }];
+          }
         });
 
         const customComponent = {
           type: 'custom-not-set',
-          brush,
+          brush
         };
 
         settings.components.push(customComponent);
@@ -414,14 +416,16 @@ describe('Brushing', () => {
         p.component('custom-disableTriggers', {
           disableTriggers: true,
           render() {
-            const data = { source: { key: 'k', field: 'f' }, value: 'v' };
-            return [{ type: 'circle', cx: 50, cy: 50, r: 50, data }]
-          },
+            const pointData = { source: { key: 'k', field: 'f' }, value: 'v' };
+            return [{
+              type: 'circle', cx: 50, cy: 50, r: 50, data: pointData
+            }];
+          }
         });
 
         const customComponent = {
           type: 'custom-disableTriggers',
-          brush,
+          brush
         };
 
         settings.components.push(customComponent);
@@ -442,7 +446,6 @@ describe('Brushing', () => {
         expect(activeShapes).to.be.of.length(0);
         expect(didPreventDefault).eql(false);
       });
-
     });
   });
 });
