@@ -68,11 +68,12 @@ const qLocaleInfo = {
 describe('qs-formatter', () => {
   it('should create a numeric formatter by default', () => {
     const f = createFromMetaInfo();
-    expect(f.pattern()).to.equal('#');
+    expect(f.pattern()).to.equal('#.##A');
   });
   it('should create an abbreviation formatter when qIsAutoFormat=true', () => {
     const f = createFromMetaInfo({
-      qIsAutoFormat: true
+      qIsAutoFormat: true,
+      qNumFormat: {}
     });
     expect(f.pattern()).to.equal('#.##A');
   });
