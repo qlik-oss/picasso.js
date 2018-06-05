@@ -63,9 +63,11 @@ function prepareContext(ctx, definition, opts) {
   Object.defineProperty(ctx, 'registries', {
     get: registries
   });
-  Object.defineProperty(ctx, 'getState', {
-    get: getState,
-  });
+  if (getState) {
+    Object.defineProperty(ctx, 'getState', {
+      get: getState,
+    });
+  }
 
   Object.keys(definition).forEach((key) => {
     if (!isReservedProperty(key)) {
