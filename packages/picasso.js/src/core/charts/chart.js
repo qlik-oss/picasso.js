@@ -233,6 +233,9 @@ function chartFn(definition, context) {
     if (!partialData) {
       Object.keys(brushes).forEach(b => brushes[b].clear());
     }
+    if (_settings.palettes) {
+      theme.setPalettes(_settings.palettes);
+    }
     dataCollection = dataCollections(_settings.collections, { dataset }, { logger });
     currentScales = buildScales(scales, { dataset, collection: dataCollection }, { scale: registries.scale, theme, logger });
     currentFormatters = buildFormatters(formatters, { dataset, collection: dataCollection }, { formatter: registries.formatter, theme, logger });
@@ -760,6 +763,8 @@ function chartFn(definition, context) {
   };
 
   instance.logger = () => logger;
+
+  instance.theme = () => theme;
 
   /**
    * Get the all interactions instances
