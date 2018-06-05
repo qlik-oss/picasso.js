@@ -182,7 +182,8 @@ describe('legend-resolver', () => {
         data: { fields: [{}] },
         defaults: {
           direction: 'ltr',
-          size: 1
+          size: 1,
+          scrollOffset: 0
         },
         settings: { whatevz: 'yes' }
       });
