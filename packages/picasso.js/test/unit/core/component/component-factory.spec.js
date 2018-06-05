@@ -206,5 +206,12 @@ describe('Component', () => {
       state = instance.ctx.getState;
       expect(state).to.deep.equal({ a: 1 });
     });
+
+    it('should not be exposed on definition context', () => {
+      definition.getState = () => ({ a: 1 });
+      instance = createAndRenderComponent({});
+      state = instance.def.getState;
+      expect(state = instance.def.getState).to.be.undefined;
+    });
   });
 });
