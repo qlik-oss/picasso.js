@@ -15,7 +15,8 @@ const isReservedProperty = prop => [
   'on', 'preferredSize', 'created', 'beforeMount', 'mounted', 'resize',
   'beforeUpdate', 'updated', 'beforeRender', 'render', 'beforeUnmount', 'beforeDestroy',
   'destroyed', 'defaultSettings', 'data', 'settings', 'formatter',
-  'scale', 'chart', 'dockConfig', 'mediator', 'style', 'resolver', 'registries'
+  'scale', 'chart', 'dockConfig', 'mediator', 'style', 'resolver', 'registries',
+  'getState'
 ].some(name => name === prop);
 
 function prepareContext(ctx, definition, opts) {
@@ -36,7 +37,8 @@ function prepareContext(ctx, definition, opts) {
     style,
     registries,
     resolver,
-    update
+    update,
+    getState,
   } = opts;
 
   // TODO add setters and log warnings / errors to console
@@ -60,6 +62,9 @@ function prepareContext(ctx, definition, opts) {
   });
   Object.defineProperty(ctx, 'registries', {
     get: registries
+  });
+  Object.defineProperty(ctx, 'getState', {
+    get: getState,
   });
 
   Object.keys(definition).forEach((key) => {
@@ -139,7 +144,8 @@ function setUpEmitter(ctx, emitter, settings) {
 // TODO support es6 classes
 function componentFactory(definition, options = {}) {
   const {
-    defaultSettings = {}
+    defaultSettings = {},
+    getState = () => ({})
   } = definition;
   const {
     chart,
@@ -436,7 +442,8 @@ function componentFactory(definition, options = {}) {
     chart: () => chart,
     dockConfig: () => dockConfig,
     mediator: () => mediator,
-    style: () => style
+    style: () => style,
+    getState: () => getState.call(definitionContext),
   });
 
   fn.getBrushedShapes = function getBrushedShapes(context, mode, props) {
