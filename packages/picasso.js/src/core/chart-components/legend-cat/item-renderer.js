@@ -220,7 +220,8 @@ export function itemize({
       mode: resolved.layout.item.mode,
       size: resolved.layout.item.size,
       orientation: dock === 'top' || dock === 'bottom' ? 'horizontal' : 'vertical',
-      direction: resolved.layout.item.direction
+      direction: resolved.layout.item.direction,
+      scrollOffset: resolved.layout.item.scrollOffset
     }
   };
 }
@@ -273,12 +274,13 @@ export default function (legend, {
   const api = {
     itemize: (obj) => {
       itemized = itemize(obj, legend.renderer);
+      offset = itemized.layout.scrollOffset; // Set the initial offset
     },
     getItemsToRender: (obj) => {
       viewRect = obj.viewRect;
       overflow = api.getContentOverflow(viewRect);
       const ext = api.extent();
-      offset = Math.min(offset, overflow);
+      offset = Math.max(0, Math.min(offset, overflow));
 
       containerRect = extend({}, viewRect);
 

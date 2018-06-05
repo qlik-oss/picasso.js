@@ -163,6 +163,7 @@ const component = {
     this.onScroll = () => {
       const items = render(this);
       this.update(items);
+      this.state.interaction.offset = this.itemRenderer.offset();
     };
     this.itemRenderer = itemRendererFactory(this, {
       onScroll: this.onScroll
@@ -188,7 +189,12 @@ const component = {
   beforeDestroy() {
     this.navigationRenderer.renderer.destroy();
     this.titleRenderer.renderer.destroy();
-  }
+  },
+  getState() {
+    return {
+      offset: this.state.interaction.offset
+    };
+  },
 };
 
 export default component;
