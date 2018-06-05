@@ -21,7 +21,7 @@ const DEFAULT_SETTINGS = {
     direction: 'ltr',
     /** Initial scroll offset
      * @type {number=} */
-    scrollOffset: 0,
+    scrollOffset: 0
   },
   /**
    * Settings applied per item

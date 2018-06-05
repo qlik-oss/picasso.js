@@ -38,7 +38,7 @@ function prepareContext(ctx, definition, opts) {
     registries,
     resolver,
     update,
-    getState,
+    getState
   } = opts;
 
   // TODO add setters and log warnings / errors to console
@@ -65,7 +65,7 @@ function prepareContext(ctx, definition, opts) {
   });
   if (getState) {
     Object.defineProperty(ctx, 'getState', {
-      get: getState,
+      get: getState
     });
   }
 
@@ -445,7 +445,7 @@ function componentFactory(definition, options = {}) {
     dockConfig: () => dockConfig,
     mediator: () => mediator,
     style: () => style,
-    getState: () => getState.call(definitionContext),
+    getState: () => getState.call(definitionContext)
   });
 
   fn.getBrushedShapes = function getBrushedShapes(context, mode, props) {

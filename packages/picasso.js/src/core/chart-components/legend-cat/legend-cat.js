@@ -194,7 +194,7 @@ const component = {
     return {
       offset: this.state.interaction.offset
     };
-  },
+  }
 };
 
 export default component;

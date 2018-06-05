@@ -201,7 +201,7 @@ describe('Component', () => {
     });
 
     it('should return definition state', () => {
-      definition.getState  = () => ({ a: 1 });
+      definition.getState = () => ({ a: 1 });
       instance = createAndRenderComponent({});
       state = instance.ctx.getState;
       expect(state).to.deep.equal({ a: 1 });
