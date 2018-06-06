@@ -1,5 +1,3 @@
-// import extend from 'extend';
-
 const DIR = {
   up: '\u25B2',
   right: '\u25B6',
