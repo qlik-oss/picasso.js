@@ -68,7 +68,7 @@ function prepareContext(ctx, definition, opts) {
       value: getState,
       enumerable: false,
       configurable: false,
-      writable: false,
+      writable: false
     });
   }
 
