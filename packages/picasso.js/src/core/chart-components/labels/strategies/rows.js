@@ -57,7 +57,7 @@ function getSliceBounds(slice) {
     outerRadius,
     offset
   } = slice;
-  if (Math.abs(start + (2 * Math.PI) - end) > EPSILON) {
+  if (Math.abs((start + (2 * Math.PI)) - end) > EPSILON) {
     return { type: null, bounds: null };
   }
   let r = innerRadius !== 0 ? innerRadius : outerRadius;
