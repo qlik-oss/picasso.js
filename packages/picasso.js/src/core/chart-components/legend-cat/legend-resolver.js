@@ -116,7 +116,13 @@ export default function resolveSettings(comp) {
   if (comp.scale.type === 'threshold-color') {
     const fields = comp.scale.data().fields;
     const sourceField = fields[0];
-    const formatter = sourceField ? sourceField.formatter() : v => String(v);
+    let formatter = v => String(v);
+
+    if (comp.settings.formatter) {
+      formatter = comp.chart.formatter(comp.settings.formatter);
+    } else if (sourceField) {
+      formatter = sourceField.formatter();
+    }
 
     for (let i = 0; i < domain.length - 1; i++) {
       const it = {
