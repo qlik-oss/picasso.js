@@ -49,6 +49,7 @@ function getRectFromCircle({ cx, cy, r }) {
   };
 }
 function getSliceBounds(slice) {
+  const EPSILON = 1e-12;
   let {
     start,
     end,
@@ -56,7 +57,7 @@ function getSliceBounds(slice) {
     outerRadius,
     offset
   } = slice;
-  if (start + (2 * Math.PI) !== end) {
+  if (Math.abs(start + (2 * Math.PI) - end) > EPSILON) {
     return { type: null, bounds: null };
   }
   let r = innerRadius !== 0 ? innerRadius : outerRadius;
