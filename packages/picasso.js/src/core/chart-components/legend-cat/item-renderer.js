@@ -274,7 +274,7 @@ export default function (legend, {
   const api = {
     itemize: (obj) => {
       itemized = itemize(obj, legend.renderer);
-      offset = isNaN(offset) ? itemized.layout.scrollOffset : offset; // Set the initial offset
+      offset = offset === null && !isNaN(itemized.layout.scrollOffset) ? itemized.layout.scrollOffset : offset; // Set the initial offset
     },
     getItemsToRender: (obj) => {
       viewRect = obj.viewRect;
