@@ -56,7 +56,9 @@ function getSliceBounds(slice) {
     outerRadius,
     offset
   } = slice;
-  if (start + (2 * Math.PI) !== end) { return null; }
+  if (start + (2 * Math.PI) !== end) {
+    return { type: null, bounds: null };
+  }
   let r = innerRadius !== 0 ? innerRadius : outerRadius;
   return getRectFromCircle({ cx: offset.x, cy: offset.y, r });
 }

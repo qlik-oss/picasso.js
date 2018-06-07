@@ -109,6 +109,37 @@ describe('labeling - rows', () => {
       });
     });
 
+    it('should not support pie slice that are not a "circle"', () => {
+      const settings = {
+        padding: 0,
+        labels: [{
+          label: () => 'etikett'
+        }]
+      };
+      const nodes = [{
+        type: 'path',
+        desc: {
+          slice: {
+            start: 0,
+            end: Math.PI,
+            offset: { x: 30, y: 30 },
+            innerRadius: 0,
+            outerRadius: 25
+          }
+        }
+      }];
+      renderer.measureText.returns({ width: 20, height: 14 });
+      let labels = rows({
+        settings,
+        chart,
+        nodes,
+        renderer,
+        style: {}
+      }, bounds => bounds);
+
+      expect(labels).to.have.length(0);
+    });
+
     it('should stack labels', () => {
       const settings = {
         align: 0,
