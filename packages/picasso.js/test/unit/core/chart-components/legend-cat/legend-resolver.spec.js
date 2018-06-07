@@ -68,6 +68,43 @@ describe('legend-resolver', () => {
     });
   });
 
+  it('should resolve correctly using a custom formatter', () => {
+    const resolved = resolveSettings({
+      scale: {
+        type: 'threshold-color',
+        data: () => ({
+          fields: [{
+            id: () => 'measure'
+          }]
+        }),
+        domain: () => [2, 5, 7]
+      },
+      settings: {
+        formatter: v => `${v}kr`,
+        settings: {}
+      },
+      style: {
+        item: {}
+      },
+      resolver: {
+        resolve: x => (!x.data.items ? {} : {
+          items: x.data.items.map(d => ({
+            data: d
+          }))
+        })
+      },
+      chart: {
+        formatter: v => v
+      }
+    });
+    expect(resolved.labels).to.eql({
+      items: [
+        { data: { label: '5kr - < 7kr', value: [5, 7], source: { field: 'measure' } } },
+        { data: { label: '2kr - < 5kr', value: [2, 5], source: { field: 'measure' } } }
+      ]
+    });
+  });
+
   describe('resolveSettings', () => {
     let resolved;
     let settings;
