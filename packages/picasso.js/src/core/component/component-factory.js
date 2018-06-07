@@ -65,7 +65,10 @@ function prepareContext(ctx, definition, opts) {
   });
   if (getState) {
     Object.defineProperty(ctx, 'getState', {
-      get: getState
+      value: getState,
+      enumerable: false,
+      configurable: false,
+      writable: false,
     });
   }
 
@@ -445,7 +448,7 @@ function componentFactory(definition, options = {}) {
     dockConfig: () => dockConfig,
     mediator: () => mediator,
     style: () => style,
-    getState: () => getState.call(definitionContext)
+    getState: getState.bind(definitionContext)
   });
 
   fn.getBrushedShapes = function getBrushedShapes(context, mode, props) {

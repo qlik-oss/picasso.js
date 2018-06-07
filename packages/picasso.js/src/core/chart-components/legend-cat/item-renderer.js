@@ -268,13 +268,13 @@ export default function (legend, {
   let parallels;
   let viewRect;
   let containerRect;
-  let offset = 0;
+  let offset = null;
   let overflow = 0;
 
   const api = {
     itemize: (obj) => {
       itemized = itemize(obj, legend.renderer);
-      offset = itemized.layout.scrollOffset; // Set the initial offset
+      offset = isNaN(offset) ? itemized.layout.scrollOffset : offset; // Set the initial offset
     },
     getItemsToRender: (obj) => {
       viewRect = obj.viewRect;

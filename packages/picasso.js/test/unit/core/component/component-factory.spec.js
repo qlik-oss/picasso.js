@@ -196,14 +196,14 @@ describe('Component', () => {
 
     it('should by default return an empty state', () => {
       instance = createAndRenderComponent({});
-      state = instance.ctx.getState;
+      state = instance.ctx.getState();
       expect(state).to.deep.equal({});
     });
 
     it('should return definition state', () => {
       definition.getState = () => ({ a: 1 });
       instance = createAndRenderComponent({});
-      state = instance.ctx.getState;
+      state = instance.ctx.getState();
       expect(state).to.deep.equal({ a: 1 });
     });
 
@@ -211,7 +211,7 @@ describe('Component', () => {
       definition.getState = () => ({ a: 1 });
       instance = createAndRenderComponent({});
       state = instance.def.getState;
-      expect(state = instance.def.getState).to.be.undefined;
+      expect(state).to.be.undefined;
     });
   });
 });
