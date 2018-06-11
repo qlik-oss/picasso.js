@@ -28,16 +28,18 @@ describe('categorical', () => {
   });
 
   describe('explicit', () => {
+    let settings;
     let s;
     beforeEach(() => {
-      s = categorical({
+      settings = {
         domain: ['Sweden', 'Italy', 'England', 'France', 'Canada'],
         range: ['blue', 'red'],
         explicit: {
           domain: ['Italy', 'USA', 'Sweden'],
           range: ['green', 'starspangled', 'yellow']
         }
-      });
+      };
+      s = categorical(settings);
     });
 
     it('should not modify domain when explicit domain is set', () => {
@@ -50,6 +52,51 @@ describe('categorical', () => {
 
     it('should return custom color for "Italy"', () => {
       expect(s('Italy')).to.equal('green');
+    });
+
+    it('should override the range', () => {
+      settings.explicit.domain = ['Italy', 'England', 'Sweden'];
+      settings.explicit.range = ['green', 'white', 'yellow'];
+      settings.explicit.override = true;
+
+      s = categorical(settings);
+
+      expect(s.range()).to.eql(['yellow', 'green', 'white', 'red', 'blue']);
+    });
+
+    it('should append null', () => {
+      settings.domain.push(-2);
+      settings.explicit.domain = [-2];
+      settings.explicit.range = ['grey'];
+      settings.explicit.override = true;
+
+      s = categorical(settings);
+
+      expect(s.range()).to.eql(['blue', 'red', 'blue', 'red', 'blue', 'grey']);
+    });
+
+    it('should append others', () => {
+      settings.domain.push(-3);
+      settings.explicit.domain = [-3];
+      settings.explicit.range = ['darkgrey'];
+      settings.explicit.override = false;
+
+      s = categorical(settings);
+
+      expect(s.range()).to.eql(['blue', 'red', 'blue', 'red', 'blue', 'darkgrey']);
+    });
+
+    it('should append others and null', () => {
+      settings.domain.push(-3);
+      settings.domain.splice(0, 0, -2);
+
+      settings.explicit.domain = [-2, -3];
+      settings.explicit.range = ['grey', 'darkgrey'];
+      settings.explicit.override = false;
+
+      s = categorical(settings);
+
+      expect(s.range()).to.eql(['grey', 'blue', 'red', 'blue', 'red', 'blue', 'darkgrey']);
     });
   });
 });

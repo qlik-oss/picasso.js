@@ -64,8 +64,14 @@ export default function scaleCategorical(settings = {}, data = {}, resources = {
     const order = explicitDomain.map((d, i) => [domain.indexOf(d), d, explicitRange[i]]).sort((a, b) => a[0] - b[0]);
     order.forEach((v) => {
       const idx = domain.indexOf(v[1]);
+      const isOthersOrNull = (v[1] === -2 || v[1] === -3);
       if (idx !== -1) {
-        range.splice(idx, 0, v[2]);
+        // Others or null should always be injected
+        if (settings.explicit.override && !isOthersOrNull) {
+          range.splice(idx, 1, v[2]);
+        } else {
+          range.splice(idx, 0, v[2]);
+        }
       }
     });
     // cutoff excess range values
