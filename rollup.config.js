@@ -31,18 +31,21 @@ const config = {
     resolve({ jsnext: true, preferBuiltins: false }),
     commonjs(),
     babel({
+      babelrc: false,
       exclude: 'node_modules/**',
-      presets: [['es2015', { modules: false }]],
+      presets: [['env', { modules: false }]],
       plugins: ['external-helpers']
     }),
-    ...(production ? [uglify()] : []),
-    filesize(),
-    license({
-      banner: `
-        ${name} v${version}
-        Copyright (c) ${new Date().getFullYear()} QlikTech International AB
-      `
-    })
+    ...(production ? [
+      uglify(),
+      filesize(),
+      license({
+        banner: `
+          ${name} v${version}
+          Copyright (c) ${new Date().getFullYear()} QlikTech International AB
+        `
+      })
+    ] : [])
   ]
 };
 
