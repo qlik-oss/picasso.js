@@ -7,10 +7,14 @@
     "sourceType": "module",
     "ecmaVersion": 6,
     "ecmaFeatures": {
-      "experimentalObjectRestSpread": true
+      "experimentalObjectRestSpread": true,
+      "jsx": true
     }
   },
-  "extends": "airbnb/base",
+  "extends": "airbnb-base",
+  "plugins": [
+    "react"
+  ],
   "rules": {
     "max-len": 0,
     "no-bitwise": 0,
