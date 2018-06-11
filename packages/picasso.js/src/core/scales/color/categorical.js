@@ -12,6 +12,24 @@ const DEFAULT_EXPLICIT_SETTINGS = {
   range: []
 };
 
+const overrideRange = (range, domain, explicit) => {
+  const overridenRange = range.slice();
+  const explicitDomain = explicit.explicitDomain;
+  const explicitRange = explicit.explicitRange;
+
+  for (let i = 0; i < explicitDomain.length; i++) {
+    const index = domain.indexOf(explicitDomain[i]);
+    if (index > -1) {
+      if (index >= overridenRange.length) {
+        overridenRange.push(explicitRange[i]);
+      } else {
+        overridenRange[index] = explicitRange[i];
+      }
+    }
+  }
+  return overridenRange;
+};
+
 /**
  * @typedef {object} scale--categorical-color
  * @property {string} [type='categorical-color']
@@ -36,8 +54,10 @@ export default function scaleCategorical(settings = {}, data = {}, resources = {
   const theme = resources.theme;
   const stgns = resolveSettings(settings, DEFAULT_SETTINGS, { data, resources });
   stgns.explicit = resolveSettings(settings.explicit, DEFAULT_EXPLICIT_SETTINGS, { data, resources });
+  const haveOverride = settings.explicit && settings.explicit.override;
 
   let range;
+  let overridenRange;
   if (!Array.isArray(stgns.range) || stgns.range.length === 0) {
     range = theme ? theme.palette('categorical', s.domain().length).slice() : [];
   } else {
@@ -54,30 +74,38 @@ export default function scaleCategorical(settings = {}, data = {}, resources = {
   if (Array.isArray(stgns.explicit.domain) && stgns.explicit.domain.length) {
     const domain = s.domain().slice();
     const explicitDomain = stgns.explicit.domain;
+    const explicitRange = Array.isArray(stgns.explicit.range) ? stgns.explicit.range : [];
+    const explicit = {
+      explicitDomain,
+      explicitRange
+    };
+
+    overridenRange = overrideRange(range, domain, explicit);
+
     // duplicate range values to cover entire domain
     const numCopies = Math.floor(domain.length / range.length);
     for (let i = 1; i < numCopies + 1; i *= 2) {
       range = range.concat(range);
     }
+
     // inject explicit colors
-    const explicitRange = Array.isArray(stgns.explicit.range) ? stgns.explicit.range : [];
     const order = explicitDomain.map((d, i) => [domain.indexOf(d), d, explicitRange[i]]).sort((a, b) => a[0] - b[0]);
     order.forEach((v) => {
       const idx = domain.indexOf(v[1]);
-      const isOthersOrNull = (v[1] === -2 || v[1] === -3);
       if (idx !== -1) {
-        // Others or null should always be injected
-        if (settings.explicit.override && !isOthersOrNull) {
-          range.splice(idx, 1, v[2]);
-        } else {
-          range.splice(idx, 0, v[2]);
-        }
+        range.splice(idx, 0, v[2]);
       }
     });
+
     // cutoff excess range values
     range.length = domain.length;
   }
-  s.range(range);
+
+  if (haveOverride) {
+    s.range(overridenRange);
+  } else {
+    s.range(range);
+  }
 
   return s;
 }
