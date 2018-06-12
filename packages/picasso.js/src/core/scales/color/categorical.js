@@ -12,22 +12,33 @@ const DEFAULT_EXPLICIT_SETTINGS = {
   range: []
 };
 
+/**
+ * Overrides the range with the values specified in the explicit object if possible.
+ * If there are no overrides, the values from explicit object will be injected into
+ * the range in the order specified by the domain.
+ * If the index is out of bounds, no injection or override will be performed.
+ * @param {Array} range - colors
+ * @param {Array} domain - values to be colored
+ * @param {Object} explicit - Object containing explicit domain and range to be overriden or injected.
+ */
 const overrideRange = (range, domain, explicit) => {
-  const overridenRange = range.slice();
+  const newRange = range.slice();
   const explicitDomain = explicit.explicitDomain;
   const explicitRange = explicit.explicitRange;
 
   for (let i = 0; i < explicitDomain.length; i++) {
     const index = domain.indexOf(explicitDomain[i]);
     if (index > -1) {
-      if (index >= overridenRange.length) {
-        overridenRange.push(explicitRange[i]);
+      if (index >= newRange.length) {
+        newRange.push(explicitRange[i]);
+      } else if (newRange.indexOf(explicitRange[i]) === -1 && newRange.length < domain.length) {
+        newRange.splice(index, 0, explicitRange[i]);
       } else {
-        overridenRange[index] = explicitRange[i];
+        newRange[index] = explicitRange[i];
       }
     }
   }
-  return overridenRange;
+  return newRange;
 };
 
 /**

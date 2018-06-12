@@ -61,7 +61,7 @@ describe('categorical', () => {
 
       s = categorical(settings);
 
-      expect(s.range()).to.eql(['yellow', 'green', 'white']);
+      expect(s.range()).to.eql(['yellow', 'blue', 'green', 'white', 'red']);
     });
 
     it('should append null', () => {
