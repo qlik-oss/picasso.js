@@ -10,7 +10,7 @@
       "experimentalObjectRestSpread": true
     }
   },
-  "extends": "airbnb/base",
+  "extends": "airbnb-base",
   "rules": {
     "max-len": 0,
     "no-bitwise": 0,
