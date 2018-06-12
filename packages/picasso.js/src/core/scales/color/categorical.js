@@ -20,6 +20,7 @@ const DEFAULT_EXPLICIT_SETTINGS = {
  * @param {Array} range - colors
  * @param {Array} domain - values to be colored
  * @param {Object} explicit - Object containing explicit domain and range to be overriden or injected.
+ * @ignore
  */
 const overrideRange = (range, domain, explicit) => {
   const newRange = range.slice();
