@@ -29,7 +29,6 @@
     "build:watch": "npm run build -- -w",
     "lint": "eslint src test",
     "lint:fix": "npm run lint -- --fix",
-    "lint:recommended": "npm run lint -- --config .eslintrc-recommended.json",
     "test": "npm run test:unit",
     "test:coverage": "npm run test:unit:coverage && npm run test:component:coverage",
     "test:unit": "aw -c aw.config.unit.js",
