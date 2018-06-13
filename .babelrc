@@ -3,22 +3,19 @@
     "test": {
       "sourceMaps": "inline",
       "retainLines": true,
-      "presets": [
-        [
-          "es2015"
-        ]
-      ],
+      "presets": ["env"],
       "plugins": [
         "transform-object-rest-spread",
-        [
-          "istanbul",
-          {
-            "exclude": [
-              "**/test/**",
-              "**/dist/**"
-            ]
-          }
-        ]
+        ["transform-runtime", {
+          "polyfill": false,
+          "regenerator": true
+        }],
+        ["istanbul", {
+          "exclude": [
+            "**/test/**",
+            "**/dist/**"
+          ]
+        }]
       ]
     }
   }
