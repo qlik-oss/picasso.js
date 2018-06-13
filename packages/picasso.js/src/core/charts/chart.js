@@ -491,8 +491,11 @@ function chartFn(definition, context) {
     toRender.forEach(comp => comp.instance.render());
     toUpdate.forEach(comp => comp.instance.update());
 
-    // Ensure that displayOrder is keept
-    visibleComponents.forEach((comp, i) => moveToPosition(comp, i));
+    // Ensure that displayOrder is keept, only do so on re-layout update.
+    // Which is only the case if partialData is false.
+    if (!partialData) {
+      visibleComponents.forEach((comp, i) => moveToPosition(comp, i));
+    }
 
     toRender.forEach(comp => comp.instance.mounted());
     toUpdate.forEach(comp => comp.instance.updated());
