@@ -189,29 +189,4 @@ describe('Component', () => {
       expect(spy).to.have.been.calledWith({ x: 0 }, ['x'], 'xor');
     });
   });
-
-  describe('getState', () => {
-    let instance;
-    let state;
-
-    it('should by default return an empty state', () => {
-      instance = createAndRenderComponent({});
-      state = instance.ctx.getState();
-      expect(state).to.deep.equal({});
-    });
-
-    it('should return definition state', () => {
-      definition.getState = () => ({ a: 1 });
-      instance = createAndRenderComponent({});
-      state = instance.ctx.getState();
-      expect(state).to.deep.equal({ a: 1 });
-    });
-
-    it('should not be exposed on definition context', () => {
-      definition.getState = () => ({ a: 1 });
-      instance = createAndRenderComponent({});
-      state = instance.def.getState;
-      expect(state).to.be.undefined;
-    });
-  });
 });

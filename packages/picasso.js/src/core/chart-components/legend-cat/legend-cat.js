@@ -189,7 +189,7 @@ const component = {
     this.navigationRenderer.renderer.destroy();
     this.titleRenderer.renderer.destroy();
   },
-  getState() {
+  _DO_NOT_USE_getInfo() {
     return {
       offset: this.itemRenderer.offset()
     };

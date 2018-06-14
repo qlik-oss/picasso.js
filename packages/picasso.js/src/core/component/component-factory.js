@@ -1,3 +1,4 @@
+/* eslint camelcase: 1 */
 import extend from 'extend';
 import EventEmitter from '../utils/event-emitter';
 import { list as listMixins } from './component-mixins';
@@ -16,7 +17,7 @@ const isReservedProperty = prop => [
   'beforeUpdate', 'updated', 'beforeRender', 'render', 'beforeUnmount', 'beforeDestroy',
   'destroyed', 'defaultSettings', 'data', 'settings', 'formatter',
   'scale', 'chart', 'dockConfig', 'mediator', 'style', 'resolver', 'registries',
-  'getState'
+  '_DO_NOT_USE_getInfo'
 ].some(name => name === prop);
 
 function prepareContext(ctx, definition, opts) {
@@ -38,7 +39,7 @@ function prepareContext(ctx, definition, opts) {
     registries,
     resolver,
     update,
-    getState
+    _DO_NOT_USE_getInfo
   } = opts;
 
   // TODO add setters and log warnings / errors to console
@@ -63,13 +64,12 @@ function prepareContext(ctx, definition, opts) {
   Object.defineProperty(ctx, 'registries', {
     get: registries
   });
-  if (getState) {
-    Object.defineProperty(ctx, 'getState', {
-      value: getState,
-      enumerable: false,
-      configurable: false,
-      writable: false
-    });
+
+  // TODO _DO_NOT_USE_getInfo is a temporary solution to expose info from a component
+  // It should replace ASAP with a proper solution.
+  // The only component activaly in need of it is the legend-cat
+  if (_DO_NOT_USE_getInfo) {
+    ctx._DO_NOT_USE_getInfo = _DO_NOT_USE_getInfo;
   }
 
   Object.keys(definition).forEach((key) => {
@@ -150,7 +150,7 @@ function setUpEmitter(ctx, emitter, settings) {
 function componentFactory(definition, options = {}) {
   const {
     defaultSettings = {},
-    getState = () => ({})
+    _DO_NOT_USE_getInfo = () => ({})
   } = definition;
   const {
     chart,
@@ -448,7 +448,7 @@ function componentFactory(definition, options = {}) {
     dockConfig: () => dockConfig,
     mediator: () => mediator,
     style: () => style,
-    getState: getState.bind(definitionContext)
+    _DO_NOT_USE_getInfo: _DO_NOT_USE_getInfo.bind(definitionContext)
   });
 
   fn.getBrushedShapes = function getBrushedShapes(context, mode, props) {
