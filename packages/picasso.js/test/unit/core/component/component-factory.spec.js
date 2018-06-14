@@ -51,7 +51,8 @@ describe('Component', () => {
     renderer = {
       appendTo: () => {},
       render: () => ({}),
-      size: () => {}
+      size: () => {},
+      element: () => 'elm'
     };
   });
 
@@ -121,6 +122,71 @@ describe('Component', () => {
   });
   */
 
+  describe('findShapes', () => {
+    let instance;
+    let config;
+    let shapes;
+
+    beforeEach(() => {
+      shapes = [{ data: 0 }, { data: 1 }, { data: 2 }];
+      renderer.findShapes = () => shapes;
+      config = {
+        key: 'myKey'
+      };
+
+      instance = createAndRenderComponent(config);
+    });
+
+    it('should return matching shapes', () => {
+      const s = instance.findShapes('*');
+
+      expect(s).to.deep.equal([
+        { data: 0, key: 'myKey', element: 'elm' },
+        { data: 1, key: 'myKey', element: 'elm' },
+        { data: 2, key: 'myKey', element: 'elm' }
+      ]);
+    });
+  });
+
+  describe('shapesAt', () => {
+    let instance;
+    let config;
+    let shapes;
+
+    beforeEach(() => {
+      shapes = [
+        { node: { data: 0 } },
+        { node: { data: 1 } },
+        { node: { data: 2 } }
+      ];
+      renderer.itemsAt = () => shapes;
+      config = {
+        key: 'myKey'
+      };
+
+      instance = createAndRenderComponent(config);
+    });
+
+    it('should return matching shapes', () => {
+      const s = instance.shapesAt({ x: 0, y: 0 }); // Input doesn't matter as output is mocked
+
+      expect(s).to.deep.equal([
+        { data: 0, key: 'myKey', element: 'elm' },
+        { data: 1, key: 'myKey', element: 'elm' },
+        { data: 2, key: 'myKey', element: 'elm' }
+      ]);
+    });
+
+    it('propagation option should return last shape', () => {
+      // Last shape is the shape that is visibly "on top"
+      const s = instance.shapesAt({ x: 0, y: 0 }, { propagation: 'stop' });
+
+      expect(s).to.deep.equal([
+        { data: 2, key: 'myKey', element: 'elm' }
+      ]);
+    });
+  });
+
   describe('getBrushedShapes', () => {
     let instance;
     let config;
@@ -131,6 +197,7 @@ describe('Component', () => {
       renderer.findShapes = () => shapes;
       chart.brush = () => ({ containsMappedData: d => d === 1 || d === 2 });
       config = {
+        key: 'myKey',
         brush: {
           consume: [
             {
@@ -148,7 +215,10 @@ describe('Component', () => {
       expect(rNoMatch).to.be.empty;
 
       const rMatch = instance.getBrushedShapes('test');
-      expect(rMatch).to.deep.equal([{ data: 1 }, { data: 2 }]);
+      expect(rMatch).to.deep.equal([
+        { data: 1, key: 'myKey', element: 'elm' },
+        { data: 2, key: 'myKey', element: 'elm' }
+      ]);
     });
 
     it('should not return duplicate shapes', () => {
@@ -156,7 +226,10 @@ describe('Component', () => {
       config.brush.consume.push({ context: 'test' });
 
       instance = createAndRenderComponent(config);
-      expect(instance.getBrushedShapes('test')).to.deep.equal([{ data: 1 }, { data: 2 }]);
+      expect(instance.getBrushedShapes('test')).to.deep.equal([
+        { data: 1, key: 'myKey', element: 'elm' },
+        { data: 2, key: 'myKey', element: 'elm' }
+      ]);
     });
 
     it('should use data props parameter if submitted', () => {
