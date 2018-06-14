@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.9.0"></a>
+# [0.9.0](https://github.com/qlik-oss/picasso.js/compare/v0.8.0...v0.9.0) (2018-06-14)
+
+
+### Bug Fixes
+
+* **q:** Register number & time formatter when using q plugin ([#98](https://github.com/qlik-oss/picasso.js/issues/98)) ([37831a3](https://github.com/qlik-oss/picasso.js/commit/37831a3))
+* **q:** use auto formatter when qNumFormat is missing ([#91](https://github.com/qlik-oss/picasso.js/issues/91)) ([4f9c2a6](https://github.com/qlik-oss/picasso.js/commit/4f9c2a6))
+
+
+### Features
+
+* **q:** add support for qTreeData and qMode=K ([#88](https://github.com/qlik-oss/picasso.js/issues/88)) ([e43443d](https://github.com/qlik-oss/picasso.js/commit/e43443d))
+
+
+
+
 <a name="0.7.0"></a>
 # [0.7.0](https://github.com/qlik-oss/picasso.js/compare/v0.6.0...v0.7.0) (2018-04-05)
 
