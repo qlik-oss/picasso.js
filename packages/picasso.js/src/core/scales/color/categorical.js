@@ -37,7 +37,6 @@ export default function scaleCategorical(settings = {}, data = {}, resources = {
   const theme = resources.theme;
   const stgns = resolveSettings(settings, DEFAULT_SETTINGS, { data, resources });
   stgns.explicit = resolveSettings(settings.explicit, DEFAULT_EXPLICIT_SETTINGS, { data, resources });
-  const haveOverride = stgns.explicit && stgns.explicit.override;
 
   let range;
   if (!Array.isArray(stgns.range) || stgns.range.length === 0) {
@@ -64,7 +63,7 @@ export default function scaleCategorical(settings = {}, data = {}, resources = {
       range = range.concat(range);
     }
 
-    if (haveOverride) {
+    if (stgns.explicit.override) {
       for (let i = 0; i < explicitDomain.length; i++) {
         const index = domain.indexOf(explicitDomain[i]);
         if (index > -1) {
