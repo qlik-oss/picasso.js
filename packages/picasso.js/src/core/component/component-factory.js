@@ -254,6 +254,11 @@ function componentFactory(definition, options = {}) {
   };
   updateDockConfig(dockConfig, settings);
 
+  const appendComponentMeta = (node) => {
+    node.key = settings.key;
+    node.element = rend.element();
+  };
+
   const fn = () => {};
 
   fn.dockConfig = dockConfig;
@@ -450,6 +455,7 @@ function componentFactory(definition, options = {}) {
           for (let i = 0; i < sceneNodes.length; i++) {
             const node = sceneNodes[i];
             if (node.data && brusher.containsMappedData(node.data, props || consume.data, mode)) {
+              appendComponentMeta(node);
               shapes.push(node);
               sceneNodes.splice(i, 1);
               i--;
@@ -463,7 +469,7 @@ function componentFactory(definition, options = {}) {
   fn.findShapes = (selector) => {
     const shapes = rend.findShapes(selector);
     for (let i = 0, num = shapes.length; i < num; i++) {
-      shapes[i].key = settings.key;
+      appendComponentMeta(shapes[i]);
     }
 
     return shapes;
@@ -480,7 +486,7 @@ function componentFactory(definition, options = {}) {
     }
 
     for (let i = 0, num = shapes.length; i < num; i++) {
-      shapes[i].key = settings.key;
+      appendComponentMeta(shapes[i]);
     }
 
     return shapes;

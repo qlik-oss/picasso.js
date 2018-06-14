@@ -51,7 +51,8 @@ describe('Component', () => {
     renderer = {
       appendTo: () => {},
       render: () => ({}),
-      size: () => {}
+      size: () => {},
+      element: () => 'elm'
     };
   });
 
@@ -131,6 +132,7 @@ describe('Component', () => {
       renderer.findShapes = () => shapes;
       chart.brush = () => ({ containsMappedData: d => d === 1 || d === 2 });
       config = {
+        key: 'myKey',
         brush: {
           consume: [
             {
@@ -148,7 +150,10 @@ describe('Component', () => {
       expect(rNoMatch).to.be.empty;
 
       const rMatch = instance.getBrushedShapes('test');
-      expect(rMatch).to.deep.equal([{ data: 1 }, { data: 2 }]);
+      expect(rMatch).to.deep.equal([
+        { data: 1, key: 'myKey', element: 'elm' },
+        { data: 2, key: 'myKey', element: 'elm' }
+      ]);
     });
 
     it('should not return duplicate shapes', () => {
@@ -156,7 +161,10 @@ describe('Component', () => {
       config.brush.consume.push({ context: 'test' });
 
       instance = createAndRenderComponent(config);
-      expect(instance.getBrushedShapes('test')).to.deep.equal([{ data: 1 }, { data: 2 }]);
+      expect(instance.getBrushedShapes('test')).to.deep.equal([
+        { data: 1, key: 'myKey', element: 'elm' },
+        { data: 2, key: 'myKey', element: 'elm' }
+      ]);
     });
 
     it('should use data props parameter if submitted', () => {
