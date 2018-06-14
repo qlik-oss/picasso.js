@@ -67,6 +67,9 @@ const SETTINGS = {
        * @type {number=} */
       strokeWidth: 1,
       /**
+       * @type {string=} */
+      strokeDasharray: undefined,
+      /**
        * @type {number=} */
       opacity: 1,
       /**
@@ -95,7 +98,7 @@ function createDisplayLayer(points, {
   data
 }, fill = '') {
   const path = generator(points);
-  return {
+  const d = {
     type: 'path',
     d: path,
     opacity: item.opacity,
@@ -104,6 +107,12 @@ function createDisplayLayer(points, {
     fill: fill || item.fill,
     data
   };
+
+  if (item.strokeDasharray) {
+    d.strokeDasharray = item.strokeDasharray;
+  }
+
+  return d;
 }
 
 function createDisplayLayers(layers, {
@@ -113,6 +122,7 @@ function createDisplayLayers(layers, {
   stngs
 }) {
   const nodes = [];
+  const layerStngs = stngs.layers || {};
   layers.forEach((layer) => {
     const {
       lineObj, layerObj, areaObj, points
@@ -139,7 +149,7 @@ function createDisplayLayers(layers, {
     secondaryLineGenerator = areaGenerator[`line${minor.p.toUpperCase()}0`]();
 
     // area layer
-    if (stngs.layers.area && areaObj.show !== false) {
+    if (layerStngs.area && areaObj.show !== false) {
       nodes.push(createDisplayLayer(points, {
         data: layer.firstPoint,
         item: areaObj,
@@ -156,7 +166,7 @@ function createDisplayLayers(layers, {
       }, 'none'));
 
       // secondary line layer, used only when rendering area
-      if (!missingMinor0 && stngs.layers.area && areaObj.show !== false) {
+      if (!missingMinor0 && layerStngs.area && areaObj.show !== false) {
         nodes.push(createDisplayLayer(points, {
           data: layer.firstPoint,
           item: lineObj,
@@ -201,6 +211,7 @@ function resolve({
 
   const metaLayers = Object.keys(layerIds).map(lid => layerIds[lid]);
   const layersData = { items: metaLayers.map(layer => layer.firstPoint) };
+  const layerStngs = stngs.layers || {};
 
   const layersResolved = resolver.resolve({
     data: layersData,
@@ -208,21 +219,21 @@ function resolve({
       curve: SETTINGS.layers.curve, show: SETTINGS.layers.show
     },
     settings: {
-      curve: stngs.layers.curve,
-      show: stngs.layers.show
+      curve: layerStngs.curve,
+      show: layerStngs.show
     }
   });
 
   const linesResolved = resolver.resolve({
     data: layersData,
     defaults: extend({}, SETTINGS.layers.line, style.line),
-    settings: stngs.layers.line
+    settings: layerStngs.line
   });
 
   const areasResolved = resolver.resolve({
     data: layersData,
     defaults: extend({}, SETTINGS.layers.area, style.area),
-    settings: stngs.layers.area
+    settings: layerStngs.area
   });
 
   return {
@@ -300,7 +311,7 @@ const lineMarkerComponent = {
   },
   render({ data }) {
     const { width, height } = this.rect;
-    const missingMinor0 = typeof this.stngs.coordinates.minor0 === 'undefined';
+    const missingMinor0 = !this.stngs.coordinates || typeof this.stngs.coordinates.minor0 === 'undefined';
 
     const visibleLayers = calculateVisibleLayers({
       data,
