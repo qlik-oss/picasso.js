@@ -183,17 +183,9 @@ export function renderer(sceneFn = sceneFactory) {
     return doRender;
   };
 
-  canvasRenderer.itemsAt = options => (scene ? scene.getItemsFrom(options) : []);
+  canvasRenderer.itemsAt = input => (scene ? scene.getItemsFrom(input) : []);
 
-  canvasRenderer.findShapes = (selector) => {
-    if (scene) {
-      return scene.findShapes(selector).map((s) => {
-        s.element = canvasRenderer.element();
-        return s;
-      });
-    }
-    return [];
-  };
+  canvasRenderer.findShapes = selector => (scene ? scene.findShapes(selector) : []);
 
   canvasRenderer.clear = () => {
     if (el) {

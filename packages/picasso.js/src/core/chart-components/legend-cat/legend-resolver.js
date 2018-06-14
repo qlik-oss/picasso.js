@@ -18,7 +18,10 @@ const DEFAULT_SETTINGS = {
      * Layout direction. Either `'ltr'` or `'rtl'`
      * @type {string=}
      */
-    direction: 'ltr'
+    direction: 'ltr',
+    /** Initial scroll offset
+     * @type {number=} */
+    scrollOffset: 0
   },
   /**
    * Settings applied per item

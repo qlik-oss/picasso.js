@@ -1,3 +1,4 @@
+/* eslint camelcase: 1 */
 import extend from 'extend';
 import EventEmitter from '../utils/event-emitter';
 import { list as listMixins } from './component-mixins';
@@ -15,7 +16,8 @@ const isReservedProperty = prop => [
   'on', 'preferredSize', 'created', 'beforeMount', 'mounted', 'resize',
   'beforeUpdate', 'updated', 'beforeRender', 'render', 'beforeUnmount', 'beforeDestroy',
   'destroyed', 'defaultSettings', 'data', 'settings', 'formatter',
-  'scale', 'chart', 'dockConfig', 'mediator', 'style', 'resolver', 'registries'
+  'scale', 'chart', 'dockConfig', 'mediator', 'style', 'resolver', 'registries',
+  '_DO_NOT_USE_getInfo'
 ].some(name => name === prop);
 
 function prepareContext(ctx, definition, opts) {
@@ -36,7 +38,8 @@ function prepareContext(ctx, definition, opts) {
     style,
     registries,
     resolver,
-    update
+    update,
+    _DO_NOT_USE_getInfo
   } = opts;
 
   // TODO add setters and log warnings / errors to console
@@ -61,6 +64,13 @@ function prepareContext(ctx, definition, opts) {
   Object.defineProperty(ctx, 'registries', {
     get: registries
   });
+
+  // TODO _DO_NOT_USE_getInfo is a temporary solution to expose info from a component
+  // It should replace ASAP with a proper solution.
+  // The only component activaly in need of it is the legend-cat
+  if (_DO_NOT_USE_getInfo) {
+    ctx._DO_NOT_USE_getInfo = _DO_NOT_USE_getInfo;
+  }
 
   Object.keys(definition).forEach((key) => {
     if (!isReservedProperty(key)) {
@@ -139,7 +149,8 @@ function setUpEmitter(ctx, emitter, settings) {
 // TODO support es6 classes
 function componentFactory(definition, options = {}) {
   const {
-    defaultSettings = {}
+    defaultSettings = {},
+    _DO_NOT_USE_getInfo = () => ({})
   } = definition;
   const {
     chart,
@@ -253,6 +264,11 @@ function componentFactory(definition, options = {}) {
     })
   };
   updateDockConfig(dockConfig, settings);
+
+  const appendComponentMeta = (node) => {
+    node.key = settings.key;
+    node.element = rend.element();
+  };
 
   const fn = () => {};
 
@@ -436,7 +452,8 @@ function componentFactory(definition, options = {}) {
     chart: () => chart,
     dockConfig: () => dockConfig,
     mediator: () => mediator,
-    style: () => style
+    style: () => style,
+    _DO_NOT_USE_getInfo: _DO_NOT_USE_getInfo.bind(definitionContext)
   });
 
   fn.getBrushedShapes = function getBrushedShapes(context, mode, props) {
@@ -450,6 +467,7 @@ function componentFactory(definition, options = {}) {
           for (let i = 0; i < sceneNodes.length; i++) {
             const node = sceneNodes[i];
             if (node.data && brusher.containsMappedData(node.data, props || consume.data, mode)) {
+              appendComponentMeta(node);
               shapes.push(node);
               sceneNodes.splice(i, 1);
               i--;
@@ -463,7 +481,7 @@ function componentFactory(definition, options = {}) {
   fn.findShapes = (selector) => {
     const shapes = rend.findShapes(selector);
     for (let i = 0, num = shapes.length; i < num; i++) {
-      shapes[i].key = settings.key;
+      appendComponentMeta(shapes[i]);
     }
 
     return shapes;
@@ -480,7 +498,7 @@ function componentFactory(definition, options = {}) {
     }
 
     for (let i = 0, num = shapes.length; i < num; i++) {
-      shapes[i].key = settings.key;
+      appendComponentMeta(shapes[i]);
     }
 
     return shapes;
