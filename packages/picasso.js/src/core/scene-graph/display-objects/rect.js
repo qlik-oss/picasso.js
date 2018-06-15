@@ -29,7 +29,6 @@ export default class Rect extends DisplayObject {
     }, collider);
 
     super.set(v);
-    super.collider(opts);
 
     if (width >= 0) {
       this.attrs.x = x;
@@ -46,6 +45,8 @@ export default class Rect extends DisplayObject {
       this.attrs.y = y + height;
       this.attrs.height = -height;
     }
+
+    super.collider(opts);
   }
 
   boundingRect(includeTransform = false) {

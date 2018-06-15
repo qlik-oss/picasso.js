@@ -25,11 +25,12 @@ export default class Circle extends DisplayObject {
     }, collider);
 
     super.set(v);
-    super.collider(opts);
 
     this.attrs.cx = cx;
     this.attrs.cy = cy;
     this.attrs.r = r;
+
+    super.collider(opts);
   }
 
   boundingRect(includeTransform = false) {

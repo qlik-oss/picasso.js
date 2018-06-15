@@ -1,8 +1,13 @@
+import extend from 'extend';
 import DisplayObject from './display-object';
 import {
   rectToPoints,
   getMinMax
 } from '../../geometry/util';
+
+function hasData({ data, _boundingRect, _textBoundsFn }) {
+  return typeof data !== 'undefined' && data !== null && (_boundingRect || _textBoundsFn);
+}
 
 /**
  * @extends node-def
@@ -46,7 +51,6 @@ export default class Text extends DisplayObject {
     } = v;
 
     super.set(v);
-    super.collider(collider);
     this.attrs.x = x;
     this.attrs.y = y;
     this.attrs.dx = dx;
@@ -55,18 +59,24 @@ export default class Text extends DisplayObject {
     if (boundingRect) {
       this._boundingRect = boundingRect;
     } else if (typeof textBoundsFn === 'function') {
-      this._boundingRect = textBoundsFn(this.attrs);
+      this._textBoundsFn = textBoundsFn;
     }
+
+    super.collider(extend({ type: hasData(this) ? 'bounds' : null }, collider));
   }
 
   boundingRect(includeTransform = false) {
-    if (!this._boundingRect) {
+    if (!this._boundingRect && !this._textBoundsFn) {
       return {
         x: 0,
         y: 0,
         width: 0,
         height: 0
       };
+    }
+
+    if (!this._boundingRect && this._textBoundsFn) {
+      this._boundingRect = this._textBoundsFn(this.attrs);
     }
 
     const p = rectToPoints(this._boundingRect);

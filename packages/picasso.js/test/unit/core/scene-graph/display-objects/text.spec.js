@@ -1,4 +1,5 @@
 import Text, { create as createText } from '../../../../../src/core/scene-graph/display-objects/text';
+import GeoRect from '../../../../../src/core/geometry/rect';
 
 describe('Text', () => {
   let node;
@@ -52,6 +53,40 @@ describe('Text', () => {
       expect(node.attrs.dy).to.equal(4);
       expect(node.collider()).to.be.null;
     });
+
+    it('should instantiate collider given data and explicit bounds', () => {
+      node = createText({
+        text: 'testing',
+        x: 1,
+        y: 2,
+        dx: 3,
+        dy: 4,
+        data: 0,
+        boundingRect: {
+          x: 0, y: 0, width: 0, height: 0
+        }
+      });
+      expect(node.collider()).to.be.a('object');
+      expect(node.collider().fn).to.be.an.instanceof(GeoRect);
+      expect(node.collider().type).to.equal('bounds');
+    });
+
+    it('should instantiate collider given data and bounds function', () => {
+      node = createText({
+        text: 'testing',
+        x: 1,
+        y: 2,
+        dx: 3,
+        dy: 4,
+        data: 0,
+        textBoundsFn: () => ({
+          x: 0, y: 0, width: 0, height: 0
+        })
+      });
+      expect(node.collider()).to.be.a('object');
+      expect(node.collider().fn).to.be.an.instanceof(GeoRect);
+      expect(node.collider().type).to.equal('bounds');
+    });
   });
 
   describe('BoundingRect', () => {
@@ -72,6 +107,19 @@ describe('Text', () => {
       expect(node.boundingRect()).to.deep.equal({
         x: 4, y: 6, width: 50, height: 100
       });
+    });
+
+    it('should cache result from textBounds function', () => {
+      def.x = 1;
+      def.y = 2;
+      def.dx = 3;
+      def.dy = 4;
+      def.textBoundsFn = sinon.stub().returns(mockedBounds);
+      node = createText(def);
+      node.boundingRect();
+      expect(def.textBoundsFn).to.have.been.calledOnce;
+      node.boundingRect(); // Should not call fn again
+      expect(def.textBoundsFn).to.have.been.calledOnce;
     });
 
     it('should use boundingRect attribute if supplied', () => {
