@@ -378,6 +378,7 @@ function findBestPlacement({
  * @property {number} [fontSize=12]
  * @property {Array<object>} labels
  * @property {string|function} labels[].label - The text value
+ * @property {function} labels[].linkData - Link data to the label
  * @property {Array<object>} labels[].placements
  * @property {string} [labels[].placements[].position='into'] - 'inside' | 'into' | 'outside' (outside is not implmented yet)
  * @property {string} [labels[].placements[].fill='#333'] - Color of the label

@@ -91,6 +91,7 @@ function getBounds(node) {
  * @property {number} [padding=4]
  * @property {Array<object>} labels
  * @property {string|function} labels[].label - The text value
+ * @property {function} labels[].linkData - Link data to the label
  * @property {number} [labels[].align=0.5]
  * @property {string|function} [labels[].fill='#333']
  */

@@ -333,6 +333,7 @@ export function precalculate({
  * @property {number} [fontSize=12]
  * @property {Array<object>} labels
  * @property {string|function} labels[].label - The text value
+ * @property {function} labels[].linkData - Link data to the label
  * @property {Array<object>} labels[].placements
  * @property {string} labels[].placements[].position - 'inside' | 'outside' | 'opposite'
  * @property {number} [labels[].placements[].justify=0] - Placement of the label along the direction of the bar
