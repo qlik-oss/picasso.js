@@ -56,6 +56,7 @@ export default class Text extends DisplayObject {
     this.attrs.dx = dx;
     this.attrs.dy = dy;
     this.attrs.text = text;
+    this._boundingRect = null; // Reset cache
     if (boundingRect) {
       this._boundingRect = boundingRect;
     } else if (typeof textBoundsFn === 'function') {
