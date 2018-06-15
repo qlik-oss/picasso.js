@@ -201,5 +201,38 @@ describe('labeling - rows', () => {
 
       expect(labels).to.eql(['label1']);
     });
+
+    it('should link data', () => {
+      const settings = {
+        align: 0,
+        justify: 0,
+        labels: [{
+          label: () => 'etikett',
+          linkData: ({ data }) => data
+        }]
+      };
+      const nodes = [{
+        type: 'rect',
+        bounds: {
+          x: 0,
+          y: 0,
+          width: 100,
+          height: 100
+        },
+        data: 1
+      }];
+      renderer.measureText.returns({ width: 20, height: 10 });
+      let labels = rows({
+        settings,
+        chart,
+        nodes,
+        renderer,
+        style: {}
+      }, bounds => bounds);
+
+      expect(labels[0]).to.containSubset({
+        data: 1
+      });
+    });
   });
 });

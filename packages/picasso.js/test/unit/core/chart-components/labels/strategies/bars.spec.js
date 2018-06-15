@@ -352,6 +352,42 @@ describe('labeling - bars', () => {
       });
     });
 
+    it('should link data', () => {
+      const settings = {
+        direction: () => 'right',
+        align: 0.4,
+        justify: 0.8,
+        labels: [{
+          placements: [{
+            position: 'inside', justify: 0.2, align: 0.5, fill: () => 'red'
+          }],
+          label: () => 'etikett',
+          linkData: ({ data }) => data
+        }]
+      };
+      const nodes = [{
+        localBounds: {
+          x: 10, y: 20, width: 40, height: 50
+        },
+        data: 1
+      }];
+      renderer.measureText.returns({ width: 20, height: 10 });
+      let labels = bars({
+        settings,
+        chart,
+        nodes,
+        rect: {
+          x: 0, y: 0, width: 100, height: 200
+        },
+        renderer,
+        style: {}
+      });
+
+      expect(labels[0]).to.containSubset({
+        data: 1
+      });
+    });
+
     it('should skip node if outside container', () => {
       const settings = {
         direction: () => 'right',

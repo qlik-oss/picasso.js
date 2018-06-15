@@ -219,6 +219,7 @@ export function placeInBars(
       if (bounds && placement) {
         justify = placement.justify;
         fill = typeof placement.fill === 'function' ? placement.fill(arg, i) : placement.fill;
+        const linkData = typeof lblStngs.linkData === 'function' ? lblStngs.linkData(arg, i) : undefined;
 
         if (direction === 'up') {
           justify = 1 - justify;
@@ -238,6 +239,9 @@ export function placeInBars(
         });
 
         if (label) {
+          if (typeof linkData !== 'undefined') {
+            label.data = linkData;
+          }
           labels.push(label);
         }
       }
