@@ -9,6 +9,7 @@ import {
 } from './svg-gradient';
 import createRendererBox from '../renderer-box';
 import create from '../index';
+import injectTextBoundsFn from '../../text-manipulation/inject-textbounds';
 
 /**
  * Create a new svg renderer
@@ -81,7 +82,8 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
       on: {
         create: [
           onGradient,
-          onLineBreak(svg.measureText)
+          onLineBreak(svg.measureText),
+          injectTextBoundsFn(svg)
         ]
       }
     });
