@@ -316,7 +316,7 @@ function componentFactory(definition, options = {}) {
       rend.size(inner);
       size = inner;
     }
-    instanceContext.rect = rend.size();  
+    instanceContext.rect = inner;
   };
 
   fn.getRect = () => instanceContext.rect;

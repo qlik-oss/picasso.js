@@ -49,8 +49,5 @@ export default function createRendererBox({
     box.margin.top = isNaN(margin.top) ? 0 : margin.top;
   }
 
-  box.scaledWidth = box.width * box.scaleRatio.x;
-  box.scaledHeight = box.height * box.scaleRatio.y;
-
   return box;
 }
