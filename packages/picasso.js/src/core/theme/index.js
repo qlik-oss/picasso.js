@@ -1,13 +1,16 @@
 import styleResolver from '../style/resolver';
 
 function themeFn(style = {}, palettes = []) {
-  const pals = {};
-  palettes.forEach((palette) => {
-    pals[palette.key] = {
-      colors: palette.colors,
-      sizes: palette.colors.map(colors => colors.length)
-    };
-  });
+  let pals = {};
+  const setPalettes = (p) => {
+    p.forEach((palette) => {
+      const pal = Array.isArray(palette.colors[0]) ? palette.colors : [palette.colors];
+      pals[palette.key] = {
+        colors: pal,
+        sizes: pal.map(colors => (colors ? colors.length : 0))
+      };
+    });
+  };
 
   const getPalette = (key, num) => {
     const palette = pals[key];
@@ -37,12 +40,16 @@ function themeFn(style = {}, palettes = []) {
      */
     palette: (name, num) => getPalette(name, num),
 
+    setPalettes,
+
     /**
      * Resolve style references
      * @param {style-object} s - Object containing
      */
     style: s => styleResolver(s, style)
   };
+
+  setPalettes(palettes);
 
   return theme;
 }

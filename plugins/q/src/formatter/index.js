@@ -21,6 +21,8 @@ export function createFromMetaInfo(meta, localeInfo) {
     decimal = meta.qNumFormat.qDec || decimal;
     type = meta.qNumFormat.qType || type;
     isAuto = isAuto && ['M'].indexOf(meta.qNumFormat.qType) === -1;
+  } else {
+    isAuto = true;
   }
 
   if (isAuto) {

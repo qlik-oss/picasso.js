@@ -233,6 +233,9 @@ function chartFn(definition, context) {
     if (!partialData) {
       Object.keys(brushes).forEach(b => brushes[b].clear());
     }
+    if (_settings.palettes) {
+      theme.setPalettes(_settings.palettes);
+    }
     dataCollection = dataCollections(_settings.collections, { dataset }, { logger });
     currentScales = buildScales(scales, { dataset, collection: dataCollection }, { scale: registries.scale, theme, logger });
     currentFormatters = buildFormatters(formatters, { dataset, collection: dataCollection }, { formatter: registries.formatter, theme, logger });
@@ -338,14 +341,17 @@ function chartFn(definition, context) {
     };
 
     const onBrushTap = (e) => {
+      const comps = eventInfo.comps || componentsFromPoint(e);
+      if (comps.every(c => c.instance.def.disableTriggers)) {
+        return;
+      }
+
       if (e.type === 'touchend') {
         e.preventDefault();
       }
       if (!isValidTapEvent(e, eventInfo)) {
         return;
       }
-
-      const comps = eventInfo.comps || componentsFromPoint(e);
 
       for (let i = comps.length - 1; i >= 0; i--) {
         const comp = comps[i];
@@ -491,8 +497,11 @@ function chartFn(definition, context) {
     toRender.forEach(comp => comp.instance.render());
     toUpdate.forEach(comp => comp.instance.update());
 
-    // Ensure that displayOrder is keept
-    visibleComponents.forEach((comp, i) => moveToPosition(comp, i));
+    // Ensure that displayOrder is keept, only do so on re-layout update.
+    // Which is only the case if partialData is false.
+    if (!partialData) {
+      visibleComponents.forEach((comp, i) => moveToPosition(comp, i));
+    }
 
     toRender.forEach(comp => comp.instance.mounted());
     toUpdate.forEach(comp => comp.instance.updated());
@@ -763,6 +772,8 @@ function chartFn(definition, context) {
   };
 
   instance.logger = () => logger;
+
+  instance.theme = () => theme;
 
   /**
    * Get the all interactions instances

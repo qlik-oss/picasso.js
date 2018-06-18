@@ -9,7 +9,8 @@ const DEFAULT_SETTINGS = {
 
 const DEFAULT_EXPLICIT_SETTINGS = {
   domain: [],
-  range: []
+  range: [],
+  override: false
 };
 
 /**
@@ -54,24 +55,36 @@ export default function scaleCategorical(settings = {}, data = {}, resources = {
   if (Array.isArray(stgns.explicit.domain) && stgns.explicit.domain.length) {
     const domain = s.domain().slice();
     const explicitDomain = stgns.explicit.domain;
+    const explicitRange = Array.isArray(stgns.explicit.range) ? stgns.explicit.range : [];
+
     // duplicate range values to cover entire domain
     const numCopies = Math.floor(domain.length / range.length);
     for (let i = 1; i < numCopies + 1; i *= 2) {
       range = range.concat(range);
     }
-    // inject explicit colors
-    const explicitRange = Array.isArray(stgns.explicit.range) ? stgns.explicit.range : [];
-    const order = explicitDomain.map((d, i) => [domain.indexOf(d), d, explicitRange[i]]).sort((a, b) => a[0] - b[0]);
-    order.forEach((v) => {
-      const idx = domain.indexOf(v[1]);
-      if (idx !== -1) {
-        range.splice(idx, 0, v[2]);
+
+    if (stgns.explicit.override) {
+      for (let i = 0; i < explicitDomain.length; i++) {
+        const index = domain.indexOf(explicitDomain[i]);
+        if (index > -1) {
+          range[index] = explicitRange[i];
+        }
       }
-    });
+    } else {
+      // inject explicit colors
+      const order = explicitDomain.map((d, i) => [domain.indexOf(d), d, explicitRange[i]]).sort((a, b) => a[0] - b[0]);
+      order.forEach((v) => {
+        const idx = domain.indexOf(v[1]);
+        if (idx !== -1) {
+          range.splice(idx, 0, v[2]);
+        }
+      });
+    }
+
     // cutoff excess range values
     range.length = domain.length;
   }
-  s.range(range);
 
+  s.range(range);
   return s;
 }

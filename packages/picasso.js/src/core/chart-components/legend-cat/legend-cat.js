@@ -188,6 +188,11 @@ const component = {
   beforeDestroy() {
     this.navigationRenderer.renderer.destroy();
     this.titleRenderer.renderer.destroy();
+  },
+  _DO_NOT_USE_getInfo() {
+    return {
+      offset: this.itemRenderer.offset()
+    };
   }
 };
 

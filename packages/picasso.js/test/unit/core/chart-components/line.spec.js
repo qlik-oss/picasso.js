@@ -18,11 +18,7 @@ describe('line component', () => {
   it('should render lines with default settings', () => {
     componentFixture.mocks().theme.style.returns({});
     const config = {
-      data: [1, 1, 1, 1],
-      settings: {
-        coordinates: {},
-        layers: {}
-      }
+      data: [1, 1, 1, 1]
     };
 
     componentFixture.simulateCreate(component, config);
@@ -34,6 +30,38 @@ describe('line component', () => {
       fill: 'none',
       stroke: '#ccc',
       strokeWidth: 1,
+      opacity: 1,
+      data: { value: 1, label: '1' }
+    }]);
+  });
+
+  it('should render lines with custom settings', () => {
+    componentFixture.mocks().theme.style.returns({});
+    const config = {
+      data: [1, 1, 1, 1],
+      settings: {
+        coordinates: {},
+        layers: {
+          line: {
+            fill: 'red',
+            stroke: 'green',
+            strokeWidth: 4,
+            strokeDasharray: '8 4'
+          }
+        }
+      }
+    };
+
+    componentFixture.simulateCreate(component, config);
+    rendered = componentFixture.simulateRender(opts);
+
+    expect(rendered).to.eql([{
+      type: 'path',
+      d: 'M100,50L100,50L100,50L100,50',
+      fill: 'none',
+      stroke: 'green',
+      strokeWidth: 4,
+      strokeDasharray: '8 4',
       opacity: 1,
       data: { value: 1, label: '1' }
     }]);

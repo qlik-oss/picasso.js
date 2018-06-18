@@ -28,16 +28,18 @@ describe('categorical', () => {
   });
 
   describe('explicit', () => {
+    let settings;
     let s;
     beforeEach(() => {
-      s = categorical({
+      settings = {
         domain: ['Sweden', 'Italy', 'England', 'France', 'Canada'],
         range: ['blue', 'red'],
         explicit: {
           domain: ['Italy', 'USA', 'Sweden'],
           range: ['green', 'starspangled', 'yellow']
         }
-      });
+      };
+      s = categorical(settings);
     });
 
     it('should not modify domain when explicit domain is set', () => {
@@ -50,6 +52,17 @@ describe('categorical', () => {
 
     it('should return custom color for "Italy"', () => {
       expect(s('Italy')).to.equal('green');
+    });
+
+    it('should override range', () => {
+      settings.domain = ['Italy', 'France', 'Sweden', 'Canada'];
+      settings.explicit.override = true;
+      // range is first duplicated to fit domain:  [blue, red] -> [blue, red, blue, red]
+      // then override -> [green, red, yellow, blue]
+
+      s = categorical(settings);
+
+      expect(s.range()).to.eql(['green', 'red', 'yellow', 'red']);
     });
   });
 });
