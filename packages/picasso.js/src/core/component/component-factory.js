@@ -300,10 +300,10 @@ function componentFactory(definition, options = {}) {
       rend.size(inner);
       size = inner;
     }
-    // instanceContext.rect = rend.size();  
+    instanceContext.rect = rend.size();  
   };
 
-  fn.size = () => rend.size();
+  fn.getRect = () => instanceContext.rect;
 
   const getRenderArgs = () => {
     const renderArgs = rend.renderArgs ? rend.renderArgs.slice(0) : [];
