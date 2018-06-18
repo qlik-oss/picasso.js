@@ -104,6 +104,7 @@ function compileMarkdownFiles(jsdocdata) {
 }
 
 handlebars.registerHelper('ifCond', function ifCond(v1, operator, v2, options) {
+  // https://stackoverflow.com/revisions/16315366/1
   switch (operator) {
     case '==':
       return (v1 == v2) ? options.fn(this) : options.inverse(this); // eslint-disable-line eqeqeq
