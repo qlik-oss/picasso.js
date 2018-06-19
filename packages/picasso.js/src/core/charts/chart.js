@@ -297,7 +297,13 @@ function chartFn(definition, context) {
     const ret = [];
     visibleComponents.forEach((c) => {
       const r = c.instance.getRect();
-      if (NarrowPhaseCollision.testRectPoint(r, tp)) {
+      // Do test on physical rect
+      if (NarrowPhaseCollision.testRectPoint({
+        x: r.margin.left + (r.x * r.scaleRatio.x),
+        y: r.margin.top + (r.y * r.scaleRatio.y),
+        width: r.width * r.scaleRatio.x,
+        height: r.height * r.scaleRatio.y
+      }, tp)) {
         ret.push(c);
       }
     });
