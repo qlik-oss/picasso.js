@@ -81,7 +81,7 @@ class DisplayObject extends Node {
     } else if (type === 'frontChild') {
       this._collider = c;
     } else if (type === 'bounds') {
-      c.fn = geometry('rect', opts);
+      c.fn = geometry('rect', this.boundingRect());
       this._collider = c;
     } else if (['line', 'rect', 'circle', 'polygon', 'polyline'].indexOf(type) !== -1) {
       c.fn = geometry(type, opts);

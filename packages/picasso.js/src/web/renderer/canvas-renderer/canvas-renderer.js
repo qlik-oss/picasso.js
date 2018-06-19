@@ -4,6 +4,7 @@ import { onLineBreak } from '../../text-manipulation';
 import createCanvasGradient from './canvas-gradient';
 import createRendererBox from '../renderer-box';
 import create from '../index';
+import injectTextBoundsFn from '../../text-manipulation/inject-textbounds';
 
 const reg = registry();
 
@@ -167,7 +168,10 @@ export function renderer(sceneFn = sceneFactory) {
       items: [sceneContainer],
       dpi: dpiRatio,
       on: {
-        create: [onLineBreak(canvasRenderer.measureText)]
+        create: [
+          onLineBreak(canvasRenderer.measureText),
+          injectTextBoundsFn(canvasRenderer)
+        ]
       }
     });
     const hasChangedScene = scene ? !newScene.equals(scene) : true;

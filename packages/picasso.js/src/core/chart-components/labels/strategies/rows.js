@@ -91,6 +91,7 @@ function getBounds(node) {
  * @property {number} [padding=4]
  * @property {Array<object>} labels
  * @property {string|function} labels[].label - The text value
+ * @property {function} labels[].linkData - Link data to the label
  * @property {number} [labels[].align=0.5]
  * @property {string|function} [labels[].fill='#333']
  */
@@ -187,6 +188,7 @@ export function rows({
 
       currentY += measurements[j].height + rowSettings.padding;
       let fill = typeof lblStngs.fill === 'function' ? lblStngs.fill(arg, i) : lblStngs.fill;
+      const linkData = typeof lblStngs.linkData === 'function' ? lblStngs.linkData(arg, i) : undefined;
       let label = placer(rect, texts[j], {
         fill,
         align: lblStngs.align,
@@ -195,6 +197,9 @@ export function rows({
         textMetrics: measurements[j]
       });
       if (label) {
+        if (typeof linkData !== 'undefined') {
+          label.data = linkData;
+        }
         labels.push(label);
       }
     }

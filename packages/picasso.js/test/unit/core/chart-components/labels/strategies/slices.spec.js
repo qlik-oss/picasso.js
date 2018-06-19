@@ -231,6 +231,41 @@ describe('labeling - slices', () => {
       expect(labels).to.be.empty;
     });
 
+    it('should link data', () => {
+      const settings = {
+        direction: () => 'vertical',
+        labels: [{
+          placements: [{ position: 'into', fill: () => 'red' }],
+          label: () => 'etikett',
+          linkData: ({ data }) => data
+        }]
+      };
+      const nodes = [{
+        desc: {
+          slice: {
+            offset: { x: 25, y: 25 },
+            start: 0,
+            end: 2 * Math.PI,
+            innerRadius: 0,
+            outerRadius: 50
+          }
+        },
+        data: 1
+      }];
+      renderer.measureText.returns({ width: 20, height: 10 });
+      let labels = slices({
+        settings,
+        chart,
+        nodes,
+        renderer,
+        style: {}
+      });
+
+      expect(labels[0]).to.containSubset({
+        data: 1
+      });
+    });
+
     describe('label overlap', () => {
       function testLabelCount(count, list) {
         const settings = {

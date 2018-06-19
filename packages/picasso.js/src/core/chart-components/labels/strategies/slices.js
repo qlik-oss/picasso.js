@@ -378,6 +378,7 @@ function findBestPlacement({
  * @property {number} [fontSize=12]
  * @property {Array<object>} labels
  * @property {string|function} labels[].label - The text value
+ * @property {function} labels[].linkData - Link data to the label
  * @property {Array<object>} labels[].placements
  * @property {string} [labels[].placements[].position='into'] - 'inside' | 'into' | 'outside' (outside is not implmented yet)
  * @property {string} [labels[].placements[].fill='#333'] - Color of the label
@@ -427,6 +428,7 @@ export function slices(
         continue;
       }
       let direction = typeof lblStngs.direction === 'function' ? lblStngs.direction(arg, i) : lblStngs.direction || 'horizontal';
+      const linkData = typeof lblStngs.linkData === 'function' ? lblStngs.linkData(arg, i) : undefined;
 
       labelStruct.fontFamily = lblStngs.fontFamily;
       labelStruct.fontSize = `${lblStngs.fontSize}px`;
@@ -469,6 +471,9 @@ export function slices(
         });
 
         if (label) {
+          if (typeof linkData !== 'undefined') {
+            label.data = linkData;
+          }
           labels.push(label);
         }
       }
