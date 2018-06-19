@@ -44,25 +44,20 @@ function resolveFrontChildCollision(node, type, input) {
   return null;
 }
 
-function resolveBoundsCollision(node, type, input) {
+function resolveGeometryCollision(node, type, input) {
   const collider = node._collider.fn;
-  let transformedInput = input;
-
-  if (Array.isArray(input.vertices)) {
-    transformedInput = createPolygon(input); // TODO Shouldn't have to do this here, currently its beacause a collision algorithm optimization, i.e. caching of polygon bounds
-  }
-
-  if (collider[type](transformedInput)) {
+  if (collider[type](input)) {
     const c = createCollision(node);
 
     appendParentNode(node, c);
 
     return c;
   }
+
   return null;
 }
 
-function resolveGeometryCollision(node, type, input) {
+function inverseTransform(node, input) {
   let transformedInput = {};
   if (node.modelViewMatrix) {
     if (Array.isArray(input)) { // Rect or Line
@@ -84,29 +79,20 @@ function resolveGeometryCollision(node, type, input) {
     transformedInput = createPolygon(transformedInput); // TODO Shouldn't have to do this here, currently its beacause a collision algorithm optimization, i.e. caching of polygon bounds
   }
 
-  const collider = node._collider.fn;
-  if (collider[type](transformedInput)) {
-    const c = createCollision(node);
-
-    appendParentNode(node, c);
-
-    return c;
-  }
-
-  return null;
+  return transformedInput;
 }
 
 function resolveCollision(node, intersectionType, input) {
   const collider = node._collider;
   if (collider === null) { return null; }
 
+  const transformedInput = inverseTransform(node, input);
+
   if (collider.type === 'frontChild') {
-    return resolveFrontChildCollision(node, intersectionType, input);
-  } else if (collider.type === 'bounds') {
-    return resolveBoundsCollision(node, intersectionType, input);
+    return resolveFrontChildCollision(node, intersectionType, transformedInput);
   }
 
-  return resolveGeometryCollision(node, intersectionType, input);
+  return resolveGeometryCollision(node, intersectionType, transformedInput);
 }
 
 function findAllCollisions(nodes, intersectionType, ary, input) {
