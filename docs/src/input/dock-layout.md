@@ -87,7 +87,7 @@ The minimum layout mode is a way to tell the layout engine that a component shou
 **Example**
   ```js
   dockLayout: {
-    layoutMode: {
+    layoutModes: {
       S: { width: 150, height: 150 }
       L: { width: 300, height: 300 }
     }
