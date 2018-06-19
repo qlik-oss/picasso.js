@@ -366,7 +366,7 @@ function findBestPlacement({
   return { bounds: null, placement: null };
 }
 
-function collitionRect(bounds) {
+function collisionRect(bounds) {
   if (bounds.anchor === 'start') {
     return bounds;
   }
@@ -463,7 +463,7 @@ export function slices(
 
       if (bounds && placement) {
         if (placement.position === 'outside') {
-          const r = collitionRect(bounds);
+          const r = collisionRect(bounds);
           if (!firstOutsideRect) {
             firstOutsideRect = r;
           } else if (firstOutsideRect && collisions.testRectRect(firstOutsideRect, r)) {
