@@ -292,4 +292,110 @@ describe('Text', () => {
       ]);
     });
   });
+
+  describe('containsPoint', () => {
+    it('should include transformation when resolving point', () => {
+      node = createText({
+        text: 'testing',
+        x: 10,
+        y: 20,
+        data: 0,
+        boundingRect: {
+          x: 10, y: 20, width: 1, height: 1
+        },
+        transform: 'translate(5, 10)'
+      });
+
+      node.resolveLocalTransform();
+
+      expect(node.containsPoint({ x: 15, y: 30 })).to.equal(true);
+    });
+  });
+
+  describe('intersectsLine', () => {
+    it('should include transformation when resolving line', () => {
+      node = createText({
+        text: 'testing',
+        x: 10,
+        y: 20,
+        data: 0,
+        boundingRect: {
+          x: 10, y: 20, width: 1, height: 1
+        },
+        transform: 'translate(5, 10)'
+      });
+
+      node.resolveLocalTransform();
+
+      expect(node.intersectsLine({
+        x1: 15, y1: 30, x2: 16, y2: 31
+      })).to.equal(true);
+    });
+  });
+
+  describe('intersectsRect', () => {
+    it('should include transformation when resolving rect', () => {
+      node = createText({
+        text: 'testing',
+        x: 10,
+        y: 20,
+        data: 0,
+        boundingRect: {
+          x: 10, y: 20, width: 1, height: 1
+        },
+        transform: 'translate(5, 10)'
+      });
+
+      node.resolveLocalTransform();
+
+      expect(node.intersectsRect({
+        x: 15, y: 30, width: 1, height: 1
+      })).to.equal(true);
+    });
+  });
+
+  describe('intersectsCircle', () => {
+    it('should include transformation when resolving rect', () => {
+      node = createText({
+        text: 'testing',
+        x: 10,
+        y: 20,
+        data: 0,
+        boundingRect: {
+          x: 10, y: 20, width: 1, height: 1
+        },
+        transform: 'translate(5, 10)'
+      });
+
+      node.resolveLocalTransform();
+
+      expect(node.intersectsCircle({ cx: 15, cy: 30, r: 1 })).to.equal(true);
+    });
+  });
+
+  describe('intersectsPolygon', () => {
+    it('should include transformation when resolving rect', () => {
+      node = createText({
+        text: 'testing',
+        x: 110,
+        y: 120,
+        data: 0,
+        boundingRect: {
+          x: 110, y: 120, width: 10, height: 10
+        },
+        transform: 'translate(-100, -100)'
+      });
+
+      node.resolveLocalTransform();
+
+      const vertices = [
+        { x: 0, y: 25 },
+        { x: 25, y: 0 },
+        { x: 50, y: 25 },
+        { x: 0, y: 25 }
+      ];
+
+      expect(node.intersectsPolygon({ vertices })).to.equal(true);
+    });
+  });
 });
