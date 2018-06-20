@@ -366,6 +366,19 @@ function findBestPlacement({
   return { bounds: null, placement: null };
 }
 
+function collisionRect(bounds) {
+  if (bounds.anchor === 'start') {
+    return bounds;
+  }
+  // bounds.anchor === 'end'
+  return {
+    x: bounds.x - bounds.width,
+    y: bounds.y,
+    width: bounds.width,
+    height: bounds.height
+  };
+}
+
 /**
  * @typedef {object} component--labels~slices-label-strategy
  *
@@ -414,8 +427,8 @@ export function slices(
 
   const labelStruct = {};
   const labels = [];
-  let firstOutsideBounds = null;
-  let previousOutsideBounds = null;
+  let firstOutsideRect = null;
+  let previousOutsideRect = null;
 
   for (let i = 0, len = nodes.length; i < len; i++) {
     let node = nodes[i];
@@ -450,15 +463,16 @@ export function slices(
 
       if (bounds && placement) {
         if (placement.position === 'outside') {
-          if (!firstOutsideBounds) {
-            firstOutsideBounds = bounds;
-          } else if (firstOutsideBounds.anchor === bounds.anchor && collisions.testRectRect(firstOutsideBounds, bounds)) {
+          const r = collisionRect(bounds);
+          if (!firstOutsideRect) {
+            firstOutsideRect = r;
+          } else if (firstOutsideRect && collisions.testRectRect(firstOutsideRect, r)) {
             continue;
           }
-          if (previousOutsideBounds && previousOutsideBounds.anchor === bounds.anchor && collisions.testRectRect(previousOutsideBounds, bounds)) {
+          if (previousOutsideRect && collisions.testRectRect(previousOutsideRect, r)) {
             continue;
           }
-          previousOutsideBounds = bounds;
+          previousOutsideRect = r;
         }
 
         let fill = typeof placement.fill === 'function' ? placement.fill(arg, i) : placement.fill;
