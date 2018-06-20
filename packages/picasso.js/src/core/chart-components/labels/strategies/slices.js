@@ -8,6 +8,20 @@ function pad(bounds, padding) {
   bounds.height -= (padding * 2);
 }
 
+/**
+ * Check if the pie slice label is located entirely within it's parent rect
+ * @param {Object} bounds - An object describing the position(x,y), width and height of label
+ * @param {Object} rect - An object describing the position(x,y), width and height of parent rect
+ * @ignore
+ */
+function isInRect(bounds, rect) {
+  const totalLabelWidth = bounds.x + bounds.width;
+  const totalLabelHeight = bounds.y < rect.height / 2 ? bounds.y - bounds.height : bounds.y + bounds.height;
+
+  return totalLabelWidth > 0 && totalLabelHeight > 0 &&
+   totalLabelWidth < rect.width && totalLabelHeight < rect.height;
+}
+
 // assume 0 <= angle < (PI / 2)
 function getLineCircleIntersection(radius, offset, angle) {
   let { x, y } = offset;
@@ -488,7 +502,10 @@ export function slices(
           if (typeof linkData !== 'undefined') {
             label.data = linkData;
           }
-          labels.push(label);
+
+          if (isInRect(bounds, rect)) {
+            labels.push(label);
+          }
         }
       }
     }
