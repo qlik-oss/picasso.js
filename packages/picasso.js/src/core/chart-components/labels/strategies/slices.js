@@ -1,25 +1,12 @@
 import extend from 'extend';
 import collisions from '../../../math/narrow-phase-collision';
+import { rectContainsRect } from '../../../math/intersection';
 
 function pad(bounds, padding) {
   bounds.x += padding;
   bounds.width -= (padding * 2);
   bounds.y += padding;
   bounds.height -= (padding * 2);
-}
-
-/**
- * Check if the pie slice label is located entirely within it's parent rect
- * @param {Object} bounds - An object describing the position(x,y), width and height of label
- * @param {Object} rect - An object describing the position(x,y), width and height of parent rect
- * @ignore
- */
-function isInRect(bounds, rect) {
-  const totalLabelWidth = bounds.x + bounds.width;
-  const totalLabelHeight = bounds.y < rect.height / 2 ? bounds.y - bounds.height : bounds.y + bounds.height;
-
-  return totalLabelWidth > 0 && totalLabelHeight > 0 &&
-   totalLabelWidth < rect.width && totalLabelHeight < rect.height;
 }
 
 // assume 0 <= angle < (PI / 2)
@@ -503,7 +490,7 @@ export function slices(
             label.data = linkData;
           }
 
-          if (isInRect(bounds, rect)) {
+          if (rectContainsRect(bounds, rect)) {
             labels.push(label);
           }
         }
