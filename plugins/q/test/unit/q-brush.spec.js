@@ -273,6 +273,15 @@ describe('q-brush', () => {
       });
     });
 
+    it('should map attribute expression layout value to params (on measure) - without layout', () => {
+      let v = extractFieldFromId('/qHyperCube/qMeasureInfo/1/qAttrExprInfo/1');
+      expect(v).to.eql({
+        path: '/qHyperCubeDef',
+        measureIdx: 3,
+        dimensionIdx: -1
+      });
+    });
+
     it('should map attribute expression layout value to params (on dimension)', () => {
       let v = extractFieldFromId('/qHyperCube/qDimensionInfo/1/qAttrExprInfo/1', {
         qHyperCube: {
@@ -283,6 +292,15 @@ describe('q-brush', () => {
       expect(v).to.eql({
         path: '/qHyperCubeDef',
         measureIdx: 6,
+        dimensionIdx: -1
+      });
+    });
+
+    it('should map attribute expression layout value to params (on dimension) - without layout', () => {
+      let v = extractFieldFromId('/qHyperCube/qDimensionInfo/1/qAttrExprInfo/1');
+      expect(v).to.eql({
+        path: '/qHyperCubeDef',
+        measureIdx: 1,
         dimensionIdx: -1
       });
     });
