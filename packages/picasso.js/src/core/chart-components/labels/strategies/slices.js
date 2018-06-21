@@ -399,7 +399,7 @@ function collisionRect(bounds) {
 
 /**
  * @typedef {object} component--labels~slices-label-strategy.settings
- * @property {string|function} [direction='horizontal'] - The direction of the text: 'horizontal' or 'rotated'.
+ * @property {string|function} [direction='horizontal'] - The direction of the text: 'horizontal' or 'rotate'.
  * @property {string} [fontFamily='Arial']
  * @property {number} [fontSize=12]
  * @property {Array<object>} labels
@@ -475,7 +475,12 @@ export function slices(
       let placement = bestPlacement.placement;
 
       if (bounds && placement) {
-        if (placement.position === 'outside') {
+        if (placement.position === 'outside' && direction !== 'rotate') {
+          const topLeftBounds = getTopLeftBounds(bounds);
+
+          if (!rectContainsRect(topLeftBounds, rect)) {
+            continue;
+          }
           const r = collisionRect(bounds);
           if (!firstOutsideRect) {
             firstOutsideRect = r;
@@ -501,12 +506,7 @@ export function slices(
           if (typeof linkData !== 'undefined') {
             label.data = linkData;
           }
-
-          const topLeftBounds = getTopLeftBounds(bounds);
-
-          if (rectContainsRect(topLeftBounds, rect)) {
-            labels.push(label);
-          }
+          labels.push(label);
         }
       }
     }

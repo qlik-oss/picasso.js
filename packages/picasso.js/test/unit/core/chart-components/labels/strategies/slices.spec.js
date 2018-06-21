@@ -155,7 +155,6 @@ describe('labeling - slices', () => {
 
     it('should return some labels', () => {
       const settings = {
-        direction: () => 'vertical',
         labels: [{
           placements: [{ position: 'into', fill: () => 'red' }],
           label: () => 'etikett'
@@ -241,7 +240,6 @@ describe('labeling - slices', () => {
 
     it('should link data', () => {
       const settings = {
-        direction: () => 'vertical',
         labels: [{
           placements: [{ position: 'into', fill: () => 'red' }],
           label: () => 'etikett',
@@ -278,7 +276,6 @@ describe('labeling - slices', () => {
     describe('label overlap', () => {
       function testLabelCount(count, list) {
         const settings = {
-          direction: () => 'vertical',
           labels: [{
             placements: [{ position: 'outside', fill: () => 'red' }],
             label: () => 'etikett'
@@ -347,7 +344,6 @@ describe('labeling - slices', () => {
 
       it('test for bug with a longer label overlap with a shorter one', () => {
         const settings = {
-          direction: () => 'vertical',
           labels: [{
             placements: [{ position: 'outside', fill: () => 'red' }],
             label: ({ node }) => node.label

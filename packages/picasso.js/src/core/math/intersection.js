@@ -18,6 +18,11 @@ export function isCollinear(p1, p2, p3, e = EPSILON) {
   return t < e;
 }
 
+/**
+ * Check if rectangle a is located inside rectangle b or if they are the same rectangle.
+ * @param {rect} a - An rect containing (x,y) coordinates, width and height. The origin is assumed to be top left.
+ * @param {rect} b - An rect containing (x,y) coordinates, width and height. The origin is assumed to be top left.
+ */
 export function rectContainsRect(a, b) {
   return a.x >= b.x &&
         a.x + a.width <= b.x + b.width &&
