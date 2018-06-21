@@ -490,7 +490,12 @@ export function slices(
             label.data = linkData;
           }
 
-          if (rectContainsRect(bounds, rect)) {
+          const rectSettings = {
+            rtl: false,
+            orientation: 'middle'
+          };
+
+          if (rectContainsRect(bounds, rect, rectSettings)) {
             labels.push(label);
           }
         }

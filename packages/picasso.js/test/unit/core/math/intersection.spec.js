@@ -24,7 +24,33 @@ describe('Intersection', () => {
       it('should throw error if all properties are missing', () => {
         expect(() => {
           rectContainsRect({}, {});
-        }).to.throw('Position on child rect is missing or parent rect have a missing width or height');
+        }).to.throw('One or more entries are either not a number or the parent rect has wrongly specified width and height');
+      });
+
+      it('should throw error if all properties are missing', () => {
+        expect(() => {
+          rectContainsRect({}, {});
+        }).to.throw('One or more entries are either not a number or the parent rect has wrongly specified width and height');
+      });
+
+      it('should throw error for NaN', () => {
+        const childRect = {
+          x: NaN,
+          y: 20,
+          width: 10,
+          height: 30
+        };
+
+        const parentRect = {
+          x: 10,
+          y: 10,
+          height: 120,
+          width: 110
+        };
+
+        expect(() => {
+          rectContainsRect(childRect, parentRect);
+        }).to.throw('One or more entries are either not a number or the parent rect has wrongly specified width and height');
       });
 
       it('should throw error if x is missing', () => {
@@ -35,13 +61,15 @@ describe('Intersection', () => {
         };
 
         const parentRect = {
+          x: 10,
+          y: 10,
           height: 120,
           width: 110
         };
 
         expect(() => {
           rectContainsRect(childRect, parentRect);
-        }).to.throw('Position on child rect is missing or parent rect have a missing width or height');
+        }).to.throw('One or more entries are either not a number or the parent rect has wrongly specified width and height');
       });
 
       it('should throw error if y is missing', () => {
@@ -52,13 +80,15 @@ describe('Intersection', () => {
         };
 
         const parentRect = {
+          x: 10,
+          y: 10,
           height: 120,
           width: 110
         };
 
         expect(() => {
           rectContainsRect(childRect, parentRect);
-        }).to.throw('Position on child rect is missing or parent rect have a missing width or height');
+        }).to.throw('One or more entries are either not a number or the parent rect has wrongly specified width and height');
       });
 
       it('should throw error if both x and y are missing', () => {
@@ -68,13 +98,15 @@ describe('Intersection', () => {
         };
 
         const parentRect = {
+          x: 10,
+          y: 10,
           height: 120,
           width: 110
         };
 
         expect(() => {
           rectContainsRect(childRect, parentRect);
-        }).to.throw('Position on child rect is missing or parent rect have a missing width or height');
+        }).to.throw('One or more entries are either not a number or the parent rect has wrongly specified width and height');
       });
 
       it('should throw error if parentRect has no height', () => {
@@ -89,7 +121,7 @@ describe('Intersection', () => {
 
         expect(() => {
           rectContainsRect(childRect, parentRect);
-        }).to.throw('Position on child rect is missing or parent rect have a missing width or height');
+        }).to.throw('One or more entries are either not a number or the parent rect has wrongly specified width and height');
       });
 
       it('should throw error if parentRect has no width', () => {
@@ -104,7 +136,7 @@ describe('Intersection', () => {
 
         expect(() => {
           rectContainsRect(childRect, parentRect);
-        }).to.throw('Position on child rect is missing or parent rect have a missing width or height');
+        }).to.throw('One or more entries are either not a number or the parent rect has wrongly specified width and height');
       });
 
       it('should throw error if parentRect has no width nor height', () => {
@@ -117,7 +149,7 @@ describe('Intersection', () => {
 
         expect(() => {
           rectContainsRect(childRect, parentRect);
-        }).to.throw('Position on child rect is missing or parent rect have a missing width or height');
+        }).to.throw('One or more entries are either not a number or the parent rect has wrongly specified width and height');
       });
     });
 
@@ -130,6 +162,8 @@ describe('Intersection', () => {
       };
 
       const parentRect = {
+        x: 10,
+        y: 10,
         height: 120,
         width: 110
       };
@@ -146,6 +180,8 @@ describe('Intersection', () => {
       };
 
       const parentRect = {
+        x: 10,
+        y: 40,
         height: 120,
         width: 110
       };
@@ -153,20 +189,104 @@ describe('Intersection', () => {
       expect(rectContainsRect(childRect, parentRect)).to.equal(false);
     });
 
-    it('should be located on the lower part of parent rect', () => {
+    it('should fit by explicitly specifying settings', () => {
       const childRect = {
         x: 20,
-        y: 70,
+        y: 5,
         width: 10,
         height: 30
       };
 
       const parentRect = {
+        x: 10,
+        y: 40,
         height: 120,
         width: 110
       };
 
-      expect(rectContainsRect(childRect, parentRect)).to.equal(true);
+      const settings = {
+        rtl: true,
+        orientation: 'top'
+      };
+
+      expect(rectContainsRect(childRect, parentRect, settings)).to.equal(true);
+    });
+
+    it('should not fit by explicitly specifying settings', () => {
+      const childRect = {
+        x: 20,
+        y: 160,
+        width: 10,
+        height: 30
+      };
+
+      const parentRect = {
+        x: 10,
+        y: 40,
+        height: 120,
+        width: 110
+      };
+
+      const settings = {
+        rtl: false,
+        orientation: 'bottom'
+      };
+
+      expect(rectContainsRect(childRect, parentRect, settings)).to.equal(false);
+    });
+
+    it('should not because childRects width is bigger than parentRect', () => {
+      const childRect = {
+        x: 20,
+        y: 30,
+        width: 120,
+        height: 30
+      };
+
+      const parentRect = {
+        x: 10,
+        y: 40,
+        height: 120,
+        width: 110
+      };
+
+      expect(rectContainsRect(childRect, parentRect)).to.equal(false);
+    });
+
+    it('should not because childRects height is bigger than parentRect', () => {
+      const childRect = {
+        x: 20,
+        y: 30,
+        width: 50,
+        height: 130
+      };
+
+      const parentRect = {
+        x: 10,
+        y: 40,
+        height: 120,
+        width: 110
+      };
+
+      expect(rectContainsRect(childRect, parentRect)).to.equal(false);
+    });
+
+    it('should not because childRects height and width is bigger than parentRect', () => {
+      const childRect = {
+        x: 20,
+        y: 30,
+        width: 150,
+        height: 130
+      };
+
+      const parentRect = {
+        x: 10,
+        y: 40,
+        height: 120,
+        width: 110
+      };
+
+      expect(rectContainsRect(childRect, parentRect)).to.equal(false);
     });
   });
 });

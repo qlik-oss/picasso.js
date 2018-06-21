@@ -146,6 +146,8 @@ describe('labeling - slices', () => {
         measureText: sinon.stub()
       };
       rect = {
+        x: 0,
+        y: 0,
         width: 300,
         height: 300
       };
