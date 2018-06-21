@@ -230,4 +230,40 @@ describe('Chart', () => {
       expect(brushedShapes.map(s => s.attrs.fill)).to.deep.equal(['red', 'red']);
     });
   });
+
+  it('should render components in the correct order', () => {
+    let renderOrder = [];
+    p.component('custom-log-render', {
+      render() {
+        renderOrder.push(this.settings.key);
+        return [];
+      }
+    });
+    function createComp(order) {
+      return {
+        key: `comp${order}`,
+        displayOrder: order,
+        type: 'custom-log-render'
+      };
+    }
+
+    const comp0 = createComp(0);
+    const comp1 = createComp(1);
+    const comp2 = createComp(2);
+
+    settings.components.push(comp2);
+    settings.components.push(comp0);
+    const instance = chart({
+      element,
+      data: { data },
+      settings
+    });
+    expect(renderOrder).to.eql(['comp0', 'comp2']);
+    renderOrder = [];
+    settings.components.push(comp1);
+    instance.update({
+      settings
+    });
+    expect(renderOrder).to.eql(['comp0', 'comp1', 'comp2']);
+  });
 });

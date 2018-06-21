@@ -463,15 +463,18 @@ function chartFn(definition, context) {
 
     const toUpdate = [];
     const toRender = [];
+    let toRenderOrUpdate;
     if (partialData) {
       currentComponents.forEach((comp) => {
         if (comp.updateWith && comp.visible) {
           toUpdate.push(comp);
         }
       });
+      toRenderOrUpdate = toUpdate;
     } else {
       const { visible, hidden } = layout(currentComponents); // Relayout
       visibleComponents = visible;
+      toRenderOrUpdate = visible;
 
       visible.forEach((comp) => {
         if (comp.updateWith && comp.visible) {
@@ -491,11 +494,15 @@ function chartFn(definition, context) {
     toRender.forEach(comp => comp.instance.beforeMount());
     toRender.forEach(comp => comp.instance.mount());
 
-    toRender.forEach(comp => comp.instance.beforeRender());
-    toUpdate.forEach(comp => comp.instance.beforeRender());
+    toRenderOrUpdate.forEach(comp => comp.instance.beforeRender());
 
-    toRender.forEach(comp => comp.instance.render());
-    toUpdate.forEach(comp => comp.instance.update());
+    toRenderOrUpdate.forEach((comp) => {
+      if (comp.updateWith && comp.visible) {
+        comp.instance.update();
+      } else {
+        comp.instance.render();
+      }
+    });
 
     // Ensure that displayOrder is keept, only do so on re-layout update.
     // Which is only the case if partialData is false.
