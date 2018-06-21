@@ -9,6 +9,18 @@ function pad(bounds, padding) {
   bounds.height -= (padding * 2);
 }
 
+function getTopLeftBounds(bounds) {
+  const x = bounds.x;
+  const y = bounds.y - (bounds.height / 2);
+
+  return {
+    x,
+    y,
+    width: bounds.width,
+    height: bounds.height
+  };
+}
+
 // assume 0 <= angle < (PI / 2)
 function getLineCircleIntersection(radius, offset, angle) {
   let { x, y } = offset;
@@ -490,12 +502,9 @@ export function slices(
             label.data = linkData;
           }
 
-          const rectSettings = {
-            rtl: false,
-            orientation: 'middle'
-          };
+          const topLeftBounds = getTopLeftBounds(bounds);
 
-          if (rectContainsRect(bounds, rect, rectSettings)) {
+          if (rectContainsRect(topLeftBounds, rect)) {
             labels.push(label);
           }
         }
