@@ -58,8 +58,8 @@ export function extractFieldFromId(id, layout) {
     // depends on number of measures + number of attr expressions
     // in dimensions and measures before this one
     const offset = measureIdx;
-    measureIdx = 0;
     if (layout) {
+      measureIdx = 0;
       const hc = resolve(pathToCube, layout);
 
       // offset by number of measures
@@ -82,6 +82,11 @@ export function extractFieldFromId(id, layout) {
 
       // offset by the actual column value for the attribute expression itself
       measureIdx += +ATTR_EXPR_RX.exec(path)[1];
+    } else if (dimensionIdx > -1) {
+      dimensionIdx = -1;
+      measureIdx = +ATTR_EXPR_RX.exec(path)[1];
+    } else {
+      measureIdx += +ATTR_EXPR_RX.exec(path)[1] + 1;
     }
   }
 
