@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.10.0"></a>
+# [0.10.0](https://github.com/qlik-oss/picasso.js/compare/v0.9.0...v0.10.0) (2018-06-25)
+
+
+### Bug Fixes
+
+* **q:** fix q brush when layout is missing ([#118](https://github.com/qlik-oss/picasso.js/issues/118)) ([163da33](https://github.com/qlik-oss/picasso.js/commit/163da33))
+
+
+
+
 <a name="0.9.0"></a>
 # [0.9.0](https://github.com/qlik-oss/picasso.js/compare/v0.8.0...v0.9.0) (2018-06-14)
 

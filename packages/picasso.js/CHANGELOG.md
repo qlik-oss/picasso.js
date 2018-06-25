@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.10.0"></a>
+# [0.10.0](https://github.com/qlik-oss/picasso.js/compare/v0.9.0...v0.10.0) (2018-06-25)
+
+
+### Bug Fixes
+
+* **labels:** Fix label overlap in slice strategy ([#116](https://github.com/qlik-oss/picasso.js/issues/116)) ([ee5405e](https://github.com/qlik-oss/picasso.js/commit/ee5405e))
+* **labels:** No rendering outside of parent rect ([#117](https://github.com/qlik-oss/picasso.js/issues/117)) ([02d773d](https://github.com/qlik-oss/picasso.js/commit/02d773d))
+* **render-order:** Render components in specified order ([#114](https://github.com/qlik-oss/picasso.js/issues/114)) ([96e5114](https://github.com/qlik-oss/picasso.js/commit/96e5114))
+* **scene-graph:** bounds collision ([#115](https://github.com/qlik-oss/picasso.js/issues/115)) ([6623803](https://github.com/qlik-oss/picasso.js/commit/6623803))
+
+
+### Features
+
+* **scenegraph:** add default collider on text nodes ([#108](https://github.com/qlik-oss/picasso.js/issues/108)) ([90c8848](https://github.com/qlik-oss/picasso.js/commit/90c8848))
+
+
+
+
 <a name="0.9.0"></a>
 # [0.9.0](https://github.com/qlik-oss/picasso.js/compare/v0.8.0...v0.9.0) (2018-06-14)
 
