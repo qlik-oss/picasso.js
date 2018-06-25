@@ -1,11 +1,24 @@
 import extend from 'extend';
 import collisions from '../../../math/narrow-phase-collision';
+import { rectContainsRect } from '../../../math/intersection';
 
 function pad(bounds, padding) {
   bounds.x += padding;
   bounds.width -= (padding * 2);
   bounds.y += padding;
   bounds.height -= (padding * 2);
+}
+
+function getTopLeftBounds(bounds) {
+  const x = bounds.x;
+  const y = bounds.y - (bounds.height / 2);
+
+  return {
+    x,
+    y,
+    width: bounds.width,
+    height: bounds.height
+  };
 }
 
 // assume 0 <= angle < (PI / 2)
@@ -386,7 +399,7 @@ function collisionRect(bounds) {
 
 /**
  * @typedef {object} component--labels~slices-label-strategy.settings
- * @property {string|function} [direction='horizontal'] - The direction of the text: 'horizontal' or 'rotated'.
+ * @property {string|function} [direction='horizontal'] - The direction of the text: 'horizontal' or 'rotate'.
  * @property {string} [fontFamily='Arial']
  * @property {number} [fontSize=12]
  * @property {Array<object>} labels
@@ -462,7 +475,12 @@ export function slices(
       let placement = bestPlacement.placement;
 
       if (bounds && placement) {
-        if (placement.position === 'outside') {
+        if (placement.position === 'outside' && direction !== 'rotate') {
+          const topLeftBounds = getTopLeftBounds(bounds);
+
+          if (!rectContainsRect(topLeftBounds, rect)) {
+            continue;
+          }
           const r = collisionRect(bounds);
           if (!firstOutsideRect) {
             firstOutsideRect = r;

@@ -139,16 +139,22 @@ describe('labeling - slices', () => {
   describe('slice strategy', () => {
     let chart;
     let renderer;
+    let rect;
     beforeEach(() => {
       chart = {};
       renderer = {
         measureText: sinon.stub()
       };
+      rect = {
+        x: 0,
+        y: 0,
+        width: 300,
+        height: 300
+      };
     });
 
     it('should return some labels', () => {
       const settings = {
-        direction: () => 'vertical',
         labels: [{
           placements: [{ position: 'into', fill: () => 'red' }],
           label: () => 'etikett'
@@ -170,6 +176,7 @@ describe('labeling - slices', () => {
         settings,
         chart,
         nodes,
+        rect,
         renderer,
         style: {
           label: {
@@ -233,7 +240,6 @@ describe('labeling - slices', () => {
 
     it('should link data', () => {
       const settings = {
-        direction: () => 'vertical',
         labels: [{
           placements: [{ position: 'into', fill: () => 'red' }],
           label: () => 'etikett',
@@ -257,6 +263,7 @@ describe('labeling - slices', () => {
         settings,
         chart,
         nodes,
+        rect,
         renderer,
         style: {}
       });
@@ -269,7 +276,6 @@ describe('labeling - slices', () => {
     describe('label overlap', () => {
       function testLabelCount(count, list) {
         const settings = {
-          direction: () => 'vertical',
           labels: [{
             placements: [{ position: 'outside', fill: () => 'red' }],
             label: () => 'etikett'
@@ -278,7 +284,7 @@ describe('labeling - slices', () => {
         const nodes = list.map(l => ({
           desc: {
             slice: {
-              offset: { x: 25, y: 25 },
+              offset: { x: 10, y: 50 },
               start: l.start,
               end: l.end,
               innerRadius: 0,
@@ -287,14 +293,14 @@ describe('labeling - slices', () => {
           }
         }));
 
-        renderer.measureText.returns({ width: 20, height: 10 });
+        renderer.measureText.returns({ width: 36, height: 5 });
         let labels = slices({
           settings,
           chart,
           nodes,
           renderer,
           rect: {
-            x: 0, y: 0, height: 50, width: 50
+            x: 0, y: 0, height: 100, width: 100
           },
           style: {
             label: {
@@ -307,10 +313,18 @@ describe('labeling - slices', () => {
 
         expect(labels.length).to.eql(count);
       }
+
+      it('should not add any labels, because they are out of bounds', () => {
+        testLabelCount(0, [
+          { start: 0, end: 0.1 },
+          { start: 0.2, end: 0.3 }
+        ]);
+      });
+
       it('should remove overlapping labels', () => {
         testLabelCount(1, [
-          { start: 0, end: 0.1 },
-          { start: 0.1, end: 0.2 }
+          { start: 0, end: 1.8 },
+          { start: 1.8, end: 3.6 }
         ]);
       });
 
@@ -323,14 +337,13 @@ describe('labeling - slices', () => {
 
       it('labels on different side should not overlap', () => {
         testLabelCount(2, [
-          { start: -0.1, end: 0 },
-          { start: 0, end: 0.1 }
+          { start: -7.0, end: -1.0 },
+          { start: 0, end: 1.8 }
         ]);
       });
 
       it('test for bug with a longer label overlap with a shorter one', () => {
         const settings = {
-          direction: () => 'vertical',
           labels: [{
             placements: [{ position: 'outside', fill: () => 'red' }],
             label: ({ node }) => node.label
