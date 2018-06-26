@@ -261,9 +261,9 @@ describe('labeling - rows', () => {
         nodes,
         renderer,
         style: {}
-      }, (bounds, text) => text);
+      }, (bounds, text) => text || '<empty>');
 
-      expect(labels).to.eql(['label1', '', 'label3']);
+      expect(labels).to.eql(['label1', '<empty>', 'label3']);
     });
   });
 });
