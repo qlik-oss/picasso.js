@@ -14,10 +14,10 @@
   "main": "dist/picasso-hammer.js",
   "module": "src/index.js",
   "scripts": {
-    "build": "cross-env NODE_ENV=production rollup -c ../../rollup.config.js",
-    "build:watch": "npm run build -- -w",
+    "build": "webpack --config ../../webpack.config.js",
+    "build:dev": "webpack --config ../../webpack.config.js",
+    "build:watch": "npm run build:dev -- -w",
     "lint": "eslint src test",
-    "test": "aw -c aw.config.js",
     "prepublishOnly": "rm -rf dist && npm run build"
   },
   "devDependencies": {

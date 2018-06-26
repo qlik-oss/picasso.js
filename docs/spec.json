@@ -3,7 +3,7 @@
   "info": {
     "name": "picasso.js",
     "description": "A charting library streamlined for building visualizations for the Qlik Sense Analytics platform.",
-    "version": "0.9.0",
+    "version": "0.10.0",
     "license": "MIT"
   },
   "entries": {
@@ -1600,7 +1600,7 @@
               "kind": "object",
               "entries": {
                 "direction": {
-                  "description": "The direction of the text: 'horizontal' or 'rotated'.",
+                  "description": "The direction of the text: 'horizontal' or 'rotate'.",
                   "optional": true,
                   "defaultValue": "'horizontal'",
                   "kind": "union",

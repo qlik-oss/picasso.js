@@ -1,3 +1,4 @@
+import extend from 'extend';
 import augmentH from './augment-hierarchy';
 import SExtractor from './extractor-s';
 import TExtractor from './extractor-t';
@@ -16,15 +17,15 @@ function createFields(path, obj, prefix, parentKey, opts) {
   return (obj[path] || []).map((meta, i) => {
     const fieldKey = `${parentKey ? `${parentKey}/` : ''}${path}/${i}`;
     const f = {
-      instance: field(Object.assign({
+      instance: field(extend({
         id: `${prefix ? `${prefix}/` : ''}${fieldKey}`,
         key: fieldKey,
         meta
       }, opts))
     };
-    f.attrDims = createFields('qAttrDimInfo', meta, prefix, fieldKey, Object.assign({}, opts, { value: v => v.qElemNo, type: 'dimension' }));
-    f.attrExps = createFields('qAttrExprInfo', meta, prefix, fieldKey, Object.assign({}, opts, { value: v => v.qNum, type: 'measure' }));
-    f.measures = createFields('qMeasureInfo', meta, prefix, fieldKey, Object.assign({}, opts, { value: v => v.qValue, type: 'measure' }));
+    f.attrDims = createFields('qAttrDimInfo', meta, prefix, fieldKey, extend({}, opts, { value: v => v.qElemNo, type: 'dimension' }));
+    f.attrExps = createFields('qAttrExprInfo', meta, prefix, fieldKey, extend({}, opts, { value: v => v.qNum, type: 'measure' }));
+    f.measures = createFields('qMeasureInfo', meta, prefix, fieldKey, extend({}, opts, { value: v => v.qValue, type: 'measure' }));
     return f;
   });
 }
@@ -84,8 +85,8 @@ export default function q({
   const dimAcc = cube.qMode === 'S' ? (d => d.qElemNumber) : undefined;
   const measAcc = cube.qMode === 'S' ? (d => d.qNum) : undefined;
 
-  cache.wrappedFields.push(...createFields('qDimensionInfo', cube, key, '', Object.assign({}, opts, { value: dimAcc, type: 'dimension' })));
-  cache.wrappedFields.push(...createFields('qMeasureInfo', cube, key, '', Object.assign({}, opts, { value: measAcc, type: 'measure' })));
+  cache.wrappedFields.push(...createFields('qDimensionInfo', cube, key, '', extend({}, opts, { value: dimAcc, type: 'dimension' })));
+  cache.wrappedFields.push(...createFields('qMeasureInfo', cube, key, '', extend({}, opts, { value: measAcc, type: 'measure' })));
 
   cache.fields = cache.wrappedFields.map(f => f.instance);
 

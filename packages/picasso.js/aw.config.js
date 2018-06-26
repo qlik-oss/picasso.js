@@ -11,15 +11,17 @@ module.exports = function initConfig(baseConfig) {
       }
     },
     mochaOpts: {
-      bail: true
+      bail: false
     },
     specs: [path.resolve(__dirname, 'test/integration/**/*.int.js')],
     configureHttpServer() {
       return {
-        root: [path.resolve(__dirname, '../../')],
-        rewrite: {
-          '/fixtures/(.*)': 'packages/picasso.js/test/integration/$1',
-          '/plugins/(.*)': 'plugins/$1'
+        http: {
+          root: [path.resolve(__dirname, '../../')],
+          rewrite: {
+            '/fixtures/(.*)': 'packages/picasso.js/test/integration/$1',
+            '/plugins/(.*)': 'plugins/$1'
+          }
         }
       };
     }
