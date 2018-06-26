@@ -14,7 +14,7 @@
   "main": "dist/picasso-q.js",
   "module": "src/index.js",
   "scripts": {
-    "build": "NODE_ENV=production rollup -c ../../rollup.config.js",
+    "build": "cross-env NODE_ENV=production rollup -c ../../rollup.config.js",
     "build:watch": "npm run build -- -w",
     "lint": "eslint src test",
     "test": "npm run test:unit",
