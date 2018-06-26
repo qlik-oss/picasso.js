@@ -234,5 +234,36 @@ describe('labeling - rows', () => {
         data: 1
       });
     });
+
+    it('should keep empty labels', () => {
+      const settings = {
+        align: 0,
+        justify: 0,
+        labels: [
+          { label: () => 'label1' },
+          { label: () => '' },
+          { label: () => 'label3' }
+        ]
+      };
+      const nodes = [{
+        type: 'rect',
+        bounds: {
+          x: 0,
+          y: 0,
+          width: 100,
+          height: 100
+        }
+      }];
+      renderer.measureText.returns({ width: 20, height: 10 });
+      let labels = rows({
+        settings,
+        chart,
+        nodes,
+        renderer,
+        style: {}
+      }, (bounds, text) => text);
+
+      expect(labels).to.eql(['label1', '', 'label3']);
+    });
   });
 });
