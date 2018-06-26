@@ -141,9 +141,6 @@ export function rows({
     for (j = 0; j < labelSettings.length; j++) {
       let lblStngs = labelSettings[j];
       let text = typeof lblStngs.label === 'function' ? lblStngs.label(arg, i) : '';
-      if (!text) {
-        continue;
-      }
 
       labelStruct.fontFamily = lblStngs.fontFamily;
       labelStruct.fontSize = `${lblStngs.fontSize}px`;
