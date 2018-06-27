@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.10.3"></a>
+## [0.10.3](https://github.com/qlik-oss/picasso.js/compare/v0.10.2...v0.10.3) (2018-06-27)
+
+
+### Bug Fixes
+
+* **legend-cat:** fix disabled attribute in button ([#122](https://github.com/qlik-oss/picasso.js/issues/122)) ([0fbdf6b](https://github.com/qlik-oss/picasso.js/commit/0fbdf6b))
+
+
+
+
 <a name="0.10.2"></a>
 ## [0.10.2](https://github.com/qlik-oss/picasso.js/compare/v0.10.1...v0.10.2) (2018-06-27)
 
