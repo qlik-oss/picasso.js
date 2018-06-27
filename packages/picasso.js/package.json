@@ -25,7 +25,7 @@
   "main": "dist/picasso.js",
   "module": "src/index.js",
   "scripts": {
-    "build": "webpack --config ../../webpack.config.js",
+    "build": "cross-env NODE_ENV=production webpack --config ../../webpack.config.js",
     "build:dev": "webpack --config ../../webpack.config.js",
     "build:watch": "npm run build:dev -- -w",
     "lint": "eslint src test",
