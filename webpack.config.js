@@ -28,7 +28,7 @@ module.exports = {
           path.resolve(cwd, 'src'),
           /path2d-polyfill/
         ],
-        sideEffects: false,
+        sideEffects: true,
         use: {
           loader: 'babel-loader',
           options: {
