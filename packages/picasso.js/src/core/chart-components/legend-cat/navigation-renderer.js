@@ -48,7 +48,9 @@ function btn(h, {
     style.background = 'none';
   }
   const attrsMerged = attrs;
-  attrsMerged.disabled = !isActive ? 'disabled' : undefined;
+  if (!isActive) {
+    attrsMerged.disabled = 'disabled';
+  }
 
   return h('button', {
     class: c,
