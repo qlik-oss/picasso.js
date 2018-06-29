@@ -22,7 +22,7 @@
     "test:unit:watch": "aw -c aw.config.js -w"
   },
   "devDependencies": {
-    "@after-work.js/aw": "^5.0.0-beta.1",
+    "@after-work.js/aw": "^5.0.0-beta.2",
     "@babel/cli": "^7.0.0-beta.51",
     "@babel/core": "^7.0.0-beta.51",
     "@babel/helpers": "^7.0.0-beta.51",
