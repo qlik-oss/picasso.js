@@ -87,6 +87,10 @@ function render(renderer, {
   const buttonSize = 32;
 
   const order = isVertical ? ['right', 'left'] : ['down', 'up'];
+  
+  if (isRtl && isVertical) {
+    order.reverse();
+  }
 
   const nodes = [h('div', {
     style: {
@@ -98,7 +102,7 @@ function render(renderer, {
       pointerEvents: 'auto'
     },
     attrs: {
-      dir: isRtl ? 'rtl' : 'ltr'
+      dir: isRtl && !isVertical ? 'rtl' : 'ltr'
     }
   }, [btn(h, {
     size: buttonSize,
