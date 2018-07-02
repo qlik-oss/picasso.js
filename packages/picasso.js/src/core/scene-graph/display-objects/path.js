@@ -3,6 +3,8 @@ import { getMinMax } from '../../geometry/util';
 import pathToSegments from '../parse-path-d';
 import flatten from '../../utils/flatten-array';
 
+const EPSILON = 1e-12;
+
 /**
  * @extends node-def
  * @typedef {object} node--path-def
@@ -16,7 +18,7 @@ function isClosed(points) {
   const p0 = points[0];
   const p1 = points[points.length - 1];
 
-  return p0.x === p1.x && p0.y === p1.y;
+  return Math.abs(p0.x - p1.x) < EPSILON && Math.abs(p0.y - p1.y) < EPSILON;
 }
 
 export default class Path extends DisplayObject {
