@@ -87,7 +87,7 @@ function render(renderer, {
   const buttonSize = 32;
 
   const order = isVertical ? ['right', 'left'] : ['down', 'up'];
-  
+
   if (isRtl && isVertical) {
     order.reverse();
   }
