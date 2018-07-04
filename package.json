@@ -10,7 +10,7 @@
     "build:dev": "lerna run build --concurrency 99",
     "build:watch": "lerna run build:watch --stream --no-sort --concurrency 99",
     "build:website": "cd website && npm install && npm run build",
-    "bump": "lerna publish --skip-npm --skip-git --ignore=test-utils",
+    "bump": "lerna publish --skip-npm --force-publish",
     "clean": "lerna clean",
     "lint": "lerna run lint",
     "link": "lerna link",
