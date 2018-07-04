@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.10.4"></a>
+## [0.10.4](https://github.com/qlik-oss/picasso.js/compare/v0.10.3...v0.10.4) (2018-07-04)
+
+
+### Bug Fixes
+
+* **legend-cat:** Handle RTL using dir attribute ([#124](https://github.com/qlik-oss/picasso.js/issues/124)) ([0166ff3](https://github.com/qlik-oss/picasso.js/commit/0166ff3))
+* **scenegraph:** allow small rounding errors in polygon detection ([#123](https://github.com/qlik-oss/picasso.js/issues/123)) ([d92f54d](https://github.com/qlik-oss/picasso.js/commit/d92f54d))
+
+
+
+
 <a name="0.10.3"></a>
 ## [0.10.3](https://github.com/qlik-oss/picasso.js/compare/v0.10.2...v0.10.3) (2018-06-27)
 
