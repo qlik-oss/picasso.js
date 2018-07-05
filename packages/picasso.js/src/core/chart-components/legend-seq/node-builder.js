@@ -63,7 +63,8 @@ export function createTitleNode(ctx) {
     wordBreak: settings.title.wordBreak,
     hyphens: settings.title.hyphens,
     lineHeight: settings.title.lineHeight,
-    anchor: textAnchor
+    anchor: textAnchor,
+    title: settings.title.text
   };
 
   applyAlignJustify(ctx, node);
@@ -165,7 +166,8 @@ export function createTickNodes(ctx, legendNode) {
       fill: settings.tick.fill,
       maxWidth: state.isVertical ? settings.tick.maxLengthPx : Math.min(settings.tick.maxLengthPx, state.legend.length() / 2),
       anchor,
-      textBoundsFn: ctx.renderer.textBounds
+      textBoundsFn: ctx.renderer.textBounds,
+      title: tick.label
     };
 
     return node;

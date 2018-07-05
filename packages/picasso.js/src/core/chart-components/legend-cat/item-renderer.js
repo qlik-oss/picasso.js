@@ -176,7 +176,8 @@ export function itemize({
     label = extend({}, sourceLabels[i], { // create the displayObject here in order to measure it
       type: 'text',
       fontSize: `${parseInt(sourceLabels[i].fontSize, 10)}px`,
-      text: typeof sourceLabels[i].text !== 'undefined' ? sourceLabels[i].text : sourceLabels[i].data.label || ''
+      text: typeof sourceLabels[i].text !== 'undefined' ? sourceLabels[i].text : sourceLabels[i].data.label || '',
+      title: sourceLabels[i].text
     });
 
     item = {
