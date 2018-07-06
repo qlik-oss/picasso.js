@@ -53,7 +53,7 @@ describe('svg-gradient', () => {
 
       expect(state.node.type).to.be.equal('rect');
       expect(state.node.children).to.be.undefined;
-      expect(state.node.fill).to.include('url(#');
+      expect(state.node.fill).to.include('url(\'#');
     });
 
     it('should resolve gradients defintion for stroke', () => {
@@ -64,7 +64,7 @@ describe('svg-gradient', () => {
 
       expect(state.node.type).to.be.equal('rect');
       expect(state.node.children).to.be.undefined;
-      expect(state.node.stroke).to.include('url(#');
+      expect(state.node.stroke).to.include('url(\'#');
     });
   });
 
