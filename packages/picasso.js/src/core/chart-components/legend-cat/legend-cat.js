@@ -170,7 +170,7 @@ const component = {
     this.navigationRenderer = navigationRendererFactory(this);
     this.titleRenderer = titleRendererFactory(this);
     this.navigationRenderer.renderer = this.registries.renderer('dom')();
-    this.titleRenderer.renderer = this.registries.renderer('svg')();
+    this.titleRenderer.renderer = this.registries.renderer()();
     update(this);
   },
   preferredSize(obj) {
