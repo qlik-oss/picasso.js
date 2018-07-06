@@ -45,7 +45,7 @@ function checkGradient(item = {}, attr = 'fill', url = '') {
     gradientId = gradient.id;
   }
 
-  return `url(${url}#${gradientId})`;
+  return `url('${url}#${gradientId}')`;
 }
 
 /**
