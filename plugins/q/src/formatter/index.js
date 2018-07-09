@@ -25,7 +25,7 @@ export function createFromMetaInfo(meta, localeInfo) {
     isAuto = true;
   }
 
-  if (isAuto) {
+  if (isAuto || type === 'U') {
     pattern = `#${decimal}##A`;
     type = 'U';
   }

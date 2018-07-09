@@ -77,6 +77,15 @@ describe('qs-formatter', () => {
     });
     expect(f.pattern()).to.equal('#.##A');
   });
+  it('should create an abbreviation formatter when qNumFormat.qType=U', () => {
+    const f = createFromMetaInfo({
+      qIsAutoFormat: false,
+      qNumFormat: {
+        qType: 'U'
+      }
+    });
+    expect(f.pattern()).to.equal('#.##A');
+  });
 
   it('should not create an abbreviation formatter when qType="M"', () => {
     const f = createFromMetaInfo({
