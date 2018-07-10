@@ -39,7 +39,7 @@ const DEFAULT_SETTINGS = {
    * @type {function=}
    * @returns {object[]} Array of h objects
    */
-  content: ({ h, items, style }) => items.map(item => h('div', style, item)),
+  content: ({ h, items, style }) => items.map(item => h('div', { style: style.content }, item)),
   /**
    * Placement strategy to use. Can be a custom function return a object with placement properties.
    * Available types: pointer | bounds | slice

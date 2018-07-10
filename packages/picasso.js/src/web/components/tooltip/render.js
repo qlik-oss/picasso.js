@@ -1,3 +1,5 @@
+import extend from 'extend';
+
 export default function render(items, placement, {
   renderer,
   style,
@@ -5,7 +7,7 @@ export default function render(items, placement, {
   h
 }) {
   const data = {
-    style: Object.assign({}, style.tooltip),
+    style: extend({}, style.tooltip),
     class: props.tooltipClass
   };
   const content = props.content({
@@ -19,7 +21,7 @@ export default function render(items, placement, {
   const arrow = h(
     'div',
     {
-      style: Object.assign({}, style.arrow, placement.arrowStyle),
+      style: extend({}, style.arrow, placement.arrowStyle),
       class: typeof props.arrowClass === 'function' ? props.arrowClass({ dock: placement.dock }) : props.arrowClass
     },
     '' // TODO allow custom arrow content
@@ -34,7 +36,7 @@ export default function render(items, placement, {
   const container = h(
     'div',
     {
-      style: Object.assign(containerDefaultStyle, placement.style),
+      style: extend(containerDefaultStyle, placement.style),
       hook: {
         insert: (vnode) => {
           element = vnode.elm;

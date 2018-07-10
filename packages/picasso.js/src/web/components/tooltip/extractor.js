@@ -1,3 +1,5 @@
+import extend from 'extend';
+
 export default function extractor(nodes, {
   chart,
   scale,
@@ -17,7 +19,7 @@ export default function extractor(nodes, {
   const items = [];
   nodes.forEach((node) => {
     if (typeof props.extract === 'function') {
-      const ctx = Object.assign({ node }, itemContext);
+      const ctx = extend({ node }, itemContext);
       items.push(props.extract(ctx));
     }
   });
