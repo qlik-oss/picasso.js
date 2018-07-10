@@ -5,7 +5,7 @@ import placement from './placement';
 import {
   setActive,
   removeActive,
-  cancelActive,
+  cancelActive
 } from './instance-handler';
 
 /**
@@ -60,7 +60,7 @@ const DEFAULT_SETTINGS = {
   placement: {
     type: 'pointer',
     dock: 'auto',
-    offset: 10,
+    offset: 10
   },
   tooltipClass: {},
   arrowClass: {},
@@ -72,7 +72,7 @@ const DEFAULT_SETTINGS = {
    * @example
    * appendTo: document.querySelector('#tooltip');
    */
-  appendTo: null,
+  appendTo: null
 };
 
 function areEqual(prev, curr) {
@@ -107,7 +107,7 @@ function toPoint(event, { chart, state }) {
     clientX,
     clientY,
     targetBounds, // Target bounding rect
-    chartBounds, // Chart bounding rect
+    chartBounds // Chart bounding rect
   };
 }
 
@@ -117,8 +117,8 @@ const component = {
     settings: DEFAULT_SETTINGS,
     style: {
       tooltip: {},
-      content: {},
-    },
+      content: {}
+    }
   },
   renderer: 'dom',
   on: {
@@ -144,7 +144,7 @@ const component = {
         this.dispatcher.invoke(
           () => this.invokeRenderer(nodes),
           duration,
-          delay,
+          delay
         );
       }
     },
@@ -170,25 +170,25 @@ const component = {
         this.dispatcher.invoke(
           () => this.invokeRenderer(nodes),
           duration,
-          delay,
+          delay
         );
       }
     },
     prevent(p) {
       this.state.prevent = !!p;
-    },
+    }
   },
   init(settings) {
     this.state = {
       activeNodes: [],
       pointer: {},
       targetElement: this.chart.element,
-      prevent: false,
+      prevent: false
     };
     this.props = settings.settings;
     this.dispatcher = timeSpanDispatcher({
       defaultDuration: this.props.duration,
-      defaultDelay: this.props.delay,
+      defaultDelay: this.props.delay
     });
 
     const instanceId = this.dispatcher.clear;
@@ -231,7 +231,7 @@ const component = {
         y: bounds.top,
         width: bounds.width,
         height: bounds.height,
-        scaleRatio: this.renderer.size().scaleRatio,
+        scaleRatio: this.renderer.size().scaleRatio
       };
       this.renderer.clear(); // Work-around for the dom-renderer vnode bug on destroy
       this.renderer.destroy();
@@ -251,7 +251,7 @@ const component = {
     const pseudoElement = render(items, { style: { left: '0px', top: '0px', visibility: 'hidden' } }, this);
     const pos = placement(pseudoElement.getBoundingClientRect(), this);
     render(items, pos, this);
-  },
+  }
 };
 
 export { component as default };

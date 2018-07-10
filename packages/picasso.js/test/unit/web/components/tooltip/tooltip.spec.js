@@ -15,9 +15,9 @@ function chartMock() {
     element: {
       getBoundingClientRect: sinon.stub().returns({
         left: 0,
-        top: 0,
-      }),
-    },
+        top: 0
+      })
+    }
   };
 }
 
@@ -35,14 +35,14 @@ describe('Tooltip', () => {
     invokeSpy = sinon.spy();
     dispatcherSpy = {
       invoke: a => a(),
-      clear: sinon.spy(),
+      clear: sinon.spy()
     };
     cMock = chartMock();
 
     context = {
       chart: cMock,
       renderer: {
-        render: renderSpy,
+        render: renderSpy
       },
       invokeRenderer: invokeSpy,
       dispatcher: dispatcherSpy,
@@ -53,27 +53,27 @@ describe('Tooltip', () => {
             x: 0,
             y: 0,
             width: 100,
-            height: 100,
-          }),
+            height: 100
+          })
         },
         targetBounds: {
           x: 0,
           y: 0,
           width: 100,
-          height: 100,
+          height: 100
         },
         chartBounds: {
           x: 0,
           y: 0,
           width: 100,
-          height: 100,
+          height: 100
         },
-        prevent: false,
+        prevent: false
       },
       props: {
-        filter: () => true,
+        filter: () => true
       },
-      rect: { x: 0, y: 0 },
+      rect: { x: 0, y: 0 }
     };
 
     instance = Object.assign({}, tooltip, context);
@@ -94,7 +94,7 @@ describe('Tooltip', () => {
 
       it('should not re-render tooltip if over same nodes', () => {
         const nodes = [
-          { data: 123 },
+          { data: 123 }
         ];
         cMock.shapesAt.returns(nodes);
         instance.state.activeNodes = nodes;

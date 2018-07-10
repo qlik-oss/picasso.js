@@ -10,7 +10,7 @@ function dispatcherState() {
     active: [],
     cancelled: [],
     rejected: [],
-    fulfilled: [],
+    fulfilled: []
   };
   let state;
 
@@ -36,7 +36,7 @@ function dispatcherState() {
 
 export default function timeSpanDispatcher({
   defaultDuration,
-  defaultDelay,
+  defaultDelay
 }) {
   let actionId = null;
   let fulfilledId = null;

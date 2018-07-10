@@ -14,24 +14,24 @@ describe('placement', () => {
         height: 100,
         margin: {
           left: 0,
-          top: 0,
+          top: 0
         },
         scaleRatio: {
           x: 1,
-          y: 1,
-        },
-      },
+          y: 1
+        }
+      }
     };
 
     size = {
       width: 100,
-      height: 100,
+      height: 100
     };
     context = {
       chart: {
         scale: 0,
         formatter: 1,
-        component: sinon.stub().returns(componentMock),
+        component: sinon.stub().returns(componentMock)
       },
       props: {},
       state: {
@@ -43,7 +43,7 @@ describe('placement', () => {
           dy: 4,
           clientX: 6,
           clientY: 7,
-          targetBounds: { left: 8, top: 9 },
+          targetBounds: { left: 8, top: 9 }
         },
         targetElement: {
           getBoundingClientRect: () => ({
@@ -74,14 +74,14 @@ describe('placement', () => {
       style: {
         left: '1px',
         top: '2px',
-        transform: 'translate(10px, -50%)',
+        transform: 'translate(10px, -50%)'
       },
       offset: {
         x: 0,
-        y: 39,
+        y: 39
       },
       rect: size,
-      dock: 'right',
+      dock: 'right'
     });
   });
 
@@ -96,10 +96,10 @@ describe('placement', () => {
       style: {
         left: '123px',
         top: '122px',
-        transform: 'translate(-50%, -100%) translateY(-10px)',
+        transform: 'translate(-50%, -100%) translateY(-10px)'
       },
       rect: size,
-      dock: 'top',
+      dock: 'top'
     });
   });
 
@@ -107,7 +107,7 @@ describe('placement', () => {
     context.props.placement = {
       type: 'pointer',
       dock: 'top',
-      offset: 5,
+      offset: 5
     };
     const r = placement(size, context);
 
@@ -115,9 +115,9 @@ describe('placement', () => {
       style: {
         left: '1px',
         top: '2px',
-        transform: 'translate(-50%, -100%) translateY(-5px)',
+        transform: 'translate(-50%, -100%) translateY(-5px)'
       },
-      dock: 'top',
+      dock: 'top'
     });
   });
 
@@ -125,7 +125,7 @@ describe('placement', () => {
     context.props.placement = () => ({
       type: 'pointer',
       dock: 'top',
-      offset: 5,
+      offset: 5
     });
     const r = placement(size, context);
 
@@ -133,9 +133,9 @@ describe('placement', () => {
       style: {
         left: '1px',
         top: '2px',
-        transform: 'translate(-50%, -100%) translateY(-5px)',
+        transform: 'translate(-50%, -100%) translateY(-5px)'
       },
-      dock: 'top',
+      dock: 'top'
     });
   });
 
@@ -156,7 +156,7 @@ describe('placement', () => {
         context.props.placement = {
           type: 'pointer',
           dock: 'auto',
-          offset: 5,
+          offset: 5
         };
         const r = placement(size, context);
 
@@ -165,10 +165,10 @@ describe('placement', () => {
           style: {
             left: '1px',
             top: '2px',
-            transform: 'translate(5px, -50%)',
+            transform: 'translate(5px, -50%)'
           },
           dock: 'right',
-          rect: size,
+          rect: size
         });
       });
 
@@ -179,26 +179,26 @@ describe('placement', () => {
         context.props.placement = {
           type: 'pointer',
           dock: 'auto',
-          offset: 5,
+          offset: 5
         };
         const r = placement(size, context);
 
         expect(r).to.deep.equal({
           arrowStyle: {
-            left: 'calc(50% + 8px)',
+            left: 'calc(50% + 8px)'
           },
           style: {
             left: '-7px',
             top: '2px',
             transform: 'translate(-50%, -100%) translateY(-5px)',
-            width: '72px',
+            width: '72px'
           },
           offset: {
             x: -8,
-            y: 94,
+            y: 94
           },
           dock: 'top',
-          rect: size,
+          rect: size
         });
       });
     });
@@ -207,14 +207,14 @@ describe('placement', () => {
       it('dock - top', () => {
         context.state.activeNodes = [{
           bounds: {
-            x: 10, y: 20, width: 11, height: 22,
-          },
+            x: 10, y: 20, width: 11, height: 22
+          }
         }];
 
         context.props.placement = {
           type: 'bounds',
           dock: 'top',
-          offset: 5,
+          offset: 5
         };
         const r = placement(size, context);
 
@@ -222,23 +222,23 @@ describe('placement', () => {
           style: {
             left: '18.5px',
             top: '24px',
-            transform: 'translate(-50%, -100%) translateY(-5px)',
+            transform: 'translate(-50%, -100%) translateY(-5px)'
           },
-          dock: 'top',
+          dock: 'top'
         });
       });
 
       it('dock - auto, top', () => {
         context.state.activeNodes = [{
           bounds: {
-            x: 10, y: 20, width: 11, height: 22,
-          },
+            x: 10, y: 20, width: 11, height: 22
+          }
         }];
 
         context.props.placement = {
           type: 'bounds',
           dock: 'auto',
-          offset: 5,
+          offset: 5
         };
         const r = placement(size, context);
 
@@ -246,9 +246,9 @@ describe('placement', () => {
           style: {
             left: '18.5px',
             top: '24px',
-            transform: 'translate(-50%, -100%) translateY(-5px)',
+            transform: 'translate(-50%, -100%) translateY(-5px)'
           },
-          dock: 'top',
+          dock: 'top'
         });
       });
 
@@ -258,12 +258,12 @@ describe('placement', () => {
         global.window.innerHeight = 10;
         context.state.activeNodes = [{
           bounds: {
-            x: 10, y: 20, width: 11, height: 22,
-          },
+            x: 10, y: 20, width: 11, height: 22
+          }
         }];
 
         context.props.placement = {
-          type: 'bounds',
+          type: 'bounds'
         };
         const r = placement(size, context);
 
@@ -271,9 +271,9 @@ describe('placement', () => {
           style: {
             left: '18.5px',
             top: '24px',
-            transform: 'translate(-50%, -100%) translateY(-10px)',
+            transform: 'translate(-50%, -100%) translateY(-10px)'
           },
-          dock: 'top',
+          dock: 'top'
         });
       });
 
@@ -284,14 +284,14 @@ describe('placement', () => {
         componentMock.rect.scaleRatio.y = 0.5;
         context.state.activeNodes = [{
           bounds: {
-            x: 10, y: 20, width: 15, height: 25,
-          },
+            x: 10, y: 20, width: 15, height: 25
+          }
         }];
 
         context.props.placement = {
           type: 'bounds',
           dock: 'top',
-          offset: 5,
+          offset: 5
         };
         const r = placement(size, context);
 
@@ -299,9 +299,9 @@ describe('placement', () => {
           style: {
             left: '60.5px',
             top: '39px',
-            transform: 'translate(-50%, -100%) translateY(-5px)',
+            transform: 'translate(-50%, -100%) translateY(-5px)'
           },
-          dock: 'top',
+          dock: 'top'
         });
       });
     });
@@ -318,14 +318,14 @@ describe('placement', () => {
             slice: {
               start: (Math.PI * 5) / 6, // slice, at 180 angle
               end: (Math.PI * 7) / 6,
-              outerRadius: 20,
-            },
-          },
+              outerRadius: 20
+            }
+          }
         }];
         context.props.placement = {
           type: 'slice',
           dock: 'auto',
-          offset: 5,
+          offset: 5
         };
         const r = placement(size, context);
 
@@ -334,10 +334,10 @@ describe('placement', () => {
           style: {
             left: '50px',
             top: '70px',
-            transform: 'translate(-50%, 5px)',
+            transform: 'translate(-50%, 5px)'
           },
           dock: 'bottom',
-          rect: size,
+          rect: size
         });
       });
 
@@ -352,14 +352,14 @@ describe('placement', () => {
             slice: {
               start: (Math.PI * 5) / 6, // slice, at 180 angle
               end: (Math.PI * 7) / 6,
-              outerRadius: 20,
-            },
-          },
+              outerRadius: 20
+            }
+          }
         }];
         context.props.placement = {
           type: 'slice',
           dock: 'bottom',
-          offset: 5,
+          offset: 5
         };
         const r = placement(size, context);
 
@@ -367,9 +367,9 @@ describe('placement', () => {
           style: {
             left: '50px',
             top: '70px',
-            transform: 'translate(-50%, 5px)',
+            transform: 'translate(-50%, 5px)'
           },
-          dock: 'bottom',
+          dock: 'bottom'
         });
       });
 
@@ -386,14 +386,14 @@ describe('placement', () => {
             slice: {
               start: (Math.PI * 5) / 6, // slice, at 180 angle
               end: (Math.PI * 7) / 6,
-              outerRadius: 20,
-            },
-          },
+              outerRadius: 20
+            }
+          }
         }];
         context.props.placement = {
           type: 'slice',
           dock: 'auto',
-          offset: 5,
+          offset: 5
         };
         const r = placement(size, context);
 
@@ -402,10 +402,10 @@ describe('placement', () => {
           style: {
             left: '20px',
             top: '35px',
-            transform: 'translate(-50%, 5px)',
+            transform: 'translate(-50%, 5px)'
           },
           dock: 'bottom',
-          rect: size,
+          rect: size
         });
       });
 
@@ -422,14 +422,14 @@ describe('placement', () => {
             slice: {
               start: (Math.PI * 5) / 6, // slice, at 180 angle
               end: (Math.PI * 7) / 6,
-              outerRadius: 20,
-            },
-          },
+              outerRadius: 20
+            }
+          }
         }];
         context.props.placement = {
           type: 'slice',
           dock: 'auto',
-          offset: 5,
+          offset: 5
         };
         const r = placement(size, context);
 
@@ -438,10 +438,10 @@ describe('placement', () => {
           style: {
             left: '60px',
             top: '75px',
-            transform: 'translate(-50%, 5px)',
+            transform: 'translate(-50%, 5px)'
           },
           dock: 'bottom',
-          rect: size,
+          rect: size
         });
       });
     });
@@ -453,7 +453,7 @@ describe('calcOffset', () => {
   it('should calculate the right offset', () => {
     const viewport = {
       width: 800,
-      height: 600,
+      height: 600
     };
 
     const vx = 300;
@@ -461,19 +461,19 @@ describe('calcOffset', () => {
 
     const offset = {
       x: 25,
-      y: 50,
+      y: 50
     };
 
     const width = 600;
     const height = 500;
 
     const result = calcOffset({
-      viewport, vx, vy, width, height, offset,
+      viewport, vx, vy, width, height, offset
     });
 
     const expectedResult = {
       x: -125,
-      y: -150,
+      y: -150
     };
 
     expect(result).to.be.eql(expectedResult);

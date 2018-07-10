@@ -2,17 +2,17 @@ export default function render(items, placement, {
   renderer,
   style,
   props,
-  h,
+  h
 }) {
   const data = {
     style: Object.assign({}, style.tooltip),
-    class: props.tooltipClass,
+    class: props.tooltipClass
   };
   const content = props.content({
     h,
     style,
     items,
-    props,
+    props
   });
   const tooltip = h('div', data, content);
 
@@ -20,14 +20,14 @@ export default function render(items, placement, {
     'div',
     {
       style: Object.assign({}, style.arrow, placement.arrowStyle),
-      class: typeof props.arrowClass === 'function' ? props.arrowClass({ dock: placement.dock }) : props.arrowClass,
+      class: typeof props.arrowClass === 'function' ? props.arrowClass({ dock: placement.dock }) : props.arrowClass
     },
-    '', // TODO allow custom arrow content
+    '' // TODO allow custom arrow content
   );
 
   const containerDefaultStyle = {
     position: 'relative',
-    display: 'inline-block',
+    display: 'inline-block'
   };
 
   let element;
@@ -41,13 +41,13 @@ export default function render(items, placement, {
         },
         postpatch: (oldNode, vnode) => {
           element = vnode.elm;
-        },
+        }
       },
       attrs: {
-        dir: props.direction,
-      },
+        dir: props.direction
+      }
     },
-    [tooltip, arrow],
+    [tooltip, arrow]
   );
 
   renderer.render([container]);

@@ -2,16 +2,16 @@ export default function extractor(nodes, {
   chart,
   scale,
   props,
-  h,
+  h
 }) {
   const itemContext = {
     resources: {
       dataset: chart.dataset,
       scale: chart.scale,
-      formatter: chart.formatter,
+      formatter: chart.formatter
     },
     scale,
-    h,
+    h
   };
 
   const items = [];

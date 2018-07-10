@@ -5,7 +5,7 @@ function getDockTransform(offset = 0) {
     left: `translate(-100%,-50%) translateX(${-offset}px)`,
     right: `translate(${offset}px, -50%)`,
     top: `translate(-50%, -100%) translateY(${-offset}px)`,
-    bottom: `translate(-50%, ${offset}px)`,
+    bottom: `translate(-50%, ${offset}px)`
   };
 }
 
@@ -14,7 +14,7 @@ function getDockOffset(width, height, offset = 0) {
     left: { x: -width - offset, y: -height / 2 },
     right: { x: offset, y: -height / 2 },
     top: { x: -width / 2, y: -height - offset },
-    bottom: { x: -width / 2, y: offset },
+    bottom: { x: -width / 2, y: offset }
   };
 }
 
@@ -23,7 +23,7 @@ function isInsideViewport(viewport, clientX, clientY, width, height, offset) {
     x: clientX + offset.x,
     y: clientY + offset.y,
     width,
-    height,
+    height
   };
 
   if (rect.x < 0 || rect.y < 0) {
@@ -39,13 +39,13 @@ function isInsideViewport(viewport, clientX, clientY, width, height, offset) {
  * @param {vy} vy Y-coordinate realative to the viewport
  */
 export function calcOffset({
-  viewport, vx, vy, width, height, offset,
+  viewport, vx, vy, width, height, offset
 }) {
   const rect = {
     x: vx + offset.x,
     y: vy + offset.y,
     width,
-    height,
+    height
   };
 
   let offsetX = rect.x < 0 ? -rect.x : 0;
@@ -58,7 +58,7 @@ export function calcOffset({
 
   return {
     x: offsetX,
-    y: offsetY,
+    y: offsetY
   };
 }
 
@@ -68,13 +68,13 @@ function alignToBounds({
   pointer,
   width: elmWidth,
   height: elmHeight,
-  placement: place,
+  placement: place
 }) {
   const {
     x,
     y,
     width,
-    height,
+    height
   } = nodes[0].bounds;
   const { dx, dy, targetBounds } = pointer;
   const componentBounds = resources.component(nodes[0].key).rect;
@@ -90,20 +90,20 @@ function alignToBounds({
   const docks = {
     left: {
       x: rx,
-      y: ry + (height / 2),
+      y: ry + (height / 2)
     },
     right: {
       x: rx + width,
-      y: ry + (height / 2),
+      y: ry + (height / 2)
     },
     top: {
       x: rx + (width / 2),
-      y: ry,
+      y: ry
     },
     bottom: {
       x: rx + (width / 2),
-      y: ry + height,
-    },
+      y: ry + height
+    }
   };
 
   // Check if explicit dock
@@ -114,15 +114,15 @@ function alignToBounds({
       style: {
         left: `${docks[place.dock].x}px`,
         top: `${docks[place.dock].y}px`,
-        transform,
+        transform
       },
-      dock: place.dock,
+      dock: place.dock
     };
   }
 
   const viewport = {
     width: window.innerWidth,
-    height: window.innerHeight,
+    height: window.innerHeight
   };
   const dockOffsets = getDockOffset(elmWidth, elmHeight, place.offset);
   const dockOrder = ['top', 'left', 'right', 'bottom'];
@@ -136,9 +136,9 @@ function alignToBounds({
         style: {
           left: `${docks[dock].x}px`,
           top: `${docks[dock].y}px`,
-          transform: dockTransforms[dock],
+          transform: dockTransforms[dock]
         },
-        dock,
+        dock
       };
     }
   }
@@ -147,9 +147,9 @@ function alignToBounds({
     style: {
       left: `${docks.top.x}px`,
       top: `${docks.top.y}px`,
-      transform: dockTransforms.top,
+      transform: dockTransforms.top
     },
-    dock: 'top',
+    dock: 'top'
   };
 }
 
@@ -160,10 +160,10 @@ function alignToPoint({
   height,
   dockOrder,
   x,
-  y,
+  y
 }) {
   const {
-    targetBounds,
+    targetBounds
   } = pointer;
 
   // Check if explicit dock
@@ -174,15 +174,15 @@ function alignToPoint({
       style: {
         left: `${x}px`,
         top: `${y}px`,
-        transform,
+        transform
       },
-      dock: place.dock,
+      dock: place.dock
     };
   }
 
   const viewport = {
     width: window.innerWidth,
-    height: window.innerHeight,
+    height: window.innerHeight
   };
   const dockOffsets = getDockOffset(width, height, place.offset);
 
@@ -195,13 +195,13 @@ function alignToPoint({
     const dock = dockOrder[i];
 
     const offset = calcOffset({
-      viewport, vx, vy, width, height, offset: dockOffsets[dock],
+      viewport, vx, vy, width, height, offset: dockOffsets[dock]
     });
 
     const style = {
       left: `${x}px`,
       top: `${y}px`,
-      transform: dockTransforms[dock],
+      transform: dockTransforms[dock]
     };
     let arrowStyle = {};
 
@@ -212,7 +212,7 @@ function alignToPoint({
         style.left = `${x + offset.x}px`;
 
         arrowStyle = {
-          left: `calc(50% ${offset.x > 0 ? '-' : '+'} ${Math.abs(offset.x)}px)`,
+          left: `calc(50% ${offset.x > 0 ? '-' : '+'} ${Math.abs(offset.x)}px)`
         };
       }
     }
@@ -223,8 +223,8 @@ function alignToPoint({
       dock,
       rect: {
         width,
-        height,
-      },
+        height
+      }
     };
 
     if (offset.x === 0 && offset.y === 0) {
@@ -245,11 +245,11 @@ function alignToPointer({
   placement: place,
   pointer,
   width,
-  height,
+  height
 }) {
   const {
     x,
-    y,
+    y
   } = pointer;
 
   return alignToPoint({
@@ -259,7 +259,7 @@ function alignToPointer({
     width,
     height,
     place,
-    dockOrder: ['top', 'left', 'right', 'bottom'],
+    dockOrder: ['top', 'left', 'right', 'bottom']
   });
 }
 
@@ -269,7 +269,7 @@ function alignToSlice({
   width,
   height,
   nodes,
-  resources,
+  resources
 }) {
   const node = nodes[0];
   const { dx, dy } = pointer;
@@ -283,13 +283,13 @@ function alignToSlice({
   // cx and cy relative to targetBounds
   const center = {
     x: dx + px + (pWidth / 2),
-    y: dy + py + (pHeight / 2),
+    y: dy + py + (pHeight / 2)
   };
 
   const {
     start,
     end,
-    outerRadius,
+    outerRadius
   } = node.desc.slice;
 
   // origin is at 12 o clock, clockwise, so it is transform to origin at 3 a clock
@@ -317,31 +317,31 @@ function alignToSlice({
     width,
     height,
     place,
-    dockOrder,
+    dockOrder
   });
 }
 
 const STRATEGIES = {
   bounds: alignToBounds,
   pointer: alignToPointer,
-  slice: alignToSlice,
+  slice: alignToSlice
 };
 
 export default function placement({ width, height }, {
   chart,
   state,
-  props,
+  props
 }) {
   const propCtx = {
     resources: {
       formatter: chart.formatter,
       scale: chart.scale,
-      component: chart.component,
+      component: chart.component
     },
     nodes: state.activeNodes,
     pointer: state.pointer,
     width,
-    height,
+    height
   };
   const type = typeof props.placement;
 
