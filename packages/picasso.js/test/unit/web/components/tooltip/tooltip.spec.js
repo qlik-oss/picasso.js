@@ -1,4 +1,4 @@
-import tooltip from '../../../../../src/web/components/tooltip';
+import tooltip from '../../../../../src/web/components/tooltip/tooltip';
 
 function componentMock() {
   return {
