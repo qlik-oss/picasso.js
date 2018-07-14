@@ -274,7 +274,7 @@ describe('labeling - slices', () => {
     });
 
     describe('label overlap', () => {
-      function testLabelCount(count, list) {
+      function createLabel(list) {
         const settings = {
           labels: [{
             placements: [{ position: 'outside', fill: () => 'red' }],
@@ -294,7 +294,7 @@ describe('labeling - slices', () => {
         }));
 
         renderer.measureText.returns({ width: 36, height: 5 });
-        let labels = slices({
+        return slices({
           settings,
           chart,
           nodes,
@@ -310,103 +310,42 @@ describe('labeling - slices', () => {
             }
           }
         });
-
-        expect(labels.length).to.eql(count);
       }
 
       it('should not add any labels, because they are out of bounds', () => {
-        testLabelCount(0, [
+        const labels = createLabel([
           { start: 0, end: 0.1 },
           { start: 0.2, end: 0.3 }
         ]);
+        expect(labels.length).to.eql(0);
       });
 
-      it('should remove overlapping labels', () => {
-        testLabelCount(1, [
-          { start: 0, end: 1.8 },
-          { start: 1.8, end: 3.6 }
+      it('should move overlapping labels and create a line to the moved one', () => {
+        const labels = createLabel([
+          { start: 1.38, end: 1.45 },
+          { start: 1.45, end: 1.51 }
         ]);
-      });
-
-      it('should keep not overlapping labels', () => {
-        testLabelCount(2, [
-          { start: 0, end: Math.PI / 2 },
-          { start: Math.PI / 2, end: Math.PI }
+        expect(labels).to.containSubset([
+          { type: 'text' },
+          { type: 'text' },
+          { type: 'line' }
         ]);
+        // check indication that the correct label is moved
+        expect(labels[0].y > labels[1].y).to.be.true;
       });
 
-      it('labels on different side should not overlap', () => {
-        testLabelCount(2, [
-          { start: -7.0, end: -1.0 },
-          { start: 0, end: 1.8 }
+      it('should handle roatation and wraparound', () => {
+        const labels = createLabel([
+          { start: 1.45, end: 1.51 },
+          { start: 1.38 + (Math.PI * 2), end: 1.45 + (Math.PI * 2) }
         ]);
-      });
-
-      it('test for bug with a longer label overlap with a shorter one', () => {
-        const settings = {
-          labels: [{
-            placements: [{ position: 'outside', fill: () => 'red' }],
-            label: ({ node }) => node.label
-          }]
-        };
-        const nodes = [{
-          label: 'Eggs',
-          desc: {
-            slice: {
-              offset: { x: 400.5, y: 176 },
-              start: 6.028915516022773,
-              end: 6.048023620437467,
-              innerRadius: 0,
-              outerRadius: 140.8
-            }
-          }
-        }, {
-          label: 'Anchovies',
-          desc: {
-            slice: {
-              offset: { x: 400.5, y: 176 },
-              start: 6.218028611691536,
-              end: 6.227965057950124,
-              innerRadius: 0,
-              outerRadius: 140.8
-            }
-          }
-        }];
-
-        renderer.measureText.withArgs({
-          text: 'Eggs',
-          fontFamily: sinon.match.any,
-          fontSize: sinon.match.any
-        }).returns({
-          width: 27.3515625, height: 11.995312499999999
-        });
-        renderer.measureText.withArgs({
-          text: 'Anchovies',
-          fontFamily: sinon.match.any,
-          fontSize: sinon.match.any
-        }).returns({
-          width: 55.365234375, height: 11.995312499999999
-        });
-
-        let labels = slices({
-          settings,
-          chart,
-          nodes,
-          renderer,
-          rect: {
-            x: 0, y: 0, width: 801, height: 352
-          },
-          style: {
-            label: {
-              fontSize: '16px',
-              fontFamily: 'simpsons',
-              fill: 'green'
-            }
-          }
-        });
-
-        expect(renderer.measureText).to.be.calledTwice;
-        expect(labels.length).to.eql(1);
+        expect(labels).to.containSubset([
+          { type: 'text' },
+          { type: 'text' },
+          { type: 'line' }
+        ]);
+        // check indication that the correct label is moved
+        expect(labels[0].y > labels[1].y).to.be.true;
       });
     });
   });
