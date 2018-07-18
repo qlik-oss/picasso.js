@@ -79,6 +79,7 @@ describe('line component', () => {
       {
         stroke: 'red',
         strokeWidth: 1,
+        strokeDasharray: undefined,
         type: 'line',
         flipXY: false,
         x1: 49.5,
@@ -89,6 +90,7 @@ describe('line component', () => {
       {
         stroke: 'red',
         strokeWidth: 1,
+        strokeDasharray: undefined,
         type: 'line',
         flipXY: true,
         x1: -0.5,
@@ -112,6 +114,7 @@ describe('line component', () => {
       {
         stroke: 'red',
         strokeWidth: 1,
+        strokeDasharray: undefined,
         type: 'line',
         flipXY: false,
         x1: 49.5,
@@ -135,6 +138,7 @@ describe('line component', () => {
       {
         stroke: 'red',
         strokeWidth: 1,
+        strokeDasharray: undefined,
         type: 'line',
         flipXY: true,
         x1: -0.5,
@@ -165,6 +169,7 @@ describe('line component', () => {
       {
         stroke: 'blue',
         strokeWidth: 1,
+        strokeDasharray: undefined,
         type: 'line',
         flipXY: false,
         x1: 49.5,
@@ -175,6 +180,7 @@ describe('line component', () => {
       {
         stroke: 'blue',
         strokeWidth: 1,
+        strokeDasharray: undefined,
         type: 'line',
         flipXY: true,
         x1: -0.5,
