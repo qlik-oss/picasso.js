@@ -41,6 +41,14 @@ const DEFAULT_SETTINGS = {
    */
   content: ({ h, items, style }) => items.map(item => h('div', { style: style.content }, item)),
   /**
+   * Debounce condition. A function that define if the tooltip event `over` should be debounced or not.
+   * @type {function=}
+   * @returns {boolean} True if the event should be debounced, false otherwise
+   */
+  debounce: (prev, curr) => prev.length &&
+    prev.length === curr.length &&
+    prev.every((p, i) => curr[i] && JSON.stringify(p.data) === JSON.stringify(curr[i].data)),
+  /**
    * Placement strategy to use. Can be a custom function return a object with placement properties.
    * Available types: pointer | bounds | slice
    * Available docking: left | right | top | bottom | auto
@@ -74,12 +82,6 @@ const DEFAULT_SETTINGS = {
    */
   appendTo: null
 };
-
-function areEqual(prev, curr) {
-  // TODO Use better comparison
-  return prev.length &&
-    prev.every((p, i) => curr[i] && JSON.stringify(p.data) === JSON.stringify(curr[i].data));
-}
 
 function toPoint(event, { chart, state }) {
   let x = 0;
@@ -133,7 +135,7 @@ const component = {
       const nodes = this.chart.shapesAt({ x: p.x - p.dx, y: p.y - p.dy })
         .filter(this.props.filter);
 
-      if (areEqual(this.state.activeNodes, nodes)) {
+      if (this.props.debounce(this.state.activeNodes, nodes)) {
         return;
       }
       // Nodes are not the same, clear, if any, the active tooltip
