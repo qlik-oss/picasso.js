@@ -350,18 +350,18 @@ export default function placement({ width, height }, {
     return props.placement.fn(propCtx);
   }
 
-  let placementOptions = { type: 'pointer', offset: 10, dock: 'auto' };
+  let placementOptions = { type: 'pointer', offset: 8, dock: 'auto' };
   if (type === 'function') {
     // Custom placement function
-    placementOptions = extend({ offset: 10, dock: 'auto' }, props.placement(propCtx));
+    placementOptions = extend({ offset: 8, dock: 'auto' }, props.placement(propCtx));
   }
 
   if (type === 'object' && STRATEGIES[props.placement.type]) {
     // Predefined placement function with options
-    placementOptions = extend({ offset: 10, dock: 'auto' }, props.placement);
+    placementOptions = extend({ offset: 8, dock: 'auto' }, props.placement);
   } else if (type === 'string' && STRATEGIES[props.placement]) {
     // Predefined placement function without options
-    placementOptions = { type: props.placement, offset: 10, dock: 'auto' };
+    placementOptions = { type: props.placement, offset: 8, dock: 'auto' };
   }
 
   propCtx.placement = placementOptions;

@@ -21,7 +21,7 @@ export default function render(items, placement, {
   const arrow = h(
     'div',
     {
-      style: extend({}, style.arrow, placement.arrowStyle),
+      style: extend({}, style['tooltip-arrow'], style[`tooltip-arrow--${placement.dock}`], placement.arrowStyle),
       class: typeof props.arrowClass === 'function' ? props.arrowClass({ dock: placement.dock }) : props.arrowClass
     },
     '' // TODO allow custom arrow content

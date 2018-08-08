@@ -68,7 +68,7 @@ const DEFAULT_SETTINGS = {
   placement: {
     type: 'pointer',
     dock: 'auto',
-    offset: 10
+    offset: 8
   },
   tooltipClass: {},
   arrowClass: {},
@@ -80,7 +80,61 @@ const DEFAULT_SETTINGS = {
    * @example
    * appendTo: document.querySelector('#tooltip');
    */
-  appendTo: null
+  appendTo: null,
+  /**
+   * Event function called when the tooltip is displayed.
+   * @type {function=}
+   * @example
+   * onDisplayed: () => { debugger; }
+   */
+  onDisplayed: null,
+  /**
+   * Event function called when the tooltip is hidden.
+   * @type {function=}
+   */
+  onHidden: null
+};
+
+const DEFAULT_STYLE = {
+  tooltip: {
+    'background-color': '$gray-35',
+    color: '$font-color--inverted',
+    fontFamily: '$font-family',
+    fontSize: '$font-size',
+    lineHeight: '$line-height',
+    borderRadius: '4px',
+    padding: '8px',
+    opacity: 0.9
+  },
+  'tooltip-arrow': {
+    position: 'absolute',
+    width: '0px',
+    height: '0px',
+    border: '8px solid',
+    'border-color': 'transparent',
+    'border-top-color': '$gray-35',
+    opacity: 0.9
+  },
+  'tooltip-arrow--bottom': {
+    left: 'calc(50% - 8px)',
+    top: '-16px',
+    transform: 'rotate(180deg)'
+  },
+  'tooltip-arrow--top': {
+    left: 'calc(50% - 8px)',
+    top: '100%'
+  },
+  'tooltip-arrow--right': {
+    left: '-16px',
+    top: 'calc(50% - 8px)',
+    transform: 'rotate(90deg)'
+  },
+  'tooltip-arrow--left': {
+    left: '100%',
+    top: 'calc(50% - 8px)',
+    transform: 'rotate(-90deg)'
+  },
+  content: {}
 };
 
 function toPoint(event, { chart, state }) {
@@ -117,10 +171,7 @@ const component = {
   require: ['chart', 'renderer'],
   defaultSettings: {
     settings: DEFAULT_SETTINGS,
-    style: {
-      tooltip: {},
-      content: {}
-    }
+    style: DEFAULT_STYLE
   },
   renderer: 'dom',
   on: {
@@ -138,7 +189,7 @@ const component = {
       if (this.props.debounce(this.state.activeNodes, nodes)) {
         return;
       }
-      // Nodes are not the same, clear, if any, the active tooltip
+
       this.dispatcher.clear();
       this.state.activeNodes = nodes;
 
@@ -202,6 +253,16 @@ const component = {
     this.dispatcher.on(['cancelled', 'fulfilled'], () => {
       this.renderer.render([]); // Hide tooltip
       removeActive(instanceId);
+
+      if (typeof this.props.onHidden === 'function') {
+        this.props.onHidden();
+      }
+    });
+
+    this.dispatcher.on('active', () => {
+      if (typeof this.props.onDisplayed === 'function') {
+        this.props.onDisplayed();
+      }
     });
   },
   created() {
