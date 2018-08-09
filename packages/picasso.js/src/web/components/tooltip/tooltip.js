@@ -24,13 +24,18 @@ const DEFAULT_SETTINGS = {
    */
   delay: 500,
   /**
+   * Reduce incoming nodes to only a set of applicable nodes.
+   * Is called as a part of the `over` event.
    * @type {function=}
+   * @returns {array} An array of nodes
+   * @example
+   * (nodes) => nodes.filter(node.key === '<target-component-key>')
    */
-  filter: node => node.data, // Filter SceneNodes
+  filter: nodes => nodes.filter(node => node.data), // Filter SceneNodes
   /**
    * Extract items from node.
    * @type {function=}
-   * @returns {array}
+   * @returns {array} An array of data
    */
   extract: ctx => [ctx.node.data.value],
   /**
@@ -42,6 +47,9 @@ const DEFAULT_SETTINGS = {
   content: ({ h, items, style }) => items.map(item => h('div', { style: style.content }, item)),
   /**
    * Debounce condition. A function that define if the tooltip event `over` should be debounced or not.
+   * Two parameters are passed to the function, the first is a set of nodes, representing active
+   * nodes displayed in the tooltip, and the second parameter is the incoming set of nodes. Typically
+   * if the two set of nodes are the same, it should be debounced.
    * @type {function=}
    * @returns {boolean} True if the event should be debounced, false otherwise
    */
@@ -134,7 +142,7 @@ const DEFAULT_STYLE = {
     top: 'calc(50% - 8px)',
     transform: 'rotate(-90deg)'
   },
-  content: {}
+  content: {} // TODO Remove, as it's used in settings function
 };
 
 function toPoint(event, { chart, state }) {
@@ -183,8 +191,7 @@ const component = {
       const p = toPoint(e, this);
       // Set pointer here to always expose latest pointer to invokeRenderer
       this.state.pointer = p;
-      const nodes = this.chart.shapesAt({ x: p.x - p.dx, y: p.y - p.dy })
-        .filter(this.props.filter);
+      const nodes = this.props.filter(this.chart.shapesAt({ x: p.x - p.dx, y: p.y - p.dy }));
 
       if (this.props.debounce(this.state.activeNodes, nodes)) {
         return;
@@ -216,7 +223,7 @@ const component = {
         this.state.pointer = toPoint(e, this);
       }
 
-      const nodes = shapes.filter(this.props.filter);
+      const nodes = this.props.filter(shapes);
       this.state.activeNodes = nodes;
 
       if (nodes.length) {
