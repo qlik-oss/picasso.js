@@ -19,7 +19,7 @@ const DEFAULT_SETTINGS = {
    */
   duration: 8000,
   /**
-   * Time to delay before the tooltip is rendered, in milliseconds
+   * Delay before the tooltip is rendered, in milliseconds
    * @type {number=}
    */
   delay: 500,
@@ -85,7 +85,7 @@ const DEFAULT_SETTINGS = {
    * Event function called when the tooltip is displayed.
    * @type {function=}
    * @example
-   * onDisplayed: () => { debugger; }
+   * onDisplayed: ({ element }) => { debugger; }
    */
   onDisplayed: null,
   /**
@@ -255,13 +255,26 @@ const component = {
       removeActive(instanceId);
 
       if (typeof this.props.onHidden === 'function') {
-        this.props.onHidden();
+        this.props.onHidden({
+          resources: {
+            formatter: this.chart.formatter,
+            scale: this.chart.scale
+          }
+        });
       }
+
+      this.state.tooltipElm = undefined;
     });
 
     this.dispatcher.on('active', () => {
       if (typeof this.props.onDisplayed === 'function') {
-        this.props.onDisplayed();
+        this.props.onDisplayed({
+          element: this.state.tooltipElm,
+          resources: {
+            formatter: this.chart.formatter,
+            scale: this.chart.scale
+          }
+        });
       }
     });
   },
@@ -286,8 +299,12 @@ const component = {
   },
   appendTo() {
     if (this.props.appendTo) {
-      // TODO Provide some kind of context for appendTo function
-      this.state.targetElement = typeof this.props.appendTo === 'function' ? this.props.appendTo() : this.props.appendTo;
+      this.state.targetElement = typeof this.props.appendTo === 'function' ? this.props.appendTo({
+        resources: {
+          formatter: this.chart.formatter,
+          scale: this.chart.scale
+        }
+      }) : this.props.appendTo;
       const bounds = this.state.targetElement.getBoundingClientRect();
       const size = {
         x: bounds.left, // TODO should be relative to parent node?
@@ -296,7 +313,6 @@ const component = {
         height: bounds.height,
         scaleRatio: this.renderer.size().scaleRatio
       };
-      this.renderer.clear(); // Work-around for the dom-renderer vnode bug on destroy
       this.renderer.destroy();
       this.rect = this.renderer.size(size);
       this.renderer.appendTo(this.state.targetElement);
@@ -313,7 +329,7 @@ const component = {
     const items = extractor(nodes, this);
     const pseudoElement = render(items, { style: { left: '0px', top: '0px', visibility: 'hidden' } }, this);
     const pos = placement(pseudoElement.getBoundingClientRect(), this);
-    render(items, pos, this);
+    this.state.tooltipElm = render(items, pos, this);
   }
 };
 
