@@ -76,7 +76,8 @@ const DEFAULT_SETTINGS = {
   placement: {
     type: 'pointer',
     dock: 'auto',
-    offset: 8
+    offset: 8,
+    area: 'viewport' // Specify the area which placement strategies should limit themself to [viewport | target]
   },
   tooltipClass: {},
   arrowClass: {},
@@ -90,14 +91,14 @@ const DEFAULT_SETTINGS = {
    */
   appendTo: null,
   /**
-   * Event function called when the tooltip is displayed.
+   * Event listener. Called when the tooltip is displayed.
    * @type {function=}
    * @example
    * onDisplayed: ({ element }) => { debugger; }
    */
   onDisplayed: null,
   /**
-   * Event function called when the tooltip is hidden.
+   * Event listener. Called when the tooltip is hidden.
    * @type {function=}
    */
   onHidden: null
@@ -155,12 +156,15 @@ function toPoint(event, { chart, state }) {
     x += event.clientX;
     y += event.clientY;
   }
+  // TODO Don't do getBoundingClientRect lookup here. It's performance heavy.
   const chartBounds = chart.element.getBoundingClientRect();
   const targetBounds = state.targetElement.getBoundingClientRect();
   const clientX = x;
   const clientY = y;
   const dx = chartBounds.left - targetBounds.left;
   const dy = chartBounds.top - targetBounds.top;
+  const cx = x - chartBounds.left;
+  const cy = y - chartBounds.top;
   x -= targetBounds.left;
   y -= targetBounds.top;
   return {
@@ -168,6 +172,8 @@ function toPoint(event, { chart, state }) {
     y,
     dx, // Delta from target bounds to the chart bounds
     dy,
+    cx, // Target point relative to the chart bounds
+    cy,
     clientX,
     clientY,
     targetBounds, // Target bounding rect
@@ -191,7 +197,7 @@ const component = {
       const p = toPoint(e, this);
       // Set pointer here to always expose latest pointer to invokeRenderer
       this.state.pointer = p;
-      const nodes = this.props.filter(this.chart.shapesAt({ x: p.x - p.dx, y: p.y - p.dy }));
+      const nodes = this.props.filter(this.chart.shapesAt({ x: p.cx, y: p.cy }));
 
       if (this.props.debounce(this.state.activeNodes, nodes)) {
         return;
@@ -242,7 +248,7 @@ const component = {
     this.state = {
       activeNodes: [],
       pointer: {},
-      targetElement: this.chart.element,
+      targetElement: null,
       prevent: false
     };
     this.props = settings.settings;
@@ -314,8 +320,6 @@ const component = {
       }) : this.props.appendTo;
       const bounds = this.state.targetElement.getBoundingClientRect();
       const size = {
-        x: bounds.left, // TODO should be relative to parent node?
-        y: bounds.top,
         width: bounds.width,
         height: bounds.height,
         scaleRatio: this.renderer.size().scaleRatio
@@ -323,6 +327,8 @@ const component = {
       this.renderer.destroy();
       this.rect = this.renderer.size(size);
       this.renderer.appendTo(this.state.targetElement);
+    } else {
+      this.state.targetElement = this.renderer.element();
     }
   },
   mounted() {

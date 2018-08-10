@@ -68,7 +68,7 @@ function alignToBounds({
   pointer,
   width: elmWidth,
   height: elmHeight,
-  placement: place
+  options
 }) {
   const {
     x,
@@ -107,30 +107,30 @@ function alignToBounds({
   };
 
   // Check if explicit dock
-  const dockTransforms = getDockTransform(place.offset);
-  const transform = dockTransforms[place.dock];
+  const dockTransforms = getDockTransform(options.offset);
+  const transform = dockTransforms[options.dock];
   if (transform) {
     return {
       style: {
-        left: `${docks[place.dock].x}px`,
-        top: `${docks[place.dock].y}px`,
+        left: `${docks[options.dock].x}px`,
+        top: `${docks[options.dock].y}px`,
         transform
       },
-      dock: place.dock
+      dock: options.dock
     };
   }
 
   const viewport = {
-    width: window.innerWidth,
-    height: window.innerHeight
+    width: options.area === 'target' ? targetBounds.width : window.innerWidth,
+    height: options.area === 'target' ? targetBounds.height : window.innerHeight
   };
-  const dockOffsets = getDockOffset(elmWidth, elmHeight, place.offset);
+  const dockOffsets = getDockOffset(elmWidth, elmHeight, options.offset);
   const dockOrder = ['top', 'left', 'right', 'bottom'];
 
   for (let i = 0; i < dockOrder.length; i += 1) {
     const dock = dockOrder[i];
-    const vx = targetBounds.left + docks[dock].x;
-    const vy = targetBounds.top + docks[dock].y;
+    const vx = options.area === 'target' ? docks[dock].x : targetBounds.left + docks[dock].x;
+    const vy = options.area === 'target' ? docks[dock].y : targetBounds.top + docks[dock].y;
     if (isInsideViewport(viewport, vx, vy, elmWidth, elmHeight, dockOffsets[dock])) {
       return {
         style: {
@@ -154,7 +154,7 @@ function alignToBounds({
 }
 
 function alignToPoint({
-  place,
+  options,
   pointer,
   width,
   height,
@@ -167,8 +167,8 @@ function alignToPoint({
   } = pointer;
 
   // Check if explicit dock
-  const dockTransforms = getDockTransform(place.offset);
-  const transform = dockTransforms[place.dock];
+  const dockTransforms = getDockTransform(options.offset);
+  const transform = dockTransforms[options.dock];
   if (transform) {
     return {
       style: {
@@ -176,20 +176,20 @@ function alignToPoint({
         top: `${y}px`,
         transform
       },
-      dock: place.dock
+      dock: options.dock
     };
   }
 
   const viewport = {
-    width: window.innerWidth,
-    height: window.innerHeight
+    width: options.area === 'target' ? targetBounds.width : window.innerWidth,
+    height: options.area === 'target' ? targetBounds.height : window.innerHeight
   };
-  const dockOffsets = getDockOffset(width, height, place.offset);
+  const dockOffsets = getDockOffset(width, height, options.offset);
 
   const results = [];
   const edgeMargin = 20;
-  const vx = targetBounds.left + x;
-  const vy = targetBounds.top + y;
+  const vx = options.area === 'target' ? x : targetBounds.left + x;
+  const vy = options.area === 'target' ? y : targetBounds.top + y;
 
   for (let i = 0; i < dockOrder.length; i += 1) {
     const dock = dockOrder[i];
@@ -242,7 +242,7 @@ function alignToPoint({
 }
 
 function alignToPointer({
-  placement: place,
+  options,
   pointer,
   width,
   height
@@ -258,13 +258,13 @@ function alignToPointer({
     pointer,
     width,
     height,
-    place,
+    options,
     dockOrder: ['top', 'left', 'right', 'bottom']
   });
 }
 
 function alignToSlice({
-  placement: place,
+  options,
   pointer,
   width,
   height,
@@ -298,7 +298,7 @@ function alignToSlice({
   const radians = ((middle % PI2) + PI2) % PI2;
   let dockOrder = ['top', 'left', 'right', 'bottom'];
 
-  if (place.dock === 'auto') {
+  if (options.dock === 'auto') {
     if (radians <= Math.PI / 4 || radians >= (Math.PI * 7) / 4) {
       dockOrder = ['right', 'top', 'bottom', 'left'];
     } else if (radians <= (Math.PI * 3) / 4) {
@@ -316,7 +316,7 @@ function alignToSlice({
     pointer,
     width,
     height,
-    place,
+    options,
     dockOrder
   });
 }
@@ -350,20 +350,25 @@ export default function placement({ width, height }, {
     return props.placement.fn(propCtx);
   }
 
-  let placementOptions = { type: 'pointer', offset: 8, dock: 'auto' };
+  let opts = {
+    type: 'pointer',
+    offset: 8,
+    dock: 'auto',
+    area: 'viewport'
+  };
   if (type === 'function') {
     // Custom placement function
-    placementOptions = extend({ offset: 8, dock: 'auto' }, props.placement(propCtx));
+    opts = extend(opts, props.placement(propCtx));
   }
 
   if (type === 'object' && STRATEGIES[props.placement.type]) {
     // Predefined placement function with options
-    placementOptions = extend({ offset: 8, dock: 'auto' }, props.placement);
+    opts = extend(opts, props.placement);
   } else if (type === 'string' && STRATEGIES[props.placement]) {
     // Predefined placement function without options
-    placementOptions = { type: props.placement, offset: 8, dock: 'auto' };
+    opts = extend(opts, { type: props.placement });
   }
 
-  propCtx.placement = placementOptions;
-  return STRATEGIES[placementOptions.type](propCtx);
+  propCtx.options = opts;
+  return STRATEGIES[opts.type](propCtx);
 }
