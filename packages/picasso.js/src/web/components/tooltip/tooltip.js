@@ -106,7 +106,7 @@ const DEFAULT_SETTINGS = {
 
 const DEFAULT_STYLE = {
   tooltip: {
-    'background-color': '$gray-35',
+    backgroundColor: '$gray-35',
     color: '$font-color--inverted',
     fontFamily: '$font-family',
     fontSize: '$font-size',
@@ -119,29 +119,29 @@ const DEFAULT_STYLE = {
     position: 'absolute',
     width: '0px',
     height: '0px',
-    border: '8px solid',
-    'border-color': 'transparent',
-    'border-top-color': '$gray-35',
+    borderStyle: 'solid',
+    color: '$gray-35',
     opacity: 0.9
   },
   'tooltip-arrow--bottom': {
-    left: 'calc(50% - 8px)',
-    top: '-16px',
-    transform: 'rotate(180deg)'
+    borderTopColor: 'transparent',
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent'
   },
   'tooltip-arrow--top': {
-    left: 'calc(50% - 8px)',
-    top: '100%'
+    borderBottomColor: 'transparent',
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent'
   },
   'tooltip-arrow--right': {
-    left: '-16px',
-    top: 'calc(50% - 8px)',
-    transform: 'rotate(90deg)'
+    borderTopColor: 'transparent',
+    borderLeftColor: 'transparent',
+    borderBottomColor: 'transparent'
   },
   'tooltip-arrow--left': {
-    left: '100%',
-    top: 'calc(50% - 8px)',
-    transform: 'rotate(-90deg)'
+    borderTopColor: 'transparent',
+    borderBottomColor: 'transparent',
+    borderRightColor: 'transparent'
   },
   content: {} // TODO Remove, as it's used in settings function
 };

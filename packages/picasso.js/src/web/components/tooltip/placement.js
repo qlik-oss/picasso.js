@@ -18,6 +18,31 @@ function getDockOffset(width, height, offset = 0) {
   };
 }
 
+function getCalculatedArrowStyle(offset) {
+  return {
+    left: {
+      left: '100%',
+      top: `calc(50% - ${offset}px)`,
+      borderWidth: `${offset}px`
+    },
+    right: {
+      left: `${-offset * 2}px`,
+      top: `calc(50% - ${offset}px)`,
+      borderWidth: `${offset}px`
+    },
+    top: {
+      left: `calc(50% - ${offset}px)`,
+      top: '100%',
+      borderWidth: `${offset}px`
+    },
+    bottom: {
+      left: `calc(50% - ${offset}px)`,
+      top: `${-offset * 2}px`,
+      borderWidth: `${offset}px`
+    }
+  };
+}
+
 function isInsideViewport(viewport, clientX, clientY, width, height, offset) {
   const rect = {
     x: clientX + offset.x,
@@ -138,6 +163,7 @@ function alignToBounds({
           top: `${docks[dock].y}px`,
           transform: dockTransforms[dock]
         },
+        arrowStyle: getCalculatedArrowStyle(options.offset)[dock],
         dock
       };
     }
@@ -149,6 +175,7 @@ function alignToBounds({
       top: `${docks.top.y}px`,
       transform: dockTransforms.top
     },
+    arrowStyle: getCalculatedArrowStyle(options.offset).top,
     dock: 'top'
   };
 }
@@ -203,7 +230,7 @@ function alignToPoint({
       top: `${y}px`,
       transform: dockTransforms[dock]
     };
-    let arrowStyle = {};
+    const arrowStyle = getCalculatedArrowStyle(options.offset)[dock];
 
     if (offset.x !== 0) {
       style.width = `${width - edgeMargin - Math.abs(offset.x)}px`;
@@ -211,9 +238,7 @@ function alignToPoint({
       if (dock === 'top' || dock === 'bottom') {
         style.left = `${x + offset.x}px`;
 
-        arrowStyle = {
-          left: `calc(50% ${offset.x > 0 ? '-' : '+'} ${Math.abs(offset.x)}px)`
-        };
+        arrowStyle.left = `calc(50% ${offset.x > 0 ? '-' : '+'} ${Math.abs(offset.x)}px)`;
       }
     }
 
