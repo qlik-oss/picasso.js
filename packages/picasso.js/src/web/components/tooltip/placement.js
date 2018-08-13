@@ -43,28 +43,28 @@ function getComputedArrowStyle(offset) {
   };
 }
 
-function isInsideViewport(viewport, clientX, clientY, width, height, offset) {
+function isInsideArea(area, vx, vy, width, height, offset) {
   const rect = {
-    x: clientX + offset.x,
-    y: clientY + offset.y,
+    x: vx + offset.x,
+    y: vy + offset.y,
     width,
     height
   };
 
   if (rect.x < 0 || rect.y < 0) {
     return false;
-  } else if (rect.x + rect.width > viewport.width || rect.y + rect.height > viewport.height) {
+  } else if (rect.x + rect.width > area.width || rect.y + rect.height > area.height) {
     return false;
   }
   return true;
 }
 
 /**
- * @param {vx} vx X-coordinate realative to the viewport
- * @param {vy} vy Y-coordinate realative to the viewport
+ * @param {vx} vx X-coordinate realative to the area
+ * @param {vy} vy Y-coordinate realative to the area
  */
 export function calcOffset({
-  viewport, vx, vy, width, height, offset
+  area, vx, vy, width, height, offset
 }) {
   const rect = {
     x: vx + offset.x,
@@ -76,10 +76,10 @@ export function calcOffset({
   let offsetX = rect.x < 0 ? -rect.x : 0;
   let offsetY = rect.y < 0 ? -rect.y : 0;
 
-  offsetX += rect.x + rect.width > viewport.width ?
-    -((rect.x + rect.width) - viewport.width) : 0;
-  offsetY += rect.y + rect.height > viewport.height ?
-    -((rect.y + rect.height) - viewport.height) : 0;
+  offsetX += rect.x + rect.width > area.width ?
+    -((rect.x + rect.width) - area.width) : 0;
+  offsetY += rect.y + rect.height > area.height ?
+    -((rect.y + rect.height) - area.height) : 0;
 
   return {
     x: offsetX,
@@ -146,7 +146,7 @@ function alignToBounds({
     };
   }
 
-  const viewport = {
+  const area = {
     width: options.area === 'target' ? targetBounds.width : window.innerWidth,
     height: options.area === 'target' ? targetBounds.height : window.innerHeight
   };
@@ -157,7 +157,7 @@ function alignToBounds({
     const dock = dockOrder[i];
     const vx = options.area === 'target' ? docks[dock].x : targetBounds.left + docks[dock].x;
     const vy = options.area === 'target' ? docks[dock].y : targetBounds.top + docks[dock].y;
-    if (isInsideViewport(viewport, vx, vy, elmWidth, elmHeight, dockOffsets[dock])) {
+    if (isInsideArea(area, vx, vy, elmWidth, elmHeight, dockOffsets[dock])) {
       return {
         computedTooltipStyle: {
           left: `${docks[dock].x}px`,
@@ -209,7 +209,7 @@ function alignToPoint({
     };
   }
 
-  const viewport = {
+  const area = {
     width: options.area === 'target' ? targetBounds.width : window.innerWidth,
     height: options.area === 'target' ? targetBounds.height : window.innerHeight
   };
@@ -224,7 +224,7 @@ function alignToPoint({
     const dock = dockOrder[i];
 
     const offset = calcOffset({
-      viewport, vx, vy, width, height, offset: dockOffsets[dock]
+      area, vx, vy, width, height, offset: dockOffsets[dock]
     });
 
     const computedTooltipStyle = {
