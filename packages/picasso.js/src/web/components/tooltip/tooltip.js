@@ -44,7 +44,7 @@ const DEFAULT_SETTINGS = {
    * @type {function=}
    * @returns {object[]} Array of h objects
    */
-  content: ({ h, items, style }) => items.map(item => h('div', { style: style.content }, item)),
+  content: ({ h, items }) => items.map(item => h('div', {}, item)),
   /**
    * Debounce condition. A function that define if the tooltip event `over` should be debounced or not.
    * Two parameters are passed to the function, the first is a set of nodes, representing active
@@ -80,6 +80,7 @@ const DEFAULT_SETTINGS = {
     area: 'viewport' // Specify the area which placement strategies should limit themself to [viewport | target]
   },
   tooltipClass: {},
+  contentClass: {},
   arrowClass: {},
   direction: 'ltr',
   /**
@@ -105,7 +106,8 @@ const DEFAULT_SETTINGS = {
 };
 
 const DEFAULT_STYLE = {
-  tooltip: {
+  tooltip: {},
+  content: {
     backgroundColor: '$gray-35',
     color: '$font-color--inverted',
     fontFamily: '$font-family',
@@ -115,7 +117,7 @@ const DEFAULT_STYLE = {
     padding: '8px',
     opacity: 0.9
   },
-  'tooltip-arrow': {
+  arrow: {
     position: 'absolute',
     width: '0px',
     height: '0px',
@@ -123,27 +125,26 @@ const DEFAULT_STYLE = {
     color: '$gray-35',
     opacity: 0.9
   },
-  'tooltip-arrow--bottom': {
+  'arrow-bottom': {
     borderTopColor: 'transparent',
     borderLeftColor: 'transparent',
     borderRightColor: 'transparent'
   },
-  'tooltip-arrow--top': {
+  'arrow-top': {
     borderBottomColor: 'transparent',
     borderLeftColor: 'transparent',
     borderRightColor: 'transparent'
   },
-  'tooltip-arrow--right': {
+  'arrow-right': {
     borderTopColor: 'transparent',
     borderLeftColor: 'transparent',
     borderBottomColor: 'transparent'
   },
-  'tooltip-arrow--left': {
+  'arrow-left': {
     borderTopColor: 'transparent',
     borderBottomColor: 'transparent',
     borderRightColor: 'transparent'
-  },
-  content: {} // TODO Remove, as it's used in settings function
+  }
 };
 
 function toPoint(event, { chart, state }) {

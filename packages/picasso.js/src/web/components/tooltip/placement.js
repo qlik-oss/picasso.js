@@ -18,7 +18,7 @@ function getDockOffset(width, height, offset = 0) {
   };
 }
 
-function getCalculatedArrowStyle(offset) {
+function getComputedArrowStyle(offset) {
   return {
     left: {
       left: '100%',
@@ -136,11 +136,12 @@ function alignToBounds({
   const transform = dockTransforms[options.dock];
   if (transform) {
     return {
-      style: {
+      computedTooltipStyle: {
         left: `${docks[options.dock].x}px`,
         top: `${docks[options.dock].y}px`,
         transform
       },
+      computedArrowStyle: getComputedArrowStyle(options.offset)[options.dock],
       dock: options.dock
     };
   }
@@ -158,24 +159,24 @@ function alignToBounds({
     const vy = options.area === 'target' ? docks[dock].y : targetBounds.top + docks[dock].y;
     if (isInsideViewport(viewport, vx, vy, elmWidth, elmHeight, dockOffsets[dock])) {
       return {
-        style: {
+        computedTooltipStyle: {
           left: `${docks[dock].x}px`,
           top: `${docks[dock].y}px`,
           transform: dockTransforms[dock]
         },
-        arrowStyle: getCalculatedArrowStyle(options.offset)[dock],
+        computedArrowStyle: getComputedArrowStyle(options.offset)[dock],
         dock
       };
     }
   }
 
   return {
-    style: {
+    computedTooltipStyle: {
       left: `${docks.top.x}px`,
       top: `${docks.top.y}px`,
       transform: dockTransforms.top
     },
-    arrowStyle: getCalculatedArrowStyle(options.offset).top,
+    computedArrowStyle: getComputedArrowStyle(options.offset).top,
     dock: 'top'
   };
 }
@@ -198,11 +199,12 @@ function alignToPoint({
   const transform = dockTransforms[options.dock];
   if (transform) {
     return {
-      style: {
+      computedTooltipStyle: {
         left: `${x}px`,
         top: `${y}px`,
         transform
       },
+      computedArrowStyle: getComputedArrowStyle(options.offset)[options.dock],
       dock: options.dock
     };
   }
@@ -225,26 +227,26 @@ function alignToPoint({
       viewport, vx, vy, width, height, offset: dockOffsets[dock]
     });
 
-    const style = {
+    const computedTooltipStyle = {
       left: `${x}px`,
       top: `${y}px`,
       transform: dockTransforms[dock]
     };
-    const arrowStyle = getCalculatedArrowStyle(options.offset)[dock];
+    const computedArrowStyle = getComputedArrowStyle(options.offset)[dock];
 
     if (offset.x !== 0) {
-      style.width = `${width - edgeMargin - Math.abs(offset.x)}px`;
+      computedTooltipStyle.width = `${width - edgeMargin - Math.abs(offset.x)}px`;
 
       if (dock === 'top' || dock === 'bottom') {
-        style.left = `${x + offset.x}px`;
+        computedTooltipStyle.left = `${x + offset.x}px`;
 
-        arrowStyle.left = `calc(50% ${offset.x > 0 ? '-' : '+'} ${Math.abs(offset.x)}px)`;
+        computedArrowStyle.left = `calc(50% ${offset.x > 0 ? '-' : '+'} ${Math.abs(offset.x)}px)`;
       }
     }
 
     const result = {
-      style,
-      arrowStyle,
+      computedTooltipStyle,
+      computedArrowStyle,
       dock,
       rect: {
         width,

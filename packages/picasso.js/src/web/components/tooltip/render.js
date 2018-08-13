@@ -1,14 +1,23 @@
 import extend from 'extend';
 
+function resolveClasses(props, opts) {
+  return {
+    tooltip: typeof props.tooltipClass === 'function' ? props.tooltipClass({ dock: opts.dock }) : props.tooltipClass,
+    content: typeof props.contentClass === 'function' ? props.contentClass({ dock: opts.dock }) : props.contentClass,
+    arrow: typeof props.arrowClass === 'function' ? props.arrowClass({ dock: opts.dock }) : props.arrowClass
+  };
+}
+
 export default function render(items, placement, {
   renderer,
   style,
   props,
   h
 }) {
+  const classes = resolveClasses(props, placement);
   const data = {
-    style: extend({}, style.tooltip),
-    class: props.tooltipClass
+    style: extend({}, style.content),
+    class: classes.content
   };
   const content = props.content({
     h,
@@ -16,27 +25,28 @@ export default function render(items, placement, {
     items,
     props
   });
-  const tooltip = h('div', data, content);
+  const contentNode = h('div', data, content);
 
-  const arrow = h(
+  const arrowNode = h(
     'div',
     {
-      style: extend({}, style['tooltip-arrow'], style[`tooltip-arrow--${placement.dock}`], placement.arrowStyle),
-      class: typeof props.arrowClass === 'function' ? props.arrowClass({ dock: placement.dock }) : props.arrowClass
+      style: extend({}, style.arrow, style[`arrow-${placement.dock}`], placement.computedArrowStyle),
+      class: classes.arrow
     },
     '' // TODO allow custom arrow content
   );
 
-  const containerDefaultStyle = {
+  const tooltipDefaultStyle = {
     position: 'relative',
     display: 'inline-block'
   };
 
   let element;
-  const container = h(
+  const tooltipNode = h(
     'div',
     {
-      style: extend(containerDefaultStyle, placement.style),
+      style: extend(tooltipDefaultStyle, placement.computedTooltipStyle),
+      class: classes.tooltip,
       hook: {
         insert: (vnode) => {
           element = vnode.elm;
@@ -49,10 +59,10 @@ export default function render(items, placement, {
         dir: props.direction
       }
     },
-    [tooltip, arrow]
+    [contentNode, arrowNode]
   );
 
-  renderer.render([container]);
+  renderer.render([tooltipNode]);
 
   return element;
 }
