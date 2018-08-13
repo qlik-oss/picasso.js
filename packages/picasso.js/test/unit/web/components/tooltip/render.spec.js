@@ -6,7 +6,7 @@ describe('render', () => {
 
   beforeEach(() => {
     placement = {
-      style: {
+      computedTooltipStyle: {
         left: 1,
         top: 2
       }
@@ -15,7 +15,7 @@ describe('render', () => {
       renderer: { render: sinon.spy() },
       h: sinon.stub().returns('CALLED'),
       style: {
-        tooltip: {
+        content: {
           testStyle: 'testing'
         },
         arrow: {
@@ -24,7 +24,7 @@ describe('render', () => {
       },
       props: {
         content: sinon.spy(),
-        tooltipClass: {
+        contentClass: {
           testClass: true
         },
         arrowClass: {

@@ -71,7 +71,8 @@ describe('Tooltip', () => {
         prevent: false
       },
       props: {
-        filter: () => true
+        filter: nodes => nodes,
+        debounce: () => false
       },
       rect: { x: 0, y: 0 }
     };

@@ -70,11 +70,15 @@ describe('placement', () => {
     const r = placement(size, context);
 
     expect(r).to.deep.equal({
-      arrowStyle: {},
-      style: {
+      computedArrowStyle: {
+        borderWidth: '8px',
+        left: '-16px',
+        top: 'calc(50% - 8px)'
+      },
+      computedTooltipStyle: {
         left: '1px',
         top: '2px',
-        transform: 'translate(10px, -50%)'
+        transform: 'translate(8px, -50%)'
       },
       offset: {
         x: 0,
@@ -92,11 +96,15 @@ describe('placement', () => {
     const r = placement(size, context);
 
     expect(r).to.deep.equal({
-      arrowStyle: {},
-      style: {
+      computedArrowStyle: {
+        borderWidth: '8px',
+        left: 'calc(50% - 8px)',
+        top: '100%'
+      },
+      computedTooltipStyle: {
         left: '123px',
         top: '122px',
-        transform: 'translate(-50%, -100%) translateY(-10px)'
+        transform: 'translate(-50%, -100%) translateY(-8px)'
       },
       rect: size,
       dock: 'top'
@@ -112,7 +120,12 @@ describe('placement', () => {
     const r = placement(size, context);
 
     expect(r).to.deep.equal({
-      style: {
+      computedArrowStyle: {
+        borderWidth: '5px',
+        left: 'calc(50% - 5px)',
+        top: '100%'
+      },
+      computedTooltipStyle: {
         left: '1px',
         top: '2px',
         transform: 'translate(-50%, -100%) translateY(-5px)'
@@ -130,7 +143,12 @@ describe('placement', () => {
     const r = placement(size, context);
 
     expect(r).to.deep.equal({
-      style: {
+      computedArrowStyle: {
+        borderWidth: '5px',
+        left: 'calc(50% - 5px)',
+        top: '100%'
+      },
+      computedTooltipStyle: {
         left: '1px',
         top: '2px',
         transform: 'translate(-50%, -100%) translateY(-5px)'
@@ -140,7 +158,7 @@ describe('placement', () => {
   });
 
   it('should return custom placement strategy', () => {
-    context.props.placement = { fn: sinon.stub().returns({ testing: 'test' }) };
+    context.props.placement = { fn: () => ({ testing: 'test' }) };
     const r = placement(size, context);
 
     expect(r).to.deep.equal({ testing: 'test' });
@@ -161,8 +179,12 @@ describe('placement', () => {
         const r = placement(size, context);
 
         expect(r).to.deep.equal({
-          arrowStyle: {},
-          style: {
+          computedArrowStyle: {
+            borderWidth: '5px',
+            left: '-10px',
+            top: 'calc(50% - 5px)'
+          },
+          computedTooltipStyle: {
             left: '1px',
             top: '2px',
             transform: 'translate(5px, -50%)'
@@ -184,10 +206,12 @@ describe('placement', () => {
         const r = placement(size, context);
 
         expect(r).to.deep.equal({
-          arrowStyle: {
-            left: 'calc(50% + 8px)'
+          computedArrowStyle: {
+            borderWidth: '5px',
+            left: 'calc(50% + 8px)',
+            top: '100%'
           },
-          style: {
+          computedTooltipStyle: {
             left: '-7px',
             top: '2px',
             transform: 'translate(-50%, -100%) translateY(-5px)',
@@ -219,7 +243,12 @@ describe('placement', () => {
         const r = placement(size, context);
 
         expect(r).to.deep.equal({
-          style: {
+          computedArrowStyle: {
+            borderWidth: '5px',
+            left: 'calc(50% - 5px)',
+            top: '100%'
+          },
+          computedTooltipStyle: {
             left: '18.5px',
             top: '24px',
             transform: 'translate(-50%, -100%) translateY(-5px)'
@@ -243,7 +272,12 @@ describe('placement', () => {
         const r = placement(size, context);
 
         expect(r).to.deep.equal({
-          style: {
+          computedArrowStyle: {
+            borderWidth: '5px',
+            left: 'calc(50% - 5px)',
+            top: '100%'
+          },
+          computedTooltipStyle: {
             left: '18.5px',
             top: '24px',
             transform: 'translate(-50%, -100%) translateY(-5px)'
@@ -268,10 +302,15 @@ describe('placement', () => {
         const r = placement(size, context);
 
         expect(r).to.deep.equal({
-          style: {
+          computedArrowStyle: {
+            borderWidth: '8px',
+            left: 'calc(50% - 8px)',
+            top: '100%'
+          },
+          computedTooltipStyle: {
             left: '18.5px',
             top: '24px',
-            transform: 'translate(-50%, -100%) translateY(-10px)'
+            transform: 'translate(-50%, -100%) translateY(-8px)'
           },
           dock: 'top'
         });
@@ -290,16 +329,20 @@ describe('placement', () => {
 
         context.props.placement = {
           type: 'bounds',
-          dock: 'top',
-          offset: 5
+          dock: 'top'
         };
         const r = placement(size, context);
 
         expect(r).to.deep.equal({
-          style: {
+          computedArrowStyle: {
+            borderWidth: '8px',
+            left: 'calc(50% - 8px)',
+            top: '100%'
+          },
+          computedTooltipStyle: {
             left: '60.5px',
             top: '39px',
-            transform: 'translate(-50%, -100%) translateY(-5px)'
+            transform: 'translate(-50%, -100%) translateY(-8px)'
           },
           dock: 'top'
         });
@@ -330,8 +373,12 @@ describe('placement', () => {
         const r = placement(size, context);
 
         expect(r).to.deep.equal({
-          arrowStyle: {},
-          style: {
+          computedArrowStyle: {
+            borderWidth: '5px',
+            left: 'calc(50% - 5px)',
+            top: '-10px'
+          },
+          computedTooltipStyle: {
             left: '50px',
             top: '70px',
             transform: 'translate(-50%, 5px)'
@@ -364,7 +411,12 @@ describe('placement', () => {
         const r = placement(size, context);
 
         expect(r).to.deep.equal({
-          style: {
+          computedArrowStyle: {
+            borderWidth: '5px',
+            left: 'calc(50% - 5px)',
+            top: '-10px'
+          },
+          computedTooltipStyle: {
             left: '50px',
             top: '70px',
             transform: 'translate(-50%, 5px)'
@@ -398,8 +450,12 @@ describe('placement', () => {
         const r = placement(size, context);
 
         expect(r).to.deep.equal({
-          arrowStyle: {},
-          style: {
+          computedArrowStyle: {
+            borderWidth: '5px',
+            left: 'calc(50% - 5px)',
+            top: '-10px'
+          },
+          computedTooltipStyle: {
             left: '20px',
             top: '35px',
             transform: 'translate(-50%, 5px)'
@@ -434,8 +490,12 @@ describe('placement', () => {
         const r = placement(size, context);
 
         expect(r).to.deep.equal({
-          arrowStyle: {},
-          style: {
+          computedArrowStyle: {
+            borderWidth: '5px',
+            left: 'calc(50% - 5px)',
+            top: '-10px'
+          },
+          computedTooltipStyle: {
             left: '60px',
             top: '75px',
             transform: 'translate(-50%, 5px)'
