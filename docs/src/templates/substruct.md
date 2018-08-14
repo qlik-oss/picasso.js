@@ -13,9 +13,6 @@
   {{>substruct this.items}}
 ],
 {{else}}
-{{#if description}}
-/* {{{description}}} */
-{{/if}}
 {{name}}: {{#sample this}}{{/sample}},{{#if optional}} // Optional{{/if}}
 {{/ifCond}}
 {{/ifCond}}
