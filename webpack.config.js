@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const jsxPlugin = require('@babel/plugin-transform-react-jsx');
 
 const mode = process.env.NODE_ENV === 'production' ? 'production' : 'development';
 
@@ -39,6 +40,9 @@ module.exports = {
                   browsers: ['ie 11']
                 }
               }]
+            ],
+            plugins: [
+              [jsxPlugin, { pragma: 'h' }]
             ]
           }
         }
