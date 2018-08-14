@@ -35,8 +35,8 @@ describe('render', () => {
   });
 
   it('should render content', () => {
-    const items = [0, 1, 2];
-    render(items, placement, context);
+    const data = [0, 1, 2];
+    render(data, placement, context);
 
     // Content call
     expect(context.h.args[0][0]).to.equal('div');
@@ -72,7 +72,7 @@ describe('render', () => {
     expect(context.props.content).to.have.been.calledWith({
       h: context.h,
       style: context.style,
-      items,
+      data,
       props: context.props
     });
 

@@ -33,18 +33,18 @@ const DEFAULT_SETTINGS = {
    */
   filter: nodes => nodes.filter(node => node.data), // Filter SceneNodes
   /**
-   * Extract items from node.
+   * Extract data from a node.
    * @type {function=}
    * @returns {object} An array of data
    */
   extract: ctx => ctx.node.data.value,
   /**
-   * Content generator
-   * Extracted items are available in the `items` property
+   * Content generator. Extracted data is available in the `data` property, where each value in the area
+   * is the extracted datum from a node.
    * @type {function=}
    * @returns {object[]} Array of h objects
    */
-  content: ({ h, items }) => items.map(item => h('div', {}, item)),
+  content: ({ h, data }) => data.map(datum => h('div', {}, datum)),
   /**
    * Comparison function, if evaluted to true, the incoming nodes are ignored and any active tooltip
    * remains. If evaluated to false, any active tooltip is cleared and a new tooltip is d

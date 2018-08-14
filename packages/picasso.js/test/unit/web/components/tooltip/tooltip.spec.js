@@ -81,7 +81,7 @@ describe('Tooltip', () => {
   });
 
   describe('events', () => {
-    describe.only('show', () => {
+    describe('show', () => {
       beforeEach(() => {
         instance.on.show = instance.on.show.bind(instance);
       });
@@ -139,23 +139,14 @@ describe('Tooltip', () => {
     describe('prevent', () => {
       beforeEach(() => {
         instance.on.show = instance.on.show.bind(instance);
-        instance.on.over = instance.on.over.bind(instance);
         instance.on.prevent = instance.on.prevent.bind(instance);
       });
 
       it('should prevent `show` from being invoked', () => {
         instance.props.filter = sinon.stub().returns(true);
         instance.on.prevent(true);
-        instance.on.show([0, 1, 2]);
-
-        expect(instance.props.filter).to.not.have.been.called;
-      });
-
-      it('should prevent `over` from being invoked', () => {
-        instance.props.filter = sinon.stub().returns(true);
-        instance.on.prevent(true);
         cMock.shapesAt.returns([0, 1, 2]);
-        instance.on.over({});
+        instance.on.show({});
 
         expect(instance.props.filter).to.not.have.been.called;
       });

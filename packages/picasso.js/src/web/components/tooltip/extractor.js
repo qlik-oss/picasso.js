@@ -6,7 +6,7 @@ export default function extractor(nodes, {
   props,
   h
 }) {
-  const itemContext = {
+  const dataCtx = {
     resources: {
       dataset: chart.dataset,
       scale: chart.scale,
@@ -16,13 +16,13 @@ export default function extractor(nodes, {
     h
   };
 
-  const items = [];
+  const data = [];
   nodes.forEach((node) => {
     if (typeof props.extract === 'function') {
-      const ctx = extend({ node }, itemContext);
-      items.push(props.extract(ctx));
+      const ctx = extend({ node }, dataCtx);
+      data.push(props.extract(ctx));
     }
   });
 
-  return items;
+  return data;
 }

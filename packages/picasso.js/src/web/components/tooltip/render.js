@@ -8,24 +8,23 @@ function resolveClasses(props, opts) {
   };
 }
 
-export default function render(items, placement, {
+export default function render(data, placement, {
   renderer,
   style,
   props,
   h
 }) {
   const classes = resolveClasses(props, placement);
-  const data = {
-    style: extend({}, style.content),
-    class: classes.content
-  };
   const content = props.content({
     h,
     style,
-    items,
+    data,
     props
   });
-  const contentNode = h('div', data, content);
+  const contentNode = h('div', {
+    style: extend({}, style.content),
+    class: classes.content
+  }, content);
 
   const arrowNode = h(
     'div',
