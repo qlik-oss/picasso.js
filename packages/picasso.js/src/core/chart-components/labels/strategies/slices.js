@@ -2,6 +2,11 @@ import extend from 'extend';
 import collisions from '../../../math/narrow-phase-collision';
 import { rectContainsRect } from '../../../math/intersection';
 
+function normalize(angle) {
+  const PI2 = Math.PI * 2;
+  return ((angle % PI2) + PI2) % PI2; // normalize
+}
+
 function pad(bounds, padding) {
   bounds.x += padding;
   bounds.width -= (padding * 2);
@@ -90,15 +95,12 @@ function getHorizontalInsideSliceRect({ slice, padding, measured }) {
   let {
     start, end, innerRadius, outerRadius
   } = slice;
-  let middle = (start + end) / 2;
+  const middle = normalize((start + end) / 2);
 
   let size = {
     width: measured.width + (padding * 2),
     height: measured.height + (padding * 2)
   };
-
-  let PI2 = Math.PI * 2;
-  middle = ((middle % PI2) + PI2) % PI2; // normalize
 
   let bounds = getRectFromCircleIntersection({
     radius: outerRadius,
@@ -144,9 +146,7 @@ function getRotatedInsideSliceRect({ slice, measured, padding }) {
     return null;
   }
 
-  let middle = (start + end) / 2;
-  let PI2 = Math.PI * 2;
-  middle = ((middle % PI2) + PI2) % PI2; // normalize
+  const middle = normalize((start + end) / 2);
   let r = outerRadius - padding;
   let bounds = {
     x: Math.sin(middle) * r,
@@ -179,9 +179,7 @@ function getRotatedOusideSliceRect({
       return null;
     }
   }
-  let middle = (start + end) / 2;
-  let PI2 = Math.PI * 2;
-  middle = ((middle % PI2) + PI2) % PI2; // normalize
+  const middle = normalize((start + end) / 2);
   let x = Math.sin(middle) * r;
   let y = -Math.cos(middle) * r;
 
@@ -225,21 +223,150 @@ function getRotatedOusideSliceRect({
   return bounds;
 }
 
+function outOfSpace(context, section, view) {
+  switch (section) {
+    case 0: return context.q1maxY < 0;
+    case 1: return context.q2minY > view.height;
+    case 2: return context.q3minY > view.height;
+    case 3: return context.q4maxY < 0;
+    default: return true;
+  }
+}
+function adjustBounds(bounds, context, slice) {
+  const LINE_PADDING = 2;
+  const LIMIT = 1;
+
+  const {
+    start, end, offset, outerRadius
+  } = slice;
+  const middle = normalize((start + end) / 2);
+  let section = Math.floor(middle / (Math.PI / 2));
+
+  switch (section) {
+    case 0:
+      if (context.q1maxY !== undefined) {
+        let y = Math.min(bounds.y, context.q1maxY - bounds.height);
+        let dy = bounds.y - y;
+        bounds.y = y;
+        if (dy > LIMIT) {
+          let r = outerRadius + LINE_PADDING;
+          bounds.line = {
+            type: 'line',
+            x1: bounds.x - LINE_PADDING,
+            y1: bounds.y + LINE_PADDING,
+            x2: offset.x + (Math.sin(middle) * r),
+            y2: offset.y - (Math.cos(middle) * r),
+            strokeWidth: 1
+          };
+        }
+      }
+      break;
+    case 1:
+      if (context.q2minY !== undefined) {
+        let y = Math.max(bounds.y, context.q2minY);
+        let dy = y - bounds.y;
+        bounds.y = y;
+        if (dy > LIMIT) {
+          let r = outerRadius + LINE_PADDING;
+          bounds.line = {
+            type: 'line',
+            x1: bounds.x - LINE_PADDING,
+            y1: bounds.y - LINE_PADDING,
+            x2: offset.x + (Math.sin(middle) * r),
+            y2: offset.y - (Math.cos(middle) * r),
+            strokeWidth: 1
+          };
+        }
+      }
+      break;
+    case 2:
+      if (context.q3minY !== undefined) {
+        let y = Math.max(bounds.y, context.q3minY);
+        let dy = y - bounds.y;
+        bounds.y = y;
+        if (dy > LIMIT) {
+          let r = outerRadius + LINE_PADDING;
+          bounds.line = {
+            type: 'line',
+            x1: bounds.x + LINE_PADDING,
+            y1: bounds.y - LINE_PADDING,
+            x2: offset.x + (Math.sin(middle) * r),
+            y2: offset.y - (Math.cos(middle) * r),
+            strokeWidth: 1
+          };
+        }
+      }
+      break;
+    case 3:
+      if (context.q4maxY !== undefined) {
+        let y = Math.min(bounds.y, context.q4maxY - bounds.height);
+        let dy = bounds.y - y;
+        bounds.y = y;
+        if (dy > LIMIT) {
+          let r = outerRadius + LINE_PADDING;
+          bounds.line = {
+            type: 'line',
+            x1: bounds.x + LINE_PADDING,
+            y1: bounds.y + LINE_PADDING,
+            x2: offset.x + (Math.sin(middle) * r),
+            y2: offset.y - (Math.cos(middle) * r),
+            strokeWidth: 1
+          };
+        }
+      }
+      break;
+    default: break;
+  }
+}
+function updateContext({ context, node, bounds }) {
+  const PADDING = 2;
+  let {
+    start, end
+  } = node.desc.slice;
+  const middle = normalize((start + end) / 2);
+
+  let section = Math.floor(middle / (Math.PI / 2));
+  switch (section) {
+    case 0:
+      context.q1maxY = bounds.y - PADDING;
+      if (context.q2minY === undefined) {
+        context.q2minY = bounds.y + bounds.height + PADDING;
+      }
+      break;
+    case 1:
+      context.q2minY = bounds.y + bounds.height + PADDING;
+      break;
+    case 2:
+      context.q3minY = bounds.y + bounds.height + PADDING;
+      break;
+    case 3:
+      context.q4maxY = bounds.y - PADDING;
+      if (context.q3minY === undefined) {
+        context.q3minY = bounds.y + bounds.height + PADDING;
+      }
+      break;
+    default: break;
+  }
+}
+
 function getHorizontalOusideSliceRect({
-  slice, measured, padding, view
+  slice, measured, padding, view, context
 }) {
   let {
     start, end, outerRadius, offset
   } = slice;
-  let r = outerRadius + padding + (measured.height / 2);
+  const middle = normalize((start + end) / 2);
 
-  let middle = (start + end) / 2;
-  let PI2 = Math.PI * 2;
-  middle = ((middle % PI2) + PI2) % PI2; // normalize
-  let maxWidth = measured.width;
+  let section = Math.floor(middle / (Math.PI / 2));
+  if (outOfSpace(context, section, view)) {
+    return null;
+  }
+
+  let r = outerRadius + padding + (measured.height / 2);
   let x = Math.sin(middle) * r;
   let y = -Math.cos(middle) * r;
 
+  let maxWidth = measured.width;
   if (middle < Math.PI) {
     let w = Math.abs((view.x + view.width) - (x + offset.x));
     if (w < maxWidth) {
@@ -258,6 +385,7 @@ function getHorizontalOusideSliceRect({
     width: maxWidth,
     height: measured.height
   };
+
   if (middle < Math.PI) {
     bounds.anchor = 'start';
   } else {
@@ -299,7 +427,7 @@ function placeTextOnPoint(rect, text, opts) {
 }
 
 export function getSliceRect({
-  slice, direction, position, padding, measured, view
+  slice, direction, position, padding, measured, view, context
 }) {
   let {
     start,
@@ -338,7 +466,7 @@ export function getSliceRect({
         });
       } else {
         bounds = getHorizontalOusideSliceRect({
-          slice, measured, padding, view
+          slice, measured, padding, view, context
         });
       }
       break;
@@ -348,11 +476,15 @@ export function getSliceRect({
   if (bounds) {
     bounds.x += offset.x;
     bounds.y += offset.y;
+    if (position === 'outside' && direction !== 'rotate') {
+      adjustBounds(bounds, context, slice);
+    }
   }
   return bounds;
 }
 
 function findBestPlacement({
+  context,
   direction,
   measured,
   node,
@@ -362,6 +494,7 @@ function findBestPlacement({
   for (let p = 0; p < placementSettings.length; p++) {
     let placement = placementSettings[p];
     let bounds = sliceRect({
+      context,
       slice: node.desc.slice,
       view: rect,
       direction,
@@ -379,17 +512,42 @@ function findBestPlacement({
   return { bounds: null, placement: null };
 }
 
-function collisionRect(bounds) {
-  if (bounds.anchor === 'start') {
-    return bounds;
+/*
+ * Sorts the nodes so that
+ *   in each quarter sort nodes from the center (in y) outwards
+ *   first quarter before the second
+ *   forth quarter before the third
+ */
+function sortNodes(nodes) {
+  const q1 = [];
+  const q2 = [];
+  const q3 = [];
+  const q4 = [];
+  for (let i = 0; i < nodes.length; ++i) {
+    const { start, end } = nodes[i].desc.slice;
+    const middle = normalize((start + end) / 2);
+    let section = Math.floor(middle / (Math.PI / 2));
+    switch (section) {
+      case 0: q1.push(nodes[i]); break;
+      case 1: q2.push(nodes[i]); break;
+      case 2: q3.push(nodes[i]); break;
+      case 3: q4.push(nodes[i]); break;
+      default: break;
+    }
   }
-  // bounds.anchor === 'end'
-  return {
-    x: bounds.x - bounds.width,
-    y: bounds.y,
-    width: bounds.width,
-    height: bounds.height
+
+  const sortFn = (a, b) => {
+    const middleA = normalize((a.desc.slice.start + a.desc.slice.end) / 2);
+    const middleB = normalize((b.desc.slice.start + b.desc.slice.end) / 2);
+    return middleA - middleB;
   };
+  const reverseSortFn = (a, b) => sortFn(b, a);
+
+  q1.sort(reverseSortFn);
+  q2.sort(sortFn);
+  q3.sort(reverseSortFn);
+  q4.sort(sortFn);
+  return q1.concat(q2, q4, q3);
 }
 
 /**
@@ -440,8 +598,9 @@ export function slices(
 
   const labelStruct = {};
   const labels = [];
-  let firstOutsideRect = null;
-  let previousOutsideRect = null;
+
+  nodes = sortNodes(nodes);
+  const context = {};
 
   for (let i = 0, len = nodes.length; i < len; i++) {
     let node = nodes[i];
@@ -463,6 +622,7 @@ export function slices(
       let measured = renderer.measureText(labelStruct);
 
       const bestPlacement = findPlacement({
+        context,
         direction,
         lblStngs,
         measured,
@@ -476,21 +636,13 @@ export function slices(
 
       if (bounds && placement) {
         if (placement.position === 'outside' && direction !== 'rotate') {
+          updateContext({ context, node, bounds });
+
           const topLeftBounds = getTopLeftBounds(bounds);
 
           if (!rectContainsRect(topLeftBounds, rect)) {
             continue;
           }
-          const r = collisionRect(bounds);
-          if (!firstOutsideRect) {
-            firstOutsideRect = r;
-          } else if (firstOutsideRect && collisions.testRectRect(firstOutsideRect, r)) {
-            continue;
-          }
-          if (previousOutsideRect && collisions.testRectRect(previousOutsideRect, r)) {
-            continue;
-          }
-          previousOutsideRect = r;
         }
 
         let fill = typeof placement.fill === 'function' ? placement.fill(arg, i) : placement.fill;
@@ -507,6 +659,10 @@ export function slices(
             label.data = linkData;
           }
           labels.push(label);
+          if (bounds.line) {
+            bounds.line.stroke = fill;
+            labels.push(bounds.line);
+          }
         }
       }
     }
