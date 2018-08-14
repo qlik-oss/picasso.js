@@ -2,7 +2,37 @@
 title: Tooltip
 ---
 
-A component that renders a tooltip.
+A customizable tooltip component that can display complementary information. Typically used when moving the mouse curser over a node or selecting one.
+
+![Tooltip](/img/tooltip.png)
+
+## Example
+
+```js
+picasso.chart({
+  settings: {
+    interactions: [{
+      type: 'native',
+      events: {
+        mousemove(e) {
+          const tooltip = this.chart.component('<tooltip-key>');
+          tooltip.emit('show', e);
+        },
+        mouseleave(e) {
+          const tooltip = this.chart.component('<tooltip-key>');
+          tooltip.emit('hide');
+        }
+      }
+    }],
+    components: [
+      {
+        type: 'tooltip'
+      }
+    ]
+  },
+  ...
+});
+```
 
 ## Events
 
@@ -37,9 +67,7 @@ picassoInstance.component('<key value of tooltip>').emit('hide');
 
 ## Extracting data and generating custom content
 
-As the main purpose of a tooltip often is to displayed additonal data when hovering or selecting a node, controlling which data to displayed is crucial.
-
-Luckily there are two settings available to ensure that correct data is displayed in the tooltip.
+As the main purpose of a tooltip is often to displayed complementary data when hovering or selecting a node, controlling which data to displayed is crucial. Luckily there are two settings available to ensure that correct data is displayed in the tooltip.
 
 ### Extracting data
 
@@ -53,67 +81,91 @@ const extract = ({ node }) => node.data.value;
 
 ### Generating content
 
-The `content setting` is a function responsible for generating virtual nodes using the HyperScript API. The output is used for the content area of the tooltip.
+The `content` setting is a function responsible for generating virtual nodes using the HyperScript API and is expected to return an array of virtual nodes.
 
 #### Default
 
 ```js
-const content = ({ h, data }) => data.map(datum => h('div', {}, datum));
+{
+  settings: {
+    content: ({ h, data }) => data.map(datum => h('div', {}, datum))
+  }
+}
 ```
 
 ### Example - Formatting values
 
 Here we format the value using a formatter and return the output as extracted data.
 ```js
-const extract = ({ node, resources }) => resources.formatter('<name-of-a-formatter>')(node.data.value);
-```
-
-But sometimes we want to give the value some context, for example by labeling it. As such we change the data structure to an  object instead to make it more clear what the data represent. As we do, the default `content` generator function will complain because it doesn't understand our new data structure, so we must also update the `content` setting.
-```js
-const extract = ({ node, resources }) => ({
-  label: node.data.label,
-  value: resources.formatter('<name-of-a-formatter>')(node.data.value)
-});
-
-// We go from a basic content generator
-let content = ({ h, data }) => data.map(datum => h('div', {}, datum))
-// To one that understand our new data structure
-content = ({ h, data }) => data.map(datum => h('div', {}, `${datum.label}: ${datum.value}`))
-```
-
-## Placement strategy
-
-### Example - As a string
-
-```js
 {
-  placement: 'pointer'
-}
-```
-
-### Example - As an object
-
-```js
-{
-  placement: {
-    type: 'pointer',
-    dock: 'top',
-    offset: 8,
-    area: 'target'
+  settings: {
+    extract: ({ node, resources }) => resources.formatter('<name-of-a-formatter>')(node.data.value)
   }
 }
 ```
 
-### Example - As a function
-
+But sometimes we want to give the value some context, for example by labeling it. As such we change the data structure to an  object instead to make it more clear what the data represent. As we do, the default `content` generator function will complain because it doesn't understand our new data structure, so we must also update the `content` setting.
 ```js
 {
-  placement: () => ({
-    type: 'pointer',
-    dock: 'top',
-    offset: 8,
-    area: 'target'
-  })
+  settings: {
+    extract: ({ node, resources }) => ({
+      label: node.data.label,
+      value: resources.formatter('<name-of-a-formatter>')(node.data.value)
+    }),
+    // We go from a basic content generator, to one that understand our new data structure
+    content: ({ h, data }) => data.map(datum => h('div', {}, `${datum.label}: ${datum.value}`))
+  }
+}
+```
+
+## Placement strategies
+
+The placement strategy defines how the tooltip is positioned in relation to a set of nodes or a node. The built-in strategies all have a auto docking feature, such that if the tooltip doesn't fit inside its designated area, the docking position may be adjusted to a position where it does fit. Note that there may still be scenarioes where the tooltip doesn't fit, for example when the designated area just cannot fit the tooltip at all.
+
+### `pointer`
+
+The `pointer` strategy is the default and use the current pointer position to place the tooltip.
+
+### `bounds`
+
+The `bounds` strategy use the bounding rectangle of the first node. Note the depending on the type of shape, the position of the tooltip may indicate that it's not over the visual area of the shape.
+
+### `slice`
+
+The `slice` strategy is built to work together with the `pie` component, such that the tooltip is placed at the arc of a slice.
+
+### Example
+
+```js
+// Define as a string
+{
+  settings: {
+    placement: 'pointer'
+  }
+}
+
+// Or as an object
+{
+  settings: {
+    placement: {
+      type: 'pointer',
+      dock: 'top',
+      offset: 8,
+      area: 'target'
+    }
+  }
+}
+
+// Or as a function
+{
+  settings: {
+    placement: () => ({
+      type: 'pointer',
+      dock: 'top',
+      offset: 8,
+      area: 'target'
+    })
+  }
 }
 ```
 
@@ -121,20 +173,27 @@ content = ({ h, data }) => data.map(datum => h('div', {}, `${datum.label}: ${dat
 
 ```js
 {
-  placement: {
-    fn: () => ({
-      computedTooltipStyle: {
-        left: '10px',
-        top: '20px',
-        color: 'red'
-      },
-      computedArrowStyle: {
-        left: '0px',
-        top: '0px',
-        color: 'red'
-      },
-      dock: 'top'
-    })
+  settings: {
+    placement: {
+      fn: () => {
+        // Do some magic here
+        return {
+          {
+            computedTooltipStyle: {
+              left: '10px',
+              top: '20px',
+              color: 'red'
+            },
+            computedArrowStyle: {
+              left: '0px',
+              top: '0px',
+              color: 'red'
+            },
+            dock: 'top'
+          }
+        };
+      }
+    }
   }
 }
 ```
