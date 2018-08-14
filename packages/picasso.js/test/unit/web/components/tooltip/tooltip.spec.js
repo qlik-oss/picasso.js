@@ -72,7 +72,7 @@ describe('Tooltip', () => {
       },
       props: {
         filter: nodes => nodes,
-        debounce: () => false
+        isEqual: () => false
       },
       rect: { x: 0, y: 0 }
     };
@@ -81,14 +81,20 @@ describe('Tooltip', () => {
   });
 
   describe('events', () => {
-    describe('over', () => {
+    describe.only('show', () => {
       beforeEach(() => {
-        instance.on.over = instance.on.over.bind(instance);
+        instance.on.show = instance.on.show.bind(instance);
       });
 
-      it('should show tooltip', () => {
+      it('should do shape loookup and show tooltip', () => {
         cMock.shapesAt.returns([0, 1, 2]);
-        instance.on.over({});
+        instance.on.show({});
+
+        expect(invokeSpy).to.have.been.calledWith([0, 1, 2]);
+      });
+
+      it('should show tooltip with provided nodes', () => {
+        instance.on.show({}, { nodes: [0, 1, 2] });
 
         expect(invokeSpy).to.have.been.calledWith([0, 1, 2]);
       });
@@ -99,7 +105,7 @@ describe('Tooltip', () => {
         ];
         cMock.shapesAt.returns(nodes);
         instance.state.activeNodes = nodes;
-        instance.on.over({});
+        instance.on.show({});
 
         expect(dispatcherSpy.clear).to.not.have.been.called;
         expect(invokeSpy).to.not.have.been.called;
@@ -107,7 +113,12 @@ describe('Tooltip', () => {
 
       it('should not show tooltip if there are no matching nodes', () => {
         cMock.shapesAt.returns([]);
-        instance.on.over({});
+        instance.on.show({});
+
+        expect(dispatcherSpy.clear).to.not.have.been.called;
+        expect(invokeSpy).to.not.have.been.called;
+
+        instance.on.show({}, { nodes: [] });
 
         expect(dispatcherSpy.clear).to.not.have.been.called;
         expect(invokeSpy).to.not.have.been.called;
@@ -122,24 +133,6 @@ describe('Tooltip', () => {
       it('should hide tooltip', () => {
         instance.on.hide();
         expect(dispatcherSpy.clear).to.have.been.called;
-      });
-    });
-
-    describe('show', () => {
-      beforeEach(() => {
-        instance.on.show = instance.on.show.bind(instance);
-      });
-
-      it('should show tooltip', () => {
-        instance.on.show([0, 1, 2]);
-
-        expect(invokeSpy).to.have.been.calledWith([0, 1, 2]);
-      });
-
-      it('should not show tooltip if there are no matching nodes', () => {
-        instance.on.show([]);
-
-        expect(invokeSpy).to.not.have.been.called;
       });
     });
 

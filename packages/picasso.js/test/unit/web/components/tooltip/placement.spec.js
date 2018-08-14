@@ -511,7 +511,7 @@ describe('placement', () => {
 
 describe('calcOffset', () => {
   it('should calculate the right offset', () => {
-    const viewport = {
+    const area = {
       width: 800,
       height: 600
     };
@@ -528,7 +528,7 @@ describe('calcOffset', () => {
     const height = 500;
 
     const result = calcOffset({
-      viewport, vx, vy, width, height, offset
+      area, vx, vy, width, height, offset
     });
 
     const expectedResult = {

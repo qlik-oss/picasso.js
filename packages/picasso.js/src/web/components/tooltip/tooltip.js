@@ -25,7 +25,7 @@ const DEFAULT_SETTINGS = {
   delay: 500,
   /**
    * Reduce incoming nodes to only a set of applicable nodes.
-   * Is called as a part of the `over` event.
+   * Is called as a part of the `show` event.
    * @type {function=}
    * @returns {array} An array of nodes
    * @example
@@ -35,9 +35,9 @@ const DEFAULT_SETTINGS = {
   /**
    * Extract items from node.
    * @type {function=}
-   * @returns {array} An array of data
+   * @returns {object} An array of data
    */
-  extract: ctx => [ctx.node.data.value],
+  extract: ctx => ctx.node.data.value,
   /**
    * Content generator
    * Extracted items are available in the `items` property
@@ -46,14 +46,18 @@ const DEFAULT_SETTINGS = {
    */
   content: ({ h, items }) => items.map(item => h('div', {}, item)),
   /**
-   * Debounce condition. A function that define if the tooltip event `over` should be debounced or not.
+   * Comparison function, if evaluted to true, the incoming nodes are ignored and any active tooltip
+   * remains. If evaluated to false, any active tooltip is cleared and a new tooltip is d
+   * 
+   * Compare condition. A function that define if the tooltip event `over` should be debounced or not.
    * Two parameters are passed to the function, the first is a set of nodes, representing active
-   * nodes displayed in the tooltip, and the second parameter is the incoming set of nodes. Typically
-   * if the two set of nodes are the same, it should be debounced.
+   * nodes displayed in the tooltip, and the second parameter is the incoming set of nodes.
+   *
+   * Typically if the two set of nodes are the same, it should be evaluted to true.
    * @type {function=}
    * @returns {boolean} True if the event should be debounced, false otherwise
    */
-  debounce: (prev, curr) => prev.length &&
+  isEqual: (prev, curr) => prev.length &&
     prev.length === curr.length &&
     prev.every((p, i) => curr[i] && JSON.stringify(p.data) === JSON.stringify(curr[i].data)),
   /**
@@ -190,52 +194,39 @@ const component = {
   },
   renderer: 'dom',
   on: {
-    over(e, duration, delay) { // Duration and delay are optional
-      if (this.state.prevent) {
-        return;
-      }
-
-      const p = toPoint(e, this);
-      // Set pointer here to always expose latest pointer to invokeRenderer
-      this.state.pointer = p;
-      const nodes = this.props.filter(this.chart.shapesAt({ x: p.cx, y: p.cy }));
-
-      if (this.props.debounce(this.state.activeNodes, nodes)) {
-        return;
-      }
-
-      this.dispatcher.clear();
-      this.state.activeNodes = nodes;
-
-      if (nodes.length) {
-        this.dispatcher.invoke(
-          () => this.invokeRenderer(nodes),
-          duration,
-          delay
-        );
-      }
-    },
     hide() {
       this.dispatcher.clear();
       this.state.activeNodes = [];
       this.state.pointer = {};
     },
-    // lookup agnostic, i.e. could be triggered from brushing or events
-    show(shapes, e, duration, delay) {
+    show(event, { nodes, duration, delay } = {}) {
       if (this.state.prevent) {
         return;
       }
 
-      if (e) {
-        this.state.pointer = toPoint(e, this);
+      // Set pointer here to always expose latest pointer to invokeRenderer
+      this.state.pointer = toPoint(event, this);
+
+      let fNodes;
+      if (Array.isArray(nodes)) {
+        fNodes = this.props.filter(nodes);
+      } else {
+        fNodes = this.props.filter(this.chart.shapesAt({
+          x: this.state.pointer.cx,
+          y: this.state.pointer.cy
+        }));
       }
 
-      const nodes = this.props.filter(shapes);
-      this.state.activeNodes = nodes;
+      if (this.props.isEqual(this.state.activeNodes, fNodes)) {
+        return;
+      }
 
-      if (nodes.length) {
+      this.dispatcher.clear();
+      this.state.activeNodes = fNodes;
+
+      if (this.state.activeNodes.length) {
         this.dispatcher.invoke(
-          () => this.invokeRenderer(nodes),
+          () => this.invokeRenderer(this.state.activeNodes),
           duration,
           delay
         );
