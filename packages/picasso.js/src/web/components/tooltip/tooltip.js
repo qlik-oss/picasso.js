@@ -9,8 +9,8 @@ import {
 } from './instance-handler';
 
 /**
- * Tooltip default settings
  * @typedef {object}
+ * @alias component--tooltip.settings
  */
 const DEFAULT_SETTINGS = {
   /**
@@ -24,12 +24,9 @@ const DEFAULT_SETTINGS = {
    */
   delay: 500,
   /**
-   * Reduce incoming nodes to only a set of applicable nodes.
-   * Is called as a part of the `show` event.
+   * Reduce incoming nodes to only a set of applicable nodes. Is called as a part of the `show` event.
    * @type {function=}
    * @returns {array} An array of nodes
-   * @example
-   * (nodes) => nodes.filter(node.key === '<target-component-key>')
    */
   filter: nodes => nodes.filter(node => node.data), // Filter SceneNodes
   /**
@@ -39,80 +36,86 @@ const DEFAULT_SETTINGS = {
    */
   extract: ctx => ctx.node.data.value,
   /**
-   * Content generator. Extracted data is available in the `data` property, where each value in the area
-   * is the extracted datum from a node.
+   * Content generator. Extracted data is available in the `data` property, where each value in the area is the extracted datum from a node.
    * @type {function=}
    * @returns {object[]} Array of h objects
    */
   content: ({ h, data }) => data.map(datum => h('div', {}, datum)),
   /**
-   * Comparison function, if evaluted to true, the incoming nodes are ignored and any active tooltip
-   * remains. If evaluated to false, any active tooltip is cleared and a new tooltip is d
-   * 
-   * Compare condition. A function that define if the tooltip event `over` should be debounced or not.
-   * Two parameters are passed to the function, the first is a set of nodes, representing active
-   * nodes displayed in the tooltip, and the second parameter is the incoming set of nodes.
+   * Comparison function, if evaluted to true, the incoming nodes in the `show` event are ignored. If evaluated to false, any active tooltip is cleared and a new tooltip is queued.
    *
-   * Typically if the two set of nodes are the same, it should be evaluted to true.
+   * The function gets two parameters, the first is the currently active set of nodes, if any, and the second is the incoming set of nodes. By default the two set of nodes are considered equal if their data attributes are the same.
    * @type {function=}
-   * @returns {boolean} True if the event should be debounced, false otherwise
+   * @returns {boolean}
    */
   isEqual: (prev, curr) => prev.length &&
     prev.length === curr.length &&
     prev.every((p, i) => curr[i] && JSON.stringify(p.data) === JSON.stringify(curr[i].data)),
   /**
-   * Placement strategy to use. Can be a custom function return a object with placement properties.
-   * Available types: pointer | bounds | slice
-   * Available docking: left | right | top | bottom | auto
-   * @type {object=}
-   * @example
-   * As a custom generator function:
-   * placement: {
-   *  fn: ctx => ({ style: { left: 123, top: 123, }, dock: 'left' })
-   * }
-   *
-   * As a function:
-   * placement: ctx => { type: <condition> ? 'pointer' : 'bounds' }
-   *
-   * As a string:
-   * placement: 'pointer'
+   * @typedef {object=}
    */
   placement: {
+    /**
+     * Available types: [pointer | bounds | slice]
+     * @type {string=}
+     */
     type: 'pointer',
+    /**
+     * Docking position of the tooltip. Available positions: [left | right | top | bottom | auto]
+     * @type {string=}
+     */
     dock: 'auto',
+    /**
+     * Distance from the content area to the tooltip position, in px.
+     * @type {number=}
+     */
     offset: 8,
-    area: 'viewport' // Specify the area which placement strategies should limit themself to [viewport | target]
+    /**
+     * Specify the limiting area, where target is the component area unless the appendTo property is set, in which case it referes to the appendTo element. Viewport is the browser viewport.
+     *
+     * Available options are: [viewport | target]
+     * @type {number=}
+     */
+    area: 'viewport'
   },
+  /**
+  * @type {object<string, boolean>=}
+  */
   tooltipClass: {},
+  /**
+  * @type {object<string, boolean>=}
+  */
   contentClass: {},
+  /**
+  * @type {object<string, boolean>=}
+  */
   arrowClass: {},
+  /**
+   * Content direction [ltr | rtl]
+   * @type {string=}
+   */
   direction: 'ltr',
   /**
-   * Explicitly set a target element.
-   * This allows the tooltip to attach itself outside the picasso container.
+   * Explicitly set a target element. This allows the tooltip to attach itself outside the picasso container.
    * @type {HTMLElement=}
-   * @example
-   * appendTo: document.querySelector('#tooltip');
    */
-  appendTo: null,
+  appendTo: undefined,
   /**
    * Event listener. Called when the tooltip is displayed.
    * @type {function=}
-   * @example
-   * onDisplayed: ({ element }) => { debugger; }
    */
-  onDisplayed: null,
+  onDisplayed: undefined,
   /**
    * Event listener. Called when the tooltip is hidden.
    * @type {function=}
    */
-  onHidden: null
+  onHidden: undefined
 };
 
 const DEFAULT_STYLE = {
   tooltip: {},
   content: {
-    backgroundColor: '$gray-35',
+    backgroundColor: '$gray-25',
     color: '$font-color--inverted',
     fontFamily: '$font-family',
     fontSize: '$font-size',
@@ -126,7 +129,7 @@ const DEFAULT_STYLE = {
     width: '0px',
     height: '0px',
     borderStyle: 'solid',
-    color: '$gray-35',
+    color: '$gray-25',
     opacity: 0.9
   },
   'arrow-bottom': {

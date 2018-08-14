@@ -8,6 +8,14 @@ function resolveClasses(props, opts) {
   };
 }
 
+function resolveContent(h, data, style, props) {
+  return props.content({
+    h,
+    style,
+    data
+  });
+}
+
 export default function render(data, placement, {
   renderer,
   style,
@@ -15,12 +23,8 @@ export default function render(data, placement, {
   h
 }) {
   const classes = resolveClasses(props, placement);
-  const content = props.content({
-    h,
-    style,
-    data,
-    props
-  });
+  const content = resolveContent(h, data, style, props);
+
   const contentNode = h('div', {
     style: extend({}, style.content),
     class: classes.content
