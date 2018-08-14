@@ -27,14 +27,14 @@ export default function render(data, placement, {
 
   const contentNode = h('div', {
     style: extend({}, style.content),
-    class: classes.content
+    class: extend({ 'pic-tooltip-content': true }, classes.content)
   }, content);
 
   const arrowNode = h(
     'div',
     {
       style: extend({}, style.arrow, style[`arrow-${placement.dock}`], placement.computedArrowStyle),
-      class: classes.arrow
+      class: extend({ 'pic-tooltip-arrow': true }, classes.arrow)
     },
     '' // TODO allow custom arrow content
   );
@@ -49,7 +49,7 @@ export default function render(data, placement, {
     'div',
     {
       style: extend(tooltipDefaultStyle, placement.computedTooltipStyle),
-      class: classes.tooltip,
+      class: extend({ 'pic-tooltip': true }, classes.tooltip),
       hook: {
         insert: (vnode) => {
           element = vnode.elm;
