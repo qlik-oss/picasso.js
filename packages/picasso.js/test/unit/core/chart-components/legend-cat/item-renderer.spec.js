@@ -36,6 +36,7 @@ describe('legend-item-renderer', () => {
             data: { label: 'wohoo' },
             fontSize: '11px',
             text: 'wohoo',
+            title: 'wohoo',
             type: 'text'
           },
           bounds: { width: 22, height: 20 }

@@ -41,6 +41,10 @@ const maintainer = (element, item) => {
         val = item.attrs[attr];
       }
       element.setAttribute('dy', val + dy);
+    } else if (item.type === 'text' && attr === 'title' && item.attrs.title) {
+      const t = element.ownerDocument.createElementNS(svgNs, 'title');
+      t.textContent = item.attrs.title;
+      element.appendChild(t);
     } else {
       element.setAttribute(attr, item.attrs[attr]);
     }

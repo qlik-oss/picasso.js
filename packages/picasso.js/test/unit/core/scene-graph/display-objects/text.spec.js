@@ -40,6 +40,7 @@ describe('Text', () => {
     it('should accept arguments', () => {
       node = createText({
         text: 'testing',
+        title: 'my title',
         x: 1,
         y: 2,
         dx: 3,
@@ -47,6 +48,7 @@ describe('Text', () => {
       });
       expect(node).to.be.an.instanceof(Text);
       expect(node.attrs.text).to.equal('testing');
+      expect(node.attrs.title).to.equal('my title');
       expect(node.attrs.x).to.equal(1);
       expect(node.attrs.y).to.equal(2);
       expect(node.attrs.dx).to.equal(3);
