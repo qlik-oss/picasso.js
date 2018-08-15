@@ -187,4 +187,36 @@ describe('Tooltip', () => {
       expect(hookSpy).to.not.have.been.called;
     });
   });
+
+  describe('appendTo', () => {
+    let container;
+
+    beforeEach(() => {
+      container = {
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 100,
+        scaleRatio: { x: 0, y: 0 }
+      };
+
+      componentFixture.mocks().renderer.size = sandbox.stub().returns(container);
+    });
+
+    it('should apply appendTo on mounted', () => {
+      const stub = sandbox.stub().returns({ getBoundingClientRect: () => container });
+      instance.def.props.appendTo = stub;
+      componentFixture.simulateRender({ inner: container, outer: container });
+
+      expect(stub).to.have.been.called;
+    });
+
+    it('should apply appendTo on updated', () => {
+      const stub = sandbox.stub().returns({ getBoundingClientRect: () => container });
+      config.settings.appendTo = stub;
+      componentFixture.simulateUpdate(config);
+
+      expect(stub).to.have.been.called;
+    });
+  });
 });

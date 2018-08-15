@@ -54,7 +54,8 @@ export default function componentFactoryFixture() {
         height: 5
       }),
       element: () => container,
-      clear: () => {}
+      clear: () => {},
+      destroy: () => {}
     };
 
     mediatorMock = {
