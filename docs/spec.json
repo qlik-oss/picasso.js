@@ -3,7 +3,7 @@
   "info": {
     "name": "picasso.js",
     "description": "A charting library streamlined for building visualizations for the Qlik Sense Analytics platform.",
-    "version": "0.10.0",
+    "version": "0.10.4",
     "license": "MIT"
   },
   "entries": {
@@ -5012,6 +5012,173 @@
           }
         }
       }
+    },
+    "component--tooltip": {
+      "kind": "object",
+      "entries": {
+        "type": {
+          "defaultValue": "tooltip",
+          "type": "string"
+        },
+        "settings": {
+          "kind": "object",
+          "entries": {
+            "duration": {
+              "description": "How long the tooltip is visible, in milliseconds",
+              "optional": true,
+              "defaultValue": 8000,
+              "type": "number"
+            },
+            "delay": {
+              "description": "Delay before the tooltip is rendered, in milliseconds",
+              "optional": true,
+              "defaultValue": 500,
+              "type": "number"
+            },
+            "filter": {
+              "description": "Reduce incoming nodes to only a set of applicable nodes. Is called as a part of the `show` event.",
+              "optional": true,
+              "kind": "function",
+              "params": [],
+              "returns": {
+                "description": "An array of nodes",
+                "kind": "array",
+                "items": {
+                  "type": "any"
+                }
+              }
+            },
+            "extract": {
+              "description": "Extract data from a node.",
+              "optional": true,
+              "kind": "function",
+              "params": [],
+              "returns": {
+                "description": "An array of data",
+                "type": "object"
+              }
+            },
+            "content": {
+              "description": "Content generator. Extracted data is available in the `data` property, where each value in the area is the extracted datum from a node.",
+              "optional": true,
+              "kind": "function",
+              "params": [],
+              "returns": {
+                "description": "Array of h objects",
+                "kind": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            },
+            "isEqual": {
+              "description": "Comparison function. If evaluted to true, the incoming nodes in the `show` event are ignored. If evaluated to false, any active tooltip is cleared and a new tooltip is queued.\n\nThe function gets two parameters, the first is the currently active set of nodes, if any, and the second is the incoming set of nodes. By default the two set of nodes are considered equal if their data attributes are the same.",
+              "optional": true,
+              "kind": "function",
+              "params": [],
+              "returns": {
+                "type": "boolean"
+              }
+            },
+            "placement": {
+              "optional": true,
+              "kind": "object",
+              "entries": {
+                "type": {
+                  "description": "Available types: [pointer | bounds | slice]",
+                  "optional": true,
+                  "defaultValue": "pointer",
+                  "type": "string"
+                },
+                "dock": {
+                  "description": "Docking position of the tooltip. Available positions: [left | right | top | bottom | auto]",
+                  "optional": true,
+                  "defaultValue": "auto",
+                  "type": "string"
+                },
+                "offset": {
+                  "description": "Distance from the content area to the tooltip position, in px.",
+                  "optional": true,
+                  "defaultValue": 8,
+                  "type": "number"
+                },
+                "area": {
+                  "description": "Specify the limiting area, where target is the component area unless the appendTo property is set, in which case it referes to the appendTo element. Viewport is the browser viewport.\n\nAvailable options are: [viewport | target]",
+                  "optional": true,
+                  "defaultValue": "viewport",
+                  "type": "number"
+                }
+              }
+            },
+            "tooltipClass": {
+              "description": "Set tooltip class.",
+              "optional": true,
+              "type": "object<string, boolean>"
+            },
+            "contentClass": {
+              "description": "Set content class.",
+              "optional": true,
+              "type": "object<string, boolean>"
+            },
+            "arrowClass": {
+              "description": "Set arrow class.",
+              "optional": true,
+              "type": "object<string, boolean>"
+            },
+            "direction": {
+              "description": "Content direction [ltr | rtl]",
+              "optional": true,
+              "defaultValue": "ltr",
+              "type": "string"
+            },
+            "appendTo": {
+              "description": "Explicitly set a target element. This allows the tooltip to attach itself outside the picasso container.",
+              "optional": true,
+              "type": "HTMLElement"
+            },
+            "beforeShow": {
+              "description": "Component lifecycle hook. Called before the tooltip is displayed.",
+              "optional": true,
+              "type": "function"
+            },
+            "afterShow": {
+              "description": "Component lifecycle hook. Called after the tooltip have been displayed.",
+              "optional": true,
+              "type": "function"
+            },
+            "beforeHide": {
+              "description": "Component lifecycle hook. Called before the tooltip is hidden.",
+              "optional": true,
+              "type": "function"
+            },
+            "onHide": {
+              "description": "Component lifecycle hook. Called when the toolip is hidden. By default this deletes the tooltip element.",
+              "optional": true,
+              "type": "function"
+            },
+            "afterHide": {
+              "description": "Component lifecycle hook. Called after the tooltip is hidden.",
+              "optional": true,
+              "type": "function"
+            }
+          }
+        }
+      }
+    },
+    "calcOffset": {
+      "kind": "function",
+      "params": [
+        {
+          "name": "vx",
+          "description": "X-coordinate realative to the area",
+          "type": "vx"
+        },
+        {
+          "name": "vy",
+          "description": "Y-coordinate realative to the area",
+          "type": "vy"
+        }
+      ]
     },
     "canvasRendererFactory": {
       "description": "Create a new canvas renderer",

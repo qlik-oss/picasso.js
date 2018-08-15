@@ -26,6 +26,7 @@ picasso.chart({
     }],
     components: [
       {
+        key: '<tooltip-key>',
         type: 'tooltip'
       }
     ]
@@ -196,3 +197,49 @@ When the built in placement strategies are not sufficient, it possible to create
 ## API Reference
 
 {{>struct definitions.component--tooltip}}
+
+### Style
+
+```js
+{
+  tooltip: {},
+  content: {
+    backgroundColor: '$gray-25',
+    color: '$font-color--inverted',
+    fontFamily: '$font-family',
+    fontSize: '$font-size',
+    lineHeight: '$line-height',
+    borderRadius: '4px',
+    padding: '8px',
+    opacity: 0.9
+  },
+  arrow: {
+    position: 'absolute',
+    width: '0px',
+    height: '0px',
+    borderStyle: 'solid',
+    color: '$gray-25',
+    opacity: 0.9
+  },
+  'arrow-bottom': {
+    borderTopColor: 'transparent',
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent'
+  },
+  'arrow-top': {
+    borderBottomColor: 'transparent',
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent'
+  },
+  'arrow-right': {
+    borderTopColor: 'transparent',
+    borderLeftColor: 'transparent',
+    borderBottomColor: 'transparent'
+  },
+  'arrow-left': {
+    borderTopColor: 'transparent',
+    borderBottomColor: 'transparent',
+    borderRightColor: 'transparent'
+  }
+}
+```
