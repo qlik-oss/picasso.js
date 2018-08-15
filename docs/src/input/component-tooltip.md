@@ -2,7 +2,7 @@
 title: Tooltip
 ---
 
-A customizable tooltip component that can display complementary information. Typically used when moving the mouse curser over a node or selecting one.
+A customizable tooltip component that can display complementary information. Typically used when moving the mouse curser over a node or selecting a node.
 
 ![Tooltip](/img/tooltip.png)
 
@@ -71,7 +71,7 @@ As the main purpose of a tooltip is often to displayed complementary data when h
 
 ### Extracting data
 
-The `extract` setting is function that is executed for each node and is expected to return a data representation. By default the extracted data is a string with the value of the node. But could be any data structure, such as an object or an array of objects.
+The `extract` setting is executed for each node and is expected to return a data representation. By default the extracted data is a string with the value of the node. But could be any data structure, such as an object or an array of objects.
 
 #### Default
 
@@ -81,7 +81,7 @@ const extract = ({ node }) => node.data.value;
 
 ### Generating content
 
-The `content` setting is a function responsible for generating virtual nodes using the HyperScript API and is expected to return an array of virtual nodes.
+The `content` setting is responsible for generating virtual nodes using the HyperScript API and is expected to return an array of virtual nodes.
 
 #### Default
 
@@ -122,17 +122,10 @@ But sometimes we want to give the value some context, for example by labeling it
 
 The placement strategy defines how the tooltip is positioned in relation to a set of nodes or a node. The built-in strategies all have a auto docking feature, such that if the tooltip doesn't fit inside its designated area, the docking position may be adjusted to a position where it does fit. Note that there may still be scenarioes where the tooltip doesn't fit, for example when the designated area just cannot fit the tooltip at all.
 
-### `pointer`
-
-The `pointer` strategy is the default and use the current pointer position to place the tooltip.
-
-### `bounds`
-
-The `bounds` strategy use the bounding rectangle of the first node. Note the depending on the type of shape, the position of the tooltip may indicate that it's not over the visual area of the shape.
-
-### `slice`
-
-The `slice` strategy is built to work together with the `pie` component, such that the tooltip is placed at the arc of a slice.
+There are 3 available strategies:
+* `pointer` - is the default and use the current pointer position to place the tooltip.
+* `bounds` - use the bounding rectangle of the first node. Note the depending on the type of shape, the position of the tooltip may indicate that it's not over the visual area of the shape.
+* `slice` - is built to work together with the `pie` component, such that the tooltip is placed at the arc of a slice.
 
 ### Example
 
@@ -170,6 +163,8 @@ The `slice` strategy is built to work together with the `pie` component, such th
 ```
 
 ### Example - Custom placement function
+
+When the built in placement strategies are not sufficient, it possible to create your own placement function.
 
 ```js
 {
