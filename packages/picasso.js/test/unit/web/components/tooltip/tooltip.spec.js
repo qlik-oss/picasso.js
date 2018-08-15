@@ -1,3 +1,4 @@
+import extend from 'extend';
 import tooltip from '../../../../../src/web/components/tooltip/tooltip';
 
 function componentMock() {
@@ -29,6 +30,7 @@ describe('Tooltip', () => {
   let invokeSpy;
   let dispatcherSpy;
   let cMock;
+  let isEql;
 
   beforeEach(() => {
     renderSpy = sinon.spy();
@@ -38,6 +40,7 @@ describe('Tooltip', () => {
       clear: sinon.spy()
     };
     cMock = chartMock();
+    isEql = sinon.stub().returns(false);
 
     context = {
       chart: cMock,
@@ -72,12 +75,12 @@ describe('Tooltip', () => {
       },
       props: {
         filter: nodes => nodes,
-        isEqual: () => false
+        isEqual: isEql
       },
       rect: { x: 0, y: 0 }
     };
 
-    instance = Object.assign({}, tooltip, context);
+    instance = extend(true, {}, tooltip, context);
   });
 
   describe('events', () => {
@@ -100,11 +103,7 @@ describe('Tooltip', () => {
       });
 
       it('should not re-render tooltip if over same nodes', () => {
-        const nodes = [
-          { data: 123 }
-        ];
-        cMock.shapesAt.returns(nodes);
-        instance.state.activeNodes = nodes;
+        isEql.returns(true);
         instance.on.show({});
 
         expect(dispatcherSpy.clear).to.not.have.been.called;
@@ -115,12 +114,10 @@ describe('Tooltip', () => {
         cMock.shapesAt.returns([]);
         instance.on.show({});
 
-        expect(dispatcherSpy.clear).to.not.have.been.called;
         expect(invokeSpy).to.not.have.been.called;
 
         instance.on.show({}, { nodes: [] });
 
-        expect(dispatcherSpy.clear).to.not.have.been.called;
         expect(invokeSpy).to.not.have.been.called;
       });
     });

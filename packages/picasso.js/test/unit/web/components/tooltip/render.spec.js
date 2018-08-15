@@ -72,8 +72,7 @@ describe('render', () => {
     expect(context.props.content).to.have.been.calledWith({
       h: context.h,
       style: context.style,
-      data,
-      props: context.props
+      data
     });
 
     expect(context.renderer.render).to.have.been.calledWith(['CALLED']);
