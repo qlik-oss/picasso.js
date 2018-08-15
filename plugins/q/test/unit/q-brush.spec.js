@@ -199,6 +199,109 @@ describe('q-brush', () => {
     });
   });
 
+  describe('selectPivotCells', () => {
+    beforeEach(() => {
+      brush.brushes.returns([{
+        id: 'layers/0/qHyperCube/qDimensionInfo/2',
+        type: 'value',
+        brush: {
+          values: () => [
+            {
+              qCol: 2,
+              qRow: 3,
+              qType: 'L'
+            },
+            {
+              qCol: 2,
+              qRow: 2,
+              qType: 'L'
+            },
+            {
+              qCol: 2,
+              qRow: 7,
+              qType: 'L'
+            }
+          ]
+        }
+      }, {
+        id: '/layers/0/qHyperCube/qDimensionInfo/1',
+        type: 'value',
+        brush: {
+          values: () => [
+            {
+              qCol: 1,
+              qRow: 1,
+              qType: 'L'
+            },
+            {
+              qCol: 1,
+              qRow: 6,
+              qType: 'L'
+            },
+            {
+              qCol: 1,
+              qRow: 4,
+              qType: 'L'
+            }
+          ]
+        }
+      }]);
+    });
+
+    it('should have method="selectPivotCells"', () => {
+      const selections = qBrush(brush, { byPivotCells: true });
+      expect(selections[0].method).to.equal('selectPivotCells');
+    });
+
+    it('should have valid params when primary is not specified', () => {
+      const selections = qBrush(brush, { byPivotCells: true });
+      expect(selections[0].params).to.eql([
+        '/layers/0/qHyperCubeDef',
+        [
+          {
+            qCol: 2,
+            qRow: 3,
+            qType: 'L'
+          },
+          {
+            qCol: 2,
+            qRow: 2,
+            qType: 'L'
+          },
+          {
+            qCol: 2,
+            qRow: 7,
+            qType: 'L'
+          }
+        ]
+      ]);
+    });
+
+    it('should have valid params when primary is specified', () => {
+      const selections = qBrush(brush, { byPivotCells: true, primarySource: '/layers/0/qHyperCube/qDimensionInfo/1' });
+      expect(selections[0].params).to.eql([
+        '/layers/0/qHyperCubeDef',
+        [
+          {
+            qCol: 1,
+            qRow: 1,
+            qType: 'L'
+          },
+          {
+            qCol: 1,
+            qRow: 6,
+            qType: 'L'
+          },
+          {
+            qCol: 1,
+            qRow: 4,
+            qType: 'L'
+          }
+        ]
+      ]);
+    });
+  });
+
   describe('path extraction', () => {
     it('should map hypercube layout value to property path', () => {
       let v = extractFieldFromId('/qHyperCube');

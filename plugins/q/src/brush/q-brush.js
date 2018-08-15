@@ -116,12 +116,14 @@ export function extractFieldFromId(id, layout) {
  * @param {brush} brush A brush instance
  * @param {object} [opts]
  * @param {boolean} [opts.byCells=false] Whether to prefer selection by row index.
+ * @param {boolean} [opts.byPivotCells=false] Whether to prefer selection by top or left index.
  * @param {string} [opts.primarySource] Field source to extract row indices from. If not specified, indices from first source are used.
  * @param {object} [layout] QIX data layout. Needed only when brushing on attribute expressions, to be able to calculate the measure index.
  * @return {object[]} An array of relevant selections
  */
 export default function qBrush(brush, opts = {}, layout) {
   const byCells = opts.byCells;
+  const byPivotCells = opts.byPivotCells;
   const primarySource = opts.primarySource;
   const selections = [];
   const methods = {};
@@ -209,6 +211,18 @@ export default function qBrush(brush, opts = {}, layout) {
               .filter(v => !isNaN(v));
             hasValues = !!methods.selectHyperCubeCells.values.length;
           }
+        } else if (byPivotCells) {
+          if (!methods.selectPivotCells) {
+            methods.selectPivotCells = {
+              path: info.path,
+              cells: []
+            };
+          }
+
+          if (b.id === primarySource || (!primarySource && methods.selectPivotCells.cells.length === 0)) {
+            methods.selectPivotCells.cells = b.brush.values();
+            hasValues = !!methods.selectPivotCells.cells.length;
+          }
         } else {
           const values = b.brush.values().map(s => +s).filter(v => !isNaN(v));
           hasValues = !!values.length;
@@ -249,6 +263,16 @@ export default function qBrush(brush, opts = {}, layout) {
         methods.selectHyperCubeCells.path,
         methods.selectHyperCubeCells.values,
         methods.selectHyperCubeCells.cols
+      ]
+    });
+  }
+
+  if (methods.selectPivotCells) {
+    selections.push({
+      method: 'selectPivotCells',
+      params: [
+        methods.selectPivotCells.path,
+        methods.selectPivotCells.cells
       ]
     });
   }
