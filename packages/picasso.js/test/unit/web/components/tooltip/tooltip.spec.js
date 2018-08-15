@@ -1,5 +1,6 @@
 import extend from 'extend';
 import tooltip from '../../../../../src/web/components/tooltip/tooltip';
+import componentFactoryFixture from '../../../../helpers/component-factory-fixture';
 
 function componentMock() {
   return {
@@ -25,128 +26,165 @@ function chartMock() {
 
 describe('Tooltip', () => {
   let instance;
-  let context;
-  let renderSpy;
   let invokeSpy;
   let dispatcherSpy;
   let cMock;
   let isEql;
+  let componentFixture;
+  let sandbox;
+  let config;
+  let clock;
 
   beforeEach(() => {
-    renderSpy = sinon.spy();
-    invokeSpy = sinon.spy();
-    dispatcherSpy = {
-      invoke: a => a(),
-      clear: sinon.spy()
-    };
-    cMock = chartMock();
-    isEql = sinon.stub().returns(false);
+    componentFixture = componentFactoryFixture();
+    sandbox = componentFixture.sandbox();
+    cMock = extend(componentFixture.mocks().chart, chartMock());
+    clock = sandbox.useFakeTimers();
+    isEql = sandbox.stub().returns(false);
 
-    context = {
-      chart: cMock,
-      renderer: {
-        render: renderSpy
-      },
-      invokeRenderer: invokeSpy,
-      dispatcher: dispatcherSpy,
-      state: {
-        activeNodes: [],
-        targetElement: {
-          getBoundingClientRect: () => ({
-            x: 0,
-            y: 0,
-            width: 100,
-            height: 100
-          })
-        },
-        targetBounds: {
-          x: 0,
-          y: 0,
-          width: 100,
-          height: 100
-        },
-        chartBounds: {
-          x: 0,
-          y: 0,
-          width: 100,
-          height: 100
-        },
-        prevent: false
-      },
-      props: {
+    config = {
+      settings: {
         filter: nodes => nodes,
         isEqual: isEql
-      },
-      rect: { x: 0, y: 0 }
+      }
     };
 
-    instance = extend(true, {}, tooltip, context);
+    instance = componentFixture.simulateCreate(tooltip, config);
+    componentFixture.simulateRender({
+      inner: {
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 100
+      }
+    }); // To attach h to context
+
+    invokeSpy = sandbox.stub(instance.def, 'invokeRenderer');
   });
 
   describe('events', () => {
     describe('show', () => {
-      beforeEach(() => {
-        instance.on.show = instance.on.show.bind(instance);
-      });
-
       it('should do shape loookup and show tooltip', () => {
         cMock.shapesAt.returns([0, 1, 2]);
-        instance.on.show({});
+        instance.def.show({});
+        clock.tick(500);
 
         expect(invokeSpy).to.have.been.calledWith([0, 1, 2]);
       });
 
       it('should show tooltip with provided nodes', () => {
-        instance.on.show({}, { nodes: [0, 1, 2] });
+        instance.def.show({}, { nodes: [0, 1, 2] });
+        clock.tick(500);
 
         expect(invokeSpy).to.have.been.calledWith([0, 1, 2]);
       });
 
       it('should not re-render tooltip if over same nodes', () => {
         isEql.returns(true);
-        instance.on.show({});
+        cMock.shapesAt.returns([0, 1, 2]);
+        instance.def.show({});
 
-        expect(dispatcherSpy.clear).to.not.have.been.called;
         expect(invokeSpy).to.not.have.been.called;
+        expect(isEql).to.have.been.called;
       });
 
       it('should not show tooltip if there are no matching nodes', () => {
         cMock.shapesAt.returns([]);
-        instance.on.show({});
+        instance.def.show({});
 
         expect(invokeSpy).to.not.have.been.called;
 
-        instance.on.show({}, { nodes: [] });
+        instance.def.show({}, { nodes: [] });
 
         expect(invokeSpy).to.not.have.been.called;
       });
     });
 
     describe('hide', () => {
-      beforeEach(() => {
-        instance.on.hide = instance.on.hide.bind(instance);
-      });
-
       it('should hide tooltip', () => {
-        instance.on.hide();
-        expect(dispatcherSpy.clear).to.have.been.called;
+        dispatcherSpy = sandbox.spy(instance.def.dispatcher, 'clear');
+        instance.def.hide();
+
+        expect(dispatcherSpy).to.have.been.called;
       });
     });
 
     describe('prevent', () => {
-      beforeEach(() => {
-        instance.on.show = instance.on.show.bind(instance);
-        instance.on.prevent = instance.on.prevent.bind(instance);
-      });
-
       it('should prevent `show` from being invoked', () => {
-        instance.props.filter = sinon.stub().returns(true);
-        instance.on.prevent(true);
-        cMock.shapesAt.returns([0, 1, 2]);
-        instance.on.show({});
+        instance.def.prevent(true);
+        instance.def.show({});
 
-        expect(instance.props.filter).to.not.have.been.called;
+        expect(isEql).to.not.have.been.called;
       });
+    });
+  });
+
+  describe('lifecycle hooks', () => {
+    let hookSpy;
+
+    beforeEach(() => {
+      hookSpy = sandbox.spy();
+      cMock.shapesAt.returns([0, 1, 2]);
+    });
+
+    it('should call beforeShow', () => {
+      instance.def.props.beforeShow = hookSpy;
+      instance.def.show({});
+
+      expect(hookSpy).to.have.been.called;
+    });
+
+    it('should call afterShow', () => {
+      instance.def.props.afterShow = hookSpy;
+      instance.def.show({});
+      clock.tick(500);
+
+      expect(hookSpy).to.have.been.called;
+    });
+
+    it('should call beforeHide', () => {
+      instance.def.props.afterShow = hookSpy;
+      instance.def.show({});
+      clock.tick(8500);
+
+      expect(hookSpy).to.have.been.called;
+    });
+
+    it('should not call beforeHide if tooltip is not displayed', () => {
+      instance.def.props.afterShow = hookSpy;
+      instance.def.hide();
+
+      expect(hookSpy).to.not.have.been.called;
+    });
+
+    it('should call onHide', () => {
+      instance.def.props.onHide = hookSpy;
+      instance.def.show({});
+      clock.tick(8500);
+
+      expect(hookSpy).to.have.been.called;
+    });
+
+    it('should not call onHide if tooltip is not displayed', () => {
+      instance.def.props.onHide = hookSpy;
+      instance.def.hide();
+
+      expect(hookSpy).to.not.have.been.called;
+    });
+
+    it('should call afterHide', () => {
+      instance.def.props.afterHide = hookSpy;
+      instance.def.show({});
+      clock.tick(8500);
+
+      expect(hookSpy).to.have.been.called;
+    });
+
+    it('should not call afterHide if tooltip is not displayed', () => {
+      instance.def.props.afterHide = hookSpy;
+      instance.def.hide();
+
+      expect(hookSpy).to.not.have.been.called;
     });
   });
 });

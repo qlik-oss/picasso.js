@@ -53,7 +53,8 @@ export default function componentFactoryFixture() {
         width: text.toString().length,
         height: 5
       }),
-      element: () => container
+      element: () => container,
+      clear: () => {}
     };
 
     mediatorMock = {

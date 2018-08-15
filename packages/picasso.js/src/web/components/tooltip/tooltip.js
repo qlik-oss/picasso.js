@@ -1,3 +1,4 @@
+import extend from 'extend';
 import extractor from './extractor';
 import render from './render';
 import timeSpanDispatcher from './timespan-dispatcher';
@@ -28,7 +29,7 @@ const DEFAULT_SETTINGS = {
    * @type {function=}
    * @returns {array} An array of nodes
    */
-  filter: nodes => nodes.filter(node => node.data), // Filter SceneNodes
+  filter: nodes => nodes.filter(node => typeof node.data === 'object' && typeof node.data.value !== 'undefined'),
   /**
    * Extract data from a node.
    * @type {function=}
@@ -42,7 +43,7 @@ const DEFAULT_SETTINGS = {
    */
   content: ({ h, data }) => data.map(datum => h('div', {}, datum)),
   /**
-   * Comparison function, if evaluted to true, the incoming nodes in the `show` event are ignored. If evaluated to false, any active tooltip is cleared and a new tooltip is queued.
+   * Comparison function. If evaluted to true, the incoming nodes in the `show` event are ignored. If evaluated to false, any active tooltip is cleared and a new tooltip is queued.
    *
    * The function gets two parameters, the first is the currently active set of nodes, if any, and the second is the incoming set of nodes. By default the two set of nodes are considered equal if their data attributes are the same.
    * @type {function=}
@@ -79,14 +80,17 @@ const DEFAULT_SETTINGS = {
     area: 'viewport'
   },
   /**
+   * Set tooltip class.
   * @type {object<string, boolean>=}
   */
   tooltipClass: {},
   /**
+   * Set content class.
   * @type {object<string, boolean>=}
   */
   contentClass: {},
   /**
+   * Set arrow class.
   * @type {object<string, boolean>=}
   */
   arrowClass: {},
@@ -101,15 +105,30 @@ const DEFAULT_SETTINGS = {
    */
   appendTo: undefined,
   /**
-   * Event listener. Called when the tooltip is displayed.
+   * Component lifecycle hook. Called before the tooltip is displayed.
    * @type {function=}
    */
-  onDisplayed: undefined,
+  beforeShow: undefined,
   /**
-   * Event listener. Called when the tooltip is hidden.
+   * Component lifecycle hook. Called after the tooltip have been displayed.
    * @type {function=}
    */
-  onHidden: undefined
+  afterShow: undefined,
+  /**
+   * Component lifecycle hook. Called before the tooltip is hidden.
+   * @type {function=}
+   */
+  beforeHide: undefined,
+  /**
+   * Component lifecycle hook. Called when the toolip is hidden. By default this deletes the tooltip element.
+   * @type {function=}
+   */
+  onHide: undefined,
+  /**
+   * Component lifecycle hook. Called after the tooltip is hidden.
+   * @type {function=}
+   */
+  afterHide: undefined
 };
 
 const DEFAULT_STYLE = {
@@ -198,46 +217,55 @@ const component = {
   renderer: 'dom',
   on: {
     hide() {
-      this.dispatcher.clear();
-      this.state.activeNodes = [];
-      this.state.pointer = {};
+      this.hide();
     },
-    show(event, { nodes, duration, delay } = {}) {
-      if (this.state.prevent) {
-        return;
-      }
-
-      // Set pointer here to always expose latest pointer to invokeRenderer
-      this.state.pointer = toPoint(event, this);
-
-      let fNodes;
-      if (Array.isArray(nodes)) {
-        fNodes = this.props.filter(nodes);
-      } else {
-        fNodes = this.props.filter(this.chart.shapesAt({
-          x: this.state.pointer.cx,
-          y: this.state.pointer.cy
-        }));
-      }
-
-      if (this.props.isEqual(this.state.activeNodes, fNodes)) {
-        return;
-      }
-
-      this.dispatcher.clear();
-      this.state.activeNodes = fNodes;
-
-      if (this.state.activeNodes.length) {
-        this.dispatcher.invoke(
-          () => this.invokeRenderer(this.state.activeNodes),
-          duration,
-          delay
-        );
-      }
+    show(event, opts = {}) {
+      this.show(event, opts);
     },
     prevent(p) {
-      this.state.prevent = !!p;
+      this.prevent(p);
     }
+  },
+  hide() {
+    this.dispatcher.clear();
+    this.state.activeNodes = [];
+    this.state.pointer = {};
+  },
+  show(event, { nodes, duration, delay } = {}) {
+    if (this.state.prevent) {
+      return;
+    }
+
+    // Set pointer here to always expose latest pointer to invokeRenderer
+    this.state.pointer = toPoint(event, this);
+
+    let fNodes;
+    if (Array.isArray(nodes)) {
+      fNodes = this.props.filter(nodes);
+    } else {
+      fNodes = this.props.filter(this.chart.shapesAt({
+        x: this.state.pointer.cx,
+        y: this.state.pointer.cy
+      }));
+    }
+
+    if (this.props.isEqual(this.state.activeNodes, fNodes)) {
+      return;
+    }
+
+    this.dispatcher.clear();
+    this.state.activeNodes = fNodes;
+
+    if (this.state.activeNodes.length) {
+      this.dispatcher.invoke(
+        () => this.invokeRenderer(this.state.activeNodes),
+        duration,
+        delay
+      );
+    }
+  },
+  prevent(p) {
+    this.state.prevent = !!p;
   },
   init(settings) {
     this.state = {
@@ -257,26 +285,46 @@ const component = {
       // Cancel only if the active is another instance
       cancelActive(instanceId);
       setActive(instanceId);
-    });
-    this.dispatcher.on(['cancelled', 'fulfilled'], () => {
-      this.renderer.render([]); // Hide tooltip
-      removeActive(instanceId);
 
-      if (typeof this.props.onHidden === 'function') {
-        this.props.onHidden({
+      if (typeof this.props.beforeShow === 'function') {
+        this.props.beforeShow.call(undefined, {
           resources: {
             formatter: this.chart.formatter,
             scale: this.chart.scale
           }
         });
       }
+    });
 
+    this.dispatcher.on(['cancelled', 'fulfilled'], () => {
+      const listenerCtx = {
+        resources: {
+          formatter: this.chart.formatter,
+          scale: this.chart.scale
+        }
+      };
+
+      if (typeof this.props.beforeHide === 'function') {
+        this.props.beforeHide.call(undefined, extend({ element: this.state.tooltipElm }, listenerCtx));
+      }
+
+      if (typeof this.props.onHide === 'function') {
+        this.props.onHide.call(undefined, extend({ element: this.state.tooltipElm }, listenerCtx));
+      } else {
+        this.renderer.clear([]); // Hide tooltip
+      }
+
+      if (typeof this.props.afterHide === 'function') {
+        this.props.afterHide.call(undefined, listenerCtx);
+      }
+
+      removeActive(instanceId);
       this.state.tooltipElm = undefined;
     });
 
     this.dispatcher.on('active', () => {
-      if (typeof this.props.onDisplayed === 'function') {
-        this.props.onDisplayed({
+      if (typeof this.props.afterShow === 'function') {
+        this.props.afterShow.call(undefined, {
           element: this.state.tooltipElm,
           resources: {
             formatter: this.chart.formatter,
