@@ -29,7 +29,7 @@ const DEFAULT_SETTINGS = {
    * @type {function=}
    * @returns {array} An array of nodes
    */
-  filter: nodes => nodes.filter(node => typeof node.data === 'object' && typeof node.data.value !== 'undefined'),
+  filter: nodes => nodes.filter(node => node.data && typeof node.data.value !== 'undefined'),
   /**
    * Extract data from a node.
    * @type {function=}
