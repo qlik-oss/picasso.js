@@ -200,61 +200,41 @@ describe('q-brush', () => {
   });
 
   describe('selectPivotCells', () => {
+    const layout = {
+      qHyperCube: {
+        qEffectiveInterColumnSortOrder: [],
+        qMode: 'T'
+      }
+    };
+
     beforeEach(() => {
       brush.brushes.returns([{
         id: 'layers/0/qHyperCube/qDimensionInfo/2',
         type: 'value',
         brush: {
-          values: () => [
-            {
-              qCol: 2,
-              qRow: 3,
-              qType: 'L'
-            },
-            {
-              qCol: 2,
-              qRow: 2,
-              qType: 'L'
-            },
-            {
-              qCol: 2,
-              qRow: 7,
-              qType: 'L'
-            }
-          ]
+          values: () => [3, 2, 7]
         }
       }, {
         id: '/layers/0/qHyperCube/qDimensionInfo/1',
         type: 'value',
         brush: {
-          values: () => [
-            {
-              qCol: 1,
-              qRow: 1,
-              qType: 'L'
-            },
-            {
-              qCol: 1,
-              qRow: 6,
-              qType: 'L'
-            },
-            {
-              qCol: 1,
-              qRow: 4,
-              qType: 'L'
-            }
-          ]
+          values: () => [1, 6, 4]
         }
       }]);
+
+      layout.qHyperCube.qEffectiveInterColumnSortOrder = [];
     });
 
     it('should have method="selectPivotCells"', () => {
-      const selections = qBrush(brush, { byPivotCells: true });
+      const selections = qBrush(brush, { byCells: true }, layout);
       expect(selections[0].method).to.equal('selectPivotCells');
     });
 
     it('should have valid params when primary is not specified', () => {
-      const selections = qBrush(brush, { byPivotCells: true });
+      layout.qHyperCube.qNoOfLeftDims = 1;
+      layout.qHyperCube.qEffectiveInterColumnSortOrder.push(2);
+
+      const selections = qBrush(brush, { byCells: true }, layout);
       expect(selections[0].params).to.eql([
         '/layers/0/qHyperCubeDef',
         [
@@ -278,7 +258,10 @@ describe('q-brush', () => {
     });
 
     it('should have valid params when primary is specified', () => {
-      const selections = qBrush(brush, { byPivotCells: true, primarySource: '/layers/0/qHyperCube/qDimensionInfo/1' });
+      layout.qHyperCube.qNoOfLeftDims = 1;
+      layout.qHyperCube.qEffectiveInterColumnSortOrder.push(1);
+
+      const selections = qBrush(brush, { byCells: true, primarySource: '/layers/0/qHyperCube/qDimensionInfo/1' }, layout);
       expect(selections[0].params).to.eql([
         '/layers/0/qHyperCubeDef',
         [
@@ -296,6 +279,33 @@ describe('q-brush', () => {
             qCol: 1,
             qRow: 4,
             qType: 'L'
+          }
+        ]
+      ]);
+    });
+
+    it('should get top dimension', () => {
+      layout.qHyperCube.qNoOfLeftDims = 0;
+      layout.qHyperCube.qEffectiveInterColumnSortOrder.push(1);
+
+      const selections = qBrush(brush, { byCells: true, primarySource: '/layers/0/qHyperCube/qDimensionInfo/1' }, layout);
+      expect(selections[0].params).to.eql([
+        '/layers/0/qHyperCubeDef',
+        [
+          {
+            qCol: 1,
+            qRow: 0,
+            qType: 'T'
+          },
+          {
+            qCol: 6,
+            qRow: 0,
+            qType: 'T'
+          },
+          {
+            qCol: 4,
+            qRow: 0,
+            qType: 'T'
           }
         ]
       ]);

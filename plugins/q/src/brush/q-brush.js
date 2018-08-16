@@ -123,7 +123,6 @@ export function extractFieldFromId(id, layout) {
  */
 export default function qBrush(brush, opts = {}, layout) {
   const byCells = opts.byCells;
-  const byPivotCells = opts.byPivotCells;
   const primarySource = opts.primarySource;
   const selections = [];
   const methods = {};
@@ -195,33 +194,58 @@ export default function qBrush(brush, opts = {}, layout) {
           }));
         }
       }
+
       if (b.type === 'value' && info.dimensionIdx > -1) {
         if (byCells) {
-          if (!methods.selectHyperCubeCells) {
-            methods.selectHyperCubeCells = {
-              path: info.path,
-              cols: []
-            };
-          }
+          if (layout) {
+            const hyperCube = layout.qHyperCube;
+            const noOfLeftDims = hyperCube.qNoOfLeftDims;
+            const dimInterColSortIdx = hyperCube.qEffectiveInterColumnSortOrder.indexOf(info.dimensionIdx);
 
-          methods.selectHyperCubeCells.cols.push(info.dimensionIdx);
-          if (b.id === primarySource || (!primarySource && !methods.selectHyperCubeCells.values)) {
-            methods.selectHyperCubeCells.values = b.brush.values()
-              .map(s => +s)
-              .filter(v => !isNaN(v));
-            hasValues = !!methods.selectHyperCubeCells.values.length;
-          }
-        } else if (byPivotCells) {
-          if (!methods.selectPivotCells) {
-            methods.selectPivotCells = {
-              path: info.path,
-              cells: []
-            };
-          }
+            if (hyperCube.qMode === 'P' || hyperCube.qMode === 'T') {
+              if (!methods.selectPivotCells) {
+                methods.selectPivotCells = {
+                  path: info.path,
+                  cells: []
+                };
+              }
 
-          if (b.id === primarySource || (!primarySource && methods.selectPivotCells.cells.length === 0)) {
-            methods.selectPivotCells.cells = b.brush.values();
-            hasValues = !!methods.selectPivotCells.cells.length;
+              if (b.id === primarySource || (!primarySource && methods.selectPivotCells.cells.length === 0)) {
+                if (hyperCube.qNoOfLeftDims === 0 || dimInterColSortIdx >= noOfLeftDims) {
+                  b.brush.values().forEach((val) => {
+                    methods.selectPivotCells.cells.push({
+                      qType: 'T',
+                      qCol: val,
+                      qRow: dimInterColSortIdx - noOfLeftDims
+                    });
+                  });
+                } else {
+                  b.brush.values().forEach((val) => {
+                    methods.selectPivotCells.cells.push({
+                      qType: 'L',
+                      qCol: info.dimensionIdx,
+                      qRow: val
+                    });
+                  });
+                }
+                hasValues = !!methods.selectPivotCells.cells.length;
+              }
+            }
+          } else {
+            if (!methods.selectHyperCubeCells) {
+              methods.selectHyperCubeCells = {
+                path: info.path,
+                cols: []
+              };
+            }
+
+            methods.selectHyperCubeCells.cols.push(info.dimensionIdx);
+            if (b.id === primarySource || (!primarySource && !methods.selectHyperCubeCells.values)) {
+              methods.selectHyperCubeCells.values = b.brush.values()
+                .map(s => +s)
+                .filter(v => !isNaN(v));
+              hasValues = !!methods.selectHyperCubeCells.values.length;
+            }
           }
         } else {
           const values = b.brush.values().map(s => +s).filter(v => !isNaN(v));
@@ -286,3 +310,4 @@ export default function qBrush(brush, opts = {}, layout) {
 
   return selections;
 }
+

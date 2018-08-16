@@ -253,50 +253,20 @@ const selection = picassoQ.selections(b, {
 // }
 ```
 
-### By pivot cells 
-
-Brushing by pivot table specifying row and column:
+It is also possible to get a selectPivotCells call by providing the layout: 
 
 ```js
-const b = chart.brush('selection');
-b.addValue('qHyperCube/qDimensionInfo/1', {qCol: 1, qRow: 10, qType: 'L'});
-b.addValue('qHyperCube/qDimensionInfo/1', {qCol: 1, qRow: 13, qType: 'L'});
-b.addValue('qHyperCube/qDimensionInfo/0', {qCol: 0, qRow: 11, qType: 'L'});
-b.addValue('qHyperCube/qDimensionInfo/0', {qCol: 0, qRow: 17, qType: 'L'});
-```
-
-In the above case, rows `10` and `13` have been brushed on dimension `1`, and rows `11` and `17` on dimension `0`. The dimensions have been indexed from the left and 
-qCol property will correspond to dimension index when qType is L.
-To extract the relevant information, `byPivotCells` is enabled:
-
-```js
-const selection = picassoQ.selections(b, { byPivotCells: true })[0];
+const selection = picassoQ.selections(b, { byCells: true }, layout)[0];
 // {
 //   method: 'selectPivotCells',
 //   params: [
 //     '/qHyperCubeDef',
-//     [{qCol: 1, qRow: 10, qType: 'L'}], // column, row index and type to select
-//   
+//     [{qType: 'L', qCol: 1, qRow: 10}, {qType: 'L', qCol: 1, qRow: 13}], // Array of NxSelectionCell for pivot data
+//     
 //   ]
 // }
 ```
 
-Pivot cells are used from the first dimension that adds a value to a brush,  `qDimensionInfo/1`, in the case above.
-To use values from another dimension, `primarySource` should be set:
-
-```js
-const selection = picassoQ.selections(b, {
-  byCells: true,
-  primarySource: 'qHyperCube/qDimensionInfo/0'
-})[0];
-// {
-//   method: 'selectPivotCells',
-//   params: [
-//     '/qHyperCubeDef',
-//     [{qCol: 0, qRow: 11, qType: 'L'}], // column, row index and type to select
-//   ]
-// }
-```
 
 ### By attribute dimension
 
