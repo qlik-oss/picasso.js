@@ -95,40 +95,19 @@ function alignToBounds({
   height: elmHeight,
   options
 }) {
+  const { targetBounds } = pointer;
   const {
     x,
     y,
     width,
     height
-  } = nodes[0].bounds;
-  const { dx, dy, targetBounds } = pointer;
-  const componentBounds = resources.component(nodes[0].key).rect;
-
-  // Calc the physical component coordinates
-  const px = componentBounds.margin.left + (componentBounds.x * componentBounds.scaleRatio.x);
-  const py = componentBounds.margin.top + (componentBounds.y * componentBounds.scaleRatio.y);
-
-  // x and y relative to targetBounds
-  const rx = dx + px + x;
-  const ry = dy + py + y;
+  } = resources.getNodeBoundsRelativeToTarget(nodes[0]);
 
   const docks = {
-    left: {
-      x: rx,
-      y: ry + (height / 2)
-    },
-    right: {
-      x: rx + width,
-      y: ry + (height / 2)
-    },
-    top: {
-      x: rx + (width / 2),
-      y: ry
-    },
-    bottom: {
-      x: rx + (width / 2),
-      y: ry + height
-    }
+    left: { x, y: y + (height / 2) },
+    right: { x: x + width, y: y + (height / 2) },
+    top: { x: x + (width / 2), y },
+    bottom: { x: x + (width / 2), y: y + height }
   };
 
   // Check if explicit dock
@@ -300,17 +279,12 @@ function alignToSlice({
 }) {
   const node = nodes[0];
   const { dx, dy } = pointer;
-  const componentBounds = resources.component(node.key).rect;
+  const componentBounds = resources.getComponentBoundsFromNode(node);
 
-  // Calc the physical rect
-  const px = componentBounds.margin.left + (componentBounds.x * componentBounds.scaleRatio.x);
-  const py = componentBounds.margin.top + (componentBounds.y * componentBounds.scaleRatio.y);
-  const pWidth = componentBounds.width * componentBounds.scaleRatio.x;
-  const pHeight = componentBounds.height * componentBounds.scaleRatio.y;
   // cx and cy relative to targetBounds
   const center = {
-    x: dx + px + (pWidth / 2),
-    y: dy + py + (pHeight / 2)
+    x: dx + componentBounds.x + (componentBounds.width / 2),
+    y: dy + componentBounds.y + (componentBounds.height / 2)
   };
 
   const {
@@ -348,6 +322,45 @@ function alignToSlice({
   });
 }
 
+function getComponentBoundsFromNode(node, pointer, chart) {
+  const comp = node.key ? chart.component(node.key) :
+    chart.componentsFromPoint({ x: pointer.clientX, y: pointer.clientY })[0];
+
+  if (!comp) {
+    return {
+      x: 0,
+      y: 0,
+      width: 0,
+      height: 0,
+      scaleRatio: {
+        x: 1,
+        y: 1
+      }
+    };
+  }
+
+  const componentSize = comp.rect;
+  return {
+    x: componentSize.margin.left + (componentSize.x * componentSize.scaleRatio.x),
+    y: componentSize.margin.top + (componentSize.y * componentSize.scaleRatio.y),
+    width: componentSize.width * componentSize.scaleRatio.x,
+    height: componentSize.height * componentSize.scaleRatio.y,
+    scaleRatio: componentSize.scaleRatio
+  };
+}
+
+function getNodeBoundsRelativeToTarget(node, pointer, chart) {
+  const componentBounds = getComponentBoundsFromNode(node, pointer, chart);
+  const bounds = node.bounds;
+
+  return {
+    x: componentBounds.x + pointer.dx + bounds.x,
+    y: componentBounds.y + pointer.dy + bounds.y,
+    width: bounds.width,
+    height: bounds.height
+  };
+}
+
 const STRATEGIES = {
   bounds: alignToBounds,
   pointer: alignToPointer,
@@ -363,7 +376,9 @@ export default function placement({ width, height }, {
     resources: {
       formatter: chart.formatter,
       scale: chart.scale,
-      component: chart.component
+      component: chart.component,
+      getComponentBoundsFromNode: node => getComponentBoundsFromNode(node, state.pointer, chart),
+      getNodeBoundsRelativeToTarget: node => getNodeBoundsRelativeToTarget(node, state.pointer, chart)
     },
     nodes: state.activeNodes,
     pointer: state.pointer,

@@ -7,6 +7,7 @@ describe('placement', () => {
 
   beforeEach(() => {
     componentMock = {
+      key: 'aKey',
       rect: {
         x: 0,
         y: 0,
@@ -232,7 +233,8 @@ describe('placement', () => {
         context.state.activeNodes = [{
           bounds: {
             x: 10, y: 20, width: 11, height: 22
-          }
+          },
+          key: 'aKey'
         }];
 
         context.props.placement = {
@@ -261,7 +263,8 @@ describe('placement', () => {
         context.state.activeNodes = [{
           bounds: {
             x: 10, y: 20, width: 11, height: 22
-          }
+          },
+          key: 'aKey'
         }];
 
         context.props.placement = {
@@ -293,7 +296,8 @@ describe('placement', () => {
         context.state.activeNodes = [{
           bounds: {
             x: 10, y: 20, width: 11, height: 22
-          }
+          },
+          key: 'aKey'
         }];
 
         context.props.placement = {
@@ -324,7 +328,8 @@ describe('placement', () => {
         context.state.activeNodes = [{
           bounds: {
             x: 10, y: 20, width: 15, height: 25
-          }
+          },
+          key: 'aKey'
         }];
 
         context.props.placement = {
@@ -363,7 +368,8 @@ describe('placement', () => {
               end: (Math.PI * 7) / 6,
               outerRadius: 20
             }
-          }
+          },
+          key: 'aKey'
         }];
         context.props.placement = {
           type: 'slice',
@@ -401,7 +407,8 @@ describe('placement', () => {
               end: (Math.PI * 7) / 6,
               outerRadius: 20
             }
-          }
+          },
+          key: 'aKey'
         }];
         context.props.placement = {
           type: 'slice',
@@ -440,7 +447,8 @@ describe('placement', () => {
               end: (Math.PI * 7) / 6,
               outerRadius: 20
             }
-          }
+          },
+          key: 'aKey'
         }];
         context.props.placement = {
           type: 'slice',
@@ -480,7 +488,8 @@ describe('placement', () => {
               end: (Math.PI * 7) / 6,
               outerRadius: 20
             }
-          }
+          },
+          key: 'aKey'
         }];
         context.props.placement = {
           type: 'slice',
