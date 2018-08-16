@@ -8,6 +8,7 @@ const mappedAttributes = {
   stroke: 'stroke',
   opacity: 'opacity',
   strokeWidth: 'stroke-width',
+  strokeLineJoin: 'stroke-linejoin',
   fontFamily: 'font-family',
   fontSize: 'font-size',
   baseline: 'dominant-baseline', // Special case where we have defined our own attribute name
