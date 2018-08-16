@@ -116,7 +116,6 @@ export function extractFieldFromId(id, layout) {
  * @param {brush} brush A brush instance
  * @param {object} [opts]
  * @param {boolean} [opts.byCells=false] Whether to prefer selection by row index.
- * @param {boolean} [opts.byPivotCells=false] Whether to prefer selection by top or left index.
  * @param {string} [opts.primarySource] Field source to extract row indices from. If not specified, indices from first source are used.
  * @param {object} [layout] QIX data layout. Needed only when brushing on attribute expressions, to be able to calculate the measure index.
  * @return {object[]} An array of relevant selections
