@@ -68,6 +68,9 @@ const SETTINGS = {
       strokeWidth: 1,
       /**
        * @type {string=} */
+      strokeLineJoin: 'miter',
+      /**
+       * @type {string=} */
       strokeDasharray: undefined,
       /**
        * @type {number=} */
@@ -104,6 +107,7 @@ function createDisplayLayer(points, {
     opacity: item.opacity,
     stroke: item.stroke,
     strokeWidth: item.strokeWidth,
+    strokeLineJoin: item.strokeLineJoin,
     fill: fill || item.fill,
     data
   };

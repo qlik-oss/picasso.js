@@ -25,6 +25,7 @@ const DEFAULT_DATA_SETTINGS = {
     fill: '#fff',
     stroke: '#000',
     strokeWidth: 1,
+    strokeLineJoin: 'miter',
     width: 1,
     maxWidthPx: undefined,
     minWidthPx: 1,

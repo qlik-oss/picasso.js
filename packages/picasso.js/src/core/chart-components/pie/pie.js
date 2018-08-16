@@ -75,6 +75,7 @@ const DEFAULT_DATA_SETTINGS = {
  *       fill: 'green',
  *       stroke: 'red',
  *       strokeWidth: 2,
+ *       strokeLineJoin: 'round',
  *       innerRadius: 0.6,
  *       outerRadius 0.8,
  *       opacity: 0.8,

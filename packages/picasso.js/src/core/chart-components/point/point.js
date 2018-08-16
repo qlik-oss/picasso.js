@@ -31,6 +31,9 @@ const DEFAULT_DATA_SETTINGS = {
   /** Stroke width
    * @type {datum-number=} */
   strokeWidth: 0,
+  /** Stroke line join
+   * @type {string=} */
+  strokeLineJoin: 'miter',
   /** Opacity of shape
    * @type {datum-number=} */
   opacity: 1,
