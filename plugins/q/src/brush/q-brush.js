@@ -210,7 +210,7 @@ export default function qBrush(brush, opts = {}, layout) {
               }
 
               if (b.id === primarySource || (!primarySource && methods.selectPivotCells.cells.length === 0)) {
-                if (hyperCube.qNoOfLeftDims === 0 || dimInterColSortIdx >= noOfLeftDims) {
+                if (noOfLeftDims === 0 || dimInterColSortIdx >= noOfLeftDims) {
                   b.brush.values().forEach((val) => {
                     methods.selectPivotCells.cells.push({
                       qType: 'T',
