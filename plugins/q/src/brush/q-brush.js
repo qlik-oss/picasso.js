@@ -210,8 +210,12 @@ export default function qBrush(brush, opts = {}, layout) {
               }
 
               if (b.id === primarySource || (!primarySource && methods.selectPivotCells.cells.length === 0)) {
+                const validValues = b.brush.values()
+                  .map(s => +s)
+                  .filter(v => !isNaN(v));
+
                 if (noOfLeftDims === 0 || dimInterColSortIdx >= noOfLeftDims) {
-                  b.brush.values().forEach((val) => {
+                  validValues.forEach((val) => {
                     methods.selectPivotCells.cells.push({
                       qType: 'T',
                       qCol: val,
@@ -219,7 +223,7 @@ export default function qBrush(brush, opts = {}, layout) {
                     });
                   });
                 } else {
-                  b.brush.values().forEach((val) => {
+                  validValues.forEach((val) => {
                     methods.selectPivotCells.cells.push({
                       qType: 'L',
                       qCol: info.dimensionIdx,
