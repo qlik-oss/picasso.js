@@ -568,7 +568,7 @@ describe('box component', () => {
       }
     };
 
-    chart.dataset().extract.returns(dataset);++
+    chart.dataset().extract.returns(dataset);
 
     const xDomain = [1, 2, 3, 4, 5];
     const xScale = v => xDomain.indexOf(v) * 0.2;
