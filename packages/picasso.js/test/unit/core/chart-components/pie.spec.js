@@ -80,6 +80,26 @@ describe('pie', () => {
     expect(rendered.map(r => r.data.value)).to.deep.equal([1, 2, 3, 4]);
   });
 
+  it('should filter out outerRadius <= innerRadius', () => {
+    componentFixture.mocks().theme.style.returns({});
+    const config = {
+      data: [1, 2, 3],
+      settings: {
+        slice: {
+          innerRadius: 0,
+          outerRadius: {
+            fn: (d, index) => (index === 1 ? -1 : 0.8)
+          }
+        }
+      }
+    };
+
+    componentFixture.simulateCreate(component, config);
+    rendered = componentFixture.simulateRender(opts);
+
+    expect(rendered.map(r => r.data.value)).to.deep.equal([1, 3]);
+  });
+
   describe('arcValue', () => {
     it('should default to data.value', () => {
       expect(arcValue({}, {
