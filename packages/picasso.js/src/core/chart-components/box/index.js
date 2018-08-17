@@ -53,7 +53,7 @@ export default function box(picasso) {
  * @property {string} [box.fill='#fff']
  * @property {string} [box.stroke='#000']
  * @property {number} [box.strokeWidth=1]
- * @property {number} [box.strokeLineJoin='miter']
+ * @property {string} [box.strokeLinejoin='miter']
  * @property {number} [box.width=1]
  * @property {number} [box.maxWidthPx=100]
  * @property {number} [box.minWidthPx=1]

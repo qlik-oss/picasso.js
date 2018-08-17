@@ -25,7 +25,7 @@ describe('Display Object', () => {
         fill: '1',
         stroke: '2',
         strokeWidth: '3',
-        strokeLineJoin: 'bevel',
+        strokeLinejoin: 'bevel',
         fontFamily: '4',
         fontSize: '5',
         baseline: '6',

@@ -54,7 +54,7 @@ describe('box component', () => {
         box: {
           width: 1,
           stroke: '#f00',
-          strokeLineJoin: 'round'
+          strokeLinejoin: 'round'
         },
         whisker: {
           stroke: '#0f0'
@@ -118,7 +118,7 @@ describe('box component', () => {
             minWidthPx: 1,
             show: true,
             stroke: '#f00',
-            strokeLineJoin: 'round',
+            strokeLinejoin: 'round',
             strokeWidth: 1,
             type: 'rect',
             width: 50,
@@ -309,7 +309,7 @@ describe('box component', () => {
             minWidthPx: 1,
             show: true,
             stroke: '#f00',
-            strokeLineJoin: 'miter',
+            strokeLinejoin: 'miter',
             strokeWidth: 1,
             type: 'rect',
             width: 50,
@@ -376,7 +376,7 @@ describe('box component', () => {
             minWidthPx: 1,
             show: true,
             stroke: '#f00',
-            strokeLineJoin: 'miter',
+            strokeLinejoin: 'miter',
             strokeWidth: 1,
             type: 'rect',
             width: 50,
@@ -452,7 +452,7 @@ describe('box component', () => {
             minWidthPx: 1,
             show: true,
             stroke: '#f00',
-            strokeLineJoin: 'miter',
+            strokeLinejoin: 'miter',
             strokeWidth: 1,
             type: 'rect',
             width: 50,
@@ -568,7 +568,7 @@ describe('box component', () => {
       }
     };
 
-    chart.dataset().extract.returns(dataset);
+    chart.dataset().extract.returns(dataset);++
 
     const xDomain = [1, 2, 3, 4, 5];
     const xScale = v => xDomain.indexOf(v) * 0.2;
@@ -592,7 +592,7 @@ describe('box component', () => {
         show: true,
         fill: '#fff',
         stroke: '#f00',
-        strokeLineJoin: 'miter',
+        strokeLinejoin: 'miter',
         strokeWidth: 1,
         maxWidthPx: 100,
         minHeightPx: 1,
@@ -617,7 +617,7 @@ describe('box component', () => {
         show: true,
         fill: '#fff',
         stroke: '#f00',
-        strokeLineJoin: 'miter',
+        strokeLinejoin: 'miter',
         strokeWidth: 1,
         maxWidthPx: 100,
         minHeightPx: 1,
@@ -642,7 +642,7 @@ describe('box component', () => {
         show: true,
         fill: '#fff',
         stroke: '#f00',
-        strokeLineJoin: 'miter',
+        strokeLinejoin: 'miter',
         strokeWidth: 1,
         maxWidthPx: 100,
         minHeightPx: 1,
@@ -668,7 +668,7 @@ describe('box component', () => {
         fill: '#fff',
         stroke: '#f00',
         strokeWidth: 1,
-        strokeLineJoin: 'miter',
+        strokeLinejoin: 'miter',
         maxWidthPx: 100,
         minHeightPx: 1,
         minWidthPx: 1,
@@ -692,7 +692,7 @@ describe('box component', () => {
         show: true,
         fill: '#fff',
         stroke: '#f00',
-        strokeLineJoin: 'miter',
+        strokeLinejoin: 'miter',
         strokeWidth: 1,
         maxWidthPx: 100,
         minHeightPx: 1,
