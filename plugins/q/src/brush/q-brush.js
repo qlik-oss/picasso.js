@@ -233,6 +233,13 @@ export default function qBrush(brush, opts = {}, layout) {
                 }
                 hasValues = !!methods.selectPivotCells.cells.length;
               }
+            } else {
+              const values = b.brush.values().map(s => +s).filter(v => !isNaN(v));
+              hasValues = !!values.length;
+              selections.push({
+                params: [info.path, info.dimensionIdx, values, false],
+                method: 'selectHyperCubeValues'
+              });
             }
           } else {
             if (!methods.selectHyperCubeCells) {
