@@ -32,6 +32,9 @@ const DEFAULT_DATA_SETTINGS = {
     /** Stroke width of the slice
      * @type {number=} */
     strokeWidth: 1,
+    /** Stroke line join
+     * @type {string=} */
+    strokeLinejoin: 'round',
     /** Opacity of the slice
      * @type {number=} */
     opacity: 1,
@@ -72,6 +75,7 @@ const DEFAULT_DATA_SETTINGS = {
  *       fill: 'green',
  *       stroke: 'red',
  *       strokeWidth: 2,
+ *       strokeLinejoin: 'round',
  *       innerRadius: 0.6,
  *       outerRadius 0.8,
  *       opacity: 0.8,
