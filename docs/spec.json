@@ -1380,6 +1380,10 @@
               "optional": true,
               "defaultValue": "'1'",
               "type": "number"
+            },
+            "strokeDasharray": {
+              "optional": true,
+              "type": "string"
             }
           }
         },
@@ -1401,6 +1405,10 @@
               "optional": true,
               "defaultValue": "'1'",
               "type": "number"
+            },
+            "strokeDasharray": {
+              "optional": true,
+              "type": "string"
             }
           }
         }
