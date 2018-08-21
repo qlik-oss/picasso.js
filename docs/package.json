@@ -11,7 +11,7 @@
     "handlebars": "^4.0.6",
     "handlebars-helpers": "0.7.5",
     "jsdoc": "3.4.3",
-    "jsdoc2spec": "^0.6.0",
+    "jsdoc2spec": "^0.8.0",
     "marked": "^0.3.12",
     "striptags": "2.1.1"
   }
