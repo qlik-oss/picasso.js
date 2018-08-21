@@ -2,6 +2,7 @@ import qBrush, { extractFieldFromId } from '../../src/brush/q-brush';
 
 describe('q-brush', () => {
   let brush;
+  let layout;
 
   beforeEach(() => {
     brush = {
@@ -194,6 +195,128 @@ describe('q-brush', () => {
       expect(selections[0].params).to.eql([
         '/layers/0/qHyperCubeDef',
         [1, 6, 4],
+        [2, 1]
+      ]);
+    });
+  });
+
+  describe('selectPivotCells', () => {
+    beforeEach(() => {
+      brush.brushes.returns([{
+        id: 'layers/0/qHyperCube/qDimensionInfo/2',
+        type: 'value',
+        brush: {
+          values: () => [3, 2, 7]
+        }
+      }, {
+        id: '/layers/0/qHyperCube/qDimensionInfo/1',
+        type: 'value',
+        brush: {
+          values: () => [1, 6, 4]
+        }
+      }]);
+
+      layout = {
+        qHyperCube: {
+          qEffectiveInterColumnSortOrder: [],
+          qMode: 'T'
+        }
+      };
+    });
+
+    it('should have method="selectPivotCells"', () => {
+      const selections = qBrush(brush, { byCells: true }, layout);
+      expect(selections[0].method).to.equal('selectPivotCells');
+    });
+
+    it('should have valid params when primary is not specified', () => {
+      layout.qHyperCube.qNoOfLeftDims = 1;
+      layout.qHyperCube.qEffectiveInterColumnSortOrder.push(2);
+
+      const selections = qBrush(brush, { byCells: true }, layout);
+      expect(selections[0].params).to.eql([
+        '/layers/0/qHyperCubeDef',
+        [
+          {
+            qCol: 2,
+            qRow: 3,
+            qType: 'L'
+          },
+          {
+            qCol: 2,
+            qRow: 2,
+            qType: 'L'
+          },
+          {
+            qCol: 2,
+            qRow: 7,
+            qType: 'L'
+          }
+        ]
+      ]);
+    });
+
+    it('should have valid params when primary is specified', () => {
+      layout.qHyperCube.qNoOfLeftDims = 1;
+      layout.qHyperCube.qEffectiveInterColumnSortOrder.push(1);
+
+      const selections = qBrush(brush, { byCells: true, primarySource: '/layers/0/qHyperCube/qDimensionInfo/1' }, layout);
+      expect(selections[0].params).to.eql([
+        '/layers/0/qHyperCubeDef',
+        [
+          {
+            qCol: 1,
+            qRow: 1,
+            qType: 'L'
+          },
+          {
+            qCol: 1,
+            qRow: 6,
+            qType: 'L'
+          },
+          {
+            qCol: 1,
+            qRow: 4,
+            qType: 'L'
+          }
+        ]
+      ]);
+    });
+
+    it('should get top dimension', () => {
+      layout.qHyperCube.qNoOfLeftDims = 0;
+      layout.qHyperCube.qEffectiveInterColumnSortOrder.push(1);
+
+      const selections = qBrush(brush, { byCells: true, primarySource: '/layers/0/qHyperCube/qDimensionInfo/1' }, layout);
+      expect(selections[0].params).to.eql([
+        '/layers/0/qHyperCubeDef',
+        [
+          {
+            qCol: 1,
+            qRow: 0,
+            qType: 'T'
+          },
+          {
+            qCol: 6,
+            qRow: 0,
+            qType: 'T'
+          },
+          {
+            qCol: 4,
+            qRow: 0,
+            qType: 'T'
+          }
+        ]
+      ]);
+    });
+
+    it('should do selectHyperCubeCells if qMode: S and byCells: true', () => {
+      layout.qHyperCube.qMode = 'S';
+
+      const selections = qBrush(brush, { byCells: true }, layout);
+      expect(selections[0].params).to.eql([
+        '/layers/0/qHyperCubeDef',
+        [3, 2, 7],
         [2, 1]
       ]);
     });
