@@ -33,7 +33,8 @@
       "component-labels",
       "component-brush-area-dir",
       "component-brush-lasso",
-      "component-brush-range"
+      "component-brush-range",
+      "component-tooltip"
     ],
     "Plugins": [
       "plugin-q",
