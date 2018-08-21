@@ -32,6 +32,9 @@ const DEFAULT_DATA_SETTINGS = {
     /** Stroke width of the slice
      * @type {number=} */
     strokeWidth: 1,
+    /** Stroke line join
+     * @type {string=} */
+    strokeLinejoin: 'round',
     /** Opacity of the slice
      * @type {number=} */
     opacity: 1,
@@ -72,6 +75,7 @@ const DEFAULT_DATA_SETTINGS = {
  *       fill: 'green',
  *       stroke: 'red',
  *       strokeWidth: 2,
+ *       strokeLinejoin: 'round',
  *       innerRadius: 0.6,
  *       outerRadius 0.8,
  *       opacity: 0.8,
@@ -167,7 +171,7 @@ const pieComponent = {
     let sum = 0;
     for (let i = 0, len = items.length; i < len; i++) {
       const val = arcValue(stngs, items[i]);
-      if (val > 0) {
+      if (val > 0 && items[i].outerRadius >= items[i].innerRadius) {
         arcValues.push(val);
         slices.push(items[i]);
         sum += val;

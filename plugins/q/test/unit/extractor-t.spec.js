@@ -1,4 +1,4 @@
-import extract from '../../src/data/extractor-t';
+import { extract } from '../../src/data/extractor-t';
 
 import {
   getPropsInfo,
