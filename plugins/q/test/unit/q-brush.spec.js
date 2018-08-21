@@ -311,16 +311,14 @@ describe('q-brush', () => {
       ]);
     });
 
-    it('should do selectHyperCubeValues if qMode: S and byCells: true', () => {
+    it('should do selectHyperCubeCells if qMode: S and byCells: true', () => {
       layout.qHyperCube.qMode = 'S';
-
 
       const selections = qBrush(brush, { byCells: true }, layout);
       expect(selections[0].params).to.eql([
         '/layers/0/qHyperCubeDef',
-        2,
         [3, 2, 7],
-        false
+        [2, 1]
       ]);
     });
   });

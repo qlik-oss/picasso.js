@@ -196,50 +196,41 @@ export default function qBrush(brush, opts = {}, layout) {
 
       if (b.type === 'value' && info.dimensionIdx > -1) {
         if (byCells) {
-          if (layout) {
+          if (layout && layout.qHyperCube && (layout.qHyperCube.qMode === 'P' || layout.qHyperCube.qMode === 'T')) {
             const hyperCube = layout.qHyperCube;
             const noOfLeftDims = hyperCube.qNoOfLeftDims;
             const dimInterColSortIdx = hyperCube.qEffectiveInterColumnSortOrder.indexOf(info.dimensionIdx);
 
-            if (hyperCube.qMode === 'P' || hyperCube.qMode === 'T') {
-              if (!methods.selectPivotCells) {
-                methods.selectPivotCells = {
-                  path: info.path,
-                  cells: []
-                };
-              }
+            if (!methods.selectPivotCells) {
+              methods.selectPivotCells = {
+                path: info.path,
+                cells: []
+              };
+            }
 
-              if (b.id === primarySource || (!primarySource && methods.selectPivotCells.cells.length === 0)) {
-                const validValues = b.brush.values()
-                  .map(s => +s)
-                  .filter(v => !isNaN(v));
+            if (b.id === primarySource || (!primarySource && methods.selectPivotCells.cells.length === 0)) {
+              const validValues = b.brush.values()
+                .map(s => +s)
+                .filter(v => !isNaN(v));
 
-                if (noOfLeftDims === 0 || dimInterColSortIdx >= noOfLeftDims) {
-                  validValues.forEach((val) => {
-                    methods.selectPivotCells.cells.push({
-                      qType: 'T',
-                      qCol: val,
-                      qRow: dimInterColSortIdx - noOfLeftDims
-                    });
+              if (noOfLeftDims === 0 || dimInterColSortIdx >= noOfLeftDims) {
+                validValues.forEach((val) => {
+                  methods.selectPivotCells.cells.push({
+                    qType: 'T',
+                    qCol: val,
+                    qRow: dimInterColSortIdx - noOfLeftDims
                   });
-                } else {
-                  validValues.forEach((val) => {
-                    methods.selectPivotCells.cells.push({
-                      qType: 'L',
-                      qCol: info.dimensionIdx,
-                      qRow: val
-                    });
+                });
+              } else {
+                validValues.forEach((val) => {
+                  methods.selectPivotCells.cells.push({
+                    qType: 'L',
+                    qCol: info.dimensionIdx,
+                    qRow: val
                   });
-                }
-                hasValues = !!methods.selectPivotCells.cells.length;
+                });
               }
-            } else {
-              const values = b.brush.values().map(s => +s).filter(v => !isNaN(v));
-              hasValues = !!values.length;
-              selections.push({
-                params: [info.path, info.dimensionIdx, values, false],
-                method: 'selectHyperCubeValues'
-              });
+              hasValues = !!methods.selectPivotCells.cells.length;
             }
           } else {
             if (!methods.selectHyperCubeCells) {
