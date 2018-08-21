@@ -29,6 +29,10 @@ code {
   background: rgba(255, 255, 255, 0.2);
 }
 
+.navigationSlider .slidingNav ul li.siteNavItemActive a, .navigationSlider .slidingNav ul li.siteNavGroupActive a {
+  background: rgba(255, 255, 255, 0.2);
+}
+
 .navigationSlider .slidingNav ul li a[href^="http"] {
   font-family: FontAwesome;
   font-size: 1.3em;

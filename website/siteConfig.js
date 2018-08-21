@@ -19,9 +19,8 @@ const siteConfig = {
   ],
   headerIcon: 'img/picassojs.svg',
   disableHeaderTitle: true,
+  scrollToTop: true,
   footerIcon: 'img/picassojs.svg',
-  ogImage: 'img/picassojs.png',
-  gaTrackingId: 'UA-113818093-1',
   favicon: 'img/favicon.png',
   colors: {
     primaryColor: '#333',
@@ -40,7 +39,11 @@ const siteConfig = {
     'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'
   ],
   repoUrl: 'https://github.com/qlik-oss/picasso.js',
+  editUrl: 'https://github.com/qlik-oss/picasso.js/edit/master/docs/src/input/',
+  gaTrackingId: 'UA-113818093-1',
+  ogImage: 'img/picassojs.png',
   twitter: true,
+  twitterImage: 'img/picassojs.png',
   algolia: {
     apiKey: '3acaf839e39f2abc9d53e17093978fe3',
     indexName: 'picassojs',
