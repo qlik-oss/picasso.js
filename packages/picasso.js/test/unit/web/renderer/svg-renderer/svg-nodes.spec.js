@@ -171,5 +171,27 @@ describe('svg-nodes', () => {
 
       expect(el.setAttribute.args[0]).to.deep.equal(['dy', 3]);
     });
+
+    it('should append a title element on text item with the title attribute', () => {
+      const titleElm = {};
+      const el = {
+        setAttribute: sinon.spy(),
+        getAttribute: () => 5,
+        ownerDocument: {
+          createElementNS: () => titleElm
+        },
+        appendChild: sinon.spy()
+      };
+      const item = {
+        type: 'text',
+        attrs: {
+          title: 'my title'
+        }
+      };
+      maintainer(el, item);
+
+      expect(el.appendChild).to.have.been.calledWith(titleElm);
+      expect(titleElm.textContent).to.equal('my title');
+    });
   });
 });

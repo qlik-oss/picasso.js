@@ -46,6 +46,7 @@ export default class Text extends DisplayObject {
       dy = 0,
       textBoundsFn,
       text,
+      title,
       collider,
       boundingRect
     } = v;
@@ -56,6 +57,7 @@ export default class Text extends DisplayObject {
     this.attrs.dx = dx;
     this.attrs.dy = dy;
     this.attrs.text = text;
+    this.attrs.title = title;
     this._boundingRect = null; // Reset cache
     if (boundingRect) {
       this._boundingRect = boundingRect;

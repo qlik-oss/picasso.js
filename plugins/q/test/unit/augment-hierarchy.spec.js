@@ -166,15 +166,15 @@ describe('augment-hierarchy', () => {
       });
       // console.log(stackedPageWithoutPseudo.qData[0]);
       expect(m.descendants().map(child => child.data.desc.value)).to.eql([
-        '666---45---32---667---13---17', // descendants of '__root', with reduction applied
-        '666---45---32', // measure nodes in 'Alpha', with reduction applied
-        '667---13---17', // measure nodes in 'Beta', with reduction applied
-        undefined, // total node
-        45,
-        32,
-        undefined,
-        13,
-        17,
+        '45---32---13---17', // descendants of '__root', with reduction applied
+        '45---32', // measure nodes in 'Alpha', with reduction applied
+        '13---17', // measure nodes in 'Beta', with reduction applied
+        '', // total node
+        '45',
+        '32',
+        '',
+        '13',
+        '17',
         45, // actual measure node
         32, // actual measure node
         13, // actual measure node
@@ -211,4 +211,36 @@ describe('augment-hierarchy', () => {
     });
   });
   // });
+  describe('S mode', () => {
+    it('hierarchy', () => {
+      const cube = {
+        qMode: 'S',
+        qDimensionInfo: [{ qFallbackTitle: 'first', qStateCounts: {} }, { qFallbackTitle: 'second', qStateCounts: {} }],
+        qMeasureInfo: [{ qFallbackTitle: 'emasure', qMin: 1, qMax: 2 }],
+        qDataPages: [{
+          qMatrix: [
+            [{ qText: 'Aa', qElemNumber: 1 }, { qText: '$456', qNum: 3 }, { qText: 'A', qElemNumber: 1 }],
+            [{ qText: 'Ba', qElemNumber: 2 }, { qText: '$457', qNum: 10 }, { qText: 'B', qElemNumber: 2 }],
+            [{ qText: 'Ab', qElemNumber: 3 }, { qText: '$235', qNum: 5 }, { qText: 'A', qElemNumber: 1 }]
+          ]
+        }],
+        qEffectiveInterColumnSortOrder: [1, 0, 2],
+        qColumnOrder: [1, 2, 0]
+      };
+      const d = q({
+        key: 'nyckel',
+        data: cube
+      });
+      const h = d.hierarchy({
+        value: v => (v ? v.qText : '__'),
+        props: {
+          v: {
+            field: 'qMeasureInfo/0', value: v => (v ? v.qNum : NaN)
+          }
+        }
+      });
+
+      expect(h.descendants().map(child => child.data.v.value)).to.eql([6, 4, 10, 3, 5, 10]);
+    });
+  });
 });
