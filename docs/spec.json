@@ -3,7 +3,7 @@
   "info": {
     "name": "picasso.js",
     "description": "A charting library streamlined for building visualizations for the Qlik Sense Analytics platform.",
-    "version": "0.10.4",
+    "version": "0.11.0",
     "license": "MIT"
   },
   "entries": {
@@ -1047,6 +1047,11 @@
                   "defaultValue": 1,
                   "type": "number"
                 },
+                "strokeLinejoin": {
+                  "optional": true,
+                  "defaultValue": "'miter'",
+                  "type": "string"
+                },
                 "width": {
                   "optional": true,
                   "defaultValue": 1,
@@ -1077,18 +1082,18 @@
                   "optional": true,
                   "defaultValue": true,
                   "type": "boolean"
+                },
+                "stroke": {
+                  "optional": true,
+                  "defaultValue": "'#000'",
+                  "type": "string"
+                },
+                "strokeWidth": {
+                  "optional": true,
+                  "defaultValue": 1,
+                  "type": "number"
                 }
               }
-            },
-            "stroke": {
-              "optional": true,
-              "defaultValue": "'#000'",
-              "type": "string"
-            },
-            "strokeWidth": {
-              "optional": true,
-              "defaultValue": 1,
-              "type": "number"
             },
             "whisker": {
               "optional": true,
@@ -2076,6 +2081,11 @@
                   "defaultValue": 1,
                   "type": "number"
                 },
+                "strokeLinejoin": {
+                  "optional": true,
+                  "defaultValue": "miter",
+                  "type": "string"
+                },
                 "strokeDasharray": {
                   "optional": true,
                   "type": "string"
@@ -2163,6 +2173,12 @@
               "defaultValue": 1,
               "type": "number"
             },
+            "strokeLinejoin": {
+              "description": "Stroke line join",
+              "optional": true,
+              "defaultValue": "round",
+              "type": "string"
+            },
             "opacity": {
               "description": "Opacity of the slice",
               "optional": true,
@@ -2207,7 +2223,7 @@
         }
       },
       "examples": [
-        "{\n  type: 'pie',\n  data: {\n    extract: {\n      field: 'Region',\n      props: {\n        num: { field: 'Population' }\n      }\n    }\n  },\n  settings: {\n    startAngle: Math.PI / 2,\n    endAngle: -Math.PI / 2,\n    slice: {\n      arc: { ref: 'num' },\n      fill: 'green',\n      stroke: 'red',\n      strokeWidth: 2,\n      innerRadius: 0.6,\n      outerRadius 0.8,\n      opacity: 0.8,\n      offset: 0.2\n    }\n  }\n}"
+        "{\n  type: 'pie',\n  data: {\n    extract: {\n      field: 'Region',\n      props: {\n        num: { field: 'Population' }\n      }\n    }\n  },\n  settings: {\n    startAngle: Math.PI / 2,\n    endAngle: -Math.PI / 2,\n    slice: {\n      arc: { ref: 'num' },\n      fill: 'green',\n      stroke: 'red',\n      strokeWidth: 2,\n      strokeLinejoin: 'round',\n      innerRadius: 0.6,\n      outerRadius 0.8,\n      opacity: 0.8,\n      offset: 0.2\n    }\n  }\n}"
       ]
     },
     "component--point": {
@@ -2243,6 +2259,12 @@
               "optional": true,
               "defaultValue": 0,
               "type": "#/definitions/datum-number"
+            },
+            "strokeLinejoin": {
+              "description": "Stroke line join",
+              "optional": true,
+              "defaultValue": "miter",
+              "type": "string"
             },
             "opacity": {
               "description": "Opacity of shape",

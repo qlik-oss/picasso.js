@@ -29,6 +29,7 @@ describe('line component', () => {
       d: 'M100,50L100,50L100,50L100,50',
       fill: 'none',
       stroke: '#ccc',
+      strokeLinejoin: 'miter',
       strokeWidth: 1,
       opacity: 1,
       data: { value: 1, label: '1' }
@@ -45,6 +46,7 @@ describe('line component', () => {
           line: {
             fill: 'red',
             stroke: 'green',
+            strokeLinejoin: 'round',
             strokeWidth: 4,
             strokeDasharray: '8 4'
           }
@@ -60,6 +62,7 @@ describe('line component', () => {
       d: 'M100,50L100,50L100,50L100,50',
       fill: 'none',
       stroke: 'green',
+      strokeLinejoin: 'round',
       strokeWidth: 4,
       strokeDasharray: '8 4',
       opacity: 1,
@@ -89,6 +92,7 @@ describe('line component', () => {
       d: 'M400,0L600,100L200,200',
       fill: 'none',
       stroke: '#ccc',
+      strokeLinejoin: 'miter',
       strokeWidth: 1,
       opacity: 1,
       data: { value: 2, label: '2' }
@@ -116,6 +120,7 @@ describe('line component', () => {
       d: 'M0,200L200,300M600,100L800,200',
       fill: 'none',
       stroke: '#ccc',
+      strokeLinejoin: 'miter',
       strokeWidth: 1,
       opacity: 1,
       data: { value: 2, label: '2' }
@@ -155,6 +160,7 @@ describe('line component', () => {
       d: 'M0,100L200,200L400,300L400,0L200,0L0,0Z',
       fill: 'blue',
       stroke: undefined,
+      strokeLinejoin: undefined,
       strokeWidth: undefined,
       opacity: 0.3,
       data: { value: 1, label: '1' }
@@ -201,6 +207,7 @@ describe('line component', () => {
         d: `${forward}${backward}`,
         fill: 'red',
         stroke: undefined,
+        strokeLinejoin: undefined,
         strokeWidth: undefined,
         opacity: 0.3,
         data: { value: 1, label: '1' }
@@ -213,6 +220,7 @@ describe('line component', () => {
         d: `${forward}`,
         fill: 'none',
         stroke: '#ccc',
+        strokeLinejoin: 'miter',
         strokeWidth: 1,
         opacity: 1,
         data: { value: 1, label: '1' }
@@ -225,6 +233,7 @@ describe('line component', () => {
         d: 'M0,100L200,200L400,300',
         fill: 'none',
         stroke: '#ccc',
+        strokeLinejoin: 'miter',
         strokeWidth: 1,
         opacity: 1,
         data: { value: 1, label: '1' }
@@ -258,6 +267,7 @@ describe('line component', () => {
         d: 'M0,100L200,200L400,100',
         fill: 'none',
         stroke: '#ccc',
+        strokeLinejoin: 'miter',
         strokeWidth: 1,
         opacity: 1,
         data: { value: 1, label: '1' }
@@ -270,6 +280,7 @@ describe('line component', () => {
         d: 'M0,300L200,400L400,300',
         fill: 'none',
         stroke: '#ccc',
+        strokeLinejoin: 'miter',
         strokeWidth: 1,
         opacity: 1,
         data: { value: 3, label: '3' }

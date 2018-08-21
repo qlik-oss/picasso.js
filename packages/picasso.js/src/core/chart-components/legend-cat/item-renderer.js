@@ -173,10 +173,12 @@ export function itemize({
       continue;
     }
 
+    const text = typeof sourceLabels[i].text !== 'undefined' ? sourceLabels[i].text : sourceLabels[i].data.label || '';
     label = extend({}, sourceLabels[i], { // create the displayObject here in order to measure it
       type: 'text',
       fontSize: `${parseInt(sourceLabels[i].fontSize, 10)}px`,
-      text: typeof sourceLabels[i].text !== 'undefined' ? sourceLabels[i].text : sourceLabels[i].data.label || ''
+      text,
+      title: text
     });
 
     item = {

@@ -113,6 +113,7 @@ export function renderer(sceneFn = sceneFactory) {
     ['opacity', 'globalAlpha'],
     ['globalAlpha', 'globalAlpha'],
     ['stroke-width', 'lineWidth'],
+    ['stroke-linejoin', 'lineJoin'],
     ['stroke-dasharray', 'setLineDash', toLineDash]
   ];
 

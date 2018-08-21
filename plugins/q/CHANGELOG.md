@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.11.0"></a>
+# [0.11.0](https://github.com/qlik-oss/picasso.js/compare/v0.10.4...v0.11.0) (2018-07-14)
+
+
+### Bug Fixes
+
+* **q:** use abbreviation pattern when qNumFormat.qType is U ([#139](https://github.com/qlik-oss/picasso.js/issues/139)) ([f508c69](https://github.com/qlik-oss/picasso.js/commit/f508c69))
+
+
+
+
 <a name="0.10.4"></a>
 ## [0.10.4](https://github.com/qlik-oss/picasso.js/compare/v0.10.3...v0.10.4) (2018-07-04)
 
