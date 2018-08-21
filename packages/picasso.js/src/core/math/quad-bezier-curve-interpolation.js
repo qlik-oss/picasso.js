@@ -3,9 +3,9 @@ import cubicToPoints from './cubic-bezier-curve-interpolation';
 function interpolate(t, s, cp, e) {
   const td = (1 - t);
 
-  return (Math.pow(td, 2) * s) +
-    (2 * td * t * cp) +
-    (Math.pow(t, 2) * e);
+  return (Math.pow(td, 2) * s)
+    + (2 * td * t * cp)
+    + (Math.pow(t, 2) * e);
 }
 
 function toCubic(s, cp, e) {

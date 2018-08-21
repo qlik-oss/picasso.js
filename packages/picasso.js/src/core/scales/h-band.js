@@ -209,4 +209,3 @@ export default function scaleHierarchicalBand(settings = {}, data = {}, resource
 
   return hBand;
 }
-

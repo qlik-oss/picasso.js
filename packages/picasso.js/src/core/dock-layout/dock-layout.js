@@ -176,7 +176,8 @@ function positionComponents(components, logicalContainerRect, reducedRect, conta
   components.sort((a, b) => {
     if (/^@/.test(b.config.dock())) {
       return -1;
-    } else if (/^@/.test(a.config.dock())) {
+    }
+    if (/^@/.test(a.config.dock())) {
       return 1;
     }
     return a.config.displayOrder() - b.config.displayOrder();
@@ -258,14 +259,14 @@ function checkShowSettings(components, hiddenComponents, settings, logicalContai
     const minimumLayoutMode = c.config.minimumLayoutMode();
     let show = c.config.show();
     if (show && typeof minimumLayoutMode === 'object') {
-      show = layoutModes[minimumLayoutMode.width] &&
-        layoutModes[minimumLayoutMode.height] &&
-        logicalContainerRect.width >= layoutModes[minimumLayoutMode.width].width &&
-        logicalContainerRect.height >= layoutModes[minimumLayoutMode.height].height;
+      show = layoutModes[minimumLayoutMode.width]
+        && layoutModes[minimumLayoutMode.height]
+        && logicalContainerRect.width >= layoutModes[minimumLayoutMode.width].width
+        && logicalContainerRect.height >= layoutModes[minimumLayoutMode.height].height;
     } else if (show && minimumLayoutMode !== undefined) {
-      show = layoutModes[minimumLayoutMode] &&
-        logicalContainerRect.width >= layoutModes[minimumLayoutMode].width &&
-        logicalContainerRect.height >= layoutModes[minimumLayoutMode].height;
+      show = layoutModes[minimumLayoutMode]
+        && logicalContainerRect.width >= layoutModes[minimumLayoutMode].width
+        && logicalContainerRect.height >= layoutModes[minimumLayoutMode].height;
     }
     if (!show) {
       components.splice(i, 1);

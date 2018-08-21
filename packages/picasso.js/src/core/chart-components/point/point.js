@@ -102,8 +102,7 @@ function getPointSizeLimits(x, y, width, height, limits) {
 function createDisplayPoints(dataPoints, {
   width, height
 }, pointSize, shapeFn) {
-  return dataPoints.filter(p =>
-    !isNaN(p.x + p.y)).map((p) => {
+  return dataPoints.filter(p => !isNaN(p.x + p.y)).map((p) => {
     const s = notNumber(p.size) ? DEFAULT_ERROR_SETTINGS.errorShape : p;
     const size = pointSize.min + (s.size * (pointSize.max - pointSize.min));
     const shapeSpec = {

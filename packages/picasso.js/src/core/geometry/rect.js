@@ -1,7 +1,7 @@
 import {
   pointsToLine,
   pointsToRect
-} from '../geometry/util';
+} from './util';
 import NarrowPhaseCollision from '../math/narrow-phase-collision';
 
 /**

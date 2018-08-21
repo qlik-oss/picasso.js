@@ -59,10 +59,12 @@ function insertHyphenAndJump(state, token, iterator) {
 
     if (!token.hyphenation || !pairToken.hyphenation || token.index === 0) {
       return token;
-    } else if (state.width + state.hyphens.metrics.width <= state.maxWidth) {
+    }
+    if (state.width + state.hyphens.metrics.width <= state.maxWidth) {
       state.line += state.hyphens.char;
       return token;
-    } else if (state.line.length === 1) {
+    }
+    if (state.line.length === 1) {
       return token;
     }
 

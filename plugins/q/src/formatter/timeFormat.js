@@ -1,20 +1,9 @@
 import dateFormatFactory from './parts/qs-date-formatter';
+import { TYPES } from './constants';
 
 export function QlikTimeToDate(value) {
   return new Date(1899, 11, 30 + Math.floor(value), 0, 0, 0, 1000 * 24 * 60 * 60 * (value - Math.floor(value)));
 }
-
-export const TYPES = {
-  AUTO: 'U',
-  INTEGER: 'I',
-  NUMBER: 'R',
-  FIXED_TO: 'F',
-  MONEY: 'M',
-  DATE: 'D',
-  TIME: 'T',
-  DATE_TIME: 'TS',
-  INTERVAL: 'IV'
-};
 
 export default function formatter(pattern, qtype = 'TS', localeInfo = null) {
   let qformat = dateFormatFactory(localeInfo, pattern, qtype);

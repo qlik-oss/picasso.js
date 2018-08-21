@@ -1,5 +1,5 @@
 {
-  "spec": "0.x",
+  "scriptappy": "1.0.0",
   "info": {
     "name": "picasso.js",
     "description": "A charting library streamlined for building visualizations for the Qlik Sense Analytics platform.",
@@ -156,7 +156,7 @@
           "params": [],
           "emits": [
             {
-              "type": "#/definitions/brush/events/start"
+              "type": "#/definitions/brush/events/end"
             }
           ]
         },
@@ -201,7 +201,8 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "type": "any"
             }
           ],
           "emits": [
@@ -262,7 +263,8 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "type": "any"
             }
           ],
           "examples": [
@@ -324,7 +326,8 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "type": "any"
             }
           ],
           "examples": [
@@ -364,7 +367,8 @@
                 {
                   "type": "number"
                 }
-              ]
+              ],
+              "type": "any"
             }
           ],
           "returns": {
@@ -1005,7 +1009,8 @@
                     {
                       "type": "#/definitions/component--box/definitions/settings/definitions/majorReference"
                     }
-                  ]
+                  ],
+                  "type": "any"
                 }
               }
             },
@@ -1464,7 +1469,8 @@
                     {
                       "type": "function"
                     }
-                  ]
+                  ],
+                  "type": "any"
                 },
                 "fontFamily": {
                   "optional": true,
@@ -1490,7 +1496,8 @@
                           {
                             "type": "function"
                           }
-                        ]
+                        ],
+                        "type": "any"
                       },
                       "linkData": {
                         "description": "Link data to the label",
@@ -1574,7 +1581,8 @@
                           {
                             "type": "function"
                           }
-                        ]
+                        ],
+                        "type": "any"
                       },
                       "linkData": {
                         "description": "Link data to the label",
@@ -1596,7 +1604,8 @@
                           {
                             "type": "function"
                           }
-                        ]
+                        ],
+                        "type": "any"
                       }
                     },
                     "kind": "object"
@@ -1624,7 +1633,8 @@
                     {
                       "type": "function"
                     }
-                  ]
+                  ],
+                  "type": "any"
                 },
                 "fontFamily": {
                   "optional": true,
@@ -1650,7 +1660,8 @@
                           {
                             "type": "function"
                           }
-                        ]
+                        ],
+                        "type": "any"
                       },
                       "linkData": {
                         "description": "Link data to the label",
@@ -1826,7 +1837,15 @@
                   "entries": {
                     "class": {
                       "optional": true,
-                      "type": "object<string, boolean>"
+                      "type": "object",
+                      "generics": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "boolean"
+                        }
+                      ]
                     },
                     "content": {
                       "type": "function"
@@ -2380,7 +2399,8 @@
         {
           "type": "#/definitions/datum-accessor"
         }
-      ]
+      ],
+      "type": "any"
     },
     "datum-number": {
       "kind": "union",
@@ -2394,7 +2414,8 @@
         {
           "type": "#/definitions/datum-accessor"
         }
-      ]
+      ],
+      "type": "any"
     },
     "component--range": {
       "kind": "object",
@@ -2691,7 +2712,8 @@
                 {
                   "type": "string"
                 }
-              ]
+              ],
+              "type": "any"
             },
             "vAlign": {
               "description": "Alignment property top to bottom (0 = top, 1 = bottom). Also supports string ('top', 'center', 'middle', 'bottom')",
@@ -2705,7 +2727,8 @@
                 {
                   "type": "string"
                 }
-              ]
+              ],
+              "type": "any"
             },
             "maxWidth": {
               "description": "The maximum relative width to the width of the rendering area (see maxWidthPx below aswell)",
@@ -2804,7 +2827,8 @@
             {
               "type": "function"
             }
-          ]
+          ],
+          "type": "any"
         },
         "settings": {
           "description": "Text settings",
@@ -2933,7 +2957,8 @@
             {
               "type": "Object"
             }
-          ]
+          ],
+          "type": "any"
         },
         "dock": {
           "description": "left, right, top or bottom",
@@ -3086,7 +3111,8 @@
                 {
                   "type": "#/definitions/circle"
                 }
-              ]
+              ],
+              "type": "any"
             },
             {
               "name": "opts",
@@ -3239,7 +3265,8 @@
                 {
                   "type": "object"
                 }
-              ]
+              ],
+              "type": "any"
             }
           ],
           "returns": {
@@ -3264,7 +3291,8 @@
                 {
                   "type": "object"
                 }
-              ]
+              ],
+              "type": "any"
             }
           ],
           "returns": {
@@ -3340,76 +3368,6 @@
         },
         "data": {
           "type": "any"
-        }
-      }
-    },
-    "dataset": {
-      "kind": "interface",
-      "params": [],
-      "entries": {
-        "key": {
-          "description": "Get the key identifying this dataset",
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "string"
-          }
-        },
-        "raw": {
-          "description": "Get the raw data",
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "any"
-          }
-        },
-        "field": {
-          "description": "Find a field within this dataset",
-          "kind": "function",
-          "params": [
-            {
-              "name": "query",
-              "description": "The field to find",
-              "type": "string"
-            }
-          ],
-          "returns": {
-            "type": "#/definitions/field"
-          }
-        },
-        "fields": {
-          "description": "Get all fields within this dataset",
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "kind": "array",
-            "items": {
-              "type": "#/definitions/field"
-            }
-          }
-        },
-        "extract": {
-          "description": "Extract data items from this dataset",
-          "kind": "function",
-          "params": [
-            {
-              "name": "config",
-              "type": "#/definitions/data-extract-config"
-            }
-          ],
-          "returns": {
-            "kind": "array",
-            "items": {
-              "type": "#/definitions/datum-extract"
-            }
-          }
-        },
-        "hierarchy": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "null"
-          }
         }
       }
     },
@@ -3542,6 +3500,76 @@
               "description": "The source field",
               "type": "string"
             }
+          }
+        }
+      }
+    },
+    "dataset": {
+      "kind": "interface",
+      "params": [],
+      "entries": {
+        "key": {
+          "description": "Get the key identifying this dataset",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "string"
+          }
+        },
+        "raw": {
+          "description": "Get the raw data",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "any"
+          }
+        },
+        "field": {
+          "description": "Find a field within this dataset",
+          "kind": "function",
+          "params": [
+            {
+              "name": "query",
+              "description": "The field to find",
+              "type": "string"
+            }
+          ],
+          "returns": {
+            "type": "#/definitions/field"
+          }
+        },
+        "fields": {
+          "description": "Get all fields within this dataset",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "kind": "array",
+            "items": {
+              "type": "#/definitions/field"
+            }
+          }
+        },
+        "extract": {
+          "description": "Extract data items from this dataset",
+          "kind": "function",
+          "params": [
+            {
+              "name": "config",
+              "type": "#/definitions/data-extract-config"
+            }
+          ],
+          "returns": {
+            "kind": "array",
+            "items": {
+              "type": "#/definitions/datum-extract"
+            }
+          }
+        },
+        "hierarchy": {
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "null"
           }
         }
       }
@@ -3715,7 +3743,18 @@
         "layoutModes": {
           "description": "Dictionary with named sizes",
           "optional": true,
-          "type": "object<string, {width: number, height: number}>"
+          "type": "object",
+          "generics": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "{width:number"
+            },
+            {
+              "type": "height:number}"
+            }
+          ]
         }
       }
     },
@@ -4057,12 +4096,19 @@
               "kind": "union",
               "items": [
                 {
-                  "type": "Array<number>"
+                  "kind": "array",
+                  "items": {
+                    "type": "number"
+                  }
                 },
                 {
-                  "type": "Array<object>"
+                  "kind": "array",
+                  "items": {
+                    "type": "object"
+                  }
                 }
-              ]
+              ],
+              "type": "any"
             },
             "count": {
               "optional": true,
@@ -4149,7 +4195,8 @@
             {
               "type": "#/definitions/gradient-def"
             }
-          ]
+          ],
+          "type": "any"
         },
         "stroke": {
           "description": "{@link https://www.w3.org/TR/fill-stroke-3/#propdef-stroke}",
@@ -4162,7 +4209,8 @@
             {
               "type": "#/definitions/gradient-def"
             }
-          ]
+          ],
+          "type": "any"
         },
         "strokeWidth": {
           "description": "{@link https://www.w3.org/TR/fill-stroke-3/#propdef-stroke-width}",
@@ -4178,9 +4226,13 @@
               "type": "string"
             },
             {
-              "type": "Array<number>"
+              "kind": "array",
+              "items": {
+                "type": "number"
+              }
             }
-          ]
+          ],
+          "type": "any"
         },
         "opacity": {
           "description": "{@link https://www.w3.org/TR/css-color-4/#propdef-opacity}",
@@ -4459,6 +4511,7 @@
       "description": "Read-only object representing a node on the scene.",
       "kind": "class",
       "constructor": {
+        "kind": "function",
         "params": []
       },
       "entries": {
@@ -4507,7 +4560,8 @@
             {
               "type": "#/definitions/path"
             }
-          ]
+          ],
+          "type": "any"
         },
         "desc": {
           "description": "Node description",
@@ -5143,17 +5197,41 @@
             "tooltipClass": {
               "description": "Set tooltip class.",
               "optional": true,
-              "type": "object<string, boolean>"
+              "type": "object",
+              "generics": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "boolean"
+                }
+              ]
             },
             "contentClass": {
               "description": "Set content class.",
               "optional": true,
-              "type": "object<string, boolean>"
+              "type": "object",
+              "generics": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "boolean"
+                }
+              ]
             },
             "arrowClass": {
               "description": "Set arrow class.",
               "optional": true,
-              "type": "object<string, boolean>"
+              "type": "object",
+              "generics": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "boolean"
+                }
+              ]
             },
             "direction": {
               "description": "Content direction [ltr | rtl]",
@@ -5300,7 +5378,8 @@
                 {
                   "type": "#/definitions/polygon"
                 }
-              ]
+              ],
+              "type": "any"
             }
           ],
           "returns": {

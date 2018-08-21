@@ -271,8 +271,8 @@ class NarrowPhaseCollision {
 
     const [p1, p2] = lineToPoints(line);
 
-    return NarrowPhaseCollision.testPolygonPoint(polygon, p1) ||
-      NarrowPhaseCollision.testPolygonPoint(polygon, p2);
+    return NarrowPhaseCollision.testPolygonPoint(polygon, p1)
+      || NarrowPhaseCollision.testPolygonPoint(polygon, p2);
   }
 
   /**
@@ -310,10 +310,10 @@ class NarrowPhaseCollision {
     }
 
     const [p1, p2, p3, p4] = rectToPoints(rect);
-    return NarrowPhaseCollision.testPolygonPoint(polygon, p1) ||
-      NarrowPhaseCollision.testPolygonPoint(polygon, p2) ||
-      NarrowPhaseCollision.testPolygonPoint(polygon, p3) ||
-      NarrowPhaseCollision.testPolygonPoint(polygon, p4);
+    return NarrowPhaseCollision.testPolygonPoint(polygon, p1)
+      || NarrowPhaseCollision.testPolygonPoint(polygon, p2)
+      || NarrowPhaseCollision.testPolygonPoint(polygon, p3)
+      || NarrowPhaseCollision.testPolygonPoint(polygon, p4);
   }
 
   /**
@@ -336,10 +336,10 @@ class NarrowPhaseCollision {
       return false;
     }
 
-    return rect1.x <= rect2.x + rect2.width &&
-      rect2.x <= rect1.x + rect1.width &&
-      rect1.y <= rect2.y + rect2.height &&
-      rect2.y <= rect1.y + rect1.height;
+    return rect1.x <= rect2.x + rect2.width
+      && rect2.x <= rect1.x + rect1.width
+      && rect1.y <= rect2.y + rect2.height
+      && rect2.y <= rect1.y + rect1.height;
   }
 
   /**
@@ -358,10 +358,10 @@ class NarrowPhaseCollision {
   static testRectPoint(rect, point) {
     if (rectHasNoSize(rect)) { return false; }
 
-    return point.x >= rect.x &&
-      point.x <= rect.x + rect.width &&
-      point.y >= rect.y &&
-      point.y <= rect.y + rect.height;
+    return point.x >= rect.x
+      && point.x <= rect.x + rect.width
+      && point.y >= rect.y
+      && point.y <= rect.y + rect.height;
   }
 
   /**

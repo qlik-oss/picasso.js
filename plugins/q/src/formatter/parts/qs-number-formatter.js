@@ -381,7 +381,8 @@ class NumberFormatter {
     if (value === 0 && prep.zero) {
       prep = prep.zero;
       return prep.pattern;
-    } else if (value < 0 && prep.negative) {
+    }
+    if (value < 0 && prep.negative) {
       prep = prep.negative;
       value = -value;
     } else {
@@ -497,7 +498,8 @@ class NumberFormatter {
       value = value.replace(prep.numericRegex, (m) => {
         if (m === t) {
           return prep.groupTemp;
-        } else if (m === d) {
+        }
+        if (m === d) {
           return prep.decTemp;
         }
         return '';

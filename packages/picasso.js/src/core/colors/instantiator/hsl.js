@@ -1,4 +1,4 @@
-import HslaColor from './../hsla-color';
+import HslaColor from '../hsla-color';
 
 const rHsl = /^\s*hsl\(\s*(-?\d+\.?\d*)\s*,\s*(-?\d+\.?\d*%{1})\s*,\s*(-?\d+\.?\d*%{1})\s*\)$/i,
   rHsla = /^\s*hsla\(\s*(-?\d+\.?\d*)\s*,\s*(-?\d+\.?\d*%{1})\s*,\s*(-?\d+\.?\d*%{1})\s*,\s*(-?\d+\.?\d*)\s*\)\s*$/i;

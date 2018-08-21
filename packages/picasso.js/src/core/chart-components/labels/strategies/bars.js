@@ -137,12 +137,12 @@ export function findBestPlacement({
     boundaries.push(testBounds);
     largest = !p || testBounds.height > largest.height ? testBounds : largest;
 
-    if (orientation === 'v' && ((fitsHorizontally && testBounds.height > measured.height * LINE_HEIGHT) ||
-      (!fitsHorizontally && testBounds.height > measured.width))) {
+    if (orientation === 'v' && ((fitsHorizontally && testBounds.height > measured.height * LINE_HEIGHT)
+      || (!fitsHorizontally && testBounds.height > measured.width))) {
       bounds = testBounds;
       break;
-    } else if (orientation === 'h' && (testBounds.height > measured.height) &&
-      (testBounds.width > measured.width)) {
+    } else if (orientation === 'h' && (testBounds.height > measured.height)
+      && (testBounds.width > measured.width)) {
       bounds = testBounds;
       break;
     }
@@ -359,12 +359,9 @@ export function bars({
 
   defaults.fontSize = parseInt(defaults.fontSize, 10);
 
-  const labelSettings = settings.labels.map(labelSetting =>
-    extend({}, defaults, settings, labelSetting));
+  const labelSettings = settings.labels.map(labelSetting => extend({}, defaults, settings, labelSetting));
 
-  const placementSettings = settings.labels.map(labelSetting =>
-    labelSetting.placements.map(placement =>
-      extend({}, defaults, settings, labelSetting, placement)));
+  const placementSettings = settings.labels.map(labelSetting => labelSetting.placements.map(placement => extend({}, defaults, settings, labelSetting, placement)));
 
   const {
     fitsHorizontally,

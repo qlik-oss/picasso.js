@@ -104,7 +104,8 @@ function getBubbleLabel(state, value, range) {
 
   if (typeof state.settings.bubbles.label === 'function') {
     return state.settings.bubbles.label(labelShape.data);
-  } else if (Array.isArray(compConfig.data) && compConfig.data.length) {
+  }
+  if (Array.isArray(compConfig.data) && compConfig.data.length) {
     return labelShape.data[compConfig.data[0]].label;
   }
 

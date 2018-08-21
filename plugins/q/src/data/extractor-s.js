@@ -29,7 +29,8 @@ export function getFieldAccessor(field, page, deps) {
 
   if (attrDimIdx >= 0) {
     return Function('row', `return ${path}.qAttrDims.qValues[${attrDimIdx}];`); // eslint-disable-line no-new-func
-  } else if (attrIdx >= 0) {
+  }
+  if (attrIdx >= 0) {
     return Function('row', `return ${path}.qAttrExps.qValues[${attrIdx}];`); // eslint-disable-line no-new-func
   }
 

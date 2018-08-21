@@ -1,4 +1,4 @@
-import { mappedAttributes } from '../scene-graph//attributes';
+import { mappedAttributes } from '../scene-graph/attributes';
 import circle from './circle';
 import diamond from './diamond';
 import saltire from './saltire';
