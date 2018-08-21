@@ -12,7 +12,10 @@ describe('render', () => {
       }
     };
     context = {
-      renderer: { render: sinon.spy() },
+      renderer: {
+        render: sinon.spy(),
+        element: sinon.stub().returns({ children: [0] })
+      },
       h: sinon.stub().returns('CALLED'),
       style: {
         content: {
