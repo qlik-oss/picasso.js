@@ -5,10 +5,11 @@
     "plugins/*",
     "docs"
   ],
-  "commands": {
+  "command": {
     "publish": {
       "message": "chore(release): %s",
-      "ignore": [
+      "allowBranch": "master",
+      "ignoreChanges": [
         "test-utils",
         "docs"
       ]

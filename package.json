@@ -5,6 +5,7 @@
     "url": "ssh://git@github.com:qlik-oss/picasso.js.git"
   },
   "scripts": {
+    "postinstall": "npm run bootstrap",
     "bootstrap": "lerna bootstrap --hoist",
     "build": "cross-env NODE_ENV=production lerna run build --concurrency 99",
     "build:dev": "lerna run build --concurrency 99",
@@ -38,10 +39,8 @@
     "eslint-plugin-mocha": "^5.0.0",
     "extend": "^3.0.1",
     "globby": "^8.0.1",
-    "lerna": "^2.11.0",
-    "mocha": "^5.1.1",
-    "protractor": "^5.3.2",
-    "rimraf": "^2.6.2",
+    "lerna": "^3.1.1",
+    "protractor": "^5.4.0",
     "webpack": "^4.12.1",
     "webpack-cli": "^3.0.8",
     "yargs": "^11.0.0"
