@@ -52,7 +52,7 @@ class Footer extends React.Component {
             src={this.props.config.baseUrl + 'img/QlikLogo-White.png'}
             alt="Qlik Open Source"
             width="170"
-            height="45"
+            height="85"
           />
         </a>
         <section className="copyright">
