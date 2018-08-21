@@ -293,7 +293,7 @@ function alignToSlice({
     outerRadius
   } = node.desc.slice;
 
-  // origin is at 12 o clock, clockwise, so it is transform to origin at 3 a clock
+  // Node origin is at 12 o clock, clockwise, but Math uses 3 a clock, so it's transformed to origin at 3 a clock
   const middle = ((start + end) / 2) - (Math.PI / 2);
   const PI2 = Math.PI * 2;
   const radians = ((middle % PI2) + PI2) % PI2;
