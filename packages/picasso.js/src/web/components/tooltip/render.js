@@ -44,20 +44,11 @@ export default function render(data, placement, {
     display: 'inline-block'
   };
 
-  let element;
   const tooltipNode = h(
     'div',
     {
       style: extend(tooltipDefaultStyle, placement.computedTooltipStyle),
       class: extend({ 'pic-tooltip': true }, classes.tooltip),
-      hook: {
-        insert: (vnode) => {
-          element = vnode.elm;
-        },
-        postpatch: (oldNode, vnode) => {
-          element = vnode.elm;
-        }
-      },
       attrs: {
         dir: props.direction
       }
@@ -67,5 +58,5 @@ export default function render(data, placement, {
 
   renderer.render([tooltipNode]);
 
-  return element;
+  return renderer.element().children[0];
 }
