@@ -1,17 +1,9 @@
+// import augmentH from './augment-hierarchy';
 import extend from 'extend';
-import augmentH from './augment-hierarchy';
 import SExtractor from './extractor-s';
-import TExtractor from './extractor-t';
+import { extract as TExtractor, augment as augmentTree } from './extractor-t';
 import { findField } from './util';
 import field from './field';
-
-function hierarchy(config = {}, dataset, cache, deps) {
-  const cube = dataset.raw();
-  if (cube.qMode !== 'K') {
-    return null;
-  }
-  return augmentH(config, dataset, cache, deps);
-}
 
 function createFields(path, obj, prefix, parentKey, opts) {
   return (obj[path] || []).map((meta, i) => {
@@ -57,7 +49,8 @@ export default function q({
     cube,
     localeInfo: config.localeInfo,
     fieldExtractor: null,
-    pages: null
+    pages: null,
+    hierarchy: () => null
   };
 
   const dataset = {
@@ -66,18 +59,20 @@ export default function q({
     field: query => findField(query, opts),
     fields: () => cache.fields.slice(),
     extract: extractionConfig => opts.extractor(extractionConfig, dataset, cache, deps),
-    hierarchy: hierarchyConfig => hierarchy(hierarchyConfig, dataset, cache, deps),
+    hierarchy: hierarchyConfig => opts.hierarchy(hierarchyConfig, dataset, cache, deps),
     _cache: () => cache
   };
 
   if (cube.qMode === 'K' || cube.qMode === 'T' || (!cube.qMode && cube.qNodesOnDim)) {
     opts.extractor = TExtractor;
+    opts.hierarchy = augmentTree;
     opts.pages = cube.qMode === 'K' ? cube.qStackedDataPages : cube.qTreeDataPages;
   } else if (cube.qMode === 'S') {
     opts.extractor = SExtractor;
     opts.pages = cube.qDataPages;
+    opts.hierarchy = augmentTree;
   } else {
-    opts.ectractor = () => []; // TODO - throw unsupported error?
+    opts.extractor = () => []; // TODO - throw unsupported error?
   }
 
   opts.fieldExtractor = f => opts.extractor({ field: f }, dataset, cache, deps);
