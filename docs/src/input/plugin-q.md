@@ -253,6 +253,21 @@ const selection = picassoQ.selections(b, {
 // }
 ```
 
+It is also possible to get a selectPivotCells call by providing the layout: 
+
+```js
+const selection = picassoQ.selections(b, { byCells: true }, layout)[0];
+// {
+//   method: 'selectPivotCells',
+//   params: [
+//     '/qHyperCubeDef',
+//     [{qType: 'L', qCol: 1, qRow: 10}, {qType: 'L', qCol: 1, qRow: 13}], // Array of NxSelectionCell for pivot data
+//     
+//   ]
+// }
+```
+
+
 ### By attribute dimension
 
 Brush on attribute dimension values:

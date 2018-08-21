@@ -135,7 +135,8 @@ describe('scales', () => {
     deps.scale.has.withArgs('h-band').returns(true);
     deps.scale.get.returns(scaleFn);
     const dataset = {
-      hierarchy: sinon.stub().returns({})
+      hierarchy: sinon.stub().returns({}),
+      fields: () => []
     };
     const datasetFn = () => dataset;
     const s = create({
