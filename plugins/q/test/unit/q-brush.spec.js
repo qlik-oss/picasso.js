@@ -2,6 +2,7 @@ import qBrush, { extractFieldFromId } from '../../src/brush/q-brush';
 
 describe('q-brush', () => {
   let brush;
+  let layout;
 
   beforeEach(() => {
     brush = {
@@ -200,13 +201,6 @@ describe('q-brush', () => {
   });
 
   describe('selectPivotCells', () => {
-    const layout = {
-      qHyperCube: {
-        qEffectiveInterColumnSortOrder: [],
-        qMode: 'T'
-      }
-    };
-
     beforeEach(() => {
       brush.brushes.returns([{
         id: 'layers/0/qHyperCube/qDimensionInfo/2',
@@ -222,7 +216,12 @@ describe('q-brush', () => {
         }
       }]);
 
-      layout.qHyperCube.qEffectiveInterColumnSortOrder = [];
+      layout = {
+        qHyperCube: {
+          qEffectiveInterColumnSortOrder: [],
+          qMode: 'T'
+        }
+      };
     });
 
     it('should have method="selectPivotCells"', () => {
