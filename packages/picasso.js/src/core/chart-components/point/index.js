@@ -15,4 +15,3 @@ export default function pointMarker(picasso) {
 
   picasso.component('point-marker', pointMarkerComponent); // temporary backwards compatibility - DEPRECATED
 }
-

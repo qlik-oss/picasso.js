@@ -1,4 +1,6 @@
-import { add, sub, projectOnto, distance } from './vector';
+import {
+  add, sub, projectOnto, distance
+} from './vector';
 
 const EPSILON = 1e-12;
 
@@ -25,8 +27,8 @@ export function isCollinear(p1, p2, p3, e = EPSILON) {
  * @ignore
  */
 export function rectContainsRect(a, b) {
-  return a.x >= b.x &&
-        a.x + a.width <= b.x + b.width &&
-        a.y >= b.y &&
-        a.y + a.height <= b.y + b.height;
+  return a.x >= b.x
+        && a.x + a.width <= b.x + b.width
+        && a.y >= b.y
+        && a.y + a.height <= b.y + b.height;
 }

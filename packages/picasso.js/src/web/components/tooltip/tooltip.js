@@ -49,9 +49,9 @@ const DEFAULT_SETTINGS = {
    * @type {function=}
    * @returns {boolean}
    */
-  isEqual: (prev, curr) => prev.length &&
-    prev.length === curr.length &&
-    prev.every((p, i) => curr[i] && JSON.stringify(p.data) === JSON.stringify(curr[i].data)),
+  isEqual: (prev, curr) => prev.length
+    && prev.length === curr.length
+    && prev.every((p, i) => curr[i] && JSON.stringify(p.data) === JSON.stringify(curr[i].data)),
   /**
    * @typedef {object=}
    */

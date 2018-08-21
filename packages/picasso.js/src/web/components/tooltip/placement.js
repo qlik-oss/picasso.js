@@ -53,7 +53,8 @@ function isInsideArea(area, vx, vy, width, height, offset) {
 
   if (rect.x < 0 || rect.y < 0) {
     return false;
-  } else if (rect.x + rect.width > area.width || rect.y + rect.height > area.height) {
+  }
+  if (rect.x + rect.width > area.width || rect.y + rect.height > area.height) {
     return false;
   }
   return true;
@@ -76,10 +77,10 @@ export function calcOffset({
   let offsetX = rect.x < 0 ? -rect.x : 0;
   let offsetY = rect.y < 0 ? -rect.y : 0;
 
-  offsetX += rect.x + rect.width > area.width ?
-    -((rect.x + rect.width) - area.width) : 0;
-  offsetY += rect.y + rect.height > area.height ?
-    -((rect.y + rect.height) - area.height) : 0;
+  offsetX += rect.x + rect.width > area.width
+    ? -((rect.x + rect.width) - area.width) : 0;
+  offsetY += rect.y + rect.height > area.height
+    ? -((rect.y + rect.height) - area.height) : 0;
 
   return {
     x: offsetX,
@@ -323,8 +324,8 @@ function alignToSlice({
 }
 
 function getComponentBoundsFromNode(node, pointer, chart) {
-  const comp = node.key ? chart.component(node.key) :
-    chart.componentsFromPoint({ x: pointer.clientX, y: pointer.clientY })[0];
+  const comp = node.key ? chart.component(node.key)
+    : chart.componentsFromPoint({ x: pointer.clientX, y: pointer.clientY })[0];
 
   if (!comp) {
     return {

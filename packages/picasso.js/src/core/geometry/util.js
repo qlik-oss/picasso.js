@@ -95,13 +95,17 @@ export function getShapeType(shape) {
 
   if (isNumber(cx) && isNumber(cy) && isNumber(r)) {
     return 'circle';
-  } else if (isNumber(x1) && isNumber(x2) && isNumber(y1) && isNumber(y2)) {
+  }
+  if (isNumber(x1) && isNumber(x2) && isNumber(y1) && isNumber(y2)) {
     return 'line';
-  } else if (isNumber(x) && isNumber(y) && isNumber(width) && isNumber(height)) {
+  }
+  if (isNumber(x) && isNumber(y) && isNumber(width) && isNumber(height)) {
     return 'rect';
-  } else if (isNumber(x) && isNumber(y)) {
+  }
+  if (isNumber(x) && isNumber(y)) {
     return 'point';
-  } else if (Array.isArray(vertices)) {
+  }
+  if (Array.isArray(vertices)) {
     return 'polygon';
   }
   return null;

@@ -12,7 +12,8 @@ import { scaleWithSize } from '../../scales';
 function alignTransform({ align, inner }) {
   if (align === 'left') {
     return { x: inner.width + inner.x };
-  } else if (align === 'right' || align === 'bottom') {
+  }
+  if (align === 'right' || align === 'bottom') {
     return inner;
   }
   return { y: inner.y + inner.height };
@@ -23,7 +24,8 @@ function resolveAlign(align, dock) {
   const vertical = ['left', 'right'];
   if (horizontal.indexOf(align) !== -1 && vertical.indexOf(dock) === -1) {
     return align;
-  } else if (vertical.indexOf(align) !== -1 && horizontal.indexOf(dock) === -1) {
+  }
+  if (vertical.indexOf(align) !== -1 && horizontal.indexOf(dock) === -1) {
     return align;
   }
   return dock; // Invalid align, return current dock as default
@@ -58,7 +60,8 @@ function updateActiveMode(state, settings, isDiscrete) {
 
   if (mode === 'auto') {
     return state.labels.activeMode;
-  } else if (['layered', 'tilted'].indexOf(settings.labels.mode) !== -1 && ['top', 'bottom'].indexOf(settings.dock) !== -1) {
+  }
+  if (['layered', 'tilted'].indexOf(settings.labels.mode) !== -1 && ['top', 'bottom'].indexOf(settings.dock) !== -1) {
     return mode;
   }
   return 'horizontal';

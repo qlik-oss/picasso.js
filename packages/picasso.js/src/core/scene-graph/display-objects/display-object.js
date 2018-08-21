@@ -3,9 +3,9 @@ import Node from '../node';
 import { create as geometry } from '../../geometry';
 import { create as geometryCollection } from '../../geometry/geometry-collection';
 import Matrix from '../../math/matrix';
-import resolveTransform from './../transform-resolver';
-import nodeSelector from './../node-selector';
-import createSceneNode from './../scene-node';
+import resolveTransform from '../transform-resolver';
+import nodeSelector from '../node-selector';
+import createSceneNode from '../scene-node';
 import { resolveCollionsOnNode, hasCollisionOnNode } from '../collision-resolver';
 import { assignMappedAttribute } from '../attributes';
 

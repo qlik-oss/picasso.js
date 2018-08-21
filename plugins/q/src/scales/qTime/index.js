@@ -72,7 +72,8 @@ export default function qTime(settings, data) {
         return ticks.concat(mt);
       }
       return ticks;
-    } else if (stgns.level === 'inner' && lvl.index === null) { // Use prop as condition instead to allow on any level?
+    }
+    if (stgns.level === 'inner' && lvl.index === null) { // Use prop as condition instead to allow on any level?
       return tickFn.createTicks(distance);
     }
     return [];

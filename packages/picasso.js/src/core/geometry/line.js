@@ -1,4 +1,4 @@
-import { pointsToLine, pointsToRect } from '../geometry/util';
+import { pointsToLine, pointsToRect } from './util';
 import NarrowPhaseCollision from '../math/narrow-phase-collision';
 
 /**

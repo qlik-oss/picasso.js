@@ -59,7 +59,8 @@ function attr(targets, attribute, defaultVal, index) {
     }
     // end of the chain, return default
     return defaultVal;
-  } else if (typeof target[attribute] === typeof defaultVal || target[attribute] === null) {
+  }
+  if (typeof target[attribute] === typeof defaultVal || target[attribute] === null) {
     // constant value of same type as default or explicitly set to null
     return validateValue(globalDefault, target[attribute]);
   }
@@ -70,7 +71,8 @@ function attr(targets, attribute, defaultVal, index) {
     const inner = attr(targets, attribute, defaultVal, index + 1);
     target[attribute].fn = (...args) => wrapper(globalDefault, inner, target[attribute], ...args);
     return target[attribute];
-  } else if (type === 'object') {
+  }
+  if (type === 'object') {
     return target[attribute];
   }
 

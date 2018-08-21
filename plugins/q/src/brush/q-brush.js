@@ -311,4 +311,3 @@ export default function qBrush(brush, opts = {}, layout) {
 
   return selections;
 }
-

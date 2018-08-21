@@ -29,9 +29,11 @@ export function refLabelDefaultSettings() {
 export function alignmentToNumber(align) {
   if (typeof align === 'undefined') {
     return 0;
-  } else if (typeof align === 'number' && isFinite(align)) {
+  }
+  if (typeof align === 'number' && isFinite(align)) {
     return align;
-  } else if (typeof align === 'string') {
+  }
+  if (typeof align === 'string') {
     switch (align) {
       case 'center':
       case 'middle':
@@ -160,8 +162,8 @@ export function createLineWithLabel({
     });
 
     if (
-      rect.x < -1 || (rect.x + rect.width) > (blueprint.width + 1) ||
-      rect.y < -1 || (rect.y + rect.height) > (blueprint.height + 1)
+      rect.x < -1 || (rect.x + rect.width) > (blueprint.width + 1)
+      || rect.y < -1 || (rect.y + rect.height) > (blueprint.height + 1)
     ) {
       // do not create labels if out of bounds
       rect = undefined;

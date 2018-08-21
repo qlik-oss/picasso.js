@@ -14,8 +14,7 @@ const rHex = /^\s*#([A-Fa-f0-9]{2})([A-f0-A-Fa-f0-9]{2})([A-Fa-f0-9]{2})\s*$/i,
  * hex( "#ffffff" );
 */
 export default function hex(colStr) {
-  const [r, g, b] = (rHex.exec(colStr) || rHexShort.exec(colStr) || []).slice(1).map(v =>
-    parseInt(v.length === 1 ? v + v : v, 16));
+  const [r, g, b] = (rHex.exec(colStr) || rHexShort.exec(colStr) || []).slice(1).map(v => parseInt(v.length === 1 ? v + v : v, 16));
 
   return new RgbaColor(r, g, b, 1);
 }

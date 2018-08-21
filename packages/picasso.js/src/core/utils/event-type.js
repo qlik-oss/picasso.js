@@ -23,9 +23,9 @@ export function isValidTapEvent(e, eventInfo) {
   const dx = isNaN(eventInfo.x) ? 0 : Math.abs(ee.clientX - eventInfo.x);
   const dy = isNaN(eventInfo.y) ? 0 : Math.abs(ee.clientY - eventInfo.y);
 
-  return (e.button === 0 || isTouch) &&
-    !eventInfo.multiTouch &&
-    dx <= 12 &&
-    dy <= 12 &&
-    dt <= 300;
+  return (e.button === 0 || isTouch)
+    && !eventInfo.multiTouch
+    && dx <= 12
+    && dy <= 12
+    && dt <= 300;
 }

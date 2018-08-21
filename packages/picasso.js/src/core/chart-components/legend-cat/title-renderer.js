@@ -69,4 +69,3 @@ export default function (legend) {
 
   return api;
 }
-

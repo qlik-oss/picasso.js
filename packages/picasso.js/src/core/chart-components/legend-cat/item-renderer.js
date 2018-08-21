@@ -233,24 +233,24 @@ export function extent(itemized, parallels) {
   const size = Math.ceil(count / parallels);
   const property = itemized.layout.orientation === 'horizontal' ? 'width' : 'height';
   const margin = property === 'width' ? 'horizontal' : 'vertical';
-  return (itemized.globalMetrics.maxItemBounds[property] * size) +
-    ((size - 1) * itemized.layout.margin[margin]);
+  return (itemized.globalMetrics.maxItemBounds[property] * size)
+    + ((size - 1) * itemized.layout.margin[margin]);
 }
 
 export function spread(itemized, parallels) {
   const size = parallels;
   const property = itemized.layout.orientation === 'horizontal' ? 'height' : 'width';
   const margin = property === 'width' ? 'horizontal' : 'vertical';
-  return (itemized.globalMetrics.maxItemBounds[property] * size) + // expected vertical size of items
-    ((size - 1) * itemized.layout.margin[margin]); // expected spacing between items
+  return (itemized.globalMetrics.maxItemBounds[property] * size) // expected vertical size of items
+    + ((size - 1) * itemized.layout.margin[margin]); // expected spacing between items
 }
 
 export function parallelize(availableExtent, availableSpread, itemized) {
   const count = itemized.items.length;
   const extentProperty = itemized.layout.orientation === 'horizontal' ? 'width' : 'height';
   const margin = extentProperty === 'width' ? 'horizontal' : 'vertical';
-  const extentInPx = (itemized.globalMetrics.maxItemBounds[extentProperty] * count) +
-    ((count - 1) * itemized.layout.margin[margin]);
+  const extentInPx = (itemized.globalMetrics.maxItemBounds[extentProperty] * count)
+    + ((count - 1) * itemized.layout.margin[margin]);
   let numNeeded = Math.ceil(extentInPx / availableExtent);
 
   if (availableSpread != null) {

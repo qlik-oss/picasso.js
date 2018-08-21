@@ -25,14 +25,12 @@ function resolve(path, obj) {
     } else if (Array.isArray(container)) {
       if (arr[i] && arr[i].indexOf('...') !== -1) {
         const minMax = arr[i].split('...');
-        container = container.filter((v, i2) =>
-          i2 >= +minMax[0] && i2 <= +minMax[1]);
+        container = container.filter((v, i2) => i2 >= +minMax[0] && i2 <= +minMax[1]);
       } else if (arr[i]) {
         const allowedIndexes = arr[i].split(',');
         container = container.filter((v, i2) => allowedIndexes.indexOf(`${i2}`) !== -1);
       }
-      return container.map(v =>
-        resolve(arr.slice(i + 1).join('/'), v));
+      return container.map(v => resolve(arr.slice(i + 1).join('/'), v));
     }
   }
 

@@ -25,7 +25,8 @@ const FILTERS = {
 
       if (!operator) {
         return typeof v !== 'undefined';
-      } else if (typeof v === 'undefined') {
+      }
+      if (typeof v === 'undefined') {
         return false;
       }
 

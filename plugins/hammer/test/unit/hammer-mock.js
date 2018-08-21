@@ -15,10 +15,12 @@ class Manager {
     this.element = element;
     this.gestures = [];
   }
+
   add(gesture) {
     gesture.manager = this;
     this.gestures.push(gesture);
   }
+
   remove(event) {
     let i = 0;
     for (; i < this.gestures.length; ++i) {
@@ -30,6 +32,7 @@ class Manager {
       this.gestures.splice(i, 1);
     }
   }
+
   get(event) {
     for (let i = 0; i < this.gestures.length; ++i) {
       if (this.gestures[i].opts.event === event) {
@@ -38,14 +41,17 @@ class Manager {
     }
     return null;
   }
+
   on(event, listener) {
     if (this.get(getBasicEvent(event)).opts.enable) {
       this.element.addEventListener(event, listener);
     }
   }
+
   off(event, listener) {
     this.element.removeEventListener(event, listener);
   }
+
   destroy() {
     this.gestures = [];
   }

@@ -343,6 +343,26 @@ export default function brush({
   const fn = {};
 
   /**
+   * Triggered when this brush is activated
+   * @event brush#start
+   * @type {string}
+   */
+
+  /**
+   * Triggered when this brush is updated
+   * @event brush#update
+   * @type {string}
+   * @param {Array<object>} added - The added items
+   * @param {Array<object>} removed - The removed items
+   */
+
+  /**
+   * Triggered when this brush is deactivated
+   * @event brush#end
+   * @type {string}
+   */
+
+  /**
    * Link this brush to another brush instance.
    *
    * When linked, the `target` will receive updates whenever this brush changes.
@@ -425,7 +445,7 @@ export default function brush({
    * Ends this brush context
    *
    * Ends this brush context and emits an 'end' event if it is not already ended.
-   * @emits brush#start
+   * @emits brush#end
    */
   fn.end = () => {
     if (!activated) {
@@ -913,7 +933,8 @@ export default function brush({
       status = status.filter(b => props.indexOf(b.key) !== -1);
       if (mode === 'and') {
         return !!status.length && !status.some(s => s.bool === false);
-      } else if (mode === 'xor') {
+      }
+      if (mode === 'xor') {
         return !!status.length && status.some(s => s.bool) && status.some(s => s.bool === false);
       }
       // !mode || mode === 'or'
@@ -1017,23 +1038,3 @@ export default function brush({
 
   return fn;
 }
-
-/**
- * Triggered when this brush is activated
- * @event brush#start
- * @type {string}
- */
-
-/**
- * Triggered when this brush is updated
- * @event brush#update
- * @type {string}
- * @param {Array<object>} added - The added items
- * @param {Array<object>} removed - The removed items
- */
-
-/**
- * Triggered when this brush is deactivated
- * @event brush#end
- * @type {string}
- */

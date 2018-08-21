@@ -23,15 +23,20 @@ class Transposer {
 
       if (firstChar === 'x') {
         return `y${rest}`;
-      } else if (firstChar === 'y') {
+      }
+      if (firstChar === 'y') {
         return `x${rest}`;
-      } else if (key === 'cx') {
+      }
+      if (key === 'cx') {
         return 'cy';
-      } else if (key === 'cy') {
+      }
+      if (key === 'cy') {
         return 'cx';
-      } else if (key === 'width') {
+      }
+      if (key === 'width') {
         return 'height';
-      } else if (key === 'height') {
+      }
+      if (key === 'height') {
         return 'width';
       }
     }
@@ -53,13 +58,17 @@ class Transposer {
 
       if (firstChar === 'x' || key === 'cx') {
         return coordinate * this.width;
-      } else if (key === 'width') {
+      }
+      if (key === 'width') {
         return coordinate * this.width;
-      } else if (key === 'r') {
+      }
+      if (key === 'r') {
         return coordinate * (!flipXY ? this.width : this.height);
-      } else if (firstChar === 'y' || key === 'cy') {
+      }
+      if (firstChar === 'y' || key === 'cy') {
         return coordinate * this.height;
-      } else if (key === 'height') {
+      }
+      if (key === 'height') {
         return coordinate * this.height;
       }
     }

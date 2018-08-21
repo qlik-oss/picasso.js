@@ -13,4 +13,3 @@ const type = 'line';
 export default function pointMarker(picasso) {
   picasso.component(type, component);
 }
-

@@ -11,7 +11,8 @@ const reg = registry();
 function toLineDash(p) {
   if (Array.isArray(p)) {
     return p;
-  } else if (typeof p === 'string') {
+  }
+  if (typeof p === 'string') {
     if (p.indexOf(',') !== -1) {
       return p.split(',');
     }
@@ -22,11 +23,11 @@ function toLineDash(p) {
 
 function dpiScale(g) {
   const dpr = typeof window === 'undefined' ? 1 : window.devicePixelRatio || 1;
-  const backingStorePixelRatio = g.webkitBackingStorePixelRatio ||
-    g.mozBackingStorePixelRatio ||
-    g.msBackingStorePixelRatio ||
-    g.oBackingStorePixelRatio ||
-    g.backingStorePixelRatio || 1;
+  const backingStorePixelRatio = g.webkitBackingStorePixelRatio
+    || g.mozBackingStorePixelRatio
+    || g.msBackingStorePixelRatio
+    || g.oBackingStorePixelRatio
+    || g.backingStorePixelRatio || 1;
   return dpr / backingStorePixelRatio;
 }
 

@@ -96,7 +96,8 @@ function isTiltedLabelOverlapping({
 }) {
   if (majorTicks.length < 2) {
     return false;
-  } else if (angle === 0) {
+  }
+  if (angle === 0) {
     return true; // TODO 0 angle should be considered non-tilted
   }
   const absAngle = Math.abs(angle);

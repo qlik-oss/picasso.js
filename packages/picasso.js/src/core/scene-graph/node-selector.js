@@ -25,7 +25,8 @@ const FILTERS = {
 
       if (!operator) { // TODO handle undefined differently for != operator? As display object may very well have a default rendering color
         return typeof v !== 'undefined';
-      } else if (typeof v === 'undefined') {
+      }
+      if (typeof v === 'undefined') {
         return false;
       }
 

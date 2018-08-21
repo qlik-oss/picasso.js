@@ -40,4 +40,3 @@ function assignMappedAttribute(target, source) {
 }
 
 export { mappedAttributes, assignMappedAttribute };
-

@@ -45,7 +45,8 @@ export function findField(query, { cache }) {
       }
     }
     return false;
-  } else if (typeof query === 'string') {
+  }
+  if (typeof query === 'string') {
     for (let i = 0; i < allFields.length; i++) {
       if (allFields[i].key() === query || allFields[i].title() === query) {
         return allFields[i];

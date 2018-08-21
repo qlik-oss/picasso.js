@@ -1,7 +1,7 @@
 const rimraf = require('rimraf');
 const fs = require('fs');
 const path = require('path');
-const spec = require('./spec.json');
+const spec = require('./scriptappy.json');
 
 const glob = require('glob');
 const handlebars = require('handlebars');

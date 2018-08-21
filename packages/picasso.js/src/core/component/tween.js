@@ -10,7 +10,8 @@ import {
 function nodeId(node, i) {
   if (node.data) {
     return node.data.value;
-  } else if (node.type === 'text') {
+  }
+  if (node.type === 'text') {
     return node.text;
   }
   return i;
