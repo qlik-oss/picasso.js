@@ -1,4 +1,4 @@
-import { hierarchy } from 'd3-hierarchy';
+import { hierarchy, stratify } from 'd3-hierarchy';
 
 import picker from '../json-path-resolver';
 
@@ -24,6 +24,7 @@ export function getFieldDepth(field, { cube }) {
   let remainder = key;
 
   const treeOrder = cube.qEffectiveInterColumnSortOrder;
+  const columnOrder = (cube.qColumnOrder || cube.qDimensionInfo.map((d, ii) => ii)).filter(ii => ii < cube.qDimensionInfo.length);
 
   if (DIM_RX.test(remainder)) {
     isFieldDimension = true;
@@ -52,7 +53,11 @@ export function getFieldDepth(field, { cube }) {
   }
 
   if (isFieldDimension) {
-    fieldDepth = treeOrder ? treeOrder.indexOf(fieldIdx) : fieldIdx;
+    if (cube.qMode === 'S') {
+      fieldDepth = columnOrder[fieldIdx];
+    } else {
+      fieldDepth = treeOrder ? treeOrder.indexOf(fieldIdx) : fieldIdx;
+    }
   } else if (treeOrder && treeOrder.indexOf(-1) !== -1) { // if pseudo dimension exists in sort order
     fieldDepth = treeOrder.indexOf(-1); // depth of pesudodimension
   } else { // assume measure is at the bottom of the tree
@@ -111,44 +116,253 @@ function datumExtract(propCfg, cell, {
   return datum;
 }
 
-export default function extract(config, dataset, cache, util) {
+function doIt({
+  propsArr,
+  props,
+  item,
+  itemData,
+  ret,
+  sourceKey
+}) {
+  propsArr.forEach((prop) => {
+    const pCfg = props[prop];
+    const arr = pCfg.fields || [pCfg];
+    let coll;
+    if (pCfg.fields) {
+      coll = [];
+    }
+    arr.forEach((p) => {
+      let fn;
+      let value;
+      if (p.type === 'primitive') {
+        value = p.value;
+      } else {
+        if (typeof p.value === 'function') { // accessor function
+          fn = v => p.value(v, item);
+        }
+        if (p.accessor) {
+          value = p.accessor(item);
+          if (Array.isArray(value)) { // propably descendants
+            value = value.map(p.valueAccessor);
+            if (p.attrAccessor) {
+              value = value.map(p.attrAccessor);
+            }
+            if (fn) {
+              value = value.map(fn);
+              fn = null;
+            }
+            value = p.reduce ? p.reduce(value) : value;
+          } else {
+            value = p.attrAccessor ? p.attrAccessor(p.valueAccessor(value)) : p.valueAccessor(value);
+          }
+        } else {
+          value = itemData;
+        }
+      }
+      if (pCfg.fields) {
+        coll.push(fn ? fn(value) : value);
+      } else {
+        ret[prop] = {
+          value: fn ? fn(value) : value
+        };
+        ret[prop].label = String(ret[prop].value);
+        if (p.field) {
+          ret[prop].source = { field: p.field.key(), key: sourceKey };
+        }
+      }
+    });
+    if (coll) {
+      ret[prop] = {
+        value: typeof pCfg.value === 'function' ? pCfg.value(coll, item) : coll
+      };
+      ret[prop].label = String(ret[prop].value);
+    }
+  });
+}
+
+const getHierarchy = (cube, cache, config) => {
+  const rootPath = cube.qMode === 'K' ? '/qStackedDataPages/*/qData' : '/qTreeDataPages/*';
+  const childNodes = cube.qMode === 'K' ? 'qSubNodes' : 'qNodes';
+  const root = picker(rootPath, cube);
+  if (!root || !root[0]) {
+    return null;
+  }
+  cache.tree = hierarchy(root[0], config.children || (node => node[childNodes]));
+  return cache.tree;
+};
+
+function getHierarchyForSMode(dataset) {
+  const matrix = dataset.raw().qDataPages[0].qMatrix;
+  const order = dataset.raw().qColumnOrder;
+  const fields = dataset.fields();
+  let dimensions = dataset.fields().filter(f => f.type() === 'dimension')
+    .map(order ? (f => order.indexOf(fields.indexOf(f))) : (f, i) => i);
+  let measures = dataset.fields().filter(f => f.type() === 'measure')
+    .map(order ? (f => order.indexOf(fields.indexOf(f))) : (f, i) => dimensions.length + i);
+
+  const root = {
+    __id: '__root',
+    qValues: []
+  };
+
+  const keys = {
+    __root: root
+  };
+
+  for (let r = 0; r < matrix.length; r++) {
+    const row = matrix[r];
+    let id = '__root';
+    // let parent = root;
+    let isNew = false;
+    for (let c = 0; c < dimensions.length; c++) {
+      const cell = row[dimensions[c]];
+      const key = `${id}__${cell.qText}`;
+      if (!keys[key]) {
+        keys[key] = Object.assign({ __id: key, __parent: id, qValues: [] }, cell);
+        isNew = true;
+      }
+      id = key;
+    }
+    if (isNew) {
+      for (let c = 0; c < measures.length; c++) {
+        const cell = row[measures[c]];
+        keys[id].qValues.push(cell);
+      }
+    }
+  }
+
+  const nodes = Object.keys(keys).map(key => keys[key]);
+
+  const h = stratify()
+    .id(d => d.__id)
+    .parentId(d => d.__parent)(nodes);
+
+  return h;
+}
+
+const attachPropsAccessors = ({
+  propsArr,
+  props,
+  cube,
+  cache,
+  itemDepthObject,
+  f
+}) => {
+  propsArr.forEach((prop) => {
+    const pCfg = props[prop];
+    const arr = pCfg.fields ? pCfg.fields : [pCfg];
+    arr.forEach((p) => {
+      if (p.field !== f) {
+        const depthObject = getFieldDepth(p.field, { cube, cache });
+        const accessors = getFieldAccessor(itemDepthObject, depthObject);
+        p.accessor = accessors.nodeFn;
+        p.valueAccessor = accessors.valueFn;
+        p.attrAccessor = accessors.attrFn;
+      }
+    });
+  });
+};
+
+export function augment(config = {}, dataset, cache, util) {
+  const cube = dataset.raw();
+  const sourceKey = dataset.key();
+  const h = cube.qMode === 'S' ? getHierarchyForSMode(dataset) : getHierarchy(cube, cache, config);
+  if (!h) {
+    return null;
+  }
+
+  const height = h.height;
+  const propDefs = [];
+  for (let i = 0; i <= height; i++) {
+    let f = null;
+    if (i > 0) {
+      if (cube.qMode === 'S') {
+        const order = (cube.qColumnOrder || cube.qDimensionInfo.map((d, ii) => ii)).filter(ii => ii < cube.qDimensionInfo.length);
+        let idx = order[i - 1];
+        f = cache.fields[idx];
+      } else {
+        let idx = cube.qEffectiveInterColumnSortOrder[i - 1];
+        // if (idx === -1) { // pseudo
+        //   let childIdx = node.parent.children.indexOf(node);
+        //   idx = cube.qDimensionInfo.length + childIdx; // measure field
+        // }
+        if (i > cube.qEffectiveInterColumnSortOrder.length) {
+          idx = cube.qDimensionInfo.length;
+        }
+
+        f = cache.fields[idx];
+      }
+    }
+
+    const { props, main } = util.normalizeConfig(Object.assign({}, config, { field: f ? f.key() : undefined }), dataset);
+    const propsArr = Object.keys(props);
+    propDefs[i] = { propsArr, props, main };
+
+    const itemDepthObject = f ? getFieldDepth(f, { cube, cache }) : { fieldDepth: 0 };
+
+    attachPropsAccessors({
+      propsArr,
+      props,
+      cube,
+      cache,
+      itemDepthObject,
+      f
+    });
+  }
+
+  const replica = h.copy();
+  const replicaDescendants = replica.descendants();
+  const descendants = h.descendants();
+
+  descendants.forEach((node, idx) => {
+    const propsArr = propDefs[node.depth].propsArr;
+    const props = propDefs[node.depth].props;
+    const main = propDefs[node.depth].main;
+
+    const item = replicaDescendants[idx];
+    const itemData = item.data; // main.valueAccessor(currentOriginal);
+
+    const ret = datumExtract(main, itemData, { key: sourceKey });
+    doIt({
+      propsArr,
+      props,
+      item,
+      itemData,
+      ret,
+      sourceKey,
+      isTree: true
+    });
+    node.data = ret;
+  });
+  return h;
+}
+
+export function extract(config, dataset, cache, util) {
   const cfgs = Array.isArray(config) ? config : [config];
   let dataItems = [];
   cfgs.forEach((cfg) => {
     if (typeof cfg.field !== 'undefined') {
       const cube = dataset.raw();
-      const rootPath = cube.qMode === 'K' ? '/qStackedDataPages/*/qData' : '/qTreeDataPages/*';
-      const childNodes = cube.qMode === 'K' ? 'qSubNodes' : 'qNodes';
-      const root = picker(rootPath, cube);
-      if (!root || !root[0]) {
+      const sourceKey = dataset.key();
+      const h = getHierarchy(cube, cache, config);
+      if (!h) {
         return;
       }
-      const sourceKey = dataset.key();
+
       const f = typeof cfg.field === 'object' ? cfg.field : dataset.field(cfg.field);
       const { props, main } = util.normalizeConfig(cfg, dataset);
       const propsArr = Object.keys(props);
-      if (!cache.tree) {
-        cache.tree = hierarchy(root[0], node => node[childNodes]);
-      }
+
       const itemDepthObject = getFieldDepth(f, { cube, cache });
       const { nodeFn, attrFn, valueFn } = getFieldAccessor({ fieldDepth: 0 }, itemDepthObject);
 
-      propsArr.forEach((prop) => {
-        const pCfg = props[prop];
-        const arr = pCfg.fields ? pCfg.fields : [pCfg];
-        arr.forEach((p) => {
-          if (p.field) {
-            if (p.field === f) {
-              p.isSame = true;
-            } else {
-              const depthObject = getFieldDepth(p.field, { cube, cache });
-              const accessors = getFieldAccessor(itemDepthObject, depthObject);
-              p.accessor = accessors.nodeFn;
-              p.valueAccessor = accessors.valueFn;
-              p.attrAccessor = accessors.attrFn;
-            }
-          }
-        });
+      attachPropsAccessors({
+        propsArr,
+        props,
+        cube,
+        cache,
+        itemDepthObject,
+        f
       });
 
       const track = !!cfg.trackBy;
@@ -166,59 +380,13 @@ export default function extract(config, dataset, cache, util) {
           continue;
         }
         const ret = datumExtract(main, itemData, { key: sourceKey });
-        propsArr.forEach((prop) => {
-          const pCfg = props[prop];
-          const arr = pCfg.fields || [pCfg];
-          let coll;
-          if (pCfg.fields) {
-            coll = [];
-          }
-          arr.forEach((p) => {
-            let fn;
-            let value;
-            if (p.type === 'primitive') {
-              value = p.value;
-            } else {
-              if (typeof p.value === 'function') { // accessor function
-                fn = p.value;
-              }
-              if (p.accessor) {
-                value = p.accessor(item);
-                if (Array.isArray(value)) { // propably descendants
-                  value = value.map(p.valueAccessor);
-                  if (p.attrAccessor) {
-                    value = value.map(p.attrAccessor);
-                  }
-                  if (fn) {
-                    value = value.map(fn);
-                    fn = null;
-                  }
-                  value = p.reduce ? p.reduce(value) : value;
-                } else {
-                  value = p.attrAccessor ? p.attrAccessor(p.valueAccessor(value)) : p.valueAccessor(value);
-                }
-              } else {
-                value = itemData;
-              }
-            }
-            if (pCfg.fields) {
-              coll.push(fn ? fn(value) : value);
-            } else {
-              ret[prop] = {
-                value: fn ? fn(value) : value
-              };
-              ret[prop].label = String(ret[prop].value);
-              if (p.field) {
-                ret[prop].source = { field: p.field.key(), key: sourceKey };
-              }
-            }
-          });
-          if (coll) {
-            ret[prop] = {
-              value: typeof pCfg.value === 'function' ? pCfg.value(coll) : coll
-            };
-            ret[prop].label = String(ret[prop].value);
-          }
+        doIt({
+          propsArr,
+          props,
+          item,
+          itemData,
+          ret,
+          sourceKey
         });
         // collect items based on the trackBy value
         // items with the same trackBy value are placed in an array and reduced later

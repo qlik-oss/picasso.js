@@ -28,6 +28,7 @@ export default function extract(dataConfig, data = {}, opts = {}) {
       extracted.items = [];
     } else if (dataConfig.hierarchy) {
       extracted.root = source.hierarchy ? source.hierarchy(dataConfig.hierarchy) : null;
+      extracted.fields = source.fields();
     } else if (dataConfig.items) {
       extracted.items = dataConfig.items.map(v => ({ value: valueFn(v), label: String(labelFn(v)) }));
     } else if (dataConfig.extract) {

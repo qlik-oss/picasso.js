@@ -27,7 +27,9 @@ const ds = (qMode) => {
       qLeft: 0, qTop: 0, qWidth: 4, qHeight: 1
     },
     qMatrix: [
-      [NxCell, {}, {}, Object.assign(NxCell, { qAttrDims: { qValues: [{}, NxSimpleDimValue] }, qAttrExps: { qValues: [{}, NxSimpleValue] } })]
+      [NxCell, {}, {}, Object.assign({}, NxCell, {
+        qNum: 3.6, qText: '$$3.6', qAttrDims: { qValues: [{}, NxSimpleDimValue] }, qAttrExps: { qValues: [{}, NxSimpleValue] }
+      })]
     ]
   }];
   const qStackedDataPages = [{
@@ -72,8 +74,10 @@ const ds = (qMode) => {
     qTreeDataPages
   };
 
-  if (qMode === 'K') {
+  if (qMode !== 'S') {
     cube.qEffectiveInterColumnSortOrder = [0];
+  } else {
+    cube.qEffectiveInterColumnSortOrder = [2, 3, 0, 1];
   }
 
   const d = q({
@@ -95,6 +99,7 @@ const tree = () => {
   }];
   const cube = {
     qNodesOnDim: [],
+    qEffectiveInterColumnSortOrder: [0],
     qDimensionInfo: [{
       qFallbackTitle: 'A',
       qMeasureInfo: [{}, {}, {
@@ -185,8 +190,8 @@ describe('q-data', () => {
       });
 
       it('items', () => {
-        expect(f.items().map(v => v.value)).to.eql([3.1]);
-        expect(f.items().map(v => v.label)).to.eql(['three']);
+        expect(f.items().map(v => v.value)).to.eql([3.6]);
+        expect(f.items().map(v => v.label)).to.eql(['$$3.6']);
       });
     });
 
@@ -220,6 +225,32 @@ describe('q-data', () => {
           field: 'qDimensionInfo/0'
         });
         expect(extracted).to.eql([{ value: 3, label: 'three', source: { field: 'qDimensionInfo/0', key: 'nyckel' } }]);
+      });
+    });
+
+    describe('hierarchy', () => {
+      it('root', () => {
+        const h = d.hierarchy();
+        expect(h.descendants()[1].data).to.eql({
+          source: { key: 'nyckel', field: 'qDimensionInfo/0' },
+          label: 'three',
+          value: 3
+        });
+      });
+
+      it('props', () => {
+        const h = d.hierarchy({
+          props: {
+            v: {
+              field: 'qMeasureInfo/2'
+            }
+          }
+        });
+        expect(h.descendants()[1].data.v).to.eql({
+          source: { key: 'nyckel', field: 'qMeasureInfo/2' },
+          label: '3.6',
+          value: 3.6
+        });
       });
     });
   });
@@ -340,6 +371,13 @@ describe('q-data', () => {
         expect(f.items().map(v => v.label)).to.eql(['seven']);
       });
     });
+
+    describe('hierarchy', () => {
+      it('should return tree', () => {
+        const t = d.hierarchy();
+        expect(t.children[0].data.label).to.equal('nine');
+      });
+    });
   });
 
   describe('TreeData', () => {
@@ -393,6 +431,13 @@ describe('q-data', () => {
       it('items', () => {
         expect(f.items().map(v => v.value)).to.eql([7]);
         expect(f.items().map(v => v.label)).to.eql(['seven']);
+      });
+    });
+
+    describe('hierarchy', () => {
+      it('should return tree', () => {
+        const t = d.hierarchy();
+        expect(t.children[0].data.label).to.equal('nine');
       });
     });
   });
