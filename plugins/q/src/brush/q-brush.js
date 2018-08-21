@@ -193,21 +193,60 @@ export default function qBrush(brush, opts = {}, layout) {
           }));
         }
       }
+
       if (b.type === 'value' && info.dimensionIdx > -1) {
         if (byCells) {
-          if (!methods.selectHyperCubeCells) {
-            methods.selectHyperCubeCells = {
-              path: info.path,
-              cols: []
-            };
-          }
+          if (layout && layout.qHyperCube && (layout.qHyperCube.qMode === 'P' || layout.qHyperCube.qMode === 'T')) {
+            const hyperCube = layout.qHyperCube;
+            const noOfLeftDims = hyperCube.qNoOfLeftDims;
+            const dimInterColSortIdx = hyperCube.qEffectiveInterColumnSortOrder.indexOf(info.dimensionIdx);
 
-          methods.selectHyperCubeCells.cols.push(info.dimensionIdx);
-          if (b.id === primarySource || (!primarySource && !methods.selectHyperCubeCells.values)) {
-            methods.selectHyperCubeCells.values = b.brush.values()
-              .map(s => +s)
-              .filter(v => !isNaN(v));
-            hasValues = !!methods.selectHyperCubeCells.values.length;
+            if (!methods.selectPivotCells) {
+              methods.selectPivotCells = {
+                path: info.path,
+                cells: []
+              };
+            }
+
+            if (b.id === primarySource || (!primarySource && methods.selectPivotCells.cells.length === 0)) {
+              const validValues = b.brush.values()
+                .map(s => +s)
+                .filter(v => !isNaN(v));
+
+              if (noOfLeftDims === 0 || dimInterColSortIdx >= noOfLeftDims) {
+                validValues.forEach((val) => {
+                  methods.selectPivotCells.cells.push({
+                    qType: 'T',
+                    qCol: val,
+                    qRow: dimInterColSortIdx - noOfLeftDims
+                  });
+                });
+              } else {
+                validValues.forEach((val) => {
+                  methods.selectPivotCells.cells.push({
+                    qType: 'L',
+                    qCol: info.dimensionIdx,
+                    qRow: val
+                  });
+                });
+              }
+              hasValues = !!methods.selectPivotCells.cells.length;
+            }
+          } else {
+            if (!methods.selectHyperCubeCells) {
+              methods.selectHyperCubeCells = {
+                path: info.path,
+                cols: []
+              };
+            }
+
+            methods.selectHyperCubeCells.cols.push(info.dimensionIdx);
+            if (b.id === primarySource || (!primarySource && !methods.selectHyperCubeCells.values)) {
+              methods.selectHyperCubeCells.values = b.brush.values()
+                .map(s => +s)
+                .filter(v => !isNaN(v));
+              hasValues = !!methods.selectHyperCubeCells.values.length;
+            }
           }
         } else {
           const values = b.brush.values().map(s => +s).filter(v => !isNaN(v));
@@ -253,6 +292,16 @@ export default function qBrush(brush, opts = {}, layout) {
     });
   }
 
+  if (methods.selectPivotCells) {
+    selections.push({
+      method: 'selectPivotCells',
+      params: [
+        methods.selectPivotCells.path,
+        methods.selectPivotCells.cells
+      ]
+    });
+  }
+
   if (methods.multiRangeSelectTreeDataValues) {
     selections.push({
       method: 'multiRangeSelectTreeDataValues',
@@ -262,3 +311,4 @@ export default function qBrush(brush, opts = {}, layout) {
 
   return selections;
 }
+
