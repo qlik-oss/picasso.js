@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.12.0"></a>
+# [0.12.0](https://github.com/qlik-oss/picasso.js/compare/v0.11.0...v0.12.0) (2018-08-22)
+
+
+### Features
+
+* **pie:** only show pie slices when outerRadius >= innerRadius ([#149](https://github.com/qlik-oss/picasso.js/issues/149)) ([fb9e93d](https://github.com/qlik-oss/picasso.js/commit/fb9e93d))
+* **q:** add hierarchy support for qMode='S' ([#150](https://github.com/qlik-oss/picasso.js/issues/150)) ([9f9e33b](https://github.com/qlik-oss/picasso.js/commit/9f9e33b))
+* **svg-renderer:** title attribute ([#138](https://github.com/qlik-oss/picasso.js/issues/138)) ([b35c2f8](https://github.com/qlik-oss/picasso.js/commit/b35c2f8))
+* grid-line ticks strokeDasharray support ([#143](https://github.com/qlik-oss/picasso.js/issues/143)) ([c720ee7](https://github.com/qlik-oss/picasso.js/commit/c720ee7))
+* stroke-linejoin ([#148](https://github.com/qlik-oss/picasso.js/issues/148)) ([4ca749d](https://github.com/qlik-oss/picasso.js/commit/4ca749d))
+* tooltip ([#147](https://github.com/qlik-oss/picasso.js/issues/147)) ([c09d726](https://github.com/qlik-oss/picasso.js/commit/c09d726))
+
+
+
+
+
 <a name="0.11.0"></a>
 # [0.11.0](https://github.com/qlik-oss/picasso.js/compare/v0.10.4...v0.11.0) (2018-07-14)
 

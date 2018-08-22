@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.12.0"></a>
+# [0.12.0](https://github.com/qlik-oss/picasso.js/compare/v0.11.0...v0.12.0) (2018-08-22)
+
+
+### Features
+
+* **q:** add hierarchy support for qMode='S' ([#150](https://github.com/qlik-oss/picasso.js/issues/150)) ([9f9e33b](https://github.com/qlik-oss/picasso.js/commit/9f9e33b))
+* Enable selectPivotCells for brush ([#146](https://github.com/qlik-oss/picasso.js/issues/146)) ([f15c4ca](https://github.com/qlik-oss/picasso.js/commit/f15c4ca))
+
+
+
+
+
 <a name="0.11.0"></a>
 # [0.11.0](https://github.com/qlik-oss/picasso.js/compare/v0.10.4...v0.11.0) (2018-07-14)
 
