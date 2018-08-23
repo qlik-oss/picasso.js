@@ -103,9 +103,9 @@ const component = {
     }
   },
   mounted(renderElement) {
-    if (renderElement && renderElement.parentElement) {
-      this.navigationRenderer.renderer.appendTo(renderElement.parentElement);
-      this.titleRenderer.renderer.appendTo(renderElement.parentElement);
+    if (renderElement && renderElement.parentNode) {
+      this.navigationRenderer.renderer.appendTo(renderElement.parentNode);
+      this.titleRenderer.renderer.appendTo(renderElement.parentNode);
     }
     this.navigationRenderer.render({
       rect: this.state.views.layout.navigation,
