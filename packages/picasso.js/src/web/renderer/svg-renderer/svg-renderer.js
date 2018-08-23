@@ -117,7 +117,7 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
 
   svg.destroy = () => {
     // parentElement is not supported in IE11 for SVGElement.
-    if (el && el.parentNode && el.parentNode.nodeType === 1) {
+    if (el && el.parentNode) {
       el.parentNode.removeChild(el);
     }
     el = null;

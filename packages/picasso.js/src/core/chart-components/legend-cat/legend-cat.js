@@ -103,7 +103,7 @@ const component = {
     }
   },
   mounted(renderElement) {
-    if (renderElement && renderElement.parentNode && renderElement.parentNode.nodeType === 1) {
+    if (renderElement && renderElement.parentNode) {
       this.navigationRenderer.renderer.appendTo(renderElement.parentNode);
       this.titleRenderer.renderer.appendTo(renderElement.parentNode);
     }
