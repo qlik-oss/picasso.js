@@ -9,6 +9,7 @@ function element(name, rect = { x: 0, y: 0, width: 100, height: 100 }) {
     listeners: [],
     parentNode: null,
     parentElement: null,
+    nodeType: 1,
     ownerDocument: {
       createElementNS(ns, tag) {
         return element(`${ns}:${tag}`);

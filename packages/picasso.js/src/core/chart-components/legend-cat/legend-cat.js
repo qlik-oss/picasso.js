@@ -103,7 +103,7 @@ const component = {
     }
   },
   mounted(renderElement) {
-    if (renderElement && renderElement.parentNode) {
+    if (renderElement && renderElement.parentNode && renderElement.parentNode.nodeType === 1) {
       this.navigationRenderer.renderer.appendTo(renderElement.parentNode);
       this.titleRenderer.renderer.appendTo(renderElement.parentNode);
     }
@@ -170,7 +170,7 @@ const component = {
     this.navigationRenderer = navigationRendererFactory(this);
     this.titleRenderer = titleRendererFactory(this);
     this.navigationRenderer.renderer = this.registries.renderer('dom')();
-    this.titleRenderer.renderer = this.registries.renderer()();
+    this.titleRenderer.renderer = this.registries.renderer(this.settings.renderer)();
     update(this);
   },
   preferredSize(obj) {
