@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.12.1"></a>
+## [0.12.1](https://github.com/qlik-oss/picasso.js/compare/v0.12.0...v0.12.1) (2018-08-23)
+
+
+### Bug Fixes
+
+* use parentNode property instead of parentElement where applicable ([#173](https://github.com/qlik-oss/picasso.js/issues/173)) ([c8607fb](https://github.com/qlik-oss/picasso.js/commit/c8607fb))
+
+
+
+
+
 <a name="0.12.0"></a>
 # [0.12.0](https://github.com/qlik-oss/picasso.js/compare/v0.11.0...v0.12.0) (2018-08-22)
 
