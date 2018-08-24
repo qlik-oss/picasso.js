@@ -213,7 +213,7 @@ export default function qBrush(brush, opts = {}, layout) {
                 .map(s => +s)
                 .filter(v => !isNaN(v));
 
-              if (noOfLeftDims === 0 || dimInterColSortIdx >= noOfLeftDims) {
+              if ((noOfLeftDims === 0 || dimInterColSortIdx >= noOfLeftDims) && noOfLeftDims > -1) {
                 validValues.forEach((val) => {
                   methods.selectPivotCells.cells.push({
                     qType: 'T',

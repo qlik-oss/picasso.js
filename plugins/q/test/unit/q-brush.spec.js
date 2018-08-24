@@ -310,6 +310,32 @@ describe('q-brush', () => {
       ]);
     });
 
+    it('should get left dimension, when qNoOfLeftDims = -1', () => {
+      layout.qHyperCube.qNoOfLeftDims = -1;
+
+      const selections = qBrush(brush, { byCells: true }, layout);
+      expect(selections[0].params).to.eql([
+        '/layers/0/qHyperCubeDef',
+        [
+          {
+            qCol: 2,
+            qRow: 3,
+            qType: 'L'
+          },
+          {
+            qCol: 2,
+            qRow: 2,
+            qType: 'L'
+          },
+          {
+            qCol: 2,
+            qRow: 7,
+            qType: 'L'
+          }
+        ]
+      ]);
+    });
+
     it('should do selectHyperCubeCells if qMode: S and byCells: true', () => {
       layout.qHyperCube.qMode = 'S';
 
