@@ -95,5 +95,30 @@ describe('Chart', () => {
       expect(destroyed, 'destroyed').to.have.been.calledOnce;
       expect(element.listeners.length).to.equal(0);
     });
+
+    it('should not freak out when using unregistered components', () => {
+      const comp = () => undefined;
+      comp.has = () => false;
+      const logger = {
+        warn: sinon.spy()
+      };
+      const create = () => {
+        chart(Object.assign(definition, {
+          settings: {
+            components: [{
+              type: 'noop'
+            }]
+          }
+        }), {
+          logger,
+          registries: {
+            component: comp
+          }
+        });
+      };
+
+      expect(create).to.not.throw();
+      expect(logger.warn).to.have.been.calledWithExactly('Unknown component: noop');
+    });
   });
 });
