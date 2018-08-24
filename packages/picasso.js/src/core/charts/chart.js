@@ -135,6 +135,10 @@ function chartFn(definition, context) {
   let stopBrushing = false;
 
   const createComponent = (compSettings, container) => {
+    if (!registries.component.has(compSettings.type)) {
+      logger.warn(`Unknown component: ${compSettings.type}`);
+      return false;
+    }
     const componentDefinition = registries.component(compSettings.type);
     const compInstance = componentFactory(componentDefinition, {
       settings: compSettings,
@@ -253,7 +257,7 @@ function chartFn(definition, context) {
 
     currentComponents = components.map(compSettings => (
       createComponent(compSettings, element)
-    ));
+    )).filter(c => !!c);
 
     const { visible, hidden } = layout(currentComponents);
     visibleComponents = visible;
@@ -448,7 +452,7 @@ function chartFn(definition, context) {
         settings: comp
       };
       return currentComponents[idx];
-    });
+    }).filter(c => !!c);
 
     currentComponents.forEach((comp) => {
       if (comp.updateWith) {
