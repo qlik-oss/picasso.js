@@ -23,8 +23,6 @@
     "/dist"
   ],
   "main": "dist/picasso.js",
-  "module": "src/index.js",
-  "source": true,
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --config ../../webpack.config.js",
     "build:dev": "webpack --config ../../webpack.config.js",
