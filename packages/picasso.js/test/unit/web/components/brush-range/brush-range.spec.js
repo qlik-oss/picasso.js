@@ -103,7 +103,8 @@ describe('Brush Range', () => {
       height: '100%',
       width: '1px',
       left: '0',
-      top: '0'
+      top: '0',
+      pointerEvents: 'none'
     };
 
     rootEdgeStyle = {
@@ -141,18 +142,15 @@ describe('Brush Range', () => {
         const edgeLeft = rendererOutput[0];
 
         // Work-around to deal with deep equal on objects with functions
-        expect(edgeLeft.data.on.mouseover).to.be.a('function');
-        expect(edgeLeft.data.on.mouseout).to.be.a('function');
-        delete edgeLeft.data.on.mouseover;
-        delete edgeLeft.data.on.mouseout;
+        expect(edgeLeft.data.onmouseover).to.be.a('function');
+        expect(edgeLeft.data.onmouseout).to.be.a('function');
+        delete edgeLeft.data.onmouseover;
+        delete edgeLeft.data.onmouseout;
 
         const expectedEdgeLeft = {
           sel: 'div',
           data: {
-            on: {},
-            attrs: {
-              'data-value': 0
-            },
+            'data-value': 0,
             style: rootEdgeStyle
           },
           children: [{
@@ -175,18 +173,15 @@ describe('Brush Range', () => {
         const edgeRight = rendererOutput[1];
 
         // Work-around to deal with deep equal on objects with functions
-        expect(edgeRight.data.on.mouseover).to.be.a('function');
-        expect(edgeRight.data.on.mouseout).to.be.a('function');
-        delete edgeRight.data.on.mouseover;
-        delete edgeRight.data.on.mouseout;
+        expect(edgeRight.data.onmouseover).to.be.a('function');
+        expect(edgeRight.data.onmouseout).to.be.a('function');
+        delete edgeRight.data.onmouseover;
+        delete edgeRight.data.onmouseout;
 
         const expectedEdgeRight = {
           sel: 'div',
           data: {
-            on: {},
-            attrs: {
-              'data-value': 1
-            },
+            'data-value': 1,
             style: rootEdgeStyle
           },
           children: [{
@@ -210,10 +205,8 @@ describe('Brush Range', () => {
           children: [{
             sel: 'div',
             data: {
-              attrs: {
-                'data-other-value': 1,
-                'data-idx': -1
-              },
+              'data-other-value': 1,
+              'data-idx': -1,
               style: bubbleStyle
             },
             children: ['-']
@@ -234,10 +227,8 @@ describe('Brush Range', () => {
           children: [{
             sel: 'div',
             data: {
-              attrs: {
-                'data-other-value': 0,
-                'data-idx': -1
-              },
+              'data-other-value': 0,
+              'data-idx': -1,
               style: bubbleStyle
             },
             children: ['-']
@@ -275,18 +266,15 @@ describe('Brush Range', () => {
         const edgeLeft = rendererOutput[0];
 
         // Work-around to deal with deep equal on objects with functions
-        expect(edgeLeft.data.on.mouseover).to.be.a('function');
-        expect(edgeLeft.data.on.mouseout).to.be.a('function');
-        delete edgeLeft.data.on.mouseover;
-        delete edgeLeft.data.on.mouseout;
+        expect(edgeLeft.data.onmouseover).to.be.a('function');
+        expect(edgeLeft.data.onmouseout).to.be.a('function');
+        delete edgeLeft.data.onmouseover;
+        delete edgeLeft.data.onmouseout;
 
         const expectedEdgeLeft = {
           sel: 'div',
           data: {
-            on: {},
-            attrs: {
-              'data-value': 0
-            },
+            'data-value': 0,
             style: rootEdgeStyle
           },
           children: [{
@@ -309,18 +297,15 @@ describe('Brush Range', () => {
         const edgeRight = rendererOutput[1];
 
         // Work-around to deal with deep equal on objects with functions
-        expect(edgeRight.data.on.mouseover).to.be.a('function');
-        expect(edgeRight.data.on.mouseout).to.be.a('function');
-        delete edgeRight.data.on.mouseover;
-        delete edgeRight.data.on.mouseout;
+        expect(edgeRight.data.onmouseover).to.be.a('function');
+        expect(edgeRight.data.onmouseout).to.be.a('function');
+        delete edgeRight.data.onmouseover;
+        delete edgeRight.data.onmouseout;
 
         const expectedEdgeRight = {
           sel: 'div',
           data: {
-            on: {},
-            attrs: {
-              'data-value': 1
-            },
+            'data-value': 1,
             style: rootEdgeStyle
           },
           children: [{
@@ -344,10 +329,8 @@ describe('Brush Range', () => {
           children: [{
             sel: 'div',
             data: {
-              attrs: {
-                'data-other-value': 1,
-                'data-idx': -1
-              },
+              'data-other-value': 1,
+              'data-idx': -1,
               style: bubbleStyle
             },
             children: ['0']
@@ -368,10 +351,8 @@ describe('Brush Range', () => {
           children: [{
             sel: 'div',
             data: {
-              attrs: {
-                'data-other-value': 0,
-                'data-idx': -1
-              },
+              'data-other-value': 0,
+              'data-idx': -1,
               style: bubbleStyle
             },
             children: ['1']
@@ -402,18 +383,15 @@ describe('Brush Range', () => {
         const edgeTop = rendererOutput[0];
 
         // Work-around to deal with deep equal on objects with functions
-        expect(edgeTop.data.on.mouseover).to.be.a('function');
-        expect(edgeTop.data.on.mouseout).to.be.a('function');
-        delete edgeTop.data.on.mouseover;
-        delete edgeTop.data.on.mouseout;
+        expect(edgeTop.data.onmouseover).to.be.a('function');
+        expect(edgeTop.data.onmouseout).to.be.a('function');
+        delete edgeTop.data.onmouseover;
+        delete edgeTop.data.onmouseout;
 
         const expectedEdgeTop = {
           sel: 'div',
           data: {
-            on: {},
-            attrs: {
-              'data-value': 0
-            },
+            'data-value': 0,
             style: rootEdgeStyle
           },
           children: [{
@@ -439,18 +417,15 @@ describe('Brush Range', () => {
         const edgeBottom = rendererOutput[1];
 
         // Work-around to deal with deep equal on objects with functions
-        expect(edgeBottom.data.on.mouseover).to.be.a('function');
-        expect(edgeBottom.data.on.mouseout).to.be.a('function');
-        delete edgeBottom.data.on.mouseover;
-        delete edgeBottom.data.on.mouseout;
+        expect(edgeBottom.data.onmouseover).to.be.a('function');
+        expect(edgeBottom.data.onmouseout).to.be.a('function');
+        delete edgeBottom.data.onmouseover;
+        delete edgeBottom.data.onmouseout;
 
         const expectedEdgeBottom = {
           sel: 'div',
           data: {
-            on: {},
-            attrs: {
-              'data-value': 1
-            },
+            'data-value': 1,
             style: rootEdgeStyle
           },
           children: [{
@@ -477,10 +452,8 @@ describe('Brush Range', () => {
           children: [{
             sel: 'div',
             data: {
-              attrs: {
-                'data-other-value': 1,
-                'data-idx': -1
-              },
+              'data-other-value': 1,
+              'data-idx': -1,
               style: bubbleStyle
             },
             children: ['0']
@@ -503,10 +476,8 @@ describe('Brush Range', () => {
           children: [{
             sel: 'div',
             data: {
-              attrs: {
-                'data-other-value': 0,
-                'data-idx': -1
-              },
+              'data-other-value': 0,
+              'data-idx': -1,
               style: bubbleStyle
             },
             children: ['1']
