@@ -81,18 +81,15 @@ describe('Brush Area Directional', () => {
         const edgeLeft = rendererOutput[0];
 
         // Work-around to deal with deep equal on objects with functions
-        expect(edgeLeft.data.on.mouseover).to.be.a('function');
-        expect(edgeLeft.data.on.mouseout).to.be.a('function');
-        delete edgeLeft.data.on.mouseover;
-        delete edgeLeft.data.on.mouseout;
+        expect(edgeLeft.data.onmouseover).to.be.a('function');
+        expect(edgeLeft.data.onmouseout).to.be.a('function');
+        delete edgeLeft.data.onmouseover;
+        delete edgeLeft.data.onmouseout;
 
         const expectedEdgeLeft = {
           sel: 'div',
           data: {
-            on: {},
-            attrs: {
-              'data-value': 0
-            },
+            'data-value': 0,
             style: {
               cursor: 'ew-resize',
               position: 'absolute',
@@ -112,7 +109,8 @@ describe('Brush Area Directional', () => {
                 height: '100%',
                 width: '1px',
                 left: '0',
-                top: '0'
+                top: '0',
+                pointerEvents: 'none'
               }
             },
             children: []
@@ -125,18 +123,15 @@ describe('Brush Area Directional', () => {
         const edgeRight = rendererOutput[1];
 
         // Work-around to deal with deep equal on objects with functions
-        expect(edgeRight.data.on.mouseover).to.be.a('function');
-        expect(edgeRight.data.on.mouseout).to.be.a('function');
-        delete edgeRight.data.on.mouseover;
-        delete edgeRight.data.on.mouseout;
+        expect(edgeRight.data.onmouseover).to.be.a('function');
+        expect(edgeRight.data.onmouseout).to.be.a('function');
+        delete edgeRight.data.onmouseover;
+        delete edgeRight.data.onmouseout;
 
         const expectedEdgeRight = {
           sel: 'div',
           data: {
-            on: {},
-            attrs: {
-              'data-value': 100
-            },
+            'data-value': 100,
             style: {
               cursor: 'ew-resize',
               position: 'absolute',
@@ -156,7 +151,8 @@ describe('Brush Area Directional', () => {
                 height: '100%',
                 width: '1px',
                 right: '0',
-                bottom: '0'
+                bottom: '0',
+                pointerEvents: 'none'
               }
             },
             children: []
@@ -180,10 +176,8 @@ describe('Brush Area Directional', () => {
           children: [{
             sel: 'div',
             data: {
-              attrs: {
-                'data-other-value': 100,
-                'data-idx': 0
-              },
+              'data-other-value': 100,
+              'data-idx': 0,
               style: {
                 position: 'relative',
                 borderRadius: '4px',
@@ -226,10 +220,8 @@ describe('Brush Area Directional', () => {
           children: [{
             sel: 'div',
             data: {
-              attrs: {
-                'data-other-value': 0,
-                'data-idx': 0
-              },
+              'data-other-value': 0,
+              'data-idx': 0,
               style: {
                 position: 'relative',
                 borderRadius: '4px',
@@ -273,18 +265,15 @@ describe('Brush Area Directional', () => {
         const edgeTop = rendererOutput[0];
 
         // Work-around to deal with deep equal on objects with functions
-        expect(edgeTop.data.on.mouseover).to.be.a('function');
-        expect(edgeTop.data.on.mouseout).to.be.a('function');
-        delete edgeTop.data.on.mouseover;
-        delete edgeTop.data.on.mouseout;
+        expect(edgeTop.data.onmouseover).to.be.a('function');
+        expect(edgeTop.data.onmouseout).to.be.a('function');
+        delete edgeTop.data.onmouseover;
+        delete edgeTop.data.onmouseout;
 
         const expectedEdgeTop = {
           sel: 'div',
           data: {
-            on: {},
-            attrs: {
-              'data-value': 0
-            },
+            'data-value': 0,
             style: {
               cursor: 'ns-resize',
               position: 'absolute',
@@ -304,7 +293,8 @@ describe('Brush Area Directional', () => {
                 height: '1px',
                 width: '100%',
                 left: '0',
-                top: '0'
+                top: '0',
+                pointerEvents: 'none'
               }
             },
             children: []
@@ -317,18 +307,15 @@ describe('Brush Area Directional', () => {
         const edgeBottom = rendererOutput[1];
 
         // Work-around to deal with deep equal on objects with functions
-        expect(edgeBottom.data.on.mouseover).to.be.a('function');
-        expect(edgeBottom.data.on.mouseout).to.be.a('function');
-        delete edgeBottom.data.on.mouseover;
-        delete edgeBottom.data.on.mouseout;
+        expect(edgeBottom.data.onmouseover).to.be.a('function');
+        expect(edgeBottom.data.onmouseout).to.be.a('function');
+        delete edgeBottom.data.onmouseover;
+        delete edgeBottom.data.onmouseout;
 
         const expectedEdgeBottom = {
           sel: 'div',
           data: {
-            on: {},
-            attrs: {
-              'data-value': 150
-            },
+            'data-value': 150,
             style: {
               cursor: 'ns-resize',
               position: 'absolute',
@@ -348,7 +335,8 @@ describe('Brush Area Directional', () => {
                 height: '1px',
                 width: '100%',
                 right: '0',
-                bottom: '0'
+                bottom: '0',
+                pointerEvents: 'none'
               }
             },
             children: []
@@ -372,10 +360,8 @@ describe('Brush Area Directional', () => {
           children: [{
             sel: 'div',
             data: {
-              attrs: {
-                'data-other-value': 150,
-                'data-idx': 0
-              },
+              'data-other-value': 150,
+              'data-idx': 0,
               style: {
                 position: 'relative',
                 borderRadius: '4px',
@@ -418,10 +404,8 @@ describe('Brush Area Directional', () => {
           children: [{
             sel: 'div',
             data: {
-              attrs: {
-                'data-other-value': 0,
-                'data-idx': 0
-              },
+              'data-other-value': 0,
+              'data-idx': 0,
               style: {
                 position: 'relative',
                 borderRadius: '4px',

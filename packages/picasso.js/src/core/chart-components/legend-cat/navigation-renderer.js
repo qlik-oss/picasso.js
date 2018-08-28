@@ -1,3 +1,6 @@
+import extend from 'extend';
+import classString from '../../utils/class-string';
+
 const DIR = {
   up: '\u25B2',
   right: '\u25B6',
@@ -52,11 +55,10 @@ function btn(h, {
     attrsMerged.disabled = 'disabled';
   }
 
-  return h('button', {
-    class: c,
-    style,
-    attrs: attrsMerged
-  }, [content || h('span', {
+  return h('button', extend({
+    class: classString(c),
+    style
+  }, attrsMerged), [content || h('span', {
     style: {
       pointerEvents: 'none'
     }
@@ -101,9 +103,7 @@ function render(renderer, {
       height: '100%',
       pointerEvents: 'auto'
     },
-    attrs: {
-      dir: isRtl && !isVertical ? 'rtl' : 'ltr'
-    }
+    dir: isRtl && !isVertical ? 'rtl' : 'ltr'
   }, [btn(h, {
     size: buttonSize,
     isActive: hasNext,

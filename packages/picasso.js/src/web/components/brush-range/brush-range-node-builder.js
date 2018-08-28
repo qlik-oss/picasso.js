@@ -31,19 +31,15 @@ function buildLine({
 
   // edge
   return h('div', {
-    on: {
-      mouseover() {
-        this.children[0].elm.style.backgroundColor = '#000';
-        this.children[0].elm.style[isVertical ? 'height' : 'width'] = '2px';
-      },
-      mouseout() {
-        this.children[0].elm.style.backgroundColor = state.style.line.stroke;
-        this.children[0].elm.style[isVertical ? 'height' : 'width'] = '1px';
-      }
+    onmouseover(e) {
+      e.srcElement.children[0].style.backgroundColor = '#000';
+      e.srcElement.children[0].style[isVertical ? 'height' : 'width'] = '2px';
     },
-    attrs: {
-      'data-value': value
+    onmouseout(e) {
+      e.srcElement.children[0].style.backgroundColor = state.style.line.stroke;
+      e.srcElement.children[0].style[isVertical ? 'height' : 'width'] = '1px';
     },
+    'data-value': value,
     style: {
       cursor: isVertical ? 'ns-resize' : 'ew-resize',
       position: 'absolute',
@@ -61,7 +57,8 @@ function buildLine({
           backgroundColor: state.style.line.stroke,
           position: 'absolute',
           height: isVertical ? `${1}px` : '100%',
-          width: isVertical ? '100%' : `${1}px`
+          width: isVertical ? '100%' : `${1}px`,
+          pointerEvents: 'none'
         },
         alignStyle
       )
@@ -99,10 +96,8 @@ function buildBubble({
   }, [
     // bubble
     h('div', {
-      attrs: {
-        'data-other-value': otherValue,
-        'data-idx': idx
-      },
+      'data-other-value': otherValue,
+      'data-idx': idx,
       style: extend({
         position: 'relative',
         borderRadius: `${state.style.bubble.borderRadius}px`,
@@ -129,7 +124,7 @@ function buildBubble({
 function buildArea({
   h, isVertical, top, height, color, on, opacity
 }) {
-  return h('div', {
+  return h('div', extend({
     style: {
       backgroundColor: color,
       opacity,
@@ -139,9 +134,8 @@ function buildArea({
       height: isVertical ? `${height}px` : '100%',
       width: isVertical ? '100%' : `${height}px`,
       pointerEvents: 'auto'
-    },
-    on
-  }, []);
+    }
+  }, on), []);
 }
 
 export default function buildRange({
@@ -175,11 +169,11 @@ export default function buildRange({
     };
     if (state.style.target.opacity < 0.8) {
       targetArea.on = {
-        mouseover() {
-          this.elm.style.opacity = state.style.target.opacity + 0.1;
+        onmouseover(e) {
+          e.srcElement.style.opacity = state.style.target.opacity + 0.1;
         },
-        mouseout() {
-          this.elm.style.opacity = state.style.target.opacity;
+        onmouseout(e) {
+          e.srcElement.style.opacity = state.style.target.opacity;
         }
       };
     }

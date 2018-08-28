@@ -1,4 +1,4 @@
-import { h, patch } from './vdom';
+import { h, render } from 'preact';
 import createRendererBox from '../renderer-box';
 import create from '../index';
 
@@ -9,7 +9,7 @@ export default function renderer(opts = {}) {
 
   let el;
   let rect = createRendererBox();
-  let vnode;
+  let dNode;
 
   const dom = create();
 
@@ -44,14 +44,14 @@ export default function renderer(opts = {}) {
     el.style.width = `${Math.round(rect.width * scaleX)}px`;
     el.style.height = `${Math.round(rect.height * scaleY)}px`;
 
-    const node = h('div', {}, Array.isArray(nodes) ? nodes : [nodes]);
-
-    if (vnode) {
-      patch(vnode, node);
+    let vNode;
+    if (Array.isArray(nodes)) {
+      vNode = <div>{nodes}</div>;
     } else {
-      patch(el, node);
+      vNode = nodes;
     }
-    vnode = node;
+
+    dNode = render(vNode, el, dNode);
 
     return true;
   };
@@ -66,7 +66,7 @@ export default function renderer(opts = {}) {
         el.removeChild(first);
         first = el.firstChild;
       }
-      vnode = null;
+      dNode = null;
     }
 
     return dom;
@@ -77,7 +77,7 @@ export default function renderer(opts = {}) {
       el.parentElement.removeChild(el);
     }
     el = null;
-    vnode = null;
+    dNode = null;
   };
 
   dom.size = (inner) => {

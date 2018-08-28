@@ -1,4 +1,5 @@
 import extend from 'extend';
+import classString from '../../../core/utils/class-string';
 
 function resolveClasses(props, opts) {
   return {
@@ -25,38 +26,21 @@ export default function render(data, placement, {
   const classes = resolveClasses(props, placement);
   const content = resolveContent(h, data, style, props);
 
-  const contentNode = h('div', {
-    style: extend({}, style.content),
-    class: extend({ 'pic-tooltip-content': true }, classes.content)
-  }, content);
-
-  const arrowNode = h(
-    'div',
-    {
-      style: extend({}, style.arrow, style[`arrow-${placement.dock}`], placement.computedArrowStyle),
-      class: extend({ 'pic-tooltip-arrow': true }, classes.arrow)
-    },
-    '' // TODO allow custom arrow content
-  );
-
   const tooltipDefaultStyle = {
     position: 'relative',
     display: 'inline-block'
   };
 
-  const tooltipNode = h(
-    'div',
-    {
-      style: extend(tooltipDefaultStyle, placement.computedTooltipStyle),
-      class: extend({ 'pic-tooltip': true }, classes.tooltip),
-      attrs: {
-        dir: props.direction
-      }
-    },
-    [contentNode, arrowNode]
+  const tooltipNode = (
+    <div dir={props.direction} class={classString(extend({ 'pic-tooltip': true }, classes.tooltip))} style={extend(tooltipDefaultStyle, placement.computedTooltipStyle)}>
+      <div style={style.content} class={classString(extend({ 'pic-tooltip-content': true }, classes.content))}>
+        {content}
+      </div>
+      <div class={classString(extend({ 'pic-tooltip-arrow': true }, classes.arrow))} style={extend({}, style.arrow, style[`arrow-${placement.dock}`], placement.computedArrowStyle)}></div>
+    </div>
   );
 
-  renderer.render([tooltipNode]);
+  renderer.render(tooltipNode);
 
   return renderer.element().children[0];
 }

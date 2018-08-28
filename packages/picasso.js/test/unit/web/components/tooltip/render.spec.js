@@ -47,16 +47,12 @@ describe('render', () => {
       style: {
         testStyle: 'testing'
       },
-      class: {
-        testClass: true
-      }
+      class: 'pic-tooltip-content testClass'
     });
 
     // Arrow call
     expect(context.h.args[1][1]).to.containSubset({
-      class: {
-        class: true
-      },
+      class: 'pic-tooltip-arrow class',
       style: {
         arrowTestStyle: 'test2'
       }
@@ -78,6 +74,6 @@ describe('render', () => {
       data
     });
 
-    expect(context.renderer.render).to.have.been.calledWith(['CALLED']);
+    expect(context.renderer.render).to.have.been.calledWith('CALLED');
   });
 });
