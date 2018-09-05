@@ -1,19 +1,22 @@
 {
-  "lerna": "2.11.0",
   "packages": [
     "docs",
     "packages/*",
     "plugins/*"
   ],
   "command": {
-    "publish": {
-      "message": "chore(release): %s",
+    "version": {
       "allowBranch": "master",
-      "ignoreChanges": [
+      "conventionalCommits": true,
+      "forcePublish": true,
+      "message": "chore(release): %s 🚀",
+      "ignore": [
         "test-utils",
         "docs"
       ]
     }
   },
-  "version": "0.12.2"
+  "version": "0.12.2",
+  "npmClient": "yarn",
+  "useWorkspaces": true
 }

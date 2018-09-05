@@ -50,7 +50,7 @@ This is a multi-package repository which uses [lerna](https://github.com/lerna/l
 To install and build all packages run:
 
 ```sh
-$ npm install
+$ yarn
 $ npm run bootstrap
 $ npm run build
 ```
