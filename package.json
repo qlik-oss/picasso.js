@@ -9,7 +9,7 @@
     "build": "cross-env NODE_ENV=production lerna run build --concurrency 99",
     "build:dev": "lerna run build --concurrency 99",
     "build:watch": "lerna run build:watch --stream --no-sort --concurrency 99",
-    "build:website": "cd website && npm run build:website",
+    "build:website": "cd website && yarn install && yarn run build",
     "bump": "lerna publish --no-push",
     "clean": "lerna clean",
     "lint": "lerna run lint",
@@ -47,7 +47,6 @@
   "workspaces": [
     "docs",
     "packages/*",
-    "plugins/*",
-    "website"
+    "plugins/*"
   ]
 }
