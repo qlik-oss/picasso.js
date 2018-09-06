@@ -39,7 +39,7 @@ describe('pie', () => {
       transform: 'translate(0, 0) translate(50, 100)',
       cornerRadius: 0,
       innerRadius: 0,
-      outerRadius: 0.8,
+      outerRadius: 0.3,
       offset: 0,
       label: '',
       fill: '#333',

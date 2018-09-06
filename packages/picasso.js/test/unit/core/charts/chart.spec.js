@@ -93,7 +93,7 @@ describe('Chart', () => {
       expect(mounted, 'mounted').to.have.been.calledOnce;
       expect(beforeDestroy, 'beforeDestroy').to.have.been.calledOnce;
       expect(destroyed, 'destroyed').to.have.been.calledOnce;
-      expect(element.listeners.length).to.equal(0);
+      expect(element.listeners.length).to.equal(10);
     });
 
     it('should not freak out when using unregistered components', () => {
