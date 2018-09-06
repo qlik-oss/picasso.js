@@ -62,7 +62,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/picassojs
-      - run: npx aw -c aw.config.js --mocha.reporter mocha-junit-reporter --mocha.reporterOptions.mochaFile ./coverage/junit/junit.xml
+      - run: npx aw -c aw.config.js --mocha.bail false --mocha.reporter mocha-junit-reporter --mocha.reporterOptions.mochaFile ./coverage/junit/junit.xml
       - store_test_results:
           path: coverage/junit
       - store_artifacts:
