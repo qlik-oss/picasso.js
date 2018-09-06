@@ -50,21 +50,6 @@ jobs:
             - docs/dist
             - docs/spec.json
 
-  docs-website:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: ~/picassojs
-      - run: yarn run build:website
-      - store_artifacts:
-          path: docs/spec.json
-      - store_artifacts:
-          path: website/build
-      - persist_to_workspace:
-          root: ~/picassojs
-          paths:
-            - website/build/
-
   lint:
     <<: *defaults
     steps:
@@ -77,12 +62,11 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/picassojs
-      - run: yarn run test:unit:coverage
-      - run: 
-          name: Publish coverage
-          command: yarn run test:unit:coverage:publish || echo "Unable to publish code coverage"
+      - run: npx aw -c aw.config.js --mocha.reporter mocha-junit-reporter --mocha.reporterOptions.mochaFile ./coverage/junit/junit.xml
+      - store_test_results:
+          path: coverage/junit
       - store_artifacts:
-          path: coverage
+          path: coverage/junit
 
   test-component:
     <<: *defaults
@@ -97,6 +81,21 @@ jobs:
       - attach_workspace:
           at: ~/picassojs
       - run: yarn run test:integration:local
+
+  docs-website:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/picassojs
+      - run: yarn run build:website
+      - store_artifacts:
+          path: docs/spec.json
+      - store_artifacts:
+          path: website/build
+      - persist_to_workspace:
+          root: ~/picassojs
+          paths:
+            - website/build/
 
   deploy-docs:
     docker:
@@ -132,6 +131,9 @@ workflows:
       - docs-website:
           requires:
             - build
+          filters:
+            branches:
+              only: master
       - deploy-docs:
           requires:
             - docs-website
