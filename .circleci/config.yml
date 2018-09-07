@@ -8,6 +8,9 @@ aliases:
     paths:
       - ~/.cache/yarn
     key: v1-yarn-deps-{{ checksum "yarn.lock" }}
+  - &filter_master
+    branches:
+      only: master
 
 defaults: &defaults
   working_directory: ~/picassojs
@@ -92,16 +95,12 @@ jobs:
       - attach_workspace:
           at: ~/picassojs
       - run: yarn run build:website
-      - store_artifacts:
-          path: docs/spec.json
-      - store_artifacts:
-          path: website/build
       - persist_to_workspace:
           root: ~/picassojs
           paths:
             - website/build/
 
-  deploy-docs:
+  build-and-deploy-docs:
     docker:
       - image: cibuilds/aws:1.14.38
     working_directory: ~/picassojs
@@ -109,8 +108,16 @@ jobs:
       - attach_workspace:
           at: ~/picassojs
       - run:
-          name: Deploy to S3 ...
-          command: aws s3 sync website/build/picasso.js/ s3://picassojs.com/ --delete
+          name: Build and deploy
+          command: |
+            set -eo pipefail
+            NUM=$(git tag --points-at HEAD | wc -l)
+            if [ "$NUM" -gt 0 ]; then
+              yarn run build:website
+              aws s3 sync website/build/picasso.js/ s3://picassojs.com/ --delete
+            else
+              echo "Skipping deploy..."
+            fi
 
 workflows:
   version: 2
@@ -132,21 +139,7 @@ workflows:
       - test-integration:
           requires:
             - build
-      - docs-website:
+      - build-and-deploy-docs:
           requires:
             - build
-          filters:
-            branches:
-              only: master
-      - deploy-docs:
-          requires:
-            - docs-website
-            - lint
-            - test-unit
-            - test-component
-            - test-integration
-          filters:
-            branches:
-              only: master
-            tags:
-              only: /^v.*/
+          filters: *filter_master
