@@ -19,7 +19,6 @@
     "test:component:coverage": "aw -c aw.config.js --type component",
     "test:integration:local": "lerna run test:integration:local",
     "test:unit:coverage": "aw -c aw.config.js",
-    "test:unit:coverage:publish": "codeclimate-test-reporter < coverage/unit/lcov.info",
     "test:unit:watch": "aw -c aw.config.js -w"
   },
   "devDependencies": {
@@ -35,6 +34,7 @@
     "babel-loader": "^8.0.2",
     "babel-plugin-istanbul": "^4.1.6",
     "codeclimate-test-reporter": "^0.5.0",
+    "coveralls": "^3.0.2",
     "cross-env": "^5.2.0",
     "eslint": "^5.4.0",
     "eslint-config-airbnb-base": "^13.1.0",

@@ -1,4 +1,5 @@
 [![CircleCI](https://circleci.com/gh/qlik-oss/picasso.js.svg?style=shield)](https://circleci.com/gh/qlik-oss/picasso.js)
+[![Coverage Status](https://coveralls.io/repos/github/miralemd/picasso.js/badge.svg)](https://coveralls.io/github/miralemd/picasso.js)
 
 ![picasso.js](docs/assets/picassojs.png)
 
