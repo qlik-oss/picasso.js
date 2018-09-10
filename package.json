@@ -1,17 +1,17 @@
 {
+  "private": true,
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "ssh://git@github.com:qlik-oss/picasso.js.git"
   },
   "scripts": {
-    "postinstall": "npm run bootstrap",
-    "bootstrap": "lerna bootstrap --hoist",
     "build": "cross-env NODE_ENV=production lerna run build --concurrency 99",
     "build:dev": "lerna run build --concurrency 99",
     "build:watch": "lerna run build:watch --stream --no-sort --concurrency 99",
-    "build:website": "cd website && npm install && npm run build",
-    "bump": "lerna publish --skip-npm --force-publish --conventional-commits",
+    "build:website": "cd website && yarn install && yarn run build",
+    "bump": "lerna publish --no-push",
+    "commitmsg": "commitlint -E GIT_PARAMS",
     "clean": "lerna clean",
     "lint": "lerna run lint",
     "link": "lerna link",
@@ -19,20 +19,22 @@
     "test:component:coverage": "aw -c aw.config.js --type component",
     "test:integration:local": "lerna run test:integration:local",
     "test:unit:coverage": "aw -c aw.config.js",
-    "test:unit:coverage:publish": "codeclimate-test-reporter < coverage/unit/lcov.info",
     "test:unit:watch": "aw -c aw.config.js -w"
   },
   "devDependencies": {
-    "@after-work.js/aw": "^5.0.0-beta.5",
-    "@babel/cli": "^7.0.0-rc.1",
-    "@babel/core": "^7.0.0-rc.1",
-    "@babel/helpers": "^7.0.0-rc.1",
-    "@babel/preset-env": "^7.0.0-rc.1",
-    "@babel/register": "^7.0.0-rc.1",
-    "@babel/plugin-transform-react-jsx": "^7.0.0-rc.1",
-    "babel-loader": "^8.0.0-beta.4",
+    "@after-work.js/aw": "^5.0.0",
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
+    "@babel/helpers": "^7.0.0",
+    "@babel/plugin-transform-react-jsx": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/register": "^7.0.0",
+    "@commitlint/cli": "^7.1.2",
+    "@commitlint/config-conventional": "^7.1.2",
+    "babel-loader": "^8.0.2",
     "babel-plugin-istanbul": "^4.1.6",
     "codeclimate-test-reporter": "^0.5.0",
+    "coveralls": "^3.0.2",
     "cross-env": "^5.2.0",
     "eslint": "^5.4.0",
     "eslint-config-airbnb-base": "^13.1.0",
@@ -40,9 +42,16 @@
     "eslint-plugin-mocha": "^5.2.0",
     "extend": "^3.0.2",
     "globby": "^8.0.1",
+    "husky": "^0.14.3",
     "lerna": "^3.1.1",
+    "mocha-junit-reporter": "^1.18.0",
     "protractor": "^5.4.0",
     "webpack": "^4.17.0",
     "webpack-cli": "^3.1.0"
-  }
+  },
+  "workspaces": [
+    "docs",
+    "packages/*",
+    "plugins/*"
+  ]
 }

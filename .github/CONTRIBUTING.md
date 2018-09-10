@@ -30,8 +30,7 @@ Submit your feature by creating a Pull Request, following the [GIT guidelines](#
 
 ### Prerequisits
 
-- [Node.js](https://nodejs.org/) 8+ and npm 5+ installed
-- Some JavaScript knowledge
+- [Node.js](https://nodejs.org/) 10+ and [yarn](https://yarnpkg.com) installed
 
 ### Project structure
 
@@ -50,9 +49,8 @@ This is a multi-package repository which uses [lerna](https://github.com/lerna/l
 To install and build all packages run:
 
 ```sh
-$ npm install
-$ npm run bootstrap
-$ npm run build
+$ yarn
+$ yarn run build
 ```
 
 This will generate UMD packages for
@@ -62,11 +60,9 @@ This will generate UMD packages for
 
 ### Development worklow
 
-- `npm run build` generates UMD bundles for all packages
-- `npm run docs` generates documentation in markdown
-- `npm run lint` checks code style
-- `npm run test` runs all tests
-- `npm run test:unit:coverage` generates unit test coverage
+- `yarn run build` generates UMD bundles for all packages
+- `yarn run lint` checks code style
+- `yarn run test` runs all tests
 
 ## <a name="git"></a> Git Guidelines
 
@@ -103,18 +99,11 @@ Generally, development should be done directly towards the `master` branch.
 
 1. Create a Pull Request
 
-    Before creating a Pull Request, make sure the following items are satisfied:
-
-    - CircleCI is green
-    - Code coverage has not decreased
-    - Commit message format is followed
-    - [CLA](#cla) is signed
+    > Before creating a Pull Request, make sure to sign the [CLA](#cla)
 
     In the Github UI of your fork, create a Pull Request to the `master` branch of the master repository.
 
     If the branch has merge conflicts or has been outdated, please do a rebase against the `master` branch.
-
-    _WARNING: Squashing or reverting commits and force-pushing thereafter may remove GitHub comments on code that were previously made by you or others in your commits. Avoid any form of rebasing unless necessary._
 
 
 ### <a name="commit"></a> Commit message guidelines
@@ -125,11 +114,15 @@ Commit messages should follow the [commit message convention](https://convention
 
 Should be one of the following:
 
+- **build:** Changes that affect the build system or external dependencies
 - **chore:** Changes to build and dev processes/tools
+- **ci:** Changes to the CI configuration files and scripts
 - **docs:** Changes to documentation
 - **feat:** A new feature
 - **fix:** A bug fix
+- **perf:** A code change that improves performance
 - **refactor:** Changes to production code that is neither a new feature nor a bug fix
+- **revert:** Reverts a previous commit
 - **style:** Changes to code style formatting (white space, commas etc)
 - **test:** Changes in test cases of production code
 

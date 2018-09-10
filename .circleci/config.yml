@@ -1,63 +1,33 @@
 version: 2
 
+aliases:
+  - &restore_yarn_cache
+    keys:
+      - v1-yarn-deps-{{ checksum "yarn.lock" }}
+  - &save_yarn_cache
+    paths:
+      - ~/.cache/yarn
+    key: v1-yarn-deps-{{ checksum "yarn.lock" }}
+  - &filter_master
+    branches:
+      only: master
+
 defaults: &defaults
   working_directory: ~/picassojs
     # Available images https://hub.docker.com/r/circleci/node/tags/
   docker:
-    - image: circleci/node:8.9.4-browsers
+    - image: circleci/node:10.9.0-browsers
 
 jobs:
   install:
     <<: *defaults
     steps:
       - checkout
-
-      # Restore caches
-      - restore_cache:
-          key: v1-cache-{{ checksum "package-lock.json" }}
-      - restore_cache:
-          key: v1-cache-picasso.js-{{ checksum "packages/picasso.js/package-lock.json" }}
-      - restore_cache:
-          key: v1-cache-hammer-{{ checksum "plugins/hammer/package-lock.json" }}
-      - restore_cache:
-          key: v1-cache-q-{{ checksum "plugins/q/package-lock.json" }}
-      - restore_cache:
-          key: v1-cache-docs-{{ checksum "docs/package-lock.json" }}
-      - restore_cache:
-          key: v1-cache-site-{{ checksum "website/package-lock.json" }}
-
-      - run: npm install
-      - run: npm run bootstrap
-
-    ## Save to cache
-      - save_cache:
-          key: v1-cache-{{ checksum "package-lock.json" }}
-          paths:
-            - ./node_modules
-      - save_cache:
-          key: v1-cache-picasso.js-{{ checksum "packages/picasso.js/package-lock.json" }}
-          paths:
-            - ./packages/picasso.js/node_modules
-      - save_cache:
-          key: v1-cache-hammer-{{ checksum "plugins/hammer/package-lock.json" }}
-          paths:
-            - ./plugins/hammer/node_modules
-      - save_cache:
-          key: v1-cache-q-{{ checksum "plugins/q/package-lock.json" }}
-          paths:
-            - ./plugins/q/node_modules
-      - save_cache:
-          key: v1-cache-docs-{{ checksum "docs/package-lock.json" }}
-          paths:
-            - ./docs/node_modules
-      - save_cache:
-          key: v1-cache-site-{{ checksum "website/package-lock.json" }}
-          paths:
-            - ./website/node_modules
-
+      - restore_cache: *restore_yarn_cache
+      - run: yarn
+      - save_cache: *save_yarn_cache
       - store_artifacts:
           path: package.json
-
       - persist_to_workspace:
           root: ~/picassojs
           paths:
@@ -68,8 +38,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/picassojs
-      - run: npm run link
-      - run: npm run build
+      - run: yarn run build
       - store_artifacts:
           path: packages/picasso.js/dist
       - store_artifacts:
@@ -84,59 +53,54 @@ jobs:
             - docs/dist
             - docs/spec.json
 
-  docs-website:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: ~/picassojs
-      - run: npm run build:website
-      - store_artifacts:
-          path: docs/spec.json
-      - store_artifacts:
-          path: website/build
-      - persist_to_workspace:
-          root: ~/picassojs
-          paths:
-            - website/build/
-
   lint:
     <<: *defaults
     steps:
       - attach_workspace:
           at: ~/picassojs
-      - run: npm run link
-      - run: npm run lint
+      - run: yarn run lint
 
   test-unit:
     <<: *defaults
     steps:
       - attach_workspace:
           at: ~/picassojs
-      - run: npm run link
-      - run: npm run test:unit:coverage
-      - run: 
-          name: Publish coverage
-          command: npm run test:unit:coverage:publish || echo "Unable to publish code coverage"
-      - store_artifacts:
-          path: coverage
+      - run:
+          command: |
+            npx aw -c aw.config.js --mocha.bail false --mocha.reporter mocha-junit-reporter --mocha.reporterOptions.mochaFile ./coverage/junit/junit.xml
+            if [ ! -z "$COVERALLS_REPO_TOKEN" ]; then
+              echo "Uploading coverage results to coveralls.io..."
+              cat ./coverage/unit/lcov.info | npx coveralls
+            fi
+      - store_test_results:
+          path: coverage/junit
 
   test-component:
     <<: *defaults
     steps:
       - attach_workspace:
           at: ~/picassojs
-      - run: npm run link
-      - run: npm run test:component:coverage
+      - run: yarn run test:component:coverage
 
   test-integration:
     <<: *defaults
     steps:
       - attach_workspace:
           at: ~/picassojs
-      - run: npm run link
-      - run: npm run test:integration:local
+      - run: yarn run test:integration:local
 
-  deploy-docs:
+  docs-website:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/picassojs
+      - run: yarn run build:website
+      - persist_to_workspace:
+          root: ~/picassojs
+          paths:
+            - website/build/
+
+  build-and-deploy-docs:
     docker:
       - image: cibuilds/aws:1.14.38
     working_directory: ~/picassojs
@@ -144,8 +108,16 @@ jobs:
       - attach_workspace:
           at: ~/picassojs
       - run:
-          name: Deploy to S3 ...
-          command: aws s3 sync website/build/picasso.js/ s3://picassojs.com/ --delete
+          name: Build and deploy
+          command: |
+            set -eo pipefail
+            NUM=$(git tag --points-at HEAD | wc -l)
+            if [ "$NUM" -gt 0 ]; then
+              yarn run build:website
+              aws s3 sync website/build/picasso.js/ s3://picassojs.com/ --delete
+            else
+              echo "Skipping deploy..."
+            fi
 
 workflows:
   version: 2
@@ -167,18 +139,7 @@ workflows:
       - test-integration:
           requires:
             - build
-      - docs-website:
+      - build-and-deploy-docs:
           requires:
             - build
-      - deploy-docs:
-          requires:
-            - docs-website
-            - lint
-            - test-unit
-            - test-component
-            - test-integration
-          filters:
-            branches:
-              only: master
-            tags:
-              only: /^v.*/
+          filters: *filter_master
