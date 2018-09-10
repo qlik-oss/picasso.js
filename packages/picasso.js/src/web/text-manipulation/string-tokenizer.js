@@ -45,13 +45,6 @@ function clamp(val, min, max) {
   return Math.max(min, Math.min(max, val));
 }
 
-function condition(reverse, index, length) {
-  if (reverse) {
-    return index >= 0;
-  }
-  return index < length;
-}
-
 export default function stringTokenizer({
   string,
   separator = '',
@@ -65,6 +58,7 @@ export default function stringTokenizer({
   const chunks = String(string).split(separator);
   cleanEmptyChunks(chunks);
   const length = chunks.length;
+  const isNotDone = reverse ? p => p >= 0 : p => p < length;
   let position = reverse ? length : -1; // Set init position 1 step before or after to make first next call go to first position
 
   function peek(peekAt) {
@@ -102,7 +96,7 @@ export default function stringTokenizer({
       position = clamp(jumpToPosition, 0, length - 1);
     }
 
-    if (condition(reverse, position, length)) {
+    if (isNotDone(position)) {
       return peek(position);
     }
     return { done: true };
