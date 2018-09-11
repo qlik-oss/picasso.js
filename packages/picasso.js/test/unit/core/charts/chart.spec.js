@@ -1,5 +1,5 @@
 import elementMock from 'test-utils/mocks/element-mock';
-import chart from '../../../../src/core/charts/chart';
+import chart from '../../../../src/core/chart';
 
 describe('Chart', () => {
   describe('lifecycle methods', () => {

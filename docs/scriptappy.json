@@ -715,6 +715,480 @@
         }
       }
     },
+    "component-settings": {
+      "kind": "object",
+      "entries": {
+        "type": {
+          "description": "Component type (ex: axis, point, ...)",
+          "type": "string"
+        },
+        "preferredSize": {
+          "description": "Function returning the preferred size",
+          "optional": true,
+          "type": "function"
+        },
+        "created": {
+          "optional": true,
+          "type": "function"
+        },
+        "beforeMount": {
+          "optional": true,
+          "type": "function"
+        },
+        "mounted": {
+          "optional": true,
+          "type": "function"
+        },
+        "beforeUpdate": {
+          "optional": true,
+          "type": "function"
+        },
+        "updated": {
+          "optional": true,
+          "type": "function"
+        },
+        "beforeRender": {
+          "optional": true,
+          "type": "function"
+        },
+        "beforeDestroy": {
+          "optional": true,
+          "type": "function"
+        },
+        "destroyed": {
+          "optional": true,
+          "type": "function"
+        },
+        "brush": {
+          "description": "see [brushing](./brushing.md)",
+          "optional": true,
+          "type": "brush-setting"
+        },
+        "displayOrder": {
+          "optional": true,
+          "defaultValue": 0,
+          "type": "number"
+        },
+        "prioOrder": {
+          "optional": true,
+          "defaultValue": 0,
+          "type": "number"
+        },
+        "show": {
+          "description": "If the component should be rendered",
+          "optional": true,
+          "defaultValue": true,
+          "type": "boolean"
+        },
+        "minimumLayoutMode": {
+          "description": "Refer to layout sizes defined by layoutModes in dockLayout",
+          "optional": true,
+          "kind": "union",
+          "items": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "Object"
+            }
+          ],
+          "type": "any"
+        },
+        "dock": {
+          "description": "left, right, top or bottom",
+          "optional": true,
+          "type": "string"
+        },
+        "scale": {
+          "description": "Named scale. Will be provided to the component if it ask for it.",
+          "optional": true,
+          "type": "string"
+        },
+        "formatter": {
+          "description": "Named formatter. Fallback to create formatter from scale. Will be provided to the component if it ask for it.",
+          "optional": true,
+          "type": "string"
+        }
+      }
+    },
+    "chart-definition": {
+      "kind": "object",
+      "entries": {
+        "element": {
+          "type": "HTMLElement"
+        },
+        "data": {
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/data-source"
+          }
+        },
+        "settings": {
+          "type": "chart-settings"
+        }
+      }
+    },
+    "chart": {
+      "kind": "interface",
+      "params": [],
+      "entries": {
+        "update": {
+          "description": "Update the chart with new settings and / or data",
+          "kind": "function",
+          "params": [
+            {
+              "name": "chart",
+              "description": "Chart definition",
+              "optional": true,
+              "type": "#/definitions/chart-definition"
+            }
+          ]
+        },
+        "destroy": {
+          "description": "Destroy the chart instance.",
+          "kind": "function",
+          "params": []
+        },
+        "getAffectedShapes": {
+          "description": "Get all shapes associated with the provided context",
+          "kind": "function",
+          "params": [
+            {
+              "name": "context",
+              "description": "The brush context",
+              "type": "string"
+            },
+            {
+              "name": "mode",
+              "description": "Property comparasion mode.",
+              "type": "string"
+            },
+            {
+              "name": "props",
+              "description": "Which specific data properties to compare",
+              "kind": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "key",
+              "description": "Which component to get shapes from. Default gives shapes from all components.",
+              "type": "string"
+            }
+          ],
+          "returns": {
+            "description": "Array of objects containing shape and parent element",
+            "kind": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "findShapes": {
+          "description": "Get all nodes matching the provided selector",
+          "kind": "function",
+          "params": [
+            {
+              "name": "selector",
+              "description": "CSS selector [type, attribute, universal, class]",
+              "type": "string"
+            }
+          ],
+          "returns": {
+            "description": "Array of objects containing matching nodes",
+            "kind": "array",
+            "items": {
+              "type": "#/definitions/SceneNode"
+            }
+          },
+          "examples": [
+            "chart.findShapes('Circle') // [<CircleNode>, <CircleNode>]\nchart.findShapes('Circle[fill=\"red\"][stroke!=\"black\"]') // [CircleNode, CircleNode]\nchart.findShapes('Container Rect') // [Rect, Rect]"
+          ]
+        },
+        "componentsFromPoint": {
+          "description": "Get components overlapping a point.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "p",
+              "description": "Point with x- and y-cooridnate. The coordinate is relative to the browser viewport.",
+              "type": "#/definitions/point"
+            }
+          ],
+          "returns": {
+            "description": "Array of component contexts",
+            "kind": "array",
+            "items": {
+              "type": "component-context"
+            }
+          }
+        },
+        "shapesAt": {
+          "description": "Get all nodes colliding with a geometrical shape (circle, line, rectangle, point, polygon).\n\nThe input shape is identified based on the geometrical attributes in the following order: circle => line => rectangle => point => polygon.\nNote that not all nodes on a scene have collision detection enabled.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "shape",
+              "description": "A geometrical shape. Coordinates are relative to the top-left corner of the chart instance container.",
+              "kind": "union",
+              "items": [
+                {
+                  "type": "#/definitions/line"
+                },
+                {
+                  "type": "#/definitions/rect"
+                },
+                {
+                  "type": "#/definitions/point"
+                },
+                {
+                  "type": "#/definitions/circle"
+                }
+              ],
+              "type": "any"
+            },
+            {
+              "name": "opts",
+              "description": "Options",
+              "kind": "object",
+              "entries": {
+                "components": {
+                  "description": "Array of components to include in the lookup. If no components are specified, all components will be included.",
+                  "optional": true,
+                  "kind": "array",
+                  "items": {
+                    "entries": {
+                      "component": {
+                        "kind": "object",
+                        "entries": {
+                          "key": {
+                            "description": "Component key",
+                            "optional": true,
+                            "type": "string"
+                          },
+                          "propagation": {
+                            "description": "if set to `stop`, will start lookup on top visible shape and propagate downwards until a shape is found.",
+                            "optional": true,
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "kind": "object"
+                  }
+                },
+                "propagation": {
+                  "description": "if set to `stop`, will start lookup on top visible component and propagate downwards until a component has at least a match.",
+                  "optional": true,
+                  "type": "string"
+                }
+              }
+            }
+          ],
+          "returns": {
+            "description": "Array of objects containing colliding nodes",
+            "kind": "array",
+            "items": {
+              "type": "#/definitions/SceneNode"
+            }
+          },
+          "examples": [
+            "chart.shapesAt(\n {\n   x: 0,\n   y: 0,\n   width: 100,\n   height: 100\n },\n {\n   components: [\n     { key: 'key1', propagation: 'stop' },\n     { key: 'key2' }\n   ],\n   propagation: 'stop'\n }\n);"
+          ]
+        },
+        "brushFromShapes": {
+          "description": "Brush data by providing a collection of data bound shapes.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "shapes",
+              "description": "An array of data bound shapes.",
+              "kind": "array",
+              "items": {
+                "type": "#/definitions/SceneNode"
+              }
+            },
+            {
+              "name": "config",
+              "description": "Options",
+              "type": "object"
+            }
+          ],
+          "examples": [
+            "const shapes = chartInstance.shapesAt(...);\nconst config = {\n components:[\n   {\n     key: 'key1',\n     contexts: ['myContext'],\n     data: [''],\n     action: 'add'\n   }\n ]\n};\nchartInstance.brushFromShapes(shapes, config);"
+          ]
+        },
+        "scroll": {
+          "kind": "function",
+          "params": [
+            {
+              "name": "name",
+              "description": "Name of scroll api",
+              "type": "string"
+            }
+          ],
+          "returns": {
+            "type": "scroll"
+          }
+        },
+        "dataset": {
+          "description": "Get",
+          "kind": "function",
+          "params": [
+            {
+              "name": "key",
+              "description": "Get the dataset identified by `key`",
+              "type": "string"
+            }
+          ],
+          "returns": {
+            "type": "#/definitions/dataset"
+          }
+        },
+        "scales": {
+          "description": "Get the all registered scales",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "description": "Array of scales",
+            "kind": "array",
+            "items": {
+              "type": "scale"
+            }
+          }
+        },
+        "formatters": {
+          "description": "Get the all registered formatters",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "description": "Array of formatters",
+            "kind": "array",
+            "items": {
+              "type": "formatter"
+            }
+          }
+        },
+        "brush": {
+          "description": "Get or create brush context for this chart",
+          "kind": "function",
+          "params": [
+            {
+              "name": "name",
+              "description": "Name of the brush context. If no match is found, a new brush context is created and returned.",
+              "type": "string"
+            }
+          ],
+          "returns": {
+            "type": "#/definitions/brush"
+          }
+        },
+        "scale": {
+          "description": "Get or create a scale for this chart",
+          "kind": "function",
+          "params": [
+            {
+              "name": "v",
+              "description": "Scale reference or scale options",
+              "kind": "union",
+              "items": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object"
+                }
+              ],
+              "type": "any"
+            }
+          ],
+          "returns": {
+            "type": "scale"
+          },
+          "examples": [
+            "instance.scale('nameOfMyScale'); // Fetch an existing scale by name\ninstance.scale({ scale: 'nameOfMyScale' }); // Fetch an existing scale by name\ninstance.scale({ source: '0/1', type: 'linear' }); // Create a new scale"
+          ]
+        },
+        "formatter": {
+          "description": "Get or create a formatter for this chart",
+          "kind": "function",
+          "params": [
+            {
+              "name": "v",
+              "description": "Formatter reference or formatter options",
+              "kind": "union",
+              "items": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object"
+                }
+              ],
+              "type": "any"
+            }
+          ],
+          "returns": {
+            "type": "formatter"
+          },
+          "examples": [
+            "instance.formatter('nameOfMyFormatter'); // Fetch an existing formatter by name\ninstance.formatter({ formatter: 'nameOfMyFormatter' }); // Fetch an existing formatter by name\ninstance.formatter({ type: 'q' }); // Fetch an existing formatter by type\ninstance.formatter({\n formatter: 'd3',\n type: 'number',\n format: '1.0.%'\n}); // Create a new formatter"
+          ]
+        },
+        "toggleBrushing": {
+          "kind": "function",
+          "params": [
+            {
+              "name": "val",
+              "description": "Toggle brushing on or off. If value is omitted, a toggle action is applied to the current state.",
+              "optional": true,
+              "type": "boolean"
+            }
+          ]
+        },
+        "component": {
+          "description": "Get a component context",
+          "kind": "function",
+          "params": [
+            {
+              "name": "key",
+              "description": "Component key",
+              "type": "string"
+            }
+          ],
+          "returns": {
+            "description": "Component context",
+            "type": "component-context"
+          }
+        },
+        "interactions": {
+          "description": "Get the all interactions instances",
+          "kind": "object",
+          "entries": {
+            "instances": {
+              "kind": "array",
+              "items": {
+                "type": "interaction"
+              }
+            },
+            "on": {
+              "description": "Enable all interaction instances",
+              "kind": "function",
+              "params": []
+            },
+            "off": {
+              "description": "Disable all interaction instances",
+              "kind": "function",
+              "params": []
+            }
+          },
+          "examples": [
+            "chart.interactions.instances; // Array of all interaction instances\nchart.interactions.on(); // Toggle on all interactions instances\nchart.interactions.off(); // Toggle off all interactions instances"
+          ]
+        }
+      }
+    },
     "component--axis-discrete": {
       "description": "Discrete axis settings",
       "kind": "object",
@@ -2878,480 +3352,6 @@
           "description": "Limit the text length to this value in pixels",
           "optional": true,
           "type": "number"
-        }
-      }
-    },
-    "component-settings": {
-      "kind": "object",
-      "entries": {
-        "type": {
-          "description": "Component type (ex: axis, point, ...)",
-          "type": "string"
-        },
-        "preferredSize": {
-          "description": "Function returning the preferred size",
-          "optional": true,
-          "type": "function"
-        },
-        "created": {
-          "optional": true,
-          "type": "function"
-        },
-        "beforeMount": {
-          "optional": true,
-          "type": "function"
-        },
-        "mounted": {
-          "optional": true,
-          "type": "function"
-        },
-        "beforeUpdate": {
-          "optional": true,
-          "type": "function"
-        },
-        "updated": {
-          "optional": true,
-          "type": "function"
-        },
-        "beforeRender": {
-          "optional": true,
-          "type": "function"
-        },
-        "beforeDestroy": {
-          "optional": true,
-          "type": "function"
-        },
-        "destroyed": {
-          "optional": true,
-          "type": "function"
-        },
-        "brush": {
-          "description": "see [brushing](./brushing.md)",
-          "optional": true,
-          "type": "brush-setting"
-        },
-        "displayOrder": {
-          "optional": true,
-          "defaultValue": 0,
-          "type": "number"
-        },
-        "prioOrder": {
-          "optional": true,
-          "defaultValue": 0,
-          "type": "number"
-        },
-        "show": {
-          "description": "If the component should be rendered",
-          "optional": true,
-          "defaultValue": true,
-          "type": "boolean"
-        },
-        "minimumLayoutMode": {
-          "description": "Refer to layout sizes defined by layoutModes in dockLayout",
-          "optional": true,
-          "kind": "union",
-          "items": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "Object"
-            }
-          ],
-          "type": "any"
-        },
-        "dock": {
-          "description": "left, right, top or bottom",
-          "optional": true,
-          "type": "string"
-        },
-        "scale": {
-          "description": "Named scale. Will be provided to the component if it ask for it.",
-          "optional": true,
-          "type": "string"
-        },
-        "formatter": {
-          "description": "Named formatter. Fallback to create formatter from scale. Will be provided to the component if it ask for it.",
-          "optional": true,
-          "type": "string"
-        }
-      }
-    },
-    "chart-definition": {
-      "kind": "object",
-      "entries": {
-        "element": {
-          "type": "HTMLElement"
-        },
-        "data": {
-          "kind": "array",
-          "items": {
-            "type": "#/definitions/data-source"
-          }
-        },
-        "settings": {
-          "type": "chart-settings"
-        }
-      }
-    },
-    "chart": {
-      "kind": "interface",
-      "params": [],
-      "entries": {
-        "update": {
-          "description": "Update the chart with new settings and / or data",
-          "kind": "function",
-          "params": [
-            {
-              "name": "chart",
-              "description": "Chart definition",
-              "optional": true,
-              "type": "#/definitions/chart-definition"
-            }
-          ]
-        },
-        "destroy": {
-          "description": "Destroy the chart instance.",
-          "kind": "function",
-          "params": []
-        },
-        "getAffectedShapes": {
-          "description": "Get all shapes associated with the provided context",
-          "kind": "function",
-          "params": [
-            {
-              "name": "context",
-              "description": "The brush context",
-              "type": "string"
-            },
-            {
-              "name": "mode",
-              "description": "Property comparasion mode.",
-              "type": "string"
-            },
-            {
-              "name": "props",
-              "description": "Which specific data properties to compare",
-              "kind": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            {
-              "name": "key",
-              "description": "Which component to get shapes from. Default gives shapes from all components.",
-              "type": "string"
-            }
-          ],
-          "returns": {
-            "description": "Array of objects containing shape and parent element",
-            "kind": "array",
-            "items": {
-              "type": "object"
-            }
-          }
-        },
-        "findShapes": {
-          "description": "Get all nodes matching the provided selector",
-          "kind": "function",
-          "params": [
-            {
-              "name": "selector",
-              "description": "CSS selector [type, attribute, universal, class]",
-              "type": "string"
-            }
-          ],
-          "returns": {
-            "description": "Array of objects containing matching nodes",
-            "kind": "array",
-            "items": {
-              "type": "#/definitions/SceneNode"
-            }
-          },
-          "examples": [
-            "chart.findShapes('Circle') // [<CircleNode>, <CircleNode>]\nchart.findShapes('Circle[fill=\"red\"][stroke!=\"black\"]') // [CircleNode, CircleNode]\nchart.findShapes('Container Rect') // [Rect, Rect]"
-          ]
-        },
-        "componentsFromPoint": {
-          "description": "Get components overlapping a point.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "p",
-              "description": "Point with x- and y-cooridnate. The coordinate is relative to the browser viewport.",
-              "type": "#/definitions/point"
-            }
-          ],
-          "returns": {
-            "description": "Array of component contexts",
-            "kind": "array",
-            "items": {
-              "type": "component-context"
-            }
-          }
-        },
-        "shapesAt": {
-          "description": "Get all nodes colliding with a geometrical shape (circle, line, rectangle, point, polygon).\n\nThe input shape is identified based on the geometrical attributes in the following order: circle => line => rectangle => point => polygon.\nNote that not all nodes on a scene have collision detection enabled.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "shape",
-              "description": "A geometrical shape. Coordinates are relative to the top-left corner of the chart instance container.",
-              "kind": "union",
-              "items": [
-                {
-                  "type": "#/definitions/line"
-                },
-                {
-                  "type": "#/definitions/rect"
-                },
-                {
-                  "type": "#/definitions/point"
-                },
-                {
-                  "type": "#/definitions/circle"
-                }
-              ],
-              "type": "any"
-            },
-            {
-              "name": "opts",
-              "description": "Options",
-              "kind": "object",
-              "entries": {
-                "components": {
-                  "description": "Array of components to include in the lookup. If no components are specified, all components will be included.",
-                  "optional": true,
-                  "kind": "array",
-                  "items": {
-                    "entries": {
-                      "component": {
-                        "kind": "object",
-                        "entries": {
-                          "key": {
-                            "description": "Component key",
-                            "optional": true,
-                            "type": "string"
-                          },
-                          "propagation": {
-                            "description": "if set to `stop`, will start lookup on top visible shape and propagate downwards until a shape is found.",
-                            "optional": true,
-                            "type": "string"
-                          }
-                        }
-                      }
-                    },
-                    "kind": "object"
-                  }
-                },
-                "propagation": {
-                  "description": "if set to `stop`, will start lookup on top visible component and propagate downwards until a component has at least a match.",
-                  "optional": true,
-                  "type": "string"
-                }
-              }
-            }
-          ],
-          "returns": {
-            "description": "Array of objects containing colliding nodes",
-            "kind": "array",
-            "items": {
-              "type": "#/definitions/SceneNode"
-            }
-          },
-          "examples": [
-            "chart.shapesAt(\n {\n   x: 0,\n   y: 0,\n   width: 100,\n   height: 100\n },\n {\n   components: [\n     { key: 'key1', propagation: 'stop' },\n     { key: 'key2' }\n   ],\n   propagation: 'stop'\n }\n);"
-          ]
-        },
-        "brushFromShapes": {
-          "description": "Brush data by providing a collection of data bound shapes.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "shapes",
-              "description": "An array of data bound shapes.",
-              "kind": "array",
-              "items": {
-                "type": "#/definitions/SceneNode"
-              }
-            },
-            {
-              "name": "config",
-              "description": "Options",
-              "type": "object"
-            }
-          ],
-          "examples": [
-            "const shapes = chartInstance.shapesAt(...);\nconst config = {\n components:[\n   {\n     key: 'key1',\n     contexts: ['myContext'],\n     data: [''],\n     action: 'add'\n   }\n ]\n};\nchartInstance.brushFromShapes(shapes, config);"
-          ]
-        },
-        "scroll": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "name",
-              "description": "Name of scroll api",
-              "type": "string"
-            }
-          ],
-          "returns": {
-            "type": "scroll"
-          }
-        },
-        "dataset": {
-          "description": "Get",
-          "kind": "function",
-          "params": [
-            {
-              "name": "key",
-              "description": "Get the dataset identified by `key`",
-              "type": "string"
-            }
-          ],
-          "returns": {
-            "type": "#/definitions/dataset"
-          }
-        },
-        "scales": {
-          "description": "Get the all registered scales",
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "description": "Array of scales",
-            "kind": "array",
-            "items": {
-              "type": "scale"
-            }
-          }
-        },
-        "formatters": {
-          "description": "Get the all registered formatters",
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "description": "Array of formatters",
-            "kind": "array",
-            "items": {
-              "type": "formatter"
-            }
-          }
-        },
-        "brush": {
-          "description": "Get or create brush context for this chart",
-          "kind": "function",
-          "params": [
-            {
-              "name": "name",
-              "description": "Name of the brush context. If no match is found, a new brush context is created and returned.",
-              "type": "string"
-            }
-          ],
-          "returns": {
-            "type": "#/definitions/brush"
-          }
-        },
-        "scale": {
-          "description": "Get or create a scale for this chart",
-          "kind": "function",
-          "params": [
-            {
-              "name": "v",
-              "description": "Scale reference or scale options",
-              "kind": "union",
-              "items": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "object"
-                }
-              ],
-              "type": "any"
-            }
-          ],
-          "returns": {
-            "type": "scale"
-          },
-          "examples": [
-            "instance.scale('nameOfMyScale'); // Fetch an existing scale by name\ninstance.scale({ scale: 'nameOfMyScale' }); // Fetch an existing scale by name\ninstance.scale({ source: '0/1', type: 'linear' }); // Create a new scale"
-          ]
-        },
-        "formatter": {
-          "description": "Get or create a formatter for this chart",
-          "kind": "function",
-          "params": [
-            {
-              "name": "v",
-              "description": "Formatter reference or formatter options",
-              "kind": "union",
-              "items": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "object"
-                }
-              ],
-              "type": "any"
-            }
-          ],
-          "returns": {
-            "type": "formatter"
-          },
-          "examples": [
-            "instance.formatter('nameOfMyFormatter'); // Fetch an existing formatter by name\ninstance.formatter({ formatter: 'nameOfMyFormatter' }); // Fetch an existing formatter by name\ninstance.formatter({ type: 'q' }); // Fetch an existing formatter by type\ninstance.formatter({\n formatter: 'd3',\n type: 'number',\n format: '1.0.%'\n}); // Create a new formatter"
-          ]
-        },
-        "toggleBrushing": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "val",
-              "description": "Toggle brushing on or off. If value is omitted, a toggle action is applied to the current state.",
-              "optional": true,
-              "type": "boolean"
-            }
-          ]
-        },
-        "component": {
-          "description": "Get a component context",
-          "kind": "function",
-          "params": [
-            {
-              "name": "key",
-              "description": "Component key",
-              "type": "string"
-            }
-          ],
-          "returns": {
-            "description": "Component context",
-            "type": "component-context"
-          }
-        },
-        "interactions": {
-          "description": "Get the all interactions instances",
-          "kind": "object",
-          "entries": {
-            "instances": {
-              "kind": "array",
-              "items": {
-                "type": "interaction"
-              }
-            },
-            "on": {
-              "description": "Enable all interaction instances",
-              "kind": "function",
-              "params": []
-            },
-            "off": {
-              "description": "Disable all interaction instances",
-              "kind": "function",
-              "params": []
-            }
-          },
-          "examples": [
-            "chart.interactions.instances; // Array of all interaction instances\nchart.interactions.on(); // Toggle on all interactions instances\nchart.interactions.off(); // Toggle off all interactions instances"
-          ]
         }
       }
     },
