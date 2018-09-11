@@ -1,4 +1,4 @@
-import chart from './charts/chart';
+import chart from './chart';
 import rendererFactory from './renderer';
 import component from './component';
 import data from './data';
