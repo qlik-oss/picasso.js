@@ -9,6 +9,19 @@ const M_RX = /^\/?qMeasureInfo\/(\d+)/;
 const ATTR_EXPR_RX = /\/qAttrExprInfo\/(\d+)/;
 const ATTR_DIM_RX = /\/qAttrDimInfo\/(\d+)/;
 
+function getColumnOrder(dataset) {
+  const qColumnOrder = dataset.raw().qColumnOrder;
+  const fields = dataset.fields();
+
+  return qColumnOrder && (qColumnOrder.length === fields.length) ? qColumnOrder : fields.map((f, i) => i);
+}
+
+function getDimensionColumnOrder(cube) {
+  const order = cube.qColumnOrder && cube.qColumnOrder.length ? cube.qColumnOrder : cube.qDimensionInfo.map((d, ii) => ii);
+
+  return order.filter(ii => ii < cube.qDimensionInfo.length);
+}
+
 export function getFieldDepth(field, { cube }) {
   if (!field) {
     return -1;
@@ -24,7 +37,7 @@ export function getFieldDepth(field, { cube }) {
   let remainder = key;
 
   const treeOrder = cube.qEffectiveInterColumnSortOrder;
-  const columnOrder = (cube.qColumnOrder || cube.qDimensionInfo.map((d, ii) => ii)).filter(ii => ii < cube.qDimensionInfo.length);
+  const columnOrder = getDimensionColumnOrder(cube);
 
   if (DIM_RX.test(remainder)) {
     isFieldDimension = true;
@@ -193,12 +206,12 @@ const getHierarchy = (cube, cache, config) => {
 
 function getHierarchyForSMode(dataset) {
   const matrix = dataset.raw().qDataPages[0].qMatrix;
-  const order = dataset.raw().qColumnOrder;
+  const order = getColumnOrder(dataset);
   const fields = dataset.fields();
-  let dimensions = dataset.fields().filter(f => f.type() === 'dimension')
-    .map(order ? (f => order.indexOf(fields.indexOf(f))) : (f, i) => i);
-  let measures = dataset.fields().filter(f => f.type() === 'measure')
-    .map(order ? (f => order.indexOf(fields.indexOf(f))) : (f, i) => dimensions.length + i);
+  const dimensions = dataset.fields().filter(f => f.type() === 'dimension')
+    .map(f => order.indexOf(fields.indexOf(f)));
+  const measures = dataset.fields().filter(f => f.type() === 'measure')
+    .map(f => order.indexOf(fields.indexOf(f)));
 
   const root = {
     __id: '__root',
@@ -277,7 +290,7 @@ export function augment(config = {}, dataset, cache, util) {
     let f = null;
     if (i > 0) {
       if (cube.qMode === 'S') {
-        const order = (cube.qColumnOrder || cube.qDimensionInfo.map((d, ii) => ii)).filter(ii => ii < cube.qDimensionInfo.length);
+        const order = getDimensionColumnOrder(cube);
         let idx = order[i - 1];
         f = cache.fields[idx];
       } else {
