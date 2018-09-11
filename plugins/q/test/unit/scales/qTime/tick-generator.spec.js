@@ -90,7 +90,7 @@ describe('qTime - Tick generator', () => {
       expect(ticks[0].label).to.equal('00:00');
     });
 
-    it('should generate ticks even when no distance argument is passed', () => {
+    it.skip('should generate ticks even when no distance argument is passed', () => {
       tickFn = tickGenerator(scale, settings);
 
       const ticks = tickFn.createTicks();
@@ -98,7 +98,7 @@ describe('qTime - Tick generator', () => {
       expect(ticks).to.be.of.length(9);
     });
 
-    it('should generate appropriate amount of ticks based on distance', () => {
+    it.skip('should generate appropriate amount of ticks based on distance', () => {
       tickFn = tickGenerator(scale, settings);
 
       let ticks = tickFn.createTicks(120);
@@ -109,7 +109,7 @@ describe('qTime - Tick generator', () => {
       expect(ticks).to.be.of.length(9);
     });
 
-    it('should output ticks in picasso format', () => {
+    it.skip('should output ticks in picasso format', () => {
       tickFn = tickGenerator(scale, settings);
 
       const ticks = tickFn.createTicks(120);
