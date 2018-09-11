@@ -1,7 +1,6 @@
 /* eslint camelcase: 1 */
 import extend from 'extend';
 import EventEmitter from '../utils/event-emitter';
-import { list as listMixins } from './component-mixins';
 import extractData from '../data/extractor';
 import tween from './tween';
 import settingsResolver from './settings-resolver';
@@ -147,7 +146,7 @@ function setUpEmitter(ctx, emitter, settings) {
 // beforeUpdate -> beforeRender -> render -> updated
 
 // TODO support es6 classes
-function componentFactory(definition, options = {}) {
+function componentFactory(definition, context = {}) {
   const {
     defaultSettings = {},
     _DO_NOT_USE_getInfo = () => ({})
@@ -159,8 +158,8 @@ function componentFactory(definition, options = {}) {
     registries,
     theme,
     renderer // Used by tests
-  } = options;
-  const config = options.settings || {};
+  } = context;
+  const config = context.settings || {};
   const emitter = EventEmitter.mixin({});
   let settings = extend(true, {}, defaultSettings, config);
   let data = [];
@@ -184,9 +183,8 @@ function componentFactory(definition, options = {}) {
     over: []
   };
   const brushStylers = [];
-  const componentMixins = listMixins(settings.type);
   const definitionContext = {};
-  const instanceContext = extend({}, config, componentMixins.filter(mixinName => !isReservedProperty(mixinName)));
+  const instanceContext = extend({}, config);
 
   // Create a callback that calls lifecycle functions in the definition and config (if they exist).
   function createCallback(method, defaultMethod = () => {}) {
@@ -204,11 +202,6 @@ function componentFactory(definition, options = {}) {
       if (!inDefinition && !inConfig) {
         returnValue = defaultMethod.call(definitionContext, ...args);
       }
-      componentMixins.forEach((mixin) => {
-        if (mixin[method]) {
-          mixin[method].call(instanceContext, ...args);
-        }
-      });
       return returnValue;
     };
   }
@@ -456,13 +449,13 @@ function componentFactory(definition, options = {}) {
     _DO_NOT_USE_getInfo: _DO_NOT_USE_getInfo.bind(definitionContext)
   });
 
-  fn.getBrushedShapes = function getBrushedShapes(context, mode, props) {
+  fn.getBrushedShapes = function getBrushedShapes(brushCtx, mode, props) {
     const shapes = [];
     if (settings.brush && settings.brush.consume) {
-      const brusher = chart.brush(context);
+      const brusher = chart.brush(brushCtx);
       const sceneNodes = rend.findShapes('*');
       settings.brush.consume
-        .filter(t => t.context === context)
+        .filter(t => t.context === brushCtx)
         .forEach((consume) => {
           for (let i = 0; i < sceneNodes.length; i++) {
             const node = sceneNodes[i];
