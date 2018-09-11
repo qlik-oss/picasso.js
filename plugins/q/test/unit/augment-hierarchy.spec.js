@@ -212,8 +212,10 @@ describe('augment-hierarchy', () => {
   });
   // });
   describe('S mode', () => {
-    it('hierarchy', () => {
-      const cube = {
+    let cube;
+
+    beforeEach(() => {
+      cube = {
         qMode: 'S',
         qDimensionInfo: [{ qFallbackTitle: 'first', qStateCounts: {} }, { qFallbackTitle: 'second', qStateCounts: {} }],
         qMeasureInfo: [{ qFallbackTitle: 'emasure', qMin: 1, qMax: 2 }],
@@ -227,6 +229,59 @@ describe('augment-hierarchy', () => {
         qEffectiveInterColumnSortOrder: [1, 0, 2],
         qColumnOrder: [1, 2, 0]
       };
+    });
+
+    it('hierarchy', () => {
+      const d = q({
+        key: 'nyckel',
+        data: cube
+      });
+      const h = d.hierarchy({
+        value: v => (v ? v.qText : '__'),
+        props: {
+          v: {
+            field: 'qMeasureInfo/0', value: v => (v ? v.qNum : NaN)
+          }
+        }
+      });
+
+      expect(h.descendants().map(child => child.data.v.value)).to.eql([6, 4, 10, 3, 5, 10]);
+    });
+
+    it('hierarchy - should handle empty qColumnOrder', () => {
+      cube.qColumnOrder = [];
+      cube.qDataPages = [{
+        qMatrix: [
+          [{ qText: 'A', qElemNumber: 1 }, { qText: 'Aa', qElemNumber: 1 }, { qText: '$456', qNum: 3 }],
+          [{ qText: 'B', qElemNumber: 2 }, { qText: 'Ba', qElemNumber: 2 }, { qText: '$457', qNum: 10 }],
+          [{ qText: 'A', qElemNumber: 1 }, { qText: 'Ab', qElemNumber: 3 }, { qText: '$235', qNum: 5 }]
+        ]
+      }];
+      const d = q({
+        key: 'nyckel',
+        data: cube
+      });
+      const h = d.hierarchy({
+        value: v => (v ? v.qText : '__'),
+        props: {
+          v: {
+            field: 'qMeasureInfo/0', value: v => (v ? v.qNum : NaN)
+          }
+        }
+      });
+
+      expect(h.descendants().map(child => child.data.v.value)).to.eql([6, 4, 10, 3, 5, 10]);
+    });
+
+    it('hierarchy - should handle if qColumnOrder doesnt contain a reference to all fields', () => {
+      cube.qColumnOrder = [0, 1];
+      cube.qDataPages = [{
+        qMatrix: [
+          [{ qText: 'A', qElemNumber: 1 }, { qText: 'Aa', qElemNumber: 1 }, { qText: '$456', qNum: 3 }],
+          [{ qText: 'B', qElemNumber: 2 }, { qText: 'Ba', qElemNumber: 2 }, { qText: '$457', qNum: 10 }],
+          [{ qText: 'A', qElemNumber: 1 }, { qText: 'Ab', qElemNumber: 3 }, { qText: '$235', qNum: 5 }]
+        ]
+      }];
       const d = q({
         key: 'nyckel',
         data: cube
