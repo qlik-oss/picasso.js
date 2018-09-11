@@ -1,6 +1,5 @@
 import extend from 'extend';
 
-import * as mixins from './chart-mixins';
 import createDockLayout from '../dock-layout/dock-layout';
 import {
   detectTouchSupport,
@@ -39,12 +38,6 @@ import themeFn from '../theme';
  * @property {string} [scale] Named scale. Will be provided to the component if it ask for it.
  * @property {string} [formatter] Named formatter. Fallback to create formatter from scale. Will be provided to the component if it ask for it.
  */
-
-const isReservedProperty = prop => [
-  'on', 'created', 'beforeMount', 'mounted', 'resize',
-  'beforeUpdate', 'updated', 'beforeRender', 'render', 'beforeDestroy',
-  'destroyed', 'data', 'settings'
-].some(name => name === prop);
 
 function addComponentDelta(shape, containerBounds, componentBounds) {
   const dx = containerBounds.left - componentBounds.left;
@@ -109,7 +102,6 @@ function chartFn(definition, context) {
   const logger = context.logger;
   const theme = themeFn(context.style, context.palettes);
 
-  const chartMixins = mixins.list();
   const listeners = [];
   /**
    * @alias chart
@@ -117,8 +109,7 @@ function chartFn(definition, context) {
    */
   const instance = extend(
     {},
-    definition,
-    chartMixins.filter(mixinName => !isReservedProperty(mixinName))
+    definition
   );
   const mediator = mediatorFactory();
   let currentComponents = []; // Augmented components
@@ -167,11 +158,6 @@ function chartFn(definition, context) {
       } else {
         returnValue = defaultMethod.call(instance, ...args);
       }
-      chartMixins.forEach((mixin) => {
-        if (mixin[method]) {
-          mixin[method].call(instance, ...args);
-        }
-      });
       return returnValue;
     };
   }
@@ -823,7 +809,5 @@ function chartFn(definition, context) {
 
   return instance;
 }
-
-chartFn.mixin = mixins.add; // Expose mixin registering function
 
 export default chartFn;
