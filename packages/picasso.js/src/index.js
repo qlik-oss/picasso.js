@@ -18,7 +18,7 @@ import componentRegistry from './core/component';
 import dataRegistry from './core/data';
 import formatterRegistry from './core/formatter';
 import interactionRegistry from './core/interaction';
-import scaleRegistry from './core/charts/scales';
+import scaleRegistry from './core/chart/scales';
 
 import loggerFn from './core/utils/logger';
 import registry from './core/utils/registry';
