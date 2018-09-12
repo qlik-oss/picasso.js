@@ -20,7 +20,8 @@
     "url": "https://github.com/qlik-oss/picasso.js.git"
   },
   "files": [
-    "/dist"
+    "/dist",
+    "/src"
   ],
   "main": "dist/picasso.js",
   "module": "src/index.js",
@@ -36,7 +37,7 @@
     "version": "node scripts/version.js && git add src/about.js",
     "prepublishOnly": "rm -rf dist && npm run build"
   },
-  "devDependencies": {
+  "dependencies": {
     "d3-ease": "^1.0.3",
     "d3-format": "^1.3.0",
     "d3-hierarchy": "^1.1.6",
@@ -48,7 +49,9 @@
     "hammerjs": "^2.0.8",
     "node-event-emitter": "0.0.1",
     "path2d-polyfill": "0.2.1",
-    "preact": "^8.3.0",
+    "preact": "^8.3.0"
+  },
+  "devDependencies": {
     "rimraf": "^2.6.2",
     "test-utils": "0.0.1"
   }
