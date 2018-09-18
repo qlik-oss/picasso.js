@@ -231,7 +231,7 @@ describe('Node Selector', () => {
     describe('tag', () => {
       it('should select all objects that contains tag', () => {
         c1.tag = 'title myTag label';
-        c2.tag = 'testing';
+        c2.tag = 'myTag-plus myTagPlus';
         t1.tag = 'myTag';
         const result = filter(
           { type: 'tag', value: '.myTag' },
@@ -263,6 +263,17 @@ describe('Node Selector', () => {
           [c1, c2, c3, t1, r1]
         );
         expect(result).to.deep.equal([]);
+      });
+
+      it('should not match empty tag', () => {
+        c1.tag = '';
+        c2.tag = ' test-tag ';
+        const result = filter(
+          { type: 'tag', value: '.' },
+          [c1, c2, c3, t1, r1]
+        );
+
+        expect(result).to.be.empty;
       });
     });
   });

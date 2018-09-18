@@ -43,11 +43,14 @@ const FILTERS = {
 
   universal: objects => objects,
 
-  tag: (c, objects) => { // eslint-disable-line arrow-body-style
+  tag: (selector, objects) => { // eslint-disable-line arrow-body-style
     return objects.filter((o) => {
       const tag = o.tag;
       if (tag) {
-        return tag.indexOf(c.replace('.', '')) !== -1;
+        return tag
+          .trim()
+          .split(/\s+/)
+          .indexOf(selector.replace('.', '')) !== -1;
       }
       return false;
     });
