@@ -13,14 +13,13 @@ describe('Container', () => {
 
     it('should not have a collider by default', () => {
       container = createContainer();
-      expect(container.collider()).to.equal(null);
+      expect(container.colliderType).to.equal(null);
     });
 
     it('should accept arguments', () => {
       container = createContainer({ collider: { type: 'rect' } });
-      expect(container.collider()).to.be.a('object');
-      expect(container.collider().fn).to.be.an.instanceof(GeoRect);
-      expect(container.collider().type).to.equal('rect');
+      expect(container.colliderType).to.equal('rect');
+      expect(container.collider).to.be.an.instanceof(GeoRect);
     });
   });
 
@@ -28,21 +27,20 @@ describe('Container', () => {
     it('should set correct values', () => {
       container = createContainer();
       container.set({ collider: { type: 'rect' } });
-      expect(container.collider()).to.be.a('object');
-      expect(container.collider().fn).to.be.an.instanceof(GeoRect);
-      expect(container.collider().type).to.equal('rect');
+      expect(container.colliderType).to.equal('rect');
+      expect(container.collider).to.be.an.instanceof(GeoRect);
     });
 
     it('should handle no arguments', () => {
       container = createContainer();
       container.set();
-      expect(container.collider()).to.equal(null);
+      expect(container.colliderType).to.equal(null);
     });
 
     it('should be able to disable the collider', () => {
       container = createContainer({ collider: { type: 'rect' } });
       container.set({ collider: { type: null } });
-      expect(container.collider()).to.equal(null);
+      expect(container.colliderType).to.equal(null);
     });
   });
 
@@ -372,6 +370,73 @@ describe('Container', () => {
 
       const r = container.containsPoint({ x: 2, y: 2 });
       expect(r).to.equal(true);
+    });
+
+    it('should include self transformation when resolving collision', () => {
+      const rect = createRect({
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 100
+      });
+      container = createContainer({ transform: 'translate(10, 20)', collider: { type: 'bounds' } });
+      container.addChild(rect);
+      rect.resolveGlobalTransform();
+      // After transform, container should have a bounds of { x: 10, y: 20, width: 100, height: 100 }
+      const r = container.containsPoint({ x: 105, y: 110 });
+      expect(r).to.equal(true);
+    });
+
+    it('should include descendant transformation when resolving collision', () => {
+      container = createContainer({ collider: { type: 'bounds' } });
+      const rect = createRect({
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 100,
+        transform: 'translate(10, 20)'
+      });
+      container.addChild(rect);
+      // After transform, container should have a bounds of { x: 10, y: 20, width: 100, height: 100 }
+      rect.resolveGlobalTransform();
+      const r = container.containsPoint({ x: 105, y: 110 });
+      expect(r).to.equal(true);
+    });
+
+    it('should include self and descendant transformation when resolving collision', () => {
+      container = createContainer({ transform: 'translate(-100, -100)', collider: { type: 'bounds' } });
+      const rect = createRect({
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 100,
+        transform: 'translate(10, 20)'
+      });
+      container.addChild(rect);
+
+      // After transform, container should have a bounds of { x: -90, y: -80, width: 100, height: 100 }
+      rect.resolveGlobalTransform();
+
+      expect(container.containsPoint({ x: -10, y: -20 })).to.true;
+      expect(container.containsPoint({ x: 20, y: 30 })).to.false;
+    });
+
+    it('should include ancestors transformation when resolving collision', () => {
+      const ancestor = createContainer({ transform: 'translate(-100, -100)' });
+      const rect = createRect({
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 100
+      });
+      container = createContainer({ collider: { type: 'bounds' } });
+      container.addChild(rect);
+      ancestor.addChild(container);
+      // After transform, container should have a bounds of { x: -100, y: -100, width: 100, height: 100 }
+      rect.resolveGlobalTransform();
+
+      expect(container.containsPoint({ x: -10, y: -20 })).to.true;
+      expect(container.containsPoint({ x: 20, y: 30 })).to.false;
     });
 
     it('should return true if custom collider contains point', () => {

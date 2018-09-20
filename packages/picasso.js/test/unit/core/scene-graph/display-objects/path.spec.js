@@ -10,16 +10,15 @@ describe('Path', () => {
       path = create();
       expect(path).to.be.an.instanceof(Path);
       expect(path.attrs.d).to.be.equal(undefined);
-      expect(path.collider()).to.be.equal(null);
+      expect(path.collider).to.be.equal(null);
     });
 
     it('should accept arguments', () => {
       path = create({ d: 'M10 15' });
       expect(path).to.be.an.instanceof(Path);
       expect(path.attrs.d).to.be.equal('M10 15');
-      expect(path.collider()).to.be.a('object');
-      expect(path.collider().fn).to.be.an.instanceof(GeometryCollection);
-      expect(path.collider().type).to.equal('collection');
+      expect(path.collider).to.be.an.instanceof(GeometryCollection);
+      expect(path.colliderType).to.equal('collection');
     });
   });
 

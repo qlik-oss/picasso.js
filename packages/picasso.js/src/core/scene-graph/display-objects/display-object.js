@@ -29,7 +29,11 @@ class DisplayObject extends Node {
   constructor(type) {
     super(type);
     this._stage = null;
-    this._collider = null;
+    this._collider = {
+      type: null,
+      definition: null,
+      fn: null
+    };
     this._attrs = {};
     this._node = null;
   }
@@ -56,39 +60,6 @@ class DisplayObject extends Node {
     if (typeof tag === 'string') {
       this.tag = tag;
     }
-  }
-
-  collider(opts) {
-    if (typeof opts === 'undefined') {
-      return this._collider;
-    }
-
-    if (Array.isArray(opts)) {
-      this._collider = {
-        fn: geometryCollection(opts),
-        type: 'collection'
-      };
-      return this._collider;
-    }
-
-    const { type = null } = opts;
-    const c = { type };
-
-    if (!type) {
-      this._collider = null;
-    } else if (this._collider && this._collider.type === type) {
-      this._collider.fn.set(opts);
-    } else if (type === 'frontChild') {
-      this._collider = c;
-    } else if (type === 'bounds') {
-      c.fn = geometry('rect', this.boundingRect());
-      this._collider = c;
-    } else if (['line', 'rect', 'circle', 'polygon', 'polyline'].indexOf(type) !== -1) {
-      c.fn = geometry(type, opts);
-      this._collider = c;
-    }
-
-    return this._collider;
   }
 
   findShapes(selector) {
@@ -207,6 +178,63 @@ class DisplayObject extends Node {
 
   get node() {
     return this._node;
+  }
+
+  set collider(definition) {
+    const type = Array.isArray(definition) ? 'collection' : (definition && definition.type);
+    if (typeof type !== 'string') {
+      // Non string type definition resets the collider
+      this._collider.type = null;
+      this._collider.definition = null;
+      this._collider.fn = null;
+      return;
+    }
+
+    // Check if a collider of the same type is already defined, if so, do an update
+    if (this._collider !== null && this._collider.type === type && this._collider.fn !== null) {
+      this._collider.fn.set(definition);
+      this._collider.definition = definition;
+      return;
+    }
+
+    // Store the definition so that it can be lazy evaluated
+    this._collider.type = type;
+    this._collider.definition = definition;
+  }
+
+  get collider() {
+    // Resolve geometry function from cache
+    if (this._collider.fn !== null) {
+      return this._collider.fn;
+    }
+
+    // Resolve geometry function and store it in cache
+    switch (this._collider.type) {
+      case 'collection':
+        this._collider.fn = geometryCollection(this._collider.definition);
+        break;
+      case 'frontChild': // TODO Deprecate
+        // Front child is not resolved by a function on this node, but instead on one of its child nodes
+        return true;
+      case 'bounds':
+        this._collider.fn = geometry('rect', this.boundingRect());
+        break;
+      case 'line':
+      case 'rect':
+      case 'circle':
+      case 'polygon':
+      case 'polyline':
+        this._collider.fn = geometry(this._collider.type, this._collider.definition);
+        break;
+      default:
+        return null;
+    }
+
+    return this._collider.fn;
+  }
+
+  get colliderType() {
+    return this._collider.type;
   }
 }
 

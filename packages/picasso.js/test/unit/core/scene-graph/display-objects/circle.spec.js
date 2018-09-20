@@ -21,9 +21,8 @@ describe('Circle', () => {
       expect(circle.attrs.cx).to.be.equal(0);
       expect(circle.attrs.cy).to.be.equal(0);
       expect(circle.attrs.r).to.be.equal(0);
-      expect(circle.collider()).to.be.a('object');
-      expect(circle.collider().fn).to.be.an.instanceof(GeoCircle);
-      expect(circle.collider().type).to.equal('circle');
+      expect(circle.colliderType).to.equal('circle');
+      expect(circle.collider).to.be.an.instanceof(GeoCircle);
     });
 
     it('should accept arguments', () => {
@@ -35,9 +34,8 @@ describe('Circle', () => {
       expect(circle.attrs.cx).to.be.equal(10);
       expect(circle.attrs.cy).to.be.equal(20);
       expect(circle.attrs.r).to.be.equal(5);
-      expect(circle.collider()).to.be.a('object');
-      expect(circle.collider().fn).to.be.an.instanceof(GeoRect);
-      expect(circle.collider().type).to.equal('rect');
+      expect(circle.colliderType).to.equal('rect');
+      expect(circle.collider).to.be.an.instanceof(GeoRect);
     });
   });
 
@@ -50,9 +48,8 @@ describe('Circle', () => {
       expect(circle.attrs.cx).to.be.equal(99);
       expect(circle.attrs.cy).to.be.equal(999);
       expect(circle.attrs.r).to.be.equal(9);
-      expect(circle.collider()).to.be.a('object');
-      expect(circle.collider().fn).to.be.an.instanceof(GeoRect);
-      expect(circle.collider().type).to.equal('rect');
+      expect(circle.colliderType).to.equal('rect');
+      expect(circle.collider).to.be.an.instanceof(GeoRect);
     });
 
     it('should default to zero cx', () => {
@@ -82,13 +79,13 @@ describe('Circle', () => {
       expect(circle.attrs.cx).to.be.equal(0);
       expect(circle.attrs.cy).to.be.equal(0);
       expect(circle.attrs.r).to.be.equal(0);
-      expect(circle.collider().fn).to.be.an.instanceof(GeoCircle);
+      expect(circle.collider).to.be.an.instanceof(GeoCircle);
     });
 
     it('should be able to disable the default collider', () => {
       circle = createCircle(shape);
       circle.set({ collider: { type: null } });
-      expect(circle.collider()).to.equal(null);
+      expect(circle.colliderType).to.equal(null);
     });
   });
 

@@ -31,9 +31,11 @@ function resolveFrontChildCollision(node, type, input) {
 
   for (let i = num - 1; i >= 0; i--) {
     const desc = node.descendants[i];
-    const collider = desc._collider;
+    if (desc.collider === null) {
+      continue;
+    }
 
-    if (collider && collider.fn[type](input)) {
+    if (desc.collider[type](input)) {
       const collision = createCollision(desc);
 
       appendParentNode(desc, collision);
@@ -45,8 +47,7 @@ function resolveFrontChildCollision(node, type, input) {
 }
 
 function resolveGeometryCollision(node, type, input) {
-  const collider = node._collider.fn;
-  if (collider[type](input)) {
+  if (node.collider[type](input)) {
     const c = createCollision(node);
 
     appendParentNode(node, c);
@@ -83,12 +84,13 @@ function inverseTransform(node, input) {
 }
 
 function resolveCollision(node, intersectionType, input) {
-  const collider = node._collider;
-  if (collider === null) { return null; }
+  if (node.colliderType === null) {
+    return null;
+  }
 
   const transformedInput = inverseTransform(node, input);
 
-  if (collider.type === 'frontChild') {
+  if (node.colliderType === 'frontChild') {
     return resolveFrontChildCollision(node, intersectionType, transformedInput);
   }
 
@@ -105,7 +107,7 @@ function findAllCollisions(nodes, intersectionType, ary, input) {
     if (collision) { ary.push(collision); }
 
     // Only traverse children if no match is found on parent and it doesnt have any custom collider
-    if (node.children && !collision && !node._collider) {
+    if (node.children && !collision && !node.collider) {
       findAllCollisions(node.children, intersectionType, ary, input);
     }
   }
@@ -120,7 +122,7 @@ function hasCollision(nodes, intersectionType, input) {
 
     if (collision !== null) { return true; }
 
-    if (node.children && !node._collider) {
+    if (node.children && !node.collider) {
       return hasCollision(node.children, intersectionType, input);
     }
   }

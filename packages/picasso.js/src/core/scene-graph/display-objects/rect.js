@@ -46,7 +46,7 @@ export default class Rect extends DisplayObject {
       this.attrs.height = -height;
     }
 
-    super.collider(opts);
+    this.collider = opts;
   }
 
   boundingRect(includeTransform = false) {

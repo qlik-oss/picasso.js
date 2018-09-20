@@ -15,7 +15,7 @@ describe('Display Object', () => {
     });
 
     it('should not have a collider by default', () => {
-      expect(_displayObject.collider()).to.equal(null);
+      expect(_displayObject.collider).to.equal(null);
     });
   });
 
@@ -96,9 +96,9 @@ describe('Display Object', () => {
   describe('getItemsFrom', () => {
     beforeEach(() => {
       _displayObject.set({ fill: 'me' });
-      _displayObject.collider({
+      _displayObject.collider = {
         type: 'rect', x: 0, y: 0, width: 100, height: 100
-      });
+      };
     });
 
     it('should return a collision with it self, if it contains point', () => {
@@ -148,9 +148,9 @@ describe('Display Object', () => {
 
   describe('containsPoint', () => {
     beforeEach(() => {
-      _displayObject.collider({
+      _displayObject.collider = {
         type: 'rect', x: 0, y: 0, width: 100, height: 100
-      });
+      };
     });
 
     it('should return a true if it contains point', () => {
@@ -166,9 +166,9 @@ describe('Display Object', () => {
 
   describe('intersectsLine', () => {
     beforeEach(() => {
-      _displayObject.collider({
+      _displayObject.collider = {
         type: 'rect', x: 0, y: 0, width: 100, height: 100
-      });
+      };
     });
 
     it('should return a true if it intersect line', () => {
@@ -188,9 +188,9 @@ describe('Display Object', () => {
 
   describe('intersectsRect', () => {
     beforeEach(() => {
-      _displayObject.collider({
+      _displayObject.collider = {
         type: 'rect', x: 0, y: 0, width: 100, height: 100
-      });
+      };
     });
 
     it('should return a true if it intersect rect', () => {
@@ -210,9 +210,9 @@ describe('Display Object', () => {
 
   describe('intersectsCircle', () => {
     beforeEach(() => {
-      _displayObject.collider({
+      _displayObject.collider = {
         type: 'rect', x: 0, y: 0, width: 100, height: 100
-      });
+      };
     });
 
     it('should return a true if it intersect circle', () => {
