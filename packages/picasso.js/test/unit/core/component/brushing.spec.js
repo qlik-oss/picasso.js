@@ -409,5 +409,29 @@ describe('Brushing', () => {
       const output = dummyComponent.renderer.render.args[0][0];
       expect(output.map(n => n.fill)).to.eql(['inactive', 'start', 'active', 'start']);
     });
+
+    it('should resolve style function property functions', () => {
+      dummyComponent.nodes = [
+        { type: 'a', fill: 'red', data: {} },
+        { type: 'b', fill: 'green', data: {} }
+      ];
+
+      styler(dummyComponent, {
+        context: 'test',
+        style: {
+          active: {
+            fill: shape => `${shape.fill}-active`
+          },
+          inactive: {
+            fill: shape => `${shape.fill}-inactive`
+          }
+        }
+      });
+      brusherStub.trigger('start');
+      brusherStub.trigger('update');
+
+      const output = dummyComponent.renderer.render.args[0][0];
+      expect(output.map(n => n.fill)).to.eql(['red-inactive', 'green-active']);
+    });
   });
 });

@@ -1,3 +1,4 @@
+import extend from 'extend';
 import { isTouchEvent } from '../utils/event-type';
 
 /**
@@ -78,18 +79,13 @@ export function styler(obj, {
         changed = true;
       }
       if (changed || globalActivation) {
+        const original = extend({}, nodes[i], nodes[i].__style);
         styleProps.forEach((s) => {
           if (isActive && s in active) {
-            nodes[i][s] = active[s];
+            nodes[i][s] = typeof active[s] === 'function' ? active[s].call(null, original) : active[s];
           } else if (!isActive && s in inactive) {
-            nodes[i][s] = inactive[s];
+            nodes[i][s] = typeof inactive[s] === 'function' ? inactive[s].call(null, original) : inactive[s];
           } else {
-            if (!nodes[i].__style) {
-              nodes[i].__style = nodes[i].__style || {};
-              styleProps.forEach((ss) => {
-                nodes[i].__style[ss] = nodes[i][ss]; // store original value
-              });
-            }
             nodes[i][s] = nodes[i].__style[s];
           }
         });
@@ -108,7 +104,7 @@ export function styler(obj, {
       styleProps.forEach((s) => {
         nodes[i].__style[s] = nodes[i][s]; // store original value
         if (s in inactive) {
-          nodes[i][s] = inactive[s];
+          nodes[i][s] = typeof inactive[s] === 'function' ? inactive[s].call(null, nodes[i]) : inactive[s];
         }
       });
     }
