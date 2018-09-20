@@ -382,5 +382,32 @@ describe('Brushing', () => {
       expect(output[0].fill).to.equal('inactiveFill');
       expect(output[1].fill).to.equal('inactiveFill'); // Inactive
     });
+
+    it('should only affect filtered nodes', () => {
+      dummyComponent.nodes = [
+        { type: 'a', fill: 'start', data: {} },
+        { type: 'b', fill: 'start', data: {} },
+        { type: 'c', fill: 'start', data: {} },
+        { type: 'd', fill: 'start', data: {} }
+      ];
+
+      styler(dummyComponent, {
+        context: 'test',
+        filter(n) { return n.type === 'a' || n.type === 'c'; },
+        style: {
+          active: {
+            fill: 'active'
+          },
+          inactive: {
+            fill: 'inactive'
+          }
+        }
+      });
+      brusherStub.trigger('start');
+      brusherStub.trigger('update');
+
+      const output = dummyComponent.renderer.render.args[0][0];
+      expect(output.map(n => n.fill)).to.eql(['inactive', 'start', 'active', 'start']);
+    });
   });
 });
