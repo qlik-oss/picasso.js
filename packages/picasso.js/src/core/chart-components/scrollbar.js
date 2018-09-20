@@ -182,9 +182,7 @@ const scrollbarComponent = {
         }
       },
       [].concat(h('div', {
-        class: {
-          scroller: true
-        },
+        class: 'scroller',
         style: {
           position: 'absolute',
           [horizontal ? 'left' : 'top']: `${thumbStart}px`,
