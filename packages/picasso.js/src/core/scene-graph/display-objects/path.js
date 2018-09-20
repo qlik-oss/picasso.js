@@ -1,3 +1,4 @@
+import extend from 'extend';
 import DisplayObject from './display-object';
 import { getMinMax } from '../../geometry/util';
 import pathToSegments from '../parse-path-d';
@@ -33,28 +34,28 @@ export default class Path extends DisplayObject {
     this.points = [];
     this.attrs.d = v.d;
 
-    if (v.collider) {
-      super.collider(v.collider);
+    if (Array.isArray(v.collider) || (typeof v.collider === 'object' && v.collider.type)) {
+      super.collider = v.collider;
     } else if (v.d) {
-      const col = [];
+      const collection = [];
       this.segments = pathToSegments(v.d);
       this.segments.forEach((segment) => {
         if (segment.length <= 1) {
           // Omit empty and single point segments
         } else if (isClosed(segment)) {
-          col.push({
+          collection.push(extend({
             type: 'polygon',
             vertices: segment
-          });
+          }, v.collider));
         } else {
-          col.push({
+          collection.push(extend({
             type: 'polyline',
             points: segment
-          });
+          }, v.collider));
         }
       });
 
-      super.collider(col);
+      super.collider = collection;
     }
   }
 

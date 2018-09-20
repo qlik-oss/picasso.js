@@ -65,7 +65,7 @@ export default class Text extends DisplayObject {
       this._textBoundsFn = textBoundsFn;
     }
 
-    super.collider(extend({ type: hasData(this) ? 'bounds' : null }, collider));
+    super.collider = extend({ type: hasData(this) ? 'bounds' : null }, collider);
   }
 
   boundingRect(includeTransform = false) {

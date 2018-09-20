@@ -30,7 +30,7 @@ export default class Circle extends DisplayObject {
     this.attrs.cy = cy;
     this.attrs.r = r;
 
-    super.collider(opts);
+    super.collider = opts;
   }
 
   boundingRect(includeTransform = false) {

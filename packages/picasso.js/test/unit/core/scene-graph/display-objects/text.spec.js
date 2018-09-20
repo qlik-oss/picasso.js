@@ -34,7 +34,7 @@ describe('Text', () => {
       expect(node.attrs.y).to.be.equal(0);
       expect(node.attrs.dx).to.be.equal(0);
       expect(node.attrs.dy).to.be.equal(0);
-      expect(node.collider()).to.be.null;
+      expect(node.collider).to.be.null;
     });
 
     it('should accept arguments', () => {
@@ -53,7 +53,7 @@ describe('Text', () => {
       expect(node.attrs.y).to.equal(2);
       expect(node.attrs.dx).to.equal(3);
       expect(node.attrs.dy).to.equal(4);
-      expect(node.collider()).to.be.null;
+      expect(node.collider).to.be.null;
     });
 
     it('should instantiate collider given data and explicit bounds', () => {
@@ -68,9 +68,9 @@ describe('Text', () => {
           x: 0, y: 0, width: 0, height: 0
         }
       });
-      expect(node.collider()).to.be.a('object');
-      expect(node.collider().fn).to.be.an.instanceof(GeoRect);
-      expect(node.collider().type).to.equal('bounds');
+      expect(node.collider).to.be.a('object');
+      expect(node.collider).to.be.an.instanceof(GeoRect);
+      expect(node.colliderType).to.equal('bounds');
     });
 
     it('should instantiate collider given data and bounds function', () => {
@@ -85,9 +85,8 @@ describe('Text', () => {
           x: 0, y: 0, width: 0, height: 0
         })
       });
-      expect(node.collider()).to.be.a('object');
-      expect(node.collider().fn).to.be.an.instanceof(GeoRect);
-      expect(node.collider().type).to.equal('bounds');
+      expect(node.collider).to.be.an.instanceof(GeoRect);
+      expect(node.colliderType).to.equal('bounds');
     });
   });
 

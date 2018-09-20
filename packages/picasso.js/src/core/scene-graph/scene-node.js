@@ -39,14 +39,12 @@ function geometryToDef(geometry, dpi, mvm) {
  * @returns {object} Returns a node definition of the collider
  */
 function colliderToShape(node, dpi) {
-  const collider = node.collider();
-
-  if (collider && collider.fn) {
+  if (node.collider) {
     const mvm = node.modelViewMatrix;
-    const isCollection = collider.type === 'collection';
+    const isCollection = node.colliderType === 'collection';
 
     if (isCollection) {
-      const children = collider.fn.geometries.map(geometry => geometryToDef(geometry, dpi, mvm));
+      const children = node.collider.geometries.map(geometry => geometryToDef(geometry, dpi, mvm));
 
       return {
         type: 'container',
@@ -54,7 +52,7 @@ function colliderToShape(node, dpi) {
       };
     }
 
-    return geometryToDef(collider.fn, dpi, mvm);
+    return geometryToDef(node.collider, dpi, mvm);
   }
 
   return null;

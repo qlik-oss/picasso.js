@@ -23,9 +23,8 @@ describe('Rect', () => {
       expect(rect.attrs.y).to.be.equal(0);
       expect(rect.attrs.width).to.be.equal(0);
       expect(rect.attrs.height).to.be.equal(0);
-      expect(rect.collider()).to.be.a('object');
-      expect(rect.collider().fn).to.be.an.instanceof(GeoRect);
-      expect(rect.collider().type).to.equal('rect');
+      expect(rect.collider).to.be.an.instanceof(GeoRect);
+      expect(rect.colliderType).to.equal('rect');
     });
 
     it('should accept arguments', () => {
@@ -39,9 +38,8 @@ describe('Rect', () => {
       expect(rect.attrs.y).to.be.equal(20);
       expect(rect.attrs.width).to.be.equal(15);
       expect(rect.attrs.height).to.be.equal(25);
-      expect(rect.collider()).to.be.a('object');
-      expect(rect.collider().fn).to.be.an.instanceof(GeoCircle);
-      expect(rect.collider().type).to.equal('circle');
+      expect(rect.collider).to.be.an.instanceof(GeoCircle);
+      expect(rect.colliderType).to.equal('circle');
     });
   });
 
@@ -55,9 +53,8 @@ describe('Rect', () => {
       expect(rect.attrs.y).to.be.equal(999);
       expect(rect.attrs.width).to.be.equal(1337);
       expect(rect.attrs.height).to.be.equal(101);
-      expect(rect.collider()).to.be.a('object');
-      expect(rect.collider().fn).to.be.an.instanceof(GeoCircle);
-      expect(rect.collider().type).to.equal('circle');
+      expect(rect.collider).to.be.an.instanceof(GeoCircle);
+      expect(rect.colliderType).to.equal('circle');
     });
 
     it('should handle no arguments', () => {
@@ -67,13 +64,13 @@ describe('Rect', () => {
       expect(rect.attrs.y).to.be.equal(0);
       expect(rect.attrs.width).to.be.equal(0);
       expect(rect.attrs.height).to.be.equal(0);
-      expect(rect.collider().fn).to.be.an.instanceof(GeoRect);
+      expect(rect.collider).to.be.an.instanceof(GeoRect);
     });
 
     it('should be able to disable the default collider', () => {
       rect = createRect(shape);
       rect.set({ collider: { type: null } });
-      expect(rect.collider()).to.equal(null);
+      expect(rect.collider).to.equal(null);
     });
   });
 

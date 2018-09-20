@@ -42,7 +42,7 @@ export default class Container extends DisplayObject {
       type: null
     }, collider);
 
-    super.collider(opts);
+    super.collider = opts;
   }
 
   boundingRect(includeTransform = false) {
@@ -76,7 +76,7 @@ export default class Container extends DisplayObject {
       const opts = extend({
         type: 'bounds', x: 0, y: 0, width: 0, height: 0
       }, this._boundingRect);
-      super.collider(opts);
+      super.collider = opts;
     }
 
     return r;
@@ -93,7 +93,7 @@ export default class Container extends DisplayObject {
       const opts = extend({
         type: 'bounds', x: 0, y: 0, width: 0, height: 0
       }, this._boundingRect);
-      super.collider(opts);
+      super.collider = opts;
     }
 
     return r;
@@ -113,7 +113,7 @@ export default class Container extends DisplayObject {
 
     if (this._collider && this._collider.type === 'bounds') {
       const opts = extend(this.boundingRect(true), { type: 'bounds' });
-      super.collider(opts);
+      super.collider = opts;
     }
 
     return this;
@@ -124,7 +124,7 @@ export default class Container extends DisplayObject {
 
     if (this._collider && this._collider.type === 'bounds') {
       const opts = extend(this.boundingRect(true), { type: 'bounds' });
-      super.collider(opts);
+      super.collider = opts;
     }
 
     return this;

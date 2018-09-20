@@ -23,9 +23,8 @@ describe('Line', () => {
       expect(line.attrs.y1).to.be.equal(0);
       expect(line.attrs.x2).to.be.equal(0);
       expect(line.attrs.y2).to.be.equal(0);
-      expect(line.collider()).to.be.a('object');
-      expect(line.collider().fn).to.be.an.instanceof(GeoLine);
-      expect(line.collider().type).to.equal('line');
+      expect(line.collider).to.be.an.instanceof(GeoLine);
+      expect(line.colliderType).to.equal('line');
     });
 
     it('should accept arguments', () => {
@@ -39,9 +38,8 @@ describe('Line', () => {
       expect(line.attrs.y1).to.be.equal(20);
       expect(line.attrs.x2).to.be.equal(100);
       expect(line.attrs.y2).to.be.equal(200);
-      expect(line.collider()).to.be.a('object');
-      expect(line.collider().fn).to.be.an.instanceof(GeoRect);
-      expect(line.collider().type).to.equal('rect');
+      expect(line.collider).to.be.an.instanceof(GeoRect);
+      expect(line.colliderType).to.equal('rect');
     });
   });
 
@@ -55,9 +53,8 @@ describe('Line', () => {
       expect(line.attrs.y1).to.be.equal(20);
       expect(line.attrs.x2).to.be.equal(100);
       expect(line.attrs.y2).to.be.equal(200);
-      expect(line.collider()).to.be.a('object');
-      expect(line.collider().fn).to.be.an.instanceof(GeoRect);
-      expect(line.collider().type).to.equal('rect');
+      expect(line.collider).to.be.an.instanceof(GeoRect);
+      expect(line.colliderType).to.equal('rect');
     });
 
     it('should handle no arguments', () => {
@@ -67,15 +64,14 @@ describe('Line', () => {
       expect(line.attrs.y1).to.be.equal(0);
       expect(line.attrs.x2).to.be.equal(0);
       expect(line.attrs.y2).to.be.equal(0);
-      expect(line.collider()).to.be.a('object');
-      expect(line.collider().fn).to.be.an.instanceof(GeoLine);
-      expect(line.collider().type).to.equal('line');
+      expect(line.collider).to.be.an.instanceof(GeoLine);
+      expect(line.colliderType).to.equal('line');
     });
 
     it('should be able to disable the default collider', () => {
       line = createLine(shape);
       line.set({ collider: { type: null } });
-      expect(line.collider()).to.equal(null);
+      expect(line.collider).to.equal(null);
     });
   });
 

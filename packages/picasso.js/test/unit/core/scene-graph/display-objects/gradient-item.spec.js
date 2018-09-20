@@ -13,7 +13,7 @@ describe('GradientItem', () => {
 
     it('should not have a collider by default', () => {
       item = createGradientItem();
-      expect(item.collider()).to.equal(null);
+      expect(item.collider).to.equal(null);
     });
 
     it('should accept arguments', () => {
