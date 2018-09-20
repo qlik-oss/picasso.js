@@ -15,7 +15,12 @@ export function reduceToLeafNodes(nodes = []) {
   }, []);
 }
 
-export function styler(obj, { context, data, style }) {
+export function styler(obj, {
+  context,
+  data,
+  style,
+  filter
+}) {
   const brusher = obj.chart.brush(context);
   const dataProps = data;
   const active = style.active || {};
@@ -34,9 +39,17 @@ export function styler(obj, { context, data, style }) {
   const activeNodes = [];
   let globalActivation = false; // track when we need to loop through all nodes, not just the active ones
 
+  const getNodes = () => {
+    let nodes = reduceToLeafNodes(obj.nodes);
+    if (typeof filter === 'function') {
+      nodes = nodes.filter(filter);
+    }
+    return nodes;
+  };
+
   const update = () => {
     // TODO - render nodes only once, i.e. don't render for each brush, update nodes for all brushes and then render
-    const nodes = reduceToLeafNodes(obj.nodes);
+    const nodes = getNodes();
     const len = nodes.length;
     let nodeData;
     let globalChanged = false;
@@ -88,7 +101,7 @@ export function styler(obj, { context, data, style }) {
   };
 
   const onStart = () => {
-    const nodes = reduceToLeafNodes(obj.nodes);
+    const nodes = getNodes();
     const len = nodes.length;
     for (let i = 0; i < len; i++) {
       nodes[i].__style = nodes[i].__style || {};
@@ -105,7 +118,7 @@ export function styler(obj, { context, data, style }) {
   };
 
   const onEnd = () => {
-    const nodes = reduceToLeafNodes(obj.nodes);
+    const nodes = getNodes();
     const len = nodes.length;
 
     for (let i = 0; i < len; i++) {
