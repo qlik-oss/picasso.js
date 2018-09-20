@@ -3,7 +3,7 @@
 
 ![picasso.js](docs/assets/picassojs.png)
 
-A charting library streamlined for building visualizations for the Qlik Sense Analytics platform.
+A charting library streamlined for building interactive visualizations for the Qlik product suites.
 
 [![Examples](website/static/img/examples.png)](https://picassojs.com/examples.html)
 

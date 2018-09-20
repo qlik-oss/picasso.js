@@ -28,7 +28,7 @@ Submit your feature by creating a Pull Request, following the [GIT guidelines](#
 
 ## <a name="developing"></a> Developing
 
-### Prerequisits
+### Prerequisites
 
 - [Node.js](https://nodejs.org/) 10+ and [yarn](https://yarnpkg.com) installed
 
@@ -53,12 +53,12 @@ $ yarn
 $ yarn run build
 ```
 
-This will generate UMD packages for
+This will generate UMD packages for:
 
 - the main package under `/packages/picasso.js/dist`
 - each plugin under `/plugins/*/dist`
 
-### Development worklow
+### Development workflow
 
 - `yarn run build` generates UMD bundles for all packages
 - `yarn run lint` checks code style
