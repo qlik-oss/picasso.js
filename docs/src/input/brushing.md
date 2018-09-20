@@ -48,7 +48,7 @@ consume: [{
     active: {
       fill: 'red',
       stroke: '#333',
-      strokeWidth: 2
+      strokeWidth: shape => shape.strokeWidth * 2
     },
     inactive: {
     }
