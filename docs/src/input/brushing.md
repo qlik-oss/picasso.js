@@ -34,6 +34,7 @@ trigger: [{
 
 * `context`: name of the brush context to observe
 * `data`: the mapped data properties to observe. _Optional_
+* `filter`: a filtering function. _Optional_
 * `style`: the style to apply to the shapes of the component
   * `active`: the style of _active_ data points
   * `inactive`: the style of _inactive_ data points
@@ -42,6 +43,7 @@ trigger: [{
 consume: [{
   context: 'selection',
   data: ['x'],
+  filter: shape => shape.type === 'circle',
   style: {
     active: {
       fill: 'red',
