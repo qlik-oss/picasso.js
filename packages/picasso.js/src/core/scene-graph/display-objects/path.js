@@ -35,7 +35,7 @@ export default class Path extends DisplayObject {
     this.attrs.d = v.d;
 
     if (Array.isArray(v.collider) || (typeof v.collider === 'object' && v.collider.type)) {
-      super.collider = v.collider;
+      this.collider = v.collider;
     } else if (v.d) {
       const collection = [];
       this.segments = pathToSegments(v.d);
