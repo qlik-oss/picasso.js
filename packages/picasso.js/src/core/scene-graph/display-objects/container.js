@@ -42,7 +42,7 @@ export default class Container extends DisplayObject {
       type: null
     }, collider);
 
-    super.collider = opts;
+    this.collider = opts;
   }
 
   boundingRect(includeTransform = false) {

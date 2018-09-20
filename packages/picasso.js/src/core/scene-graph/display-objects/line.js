@@ -37,7 +37,7 @@ export default class Line extends DisplayObject {
       x2,
       y2
     };
-    super.collider = extend(defaultCollider, collider);
+    this.collider = extend(defaultCollider, collider);
   }
 
   boundingRect(includeTransform = false) {

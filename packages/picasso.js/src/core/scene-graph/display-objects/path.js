@@ -55,7 +55,7 @@ export default class Path extends DisplayObject {
         }
       });
 
-      super.collider = collection;
+      this.collider = collection;
     }
   }
 
