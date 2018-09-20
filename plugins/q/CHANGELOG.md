@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.13.0"></a>
+# [0.13.0](https://github.com/qlik-oss/picasso.js/compare/v0.12.2...v0.13.0) (2018-09-20)
+
+
+### Bug Fixes
+
+* **q:** handle qNoOfLeftDims = -1 for q-brush ([#175](https://github.com/qlik-oss/picasso.js/issues/175)) ([20c18db](https://github.com/qlik-oss/picasso.js/commit/20c18db))
+* **q:** use fallback qColumnOrder if not set properly ([#185](https://github.com/qlik-oss/picasso.js/issues/185)) ([ebe7e48](https://github.com/qlik-oss/picasso.js/commit/ebe7e48))
+
+
+
+
+
 <a name="0.12.2"></a>
 ## [0.12.2](https://github.com/qlik-oss/picasso.js/compare/v0.12.1...v0.12.2) (2018-08-23)
 
