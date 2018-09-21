@@ -113,6 +113,7 @@ jobs:
             set -eo pipefail
             NUM=$(git tag --points-at HEAD | wc -l)
             if [ "$NUM" -gt 0 ]; then
+              apk add yarn
               yarn run build:website
               aws s3 sync website/build/picasso.js/ s3://picassojs.com/ --delete
             else
