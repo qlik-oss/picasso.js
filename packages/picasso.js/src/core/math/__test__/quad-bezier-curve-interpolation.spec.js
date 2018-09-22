@@ -1,4 +1,4 @@
-import quadToPoints from '../../../../src/core/math/quad-bezier-curve-interpolation';
+import quadToPoints from '../quad-bezier-curve-interpolation';
 
 function approxEqual(ary, expected) {
   ary.forEach((item, i) => {

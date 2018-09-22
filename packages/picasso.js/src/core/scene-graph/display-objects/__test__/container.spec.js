@@ -1,6 +1,6 @@
-import Container, { create as createContainer } from '../../../../../src/core/scene-graph/display-objects/container';
-import { create as createRect } from '../../../../../src/core/scene-graph/display-objects/rect';
-import GeoRect from '../../../../../src/core/geometry/rect';
+import Container, { create as createContainer } from '../container';
+import { create as createRect } from '../rect';
+import GeoRect from '../../../geometry/rect';
 
 describe('Container', () => {
   let container;

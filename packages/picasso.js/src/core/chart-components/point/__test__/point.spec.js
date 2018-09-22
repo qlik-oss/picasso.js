@@ -1,5 +1,5 @@
-import componentFactoryFixture from '../../../../helpers/component-factory-fixture';
-import pointComponent from '../../../../../src/core/chart-components/point/point';
+import componentFactoryFixture from '../../../../../test/helpers/component-factory-fixture';
+import pointComponent from '../point';
 
 describe('point component', () => {
   let renderedPoints;

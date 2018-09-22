@@ -1,5 +1,5 @@
 import canvascontext from 'test-utils/mocks/canvas-context';
-import createCanvasGradient from '../../../../../src/web/renderer/canvas-renderer/canvas-gradient';
+import createCanvasGradient from '../canvas-gradient';
 
 describe('canvas-gradient', () => {
   let shape;

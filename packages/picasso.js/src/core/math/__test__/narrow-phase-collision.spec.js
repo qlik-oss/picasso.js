@@ -1,5 +1,5 @@
-import NarrowPhaseCollision from '../../../../src/core/math/narrow-phase-collision';
-import { create } from '../../../../src/core/geometry/polygon';
+import NarrowPhaseCollision from '../narrow-phase-collision';
+import { create } from '../../geometry/polygon';
 
 describe('NarrowPhaseCollision', () => {
   let polygon;

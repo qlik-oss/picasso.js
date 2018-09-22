@@ -1,5 +1,5 @@
-import componentFactoryFixture from '../../../../helpers/component-factory-fixture';
-import brushLasso from '../../../../../src/core/chart-components/brush-lasso/brush-lasso';
+import componentFactoryFixture from '../../../../../test/helpers/component-factory-fixture';
+import brushLasso from '../brush-lasso';
 
 describe('brush-lasso', () => {
   let componentFixture;

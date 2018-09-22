@@ -1,6 +1,5 @@
-
-import componentFactoryFixture from '../../../../helpers/component-factory-fixture';
-import lineComponent from '../../../../../src/core/chart-components/grid/line';
+import componentFactoryFixture from '../../../../../test/helpers/component-factory-fixture';
+import lineComponent from '../line';
 
 describe('line component', () => {
   let rendererOutput;

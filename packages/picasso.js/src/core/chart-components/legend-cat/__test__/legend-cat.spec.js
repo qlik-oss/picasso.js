@@ -1,5 +1,5 @@
-import componentFactoryFixture from '../../../../helpers/component-factory-fixture';
-import component from '../../../../../src/core/chart-components/legend-cat/legend-cat';
+import componentFactoryFixture from '../../../../../test/helpers/component-factory-fixture';
+import component from '../legend-cat';
 
 describe('legend-cat', () => {
   let renderedItems;

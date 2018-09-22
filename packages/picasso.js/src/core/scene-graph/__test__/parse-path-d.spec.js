@@ -1,4 +1,4 @@
-import pathToSegments from '../../../../src/core/scene-graph/parse-path-d';
+import pathToSegments from '../parse-path-d';
 
 function approxEqual(ary, expected) {
   ary.forEach((item, i) => {

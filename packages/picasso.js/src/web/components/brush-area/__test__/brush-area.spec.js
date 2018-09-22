@@ -1,5 +1,5 @@
-import componentFactoryFixture from '../../../../helpers/component-factory-fixture';
-import brushAreaDir from '../../../../../src/web/components/brush-area/brush-area';
+import componentFactoryFixture from '../../../../../test/helpers/component-factory-fixture';
+import brushAreaDir from '../brush-area';
 
 function nativeEvent(x, y) {
   return {

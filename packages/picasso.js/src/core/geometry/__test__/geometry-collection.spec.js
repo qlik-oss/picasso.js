@@ -1,4 +1,4 @@
-import GeometryCollection from '../../../../src/core/geometry/geometry-collection';
+import GeometryCollection from '../geometry-collection';
 
 describe('GeometryCollection', () => {
   let c;

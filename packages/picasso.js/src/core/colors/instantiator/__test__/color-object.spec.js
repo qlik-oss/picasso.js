@@ -1,6 +1,6 @@
-import colorObject from '../../../../../src/core/colors/instantiator/color-object';
-import RgbaColor from '../../../../../src/core/colors/rgba-color';
-import HslaColor from '../../../../../src/core/colors/hsla-color';
+import colorObject from '../color-object';
+import RgbaColor from '../../rgba-color';
+import HslaColor from '../../hsla-color';
 
 describe('colorObject', () => {
   const nonObjects = [true, 0, '', () => { }],

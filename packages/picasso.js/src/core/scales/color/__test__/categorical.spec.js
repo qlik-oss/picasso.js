@@ -1,4 +1,4 @@
-import categorical from '../../../../../src/core/scales/color/categorical';
+import categorical from '../categorical';
 
 describe('categorical', () => {
   it('should return greyish color for unknown values (default)', () => {

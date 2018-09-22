@@ -1,5 +1,5 @@
-import dockLayout from '../../../../src/core/dock-layout/dock-layout';
-import dockConfig from '../../../../src/core/dock-layout/dock-config';
+import dockLayout from '../dock-layout';
+import dockConfig from '../dock-config';
 
 describe('Dock Layout', () => {
   const componentMock = function componentMock({

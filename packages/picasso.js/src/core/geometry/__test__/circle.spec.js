@@ -1,5 +1,5 @@
-import GeoCircle from '../../../../src/core/geometry/circle';
-import { rectToPoints } from '../../../../src/core/geometry/util';
+import GeoCircle from '../circle';
+import { rectToPoints } from '../util';
 
 describe('GeoCircle', () => {
   describe('constructor', () => {

@@ -1,4 +1,4 @@
-import numberFormat from '../../../../../src/core/formatter/d3/numberFormat';
+import numberFormat from '../numberFormat';
 
 describe('d3 numberFormat', () => {
   let formatter;

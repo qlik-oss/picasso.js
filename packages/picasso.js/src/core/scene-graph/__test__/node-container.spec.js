@@ -1,4 +1,4 @@
-import Node from '../../../../src/core/scene-graph/node-container';
+import Node from '../node-container';
 
 describe('TreeNode', () => {
   describe('upon instantiation', () => {

@@ -1,4 +1,4 @@
-import { box, verticalLine, horizontalLine } from '../../../../../src/core/chart-components/box/box-shapes';
+import { box, verticalLine, horizontalLine } from '../box-shapes';
 
 describe('box shapes', () => {
   describe('box', () => {

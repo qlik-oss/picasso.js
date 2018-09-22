@@ -1,6 +1,6 @@
-import { create } from '../../../../src/core/geometry/polyline';
-import { create as createPolygon } from '../../../../src/core/geometry/polygon';
-import { rectToPoints, lineToPoints } from '../../../../src/core/geometry/util';
+import { create } from '../polyline';
+import { create as createPolygon } from '../polygon';
+import { rectToPoints, lineToPoints } from '../util';
 
 describe('Polyline', () => {
   let p;

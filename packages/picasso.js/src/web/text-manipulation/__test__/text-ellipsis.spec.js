@@ -1,4 +1,4 @@
-import { ellipsText } from '../../../../src/web/text-manipulation';
+import { ellipsText } from '..';
 
 describe('Text Manipulation', () => {
   describe('ellips text', () => {

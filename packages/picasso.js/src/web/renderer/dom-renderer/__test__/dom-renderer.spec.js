@@ -1,5 +1,5 @@
 import element from 'test-utils/mocks/element-mock';
-import renderer from '../../../../../src/web/renderer/dom-renderer/dom-renderer';
+import renderer from '../dom-renderer';
 
 describe('dom renderer', () => {
   let sandbox;

@@ -1,4 +1,4 @@
-import buildTick from '../../../../../src/core/chart-components/axis/axis-tick-node';
+import buildTick from '../axis-tick-node';
 
 describe('Axis Tick Node', () => {
   const innerRect = {

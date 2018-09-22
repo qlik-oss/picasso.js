@@ -1,4 +1,4 @@
-import { rows } from '../../../../../../src/core/chart-components/labels/strategies/rows';
+import { rows } from '../rows';
 
 describe('labeling - rows', () => {
   describe('rows strategy', () => {

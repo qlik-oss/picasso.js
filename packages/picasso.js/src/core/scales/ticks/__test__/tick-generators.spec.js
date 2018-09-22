@@ -1,8 +1,8 @@
 import extend from 'extend';
-import { looseDistanceBasedGenerator } from '../../../../../src/core/scales/ticks/tick-generators';
-import linear, { DEFAULT_TICKS_SETTINGS, DEFAULT_MINORTICKS_SETTINGS } from '../../../../../src/core/scales/linear';
-import band from '../../../../../src/core/scales/band';
-import formatter from '../../../../../src/core/formatter';
+import { looseDistanceBasedGenerator } from '../tick-generators';
+import linear, { DEFAULT_TICKS_SETTINGS, DEFAULT_MINORTICKS_SETTINGS } from '../../linear';
+import band from '../../band';
+import formatter from '../../../formatter';
 
 describe('Tick generators', () => {
   let settings;

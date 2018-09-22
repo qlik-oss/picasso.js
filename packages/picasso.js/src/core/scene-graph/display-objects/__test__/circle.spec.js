@@ -1,6 +1,6 @@
-import Circle, { create as createCircle } from '../../../../../src/core/scene-graph/display-objects/circle';
-import GeoRect from '../../../../../src/core/geometry/rect';
-import GeoCircle from '../../../../../src/core/geometry/circle';
+import Circle, { create as createCircle } from '../circle';
+import GeoRect from '../../../geometry/rect';
+import GeoCircle from '../../../geometry/circle';
 
 describe('Circle', () => {
   let circle;

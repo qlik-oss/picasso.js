@@ -1,6 +1,6 @@
 import extend from 'extend';
-import calcRequiredSize from '../../../../../src/core/chart-components/axis/axis-size-calculator';
-import { DEFAULT_CONTINUOUS_SETTINGS } from '../../../../../src/core/chart-components/axis/axis-default-settings';
+import calcRequiredSize from '../axis-size-calculator';
+import { DEFAULT_CONTINUOUS_SETTINGS } from '../axis-default-settings';
 
 describe('Axis size calculator', () => {
   let settings;

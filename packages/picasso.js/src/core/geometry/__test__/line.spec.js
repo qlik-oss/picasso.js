@@ -1,4 +1,4 @@
-import GeoLine from '../../../../src/core/geometry/line';
+import GeoLine from '../line';
 
 describe('GeoLine', () => {
   describe('constructor', () => {

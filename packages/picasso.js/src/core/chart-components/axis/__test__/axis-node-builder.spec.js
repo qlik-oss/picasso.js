@@ -1,4 +1,4 @@
-import { filterOverlappingLabels } from '../../../../../src/core/chart-components/axis/axis-node-builder';
+import { filterOverlappingLabels } from '../axis-node-builder';
 
 describe('Axis Node Buidlder', () => {
   describe('filterOverlappingLabels', () => {

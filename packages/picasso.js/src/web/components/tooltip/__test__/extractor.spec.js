@@ -1,4 +1,4 @@
-import extractor from '../../../../../src/web/components/tooltip/extractor';
+import extractor from '../extractor';
 
 describe('extractor', () => {
   let context;

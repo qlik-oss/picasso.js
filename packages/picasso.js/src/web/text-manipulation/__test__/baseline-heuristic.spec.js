@@ -1,4 +1,4 @@
-import baselineHeuristic from '../../../../src/web/text-manipulation/baseline-heuristic';
+import baselineHeuristic from '../baseline-heuristic';
 
 describe('Baseline polyfill', () => {
   let text;

@@ -1,6 +1,6 @@
 
-import componentFactory from '../../../../../src/core/component/component-factory';
-import refLineComponent from '../../../../../src/core/chart-components/ref-line/refline';
+import componentFactory from '../../../component/component-factory';
+import refLineComponent from '../refline';
 
 describe('reference lines', () => {
   let rendererOutput;

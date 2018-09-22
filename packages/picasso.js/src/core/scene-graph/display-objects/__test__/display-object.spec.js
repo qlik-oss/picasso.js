@@ -1,6 +1,6 @@
-import DisplayObject from '../../../../../src/core/scene-graph/display-objects/display-object';
-import { Collision } from '../../../../../src/core/scene-graph/collision';
-import { SceneNode } from '../../../../../src/core/scene-graph/scene-node';
+import DisplayObject from '../display-object';
+import { Collision } from '../../collision';
+import { SceneNode } from '../../scene-node';
 
 describe('Display Object', () => {
   let _displayObject;

@@ -1,4 +1,4 @@
-import { start, move, end } from '../../../../../src/web/components/brush-range/brush-range-interaction';
+import { start, move, end } from '../brush-range-interaction';
 
 describe('BrushRange Interaction', () => {
   let state;

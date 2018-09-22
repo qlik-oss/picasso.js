@@ -1,4 +1,4 @@
-import { cap, resolveDiff } from '../../../../../src/core/chart-components/box/box-math';
+import { cap, resolveDiff } from '../box-math';
 
 describe('box math', () => {
   describe('cap', () => {

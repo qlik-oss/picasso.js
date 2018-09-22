@@ -1,7 +1,7 @@
 import {
   getSliceRect,
   slices
-} from '../../../../../../src/core/chart-components/labels/strategies/slices';
+} from '../slices';
 
 describe('labeling - slices', () => {
   describe('slice rects', () => {

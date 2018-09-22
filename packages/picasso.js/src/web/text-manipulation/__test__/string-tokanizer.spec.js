@@ -1,4 +1,4 @@
-import stringTokenizer, { MANDATORY, BREAK_ALLOWED, NO_BREAK } from '../../../../src/web/text-manipulation/string-tokenizer';
+import stringTokenizer, { MANDATORY, BREAK_ALLOWED, NO_BREAK } from '../string-tokenizer';
 
 function toArray(iterator) {
   const ary = [];

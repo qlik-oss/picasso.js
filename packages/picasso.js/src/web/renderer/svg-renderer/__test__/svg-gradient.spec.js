@@ -2,7 +2,7 @@ import {
   resetGradients,
   onGradient,
   createDefsNode
-} from '../../../../../src/web/renderer/svg-renderer/svg-gradient';
+} from '../svg-gradient';
 
 /* eslint no-unused-expressions: 0 */
 

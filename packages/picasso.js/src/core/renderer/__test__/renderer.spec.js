@@ -1,4 +1,4 @@
-import rendererRegistry from '../../../../src/core/renderer';
+import rendererRegistry from '..';
 
 describe('renderer', () => {
   let renderer;

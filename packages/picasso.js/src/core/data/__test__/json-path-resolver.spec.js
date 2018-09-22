@@ -1,4 +1,4 @@
-import resolve from '../../../../src/core/data/json-path-resolver';
+import resolve from '../json-path-resolver';
 
 describe('JSON Path resolver', () => {
   it('should resolve basic path', () => {

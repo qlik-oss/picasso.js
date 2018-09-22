@@ -1,5 +1,5 @@
-import complexResolver from '../../../../../src/core/chart-components/box/box-resolver';
-import settingsResolver from '../../../../../src/core/component/settings-resolver';
+import complexResolver from '../box-resolver';
+import settingsResolver from '../../../scales/settings-resolver';
 
 describe('box resolver', () => {
   describe('complexResolver', () => {

@@ -1,4 +1,4 @@
-import componentFactory from '../../../../src/core/component/component-factory';
+import componentFactory from '../component-factory';
 
 describe('Component', () => {
   let definition;

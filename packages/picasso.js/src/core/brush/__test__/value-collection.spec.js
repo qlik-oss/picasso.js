@@ -1,4 +1,4 @@
-import valueCollection from '../../../../src/core/brush/value-collection';
+import valueCollection from '../value-collection';
 
 describe('value-collection', () => {
   describe('api', () => {

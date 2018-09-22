@@ -1,4 +1,4 @@
-import cubicToPoints from '../../../../src/core/math/cubic-bezier-curve-interpolation';
+import cubicToPoints from '../cubic-bezier-curve-interpolation';
 
 function approxEqual(ary, expected) {
   ary.forEach((item, i) => {

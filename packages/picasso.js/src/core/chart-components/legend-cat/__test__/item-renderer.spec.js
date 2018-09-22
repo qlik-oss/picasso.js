@@ -5,7 +5,7 @@ import {
   getItemsToRender,
   createRenderItem,
   parallelize
-} from '../../../../../src/core/chart-components/legend-cat/item-renderer';
+} from '../item-renderer';
 
 describe('legend-item-renderer', () => {
   describe('itemize', () => {

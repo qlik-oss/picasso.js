@@ -1,4 +1,4 @@
-import render from '../../../../../../src/web/renderer/canvas-renderer/shapes/circle';
+import render from '../circle';
 
 describe('circle', () => {
   describe('render', () => {

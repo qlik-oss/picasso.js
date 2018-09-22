@@ -1,7 +1,7 @@
-import componentFactoryFixture from '../../../../helpers/component-factory-fixture';
-import axisComponent from '../../../../../src/core/chart-components/axis/axis';
-import linear from '../../../../../src/core/scales/linear';
-import band from '../../../../../src/core/scales/band';
+import componentFactoryFixture from '../../../../../test/helpers/component-factory-fixture';
+import axisComponent from '../axis';
+import linear from '../../../scales/linear';
+import band from '../../../scales/band';
 
 describe('Axis', () => {
   let config;

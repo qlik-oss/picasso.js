@@ -1,5 +1,5 @@
-import colorKeyWord from '../../../../../src/core/colors/instantiator/color-keyword';
-import RgbaColor from '../../../../../src/core/colors/rgba-color';
+import colorKeyWord from '../color-keyword';
+import RgbaColor from '../../rgba-color';
 
 describe('colorKeyWord', () => {
   it('should be the correct api', () => {

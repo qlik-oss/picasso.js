@@ -1,4 +1,4 @@
-import { normalizeSettings, resolveForItem } from '../../../../src/core/chart-components/property-resolver';
+import { normalizeSettings, resolveForItem } from '..';
 
 describe('property-resolver', () => {
   describe('setting normalization', () => {

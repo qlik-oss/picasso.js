@@ -1,4 +1,4 @@
-import render from '../../../../../src/web/components/tooltip/render';
+import render from '../render';
 
 describe('render', () => {
   let context;

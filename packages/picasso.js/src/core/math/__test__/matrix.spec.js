@@ -1,4 +1,4 @@
-import Matrix from '../../../../src/core/math/matrix';
+import Matrix from '../matrix';
 
 describe('Matrix', () => {
   let m;

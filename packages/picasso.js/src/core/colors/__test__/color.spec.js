@@ -1,4 +1,4 @@
-import color from '../../../../src/core/colors/index';
+import color from '../index';
 
 describe('Colors', () => {
   describe('HSL', () => {

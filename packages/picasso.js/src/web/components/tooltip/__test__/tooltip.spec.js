@@ -1,6 +1,6 @@
 import extend from 'extend';
-import tooltip from '../../../../../src/web/components/tooltip/tooltip';
-import componentFactoryFixture from '../../../../helpers/component-factory-fixture';
+import tooltip from '../tooltip';
+import componentFactoryFixture from '../../../../../test/helpers/component-factory-fixture';
 
 function componentMock() {
   return {

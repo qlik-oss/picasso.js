@@ -1,4 +1,4 @@
-import timeSpanDispatcher from '../../../../../src/web/components/tooltip/timespan-dispatcher';
+import timeSpanDispatcher from '../timespan-dispatcher';
 
 describe('timeSpanDispatcher', () => {
   let sandbox;

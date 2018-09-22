@@ -1,4 +1,4 @@
-import registry from '../../../../src/core/utils/registry';
+import registry from '../registry';
 
 describe('Registry', () => {
   let reg;

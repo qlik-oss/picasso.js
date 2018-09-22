@@ -1,4 +1,4 @@
-import band from '../../../../src/core/scales/band';
+import band from '../band';
 
 describe('OrdinalScale', () => {
   let scale;

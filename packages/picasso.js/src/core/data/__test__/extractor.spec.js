@@ -1,4 +1,4 @@
-import extract from '../../../../src/core/data/extractor';
+import extract from '../extractor';
 
 describe('extract data', () => {
   const country = {

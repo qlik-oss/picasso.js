@@ -1,4 +1,4 @@
-import { getPropsInfo } from '../../../../src/core/data/util';
+import { getPropsInfo } from '../util';
 
 describe('data-util', () => {
   let ds;

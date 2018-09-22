@@ -1,5 +1,5 @@
-import componentFactoryFixture from '../../../../helpers/component-factory-fixture';
-import boxMarker from '../../../../../src/core/chart-components/box/box';
+import componentFactoryFixture from '../../../../../test/helpers/component-factory-fixture';
+import boxMarker from '../box';
 
 describe('box component', () => {
   let rendererOutput;

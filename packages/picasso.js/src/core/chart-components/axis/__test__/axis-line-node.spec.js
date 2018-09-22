@@ -1,4 +1,4 @@
-import buildLine from '../../../../../src/core/chart-components/axis/axis-line-node';
+import buildLine from '../axis-line-node';
 
 describe('Axis Line Node', () => {
   const innerRect = {

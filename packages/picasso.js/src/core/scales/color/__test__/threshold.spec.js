@@ -1,4 +1,4 @@
-import threshold from '../../../../../src/core/scales/color/threshold';
+import threshold from '../threshold';
 
 describe('Threshold', () => {
   let ths;

@@ -1,4 +1,4 @@
-import layout from '../../../../../src/core/chart-components/legend-cat/legend-layout';
+import layout from '../legend-layout';
 
 describe('legend layout', () => {
   const itemRenderer = {

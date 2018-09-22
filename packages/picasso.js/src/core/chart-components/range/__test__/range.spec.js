@@ -1,4 +1,4 @@
-import component from '../../../../src/core/chart-components/range/range';
+import component from '../range';
 
 describe('range component', () => {
   let chart;

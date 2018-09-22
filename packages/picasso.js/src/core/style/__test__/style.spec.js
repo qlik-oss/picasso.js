@@ -1,4 +1,4 @@
-import { resolveStyle } from '../../../../src/core/style';
+import { resolveStyle } from '..';
 
 describe('Style resolver', () => {
   let settings;

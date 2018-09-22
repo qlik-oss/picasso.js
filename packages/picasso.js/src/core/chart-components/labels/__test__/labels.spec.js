@@ -1,4 +1,4 @@
-import { strategy } from '../../../../../src/core/chart-components/labels/labels';
+import { strategy } from '../labels';
 
 describe('component - label', () => {
   describe('strategy', () => {

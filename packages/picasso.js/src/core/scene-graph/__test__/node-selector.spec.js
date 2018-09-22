@@ -1,8 +1,8 @@
-import Container from '../../../../src/core/scene-graph/display-objects/container';
-import Circle from '../../../../src/core/scene-graph/display-objects/circle';
-import Rect from '../../../../src/core/scene-graph/display-objects/rect';
-import Text from '../../../../src/core/scene-graph/display-objects/text';
-import selector, { tokenize, filter } from '../../../../src/core/scene-graph/node-selector';
+import Container from '../display-objects/container';
+import Circle from '../display-objects/circle';
+import Rect from '../display-objects/rect';
+import Text from '../display-objects/text';
+import selector, { tokenize, filter } from '../node-selector';
 
 describe('Node Selector', () => {
   let UNDEF;

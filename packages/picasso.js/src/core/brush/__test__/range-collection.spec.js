@@ -1,4 +1,4 @@
-import range from '../../../../src/core/brush/range-collection';
+import range from '../range-collection';
 
 describe('range-collection', () => {
   describe('api', () => {

@@ -1,6 +1,6 @@
-import Line, { create as createLine } from '../../../../../src/core/scene-graph/display-objects/line';
-import GeoRect from '../../../../../src/core/geometry/rect';
-import GeoLine from '../../../../../src/core/geometry/line';
+import Line, { create as createLine } from '../line';
+import GeoRect from '../../../geometry/rect';
+import GeoLine from '../../../geometry/line';
 
 describe('Line', () => {
   let line;

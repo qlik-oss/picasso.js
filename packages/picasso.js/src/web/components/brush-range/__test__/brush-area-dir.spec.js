@@ -1,7 +1,7 @@
 import elementMock from 'test-utils/mocks/element-mock';
 import vDomMock from 'test-utils/mocks/vDom-mock';
-import componentFactoryFixture from '../../../../helpers/component-factory-fixture';
-import brushAreaDir from '../../../../../src/web/components/brush-range/brush-area-dir';
+import componentFactoryFixture from '../../../../../test/helpers/component-factory-fixture';
+import brushAreaDir from '../brush-area-dir';
 
 describe('Brush Area Directional', () => {
   let componentFixture;

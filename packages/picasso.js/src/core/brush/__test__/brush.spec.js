@@ -1,4 +1,4 @@
-import brush, { toggle, set } from '../../../../src/core/brush/brush';
+import brush, { toggle, set } from '../brush';
 
 describe('brush', () => {
   const noop = () => {};

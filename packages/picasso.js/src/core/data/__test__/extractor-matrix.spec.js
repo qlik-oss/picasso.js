@@ -1,4 +1,4 @@
-import extract from '../../../../src/core/data/extractor-matrix';
+import extract from '../extractor-matrix';
 
 describe('straight mapping', () => {
   const fields = [

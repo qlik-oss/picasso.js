@@ -1,4 +1,4 @@
-import render from '../../../../../../src/web/renderer/canvas-renderer/shapes/rect';
+import render from '../rect';
 
 describe('rect', () => {
   describe('render', () => {

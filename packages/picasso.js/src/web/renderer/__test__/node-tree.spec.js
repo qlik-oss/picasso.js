@@ -1,6 +1,6 @@
 import {
   diff, createNodes, destroyNodes, updateNodes
-} from '../../../../src/web/renderer/node-tree';
+} from '../node-tree';
 
 function getContent(arr) {
   return arr.map(a => a.content);

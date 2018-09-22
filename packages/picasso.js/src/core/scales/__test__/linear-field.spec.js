@@ -1,5 +1,5 @@
-import linear from '../../../../../src/core/scales/linear';
-import field from '../../../../../src/core/data/field';
+import linear from '../linear';
+import field from '../../data/field';
 
 describe('Linear data scale', () => {
   let dataScale;

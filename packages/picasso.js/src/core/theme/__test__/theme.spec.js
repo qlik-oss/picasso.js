@@ -1,4 +1,4 @@
-import themeFn from '../../../../src/core/theme';
+import themeFn from '..';
 
 describe('Theme', () => {
   it('should find a palette', () => {

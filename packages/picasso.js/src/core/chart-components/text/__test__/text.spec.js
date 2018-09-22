@@ -1,6 +1,6 @@
-import componentFactoryFixture from '../../../../helpers/component-factory-fixture';
-import textComponent from '../../../../../src/core/chart-components/text/text';
-import band from '../../../../../src/core/scales/band';
+import componentFactoryFixture from '../../../../../test/helpers/component-factory-fixture';
+import textComponent from '../text';
+import band from '../../../scales/band';
 
 function assertNodeProperties(node, expected) {
   Object.keys(expected).forEach((key) => {

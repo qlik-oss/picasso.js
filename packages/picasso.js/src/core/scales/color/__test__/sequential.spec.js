@@ -1,4 +1,4 @@
-import sequential from '../../../../../src/core/scales/color/sequential';
+import sequential from '../sequential';
 
 describe('Sequential', () => {
   let seq;

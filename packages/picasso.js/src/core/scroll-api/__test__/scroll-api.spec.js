@@ -1,4 +1,4 @@
-import scrollApi from '../../../../src/core/scroll-api';
+import scrollApi from '..';
 
 describe('Scroll api', () => {
   let scroll;

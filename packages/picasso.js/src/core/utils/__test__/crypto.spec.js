@@ -1,4 +1,4 @@
-import { hashObject } from '../../../../src/core/utils/crypto';
+import { hashObject } from '../crypto';
 
 describe('gradient-support', () => {
   describe('hashObject', () => {

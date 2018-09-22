@@ -1,5 +1,5 @@
-import { create } from '../../../../src/core/geometry/polygon';
-import { rectToPoints, lineToPoints } from '../../../../src/core/geometry/util';
+import { create } from '../polygon';
+import { rectToPoints, lineToPoints } from '../util';
 
 describe('GeoPolygon', () => {
   let polygon;

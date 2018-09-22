@@ -1,5 +1,5 @@
-import buildLabel from '../../../../../src/core/chart-components/axis/axis-label-node';
-import { textBounds } from '../../../../../src/web/text-manipulation';
+import buildLabel from '../axis-label-node';
+import { textBounds } from '../../../../web/text-manipulation';
 
 function createTick(start, end) {
   const position = start + ((end - start) / 2);

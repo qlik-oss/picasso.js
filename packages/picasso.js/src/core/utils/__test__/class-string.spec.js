@@ -1,4 +1,4 @@
-import classString from '../../../../src/core/utils/class-string';
+import classString from '../class-string';
 
 describe('class string', () => {
   it('return a space separated string with object keys', () => {

@@ -1,6 +1,6 @@
-import { create } from '../../../../../src/core/scene-graph/display-objects/stage';
-import { create as createRect } from '../../../../../src/core/scene-graph/display-objects/rect';
-import { create as createContainer } from '../../../../../src/core/scene-graph/display-objects/container';
+import { create } from '../stage';
+import { create as createRect } from '../rect';
+import { create as createContainer } from '../container';
 
 describe('Stage', () => {
   let stage;

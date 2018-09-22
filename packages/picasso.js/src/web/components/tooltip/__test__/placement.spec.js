@@ -1,4 +1,4 @@
-import placement, { calcOffset } from '../../../../../src/web/components/tooltip/placement';
+import placement, { calcOffset } from '../placement';
 
 describe('placement', () => {
   let context;

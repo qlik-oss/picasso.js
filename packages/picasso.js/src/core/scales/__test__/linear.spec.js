@@ -1,4 +1,4 @@
-import linear from '../../../../src/core/scales/linear';
+import linear from '../linear';
 
 describe('LinearScale', () => {
   let lin;

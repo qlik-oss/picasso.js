@@ -1,5 +1,5 @@
-import Text, { create as createText } from '../../../../../src/core/scene-graph/display-objects/text';
-import GeoRect from '../../../../../src/core/geometry/rect';
+import Text, { create as createText } from '../text';
+import GeoRect from '../../../geometry/rect';
 
 describe('Text', () => {
   let node;

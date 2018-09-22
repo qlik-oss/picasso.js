@@ -1,4 +1,4 @@
-import { create } from '../../../../src/core/chart/scales';
+import { create } from '..';
 
 describe('scales', () => {
   let deps;

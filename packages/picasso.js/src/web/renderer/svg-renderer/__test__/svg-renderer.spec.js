@@ -1,5 +1,5 @@
 import element from 'test-utils/mocks/element-mock';
-import renderer from '../../../../../src/web/renderer/svg-renderer/svg-renderer';
+import renderer from '../svg-renderer';
 
 describe('svg renderer', () => {
   let sandbox,

@@ -1,4 +1,4 @@
-import formatter from '../../../../src/core/formatter';
+import formatter from '..';
 
 describe('formatter', () => {
   it('should return the default d3 number formatter', () => {

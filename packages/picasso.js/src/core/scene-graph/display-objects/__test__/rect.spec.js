@@ -1,6 +1,6 @@
-import Rect, { create as createRect } from '../../../../../src/core/scene-graph/display-objects/rect';
-import GeoRect from '../../../../../src/core/geometry/rect';
-import GeoCircle from '../../../../../src/core/geometry/circle';
+import Rect, { create as createRect } from '../rect';
+import GeoRect from '../../../geometry/rect';
+import GeoCircle from '../../../geometry/circle';
 
 describe('Rect', () => {
   let rect;

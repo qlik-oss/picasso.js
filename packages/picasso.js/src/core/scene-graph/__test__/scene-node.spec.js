@@ -1,9 +1,9 @@
-import create from '../../../../src/core/scene-graph/scene-node';
-import { create as createRect } from '../../../../src/core/scene-graph/display-objects/rect';
-import { create as createLine } from '../../../../src/core/scene-graph/display-objects/line';
-import { create as createCircle } from '../../../../src/core/scene-graph/display-objects/circle';
-import { create as createContainer } from '../../../../src/core/scene-graph/display-objects/container';
-import { create as createPath } from '../../../../src/core/scene-graph/display-objects/path';
+import create from '../scene-node';
+import { create as createRect } from '../display-objects/rect';
+import { create as createLine } from '../display-objects/line';
+import { create as createCircle } from '../display-objects/circle';
+import { create as createContainer } from '../display-objects/container';
+import { create as createPath } from '../display-objects/path';
 
 describe('Scene Node', () => {
   let sceneNode;

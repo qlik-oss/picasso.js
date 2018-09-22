@@ -1,4 +1,4 @@
-import contextFactory from '../../../../src/core/scene-graph/context';
+import contextFactory from '../context';
 
 describe('Context', () => {
   it('should handle inheritance correctly', () => {

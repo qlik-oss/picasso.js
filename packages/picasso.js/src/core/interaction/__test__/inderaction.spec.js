@@ -1,4 +1,4 @@
-import interaction from '../../../../src/core/interaction';
+import interaction from '..';
 
 describe('interaction plugin api', () => {
   it('should return the native interaction', () => {

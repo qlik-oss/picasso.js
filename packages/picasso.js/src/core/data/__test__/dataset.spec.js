@@ -1,4 +1,4 @@
-import dataset from '../../../../src/core/data/dataset';
+import dataset from '../dataset';
 
 describe('dataset', () => {
   describe('api', () => {

@@ -1,4 +1,4 @@
-import GeoRect from '../../../../src/core/geometry/rect';
+import GeoRect from '../rect';
 
 describe('GeoRect', () => {
   describe('constructor', () => {

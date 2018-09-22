@@ -1,4 +1,4 @@
-import { angleToPoints, toRadians, degreesToPoints } from '../../../../src/core/math/angles';
+import { angleToPoints, toRadians, degreesToPoints } from '../angles';
 
 describe('minmax', () => {
   describe('angleToPoints', () => {

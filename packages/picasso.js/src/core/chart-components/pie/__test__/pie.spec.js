@@ -1,5 +1,5 @@
-import componentFactoryFixture from '../../../helpers/component-factory-fixture';
-import component, { arcValue } from '../../../../src/core/chart-components/pie/pie';
+import componentFactoryFixture from '../../../../../test/helpers/component-factory-fixture';
+import component, { arcValue } from '../pie';
 
 describe('pie', () => {
   let rendered;

@@ -1,7 +1,7 @@
 import {
   styler,
   resolveTapEvent
-} from '../../../../src/core/component/brushing';
+} from '../brushing';
 
 describe('Brushing', () => {
   let nodes;

@@ -1,5 +1,5 @@
-import * as textManipulation from '../../../../../../src/web/text-manipulation';
-import render from '../../../../../../src/web/renderer/canvas-renderer/shapes/text';
+import * as textManipulation from '../../../../text-manipulation';
+import render from '../text';
 
 describe('text', () => {
   describe('render', () => {

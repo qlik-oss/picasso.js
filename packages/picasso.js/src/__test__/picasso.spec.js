@@ -1,5 +1,5 @@
 import createElement from 'test-utils/mocks/element-mock';
-import picasso from '../../src/index';
+import picasso from '../index';
 
 describe('picasso.js', () => {
   const iface = [

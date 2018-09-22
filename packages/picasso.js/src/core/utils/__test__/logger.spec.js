@@ -1,4 +1,4 @@
-import loggerFn from '../../../../src/core/utils/logger';
+import loggerFn from '../logger';
 
 describe('logger', () => {
   let logger;

@@ -1,4 +1,4 @@
-import { create } from '../../../../src/core/chart/formatter';
+import { create } from '..';
 
 describe('chart formatters', () => {
   let deps;

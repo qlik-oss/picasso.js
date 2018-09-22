@@ -1,4 +1,4 @@
-import resolve from '../../../../src/core/style/resolver';
+import resolve from '../resolver';
 
 describe('style-resolver', () => {
   /* eslint quote-props: 0 */

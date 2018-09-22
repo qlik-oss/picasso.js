@@ -1,4 +1,4 @@
-import GradientItem, { create as createGradientItem } from '../../../../../src/core/scene-graph/display-objects/gradient-item';
+import GradientItem, { create as createGradientItem } from '../gradient-item';
 
 /* eslint no-unused-expressions: 0 */
 

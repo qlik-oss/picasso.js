@@ -1,4 +1,4 @@
-import resolveSettings from '../../../../../src/core/chart-components/legend-cat/legend-resolver';
+import resolveSettings from '../legend-resolver';
 
 describe('legend-resolver', () => {
   it('should resolve defaults', () => {

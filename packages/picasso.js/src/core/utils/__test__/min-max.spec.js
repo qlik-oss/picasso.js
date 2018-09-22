@@ -1,4 +1,4 @@
-import minmax from '../../../../src/core/utils/min-max';
+import minmax from '../min-max';
 
 describe('minmax', () => {
   it('should default to [0,1]', () => {

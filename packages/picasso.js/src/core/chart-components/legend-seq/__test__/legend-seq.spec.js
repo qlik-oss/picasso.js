@@ -1,7 +1,7 @@
-import componentFactoryFixture from '../../../../helpers/component-factory-fixture';
-import legendSeq from '../../../../../src/core/chart-components/legend-seq/legend-seq';
-import sequentialScale from '../../../../../src/core/scales/color/sequential';
-import linearScale from '../../../../../src/core/scales/linear';
+import componentFactoryFixture from '../../../../../test/helpers/component-factory-fixture';
+import legendSeq from '../legend-seq';
+import sequentialScale from '../../../scales/color/sequential';
+import linearScale from '../../../scales/linear';
 
 describe('Legend Sequential', () => {
   const ticksSelector = '[id="legend-seq-ticks"] text';

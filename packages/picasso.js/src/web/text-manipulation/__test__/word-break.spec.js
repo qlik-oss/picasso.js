@@ -1,4 +1,4 @@
-import { breakAll, breakWord } from '../../../../src/web/text-manipulation/word-break';
+import { breakAll, breakWord } from '../word-break';
 
 describe('Word Break', () => {
   describe('breakAll', () => {

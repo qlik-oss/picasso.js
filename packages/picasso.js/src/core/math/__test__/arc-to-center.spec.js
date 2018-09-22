@@ -1,4 +1,4 @@
-import arcToCenter from '../../../../src/core/math/arc-to-center';
+import arcToCenter from '../arc-to-center';
 
 describe('Arc to center', () => {
   let rx;

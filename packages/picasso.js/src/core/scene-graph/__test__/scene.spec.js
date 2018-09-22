@@ -1,5 +1,5 @@
-import scene from '../../../../src/core/scene-graph/scene';
-import { create as createStage } from '../../../../src/core/scene-graph/display-objects/stage';
+import scene from '../scene';
+import { create as createStage } from '../display-objects/stage';
 
 describe('Scene', () => {
   let stage,

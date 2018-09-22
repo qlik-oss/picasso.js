@@ -1,4 +1,4 @@
-import collections from '../../../../src/core/data/collections';
+import collections from '../collections';
 
 describe('data collections', () => {
   describe('create', () => {

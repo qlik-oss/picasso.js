@@ -1,10 +1,10 @@
 import elementMock from 'test-utils/mocks/element-mock';
 import vDomMock from 'test-utils/mocks/vDom-mock';
-import componentFactoryFixture from '../../../../helpers/component-factory-fixture';
-import brushRange from '../../../../../src/web/components/brush-range/brush-range';
-import linearScale from '../../../../../src/core/scales/linear';
-import bandScale from '../../../../../src/core/scales/band';
-import brushFactory from '../../../../../src/core/brush';
+import componentFactoryFixture from '../../../../../test/helpers/component-factory-fixture';
+import brushRange from '../brush-range';
+import linearScale from '../../../../core/scales/linear';
+import bandScale from '../../../../core/scales/band';
+import brushFactory from '../../../../core/brush';
 
 describe('Brush Range', () => {
   let componentFixture;

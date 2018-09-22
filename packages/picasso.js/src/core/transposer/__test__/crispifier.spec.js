@@ -1,4 +1,4 @@
-import { crispifierFactory } from '../../../../src/core/transposer/crispifier';
+import { crispifierFactory } from '../crispifier';
 
 describe('crispifier', () => {
   it('should not modify rects with 0 stroke width', () => {

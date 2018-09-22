@@ -4,7 +4,7 @@ import {
   cancelActive,
   getActive,
   remove
-} from '../../../../../src/web/components/tooltip/instance-handler';
+} from '../instance-handler';
 
 describe('Instance handler', () => {
   beforeEach(() => {

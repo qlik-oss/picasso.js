@@ -1,4 +1,4 @@
-import { rectContainsRect } from '../../../../src/core/math/intersection';
+import { rectContainsRect } from '../intersection';
 
 describe('Intersection', () => {
   describe('rectContainsRect', () => {

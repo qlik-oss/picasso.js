@@ -1,4 +1,4 @@
-import settingsResolver from '../../../../src/core/component/settings-resolver';
+import settingsResolver from '../settings-resolver';
 
 describe('settings resolver', () => {
   let res;

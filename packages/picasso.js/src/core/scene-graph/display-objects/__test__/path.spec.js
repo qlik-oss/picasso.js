@@ -1,5 +1,5 @@
-import Path, { create } from '../../../../../src/core/scene-graph/display-objects/path';
-import GeometryCollection from '../../../../../src/core/geometry/geometry-collection';
+import Path, { create } from '../path';
+import GeometryCollection from '../../../geometry/geometry-collection';
 
 describe('Path', () => {
   let path;

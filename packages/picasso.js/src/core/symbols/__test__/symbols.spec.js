@@ -1,4 +1,4 @@
-import create, { symbols as register } from '../../../../src/core/symbols';
+import create, { symbols as register } from '..';
 
 function fixDecimals(str, precision = 5) {
   return str.replace(/\.([0-9]+)/gi, (match, g) => `.${g.substr(0, precision)}`);

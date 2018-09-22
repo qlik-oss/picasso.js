@@ -1,4 +1,4 @@
-import stack from '../../../../src/core/data/stack';
+import stack from '../stack';
 
 describe('stack', () => {
   const valueField = { key: 'nyckel', field: 'sales' };

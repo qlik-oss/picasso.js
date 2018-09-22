@@ -1,4 +1,4 @@
-import { transposer } from '../../../../src/core/transposer/transposer';
+import { transposer } from '../transposer';
 
 describe('transposer', () => {
   let draw = transposer();
