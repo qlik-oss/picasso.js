@@ -6,13 +6,13 @@
     "url": "ssh://git@github.com:qlik-oss/picasso.js.git"
   },
   "scripts": {
-    "build": "cross-env NODE_ENV=production lerna run build --concurrency 99",
-    "build:watch": "lerna run build:watch --stream --no-sort --concurrency 99",
+    "build": "cross-env NODE_ENV=production FORCE_COLOR=1 lerna run build --stream",
+    "build:watch": "cross-env FORCE_COLOR=1 lerna run build:watch --stream --no-sort",
     "build:website": "cd website && yarn install && yarn run build",
     "bump": "lerna publish --no-push",
     "commitmsg": "commitlint -E GIT_PARAMS",
     "clean": "lerna clean",
-    "lint": "lerna run lint",
+    "lint": "cross-env FORCE_COLOR=1 lerna run lint",
     "link": "lerna link",
     "test": "npm run test:unit:coverage && npm run test:component:coverage",
     "test:component:coverage": "aw -c aw.config.js --type component",
