@@ -1,5 +1,5 @@
-import q from '../../src/data/dataset';
-import { getPropsInfo } from '../../../../packages/picasso.js/src/core/data/util';
+import q from '../dataset';
+import { getPropsInfo } from '../../../../../packages/picasso.js/src/core/data/util';
 
 describe('augment-hierarchy', () => {
   before(() => {

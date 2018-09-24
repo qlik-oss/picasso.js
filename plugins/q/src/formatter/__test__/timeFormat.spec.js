@@ -1,4 +1,4 @@
-import timeFormat, { QlikTimeToDate } from '../../../src/formatter/timeFormat';
+import timeFormat, { QlikTimeToDate } from '../timeFormat';
 
 /**
  * PLEASE NOTE / WARNING: THIS FUNCTION *MAY* HAVE FLOATING POINT ERRORS

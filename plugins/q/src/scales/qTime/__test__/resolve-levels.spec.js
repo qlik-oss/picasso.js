@@ -1,4 +1,4 @@
-import resolveLevels from '../../../../src/scales/qTime/resolve-levels';
+import resolveLevels from '../resolve-levels';
 import tickGen from './tickGen';
 
 describe('qTime - Resolve levels', () => {

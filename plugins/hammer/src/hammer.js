@@ -1,3 +1,5 @@
+/* global Hammer */
+
 const translateKnownTypes = {
   click: 'Tap',
   Click: 'Tap',

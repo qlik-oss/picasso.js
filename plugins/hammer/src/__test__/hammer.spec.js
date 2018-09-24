@@ -1,5 +1,5 @@
 import createElement from 'test-utils/mocks/element-mock';
-import hammer from '../../src/hammer';
+import hammer from '../hammer';
 import hammerMock from './hammer-mock';
 
 describe('hammer interaction mixin', () => {

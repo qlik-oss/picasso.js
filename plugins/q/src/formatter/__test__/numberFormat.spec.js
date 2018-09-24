@@ -1,4 +1,4 @@
-import formatter from '../../../src/formatter/numberFormat';
+import formatter from '../numberFormat';
 
 describe('numberFormat', () => {
   describe('formatter', () => {

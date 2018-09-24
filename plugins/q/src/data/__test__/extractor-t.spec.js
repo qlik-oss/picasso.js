@@ -1,10 +1,10 @@
-import { extract } from '../../src/data/extractor-t';
+import { extract } from '../extractor-t';
 
 import {
   getPropsInfo,
   collect,
   track
-} from '../../../../packages/picasso.js/src/core/data/util';
+} from '../../../../../packages/picasso.js/src/core/data/util';
 
 describe('q-data-extractor-t', () => {
   const deps = {

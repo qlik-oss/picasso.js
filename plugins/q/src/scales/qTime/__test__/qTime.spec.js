@@ -1,4 +1,4 @@
-import qTime from '../../../../src/scales/qTime';
+import qTime from '..';
 import tickGen from './tickGen';
 
 describe('Scale - qTime', () => {

@@ -1,5 +1,5 @@
-import q from '../../src/data/dataset';
-import picData from '../../../../packages/picasso.js/src/core/data/dataset';
+import q from '../dataset';
+import picData from '../../../../../packages/picasso.js/src/core/data/dataset';
 
 const NxSimpleValue = { qNum: 37.6, qText: '$37.6' };
 const NxSimpleDimValue = { qElemNo: 7, qText: 'seven' };

@@ -1,6 +1,6 @@
 // import * as picasso from '../../../../src/index';
 
-import qField from '../../src/data/field';
+import qField from '../field';
 
 describe('q-field', () => {
   function struct(mode, fe, type) {

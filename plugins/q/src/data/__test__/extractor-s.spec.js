@@ -1,10 +1,10 @@
-import extract, { getFieldAccessor } from '../../src/data/extractor-s';
-import q from '../../src/data/dataset';
+import extract, { getFieldAccessor } from '../extractor-s';
+import q from '../dataset';
 
 import {
   collect,
   track
-} from '../../../../packages/picasso.js/src/core/data/util';
+} from '../../../../../packages/picasso.js/src/core/data/util';
 
 describe('extractor-s', () => {
   const page = {

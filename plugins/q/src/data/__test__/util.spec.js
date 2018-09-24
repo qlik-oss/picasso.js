@@ -1,4 +1,4 @@
-import { treeAccessor } from '../../src/data/util';
+import { treeAccessor } from '../util';
 
 describe('treeAccessor', () => {
   it('should return itself when depths are same', () => {
