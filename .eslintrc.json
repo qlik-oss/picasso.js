@@ -29,5 +29,38 @@
     "prefer-destructuring": 0,
     "no-multi-assign": 0,
     "no-return-assign": 0
-  }
+  },
+  "overrides": [
+    {
+      "files": ["**/*.spec.js", "**/test/**/*.js"],
+      "env": {
+        "browser": false,
+        "node": true,
+        "mocha": true,
+        "protractor": true
+      },
+      "globals": {
+        "chai": false,
+        "expect": false,
+        "sinon": false
+      },
+      "parserOptions": {
+        "sourceType": "module",
+        "ecmaVersion": 2018
+      },
+      "plugins": [
+        "mocha"
+      ],
+      "rules": {
+        "import/no-extraneous-dependencies": [
+          "error",
+          {
+            "devDependencies": true
+          }
+        ],
+        "mocha/no-exclusive-tests": "error",
+        "no-unused-expressions": 0
+      }
+    }
+  ]
 }
