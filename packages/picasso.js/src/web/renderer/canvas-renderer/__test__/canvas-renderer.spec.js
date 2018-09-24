@@ -1,5 +1,5 @@
 import element from 'test-utils/mocks/element-mock';
-import renderer from '../canvas-renderer';
+import renderer from '..';
 
 describe('canvas renderer', () => {
   let sandbox,

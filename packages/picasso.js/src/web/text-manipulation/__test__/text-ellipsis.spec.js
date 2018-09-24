@@ -72,7 +72,7 @@ describe('Text Manipulation', () => {
       expect(text).to.equal('[object Object]');
     });
 
-    it('should handle function as text', () => {
+    it.skip('should handle function as text', () => {
       textNode.text = function fn() {};
       textNode.maxWidth = Infinity;
       const text = ellipsText(textNode, measureTextMock);

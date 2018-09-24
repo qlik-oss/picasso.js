@@ -1,5 +1,5 @@
 import complexResolver from '../box-resolver';
-import settingsResolver from '../../../scales/settings-resolver';
+import settingsResolver from '../../../component/settings-resolver';
 
 describe('box resolver', () => {
   describe('complexResolver', () => {
