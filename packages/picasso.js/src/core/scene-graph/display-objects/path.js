@@ -2,6 +2,7 @@ import extend from 'extend';
 import DisplayObject from './display-object';
 import { getMinMax } from '../../geometry/util';
 import pathToSegments from '../parse-path-d';
+import polylineToPolygonCollider from '../polyline-to-polygon-collider';
 import flatten from '../../utils/flatten-array';
 
 const EPSILON = 1e-12;
@@ -34,28 +35,28 @@ export default class Path extends DisplayObject {
     this.points = [];
     this.attrs.d = v.d;
 
-    if (Array.isArray(v.collider) || (typeof v.collider === 'object' && v.collider.type)) {
+    if (Array.isArray(v.collider) || (typeof v.collider === 'object' && typeof v.collider.type !== 'undefined')) {
       this.collider = v.collider;
     } else if (v.d) {
-      const collection = [];
       this.segments = pathToSegments(v.d);
       this.segments.forEach((segment) => {
         if (segment.length <= 1) {
           // Omit empty and single point segments
         } else if (isClosed(segment)) {
-          collection.push(extend({
+          this.collider = extend({
             type: 'polygon',
             vertices: segment
-          }, v.collider));
+          }, v.collider);
+        } else if (typeof v.collider === 'object' && v.collider.visual) {
+          const size = this.attrs['stroke-width'] / 2;
+          this.collider = polylineToPolygonCollider(segment, size, v.collider);
         } else {
-          collection.push(extend({
+          this.collider = extend({
             type: 'polyline',
             points: segment
-          }, v.collider));
+          }, v.collider);
         }
       });
-
-      this.collider = collection;
     }
   }
 

@@ -3,6 +3,19 @@ import arcToCenter, { PI_X2 } from '../math/arc-to-center';
 import cubicCurveToPoints from '../math/cubic-bezier-curve-interpolation';
 import quadCurveToPoints from '../math/quad-bezier-curve-interpolation';
 
+const EPSILON = 1e-12;
+
+function removeDuplicates(points) {
+  for (let i = 0; i < points.length - 1; i++) {
+    const p0 = points[i];
+    const p1 = points[i + 1];
+    if (Math.abs(p0.x - p1.x) < EPSILON && Math.abs(p0.y - p1.y) < EPSILON) {
+      points.splice(i, 1);
+      i--;
+    }
+  }
+}
+
 /**
  * Transform an arc to a set of points a long the arc.
  * Specifiction F.6 (https://www.w3.org/TR/SVG/implnote.html#ArcImplementationNotes)
@@ -75,7 +88,7 @@ function arcToPoints(s, startX, startY) {
  * @param {string} path
  * @returns {Array<point[]>} Array of points
  */
-function pathToPoints(path) {
+export default function pathToPoints(path) {
   const commands = parsePath(path);
   const segments = [];
   const points = [];
@@ -265,16 +278,17 @@ function pathToPoints(path) {
         break;
       case 'z':
       case 'Z':
-        points.push({ x: points[0].x, y: points[0].y });
+        if (points.length) {
+          points.push({ x: points[0].x, y: points[0].y });
+        }
         break;
       default:
         // Do nothing
     }
   }
 
+  removeDuplicates(points);
   segments.push(points.splice(0));
 
   return segments;
 }
-
-export { pathToPoints as default };
