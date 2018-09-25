@@ -6674,9 +6674,9 @@ path-type@^3.0.0:
   dependencies:
     pify "^3.0.0"
 
-path2d-polyfill@0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/path2d-polyfill/-/path2d-polyfill-0.2.1.tgz#0382acf63feb134ecc75a28201be616353ba9e59"
+path2d-polyfill@0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/path2d-polyfill/-/path2d-polyfill-0.3.0.tgz#08d646529fdf2aec912fc281813248ee61b3b977"
 
 pathval@^1.0.0:
   version "1.1.0"
