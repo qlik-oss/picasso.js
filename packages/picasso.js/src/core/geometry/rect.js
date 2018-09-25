@@ -2,7 +2,13 @@ import {
   pointsToLine,
   pointsToRect
 } from './util';
-import NarrowPhaseCollision from '../math/narrow-phase-collision';
+import {
+  testCircleRect,
+  testPolygonRect,
+  testRectRect,
+  testRectPoint,
+  testRectLine
+} from '../math/narrow-phase-collision';
 
 /**
  * Construct a new GeoRect instance
@@ -44,7 +50,7 @@ class GeoRect {
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   containsPoint(p) {
-    return NarrowPhaseCollision.testRectPoint(this, p);
+    return testRectPoint(this, p);
   }
 
   /**
@@ -53,7 +59,7 @@ class GeoRect {
    */
   intersectsLine(points) {
     const line = pointsToLine(points);
-    return NarrowPhaseCollision.testRectLine(this, line);
+    return testRectLine(this, line);
   }
 
   /**
@@ -62,7 +68,7 @@ class GeoRect {
    */
   intersectsRect(points) {
     const rect = pointsToRect(points);
-    return NarrowPhaseCollision.testRectRect(this, rect);
+    return testRectRect(this, rect);
   }
 
   /**
@@ -70,7 +76,7 @@ class GeoRect {
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsCircle(c) {
-    return NarrowPhaseCollision.testCircleRect(c, this);
+    return testCircleRect(c, this);
   }
 
   /**
@@ -78,7 +84,7 @@ class GeoRect {
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsPolygon(polygon) {
-    return NarrowPhaseCollision.testPolygonRect(polygon, this);
+    return testPolygonRect(polygon, this);
   }
 
   /**

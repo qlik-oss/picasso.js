@@ -1,4 +1,7 @@
-import NarrowPhaseCollision from '../narrow-phase-collision';
+import {
+  testPolygonLine,
+  testPolygonRect
+} from '../narrow-phase-collision';
 import { create } from '../../geometry/polygon';
 
 describe('NarrowPhaseCollision', () => {
@@ -38,9 +41,9 @@ describe('NarrowPhaseCollision', () => {
       };
 
       polygon = create({ vertices: convexPolygon });
-      expect(NarrowPhaseCollision.testPolygonLine(polygon, lineIsInsidePolygon)).to.equal(true);
-      expect(NarrowPhaseCollision.testPolygonLine(polygon, lineIsCrossingAPolygonEdge)).to.equal(true);
-      expect(NarrowPhaseCollision.testPolygonLine(polygon, lineIsCoincidentWithPolygonEdge)).to.equal(true);
+      expect(testPolygonLine(polygon, lineIsInsidePolygon)).to.equal(true);
+      expect(testPolygonLine(polygon, lineIsCrossingAPolygonEdge)).to.equal(true);
+      expect(testPolygonLine(polygon, lineIsCoincidentWithPolygonEdge)).to.equal(true);
     });
 
     it('concave polygon', () => {
@@ -55,9 +58,9 @@ describe('NarrowPhaseCollision', () => {
       };
 
       polygon = create({ vertices: concavePolygon });
-      expect(NarrowPhaseCollision.testPolygonLine(polygon, lineIsInsidePolygon)).to.equal(true);
-      expect(NarrowPhaseCollision.testPolygonLine(polygon, lineIsCrossingAPolygonEdge)).to.equal(true);
-      expect(NarrowPhaseCollision.testPolygonLine(polygon, lineIsCoincidentWithPolygonEdge)).to.equal(true);
+      expect(testPolygonLine(polygon, lineIsInsidePolygon)).to.equal(true);
+      expect(testPolygonLine(polygon, lineIsCrossingAPolygonEdge)).to.equal(true);
+      expect(testPolygonLine(polygon, lineIsCoincidentWithPolygonEdge)).to.equal(true);
     });
 
     it('self-Intersecting polygon', () => {
@@ -72,9 +75,9 @@ describe('NarrowPhaseCollision', () => {
       };
 
       polygon = create({ vertices: selfIntersectingPolygon });
-      expect(NarrowPhaseCollision.testPolygonLine(polygon, lineIsInsidePolygon)).to.equal(true);
-      expect(NarrowPhaseCollision.testPolygonLine(polygon, lineIsCrossingAPolygonEdge)).to.equal(true);
-      expect(NarrowPhaseCollision.testPolygonLine(polygon, lineIsCoincidentWithPolygonEdge)).to.equal(true);
+      expect(testPolygonLine(polygon, lineIsInsidePolygon)).to.equal(true);
+      expect(testPolygonLine(polygon, lineIsCrossingAPolygonEdge)).to.equal(true);
+      expect(testPolygonLine(polygon, lineIsCoincidentWithPolygonEdge)).to.equal(true);
     });
 
     it('to few vertices', () => {
@@ -88,7 +91,7 @@ describe('NarrowPhaseCollision', () => {
           { x: 10, y: 10 }
         ]
       }); // for a 2-dimensional polygon, at least 3 edges are needed
-      expect(NarrowPhaseCollision.testPolygonLine(polygon, line)).to.equal(false);
+      expect(testPolygonLine(polygon, line)).to.equal(false);
     });
   });
 
@@ -102,8 +105,8 @@ describe('NarrowPhaseCollision', () => {
       };
 
       polygon = create({ vertices: convexPolygon });
-      expect(NarrowPhaseCollision.testPolygonRect(polygon, rectIsInsidePolygon)).to.equal(true);
-      expect(NarrowPhaseCollision.testPolygonRect(polygon, rectEdgeIsCrossingAPolygonEdge)).to.equal(true);
+      expect(testPolygonRect(polygon, rectIsInsidePolygon)).to.equal(true);
+      expect(testPolygonRect(polygon, rectEdgeIsCrossingAPolygonEdge)).to.equal(true);
     });
 
     it('concave polygon', () => {
@@ -115,8 +118,8 @@ describe('NarrowPhaseCollision', () => {
       };
 
       polygon = create({ vertices: concavePolygon });
-      expect(NarrowPhaseCollision.testPolygonRect(polygon, rectIsInsidePolygon)).to.equal(true);
-      expect(NarrowPhaseCollision.testPolygonRect(polygon, rectEdgeIsCrossingAPolygonEdge)).to.equal(true);
+      expect(testPolygonRect(polygon, rectIsInsidePolygon)).to.equal(true);
+      expect(testPolygonRect(polygon, rectEdgeIsCrossingAPolygonEdge)).to.equal(true);
     });
 
     it('self-Intersecting polygon', () => {
@@ -128,8 +131,8 @@ describe('NarrowPhaseCollision', () => {
       };
 
       polygon = create({ vertices: selfIntersectingPolygon });
-      expect(NarrowPhaseCollision.testPolygonRect(polygon, rectIsInsidePolygon)).to.equal(true);
-      expect(NarrowPhaseCollision.testPolygonRect(polygon, rectEdgeIsCrossingAPolygonEdge)).to.equal(true);
+      expect(testPolygonRect(polygon, rectIsInsidePolygon)).to.equal(true);
+      expect(testPolygonRect(polygon, rectEdgeIsCrossingAPolygonEdge)).to.equal(true);
     });
 
     it('to few vertices', () => {
@@ -143,7 +146,7 @@ describe('NarrowPhaseCollision', () => {
           { x: 10, y: 10 }
         ]
       }); // for a 2-dimensional polygon, at least 3 edges are needed
-      expect(NarrowPhaseCollision.testPolygonRect(polygon, rect)).to.equal(false);
+      expect(testPolygonRect(polygon, rect)).to.equal(false);
     });
   });
 });

@@ -2,7 +2,13 @@ import {
   pointsToLine,
   pointsToRect
 } from './util';
-import NarrowPhaseCollision from '../math/narrow-phase-collision';
+import {
+  testCircleLine,
+  testPolygonLine,
+  testLinePoint,
+  testLineLine,
+  testRectLine
+} from '../math/narrow-phase-collision';
 
 function pointsAreNotEqual(p0, p1) {
   return p0.x !== p1.x || p0.y !== p1.y;
@@ -41,7 +47,7 @@ class GeoPolyline {
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   containsPoint(point) {
-    return this.segments.some(line => NarrowPhaseCollision.testLinePoint(line, point));
+    return this.segments.some(line => testLinePoint(line, point));
   }
 
   /**
@@ -49,7 +55,7 @@ class GeoPolyline {
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsCircle(circle) {
-    return this.segments.some(line => NarrowPhaseCollision.testCircleLine(circle, line));
+    return this.segments.some(line => testCircleLine(circle, line));
   }
 
   /**
@@ -58,7 +64,7 @@ class GeoPolyline {
    */
   intersectsLine(points) {
     const testLine = pointsToLine(points);
-    return this.segments.some(line => NarrowPhaseCollision.testLineLine(line, testLine));
+    return this.segments.some(line => testLineLine(line, testLine));
   }
 
   /**
@@ -67,7 +73,7 @@ class GeoPolyline {
    */
   intersectsRect(points) {
     const rect = pointsToRect(points);
-    return this.segments.some(line => NarrowPhaseCollision.testRectLine(rect, line));
+    return this.segments.some(line => testRectLine(rect, line));
   }
 
   /**
@@ -76,7 +82,7 @@ class GeoPolyline {
    */
   intersectsPolygon(polygon) {
     // This is a unoptimized solution and should be replaced by a more efficient algorithm.
-    return this.segments.some(line => NarrowPhaseCollision.testPolygonLine(polygon, line));
+    return this.segments.some(line => testPolygonLine(polygon, line));
   }
 
   /**

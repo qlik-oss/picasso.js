@@ -1,7 +1,9 @@
 import buildLine from './axis-line-node';
 import buildLabel from './axis-label-node';
 import buildTick from './axis-tick-node';
-import NarrowPhaseCollision from '../../math/narrow-phase-collision';
+import {
+  testRectRect
+} from '../../math/narrow-phase-collision';
 import { getClampedValue } from './axis-label-size';
 
 function tickSpacing(settings) {
@@ -75,7 +77,7 @@ export function filterOverlappingLabels(labels, ticks) {
     const rect1 = l1.boundingRect;
     const rect2 = l2.boundingRect;
 
-    return NarrowPhaseCollision.testRectRect(rect1, rect2);
+    return testRectRect(rect1, rect2);
   };
 
   for (let i = 0; i <= labels.length - 1; i++) {

@@ -1,5 +1,11 @@
 import { pointsToLine, pointsToRect } from './util';
-import NarrowPhaseCollision from '../math/narrow-phase-collision';
+import {
+  testCirclePoint,
+  testCircleRect,
+  testCircleLine,
+  testCircleCircle,
+  testCirclePolygon
+} from '../math/narrow-phase-collision';
 
 /**
  * Construct a new GeoCircle instance
@@ -29,7 +35,7 @@ class GeoCircle {
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   containsPoint(p) {
-    return NarrowPhaseCollision.testCirclePoint(this, p);
+    return testCirclePoint(this, p);
   }
 
   /**
@@ -39,7 +45,7 @@ class GeoCircle {
   intersectsLine(points) {
     const line = pointsToLine(points);
 
-    return NarrowPhaseCollision.testCircleLine(this, line);
+    return testCircleLine(this, line);
   }
 
   /**
@@ -49,7 +55,7 @@ class GeoCircle {
   intersectsRect(points) {
     const rect = pointsToRect(points);
 
-    return NarrowPhaseCollision.testCircleRect(this, rect);
+    return testCircleRect(this, rect);
   }
 
   /**
@@ -57,7 +63,7 @@ class GeoCircle {
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsCircle(c) {
-    return NarrowPhaseCollision.testCircleCircle(this, c);
+    return testCircleCircle(this, c);
   }
 
   /**
@@ -65,7 +71,7 @@ class GeoCircle {
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsPolygon(polygon) {
-    return NarrowPhaseCollision.testCirclePolygon(this, polygon);
+    return testCirclePolygon(this, polygon);
   }
 
   /**

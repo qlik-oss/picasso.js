@@ -2,7 +2,13 @@ import {
   pointsToLine,
   pointsToRect
 } from './util';
-import NarrowPhaseCollision from '../math/narrow-phase-collision';
+import {
+  testCirclePolygon,
+  testPolygonPoint,
+  testPolygonLine,
+  testPolygonRect,
+  testRectRect
+} from '../math/narrow-phase-collision';
 
 function close(vertices) {
   const first = vertices[0];
@@ -79,7 +85,7 @@ class GeoPolygon {
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   containsPoint(point) {
-    return NarrowPhaseCollision.testPolygonPoint(this, point);
+    return testPolygonPoint(this, point);
   }
 
   /**
@@ -89,7 +95,7 @@ class GeoPolygon {
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsCircle(circle) {
-    return NarrowPhaseCollision.testCirclePolygon(circle, this);
+    return testCirclePolygon(circle, this);
   }
 
   /**
@@ -97,7 +103,7 @@ class GeoPolygon {
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsLine(points) {
-    return NarrowPhaseCollision.testPolygonLine(this, pointsToLine((points)));
+    return testPolygonLine(this, pointsToLine((points)));
   }
 
   /**
@@ -105,7 +111,7 @@ class GeoPolygon {
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsRect(points) {
-    return NarrowPhaseCollision.testPolygonRect(this, pointsToRect(points));
+    return testPolygonRect(this, pointsToRect(points));
   }
 
   /**
@@ -116,13 +122,13 @@ class GeoPolygon {
    */
   intersectsPolygon(polygon) {
     // This is a unoptimized solution and should be replaced by a more efficient algorithm.
-    if (!NarrowPhaseCollision.testRectRect(this.boundingRect(), polygon.boundingRect())) {
+    if (!testRectRect(this.boundingRect(), polygon.boundingRect())) {
       return false;
     }
 
     let intersects = false;
     for (let i = 0, len = this.edges.length; i < len; i++) {
-      intersects = NarrowPhaseCollision.testPolygonLine(polygon, pointsToLine(this.edges[i]));
+      intersects = testPolygonLine(polygon, pointsToLine(this.edges[i]));
       if (intersects === true) {
         break;
       }

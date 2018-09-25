@@ -1,5 +1,11 @@
 import { pointsToLine, pointsToRect } from './util';
-import NarrowPhaseCollision from '../math/narrow-phase-collision';
+import {
+  testCircleLine,
+  testPolygonLine,
+  testRectLine,
+  testLinePoint,
+  testLineLine
+} from '../math/narrow-phase-collision';
 
 /**
  * Construct a new GeoLine instance
@@ -35,9 +41,9 @@ class GeoLine {
   containsPoint(p) {
     if (this.tolerance > 0) {
       const c = { cx: p.x, cy: p.y, r: this.tolerance };
-      return NarrowPhaseCollision.testCircleLine(c, this);
+      return testCircleLine(c, this);
     }
-    return NarrowPhaseCollision.testLinePoint(this, p);
+    return testLinePoint(this, p);
   }
 
   /**
@@ -46,7 +52,7 @@ class GeoLine {
    */
   intersectsLine(points) {
     const line = pointsToLine(points);
-    return NarrowPhaseCollision.testLineLine(this, line);
+    return testLineLine(this, line);
   }
 
   /**
@@ -55,7 +61,7 @@ class GeoLine {
    */
   intersectsRect(points) {
     const rect = pointsToRect(points);
-    return NarrowPhaseCollision.testRectLine(rect, this);
+    return testRectLine(rect, this);
   }
 
   /**
@@ -63,7 +69,7 @@ class GeoLine {
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsCircle(c) {
-    return NarrowPhaseCollision.testCircleLine(c, this);
+    return testCircleLine(c, this);
   }
 
   /**
@@ -71,7 +77,7 @@ class GeoLine {
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsPolygon(polygon) {
-    return NarrowPhaseCollision.testPolygonLine(polygon, this);
+    return testPolygonLine(polygon, this);
   }
 
   /**

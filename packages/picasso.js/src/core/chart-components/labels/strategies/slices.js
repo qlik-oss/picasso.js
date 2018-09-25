@@ -1,5 +1,8 @@
 import extend from 'extend';
-import collisions from '../../../math/narrow-phase-collision';
+import {
+  testCircleRect,
+  testRectLine
+} from '../../../math/narrow-phase-collision';
 import { rectContainsRect } from '../../../math/intersection';
 
 function normalize(angle) {
@@ -115,13 +118,13 @@ function getHorizontalInsideSliceRect({ slice, padding, measured }) {
   let startLine = {
     x1: 0, y1: 0, x2: Math.sin(start) * outerRadius, y2: -Math.cos(start) * outerRadius
   };
-  if (collisions.testRectLine(bounds, startLine)) { return null; }
+  if (testRectLine(bounds, startLine)) { return null; }
   let endLine = {
     x1: 0, y1: 0, x2: Math.sin(end) * outerRadius, y2: -Math.cos(end) * outerRadius
   };
-  if (collisions.testRectLine(bounds, endLine)) { return null; }
+  if (testRectLine(bounds, endLine)) { return null; }
   let circle = { cx: 0, cy: 0, r: innerRadius };
-  if (collisions.testCircleRect(circle, bounds)) { return null; }
+  if (testCircleRect(circle, bounds)) { return null; }
 
   pad(bounds, padding);
 

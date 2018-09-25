@@ -1,5 +1,5 @@
 import extend from 'extend';
-import Collisions from '../../../core/math/narrow-phase-collision';
+import { testRectPoint } from '../../../core/math/narrow-phase-collision';
 
 function rangelimits(state) {
   return {
@@ -149,7 +149,7 @@ export function startArea({
 
   tempState.active = activeRange;
 
-  if (activeRange.mode !== 'modify' && state.targetRect && !Collisions.testRectPoint(state.targetRect, { x: relX, y: relY })) {
+  if (activeRange.mode !== 'modify' && state.targetRect && !testRectPoint(state.targetRect, { x: relX, y: relY })) {
     // do nothing
   } else {
     Object.keys(tempState).forEach(key => (state[key] = tempState[key]));
@@ -254,7 +254,7 @@ export function start({
 
   tempState.active = activeRange;
 
-  if (activeRange.mode !== 'modify' && state.targetRect && !Collisions.testRectPoint(state.targetRect, { x: relX, y: relY })) {
+  if (activeRange.mode !== 'modify' && state.targetRect && !testRectPoint(state.targetRect, { x: relX, y: relY })) {
     // do nothing
   } else {
     Object.keys(tempState).forEach(key => (state[key] = tempState[key]));

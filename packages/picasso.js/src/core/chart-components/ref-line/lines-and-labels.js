@@ -1,5 +1,8 @@
 import extend from 'extend';
-import Collision from '../../math/narrow-phase-collision';
+import {
+  testRectRect,
+  testRectLine
+} from '../../math/narrow-phase-collision';
 
 export function refLabelDefaultSettings() {
   return {
@@ -204,13 +207,13 @@ export function createLineWithLabel({
         if (curItem.type === 'rect') {
           // We only detect rects here, since rects are always behind labels,
           // and we wouldn't want to measure text one more time
-          if (Collision.testRectRect(rect, curItem)) {
+          if (testRectRect(rect, curItem)) {
             doesNotCollide = false;
           }
         } else if (curItem.type === 'line') {
           // This will only collide when flipXY are the same for both objects,
           // So it only collides on objects on the same "axis"
-          if (p.flipXY === curItem.flipXY && Collision.testRectLine(rect, curItem)) {
+          if (p.flipXY === curItem.flipXY && testRectLine(rect, curItem)) {
             doesNotCollide = false;
           }
         }
