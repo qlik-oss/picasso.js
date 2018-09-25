@@ -1,5 +1,4 @@
 import Path, { create } from '../path';
-import GeometryCollection from '../../../geometry/geometry-collection';
 
 describe('Path', () => {
   let path;
@@ -17,8 +16,61 @@ describe('Path', () => {
       path = create({ d: 'M10 15' });
       expect(path).to.be.an.instanceof(Path);
       expect(path.attrs.d).to.be.equal('M10 15');
-      expect(path.collider).to.be.an.instanceof(GeometryCollection);
-      expect(path.colliderType).to.equal('collection');
+    });
+  });
+
+  describe('Collider', () => {
+    it('should require data path', () => {
+      path = create({ d: null });
+      expect(path.colliderType).to.equal(null);
+    });
+
+    it('should be able to disable collider', () => {
+      path = create({ d: 'M10 15', collider: { type: null } });
+      expect(path.colliderType).to.equal(null);
+    });
+
+    it('should disable collider if path only contains a single point', () => {
+      path = create({ d: 'M10 15' });
+      expect(path.colliderType).to.equal(null);
+    });
+
+    it('set explicit collider', () => {
+      path = create({
+        d: 'M10 15',
+        collider: {
+          type: 'rect',
+          x: 0,
+          y: 0,
+          width: 1,
+          height: 2
+        }
+      });
+      expect(path.colliderType).to.equal('rect');
+    });
+
+    it('deduce polygon collider from data path', () => {
+      path = create({
+        d: 'M0 0 L10 0, 10 10, 0 10 Z'
+      });
+      expect(path.colliderType).to.equal('polygon');
+    });
+
+    it('deduce polyline collider from data path', () => {
+      path = create({
+        d: 'M0 0 L10 0, 10 10, 0 10'
+      });
+      expect(path.colliderType).to.equal('polyline');
+    });
+
+    it('deduce visual polyline collider from data path', () => {
+      path = create({
+        d: 'M0 0 L10 0, 10 10, 0 10',
+        collider: {
+          visual: true
+        }
+      });
+      expect(path.colliderType).to.equal('polygon'); // Polyline is transform to polygon
     });
   });
 
