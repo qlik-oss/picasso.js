@@ -1,6 +1,11 @@
 {
-  "env": {
-    "browser": true,
-    "node": false
-  }
+  "overrides": [
+    {
+      "files":["**/!(*.spec).js"],
+      "env": {
+        "browser": true,
+        "node": false
+      }
+    }
+  ]
 }

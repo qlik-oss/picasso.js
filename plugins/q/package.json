@@ -1,6 +1,6 @@
 {
   "name": "picasso-plugin-q",
-  "version": "0.13.1",
+  "version": "0.13.3",
   "description": "QIX plugin for picasso.js",
   "license": "MIT",
   "author": "QlikTech International AB",
@@ -12,11 +12,11 @@
     "/dist"
   ],
   "main": "dist/picasso-q.js",
+  "module": "dist/picasso-q.esm.js",
   "scripts": {
-    "build": "cross-env NODE_ENV=production webpack --config ../../webpack.config.js",
-    "build:dev": "webpack --config ../../webpack.config.js",
-    "build:watch": "npm run build:dev -- -w",
-    "lint": "eslint src test",
+    "build": "cross-env NODE_ENV=production rollup --config ../../rollup.config.js",
+    "build:watch": "yarn run build -w",
+    "lint": "eslint src",
     "prepublishOnly": "rm -rf dist && npm run build"
   },
   "devDependencies": {

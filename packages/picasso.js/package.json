@@ -1,6 +1,6 @@
 {
   "name": "picasso.js",
-  "version": "0.13.1",
+  "version": "0.13.3",
   "description": "A charting library streamlined for building visualizations for the Qlik Sense Analytics platform.",
   "license": "MIT",
   "author": "QlikTech International AB",
@@ -24,12 +24,10 @@
     "/src"
   ],
   "main": "dist/picasso.js",
-  "module": "src/index.js",
-  "source": true,
+  "module": "dist/picasso.esm.js",
   "scripts": {
-    "build": "cross-env NODE_ENV=production webpack --config ../../webpack.config.js",
-    "build:dev": "webpack --config ../../webpack.config.js",
-    "build:watch": "npm run build:dev -- -w",
+    "build": "cross-env NODE_ENV=production rollup --config ../../rollup.config.js",
+    "build:watch": "yarn run build -w",
     "lint": "eslint src test",
     "lint:fix": "npm run lint -- --fix",
     "test:integration:local": "webdriver-manager update --versions.chrome 2.37 --gecko false && aw protractor -c aw.config.js --require @babel/register --require @babel/helpers",
@@ -37,7 +35,7 @@
     "version": "node scripts/version.js && git add src/about.js",
     "prepublishOnly": "rm -rf dist && npm run build"
   },
-  "dependencies": {
+  "devDependencies": {
     "d3-ease": "^1.0.3",
     "d3-format": "^1.3.0",
     "d3-hierarchy": "^1.1.6",
@@ -48,11 +46,8 @@
     "extend": "^3.0.2",
     "hammerjs": "^2.0.8",
     "node-event-emitter": "0.0.1",
-    "path2d-polyfill": "0.2.1",
-    "preact": "^8.3.0"
-  },
-  "devDependencies": {
-    "rimraf": "^2.6.2",
-    "test-utils": "^0.13.1"
+    "path2d-polyfill": "0.3.0",
+    "preact": "^8.3.0",
+    "test-utils": "^0.13.3"
   }
 }

@@ -39,7 +39,7 @@ const argv = yargs
 
 const TYPES = {
   unit: {
-    glob: `${argv.scope}/test/unit/**/*.spec.js`,
+    glob: `${argv.scope}/src/**/*.spec.js`,
     reportDir: 'coverage/unit'
   },
   component: {
@@ -51,7 +51,7 @@ const TYPES = {
 const type = TYPES[argv.type];
 
 const glob = [type.glob];
-const src = [`${argv.scope}/src/**/*.js`];
+const src = [`${argv.scope}/src/**/!(*.spec).js`];
 
 module.exports = {
   glob,
