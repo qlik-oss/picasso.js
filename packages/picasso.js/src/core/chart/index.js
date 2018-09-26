@@ -14,7 +14,7 @@ import buildScroll, { getOrCreateScrollApi } from './scroll-api';
 import brush from '../brush';
 import componentFactory from '../component/component-factory';
 import mediatorFactory from '../mediator';
-import NarrowPhaseCollision from '../math/narrow-phase-collision';
+import { testRectPoint } from '../math/narrow-phase-collision';
 import themeFn from '../theme';
 
 /**
@@ -288,7 +288,7 @@ function chartFn(definition, context) {
     visibleComponents.forEach((c) => {
       const r = c.instance.getRect();
       // Do test on physical rect
-      if (NarrowPhaseCollision.testRectPoint({
+      if (testRectPoint({
         x: r.margin.left + (r.x * r.scaleRatio.x),
         y: r.margin.top + (r.y * r.scaleRatio.y),
         width: r.width * r.scaleRatio.x,

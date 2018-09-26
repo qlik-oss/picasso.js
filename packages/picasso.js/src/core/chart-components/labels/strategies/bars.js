@@ -1,5 +1,7 @@
 import extend from 'extend';
-import collisions from '../../../math/narrow-phase-collision';
+import {
+  testRectRect
+} from '../../../math/narrow-phase-collision';
 
 const LINE_HEIGHT = 1.5;
 const PADDING = 4;
@@ -275,7 +277,7 @@ export function precalculate({
   for (let i = 0; i < nodes.length; i++) {
     node = nodes[i];
     bounds = node.localBounds;
-    if (!collisions.testRectRect(bounds, rect)) {
+    if (!testRectRect(bounds, rect)) {
       continue;
     }
     let arg = cbContext(node, chart);

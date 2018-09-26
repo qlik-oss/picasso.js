@@ -1,5 +1,5 @@
 import extend from 'extend';
-import NarrowPhaseCollision from '../../../core/math/narrow-phase-collision';
+import { testRectPoint } from '../../../core/math/narrow-phase-collision';
 
 /**
  * @typedef {object} component--brush-area-brush
@@ -188,7 +188,7 @@ const definition = {
     const p = getLocalPoint(this, e, false);
 
     // Require event to be inside the component bounds
-    if (!NarrowPhaseCollision.testRectPoint({
+    if (!testRectPoint({
       x: 0, y: 0, width: this.rect.width, height: this.rect.height
     }, p)) {
       return;
