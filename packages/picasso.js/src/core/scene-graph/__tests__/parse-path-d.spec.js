@@ -192,7 +192,6 @@ describe('Parse data path', () => {
 
       const exp = [
         { x: 0, y: 0 },
-        { x: 0, y: 0 },
         { x: 4.296875, y: 32.8125 },
         { x: 15.625, y: 56.25 },
         { x: 31.640625, y: 70.3125 },
@@ -212,7 +211,6 @@ describe('Parse data path', () => {
       ary = pathToPoints(path);
 
       const exp = [
-        { x: 100, y: 100 },
         { x: 100, y: 100 },
         { x: 104.296875, y: 132.8125 },
         { x: 115.625, y: 156.25 },
@@ -254,7 +252,6 @@ describe('Parse data path', () => {
 
       const exp = [
         { x: 0, y: 0 },
-        { x: 0, y: 0 },
         { x: 4.4921875, y: 4.1015625 },
         { x: 17.1875, y: 14.0625 },
         { x: 36.9140625, y: 26.3671875 },
@@ -294,7 +291,6 @@ describe('Parse data path', () => {
       ary = pathToPoints(path);
       const exp = [
         { x: 0, y: 0 },
-        { x: 0, y: 0 },
         { x: 4.4921875, y: 4.1015625 },
         { x: 17.1875, y: 14.0625 },
         { x: 36.9140625, y: 26.3671875 },
@@ -316,7 +312,6 @@ describe('Parse data path', () => {
       ary = pathToPoints(path);
       const exp = [
         { x: 0, y: 0 },
-        { x: 0, y: 0 },
         { x: 6.250000000000002, y: 43.75 },
         { x: 25.000000000000004, y: 75 },
         { x: 56.25, y: 93.75 },
@@ -331,7 +326,6 @@ describe('Parse data path', () => {
 
       ary = pathToPoints(path);
       const exp = [
-        { x: 0, y: 0 },
         { x: 0, y: 0 },
         { x: 6.250000000000002, y: 43.75 },
         { x: 25.000000000000004, y: 75 },
@@ -364,7 +358,6 @@ describe('Parse data path', () => {
       ary = pathToPoints(path);
       const exp = [
         { x: 0, y: 0 },
-        { x: 0, y: 0 },
         { x: 6.250000000000002, y: 6.250000000000002 },
         { x: 25.000000000000004, y: 25.000000000000004 },
         { x: 56.25, y: 56.25 },
@@ -394,7 +387,6 @@ describe('Parse data path', () => {
 
       ary = pathToPoints(path);
       const exp = [
-        { x: 0, y: 0 },
         { x: 0, y: 0 },
         { x: 6.250000000000002, y: 6.250000000000002 },
         { x: 25.000000000000004, y: 25.000000000000004 },
