@@ -10,7 +10,6 @@
     "build:watch": "cross-env FORCE_COLOR=1 lerna run build:watch --stream --no-sort",
     "build:website": "cd website && yarn install && yarn run build",
     "bump": "lerna publish --no-push",
-    "commitmsg": "commitlint -E GIT_PARAMS",
     "clean": "lerna clean",
     "lint": "cross-env FORCE_COLOR=1 lerna run lint",
     "link": "lerna link",
@@ -19,6 +18,11 @@
     "test:integration:local": "lerna run test:integration:local",
     "test:unit:coverage": "aw -c aw.config.js",
     "test:unit:watch": "aw -c aw.config.js -w"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
   },
   "devDependencies": {
     "@after-work.js/aw": "^5.0.2",
@@ -41,7 +45,7 @@
     "eslint-plugin-mocha": "^5.2.0",
     "extend": "^3.0.2",
     "globby": "^8.0.1",
-    "husky": "^0.14.3",
+    "husky": "^1.0.1",
     "lerna": "^3.4.0",
     "mocha-junit-reporter": "^1.18.0",
     "protractor": "^5.4.1",
