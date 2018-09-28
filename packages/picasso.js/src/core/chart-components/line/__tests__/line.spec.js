@@ -70,6 +70,37 @@ describe('line component', () => {
     }]);
   });
 
+  it('should update settings', () => {
+    componentFixture.mocks().theme.style.returns({});
+    const config = {
+      data: [1, 1, 1, 1]
+    };
+
+    componentFixture.simulateCreate(component, config);
+    componentFixture.simulateRender(opts);
+    rendered = componentFixture.simulateUpdate({
+      ...config,
+      settings: {
+        layers: {
+          line: {
+            stroke: 'red'
+          }
+        }
+      }
+    });
+
+    expect(rendered).to.eql([{
+      type: 'path',
+      d: 'M100,50L100,50L100,50L100,50',
+      fill: 'none',
+      stroke: 'red',
+      strokeLinejoin: 'miter',
+      strokeWidth: 1,
+      opacity: 1,
+      data: { value: 1, label: '1' }
+    }]);
+  });
+
   it('should render vertical line', () => {
     componentFixture.mocks().theme.style.returns({});
     const config = {
