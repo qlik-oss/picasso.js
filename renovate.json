@@ -6,8 +6,11 @@
   "semanticCommits": true,
   "rangeStrategy": "bump",
   "schedule": [],
+  "prHourlyLimit": 0,
   "packageRules": [{
-    "groupName": "d3 packages",
-    "packagePatterns": ["^d3-"]
+    "groupName": "one update to rule them all",
+    "packagePatterns": ["*"],
+    "updateTypes": ["minor", "patch", "pin"],
+    "automerge": true
   }]
 }
