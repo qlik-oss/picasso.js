@@ -4,6 +4,6 @@
     "docker:disable"
   ],
   "semanticCommits": true,
-  "rangeStrategy": "replace",
+  "rangeStrategy": "bump",
   "schedule": []
 }
