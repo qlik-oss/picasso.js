@@ -12,5 +12,6 @@
     "packagePatterns": ["*"],
     "updateTypes": ["minor", "patch", "pin"],
     "automerge": true
-  }]
+  }],
+  "rebaseStalePrs": true
 }
