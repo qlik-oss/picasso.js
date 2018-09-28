@@ -5,5 +5,9 @@
   ],
   "semanticCommits": true,
   "rangeStrategy": "bump",
-  "schedule": []
+  "schedule": [],
+  "packageRules": [{
+    "groupName": "d3 packages",
+    "packagePatterns": ["^d3-"]
+  }]
 }
