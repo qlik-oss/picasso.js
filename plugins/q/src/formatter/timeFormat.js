@@ -2,7 +2,7 @@ import dateFormatFactory from './parts/qs-date-formatter';
 import { TYPES } from './constants';
 
 export function QlikTimeToDate(value) {
-  return new Date(1899, 11, 30 + Math.floor(value), 0, 0, 0, 1000 * 24 * 60 * 60 * (value - Math.floor(value)));
+  return new Date(Date.UTC(1899, 11, 30 + Math.floor(value), 0, 0, 0, 1000 * 24 * 60 * 60 * (value - Math.floor(value))));
 }
 
 export default function formatter(pattern, qtype = 'TS', localeInfo = null) {

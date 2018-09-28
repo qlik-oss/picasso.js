@@ -8,20 +8,18 @@ import timeFormat, { QlikTimeToDate } from '../timeFormat';
  * which means if you're specifying a date 2013-12-31 59:59:59 and the last millisecond,
  * you *might* end up in 2014.
  */
+const QT = QlikTimeToDate(0).getTime();
 function DateToQlikTime(value) {
-  let offset = QlikTimeToDate(0);
-
-  const off2 = ((offset.getTimezoneOffset() * 60 * 1000) - (value.getTimezoneOffset() * 60 * 1000)) + (offset.getTimezoneOffset() * 60 * 1000);
-
-  offset = offset.setTime(offset.getTime() + (value.getTimezoneOffset() * 60 * 1000));
-
-  return (
-    ((value.getTime() - offset) + off2 + 0.5) / (60 * 60 * 24)
-  ) / 1000;
+  return (value.getTime() - QT) / (60 * 60 * 24) / 1000;
 }
 
 describe('qlik timeFormat', () => {
   let n;
+
+  it('should create valid qlik date -> JS Date', () => {
+    let d = QlikTimeToDate(0);
+    expect(d.toISOString()).to.equal('1899-12-30T00:00:00.000Z');
+  });
 
   describe('Basic', () => {
     it('should format dates correctly according to constructor pattern', () => {
@@ -89,7 +87,7 @@ describe('qlik timeFormat', () => {
   describe('Years', () => {
     it('should format year correctly', () => {
       n = timeFormat();
-      let d = DateToQlikTime(new Date(2014, 3, 24, 13, 55, 40, 100)); // thursday 24th april 2014 @ 13:55:40:100
+      let d = DateToQlikTime(new Date(Date.UTC(2014, 3, 24, 13, 55, 40, 100))); // thursday 24th april 2014 @ 13:55:40:100
 
       expect(n.format('Y', d)).to.equal('14');
       expect(n.format('y', d)).to.equal('14');
@@ -102,7 +100,7 @@ describe('qlik timeFormat', () => {
       expect(n.format('YYYYY', d)).to.equal('02014');
       expect(n.format('YYYYYY YY', d)).to.equal('002014 14');
 
-      d = DateToQlikTime(new Date(123401, 11, 1, 13, 55, 40, 100));
+      d = DateToQlikTime(new Date(Date.UTC(123401, 11, 1, 13, 55, 40, 100)));
       expect(n.format('Y', d)).to.equal('1');
       expect(n.format('YY', d)).to.equal('01');
       expect(n.format('YYY', d)).to.equal('401');
@@ -125,18 +123,18 @@ describe('qlik timeFormat', () => {
       _11;
     beforeEach(() => {
       n = timeFormat();
-      _0 = DateToQlikTime(new Date(2014, 0, 1));
-      _1 = DateToQlikTime(new Date(2014, 1, 1));
-      _2 = DateToQlikTime(new Date(2014, 2, 1));
-      _3 = DateToQlikTime(new Date(2014, 3, 1));
-      _4 = DateToQlikTime(new Date(2014, 4, 1));
-      _5 = DateToQlikTime(new Date(2014, 5, 1));
-      _6 = DateToQlikTime(new Date(2014, 6, 1));
-      _7 = DateToQlikTime(new Date(2014, 7, 1));
-      _8 = DateToQlikTime(new Date(2014, 8, 1));
-      _9 = DateToQlikTime(new Date(2014, 9, 1));
-      _10 = DateToQlikTime(new Date(2014, 10, 1));
-      _11 = DateToQlikTime(new Date(2014, 11, 1));
+      _0 = DateToQlikTime(new Date(Date.UTC(2014, 0, 1)));
+      _1 = DateToQlikTime(new Date(Date.UTC(2014, 1, 1)));
+      _2 = DateToQlikTime(new Date(Date.UTC(2014, 2, 1)));
+      _3 = DateToQlikTime(new Date(Date.UTC(2014, 3, 1)));
+      _4 = DateToQlikTime(new Date(Date.UTC(2014, 4, 1)));
+      _5 = DateToQlikTime(new Date(Date.UTC(2014, 5, 1)));
+      _6 = DateToQlikTime(new Date(Date.UTC(2014, 6, 1)));
+      _7 = DateToQlikTime(new Date(Date.UTC(2014, 7, 1)));
+      _8 = DateToQlikTime(new Date(Date.UTC(2014, 8, 1)));
+      _9 = DateToQlikTime(new Date(Date.UTC(2014, 9, 1)));
+      _10 = DateToQlikTime(new Date(Date.UTC(2014, 10, 1)));
+      _11 = DateToQlikTime(new Date(Date.UTC(2014, 11, 1)));
     });
 
     it('as number', () => {
@@ -214,13 +212,13 @@ describe('qlik timeFormat', () => {
       sun;
     beforeEach(() => {
       n = timeFormat(null);
-      mon = DateToQlikTime(new Date(2014, 0, 6));
-      tue = DateToQlikTime(new Date(2014, 0, 7));
-      wed = DateToQlikTime(new Date(2014, 0, 8));
-      thu = DateToQlikTime(new Date(2014, 0, 9));
-      fri = DateToQlikTime(new Date(2014, 0, 10));
-      sat = DateToQlikTime(new Date(2014, 0, 11));
-      sun = DateToQlikTime(new Date(2014, 0, 12));
+      mon = DateToQlikTime(new Date(Date.UTC(2014, 0, 6)));
+      tue = DateToQlikTime(new Date(Date.UTC(2014, 0, 7)));
+      wed = DateToQlikTime(new Date(Date.UTC(2014, 0, 8)));
+      thu = DateToQlikTime(new Date(Date.UTC(2014, 0, 9)));
+      fri = DateToQlikTime(new Date(Date.UTC(2014, 0, 10)));
+      sat = DateToQlikTime(new Date(Date.UTC(2014, 0, 11)));
+      sun = DateToQlikTime(new Date(Date.UTC(2014, 0, 12)));
     });
 
     it('as number', () => {
@@ -318,9 +316,9 @@ describe('qlik timeFormat', () => {
       _31;
     beforeEach(() => {
       n = timeFormat(null);
-      _1 = DateToQlikTime(new Date(2014, 0, 1));
-      _15 = DateToQlikTime(new Date(2014, 0, 15));
-      _31 = DateToQlikTime(new Date(2014, 0, 31));
+      _1 = DateToQlikTime(new Date(Date.UTC(2014, 0, 1)));
+      _15 = DateToQlikTime(new Date(Date.UTC(2014, 0, 15)));
+      _31 = DateToQlikTime(new Date(Date.UTC(2014, 0, 31)));
     });
 
     it('as number', () => {
@@ -353,7 +351,7 @@ describe('qlik timeFormat', () => {
   describe('Combinations', () => {
     it('should support combinations of year, month, weekday and day', () => {
       n = timeFormat(null);
-      const d = DateToQlikTime(new Date(2014, 3, 24, 13, 55, 40, 100)); // thursday 24th april 2014 @ 13:55:40:100
+      const d = DateToQlikTime(new Date(Date.UTC(2014, 3, 24, 13, 55, 40, 100))); // thursday 24th april 2014 @ 13:55:40:100
 
       expect(n.format('YYYY-MM-DD', d)).to.equal('2014-04-24');
       expect(n.format('DD/MM -YY', d)).to.equal('24/04 -14');
@@ -448,19 +446,19 @@ describe('qlik timeFormat', () => {
 
     describe('Fractions', () => {
       it(' ', () => {
-        const d = DateToQlikTime(new Date(2014, 0, 1, 0, 0, 0, 456));
+        const d = DateToQlikTime(new Date(Date.UTC(2014, 0, 1, 0, 0, 0, 452)));
         expect(n.format('f F', d)).to.equal('4 4'); // tenths of a second
         expect(n.format('ff', d)).to.equal('45'); // hundreths of a second
-        expect(n.format('fff FFF', d)).to.equal('456 456'); // tousandths of a second
-        expect(n.format('ffff', d)).to.equal('4560'); // ten thousandths of a second
-        expect(n.format('fffff', d)).to.equal('45600'); // hundred thousandths of a second
-        expect(n.format('ffffff', d)).to.equal('456000'); // millionths of a second
+        expect(n.format('fff FFF', d)).to.equal('452 452'); // tousandths of a second
+        expect(n.format('ffff', d)).to.equal('4520'); // ten thousandths of a second
+        expect(n.format('fffff', d)).to.equal('45200'); // hundred thousandths of a second
+        expect(n.format('ffffff', d)).to.equal('452000'); // millionths of a second
       });
     });
 
     it('should support combinations of hours, minutes, seconds and fractions', () => {
       const d = 41753.58033550347;
-      // let d = DateToQlikTime(new Date(2014, 3, 24, 13, 55, 40, 987));
+      // let d = DateToQlikTime(new Date(Date.UTC(2014, 3, 24, 13, 55, 40, 987));
 
       expect(n.format('h:m:s', midnight)).to.equal('0:0:0');
       expect(n.format('hh:mm:ss', midnight)).to.equal('00:00:00');
@@ -471,7 +469,7 @@ describe('qlik timeFormat', () => {
       expect(n.format('h:m:s tt', noon59)).to.equal('12:59:0 pm');
       expect(n.format('h:m:s[.fff]][', noon59)).to.equal('12:59:0');
 
-      // expect( n.format( new Date( 2014, 0, 1, 13, 55, 30, 123 ), 'h:m:s[.ffff]' ) ).to.equal( '13:55.30.1230' ); // TODO?
+      // expect( n.format( new Date(Date.UTC( 2014, 0, 1, 13, 55, 30, 123 ), 'h:m:s[.ffff]' ) ).to.equal( '13:55.30.1230' ); // TODO?
 
       expect(n.format('YYYY-MM-DD hh:mm:ss.ffff', d)).to.equal('2014-04-24 13:55:40.9870');
       expect(n.format('DD/MM -YY h:m:s.fff TT', d)).to.equal('24/04 -14 1:55:40.987 PM');
