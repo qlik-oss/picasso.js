@@ -1,8 +1,9 @@
 {
   "extends": [
     "qlik-oss",
-    "docker:disable
+    "docker:disable"
   ],
   "semanticCommits": true,
-  "rangeStrategy": "replace"
+  "rangeStrategy": "replace",
+  "schedule": []
 }
