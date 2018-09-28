@@ -1,14 +1,15 @@
-import { scaleTime as d3ScaleTime } from 'd3-scale';
+import { scaleUtc as d3ScaleTime } from 'd3-scale';
 import { createFromMetaInfo } from '../../formatter';
 import { QlikTimeToDate } from '../../formatter/timeFormat';
 
-const UNIX_DATE_COMP_DAYS = 25569;
+// const UNIX_DATE_COMP_DAYS = 25569;
 const HOUR_PATTERN = 'hh:mm';
 const MINUTE_PATTERN = 'hh:mm:ss';
 
+const QT = QlikTimeToDate(0).getTime();
+
 function DateToQlikTimestamp(date) {
-  const offset = (date.getTimezoneOffset() / 60 / 24) - UNIX_DATE_COMP_DAYS;
-  return ((date.getTime() + 0.5) / 1000 / 86400) - offset;
+  return (date.getTime() - QT) / (60 * 60 * 24) / 1000;
 }
 
 function getFormatter(ticks) {

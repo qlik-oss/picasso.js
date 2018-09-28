@@ -13,8 +13,8 @@ function pad(s, n) {
 }
 
 function parseDate(d, twelveFormat) {
-  let h = d.getHours();
-  let day = d.getDay() - 1;
+  let h = d.getUTCHours();
+  let day = d.getUTCDay() - 1;
   if (twelveFormat) {
     h %= 12;
     if (!h) { // h == 0 -> 12
@@ -27,15 +27,15 @@ function parseDate(d, twelveFormat) {
   }
 
   return {
-    year: d.getFullYear(),
-    month: d.getMonth(),
+    year: d.getUTCFullYear(),
+    month: d.getUTCMonth(),
     day,
-    date: d.getDate(),
+    date: d.getUTCDate(),
     h,
-    m: d.getMinutes(),
-    s: d.getSeconds(),
-    f: d.getMilliseconds(),
-    t: d.getHours() >= 12 ? 'pm' : 'am'
+    m: d.getUTCMinutes(),
+    s: d.getUTCSeconds(),
+    f: d.getUTCMilliseconds(),
+    t: d.getUTCHours() >= 12 ? 'pm' : 'am'
   };
 }
 
@@ -76,7 +76,7 @@ function parseInterval(days, pattern) {
     date;
 
   if (/w+|t+/gi.test(pattern)) {
-    date = new Date(1899, 11, 30 + Math.floor(days), 0, 0, 24 * 60 * 60 * (days - Math.floor(days)));
+    date = new Date(Date.UTC(1899, 11, 30 + Math.floor(days), 0, 0, 24 * 60 * 60 * (days - Math.floor(days))));
     if (isNaN(date.getTime())) {
       date = null;
     }
@@ -100,7 +100,7 @@ function parseInterval(days, pattern) {
 
   let someT = '';
   if (date) {
-    someT = date.getHours() >= 12 ? 'pm' : 'am';
+    someT = date.getUTCHours() >= 12 ? 'pm' : 'am';
   }
 
   return {
