@@ -23,6 +23,7 @@ export const DEFAULT_SETTINGS = {
  * @property {number} [maxPxStep] - Explicitly limit the bandwidth to a pixel value
  * @property {function} [label] - Callback label function, applied on each datum
  * @property {function} [value] - Callback value function, applied on each datum
+ * @property {function} [explicitRange] - Function to set range explicitly (ignored when maxPxStep takes effect)
  */
 
 /**
@@ -130,7 +131,11 @@ export default function scaleBand(settings = {}, data = {}, resources = {}) {
   }
 
   band.domain(values);
-  band.range(stgns.invert ? [1, 0] : [0, 1]);
+  if (typeof settings.explicitRange === 'function') {
+    band.range(settings.explicitRange());
+  } else {
+    band.range(stgns.invert ? [1, 0] : [0, 1]);
+  }
 
   band.padding(isNaN(stgns.padding) ? 0 : stgns.padding);
   if (!isNaN(stgns.paddingInner)) { band.paddingInner(stgns.paddingInner); }
