@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.14.0"></a>
+# [0.14.0](https://github.com/qlik-oss/picasso.js/compare/v0.13.3...v0.14.0) (2018-10-01)
+
+
+### Bug Fixes
+
+* update line settings ([#208](https://github.com/qlik-oss/picasso.js/issues/208)) ([8bd4619](https://github.com/qlik-oss/picasso.js/commit/8bd4619)), closes [#144](https://github.com/qlik-oss/picasso.js/issues/144)
+
+
+### Features
+
+* add debug components ([#199](https://github.com/qlik-oss/picasso.js/issues/199)) ([cbca2f1](https://github.com/qlik-oss/picasso.js/commit/cbca2f1))
+* add range option for band scale ([#219](https://github.com/qlik-oss/picasso.js/issues/219)) ([0bd6b81](https://github.com/qlik-oss/picasso.js/commit/0bd6b81))
+* add support for visual collision on polyline ([#198](https://github.com/qlik-oss/picasso.js/issues/198)) ([54613bd](https://github.com/qlik-oss/picasso.js/commit/54613bd))
+
+
+
+
+
 <a name="0.13.3"></a>
 ## [0.13.3](https://github.com/qlik-oss/picasso.js/compare/v0.13.2...v0.13.3) (2018-09-25)
 

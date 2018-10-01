@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.14.0"></a>
+# [0.14.0](https://github.com/qlik-oss/picasso.js/compare/v0.13.3...v0.14.0) (2018-10-01)
+
+
+### Bug Fixes
+
+* use utc seconds ([d364ca0](https://github.com/qlik-oss/picasso.js/commit/d364ca0))
+* use UTC time ([#216](https://github.com/qlik-oss/picasso.js/issues/216)) ([15cbde1](https://github.com/qlik-oss/picasso.js/commit/15cbde1))
+
+
+
+
+
 <a name="0.13.3"></a>
 ## [0.13.3](https://github.com/qlik-oss/picasso.js/compare/v0.13.2...v0.13.3) (2018-09-25)
 
