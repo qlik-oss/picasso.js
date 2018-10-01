@@ -9,7 +9,8 @@ export const DEFAULT_SETTINGS = {
   paddingOuter: NaN,
   align: 0.5,
   invert: false,
-  maxPxStep: NaN
+  maxPxStep: NaN,
+  range: [0, 1]
 };
 
 /**
@@ -23,6 +24,7 @@ export const DEFAULT_SETTINGS = {
  * @property {number} [maxPxStep] - Explicitly limit the bandwidth to a pixel value
  * @property {function} [label] - Callback label function, applied on each datum
  * @property {function} [value] - Callback value function, applied on each datum
+ * @property {array<number>|function} [range=[0, 1]] - Set range explicitly (ignored when maxPxStep takes effect)
  */
 
 /**
@@ -130,8 +132,7 @@ export default function scaleBand(settings = {}, data = {}, resources = {}) {
   }
 
   band.domain(values);
-  band.range(stgns.invert ? [1, 0] : [0, 1]);
-
+  band.range(stgns.invert ? stgns.range.slice().reverse() : stgns.range);
   band.padding(isNaN(stgns.padding) ? 0 : stgns.padding);
   if (!isNaN(stgns.paddingInner)) { band.paddingInner(stgns.paddingInner); }
   if (!isNaN(stgns.paddingOuter)) { band.paddingOuter(stgns.paddingOuter); }
