@@ -87,18 +87,18 @@ describe('OrdinalScale', () => {
       });
     });
 
-    describe('with explicitRange', () => {
-      it('should call explicitRange fn if provided', () => {
-        const explicitRangeFn = sinon.stub().returns([0.2, 0.8]);
-        scale = band({ explicitRange: explicitRangeFn });
-        expect(explicitRangeFn).to.have.been.calledOnce;
+    describe('with range function', () => {
+      it('should call range fn if provided', () => {
+        const rangeFn = sinon.stub().returns([0.2, 0.8]);
+        scale = band({ range: rangeFn });
+        expect(rangeFn).to.have.been.calledOnce;
         expect(scale.range()).to.deep.equal([0.2, 0.8]);
       });
 
       it('should not affect maxPxStep setting', () => {
         items = ['A', 'B'].map(v => ({ value: v, id: v }));
         settings.maxPxStep = 10;
-        settings.explicitRange = sinon.stub().returns([0.2, 0.8]);
+        settings.range = sinon.stub().returns([0.2, 0.8]);
         settings.align = 0;
         scale = band(settings, { fields: [], items });
         const pxScale = scale.pxScale(100);
@@ -108,10 +108,10 @@ describe('OrdinalScale', () => {
         expect(pxScale.range()).to.deep.equal([0, 0.2]);
       });
 
-      it('should use explicit range when maxPxStep does not take effect', () => {
+      it('should use range fn when maxPxStep does not take effect', () => {
         items = ['A', 'B'].map(v => ({ value: v, id: v }));
         settings.maxPxStep = 80;
-        settings.explicitRange = sinon.stub().returns([-0.2, 1.8]);
+        settings.range = sinon.stub().returns([-0.2, 1.8]);
         scale = band(settings, { fields: [], items });
         const pxScale = scale.pxScale(100);
         expect(pxScale.range()).to.deep.equal([-0.2, 1.8]);
