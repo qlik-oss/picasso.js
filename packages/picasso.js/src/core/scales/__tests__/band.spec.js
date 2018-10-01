@@ -87,7 +87,7 @@ describe('OrdinalScale', () => {
       });
     });
 
-    describe('with range function', () => {
+    describe('with range', () => {
       it('should call range fn if provided', () => {
         const rangeFn = sinon.stub().returns([0.2, 0.8]);
         scale = band({ range: rangeFn });
@@ -115,6 +115,21 @@ describe('OrdinalScale', () => {
         scale = band(settings, { fields: [], items });
         const pxScale = scale.pxScale(100);
         expect(pxScale.range()).to.deep.equal([-0.2, 1.8]);
+      });
+
+      it('should reverse range when setting invert=true', () => {
+        items = ['A', 'B'].map(v => ({ value: v, id: v }));
+        settings.invert = true;
+        settings.range = sinon.stub().returns([1, 2]);
+        scale = band(settings, { fields: [], items });
+        expect(scale.range()).to.deep.equal([2, 1]);
+      });
+
+      it('should be possible to set an array', () => {
+        items = ['A', 'B'].map(v => ({ value: v, id: v }));
+        settings.range = [2, 3];
+        scale = band(settings, { fields: [], items });
+        expect(scale.range()).to.deep.equal([2, 3]);
       });
     });
   });
