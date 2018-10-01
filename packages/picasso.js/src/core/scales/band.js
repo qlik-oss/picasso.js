@@ -132,7 +132,8 @@ export default function scaleBand(settings = {}, data = {}, resources = {}) {
 
   band.domain(values);
   if (typeof settings.range === 'function') {
-    band.range(settings.range());
+    const range = settings.range().slice();
+    band.range(stgns.invert ? range.reverse() : range);
   } else {
     band.range(stgns.invert ? [1, 0] : [0, 1]);
   }
