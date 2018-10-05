@@ -4,7 +4,5 @@
     "docker:disable"
   ],
   "semanticCommits": true,
-  "rangeStrategy": "bump",
-  "schedule": ["before 7am every weekday"],
-  "timezone": "Europe/Stockholm"
+  "rangeStrategy": "bump"
 }
