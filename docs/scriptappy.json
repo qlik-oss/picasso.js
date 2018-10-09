@@ -3,7 +3,7 @@
   "info": {
     "name": "picasso.js",
     "description": "A charting library streamlined for building visualizations for the Qlik Sense Analytics platform.",
-    "version": "0.12.2",
+    "version": "0.14.0",
     "license": "MIT"
   },
   "entries": {
@@ -3911,6 +3911,26 @@
           "description": "Callback value function, applied on each datum",
           "optional": true,
           "type": "function"
+        },
+        "range": {
+          "description": "Set range explicitly (ignored when maxPxStep takes effect)",
+          "optional": true,
+          "defaultValue": "[0, 1]",
+          "kind": "union",
+          "items": [
+            {
+              "type": "array",
+              "generics": [
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            {
+              "type": "function"
+            }
+          ],
+          "type": "any"
         }
       }
     },
