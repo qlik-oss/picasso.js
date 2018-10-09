@@ -90,6 +90,7 @@ describe('Brush Area Directional', () => {
           sel: 'div',
           data: {
             'data-value': 0,
+            'data-key': 'brush-area-dir-edge-0',
             style: {
               cursor: 'ew-resize',
               position: 'absolute',
@@ -132,6 +133,7 @@ describe('Brush Area Directional', () => {
           sel: 'div',
           data: {
             'data-value': 100,
+            'data-key': 'brush-area-dir-edge-0',
             style: {
               cursor: 'ew-resize',
               position: 'absolute',
@@ -178,6 +180,7 @@ describe('Brush Area Directional', () => {
             data: {
               'data-other-value': 100,
               'data-idx': 0,
+              'data-key': 'brush-area-dir-bubble-0',
               style: {
                 position: 'relative',
                 borderRadius: '4px',
@@ -222,6 +225,7 @@ describe('Brush Area Directional', () => {
             data: {
               'data-other-value': 0,
               'data-idx': 0,
+              'data-key': 'brush-area-dir-bubble-0',
               style: {
                 position: 'relative',
                 borderRadius: '4px',
@@ -274,6 +278,7 @@ describe('Brush Area Directional', () => {
           sel: 'div',
           data: {
             'data-value': 0,
+            'data-key': 'brush-area-dir-edge-0',
             style: {
               cursor: 'ns-resize',
               position: 'absolute',
@@ -316,6 +321,7 @@ describe('Brush Area Directional', () => {
           sel: 'div',
           data: {
             'data-value': 150,
+            'data-key': 'brush-area-dir-edge-0',
             style: {
               cursor: 'ns-resize',
               position: 'absolute',
@@ -362,6 +368,7 @@ describe('Brush Area Directional', () => {
             data: {
               'data-other-value': 150,
               'data-idx': 0,
+              'data-key': 'brush-area-dir-bubble-0',
               style: {
                 position: 'relative',
                 borderRadius: '4px',
@@ -406,6 +413,7 @@ describe('Brush Area Directional', () => {
             data: {
               'data-other-value': 0,
               'data-idx': 0,
+              'data-key': 'brush-area-dir-bubble-0',
               style: {
                 position: 'relative',
                 borderRadius: '4px',
