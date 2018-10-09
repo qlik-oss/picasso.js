@@ -108,6 +108,11 @@ export function horizontalLine({
   });
 }
 
+export function getBoxWidth(bandwidth, item, maxMajorWidth) {
+  const boxWidth = Math.min(bandwidth * item.box.width, isNaN(item.box.maxWidthPx) ? maxMajorWidth : item.box.maxWidthPx / maxMajorWidth);
+  return isNaN(item.box.minWidthPx) ? boxWidth : Math.max(item.box.minWidthPx / maxMajorWidth, boxWidth);
+}
+
 export function buildShapes({
   width,
   height,
@@ -158,7 +163,7 @@ export function buildShapes({
     keys.forEach(key => (item[key] = resolved[key].items[i]));
 
     const maxMajorWidth = flipXY ? height : width;
-    const boxWidth = Math.min(bandwidth * item.box.width, isNaN(item.box.maxWidthPx) ? maxMajorWidth : item.box.maxWidthPx / maxMajorWidth);
+    const boxWidth = getBoxWidth(bandwidth, item, maxMajorWidth);
     const boxPadding = (bandwidth - boxWidth) / 2;
     const boxCenter = boxPadding + item.major + (boxWidth / 2);
 
