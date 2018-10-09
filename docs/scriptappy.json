@@ -2528,6 +2528,43 @@
           "defaultValue": "line",
           "type": "string"
         }
+      },
+      "definitions": {
+        "layerSort": {
+          "kind": "function",
+          "params": [
+            {
+              "name": "a",
+              "kind": "object",
+              "entries": {
+                "id": {
+                  "type": "string"
+                },
+                "data": {
+                  "kind": "array",
+                  "items": {
+                    "type": "#/definitions/datum-extract"
+                  }
+                }
+              }
+            },
+            {
+              "name": "b",
+              "kind": "object",
+              "entries": {
+                "id": {
+                  "type": "string"
+                },
+                "data": {
+                  "kind": "array",
+                  "items": {
+                    "type": "#/definitions/datum-extract"
+                  }
+                }
+              }
+            }
+          ]
+        }
       }
     },
     "component--line-settings": {
@@ -2568,6 +2605,10 @@
               "optional": true,
               "defaultValue": true,
               "type": "boolean"
+            },
+            "sort": {
+              "optional": true,
+              "type": "#/definitions/component--line/definitions/layerSort"
             },
             "line": {
               "kind": "object",

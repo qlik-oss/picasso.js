@@ -318,4 +318,43 @@ describe('line component', () => {
       });
     });
   });
+
+  describe('layer order', () => {
+    let config;
+    beforeEach(() => {
+      config = {
+        data: [2.1, 2.2, 2.3, 1.1, 1.2, 1.3, 3.1, 3.2, 3.3],
+        settings: {
+          coordinates: {
+            major(d, i) { return i; },
+            minor(d) { return d.datum.value; },
+            layerId(d) { return 10 - Math.round(d.datum.value); }
+          },
+          layers: {
+            line: {
+              stroke: d => ['red', 'green', 'blue'][Math.round(d.datum.value) - 1]
+            }
+          }
+        }
+      };
+
+      componentFixture.mocks().theme.style.returns({});
+    });
+
+    it('should be sorted by median by default', () => {
+      componentFixture.simulateCreate(component, config);
+      rendered = componentFixture.simulateRender(opts);
+      const order = rendered.map(layer => layer.stroke);
+      expect(order).to.eql(['red', 'green', 'blue']);
+    });
+
+    it('should be sorted by custom sorting function', () => {
+      config.settings.layers.sort = (a, b) => b.data[0].value - a.data[0].value;
+
+      componentFixture.simulateCreate(component, config);
+      rendered = componentFixture.simulateRender(opts);
+      const order = rendered.map(layer => layer.stroke);
+      expect(order).to.eql(['blue', 'green', 'red']);
+    });
+  });
 });

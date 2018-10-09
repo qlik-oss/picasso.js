@@ -27,6 +27,16 @@ const CURVES = {
 };
 
 /**
+ * @callback component--line~layerSort
+ * @param {object} a
+ * @param {string} a.id
+ * @param {Array<datum-extract>} a.data
+ * @param {object} b
+ * @param {string} b.id
+ * @param {Array<datum-extract>} b.data
+ */
+
+/**
  * @typedef {object}
  * @alias component--line-settings
  */
@@ -57,6 +67,9 @@ const SETTINGS = {
     /**
      * @type {boolean=} */
     show: true,
+    /**
+     * @type {component--line~layerSort=} */
+    sort: undefined,
     /**
      * @typedef {object} */
     line: {
@@ -220,7 +233,8 @@ function resolve({
   const layersResolved = resolver.resolve({
     data: layersData,
     defaults: {
-      curve: SETTINGS.layers.curve, show: SETTINGS.layers.show
+      curve: SETTINGS.layers.curve,
+      show: SETTINGS.layers.show
     },
     settings: {
       curve: layerStngs.curve,
@@ -265,6 +279,11 @@ function calculateVisibleLayers(opts) {
       return;
     }
 
+    // layerObj.points = [];
+    layerObj.datum = layerObj.data;
+    layerObj.data = [];
+    layerObj.id = layer.id;
+
     const values = [];
     const points = [];
     let point;
@@ -282,6 +301,7 @@ function calculateVisibleLayers(opts) {
         values.push(point.minor);
       }
       points.push(point);
+      layerObj.data.push(point.data);
     }
 
     const median = values.sort((a, b) => a - b)[Math.floor((values.length - 1) / 2)];
@@ -326,7 +346,16 @@ const lineMarkerComponent = {
       missingMinor0
     });
 
-    visibleLayers.sort((a, b) => a.median - b.median);
+    if (this.stngs.layers && this.stngs.layers.sort) {
+      const sortable = visibleLayers.map(v => ({
+        id: v.layerObj.id,
+        data: v.layerObj.data
+      }));
+      sortable.sort(this.stngs.layers.sort).map(s => s.id);
+      visibleLayers.sort((a, b) => sortable.indexOf(b.layerObj.id) - sortable.indexOf(a.layerObj.id));
+    } else {
+      visibleLayers.sort((a, b) => a.median - b.median);
+    }
 
     // generate visuals
     return createDisplayLayers(visibleLayers, {
