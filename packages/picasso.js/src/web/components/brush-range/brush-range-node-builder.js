@@ -6,7 +6,7 @@ import {
 } from './brush-range-const';
 
 function buildLine({
-  h, isVertical, value, pos, align, borderHit, state
+  h, isVertical, value, pos, align, borderHit, state, idx
 }) {
   const isAlignStart = align !== 'end';
   const alignStart = { left: '0', top: '0' };
@@ -40,6 +40,7 @@ function buildLine({
       e.srcElement.children[0].style[isVertical ? 'height' : 'width'] = '1px';
     },
     'data-value': value,
+    'data-key': [state.key, 'edge', idx].join('-'),
     style: {
       cursor: isVertical ? 'ns-resize' : 'ew-resize',
       position: 'absolute',
@@ -96,6 +97,7 @@ function buildBubble({
   }, [
     // bubble
     h('div', {
+      'data-key': [state.key, 'bubble', idx].join('-'),
       'data-other-value': otherValue,
       'data-idx': idx,
       style: extend({
@@ -206,7 +208,8 @@ export default function buildRange({
     value: start < end ? vStart : vEnd,
     pos: top,
     align: 'start',
-    state
+    state,
+    idx
   }));
 
   els.push(buildLine({
@@ -216,7 +219,8 @@ export default function buildRange({
     value: start < end ? vEnd : vStart,
     pos: bottom,
     align: 'end',
-    state
+    state,
+    idx
   }));
 
   const bubbles = state.settings.bubbles;
