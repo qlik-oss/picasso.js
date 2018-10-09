@@ -2524,9 +2524,9 @@
     "component--line": {
       "kind": "object",
       "entries": {
-        "module.exports": {
-          "kind": "function",
-          "params": []
+        "type": {
+          "defaultValue": "line",
+          "type": "string"
         }
       }
     },
