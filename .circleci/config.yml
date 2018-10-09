@@ -151,7 +151,6 @@ workflows:
       - build-docs:
           requires:
             - build
-          filters: *filter_master
       - deploy-docs:
           requires:
             - build-docs
