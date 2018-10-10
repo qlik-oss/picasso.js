@@ -74,6 +74,39 @@ describe('Component', () => {
     return instance;
   }
 
+  describe('require', () => {
+    it('should be able to require symbol factory', () => {
+      const opts = {
+        settings: {},
+        chart,
+        renderer,
+        theme: {
+          palette: sinon.stub(),
+          style: sinon.stub()
+        }
+      };
+
+      let fn;
+
+      definition = {
+        defaultSettings: {},
+        created() {
+          fn = this.symbol;
+        }
+      };
+
+      componentFactory(definition, opts);
+
+      expect(fn).to.equal(undefined);
+
+      definition.require = ['symbol'];
+
+      componentFactory(definition, opts);
+
+      expect(fn).to.be.a('Function');
+    });
+  });
+
   it('should call lifecycle methods with correct context when rendering', () => {
     /* const config = {
       key1: 'override',
