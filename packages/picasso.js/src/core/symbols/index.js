@@ -24,17 +24,6 @@ reg.add('n-polygon', nPolygon);
 reg.add('cross', cross);
 reg.add('bar', bar);
 
-function createRectCollider({ x, y, size }) {
-  const r = size / 2;
-  return {
-    type: 'rect',
-    x: x - r,
-    y: y - r,
-    width: size,
-    height: size
-  };
-}
-
 function applyOpts(obj, opts = {}) {
   Object.keys(opts).forEach((key) => {
     if (typeof mappedAttributes[key] !== 'undefined' && key !== 'transform') {
@@ -54,10 +43,6 @@ function create(options = {}) { // TODO handle reserverd properties x, y, size, 
   const fn = reg.get(options.type);
   if (fn) {
     const s = fn(options);
-    if (!s.collider) {
-      s.collider = createRectCollider(options);
-    }
-
     applyOpts(s, options);
 
     if (typeof options.data !== 'undefined') {
@@ -78,7 +63,8 @@ const symbols = {
 
 export {
   create as default,
-  symbols
+  symbols,
+  reg as symbolRegistry
 };
 
 /**
