@@ -39,6 +39,39 @@ export function box({
   });
 }
 
+export function oob({
+  item, value, boxWidth, boxPadding, rendwidth, rendheight, flipXY
+}) {
+  let x = 'x';
+  let y = 'y';
+  let width = 'width';
+  let height = 'height';
+  let calcwidth = rendwidth;
+  let calcheight = rendheight;
+
+  if (flipXY) {
+    x = 'y';
+    y = 'x';
+    width = 'height';
+    height = 'width';
+    calcwidth = rendheight;
+    calcheight = rendwidth;
+  }
+
+  console.log(value, Math.max(0, Math.min(value * calcheight, calcheight - 10)));
+
+  return extend({}, item.oob, {
+    type: 'rect',
+    [x]: (boxPadding + item.major + (boxWidth / 2)) * calcwidth,
+    [y]: Math.max(0, Math.min(value * calcheight, calcheight - 10)),
+    [height]: 10,
+    [width]: 10,
+    collider: {
+      type: null
+    }
+  });
+}
+
 export function verticalLine({
   item, from, to, boxCenter, rendwidth, rendheight, flipXY
 }) {
@@ -169,6 +202,23 @@ export function buildShapes({
 
     const rendwidth = width;
     const rendheight = height;
+
+
+    const allValidValues = [item.min, item.start, item.med, item.end, item.max].filter(v => typeof v === 'number' && !Number.isNaN(v));
+
+    if (Math.min(...allValidValues) < 0 && Math.max(...allValidValues) < 0) {
+      console.log(0, item);
+      children.push(oob({
+        item, value: 0, boxWidth, boxPadding, rendwidth, rendheight, flipXY
+      }));
+    }
+
+    if (Math.min(...allValidValues) > 1 && Math.max(...allValidValues) > 1) {
+      console.log(1, item);
+      children.push(oob({
+        item, value: 1, boxWidth, boxPadding, rendwidth, rendheight, flipXY
+      }));
+    }
 
     if (item.box.show && isNumber(item.start) && isNumber(item.end)) {
       children.push(box({

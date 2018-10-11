@@ -30,6 +30,10 @@ const DEFAULT_DATA_SETTINGS = {
     maxWidthPx: undefined,
     minWidthPx: 1,
     minHeightPx: 1
+  },
+  oob: {
+    show: true,
+    fill: 'red'
   }
 };
 
