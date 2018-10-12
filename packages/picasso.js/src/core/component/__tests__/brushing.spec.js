@@ -379,7 +379,7 @@ describe('Brushing', () => {
 
       const output = dummyComponent.renderer.render.args[0][0];
       expect(output[0].stroke).to.equal('doNotUpdate'); // No data attr
-      expect(output[0].fill).to.equal('inactiveFill');
+      expect(output[0].fill).to.equal('doNotUpdate');
       expect(output[1].fill).to.equal('inactiveFill'); // Inactive
     });
 
