@@ -3,6 +3,52 @@ import { resolveDiff } from './box-math';
 
 import { isNumber } from '../../utils/is-number';
 
+/**
+ * Out of bounds shape
+ * @param {object} params parameters
+ * @param {object} params.item Resolved styling item from box component with item.major
+ * @param {number} params.value 0 or 1 depending on where to render the oob shape
+ * @param {number} params.boxWidth Un-calculated box width in relative/normalized format
+ * @param {number} params.boxPadding Un-calculated box padding in relative/normalized format
+ * @param {number} params.rendwidth The pixel width of the area to render upon
+ * @param {number} params.rendheight The pixel height of the area to render upon
+ * @param {boolean} params.flipXY Wether or not to flip X and Y coordinates together with Width and Height
+ * @param {function} params.symbol Symbol library function from component
+ * @ignore
+ */
+export function oob({
+  item, value, boxWidth, boxPadding, rendwidth, rendheight, flipXY, symbol
+}) {
+  let x = 'x';
+  let y = 'y';
+  let calcwidth = rendwidth;
+  let calcheight = rendheight;
+
+  if (flipXY) {
+    x = 'y';
+    y = 'x';
+    calcwidth = rendheight;
+    calcheight = rendwidth;
+  }
+
+  return symbol(extend({}, item.oob, {
+    [x]: (boxPadding + item.major + (boxWidth / 2)) * calcwidth,
+    [y]: Math.max((item.oob.size / 2), Math.min(value * calcheight, calcheight - (item.oob.size / 2))),
+    startAngle: value < 0.5 ? 90 : -90
+  }));
+}
+
+/**
+ * Box shape calculation function
+ * @param {object} params parameters
+ * @param {object} params.item Resolved styling item from box component with item.major
+ * @param {number} params.boxWidth Un-calculated box width in relative/normalized format
+ * @param {number} params.boxPadding Un-calculated box padding in relative/normalized format
+ * @param {number} params.rendwidth The pixel width of the area to render upon
+ * @param {number} params.rendheight The pixel height of the area to render upon
+ * @param {boolean} params.flipXY wether or not to flip X and Y coordinates together with Width and Height
+ * @ignore
+ */
 export function box({
   item, boxWidth, boxPadding, rendwidth, rendheight, flipXY
 }) {
@@ -39,28 +85,18 @@ export function box({
   });
 }
 
-export function oob({
-  item, value, boxWidth, boxPadding, rendwidth, rendheight, flipXY, symbol
-}) {
-  let x = 'x';
-  let y = 'y';
-  let calcwidth = rendwidth;
-  let calcheight = rendheight;
-
-  if (flipXY) {
-    x = 'y';
-    y = 'x';
-    calcwidth = rendheight;
-    calcheight = rendwidth;
-  }
-
-  return symbol(extend({}, item.oob, {
-    [x]: (boxPadding + item.major + (boxWidth / 2)) * calcwidth,
-    [y]: Math.max((item.oob.size / 2), Math.min(value * calcheight, calcheight - (item.oob.size / 2))),
-    startAngle: value < 0.5 ? 90 : -90
-  }));
-}
-
+/**
+ * A vertical line shape (for start - min, end - max values)
+ * @param {object} params parameters
+ * @param {object} params.item Resolved styling item from box component with item.major
+ * @param {number} params.from Normalized from value
+ * @param {number} params.to Normalized to value
+ * @param {number} params.boxCenter Center coordinate for the box
+ * @param {number} params.rendwidth The pixel width of the area to render upon
+ * @param {number} params.rendheight The pixel height of the area to render upon
+ * @param {boolean} params.flipXY wether or not to flip X and Y coordinates together with Width and Height
+ * @ignore
+ */
 export function verticalLine({
   item, from, to, boxCenter, rendwidth, rendheight, flipXY
 }) {
@@ -93,6 +129,19 @@ export function verticalLine({
   });
 }
 
+/**
+ * A horizontal line shape (for median and whiskers)
+ * @param {object} params parameters
+ * @param {object} params.item Resolved styling item from box component with item.major
+ * @param {string} params.key Which key to use as style base in the item object
+ * @param {number} params.position At which "height" (X) to position the horizontal line
+ * @param {number} params.width Width of the horizontal line (i.e. box width or a multiple of it)
+ * @param {number} params.boxCenter Center coordinate for the box
+ * @param {number} params.rendwidth The pixel width of the area to render upon
+ * @param {number} params.rendheight The pixel height of the area to render upon
+ * @param {boolean} params.flipXY wether or not to flip X and Y coordinates together with Width and Height
+ * @ignore
+ */
 export function horizontalLine({
   item, key, position, width, boxCenter, rendwidth, rendheight, flipXY
 }) {
@@ -130,6 +179,13 @@ export function horizontalLine({
   });
 }
 
+/**
+ * A horizontal line shape (for median and whiskers)
+ * @param {number} bandwidth The current bandwidth for this item
+ * @param {object} item A resolved style item to render with major and box width variables, minWidthPx and maxWidthPx
+ * @param {number} maxMajorWidth The actual maximum major width
+ * @ignore
+ */
 export function getBoxWidth(bandwidth, item, maxMajorWidth) {
   const boxWidth = Math.min(bandwidth * item.box.width, isNaN(item.box.maxWidthPx) ? maxMajorWidth : item.box.maxWidthPx / maxMajorWidth);
   return isNaN(item.box.minWidthPx) ? boxWidth : Math.max(item.box.minWidthPx / maxMajorWidth, boxWidth);
@@ -196,48 +252,52 @@ export function buildShapes({
 
     const allValidValues = [item.min, item.start, item.med, item.end, item.max].filter(v => typeof v === 'number' && !Number.isNaN(v));
 
+    const isLowerOutOfBounds = Math.min(...allValidValues) < 0 && Math.max(...allValidValues) < 0;
+    const isHigherOutOfBounds = Math.min(...allValidValues) > 1 && Math.max(...allValidValues) > 1;
+    const isOutOfBounds = isLowerOutOfBounds || isHigherOutOfBounds;
+
     /* OUT OF BOUNDS */
-    if (item.oob.show && Math.min(...allValidValues) < 0 && Math.max(...allValidValues) < 0) {
+    if (item.oob.show && isLowerOutOfBounds) {
       children.push(oob({
         item, value: 0, boxWidth, boxPadding, rendwidth, rendheight, flipXY, symbol
       }));
     }
 
-    if (item.oob.show && Math.min(...allValidValues) > 1 && Math.max(...allValidValues) > 1) {
+    if (item.oob.show && isHigherOutOfBounds) {
       children.push(oob({
         item, value: 1, boxWidth, boxPadding, rendwidth, rendheight, flipXY, symbol
       }));
     }
 
     /* THE BOX */
-    if (item.box.show && isNumber(item.start) && isNumber(item.end)) {
+    if (!isOutOfBounds && item.box.show && isNumber(item.start) && isNumber(item.end)) {
       children.push(box({
         item, boxWidth, boxPadding, rendwidth, rendheight, flipXY
       }));
     }
 
     /* LINES MIN - START, END - MAX */
-    if (item.line.show && isNumber(item.min) && isNumber(item.start)) {
+    if (!isOutOfBounds && item.line.show && isNumber(item.min) && isNumber(item.start)) {
       children.push(verticalLine({
         item, from: item.min, to: item.start, boxCenter, rendwidth, rendheight, flipXY
       }));
     }
 
-    if (item.line.show && isNumber(item.max) && isNumber(item.end)) {
+    if (!isOutOfBounds && item.line.show && isNumber(item.max) && isNumber(item.end)) {
       children.push(verticalLine({
         item, from: item.max, to: item.end, boxCenter, rendwidth, rendheight, flipXY
       }));
     }
 
     /* MEDIAN */
-    if (item.median.show && isNumber(item.med)) {
+    if (!isOutOfBounds && item.median.show && isNumber(item.med)) {
       children.push(horizontalLine({
         item, key: 'median', position: item.med, width: boxWidth, boxCenter, rendwidth, rendheight, flipXY
       }));
     }
 
     /* WHISKERS */
-    if (item.whisker.show) {
+    if (!isOutOfBounds && item.whisker.show) {
       const whiskerWidth = boxWidth * item.whisker.width;
 
       if (isNumber(item.min)) {
