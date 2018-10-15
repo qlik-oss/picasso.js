@@ -1,4 +1,5 @@
 import {
+  oob,
   box,
   verticalLine,
   horizontalLine,
@@ -6,6 +7,59 @@ import {
 } from '../box-shapes';
 
 describe('box shapes', () => {
+  describe('out of bounds arrows', () => {
+    it('should create a correct out of bounds shape at the bottom of the graph', () => {
+      const item = {
+        major: 0.25,
+        oob: {
+          size: 10
+        }
+      };
+
+      const boxWidth = 0.1;
+      const boxPadding = 0;
+
+      // We mock the symbol() function here
+      let result = oob({
+        value: 1, item, boxWidth, boxPadding, rendwidth: 100, rendheight: 100, flipXY: false, symbol: v => v
+      });
+
+      expect(result).to.eql({
+        size: 10,
+        startAngle: -90,
+        x: 30,
+        y: 95
+      });
+
+      item.major = 0.5;
+    });
+
+    it('should create a correct out of bounds shape at the top of the graph', () => {
+      const item = {
+        major: 0.6,
+        oob: {
+          size: 10
+        }
+      };
+
+      const boxWidth = 0.1;
+      const boxPadding = 0.1;
+
+      // We mock the symbol() function here
+      let result = oob({
+        value: 0, item, boxWidth, boxPadding, rendwidth: 100, rendheight: 100, flipXY: false, symbol: v => v
+      });
+
+      expect(result).to.eql({
+        size: 10,
+        startAngle: 90,
+        x: 75,
+        y: 5
+      });
+    });
+  });
+
+
   describe('box', () => {
     it('should create a correct box shape', () => {
       const item = {

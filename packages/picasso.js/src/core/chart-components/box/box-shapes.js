@@ -40,36 +40,25 @@ export function box({
 }
 
 export function oob({
-  item, value, boxWidth, boxPadding, rendwidth, rendheight, flipXY
+  item, value, boxWidth, boxPadding, rendwidth, rendheight, flipXY, symbol
 }) {
   let x = 'x';
   let y = 'y';
-  let width = 'width';
-  let height = 'height';
   let calcwidth = rendwidth;
   let calcheight = rendheight;
 
   if (flipXY) {
     x = 'y';
     y = 'x';
-    width = 'height';
-    height = 'width';
     calcwidth = rendheight;
     calcheight = rendwidth;
   }
 
-  console.log(value, Math.max(0, Math.min(value * calcheight, calcheight - 10)));
-
-  return extend({}, item.oob, {
-    type: 'rect',
+  return symbol(extend({}, item.oob, {
     [x]: (boxPadding + item.major + (boxWidth / 2)) * calcwidth,
-    [y]: Math.max(0, Math.min(value * calcheight, calcheight - 10)),
-    [height]: 10,
-    [width]: 10,
-    collider: {
-      type: null
-    }
-  });
+    [y]: Math.max((item.oob.size / 2), Math.min(value * calcheight, calcheight - (item.oob.size / 2))),
+    startAngle: value < 0.5 ? 90 : -90
+  }));
 }
 
 export function verticalLine({
@@ -151,7 +140,8 @@ export function buildShapes({
   height,
   flipXY,
   resolved,
-  keys
+  keys,
+  symbol
 }) {
   // if (!settings || !settings.major || !settings.major.scale || !settings.minor || !settings.minor.scale) {
   //   return [];
@@ -206,26 +196,27 @@ export function buildShapes({
 
     const allValidValues = [item.min, item.start, item.med, item.end, item.max].filter(v => typeof v === 'number' && !Number.isNaN(v));
 
-    if (Math.min(...allValidValues) < 0 && Math.max(...allValidValues) < 0) {
-      console.log(0, item);
+    /* OUT OF BOUNDS */
+    if (item.oob.show && Math.min(...allValidValues) < 0 && Math.max(...allValidValues) < 0) {
       children.push(oob({
-        item, value: 0, boxWidth, boxPadding, rendwidth, rendheight, flipXY
+        item, value: 0, boxWidth, boxPadding, rendwidth, rendheight, flipXY, symbol
       }));
     }
 
-    if (Math.min(...allValidValues) > 1 && Math.max(...allValidValues) > 1) {
-      console.log(1, item);
+    if (item.oob.show && Math.min(...allValidValues) > 1 && Math.max(...allValidValues) > 1) {
       children.push(oob({
-        item, value: 1, boxWidth, boxPadding, rendwidth, rendheight, flipXY
+        item, value: 1, boxWidth, boxPadding, rendwidth, rendheight, flipXY, symbol
       }));
     }
 
+    /* THE BOX */
     if (item.box.show && isNumber(item.start) && isNumber(item.end)) {
       children.push(box({
         item, boxWidth, boxPadding, rendwidth, rendheight, flipXY
       }));
     }
 
+    /* LINES MIN - START, END - MAX */
     if (item.line.show && isNumber(item.min) && isNumber(item.start)) {
       children.push(verticalLine({
         item, from: item.min, to: item.start, boxCenter, rendwidth, rendheight, flipXY
@@ -238,12 +229,14 @@ export function buildShapes({
       }));
     }
 
+    /* MEDIAN */
     if (item.median.show && isNumber(item.med)) {
       children.push(horizontalLine({
         item, key: 'median', position: item.med, width: boxWidth, boxCenter, rendwidth, rendheight, flipXY
       }));
     }
 
+    /* WHISKERS */
     if (item.whisker.show) {
       const whiskerWidth = boxWidth * item.whisker.width;
 
