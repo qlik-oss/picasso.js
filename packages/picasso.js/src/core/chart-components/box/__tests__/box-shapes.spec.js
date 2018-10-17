@@ -10,18 +10,15 @@ describe('box shapes', () => {
   describe('out of bounds arrows', () => {
     it('should create a correct out of bounds shape at the bottom of the graph', () => {
       const item = {
-        major: 0.25,
+        major: 0.3,
         oob: {
           size: 10
         }
       };
 
-      const boxWidth = 0.1;
-      const boxPadding = 0;
-
       // We mock the symbol() function here
       let result = oob({
-        value: 1, item, boxWidth, boxPadding, rendwidth: 100, rendheight: 100, flipXY: false, symbol: v => v
+        value: 1, item, boxCenter: item.major, rendwidth: 100, rendheight: 100, flipXY: false, symbol: v => v
       });
 
       expect(result).to.eql({
@@ -36,18 +33,15 @@ describe('box shapes', () => {
 
     it('should create a correct out of bounds shape at the top of the graph', () => {
       const item = {
-        major: 0.6,
+        major: 0.75,
         oob: {
           size: 10
         }
       };
 
-      const boxWidth = 0.1;
-      const boxPadding = 0.1;
-
       // We mock the symbol() function here
       let result = oob({
-        value: 0, item, boxWidth, boxPadding, rendwidth: 100, rendheight: 100, flipXY: false, symbol: v => v
+        value: 0, item, boxCenter: item.major, rendwidth: 100, rendheight: 100, flipXY: false, symbol: v => v
       });
 
       expect(result).to.eql({

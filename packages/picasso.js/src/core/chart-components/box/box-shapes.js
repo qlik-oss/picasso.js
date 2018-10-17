@@ -17,7 +17,7 @@ import { isNumber } from '../../utils/is-number';
  * @ignore
  */
 export function oob({
-  item, value, boxWidth, boxPadding, rendwidth, rendheight, flipXY, symbol
+  item, value, boxCenter, rendwidth, rendheight, flipXY, symbol
 }) {
   let x = 'x';
   let y = 'y';
@@ -32,7 +32,7 @@ export function oob({
   }
 
   return symbol(extend({}, item.oob, {
-    [x]: (boxPadding + item.major + (boxWidth / 2)) * calcwidth,
+    [x]: boxCenter * calcwidth,
     [y]: Math.max((item.oob.size / 2), Math.min(value * calcheight, calcheight - (item.oob.size / 2))),
     startAngle: value < 0.5 ? 90 : -90
   }));
@@ -259,13 +259,13 @@ export function buildShapes({
     /* OUT OF BOUNDS */
     if (item.oob.show && isLowerOutOfBounds) {
       children.push(oob({
-        item, value: 0, boxWidth, boxPadding, rendwidth, rendheight, flipXY, symbol
+        item, value: 0, boxCenter, rendwidth, rendheight, flipXY, symbol
       }));
     }
 
     if (item.oob.show && isHigherOutOfBounds) {
       children.push(oob({
-        item, value: 1, boxWidth, boxPadding, rendwidth, rendheight, flipXY, symbol
+        item, value: 1, boxCenter, rendwidth, rendheight, flipXY, symbol
       }));
     }
 
