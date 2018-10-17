@@ -22,7 +22,8 @@ It presumes certain values have been bound to the data, and will behave differen
 on what data props are mapped to the component.
 
 To create a full boxplot it requires a "major" and "minor" scale, a field to extract (major),
-and props (minor) for each field.
+and props (minor) for each field. Major is similar to what a dimension would be using the
+Qlik data formats, and minor is similar to one or more measures.
 
 For a full-featured visual box plot without interactions, the properties and settings, at a minimum,
 look something like this:
@@ -157,7 +158,34 @@ Example:
 }
 ```
 
+Candlestick example:
 ![Candlestick example](/img/candlestick-chart.png)
+
+### Out of bounds 
+If a box or all of it's data is "out of bounds" i.e. outside of the renderable area, the box will not be rendered at all, 
+instead the marker will display an arrow pointing towards where the box is. It's known as the "out of bounds arrow".
+
+The OOB feature can be turned off using 
+
+```js 
+{
+  type: 'box',
+  data: {
+    [data props here]
+  },
+  settings: {
+    major: { scale: 'x' },
+    minor: { scale: 'y' },
+    oob: {
+      show: false // turn off out of bounds arrows
+    }
+  }
+}
+```
+
+Out of bounds arrow example:
+![Out of bounds arrow example](/img/box-oob-arrow.png)
+
 
 ## API Reference 
 

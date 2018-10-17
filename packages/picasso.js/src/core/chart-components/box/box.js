@@ -33,8 +33,10 @@ const DEFAULT_DATA_SETTINGS = {
   },
   oob: {
     show: true,
-    fill: '#999',
     type: 'n-polygon',
+    fill: '#999',
+    stroke: '#000',
+    strokeWidth: 0,
     size: 10,
     sides: 3,
     startAngle: -90
