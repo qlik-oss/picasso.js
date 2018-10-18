@@ -1468,7 +1468,7 @@
               "kind": "object",
               "entries": {
                 "scale": {
-                  "description": "The scale to use along the major axis",
+                  "description": "The scale to use along the major (dimension) axis",
                   "type": "string"
                 },
                 "ref": {
@@ -1492,21 +1492,24 @@
               "kind": "object",
               "entries": {
                 "scale": {
-                  "description": "The scale to use along the minor axis",
+                  "description": "The scale to use along the minor (measure) axis",
                   "type": "string"
                 }
               }
             },
             "orientation": {
+              "description": "Which orientation to use (vertical or horizontal)",
               "optional": true,
               "defaultValue": "'vertical'",
               "type": "string"
             },
             "box": {
+              "description": "Visual properties for the box shape in the box marker",
               "optional": true,
               "kind": "object",
               "entries": {
                 "show": {
+                  "description": "Boolean for showing the box shape",
                   "optional": true,
                   "defaultValue": true,
                   "type": "boolean"
@@ -1537,16 +1540,19 @@
                   "type": "number"
                 },
                 "maxWidthPx": {
+                  "description": "Maximum width of the box in pixels (not applicable when using major start and end)",
                   "optional": true,
                   "defaultValue": 100,
                   "type": "number"
                 },
                 "minWidthPx": {
+                  "description": "Minimum width of the box in pixels (not applicable when using major start and end)",
                   "optional": true,
                   "defaultValue": 1,
                   "type": "number"
                 },
                 "minHeightPx": {
+                  "description": "Minimum height of the box shape",
                   "optional": true,
                   "defaultValue": 1,
                   "type": "number"
@@ -1554,6 +1560,7 @@
               }
             },
             "line": {
+              "description": "Visual properties for lines between min-start, end-max.",
               "optional": true,
               "kind": "object",
               "entries": {
@@ -1575,6 +1582,7 @@
               }
             },
             "whisker": {
+              "description": "All the visual properties for whiskers at min and max.",
               "optional": true,
               "kind": "object",
               "entries": {
@@ -1601,6 +1609,7 @@
               }
             },
             "median": {
+              "description": "Visual properties for the median",
               "optional": true,
               "kind": "object",
               "entries": {
@@ -1612,11 +1621,59 @@
                 "stroke": {
                   "optional": true,
                   "defaultValue": "'#000'",
-                  "type": "number"
+                  "type": "string"
                 },
                 "strokeWidth": {
                   "optional": true,
                   "defaultValue": 1,
+                  "type": "number"
+                }
+              }
+            },
+            "oob": {
+              "description": "EXPERIMENTAL: Out of bounds symbol utilizing the symbol API",
+              "optional": true,
+              "kind": "object",
+              "entries": {
+                "show": {
+                  "optional": true,
+                  "defaultValue": true,
+                  "type": "number"
+                },
+                "type": {
+                  "description": "Type of the symbol to be used",
+                  "optional": true,
+                  "defaultValue": "'n-polygon'",
+                  "type": "string"
+                },
+                "fill": {
+                  "description": "Fill color of the symbol",
+                  "optional": true,
+                  "defaultValue": "'#999'",
+                  "type": "string"
+                },
+                "stroke": {
+                  "description": "Stroke color",
+                  "optional": true,
+                  "defaultValue": "'#000'",
+                  "type": "string"
+                },
+                "strokeWidth": {
+                  "description": "Stroke width",
+                  "optional": true,
+                  "defaultValue": 0,
+                  "type": "number"
+                },
+                "size": {
+                  "description": "Size/width of the symbol in pixels",
+                  "optional": true,
+                  "defaultValue": 10,
+                  "type": "number"
+                },
+                "sides": {
+                  "description": "Number of sides for a n-polygon (3 for triangle)",
+                  "optional": true,
+                  "defaultValue": 3,
                   "type": "number"
                 }
               }
@@ -1642,27 +1699,27 @@
           "kind": "object",
           "entries": {
             "min": {
-              "description": "min",
+              "description": "Min",
               "optional": true,
               "type": "number"
             },
             "max": {
-              "description": "max",
+              "description": "Max",
               "optional": true,
               "type": "number"
             },
             "start": {
-              "description": "start",
+              "description": "Start of box",
               "optional": true,
               "type": "number"
             },
             "end": {
-              "description": "end",
+              "description": "End of box",
               "optional": true,
               "type": "number"
             },
             "med": {
-              "description": "med",
+              "description": "Median",
               "optional": true,
               "type": "number"
             }
