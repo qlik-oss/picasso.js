@@ -18,7 +18,7 @@ describe('box shapes', () => {
 
       // We mock the symbol() function here
       let result = oob({
-        value: 1, item, boxCenter: item.major, rendwidth: 100, rendheight: 100, flipXY: false, symbol: v => v
+        value: 1, item, boxCenter: item.major, rendWidth: 100, rendHeight: 100, flipXY: false, symbol: v => v
       });
 
       expect(result).to.eql({
@@ -41,7 +41,7 @@ describe('box shapes', () => {
 
       // We mock the symbol() function here
       let result = oob({
-        value: 0, item, boxCenter: item.major, rendwidth: 100, rendheight: 100, flipXY: false, symbol: v => v
+        value: 0, item, boxCenter: item.major, rendWidth: 100, rendHeight: 100, flipXY: false, symbol: v => v
       });
 
       expect(result).to.eql({
@@ -69,7 +69,7 @@ describe('box shapes', () => {
       const boxPadding = 0;
 
       let result = box({
-        item, boxWidth, boxPadding, rendwidth: 100, rendheight: 100, flipXY: false
+        item, boxWidth, boxPadding, rendWidth: 100, rendHeight: 100, flipXY: false
       });
 
       expect(result).to.eql({
@@ -87,7 +87,7 @@ describe('box shapes', () => {
 
 
       result = box({
-        item, boxWidth, boxPadding, rendwidth: 200, rendheight: 100, flipXY: false
+        item, boxWidth, boxPadding, rendWidth: 200, rendHeight: 100, flipXY: false
       });
 
       expect(result).to.eql({
@@ -104,7 +104,7 @@ describe('box shapes', () => {
       });
 
       result = box({
-        item, boxWidth, boxPadding, rendwidth: 100, rendheight: 100, flipXY: true
+        item, boxWidth, boxPadding, rendWidth: 100, rendHeight: 100, flipXY: true
       });
 
       expect(result).to.eql({
@@ -122,7 +122,7 @@ describe('box shapes', () => {
 
       item.data = { test: true };
       result = box({
-        item, boxWidth, boxPadding, rendwidth: 200, rendheight: 100, flipXY: true
+        item, boxWidth, boxPadding, rendWidth: 200, rendHeight: 100, flipXY: true
       });
 
       expect(result).to.eql({
@@ -151,7 +151,7 @@ describe('box shapes', () => {
       };
 
       let result = verticalLine({
-        item, from: 0.25, to: 0.75, boxCenter: 0.5, rendwidth: 100, rendheight: 100, flipXY: false
+        item, from: 0.25, to: 0.75, boxCenter: 0.5, rendWidth: 100, rendHeight: 100, flipXY: false
       });
 
       expect(result).to.eql({
@@ -168,7 +168,7 @@ describe('box shapes', () => {
       });
 
       result = verticalLine({
-        item, from: 0.25, to: 0.75, boxCenter: 0.5, rendwidth: 200, rendheight: 100, flipXY: false
+        item, from: 0.25, to: 0.75, boxCenter: 0.5, rendWidth: 200, rendHeight: 100, flipXY: false
       });
 
       expect(result).to.eql({
@@ -186,7 +186,7 @@ describe('box shapes', () => {
 
       item.data = { id: 3 };
       result = verticalLine({
-        item, from: 0.25, to: 0.75, boxCenter: 0.5, rendwidth: 200, rendheight: 100, flipXY: true
+        item, from: 0.25, to: 0.75, boxCenter: 0.5, rendWidth: 200, rendHeight: 100, flipXY: true
       });
 
       expect(result).to.eql({
@@ -218,7 +218,7 @@ describe('box shapes', () => {
       };
 
       let result = horizontalLine({
-        item, key: 'med', position: 0.5, width: 0.5, boxCenter: 0.5, rendwidth: 100, rendheight: 100, flipXY: false
+        item, key: 'med', position: 0.5, width: 0.5, boxCenter: 0.5, rendWidth: 100, rendHeight: 100, flipXY: false
       });
 
       expect(result).to.eql({
@@ -239,7 +239,7 @@ describe('box shapes', () => {
       });
 
       result = horizontalLine({
-        item, key: 'low', position: 0.5, width: 0.5, boxCenter: 0.5, rendwidth: 200, rendheight: 100, flipXY: false
+        item, key: 'low', position: 0.5, width: 0.5, boxCenter: 0.5, rendWidth: 200, rendHeight: 100, flipXY: false
       });
 
       expect(result).to.eql({
@@ -261,7 +261,7 @@ describe('box shapes', () => {
 
       item.data = { origin: 'test' };
       result = horizontalLine({
-        item, key: 'med', position: 0.5, width: 0.5, boxCenter: 0.5, rendwidth: 200, rendheight: 100, flipXY: true
+        item, key: 'med', position: 0.5, width: 0.5, boxCenter: 0.5, rendWidth: 200, rendHeight: 100, flipXY: true
       });
 
       expect(result).to.eql({
