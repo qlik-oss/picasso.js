@@ -10,25 +10,25 @@ import { isNumber } from '../../utils/is-number';
  * @param {number} params.value 0 or 1 depending on where to render the oob shape
  * @param {number} params.boxWidth Un-calculated box width in relative/normalized format
  * @param {number} params.boxPadding Un-calculated box padding in relative/normalized format
- * @param {number} params.rendwidth The pixel width of the area to render upon
- * @param {number} params.rendheight The pixel height of the area to render upon
+ * @param {number} params.rendWidth The pixel width of the area to render upon
+ * @param {number} params.rendHeight The pixel height of the area to render upon
  * @param {boolean} params.flipXY Wether or not to flip X and Y coordinates together with Width and Height
  * @param {function} params.symbol Symbol library function from component
  * @ignore
  */
 export function oob({
-  item, value, boxCenter, rendwidth, rendheight, flipXY, symbol
+  item, value, boxCenter, rendWidth, rendHeight, flipXY, symbol
 }) {
   let x = 'x';
   let y = 'y';
-  let calcwidth = rendwidth;
-  let calcheight = rendheight;
+  let calcwidth = rendWidth;
+  let calcheight = rendHeight;
 
   if (flipXY) {
     x = 'y';
     y = 'x';
-    calcwidth = rendheight;
-    calcheight = rendwidth;
+    calcwidth = rendHeight;
+    calcheight = rendWidth;
   }
 
   return symbol(extend({}, item.oob, {
@@ -44,28 +44,28 @@ export function oob({
  * @param {object} params.item Resolved styling item from box component with item.major
  * @param {number} params.boxWidth Un-calculated box width in relative/normalized format
  * @param {number} params.boxPadding Un-calculated box padding in relative/normalized format
- * @param {number} params.rendwidth The pixel width of the area to render upon
- * @param {number} params.rendheight The pixel height of the area to render upon
+ * @param {number} params.rendWidth The pixel width of the area to render upon
+ * @param {number} params.rendHeight The pixel height of the area to render upon
  * @param {boolean} params.flipXY wether or not to flip X and Y coordinates together with Width and Height
  * @ignore
  */
 export function box({
-  item, boxWidth, boxPadding, rendwidth, rendheight, flipXY
+  item, boxWidth, boxPadding, rendWidth, rendHeight, flipXY
 }) {
   let x = 'x';
   let y = 'y';
   let width = 'width';
   let height = 'height';
-  let calcwidth = rendwidth;
-  let calcheight = rendheight;
+  let calcwidth = rendWidth;
+  let calcheight = rendHeight;
 
   if (flipXY) {
     x = 'y';
     y = 'x';
     width = 'height';
     height = 'width';
-    calcwidth = rendheight;
-    calcheight = rendwidth;
+    calcwidth = rendHeight;
+    calcheight = rendWidth;
   }
 
   const { actualDiff, actualLow } = resolveDiff({
@@ -92,28 +92,28 @@ export function box({
  * @param {number} params.from Normalized from value
  * @param {number} params.to Normalized to value
  * @param {number} params.boxCenter Center coordinate for the box
- * @param {number} params.rendwidth The pixel width of the area to render upon
- * @param {number} params.rendheight The pixel height of the area to render upon
+ * @param {number} params.rendWidth The pixel width of the area to render upon
+ * @param {number} params.rendHeight The pixel height of the area to render upon
  * @param {boolean} params.flipXY wether or not to flip X and Y coordinates together with Width and Height
  * @ignore
  */
 export function verticalLine({
-  item, from, to, boxCenter, rendwidth, rendheight, flipXY
+  item, from, to, boxCenter, rendWidth, rendHeight, flipXY
 }) {
   let x1 = 'x1';
   let y1 = 'y1';
   let x2 = 'x2';
   let y2 = 'y2';
-  let calcwidth = rendwidth;
-  let calcheight = rendheight;
+  let calcwidth = rendWidth;
+  let calcheight = rendHeight;
 
   if (flipXY) {
     x1 = 'y1';
     y1 = 'x1';
     x2 = 'y2';
     y2 = 'x2';
-    calcwidth = rendheight;
-    calcheight = rendwidth;
+    calcwidth = rendHeight;
+    calcheight = rendWidth;
   }
 
   return extend({}, item.line, {
@@ -137,28 +137,28 @@ export function verticalLine({
  * @param {number} params.position At which "height" (X) to position the horizontal line
  * @param {number} params.width Width of the horizontal line (i.e. box width or a multiple of it)
  * @param {number} params.boxCenter Center coordinate for the box
- * @param {number} params.rendwidth The pixel width of the area to render upon
- * @param {number} params.rendheight The pixel height of the area to render upon
+ * @param {number} params.rendWidth The pixel width of the area to render upon
+ * @param {number} params.rendHeight The pixel height of the area to render upon
  * @param {boolean} params.flipXY wether or not to flip X and Y coordinates together with Width and Height
  * @ignore
  */
 export function horizontalLine({
-  item, key, position, width, boxCenter, rendwidth, rendheight, flipXY
+  item, key, position, width, boxCenter, rendWidth, rendHeight, flipXY
 }) {
   let x1 = 'x1';
   let y1 = 'y1';
   let x2 = 'x2';
   let y2 = 'y2';
-  let calcwidth = rendwidth;
-  let calcheight = rendheight;
+  let calcwidth = rendWidth;
+  let calcheight = rendHeight;
 
   if (flipXY) {
     x1 = 'y1';
     y1 = 'x1';
     x2 = 'y2';
     y2 = 'x2';
-    calcwidth = rendheight;
-    calcheight = rendwidth;
+    calcwidth = rendHeight;
+    calcheight = rendWidth;
   }
 
   const halfWidth = width / 2;
@@ -246,8 +246,8 @@ export function buildShapes({
     const boxPadding = (bandwidth - boxWidth) / 2;
     const boxCenter = boxPadding + item.major + (boxWidth / 2);
 
-    const rendwidth = width;
-    const rendheight = height;
+    const rendWidth = width;
+    const rendHeight = height;
 
 
     const allValidValues = [item.min, item.start, item.med, item.end, item.max].filter(v => typeof v === 'number' && !Number.isNaN(v));
@@ -259,40 +259,40 @@ export function buildShapes({
     /* OUT OF BOUNDS */
     if (item.oob.show && isLowerOutOfBounds) {
       children.push(oob({
-        item, value: 0, boxCenter, rendwidth, rendheight, flipXY, symbol
+        item, value: 0, boxCenter, rendWidth, rendHeight, flipXY, symbol
       }));
     }
 
     if (item.oob.show && isHigherOutOfBounds) {
       children.push(oob({
-        item, value: 1, boxCenter, rendwidth, rendheight, flipXY, symbol
+        item, value: 1, boxCenter, rendWidth, rendHeight, flipXY, symbol
       }));
     }
 
     /* THE BOX */
     if (!isOutOfBounds && item.box.show && isNumber(item.start) && isNumber(item.end)) {
       children.push(box({
-        item, boxWidth, boxPadding, rendwidth, rendheight, flipXY
+        item, boxWidth, boxPadding, rendWidth, rendHeight, flipXY
       }));
     }
 
     /* LINES MIN - START, END - MAX */
     if (!isOutOfBounds && item.line.show && isNumber(item.min) && isNumber(item.start)) {
       children.push(verticalLine({
-        item, from: item.min, to: item.start, boxCenter, rendwidth, rendheight, flipXY
+        item, from: item.min, to: item.start, boxCenter, rendWidth, rendHeight, flipXY
       }));
     }
 
     if (!isOutOfBounds && item.line.show && isNumber(item.max) && isNumber(item.end)) {
       children.push(verticalLine({
-        item, from: item.max, to: item.end, boxCenter, rendwidth, rendheight, flipXY
+        item, from: item.max, to: item.end, boxCenter, rendWidth, rendHeight, flipXY
       }));
     }
 
     /* MEDIAN */
     if (!isOutOfBounds && item.median.show && isNumber(item.med)) {
       children.push(horizontalLine({
-        item, key: 'median', position: item.med, width: boxWidth, boxCenter, rendwidth, rendheight, flipXY
+        item, key: 'median', position: item.med, width: boxWidth, boxCenter, rendWidth, rendHeight, flipXY
       }));
     }
 
@@ -302,13 +302,13 @@ export function buildShapes({
 
       if (isNumber(item.min)) {
         children.push(horizontalLine({
-          item, key: 'whisker', position: item.min, width: whiskerWidth, boxCenter, rendwidth, rendheight, flipXY
+          item, key: 'whisker', position: item.min, width: whiskerWidth, boxCenter, rendWidth, rendHeight, flipXY
         }));
       }
 
       if (isNumber(item.max)) {
         children.push(horizontalLine({
-          item, key: 'whisker', position: item.max, width: whiskerWidth, boxCenter, rendwidth, rendheight, flipXY
+          item, key: 'whisker', position: item.max, width: whiskerWidth, boxCenter, rendWidth, rendHeight, flipXY
         }));
       }
     }

@@ -1631,7 +1631,7 @@
               }
             },
             "oob": {
-              "description": "Out of bounds symbol utilizing the symbol API",
+              "description": "EXPERIMENTAL: Out of bounds symbol utilizing the symbol API",
               "optional": true,
               "kind": "object",
               "entries": {

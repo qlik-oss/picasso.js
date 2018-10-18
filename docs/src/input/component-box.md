@@ -161,7 +161,10 @@ Example:
 Candlestick example:
 ![Candlestick example](/img/candlestick-chart.png)
 
-### Out of bounds 
+### Out of bounds *EXPERIMENTAL*
+
+> Please note - this is an experimental feature and may be subject to change or removal without deprecation 
+
 If a box or all of it's data is "out of bounds" i.e. outside of the renderable area, the box will not be rendered at all, 
 instead the marker will display an arrow pointing towards where the box is. It's known as the "out of bounds arrow".
 

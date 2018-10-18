@@ -71,7 +71,7 @@ export default function box(picasso) {
  * @property {number} [median.show=true]
  * @property {string} [median.stroke='#000']
  * @property {number} [median.strokeWidth=1]
- * @property {object} [oob] Out of bounds symbol utilizing the symbol API
+ * @property {object} [oob] EXPERIMENTAL: Out of bounds symbol utilizing the symbol API
  * @property {number} [oob.show=true]
  * @property {string} [oob.type='n-polygon'] Type of the symbol to be used
  * @property {string} [oob.fill='#999'] Fill color of the symbol
