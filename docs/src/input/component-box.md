@@ -22,8 +22,7 @@ It presumes certain values have been bound to the data, and will behave differen
 on what data props are mapped to the component.
 
 To create a full boxplot it requires a "major" and "minor" scale, a field to extract (major),
-and props (minor) for each field. Major is similar to what a dimension would be using the
-Qlik data formats, and minor is similar to one or more measures.
+and props (minor) for each field.
 
 For a full-featured visual box plot without interactions, the properties and settings, at a minimum,
 look something like this:
