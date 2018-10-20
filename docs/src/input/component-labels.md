@@ -79,7 +79,7 @@ There are also two different directions 'horizontal' and 'rotated'.
 #### Example
 
 ```js
-componenst: [
+components: [
   {
     type: 'pie',
     key: 'pie',
@@ -137,7 +137,7 @@ Use align, justify & padding to control the placement labels in the shape. The t
 #### Example
 
 ```js
-componenst: [
+components: [
   {
     type: 'rows',
     key: 'rects',
