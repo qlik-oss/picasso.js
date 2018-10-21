@@ -239,9 +239,9 @@ describe('Chart', () => {
         return [];
       }
     });
-    function createComp(order) {
+    function createComp(key, order = key) {
       return {
-        key: `comp${order}`,
+        key: `comp${key}`,
         displayOrder: order,
         type: 'custom-log-render'
       };
@@ -250,9 +250,9 @@ describe('Chart', () => {
     const comp0 = createComp(0);
     const comp1 = createComp(1);
     const comp2 = createComp(2);
+    const comp3 = createComp(3, 1);
 
-    settings.components.push(comp2);
-    settings.components.push(comp0);
+    settings.components.push(comp2, comp0);
     const instance = chart({
       element,
       data: { data },
@@ -265,5 +265,11 @@ describe('Chart', () => {
       settings
     });
     expect(renderOrder).to.eql(['comp0', 'comp1', 'comp2']);
+    renderOrder = [];
+    settings.components.push(comp3);
+    instance.update({
+      settings
+    });
+    expect(renderOrder).to.eql(['comp0', 'comp1', 'comp3', 'comp2']);
   });
 });
