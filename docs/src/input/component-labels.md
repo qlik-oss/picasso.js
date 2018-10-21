@@ -82,7 +82,7 @@ There are also two different directions 'horizontal' and 'rotated'.
 components: [
   {
     type: 'pie',
-    key: 'pie',
+    key: 'myPie',
     displayOrder: 1,
     /* ... */
   },
@@ -91,7 +91,7 @@ components: [
     displayOrder: 2 // must be larger than the displayOrder for the 'pie' component
     settings: {
       sources: [{
-        component: 'pie',
+        component: 'myPie',
         selector: 'path', // select all 'path' shapes from the 'pie' component
         strategy: {
           type: 'slice', // the strategy type
