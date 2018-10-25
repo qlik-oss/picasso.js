@@ -1,3 +1,5 @@
+import extend from 'extend';
+
 /**
  * Short-hand for max(min())
  *
@@ -37,5 +39,88 @@ export function resolveDiff({
     actualDiff,
     startModifier,
     actualLow
+  };
+}
+
+/**
+ * A horizontal line shape (for median and whiskers)
+ * @param {number} bandwidth The current bandwidth for this item
+ * @param {object} item A resolved style item to render with major and box width variables, minWidthPx and maxWidthPx
+ * @param {number} maxMajorWidth The actual maximum major width
+ * @ignore
+ */
+export function getBoxWidth(bandwidth, item, maxMajorWidth) {
+  const boxWidth = Math.min(bandwidth * item.box.width, isNaN(item.box.maxWidthPx) ? maxMajorWidth : item.box.maxWidthPx / maxMajorWidth);
+  return isNaN(item.box.minWidthPx) ? boxWidth : Math.max(item.box.minWidthPx / maxMajorWidth, boxWidth);
+}
+
+/**
+ * Generic item calculation for each box item/container
+ * @param {number} i index
+ * @param {number} width width of the calc area
+ * @param {number} height height of the calc area
+ * @param {object[]} resolved array of resolved items
+ * @param {string[]} keys array of keys to refer to the resolved items
+ * @param {boolean} flipXY flip X, Y, width and height props
+ * @ignore
+ */
+export function calcItemRenderingOpts({
+  i, width, height, resolved, keys, flipXY
+}) {
+  let major;
+  let majorVal = null;
+  let majorEndVal = null;
+
+  if (typeof resolved.major.settings.binStart !== 'undefined') { // if start and end is defined
+    majorVal = resolved.major.items[i].binStart;
+    majorEndVal = resolved.major.items[i].binEnd;
+    major = resolved.major.settings.binStart.scale;
+  } else {
+    major = resolved.major.settings.major.scale;
+    majorVal = major ? resolved.major.items[i].major : 0;
+  }
+
+  let bandwidth = 0;
+  if (!major) {
+    bandwidth = 1;
+  } else if (major.bandwidth) {
+    bandwidth = major.bandwidth();
+    majorVal -= (bandwidth / 2);
+  } else {
+    bandwidth = majorEndVal - majorVal;
+  }
+
+  let item = extend({}, {
+    major: majorVal,
+    majorEnd: majorEndVal
+  }, resolved.minor.items[i]);
+
+  keys.forEach(key => (item[key] = resolved[key].items[i]));
+
+  const maxMajorWidth = flipXY ? height : width;
+  const boxWidth = getBoxWidth(bandwidth, item, maxMajorWidth);
+  const boxPadding = (bandwidth - boxWidth) / 2;
+  const boxCenter = boxPadding + item.major + (boxWidth / 2);
+
+  const rendWidth = width;
+  const rendHeight = height;
+
+
+  const allValidValues = [item.min, item.start, item.med, item.end, item.max].filter(v => typeof v === 'number' && !Number.isNaN(v));
+
+  const isLowerOutOfBounds = Math.min(...allValidValues) < 0 && Math.max(...allValidValues) < 0;
+  const isHigherOutOfBounds = Math.min(...allValidValues) > 1 && Math.max(...allValidValues) > 1;
+  const isOutOfBounds = isLowerOutOfBounds || isHigherOutOfBounds;
+
+  return {
+    item,
+    boxCenter,
+    boxWidth,
+    boxPadding,
+    rendWidth,
+    rendHeight,
+    isLowerOutOfBounds,
+    isHigherOutOfBounds,
+    isOutOfBounds
   };
 }

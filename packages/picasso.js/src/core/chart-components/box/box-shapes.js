@@ -1,5 +1,5 @@
 import extend from 'extend';
-import { resolveDiff } from './box-math';
+import { resolveDiff, calcItemRenderingOpts } from './box-math';
 
 import { isNumber } from '../../utils/is-number';
 
@@ -179,17 +179,6 @@ export function horizontalLine({
   });
 }
 
-/**
- * A horizontal line shape (for median and whiskers)
- * @param {number} bandwidth The current bandwidth for this item
- * @param {object} item A resolved style item to render with major and box width variables, minWidthPx and maxWidthPx
- * @param {number} maxMajorWidth The actual maximum major width
- * @ignore
- */
-export function getBoxWidth(bandwidth, item, maxMajorWidth) {
-  const boxWidth = Math.min(bandwidth * item.box.width, isNaN(item.box.maxWidthPx) ? maxMajorWidth : item.box.maxWidthPx / maxMajorWidth);
-  return isNaN(item.box.minWidthPx) ? boxWidth : Math.max(item.box.minWidthPx / maxMajorWidth, boxWidth);
-}
 
 export function buildShapes({
   width,
@@ -205,74 +194,62 @@ export function buildShapes({
 
   const output = [];
 
-  let major = null;
   const items = resolved.major.items;
 
   for (let i = 0, len = items.length; i < len; i++) {
+    const {
+      item,
+      boxCenter,
+      boxWidth,
+      boxPadding,
+      rendWidth,
+      rendHeight,
+      isLowerOutOfBounds,
+      isHigherOutOfBounds,
+      isOutOfBounds
+    } = calcItemRenderingOpts({
+      i, width, height, resolved, keys, flipXY
+    });
+
     const d = items[i].data;
+
     let children = [];
-
-    let majorVal = null;
-    let majorEndVal = null;
-
-    if (typeof resolved.major.settings.binStart !== 'undefined') { // if start and end is defined
-      majorVal = resolved.major.items[i].binStart;
-      majorEndVal = resolved.major.items[i].binEnd;
-      major = resolved.major.settings.binStart.scale;
-    } else {
-      major = resolved.major.settings.major.scale;
-      majorVal = major ? resolved.major.items[i].major : 0;
-    }
-
-    let bandwidth = 0;
-    if (!major) {
-      bandwidth = 1;
-    } else if (major.bandwidth) {
-      bandwidth = major.bandwidth();
-      majorVal -= (bandwidth / 2);
-    } else {
-      bandwidth = majorEndVal - majorVal;
-    }
-
-    let item = extend({}, {
-      major: majorVal,
-      majorEnd: majorEndVal
-    }, resolved.minor.items[i]);
-
-    keys.forEach(key => (item[key] = resolved[key].items[i]));
-
-    const maxMajorWidth = flipXY ? height : width;
-    const boxWidth = getBoxWidth(bandwidth, item, maxMajorWidth);
-    const boxPadding = (bandwidth - boxWidth) / 2;
-    const boxCenter = boxPadding + item.major + (boxWidth / 2);
-
-    const rendWidth = width;
-    const rendHeight = height;
-
-
-    const allValidValues = [item.min, item.start, item.med, item.end, item.max].filter(v => typeof v === 'number' && !Number.isNaN(v));
-
-    const isLowerOutOfBounds = Math.min(...allValidValues) < 0 && Math.max(...allValidValues) < 0;
-    const isHigherOutOfBounds = Math.min(...allValidValues) > 1 && Math.max(...allValidValues) > 1;
-    const isOutOfBounds = isLowerOutOfBounds || isHigherOutOfBounds;
 
     /* OUT OF BOUNDS */
     if (item.oob.show && isLowerOutOfBounds) {
       children.push(oob({
-        item, value: 0, boxCenter, rendWidth, rendHeight, flipXY, symbol
+        item,
+        value: 0,
+        boxCenter,
+        rendWidth,
+        rendHeight,
+        flipXY,
+        symbol
       }));
     }
 
     if (item.oob.show && isHigherOutOfBounds) {
       children.push(oob({
-        item, value: 1, boxCenter, rendWidth, rendHeight, flipXY, symbol
+        item,
+        value:
+        1,
+        boxCenter,
+        rendWidth,
+        rendHeight,
+        flipXY,
+        symbol
       }));
     }
 
     /* THE BOX */
     if (!isOutOfBounds && item.box.show && isNumber(item.start) && isNumber(item.end)) {
       children.push(box({
-        item, boxWidth, boxPadding, rendWidth, rendHeight, flipXY
+        item,
+        boxWidth,
+        boxPadding,
+        rendWidth,
+        rendHeight,
+        flipXY
       }));
     }
 
@@ -285,14 +262,32 @@ export function buildShapes({
 
     if (!isOutOfBounds && item.line.show && isNumber(item.max) && isNumber(item.end)) {
       children.push(verticalLine({
-        item, from: item.max, to: item.end, boxCenter, rendWidth, rendHeight, flipXY
+        item,
+        from:
+        item.max,
+        to:
+        item.end,
+        boxCenter,
+        rendWidth,
+        rendHeight,
+        flipXY
       }));
     }
 
     /* MEDIAN */
     if (!isOutOfBounds && item.median.show && isNumber(item.med)) {
       children.push(horizontalLine({
-        item, key: 'median', position: item.med, width: boxWidth, boxCenter, rendWidth, rendHeight, flipXY
+        item,
+        key:
+        'median',
+        position:
+        item.med,
+        width:
+        boxWidth,
+        boxCenter,
+        rendWidth,
+        rendHeight,
+        flipXY
       }));
     }
 
@@ -302,13 +297,33 @@ export function buildShapes({
 
       if (isNumber(item.min)) {
         children.push(horizontalLine({
-          item, key: 'whisker', position: item.min, width: whiskerWidth, boxCenter, rendWidth, rendHeight, flipXY
+          item,
+          key:
+          'whisker',
+          position:
+          item.min,
+          width:
+          whiskerWidth,
+          boxCenter,
+          rendWidth,
+          rendHeight,
+          flipXY
         }));
       }
 
       if (isNumber(item.max)) {
         children.push(horizontalLine({
-          item, key: 'whisker', position: item.max, width: whiskerWidth, boxCenter, rendWidth, rendHeight, flipXY
+          item,
+          key:
+          'whisker',
+          position:
+          item.max,
+          width:
+          whiskerWidth,
+          boxCenter,
+          rendWidth,
+          rendHeight,
+          flipXY
         }));
       }
     }

@@ -1,4 +1,5 @@
 import boxComponent from '../core/chart-components/box';
+import boxHatComponent from '../core/chart-components/box-hat';
 import pointComponent from '../core/chart-components/point';
 import pieComponent from '../core/chart-components/pie';
 import gridLineComponent from '../core/chart-components/grid';
@@ -22,6 +23,7 @@ import {
 
 export default [
   boxComponent,
+  boxHatComponent,
   pointComponent,
   pieComponent,
   gridLineComponent,
