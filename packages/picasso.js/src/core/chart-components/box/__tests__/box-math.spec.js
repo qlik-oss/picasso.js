@@ -1,4 +1,4 @@
-import { cap, resolveDiff } from '../box-math';
+import { cap, resolveDiff, getBoxWidth } from '../box-math';
 
 describe('box math', () => {
   describe('cap', () => {
@@ -52,6 +52,41 @@ describe('box math', () => {
       expect(resolveDiff({
         start: 0.1, end: 0.12, minPx: 50, maxPx: 100
       }).actualLow).to.equal(-14);
+    });
+  });
+
+  describe('getBoxWidth', () => {
+    let item;
+    let avaialbleWidth;
+    let bandwidth;
+
+    beforeEach(() => {
+      avaialbleWidth = 100;
+      bandwidth = 0.1;
+      item = {
+        box: {
+          width: 0.5,
+          maxWidthPx: NaN,
+          minWidthPx: NaN
+        }
+      };
+    });
+
+    it('width is between min and max pixel width', () => {
+      const w = getBoxWidth(bandwidth, item, avaialbleWidth);
+      expect(w).to.equal(0.05);
+    });
+
+    it('width is less than min width', () => {
+      item.box.minWidthPx = 0.1 * avaialbleWidth;
+      const w = getBoxWidth(bandwidth, item, avaialbleWidth);
+      expect(w).to.equal(0.1);
+    });
+
+    it('width is larger than max width', () => {
+      item.box.maxWidthPx = 0.01 * avaialbleWidth;
+      const w = getBoxWidth(bandwidth, item, avaialbleWidth);
+      expect(w).to.equal(0.01);
     });
   });
 });
