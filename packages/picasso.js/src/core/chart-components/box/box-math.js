@@ -49,9 +49,11 @@ export function resolveDiff({
  * @param {number} maxMajorWidth The actual maximum major width
  * @ignore
  */
-export function getBoxWidth(bandwidth, item, maxMajorWidth) {
-  const boxWidth = Math.min(bandwidth * item.box.width, isNaN(item.box.maxWidthPx) ? maxMajorWidth : item.box.maxWidthPx / maxMajorWidth);
-  return isNaN(item.box.minWidthPx) ? boxWidth : Math.max(item.box.minWidthPx / maxMajorWidth, boxWidth);
+export function getBoxWidth({
+  bandwidth, width, minWidthPx, maxWidthPx, maxMajorWidth
+}) {
+  const boxWidth = Math.min(bandwidth * width, isNaN(maxWidthPx) ? maxMajorWidth : maxWidthPx / maxMajorWidth);
+  return isNaN(minWidthPx) ? boxWidth : Math.max(minWidthPx / maxMajorWidth, boxWidth);
 }
 
 /**
@@ -62,10 +64,11 @@ export function getBoxWidth(bandwidth, item, maxMajorWidth) {
  * @param {object[]} resolved array of resolved items
  * @param {string[]} keys array of keys to refer to the resolved items
  * @param {boolean} flipXY flip X, Y, width and height props
+ * @param {string} calcKey the key which to compute width on
  * @ignore
  */
 export function calcItemRenderingOpts({
-  i, width, height, resolved, keys, flipXY
+  i, width, height, resolved, keys, flipXY, calcKey = 'box'
 }) {
   let major;
   let majorVal = null;
@@ -98,7 +101,15 @@ export function calcItemRenderingOpts({
   keys.forEach(key => (item[key] = resolved[key].items[i]));
 
   const maxMajorWidth = flipXY ? height : width;
-  const boxWidth = getBoxWidth(bandwidth, item, maxMajorWidth);
+
+  const boxWidth = getBoxWidth({
+    bandwidth,
+    width: item[calcKey].width,
+    minWidthPx: item[calcKey].minWidthPx,
+    maxWidthPx: item[calcKey].maxWidthPx,
+    maxMajorWidth
+  });
+
   const boxPadding = (bandwidth - boxWidth) / 2;
   const boxCenter = boxPadding + item.major + (boxWidth / 2);
 

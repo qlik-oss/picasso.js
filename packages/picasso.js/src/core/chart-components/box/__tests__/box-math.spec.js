@@ -57,11 +57,11 @@ describe('box math', () => {
 
   describe('getBoxWidth', () => {
     let item;
-    let avaialbleWidth;
+    let maxMajorWidth;
     let bandwidth;
 
     beforeEach(() => {
-      avaialbleWidth = 100;
+      maxMajorWidth = 100;
       bandwidth = 0.1;
       item = {
         box: {
@@ -73,19 +73,37 @@ describe('box math', () => {
     });
 
     it('width is between min and max pixel width', () => {
-      const w = getBoxWidth(bandwidth, item, avaialbleWidth);
+      const w = getBoxWidth({
+        bandwidth,
+        width: item.box.width,
+        minWidthPx: item.box.minWidthPx,
+        maxWidthPx: item.box.maxWidthPx,
+        maxMajorWidth
+      });
       expect(w).to.equal(0.05);
     });
 
     it('width is less than min width', () => {
-      item.box.minWidthPx = 0.1 * avaialbleWidth;
-      const w = getBoxWidth(bandwidth, item, avaialbleWidth);
+      item.box.minWidthPx = 0.1 * maxMajorWidth;
+      const w = getBoxWidth({
+        bandwidth,
+        width: item.box.width,
+        minWidthPx: item.box.minWidthPx,
+        maxWidthPx: item.box.maxWidthPx,
+        maxMajorWidth
+      });
       expect(w).to.equal(0.1);
     });
 
     it('width is larger than max width', () => {
-      item.box.maxWidthPx = 0.01 * avaialbleWidth;
-      const w = getBoxWidth(bandwidth, item, avaialbleWidth);
+      item.box.maxWidthPx = 0.01 * maxMajorWidth;
+      const w = getBoxWidth({
+        bandwidth,
+        width: item.box.width,
+        minWidthPx: item.box.minWidthPx,
+        maxWidthPx: item.box.maxWidthPx,
+        maxMajorWidth
+      });
       expect(w).to.equal(0.01);
     });
   });

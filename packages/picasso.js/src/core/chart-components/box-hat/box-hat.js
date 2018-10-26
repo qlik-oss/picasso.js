@@ -1,19 +1,23 @@
 import extend from 'extend';
 
-import { resolveDiff, calcItemRenderingOpts } from '../box/box-math';
+import pointsToPath from '../../utils/points-to-path';
+
+import { calcItemRenderingOpts } from '../box/box-math';
 import complexResolver from '../box/box-resolver';
 
 const DEFAULT_DATA_SETTINGS = {
-  box: {
+  hat: {
     show: true,
-    fill: '#fff',
+    fill: '#999',
     stroke: '#000',
-    strokeWidth: 1,
+    strokeWidth: 0,
     strokeLinejoin: 'miter',
     width: 1,
     maxWidthPx: undefined,
     minWidthPx: 1,
-    minHeightPx: 1
+    minHeightPx: 1,
+    alignment: 1,
+    location: 'above'
   }
 };
 
@@ -30,70 +34,56 @@ const dataKeys = Object.keys(DEFAULT_DATA_SETTINGS);
  * @param {boolean} params.flipXY wether or not to flip X and Y coordinates together with Width and Height
  * @ignore
  */
-export function box({
-  item, boxWidth, boxPadding, rendWidth, rendHeight, flipXY, symbol
+export function hat({
+  item, boxWidth, boxPadding, rendWidth, rendHeight, flipXY
 }) {
   let x = 'x';
   let y = 'y';
-  let width = 'width';
-  let height = 'height';
-  let calcwidth = rendWidth;
-  let calcheight = rendHeight;
+  let calcWidth = rendWidth;
+  let calcHeight = rendHeight;
+  let alignment = item.hat.alignment || 1;
 
   if (flipXY) {
     x = 'y';
     y = 'x';
-    width = 'height';
-    height = 'width';
-    calcwidth = rendHeight;
-    calcheight = rendWidth;
+    calcWidth = rendHeight;
+    calcHeight = rendWidth;
+    alignment = 1 - alignment;
   }
 
-  const { actualDiff, actualLow } = resolveDiff({
-    start: item.start, end: item.end, minPx: item.box.minHeightPx, maxPx: calcheight
+  let left = (boxPadding + item.major) * calcWidth;
+  let top = 0;
+
+  let contract = 8;
+  let symExtend = 10;
+
+  let points = [
+    { [x]: left, [y]: top + calcHeight },
+    { [x]: left + (boxWidth * alignment * calcWidth), [y]: top + contract },
+    { [x]: left + (boxWidth * calcWidth), [y]: top + calcHeight },
+    { [x]: left + (boxWidth * calcWidth), [y]: top + calcHeight + symExtend },
+    { [x]: left, [y]: top + calcHeight + symExtend }
+  ];
+
+  const hat1 = extend({}, item.hat, {
+    type: 'path',
+    d: pointsToPath(points)
   });
 
-  const hat1 = symbol(extend({}, item.box, {
-    type: 'advanced-triangle',
-    [x]: (boxPadding + item.major) * calcwidth,
-    [y]: 0,
-    [height]: calcheight,
-    [width]: boxWidth * calcwidth,
-    alignment: 1,
-    extend: 10,
-    contract: 8,
-    direction: 'up',
-    data: item.data || {}
-  }));
+  points = [
+    { [x]: left, [y]: top - symExtend },
+    { [x]: left, [y]: top },
+    { [x]: left + (boxWidth * (1 - alignment) * calcWidth), [y]: top + calcHeight - contract },
+    { [x]: left + (boxWidth * calcWidth), [y]: top },
+    { [x]: left, [y]: top - symExtend }
+  ];
 
-  const hat2 = symbol(extend({}, item.box, {
-    type: 'advanced-triangle',
-    [x]: ((boxPadding + item.major) - (boxWidth / 2)) * calcwidth + 5,
-    [y]: calcheight,
-    [height]: calcheight,
-    [width]: boxWidth * calcwidth,
-    alignment: 1,
-    extend: 10,
-    contract: 8,
-    direction: 'down',
-    data: item.data || {}
-  }));
-
-  console.log(hat1, hat2);
+  const hat2 = extend({}, item.hat, {
+    type: 'path',
+    d: pointsToPath(points)
+  });
 
   return [hat1, hat2];
-
-  return extend({}, item.box, {
-    type: 'rect',
-    [x]: (boxPadding + item.major) * calcwidth,
-    [y]: actualLow,
-    [height]: actualDiff,
-    [width]: boxWidth * calcwidth,
-    data: item.data || {},
-    collider: {
-      type: null
-    }
-  });
 }
 
 function buildShapes({
@@ -101,8 +91,7 @@ function buildShapes({
   height,
   flipXY,
   resolved,
-  keys,
-  symbol
+  keys
 }) {
   const output = [];
 
@@ -117,23 +106,22 @@ function buildShapes({
       rendHeight,
       isOutOfBounds
     } = calcItemRenderingOpts({
-      i, width, height, resolved, keys, flipXY
+      i, width, height, resolved, keys, flipXY, calcKey: 'hat'
     });
 
     const d = items[i].data;
 
     let children = [];
 
-    /* THE BOX */
-    if (!isOutOfBounds && item.box.show) {
-      children.push(...box({
+    /* THE HAT */
+    if (!isOutOfBounds && ((Math.min(item.start, item.end) < 0 && item.hat.location === 'above') || (Math.max(item.start, item.end) > 1 && item.hat.location === 'below'))) {
+      children.push(...hat({
         item,
         boxWidth,
         boxPadding,
         rendWidth,
         rendHeight,
-        flipXY,
-        symbol
+        flipXY
       }));
     }
 
@@ -156,10 +144,7 @@ const component = {
     settings: {},
     data: {},
     style: {
-      box: '$shape',
-      line: '$shape-guide',
-      whisker: '$shape-guide',
-      median: '$shape-guide--inverted'
+      hat: '$shape'
     }
   },
   created() {
@@ -171,18 +156,15 @@ const component = {
   beforeRender(opts) {
     this.rect = opts.size;
   },
-  preferredSize(opts) {
-    console.log(opts);
-    return 40;
+  preferredSize(/* opts */) {
+    return 25; // TODO
   },
   render({ data }) {
     const { width, height } = this.rect;
 
-    console.log('hai', this.rect);
-
     const flipXY = this.settings.settings.orientation === 'horizontal';
 
-    const { style, resolver, symbol } = this;
+    const { style, resolver } = this;
 
     const resolved = complexResolver({
       keys: dataKeys,
@@ -204,8 +186,7 @@ const component = {
       height,
       flipXY,
       resolved,
-      keys: dataKeys,
-      symbol
+      keys: dataKeys
     });
 
     return shapes;

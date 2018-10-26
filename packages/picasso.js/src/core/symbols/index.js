@@ -1,5 +1,4 @@
 import { mappedAttributes } from '../scene-graph/attributes';
-import advancedTriangle from './advanced-triangle';
 import circle from './circle';
 import diamond from './diamond';
 import saltire from './saltire';
@@ -14,7 +13,6 @@ import registry from '../utils/registry';
 
 const reg = registry();
 
-reg.add('advanced-triangle', advancedTriangle);
 reg.add('circle', circle);
 reg.add('diamond', diamond);
 reg.add('saltire', saltire);
