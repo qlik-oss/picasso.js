@@ -1,5 +1,5 @@
 function isMajorTick(tick) {
-  return !tick.isMinor;
+  return !tick.isMinor && tick.position >= 0 && tick.position <= 1;
 }
 
 function isVerticalLabelOverlapping({
