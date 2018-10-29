@@ -73,6 +73,24 @@ class SceneNode {
     this._collider = () => colliderToShape(node, this._dpi);
     this._desc = node.desc;
     this._tag = node.tag;
+    this._children = () => node.children.map(n => new SceneNode(n));
+    this._parent = () => (node.parent ? new SceneNode(node.parent) : null);
+  }
+
+  /**
+   * Get child nodes
+   * @type {SceneNode[]}
+   */
+  get children() {
+    return this._children();
+  }
+
+  /**
+   * Get parent node
+   * @type {SceneNode}
+   */
+  get parent() {
+    return this._parent();
   }
 
   /**

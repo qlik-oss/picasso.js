@@ -19,7 +19,12 @@ describe('Scene Node', () => {
       desc: {
         myProp: 1337
       },
-      tag: 'Hello world'
+      tag: 'Hello world',
+      children: [
+        { type: 'child 1' },
+        { type: 'child 2' }
+      ],
+      parent: { type: 'parent node' }
     };
 
     nodeMock.boundingRect = sinon.stub();
@@ -28,6 +33,25 @@ describe('Scene Node', () => {
     });
 
     sceneNode = create(nodeMock);
+  });
+
+  it('should return child nodes', () => {
+    const c = sceneNode.children;
+    expect(c).to.be.of.length(2);
+    expect(c).to.containSubset([
+      { type: 'child 1' },
+      { type: 'child 2' }
+    ]);
+  });
+
+  it('should return parent node', () => {
+    expect(sceneNode.parent).to.containSubset({ type: 'parent node' });
+  });
+
+  it('should null when there is no parent node', () => {
+    nodeMock.parent = null;
+    sceneNode = create(nodeMock);
+    expect(sceneNode.parent).to.equal(null);
   });
 
   it('should expose node type', () => {
