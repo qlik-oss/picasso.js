@@ -119,12 +119,13 @@ export function hat({
   return [hat1, hat2];
 }
 
-function buildShapes({
+export function buildShapes({
   width,
   height,
   flipXY,
   resolved,
-  keys
+  keys,
+  _calcItemRenderingOpts = calcItemRenderingOpts
 }) {
   const output = [];
 
@@ -138,7 +139,7 @@ function buildShapes({
       rendWidth,
       rendHeight,
       isOutOfBounds
-    } = calcItemRenderingOpts({
+    } = _calcItemRenderingOpts({
       i, width, height, resolved, keys, flipXY, calcKey: 'hat'
     });
 
