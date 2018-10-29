@@ -34,7 +34,7 @@ describe('box hat component', () => {
         type: 'path'
       });
       expect(result[1]).to.be.eql({
-        d: 'M75 -10 L75 0 L225 192 L225 0 L75 -10 Z',
+        d: 'M75 0 L225 192 L225 0 L225 -10 L75 -10 Z',
         someProp: true,
         type: 'path'
       });
@@ -52,7 +52,7 @@ describe('box hat component', () => {
         type: 'path'
       });
       expect(result[1]).to.be.eql({
-        d: 'M-10 100 L0 100 L142 100 L0 300 L-10 100 Z',
+        d: 'M0 100 L142 100 L0 300 L-10 300 L-10 100 Z',
         someProp: true,
         type: 'path'
       });

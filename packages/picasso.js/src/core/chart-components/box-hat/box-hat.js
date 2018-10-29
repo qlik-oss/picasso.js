@@ -104,10 +104,10 @@ export function hat({
   });
 
   points = [
-    { [x]: left, [y]: top - symExtend },
     { [x]: left, [y]: top },
     { [x]: left + (boxWidth * (1 - alignment) * calcWidth), [y]: top + calcHeight - contract },
     { [x]: left + (boxWidth * calcWidth), [y]: top },
+    { [x]: left + (boxWidth * calcWidth), [y]: top - symExtend },
     { [x]: left, [y]: top - symExtend }
   ];
 
