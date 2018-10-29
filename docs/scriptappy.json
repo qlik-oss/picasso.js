@@ -4633,6 +4633,17 @@
         "params": []
       },
       "entries": {
+        "children": {
+          "description": "Get child nodes",
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/SceneNode"
+          }
+        },
+        "parent": {
+          "description": "Get parent node",
+          "type": "#/definitions/SceneNode"
+        },
         "type": {
           "description": "Node type",
           "type": "string"
