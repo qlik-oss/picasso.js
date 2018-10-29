@@ -16,7 +16,7 @@ const DEFAULT_DATA_SETTINGS = {
     maxWidthPx: undefined,
     minWidthPx: 1,
     minHeightPx: 1,
-    alignment: 1,
+    alignment: 0,
     location: 'above'
   }
 };
@@ -113,8 +113,16 @@ function buildShapes({
 
     let children = [];
 
+    let above = 'above';
+    let below = 'below';
+
+    if (flipXY) {
+      above = 'below';
+      below = 'above';
+    }
+
     /* THE HAT */
-    if (!isOutOfBounds && ((Math.min(item.start, item.end) < 0 && item.hat.location === 'above') || (Math.max(item.start, item.end) > 1 && item.hat.location === 'below'))) {
+    if (!isOutOfBounds && ((Math.min(item.start, item.end) < 0 && item.hat.location === above) || (Math.max(item.start, item.end) > 1 && item.hat.location === below))) {
       children.push(...hat({
         item,
         boxWidth,
