@@ -5,18 +5,51 @@ import pointsToPath from '../../utils/points-to-path';
 import { calcItemRenderingOpts } from '../box/box-math';
 import complexResolver from '../box/box-resolver';
 
+/**
+  * @typedef {object}
+  * @alias component--box.settings
+  */
 const DEFAULT_DATA_SETTINGS = {
+  /** Size of the component
+   * @type {number=} */
+  size: 25,
+  /**
+  * @typedef {object}
+  * @alias component--box.settings.hat
+  */
   hat: {
+    /** Wether or not to show the hat
+     * @type {boolean=} */
     show: true,
+    /** Fill color
+     * @type {datum-string=} */
     fill: '#999',
+    /** Stroke color
+     * @type {datum-string=} */
     stroke: '#000',
+    /** Stroke width
+     * @type {datum-number=} */
     strokeWidth: 0,
+    /** Stroke line join
+     * @type {string=} */
     strokeLinejoin: 'miter',
+    /** Hat width (should be same as box)
+     * @type {datum-number=} */
     width: 1,
+    /** Max hat width in pixels (should be same as box)
+     * @type {datum-number=} */
     maxWidthPx: undefined,
+    /** Mininum hat width in pixels (should be same as box)
+     * @type {datum-number=} */
     minWidthPx: 1,
+    /** Mininum hat height in pixels (should be same as box)
+     * @type {datum-number=} */
     minHeightPx: 1,
+    /** Point alignment of the hat (from 0 to 1)
+     * @type {datum-number=} */
     alignment: 0,
+    /** The location of the hat (if it's docked above or below)
+     * @type {string=} */
     location: 'above'
   }
 };
@@ -24,7 +57,7 @@ const DEFAULT_DATA_SETTINGS = {
 const dataKeys = Object.keys(DEFAULT_DATA_SETTINGS);
 
 /**
- * Box shape calculation function
+ * Hat shape calculation function
  * @param {object} params parameters
  * @param {object} params.item Resolved styling item from box component with item.major
  * @param {number} params.boxWidth Un-calculated box width in relative/normalized format
@@ -41,7 +74,7 @@ export function hat({
   let y = 'y';
   let calcWidth = rendWidth;
   let calcHeight = rendHeight;
-  let alignment = item.hat.alignment || 1;
+  let alignment = item.hat.alignment || 0;
 
   if (flipXY) {
     x = 'y';
@@ -164,8 +197,8 @@ const component = {
   beforeRender(opts) {
     this.rect = opts.size;
   },
-  preferredSize(/* opts */) {
-    return 25; // TODO
+  preferredSize() {
+    return (this.settings && this.settings.settings && this.settings.settings.size) || 25;
   },
   render({ data }) {
     const { width, height } = this.rect;

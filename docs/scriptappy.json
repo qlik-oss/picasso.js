@@ -1454,7 +1454,80 @@
         },
         "settings": {
           "description": "Box settings",
-          "type": "#/definitions/component--box/definitions/settings"
+          "type": "#/definitions/component--box/definitions/settings",
+          "kind": "object",
+          "entries": {
+            "hat": {
+              "kind": "object",
+              "entries": {
+                "show": {
+                  "description": "Wether or not to show the hat",
+                  "optional": true,
+                  "defaultValue": true,
+                  "type": "boolean"
+                },
+                "fill": {
+                  "description": "Fill color",
+                  "optional": true,
+                  "defaultValue": "#999",
+                  "type": "#/definitions/datum-string"
+                },
+                "stroke": {
+                  "description": "Stroke color",
+                  "optional": true,
+                  "defaultValue": "#000",
+                  "type": "#/definitions/datum-string"
+                },
+                "strokeWidth": {
+                  "description": "Stroke width",
+                  "optional": true,
+                  "defaultValue": 0,
+                  "type": "#/definitions/datum-number"
+                },
+                "strokeLinejoin": {
+                  "description": "Stroke line join",
+                  "optional": true,
+                  "defaultValue": "miter",
+                  "type": "string"
+                },
+                "width": {
+                  "description": "Hat width (should be same as box)",
+                  "optional": true,
+                  "defaultValue": 1,
+                  "type": "#/definitions/datum-number"
+                },
+                "maxWidthPx": {
+                  "description": "Max hat width in pixels (should be same as box)",
+                  "optional": true,
+                  "type": "#/definitions/datum-number"
+                },
+                "minWidthPx": {
+                  "description": "Mininum hat width in pixels (should be same as box)",
+                  "optional": true,
+                  "defaultValue": 1,
+                  "type": "#/definitions/datum-number"
+                },
+                "minHeightPx": {
+                  "description": "Mininum hat height in pixels (should be same as box)",
+                  "optional": true,
+                  "defaultValue": 1,
+                  "type": "#/definitions/datum-number"
+                },
+                "alignment": {
+                  "description": "Point alignment of the hat (from 0 to 1)",
+                  "optional": true,
+                  "defaultValue": 0,
+                  "type": "#/definitions/datum-number"
+                },
+                "location": {
+                  "description": "The location of the hat (if it's docked above or below)",
+                  "optional": true,
+                  "defaultValue": "above",
+                  "type": "string"
+                }
+              }
+            }
+          }
         }
       },
       "examples": [
@@ -1724,6 +1797,19 @@
               "type": "number"
             }
           }
+        }
+      }
+    },
+    "component--box-hat": {
+      "kind": "object",
+      "entries": {
+        "data": {
+          "description": "Box data",
+          "type": "#/definitions/component--box/definitions/data"
+        },
+        "type": {
+          "defaultValue": "box-hat",
+          "type": "string"
         }
       }
     },
