@@ -114,7 +114,7 @@ const dsv = ({ data, config }) => {
 };
 
 const parseData = ({
-  source, data, cache, config
+  key, data, cache, config
 }) => {
   if (!data) {
     return;
@@ -132,7 +132,7 @@ const parseData = ({
   createFields({
     data: dd,
     cache,
-    source,
+    source: key,
     config
   });
 };
