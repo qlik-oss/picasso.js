@@ -22,7 +22,7 @@ export default function datasets(dataSources, { types, logger }) {
     if (datasetFactory) {
       let key = d.key;
       if (typeof d.key === 'undefined') {
-        logger.warn(`Missing key for dataset at index: ${i}. Using index as key.`);
+        logger.warn(`Missing key for dataset. Using index '${i}' as key.`);
         key = i;
       }
       let dataset = datasetFactory({
