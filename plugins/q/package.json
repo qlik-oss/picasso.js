@@ -23,6 +23,6 @@
     "d3-hierarchy": "^1.1.8",
     "d3-scale": "^2.1.2",
     "extend": "^3.0.2",
-    "number-format.js": "^1.1.11"
+    "number-format.js": "^2.0.5"
   }
 }
