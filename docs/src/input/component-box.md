@@ -157,7 +157,37 @@ Example:
 }
 ```
 
+Candlestick example:
 ![Candlestick example](/img/candlestick-chart.png)
+
+### Out of bounds *EXPERIMENTAL*
+
+> Please note - this is an experimental feature and may be subject to change or removal without deprecation 
+
+If a box or all of it's data is "out of bounds" i.e. outside of the renderable area, the box will not be rendered at all, 
+instead the marker will display an arrow pointing towards where the box is. It's known as the "out of bounds arrow".
+
+The OOB feature can be turned off using 
+
+```js 
+{
+  type: 'box',
+  data: {
+    [data props here]
+  },
+  settings: {
+    major: { scale: 'x' },
+    minor: { scale: 'y' },
+    oob: {
+      show: false // turn off out of bounds arrows
+    }
+  }
+}
+```
+
+Out of bounds arrow example:
+![Out of bounds arrow example](/img/box-oob-arrow.png)
+
 
 ## API Reference 
 

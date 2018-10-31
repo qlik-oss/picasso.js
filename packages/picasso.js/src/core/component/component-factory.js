@@ -10,13 +10,14 @@ import {
   resolveOverEvent,
   brushFromSceneNodes
 } from './brushing';
+import symbolFactory from '../symbols';
 
 const isReservedProperty = prop => [
   'on', 'preferredSize', 'created', 'beforeMount', 'mounted', 'resize',
   'beforeUpdate', 'updated', 'beforeRender', 'render', 'beforeUnmount', 'beforeDestroy',
   'destroyed', 'defaultSettings', 'data', 'settings', 'formatter',
   'scale', 'chart', 'dockConfig', 'mediator', 'style', 'resolver', 'registries',
-  '_DO_NOT_USE_getInfo'
+  '_DO_NOT_USE_getInfo', 'symbol'
 ].some(name => name === prop);
 
 function prepareContext(ctx, definition, opts) {
@@ -38,7 +39,8 @@ function prepareContext(ctx, definition, opts) {
     registries,
     resolver,
     update,
-    _DO_NOT_USE_getInfo
+    _DO_NOT_USE_getInfo,
+    symbol
   } = opts;
 
   // TODO add setters and log warnings / errors to console
@@ -107,6 +109,10 @@ function prepareContext(ctx, definition, opts) {
     } else if (req === 'resolver') {
       Object.defineProperty(ctx, 'resolver', {
         get: resolver
+      });
+    } else if (req === 'symbol') {
+      Object.defineProperty(ctx, 'symbol', {
+        get: symbol
       });
     }
   });
@@ -433,7 +439,8 @@ function componentFactory(definition, context = {}) {
     style: () => style,
     update: () => updateNodes,
     registries: () => registries,
-    resolver: () => resolver
+    resolver: () => resolver,
+    symbol: () => symbolFactory
   });
 
   prepareContext(instanceContext, config, {

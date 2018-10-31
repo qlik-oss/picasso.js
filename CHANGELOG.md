@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.15.0"></a>
+# [0.15.0](https://github.com/qlik-oss/picasso.js/compare/v0.14.0...v0.15.0) (2018-10-09)
+
+
+### Bug Fixes
+
+* **box:** add logic for minWidthPx ([#225](https://github.com/qlik-oss/picasso.js/issues/225)) ([567941e](https://github.com/qlik-oss/picasso.js/commit/567941e))
+
+
+### Features
+
+* **line:** add layer sort option ([#228](https://github.com/qlik-oss/picasso.js/issues/228)) ([b7d7e79](https://github.com/qlik-oss/picasso.js/commit/b7d7e79)), closes [#220](https://github.com/qlik-oss/picasso.js/issues/220)
+* **range-brush:** add keys to dom elements ([#226](https://github.com/qlik-oss/picasso.js/issues/226)) ([f152ef6](https://github.com/qlik-oss/picasso.js/commit/f152ef6))
+
+
+
+
+
 <a name="0.14.0"></a>
 # [0.14.0](https://github.com/qlik-oss/picasso.js/compare/v0.13.3...v0.14.0) (2018-10-01)
 

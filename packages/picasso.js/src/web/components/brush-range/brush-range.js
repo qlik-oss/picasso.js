@@ -216,7 +216,9 @@ const brushRangeComponent = {
     rangeClear(e) { this.clear(e); }
   },
   created() {
-    this.state = {};
+    this.state = {
+      key: this.settings.key || 'brush-range'
+    };
   },
   beforeRender(opts) {
     this.state.rect = opts.size;

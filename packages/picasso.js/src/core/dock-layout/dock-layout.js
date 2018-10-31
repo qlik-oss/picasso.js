@@ -172,7 +172,7 @@ function positionComponents(components, logicalContainerRect, reducedRect, conta
   };
 
   const referencedComponents = {};
-
+  const referenceArray = components.slice();
   components.sort((a, b) => {
     if (/^@/.test(b.config.dock())) {
       return -1;
@@ -180,7 +180,11 @@ function positionComponents(components, logicalContainerRect, reducedRect, conta
     if (/^@/.test(a.config.dock())) {
       return 1;
     }
-    return a.config.displayOrder() - b.config.displayOrder();
+    const diff = a.config.displayOrder() - b.config.displayOrder();
+    if (diff === 0) {
+      return referenceArray.indexOf(a) - referenceArray.indexOf(b);
+    }
+    return diff;
   }).forEach((c) => {
     let outerRect = {};
     let rect = {};

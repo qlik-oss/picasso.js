@@ -257,6 +257,45 @@ describe('box component', () => {
     ]);
   });
 
+  it('should render a out of bounds marker', () => {
+    const config = {
+      shapeFn,
+      data: {
+        extract: {}
+      },
+      settings: {
+        major: { scale: 'x' },
+        minor: { scale: 'y' },
+        oob: {
+          fill: 'red'
+        }
+      }
+    };
+
+    chart.dataset().extract.returns([{
+      value: -0.5,
+      min: { value: -0.2 },
+      start: { value: -0.4 },
+      med: { value: -0.5 },
+      end: { value: -0.6 },
+      max: { value: -0.8 }
+    }]);
+
+    const xScale = v => v;
+    xScale.bandwidth = () => 0.5;
+    const yScale = v => v;
+    chart.scale.withArgs('x').returns(xScale);
+    chart.scale.withArgs('y').returns(yScale);
+
+    componentFixture.simulateCreate(boxMarker, config);
+    rendererOutput = componentFixture.simulateRender(opts)[0].children;
+
+    expect(rendererOutput).to.containSubset([{
+      type: 'path',
+      fill: 'red'
+    }]);
+  });
+
   it('should accept only end variable and draw a simple bar chart', () => {
     const config = {
       shapeFn,

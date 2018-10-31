@@ -30,13 +30,23 @@ const DEFAULT_DATA_SETTINGS = {
     maxWidthPx: undefined,
     minWidthPx: 1,
     minHeightPx: 1
+  },
+  oob: {
+    show: true,
+    type: 'n-polygon',
+    fill: '#999',
+    stroke: '#000',
+    strokeWidth: 0,
+    size: 10,
+    sides: 3,
+    startAngle: -90
   }
 };
 
 const dataKeys = Object.keys(DEFAULT_DATA_SETTINGS);
 
 const component = {
-  require: ['chart', 'resolver'],
+  require: ['chart', 'resolver', 'symbol'],
   defaultSettings: {
     settings: {},
     data: {},
@@ -61,7 +71,7 @@ const component = {
 
     const flipXY = this.settings.settings.orientation === 'horizontal';
 
-    const { style, resolver } = this;
+    const { style, resolver, symbol } = this;
 
     const resolved = complexResolver({
       keys: dataKeys,
@@ -83,7 +93,8 @@ const component = {
       height,
       flipXY,
       resolved,
-      keys: dataKeys
+      keys: dataKeys,
+      symbol
     });
 
     return shapes;

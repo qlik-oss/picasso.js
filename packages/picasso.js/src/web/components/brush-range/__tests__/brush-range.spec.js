@@ -151,6 +151,7 @@ describe('Brush Range', () => {
           sel: 'div',
           data: {
             'data-value': 0,
+            'data-key': 'brush-range-edge--1',
             style: rootEdgeStyle
           },
           children: [{
@@ -182,6 +183,7 @@ describe('Brush Range', () => {
           sel: 'div',
           data: {
             'data-value': 1,
+            'data-key': 'brush-range-edge--1',
             style: rootEdgeStyle
           },
           children: [{
@@ -207,6 +209,7 @@ describe('Brush Range', () => {
             data: {
               'data-other-value': 1,
               'data-idx': -1,
+              'data-key': 'brush-range-bubble--1',
               style: bubbleStyle
             },
             children: ['-']
@@ -229,6 +232,7 @@ describe('Brush Range', () => {
             data: {
               'data-other-value': 0,
               'data-idx': -1,
+              'data-key': 'brush-range-bubble--1',
               style: bubbleStyle
             },
             children: ['-']
@@ -275,6 +279,7 @@ describe('Brush Range', () => {
           sel: 'div',
           data: {
             'data-value': 0,
+            'data-key': 'brush-range-edge--1',
             style: rootEdgeStyle
           },
           children: [{
@@ -306,6 +311,7 @@ describe('Brush Range', () => {
           sel: 'div',
           data: {
             'data-value': 1,
+            'data-key': 'brush-range-edge--1',
             style: rootEdgeStyle
           },
           children: [{
@@ -331,6 +337,7 @@ describe('Brush Range', () => {
             data: {
               'data-other-value': 1,
               'data-idx': -1,
+              'data-key': 'brush-range-bubble--1',
               style: bubbleStyle
             },
             children: ['0']
@@ -353,6 +360,7 @@ describe('Brush Range', () => {
             data: {
               'data-other-value': 0,
               'data-idx': -1,
+              'data-key': 'brush-range-bubble--1',
               style: bubbleStyle
             },
             children: ['1']
@@ -392,6 +400,7 @@ describe('Brush Range', () => {
           sel: 'div',
           data: {
             'data-value': 0,
+            'data-key': 'brush-range-edge--1',
             style: rootEdgeStyle
           },
           children: [{
@@ -426,6 +435,7 @@ describe('Brush Range', () => {
           sel: 'div',
           data: {
             'data-value': 1,
+            'data-key': 'brush-range-edge--1',
             style: rootEdgeStyle
           },
           children: [{
@@ -454,6 +464,7 @@ describe('Brush Range', () => {
             data: {
               'data-other-value': 1,
               'data-idx': -1,
+              'data-key': 'brush-range-bubble--1',
               style: bubbleStyle
             },
             children: ['0']
@@ -478,6 +489,7 @@ describe('Brush Range', () => {
             data: {
               'data-other-value': 0,
               'data-idx': -1,
+              'data-key': 'brush-range-bubble--1',
               style: bubbleStyle
             },
             children: ['1']

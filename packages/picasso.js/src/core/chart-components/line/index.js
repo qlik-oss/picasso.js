@@ -8,7 +8,8 @@ import component from './line';
  * @type {string}
  * @memberof component--line
  */
+const type = 'line';
 
 export default function line(picasso) {
-  picasso.component('line', component);
+  picasso.component(type, component);
 }

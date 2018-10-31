@@ -8,10 +8,7 @@ function circle(options) {
     fill: 'black',
     cx: options.x,
     cy: options.y,
-    r: options.size / 2,
-    collider: {
-      type: 'circle'
-    }
+    r: options.size / 2
   };
 }
 

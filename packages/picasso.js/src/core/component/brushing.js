@@ -100,6 +100,10 @@ export function styler(obj, {
     const nodes = getNodes();
     const len = nodes.length;
     for (let i = 0; i < len; i++) {
+      if (!nodes[i].data) {
+        continue;
+      }
+
       nodes[i].__style = nodes[i].__style || {};
       styleProps.forEach((s) => {
         nodes[i].__style[s] = nodes[i][s]; // store original value

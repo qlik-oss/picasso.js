@@ -20,13 +20,17 @@ export default function datasets(dataSources, { types, logger }) {
   sets.forEach((d, i) => {
     let datasetFactory = types(d.type);
     if (datasetFactory) {
-      let key = d.key || i;
+      let key = d.key;
+      if (typeof d.key === 'undefined') {
+        logger.warn(`Missing key for dataset. Using index '${i}' as key.`);
+        key = i;
+      }
       let dataset = datasetFactory({
         key,
         data: d.data,
         config: d.config
       });
-      data[d.key || i] = dataset;
+      data[key] = dataset;
     }
   });
 

@@ -34,6 +34,7 @@ function toFewEdges(polygon) {
 /**
    * Test if a Circle contains a point. If so, returns true and false otherwise.
    * Circle muse have a radius greater then 0.
+   * @private
    * @param {object} circle
    * @param {number} circle.cx - center x-coordinate
    * @param {number} circle.cy - center y-coordinate
@@ -61,6 +62,7 @@ export function testCirclePoint(circle, point) {
    * Test if a Circle collide with a rectangle. If so, returns true and false otherwise.
    * Circle muse have a radius greater then 0.
    * Rectangle must have a width and height greather then 0.
+   * @private
    * @param {object} circle
    * @param {number} circle.cx - center x-coordinate
    * @param {number} circle.cy - center y-coordinate
@@ -99,6 +101,7 @@ export function testCircleRect(circle, rect) {
    * Test if a Circle collide with a line segment. If so, returns true and false otherwise.
    * Circle muse have a radius greater then 0.
    * Line must have a length greater then 0.
+   * @private
    * @param {object} circle
    * @param {number} circle.cx - center x-coordinate
    * @param {number} circle.cy - center y-coordinate
@@ -130,6 +133,7 @@ export function testCircleLine(circle, line) {
 /**
    * Test if a Circle collide with another Circle. If so, returns true and false otherwise.
    * Both circles muse have a radius greater then 0.
+   * @private
    * @param {object} circle
    * @param {number} circle.cx - center x-coordinate
    * @param {number} circle.cy - center y-coordinate
@@ -157,6 +161,7 @@ export function testCircleCircle(circle1, circle2) {
    * Test if a Circle collide with Polygon. If so, returns true and false otherwise.
    * Circle muse have a radius greater then 0.
    * Polygon must contain at least 2 vertices
+   * @private
    * @param {object} circle
    * @param {number} circle.cx - center x-coordinate
    * @param {number} circle.cy - center y-coordinate
@@ -199,6 +204,7 @@ export function testCirclePolygon(circle, polygon) {
 /**
    * Test if a Polygon contains a Point. If so, returns true and false otherwise.
    * Polygon must contain at least 2 vertices
+   * @private
    * @param {object} polygon
    * @param {Array} polygon.vertices - Array of vertices
    * @param {object} polygon.vertices.vertex
@@ -237,6 +243,7 @@ export function testPolygonPoint(polygon, point) {
    * Test if a Polygon collider with a line. If so, returns true and false otherwise.
    * Polygon must contain at least 3 edges.
    * Line must have length greater then 0.
+   * @private
    * @param {object} polygon
    * @param {Array} polygon.vertices - Array of vertices
    * @param {object} polygon.vertices.vertex
@@ -277,6 +284,7 @@ export function testPolygonLine(polygon, line) {
    * Test if a Polygon collider with a rectangle. If so, returns true and false otherwise.
    * Polygon must contain at least 3 edges.
    * Rectangle must width and height greater then 0.
+   * @private
    * @param {object} polygon
    * @param {Array} polygon.vertices - Array of vertices
    * @param {object} polygon.vertices.vertex
@@ -317,6 +325,7 @@ export function testPolygonRect(polygon, rect) {
 /**
    * Test if a Rectangle collide with another rectangle. If so, returns true and false otherwise.
    * Both rectangles must have a width and height greather then 0.
+   * @private
    * @param {object} rect
    * @param {number} rect.x - x-coordinate
    * @param {number} rect.y - y-coordinate
@@ -343,6 +352,7 @@ export function testRectRect(rect1, rect2) {
 /**
    * Test if a Rectangle contains a Point. If so, returns true and false otherwise.
    * Rectangle must have a width and height greather then 0.
+   * @private
    * @param {object} rect
    * @param {number} rect.x - x-coordinate
    * @param {number} rect.y - y-coordinate
@@ -366,6 +376,7 @@ export function testRectPoint(rect, point) {
    * Test if a Rectangle collider with a line. If so, returns true and false otherwise.
    * Rectangle must have a width and height greather then 0.
    * Line must have length greater then 0.
+   * @private
    * @param {object} rect
    * @param {number} rect.x - x-coordinate
    * @param {number} rect.y - y-coordinate
@@ -401,6 +412,7 @@ export function testRectLine(rect, line) {
 /**
    * Test if a Line collider with another line. If so, returns true and false otherwise.
    * Both lines must have length greater then 0.
+   * @private
    * @param {object} line
    * @param {number} line.x1 - x-coordinate
    * @param {number} line.y1 - y-coordinate
@@ -466,6 +478,7 @@ export function testLineLine(line1, line2) {
 /**
    * Test if a Line contains a Point. If so, returns true and false otherwise.
    * Line must have length greater then 0.
+   * @private
    * @param {object} line
    * @param {number} line.x1 - x-coordinate
    * @param {number} line.y1 - y-coordinate

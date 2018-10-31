@@ -29,7 +29,6 @@ function bar(options) {
   const rect = pointsToRect(points);
   rect.type = 'rect';
   rect.fill = 'black';
-  rect.collider = { type: 'rect' };
 
   return rect;
 }

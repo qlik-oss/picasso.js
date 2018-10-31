@@ -62,6 +62,10 @@ describe('Tooltip', () => {
     invokeSpy = sandbox.stub(instance.def, 'invokeRenderer');
   });
 
+  afterEach(() => {
+    sandbox.restore();
+  });
+
   describe('events', () => {
     describe('show', () => {
       it('should do shape loookup and show tooltip', () => {
