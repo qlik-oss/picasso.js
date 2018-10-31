@@ -1,0 +1,155 @@
+<html lang="en">
+  <head>
+    <title>Puppet test</title>
+    <meta charset="utf-8">
+    <base href="/">
+    <script src="node_modules/hammerjs/hammer.min.js"></script>
+    <script src="packages/picasso.js/dist/picasso.js"></script>
+    <script src="plugins/hammer/dist/picasso-hammer.js"></script>
+    <script src="bundle.js"></script>
+    <style>
+      .container {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container"></div>
+    <script>
+    // let = rangeRef;
+    function mouseEventToRangeEvent(e) {
+	    return {
+      center: { x: e.clientX, y: e.clientY },
+      deltaX: e.movementX,
+      deltaY: e.movementY
+    };
+}
+    const element = document.getElementsByClassName('container');
+    const picassochart = window.picasso.chart({
+      element: document.querySelector('.container'),
+      data: [{
+        type: 'matrix',
+        data: [
+          ['Year', 'Month', 'Sales', 'Margin'],
+          ['2010', 'Jan', 1106, 7],
+          ['2010', 'Feb', 5444, 53],
+          ['2010', 'Mar', 147, 64],
+          ['2010', 'Apr', 7499, 47],
+          ['2010', 'May', 430, 62],
+          ['2010', 'June', 9735, 13],
+          ['2010', 'July', 7435, 15],
+        ]
+      }],
+      settings: {
+      interactions: [{
+        type: 'native',
+        events: {
+          mousedown: function(e) {
+            const overComp = this.chart.componentsFromPoint({ x: e.clientX, y: e.clientY })[0];
+            this.rangeRef = overComp && overComp.key === 'y-axis' ? 'rangeY' : 'rangeX';
+            // Fetch the range component instance and trigger the start event
+            this.chart.component(this.rangeRef).emit('rangeStart', mouseEventToRangeEvent(e));
+          },
+          mousemove: function(e) {
+            this.chart.component(this.rangeRef).emit('rangeMove', mouseEventToRangeEvent(e));
+          },
+          mouseup: function(e) {
+            this.chart.component(this.rangeRef).emit('rangeEnd', mouseEventToRangeEvent(e));
+          }
+        }
+      }],
+        scales: {
+          y: {
+            data: { field: 'Sales' },
+            invert: true,
+            include: [0]
+          },
+          c: {
+            data: { field: 'Sales' },
+            type: 'color'
+          },
+          t: { data: { extract: { field: 'Month' } }, padding: 0.3 },
+        },
+        components: [{
+          key: 'y-axis',
+          type: 'axis',
+          dock: 'left',
+          scale: 'y'
+        }, {
+          key: 'x-axis',
+          type: 'axis',
+          dock: 'bottom',
+          scale: 't'
+        }, {
+          key: 'bars',
+          type: 'box',
+          brush: {
+            trigger: [{
+              contexts: ['highlight'],
+              on: 'tap',
+              action: 'toggle'
+            }],
+            consume: [{
+              context: 'highlight',
+              style: {
+                inactive: {
+                  opacity: 0.4
+                }
+              },
+            }]
+          },
+          data: {
+            extract: {
+              field: 'Month',
+              props: {
+                start: 0,
+                end: { field: 'Sales' }
+              }
+            }
+          },
+          settings: {
+            major: { scale: 't' },
+            minor: { scale: 'y' },
+            box: {
+              fill: { scale: 'c', ref: 'end' }
+            }
+          }
+
+        },
+        {
+          key: 'rangeX', // We'll use this reference when setting up our interaction events
+          type: 'brush-range',
+          settings: {
+              brush: 'highlight',
+              direction: 'horizontal',
+              scale: 't',
+              target: {
+                component: 'x-axis' // Use the y-axis as our target and interaction trigger
+              },
+              bubbles: {
+                align: 'start'
+              }
+            }
+        },
+        {
+          key: 'rangeY', // We'll use this reference when setting up our interaction events
+          type: 'brush-range',
+          settings: {
+              brush: 'highlight',
+              direction: 'vertical',
+              scale: 'y',
+              target: {
+                component: 'y-axis' // Use the y-axis as our target and interaction trigger
+              },
+              bubbles: {
+                align: 'end'
+              }
+            }
+        }]
+      }
+    });
+    </script>
+  </body>
+</html>
