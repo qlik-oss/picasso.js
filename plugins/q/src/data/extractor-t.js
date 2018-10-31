@@ -204,7 +204,7 @@ const getHierarchy = (cube, cache, config) => {
   return cache.tree;
 };
 
-function getHierarchyForSMode(dataset) {
+function getHierarchyForSMode(dataset, config) {
   const matrix = dataset.raw().qDataPages[0].qMatrix;
   const order = getColumnOrder(dataset);
   const fields = dataset.fields();
@@ -225,6 +225,10 @@ function getHierarchyForSMode(dataset) {
   for (let r = 0; r < matrix.length; r++) {
     const row = matrix[r];
     let id = '__root';
+    const exclude = config.filter && !config.filter(row);
+    if (exclude) {
+      continue;
+    }
     // let parent = root;
     let isNew = false;
     for (let c = 0; c < dimensions.length; c++) {
@@ -279,7 +283,7 @@ const attachPropsAccessors = ({
 export function augment(config = {}, dataset, cache, util) {
   const cube = dataset.raw();
   const sourceKey = dataset.key();
-  const h = cube.qMode === 'S' ? getHierarchyForSMode(dataset) : getHierarchy(cube, cache, config);
+  const h = cube.qMode === 'S' ? getHierarchyForSMode(dataset, config) : getHierarchy(cube, cache, config);
   if (!h) {
     return null;
   }

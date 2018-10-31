@@ -248,6 +248,17 @@ describe('augment-hierarchy', () => {
       expect(h.descendants().map(child => child.data.v.value)).to.eql([6, 4, 10, 3, 5, 10]);
     });
 
+    it('hierarchy - should use filter function if defined', () => {
+      const filterFn = sinon.stub().returns(true);
+      let h = q({ key: 'nyckel', data: cube }).hierarchy({ filter: filterFn });
+
+      expect(filterFn).to.have.been.called;
+      expect(h.descendants().length).to.eql(6);
+
+      h = q({ key: 'nyckel', data: cube }).hierarchy({ filter: () => false });
+      expect(h.descendants().length).to.eql(1);
+    });
+
     it('hierarchy - should handle empty qColumnOrder', () => {
       cube.qColumnOrder = [];
       cube.qDataPages = [{
