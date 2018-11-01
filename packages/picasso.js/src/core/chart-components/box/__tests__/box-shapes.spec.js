@@ -53,6 +53,49 @@ describe('box shapes', () => {
     });
   });
 
+  it('should create a correct out of bounds shape at the bottom of the graph with flipXY', () => {
+    const item = {
+      major: 0.3,
+      oob: {
+        size: 10
+      }
+    };
+
+    // We mock the symbol() function here
+    let result = oob({
+      value: 1, item, boxCenter: item.major, rendWidth: 200, rendHeight: 150, flipXY: true, symbol: v => v
+    });
+
+    expect(result).to.eql({
+      size: 10,
+      startAngle: 0,
+      x: 195,
+      y: 45
+    });
+
+    item.major = 0.5;
+  });
+
+  it('should create a correct out of bounds shape at the top of the graph with flipXY', () => {
+    const item = {
+      major: 0.75,
+      oob: {
+        size: 10
+      }
+    };
+
+    // We mock the symbol() function here
+    let result = oob({
+      value: 0, item, boxCenter: item.major, rendWidth: 200, rendHeight: 150, flipXY: true, symbol: v => v
+    });
+
+    expect(result).to.eql({
+      size: 10,
+      startAngle: 180,
+      x: 5,
+      y: 112.5
+    });
+  });
 
   describe('box', () => {
     it('should create a correct box shape', () => {
