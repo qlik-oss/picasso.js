@@ -253,6 +253,7 @@ describe('augment-hierarchy', () => {
       let h = q({ key: 'nyckel', data: cube }).hierarchy({ filter: filterFn });
 
       expect(filterFn).to.have.been.called;
+      expect(filterFn).to.have.been.calledWith(cube.qDataPages[0].qMatrix[1]);
       expect(h.descendants().length).to.eql(6);
 
       h = q({ key: 'nyckel', data: cube }).hierarchy({ filter: () => false });
