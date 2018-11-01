@@ -23,18 +23,20 @@ export function oob({
   let y = 'y';
   let calcwidth = rendWidth;
   let calcheight = rendHeight;
+  let startAngle = value < 0.5 ? 90 : -90;
 
   if (flipXY) {
     x = 'y';
     y = 'x';
     calcwidth = rendHeight;
     calcheight = rendWidth;
+    startAngle = value < 0.5 ? 180 : 0;
   }
 
   return symbol(extend({}, item.oob, {
     [x]: boxCenter * calcwidth,
     [y]: Math.max((item.oob.size / 2), Math.min(value * calcheight, calcheight - (item.oob.size / 2))),
-    startAngle: value < 0.5 ? 90 : -90
+    startAngle
   }));
 }
 
