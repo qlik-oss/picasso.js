@@ -18,6 +18,14 @@
   <body>
     <div class="container"></div>
     <script>
+    // let = rangeRef;
+    function mouseEventToRangeEvent(e) {
+	    return {
+      center: { x: e.clientX, y: e.clientY },
+      deltaX: e.movementX,
+      deltaY: e.movementY
+    };
+}
     const element = document.getElementsByClassName('container');
     const picassochart = window.picasso.chart({
       element: document.querySelector('.container'),
@@ -35,6 +43,24 @@
         ]
       }],
       settings: {
+      interactions: [{
+        type: 'native',
+        events: {
+          mousedown: function(e) {
+            const comps = this.chart.componentsFromPoint({ x: e.clientX, y: e.clientY });
+            this.rangeRef = comps.some(c => c.key === 'y-axis') ? 'rangeY' : 'rangeX';
+            // Fetch the range component instance and trigger the start event
+            this.chart.component(this.rangeRef).emit('rangeStart', mouseEventToRangeEvent(e));
+          },
+          mousemove: function(e) {
+            e.preventDefault();
+            this.chart.component(this.rangeRef).emit('rangeMove', mouseEventToRangeEvent(e));
+          },
+          mouseup: function(e) {
+            this.chart.component(this.rangeRef).emit('rangeEnd', mouseEventToRangeEvent(e));
+          }
+        }
+      }],
         scales: {
           y: {
             data: { field: 'Sales' },
@@ -48,10 +74,12 @@
           t: { data: { extract: { field: 'Month' } }, padding: 0.3 },
         },
         components: [{
+          key: 'y-axis',
           type: 'axis',
           dock: 'left',
           scale: 'y'
         }, {
+          key: 'x-axis',
           type: 'axis',
           dock: 'bottom',
           scale: 't'
@@ -89,10 +117,40 @@
               fill: { scale: 'c', ref: 'end' }
             }
           }
+
+        },
+        {
+          key: 'rangeX', // We'll use this reference when setting up our interaction events
+          type: 'brush-range',
+          settings: {
+              brush: 'highlight',
+              direction: 'horizontal',
+              scale: 't',
+              target: {
+                component: 'x-axis' // Use the y-axis as our target and interaction trigger
+              },
+              bubbles: {
+                align: 'start'
+              }
+            }
+        },
+        {
+          key: 'rangeY', // We'll use this reference when setting up our interaction events
+          type: 'brush-range',
+          settings: {
+              brush: 'highlight',
+              direction: 'vertical',
+              scale: 'y',
+              target: {
+                component: 'y-axis' // Use the y-axis as our target and interaction trigger
+              },
+              bubbles: {
+                align: 'end'
+              }
+            }
         }]
       }
     });
-
     </script>
   </body>
 </html>
