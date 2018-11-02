@@ -394,7 +394,7 @@ function chartFn(definition, context) {
    * @param {chart-definition} [chart] - Chart definition
    */
   instance.update = (newProps = {}) => {
-    const { partialData } = newProps;
+    const { partialData, excludeFromUpdate = [] } = newProps;
     if (newProps.data) {
       data = newProps.data;
     }
@@ -426,6 +426,12 @@ function chartFn(definition, context) {
     // Let the "components" array determine order of components
     currentComponents = components.map((comp) => {
       const idx = findComponentIndexByKey(comp.key);
+
+      // Component should not be updated
+      if (excludeFromUpdate.length && excludeFromUpdate.indexOf(comp.key) > -1) {
+        return currentComponents[idx];
+      }
+
       if (idx === -1) {
         // Component is added
         return createComponent(comp, element);

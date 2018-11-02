@@ -120,5 +120,39 @@ describe('Chart', () => {
       expect(create).to.not.throw();
       expect(logger.warn).to.have.been.calledWithExactly('Unknown component: noop');
     });
+
+    it('should not update components specified in excludeFromUpdate array', () => {
+      const components = {
+        box: { has: () => true },
+        point: { has: () => true }
+      };
+      const comp = key => components[key];
+      comp.has = () => true;
+      const comp1UpdatedCb = sinon.spy();
+      const comp2UpdatedCb = sinon.spy();
+      const chartInstance = chart(Object.assign(definition, {
+        settings: {
+          components: [{
+            type: 'box',
+            key: 'comp1',
+            updated: comp1UpdatedCb
+          }, {
+            type: 'point',
+            key: 'comp2',
+            updated: comp2UpdatedCb
+          }]
+        }
+      }), {
+        registries: {
+          component: comp
+        }
+      });
+      chartInstance.update();
+      expect(comp1UpdatedCb).to.have.been.calledOnce;
+      expect(comp2UpdatedCb).to.have.been.calledOnce;
+      chartInstance.update({ excludeFromUpdate: ['comp2'] });
+      expect(comp1UpdatedCb).to.have.been.calledTwice;
+      expect(comp2UpdatedCb).to.have.been.calledOnce;
+    });
   });
 });
