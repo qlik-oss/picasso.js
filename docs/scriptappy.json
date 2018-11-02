@@ -5102,7 +5102,16 @@
       "entries": {
         "brush": {
           "description": "Brush context to apply changes to",
-          "type": "string"
+          "kind": "union",
+          "items": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object"
+            }
+          ],
+          "type": "any"
         },
         "scale": {
           "description": "Scale to extract data from",

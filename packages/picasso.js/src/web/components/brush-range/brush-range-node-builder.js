@@ -201,27 +201,35 @@ export default function buildRange({
   //   color: state.settings.fill
   // }));
 
-  els.push(buildLine({
-    h: state.h,
-    isVertical,
-    borderHit,
-    value: start < end ? vStart : vEnd,
-    pos: top,
-    align: 'start',
-    state,
-    idx
-  }));
+  const valStart = start < end ? vStart : vEnd;
+  const valEnd = start < end ? vEnd : vStart;
+  const [min, max] = hasScale ? state.scale.domain() : [vStart, vEnd];
 
-  els.push(buildLine({
-    h: state.h,
-    isVertical,
-    borderHit,
-    value: start < end ? vEnd : vStart,
-    pos: bottom,
-    align: 'end',
-    state,
-    idx
-  }));
+  if (valStart >= min && valStart <= max) {
+    els.push(buildLine({
+      h: state.h,
+      isVertical,
+      borderHit,
+      value: valStart,
+      pos: top,
+      align: 'start',
+      state,
+      idx
+    }));
+  }
+
+  if (valEnd <= max && valEnd >= min) {
+    els.push(buildLine({
+      h: state.h,
+      isVertical,
+      borderHit,
+      value: valEnd,
+      pos: bottom,
+      align: 'end',
+      state,
+      idx
+    }));
+  }
 
   const bubbles = state.settings.bubbles;
   if (bubbles && bubbles.show) {
@@ -235,29 +243,34 @@ export default function buildRange({
     };
 
     const range = [vStart, vEnd];
-    els.push(buildBubble({
-      h: state.h,
-      isVertical,
-      align: bubbles.align,
-      style,
-      idx,
-      otherValue: start < end ? vEnd : vStart,
-      label: `${state.format(start < end ? vStart : vEnd, range)}`,
-      pos: top,
-      state
-    }));
 
-    els.push(buildBubble({
-      h: state.h,
-      isVertical,
-      align: bubbles.align,
-      style,
-      idx,
-      otherValue: start < end ? vStart : vEnd,
-      label: `${state.format(start < end ? vEnd : vStart, range)}`,
-      pos: bottom,
-      state
-    }));
+    if (valStart >= min && valStart <= max) {
+      els.push(buildBubble({
+        h: state.h,
+        isVertical,
+        align: bubbles.align,
+        style,
+        idx,
+        otherValue: valEnd,
+        label: `${state.format(valStart, range)}`,
+        pos: top,
+        state
+      }));
+    }
+
+    if (valEnd <= max && valEnd >= min) {
+      els.push(buildBubble({
+        h: state.h,
+        isVertical,
+        align: bubbles.align,
+        style,
+        idx,
+        otherValue: valStart,
+        label: `${state.format(valEnd, range)}`,
+        pos: bottom,
+        state
+      }));
+    }
   }
 }
 
@@ -275,23 +288,8 @@ export function getMoveDelta(state) {
 }
 
 export function nodes(state) {
-  if (!state.active) {
+  if (!Array.isArray(state.ranges)) {
     return [];
-  }
-  let vStart = state.start;
-  let vEnd = state.current;
-  if (state.active.idx !== -1) {
-    if (state.active.mode === 'foo') {
-      vStart = Math.min(state.active.start, state.active.end);
-      vEnd = Math.max(state.active.start, state.active.end);
-    } else if (state.active.mode === 'modify') {
-      vStart = Math.min(state.start, state.current);
-      vEnd = Math.max(state.start, state.current);
-    } else {
-      const delta = getMoveDelta(state);
-      vStart = state.active.start + delta;
-      vEnd = state.active.end + delta;
-    }
   }
 
   let els = [];
@@ -300,7 +298,7 @@ export function nodes(state) {
 
   // add all other ranges
   state.ranges.forEach((r, i) => {
-    if (i !== state.active.idx) {
+    if (!state.active || i !== state.active.idx) {
       buildRange({
         borderHit: TARGET_SIZE,
         els,
@@ -313,16 +311,34 @@ export function nodes(state) {
     }
   });
 
-  // add active range
-  buildRange({
-    borderHit: TARGET_SIZE,
-    els,
-    isVertical,
-    state,
-    vStart,
-    vEnd,
-    idx: state.active.idx
-  });
+  if (state.active) {
+    // add active range
+    let vStart = state.start;
+    let vEnd = state.current;
+    if (state.active.idx !== -1) {
+      if (state.active.mode === 'foo') {
+        vStart = Math.min(state.active.start, state.active.end);
+        vEnd = Math.max(state.active.start, state.active.end);
+      } else if (state.active.mode === 'modify') {
+        vStart = Math.min(state.start, state.current);
+        vEnd = Math.max(state.start, state.current);
+      } else {
+        const delta = getMoveDelta(state);
+        vStart = state.active.start + delta;
+        vEnd = state.active.end + delta;
+      }
+    }
+
+    buildRange({
+      borderHit: TARGET_SIZE,
+      els,
+      isVertical,
+      state,
+      vStart,
+      vEnd,
+      idx: state.active.idx
+    });
+  }
 
   return els;
 }
