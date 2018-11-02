@@ -13,9 +13,12 @@
     "clean": "lerna clean",
     "lint": "cross-env FORCE_COLOR=1 lerna run lint",
     "link": "lerna link",
+    "foo": "echo 'barä'",
     "test": "npm run test:unit:coverage && npm run test:component:coverage",
     "test:component:coverage": "aw -c aw.config.js --type component",
-    "test:integration:local": "lerna run test:integration:local",
+    "test:integration:ci": "node ./test/scripts/start-puppet.js",
+    "test:integration:local": "aw puppet -c test/aw.config.js",
+    "test:integration:server": "rollup -c ./test/puppet/rollup.config.js",
     "test:unit:coverage": "aw -c aw.config.js",
     "test:unit:watch": "aw -c aw.config.js -w"
   },
