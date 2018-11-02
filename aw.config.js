@@ -45,10 +45,6 @@ const TYPES = {
   component: {
     glob: `${argv.scope}/test/component/**/*.comp.js`,
     reportDir: 'coverage/component'
-  },
-  puppeteer: {
-    glob: 'test/puppet/**/*.puppet.js',
-    watchGlob: 'test/puppet/**/*.{js,html}'
   }
 };
 

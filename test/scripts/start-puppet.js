@@ -28,5 +28,5 @@ function exec(cmd, stdio = 'inherit') {
   }
 }
 
-server = cp.spawn('npm', ['run', 'test:puppeteer:server']);
-exec('npm run test:puppeteer:local');
+server = cp.spawn('npm', ['run', 'test:integration:server']);
+exec('npm run test:integration:local');

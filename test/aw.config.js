@@ -1,6 +1,4 @@
-process.env.NODE_ENV = 'testNode';
-
 module.exports = {
-  glob: ['test/puppet/**/*.int.js'],
-  watchGlob: ['test/puppet/**/*.{js,html}']
+  glob: ['test/integration/**/*.int.js'],
+  watchGlob: ['test/integration/**/*.{js,html}']
 };
