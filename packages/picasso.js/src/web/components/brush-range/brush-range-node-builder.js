@@ -292,7 +292,7 @@ export function nodes(state) {
 
   const isVertical = state.direction === VERTICAL;
 
-  if (!Array.isArray(state.ranges)) { {
+  if (!Array.isArray(state.ranges)) {
     // add all other ranges
     state.ranges.forEach((r, i) => {
       if (!state.active || i !== state.active.idx) {
