@@ -109,7 +109,7 @@ It is possible to observe brush changes and render a range/s upon change.
       context: '<some-context>',
       observe: true // The brush range is than rendererd every time the brush context changes
     },
-    scale: '<some-linear-scale>
+    scale: '<some-linear-scale>'
   }
 }
 
