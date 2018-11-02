@@ -288,28 +288,26 @@ export function getMoveDelta(state) {
 }
 
 export function nodes(state) {
-  if (!Array.isArray(state.ranges)) {
-    return [];
-  }
-
   let els = [];
 
   const isVertical = state.direction === VERTICAL;
 
-  // add all other ranges
-  state.ranges.forEach((r, i) => {
-    if (!state.active || i !== state.active.idx) {
-      buildRange({
-        borderHit: TARGET_SIZE,
-        els,
-        isVertical,
-        state,
-        vStart: Math.min(r.min, r.max),
-        vEnd: Math.max(r.min, r.max),
-        idx: i
-      });
-    }
-  });
+  if (!Array.isArray(state.ranges)) { {
+    // add all other ranges
+    state.ranges.forEach((r, i) => {
+      if (!state.active || i !== state.active.idx) {
+        buildRange({
+          borderHit: TARGET_SIZE,
+          els,
+          isVertical,
+          state,
+          vStart: Math.min(r.min, r.max),
+          vEnd: Math.max(r.min, r.max),
+          idx: i
+        });
+      }
+    });
+  }
 
   if (state.active) {
     // add active range
