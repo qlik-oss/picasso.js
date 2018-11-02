@@ -3,7 +3,7 @@ import { breakAll, breakWord } from './word-break';
 import { DEFAULT_LINE_HEIGHT, ELLIPSIS_CHAR } from './text-const';
 import { includesLineBreak } from './string-tokenizer';
 
-function generateLineNodes(result, item, lineHeight) {
+function generateLineNodes(result, item, halfLineHeight) {
   const container = { type: 'container', children: [] };
 
   if (typeof item.id !== 'undefined') { // TODO also inherit data attribute and more?
@@ -16,14 +16,16 @@ function generateLineNodes(result, item, lineHeight) {
     const node = extend({}, item);
     node.text = line;
     node._lineBreak = true; // Flag node as processed to avoid duplicate linebreak run
+    currentY += halfLineHeight; // leading height above
 
     if (result.reduced && i === result.lines.length - 1) {
       node.text += ELLIPSIS_CHAR;
     } else {
       delete node.maxWidth;
     }
+
     node.dy = isNaN(node.dy) ? currentY : node.dy + currentY;
-    currentY += lineHeight;
+    currentY += halfLineHeight; // Leading height below
     container.children.push(node);
   });
 
@@ -72,10 +74,10 @@ export function onLineBreak(measureText) {
         return;
       }
 
-      const lineHeight = tm.height * (item.lineHeight || DEFAULT_LINE_HEIGHT);
+      const halfLineHeight = (tm.height * (item.lineHeight || DEFAULT_LINE_HEIGHT)) / 2;
       const result = wordBreakFn(item, wrappedMeasureText(item, measureText));
 
-      state.node = generateLineNodes(result, item, lineHeight); // Convert node to container
+      state.node = generateLineNodes(result, item, halfLineHeight); // Convert node to container
     }
   };
 }

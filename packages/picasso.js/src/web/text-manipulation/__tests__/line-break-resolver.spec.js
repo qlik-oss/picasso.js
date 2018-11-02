@@ -66,9 +66,9 @@ describe('Line Break Resolver', () => {
       node.maxWidth = 3;
       node.lineHeight = 10;
       fn(state);
-      expect(state.node.children[0].dy).to.equal(0);
-      expect(state.node.children[1].dy).to.equal(10);
-      expect(state.node.children[2].dy).to.equal(20);
+      expect(state.node.children[0].dy).to.equal(5);
+      expect(state.node.children[1].dy).to.equal(15);
+      expect(state.node.children[2].dy).to.equal(25);
     });
 
     it('should include dy attribute when calculating position', () => {
@@ -80,9 +80,9 @@ describe('Line Break Resolver', () => {
       node.maxWidth = 3;
       node.lineHeight = 10;
       fn(state);
-      expect(state.node.children[0].dy).to.equal(3);
-      expect(state.node.children[1].dy).to.equal(13);
-      expect(state.node.children[2].dy).to.equal(23);
+      expect(state.node.children[0].dy).to.equal(8);
+      expect(state.node.children[1].dy).to.equal(18);
+      expect(state.node.children[2].dy).to.equal(28);
     });
 
     it('should remove maxWidth attribute and append ellipis char on last line', () => {
