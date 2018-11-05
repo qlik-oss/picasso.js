@@ -3,7 +3,7 @@ import { breakAll, breakWord } from './word-break';
 import { DEFAULT_LINE_HEIGHT, ELLIPSIS_CHAR } from './text-const';
 import { includesLineBreak } from './string-tokenizer';
 
-function generateLineNodes(result, item, halfLineHeight) {
+function generateLineNodes(result, item, halfLead, height) {
   const container = { type: 'container', children: [] };
 
   if (typeof item.id !== 'undefined') { // TODO also inherit data attribute and more?
@@ -16,7 +16,7 @@ function generateLineNodes(result, item, halfLineHeight) {
     const node = extend({}, item);
     node.text = line;
     node._lineBreak = true; // Flag node as processed to avoid duplicate linebreak run
-    currentY += halfLineHeight; // leading height above
+    currentY += halfLead; // leading height above
 
     if (result.reduced && i === result.lines.length - 1) {
       node.text += ELLIPSIS_CHAR;
@@ -25,7 +25,8 @@ function generateLineNodes(result, item, halfLineHeight) {
     }
 
     node.dy = isNaN(node.dy) ? currentY : node.dy + currentY;
-    currentY += halfLineHeight; // Leading height below
+    currentY += height;
+    currentY += halfLead; // Leading height below
     container.children.push(node);
   });
 
@@ -74,10 +75,12 @@ export function onLineBreak(measureText) {
         return;
       }
 
-      const halfLineHeight = (tm.height * (item.lineHeight || DEFAULT_LINE_HEIGHT)) / 2;
+      const lineHeight = tm.height * Math.max((isNaN(item.lineHeight) ? DEFAULT_LINE_HEIGHT : item.lineHeight), 0);
+      const diff = lineHeight - tm.height;
+      const halfLead = diff / 2;
       const result = wordBreakFn(item, wrappedMeasureText(item, measureText));
 
-      state.node = generateLineNodes(result, item, halfLineHeight); // Convert node to container
+      state.node = generateLineNodes(result, item, halfLead, tm.height); // Convert node to container
     }
   };
 }
