@@ -162,7 +162,7 @@ function resolveTarget(ctx) {
 
 /**
  * @typedef {object} component--brush-range-settings
- * @property {string} brush - Brush context to apply changes to
+ * @property {string|object} brush - Brush context to apply changes to
  * @property {string} scale - Scale to extract data from
  * @property {string} [direction=vertical] - Rendering direction [horizontal|vertical]
  * @property {object} [bubbles]
@@ -223,6 +223,13 @@ const brushRangeComponent = {
   beforeRender(opts) {
     this.state.rect = opts.size;
   },
+  renderRanges() {
+    if (!this.state.started) {
+      this.state.ranges = ranges(this.state, this.state.brushInstance);
+      this.state.active = null;
+      render(this.state);
+    }
+  },
   render(h) {
     const stngs = this.settings.settings;
     this.state.direction = stngs.direction === 'vertical' ? VERTICAL : HORIZONTAL;
@@ -239,7 +246,7 @@ const brushRangeComponent = {
     this.state.settings = stngs;
     this.state.style = this.style;
     this.state.offset = offset;
-    this.state.brush = stngs.brush;
+    this.state.brush = typeof stngs.brush === 'object' ? stngs.brush.context : stngs.brush;
     this.state.brushInstance = this.chart.brush(this.state.brush);
     this.state.renderer = this.renderer;
     this.state.multi = !!stngs.multiple;
@@ -262,6 +269,7 @@ const brushRangeComponent = {
       this.state.fauxBrushInstance = brushFactory();
       this.state.findValues = valueRanges => findValues(valueRanges, scale);
     } else {
+      this.state.observeBrush = typeof stngs.brush === 'object' ? stngs.brush.observe : false;
       this.state.fauxBrushInstance = null;
       this.state.findValues = null;
       this.state.scale = scale;
@@ -270,7 +278,20 @@ const brushRangeComponent = {
         this.state.format = scaleData.fields[0].formatter();
       }
     }
-    return [];
+
+    this.state.ranges = ranges(this.state, this.state.brushInstance);
+
+    return [nodes(this.state)];
+  },
+  mounted() {
+    if (this.state.observeBrush && this.state.brushInstance) {
+      this.state.brushInstance.on('update', this.renderRanges);
+    }
+  },
+  beforeDestroy() {
+    if (this.state.observeBrush && this.state.brushInstance) {
+      this.state.brushInstance.removeListener('update', this.renderRanges);
+    }
   },
   start(e) {
     start({
@@ -287,6 +308,7 @@ const brushRangeComponent = {
     }
     end(this.state, ranges);
     render(this.state);
+    this.state.active = null;
   },
   move(e) {
     if (!this.state.started) {
@@ -301,6 +323,8 @@ const brushRangeComponent = {
       this.state.fauxBrushInstance.clear();
     }
     this.state.renderer.render([]);
+    this.state.started = false;
+    this.state.active = null;
   }
 };
 

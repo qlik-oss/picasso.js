@@ -97,6 +97,26 @@ components: [
 ]
 ```
 
+### Observe brush change
+
+It is possible to observe brush changes and render a range/s upon change.
+
+```js
+{
+  type: 'brush-range',
+  settings: {
+    brush: {
+      context: '<some-context>',
+      observe: true // The brush range is than rendererd every time the brush context changes
+    },
+    scale: '<some-linear-scale>'
+  }
+}
+
+// The following code will trigger the brush-range to render
+chartInstance.brush('<some-context>').toggleRange('<key>', { min: 1, max: 2 });
+```
+
 ## API Reference
 
 ### Settings
