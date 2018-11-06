@@ -63,7 +63,7 @@ export default function (legend) {
     render: (obj) => {
       render(obj, api.renderer, itemized);
     },
-    spread: () => (itemized ? itemized.bounds.height * 1.25 : 0),
+    spread: () => (itemized ? itemized.bounds.height : 0),
     extent: () => (itemized ? itemized.bounds.width : 0)
   };
 

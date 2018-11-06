@@ -140,8 +140,10 @@ export function textBounds(node, measureFn = measureText) {
     }
     nodeCopy.text = widestLine;
     const bounds = calcTextBounds(nodeCopy, measureFn);
-    const lineHeight = node.lineHeight || DEFAULT_LINE_HEIGHT;
-    bounds.height = bounds.height * resolvedLineBreaks.lines.length * lineHeight;
+    const lineHeight = bounds.height * Math.max(isNaN(node.lineHeight) ? DEFAULT_LINE_HEIGHT : node.lineHeight, 0);
+    const diff = lineHeight - bounds.height;
+
+    bounds.height = (bounds.height + diff) * resolvedLineBreaks.lines.length;
 
     return bounds;
   }
