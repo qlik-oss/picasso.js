@@ -428,7 +428,7 @@ function chartFn(definition, context) {
       const idx = findComponentIndexByKey(comp.key);
 
       // Component should not be updated
-      if (excludeFromUpdate.length && excludeFromUpdate.indexOf(comp.key) > -1) {
+      if (excludeFromUpdate.indexOf(comp.key) > -1) {
         return currentComponents[idx];
       }
 
