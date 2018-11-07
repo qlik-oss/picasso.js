@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.16.0](https://github.com/qlik-oss/picasso.js/compare/v0.15.0...v0.16.0) (2018-11-07)
+
+
+### Bug Fixes
+
+* **axis:** labels rendered outside the axis area ([#238](https://github.com/qlik-oss/picasso.js/issues/238)) ([e42f759](https://github.com/qlik-oss/picasso.js/commit/e42f759))
+* **box:** out of bounds symbol arrow direction ([#245](https://github.com/qlik-oss/picasso.js/issues/245)) ([8993028](https://github.com/qlik-oss/picasso.js/commit/8993028))
+* **brush:** brush only nodes with data ([#231](https://github.com/qlik-oss/picasso.js/issues/231)) ([38ce4a9](https://github.com/qlik-oss/picasso.js/commit/38ce4a9))
+* **data:** undefined data source in field ([#243](https://github.com/qlik-oss/picasso.js/issues/243)) ([2ad225f](https://github.com/qlik-oss/picasso.js/commit/2ad225f))
+* **layers:** preserve original index if equal ([#236](https://github.com/qlik-oss/picasso.js/issues/236)) ([a531a70](https://github.com/qlik-oss/picasso.js/commit/a531a70))
+* **text:** text line height leading space ([#250](https://github.com/qlik-oss/picasso.js/issues/250)) ([707f707](https://github.com/qlik-oss/picasso.js/commit/707f707))
+
+
+### Features
+
+* expose symbol registry and factory ([#230](https://github.com/qlik-oss/picasso.js/issues/230)) ([bc9b248](https://github.com/qlik-oss/picasso.js/commit/bc9b248))
+* **box-marker:** out of bounds feature for box marker ([#234](https://github.com/qlik-oss/picasso.js/issues/234)) ([31f8536](https://github.com/qlik-oss/picasso.js/commit/31f8536))
+* **brush-range:** observe brush changes ([#246](https://github.com/qlik-oss/picasso.js/issues/246)) ([3b5cf0a](https://github.com/qlik-oss/picasso.js/commit/3b5cf0a))
+* **scene-graph:** get parent and child nodes ([#241](https://github.com/qlik-oss/picasso.js/issues/241)) ([60615f7](https://github.com/qlik-oss/picasso.js/commit/60615f7))
+* make it possible to exclude specific components from update ([#248](https://github.com/qlik-oss/picasso.js/issues/248)) ([b8c32f5](https://github.com/qlik-oss/picasso.js/commit/b8c32f5))
+
+
+
+
+
 <a name="0.15.0"></a>
 # [0.15.0](https://github.com/qlik-oss/picasso.js/compare/v0.14.0...v0.15.0) (2018-10-09)
 

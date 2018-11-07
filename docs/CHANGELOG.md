@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.16.0](https://github.com/qlik-oss/picasso.js/compare/v0.15.0...v0.16.0) (2018-11-07)
+
+
+### Features
+
+* **box-marker:** out of bounds feature for box marker ([#234](https://github.com/qlik-oss/picasso.js/issues/234)) ([31f8536](https://github.com/qlik-oss/picasso.js/commit/31f8536))
+* **brush-range:** observe brush changes ([#246](https://github.com/qlik-oss/picasso.js/issues/246)) ([3b5cf0a](https://github.com/qlik-oss/picasso.js/commit/3b5cf0a))
+* **scene-graph:** get parent and child nodes ([#241](https://github.com/qlik-oss/picasso.js/issues/241)) ([60615f7](https://github.com/qlik-oss/picasso.js/commit/60615f7))
+
+
+
+
+
 <a name="0.15.0"></a>
 # [0.15.0](https://github.com/qlik-oss/picasso.js/compare/v0.14.0...v0.15.0) (2018-10-09)
 
