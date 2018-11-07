@@ -26,6 +26,10 @@
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
+  "engines":{
+    "node": "^10.9.0",
+    "yarn": "~1.9.2"
+  },
   "devDependencies": {
     "@after-work.js/aw": "^5.0.2",
     "@babel/cli": "^7.1.2",
