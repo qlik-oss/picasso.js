@@ -1,5 +1,3 @@
-/* global browser, window, $$ */
-
 describe('picasso-hammer', () => {
   const fixture = 'http://localhost:10001/plugins/hammer.fix.html';
 
