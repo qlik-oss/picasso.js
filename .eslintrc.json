@@ -42,7 +42,9 @@
       "globals": {
         "chai": false,
         "expect": false,
-        "sinon": false
+        "sinon": false,
+        "page": false,
+        "picassochart": false
       },
       "parserOptions": {
         "sourceType": "module",

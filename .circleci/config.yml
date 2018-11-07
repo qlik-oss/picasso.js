@@ -87,7 +87,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/picassojs
-      - run: yarn run test:integration:local
+      - run: yarn run test:integration:ci
 
   build-docs:
     <<: *defaults
