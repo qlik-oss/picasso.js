@@ -4,5 +4,8 @@
     "docker:disable"
   ],
   "semanticCommits": true,
-  "rangeStrategy": "bump"
+  "rangeStrategy": "bump",
+  "engines": {
+    "enabled": false
+  }
 }
