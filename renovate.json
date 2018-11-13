@@ -5,8 +5,10 @@
   ],
   "semanticCommits": true,
   "rangeStrategy": "bump",
-  "engines": {
-    "node": "^10.9.0",
-    "yarn": "~1.9.2"
-  }
+  "packageRules": [{
+    "depTypeList": [
+      "engines"
+    ],
+    "enabled": false
+  }]
 }
