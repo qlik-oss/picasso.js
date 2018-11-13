@@ -6,11 +6,7 @@
   "semanticCommits": true,
   "rangeStrategy": "bump",
   "engines": {
-    "node": {
-      "enabled": false
-    },
-    "yarn": {
-      "enabled": false
-    }
+    "node": "^10.9.0",
+    "yarn": "~1.9.2"
   }
 }
