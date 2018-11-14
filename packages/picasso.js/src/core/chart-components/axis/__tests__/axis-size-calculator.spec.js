@@ -102,6 +102,7 @@ describe('Axis size calculator', () => {
       settings.dock = 'bottom';
       settings.align = 'bottom';
       settings.labels.show = true;
+      settings.labels.filterOverlapping = false;
     });
 
     it('horizontal discrete axis should be considered to large when labels requires more size then available', () => {

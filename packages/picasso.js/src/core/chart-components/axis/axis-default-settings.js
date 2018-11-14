@@ -50,7 +50,13 @@ const DEFAULT_DISCRETE_SETTINGS = {
     align: 0.5,
     /** Offset in pixels along the axis direction.
     * @type {number=} */
-    offset: 0
+    offset: 0,
+    /**
+     * Toggle whether labels should be filtered if they are overlapping. Filtering may be applied in a non-sequential order.
+     * If labels are overlapping and this setting is toggled off, the axis will automatically hide.
+     * @type {boolean=}
+     */
+    filterOverlapping: false
   },
   /**
    * @typedef {object}
@@ -112,7 +118,13 @@ const DEFAULT_CONTINUOUS_SETTINGS = {
     align: 0.5,
     /** Offset in pixels along the axis direction.
     * @type {number=} */
-    offset: 0
+    offset: 0,
+    /**
+     * Toggle whether labels should be filtered if they are overlapping. Filtering may be applied in a non-sequential order.
+     * If labels are overlapping and this setting is toggled off, the axis will automatically hide.
+     * @type {boolean=}
+     */
+    filterOverlapping: true
   },
   /**
    * @typedef {object}
