@@ -6,7 +6,8 @@ const debugColliderDef = {
       selector: '*',
       fill: 'rgba(0, 255, 0, 0.1)',
       stroke: 'lime',
-      opacity: 1
+      opacity: 1,
+      useOuterRect: false
     }
   },
   on: {
@@ -29,6 +30,12 @@ const debugColliderDef = {
   },
   created() {
     this.props = this.settings.settings;
+  },
+  resize({ outer, inner }) {
+    if (this.props.useOuterRect) {
+      return outer;
+    }
+    return inner;
   },
   render() { },
   mounted() {
