@@ -73,7 +73,7 @@ function layeredLabelBuilder(ticks, buildOpts, settings, tickFn) {
 }
 
 export function filterOverlappingLabels(labels, ticks, buildOpts) {
-  let isOverlapping = (i, k) => { // eslint-disable-line arrow-body-style
+  let isOverlapping = (i, k) => {
     const rect1 = labels[i].boundingRect;
     const rect2 = labels[k].boundingRect;
 
