@@ -8,7 +8,8 @@ const debugPathToPointsDef = {
       fill: 'transparent',
       stroke: 'lime',
       opacity: 1,
-      radius: 2
+      radius: 2,
+      useOuterRect: false
     }
   },
   on: {
@@ -41,6 +42,12 @@ const debugPathToPointsDef = {
   },
   created() {
     this.props = this.settings.settings;
+  },
+  resize({ outer, inner }) {
+    if (this.props.useOuterRect) {
+      return outer;
+    }
+    return inner;
   },
   render() { },
   mounted() {
