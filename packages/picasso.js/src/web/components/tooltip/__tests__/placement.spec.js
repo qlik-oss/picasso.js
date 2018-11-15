@@ -356,6 +356,42 @@ describe('placement', () => {
           dock: 'top'
         });
       });
+
+      it('should clamp position to node component bounds', () => {
+        context.state.pointer.dx = 1;
+        context.state.pointer.dy = 2;
+        componentMock.rect.x = 10;
+        componentMock.rect.y = 20;
+        componentMock.rect.width = 50;
+        componentMock.rect.height = 80;
+        context.state.activeNodes = [{ // This node is OOB in both x and y, not a real scenario but allows us to cover two cases at once
+          bounds: {
+            x: -10, y: -20, width: 11, height: 22
+          },
+          key: 'aKey'
+        }];
+
+        context.props.placement = {
+          type: 'bounds',
+          dock: 'top',
+          offset: 5
+        };
+        const r = placement(size, context);
+
+        expect(r).to.deep.equal({
+          computedArrowStyle: {
+            borderWidth: '5px',
+            left: 'calc(50% - 5px)',
+            top: '100%'
+          },
+          computedTooltipStyle: {
+            left: '11px', // Component bounds + pointer delta
+            top: '22px',
+            transform: 'translate(-50%, -100%) translateY(-5px)'
+          },
+          dock: 'top'
+        });
+      });
     });
 
     describe('slice', () => {
