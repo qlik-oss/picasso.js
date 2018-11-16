@@ -269,7 +269,7 @@ function componentFactory(definition, context = {}) {
   const rend = rendString ? renderer || registries.renderer(rendString)() : renderer || registries.renderer()();
   brushArgs.renderer = rend;
 
-  const dockConfigCallbackContext = { resources: { logger: chart.logger() } };
+  const dockConfigCallbackContext = { resources: chart.logger ? { logger: chart.logger() } : {} };
   let dockConfig = createDockConfig(createDockDefinition(settings, preferredSize), dockConfigCallbackContext);
 
   const appendComponentMeta = (node) => {

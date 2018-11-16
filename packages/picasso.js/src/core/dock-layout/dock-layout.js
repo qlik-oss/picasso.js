@@ -1,5 +1,4 @@
 import extend from 'extend';
-import dockConfig from './dock-config';
 import resolveLayout, { resolveSettings } from './dock-settings-resolver';
 import { rectToPoints, pointsToRect } from '../geometry/util';
 
@@ -15,7 +14,6 @@ function validateComponent(component) {
 
 function cacheSize(c, reducedRect, containerRect) {
   if (typeof c.cachedSize === 'undefined') {
-    // TODO Breaking change, user defined prefSize will get a different callback context
     const size = c.config.computePreferredSize(reducedRect, containerRect);
     if (typeof size === 'object') {
       c.cachedSize = Math.ceil(size.size);
