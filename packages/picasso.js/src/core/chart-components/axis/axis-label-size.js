@@ -200,7 +200,7 @@ export default function getSize({
       }
     }
 
-    if (isDiscrete && state.labels.activeMode !== 'tilted' && isToLarge({
+    if (!settings.labels.filterOverlapping && state.labels.activeMode !== 'tilted' && isToLarge({
       rect, state, majorTicks, measure, horizontal
     })) {
       const toLargeSize = Math.max(rect.width, rect.height); // used to hide the axis
@@ -256,7 +256,7 @@ export default function getSize({
       const bleedDir = extendLeft ? 'left' : 'right';
       edgeBleed[bleedDir] = bleedSize;
 
-      if (isDiscrete && isTiltedLabelOverlapping({
+      if (!settings.labels.filterOverlapping && isTiltedLabelOverlapping({
         majorTicks, measureText, rect, bleedSize, angle: settings.labels.tiltAngle
       })) {
         return { size: Math.max(rect.width, rect.height), isToLarge: true };

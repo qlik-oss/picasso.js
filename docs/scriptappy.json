@@ -3,7 +3,7 @@
   "info": {
     "name": "picasso.js",
     "description": "A charting library streamlined for building visualizations for the Qlik Sense Analytics platform.",
-    "version": "0.15.0",
+    "version": "0.16.1",
     "license": "MIT"
   },
   "entries": {
@@ -1253,6 +1253,12 @@
               "optional": true,
               "defaultValue": 0,
               "type": "number"
+            },
+            "filterOverlapping": {
+              "description": "Toggle whether labels should be filtered if they are overlapping. Filtering may be applied in a non-sequential order.\nIf labels are overlapping and this setting is toggled off, the axis will automatically hide.",
+              "optional": true,
+              "defaultValue": false,
+              "type": "boolean"
             }
           }
         },
@@ -1352,6 +1358,12 @@
               "optional": true,
               "defaultValue": 0,
               "type": "number"
+            },
+            "filterOverlapping": {
+              "description": "Toggle whether labels should be filtered if they are overlapping. Filtering may be applied in a non-sequential order.\nIf labels are overlapping and this setting is toggled off, the axis will automatically hide.",
+              "optional": true,
+              "defaultValue": true,
+              "type": "boolean"
             }
           }
         },

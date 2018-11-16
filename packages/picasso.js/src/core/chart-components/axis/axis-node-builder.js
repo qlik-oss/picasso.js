@@ -72,17 +72,29 @@ function layeredLabelBuilder(ticks, buildOpts, settings, tickFn) {
   });
 }
 
-export function filterOverlappingLabels(labels, ticks) {
-  const isOverlapping = (l1, l2) => { // eslint-disable-line arrow-body-style
-    const rect1 = l1.boundingRect;
-    const rect2 = l2.boundingRect;
+export function filterOverlappingLabels(labels, ticks, buildOpts) {
+  let isOverlapping = (i, k) => {
+    const rect1 = labels[i].boundingRect;
+    const rect2 = labels[k].boundingRect;
 
     return testRectRect(rect1, rect2);
   };
 
+  if (buildOpts && buildOpts.tilted) {
+    const absAngle = Math.abs(buildOpts.angle);
+
+    isOverlapping = (i, k) => {
+      const stepSize = Math.abs(labels[i].x - labels[k].x);
+      const reciprocal = 1 / stepSize;
+      const distanceBetweenLabels = Math.sin(absAngle * (Math.PI / 180)) / reciprocal;
+
+      return labels[i].boundingRect.height > distanceBetweenLabels;
+    };
+  }
+
   for (let i = 0; i <= labels.length - 1; i++) {
     for (let k = i + 1; k <= Math.min(i + 5, i + (labels.length - 1)); k++) { // TODO Find a better way to handle exteme/layered labels then to iterare over ~5 next labels
-      if (labels[i] && labels[k] && isOverlapping(labels[i], labels[k])) {
+      if (labels[i] && labels[k] && isOverlapping(i, k)) {
         if (k === labels.length - 1) { // On collition with last label, remove current label instead
           labels.splice(i, 1);
           if (ticks) { ticks.splice(i, 1); }
@@ -161,11 +173,9 @@ function getStepSizeFn({
 
 export default function nodeBuilder(isDiscrete) {
   let calcMaxTextRectFn;
-  let filterLabels = false;
 
   function continuous() {
     calcMaxTextRectFn = continuousCalcMaxTextRect;
-    filterLabels = true;
     return continuous;
   }
 
@@ -231,8 +241,8 @@ export default function nodeBuilder(isDiscrete) {
       }
 
       // Remove labels (and paired tick) that are overlapping
-      if (filterLabels && !buildOpts.tilted) {
-        filterOverlappingLabels(labelNodes, majorTickNodes);
+      if (settings.labels.filterOverlapping) {
+        filterOverlappingLabels(labelNodes, majorTickNodes, buildOpts);
       }
 
       nodes.push(...labelNodes);

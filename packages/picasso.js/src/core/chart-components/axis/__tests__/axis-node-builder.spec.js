@@ -1,6 +1,6 @@
 import { filterOverlappingLabels } from '../axis-node-builder';
 
-describe('Axis Node Buidlder', () => {
+describe('Axis Node Builder', () => {
   describe('filterOverlappingLabels', () => {
     let nodes;
 
