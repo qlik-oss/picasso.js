@@ -11,6 +11,7 @@ import {
   brushFromSceneNodes
 } from './brushing';
 import symbolFactory from '../symbols';
+import createDockConfig from '../dock-layout/dock-config';
 
 const isReservedProperty = prop => [
   'on', 'preferredSize', 'created', 'beforeMount', 'mounted', 'resize',
@@ -122,13 +123,15 @@ function prepareContext(ctx, definition, opts) {
   });
 }
 
-function updateDockConfig(config, settings) {
-  config.displayOrder = settings.displayOrder;
-  config.dock = settings.dock;
-  config.prioOrder = settings.prioOrder;
-  config.minimumLayoutMode = settings.minimumLayoutMode;
-  config.show = settings.show;
-  return config;
+function createDockDefinition(settings, preferredSize) {
+  const def = {};
+  def.displayOrder = settings.displayOrder;
+  def.dock = settings.dock;
+  def.prioOrder = settings.prioOrder;
+  def.minimumLayoutMode = settings.minimumLayoutMode;
+  def.show = settings.show;
+  def.preferredSize = preferredSize;
+  return def;
 }
 
 function setUpEmitter(ctx, emitter, settings) {
@@ -193,26 +196,37 @@ function componentFactory(definition, context = {}) {
   const instanceContext = extend({}, config);
 
   // Create a callback that calls lifecycle functions in the definition and config (if they exist).
-  function createCallback(method, defaultMethod = () => {}) {
+  function createCallback(method, defaultMethod = () => { }, canBeValue = false) {
     return function cb(...args) {
-      const inDefinition = typeof definition[method] === 'function';
-      const inConfig = typeof config[method] === 'function';
+      const inDefinition = typeof definition[method] !== 'undefined';
+      const inConfig = typeof config[method] !== 'undefined';
 
       let returnValue;
       if (inDefinition) {
-        returnValue = definition[method].call(definitionContext, ...args);
+        if (typeof definition[method] === 'function') {
+          returnValue = definition[method].call(definitionContext, ...args);
+        } else if (canBeValue) {
+          returnValue = definition[method];
+        }
       }
-      if (typeof config[method] === 'function') {
-        returnValue = config[method].call(instanceContext, ...args);
+
+      if (inConfig) {
+        if (typeof config[method] === 'function') {
+          returnValue = config[method].call(instanceContext, ...args);
+        } else if (canBeValue) {
+          returnValue = config[method];
+        }
       }
+
       if (!inDefinition && !inConfig) {
         returnValue = defaultMethod.call(definitionContext, ...args);
       }
+
       return returnValue;
     };
   }
 
-  const preferredSize = createCallback('preferredSize', () => 0);
+  const preferredSize = createCallback('preferredSize', () => 0, true);
   const resize = createCallback('resize', ({ inner }) => inner);
   const created = createCallback('created');
   const beforeMount = createCallback('beforeMount');
@@ -255,14 +269,8 @@ function componentFactory(definition, context = {}) {
   const rend = rendString ? renderer || registries.renderer(rendString)() : renderer || registries.renderer()();
   brushArgs.renderer = rend;
 
-  const dockConfig = {
-    requiredSize: (inner, outer) => preferredSize({
-      inner,
-      outer,
-      dock: dockConfig.dock
-    })
-  };
-  updateDockConfig(dockConfig, settings);
+  const dockConfigCallbackContext = { resources: { logger: chart.logger() } };
+  let dockConfig = createDockConfig(createDockDefinition(settings, preferredSize), dockConfigCallbackContext);
 
   const appendComponentMeta = (node) => {
     node.key = settings.key;
@@ -271,13 +279,13 @@ function componentFactory(definition, context = {}) {
 
   const fn = () => {};
 
-  fn.dockConfig = dockConfig;
+  fn.dockConfig = () => dockConfig;
 
   // Set new settings - will trigger mapping of data and creation of scale / formatter.
   fn.set = (opts = {}) => {
     if (opts.settings) {
       settings = extend(true, {}, defaultSettings, opts.settings);
-      updateDockConfig(dockConfig, settings);
+      dockConfig = createDockConfig(createDockDefinition(settings, preferredSize), dockConfigCallbackContext);
     }
 
     if (settings.scale) {

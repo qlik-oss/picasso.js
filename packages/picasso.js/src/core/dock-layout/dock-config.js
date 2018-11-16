@@ -13,12 +13,12 @@
  *  show: true
  * });
  */
-function dockConfig(settings = {}) {
+function dockConfig(settings = {}, instanceContext) {
   let {
     dock = '',
     displayOrder = 0,
     prioOrder = 0,
-    requiredSize = () => 0,
+    preferredSize = 0,
     minimumLayoutMode,
     show = true
   } = settings;
@@ -32,7 +32,7 @@ function dockConfig(settings = {}) {
    * Takes a function that returns the required size of a component.
    * The return value of the function can either be a number representing the required size in the dock direction
    * or an object with a `size` and `edgeBleed` property.
-   * @param {function} [calcFn] - Function to calculate the required size of a component
+   * @param {function} [size] - Function to calculate the required size of a component
    * @returns {function|this} If no parameter is passed, the current requiredSize function is return. Else the current context is returns to allow chaining.
    * @example
    * dockConfig.requireSize(() => 150); // Require a size of 150 in the dock direction
@@ -45,13 +45,7 @@ function dockConfig(settings = {}) {
    *  }
    * })); // Require a size of 150 in the dock direction and a bleed size of 50 to the left and right dock direction
    */
-  fn.requiredSize = function requiredSizeFn(calcFn) {
-    if (typeof calcFn === 'function') {
-      requiredSize = calcFn;
-      return this;
-    }
-    return requiredSize;
-  };
+  fn.computePreferredSize = (inner, outer) => (typeof preferredSize === 'function' ? preferredSize({ inner, outer, dock: fn.dock() }, instanceContext) : preferredSize);
 
   /**
    * Set the dock direction, supported values are left | right | top | bottom. Any other value will be interpreted as center dock.
@@ -60,9 +54,9 @@ function dockConfig(settings = {}) {
    * @example
    * dockConfig.dock('left');
    */
-  fn.dock = function dockFn(d) {
+  fn.dock = (d) => {
     if (typeof d === 'undefined') {
-      return dock;
+      return typeof dock === 'function' ? dock(instanceContext) : dock;
     }
     dock = d;
     return this;
@@ -84,9 +78,9 @@ function dockConfig(settings = {}) {
    * @example
    * dockConfig.displayOrder(99);
    */
-  fn.displayOrder = function displayOrderFn(order) {
+  fn.displayOrder = (order) => {
     if (typeof order === 'undefined') {
-      return displayOrder;
+      return typeof displayOrder === 'function' ? displayOrder(instanceContext) : displayOrder;
     }
     displayOrder = order;
     return this;
@@ -102,9 +96,9 @@ function dockConfig(settings = {}) {
    * @example
    * dockConfig.prioOrder(-1);
    */
-  fn.prioOrder = function prioOrderFn(order) {
+  fn.prioOrder = (order) => {
     if (typeof order === 'undefined') {
-      return prioOrder;
+      return typeof prioOrder === 'function' ? prioOrder(instanceContext) : prioOrder;
     }
     prioOrder = order;
     return this;
@@ -118,9 +112,9 @@ function dockConfig(settings = {}) {
    * dockConfig.minimumLayoutMode('L');
    * dockConfig.minimumLayoutMode({ width: 'S', height: 'L' });
    */
-  fn.minimumLayoutMode = function minimumLayoutModeFn(s) {
+  fn.minimumLayoutMode = (s) => {
     if (typeof s === 'undefined') {
-      return minimumLayoutMode;
+      return typeof minimumLayoutMode === 'function' ? minimumLayoutMode(instanceContext) : minimumLayoutMode;
     }
     minimumLayoutMode = s;
     return this;
@@ -133,9 +127,9 @@ function dockConfig(settings = {}) {
    */
   fn.show = function showFn(s) {
     if (typeof s === 'undefined') {
-      return show;
+      return typeof show === 'function' ? show(instanceContext) : show;
     }
-    show = !!s;
+    show = s;
     return this;
   };
 

@@ -15,7 +15,8 @@ function validateComponent(component) {
 
 function cacheSize(c, reducedRect, containerRect) {
   if (typeof c.cachedSize === 'undefined') {
-    const size = c.config.requiredSize()(reducedRect, containerRect);
+    // TODO Breaking change, user defined prefSize will get a different callback context
+    const size = c.config.computePreferredSize(reducedRect, containerRect);
     if (typeof size === 'object') {
       c.cachedSize = Math.ceil(size.size);
       c.edgeBleed = size.edgeBleed;
@@ -309,14 +310,10 @@ export default function dockLayout(initialSettings) {
     validateComponent(component);
     docker.removeComponent(component);
 
-    // component.dockConfig can be undefined, a function or an object:
-    // if undefined: use default values from dockConfig()
-    // if function: use the function
-    // if object: wrap in dockConfig() function
     components.push({
       instance: component,
       key,
-      config: typeof component.dockConfig === 'function' ? component.dockConfig : dockConfig(component.dockConfig)
+      config: component.dockConfig()
     });
   };
 
