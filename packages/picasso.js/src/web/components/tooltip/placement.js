@@ -413,5 +413,22 @@ export default function placement({ width, height }, {
   }
 
   propCtx.options = opts;
-  return STRATEGIES[opts.type](propCtx);
+  const plcm = STRATEGIES[opts.type](propCtx);
+
+  let {
+    x: minX,
+    y: minY,
+    width: maxX,
+    height: maxY
+  } = propCtx.resources.getComponentBoundsFromNode(propCtx.nodes[0]);
+  minX += propCtx.pointer.dx;
+  maxX += minX;
+  minY += propCtx.pointer.dy;
+  maxY += minY;
+
+  // Clamp tooltip position
+  plcm.computedTooltipStyle.left = `${Math.min(Math.max(0, minX, parseFloat(plcm.computedTooltipStyle.left)), maxX)}px`;
+  plcm.computedTooltipStyle.top = `${Math.min(Math.max(0, minY, parseFloat(plcm.computedTooltipStyle.top)), maxY)}px`;
+
+  return plcm;
 }

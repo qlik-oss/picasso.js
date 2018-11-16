@@ -36,10 +36,10 @@ describe('placement', () => {
       },
       props: {},
       state: {
-        activeNodes: [],
+        activeNodes: [{ key: 'aKey' }],
         pointer: {
-          x: 1,
-          y: 2,
+          x: 10,
+          y: 20,
           dx: 3,
           dy: 4,
           clientX: 6,
@@ -77,13 +77,13 @@ describe('placement', () => {
         top: 'calc(50% - 8px)'
       },
       computedTooltipStyle: {
-        left: '1px',
-        top: '2px',
+        left: '10px',
+        top: '20px',
         transform: 'translate(8px, -50%)'
       },
       offset: {
         x: 0,
-        y: 39
+        y: 21
       },
       rect: size,
       dock: 'right'
@@ -92,8 +92,8 @@ describe('placement', () => {
 
   it('should return placement strategy based on string definition', () => {
     context.props.placement = 'pointer';
-    context.state.pointer.x = 123;
-    context.state.pointer.y = 122;
+    context.state.pointer.x = 103;
+    context.state.pointer.y = 102;
     const r = placement(size, context);
 
     expect(r).to.deep.equal({
@@ -103,8 +103,8 @@ describe('placement', () => {
         top: '100%'
       },
       computedTooltipStyle: {
-        left: '123px',
-        top: '122px',
+        left: '103px',
+        top: '102px',
         transform: 'translate(-50%, -100%) translateY(-8px)'
       },
       rect: size,
@@ -127,8 +127,8 @@ describe('placement', () => {
         top: '100%'
       },
       computedTooltipStyle: {
-        left: '1px',
-        top: '2px',
+        left: '10px',
+        top: '20px',
         transform: 'translate(-50%, -100%) translateY(-5px)'
       },
       dock: 'top'
@@ -150,8 +150,8 @@ describe('placement', () => {
         top: '100%'
       },
       computedTooltipStyle: {
-        left: '1px',
-        top: '2px',
+        left: '10px',
+        top: '20px',
         transform: 'translate(-50%, -100%) translateY(-5px)'
       },
       dock: 'top'
@@ -170,6 +170,8 @@ describe('placement', () => {
       it('dock - auto, right', () => {
         size.width = 10;
         size.height = 10;
+        context.state.pointer.x = 1;
+        context.state.pointer.y = 2;
         context.state.pointer.clientX = 10;
         context.state.pointer.clientY = 10;
         context.props.placement = {
@@ -186,8 +188,8 @@ describe('placement', () => {
             top: 'calc(50% - 5px)'
           },
           computedTooltipStyle: {
-            left: '1px',
-            top: '2px',
+            left: '3px', // Min x is pointer.dx
+            top: '4px', // Min y is pointer.dy
             transform: 'translate(5px, -50%)'
           },
           dock: 'right',
@@ -196,7 +198,9 @@ describe('placement', () => {
       });
 
       it('dock - fallback dock', () => {
-        // Unable to fit in this viewport, should choose best possible option
+        // Unable to fit in this viewport, should choose best possible option and clamp left/top position
+        context.state.pointer.x = 1;
+        context.state.pointer.y = 2;
         global.window.innerWidth = 10;
         global.window.innerHeight = 10;
         context.props.placement = {
@@ -213,8 +217,8 @@ describe('placement', () => {
             top: '100%'
           },
           computedTooltipStyle: {
-            left: '-7px',
-            top: '2px',
+            left: '3px',
+            top: '4px',
             transform: 'translate(-50%, -100%) translateY(-5px)',
             width: '72px'
           },
@@ -348,6 +352,42 @@ describe('placement', () => {
             left: '60.5px',
             top: '39px',
             transform: 'translate(-50%, -100%) translateY(-8px)'
+          },
+          dock: 'top'
+        });
+      });
+
+      it('should clamp position to node component bounds', () => {
+        context.state.pointer.dx = 1;
+        context.state.pointer.dy = 2;
+        componentMock.rect.x = 10;
+        componentMock.rect.y = 20;
+        componentMock.rect.width = 50;
+        componentMock.rect.height = 80;
+        context.state.activeNodes = [{ // This node is OOB in both x and y, not a real scenario but allows us to cover two cases at once
+          bounds: {
+            x: -10, y: -20, width: 11, height: 22
+          },
+          key: 'aKey'
+        }];
+
+        context.props.placement = {
+          type: 'bounds',
+          dock: 'top',
+          offset: 5
+        };
+        const r = placement(size, context);
+
+        expect(r).to.deep.equal({
+          computedArrowStyle: {
+            borderWidth: '5px',
+            left: 'calc(50% - 5px)',
+            top: '100%'
+          },
+          computedTooltipStyle: {
+            left: '11px', // Component bounds + pointer delta
+            top: '22px',
+            transform: 'translate(-50%, -100%) translateY(-5px)'
           },
           dock: 'top'
         });
