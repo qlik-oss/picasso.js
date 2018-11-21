@@ -119,7 +119,7 @@ export default function componentFactoryFixture() {
     return rendererOutput;
   };
 
-  fn.simulateLayout = opts => comp.dockConfig.requiredSize(opts.inner, opts.outer);
+  fn.simulateLayout = opts => comp.dockConfig().computePreferredSize(opts.inner, opts.outer);
 
   fn.getRenderOutput = () => rendererOutput;
 

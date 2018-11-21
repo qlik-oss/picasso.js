@@ -23,11 +23,16 @@ describe('Dock Layout', () => {
 
     const dummy = function dummy() {};
 
-    dummy.dockConfig = dockConfig({
-      dock, displayOrder, show, prioOrder
+    dummy.dockConfig = () => dockConfig({
+      dock,
+      displayOrder,
+      show,
+      prioOrder,
+      preferredSize: ({ outer }) => ({ size: outer.width * size, edgeBleed }),
+      minimumLayoutMode
     });
-    dummy.dockConfig.requiredSize((inner, outer) => ({ size: outer.width * size, edgeBleed }));
-    dummy.dockConfig.minimumLayoutMode(minimumLayoutMode);
+    // dummy.dockConfig.computePreferredSize((inner, outer) => ());
+    // dummy.dockConfig.minimumLayoutMode(minimumLayoutMode);
 
     dummy.resize = function resize(...args) {
       if (!args.length) {
@@ -120,20 +125,6 @@ describe('Dock Layout', () => {
     });
     expect(mainComp.resize().innerRect, 'Main innerRect had incorrect calculated size').to.deep.include({
       x: 300, y: 0, width: 700, height: 1000
-    });
-  });
-
-  it('should apply a default configuration if a component have not set one', () => {
-    const rect = {
-      x: 0, y: 0, width: 1000, height: 1000
-    };
-    const mainComp = componentMock();
-    mainComp.dockConfig = undefined;
-    const dl = dockLayout();
-    dl.addComponent(mainComp);
-    dl.layout(rect);
-    expect(mainComp.resize().innerRect, 'Main innerRect had incorrect calculated size').to.deep.include({
-      x: 0, y: 0, width: 1000, height: 1000
     });
   });
 

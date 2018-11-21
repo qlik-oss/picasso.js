@@ -21,7 +21,8 @@ describe('Component', () => {
       container: () => ({}),
       table: () => ({}),
       dataset: () => ({}),
-      scale: sinon.stub()
+      scale: sinon.stub(),
+      logger: () => 'logger'
     };
     created = sinon.spy();
     beforeMount = sinon.spy();
