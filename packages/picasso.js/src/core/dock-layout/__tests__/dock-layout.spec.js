@@ -168,6 +168,36 @@ describe('Dock Layout', () => {
     });
   });
 
+  it('should remove component that are docked to another component which does not fit', () => {
+    const leftComp = componentMock({ dock: 'left', size: 0.30 });
+    const leftComp2 = componentMock({ dock: 'left', size: 0.30, key: 'notFit' });
+    const leftComp3 = componentMock({ dock: 'left', size: 0.30, instance: { ctx: { dock: '@notFit' } } });
+    const mainComp = componentMock();
+    const rect = {
+      x: 0, y: 0, width: 1000, height: 1000
+    };
+    const dl = dockLayout();
+    dl.addComponent(leftComp);
+    dl.addComponent(leftComp2);
+    dl.addComponent(leftComp3);
+    dl.addComponent(mainComp);
+
+    dl.layout(rect);
+
+    expect(leftComp.resize().innerRect, 'leftComp innerRect had incorrect calculated size').to.deep.include({
+      x: 0, y: 0, width: 300, height: 1000
+    });
+    expect(leftComp2.resize().innerRect, 'leftComp2 innerRect had incorrect calculated size').to.deep.include({
+      x: 0, y: 0, width: 0, height: 0
+    });
+    expect(leftComp3.resize().innerRect, 'leftComp3 innerRect had incorrect calculated size').to.deep.include({
+      x: 0, y: 0, width: 0, height: 0
+    });
+    expect(mainComp.resize().innerRect, 'Main innerRect had incorrect calculated size').to.deep.include({
+      x: 300, y: 0, width: 700, height: 1000
+    });
+  });
+
   describe('Settings', () => {
     let settings;
     let container;

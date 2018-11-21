@@ -95,6 +95,48 @@ function reduceSingleLayoutRect(logicalContainerRect, reducedRect, edgeBleed, c,
   return true;
 }
 
+/**
+ * Updates the visible and hidden components based on components that are docked to other components.
+ * For example, assume a component called myRect:
+ * {
+ *  key: 'myRect',
+ *  type: 'rect',
+ *  dock: 'bottom'
+ * }
+ * and a component called myLine:
+ * {
+ *  key: 'myLine',
+ *  type: 'line',
+ *  dock: '@myRect'
+ * }
+ * if the layout engine decides to hide myRect, then myLine should be hidden as well.
+ * @param {Array} components - Components to be decided if they should be hidden or not.
+ * @param {Array} hiddenComponents - Components that are already hidden.
+ * @returns {Object} containing the new visible components and additional components to be hidden.
+ */
+function updateForComponentsDockedAtRemovedComponents(components, hiddenComponents) {
+  const visibleComponents = components.slice();
+
+  if (hiddenComponents.length === 0) {
+    return { visibleComponents, dockedAtRemovedComponents: [] };
+  }
+
+  const dockedAtRemovedComponents = [];
+
+  hiddenComponents.forEach((hiddenComp) => {
+    components.forEach((comp, idx) => {
+      const dock = comp.instance && comp.instance.ctx && comp.instance.ctx.dock;
+      const key = hiddenComp.ctx && hiddenComp.ctx.key;
+
+      if (dock === `@${key}`) {
+        visibleComponents.splice(idx, 1);
+        dockedAtRemovedComponents.push(comp.instance);
+      }
+    });
+  });
+  return { visibleComponents, dockedAtRemovedComponents };
+}
+
 function reduceLayoutRect(logicalContainerRect, components, hiddenComponents, settings) {
   const reducedRect = {
     x: logicalContainerRect.x,
@@ -120,7 +162,10 @@ function reduceLayoutRect(logicalContainerRect, components, hiddenComponents, se
     }
   }
 
-  const filteredUnsortedComps = components.filter(c => sortedComponents.indexOf(c) !== -1);
+  const { visibleComponents, dockedAtRemovedComponents } = updateForComponentsDockedAtRemovedComponents(sortedComponents, hiddenComponents);
+  hiddenComponents.push(...dockedAtRemovedComponents);
+
+  const filteredUnsortedComps = components.filter(c => visibleComponents.indexOf(c) !== -1);
   components.length = 0;
   components.push(...filteredUnsortedComps);
   reduceEdgeBleed(logicalContainerRect, reducedRect, edgeBleed);
