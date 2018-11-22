@@ -13,12 +13,12 @@
     "clean": "lerna clean",
     "lint": "cross-env FORCE_COLOR=1 lerna run lint",
     "link": "lerna link",
-    "test": "npm run test:unit:coverage && npm run test:component:coverage",
-    "test:component:coverage": "aw -c aw.config.js --type component",
+    "test": "npm run test:unit && npm run test:component",
+    "test:component": "aw -c aw.config.js --type component",
     "test:integration:ci": "node ./test/scripts/start-puppet.js",
-    "test:integration:local": "aw puppet -c test/aw.config.js",
+    "test:integration:local": "aw puppet -c aw.config.js --type integration",
     "test:integration:server": "rollup -c ./test/integration/rollup.config.js",
-    "test:unit:coverage": "aw -c aw.config.js",
+    "test:unit": "aw -c aw.config.js",
     "test:unit:watch": "aw -c aw.config.js -w"
   },
   "husky": {
@@ -26,7 +26,7 @@
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
-  "engines":{
+  "engines": {
     "node": "^10.9.0",
     "yarn": "~1.9.2"
   },
@@ -60,7 +60,8 @@
     "rollup-plugin-commonjs": "^9.2.0",
     "rollup-plugin-node-resolve": "^3.4.0",
     "rollup-plugin-serve": "^0.6.0",
-    "rollup-plugin-uglify": "^6.0.0"
+    "rollup-plugin-uglify": "^6.0.0",
+    "yargs": "^12.0.5"
   },
   "workspaces": [
     "docs",

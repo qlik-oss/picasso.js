@@ -1,0 +1,56 @@
+<html lang="en">
+  <head>
+    <title>Puppet test</title>
+    <meta charset="utf-8">
+    <base href="/">
+    <script src="packages/picasso.js/dist/picasso.js"></script>
+    <style>
+      .container {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container"></div>
+    <script>
+      const triggeredEvents = {
+        mousedown: 0,
+        touchstart: 0,
+        defaultPrevented: false
+      };
+      const ev = (name) => ((e) => {
+        triggeredEvents[name]++;
+      });
+
+      const chart = picasso.chart({
+        element: document.querySelector('.container'),
+        data: [],
+        on: {
+          mousedown: ev('mousedown'),
+          touchstart: ev('touchstart'),
+        },
+        settings: {
+          components: [{
+            type: 'text',
+            text: 'a',
+            dock: 'center'
+          }],
+          interactions: [{
+            type: 'native',
+            events: {
+              mousedown: ev('mousedown'),
+              touchstart: ev('touchstart'),
+            }
+          }]
+        }
+      });
+      window.picassochart = chart;
+      window.triggeredEvents = triggeredEvents;
+      document.querySelector('.container').addEventListener('touchend', (e) => {
+        triggeredEvents.defaultPrevented = e.defaultPrevented;
+      });
+    </script>
+  </body>
+</html>

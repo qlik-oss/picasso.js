@@ -300,12 +300,10 @@ function chartFn(definition, context) {
     return ret;
   };
 
-  // Browser only
-  const mount = () => {
-    element.innerHTML = '';
-
-    render();
-
+  const addDefaultEventListeners = () => {
+    if (listeners.length || !element) {
+      return;
+    }
     Object.keys(on).forEach((key) => {
       const listener = on[key].bind(instance);
       element.addEventListener(key, listener);
@@ -381,11 +379,25 @@ function chartFn(definition, context) {
       element.addEventListener(event.key, event.listener);
       listeners.push(event);
     });
+  };
+
+  const removeDefaultEventListeners = () => {
+    listeners.forEach(({ key, listener }) => element.removeEventListener(key, listener));
+    listeners.length = 0;
+  };
+
+  // Browser only
+  const mount = () => {
+    element.innerHTML = '';
+
+    render();
+
+    addDefaultEventListeners();
     setInteractions(settings.interactions);
   };
 
   const unmount = () => {
-    listeners.forEach(({ key, listener }) => element.removeEventListener(key, listener));
+    removeDefaultEventListeners();
     setInteractions();
   };
 
@@ -794,10 +806,12 @@ function chartFn(definition, context) {
         instances: currentInteractions,
         /** Enable all interaction instances */
         on() {
+          addDefaultEventListeners();
           currentInteractions.forEach(i => i.on());
         },
         /** Disable all interaction instances */
         off() {
+          removeDefaultEventListeners();
           currentInteractions.forEach(i => i.off());
         }
       };

@@ -80,7 +80,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/picassojs
-      - run: yarn run test:component:coverage
+      - run: yarn run test:component
 
   test-integration:
     <<: *defaults
