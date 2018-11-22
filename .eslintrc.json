@@ -43,8 +43,7 @@
         "chai": false,
         "expect": false,
         "sinon": false,
-        "page": false,
-        "picassochart": false
+        "page": false
       },
       "parserOptions": {
         "sourceType": "module",

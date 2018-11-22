@@ -1,9 +1,65 @@
+/* global picassochart, triggeredEvents */
+
+const iPad = {
+  name: 'iPad landscape',
+  userAgent: 'Mozilla/5.0 (iPad; CPU OS 11_0 like Mac OS X) AppleWebKit/604.1.34 (KHTML, like Gecko) Version/11.0 Mobile/15A5341f Safari/604.1',
+  viewport: {
+    width: 1024,
+    height: 768,
+    deviceScaleFactor: 2,
+    isMobile: true,
+    hasTouch: true,
+    isLandscape: true
+  }
+};
+
 describe('picasso-interactions', () => {
-  const fixture = 'http://localhost:10001/interactions/interactions-lasso.fix.html';
+  const fixture = 'http://localhost:10001/interactions/events.fix.html';
+  const fixtureLasso = 'http://localhost:10001/interactions/interactions-lasso.fix.html';
   const fixtureRange = 'http://localhost:10001/interactions/interactions-range.fix.html';
 
+  describe('events', () => {
+    it('should be on by default', async () => {
+      await page.goto(fixture);
+      await page.waitForSelector('.container');
+      await page.click('.container');
+      const ev = await page.evaluate(() => triggeredEvents);
+      expect(ev.mousedown).to.equal(2);
+    });
+
+    it('should not trigger when turned off', async () => {
+      await page.goto(fixture);
+      await page.waitForSelector('.container');
+      await page.evaluate(() => picassochart.interactions.off());
+      await page.click('.container');
+      const ev = await page.evaluate(() => triggeredEvents);
+      expect(ev.mousedown).to.equal(0);
+    });
+
+    it('should prevent default on touchend', async () => {
+      const emulatedPage = await browser.newPage();
+      await emulatedPage.emulate(iPad);
+      await emulatedPage.goto(fixture);
+      await emulatedPage.waitForSelector('.container');
+      await emulatedPage.tap('.container');
+      const ev = await emulatedPage.evaluate(() => triggeredEvents);
+      expect(ev.defaultPrevented).to.equal(true);
+    });
+
+    it('should not prevent default when interactions are off', async () => {
+      const emulatedPage = await browser.newPage();
+      await emulatedPage.emulate(iPad);
+      await emulatedPage.goto(fixture);
+      await emulatedPage.waitForSelector('.container');
+      await emulatedPage.evaluate(() => picassochart.interactions.off());
+      await emulatedPage.tap('.container');
+      const ev = await emulatedPage.evaluate(() => triggeredEvents);
+      expect(ev.defaultPrevented).to.equal(false);
+    });
+  });
+
   it('Single select', async () => {
-    await page.goto(fixture);
+    await page.goto(fixtureLasso);
     await page.waitForSelector('.container');
     await page.click('rect[data-value="Apr"]');
     await page.click('rect[data-value="Mar"]');
@@ -14,7 +70,7 @@ describe('picasso-interactions', () => {
   });
 
   it('lasso select', async () => {
-    await page.goto(fixture);
+    await page.goto(fixtureLasso);
     await page.waitForSelector('.container');
     const a = await page.$('rect[data-value="Apr"]');
     const f = await page.$('rect[data-value="Feb"]');
@@ -189,7 +245,7 @@ describe('picasso-interactions', () => {
     await page.mouse.up();
     await page.mouse.move(label.x + label.width / 2, label2.y + label.height / 2);
     await page.mouse.down();
-    await page.mouse.move(dest.x + dest.width / 2, dest.y + dest.height / 2);
+    await page.mouse.move(dest.x + dest.width / 2, dest.y + dest.height);
     await page.mouse.up();
     let rangeSelect = await page.evaluate(() => picassochart.brush('highlight').containsRange('0/Sales', { min: 0, max: 5800 }));
     expect(rangeSelect).to.equal(true, 'The rangeselect contained at least values between 10-1500');

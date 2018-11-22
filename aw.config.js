@@ -16,7 +16,7 @@ const argv = yargs
       type: 'string',
       alias: 't',
       default: 'unit',
-      choices: ['unit', 'component']
+      choices: ['unit', 'component', 'integration']
     }
   })
   .coerce('scope', (scope) => {
@@ -45,7 +45,11 @@ const TYPES = {
   component: {
     glob: `${argv.scope}/test/component/**/*.comp.js`,
     reportDir: 'coverage/component'
-  }
+  },
+  integration: {
+    glob: 'test/integration/**/*.int.js',
+    watchGlob: ['test/integration/**/*.{js,html}']
+  },
 };
 
 const type = TYPES[argv.type];
