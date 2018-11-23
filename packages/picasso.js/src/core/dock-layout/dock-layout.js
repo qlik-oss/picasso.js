@@ -117,42 +117,33 @@ function reduceSingleLayoutRect(logicalContainerRect, reducedRect, edgeBleed, c,
  * @ignore
  */
 function updateForComponentsDockedAtRemovedComponents(components, hiddenComponents) {
-  const visibleComponents = components.slice();
-
   if (hiddenComponents.length === 0) {
-    return { visibleComponents, dockedAtRemovedComponents: [] };
+    return { visibleComponents: components, dockedAtRemovedComponents: [] };
   }
 
   const dockedAtRemovedComponents = [];
 
-  components.forEach((comp, idx) => {
-    let nbrOfHidden = 0;
+  const visibleComponents = components.filter((comp) => {
     const dock = comp.config && comp.config.dock();
-    const referencedDocks = dock.split(',').map(s => s.replace(' ', ''));
-    const newTargetComponents = referencedDocks.slice();
 
-    // For multiple @ references
-    referencedDocks.forEach((referencedDock, i) => {
-      const found = hiddenComponents.some((hiddenComp) => {
-        const key = hiddenComp.ctx && hiddenComp.ctx.key;
-        return referencedDock === `@${key}`;
-      });
-
-      if (found) {
-        newTargetComponents.splice(i, 1);
-        nbrOfHidden++;
-      }
-    });
-
-    // Hide the component only if all the referenced components are hidden
-    if (nbrOfHidden === referencedDocks.length) {
-      visibleComponents.splice(idx, 1);
-      dockedAtRemovedComponents.push(comp.instance);
-    } else if (nbrOfHidden > 0) {
-      // Reassigning new dock target(s) if more that one of the referenced components are visible
-      comp.config.dock = () => newTargetComponents.join();
+    if (!/^@/.test(dock)) {
+      return true;
     }
+
+    const referencedDocks = dock.split(',').map(s => s.replace(/^\s*@/, ''));
+
+    const isAllHidden = referencedDocks.every(refDock => hiddenComponents.some((hiddenComp) => {
+      const key = hiddenComp.ctx && hiddenComp.ctx.key;
+      return refDock === key;
+    }));
+
+    if (isAllHidden) {
+      dockedAtRemovedComponents.push(comp.instance);
+    }
+
+    return !isAllHidden;
   });
+
   return { visibleComponents, dockedAtRemovedComponents };
 }
 
