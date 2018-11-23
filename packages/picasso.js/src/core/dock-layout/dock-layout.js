@@ -95,6 +95,7 @@ function reduceSingleLayoutRect(logicalContainerRect, reducedRect, edgeBleed, c,
   return true;
 }
 
+
 /**
  * Updates the visible and hidden components based on components that are docked to other components.
  * For example, assume a component called myRect:
@@ -113,6 +114,7 @@ function reduceSingleLayoutRect(logicalContainerRect, reducedRect, edgeBleed, c,
  * @param {Array} components - Components to be decided if they should be hidden or not.
  * @param {Array} hiddenComponents - Components that are already hidden.
  * @returns {Object} containing the new visible components and additional components to be hidden.
+ * @ignore
  */
 function updateForComponentsDockedAtRemovedComponents(components, hiddenComponents) {
   const visibleComponents = components.slice();
@@ -123,16 +125,33 @@ function updateForComponentsDockedAtRemovedComponents(components, hiddenComponen
 
   const dockedAtRemovedComponents = [];
 
-  hiddenComponents.forEach((hiddenComp) => {
-    components.forEach((comp, idx) => {
-      const dock = comp.instance && comp.instance.ctx && comp.instance.ctx.dock;
-      const key = hiddenComp.ctx && hiddenComp.ctx.key;
+  components.forEach((comp, idx) => {
+    let nbrOfHidden = 0;
+    const dock = comp.config && comp.config.dock();
+    const referencedDocks = dock.split(',').map(s => s.replace(' ', ''));
+    const newTargetComponents = referencedDocks.slice();
 
-      if (dock === `@${key}`) {
-        visibleComponents.splice(idx, 1);
-        dockedAtRemovedComponents.push(comp.instance);
+    // For multiple @ references
+    referencedDocks.forEach((referencedDock, i) => {
+      const found = hiddenComponents.some((hiddenComp) => {
+        const key = hiddenComp.ctx && hiddenComp.ctx.key;
+        return referencedDock === `@${key}`;
+      });
+
+      if (found) {
+        newTargetComponents.splice(i, 1);
+        nbrOfHidden++;
       }
     });
+
+    // Hide the component only if all the referenced components are hidden
+    if (nbrOfHidden === referencedDocks.length) {
+      visibleComponents.splice(idx, 1);
+      dockedAtRemovedComponents.push(comp.instance);
+    } else if (nbrOfHidden > 0) {
+      // Reassigning new dock target(s) if more that one of the referenced components are visible
+      comp.config.dock = () => newTargetComponents.join();
+    }
   });
   return { visibleComponents, dockedAtRemovedComponents };
 }
@@ -283,7 +302,8 @@ function positionComponents(components, logicalContainerRect, reducedRect, conta
         outerRect.height = rect.height = reducedRect.height;
     }
     if (/^@/.test(d)) {
-      const refs = d.split(',').map(r => referencedComponents[r.replace('@', '')]).filter(r => !!r);
+      const spacesFollowedByAtRegex = /^\s*@/;
+      const refs = d.split(',').map(r => referencedComponents[r.replace(spacesFollowedByAtRegex, '')]).filter(r => !!r);
       if (refs.length > 0) {
         outerRect = boundingBox(refs.map(r => r.outerRect));
         rect = boundingBox(refs.map(r => r.rect));
