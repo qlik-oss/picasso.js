@@ -356,10 +356,24 @@ describe('box shapes', () => {
       expect(w).to.equal(0.1);
     });
 
+    it('negative bandwidth - width is less than min width', () => {
+      bandwidth = -0.1;
+      item.box.minWidthPx = 0.1 * avaialbleWidth;
+      const w = getBoxWidth(bandwidth, item, avaialbleWidth);
+      expect(w).to.equal(-0.1);
+    });
+
     it('width is larger than max width', () => {
       item.box.maxWidthPx = 0.01 * avaialbleWidth;
       const w = getBoxWidth(bandwidth, item, avaialbleWidth);
       expect(w).to.equal(0.01);
+    });
+
+    it('negative bandwidth - width is larger than max width', () => {
+      bandwidth = -0.1;
+      item.box.maxWidthPx = 0.01 * avaialbleWidth;
+      const w = getBoxWidth(bandwidth, item, avaialbleWidth);
+      expect(w).to.equal(-0.01);
     });
   });
 });

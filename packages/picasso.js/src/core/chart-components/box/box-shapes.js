@@ -189,8 +189,10 @@ export function horizontalLine({
  * @ignore
  */
 export function getBoxWidth(bandwidth, item, maxMajorWidth) {
-  const boxWidth = Math.min(bandwidth * item.box.width, isNaN(item.box.maxWidthPx) ? maxMajorWidth : item.box.maxWidthPx / maxMajorWidth);
-  return isNaN(item.box.minWidthPx) ? boxWidth : Math.max(item.box.minWidthPx / maxMajorWidth, boxWidth);
+  const sign = bandwidth >= 0 ? 1 : -1;
+  let boxWidth = Math.min(sign * bandwidth * item.box.width, isNaN(item.box.maxWidthPx) ? maxMajorWidth : item.box.maxWidthPx / maxMajorWidth);
+  boxWidth = isNaN(item.box.minWidthPx) ? boxWidth : Math.max(item.box.minWidthPx / maxMajorWidth, boxWidth);
+  return boxWidth * sign;
 }
 
 export function buildShapes({
