@@ -124,15 +124,11 @@ function updateForComponentsDockedAtRemovedComponents(components, hiddenComponen
   const dockedAtRemovedComponents = [];
 
   const visibleComponents = components.filter((comp) => {
-    const dock = comp.config && comp.config.dock();
-
-    if (!/^@/.test(dock)) {
+    if (comp.referencedDocks.length === 0) {
       return true;
     }
 
-    const referencedDocks = dock.split(',').map(s => s.replace(/^\s*@/, ''));
-
-    const isAllHidden = referencedDocks.every(refDock => hiddenComponents.some((hiddenComp) => {
+    const isAllHidden = comp.referencedDocks.every(refDock => hiddenComponents.some((hiddenComp) => {
       const key = hiddenComp.ctx && hiddenComp.ctx.key;
       return refDock === key;
     }));
@@ -228,11 +224,13 @@ function positionComponents(components, logicalContainerRect, reducedRect, conta
   const referencedComponents = {};
   const referenceArray = components.slice();
   components.sort((a, b) => {
-    if (/^@/.test(b.config.dock())) {
-      return -1;
-    }
-    if (/^@/.test(a.config.dock())) {
-      return 1;
+    if (a.referencedDocks.length > 0 || b.referencedDocks.length > 0) {
+      if (/^@/.test(b.config.dock())) {
+        return -1;
+      }
+      if (/^@/.test(a.config.dock())) {
+        return 1;
+      }
     }
     const diff = a.config.displayOrder() - b.config.displayOrder();
     if (diff === 0) {
@@ -292,9 +290,8 @@ function positionComponents(components, logicalContainerRect, reducedRect, conta
         outerRect.width = rect.width = reducedRect.width;
         outerRect.height = rect.height = reducedRect.height;
     }
-    if (/^@/.test(d)) {
-      const spacesFollowedByAtRegex = /^\s*@/;
-      const refs = d.split(',').map(r => referencedComponents[r.replace(spacesFollowedByAtRegex, '')]).filter(r => !!r);
+    if (c.referencedDocks.length > 0) {
+      const refs = c.referencedDocks.map(r => referencedComponents[r]).filter(r => !!r);
       if (refs.length > 0) {
         outerRect = boundingBox(refs.map(r => r.outerRect));
         rect = boundingBox(refs.map(r => r.rect));
@@ -364,10 +361,19 @@ export default function dockLayout(initialSettings) {
     validateComponent(component);
     docker.removeComponent(component);
 
+    function getReferencedDocks(dock) {
+      if (!/^@/.test(dock)) {
+        return [];
+      }
+
+      return dock.split(',').map(s => s.replace(/^\s*@/, ''));
+    }
+
     components.push({
       instance: component,
       key,
-      config: component.dockConfig()
+      config: component.dockConfig(),
+      referencedDocks: getReferencedDocks(component.dockConfig().dock())
     });
   };
 
