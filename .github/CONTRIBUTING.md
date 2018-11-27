@@ -30,7 +30,7 @@ Submit your feature by creating a Pull Request, following the [GIT guidelines](#
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) 10+ and [yarn](https://yarnpkg.com) installed
+- [Node.js](https://nodejs.org/) 10+ and [yarn](https://yarnpkg.com) 1.9.4 installed
 
 ### Project structure
 
