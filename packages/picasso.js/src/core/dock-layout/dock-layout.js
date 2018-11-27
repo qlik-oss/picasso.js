@@ -224,13 +224,11 @@ function positionComponents(components, logicalContainerRect, reducedRect, conta
   const referencedComponents = {};
   const referenceArray = components.slice();
   components.sort((a, b) => {
-    if (a.referencedDocks.length > 0 || b.referencedDocks.length > 0) {
-      if (/^@/.test(b.config.dock())) {
-        return -1;
-      }
-      if (/^@/.test(a.config.dock())) {
-        return 1;
-      }
+    if (b.referencedDocks.length > 0) {
+      return -1;
+    }
+    if (a.referencedDocks.length > 0) {
+      return 1;
     }
     const diff = a.config.displayOrder() - b.config.displayOrder();
     if (diff === 0) {
@@ -361,19 +359,13 @@ export default function dockLayout(initialSettings) {
     validateComponent(component);
     docker.removeComponent(component);
 
-    function getReferencedDocks(dock) {
-      if (!/^@/.test(dock)) {
-        return [];
-      }
-
-      return dock.split(',').map(s => s.replace(/^\s*@/, ''));
-    }
+    const dock = component.dockConfig().dock();
 
     components.push({
       instance: component,
       key,
       config: component.dockConfig(),
-      referencedDocks: getReferencedDocks(component.dockConfig().dock())
+      referencedDocks: /^@/.test(dock) ? dock.split(',').map(s => s.replace(/^\s*@/, '')) : []
     });
   };
 
