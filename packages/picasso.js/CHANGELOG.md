@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.17.0](https://github.com/qlik-oss/picasso.js/compare/v0.16.1...v0.17.0) (2018-11-27)
+
+
+### Bug Fixes
+
+* **box:** min/maxWidthPx doesnt work when scale is inverted ([#264](https://github.com/qlik-oss/picasso.js/issues/264)) ([ac729b9](https://github.com/qlik-oss/picasso.js/commit/ac729b9))
+* **events:** turn off default event handlers ([#262](https://github.com/qlik-oss/picasso.js/issues/262)) ([db882b7](https://github.com/qlik-oss/picasso.js/commit/db882b7))
+* **tooltip:** clamp position to component bounds ([#259](https://github.com/qlik-oss/picasso.js/issues/259)) ([2ecdf5d](https://github.com/qlik-oss/picasso.js/commit/2ecdf5d))
+
+
+### Features
+
+* **axis:** add filter overlapping labels setting ([#257](https://github.com/qlik-oss/picasso.js/issues/257)) ([d4a99cb](https://github.com/qlik-oss/picasso.js/commit/d4a99cb))
+* **debug:** add support for components that use the outer rect ([#258](https://github.com/qlik-oss/picasso.js/issues/258)) ([1d04c8e](https://github.com/qlik-oss/picasso.js/commit/1d04c8e))
+* dock settings as a function ([#260](https://github.com/qlik-oss/picasso.js/issues/260)) ([b923b37](https://github.com/qlik-oss/picasso.js/commit/b923b37))
+
+
+
+
+
 ## [0.16.1](https://github.com/qlik-oss/picasso.js/compare/v0.16.0...v0.16.1) (2018-11-13)
 
 **Note:** Version bump only for package picasso.js
