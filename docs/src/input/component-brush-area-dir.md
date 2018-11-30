@@ -17,7 +17,7 @@ A `target` is configured in the `target` property:
 ```js
 settings: {
   target: {
-    component: 'my-target-component'
+    components: ['my-target-component']
   }
 }
 ```
@@ -103,7 +103,7 @@ components: [
       },
     },
     target: {
-      component: 'target-this-component'
+      components: ['target-this-component']
     }
   },
   ...

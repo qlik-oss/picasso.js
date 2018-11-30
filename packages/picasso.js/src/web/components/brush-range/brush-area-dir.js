@@ -126,7 +126,8 @@ function getBubbleLabel(state, value, range) {
  * @property {string} [bubbles.align=start] - Where to anchor bubble [start|end]
  * @property {function} [bubbles.label] - Callback function for the labels
  * @property {object} [target]
- * @property {string} [target.component] - Render matching overlay on target component
+ * @property {string} [target.component] - Render matching overlay on target component. @deprecated Use `components` instead
+ * @property {string[]} [target.components] - Render matching overlay on target components
  */
 
 /**
@@ -189,17 +190,28 @@ const brushAreaDirectionalComponent = {
     const size = this.state.rect[direction === VERTICAL ? 'height' : 'width'];
     const offset = this.renderer.element().getBoundingClientRect();
 
-    const target = stngs.target ? this.chart.component(stngs.target.component) : null;
-    if (target && target.rect) {
-      this.state.targetRect = {
-        x: (target.rect.x - this.rect.x),
-        y: (target.rect.y - this.rect.y),
-        width: target.rect.width,
-        height: target.rect.height
-      };
-    } else {
-      this.state.targetRect = null;
-    }
+    const targets = (stngs.target ? stngs.target.components || [stngs.target.component] : [])
+      .map(c => this.chart.component(c)).filter(Boolean);
+
+    const targetRect = targets[0] ? targets.slice(1).reduce((prev, curr) => ({
+      x0: Math.min(prev.x0, curr.rect.x),
+      y0: Math.min(prev.y0, curr.rect.y),
+      x1: Math.max(prev.x1, curr.rect.x + curr.rect.width),
+      y1: Math.max(prev.y1, curr.rect.y + curr.rect.height)
+    }), {
+      x0: targets[0].rect.x,
+      y0: targets[0].rect.y,
+      x1: targets[0].rect.x + targets[0].rect.width,
+      y1: targets[0].rect.y + targets[0].rect.height
+    }) : null;
+
+    this.state.targetRect = targetRect ? {
+      x: targetRect.x0 - this.rect.x,
+      y: targetRect.y0 - this.rect.y,
+      width: targetRect.x1 - targetRect.x0,
+      height: targetRect.y1 - targetRect.y0
+    } : null;
+
     this.state.style = this.style;
     this.state.chart = this.chart;
     this.state.direction = direction;

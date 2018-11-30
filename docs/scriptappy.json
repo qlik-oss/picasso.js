@@ -3,7 +3,7 @@
   "info": {
     "name": "picasso.js",
     "description": "A charting library streamlined for building visualizations for the Qlik Sense Analytics platform.",
-    "version": "0.16.1",
+    "version": "0.17.0",
     "license": "MIT"
   },
   "entries": {
@@ -5030,9 +5030,17 @@
           "kind": "object",
           "entries": {
             "component": {
-              "description": "Render matching overlay on target component",
+              "description": "Render matching overlay on target component. @deprecated Use `components` instead",
               "optional": true,
               "type": "string"
+            },
+            "components": {
+              "description": "Render matching overlay on target components",
+              "optional": true,
+              "kind": "array",
+              "items": {
+                "type": "string"
+              }
             }
           }
         }
