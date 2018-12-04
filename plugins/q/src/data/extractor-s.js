@@ -27,16 +27,14 @@ export function getFieldAccessor(field, page, deps) {
     return -1;
   }
 
-  let path = `row[${fieldIdx}]`;
-
   if (attrDimIdx >= 0) {
-    return Function('row', `return ${path}.qAttrDims.qValues[${attrDimIdx}];`); // eslint-disable-line no-new-func
+    return row => row[fieldIdx].qAttrDims.qValues[attrDimIdx];
   }
   if (attrIdx >= 0) {
-    return Function('row', `return ${path}.qAttrExps.qValues[${attrIdx}];`); // eslint-disable-line no-new-func
+    return row => row[fieldIdx].qAttrExps.qValues[attrIdx];
   }
 
-  return Function('row', `return ${path};`); // eslint-disable-line no-new-func
+  return row => row[fieldIdx];
 }
 
 // TODO - handle 'other' value
