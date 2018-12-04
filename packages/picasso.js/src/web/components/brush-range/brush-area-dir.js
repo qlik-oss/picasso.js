@@ -191,7 +191,7 @@ const brushAreaDirectionalComponent = {
     const offset = this.renderer.element().getBoundingClientRect();
 
     const targets = (stngs.target ? stngs.target.components || [stngs.target.component] : [])
-      .map(c => this.chart.component(c)).filter(Boolean);
+      .map(c => this.chart.component(c)).filter(c => !!c && !!c.rect);
 
     const targetRect = targets[0] ? targets.slice(1).reduce((prev, curr) => ({
       x0: Math.min(prev.x0, curr.rect.x),
