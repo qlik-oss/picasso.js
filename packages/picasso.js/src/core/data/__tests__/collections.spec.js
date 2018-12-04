@@ -12,10 +12,10 @@ describe('data collections', () => {
       expect(fn).to.throw('Data config for collections may not reference other collections');
     });
 
-    it('should call extractor', () => {
+    it('should not call extractor on initiation', () => {
       let extractor = sinon.stub();
       collections([{ key: 'a', data: 'foo' }], 'dd', 'opts', extractor);
-      expect(extractor).to.have.been.calledWithExactly('foo', 'dd', 'opts');
+      expect(extractor.callCount).to.equal(0);
     });
   });
 
@@ -36,6 +36,15 @@ describe('data collections', () => {
       ], 'dd', 'opts', extractor);
       expect(fn('a')).to.equal('a - extracted');
       expect(fn('b')).to.equal(false);
+    });
+
+    it('should extract only once', () => {
+      const extractor = sinon.stub();
+      const fn = collections([{ key: 'a', data: 'foo' }], 'dd', 'opts', extractor);
+      fn('a');
+      fn('a');
+      fn('a');
+      expect(extractor.callCount).to.equal(1);
     });
   });
 });

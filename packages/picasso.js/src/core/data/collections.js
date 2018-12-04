@@ -11,7 +11,7 @@ function create(config, d, opts, extractor = extract) {
     if (typeof cfg.data === 'object' && 'collection' in cfg.data) {
       throw new Error('Data config for collections may not reference other collections');
     }
-    collections[cfg.key] = extractor(cfg.data, d, opts);
+    collections[cfg.key] = () => extractor(cfg.data, d, opts);
   });
 
   const fn = (key) => {
@@ -25,6 +25,9 @@ function create(config, d, opts, extractor = extract) {
     }
     if (!(k in collections)) {
       throw new Error(`Unknown data collection: ${k}`);
+    }
+    if (typeof collections[k] === 'function') {
+      collections[k] = collections[k]();
     }
     let coll = collections[k];
     if (cfg) {
