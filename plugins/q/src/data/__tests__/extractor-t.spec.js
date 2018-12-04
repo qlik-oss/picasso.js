@@ -331,13 +331,13 @@ describe('q-data-extractor-t', () => {
         title: () => 'a', value: d => d.qElemNo, label: d => d.qText, key: () => 'qDimensionInfo/0', reduce: values => values.join(', '), formatter: () => (v => `<${v}>`)
       },
       {
-        title: () => 'b', value: d => d.qElemNo, label: d => d.qText, key: () => 'qDimensionInfo/1', reduce: values => values.join(', '), formatter: () => (v => `<${v}>`)
+        title: () => 'b', value: d => d.qElemNo, label: d => d.qText, key: () => 'qDimensionInfo/1', reduce: values => values.join(', '), reduceLabel: values => values.join(':'), formatter: () => (v => `<${v}>`)
       },
       {
         title: () => 'am', value: d => d.qElemNo, label: d => d.qText, key: () => 'qDimensionInfo/0/qMeasureInfo/1', reduce: values => values.join(', '), formatter: () => (v => `=${v}=`)
       },
       {
-        title: () => 'c', value: d => d.qValue, label: d => d.qText, key: () => 'qDimensionInfo/1/qMeasureInfo/0', reduce: values => values.join(', '), formatter: () => (v => `£${v}`)
+        title: () => 'c', value: d => d.qValue, label: d => d.qText, key: () => 'qDimensionInfo/1/qMeasureInfo/0', reduce: values => values.join(', '), reduceLabel: (labels, v) => `€€${v}`, formatter: () => (v => `£${v}`)
       },
       {
         title: () => 'd', value: d => d.qValue, label: d => d.qText, key: () => 'qDimensionInfo/1/qMeasureInfo/1', reduce: values => values.join(', '), formatter: () => (v => `-${v}-`)
@@ -369,6 +369,7 @@ describe('q-data-extractor-t', () => {
       title: () => '',
       key: () => 'qDimensionInfo/1/qAttrExprInfo/0',
       reduce: values => values.join(', '),
+      reduceLabel: labels => labels.join(':'),
       formatter: () => (() => '')
     };
 
@@ -444,7 +445,7 @@ describe('q-data-extractor-t', () => {
         field: 'qDimensionInfo/0',
         props: {
           descs: {
-            field: 'qDimensionInfo/1/qAttrExprInfo/0', value: v => `-${v.qText}-`
+            field: 'qDimensionInfo/1/qAttrExprInfo/0', value: v => `-${v.qText}-`, label: v => `~${v.qText}~`
           }
         }
       }, dataset, {}, deps);
@@ -454,13 +455,13 @@ describe('q-data-extractor-t', () => {
           value: 0,
           label: 'Alcoholic Beverages',
           source: { key: 'cube', field: 'qDimensionInfo/0' },
-          descs: { value: '-three-, -two-', label: '-three-, -two-', source: { key: 'cube', field: 'qDimensionInfo/1/qAttrExprInfo/0' } }
+          descs: { value: '-three-, -two-', label: '~three~:~two~', source: { key: 'cube', field: 'qDimensionInfo/1/qAttrExprInfo/0' } }
         },
         {
           value: 1,
           label: 'Baked Goods',
           source: { key: 'cube', field: 'qDimensionInfo/0' },
-          descs: { value: '-five-, -seven-, -nine-', label: '-five-, -seven-, -nine-', source: { key: 'cube', field: 'qDimensionInfo/1/qAttrExprInfo/0' } }
+          descs: { value: '-five-, -seven-, -nine-', label: '~five~:~seven~:~nine~', source: { key: 'cube', field: 'qDimensionInfo/1/qAttrExprInfo/0' } }
         }
       ]);
     });
@@ -470,7 +471,7 @@ describe('q-data-extractor-t', () => {
         field: 'qDimensionInfo/1',
         props: {
           descs: {
-            field: 'qDimensionInfo/1/qAttrExprInfo/0', value: v => v.qText
+            field: 'qDimensionInfo/1/qAttrExprInfo/0', value: v => v.qText, label: v => v.qText
           }
         }
       }, dataset, {}, deps);
@@ -605,7 +606,8 @@ describe('q-data-extractor-t', () => {
         props: {
           descs: {
             field: 'qDimensionInfo/1',
-            value: d => d.qText
+            value: d => d.qText,
+            label: d => `€${d.qText}`
           }
         }
       }, dataset, { fields }, deps);
@@ -614,13 +616,13 @@ describe('q-data-extractor-t', () => {
           value: 0,
           label: 'Alcoholic Beverages',
           source: { key: 'cube', field: 'qDimensionInfo/0' },
-          descs: { value: 'Beer, Wine', label: 'Beer, Wine', source: { key: 'cube', field: 'qDimensionInfo/1' } }
+          descs: { value: 'Beer, Wine', label: '€Beer:€Wine', source: { key: 'cube', field: 'qDimensionInfo/1' } }
         },
         {
           value: 1,
           label: 'Baked Goods',
           source: { key: 'cube', field: 'qDimensionInfo/0' },
-          descs: { value: 'Bagels, Muffins, Sliced Bread', label: 'Bagels, Muffins, Sliced Bread', source: { key: 'cube', field: 'qDimensionInfo/1' } }
+          descs: { value: 'Bagels, Muffins, Sliced Bread', label: '€Bagels:€Muffins:€Sliced Bread', source: { key: 'cube', field: 'qDimensionInfo/1' } }
         }
       ]);
     });
@@ -667,7 +669,7 @@ describe('q-data-extractor-t', () => {
           value: '0--1',
           label: '<0--1>',
           source: { key: 'cube', field: 'qDimensionInfo/0' },
-          descs: { value: 'Beer, Wine, Bagels, Muffins, Sliced Bread', label: '<Beer, Wine, Bagels, Muffins, Sliced Bread>', source: { key: 'cube', field: 'qDimensionInfo/1' } },
+          descs: { value: 'Beer, Wine, Bagels, Muffins, Sliced Bread', label: 'Beer:Wine:Bagels:Muffins:Sliced Bread', source: { key: 'cube', field: 'qDimensionInfo/1' } },
           m: { value: '171792, 195765, 22652, 158937, 110661', label: '-171792, 195765, 22652, 158937, 110661-', source: { key: 'cube', field: 'qDimensionInfo/1/qMeasureInfo/1' } }
         }
       ]);
@@ -683,7 +685,8 @@ describe('q-data-extractor-t', () => {
               { field: 'qDimensionInfo/0', value: v => v.qText },
               { value: v => v.qText }
             ],
-            value: values => values.join(':')
+            value: values => values.join(':'),
+            label: values => values.join('||')
           }
         }
       }, dataset, { fields }, deps);
@@ -693,31 +696,31 @@ describe('q-data-extractor-t', () => {
           value: 0,
           label: 'Beer',
           source: { key: 'cube', field: 'qDimensionInfo/1' },
-          id: { value: 'Alcoholic Beverages:Beer', label: 'Alcoholic Beverages:Beer' }
+          id: { value: 'Alcoholic Beverages:Beer', label: 'Alcoholic Beverages||Beer' }
         },
         {
           value: 1,
           label: 'Wine',
           source: { key: 'cube', field: 'qDimensionInfo/1' },
-          id: { value: 'Alcoholic Beverages:Wine', label: 'Alcoholic Beverages:Wine' }
+          id: { value: 'Alcoholic Beverages:Wine', label: 'Alcoholic Beverages||Wine' }
         },
         {
           value: 2,
           label: 'Bagels',
           source: { key: 'cube', field: 'qDimensionInfo/1' },
-          id: { value: 'Baked Goods:Bagels', label: 'Baked Goods:Bagels' }
+          id: { value: 'Baked Goods:Bagels', label: 'Baked Goods||Bagels' }
         },
         {
           value: 3,
           label: 'Muffins',
           source: { key: 'cube', field: 'qDimensionInfo/1' },
-          id: { value: 'Baked Goods:Muffins', label: 'Baked Goods:Muffins' }
+          id: { value: 'Baked Goods:Muffins', label: 'Baked Goods||Muffins' }
         },
         {
           value: 4,
           label: 'Sliced Bread',
           source: { key: 'cube', field: 'qDimensionInfo/1' },
-          id: { value: 'Baked Goods:Sliced Bread', label: 'Baked Goods:Sliced Bread' }
+          id: { value: 'Baked Goods:Sliced Bread', label: 'Baked Goods||Sliced Bread' }
         }
       ]);
     });
@@ -732,7 +735,8 @@ describe('q-data-extractor-t', () => {
               { value: v => v.qText },
               { field: 'qDimensionInfo/1/qMeasureInfo/0', reduce: 'sum' }
             ],
-            value: values => values.join(':')
+            value: values => values.join(':'),
+            label: labels => labels.join('||')
           }
         }
       }, dataset, { fields }, deps);
@@ -742,13 +746,13 @@ describe('q-data-extractor-t', () => {
           value: 0,
           label: 'Alcoholic Beverages',
           source: { key: 'cube', field: 'qDimensionInfo/0' },
-          id: { value: 'Alcoholic Beverages:23', label: 'Alcoholic Beverages:23' }
+          id: { value: 'Alcoholic Beverages:23', label: 'Alcoholic Beverages||€€23' }
         },
         {
           value: 1,
           label: 'Baked Goods',
           source: { key: 'cube', field: 'qDimensionInfo/0' },
-          id: { value: 'Baked Goods:24', label: 'Baked Goods:24' }
+          id: { value: 'Baked Goods:24', label: 'Baked Goods||€€24' }
         }
       ]);
     });

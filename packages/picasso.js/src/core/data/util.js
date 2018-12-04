@@ -103,6 +103,14 @@ function normalizeProperties(cfg, dataset, dataProperties, main) {
       } else if (prop.field && prop.field.reduce) {
         prop.reduce = typeof prop.field.reduce === 'string' ? reducers[prop.field.reduce] : prop.field.reduce;
       }
+
+      if (typeof pConfig.reduceLabel === 'function') {
+        prop.reduceLabel = pConfig.reduceLabel;
+      } else if (pConfig.reduceLabel) {
+        prop.reduceLabel = reducers[pConfig.reduceLabel];
+      } else if (prop.field && prop.field.reduceLabel) {
+        prop.reduceLabel = typeof prop.field.reduceLabel === 'string' ? reducers[prop.field.reduceLabel] : prop.field.reduceLabel;
+      }
     }
   });
 
@@ -148,6 +156,39 @@ export function getPropsInfo(cfg, dataset) {
   return { props, main };
 }
 
+function collectItems(items, cfg, formatter, prop) {
+  const values = Array(items.length);
+  const labels = Array(items.length);
+  let it;
+  for (let i = 0; i < items.length; i++) {
+    it = prop ? items[i][prop] : items[i];
+    values[i] = it.value;
+    labels[i] = it.label;
+  }
+
+  const reduce = cfg.reduce;
+  const reduceLabel = cfg.reduceLabel;
+  const v = reduce ? reduce(values) : values;
+  const b = reduceLabel ? reduceLabel(labels, v) : (formatter ? formatter(v) : String(v)); // eslint-disable-line no-nested-ternary
+
+  // // ret[prop].label = String(propsFormatters[prop](ret[prop].value));
+
+  const ret = {
+    value: v,
+    label: b
+  };
+  if (prop && items[0][prop].source) {
+    ret.source = items[0][prop].source;
+    return ret;
+  }
+  if (!prop && items[0].source) {
+    ret.source = items[0].source;
+    return ret;
+  }
+
+  return ret;
+}
+
 // collect items that have been grouped and reduce per group and property
 export function collect(trackedItems, {
   main,
@@ -155,30 +196,16 @@ export function collect(trackedItems, {
   props
 }) {
   let dataItems = [];
-  const mainFormatter = main.field.formatter() || (v => v);
+  const mainFormatter = main.field.formatter(); // || (v => v);
   const propsFormatters = {};
   propsArr.forEach((prop) => {
     propsFormatters[prop] = props[prop].field ? props[prop].field.formatter() : v => v;
   });
   dataItems.push(...trackedItems.map((t) => {
-    let mainValues = t.items.map(item => item.value);
-    const mainReduce = main.reduce;
-    const ret = {
-      value: mainReduce ? mainReduce(mainValues) : mainValues,
-      source: t.items[0].source
-    };
-    ret.label = mainFormatter(ret.value);
+    const ret = collectItems(t.items, main, mainFormatter);
+
     propsArr.forEach((prop) => {
-      let values = [];
-      values = t.items.map(item => item[prop].value);
-      const reduce = props[prop].reduce;
-      ret[prop] = {
-        value: reduce ? reduce(values) : values
-      };
-      ret[prop].label = String(propsFormatters[prop](ret[prop].value));
-      if (t.items[0][prop].source) {
-        ret[prop].source = t.items[0][prop].source;
-      }
+      ret[prop] = collectItems(t.items, props[prop], propsFormatters[prop], prop);
     });
     return ret;
   }));

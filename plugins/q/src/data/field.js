@@ -15,6 +15,7 @@ export default function qField({
   const labelFn = d => d.qText || '';
   const reduce = type === 'dimension' ? 'first' : 'avg';
   const formatter = createFromMetaInfo(meta, localeInfo);
+  const reduceLabel = type === 'dimension' ? 'first' : (labels, v) => formatter(v);
 
   const f = {
     id: () => id,
@@ -33,6 +34,7 @@ export default function qField({
     value: valueFn,
     label: labelFn,
     reduce,
+    reduceLabel,
     formatter: () => formatter,
     tags: () => meta.qTags
   };

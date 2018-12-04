@@ -403,7 +403,7 @@ describe('extractor-s', () => {
     const fs = [{
       title: () => 'reduceMe',
       key: () => 'reduuuced',
-      formatter: () => (v => v)
+      formatter: () => {}
     }, {
       title: () => 'minime',
       key: () => 'measure1',

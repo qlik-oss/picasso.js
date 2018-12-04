@@ -3508,6 +3508,11 @@
           "optional": true,
           "type": "#/definitions/data-extract-config/definitions/reduceFn"
         },
+        "reduceLabel": {
+          "description": "Label reducer function",
+          "optional": true,
+          "type": "#/definitions/data-extract-config/definitions/reduceLabelFn"
+        },
         "filter": {
           "description": "Filter function",
           "optional": true,
@@ -3576,13 +3581,37 @@
           "kind": "function",
           "params": [
             {
-              "name": "cell",
-              "description": "The field cell",
-              "type": "any"
+              "name": "values",
+              "description": "The collected values to reduce",
+              "kind": "array",
+              "items": {
+                "type": "any"
+              }
             }
           ],
           "returns": {
             "type": "any"
+          }
+        },
+        "reduceLabelFn": {
+          "kind": "function",
+          "params": [
+            {
+              "name": "labels",
+              "description": "The collected labels to reduce",
+              "kind": "array",
+              "items": {
+                "type": "any"
+              }
+            },
+            {
+              "name": "value",
+              "description": "Reduced value",
+              "type": "any"
+            }
+          ],
+          "returns": {
+            "type": "string"
           }
         }
       }
