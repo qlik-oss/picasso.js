@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.18.1](https://github.com/qlik-oss/picasso.js/compare/v0.18.0...v0.18.1) (2018-12-04)
+
+
+### Bug Fixes
+
+* **event:** fix touch detection on hybrid ([#272](https://github.com/qlik-oss/picasso.js/issues/272)) ([09b0da0](https://github.com/qlik-oss/picasso.js/commit/09b0da0))
+
+
+
+
+
 # [0.18.0](https://github.com/qlik-oss/picasso.js/compare/v0.17.0...v0.18.0) (2018-12-04)
 
 
