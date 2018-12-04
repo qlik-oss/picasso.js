@@ -1,3 +1,5 @@
+/* global navigator */
+
 export function detectPointerSupport(e) {
   if ('onpointerdown' in e && 'onpointerup' in e) {
     return true;
@@ -6,7 +8,7 @@ export function detectPointerSupport(e) {
 }
 
 export function detectTouchSupport(e) {
-  if ('ontouchstart' in e && 'ontouchend' in e) {
+  if (('ontouchstart' in e && 'ontouchend' in e) || navigator.maxTouchPoints > 1) {
     return true;
   }
   return false;
