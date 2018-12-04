@@ -49,13 +49,17 @@ const TYPES = {
   integration: {
     glob: 'test/integration/**/*.int.js',
     watchGlob: ['test/integration/**/*.{js,html}']
-  },
+  }
 };
 
 const type = TYPES[argv.type];
 
 const glob = [type.glob];
 const src = [`${argv.scope}/src/**/!(*.spec).js`];
+
+if (type === TYPES.unit || type === TYPES.component) {
+  global.navigator = {};
+}
 
 module.exports = {
   glob,
