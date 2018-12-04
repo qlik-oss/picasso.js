@@ -219,6 +219,7 @@ export { ds as default };
  * @property {data-extract-config~labelFn} [label] - The field label accessor
  * @property {data-extract-config~trackByFn} [trackBy] - Track by value accessor
  * @property {data-extract-config~reduceFn} [reduce] - Reducer function
+ * @property {data-extract-config~reduceLabelFn} [reduceLabel] - Label reducer function
  * @property {data-extract-config~filterFn} [filter] - Filter function
  * @property {object} [props] - Additional properties to add to the extracted item
  */
@@ -249,8 +250,15 @@ export { ds as default };
 
 /**
  * @callback data-extract-config~reduceFn
- * @param {any} cell The field cell
+ * @param {any[]} values The collected values to reduce
  * @returns {any}
+ */
+
+/**
+ * @callback data-extract-config~reduceLabelFn
+ * @param {any[]} labels The collected labels to reduce
+ * @param {any} value Reduced value
+ * @returns {string}
  */
 
 /**

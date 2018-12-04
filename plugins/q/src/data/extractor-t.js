@@ -1,3 +1,5 @@
+/* eslint no-nested-ternary: 0 */
+
 import { hierarchy, stratify } from 'd3-hierarchy';
 
 import picker from '../json-path-resolver';
@@ -141,44 +143,64 @@ function doIt({
     const pCfg = props[prop];
     const arr = pCfg.fields || [pCfg];
     let coll;
+    let collStr;
     if (pCfg.fields) {
       coll = [];
+      collStr = [];
     }
     arr.forEach((p) => {
       let fn;
+      let str;
       let value;
+      let nodes;
+      let cells;
+      let label;
       if (p.type === 'primitive') {
         value = p.value;
+        label = String(p.value);
       } else {
-        if (typeof p.value === 'function') { // accessor function
+        if (typeof p.value === 'function') {
           fn = v => p.value(v, item);
         }
+        if (typeof p.label === 'function') {
+          str = v => p.label(v, item);
+        }
         if (p.accessor) {
-          value = p.accessor(item);
-          if (Array.isArray(value)) { // propably descendants
-            value = value.map(p.valueAccessor);
+          nodes = p.accessor(item);
+          if (Array.isArray(nodes)) { // propably descendants
+            cells = nodes.map(p.valueAccessor);
             if (p.attrAccessor) {
-              value = value.map(p.attrAccessor);
+              cells = cells.map(p.attrAccessor);
             }
             if (fn) {
-              value = value.map(fn);
+              value = cells.map(fn);
               fn = null;
             }
+            if (str) {
+              label = cells.map(str);
+              str = null;
+            }
             value = p.reduce ? p.reduce(value) : value;
+            label = p.reduceLabel ? p.reduceLabel(label, value) : String(value);
           } else {
-            value = p.attrAccessor ? p.attrAccessor(p.valueAccessor(value)) : p.valueAccessor(value);
+            value = p.attrAccessor ? p.attrAccessor(p.valueAccessor(nodes)) : p.valueAccessor(nodes);
+            label = value;
           }
         } else {
           value = itemData;
+          label = itemData;
         }
       }
       if (pCfg.fields) {
-        coll.push(fn ? fn(value) : value);
+        const v = fn ? fn(value) : value;
+        coll.push(v);
+        collStr.push(str && label != null ? str(label) : (label != null ? label : String(v)));
       } else {
+        const v = fn ? fn(value) : value;
         ret[prop] = {
-          value: fn ? fn(value) : value
+          value: v,
+          label: str ? str(label) : (label != null ? label : String(v))
         };
-        ret[prop].label = String(ret[prop].value);
         if (p.field) {
           ret[prop].source = { field: p.field.key(), key: sourceKey };
         }
@@ -186,9 +208,9 @@ function doIt({
     });
     if (coll) {
       ret[prop] = {
-        value: typeof pCfg.value === 'function' ? pCfg.value(coll, item) : coll
+        value: typeof pCfg.value === 'function' ? pCfg.value(coll, item) : coll,
+        label: typeof pCfg.label === 'function' ? pCfg.label(collStr, item) : collStr
       };
-      ret[prop].label = String(ret[prop].value);
     }
   });
 }
@@ -268,9 +290,9 @@ const attachPropsAccessors = ({
       if (p.field !== f) {
         const depthObject = getFieldDepth(p.field, { cube, cache });
         const accessors = getFieldAccessor(itemDepthObject, depthObject);
-        p.accessor = accessors.nodeFn;
-        p.valueAccessor = accessors.valueFn;
-        p.attrAccessor = accessors.attrFn;
+        p.accessor = accessors.nodeFn; // nodes accessor
+        p.valueAccessor = accessors.valueFn; // cell accessor
+        p.attrAccessor = accessors.attrFn; // attr cell accessor
       }
     });
   });

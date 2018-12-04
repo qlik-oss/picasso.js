@@ -248,7 +248,7 @@ describe('q-data', () => {
         });
         expect(h.descendants()[1].data.v).to.eql({
           source: { key: 'nyckel', field: 'qMeasureInfo/2' },
-          label: '3.6',
+          label: '$$3.6',
           value: 3.6
         });
       });
