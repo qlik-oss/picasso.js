@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.18.0](https://github.com/qlik-oss/picasso.js/compare/v0.17.0...v0.18.0) (2018-12-04)
+
+
+### Bug Fixes
+
+* **brush-area-dir:** remove targets without rect ([#271](https://github.com/qlik-oss/picasso.js/issues/271)) ([d1e205b](https://github.com/qlik-oss/picasso.js/commit/d1e205b))
+* **dock-layout:** remove components that are docked at hidden components ([#261](https://github.com/qlik-oss/picasso.js/issues/261)) ([912f26a](https://github.com/qlik-oss/picasso.js/commit/912f26a))
+
+
+### Features
+
+* **brush-area-dir:** add support for multiple fill targets ([#266](https://github.com/qlik-oss/picasso.js/issues/266)) ([2800a95](https://github.com/qlik-oss/picasso.js/commit/2800a95))
+* **data:** add support for reduce label ([#268](https://github.com/qlik-oss/picasso.js/issues/268)) ([dee01ba](https://github.com/qlik-oss/picasso.js/commit/dee01ba))
+
+
+### Performance Improvements
+
+* **data:** lazy evaluate collections ([#270](https://github.com/qlik-oss/picasso.js/issues/270)) ([3c706ba](https://github.com/qlik-oss/picasso.js/commit/3c706ba))
+* **q:** use anonymous functions instead of Function constructor ([#269](https://github.com/qlik-oss/picasso.js/issues/269)) ([599d0f7](https://github.com/qlik-oss/picasso.js/commit/599d0f7))
+
+
+
+
+
 # [0.17.0](https://github.com/qlik-oss/picasso.js/compare/v0.16.1...v0.17.0) (2018-11-27)
 
 

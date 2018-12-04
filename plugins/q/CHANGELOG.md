@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.18.0](https://github.com/qlik-oss/picasso.js/compare/v0.17.0...v0.18.0) (2018-12-04)
+
+
+### Features
+
+* **data:** add support for reduce label ([#268](https://github.com/qlik-oss/picasso.js/issues/268)) ([dee01ba](https://github.com/qlik-oss/picasso.js/commit/dee01ba))
+
+
+### Performance Improvements
+
+* **q:** use anonymous functions instead of Function constructor ([#269](https://github.com/qlik-oss/picasso.js/issues/269)) ([599d0f7](https://github.com/qlik-oss/picasso.js/commit/599d0f7))
+
+
+
+
+
 # [0.17.0](https://github.com/qlik-oss/picasso.js/compare/v0.16.1...v0.17.0) (2018-11-27)
 
 **Note:** Version bump only for package picasso-plugin-q
