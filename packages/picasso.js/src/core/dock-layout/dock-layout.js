@@ -95,54 +95,6 @@ function reduceSingleLayoutRect(logicalContainerRect, reducedRect, edgeBleed, c,
   return true;
 }
 
-
-/**
- * Updates the visible and hidden components based on components that are docked to other components.
- * For example, assume a component called myRect:
- * {
- *  key: 'myRect',
- *  type: 'rect',
- *  dock: 'bottom'
- * }
- * and a component called myLine:
- * {
- *  key: 'myLine',
- *  type: 'line',
- *  dock: '@myRect'
- * }
- * if the layout engine decides to hide myRect, then myLine should be hidden as well.
- * @param {Array} components - Components to be decided if they should be hidden or not.
- * @param {Array} hiddenComponents - Components that are already hidden.
- * @returns {Object} containing the new visible components and additional components to be hidden.
- * @ignore
- */
-function updateForComponentsDockedAtRemovedComponents(components, hiddenComponents) {
-  if (hiddenComponents.length === 0) {
-    return { visibleComponents: components, dockedAtRemovedComponents: [] };
-  }
-
-  const dockedAtRemovedComponents = [];
-
-  const visibleComponents = components.filter((comp) => {
-    if (comp.referencedDocks.length === 0) {
-      return true;
-    }
-
-    const isAllHidden = comp.referencedDocks.every(refDock => hiddenComponents.some((hiddenComp) => {
-      const key = hiddenComp.ctx && hiddenComp.ctx.key;
-      return refDock === key;
-    }));
-
-    if (isAllHidden) {
-      dockedAtRemovedComponents.push(comp.instance);
-    }
-
-    return !isAllHidden;
-  });
-
-  return { visibleComponents, dockedAtRemovedComponents };
-}
-
 function reduceLayoutRect(logicalContainerRect, components, hiddenComponents, settings) {
   const reducedRect = {
     x: logicalContainerRect.x,
@@ -168,10 +120,7 @@ function reduceLayoutRect(logicalContainerRect, components, hiddenComponents, se
     }
   }
 
-  const { visibleComponents, dockedAtRemovedComponents } = updateForComponentsDockedAtRemovedComponents(sortedComponents, hiddenComponents);
-  hiddenComponents.push(...dockedAtRemovedComponents);
-
-  const filteredUnsortedComps = components.filter(c => visibleComponents.indexOf(c) !== -1);
+  const filteredUnsortedComps = components.filter(c => sortedComponents.indexOf(c) !== -1);
   components.length = 0;
   components.push(...filteredUnsortedComps);
   reduceEdgeBleed(logicalContainerRect, reducedRect, edgeBleed);
@@ -224,10 +173,10 @@ function positionComponents(components, logicalContainerRect, reducedRect, conta
   const referencedComponents = {};
   const referenceArray = components.slice();
   components.sort((a, b) => {
-    if (b.referencedDocks.length > 0) {
+    if (/^@/.test(b.config.dock())) {
       return -1;
     }
-    if (a.referencedDocks.length > 0) {
+    if (/^@/.test(a.config.dock())) {
       return 1;
     }
     const diff = a.config.displayOrder() - b.config.displayOrder();
@@ -288,8 +237,8 @@ function positionComponents(components, logicalContainerRect, reducedRect, conta
         outerRect.width = rect.width = reducedRect.width;
         outerRect.height = rect.height = reducedRect.height;
     }
-    if (c.referencedDocks.length > 0) {
-      const refs = c.referencedDocks.map(r => referencedComponents[r]).filter(r => !!r);
+    if (/^@/.test(d)) {
+      const refs = d.split(',').map(r => referencedComponents[r.replace('@', '')]).filter(r => !!r);
       if (refs.length > 0) {
         outerRect = boundingBox(refs.map(r => r.outerRect));
         rect = boundingBox(refs.map(r => r.rect));
@@ -359,13 +308,10 @@ export default function dockLayout(initialSettings) {
     validateComponent(component);
     docker.removeComponent(component);
 
-    const dock = component.dockConfig().dock();
-
     components.push({
       instance: component,
       key,
-      config: component.dockConfig(),
-      referencedDocks: /^@/.test(dock) ? dock.split(',').map(s => s.replace(/^\s*@/, '')) : []
+      config: component.dockConfig()
     });
   };
 
