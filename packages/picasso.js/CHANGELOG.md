@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.18.2](https://github.com/qlik-oss/picasso.js/compare/v0.18.1...v0.18.2) (2018-12-10)
+
+
+### Reverts
+
+* "fix(dock-layout): remove components that are docked at hidden components ([#261](https://github.com/qlik-oss/picasso.js/issues/261))" ([d923123](https://github.com/qlik-oss/picasso.js/commit/d923123))
+
+
+
+
+
 ## [0.18.1](https://github.com/qlik-oss/picasso.js/compare/v0.18.0...v0.18.1) (2018-12-04)
 
 
