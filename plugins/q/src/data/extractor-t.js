@@ -227,7 +227,7 @@ const getHierarchy = (cube, cache, config) => {
 };
 
 function getHierarchyForSMode(dataset) {
-  const matrix = dataset.raw().qDataPages[0].qMatrix;
+  const matrix = dataset.raw().qDataPages.length ? dataset.raw().qDataPages[0].qMatrix : [];
   const order = getColumnOrder(dataset);
   const fields = dataset.fields();
   const dimensions = dataset.fields().filter(f => f.type() === 'dimension')
