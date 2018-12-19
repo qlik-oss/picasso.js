@@ -19,6 +19,8 @@ function place(position, direction) {
   });
 }
 
+const postFilter = () => () => true;
+
 describe('labeling - bars', () => {
   describe('bar rects', () => {
     it('inside', () => {
@@ -278,7 +280,7 @@ describe('labeling - bars', () => {
           direction: 'right'
         }],
         collectiveOrientation: 'h'
-      }, findPlacement, placer);
+      }, findPlacement, placer, postFilter);
       expect(labels).to.eql([['bounds', 'a', {
         fill: 'blue',
         justify: 0.4,
@@ -286,7 +288,8 @@ describe('labeling - bars', () => {
         fontSize: '11px',
         fontFamily: 'bb',
         textMetrics: 2,
-        rotate: false
+        rotate: false,
+        overflow: false
       }]]);
     });
   });

@@ -2,6 +2,7 @@ import extend from 'extend';
 import {
   testRectRect
 } from '../../../math/narrow-phase-collision';
+import filterOverlapping from './bars-overlapping-filter';
 
 const LINE_HEIGHT = 1.5;
 const PADDING = 4;
@@ -35,14 +36,19 @@ export function placeTextInRect(rect, text, opts) {
 
   const textMetrics = opts.textMetrics;
 
-  if (rect.width < opts.fontSize || rect.height < textMetrics.height) {
+  if (!opts.overflow && (rect.width < opts.fontSize || rect.height < textMetrics.height)) {
     return false;
   }
 
   if (opts.rotate) {
-    const wiggleHor = Math.max(0, rect.width - (textMetrics.height / (LINE_HEIGHT * 0.8)));
+    if (opts.overflow && rect.width < textMetrics.height) {
+      label.x = rect.x + (rect.width / 2); // Use center of the rect
+      label.dx = opts.fontSize * 0.35; // Emulate the baseline heuristic for the 'central' attribute
+    } else {
+      const wiggleHor = Math.max(0, rect.width - (textMetrics.height / (LINE_HEIGHT * 0.8)));
+      label.x = rect.x + (textMetrics.height / LINE_HEIGHT) + (opts.align * wiggleHor);
+    }
     const wiggleVert = Math.max(0, rect.height - textMetrics.width);
-    label.x = rect.x + (textMetrics.height / LINE_HEIGHT) + (opts.align * wiggleHor);
     label.y = rect.y + (opts.justify * wiggleVert);
     label.transform = `rotate(-90, ${label.x + label.dx}, ${label.y + label.dy})`;
   } else {
@@ -160,6 +166,33 @@ export function findBestPlacement({
   return { bounds, placement };
 }
 
+function flipNeg90(bounds) {
+  return {
+    x: bounds.x + bounds.width - bounds.height,
+    y: bounds.y + bounds.height,
+    width: bounds.height,
+    height: bounds.width
+  };
+}
+
+function approxTextBounds(label, textMetrics, rotated) {
+  if (rotated) {
+    return flipNeg90({
+      x: label.x + label.dx - textMetrics.width,
+      y: label.y + label.dy - textMetrics.height,
+      width: textMetrics.width,
+      height: textMetrics.height
+    });
+  }
+
+  return {
+    x: label.x + label.dx,
+    y: label.y + label.dy - textMetrics.height,
+    width: textMetrics.width,
+    height: textMetrics.height
+  };
+}
+
 export function placeInBars(
   {
     chart,
@@ -168,9 +201,16 @@ export function placeInBars(
     fitsHorizontally,
     collectiveOrientation
   }, findPlacement = findBestPlacement,
-  placer = placeTextInRect
+  placer = placeTextInRect,
+  postFilter = filterOverlapping
 ) {
   const labels = [];
+  const postFilterContext = {
+    container: rect,
+    nodes: targetNodes.map(t => t.node),
+    labels: [],
+    orientation: collectiveOrientation
+  };
   let label;
   let target;
   let node;
@@ -193,12 +233,12 @@ export function placeInBars(
     arg = cbContext(node, chart);
     direction = target.direction;
     orientation = direction === 'left' || direction === 'right' ? 'h' : 'v';
+
     for (let j = 0; j < target.texts.length; j++) {
       text = target.texts[j];
       if (!text) {
         continue;
       }
-
       lblStngs = target.labelSettings[j];
       measured = target.measurements[j];
       placements = lblStngs.placements;
@@ -230,6 +270,7 @@ export function placeInBars(
           justify = 1 - justify;
         }
 
+        const rotate = !(collectiveOrientation === 'h' || fitsHorizontally);
         label = placer(bounds, text, {
           fill,
           justify: orientation === 'h' ? placement.align : justify,
@@ -237,7 +278,8 @@ export function placeInBars(
           fontSize: lblStngs.fontSize,
           fontFamily: lblStngs.fontFamily,
           textMetrics: measured,
-          rotate: !(collectiveOrientation === 'h' || fitsHorizontally)
+          rotate,
+          overflow: !!placement.overflow
         });
 
         if (label) {
@@ -245,12 +287,16 @@ export function placeInBars(
             label.data = linkData;
           }
           labels.push(label);
+          postFilterContext.labels.push({
+            node,
+            textBounds: approxTextBounds(label, measured, rotate)
+          });
         }
       }
     }
   }
 
-  return labels;
+  return labels.filter(postFilter(postFilterContext));
 }
 
 export function precalculate({
@@ -341,6 +387,7 @@ export function precalculate({
  * @property {number} [labels[].placements[].justify=0] - Placement of the label along the direction of the bar
  * @property {number} [labels[].placements[].align=0.5] - Placement of the label along the perpendicular direction of the bar
  * @property {string} [labels[].placements[].fill='#333'] - Color of the label
+ * @property {boolean} [labels[].placements[].overflow=false] - True if the label is allowed to overflow the bar
  */
 
 export function bars({
