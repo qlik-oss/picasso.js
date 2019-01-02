@@ -58,7 +58,7 @@
     "rollup": "0.66.2",
     "rollup-plugin-babel": "^4.2.0",
     "rollup-plugin-commonjs": "^9.2.0",
-    "rollup-plugin-node-resolve": "^3.4.0",
+    "rollup-plugin-node-resolve": "^4.0.0",
     "rollup-plugin-serve": "^0.6.1",
     "rollup-plugin-uglify": "^6.0.0",
     "yargs": "^12.0.5"
