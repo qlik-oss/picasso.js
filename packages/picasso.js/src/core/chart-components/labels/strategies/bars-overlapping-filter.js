@@ -7,7 +7,7 @@ import { rectContainsRect } from '../../../math/intersection';
  * Finds the first node that may intersect the label.
  * @private
  */
-function binaryLeftSearch(labelBounds, ary, coord, side, prop) {
+export function binaryLeftSearch(labelBounds, ary, coord, side, prop) {
   let left = 0;
   let right = ary.length - 1;
   let node;
@@ -15,17 +15,18 @@ function binaryLeftSearch(labelBounds, ary, coord, side, prop) {
   while (left < right) {
     let m = Math.floor((left + right) / 2);
     node = ary[m];
-    if (node[prop][coord] + node[prop][side] < labelBounds[coord]) { // is on right side
+    if (node[prop][coord] + node[prop][side] < labelBounds[coord]) { // label is on right side
       left = m + 1;
-    } else { // is on the left side
-      right = m - 1;
+    } else { // label is on the left side
+      right = m;
     }
   }
+
   return left;
 }
 
 /**
- * The purpose of this module is to act a filtering function to remove any labels
+ * The purpose of this module is to act as a filtering function to remove any labels
  * that meets one of the following criterias:
  * -- The label is not fully inside the container, such that it would be fully or partially clipped if rendered
  * -- The label overlaps another label
@@ -41,7 +42,8 @@ export default function filterOverlappingLabels({
   nodes,
   labels,
   container
-}) {
+},
+findLeft = binaryLeftSearch) {
   const removedLabels = {};
   const coord = orientation === 'v' ? 'x' : 'y';
   const side = orientation === 'v' ? 'width' : 'height';
@@ -58,7 +60,7 @@ export default function filterOverlappingLabels({
     // ### Test label to label collision ###
     // Only check up until the current label index, which sets a prio order from left to right,
     // such that labels too the left are priorities and rendered first.
-    const leftStartLabel = binaryLeftSearch(labelBounds, labels, coord, side, 'textBounds');
+    const leftStartLabel = findLeft(labelBounds, labels, coord, side, 'textBounds');
     for (let i = leftStartLabel; i < labelIndex; i++) {
       // Skip collision check if label have already been removed
       if (!removedLabels[i] && testRectRect(labelBounds, labels[i].textBounds)) {
@@ -68,11 +70,12 @@ export default function filterOverlappingLabels({
     }
 
     // ### Test label to node collision ###
-    const leftStartNode = binaryLeftSearch(labelBounds, nodes, coord, side, 'localBounds');
+    const leftStartNode = findLeft(labelBounds, nodes, coord, side, 'localBounds');
+    const labelRightBoundary = (labelBounds[coord] + labelBounds[side]);
     for (let i = leftStartNode; i < nodes.length; i++) {
       const node = nodes[i];
       // Do not test beyond this node, as they are assumed to not collide with the label
-      if ((labelBounds[coord] + labelBounds[side]) < node.localBounds[coord]) {
+      if (labelRightBoundary < node.localBounds[coord]) {
         break;
       }
 
