@@ -2,6 +2,12 @@ import extend from 'extend';
 import {
   testRectRect
 } from '../../../math/narrow-phase-collision';
+import { rotate } from '../../../math/vector';
+import {
+  rectToPoints,
+  pointsToRect
+} from '../../../geometry/util';
+import { toRadians } from '../../../math/angles';
 import filterOverlapping from './bars-overlapping-filter';
 
 const LINE_HEIGHT = 1.5;
@@ -16,6 +22,11 @@ function cbContext(node, chart) {
     formatter: chart.formatter,
     dataset: chart.dataset
   };
+}
+
+function isValidText(text) {
+  const type = typeof text;
+  return (type === 'string' || type === 'number') && text !== '';
 }
 
 export function placeTextInRect(rect, text, opts) {
@@ -48,14 +59,21 @@ export function placeTextInRect(rect, text, opts) {
       const wiggleHor = Math.max(0, rect.width - (textMetrics.height / (LINE_HEIGHT * 0.8)));
       label.x = rect.x + (textMetrics.height / LINE_HEIGHT) + (opts.align * wiggleHor);
     }
+
     const wiggleVert = Math.max(0, rect.height - textMetrics.width);
     label.y = rect.y + (opts.justify * wiggleVert);
     label.transform = `rotate(-90, ${label.x + label.dx}, ${label.y + label.dy})`;
   } else {
+    if (opts.overflow && rect.height < textMetrics.height) {
+      label.y = rect.y + (rect.height / 2); // Use center of the rect
+      label.dy = opts.fontSize * 0.35; // Emulate the baseline heuristic for the 'central' attribute
+    } else {
+      const wiggleHeight = Math.max(0, rect.height - (textMetrics.height / (LINE_HEIGHT * 0.8))); // 0.8 - MAGIC NUMBER - need to figure out why this works the best
+      label.y = rect.y + (textMetrics.height / LINE_HEIGHT) + (opts.justify * wiggleHeight);
+    }
+
     const wiggleWidth = Math.max(0, rect.width - textMetrics.width);
-    const wiggleHeight = Math.max(0, rect.height - (textMetrics.height / (LINE_HEIGHT * 0.8))); // 0.8 - MAGIC NUMBER - need to figure out why this works the best
     label.x = rect.x + (opts.align * wiggleWidth);
-    label.y = rect.y + (textMetrics.height / LINE_HEIGHT) + (opts.justify * wiggleHeight);
   }
 
   return label;
@@ -166,31 +184,28 @@ export function findBestPlacement({
   return { bounds, placement };
 }
 
-function flipNeg90(bounds) {
-  return {
-    x: bounds.x + bounds.width - bounds.height,
-    y: bounds.y + bounds.height,
-    width: bounds.height,
-    height: bounds.width
-  };
-}
+function approxTextBounds(label, textMetrics, rotated, rect) {
+  const x = label.x + label.dx;
+  const y = label.y + label.dy;
+  const width = rotated ? textMetrics.width : Math.min(textMetrics.width, rect.width);
+  const height = rotated ? Math.min(textMetrics.height, rect.height) : textMetrics.height;
+  const PADDING_OFFSET = 0.1; // Needed to support a case when multiple bars are on the same location
 
-function approxTextBounds(label, textMetrics, rotated) {
+  const bounds = {
+    x: x - PADDING - PADDING_OFFSET,
+    y: y - height - PADDING - PADDING_OFFSET,
+    width: width + (PADDING * 2) - PADDING_OFFSET,
+    height: height + (PADDING * 2) - PADDING_OFFSET
+  };
+
   if (rotated) {
-    return flipNeg90({
-      x: label.x + label.dx - textMetrics.width,
-      y: label.y + label.dy - textMetrics.height,
-      width: textMetrics.width,
-      height: textMetrics.height
-    });
+    const o = {
+      x: x - (height / 2),
+      y: y - (height / 2)
+    };
+    return pointsToRect(rectToPoints(bounds).map(p => rotate(p, toRadians(-90), o)));
   }
-
-  return {
-    x: label.x + label.dx,
-    y: label.y + label.dy - textMetrics.height,
-    width: textMetrics.width,
-    height: textMetrics.height
-  };
+  return bounds;
 }
 
 export function placeInBars(
@@ -207,7 +222,7 @@ export function placeInBars(
   const labels = [];
   const postFilterContext = {
     container: rect,
-    nodes: targetNodes.map(t => t.node),
+    targetNodes,
     labels: [],
     orientation: collectiveOrientation
   };
@@ -236,7 +251,7 @@ export function placeInBars(
 
     for (let j = 0; j < target.texts.length; j++) {
       text = target.texts[j];
-      if (!text) {
+      if (!isValidText(text)) {
         continue;
       }
       lblStngs = target.labelSettings[j];
@@ -262,6 +277,7 @@ export function placeInBars(
         justify = placement.justify;
         fill = typeof placement.fill === 'function' ? placement.fill(arg, i) : placement.fill;
         const linkData = typeof lblStngs.linkData === 'function' ? lblStngs.linkData(arg, i) : undefined;
+        const overflow = typeof placement.overflow === 'function' ? placement.overflow(arg, i) : placement.overflow;
 
         if (direction === 'up') {
           justify = 1 - justify;
@@ -270,7 +286,7 @@ export function placeInBars(
           justify = 1 - justify;
         }
 
-        const rotate = !(collectiveOrientation === 'h' || fitsHorizontally);
+        const isRotated = !(collectiveOrientation === 'h' || fitsHorizontally);
         label = placer(bounds, text, {
           fill,
           justify: orientation === 'h' ? placement.align : justify,
@@ -278,8 +294,8 @@ export function placeInBars(
           fontSize: lblStngs.fontSize,
           fontFamily: lblStngs.fontFamily,
           textMetrics: measured,
-          rotate,
-          overflow: !!placement.overflow
+          rotate: isRotated,
+          overflow: !!overflow
         });
 
         if (label) {
@@ -289,7 +305,7 @@ export function placeInBars(
           labels.push(label);
           postFilterContext.labels.push({
             node,
-            textBounds: approxTextBounds(label, measured, rotate)
+            textBounds: approxTextBounds(label, measured, isRotated, bounds)
           });
         }
       }
@@ -339,8 +355,8 @@ export function precalculate({
 
     for (let j = 0; j < labelSettings.length; j++) {
       lblStng = labelSettings[j];
-      text = typeof lblStng.label === 'function' ? lblStng.label(arg, i) : '';
-      if (!text) {
+      text = typeof lblStng.label === 'function' ? lblStng.label(arg, i) : undefined;
+      if (!isValidText(text)) {
         continue; // eslint-ignore-line
       }
       direction = typeof settings.direction === 'function' ? settings.direction(arg, i) : settings.direction || 'up';
@@ -425,6 +441,10 @@ export function bars({
     labelSettings,
     placementSettings
   });
+
+  const coord = hasHorizontalDirection ? 'y' : 'x';
+  const side = hasHorizontalDirection ? 'height' : 'width';
+  targetNodes.sort((a, b) => (a.node.localBounds[coord] + a.node.localBounds[side]) - (b.node.localBounds[coord] + b.node.localBounds[side]));
 
   return placer({
     chart,

@@ -7,15 +7,15 @@ import { rectContainsRect } from '../../../math/intersection';
  * Finds the first node that may intersect the label.
  * @private
  */
-export function binaryLeftSearch(labelBounds, ary, coord, side, prop) {
+export function binaryLeftSearch(labelBounds, ary, coord, side, extractBounds) {
   let left = 0;
   let right = ary.length - 1;
-  let node;
+  let bounds;
 
   while (left < right) {
     let m = Math.floor((left + right) / 2);
-    node = ary[m];
-    if (node[prop][coord] + node[prop][side] < labelBounds[coord]) { // label is on right side
+    bounds = extractBounds(ary[m]);
+    if (bounds[coord] + bounds[side] < labelBounds[coord]) { // label is on right side
       left = m + 1;
     } else { // label is on the left side
       right = m;
@@ -39,7 +39,7 @@ export function binaryLeftSearch(labelBounds, ary, coord, side, prop) {
  */
 export default function filterOverlappingLabels({
   orientation,
-  nodes,
+  targetNodes,
   labels,
   container
 },
@@ -47,6 +47,8 @@ findLeft = binaryLeftSearch) {
   const removedLabels = {};
   const coord = orientation === 'v' ? 'x' : 'y';
   const side = orientation === 'v' ? 'width' : 'height';
+  const getTextBounds = item => item.textBounds;
+  const getNodeBounds = item => item.node.localBounds;
 
   return (doNotUse, labelIndex) => {
     const { textBounds: labelBounds, node: labelNode } = labels[labelIndex];
@@ -60,7 +62,7 @@ findLeft = binaryLeftSearch) {
     // ### Test label to label collision ###
     // Only check up until the current label index, which sets a prio order from left to right,
     // such that labels too the left are priorities and rendered first.
-    const leftStartLabel = findLeft(labelBounds, labels, coord, side, 'textBounds');
+    const leftStartLabel = findLeft(labelBounds, labels, coord, side, getTextBounds);
     for (let i = leftStartLabel; i < labelIndex; i++) {
       // Skip collision check if label have already been removed
       if (!removedLabels[i] && testRectRect(labelBounds, labels[i].textBounds)) {
@@ -70,10 +72,10 @@ findLeft = binaryLeftSearch) {
     }
 
     // ### Test label to node collision ###
-    const leftStartNode = findLeft(labelBounds, nodes, coord, side, 'localBounds');
+    const leftStartNode = findLeft(labelBounds, targetNodes, coord, side, getNodeBounds);
     const labelRightBoundary = (labelBounds[coord] + labelBounds[side]);
-    for (let i = leftStartNode; i < nodes.length; i++) {
-      const node = nodes[i];
+    for (let i = leftStartNode; i < targetNodes.length; i++) {
+      const node = targetNodes[i].node;
       // Do not test beyond this node, as they are assumed to not collide with the label
       if (labelRightBoundary < node.localBounds[coord]) {
         break;
