@@ -8,8 +8,8 @@ import {
 import { getShapeType } from '../geometry/util';
 import datasources from '../data/data';
 import dataCollections from '../data/collections';
-import buildFormatters, { getOrCreateFormatter } from './formatter';
-import { builder as buildScales, getOrCreateScale } from './scales';
+import { collection as formatterCollection } from './formatter';
+import { collection as scaleCollection } from './scales';
 import buildScroll, { getOrCreateScrollApi } from './scroll-api';
 import brush from '../brush';
 import componentFactory from '../component/component-factory';
@@ -227,8 +227,13 @@ function chartFn(definition, context) {
       theme.setPalettes(_settings.palettes);
     }
     dataCollection = dataCollections(_settings.collections, { dataset }, { logger });
-    currentScales = buildScales(scales, { dataset, collection: dataCollection }, { scale: registries.scale, theme, logger });
-    currentFormatters = buildFormatters(formatters, { dataset, collection: dataCollection }, { formatter: registries.formatter, theme, logger });
+
+    const deps = {
+      theme,
+      logger
+    };
+    currentScales = scaleCollection(scales, { dataset, collection: dataCollection }, { ...deps, scale: registries.scale });
+    currentFormatters = formatterCollection(formatters, { dataset, collection: dataCollection }, { ...deps, formatter: registries.formatter });
     currentScrollApis = buildScroll(scroll, currentScrollApis);
   };
 
@@ -704,19 +709,19 @@ function chartFn(definition, context) {
   instance.dataCollection = key => dataCollection(key);
 
   /**
-   * Get the all registered scales
-   * @returns {Array<scale>} Array of scales
+   * Get all registered scales
+   * @returns {Object<string,scale>}
    */
   instance.scales = function scales() {
-    return currentScales;
+    return currentScales.all();
   };
 
   /**
-   * Get the all registered formatters
-   * @returns {Array<formatter>} Array of formatters
+   * Get all registered formatters
+   * @returns {Object<string,formatter>}
    */
   instance.formatters = function formatters() {
-    return currentFormatters;
+    return currentFormatters.all();
   };
 
   /**
@@ -741,7 +746,7 @@ function chartFn(definition, context) {
    * instance.scale({ source: '0/1', type: 'linear' }); // Create a new scale
    */
   instance.scale = function scale(v) {
-    return getOrCreateScale(v, currentScales, { dataset, collection: dataCollection }, { scale: registries.scale, theme, logger });
+    return currentScales.get(v);
   };
 
   /**
@@ -759,7 +764,7 @@ function chartFn(definition, context) {
    * }); // Create a new formatter
    */
   instance.formatter = function formatter(v) {
-    return getOrCreateFormatter(v, currentFormatters, { dataset, collection: dataCollection }, { formatter: registries.formatter, theme, logger });
+    return currentFormatters.get(v);
   };
 
   /**
