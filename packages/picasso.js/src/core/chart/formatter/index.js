@@ -24,25 +24,29 @@ export function create(options, data, deps, extractor = extractData) {
   throw new Error(`Formatter of type '${formatterType}' was not found`);
 }
 
-export default function builder(obj, data, deps) {
+export function collection(formattersConfig, data, deps, fn = create) {
   const formatters = {};
-  for (const f in obj) {
-    if (Object.prototype.hasOwnProperty.call(obj, f)) {
-      formatters[f] = create(obj[f], data, deps);
+  return {
+    get(def) {
+      let key;
+      if (typeof def === 'string' && formattersConfig[def]) {
+        key = def;
+      } else if (typeof def === 'object' && 'formatter' in def && formattersConfig[def.formatter]) {
+        key = def.formatter;
+      } else if (typeof def === 'object' && 'type' in def && formattersConfig[def.type]) {
+        key = def.type;
+      }
+
+      if (key) {
+        formatters[key] = formatters[key] || fn(formattersConfig[key], data, deps);
+        return formatters[key];
+      }
+
+      return fn(def || {}, data, deps);
+    },
+    all() {
+      Object.keys(formattersConfig).forEach(this.get);
+      return formatters;
     }
-  }
-  return formatters;
-}
-
-export function getOrCreateFormatter(v, formatters, data, deps) {
-  let f;
-  if (typeof v === 'string' && formatters[v]) { // return by name
-    f = formatters[v];
-  } else if (typeof v === 'object' && 'formatter' in v && formatters[v.formatter]) { // return by { formatter: "name" }
-    f = formatters[v.formatter];
-  } else if (typeof v === 'object' && 'type' in v && formatters[v.type]) { // return by { formatter: "name" }
-    f = formatters[v.type];
-  }
-
-  return f || create(v, data, deps);
+  };
 }
