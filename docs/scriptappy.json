@@ -3,7 +3,7 @@
   "info": {
     "name": "picasso.js",
     "description": "A charting library streamlined for building visualizations for the Qlik Sense Analytics platform.",
-    "version": "0.17.0",
+    "version": "0.18.2",
     "license": "MIT"
   },
   "entries": {
@@ -2071,6 +2071,12 @@
                               "optional": true,
                               "defaultValue": "'#333'",
                               "type": "string"
+                            },
+                            "overflow": {
+                              "description": "True if the label is allowed to overflow the bar",
+                              "optional": true,
+                              "defaultValue": false,
+                              "type": "boolean"
                             }
                           },
                           "kind": "object"
