@@ -44,7 +44,7 @@ export default function filterOverlappingLabels({
   container
 },
 findLeft = binaryLeftSearch) {
-  const removedLabels = {};
+  const renderLabels = [];
   const coord = orientation === 'v' ? 'x' : 'y';
   const side = orientation === 'v' ? 'width' : 'height';
   const getTextBounds = item => item.textBounds;
@@ -55,18 +55,13 @@ findLeft = binaryLeftSearch) {
 
     // ### Test if label is not fully inside container ###
     if (!rectContainsRect(labelBounds, container)) {
-      removedLabels[labelIndex] = true;
       return false;
     }
 
     // ### Test label to label collision ###
-    // Only check up until the current label index, which sets a prio order from left to right,
-    // such that labels too the left are priorities and rendered first.
-    const leftStartLabel = findLeft(labelBounds, labels, coord, side, getTextBounds);
-    for (let i = leftStartLabel; i < labelIndex; i++) {
-      // Skip collision check if label have already been removed
-      if (!removedLabels[i] && testRectRect(labelBounds, labels[i].textBounds)) {
-        removedLabels[labelIndex] = true;
+    const leftStartLabel = findLeft(labelBounds, renderLabels, coord, side, getTextBounds);
+    for (let i = leftStartLabel; i < renderLabels.length; i++) {
+      if (testRectRect(labelBounds, renderLabels[i].textBounds)) {
         return false;
       }
     }
@@ -82,12 +77,12 @@ findLeft = binaryLeftSearch) {
       }
 
       if (testRectRect(labelBounds, node.localBounds) && labelNode !== node) {
-        removedLabels[labelIndex] = true;
         return false;
       }
     }
 
     // No collision occured, allow the label to be rendered
+    renderLabels.push(labels[labelIndex]);
     return true;
   };
 }
