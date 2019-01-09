@@ -47,19 +47,6 @@ describe('TreeNode', () => {
         expect(ff).to.throw('Expecting a Node as argument, but got null');
         expect(fff).to.throw('Expecting a Node as argument, but got [object Object]');
       });
-
-      it('should push a child to the end of the array everytime it is added', () => {
-        let c1 = new Node(),
-          c2 = new Node();
-
-        n.addChild(c1).addChild(c2).addChild(c1);
-        expect(n.children.length).to.equal(2);
-        expect(n.children[0]).to.equal(c2);
-        expect(n.children[1]).to.equal(c1);
-
-        expect(c1.parent).to.equal(n);
-        expect(c2.parent).to.equal(n);
-      });
     });
 
     describe('relatives -', () => {
@@ -244,16 +231,23 @@ describe('TreeNode', () => {
 
   describe('coupling/decoupling', () => {
     let n,
-      a = new Node(),
-      a1 = new Node(),
-      a2 = new Node(),
-      a21 = new Node(),
-      b = new Node(),
-      b1 = new Node(),
-      b2 = new Node();
+      a,
+      a1,
+      a2,
+      a21,
+      b,
+      b1,
+      b2;
 
     beforeEach(() => {
       n = new Node();
+      a = new Node();
+      a1 = new Node();
+      a2 = new Node();
+      a21 = new Node();
+      b = new Node();
+      b1 = new Node();
+      b2 = new Node();
       n.addChild(a).addChild(b);
 
       a.addChild(a1).addChild(a2.addChild(a21));
@@ -263,22 +257,22 @@ describe('TreeNode', () => {
       n = null;
     });
 
-    context('adding a child that has a parent to another node:', () => {
-      context('child node', () => {
+    describe('adding a child that has a parent to another node:', () => {
+      describe('child node', () => {
         it('should have new parent', () => {
           b.addChild(a2);
           expect(a2.parent).to.equal(b);
         });
       });
 
-      context('old parent node', () => {
+      describe('old parent node', () => {
         it('should not have old child as child any longer', () => {
           b.addChild(a2);
           expect(a.children.indexOf(a2)).to.equal(-1);
         });
       });
 
-      context('new parent node', () => {
+      describe('new parent node', () => {
         it('should have newly added child as child', () => {
           b.addChild(a2);
           expect(b.children.length).to.equal(3);

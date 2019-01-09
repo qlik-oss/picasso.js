@@ -9,7 +9,8 @@ import { isTouchEvent } from '../utils/event-type';
 export function reduceToLeafNodes(nodes = []) {
   return nodes.reduce((ary, node) => {
     if (Array.isArray(node.children)) {
-      return ary.concat(reduceToLeafNodes(node.children));
+      ary.push(...reduceToLeafNodes(node.children));
+      return ary;
     }
     ary.push(node);
     return ary;
