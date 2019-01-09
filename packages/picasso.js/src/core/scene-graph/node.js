@@ -57,8 +57,10 @@ class Node {
    */
   get ancestors() {
     if (!this._ancestors) {
-      const p = this._parent;
-      this._ancestors = p ? [p].concat(p.ancestors) : [];
+      this._ancestors = [];
+      if (this.parent) {
+        this._ancestors.push(this.parent, ...this.parent.ancestors);
+      }
     }
 
     return this._ancestors;
@@ -70,17 +72,17 @@ class Node {
    * @type {Node[]}
    */
   get descendants() {
-    let r = [],
-      i,
-      len,
-      c;
+    const r = [];
+    const len = this.children.length;
+    let i;
+    let c;
 
-    for (i = 0, len = this._children.length; i < len; i++) {
-      c = this._children[i];
+    for (i = 0, len; i < len; i++) {
+      c = this.children[i];
       r.push(c);
 
-      if (c._children.length) {
-        r = r.concat(c.descendants);
+      if (c.children.length) {
+        r.push(...c.descendants);
       }
     }
     return r;

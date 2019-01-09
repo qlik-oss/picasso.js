@@ -18,14 +18,6 @@ class NodeContainer extends Node {
       c._parent.removeChild(c);
     }
 
-    // *
-    // really expensive for large arrays
-    const indx = this._children.indexOf(c); // if child already exists -> remove it, and the push it in last
-    if (indx >= 0) {
-      this._children.splice(indx, 1);
-    }
-    // * /
-
     this._children.push(c);
     c._parent = this;
     c._ancestors = null;
