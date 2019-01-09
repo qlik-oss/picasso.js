@@ -68,23 +68,28 @@ export function create(options, d, deps) {
   return s;
 }
 
-export function getOrCreateScale(v, scales, d, deps) {
-  let s;
-  if (typeof v === 'string' && scales[v]) { // return by name
-    s = scales[v];
-  } else if (typeof v === 'object' && 'scale' in v && scales[v.scale]) { // return by { scale: "name" }
-    s = scales[v.scale];
-  }
-
-  return s || create(v, d, deps);
-}
-
-export function builder(obj, d, deps) {
+export function collection(scalesConfig, data, deps, fn = create) {
   const scales = {};
-  for (const s in obj) {
-    if (Object.prototype.hasOwnProperty.call(obj, s)) {
-      scales[s] = create(obj[s], d, deps);
+
+  return {
+    get(def) {
+      let key;
+      if (typeof def === 'string' && scalesConfig[def]) {
+        key = def;
+      } else if (typeof def === 'object' && 'scale' in def && scalesConfig[def.scale]) {
+        key = def.scale;
+      }
+
+      if (key) {
+        scales[key] = scales[key] || fn(scalesConfig[key], data, deps);
+        return scales[key];
+      }
+
+      return fn(def, data, deps);
+    },
+    all() {
+      Object.keys(scalesConfig).forEach(this.get);
+      return scales;
     }
-  }
-  return scales;
+  };
 }
