@@ -32,15 +32,15 @@ export default function (resources, deps = externals) {
     }
 
     const resolved = [];
-
     if (data && Array.isArray(data.items)) {
+      let context;
       for (let i = 0, len = data.items.length; i < len; i++) {
-        const context = {
+        context = {
           datum: data.items[i],
           data,
           resources: res
         };
-        let obj = deps.resolveForItem(context, cache.norm);
+        let obj = deps.resolveForItem(context, cache.norm, i);
         obj.data = data.items[i];
         resolved.push(obj);
       }
@@ -49,13 +49,12 @@ export default function (resources, deps = externals) {
         data,
         resources: res
       };
-      let obj = deps.resolveForItem(context, cache.norm);
+      let obj = deps.resolveForItem(context, cache.norm, -1);
       return {
         settings: cache.norm,
         item: obj
       };
     }
-
     return {
       settings: cache.norm,
       items: resolved
