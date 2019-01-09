@@ -53,7 +53,7 @@ export default class GradientItem extends DisplayObject {
     for (let i = 0, len = allowedAttrs.length; i !== len; i++) {
       attrKey = allowedAttrs[i];
 
-      if (v[attrKey]) {
+      if (typeof v[attrKey] !== 'undefined') {
         attrs[attrKey] = v[attrKey];
       }
     }

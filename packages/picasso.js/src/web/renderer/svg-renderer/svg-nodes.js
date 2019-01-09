@@ -23,7 +23,11 @@ const destroyer = (el) => {
 
 const maintainer = (element, item) => {
   for (const attr in item.attrs) {
-    if (attr === 'text') {
+    if (attr === 'stroke' && item.strokeReference) {
+      element.setAttribute('stroke', item.strokeReference);
+    } else if (attr === 'fill' && item.fillReference) {
+      element.setAttribute('fill', item.fillReference);
+    } else if (attr === 'text') {
       element.setAttribute('style', 'white-space: pre');
       element.textContent = ellipsText(item.attrs, measureText);
       const dir = detectTextDirection(item.attrs.text);

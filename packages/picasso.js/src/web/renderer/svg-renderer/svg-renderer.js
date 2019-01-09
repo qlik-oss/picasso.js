@@ -2,11 +2,15 @@ import { tree as treeFactory } from './svg-tree';
 import { svgNs } from './svg-nodes';
 import sceneFactory from '../../../core/scene-graph/scene';
 import { onLineBreak } from '../../text-manipulation';
-import {
-  resetGradients,
-  onGradient,
-  createDefsNode
-} from './svg-gradient';
+// import {
+//   resetGradients,
+//   onGradient,
+//   createDefsNode
+// } from './svg-gradient';
+
+import gradienter from './svg-gradient';
+import patternizer from './svg-pattern';
+
 import createRendererBox from '../renderer-box';
 import create from '../index';
 import injectTextBoundsFn from '../../text-manipulation/inject-textbounds';
@@ -28,6 +32,13 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
   let scene;
 
   const svg = create();
+
+  const defs = {
+    type: 'defs',
+    children: []
+  };
+  const patterns = patternizer(defs.children);
+  const gradients = gradienter(defs.children);
 
   svg.element = () => el;
 
@@ -66,11 +77,13 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
       el.setAttribute('height', Math.round(rect.height * scaleY));
     }
 
-    resetGradients();
+    gradients.clear();
+    patterns.clear();
+    defs.children.length = 0;
 
     const sceneContainer = {
       type: 'container',
-      children: Array.isArray(nodes) ? [...nodes, createDefsNode()] : nodes
+      children: Array.isArray(nodes) ? [...nodes, defs] : nodes
     };
 
     if (scaleX !== 1 || scaleY !== 1) {
@@ -81,7 +94,12 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
       items: [sceneContainer],
       on: {
         create: [
-          onGradient,
+          (state) => {
+            state.node.fillReference = undefined;
+            state.node.strokeReference = undefined;
+          },
+          gradients.onCreate,
+          patterns.onCreate,
           onLineBreak(svg.measureText),
           injectTextBoundsFn(svg)
         ]

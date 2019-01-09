@@ -1,6 +1,7 @@
 import { create as stage } from './stage';
 import { create as container } from './container';
-import { create as gradientitem } from './gradient-item';
+import { create as gradientItem } from './gradient-item';
+import { create as patternItem } from './pattern-item';
 import { create as rect } from './rect';
 import { create as circle } from './circle';
 import { create as line } from './line';
@@ -17,10 +18,11 @@ reg.add('line', line);
 reg.add('path', path);
 reg.add('stage', stage);
 reg.add('container', container);
-reg.add('defs', gradientitem);
-reg.add('linearGradient', gradientitem);
-reg.add('radialGradient', gradientitem);
-reg.add('stop', gradientitem);
+reg.add('defs', container);
+reg.add('linearGradient', gradientItem);
+reg.add('radialGradient', gradientItem);
+reg.add('stop', gradientItem);
+reg.add('pattern', patternItem);
 
 export function create(type, input) { // eslint-disable-line import/prefer-default-export
   return reg.get(type)(input);

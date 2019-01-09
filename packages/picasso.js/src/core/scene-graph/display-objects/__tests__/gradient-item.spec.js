@@ -18,7 +18,7 @@ describe('GradientItem', () => {
 
     it('should accept arguments', () => {
       item = createGradientItem({
-        x1: 1,
+        x1: 0,
         x2: 2,
         y1: 3,
         y2: 4,
@@ -28,7 +28,7 @@ describe('GradientItem', () => {
         notToBeAttached: 'asdf'
       });
 
-      expect(item.attrs.x1).to.be.equal(1);
+      expect(item.attrs.x1).to.be.equal(0);
       expect(item.attrs.x2).to.be.equal(2);
       expect(item.attrs.y1).to.be.equal(3);
       expect(item.attrs.y2).to.be.equal(4);
