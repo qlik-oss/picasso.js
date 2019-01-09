@@ -4361,6 +4361,9 @@
             },
             {
               "type": "#/definitions/gradient-def"
+            },
+            {
+              "type": "#/definitions/pattern-def"
             }
           ],
           "type": "any"
@@ -4375,6 +4378,9 @@
             },
             {
               "type": "#/definitions/gradient-def"
+            },
+            {
+              "type": "#/definitions/pattern-def"
             }
           ],
           "type": "any"
@@ -4550,6 +4556,34 @@
           "type": "string"
         }
       }
+    },
+    "pattern-def": {
+      "stability": "experimental",
+      "kind": "object",
+      "entries": {
+        "type": {
+          "kind": "literal",
+          "value": "'pattern'"
+        },
+        "fill": {
+          "type": "string"
+        },
+        "width": {
+          "type": "number"
+        },
+        "height": {
+          "type": "number"
+        },
+        "shapes": {
+          "kind": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "examples": [
+        "Stripe pattern\n```js\n{\n  type: 'pattern',\n  fill: 'red',\n  width: 4,\n  height: 4,\n  shapes: [\n    { type: 'rect', x: 3, y: 0, width: 1, height: 1 },\n    { type: 'rect', x: 2, y: 1, width: 1, height: 1 },\n    { type: 'rect', x: 1, y: 2, width: 1, height: 1 },\n    { type: 'rect', x: 0, y: 3, width: 1, height: 1 },\n  ]\n}\n```"
+      ]
     },
     "node--rect-def": {
       "extends": [

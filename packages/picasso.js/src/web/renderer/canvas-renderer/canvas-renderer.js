@@ -2,6 +2,7 @@ import sceneFactory from '../../../core/scene-graph/scene';
 import registry from '../../../core/utils/registry';
 import { onLineBreak } from '../../text-manipulation';
 import createCanvasGradient from './canvas-gradient';
+import patternizer from './canvas-pattern';
 import createRendererBox from '../renderer-box';
 import create from '../index';
 import injectTextBoundsFn from '../../text-manipulation/inject-textbounds';
@@ -61,19 +62,24 @@ function applyContext(g, s, shapeToCanvasMap, computed = {}) {
   }
 }
 
-function renderShapes(shapes, g, shapeToCanvasMap) {
+function renderShapes(shapes, g, shapeToCanvasMap, deps) {
   for (let i = 0, len = shapes.length; i < len; i++) {
     let shape = shapes[i];
     let computed = {};
     g.save();
 
-    // Gradient check
+
     if (shape.attrs && (shape.attrs.fill || shape.attrs.stroke)) {
       if (shape.attrs.fill && typeof shape.attrs.fill === 'object' && shape.attrs.fill.type === 'gradient') {
-        computed.fillStyle = createCanvasGradient(g, shape.attrs, shape.attrs.fill);
+        computed.fillStyle = createCanvasGradient(g, shape, shape.attrs.fill);
+      } else if (shape.attrs.fill && typeof shape.attrs.fill === 'object' && shape.attrs.fill.type === 'pattern') {
+        computed.fillStyle = deps.patterns.create(shape.attrs.fill);
       }
+
       if (shape.attrs.stroke && typeof shape.attrs.stroke === 'object' && shape.attrs.stroke.type === 'gradient') {
-        computed.strokeStyle = createCanvasGradient(g, shape.attrs, shape.attrs.stroke);
+        computed.strokeStyle = createCanvasGradient(g, shape, shape.attrs.stroke);
+      } else if (shape.attrs.stroke && typeof shape.attrs.stroke === 'object' && shape.attrs.stroke.type === 'pattern') {
+        computed.strokeStyle = deps.patterns.create(shape.attrs.stroke);
       }
     }
 
@@ -91,7 +97,7 @@ function renderShapes(shapes, g, shapeToCanvasMap) {
       });
     }
     if (shape.children) {
-      renderShapes(shape.children, g, shapeToCanvasMap);
+      renderShapes(shape.children, g, shapeToCanvasMap, deps);
     }
     g.restore();
   }
@@ -118,6 +124,8 @@ export function renderer(sceneFn = sceneFactory) {
     ['stroke-dasharray', 'setLineDash', toLineDash]
   ];
 
+  let patterns;
+
   const canvasRenderer = create();
 
   canvasRenderer.element = () => el;
@@ -141,6 +149,9 @@ export function renderer(sceneFn = sceneFactory) {
   canvasRenderer.render = (shapes) => {
     if (!el) {
       return false;
+    }
+    if (!patterns) {
+      patterns = patternizer(el.ownerDocument);
     }
 
     const g = el.getContext('2d');
@@ -178,10 +189,14 @@ export function renderer(sceneFn = sceneFactory) {
     });
     const hasChangedScene = scene ? !newScene.equals(scene) : true;
 
+    patterns.clear();
+
     const doRender = hasChangedRect || hasChangedScene;
     if (doRender) {
       canvasRenderer.clear();
-      renderShapes(newScene.children, g, shapeToCanvasMap);
+      renderShapes(newScene.children, g, shapeToCanvasMap, {
+        patterns
+      });
     }
 
     hasChangedRect = false;

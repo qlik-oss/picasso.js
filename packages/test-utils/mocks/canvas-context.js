@@ -1,3 +1,5 @@
+/* global sinon */
+
 function gradientFactory(gradientType) {
   function createGradient(...args) {
     function gradient() {
@@ -16,15 +18,19 @@ function gradientFactory(gradientType) {
   return createGradient;
 }
 
+class CanvasPattern {}
+
 function canvascontext(contextType = '2d') {
   let item = {
-    save: () => {},
-    beginPath: () => {},
-    moveTo: () => {},
-    arc: () => {},
-    fill: () => {},
-    restore: () => {},
-    rect: () => {},
+    save: sinon.spy(),
+    beginPath: sinon.spy(),
+    moveTo: sinon.spy(),
+    arc: sinon.spy(),
+    fill: sinon.spy(),
+    restore: sinon.spy(),
+    scale: sinon.spy(),
+    rect: sinon.spy(),
+    createPattern: sinon.spy((...args) => new CanvasPattern(...args)),
     measureText: text => ({ width: text.length })
   };
 

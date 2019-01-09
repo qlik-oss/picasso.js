@@ -4,12 +4,9 @@ import createCanvasGradient from '../canvas-gradient';
 describe('canvas-gradient', () => {
   let shape;
 
-  const dummyRectObject = (type = 'radial') => ({
+  const dummyRectObject = (type = 'radial', bounds = {}) => ({
     type: 'rect',
-    width: 300,
-    height: 500,
-    x: 50,
-    y: 130,
+    boundingRect: sinon.stub().returns(bounds),
     fill: {
       type: 'gradient',
       degree: 90,
@@ -27,125 +24,76 @@ describe('canvas-gradient', () => {
     }
   });
 
-  const dummyCircleObject = (type = 'radial') => ({
-    type: 'circle',
-    r: 350,
-    cx: 70,
-    cy: 100,
-    fill: {
-      type: 'gradient',
-      degree: 90,
-      orientation: type,
-      stops: [
-        {
-          offset: 0.2,
-          color: 'blue'
-        },
-        {
-          offset: 0.7,
-          color: 'green'
-        }
-      ]
-    }
-  });
-
   beforeEach(() => {
     shape = [];
   });
 
-  describe('rect', () => {
-    describe('radial', () => {
-      it('should create rect radial gradients properly', () => {
-        shape = dummyRectObject('radial');
+  describe('radial', () => {
+    it('should create radial gradients properly', () => {
+      shape = dummyRectObject('radial');
 
-        shape.fill = createCanvasGradient(canvascontext(), shape, shape.fill);
+      const fill = createCanvasGradient(canvascontext(), shape, shape.fill);
 
-        expect(shape.fill).to.be.a('function');
-        expect(shape.fill()).to.be.equal('dummyGradient-radial');
-      });
-
-      it('should have been called with proper arguments', () => {
-        shape = dummyRectObject('radial');
-
-        shape.fill = createCanvasGradient(canvascontext(), shape, shape.fill);
-
-        expect(shape.fill.args[0]).to.be.equal(shape.x + (shape.width / 2));
-        expect(shape.fill.args[1]).to.be.equal(shape.y + (shape.height / 2));
-        expect(shape.fill.args[2]).to.be.equal(1);
-        expect(shape.fill.args[3]).to.be.equal(shape.x + (shape.width / 2));
-        expect(shape.fill.args[4]).to.be.equal(shape.y + (shape.height / 2));
-        expect(shape.fill.args[5]).to.be.equal(Math.max(shape.width, shape.height) / 2);
-      });
+      expect(fill).to.be.a('function');
+      expect(fill()).to.be.equal('dummyGradient-radial');
     });
 
-    describe('linear', () => {
-      it('should create rect linear gradients properly', () => {
-        shape = dummyRectObject('linear');
+    it('should have been called with proper arguments', () => {
+      const bounds = {
+        x: 0,
+        y: 30,
+        width: 20,
+        height: 10
+      };
+      shape = dummyRectObject('radial', bounds);
 
-        shape.fill = createCanvasGradient(canvascontext(), shape, shape.fill);
+      const fill = createCanvasGradient(canvascontext(), shape, shape.fill);
 
-        expect(shape.fill).to.be.a('function');
-        expect(shape.fill()).to.be.equal('dummyGradient-linear');
-      });
-
-      it('should have been called with proper arguments', () => {
-        shape = dummyRectObject('linear');
-
-        shape.fill = createCanvasGradient(canvascontext(), shape, shape.fill);
-
-        expect(shape.fill.args[0]).to.be.a('number');
-        expect(shape.fill.args[1]).to.be.a('number');
-        expect(shape.fill.args[2]).to.be.a('number');
-        expect(shape.fill.args[3]).to.be.a('number');
-      });
+      expect(fill.args[0]).to.be.equal(bounds.x + (bounds.width / 2));
+      expect(fill.args[1]).to.be.equal(bounds.y + (bounds.height / 2));
+      expect(fill.args[2]).to.be.equal(1e-5);
+      expect(fill.args[3]).to.be.equal(bounds.x + (bounds.width / 2));
+      expect(fill.args[4]).to.be.equal(bounds.y + (bounds.height / 2));
+      expect(fill.args[5]).to.be.equal(Math.max(bounds.width, bounds.height) / 2);
     });
   });
 
-  describe('circle', () => {
-    describe('radial', () => {
-      it('should create circle radial gradients properly', () => {
-        shape = dummyCircleObject('radial');
+  describe('linear', () => {
+    it('should create linear gradients properly', () => {
+      shape = dummyRectObject('linear');
 
-        shape.fill = createCanvasGradient(canvascontext(), shape, shape.fill);
+      const fill = createCanvasGradient(canvascontext(), shape, shape.fill);
 
-        expect(shape.fill).to.be.a('function');
-        expect(shape.fill()).to.be.equal('dummyGradient-radial');
-      });
-
-      it('should have been called with proper arguments', () => {
-        shape = dummyCircleObject('radial');
-
-        shape.fill = createCanvasGradient(canvascontext(), shape, shape.fill);
-
-        expect(shape.fill.args[0]).to.be.equal(shape.cx);
-        expect(shape.fill.args[1]).to.be.equal(shape.cy);
-        expect(shape.fill.args[2]).to.be.equal(1);
-        expect(shape.fill.args[3]).to.be.equal(shape.cx);
-        expect(shape.fill.args[4]).to.be.equal(shape.cy);
-        expect(shape.fill.args[5]).to.be.equal(shape.r);
-      });
+      expect(fill).to.be.a('function');
+      expect(fill()).to.be.equal('dummyGradient-linear');
     });
 
-    describe('linear', () => {
-      it('should create circle linear gradients properly', () => {
-        shape = dummyCircleObject('linear');
+    it('should have been called with proper arguments', () => {
+      const bounds = {
+        x: 0,
+        y: 30,
+        width: 20,
+        height: 10
+      };
+      shape = dummyRectObject('linear', bounds);
 
-        shape.fill = createCanvasGradient(canvascontext(), shape, shape.fill);
+      const grad = createCanvasGradient(canvascontext(), shape, shape.fill);
 
-        expect(shape.fill).to.be.a('function');
-        expect(shape.fill()).to.be.equal('dummyGradient-linear');
-      });
+      expect(grad.args[0]).to.equal(20);
+      expect(grad.args[1]).to.equal(30);
+      expect(grad.args[2]).to.closeTo(20, 1e-12);
+      expect(grad.args[3]).to.equal(40);
+    });
 
-      it('should have been called with proper arguments', () => {
-        shape = dummyCircleObject('linear');
+    it('should have stops and colors', () => {
+      shape = dummyRectObject('linear');
 
-        shape.fill = createCanvasGradient(canvascontext(), shape, shape.fill);
+      const grad = createCanvasGradient(canvascontext(), shape, shape.fill);
 
-        expect(shape.fill.args[0]).to.be.a('number');
-        expect(shape.fill.args[1]).to.be.a('number');
-        expect(shape.fill.args[2]).to.be.a('number');
-        expect(shape.fill.args[3]).to.be.a('number');
-      });
+      expect(grad.stops).to.eql([
+        [0, 'blue'],
+        [0.5, 'green']
+      ]);
     });
   });
 });

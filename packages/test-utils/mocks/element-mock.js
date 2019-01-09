@@ -76,8 +76,13 @@ function element(name, rect = { x: 0, y: 0, width: 100, height: 100 }) {
     }
   };
 
+  let context2d;
+
   if (name === 'canvas') {
-    e.getContext = () => canvascontext('2d');
+    e.getContext = () => {
+      context2d = context2d || canvascontext('2d');
+      return context2d;
+    };
   }
 
   return e;

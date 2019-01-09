@@ -1,121 +1,114 @@
-import {
-  resetGradients,
-  onGradient,
-  createDefsNode
-} from '../svg-gradient';
-
-/* eslint no-unused-expressions: 0 */
+import gradienter from '../svg-gradient';
 
 describe('svg-gradient', () => {
-  let state;
-
-  const dummyGradientObject = (secondOffset = 0.5) => ({
-    type: 'rect',
-    width: 500,
-    height: 500,
-    x: 50,
-    y: 100,
-    fill: {
-      type: 'gradient',
-      degree: 90,
-      orientation: 'radial',
-      stops: [
-        {
-          offset: 0,
-          color: 'blue'
-        },
-        {
-          offset: secondOffset,
-          color: 'green'
-        }
-      ]
-    }
-  });
-
-  const dummyNonGradientObject = () => ({
-    type: 'rect',
-    width: 500,
-    height: 500,
-    x: 50,
-    y: 100,
-    fill: 'red'
-  });
+  let p;
+  let bucket;
+  let clock;
+  let hasher;
 
   beforeEach(() => {
-    resetGradients();
-    state = {};
+    bucket = [];
+    clock = sinon.useFakeTimers(13);
+    let i = 1;
+    hasher = () => ++i;
+    p = gradienter(bucket, hasher);
   });
 
-  describe('onGradient', () => {
-    it('should resolve gradients defintion for fill', () => {
-      state.node = dummyGradientObject();
-      onGradient(state);
-
-      expect(state.node.type).to.be.equal('rect');
-      expect(state.node.children).to.be.undefined;
-      expect(state.node.fill).to.include('url(\'#');
-    });
-
-    it('should resolve gradients defintion for stroke', () => {
-      state.node = dummyGradientObject();
-      state.node.stroke = state.node.fill;
-      delete state.node.fill;
-      onGradient(state);
-
-      expect(state.node.type).to.be.equal('rect');
-      expect(state.node.children).to.be.undefined;
-      expect(state.node.stroke).to.include('url(\'#');
-    });
+  afterEach(() => {
+    clock.restore();
   });
 
-  describe('createDefsNode', () => {
-    it('should cache gradients of the same type', () => {
-      const gradients = [dummyGradientObject(), dummyGradientObject()];
-      gradients.forEach((g) => {
-        state.node = g;
-        onGradient(state);
-      });
-      const defs = createDefsNode();
+  describe('onCreate', () => {
+    it('should set fillReference when fill is a gradient', () => {
+      const state = {
+        node: {
+          fill: {
+            type: 'gradient'
+          }
+        }
+      };
+      p.onCreate(state);
 
-      expect(defs.type).to.be.equal('defs');
-      expect(defs.children).to.be.an('array');
-      expect(defs.children).to.have.length(1);
-
-      expect(gradients[0].type).to.be.equal('rect');
-      expect(gradients[0].fill).to.include(defs.children[0].id);
-
-      expect(gradients[1].type).to.be.equal('rect');
-      expect(gradients[1].fill).to.include(defs.children[0].id);
+      expect(state.node.fillReference).to.equal('url(\'#picasso-gradient-13-2\')');
     });
 
-    it('should not cache non-similar gradients', () => {
-      const gradients = [dummyGradientObject(0.2), dummyGradientObject(0.7)];
-      gradients.forEach((g) => {
-        state.node = g;
-        onGradient(state);
-      });
-      const defs = createDefsNode();
+    it('should set strokeReference when stroke is a gradient', () => {
+      const state = {
+        node: {
+          stroke: {
+            type: 'gradient'
+          }
+        }
+      };
+      p.onCreate(state);
 
-      expect(defs.type).to.be.equal('defs');
-      expect(defs.children).to.be.an('array');
-      expect(defs.children).to.have.length(2);
-
-      expect(gradients[0].type).to.be.equal('rect');
-      expect(gradients[0].fill).to.include(defs.children[0].id);
-
-      expect(gradients[1].type).to.be.equal('rect');
-      expect(gradients[1].fill).to.include(defs.children[1].id);
+      expect(state.node.strokeReference).to.equal('url(\'#picasso-gradient-13-2\')');
     });
 
-    it('should be disabled if no gradients', () => {
-      const gradients = [dummyNonGradientObject(), dummyNonGradientObject()];
-      gradients.forEach((g) => {
-        state.node = g;
-        onGradient(state);
-      });
-      const defs = createDefsNode();
+    it('should create a radial gradient node', () => {
+      const state = {
+        node: {
+          fill: {
+            type: 'gradient',
+            orientation: 'radial',
+            // degree: 0,
+            stops: [
+              { offset: 0, color: 'red', opacity: 0 },
+              { offset: 1, color: 'green' }
+            ]
+          }
+        }
+      };
+      p.onCreate(state);
 
-      expect(defs.disabled()).to.be.true;
+      expect(bucket[0]).to.eql({
+        id: 'picasso-gradient-13-2',
+        type: 'radialGradient',
+        children: [
+          { type: 'stop', offset: '0%', style: 'stop-color:red;stop-opacity:0' },
+          { type: 'stop', offset: '100%', style: 'stop-color:green;stop-opacity:1' }
+        ]
+      });
+    });
+
+    it('should create a linear gradient node', () => {
+      const state = {
+        node: {
+          fill: {
+            type: 'gradient',
+            degree: 0,
+            stops: [
+              { offset: 0, color: 'red', opacity: 0 },
+              { offset: 1, color: 'green' }
+            ]
+          }
+        }
+      };
+      p.onCreate(state);
+
+      expect(bucket[0]).to.containSubset({
+        id: 'picasso-gradient-13-2',
+        type: 'linearGradient',
+        x1: 1,
+        y1: 0,
+        y2: 0,
+        children: [
+          { type: 'stop', offset: '0%', style: 'stop-color:red;stop-opacity:0' },
+          { type: 'stop', offset: '100%', style: 'stop-color:green;stop-opacity:1' }
+        ]
+      });
+      expect(bucket[0].x2).be.closeTo(0, 1e-12);
+    });
+
+    it('should maintain cache', () => {
+      const localBucket = [];
+      const localP = gradienter(localBucket, input => input.key);
+      localP.onCreate({ node: { fill: { type: 'gradient', key: 'a' } } });
+      localP.onCreate({ node: { fill: { type: 'gradient', key: 'b' } } });
+      localP.onCreate({ node: { stroke: { type: 'gradient', key: 'b' } } });
+      localP.onCreate({ node: { stroke: { type: 'gradient', key: 'a' } } });
+
+      expect(localBucket.length).to.equal(2);
     });
   });
 });

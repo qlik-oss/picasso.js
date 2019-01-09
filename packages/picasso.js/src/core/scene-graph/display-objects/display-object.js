@@ -12,8 +12,8 @@ import { assignMappedAttribute } from '../attributes';
 /**
  * @typedef {object} node-def
  * @property {string} type
- * @property {string|gradient-def} [fill] - {@link https://www.w3.org/TR/fill-stroke-3/#fill-shorthand}
- * @property {string|gradient-def} [stroke] - {@link https://www.w3.org/TR/fill-stroke-3/#propdef-stroke}
+ * @property {string|gradient-def|pattern-def} [fill] - {@link https://www.w3.org/TR/fill-stroke-3/#fill-shorthand}
+ * @property {string|gradient-def|pattern-def} [stroke] - {@link https://www.w3.org/TR/fill-stroke-3/#propdef-stroke}
  * @property {number} [strokeWidth] - {@link https://www.w3.org/TR/fill-stroke-3/#propdef-stroke-width}
  * @property {string|number[]} [strokeDasharray] - {@link https://www.w3.org/TR/fill-stroke-3/#propdef-stroke-dasharray}
  * @property {number} [opacity] - {@link https://www.w3.org/TR/css-color-4/#propdef-opacity}
@@ -44,7 +44,9 @@ class DisplayObject extends Node {
     const {
       data,
       desc,
-      tag
+      tag,
+      strokeReference,
+      fillReference
     } = v;
 
     assignMappedAttribute(this.attrs, v);
@@ -59,6 +61,14 @@ class DisplayObject extends Node {
 
     if (typeof tag === 'string') {
       this.tag = tag;
+    }
+
+    if (typeof strokeReference === 'string') {
+      this.strokeReference = strokeReference;
+    }
+
+    if (typeof fillReference === 'string') {
+      this.fillReference = fillReference;
     }
   }
 
