@@ -96,14 +96,12 @@ export function normalizeSettings(settings, defaults, chart) {
   return defs;
 }
 
-export function resolveForItem(context, normalized) {
+export function resolveForItem(context, normalized, idx) {
   const ret = {};
   const keys = Object.keys(normalized);
   const len = keys.length;
   const fallbackData = context.datum;
   const datum = context.datum;
-  const dataContext = context.data && context.data.items;
-  const idx = dataContext ? dataContext.indexOf(datum) : -1;
   for (let i = 0; i < len; i++) {
     const key = keys[i];
     const normalizedProp = normalized[key];
