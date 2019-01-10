@@ -94,22 +94,26 @@ describe('property-resolver', () => {
       const resolved = resolveForItem({}, normalized);
       expect(resolved).to.eql({ strokeWidth: 0 });
     });
+
     it('should resolve fn callback', () => {
       const normalized = {
-        strokeWidth: { fn: () => 1 }
+        strokeWidth: { fn: (ctx, idx) => 1 + idx }
       };
-      const resolved = resolveForItem({}, normalized);
-      expect(resolved).to.eql({ strokeWidth: 1 });
+      const idx = 1;
+      const resolved = resolveForItem({}, normalized, idx);
+      expect(resolved).to.eql({ strokeWidth: 2 });
     });
+
     it('should resolve fn callback with context', () => {
       const normalized = {
         strokeWidth: {
-          fn: function fn(b) { return b.scale(b.datum.tjocklek); },
+          fn: function fn(b, idx) { return b.scale(b.datum.tjocklek) + idx; },
           scale: v => v * 2
         }
       };
-      const resolved = resolveForItem({ datum: { tjocklek: 3 } }, normalized);
-      expect(resolved).to.eql({ strokeWidth: 6 });
+      const idx = 1;
+      const resolved = resolveForItem({ datum: { tjocklek: 3 } }, normalized, idx);
+      expect(resolved).to.eql({ strokeWidth: 7 });
     });
 
     it('should resolve fn callback with parameters', () => {

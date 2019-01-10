@@ -5,9 +5,15 @@ describe('settings resolver', () => {
   let normalizeSettings;
   let resolveForItem;
   let updateScaleSize;
+
   beforeEach(() => {
     normalizeSettings = (...args) => [...args].join('-');
-    resolveForItem = ({ datum, data }, norm) => ({ norm, datum, data });
+    resolveForItem = ({ datum, data }, norm, idx) => ({
+      norm,
+      datum,
+      data,
+      idx
+    });
     updateScaleSize = sinon.stub();
     res = settingsResolver({
       chart: 'c'
@@ -17,6 +23,7 @@ describe('settings resolver', () => {
       updateScaleSize
     });
   });
+
   it('should call externals with proper arguments', () => {
     const resolved = res.resolve({
       settings: 's',
@@ -28,7 +35,26 @@ describe('settings resolver', () => {
     expect(resolved.items).to.eql([{
       norm: 's-d-c',
       datum: 'a',
-      data: 'a'
+      data: 'a',
+      idx: 0
     }]);
+  });
+
+  it('should call externals with proper arguments when no dataset is provided', () => {
+    const resolved = res.resolve({
+      settings: 's',
+      defaults: 'd',
+      data: 'a'
+    });
+
+    expect(resolved).to.eql({
+      settings: 's-d-c',
+      item: {
+        norm: 's-d-c',
+        datum: undefined,
+        data: 'a',
+        idx: -1
+      }
+    });
   });
 });
