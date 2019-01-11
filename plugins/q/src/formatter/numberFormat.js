@@ -1,7 +1,12 @@
 import numberFormatFactory from './parts/qs-number-formatter';
+import memoize from './memoize';
 
 export default function formatter(pattern, thousand, decimal, qType, localeInfo) {
   const qformat = numberFormatFactory(localeInfo, pattern, thousand, decimal, qType);
+  const memoized = memoize(qformat.formatValue.bind(qformat), {
+    // Handle NaN and cases where toString yields different result than +operator. Ex. a Date.
+    keyifier: value => (isNaN(value) ? value : +value)
+  });
 
   /**
    * Format a value according to the specified pattern created at construct
@@ -10,7 +15,7 @@ export default function formatter(pattern, thousand, decimal, qType, localeInfo)
    * @return {String}         [description]
    */
   function format(value) {
-    return qformat.formatValue(value);
+    return memoized(value);
   }
 
   /**
@@ -24,6 +29,7 @@ export default function formatter(pattern, thousand, decimal, qType, localeInfo)
     * @return {String}     Formatted value
     */
   format.format = function formatFn(p, v, t, d) {
+    memoized.clear();
     return qformat.format(v, p, t, d);
   };
 
@@ -35,6 +41,7 @@ export default function formatter(pattern, thousand, decimal, qType, localeInfo)
     */
   format.pattern = function patternFn(p) {
     if (p) {
+      memoized.clear();
       qformat.pattern = p;
       qformat.prepare();
     }

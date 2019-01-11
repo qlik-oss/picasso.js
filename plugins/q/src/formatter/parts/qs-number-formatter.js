@@ -1,5 +1,4 @@
 import formatter from 'number-format.js';
-import memoize from '../memoize';
 
 function escapeRegExp(str) {
   return str.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&');
@@ -240,7 +239,6 @@ class NumberFormatter {
 
     this.abbreviations = getAbbreviations(localeInfo, this.patternSeparator);
 
-    this.formatValue = memoize(this.formatValue.bind(this));
     this.prepare();
   }
 
@@ -286,7 +284,6 @@ class NumberFormatter {
   }
 
   prepare(pattern, t, d) {
-    this.formatValue.clear(); // New pattern invalides the formatValue memoization
     let prep;
 
     if (typeof pattern === 'undefined') { pattern = this.pattern; }

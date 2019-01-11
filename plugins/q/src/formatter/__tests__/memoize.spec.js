@@ -25,9 +25,14 @@ describe('memoize', () => {
 
   it('should cache all stringifiable values', () => {
     const setSpy = sinon.spy(func, 'set');
-    expect(func(undefined)).to.equal('$undefined'); // Calls set
+    expect(func(undefined)).to.equal('$undefined');
+    expect(func(null)).to.equal('$null');
+    expect(func({})).to.equal('$[object Object]');
+
     expect(setSpy).to.have.been.calledWith(undefined, '$undefined');
-    expect(func.size()).to.equal(1);
+    expect(setSpy).to.have.been.calledWith(null, '$null');
+    expect(setSpy).to.have.been.calledWith({}, '$[object Object]');
+    expect(func.size()).to.equal(3);
   });
 
   it('should handle multiple arguments', () => {

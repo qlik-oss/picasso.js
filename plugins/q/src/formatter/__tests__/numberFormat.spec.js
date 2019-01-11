@@ -545,6 +545,12 @@ describe('numberFormat', () => {
         it('should not format non-numerics', () => {
           expect(f('$3.2')).to.equal('$3.2');
           expect(f('Hello World')).to.equal('Hello World');
+          expect(f({})).to.equal('[object Object]');
+        });
+
+        it('should handle Date correctly', () => {
+          const d = new Date();
+          expect(f(d)).to.equal(`${+d}`);
         });
 
         describe('format', () => {
