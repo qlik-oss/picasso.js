@@ -57,4 +57,12 @@ describe('memoize', () => {
     expect(func.has(1)).to.be.false;
     expect(func.has(2)).to.be.true;
   });
+
+  it('should use cache key from optional toKey function', () => {
+    func = memoize(val => `$${val}`, { toKey: arg => `KEY_${arg}` });
+    expect(func(123)).to.equal('$123');
+    expect(func.has('KEY_123')).to.be.true;
+    expect(func.get('KEY_123')).to.equal('$123');
+    expect(func.size()).to.equal(1);
+  });
 });
