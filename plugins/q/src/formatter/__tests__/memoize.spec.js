@@ -37,7 +37,7 @@ describe('memoize', () => {
 
   it('should handle multiple arguments', () => {
     const funcSpy = sinon.stub().returns('1337');
-    func = memoize(funcSpy, { multipleArguments: true });
+    func = memoize(funcSpy, { multipleArguments: true, toKey: (...args) => args });
     const setSpy = sinon.spy(func, 'set');
 
     func(1, 2, 3, 4, 5);

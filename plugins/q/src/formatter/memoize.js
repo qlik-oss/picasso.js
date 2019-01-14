@@ -13,7 +13,7 @@ export default function memoize(func, opts = {}) {
 
   if (multipleArguments) {
     cacher = (...args) => {
-      k = toKey(args);
+      k = toKey(...args);
       if (cacher.has(k)) {
         return cacher.get(k);
       }
@@ -44,7 +44,7 @@ export default function memoize(func, opts = {}) {
 
   cacher.get = key => cache[key];
 
-  cacher.has = key => typeof cache[key] !== 'undefined';
+  cacher.has = key => key in cache;
 
   cacher.clear = () => {
     cache = Object.create(null);
