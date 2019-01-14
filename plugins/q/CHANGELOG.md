@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.19.0](https://github.com/qlik-oss/picasso.js/compare/v0.18.2...v0.19.0) (2019-01-14)
+
+
+### Bug Fixes
+
+* **q:** add first or default check for empty qDataPages in extractor-t ([#276](https://github.com/qlik-oss/picasso.js/issues/276)) ([e5f3d82](https://github.com/qlik-oss/picasso.js/commit/e5f3d82))
+
+
+
+
+
 ## [0.18.2](https://github.com/qlik-oss/picasso.js/compare/v0.18.1...v0.18.2) (2018-12-10)
 
 **Note:** Version bump only for package picasso-plugin-q

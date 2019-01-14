@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.19.0](https://github.com/qlik-oss/picasso.js/compare/v0.18.2...v0.19.0) (2019-01-14)
+
+
+### Features
+
+* add support for patterns ([#283](https://github.com/qlik-oss/picasso.js/issues/283)) ([836c4a1](https://github.com/qlik-oss/picasso.js/commit/836c4a1))
+* **labels:** allow text to overflow bars ([#280](https://github.com/qlik-oss/picasso.js/issues/280)) ([403f13c](https://github.com/qlik-oss/picasso.js/commit/403f13c))
+
+
+### Performance Improvements
+
+* lazy evaluation of scales and formatters ([#279](https://github.com/qlik-oss/picasso.js/issues/279)) ([33f0475](https://github.com/qlik-oss/picasso.js/commit/33f0475))
+
+
+
+
+
 ## [0.18.2](https://github.com/qlik-oss/picasso.js/compare/v0.18.1...v0.18.2) (2018-12-10)
 
 **Note:** Version bump only for package docs

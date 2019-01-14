@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.19.0](https://github.com/qlik-oss/picasso.js/compare/v0.18.2...v0.19.0) (2019-01-14)
+
+
+### Bug Fixes
+
+* **q:** add first or default check for empty qDataPages in extractor-t ([#276](https://github.com/qlik-oss/picasso.js/issues/276)) ([e5f3d82](https://github.com/qlik-oss/picasso.js/commit/e5f3d82))
+
+
+### Features
+
+* add support for patterns ([#283](https://github.com/qlik-oss/picasso.js/issues/283)) ([836c4a1](https://github.com/qlik-oss/picasso.js/commit/836c4a1))
+* **labels:** allow text to overflow bars ([#280](https://github.com/qlik-oss/picasso.js/issues/280)) ([403f13c](https://github.com/qlik-oss/picasso.js/commit/403f13c))
+
+
+### Performance Improvements
+
+* lazy evaluation of scales and formatters ([#279](https://github.com/qlik-oss/picasso.js/issues/279)) ([33f0475](https://github.com/qlik-oss/picasso.js/commit/33f0475))
+* remove unneeded indexOf in settings-resolver ([#282](https://github.com/qlik-oss/picasso.js/issues/282)) ([f28f167](https://github.com/qlik-oss/picasso.js/commit/f28f167))
+* remove usage of concat ([#281](https://github.com/qlik-oss/picasso.js/issues/281)) ([a449b6e](https://github.com/qlik-oss/picasso.js/commit/a449b6e))
+
+
+
+
+
 ## [0.18.2](https://github.com/qlik-oss/picasso.js/compare/v0.18.1...v0.18.2) (2018-12-10)
 
 
