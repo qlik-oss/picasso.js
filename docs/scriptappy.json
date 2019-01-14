@@ -2079,6 +2079,12 @@
                               "optional": true,
                               "defaultValue": "'#333'",
                               "type": "string"
+                            },
+                            "overflow": {
+                              "description": "True if the label is allowed to overflow the bar",
+                              "optional": true,
+                              "defaultValue": false,
+                              "type": "boolean"
                             }
                           },
                           "kind": "object"

@@ -2,6 +2,13 @@ import extend from 'extend';
 import {
   testRectRect
 } from '../../../math/narrow-phase-collision';
+import { rotate } from '../../../math/vector';
+import {
+  rectToPoints,
+  pointsToRect
+} from '../../../geometry/util';
+import { toRadians } from '../../../math/angles';
+import filterOverlapping from './bars-overlapping-filter';
 
 const LINE_HEIGHT = 1.5;
 const PADDING = 4;
@@ -15,6 +22,11 @@ function cbContext(node, chart) {
     formatter: chart.formatter,
     dataset: chart.dataset
   };
+}
+
+function isValidText(text) {
+  const type = typeof text;
+  return (type === 'string' || type === 'number') && text !== '';
 }
 
 export function placeTextInRect(rect, text, opts) {
@@ -35,21 +47,33 @@ export function placeTextInRect(rect, text, opts) {
 
   const textMetrics = opts.textMetrics;
 
-  if (rect.width < opts.fontSize || rect.height < textMetrics.height) {
+  if (!opts.overflow && (rect.width < opts.fontSize || rect.height < textMetrics.height)) {
     return false;
   }
 
   if (opts.rotate) {
-    const wiggleHor = Math.max(0, rect.width - (textMetrics.height / (LINE_HEIGHT * 0.8)));
+    if (opts.overflow && rect.width < textMetrics.height) {
+      label.x = rect.x + (rect.width / 2); // Use center of the rect
+      label.dx = opts.fontSize * 0.35; // Emulate the baseline heuristic for the 'central' attribute
+    } else {
+      const wiggleHor = Math.max(0, rect.width - (textMetrics.height / (LINE_HEIGHT * 0.8)));
+      label.x = rect.x + (textMetrics.height / LINE_HEIGHT) + (opts.align * wiggleHor);
+    }
+
     const wiggleVert = Math.max(0, rect.height - textMetrics.width);
-    label.x = rect.x + (textMetrics.height / LINE_HEIGHT) + (opts.align * wiggleHor);
     label.y = rect.y + (opts.justify * wiggleVert);
     label.transform = `rotate(-90, ${label.x + label.dx}, ${label.y + label.dy})`;
   } else {
+    if (opts.overflow && rect.height < textMetrics.height) {
+      label.y = rect.y + (rect.height / 2); // Use center of the rect
+      label.dy = opts.fontSize * 0.35; // Emulate the baseline heuristic for the 'central' attribute
+    } else {
+      const wiggleHeight = Math.max(0, rect.height - (textMetrics.height / (LINE_HEIGHT * 0.8))); // 0.8 - MAGIC NUMBER - need to figure out why this works the best
+      label.y = rect.y + (textMetrics.height / LINE_HEIGHT) + (opts.justify * wiggleHeight);
+    }
+
     const wiggleWidth = Math.max(0, rect.width - textMetrics.width);
-    const wiggleHeight = Math.max(0, rect.height - (textMetrics.height / (LINE_HEIGHT * 0.8))); // 0.8 - MAGIC NUMBER - need to figure out why this works the best
     label.x = rect.x + (opts.align * wiggleWidth);
-    label.y = rect.y + (textMetrics.height / LINE_HEIGHT) + (opts.justify * wiggleHeight);
   }
 
   return label;
@@ -160,6 +184,30 @@ export function findBestPlacement({
   return { bounds, placement };
 }
 
+function approxTextBounds(label, textMetrics, rotated, rect) {
+  const x = label.x + label.dx;
+  const y = label.y + label.dy;
+  const width = rotated ? textMetrics.width : Math.min(textMetrics.width, rect.width);
+  const height = rotated ? Math.min(textMetrics.height, rect.height) : textMetrics.height;
+  const PADDING_OFFSET = 0.1; // Needed to support a case when multiple bars are on the same location
+
+  const bounds = {
+    x: x - PADDING - PADDING_OFFSET,
+    y: y - height - PADDING - PADDING_OFFSET,
+    width: width + (PADDING * 2) - PADDING_OFFSET,
+    height: height + (PADDING * 2) - PADDING_OFFSET
+  };
+
+  if (rotated) {
+    const o = {
+      x: x - (height / 2),
+      y: y - (height / 2)
+    };
+    return pointsToRect(rectToPoints(bounds).map(p => rotate(p, toRadians(-90), o)));
+  }
+  return bounds;
+}
+
 export function placeInBars(
   {
     chart,
@@ -168,9 +216,16 @@ export function placeInBars(
     fitsHorizontally,
     collectiveOrientation
   }, findPlacement = findBestPlacement,
-  placer = placeTextInRect
+  placer = placeTextInRect,
+  postFilter = filterOverlapping
 ) {
   const labels = [];
+  const postFilterContext = {
+    container: rect,
+    targetNodes,
+    labels: [],
+    orientation: collectiveOrientation
+  };
   let label;
   let target;
   let node;
@@ -193,12 +248,12 @@ export function placeInBars(
     arg = cbContext(node, chart);
     direction = target.direction;
     orientation = direction === 'left' || direction === 'right' ? 'h' : 'v';
+
     for (let j = 0; j < target.texts.length; j++) {
       text = target.texts[j];
-      if (!text) {
+      if (!isValidText(text)) {
         continue;
       }
-
       lblStngs = target.labelSettings[j];
       measured = target.measurements[j];
       placements = lblStngs.placements;
@@ -222,6 +277,7 @@ export function placeInBars(
         justify = placement.justify;
         fill = typeof placement.fill === 'function' ? placement.fill(arg, i) : placement.fill;
         const linkData = typeof lblStngs.linkData === 'function' ? lblStngs.linkData(arg, i) : undefined;
+        const overflow = typeof placement.overflow === 'function' ? placement.overflow(arg, i) : placement.overflow;
 
         if (direction === 'up') {
           justify = 1 - justify;
@@ -230,6 +286,7 @@ export function placeInBars(
           justify = 1 - justify;
         }
 
+        const isRotated = !(collectiveOrientation === 'h' || fitsHorizontally);
         label = placer(bounds, text, {
           fill,
           justify: orientation === 'h' ? placement.align : justify,
@@ -237,7 +294,8 @@ export function placeInBars(
           fontSize: lblStngs.fontSize,
           fontFamily: lblStngs.fontFamily,
           textMetrics: measured,
-          rotate: !(collectiveOrientation === 'h' || fitsHorizontally)
+          rotate: isRotated,
+          overflow: !!overflow
         });
 
         if (label) {
@@ -245,12 +303,16 @@ export function placeInBars(
             label.data = linkData;
           }
           labels.push(label);
+          postFilterContext.labels.push({
+            node,
+            textBounds: approxTextBounds(label, measured, isRotated, bounds)
+          });
         }
       }
     }
   }
 
-  return labels;
+  return labels.filter(postFilter(postFilterContext));
 }
 
 export function precalculate({
@@ -293,8 +355,8 @@ export function precalculate({
 
     for (let j = 0; j < labelSettings.length; j++) {
       lblStng = labelSettings[j];
-      text = typeof lblStng.label === 'function' ? lblStng.label(arg, i) : '';
-      if (!text) {
+      text = typeof lblStng.label === 'function' ? lblStng.label(arg, i) : undefined;
+      if (!isValidText(text)) {
         continue; // eslint-ignore-line
       }
       direction = typeof settings.direction === 'function' ? settings.direction(arg, i) : settings.direction || 'up';
@@ -341,6 +403,7 @@ export function precalculate({
  * @property {number} [labels[].placements[].justify=0] - Placement of the label along the direction of the bar
  * @property {number} [labels[].placements[].align=0.5] - Placement of the label along the perpendicular direction of the bar
  * @property {string} [labels[].placements[].fill='#333'] - Color of the label
+ * @property {boolean} [labels[].placements[].overflow=false] - True if the label is allowed to overflow the bar
  */
 
 export function bars({
@@ -378,6 +441,10 @@ export function bars({
     labelSettings,
     placementSettings
   });
+
+  const coord = hasHorizontalDirection ? 'y' : 'x';
+  const side = hasHorizontalDirection ? 'height' : 'width';
+  targetNodes.sort((a, b) => (a.node.localBounds[coord] + a.node.localBounds[side]) - (b.node.localBounds[coord] + b.node.localBounds[side]));
 
   return placer({
     chart,
