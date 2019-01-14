@@ -58,9 +58,16 @@ export default class Path extends DisplayObject {
         }
       });
     }
+
+    this.__boundingRect = { true: null, false: null };
+    this.__bounds = { true: null, false: null };
   }
 
   boundingRect(includeTransform = false) {
+    if (this.__boundingRect[includeTransform] !== null) {
+      return this.__boundingRect[includeTransform];
+    }
+
     if (!this.points.length) {
       this.segments = this.segments.length ? this.segments : pathToSegments(this.attrs.d);
       this.points = flatten(this.segments);
@@ -69,23 +76,29 @@ export default class Path extends DisplayObject {
     const pt = includeTransform && this.modelViewMatrix ? this.modelViewMatrix.transformPoints(this.points) : this.points;
     const [xMin, yMin, xMax, yMax] = getMinMax(pt);
 
-    return {
+    this.__boundingRect[includeTransform] = {
       x: xMin || 0,
       y: yMin || 0,
       width: (xMax - xMin) || 0,
       height: (yMax - yMin) || 0
     };
+
+    return this.__boundingRect[includeTransform];
   }
 
   bounds(includeTransform = false) {
+    if (this.__bounds[includeTransform] !== null) {
+      return this.__bounds[includeTransform];
+    }
     const rect = this.boundingRect(includeTransform);
 
-    return [
+    this.__bounds[includeTransform] = [
       { x: rect.x, y: rect.y },
       { x: rect.x + rect.width, y: rect.y },
       { x: rect.x + rect.width, y: rect.y + rect.height },
       { x: rect.x, y: rect.y + rect.height }
     ];
+    return this.__bounds[includeTransform];
   }
 }
 

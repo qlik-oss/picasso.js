@@ -47,30 +47,42 @@ export default class Rect extends DisplayObject {
     }
 
     this.collider = opts;
+    this.__boundingRect = { true: null, false: null };
+    this.__bounds = { true: null, false: null };
   }
 
   boundingRect(includeTransform = false) {
+    if (this.__boundingRect[includeTransform] !== null) {
+      return this.__boundingRect[includeTransform];
+    }
     const p = rectToPoints(this.attrs);
     const pt = includeTransform && this.modelViewMatrix ? this.modelViewMatrix.transformPoints(p) : p;
     const [xMin, yMin, xMax, yMax] = getMinMax(pt);
 
-    return {
+    this.__boundingRect[includeTransform] = {
       x: xMin,
       y: yMin,
       width: xMax - xMin,
       height: yMax - yMin
     };
+
+    return this.__boundingRect[includeTransform];
   }
 
   bounds(includeTransform = false) {
+    if (this.__bounds[includeTransform] !== null) {
+      return this.__bounds[includeTransform];
+    }
     const rect = this.boundingRect(includeTransform);
 
-    return [
+    this.__bounds[includeTransform] = [
       { x: rect.x, y: rect.y },
       { x: rect.x + rect.width, y: rect.y },
       { x: rect.x + rect.width, y: rect.y + rect.height },
       { x: rect.x, y: rect.y + rect.height }
     ];
+
+    return this.__bounds[includeTransform];
   }
 }
 
