@@ -36,8 +36,7 @@
       "env": {
         "browser": false,
         "node": true,
-        "mocha": true,
-        "protractor": true
+        "mocha": true
       },
       "globals": {
         "chai": false,
