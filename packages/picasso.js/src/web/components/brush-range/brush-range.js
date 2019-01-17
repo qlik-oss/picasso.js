@@ -168,6 +168,7 @@ function resolveTarget(ctx) {
  * @property {object} [bubbles]
  * @property {boolean} [bubbles.show=true] - True to show label bubble, false otherwise
  * @property {string} [bubbles.align=start] - Where to anchor bubble [start|end]
+ * @property {function} [bubbles.label] - Callback function for the labels
  * @property {object} [target]
  * @property {string} [target.component] - Render matching overlay on target component
  * @property {string} [target.selector] - Instead of targeting a component, target one or more shapes
@@ -256,16 +257,27 @@ const brushRangeComponent = {
       coord: this.state.direction === VERTICAL ? 'y' : 'x',
       pos: this.state.direction === VERTICAL ? 'deltaY' : 'deltaX'
     };
+    this.state.format = typeof stngs.bubbles.label === 'function' ? (v, r) => stngs.bubbles.label.call(undefined, {
+      datum: v,
+      data: r,
+      scale,
+      resources: {
+        scale: this.chart.scale,
+        formatter: this.chart.formatter
+      }
+    }) : false;
 
     if (!{}.hasOwnProperty.call(scale, 'norm')) { // Non-linear scale if norm method is unavailable
       this.state.scale = linear();
       this.state.scale.data = scale.data;
-      this.state.format = (v, r) => {
-        if (!rangesOverlap(scale.range(), r)) {
-          return '-';
-        }
-        return findClosestLabel(v, scale);
-      };
+      if (!this.state.format) {
+        this.state.format = (v, r) => {
+          if (!rangesOverlap(scale.range(), r)) {
+            return '-';
+          }
+          return findClosestLabel(v, scale);
+        };
+      }
       this.state.fauxBrushInstance = brushFactory();
       this.state.findValues = valueRanges => findValues(valueRanges, scale);
     } else {
@@ -274,7 +286,7 @@ const brushRangeComponent = {
       this.state.findValues = null;
       this.state.scale = scale;
       const scaleData = this.state.scale.data();
-      if (scaleData && scaleData.fields && scaleData.fields[0]) {
+      if (!this.state.format && scaleData && scaleData.fields && scaleData.fields[0]) {
         this.state.format = scaleData.fields[0].formatter();
       }
     }
