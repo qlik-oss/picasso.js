@@ -58,18 +58,27 @@ export default class Text extends DisplayObject {
     this.attrs.dy = dy;
     this.attrs.text = text;
     this.attrs.title = title;
-    this._boundingRect = null; // Reset cache
-    if (boundingRect) {
-      this._boundingRect = boundingRect;
+    if (typeof boundingRect === 'object') {
+      this._textBoundsFn = () => boundingRect;
     } else if (typeof textBoundsFn === 'function') {
       this._textBoundsFn = textBoundsFn;
     }
 
     this.collider = extend({ type: hasData(this) ? 'bounds' : null }, collider);
+
+    this.__boundingRect = { true: null, false: null };
+    this.__bounds = { true: null, false: null };
   }
 
   boundingRect(includeTransform = false) {
-    if (!this._boundingRect && !this._textBoundsFn) {
+    if (this.__boundingRect[includeTransform] !== null) {
+      return this.__boundingRect[includeTransform];
+    }
+
+    let rect;
+    if (typeof this._textBoundsFn === 'function') {
+      rect = this._textBoundsFn(this.attrs);
+    } else {
       return {
         x: 0,
         y: 0,
@@ -78,31 +87,33 @@ export default class Text extends DisplayObject {
       };
     }
 
-    if (!this._boundingRect && this._textBoundsFn) {
-      this._boundingRect = this._textBoundsFn(this.attrs);
-    }
-
-    const p = rectToPoints(this._boundingRect);
+    const p = rectToPoints(rect);
     const pt = includeTransform && this.modelViewMatrix ? this.modelViewMatrix.transformPoints(p) : p;
     const [xMin, yMin, xMax, yMax] = getMinMax(pt);
 
-    return {
+    this.__boundingRect[includeTransform] = {
       x: xMin,
       y: yMin,
       width: xMax - xMin,
       height: yMax - yMin
     };
+
+    return this.__boundingRect[includeTransform];
   }
 
   bounds(includeTransform = false) {
+    if (this.__bounds[includeTransform] !== null) {
+      return this.__bounds[includeTransform];
+    }
     const rect = this.boundingRect(includeTransform);
 
-    return [
+    this.__bounds[includeTransform] = [
       { x: rect.x, y: rect.y },
       { x: rect.x + rect.width, y: rect.y },
       { x: rect.x + rect.width, y: rect.y + rect.height },
       { x: rect.x, y: rect.y + rect.height }
     ];
+    return this.__bounds[includeTransform];
   }
 }
 

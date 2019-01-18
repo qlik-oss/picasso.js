@@ -10,28 +10,11 @@ import NodeContainer from '../node-container';
 
 const NC = NodeContainer.prototype;
 
-function reCalcBoundingRect(c, child, includeTransform = false) {
-  if (typeof child.bounds !== 'undefined') {
-    const [p0, , p2] = child.bounds(includeTransform);
-    const { x: xMin, y: yMin } = p0;
-    const { x: xMax, y: yMax } = p2;
-
-    const _xMax = isNaN(c._boundingRect.width) ? xMax : Math.max(xMax, c._boundingRect.width + c._boundingRect.x);
-    const _yMax = isNaN(c._boundingRect.height) ? yMax : Math.max(yMax, c._boundingRect.height + c._boundingRect.y);
-
-    c._boundingRect.x = isNaN(c._boundingRect.x) ? xMin : Math.min(xMin, c._boundingRect.x);
-    c._boundingRect.y = isNaN(c._boundingRect.y) ? yMin : Math.min(yMin, c._boundingRect.y);
-    c._boundingRect.width = _xMax - c._boundingRect.x;
-    c._boundingRect.height = _yMax - c._boundingRect.y;
-  }
-}
-
 export default class Container extends DisplayObject {
   constructor(s = {}) {
     const { type = 'container' } = s;
     super(type);
     this.set(s);
-    this._boundingRect = {};
   }
 
   set(v = {}) {
@@ -43,39 +26,70 @@ export default class Container extends DisplayObject {
     }, collider);
 
     this.collider = opts;
+    this.__boundingRect = { true: null, false: null };
+    this.__bounds = { true: null, false: null };
+  }
+
+  appendChildRect(child, includeTransform) {
+    if (typeof child.bounds !== 'undefined') {
+      const rect = this.__boundingRect[includeTransform] || {};
+      const [p0, , p2] = child.bounds(includeTransform);
+      const { x: xMin, y: yMin } = p0;
+      const { x: xMax, y: yMax } = p2;
+
+      const _xMax = isNaN(rect.width) ? xMax : Math.max(xMax, rect.width + rect.x);
+      const _yMax = isNaN(rect.height) ? yMax : Math.max(yMax, rect.height + rect.y);
+
+      rect.x = isNaN(rect.x) ? xMin : Math.min(xMin, rect.x);
+      rect.y = isNaN(rect.y) ? yMin : Math.min(yMin, rect.y);
+      rect.width = _xMax - rect.x;
+      rect.height = _yMax - rect.y;
+
+      this.__boundingRect[includeTransform] = rect;
+    }
   }
 
   boundingRect(includeTransform = false) {
+    if (this.__boundingRect[includeTransform] !== null) {
+      return this.__boundingRect[includeTransform];
+    }
+
     const num = this.children.length;
-    this._boundingRect = {};
 
     for (let i = 0; i < num; i++) {
-      reCalcBoundingRect(this, this.children[i], includeTransform);
+      this.appendChildRect(this.children[i], includeTransform);
     }
-    return extend({
+
+    this.__boundingRect[includeTransform] = extend({
       x: 0, y: 0, width: 0, height: 0
-    }, this._boundingRect);
+    }, this.__boundingRect[includeTransform]);
+
+    return this.__boundingRect[includeTransform];
   }
 
   bounds(includeTransform = false) {
+    if (this.__bounds[includeTransform] !== null) {
+      return this.__bounds[includeTransform];
+    }
     const rect = this.boundingRect(includeTransform);
 
-    return [
+    this.__bounds[includeTransform] = [
       { x: rect.x, y: rect.y },
       { x: rect.x + rect.width, y: rect.y },
       { x: rect.x + rect.width, y: rect.y + rect.height },
       { x: rect.x, y: rect.y + rect.height }
     ];
+    return this.__bounds[includeTransform];
   }
 
   addChild(c) {
     const r = NC.addChild.call(this, c);
 
     if (this._collider && this._collider.type === 'bounds') {
-      reCalcBoundingRect(this, c, true);
+      this.appendChildRect(c, true);
       const opts = extend({
         type: 'bounds', x: 0, y: 0, width: 0, height: 0
-      }, this._boundingRect);
+      }, this.__boundingRect.true);
       this.collider = opts;
     }
 
@@ -88,11 +102,11 @@ export default class Container extends DisplayObject {
 
     if (this._collider && this._collider.type === 'bounds' && num > 0) {
       for (let i = 0; i < num; i++) {
-        reCalcBoundingRect(this, children[i], true);
+        this.appendChildRect(children[i], true);
       }
       const opts = extend({
         type: 'bounds', x: 0, y: 0, width: 0, height: 0
-      }, this._boundingRect);
+      }, this.__boundingRect.true);
       this.collider = opts;
     }
 
@@ -112,6 +126,8 @@ export default class Container extends DisplayObject {
     NC.removeChild.call(this, c);
 
     if (this._collider && this._collider.type === 'bounds') {
+      this.__boundingRect = { true: null, false: null };
+      this.__bounds = { true: null, false: null };
       const opts = extend(this.boundingRect(true), { type: 'bounds' });
       this.collider = opts;
     }
@@ -123,6 +139,8 @@ export default class Container extends DisplayObject {
     NC.removeChildren.call(this, children);
 
     if (this._collider && this._collider.type === 'bounds') {
+      this.__boundingRect = { true: null, false: null };
+      this.__bounds = { true: null, false: null };
       const opts = extend(this.boundingRect(true), { type: 'bounds' });
       this.collider = opts;
     }

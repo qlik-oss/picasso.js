@@ -38,9 +38,14 @@ export default class Line extends DisplayObject {
       y2
     };
     this.collider = extend(defaultCollider, collider);
+    this.__boundingRect = { true: null, false: null };
+    this.__bounds = { true: null, false: null };
   }
 
   boundingRect(includeTransform = false) {
+    if (this.__boundingRect[includeTransform] !== null) {
+      return this.__boundingRect[includeTransform];
+    }
     let p = lineToPoints(this.attrs);
 
     if (includeTransform && this.modelViewMatrix) {
@@ -50,22 +55,27 @@ export default class Line extends DisplayObject {
     const [xMin, yMin, xMax, yMax] = getMinMax(p);
     const hasSize = xMin !== xMax || yMin !== yMax;
 
-    return {
+    this.__boundingRect[includeTransform] = {
       x: xMin,
       y: yMin,
       width: hasSize ? Math.max(1, xMax - xMin) : 0,
       height: hasSize ? Math.max(1, yMax - yMin) : 0
     };
+    return this.__boundingRect[includeTransform];
   }
 
   bounds(includeTransform = false) {
+    if (this.__bounds[includeTransform] !== null) {
+      return this.__bounds[includeTransform];
+    }
     const rect = this.boundingRect(includeTransform);
-    return [
+    this.__bounds[includeTransform] = [
       { x: rect.x, y: rect.y },
       { x: rect.x + rect.width, y: rect.y },
       { x: rect.x + rect.width, y: rect.y + rect.height },
       { x: rect.x, y: rect.y + rect.height }
     ];
+    return this.__bounds[includeTransform];
   }
 }
 

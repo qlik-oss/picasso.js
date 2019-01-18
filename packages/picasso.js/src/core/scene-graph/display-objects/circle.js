@@ -31,22 +31,31 @@ export default class Circle extends DisplayObject {
     this.attrs.r = r;
 
     this.collider = opts;
+    this.__boundingRect = { true: null, false: null };
+    this.__bounds = { true: null, false: null };
   }
 
   boundingRect(includeTransform = false) {
+    if (this.__boundingRect[includeTransform] !== null) {
+      return this.__boundingRect[includeTransform];
+    }
     // TODO Handle Circle bounds correctly for a circle transformed to an non axis aligned ellipse/circle
     // Current solution only rotate the bounds, giving a larger boundingRect if rotated
     const p = this.bounds(includeTransform);
 
-    return {
+    this.__boundingRect[includeTransform] = {
       x: p[0].x,
       y: p[0].y,
       width: p[2].x - p[0].x,
       height: p[2].y - p[0].y
     };
+    return this.__boundingRect[includeTransform];
   }
 
   bounds(includeTransform = false) {
+    if (this.__bounds[includeTransform] !== null) {
+      return this.__bounds[includeTransform];
+    }
     // TODO Handle Circle bounds correctly for a circle transformed to an non axis aligned ellipse/circle
     const {
       cx, cy, r: rX, r: rY
@@ -68,15 +77,17 @@ export default class Circle extends DisplayObject {
       w = xMax - xMin;
       h = yMax - yMin;
 
-      return [
+      this.__bounds[includeTransform] = [
         { x: xMin, y: yMin },
         { x: xMin + w, y: yMin },
         { x: xMin + w, y: yMin + h },
         { x: xMin, y: yMin + h }
       ];
+    } else {
+      this.__bounds[includeTransform] = p;
     }
 
-    return p;
+    return this.__bounds[includeTransform];
   }
 }
 
