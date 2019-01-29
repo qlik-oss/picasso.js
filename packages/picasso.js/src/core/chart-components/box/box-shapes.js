@@ -254,7 +254,7 @@ export function buildShapes({
     const rendHeight = height;
 
 
-    const allValidValues = [item.min, item.start, item.med, item.end, item.max].filter(v => typeof v === 'number' && !Number.isNaN(v));
+    const allValidValues = [item.min, item.start, item.med, item.end, item.max].filter(isNumber);
 
     const isLowerOutOfBounds = Math.min(...allValidValues) < 0 && Math.max(...allValidValues) < 0;
     const isHigherOutOfBounds = Math.min(...allValidValues) > 1 && Math.max(...allValidValues) > 1;
