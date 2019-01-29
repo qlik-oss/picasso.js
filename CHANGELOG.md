@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.18.3](https://github.com/qlik-oss/picasso.js/compare/v0.18.2...v0.18.3) (2019-01-29)
+
+
+### Bug Fixes
+
+* **box:** remove Number.isNaN ([bd43f87](https://github.com/qlik-oss/picasso.js/commit/bd43f87))
+
+
+
+
+
 ## [0.18.2](https://github.com/qlik-oss/picasso.js/compare/v0.18.1...v0.18.2) (2018-12-10)
 
 
