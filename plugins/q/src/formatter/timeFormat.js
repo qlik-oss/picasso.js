@@ -58,7 +58,9 @@ export default function formatter(pattern, qtype = 'TS', localeInfo = null) {
    */
   format.locale = function locale(li) {
     qformat = dateFormatFactory(li, pattern, qtype);
-    memoized = memoize(qformat.format.bind(qformat));
+    memoized = memoize(qformat.format.bind(qformat), {
+      toKey: date => (typeof date === 'object' ? date.getTime() : date)
+    });
     return this;
   };
 
