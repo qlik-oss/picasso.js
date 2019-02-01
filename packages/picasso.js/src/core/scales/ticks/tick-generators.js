@@ -194,7 +194,10 @@ function forceTicksAtBounds(ticks, scale, formatter) {
 }
 
 export function generateContinuousTicks({
-  settings, scale, distance, formatter
+  settings,
+  scale,
+  distance,
+  formatter = val => val
 }) {
   let ticks;
   const minorCount = settings.minorTicks && !notNumber(settings.minorTicks.count) ? Math.min(100, settings.minorTicks.count) : 0;
