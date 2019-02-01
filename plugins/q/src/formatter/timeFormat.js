@@ -1,5 +1,6 @@
 import dateFormatFactory from './parts/qs-date-formatter';
 import { TYPES } from './constants';
+import memoize from './memoize';
 
 export function QlikTimeToDate(value) {
   return new Date(Date.UTC(1899, 11, 30 + Math.floor(value), 0, 0, 0, 1000 * 24 * 60 * 60 * (value - Math.floor(value))));
@@ -7,6 +8,9 @@ export function QlikTimeToDate(value) {
 
 export default function formatter(pattern, qtype = 'TS', localeInfo = null) {
   let qformat = dateFormatFactory(localeInfo, pattern, qtype);
+  let memoized = memoize(qformat.format.bind(qformat), {
+    toKey: date => (typeof date === 'object' ? date.getTime() : date)
+  });
 
   /**
    * Prepare a value according to the specified qtype
@@ -29,7 +33,7 @@ export default function formatter(pattern, qtype = 'TS', localeInfo = null) {
    */
   function format(value) {
     value = prepare(value);
-    return qformat.format(value);
+    return memoized(value);
   }
 
   /**
@@ -41,6 +45,7 @@ export default function formatter(pattern, qtype = 'TS', localeInfo = null) {
     * @return {String}     Formatted value
     */
   format.format = function formatFn(p, v) {
+    memoized.clear();
     v = prepare(v);
     return qformat.format(v, p);
   };
@@ -53,7 +58,7 @@ export default function formatter(pattern, qtype = 'TS', localeInfo = null) {
    */
   format.locale = function locale(li) {
     qformat = dateFormatFactory(li, pattern, qtype);
-
+    memoized = memoize(qformat.format.bind(qformat));
     return this;
   };
 
@@ -66,6 +71,7 @@ export default function formatter(pattern, qtype = 'TS', localeInfo = null) {
   format.qtype = function qtypeFn(nqt) {
     if (nqt !== undefined) {
       qtype = nqt;
+      memoized.clear();
     }
     return qtype;
   };
