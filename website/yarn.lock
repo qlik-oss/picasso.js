@@ -1640,9 +1640,9 @@ dir-glob@2.0.0:
     arrify "^1.0.1"
     path-type "^3.0.0"
 
-docusaurus@^1.7.1:
-  version "1.7.1"
-  resolved "https://registry.yarnpkg.com/docusaurus/-/docusaurus-1.7.1.tgz#5ada6752b992027de1c58170948c43958348bc48"
+docusaurus@^1.7.2:
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/docusaurus/-/docusaurus-1.7.2.tgz#2de7323a8b27da3a4e54cab90fc397c786326a9a"
   dependencies:
     "@babel/core" "^7.0.0"
     "@babel/plugin-proposal-class-properties" "^7.0.0"
