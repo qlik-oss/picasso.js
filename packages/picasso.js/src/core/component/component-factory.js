@@ -44,6 +44,8 @@ function prepareContext(ctx, definition, opts) {
     symbol
   } = opts;
 
+  ctx.emit = () => {};
+
   // TODO add setters and log warnings / errors to console
   Object.defineProperty(ctx, 'settings', {
     get: settings
@@ -143,6 +145,13 @@ function setUpEmitter(ctx, emitter, settings) {
     emitter.on(event, listener);
   });
   ctx.emit = (name, ...event) => emitter.emit(name, ...event);
+}
+
+function tearDownEmitter(ctx, emitter) {
+  (ctx.eventListeners || []).forEach(({ event, listener }) => {
+    emitter.removeListener(event, listener);
+    ctx.emit = () => {};
+  });
 }
 
 // First render
@@ -548,9 +557,7 @@ function componentFactory(definition, context = {}) {
 
   fn.unmount = () => {
     [instanceContext, definitionContext].forEach((ctx) => {
-      (ctx.eventListeners || []).forEach(({ event, listener }) => {
-        emitter.removeListener(event, listener);
-      });
+      tearDownEmitter(ctx, emitter);
     });
     brushTriggers.tap = [];
     brushTriggers.over = [];
