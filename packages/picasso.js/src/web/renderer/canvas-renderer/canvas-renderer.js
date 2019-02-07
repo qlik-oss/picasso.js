@@ -160,21 +160,23 @@ export function renderer(sceneFn = sceneFactory) {
     const scaleY = rect.scaleRatio.y;
 
     if (hasChangedRect) {
+      el.style.transform = `translate(${-rect.edgeBleed.left}px, ${-rect.edgeBleed.top}px)`;
       el.style.left = `${Math.round(rect.margin.left + (rect.x * scaleX))}px`;
       el.style.top = `${Math.round(rect.margin.top + (rect.y * scaleY))}px`;
-      el.style.width = `${Math.round(rect.width * scaleX)}px`;
-      el.style.height = `${Math.round(rect.height * scaleY)}px`;
-      el.width = Math.round(rect.width * dpiRatio * scaleX);
-      el.height = Math.round(rect.height * dpiRatio * scaleY);
+      el.style.width = `${Math.round(rect.width * scaleX) + rect.edgeBleed.right + rect.edgeBleed.left}px`;
+      el.style.height = `${Math.round(rect.height * scaleY) + rect.edgeBleed.bottom + rect.edgeBleed.top}px`;
+      el.width = Math.round(rect.width * dpiRatio * scaleX) + rect.edgeBleed.right + rect.edgeBleed.left;
+      el.height = Math.round(rect.height * dpiRatio * scaleY) + rect.edgeBleed.bottom + rect.edgeBleed.top;
     }
 
     const sceneContainer = {
       type: 'container',
-      children: shapes
+      children: shapes,
+      transform: rect.edgeBleed.bool ? `translate(${rect.edgeBleed.left}, ${rect.edgeBleed.top})` : undefined
     };
 
     if (dpiRatio !== 1 || scaleX !== 1 || scaleY !== 1) {
-      sceneContainer.transform = `scale(${dpiRatio * scaleX}, ${dpiRatio * scaleY})`;
+      sceneContainer.transform += `scale(${dpiRatio * scaleX}, ${dpiRatio * scaleY})`;
     }
 
     const newScene = sceneFn({

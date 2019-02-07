@@ -250,6 +250,8 @@ function positionComponents(components, logicalContainerRect, reducedRect, conta
       };
     }
     appendScaleRatio(rect, outerRect, logicalContainerRect, containerRect);
+    rect.edgeBleed = c.edgeBleed;
+    outerRect.edgeBleed = c.edgeBleed;
     c.instance.resize(rect, outerRect, logicalContainerRect);
     c.cachedSize = undefined;
   });
