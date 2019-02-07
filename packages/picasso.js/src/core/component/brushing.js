@@ -21,7 +21,8 @@ export function styler(obj, {
   context,
   data,
   style,
-  filter
+  filter,
+  mode
 }) {
   const brusher = obj.chart.brush(context);
   const dataProps = data;
@@ -69,7 +70,7 @@ export function styler(obj, {
         });
       }
 
-      const isActive = brusher.containsMappedData(nodeData, dataProps);
+      const isActive = brusher.containsMappedData(nodeData, dataProps, mode);
       const activeIdx = activeNodes.indexOf(nodes[i]);
       let changed = false;
       if (isActive && activeIdx === -1) { // activated

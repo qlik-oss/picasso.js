@@ -274,6 +274,13 @@ describe('Brushing', () => {
       };
     });
 
+    it('should call containsMappedData with provided arguments', () => {
+      const s = styler(dummyComponent, { ...consume, mode: 'moood', data: ['a'] });
+      s.update();
+
+      expect(brusherStub.containsMappedData.firstCall).to.have.been.calledWithExactly(data[0], ['a'], 'moood');
+    });
+
     it('start should store all original styling values', () => {
       styler(dummyComponent, consume);
       brusherStub.trigger('start');
