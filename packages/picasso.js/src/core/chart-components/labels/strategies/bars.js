@@ -215,7 +215,8 @@ export function placeInBars(
     rect,
     fitsHorizontally,
     collectiveOrientation
-  }, findPlacement = findBestPlacement,
+  },
+  findPlacement = findBestPlacement,
   placer = placeTextInRect,
   postFilter = filterOverlapping
 ) {
@@ -283,6 +284,9 @@ export function placeInBars(
           justify = 1 - justify;
         }
         if (placement.position === 'opposite') {
+          justify = 1 - justify;
+        }
+        if (direction === 'left') {
           justify = 1 - justify;
         }
 
