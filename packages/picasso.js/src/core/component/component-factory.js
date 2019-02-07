@@ -150,8 +150,8 @@ function setUpEmitter(ctx, emitter, settings) {
 function tearDownEmitter(ctx, emitter) {
   (ctx.eventListeners || []).forEach(({ event, listener }) => {
     emitter.removeListener(event, listener);
-    ctx.emit = () => {};
   });
+  ctx.emit = () => {};
 }
 
 // First render
