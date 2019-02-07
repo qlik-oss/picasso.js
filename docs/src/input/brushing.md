@@ -34,6 +34,7 @@ trigger: [{
 
 * `context`: name of the brush context to observe
 * `data`: the mapped data properties to observe. _Optional_
+* `mode`: data properties operator: `and`, `or`, `xor`. _Optional_
 * `filter`: a filtering function. _Optional_
 * `style`: the style to apply to the shapes of the component
   * `active`: the style of _active_ data points
