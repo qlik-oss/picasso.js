@@ -91,7 +91,11 @@ function create() {
      * @param {node--text-def} node
      * @return {rect} The bounding rectangle
      */
-    textBounds
+    textBounds,
+
+    setKey: (key) => {
+      renderer.element().setAttribute('data-key', key);
+    }
   };
 
   return renderer;

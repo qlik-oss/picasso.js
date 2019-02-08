@@ -292,6 +292,40 @@ describe('labeling - bars', () => {
         overflow: false
       }]]);
     });
+
+    it('should call placer with certain arguments', () => {
+      findPlacement.returns({
+        bounds: 'bounds',
+        placement: {
+          fill: 'blue',
+          justify: 0.3,
+          direction: 'left',
+          align: 0.4
+        }
+      });
+      placeInBars({
+        chart,
+        targetNodes: [{
+          node: {},
+          texts: ['a'],
+          measurements: [2],
+          labelSettings: [{ fontSize: '11px', fontFamily: 'bb' }],
+          placementSettings: [{}],
+          direction: 'left'
+        }],
+        collectiveOrientation: 'h'
+      }, findPlacement, placer, postFilter);
+      expect(placer.firstCall).to.have.been.calledWithExactly('bounds', 'a', {
+        fill: 'blue',
+        justify: 0.4,
+        align: 0.7,
+        fontSize: '11px',
+        fontFamily: 'bb',
+        textMetrics: 2,
+        rotate: false,
+        overflow: false
+      });
+    });
   });
 
   describe('bar strategy', () => {

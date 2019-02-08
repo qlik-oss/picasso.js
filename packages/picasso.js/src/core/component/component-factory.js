@@ -404,6 +404,10 @@ function componentFactory(definition, context = {}) {
       rend.render(nodes);
     }
     currentNodes = nodes;
+
+    if (rend.setKey && typeof config.key === 'string') {
+      rend.setKey(config.key);
+    }
   };
 
   fn.updated = updated;
@@ -527,6 +531,9 @@ function componentFactory(definition, context = {}) {
 
   fn.mount = () => {
     element = rend.element && rend.element() ? element : rend.appendTo(container);
+    if (rend.setKey && typeof config.key === 'string') {
+      rend.setKey(config.key);
+    }
 
     if (settings.brush) {
       addBrushStylers();
