@@ -58,11 +58,13 @@ export default function createRendererBox({
   }
 
   if (typeof edgeBleed === 'object') {
-    console.log(edgeBleed);
     ['left', 'right', 'top', 'bottom'].forEach((prop) => {
-      box.edgeBleed[prop] = isNaN(edgeBleed[prop]) ? box.edgeBleed[prop] : edgeBleed[prop];
-      box.edgeBleed.bool = !isNaN(edgeBleed[prop]);
+      if (!isNaN(edgeBleed[prop]) && edgeBleed[prop] > 0) {
+        box.edgeBleed[prop] = edgeBleed[prop];
+        box.edgeBleed.bool = true;
+      }
     });
+    if (box.edgeBleed.bool) { console.log(box.edgeBleed); }
   }
 
   return box;

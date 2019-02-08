@@ -160,19 +160,24 @@ export function renderer(sceneFn = sceneFactory) {
     const scaleY = rect.scaleRatio.y;
 
     if (hasChangedRect) {
-      el.style.transform = `translate(${-rect.edgeBleed.left}px, ${-rect.edgeBleed.top}px)`;
+      if (rect.edgeBleed.bool) {
+        el.style.transform = `translate(${-rect.edgeBleed.left}px, ${-rect.edgeBleed.top}px)`;
+      }
+
+      const fullWidth = rect.width + rect.edgeBleed.right + rect.edgeBleed.left;
+      const fullHeight = rect.height + rect.edgeBleed.bottom + rect.edgeBleed.top;
       el.style.left = `${Math.round(rect.margin.left + (rect.x * scaleX))}px`;
       el.style.top = `${Math.round(rect.margin.top + (rect.y * scaleY))}px`;
-      el.style.width = `${Math.round(rect.width * scaleX) + rect.edgeBleed.right + rect.edgeBleed.left}px`;
-      el.style.height = `${Math.round(rect.height * scaleY) + rect.edgeBleed.bottom + rect.edgeBleed.top}px`;
-      el.width = Math.round(rect.width * dpiRatio * scaleX) + rect.edgeBleed.right + rect.edgeBleed.left;
-      el.height = Math.round(rect.height * dpiRatio * scaleY) + rect.edgeBleed.bottom + rect.edgeBleed.top;
+      el.style.width = `${Math.round(fullWidth * scaleX)}px`;
+      el.style.height = `${Math.round(fullHeight * scaleY)}px`;
+      el.width = Math.round(fullWidth * dpiRatio * scaleX);
+      el.height = Math.round(fullHeight * dpiRatio * scaleY);
     }
 
     const sceneContainer = {
       type: 'container',
       children: shapes,
-      transform: rect.edgeBleed.bool ? `translate(${rect.edgeBleed.left}, ${rect.edgeBleed.top})` : undefined
+      transform: rect.edgeBleed.bool ? `translate(${rect.edgeBleed.left * dpiRatio}, ${rect.edgeBleed.top * dpiRatio})` : ''
     };
 
     if (dpiRatio !== 1 || scaleX !== 1 || scaleY !== 1) {
