@@ -113,6 +113,16 @@ describe('canvas renderer', () => {
     expect(div.children.length).to.equal(0);
   });
 
+  describe('setKey', () => {
+    it('should set key attribute', () => {
+      const div = element('div');
+      const spy = sandbox.spy(div, 'setAttribute');
+      r.element = () => div;
+      r.setKey('myKey');
+      expect(spy).have.been.calledWith('data-key', 'myKey');
+    });
+  });
+
   describe('itemsAt', () => {
     let items;
 

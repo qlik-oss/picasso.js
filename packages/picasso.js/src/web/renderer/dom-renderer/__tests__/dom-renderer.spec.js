@@ -130,4 +130,15 @@ describe('dom renderer', () => {
       });
     });
   });
+
+  describe('setKey', () => {
+    it('should set key attribute', () => {
+      const el = element('div');
+      const spy = sinon.spy(el, 'setAttribute');
+      rend.element = () => el;
+      rend.setKey(123);
+
+      expect(spy).to.have.been.calledWith('data-key', 123);
+    });
+  });
 });

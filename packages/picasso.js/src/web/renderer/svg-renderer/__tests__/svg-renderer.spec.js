@@ -282,4 +282,15 @@ describe('svg renderer', () => {
       });
     });
   });
+
+  describe('setKey', () => {
+    it('should set key attribute', () => {
+      const el = element('div');
+      const spy = sinon.spy(el, 'setAttribute');
+      svg.element = () => el;
+      svg.setKey(123);
+
+      expect(spy).to.have.been.calledWith('data-key', 123);
+    });
+  });
 });
