@@ -76,46 +76,262 @@ describe('Scene Node', () => {
     expect(sceneNode.tag).to.equal('Hello world');
   });
 
-  it('should expose node bounds, after any transform', () => {
-    const bounds = {
-      x: 10, y: 20, width: 30, height: 40
-    };
-    const rect = createRect({ ...bounds, transform: 'translate(5, 15)' });
-    rect.resolveLocalTransform();
-    sceneNode = create(rect);
+  describe('bounds', () => {
+    it('should expose node bounds, after any transform', () => {
+      const bounds = {
+        x: 10, y: 20, width: 30, height: 40
+      };
+      const rect = createRect({ ...bounds, transform: 'translate(5, 15)' });
+      rect.resolveLocalTransform();
+      sceneNode = create(rect);
 
-    expect(sceneNode.bounds).to.deep.equal({
-      x: 15, y: 35, width: 30, height: 40
+      expect(sceneNode.bounds).to.deep.equal({
+        x: 15, y: 35, width: 30, height: 40
+      });
+    });
+
+    it('should expose node bounds, exluding the dpi scale factor', () => {
+      const bounds = {
+        x: 10, y: 20, width: 30, height: 40
+      };
+      nodeMock.boundingRect.returns(bounds);
+      nodeMock.stage = {
+        dpi: 2
+      };
+      sceneNode = create(nodeMock);
+
+      expect(sceneNode.bounds).to.deep.equal({
+        x: 10 / 2,
+        y: 20 / 2,
+        width: 30 / 2,
+        height: 40 / 2
+      });
+    });
+
+    it('should handle when node doesnt expose a way to get the bounding rect', () => {
+      nodeMock.boundingRect = undefined;
+      sceneNode = create(nodeMock);
+
+      expect(sceneNode.bounds).to.deep.equal({
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0
+      });
+    });
+
+    it('should return a copy of the node bounds to avoid mutation issues', () => {
+      const bounds = {
+        x: 10, y: 20, width: 30, height: 40
+      };
+      nodeMock.boundingRect.returns(bounds);
+      sceneNode = create(nodeMock);
+      const orgBounds = sceneNode.bounds;
+      const mutatedBounds = sceneNode.bounds;
+      mutatedBounds.x += 1;
+
+      expect(orgBounds).to.not.eql(mutatedBounds);
     });
   });
 
-  it('should expose node bounds, exluding the dpi scale factor', () => {
-    const bounds = {
-      x: 10, y: 20, width: 30, height: 40
-    };
-    nodeMock.boundingRect.returns(bounds);
-    nodeMock.stage = {
-      dpi: 2
-    };
-    sceneNode = create(nodeMock);
+  describe('localBounds', () => {
+    it('should return node bounds, without any transform', () => {
+      const bounds = {
+        x: 10, y: 20, width: 30, height: 40
+      };
+      const rect = createRect({ ...bounds, transform: 'translate(5, 15)' });
+      rect.resolveLocalTransform();
+      sceneNode = create(rect);
 
-    expect(sceneNode.bounds).to.deep.equal({
-      x: 10 / 2,
-      y: 20 / 2,
-      width: 30 / 2,
-      height: 40 / 2
+      expect(sceneNode.localBounds).to.deep.equal({
+        x: 10, y: 20, width: 30, height: 40
+      });
     });
   });
 
-  it('should handle when node doesnt expose a way to get the bounding rect', () => {
-    nodeMock.boundingRect = undefined;
-    sceneNode = create(nodeMock);
+  describe('boundsRelativeTo', () => {
+    describe('HTMLElement', () => {
+      it('should return node bounds relative to the target, including any transform', () => {
+        const bounds = {
+          x: 10, y: 20, width: 30, height: 40
+        };
+        const rect = createRect({ ...bounds, transform: 'translate(5, 15)' });
+        rect.resolveLocalTransform();
+        sceneNode = create(rect);
+        sceneNode.element = {
+          getBoundingClientRect: () => ({
+            left: 11,
+            top: 22
+          })
+        };
+        const target = {
+          getBoundingClientRect: () => ({
+            left: 3,
+            top: 6
+          })
+        };
 
-    expect(sceneNode.bounds).to.deep.equal({
-      x: 0,
-      y: 0,
-      width: 0,
-      height: 0
+        expect(sceneNode.boundsRelativeTo(target)).to.deep.equal({
+          x: 10 + 11 + 5 - 3, y: 20 + 22 + 15 - 6, width: 30, height: 40
+        });
+      });
+
+      it('should return node bounds relative to the target, excluding any transform', () => {
+        const bounds = {
+          x: 10, y: 20, width: 30, height: 40
+        };
+        const rect = createRect({ ...bounds, transform: 'translate(5, 15)' });
+        rect.resolveLocalTransform();
+        sceneNode = create(rect);
+        sceneNode.element = {
+          getBoundingClientRect: () => ({
+            left: 11,
+            top: 22
+          })
+        };
+        const target = {
+          getBoundingClientRect: () => ({
+            left: 3,
+            top: 6
+          })
+        };
+
+        expect(sceneNode.boundsRelativeTo(target, false)).to.deep.equal({
+          x: 10 + 11 - 3, y: 20 + 22 - 6, width: 30, height: 40
+        });
+      });
+
+      it('should handle when element is not set', () => {
+        const bounds = {
+          x: 10, y: 20, width: 30, height: 40
+        };
+        nodeMock.boundingRect.returns(bounds);
+        sceneNode = create(nodeMock);
+        sceneNode.element = undefined;
+        const target = {
+          getBoundingClientRect: () => ({
+            left: 3,
+            top: 6
+          })
+        };
+
+        expect(sceneNode.boundsRelativeTo(target)).to.deep.equal({
+          x: 10 - 3, y: 20 - 6, width: 30, height: 40
+        });
+      });
+    });
+
+    describe('Component', () => {
+      let compMock;
+
+      beforeEach(() => {
+        compMock = {
+          rect: {
+            x: 1,
+            y: 2,
+            margin: { left: 3, top: 4 },
+            scaleRatio: { x: 0.5, y: 2 }
+          }
+        };
+      });
+
+      it('should return node bounds relative to the component, including any transform', () => {
+        const bounds = {
+          x: 10, y: 20, width: 30, height: 40
+        };
+        const rect = createRect({ ...bounds, transform: 'translate(5, 15)' });
+        rect.resolveLocalTransform();
+        sceneNode = create(rect);
+        sceneNode.element = {
+          getBoundingClientRect: () => ({
+            left: 11,
+            top: 22
+          })
+        };
+        expect(sceneNode.boundsRelativeTo(compMock)).to.deep.equal({
+          x: 22.5, y: 49, width: 30, height: 40
+        });
+      });
+
+      it('should return node bounds relative to the component, excluding any transform', () => {
+        const bounds = {
+          x: 10, y: 20, width: 30, height: 40
+        };
+        const rect = createRect({ ...bounds, transform: 'translate(5, 15)' });
+        rect.resolveLocalTransform();
+        sceneNode = create(rect);
+        sceneNode.element = {
+          getBoundingClientRect: () => ({
+            left: 11,
+            top: 22
+          })
+        };
+        expect(sceneNode.boundsRelativeTo(compMock, false)).to.deep.equal({
+          x: 17.5, y: 34, width: 30, height: 40
+        });
+      });
+
+      it('should handle when element is not set', () => {
+        const bounds = {
+          x: 10, y: 20, width: 30, height: 40
+        };
+        nodeMock.boundingRect.returns(bounds);
+        sceneNode = create(nodeMock);
+        sceneNode.element = undefined;
+        expect(sceneNode.boundsRelativeTo(compMock)).to.deep.equal({
+          x: 6.5, y: 12, width: 30, height: 40
+        });
+      });
+    });
+
+    describe('viewport', () => {
+      it('should return node bounds relative to the viewport, including any transform', () => {
+        const bounds = {
+          x: 10, y: 20, width: 30, height: 40
+        };
+        const rect = createRect({ ...bounds, transform: 'translate(5, 15)' });
+        rect.resolveLocalTransform();
+        sceneNode = create(rect);
+        sceneNode.element = {
+          getBoundingClientRect: () => ({
+            left: 11,
+            top: 22
+          })
+        };
+        expect(sceneNode.boundsRelativeTo()).to.deep.equal({
+          x: 10 + 11 + 5, y: 20 + 22 + 15, width: 30, height: 40
+        });
+      });
+
+      it('should return node bounds relative to the viewport, excluding any transform', () => {
+        const bounds = {
+          x: 10, y: 20, width: 30, height: 40
+        };
+        const rect = createRect({ ...bounds, transform: 'translate(5, 15)' });
+        rect.resolveLocalTransform();
+        sceneNode = create(rect);
+        sceneNode.element = {
+          getBoundingClientRect: () => ({
+            left: 11,
+            top: 22
+          })
+        };
+        expect(sceneNode.boundsRelativeTo(null, false)).to.deep.equal({
+          x: 10 + 11, y: 20 + 22, width: 30, height: 40
+        });
+      });
+
+      it('should handle when element is not set', () => {
+        const bounds = {
+          x: 10, y: 20, width: 30, height: 40
+        };
+        nodeMock.boundingRect.returns(bounds);
+        sceneNode = create(nodeMock);
+        sceneNode.element = undefined;
+        expect(sceneNode.boundsRelativeTo()).to.deep.equal({
+          x: 10, y: 20, width: 30, height: 40
+        });
+      });
     });
   });
 

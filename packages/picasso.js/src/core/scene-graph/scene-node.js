@@ -63,9 +63,16 @@ function colliderToShape(node, dpi) {
  */
 class SceneNode {
   constructor(node) {
-    this._bounds = node.boundingRect ? (withTransform = true) => node.boundingRect(withTransform) : () => ({
-      x: 0, y: 0, width: 0, height: 0
-    });
+    this._bounds = (includeTransform = true) => {
+      const {
+        x, y, width, height
+      } = node.boundingRect ? node.boundingRect(includeTransform) : {
+        x: 0, y: 0, width: 0, height: 0
+      };
+      return {
+        x, y, width, height
+      };
+    };
     this._attrs = node.attrs;
     this._type = node.type;
     this._data = node.data;
@@ -75,6 +82,16 @@ class SceneNode {
     this._tag = node.tag;
     this._children = () => node.children.map(n => new SceneNode(n));
     this._parent = () => (node.parent ? new SceneNode(node.parent) : null);
+
+    this._cache = {
+      elementBoundingRect: null
+    };
+    this._getElementBoundingRect = () => {
+      if (!this._cache.elementBoundingRect && this.element) {
+        this._cache.elementBoundingRect = this.element.getBoundingClientRect();
+      }
+      return this._cache.elementBoundingRect || { left: 0, top: 0 };
+    };
   }
 
   /**
@@ -123,6 +140,7 @@ class SceneNode {
    * @private
    */
   set element(e) {
+    this._cache.elementBoundingRect = null;
     this._element = e;
   }
 
@@ -172,6 +190,52 @@ class SceneNode {
    */
   get localBounds() {
     const bounds = this._bounds(false);
+    return bounds;
+  }
+
+  /**
+   * Bounding rectangle of the node, relative a target.
+   *
+   * If target is an HTMLElement, the bounds is relative to the HTMLElement.
+   * If target is a picasso component instance, the bounds is relative to that picasso component.
+   * Any other target type will return the bounds reltive to the viewport of the browser.
+   *
+   * @param {HTMLElement|Component|any} target
+   * @param {boolean} includeTransform - true will include any transform attribute on the node, false will not
+   * @returns {rect}
+   * @example
+   *
+   * node.boundsRelativeTo($('div'));
+   * node.boundsRelativeTo(chartInstace.component('<some-key>'))
+   * node.boundsRelativeTo('viewport');
+   */
+  boundsRelativeTo(target, includeTransform = true) {
+    const type = typeof target;
+    const bounds = includeTransform ? this.bounds : this.localBounds;
+    const selfRect = this._getElementBoundingRect();
+    let dx = selfRect.left;
+    let dy = selfRect.top;
+
+    if (type === 'object' && target !== null) {
+      if (typeof target.getBoundingClientRect === 'function') {
+        const { left = 0, top = 0 } = target.getBoundingClientRect();
+        dx -= left;
+        dy -= top;
+      } else if (typeof target.rect === 'object') { // Picasso component
+        const {
+          x = 0,
+          y = 0,
+          margin = { left: 0, top: 0 },
+          scaleRatio = { x: 0, y: 0 }
+        } = target.rect;
+        dx -= margin.left + (x * scaleRatio.x);
+        dy -= margin.top + (y * scaleRatio.y);
+      }
+    }
+
+    bounds.x += dx;
+    bounds.y += dy;
+
     return bounds;
   }
 

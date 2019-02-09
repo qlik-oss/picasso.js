@@ -4762,6 +4762,40 @@
           "description": "Bounding rectangle of the node withing it's local coordinate system.\nOrigin is in the top-left corner of the scene element.",
           "type": "#/definitions/rect"
         },
+        "boundsRelativeTo": {
+          "description": "Bounding rectangle of the node, relative a target.\n\nIf target is an HTMLElement, the bounds is relative to the HTMLElement.\nIf target is a picasso component instance, the bounds is relative to that picasso component.\nAny other target type will return the bounds reltive to the viewport of the browser.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "target",
+              "kind": "union",
+              "items": [
+                {
+                  "type": "HTMLElement"
+                },
+                {
+                  "type": "Component"
+                },
+                {
+                  "type": "any"
+                }
+              ],
+              "type": "any"
+            },
+            {
+              "name": "includeTransform",
+              "description": "true will include any transform attribute on the node, false will not",
+              "defaultValue": true,
+              "type": "boolean"
+            }
+          ],
+          "returns": {
+            "type": "#/definitions/rect"
+          },
+          "examples": [
+            "node.boundsRelativeTo($('div'));\nnode.boundsRelativeTo(chartInstace.component('<some-key>'))\nnode.boundsRelativeTo('viewport');"
+          ]
+        },
         "collider": {
           "description": "Collider of the node. Transform on the node has been applied to the collider shape, if any, but excluding scaling transform related to devicePixelRatio.\nOrigin is in the top-left corner of the scene element.\n\nIf node has no collider, null is returned.",
           "kind": "union",
