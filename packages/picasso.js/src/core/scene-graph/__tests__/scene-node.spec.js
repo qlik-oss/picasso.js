@@ -221,69 +221,6 @@ describe('Scene Node', () => {
       });
     });
 
-    describe('Component', () => {
-      let compMock;
-
-      beforeEach(() => {
-        compMock = {
-          rect: {
-            x: 1,
-            y: 2,
-            margin: { left: 3, top: 4 },
-            scaleRatio: { x: 0.5, y: 2 }
-          }
-        };
-      });
-
-      it('should return node bounds relative to the component, including any transform', () => {
-        const bounds = {
-          x: 10, y: 20, width: 30, height: 40
-        };
-        const rect = createRect({ ...bounds, transform: 'translate(5, 15)' });
-        rect.resolveLocalTransform();
-        sceneNode = create(rect);
-        sceneNode.element = {
-          getBoundingClientRect: () => ({
-            left: 11,
-            top: 22
-          })
-        };
-        expect(sceneNode.boundsRelativeTo(compMock)).to.deep.equal({
-          x: 22.5, y: 49, width: 30, height: 40
-        });
-      });
-
-      it('should return node bounds relative to the component, excluding any transform', () => {
-        const bounds = {
-          x: 10, y: 20, width: 30, height: 40
-        };
-        const rect = createRect({ ...bounds, transform: 'translate(5, 15)' });
-        rect.resolveLocalTransform();
-        sceneNode = create(rect);
-        sceneNode.element = {
-          getBoundingClientRect: () => ({
-            left: 11,
-            top: 22
-          })
-        };
-        expect(sceneNode.boundsRelativeTo(compMock, false)).to.deep.equal({
-          x: 17.5, y: 34, width: 30, height: 40
-        });
-      });
-
-      it('should handle when element is not set', () => {
-        const bounds = {
-          x: 10, y: 20, width: 30, height: 40
-        };
-        nodeMock.boundingRect.returns(bounds);
-        sceneNode = create(nodeMock);
-        sceneNode.element = undefined;
-        expect(sceneNode.boundsRelativeTo(compMock)).to.deep.equal({
-          x: 6.5, y: 12, width: 30, height: 40
-        });
-      });
-    });
-
     describe('viewport', () => {
       it('should return node bounds relative to the viewport, including any transform', () => {
         const bounds = {

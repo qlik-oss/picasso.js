@@ -4763,7 +4763,7 @@
           "type": "#/definitions/rect"
         },
         "boundsRelativeTo": {
-          "description": "Bounding rectangle of the node, relative a target.\n\nIf target is an HTMLElement, the bounds is relative to the HTMLElement.\nIf target is a picasso component instance, the bounds is relative to that picasso component.\nAny other target type will return the bounds reltive to the viewport of the browser.",
+          "description": "Bounding rectangle of the node, relative a target.\n\nIf target is an HTMLElement, the bounds is relative to the HTMLElement.\nAny other target type will return the bounds reltive to the viewport of the browser.",
           "kind": "function",
           "params": [
             {
@@ -4772,9 +4772,6 @@
               "items": [
                 {
                   "type": "HTMLElement"
-                },
-                {
-                  "type": "Component"
                 },
                 {
                   "type": "any"
@@ -4793,7 +4790,7 @@
             "type": "#/definitions/rect"
           },
           "examples": [
-            "node.boundsRelativeTo($('div'));\nnode.boundsRelativeTo(chartInstace.component('<some-key>'))\nnode.boundsRelativeTo('viewport');"
+            "node.boundsRelativeTo($('div'));\nnode.boundsRelativeTo('viewport');"
           ]
         },
         "collider": {

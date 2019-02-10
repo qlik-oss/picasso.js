@@ -197,16 +197,14 @@ class SceneNode {
    * Bounding rectangle of the node, relative a target.
    *
    * If target is an HTMLElement, the bounds is relative to the HTMLElement.
-   * If target is a picasso component instance, the bounds is relative to that picasso component.
    * Any other target type will return the bounds reltive to the viewport of the browser.
    *
-   * @param {HTMLElement|Component|any} target
+   * @param {HTMLElement|any} target
    * @param {boolean} includeTransform - true will include any transform attribute on the node, false will not
    * @returns {rect}
    * @example
    *
    * node.boundsRelativeTo($('div'));
-   * node.boundsRelativeTo(chartInstace.component('<some-key>'))
    * node.boundsRelativeTo('viewport');
    */
   boundsRelativeTo(target, includeTransform = true) {
@@ -216,21 +214,10 @@ class SceneNode {
     let dx = selfRect.left;
     let dy = selfRect.top;
 
-    if (type === 'object' && target !== null) {
-      if (typeof target.getBoundingClientRect === 'function') {
-        const { left = 0, top = 0 } = target.getBoundingClientRect();
-        dx -= left;
-        dy -= top;
-      } else if (typeof target.rect === 'object') { // Picasso component
-        const {
-          x = 0,
-          y = 0,
-          margin = { left: 0, top: 0 },
-          scaleRatio = { x: 0, y: 0 }
-        } = target.rect;
-        dx -= margin.left + (x * scaleRatio.x);
-        dy -= margin.top + (y * scaleRatio.y);
-      }
+    if (type === 'object' && target !== null && typeof target.getBoundingClientRect === 'function') {
+      const { left = 0, top = 0 } = target.getBoundingClientRect();
+      dx -= left;
+      dy -= top;
     }
 
     bounds.x += dx;
