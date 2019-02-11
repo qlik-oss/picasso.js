@@ -64,8 +64,14 @@ export default function createRendererBox({
         box.edgeBleed.bool = true;
       }
     });
-    if (box.edgeBleed.bool) { console.log(box.edgeBleed); }
   }
+
+  box.computed = {
+    x: box.margin.left + ((box.x - box.edgeBleed.left) * box.scaleRatio.x),
+    y: box.margin.top + ((box.y - box.edgeBleed.top) * box.scaleRatio.y),
+    width: (box.width + box.edgeBleed.left + box.edgeBleed.right) * box.scaleRatio.x,
+    height: (box.height + box.edgeBleed.top + box.edgeBleed.bottom) * box.scaleRatio.y
+  };
 
   return box;
 }

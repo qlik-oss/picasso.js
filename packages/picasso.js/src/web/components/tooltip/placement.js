@@ -341,13 +341,7 @@ function getComponentBoundsFromNode(node, pointer, chart) {
   }
 
   const componentSize = comp.rect;
-  return {
-    x: componentSize.margin.left + (componentSize.x * componentSize.scaleRatio.x),
-    y: componentSize.margin.top + (componentSize.y * componentSize.scaleRatio.y),
-    width: componentSize.width * componentSize.scaleRatio.x,
-    height: componentSize.height * componentSize.scaleRatio.y,
-    scaleRatio: componentSize.scaleRatio
-  };
+  return extend({ scaleRatio: componentSize.scaleRatio }, componentSize.computed);
 }
 
 function getNodeBoundsRelativeToTarget(node, pointer, chart) {

@@ -36,13 +36,10 @@ export default function renderer(opts = {}) {
       return false;
     }
 
-    const scaleX = rect.scaleRatio.x;
-    const scaleY = rect.scaleRatio.y;
-
-    el.style.left = `${Math.round(rect.margin.left + (rect.x * scaleX))}px`;
-    el.style.top = `${Math.round(rect.margin.left + (rect.y * scaleY))}px`;
-    el.style.width = `${Math.round(rect.width * scaleX)}px`;
-    el.style.height = `${Math.round(rect.height * scaleY)}px`;
+    el.style.left = `${Math.round(rect.computed.x)}px`;
+    el.style.top = `${Math.round(rect.computed.y)}px`;
+    el.style.width = `${Math.round(rect.computed.width)}px`;
+    el.style.height = `${Math.round(rect.computed.height)}px`;
 
     let vNode;
     if (Array.isArray(nodes)) {

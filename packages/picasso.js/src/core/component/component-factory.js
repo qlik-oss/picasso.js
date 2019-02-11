@@ -317,13 +317,11 @@ function componentFactory(definition, context = {}) {
       outer
     });
     if (newSize) {
-      rend.size(newSize);
-      size = newSize;
+      size = rend.size(newSize);
     } else {
-      rend.size(inner);
-      size = inner;
+      size = rend.size(inner);
     }
-    instanceContext.rect = inner;
+    instanceContext.rect = size;
   };
 
   fn.getRect = () => instanceContext.rect;
