@@ -196,11 +196,11 @@ class SceneNode {
   /**
    * Bounding rectangle of the node, relative a target.
    *
-   * If target is an HTMLElement, the bounds is relative to the HTMLElement.
-   * Any other target type will return the bounds reltive to the viewport of the browser.
+   * If target is an HTMLElement, the bounds are relative to the HTMLElement.
+   * Any other target type will return the bounds relative to the viewport of the browser.
    *
    * @param {HTMLElement|any} target
-   * @param {boolean} includeTransform - true will include any transform attribute on the node, false will not
+   * @param {boolean} includeTransform - whether to include any applied transforms on the node
    * @returns {rect}
    * @example
    *

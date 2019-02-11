@@ -4763,7 +4763,7 @@
           "type": "#/definitions/rect"
         },
         "boundsRelativeTo": {
-          "description": "Bounding rectangle of the node, relative a target.\n\nIf target is an HTMLElement, the bounds is relative to the HTMLElement.\nAny other target type will return the bounds reltive to the viewport of the browser.",
+          "description": "Bounding rectangle of the node, relative a target.\n\nIf target is an HTMLElement, the bounds are relative to the HTMLElement.\nAny other target type will return the bounds relative to the viewport of the browser.",
           "kind": "function",
           "params": [
             {
@@ -4781,7 +4781,7 @@
             },
             {
               "name": "includeTransform",
-              "description": "true will include any transform attribute on the node, false will not",
+              "description": "whether to include any applied transforms on the node",
               "defaultValue": true,
               "type": "boolean"
             }
