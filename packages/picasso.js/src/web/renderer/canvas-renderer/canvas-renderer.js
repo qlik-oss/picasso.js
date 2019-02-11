@@ -161,7 +161,7 @@ export function renderer(sceneFn = sceneFactory) {
 
     if (hasChangedRect) {
       if (rect.edgeBleed.bool) {
-        el.style.transform = `translate(${-rect.edgeBleed.left}px, ${-rect.edgeBleed.top}px)`;
+        el.style.transform = `translate(${-rect.edgeBleed.left * scaleX}px, ${-rect.edgeBleed.top * scaleY}px)`;
       }
 
       const fullWidth = rect.width + rect.edgeBleed.right + rect.edgeBleed.left;
@@ -177,7 +177,7 @@ export function renderer(sceneFn = sceneFactory) {
     const sceneContainer = {
       type: 'container',
       children: shapes,
-      transform: rect.edgeBleed.bool ? `translate(${rect.edgeBleed.left * dpiRatio}, ${rect.edgeBleed.top * dpiRatio})` : ''
+      transform: rect.edgeBleed.bool ? `translate(${rect.edgeBleed.left * dpiRatio * scaleX}, ${rect.edgeBleed.top * dpiRatio * scaleY})` : ''
     };
 
     if (dpiRatio !== 1 || scaleX !== 1 || scaleY !== 1) {

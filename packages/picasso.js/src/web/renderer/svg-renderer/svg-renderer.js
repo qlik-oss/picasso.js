@@ -72,7 +72,7 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
 
     if (hasChangedRect) {
       if (rect.edgeBleed.bool) {
-        el.style.transform = `translate(${-rect.edgeBleed.left}px, ${-rect.edgeBleed.top}px)`;
+        el.style.transform = `translate(${-rect.edgeBleed.left * scaleX}px, ${-rect.edgeBleed.top * scaleY}px)`;
       }
 
       const fullWidth = rect.width + rect.edgeBleed.right + rect.edgeBleed.left;
@@ -90,7 +90,7 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
     const sceneContainer = {
       type: 'container',
       children: Array.isArray(nodes) ? [...nodes, defs] : nodes,
-      transform: rect.edgeBleed.bool ? `translate(${rect.edgeBleed.left}, ${rect.edgeBleed.top})` : ''
+      transform: rect.edgeBleed.bool ? `translate(${rect.edgeBleed.left * scaleX}, ${rect.edgeBleed.top * scaleY})` : ''
     };
 
     if (scaleX !== 1 || scaleY !== 1) {
