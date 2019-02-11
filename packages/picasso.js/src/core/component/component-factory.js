@@ -21,10 +21,6 @@ const isReservedProperty = prop => [
   '_DO_NOT_USE_getInfo', 'symbol', 'isVisible'
 ].some(name => name === prop);
 
-function setVisibility(ctx, isVisible) {
-  ctx.isVisible = () => isVisible;
-}
-
 function prepareContext(ctx, definition, opts) {
   const {
     require = []
@@ -484,7 +480,7 @@ function componentFactory(definition, context = {}) {
     mediator: () => mediator,
     style: () => style,
     _DO_NOT_USE_getInfo: _DO_NOT_USE_getInfo.bind(definitionContext),
-    isVisible: () => setVisibility(instanceContext, false)
+    isVisible: () => instanceContext.isVisible = () => false
   });
 
   fn.getBrushedShapes = function getBrushedShapes(brushCtx, mode, props) {
@@ -549,6 +545,8 @@ function componentFactory(definition, context = {}) {
   };
 
   fn.mount = () => {
+    const isVisible = true;
+
     element = rend.element && rend.element() ? element : rend.appendTo(container);
     if (rend.setKey && typeof config.key === 'string') {
       rend.setKey(config.key);
@@ -562,12 +560,14 @@ function componentFactory(definition, context = {}) {
     setUpEmitter(instanceContext, emitter, config);
     setUpEmitter(definitionContext, emitter, definition);
 
-    setVisibility(instanceContext, true);
+    instanceContext.isVisible = () => isVisible;
   };
 
   fn.mounted = () => mounted(element);
 
   fn.unmount = () => {
+    const isVisible = false;
+
     [instanceContext, definitionContext].forEach((ctx) => {
       tearDownEmitter(ctx, emitter);
     });
@@ -579,7 +579,7 @@ function componentFactory(definition, context = {}) {
     brushStylers.length = 0;
     beforeUnmount();
 
-    setVisibility(instanceContext, false);
+    instanceContext.isVisible = () => isVisible;
   };
 
   fn.onBrushTap = (e) => {

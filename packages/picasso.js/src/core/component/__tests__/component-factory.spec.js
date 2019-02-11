@@ -183,7 +183,7 @@ describe('Component', () => {
     });
   });
 
-  describe('Visibility', () => {
+  describe('visibility', () => {
     it('should return false for isVisible() when initialising', () => {
       const instance = createInstance();
       expect(instance.ctx.isVisible()).to.equal(false);
