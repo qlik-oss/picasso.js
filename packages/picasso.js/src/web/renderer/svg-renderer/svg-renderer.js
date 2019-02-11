@@ -75,10 +75,12 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
         el.style.transform = `translate(${-rect.edgeBleed.left}px, ${-rect.edgeBleed.top}px)`;
       }
 
+      const fullWidth = rect.width + rect.edgeBleed.right + rect.edgeBleed.left;
+      const fullHeight = rect.height + rect.edgeBleed.bottom + rect.edgeBleed.top;
       el.style.left = `${Math.round(rect.margin.left + (rect.x * scaleX))}px`;
       el.style.top = `${Math.round(rect.margin.top + (rect.y * scaleY))}px`;
-      el.setAttribute('width', Math.round((rect.width * scaleX) + rect.edgeBleed.right + rect.edgeBleed.left));
-      el.setAttribute('height', Math.round((rect.height * scaleY) + rect.edgeBleed.bottom + rect.edgeBleed.top));
+      el.setAttribute('width', Math.round(fullWidth * scaleX));
+      el.setAttribute('height', Math.round(fullHeight * scaleY));
     }
 
     gradients.clear();
