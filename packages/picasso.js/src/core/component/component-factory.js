@@ -18,8 +18,12 @@ const isReservedProperty = prop => [
   'beforeUpdate', 'updated', 'beforeRender', 'render', 'beforeUnmount', 'beforeDestroy',
   'destroyed', 'defaultSettings', 'data', 'settings', 'formatter',
   'scale', 'chart', 'dockConfig', 'mediator', 'style', 'resolver', 'registries',
-  '_DO_NOT_USE_getInfo', 'symbol'
+  '_DO_NOT_USE_getInfo', 'symbol', 'isVisible'
 ].some(name => name === prop);
+
+function setVisibility(ctx, isVisible) {
+  ctx.isVisible = () => isVisible;
+}
 
 function prepareContext(ctx, definition, opts) {
   const {
@@ -45,6 +49,8 @@ function prepareContext(ctx, definition, opts) {
   } = opts;
 
   ctx.emit = () => {};
+
+  setVisibility(ctx, false);
 
   // TODO add setters and log warnings / errors to console
   Object.defineProperty(ctx, 'settings', {
@@ -551,6 +557,9 @@ function componentFactory(definition, context = {}) {
 
     setUpEmitter(instanceContext, emitter, config);
     setUpEmitter(definitionContext, emitter, definition);
+
+    setVisibility(instanceContext, true);
+    setVisibility(definitionContext, true);
   };
 
   fn.mounted = () => mounted(element);
@@ -566,6 +575,9 @@ function componentFactory(definition, context = {}) {
     });
     brushStylers.length = 0;
     beforeUnmount();
+
+    setVisibility(instanceContext, false);
+    setVisibility(definitionContext, false);
   };
 
   fn.onBrushTap = (e) => {

@@ -58,8 +58,8 @@ describe('Component', () => {
     };
   });
 
-  function createAndRenderComponent(config) {
-    const instance = componentFactory(definition, {
+  function createInstance(config) {
+    return componentFactory(definition, {
       settings: config,
       chart,
       renderer,
@@ -68,6 +68,10 @@ describe('Component', () => {
         style: sinon.stub()
       }
     });
+  }
+
+  function createAndRenderComponent(config) {
+    const instance = createInstance(config);
     instance.beforeMount();
     instance.resize({});
     instance.beforeRender();
@@ -176,6 +180,25 @@ describe('Component', () => {
       instance.destroy();
 
       expect(instance.ctx.emit).to.be.a('function');
+    });
+  });
+
+  describe('Visibility', () => {
+    it('should return false for isVisible() when initialising', () => {
+      const instance = createInstance();
+      expect(instance.ctx.isVisible()).to.equal(false);
+    });
+
+    it('should return true for isVisible() when mounting', () => {
+      const instance = createInstance();
+      instance.mount();
+      expect(instance.ctx.isVisible()).to.equal(true);
+    });
+
+    it('should return false for isVisible() when unmounting', () => {
+      const instance = createInstance();
+      instance.unmount();
+      expect(instance.ctx.isVisible()).to.equal(false);
     });
   });
 
