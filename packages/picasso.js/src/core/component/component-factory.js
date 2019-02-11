@@ -194,6 +194,7 @@ function componentFactory(definition, context = {}) {
   let resolver = settingsResolver({
     chart
   });
+  let isVisible;
 
   const brushArgs = {
     nodes: [],
@@ -545,8 +546,6 @@ function componentFactory(definition, context = {}) {
   };
 
   fn.mount = () => {
-    const isVisible = true;
-
     element = rend.element && rend.element() ? element : rend.appendTo(container);
     if (rend.setKey && typeof config.key === 'string') {
       rend.setKey(config.key);
@@ -560,14 +559,13 @@ function componentFactory(definition, context = {}) {
     setUpEmitter(instanceContext, emitter, config);
     setUpEmitter(definitionContext, emitter, definition);
 
+    isVisible = true;
     instanceContext.isVisible = () => isVisible;
   };
 
   fn.mounted = () => mounted(element);
 
   fn.unmount = () => {
-    const isVisible = false;
-
     [instanceContext, definitionContext].forEach((ctx) => {
       tearDownEmitter(ctx, emitter);
     });
@@ -579,6 +577,7 @@ function componentFactory(definition, context = {}) {
     brushStylers.length = 0;
     beforeUnmount();
 
+    isVisible = false;
     instanceContext.isVisible = () => isVisible;
   };
 
