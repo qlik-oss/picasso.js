@@ -45,12 +45,15 @@ function prepareContext(ctx, definition, opts) {
     resolver,
     update,
     _DO_NOT_USE_getInfo,
-    symbol
+    symbol,
+    isVisible
   } = opts;
 
   ctx.emit = () => {};
 
-  setVisibility(ctx, false);
+  if (isVisible) {
+    isVisible();
+  }
 
   // TODO add setters and log warnings / errors to console
   Object.defineProperty(ctx, 'settings', {
@@ -480,7 +483,8 @@ function componentFactory(definition, context = {}) {
     dockConfig: () => dockConfig,
     mediator: () => mediator,
     style: () => style,
-    _DO_NOT_USE_getInfo: _DO_NOT_USE_getInfo.bind(definitionContext)
+    _DO_NOT_USE_getInfo: _DO_NOT_USE_getInfo.bind(definitionContext),
+    isVisible: () => setVisibility(instanceContext, false)
   });
 
   fn.getBrushedShapes = function getBrushedShapes(brushCtx, mode, props) {
@@ -559,7 +563,6 @@ function componentFactory(definition, context = {}) {
     setUpEmitter(definitionContext, emitter, definition);
 
     setVisibility(instanceContext, true);
-    setVisibility(definitionContext, true);
   };
 
   fn.mounted = () => mounted(element);
@@ -577,7 +580,6 @@ function componentFactory(definition, context = {}) {
     beforeUnmount();
 
     setVisibility(instanceContext, false);
-    setVisibility(definitionContext, false);
   };
 
   fn.onBrushTap = (e) => {
