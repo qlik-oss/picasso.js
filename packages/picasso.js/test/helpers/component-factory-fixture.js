@@ -27,20 +27,30 @@ export default function componentFactoryFixture() {
     };
 
     rendererMock = {
-      size: rect => ({
-        x: rect.x || 0,
-        y: rect.y || 0,
-        width: rect.width || 100,
-        height: rect.height || 100,
-        margin: {
-          left: 0,
-          top: 0
-        },
-        scaleRatio: {
-          x: 1,
-          y: 1
-        }
-      }),
+      size(rect) {
+        const s = {
+          x: rect.x || 0,
+          y: rect.y || 0,
+          width: rect.width || 100,
+          height: rect.height || 100,
+          margin: {
+            left: 0,
+            top: 0
+          },
+          scaleRatio: {
+            x: 1,
+            y: 1
+          }
+        };
+
+        s.computed = {
+          x: s.x,
+          y: s.y,
+          width: s.width,
+          height: s.height
+        };
+        return s;
+      },
       render: (nodes) => { rendererOutput = nodes; },
       appendTo: () => {},
       measureText: ({ text }) => ({

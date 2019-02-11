@@ -65,25 +65,77 @@ describe('canvas renderer', () => {
 
   it('should return zero size when canvas is not initiated', () => {
     expect(r.size()).to.deep.equal({
-      x: 0, y: 0, width: 0, height: 0, scaleRatio: { x: 1, y: 1 }, margin: { left: 0, top: 0 }
+      x: 0,
+      y: 0,
+      width: 0,
+      height: 0,
+      scaleRatio: { x: 1, y: 1 },
+      margin: { left: 0, top: 0 },
+      edgeBleed: {
+        left: 0, right: 0, top: 0, bottom: 0, bool: false
+      },
+      computed: {
+        x: 0, y: 0, width: 0, height: 0
+      }
     });
   });
 
   it('should return size when called', () => {
     r.size({
-      x: 50, y: 100, width: 200, height: 400, scaleRatio: { x: 3, y: 4 }, margin: { left: 5, top: 6 }
+      x: 50,
+      y: 100,
+      width: 200,
+      height: 400,
+      scaleRatio: { x: 3, y: 4 },
+      margin: { left: 5, top: 6 },
+      edgeBleed: {
+        left: 7, right: 8, top: 9, bottom: 10
+      }
     });
     expect(r.size()).to.deep.equal({
-      x: 50, y: 100, width: 200, height: 400, scaleRatio: { x: 3, y: 4 }, margin: { left: 5, top: 6 }
+      x: 50,
+      y: 100,
+      width: 200,
+      height: 400,
+      scaleRatio: { x: 3, y: 4 },
+      margin: { left: 5, top: 6 },
+      edgeBleed: {
+        left: 7, right: 8, top: 9, bottom: 10, bool: true
+      },
+      computed: {
+        x: 134,
+        y: 370,
+        width: 645,
+        height: 1676
+      }
     });
   });
 
   it('should ignore NaN values and fallback to default size value', () => {
     r.size({
-      x: undefined, y: undefined, width: undefined, height: undefined, scaleRatio: { x: undefined, y: undefined }, margin: { left: undefined, top: undefined }
+      x: undefined,
+      y: undefined,
+      width: undefined,
+      height: undefined,
+      scaleRatio: { x: undefined, y: undefined },
+      margin: { left: undefined, top: undefined },
+      edgeBleed: {
+        left: undefined, right: undefined, top: undefined, bottom: undefined
+      }
     });
     expect(r.size()).to.deep.equal({
-      x: 0, y: 0, width: 0, height: 0, scaleRatio: { x: 1, y: 1 }, margin: { left: 0, top: 0 }
+      x: 0,
+      y: 0,
+      width: 0,
+      height: 0,
+      scaleRatio: { x: 1, y: 1 },
+      margin: { left: 0, top: 0 },
+      edgeBleed: {
+        left: 0, right: 0, top: 0, bottom: 0, bool: false
+      },
+      computed: {
+        x: 0, y: 0, width: 0, height: 0
+      }
     });
   });
 
