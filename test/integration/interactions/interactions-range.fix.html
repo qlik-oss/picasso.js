@@ -51,13 +51,17 @@
             this.rangeRef = comps.some(c => c.key === 'y-axis') ? 'rangeY' : 'rangeX';
             // Fetch the range component instance and trigger the start event
             this.chart.component(this.rangeRef).emit('rangeStart', mouseEventToRangeEvent(e));
+            this.started = true;
           },
           mousemove: function(e) {
-            e.preventDefault();
-            this.chart.component(this.rangeRef).emit('rangeMove', mouseEventToRangeEvent(e));
+            if (this.started) {
+              e.preventDefault();
+              this.chart.component(this.rangeRef).emit('rangeMove', mouseEventToRangeEvent(e));
+            }
           },
           mouseup: function(e) {
             this.chart.component(this.rangeRef).emit('rangeEnd', mouseEventToRangeEvent(e));
+            this.started = false;
           }
         }
       }],
