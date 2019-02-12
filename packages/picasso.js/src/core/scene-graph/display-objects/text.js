@@ -57,7 +57,9 @@ export default class Text extends DisplayObject {
     this.attrs.dx = dx;
     this.attrs.dy = dy;
     this.attrs.text = text;
-    this.attrs.title = title;
+    if (typeof title !== 'undefined') {
+      this.attrs.title = String(title);
+    }
     if (typeof boundingRect === 'object') {
       this._textBoundsFn = () => boundingRect;
     } else if (typeof textBoundsFn === 'function') {
