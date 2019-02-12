@@ -66,11 +66,11 @@ export default function createRendererBox({
     });
   }
 
-  box.computed = {
-    x: box.margin.left + ((box.x - box.edgeBleed.left) * box.scaleRatio.x),
-    y: box.margin.top + ((box.y - box.edgeBleed.top) * box.scaleRatio.y),
-    width: (box.width + box.edgeBleed.left + box.edgeBleed.right) * box.scaleRatio.x,
-    height: (box.height + box.edgeBleed.top + box.edgeBleed.bottom) * box.scaleRatio.y
+  box.computedPhysical = {
+    x: Math.round(box.margin.left + ((box.x - box.edgeBleed.left) * box.scaleRatio.x)),
+    y: Math.round(box.margin.top + ((box.y - box.edgeBleed.top) * box.scaleRatio.y)),
+    width: Math.round((box.width + box.edgeBleed.left + box.edgeBleed.right) * box.scaleRatio.x),
+    height: Math.round((box.height + box.edgeBleed.top + box.edgeBleed.bottom) * box.scaleRatio.y)
   };
 
   return box;

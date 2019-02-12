@@ -71,10 +71,10 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
     const scaleY = rect.scaleRatio.y;
 
     if (hasChangedRect) {
-      el.style.left = `${Math.round(rect.computed.x)}px`;
-      el.style.top = `${Math.round(rect.computed.y)}px`;
-      el.setAttribute('width', Math.round(rect.computed.width));
-      el.setAttribute('height', Math.round(rect.computed.height));
+      el.style.left = `${rect.computedPhysical.x}px`;
+      el.style.top = `${rect.computedPhysical.y}px`;
+      el.setAttribute('width', rect.computedPhysical.width);
+      el.setAttribute('height', rect.computedPhysical.height);
     }
 
     gradients.clear();

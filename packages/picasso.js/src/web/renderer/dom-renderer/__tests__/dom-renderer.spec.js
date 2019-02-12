@@ -134,7 +134,7 @@ describe('dom renderer', () => {
         edgeBleed: {
           left: 7, right: 8, top: 9, bottom: 10, bool: true
         },
-        computed: {
+        computedPhysical: {
           x: 134,
           y: 370,
           width: 645,
@@ -165,7 +165,7 @@ describe('dom renderer', () => {
         edgeBleed: {
           left: 0, right: 0, top: 0, bottom: 0, bool: false
         },
-        computed: {
+        computedPhysical: {
           x: 0, y: 0, width: 0, height: 0
         }
       });

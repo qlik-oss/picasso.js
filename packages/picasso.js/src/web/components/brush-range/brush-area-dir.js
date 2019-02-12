@@ -180,7 +180,7 @@ const brushAreaDirectionalComponent = {
     };
   },
   beforeRender(opts) {
-    this.rect = opts.size;
+    this.rect = opts.size.computedInner;
   },
   render(h) {
     this.state.rect = this.rect;

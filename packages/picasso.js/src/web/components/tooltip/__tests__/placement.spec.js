@@ -10,7 +10,7 @@ class Rect {
     this.scaleRatio = { x: 1, y: 1 };
   }
 
-  get computed() {
+  get computedInner() {
     return {
       x: this.margin.left + (this.x * this.scaleRatio.x),
       y: this.margin.top + (this.y * this.scaleRatio.y),

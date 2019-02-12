@@ -127,6 +127,15 @@ function reduceLayoutRect(logicalContainerRect, components, hiddenComponents, se
   return reducedRect;
 }
 
+function computeRect(rect) {
+  return {
+    x: rect.margin.left + (rect.x * rect.scaleRatio.x),
+    y: rect.margin.top + (rect.y * rect.scaleRatio.y),
+    width: rect.width * rect.scaleRatio.x,
+    height: rect.height * rect.scaleRatio.y
+  };
+}
+
 function appendScaleRatio(rect, outerRect, logicalContainerRect, containerRect) {
   const scaleRatio = {
     x: containerRect.width / logicalContainerRect.width,
@@ -251,7 +260,9 @@ function positionComponents(components, logicalContainerRect, reducedRect, conta
     }
     appendScaleRatio(rect, outerRect, logicalContainerRect, containerRect);
     rect.edgeBleed = c.edgeBleed;
+    rect.computed = computeRect(rect);
     outerRect.edgeBleed = c.edgeBleed;
+    outerRect.computed = computeRect(outerRect);
     c.instance.resize(rect, outerRect, logicalContainerRect);
     c.cachedSize = undefined;
   });

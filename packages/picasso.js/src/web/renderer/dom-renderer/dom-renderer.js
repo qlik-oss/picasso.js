@@ -36,10 +36,10 @@ export default function renderer(opts = {}) {
       return false;
     }
 
-    el.style.left = `${Math.round(rect.computed.x)}px`;
-    el.style.top = `${Math.round(rect.computed.y)}px`;
-    el.style.width = `${Math.round(rect.computed.width)}px`;
-    el.style.height = `${Math.round(rect.computed.height)}px`;
+    el.style.left = `${rect.computedPhysical.x}px`;
+    el.style.top = `${rect.computedPhysical.y}px`;
+    el.style.width = `${rect.computedPhysical.width}px`;
+    el.style.height = `${rect.computedPhysical.height}px`;
 
     let vNode;
     if (Array.isArray(nodes)) {

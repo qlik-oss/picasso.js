@@ -149,11 +149,12 @@ function resolveTarget(ctx) {
       resolved.targetFillRect = fillBounds;
     }
   } else if (target && target.rect) {
+    const innerRect = target.rect.computedInner;
     resolved.targetRect = {
-      x: target.rect.x - ctx.state.rect.x,
-      y: target.rect.y - ctx.state.rect.y,
-      width: target.rect.width,
-      height: target.rect.height
+      x: innerRect.x - ctx.state.rect.x,
+      y: innerRect.y - ctx.state.rect.y,
+      width: innerRect.width,
+      height: innerRect.height
     };
   }
 
@@ -222,7 +223,7 @@ const brushRangeComponent = {
     };
   },
   beforeRender(opts) {
-    this.state.rect = opts.size;
+    this.state.rect = opts.size.computedInner;
   },
   renderRanges() {
     if (!this.state.started) {

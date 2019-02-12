@@ -320,7 +320,7 @@ function componentFactory(definition, context = {}) {
     style = theme.style(settings.style || {});
   };
 
-  fn.resize = (inner, outer) => {
+  fn.resize = (inner = {}, outer = {}) => {
     const newSize = resize({
       inner,
       outer
@@ -330,7 +330,15 @@ function componentFactory(definition, context = {}) {
     } else {
       size = rend.size(inner);
     }
-    instanceContext.rect = size;
+    instanceContext.rect = extend(true, {
+      computedPhysical: size.computedPhysical,
+      computedOuter: outer.computed,
+      computedInner: inner.computed
+    }, inner);
+    size = extend(true, {
+      computedOuter: outer.computed,
+      computedInner: inner.computed
+    }, size);
   };
 
   fn.getRect = () => instanceContext.rect;

@@ -293,7 +293,7 @@ function chartFn(definition, context) {
     visibleComponents.forEach((c) => {
       const r = c.instance.getRect();
       // Do test on physical rect and use computed rect if available, otherwise fallback to computing a new rect for legacy support
-      if (testRectPoint(r.computed ? r.computed : {
+      if (testRectPoint(r.computedPhysical ? r.computedPhysical : {
         x: r.margin.left + (r.x * r.scaleRatio.x),
         y: r.margin.top + (r.y * r.scaleRatio.y),
         width: r.width * r.scaleRatio.x,

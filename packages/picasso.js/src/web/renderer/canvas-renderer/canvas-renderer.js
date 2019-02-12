@@ -160,12 +160,12 @@ export function renderer(sceneFn = sceneFactory) {
     const scaleY = rect.scaleRatio.y;
 
     if (hasChangedRect) {
-      el.style.left = `${Math.round(rect.computed.x)}px`;
-      el.style.top = `${Math.round(rect.computed.y)}px`;
-      el.style.width = `${Math.round(rect.computed.width)}px`;
-      el.style.height = `${Math.round(rect.computed.height)}px`;
-      el.width = Math.round(rect.computed.width * dpiRatio);
-      el.height = Math.round(rect.computed.height * dpiRatio);
+      el.style.left = `${rect.computedPhysical.x}px`;
+      el.style.top = `${rect.computedPhysical.y}px`;
+      el.style.width = `${rect.computedPhysical.width}px`;
+      el.style.height = `${rect.computedPhysical.height}px`;
+      el.width = Math.round(rect.computedPhysical.width * dpiRatio);
+      el.height = Math.round(rect.computedPhysical.height * dpiRatio);
     }
 
     const sceneContainer = {

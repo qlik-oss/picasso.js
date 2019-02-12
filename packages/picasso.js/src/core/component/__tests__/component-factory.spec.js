@@ -53,7 +53,7 @@ describe('Component', () => {
       appendTo: () => {},
       render: () => ({}),
       destroy: () => ({}),
-      size: () => {},
+      size: s => s,
       element: () => 'elm'
     };
   });
@@ -69,7 +69,7 @@ describe('Component', () => {
       }
     });
     instance.beforeMount();
-    instance.resize({});
+    instance.resize({}, {});
     instance.beforeRender();
     instance.render();
     instance.mounted();
@@ -115,7 +115,7 @@ describe('Component', () => {
       key2: false
     };
     const expectedContext = {
-      settings: {
+      settings: {s
         dock: 'top',
         style: {
           strokeWidth: 5
@@ -140,7 +140,7 @@ describe('Component', () => {
     const instance = createAndRenderComponent();
     instance.set();
     instance.beforeUpdate();
-    instance.resize();
+    instance.resize({}, {});
     instance.beforeRender();
     instance.render();
     instance.updated();
@@ -162,7 +162,7 @@ describe('Component', () => {
       const instance = createAndRenderComponent();
       instance.set();
       instance.beforeUpdate();
-      instance.resize();
+      instance.resize({}, {});
       instance.beforeRender();
       instance.render();
       instance.updated();
