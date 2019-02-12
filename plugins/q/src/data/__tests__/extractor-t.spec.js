@@ -1,4 +1,7 @@
-import { extract } from '../extractor-t';
+import {
+  extract,
+  getFieldDepth
+} from '../extractor-t';
 
 import {
   getPropsInfo,
@@ -374,6 +377,28 @@ describe('q-data-extractor-t', () => {
     };
 
     dataset.field.withArgs('qDimensionInfo/1/qAttrExprInfo/0').returns(attrExprField);
+
+    it('should return origin field depth for virtual field', () => {
+      const origin = {
+        key: () => 'qDimensionInfo/1'
+      };
+      const f = {
+        origin: () => origin
+      };
+      const depth = getFieldDepth(f, {
+        cube: {
+          qEffectiveInterColumnSortOrder: [2, 0, 1],
+          qDimensionInfo: [{}, {}, {}]
+        }
+      });
+      expect(depth).to.eql({
+        fieldDepth: 3,
+        pseudoMeasureIndex: -1,
+        measureIdx: -1,
+        attrDimIdx: -1,
+        attrIdx: -1
+      });
+    });
 
     it('should return empty array when root node is missing or empty', () => {
       const m = extract({

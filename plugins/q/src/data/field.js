@@ -7,7 +7,8 @@ export default function qField({
   localeInfo,
   fieldExtractor,
   value,
-  type
+  type,
+  sourceField
 } = {}) {
   let values;
 
@@ -23,6 +24,7 @@ export default function qField({
     raw: () => meta,
     title: () => meta.qFallbackTitle || meta.label,
     type: () => type,
+    origin: () => sourceField,
     items: () => {
       if (!values) {
         values = fieldExtractor(f);

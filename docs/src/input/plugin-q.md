@@ -28,7 +28,8 @@ This dataset type understands the QIX hypercube format and its internals, making
 ```js
 const ds = picasso.data('q')({
   key: 'qHyperCube', // path to the hypercube from the layout
-  data: layout.qHyperCube
+  data: layout.qHyperCube,
+  config: { /* ... */ }
 });
 ```
 
@@ -37,6 +38,38 @@ Dimensions, measures, attribute expressions and attribute dimensions are all rec
 ```js
 const f = ds.field('Sales');
 const ff = ds.field('qDimensionInfo/1/qAttrDimInfo/2');
+```
+
+#### Config
+
+The `config` object allows for further configuration:
+
+- `config`: `<object>`
+  - `localeInfo`: <[LocaleInfo]> - App locale info used for formatting.
+  - `virtualFields`: `<Array<object>>` - Convenience config to alias fields. _Experimental_.
+    - `key`: `<string>` - Identifier for the field.
+    - `from`: `<string>` - Source field identifier.
+    - `override`: `<object>` - Override accessor inherited from source field.
+      - `value`: `<function>` - Value accessor.
+      - `label`: `<function>` - Label accessor.
+
+
+```js
+const ds = picasso.data('q')({
+  key: 'qHyperCube',
+  data: layout.qHyperCube,
+  config: {
+    virtualFields: [{
+      key: 'surpriseMe',
+      from: 'qMeasureInfo/0',
+      override: {
+        value: v => v.qValue * Math.random(),
+      }
+    }]
+  }
+});
+
+ds.field('surpriseMe').items(); // -> array of random numbers multiplied with the value from first measure
 ```
 
 ### Extracting data values
@@ -342,3 +375,9 @@ which results in `2 + 1 + 2 + 2 = 7`
 ## Formatting
 
 The `q` plugin comes bundled with a [formatter](formatters.md) attached the to data `field`. To use it, no configuration other then using the [q-dataset](plugin-q.md#q-dataset) is required.
+
+
+[LocaleInfo]: https://core.qlik.com/services/qix-engine/apis/qix/definitions/#localeinfo
+[object]: https://core.qlik.com/services/qix-engine/apis/qix/definitions/#localeinfo
+[string]: https://core.qlik.com/services/qix-engine/apis/qix/definitions/#localeinfo
+[function]: https://core.qlik.com/services/qix-engine/apis/qix/definitions/#localeinfo

@@ -30,7 +30,8 @@ export default function q({
   const cache = {
     fields: [],
     wrappedFields: [],
-    allFields: []
+    allFields: [],
+    virtualFields: []
   };
 
   const cube = data;
@@ -50,7 +51,8 @@ export default function q({
     localeInfo: config.localeInfo,
     fieldExtractor: null,
     pages: null,
-    hierarchy: () => null
+    hierarchy: () => null,
+    virtualFields: config.virtualFields
   };
 
   const dataset = {
@@ -95,6 +97,29 @@ export default function q({
   };
 
   traverse(cache.wrappedFields);
+
+  (config.virtualFields || []).forEach((v) => {
+    // key: 'temporal',
+    // from: 'qDimensionInfo/0',
+    // override: {
+    //   value: v => v.qNum,
+    // },
+    const sourceField = dataset.field(v.from);
+    const f = field({
+      meta: sourceField.raw(),
+      id: `${key}/${v.key}`,
+      sourceField,
+      fieldExtractor: ff => opts.extractor({ field: ff }, dataset, cache, deps),
+      key: v.key,
+      type: sourceField.type(),
+      localeInfo: opts.localeInfo,
+      value: sourceField.value,
+      ...(v.override || {})
+    });
+    cache.virtualFields.push(f);
+  });
+
+  cache.allFields.push(...cache.virtualFields);
 
   return dataset;
 }

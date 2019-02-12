@@ -7,6 +7,10 @@ export function getFieldAccessor(field, page, deps) {
     return -1;
   }
   const cache = deps.cache;
+  const origin = field.origin ? field.origin() : null;
+  if (origin) {
+    field = origin;
+  }
   let fieldIdx = cache.fields.indexOf(field);
   let attrIdx = -1;
   let attrDimIdx = -1;

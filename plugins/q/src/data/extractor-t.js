@@ -28,7 +28,8 @@ export function getFieldDepth(field, { cube }) {
   if (!field) {
     return -1;
   }
-  let key = field.key();
+
+  let key = field.origin && field.origin() ? field.origin().key() : field.key();
   let isFieldDimension = false;
   let fieldIdx = -1; // cache.fields.indexOf(field);
   let attrIdx = -1;

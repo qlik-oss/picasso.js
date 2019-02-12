@@ -750,5 +750,16 @@ describe('extractor-s', () => {
       }, { cache: localCache });
       expect(acc(row)).to.equal('exp');
     });
+
+    it('should return origin field accessor for virtual field', () => {
+      const f = {
+        origin: () => localCache.fields[2]
+      };
+      const row = ['a', 'b'];
+      const acc = getFieldAccessor(f, {
+        qArea: { qLeft: 1 }
+      }, { cache: localCache });
+      expect(acc(row)).to.equal('b');
+    });
   });
 });
