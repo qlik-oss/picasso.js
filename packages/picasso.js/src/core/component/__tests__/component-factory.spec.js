@@ -52,6 +52,7 @@ describe('Component', () => {
     renderer = {
       appendTo: () => {},
       render: () => ({}),
+      destroy: () => ({}),
       size: () => {},
       element: () => 'elm'
     };
@@ -149,6 +150,33 @@ describe('Component', () => {
     expect(beforeUpdate).to.have.been.calledOnce;
     expect(updated).to.have.been.calledOnce;
     expect(render).to.have.been.calledTwice;
+  });
+
+  describe('emits', () => {
+    it('should have an empty emit function when rendering', () => {
+      const instance = createAndRenderComponent();
+      expect(instance.ctx.emit).to.be.a('function');
+    });
+
+    it('should have an empty emit function when updating', () => {
+      const instance = createAndRenderComponent();
+      instance.set();
+      instance.beforeUpdate();
+      instance.resize();
+      instance.beforeRender();
+      instance.render();
+      instance.updated();
+
+      expect(instance.ctx.emit).to.be.a('function');
+    });
+
+    it('should have an empty emit function when destroying', () => {
+      const instance = createAndRenderComponent();
+      instance.set();
+      instance.destroy();
+
+      expect(instance.ctx.emit).to.be.a('function');
+    });
   });
 
   /*
