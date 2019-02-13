@@ -18,7 +18,7 @@ const isReservedProperty = prop => [
   'beforeUpdate', 'updated', 'beforeRender', 'render', 'beforeUnmount', 'beforeDestroy',
   'destroyed', 'defaultSettings', 'data', 'settings', 'formatter',
   'scale', 'chart', 'dockConfig', 'mediator', 'style', 'resolver', 'registries',
-  '_DO_NOT_USE_getInfo', 'symbol'
+  '_DO_NOT_USE_getInfo', 'symbol', 'isVisible'
 ].some(name => name === prop);
 
 function prepareContext(ctx, definition, opts) {
@@ -41,10 +41,15 @@ function prepareContext(ctx, definition, opts) {
     resolver,
     update,
     _DO_NOT_USE_getInfo,
-    symbol
+    symbol,
+    isVisible
   } = opts;
 
   ctx.emit = () => {};
+
+  if (isVisible) {
+    ctx.isVisible = isVisible;
+  }
 
   // TODO add setters and log warnings / errors to console
   Object.defineProperty(ctx, 'settings', {
@@ -189,6 +194,7 @@ function componentFactory(definition, context = {}) {
   let resolver = settingsResolver({
     chart
   });
+  let isVisible = false;
 
   const brushArgs = {
     nodes: [],
@@ -474,7 +480,8 @@ function componentFactory(definition, context = {}) {
     dockConfig: () => dockConfig,
     mediator: () => mediator,
     style: () => style,
-    _DO_NOT_USE_getInfo: _DO_NOT_USE_getInfo.bind(definitionContext)
+    _DO_NOT_USE_getInfo: _DO_NOT_USE_getInfo.bind(definitionContext),
+    isVisible: () => isVisible
   });
 
   fn.getBrushedShapes = function getBrushedShapes(brushCtx, mode, props) {
@@ -551,6 +558,8 @@ function componentFactory(definition, context = {}) {
 
     setUpEmitter(instanceContext, emitter, config);
     setUpEmitter(definitionContext, emitter, definition);
+
+    isVisible = true;
   };
 
   fn.mounted = () => mounted(element);
@@ -566,6 +575,8 @@ function componentFactory(definition, context = {}) {
     });
     brushStylers.length = 0;
     beforeUnmount();
+
+    isVisible = false;
   };
 
   fn.onBrushTap = (e) => {

@@ -106,6 +106,28 @@ picasso.chart({
 });
 ```
 
+## Visibility of a component
+It is possible to get the visibility of a component when it is mounted/unmounted. This can be done in the following example.
+
+Assume a custom component of type foo: 
+
+```js
+
+const foo = {
+  type: 'foo',
+  key: 'myComponent'
+};
+
+const chart = picasso.chart({
+  element,
+  settings: {
+    components: [foo]
+  }
+});
+
+chart.component('myComponent').isVisible(); // returns a boolean determining if the component is visible or not
+```
+
 ## Component lifecycle hooks
 
 __TODO__
