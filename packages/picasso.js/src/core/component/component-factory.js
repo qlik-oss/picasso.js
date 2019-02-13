@@ -48,7 +48,7 @@ function prepareContext(ctx, definition, opts) {
   ctx.emit = () => {};
 
   if (isVisible) {
-    isVisible();
+    ctx.isVisible = isVisible;
   }
 
   // TODO add setters and log warnings / errors to console
@@ -194,7 +194,7 @@ function componentFactory(definition, context = {}) {
   let resolver = settingsResolver({
     chart
   });
-  let isVisible;
+  let isVisible = false;
 
   const brushArgs = {
     nodes: [],
@@ -481,7 +481,7 @@ function componentFactory(definition, context = {}) {
     mediator: () => mediator,
     style: () => style,
     _DO_NOT_USE_getInfo: _DO_NOT_USE_getInfo.bind(definitionContext),
-    isVisible: () => instanceContext.isVisible = () => false
+    isVisible: () => isVisible
   });
 
   fn.getBrushedShapes = function getBrushedShapes(brushCtx, mode, props) {
@@ -560,7 +560,6 @@ function componentFactory(definition, context = {}) {
     setUpEmitter(definitionContext, emitter, definition);
 
     isVisible = true;
-    instanceContext.isVisible = () => isVisible;
   };
 
   fn.mounted = () => mounted(element);
@@ -578,7 +577,6 @@ function componentFactory(definition, context = {}) {
     beforeUnmount();
 
     isVisible = false;
-    instanceContext.isVisible = () => isVisible;
   };
 
   fn.onBrushTap = (e) => {
