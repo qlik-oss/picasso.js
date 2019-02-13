@@ -21,7 +21,7 @@ const NxTreeValue = {
 };
 const NxTreeNode = { qElemNo: 9, qText: 'nine', qValues: [{}, {}, NxTreeValue] };
 
-const ds = (qMode) => {
+const ds = (qMode, config = {}) => {
   const qDataPages = [{
     qArea: {
       qLeft: 0, qTop: 0, qWidth: 4, qHeight: 1
@@ -86,7 +86,8 @@ const ds = (qMode) => {
     config: {
       localeInfo: {
         qDecimalSep: '_'
-      }
+      },
+      ...config
     }
   });
 
@@ -150,6 +151,31 @@ describe('q-data', () => {
     it('bad cube should throw', () => {
       const d = () => q({ data: {} });
       expect(d).throw('The "data" input is not recognized as a hypercube');
+    });
+  });
+
+  describe('virtualFields', () => {
+    let d;
+    beforeEach(() => {
+      d = ds('S', {
+        virtualFields: [{
+          key: 'temporal',
+          from: 'qMeasureInfo/2',
+          override: {
+            value: '3'
+          }
+        }]
+      });
+    });
+
+    it('should be found', () => {
+      const f = d.field('temporal');
+      expect(f.value).to.equal('3');
+      expect(f.key()).to.equal('temporal');
+    });
+
+    it('should have link to its origin', () => {
+      expect(d.field('temporal').origin().key()).to.equal('qMeasureInfo/2');
     });
   });
 
