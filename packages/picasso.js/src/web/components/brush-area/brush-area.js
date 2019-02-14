@@ -181,7 +181,7 @@ const definition = {
   },
   render() {},
   beforeRender({ size }) {
-    this.rect = size;
+    this.rect = size.computedInner;
   },
   start(e) {
     this.state.boundingRect = this.renderer.element().getBoundingClientRect();

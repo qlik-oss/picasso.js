@@ -326,19 +326,25 @@ function componentFactory(definition, context = {}) {
     style = theme.style(settings.style || {});
   };
 
-  fn.resize = (inner, outer) => {
+  fn.resize = (inner = {}, outer = {}) => {
     const newSize = resize({
       inner,
       outer
     });
     if (newSize) {
-      rend.size(newSize);
-      size = newSize;
+      size = rend.size(newSize);
     } else {
-      rend.size(inner);
-      size = inner;
+      size = rend.size(inner);
     }
-    instanceContext.rect = inner;
+    instanceContext.rect = extend(true, {
+      computedPhysical: size.computedPhysical,
+      computedOuter: outer.computed,
+      computedInner: inner.computed
+    }, inner);
+    size = extend(true, {
+      computedOuter: outer.computed,
+      computedInner: inner.computed
+    }, size);
   };
 
   fn.getRect = () => instanceContext.rect;

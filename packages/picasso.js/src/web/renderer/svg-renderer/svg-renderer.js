@@ -71,10 +71,10 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
     const scaleY = rect.scaleRatio.y;
 
     if (hasChangedRect) {
-      el.style.left = `${Math.round(rect.margin.left + (rect.x * scaleX))}px`;
-      el.style.top = `${Math.round(rect.margin.top + (rect.y * scaleY))}px`;
-      el.setAttribute('width', Math.round(rect.width * scaleX));
-      el.setAttribute('height', Math.round(rect.height * scaleY));
+      el.style.left = `${rect.computedPhysical.x}px`;
+      el.style.top = `${rect.computedPhysical.y}px`;
+      el.setAttribute('width', rect.computedPhysical.width);
+      el.setAttribute('height', rect.computedPhysical.height);
     }
 
     gradients.clear();
@@ -83,11 +83,12 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
 
     const sceneContainer = {
       type: 'container',
-      children: Array.isArray(nodes) ? [...nodes, defs] : nodes
+      children: Array.isArray(nodes) ? [...nodes, defs] : nodes,
+      transform: rect.edgeBleed.bool ? `translate(${rect.edgeBleed.left * scaleX}, ${rect.edgeBleed.top * scaleY})` : ''
     };
 
     if (scaleX !== 1 || scaleY !== 1) {
-      sceneContainer.transform = `scale(${scaleX}, ${scaleY})`;
+      sceneContainer.transform += `scale(${scaleX}, ${scaleY})`;
     }
 
     const newScene = sceneFn({

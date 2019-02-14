@@ -2,6 +2,15 @@ import elementMock from 'test-utils/mocks/element-mock';
 import componentFactory from '../../src/core/component/component-factory';
 import findNodes from './node-def-selector';
 
+function computeRect(rect) {
+  return {
+    x: rect.x,
+    y: rect.y,
+    width: rect.width,
+    height: rect.height
+  };
+}
+
 export default function componentFactoryFixture() {
   let comp;
   let chartMock;
@@ -27,20 +36,33 @@ export default function componentFactoryFixture() {
     };
 
     rendererMock = {
-      size: rect => ({
-        x: rect.x || 0,
-        y: rect.y || 0,
-        width: rect.width || 100,
-        height: rect.height || 100,
-        margin: {
-          left: 0,
-          top: 0
-        },
-        scaleRatio: {
-          x: 1,
-          y: 1
-        }
-      }),
+      size(rect) {
+        const s = {
+          x: rect.x || 0,
+          y: rect.y || 0,
+          width: rect.width || 100,
+          height: rect.height || 100,
+          margin: {
+            left: 0,
+            top: 0
+          },
+          scaleRatio: {
+            x: 1,
+            y: 1
+          },
+          edgeBleed: {
+            left: 0, top: 0, right: 0, bottom: 0
+          }
+        };
+
+        s.computedPhysical = {
+          x: s.x,
+          y: s.y,
+          width: s.width,
+          height: s.height
+        };
+        return s;
+      },
       render: (nodes) => { rendererOutput = nodes; },
       appendTo: () => {},
       measureText: ({ text }) => ({
@@ -99,6 +121,12 @@ export default function componentFactoryFixture() {
       inner,
       outer
     } = opts;
+    if (inner && !inner.computed) {
+      inner.computed = computeRect(inner);
+    }
+    if (outer && !outer.computed) {
+      outer.computed = computeRect(outer);
+    }
 
     comp.beforeMount();
     comp.resize(inner, outer);

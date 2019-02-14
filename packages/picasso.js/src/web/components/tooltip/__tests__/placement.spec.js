@@ -1,5 +1,25 @@
 import placement, { calcOffset } from '../placement';
 
+class Rect {
+  constructor() {
+    this.x = 0;
+    this.y = 0;
+    this.width = 100;
+    this.height = 100;
+    this.margin = { left: 0, top: 0 };
+    this.scaleRatio = { x: 1, y: 1 };
+  }
+
+  get computedInner() {
+    return {
+      x: this.margin.left + (this.x * this.scaleRatio.x),
+      y: this.margin.top + (this.y * this.scaleRatio.y),
+      width: this.width * this.scaleRatio.x,
+      height: this.height * this.scaleRatio.y
+    };
+  }
+}
+
 describe('placement', () => {
   let context;
   let size;
@@ -8,20 +28,7 @@ describe('placement', () => {
   beforeEach(() => {
     componentMock = {
       key: 'aKey',
-      rect: {
-        x: 0,
-        y: 0,
-        width: 100,
-        height: 100,
-        margin: {
-          left: 0,
-          top: 0
-        },
-        scaleRatio: {
-          x: 1,
-          y: 1
-        }
-      }
+      rect: new Rect()
     };
 
     size = {

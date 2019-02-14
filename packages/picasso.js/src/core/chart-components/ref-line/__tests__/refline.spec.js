@@ -8,7 +8,7 @@ describe('reference lines', () => {
   let renderer = {
     appendTo: () => {},
     render: p => (rendererOutput = p),
-    size: () => {},
+    size: rect => rect,
     measureText: ({ text, fontSize }) => ({ width: text.length * parseInt(fontSize.replace('px', ''), 10) * 0.6, height: parseInt(fontSize.replace('px', ''), 10) * 1.2 })
   };
   let shapeFn;
