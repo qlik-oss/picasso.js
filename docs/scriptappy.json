@@ -4781,7 +4781,7 @@
             },
             {
               "name": "includeTransform",
-              "description": "whether to include any applied transforms on the node",
+              "description": "Whether to include any applied transforms on the node",
               "defaultValue": true,
               "type": "boolean"
             }
