@@ -200,7 +200,7 @@ class SceneNode {
    * Any other target type will return the bounds relative to the viewport of the browser.
    *
    * @param {HTMLElement|any} target
-   * @param {boolean} includeTransform - whether to include any applied transforms on the node
+   * @param {boolean} includeTransform - Whether to include any applied transforms on the node
    * @returns {rect}
    * @example
    *
