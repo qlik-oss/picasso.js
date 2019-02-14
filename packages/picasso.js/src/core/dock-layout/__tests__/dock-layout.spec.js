@@ -9,7 +9,8 @@ describe('Dock Layout', () => {
     prioOrder = 0,
     edgeBleed = {},
     minimumLayoutMode,
-    show = true
+    show = true,
+    ctx = {}
   } = {}) {
     let outerRect = {
       x: 0, y: 0, width: 0, height: 0
@@ -41,6 +42,8 @@ describe('Dock Layout', () => {
       [innerRect, outerRect, containerRect] = args;
       return this;
     };
+
+    dummy.ctx = ctx;
 
     return dummy;
   };
@@ -162,6 +165,67 @@ describe('Dock Layout', () => {
     });
     expect(leftComp3.resize().innerRect, 'leftComp3 innerRect had incorrect calculated size').to.deep.include({
       x: 0, y: 0, width: 0, height: 0
+    });
+    expect(mainComp.resize().innerRect, 'Main innerRect had incorrect calculated size').to.deep.include({
+      x: 300, y: 0, width: 700, height: 1000
+    });
+  });
+
+  it('should remove component that are docked to another component which does not fit', () => {
+    const leftComp = componentMock({ dock: 'left', size: 0.30 });
+    const leftComp2 = componentMock({ dock: 'left', size: 0.30, ctx: { key: 'notFit' } });
+    const leftComp3 = componentMock({ dock: '@notFit', size: 0.30 });
+    const mainComp = componentMock();
+    const rect = {
+      x: 0, y: 0, width: 1000, height: 1000
+    };
+    const dl = dockLayout();
+    dl.addComponent(leftComp);
+    dl.addComponent(leftComp2);
+    dl.addComponent(leftComp3);
+    dl.addComponent(mainComp);
+
+    dl.layout(rect);
+
+    expect(leftComp.resize().innerRect, 'leftComp innerRect had incorrect calculated size').to.deep.include({
+      x: 0, y: 0, width: 300, height: 1000
+    });
+    expect(leftComp2.resize().innerRect, 'leftComp2 innerRect had incorrect calculated size').to.deep.include({
+      x: 0, y: 0, width: 0, height: 0
+    });
+    expect(leftComp3.resize().innerRect, 'leftComp3 innerRect had incorrect calculated size').to.deep.include({
+      x: 0, y: 0, width: 0, height: 0
+    });
+    expect(mainComp.resize().innerRect, 'Main innerRect had incorrect calculated size').to.deep.include({
+      x: 300, y: 0, width: 700, height: 1000
+    });
+  });
+
+  it('should keep component because one of the referenced components are shown', () => {
+    const leftComp = componentMock({ dock: 'left', size: 0.30, ctx: { key: 'fit' } });
+    const leftComp2 = componentMock({ dock: 'left', size: 0.30, ctx: { key: 'notFit' } });
+    const leftComp3 = componentMock({ dock: '@fit, @notFit', size: 0.30 });
+    const mainComp = componentMock();
+    const rect = {
+      x: 0, y: 0, width: 1000, height: 1000
+    };
+    const dl = dockLayout();
+    dl.addComponent(leftComp, 'fit');
+    dl.addComponent(leftComp2);
+    dl.addComponent(leftComp3);
+    dl.addComponent(mainComp);
+
+    dl.layout(rect);
+
+    // leftComp3 should be docked on top of leftComp
+    expect(leftComp.resize().innerRect, 'leftComp innerRect had incorrect calculated size').to.deep.include({
+      x: 0, y: 0, width: 300, height: 1000
+    });
+    expect(leftComp2.resize().innerRect, 'leftComp2 innerRect had incorrect calculated size').to.deep.include({
+      x: 0, y: 0, width: 0, height: 0
+    });
+    expect(leftComp3.resize().innerRect, 'leftComp3 innerRect had incorrect calculated size').to.deep.include({
+      x: 0, y: 0, width: 300, height: 1000
     });
     expect(mainComp.resize().innerRect, 'Main innerRect had incorrect calculated size').to.deep.include({
       x: 300, y: 0, width: 700, height: 1000
