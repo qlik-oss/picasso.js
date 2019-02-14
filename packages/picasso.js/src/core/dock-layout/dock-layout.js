@@ -365,7 +365,7 @@ export default function dockLayout(initialSettings) {
       instance: component,
       key,
       config: component.dockConfig(),
-      referencedDocks: /^@/.test(dock) ? dock.split(',').map(s => s.replace(/^\s*@/, '')) : []
+      referencedDocks: /@/.test(dock) ? dock.split(',').map(s => s.replace(/^\s*@/, '')) : []
     });
   };
 
