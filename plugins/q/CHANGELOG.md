@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.20.0](https://github.com/qlik-oss/picasso.js/compare/v0.19.0...v0.20.0) (2019-02-14)
+
+
+### Features
+
+* **q:** add experimental virtual fields ([#309](https://github.com/qlik-oss/picasso.js/issues/309)) ([d2e5c41](https://github.com/qlik-oss/picasso.js/commit/d2e5c41))
+
+
+### Performance Improvements
+
+* **q:** memoize q-number-formatter ([#284](https://github.com/qlik-oss/picasso.js/issues/284)) ([c857e10](https://github.com/qlik-oss/picasso.js/commit/c857e10))
+* **q:** memoize time formatter ([#298](https://github.com/qlik-oss/picasso.js/issues/298)) ([1d71937](https://github.com/qlik-oss/picasso.js/commit/1d71937))
+
+
+
+
+
 # [0.19.0](https://github.com/qlik-oss/picasso.js/compare/v0.18.2...v0.19.0) (2019-01-14)
 
 

@@ -3,6 +3,40 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.20.0](https://github.com/qlik-oss/picasso.js/compare/v0.19.0...v0.20.0) (2019-02-14)
+
+
+### Bug Fixes
+
+* **box:** remove Number.isNaN ([#296](https://github.com/qlik-oss/picasso.js/issues/296)) ([9f31c90](https://github.com/qlik-oss/picasso.js/commit/9f31c90))
+* invert justify when bar direction is left ([#304](https://github.com/qlik-oss/picasso.js/issues/304)) ([88ecfd0](https://github.com/qlik-oss/picasso.js/commit/88ecfd0))
+* setup emits on all components ([#300](https://github.com/qlik-oss/picasso.js/issues/300)) ([e9be4e1](https://github.com/qlik-oss/picasso.js/commit/e9be4e1))
+* **dock-layout:** remove components docked at hidden components ([#310](https://github.com/qlik-oss/picasso.js/issues/310)) ([1ff1a59](https://github.com/qlik-oss/picasso.js/commit/1ff1a59))
+* **scales:** fallback to default formatter ([#297](https://github.com/qlik-oss/picasso.js/issues/297)) ([62c7209](https://github.com/qlik-oss/picasso.js/commit/62c7209))
+* **svg-renderer:** do not add undefined title attribute ([#305](https://github.com/qlik-oss/picasso.js/issues/305)) ([abaade7](https://github.com/qlik-oss/picasso.js/commit/abaade7))
+
+
+### Features
+
+* **brush-range:** add label settings ([#291](https://github.com/qlik-oss/picasso.js/issues/291)) ([ca8654f](https://github.com/qlik-oss/picasso.js/commit/ca8654f))
+* **q:** add experimental virtual fields ([#309](https://github.com/qlik-oss/picasso.js/issues/309)) ([d2e5c41](https://github.com/qlik-oss/picasso.js/commit/d2e5c41))
+* apply edgebleed on renderer container ([#308](https://github.com/qlik-oss/picasso.js/issues/308)) ([73d51b2](https://github.com/qlik-oss/picasso.js/commit/73d51b2))
+* expose mode on brush consumer ([#301](https://github.com/qlik-oss/picasso.js/issues/301)) ([3253fd3](https://github.com/qlik-oss/picasso.js/commit/3253fd3))
+* expose the visibility of a component ([#302](https://github.com/qlik-oss/picasso.js/issues/302)) ([d67e50d](https://github.com/qlik-oss/picasso.js/commit/d67e50d))
+* set component key as attribute on renderer element ([#303](https://github.com/qlik-oss/picasso.js/issues/303)) ([d7713b8](https://github.com/qlik-oss/picasso.js/commit/d7713b8))
+* **scene-node:** add boundsRelativeTo method ([#307](https://github.com/qlik-oss/picasso.js/issues/307)) ([541c8bf](https://github.com/qlik-oss/picasso.js/commit/541c8bf))
+
+
+### Performance Improvements
+
+* **q:** memoize q-number-formatter ([#284](https://github.com/qlik-oss/picasso.js/issues/284)) ([c857e10](https://github.com/qlik-oss/picasso.js/commit/c857e10))
+* cache bounds calculations ([#290](https://github.com/qlik-oss/picasso.js/issues/290)) ([e4abc8f](https://github.com/qlik-oss/picasso.js/commit/e4abc8f))
+* **q:** memoize time formatter ([#298](https://github.com/qlik-oss/picasso.js/issues/298)) ([1d71937](https://github.com/qlik-oss/picasso.js/commit/1d71937))
+
+
+
+
+
 # [0.19.0](https://github.com/qlik-oss/picasso.js/compare/v0.18.2...v0.19.0) (2019-01-14)
 
 

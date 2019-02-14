@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.20.0](https://github.com/qlik-oss/picasso.js/compare/v0.19.0...v0.20.0) (2019-02-14)
+
+
+### Features
+
+* **brush-range:** add label settings ([#291](https://github.com/qlik-oss/picasso.js/issues/291)) ([ca8654f](https://github.com/qlik-oss/picasso.js/commit/ca8654f))
+* expose mode on brush consumer ([#301](https://github.com/qlik-oss/picasso.js/issues/301)) ([3253fd3](https://github.com/qlik-oss/picasso.js/commit/3253fd3))
+* **q:** add experimental virtual fields ([#309](https://github.com/qlik-oss/picasso.js/issues/309)) ([d2e5c41](https://github.com/qlik-oss/picasso.js/commit/d2e5c41))
+* expose the visibility of a component ([#302](https://github.com/qlik-oss/picasso.js/issues/302)) ([d67e50d](https://github.com/qlik-oss/picasso.js/commit/d67e50d))
+* **scene-node:** add boundsRelativeTo method ([#307](https://github.com/qlik-oss/picasso.js/issues/307)) ([541c8bf](https://github.com/qlik-oss/picasso.js/commit/541c8bf))
+
+
+
+
+
 # [0.19.0](https://github.com/qlik-oss/picasso.js/compare/v0.18.2...v0.19.0) (2019-01-14)
 
 
