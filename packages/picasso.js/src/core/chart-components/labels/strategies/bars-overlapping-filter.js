@@ -1,5 +1,4 @@
 import { testRectRect } from '../../../math/narrow-phase-collision';
-import { rectContainsRect } from '../../../math/intersection';
 
 /**
  * Using the basic example found here: https://en.wikipedia.org/wiki/Binary_search_algorithm
@@ -53,8 +52,8 @@ findLeft = binaryLeftSearch) {
   return (doNotUse, labelIndex) => {
     const { textBounds: labelBounds, node: labelNode } = labels[labelIndex];
 
-    // ### Test if label is not fully inside container ###
-    if (!rectContainsRect(labelBounds, container)) {
+    // ### Test if label is not fully inside container based on the orientation ###
+    if (labelBounds[coord] < container[coord] || labelBounds[coord] + labelBounds[side] > container[coord] + container[side]) {
       return false;
     }
 
