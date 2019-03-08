@@ -1,6 +1,6 @@
 import componentFactory from '../component-factory';
 
-describe('Component', () => {
+describe.only('Component', () => {
   let definition;
   let created;
   let beforeMount;
@@ -269,6 +269,22 @@ describe('Component', () => {
       expect(s).to.deep.equal([
         { data: 2, key: 'myKey', element: 'elm' }
       ]);
+    });
+  });
+
+  describe('unmount', () => {
+    let instance;
+
+    beforeEach(() => {
+      instance = createAndRenderComponent({
+        key: 'myKey',
+        eventListeners: [{ event: 'event1', listener: () => {} }, { event: 'event2', listener: () => {} }]
+      });
+    });
+
+    it('should remove event listeners from instance context', () => {
+      instance.unmount();
+      expect(instance.ctx.eventListeners).to.deep.equal([]);
     });
   });
 
