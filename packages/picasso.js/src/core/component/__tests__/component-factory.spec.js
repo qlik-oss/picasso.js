@@ -1,6 +1,6 @@
 import componentFactory from '../component-factory';
 
-describe.only('Component', () => {
+describe('Component', () => {
   let definition;
   let created;
   let beforeMount;
