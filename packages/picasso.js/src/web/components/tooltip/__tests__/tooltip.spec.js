@@ -23,7 +23,6 @@ function chartMock() {
   };
 }
 
-
 describe('Tooltip', () => {
   let instance;
   let invokeSpy;
@@ -189,6 +188,15 @@ describe('Tooltip', () => {
       instance.def.hide();
 
       expect(hookSpy).to.not.have.been.called;
+    });
+  });
+
+  describe('beforeUpdate', () => {
+    it('should destroy dispatcher if exists', () => {
+      dispatcherSpy = sandbox.spy(instance.def.dispatcher, 'destroy');
+      instance.beforeUpdate({});
+
+      expect(dispatcherSpy).to.have.been.called;
     });
   });
 

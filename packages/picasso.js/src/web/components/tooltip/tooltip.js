@@ -339,7 +339,7 @@ const component = {
   },
   beforeUpdate({ settings }) {
     if (this.dispatcher) {
-      this.dispatcher.clear();
+      this.dispatcher.destroy();
     }
     this.init(settings);
   },
@@ -351,7 +351,7 @@ const component = {
     return []; // Nothing to render initially.
   },
   beforeDestroy() {
-    this.dispatcher.clear();
+    this.dispatcher.destroy();
   },
   appendTo() {
     if (this.props.appendTo) {
