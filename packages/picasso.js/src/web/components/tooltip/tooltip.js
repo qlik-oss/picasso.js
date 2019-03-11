@@ -6,7 +6,8 @@ import placement from './placement';
 import {
   setActive,
   removeActive,
-  cancelActive
+  cancelActive,
+  remove
 } from './instance-handler';
 
 /**
@@ -339,7 +340,8 @@ const component = {
   },
   beforeUpdate({ settings }) {
     if (this.dispatcher) {
-      this.dispatcher.clear();
+      this.dispatcher.destroy();
+      remove();
     }
     this.init(settings);
   },
@@ -351,7 +353,8 @@ const component = {
     return []; // Nothing to render initially.
   },
   beforeDestroy() {
-    this.dispatcher.clear();
+    this.dispatcher.destroy();
+    remove();
   },
   appendTo() {
     if (this.props.appendTo) {

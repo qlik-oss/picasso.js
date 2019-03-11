@@ -27,6 +27,12 @@ function dispatcherState() {
     }
   };
 
+  fn.destroy = () => {
+    Object.keys(on).forEach((key) => {
+      on[key].length = 0;
+    });
+  };
+
   // fn.on(['pending', 'debounced', 'active', 'cancelled', 'rejected', 'fulfilled'], (e) => {
   //   console.log(e);
   // });
@@ -89,6 +95,11 @@ export default function timeSpanDispatcher({
 
   fn.on = (key, event) => {
     state.on(key, event);
+  };
+
+  fn.destroy = () => {
+    fn.clear();
+    state.destroy();
   };
 
   return fn;

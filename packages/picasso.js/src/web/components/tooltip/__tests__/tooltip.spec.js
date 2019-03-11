@@ -1,6 +1,7 @@
 import extend from 'extend';
 import tooltip from '../tooltip';
 import componentFactoryFixture from '../../../../../test/helpers/component-factory-fixture';
+import * as instanceHandler from '../instance-handler';
 
 function componentMock() {
   return {
@@ -22,7 +23,6 @@ function chartMock() {
     }
   };
 }
-
 
 describe('Tooltip', () => {
   let instance;
@@ -189,6 +189,22 @@ describe('Tooltip', () => {
       instance.def.hide();
 
       expect(hookSpy).to.not.have.been.called;
+    });
+  });
+
+  describe('beforeUpdate', () => {
+    it('should destroy dispatcher', () => {
+      dispatcherSpy = sandbox.spy(instance.def.dispatcher, 'destroy');
+      instance.beforeUpdate({});
+
+      expect(dispatcherSpy).to.have.been.called;
+    });
+
+    it('should call remove on instance handler', () => {
+      sandbox.spy(instanceHandler, 'remove');
+      instance.beforeUpdate({});
+
+      expect(instanceHandler.remove).to.have.been.called;
     });
   });
 
