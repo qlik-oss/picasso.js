@@ -153,9 +153,12 @@ function setUpEmitter(ctx, emitter, settings) {
 }
 
 function tearDownEmitter(ctx, emitter) {
-  (ctx.eventListeners || []).forEach(({ event, listener }) => {
-    emitter.removeListener(event, listener);
-  });
+  if (ctx.eventListeners) {
+    ctx.eventListeners.forEach(({ event, listener }) => {
+      emitter.removeListener(event, listener);
+    });
+    ctx.eventListeners.length = 0;
+  }
   ctx.emit = () => {};
 }
 

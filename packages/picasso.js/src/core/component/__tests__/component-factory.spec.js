@@ -272,6 +272,22 @@ describe('Component', () => {
     });
   });
 
+  describe('unmount', () => {
+    let instance;
+
+    beforeEach(() => {
+      instance = createAndRenderComponent({
+        key: 'myKey',
+        eventListeners: [{ event: 'event1', listener: () => {} }, { event: 'event2', listener: () => {} }]
+      });
+    });
+
+    it('should remove event listeners from instance context', () => {
+      instance.unmount();
+      expect(instance.ctx.eventListeners).to.deep.equal([]);
+    });
+  });
+
   describe('getBrushedShapes', () => {
     let instance;
     let config;
