@@ -180,6 +180,7 @@ describe('Brush Area Directional', () => {
             data: {
               'data-other-value': 100,
               'data-idx': 0,
+              'data-bidx': 0,
               'data-key': 'brush-area-dir-bubble-0',
               style: {
                 position: 'relative',
@@ -225,6 +226,7 @@ describe('Brush Area Directional', () => {
             data: {
               'data-other-value': 0,
               'data-idx': 0,
+              'data-bidx': 1,
               'data-key': 'brush-area-dir-bubble-0',
               style: {
                 position: 'relative',
@@ -368,6 +370,7 @@ describe('Brush Area Directional', () => {
             data: {
               'data-other-value': 150,
               'data-idx': 0,
+              'data-bidx': 0,
               'data-key': 'brush-area-dir-bubble-0',
               style: {
                 position: 'relative',
@@ -413,6 +416,7 @@ describe('Brush Area Directional', () => {
             data: {
               'data-other-value': 0,
               'data-idx': 0,
+              'data-bidx': 1,
               'data-key': 'brush-area-dir-bubble-0',
               style: {
                 position: 'relative',

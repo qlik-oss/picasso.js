@@ -26,14 +26,16 @@ settings: {
 
 ## Events
 
-There are four different types of listeners available.
-
 * `rangeStart`: initialize the range selection
 * `rangeMove`: change the size of the range or move the current active range
 * `rangeEnd`: end the current active range
 * `rangeClear`: cancel the active range
+* `bubbleStart`: start editing a bubble in the active range
+* `bubbleEnd`: end bubble edit
 
-The events are triggered from the component instance and expect an event object as parameter with the following properties:
+The events are triggered from the component instance.
+
+`range` events expects an event object as parameter with the following properties:
 
 ```js
 const param = {
@@ -46,6 +48,16 @@ const param = {
 };
 
 compInstance.emit('rangeStart', param);
+```
+
+`bubbleStart` expects an event object as parameter with the following properties:
+
+```js
+const param = {
+  target: <DOMElement>
+};
+
+compInstance.emit('bubbleStart', param);
 ```
 
 ## Usage

@@ -5,6 +5,7 @@ import {
   VERTICAL
 } from './brush-range-const';
 
+
 function buildLine({
   h, isVertical, value, pos, align, borderHit, state, idx
 }) {
@@ -68,7 +69,7 @@ function buildLine({
 }
 
 function buildBubble({
-  h, isVertical, label, otherValue, idx, pos, align, state
+  h, isVertical, label, otherValue, rangeIdx, idx, pos, align, state, value
 }) {
   const isAlignStart = align !== 'end';
   const isOutside = state.settings.bubbles.placement === 'outside';
@@ -86,6 +87,64 @@ function buildBubble({
     }
   }
 
+  let inEdit = state.edit && state.edit.rangeIdx === rangeIdx && state.edit.bubbleIdx === idx;
+
+  const bubbleStyle = {
+    position: 'relative',
+    borderRadius: `${state.style.bubble.borderRadius}px`,
+    border: `${state.style.bubble.strokeWidth}px solid ${state.style.bubble.stroke}`,
+    backgroundColor: state.style.bubble.fill,
+    color: state.style.bubble.color,
+    fontFamily: state.style.bubble.fontFamily,
+    fontSize: state.style.bubble.fontSize,
+    padding: '4px 8px',
+    textAlign: 'center',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+    maxWidth: '150px',
+    minWidth: '50px',
+    minHeight: '1em',
+    pointerEvents: 'auto',
+    transform: isVertical ? 'translate(0,-50%)' : 'translate(-50%,0)'
+  };
+
+  let currentBorderColor = state.style.bubble.stroke;
+
+  const bubble = inEdit ? h('input', {
+    type: 'text',
+    value,
+    style: {
+      ...bubbleStyle,
+      textAlign: 'start',
+      textOverflow: '',
+      fontSize: '13px' // TODO - make it styleable
+    },
+    onkeyup(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        e.stopPropagation();
+        const newValue = parseFloat(e.target.value);
+        if (isNaN(newValue)) {
+          currentBorderColor = 'rgba(230, 78, 78, 0.6)';
+          e.target.style.border = `${state.style.bubble.strokeWidth}px solid ${currentBorderColor}`;
+        } else {
+          state.onEditConfirmed(rangeIdx, newValue, otherValue);
+        }
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        e.stopPropagation();
+        state.onEditCanceled();
+      }
+    }
+  }) : h('div', {
+    'data-key': [state.key, 'bubble', rangeIdx].join('-'),
+    'data-other-value': otherValue,
+    'data-idx': rangeIdx,
+    'data-bidx': idx,
+    style: bubbleStyle
+  }, [label]);
+
   // bubble wrapper
   return h('div', {
     style: {
@@ -96,30 +155,7 @@ function buildBubble({
     }
   }, [
     // bubble
-    h('div', {
-      'data-key': [state.key, 'bubble', idx].join('-'),
-      'data-other-value': otherValue,
-      'data-idx': idx,
-      style: extend({
-        position: 'relative',
-        borderRadius: `${state.style.bubble.borderRadius}px`,
-        border: `${state.style.bubble.strokeWidth}px solid ${state.style.bubble.stroke}`,
-        backgroundColor: state.style.bubble.fill,
-        color: state.style.bubble.color,
-        fontFamily: state.style.bubble.fontFamily,
-        fontSize: state.style.bubble.fontSize,
-        padding: '4px 8px',
-        textAlign: 'center',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-        maxWidth: '150px',
-        minWidth: '50px',
-        minHeight: '1em',
-        pointerEvents: 'auto',
-        transform: isVertical ? 'translate(0,-50%)' : 'translate(-50%,0)'
-      })
-    }, [label])
+    bubble
   ]);
 }
 
@@ -250,8 +286,10 @@ export default function buildRange({
         isVertical,
         align: bubbles.align,
         style,
-        idx,
+        rangeIdx: idx,
+        idx: 0,
         otherValue: valEnd,
+        value: valStart,
         label: `${state.format(valStart, range)}`,
         pos: top,
         state
@@ -264,8 +302,10 @@ export default function buildRange({
         isVertical,
         align: bubbles.align,
         style,
-        idx,
+        rangeIdx: idx,
+        idx: 1,
         otherValue: valStart,
+        value: valEnd,
         label: `${state.format(valEnd, range)}`,
         pos: bottom,
         state

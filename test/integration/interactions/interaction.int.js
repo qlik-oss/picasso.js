@@ -149,6 +149,30 @@ describe('picasso-interactions', () => {
     expect(rangeSelect).to.equal(true, 'The rangeselect contained at least values between 3100-3800');
   });
 
+  it('Edit range bubbles', async () => {
+    await page.goto(fixtureRange);
+    await page.waitForSelector('.container');
+    const axis = await (await page.$x('//*[. = "8000"]/..'))[0].boundingBox();
+    const lower = axis.y + axis.height * 0.95;
+    const upper = axis.y + axis.height * 0.05;
+    // Do range select
+    await page.mouse.move(axis.x + axis.width / 2, lower);
+    await page.mouse.down();
+    await page.mouse.move(axis.x + axis.width / 2, upper, { steps: 10 });
+    await page.mouse.up();
+
+    await page.click('[data-bidx="0"]');
+    await page.keyboard.type('6500.125');
+    await page.keyboard.press('Enter');
+
+    await page.click('[data-bidx="1"]');
+    await page.keyboard.type('2100.25');
+    await page.keyboard.press('Enter');
+
+    let rangeSelect = await page.evaluate(() => picassochart.brush('highlight').containsRange('0/Sales', { min: 2100.25, max: 6500.125 }));
+    expect(rangeSelect).to.equal(true, 'The rangeselect contained at least values between 2100.25-6500.125');
+  });
+
   it('Range select x-axis', async () => {
     await page.goto(fixtureRange);
     await page.waitForSelector('.container');
@@ -217,15 +241,19 @@ describe('picasso-interactions', () => {
     const l = await page.$('[data-value="Jan"]');
     const label = await l.boundingBox(); /* Get boundingbox for label element */
     const box = await b.boundingBox(); /* Get boundingbox for box element */
+    const dest = await (await page.$('[data-value="Feb"]')).boundingBox();
+
+    // create initial range
     await page.mouse.move(box.x, label.y + label.height / 2);
     await page.mouse.down();
     await page.mouse.move(box.x + box.width, label.y + label.height / 2);
     await page.mouse.up();
-    await page.mouse.move(label.x, label.y);
+    await page.mouse.move(label.x, label.y + label.height / 2);
+
+    // drag existing range
     await page.mouse.down();
-    const d = await page.$('[data-value="Feb"]');
-    const dest = await d.boundingBox();
-    await page.mouse.move(dest.x, dest.y);
+    await page.mouse.move(dest.x, dest.y + dest.height / 2);
+
     let febisSelected = await page.evaluate(() => picassochart.brush('highlight').containsValue('0/Month', 'Feb'));
     expect(febisSelected).to.equal(true, 'Feb should have been selected but it was not');
   });

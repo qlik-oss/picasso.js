@@ -79,6 +79,23 @@ function setRanges(state) {
   }
 }
 
+function setEditedRanges(state, idx, startValue, endValue) {
+  let rs = state.ranges.map(r => ({ min: r.min, max: r.max }));
+  const limitMin = state.scale.min();
+  const limitMax = state.scale.max();
+  rs[idx] = { min: Math.max(limitMin, Math.min(startValue, endValue)), max: Math.min(limitMax, Math.max(startValue, endValue)) };
+  state.ranges[idx] = { ...rs[idx] };
+
+  const scaleData = state.scale.data();
+  if (scaleData && scaleData.fields) {
+    scaleData.fields.forEach((field) => {
+      if (!state.fauxBrushInstance) {
+        state.brushInstance.setRange(field.id(), rs);
+      }
+    });
+  }
+}
+
 function findClosest(value, scale) {
   let name;
   let minDist = Infinity;
@@ -215,7 +232,8 @@ const brushRangeComponent = {
     rangeStart(e) { this.start(e); },
     rangeMove(e) { this.move(e); },
     rangeEnd(e) { this.end(e); },
-    rangeClear(e) { this.clear(e); }
+    rangeClear(e) { this.clear(e); },
+    bubbleStart(e) { this.bubbleStart(e); }
   },
   created() {
     this.state = {
@@ -253,6 +271,16 @@ const brushRangeComponent = {
     this.state.renderer = this.renderer;
     this.state.multi = !!stngs.multiple;
     this.state.h = h;
+    this.state.onEditConfirmed = (rangeIdx, value, otherValue) => {
+      this.state.edit = null;
+      setEditedRanges(this.state, rangeIdx, value, otherValue);
+      this.emit('bubbleEnd');
+      render(this.state);
+    };
+    this.state.onEditCanceled = () => {
+      this.state.edit = null;
+      render(this.state);
+    };
     this.state.cssCoord = {
       offset: this.state.direction === VERTICAL ? 'top' : 'left',
       coord: this.state.direction === VERTICAL ? 'y' : 'x',
@@ -269,6 +297,7 @@ const brushRangeComponent = {
     }) : false;
 
     if (!{}.hasOwnProperty.call(scale, 'norm')) { // Non-linear scale if norm method is unavailable
+      this.state.editable = false;
       this.state.scale = linear();
       this.state.scale.data = scale.data;
       if (!this.state.format) {
@@ -282,6 +311,7 @@ const brushRangeComponent = {
       this.state.fauxBrushInstance = brushFactory();
       this.state.findValues = valueRanges => findValues(valueRanges, scale);
     } else {
+      this.state.editable = true;
       this.state.observeBrush = typeof stngs.brush === 'object' ? stngs.brush.observe : false;
       this.state.fauxBrushInstance = null;
       this.state.findValues = null;
@@ -338,6 +368,33 @@ const brushRangeComponent = {
     this.state.renderer.render([]);
     this.state.started = false;
     this.state.active = null;
+  },
+  bubbleStart(e) {
+    if (!this.state.editable) {
+      return;
+    }
+    const ee = e.srcEvent || e;
+
+    const target = ee.target;
+    const ed = {
+      rangeIdx: parseInt(target.getAttribute('data-idx'), 10),
+      bubbleIdx: parseInt(target.getAttribute('data-bidx'), 10)
+    };
+    if (isNaN(ed.rangeIdx) || JSON.stringify(ed) === JSON.stringify(this.state.edit)) {
+      return;
+    }
+    this.state.edit = ed;
+
+    ee.stopPropagation();
+    ee.stopImmediatePropagation();
+    ee.preventDefault();
+
+    const wrapper = target.parentNode;
+
+    render(this.state);
+    const inputEl = wrapper.querySelector('input');
+    inputEl.focus();
+    inputEl.select();
   }
 };
 
