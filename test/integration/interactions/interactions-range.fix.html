@@ -46,9 +46,21 @@
       interactions: [{
         type: 'native',
         events: {
+          click: function(e) {
+            if (this.started) {
+              return;
+            }
+            const bidx = parseInt(e.target.getAttribute('data-bidx'));
+            if (!isNaN(bidx)) {
+              this.chart.component('rangeY').emit('editBubble', e);
+            }
+          },
           mousedown: function(e) {
-            const comps = this.chart.componentsFromPoint({ x: e.clientX, y: e.clientY });
-            this.rangeRef = comps.some(c => c.key === 'y-axis') ? 'rangeY' : 'rangeX';
+            const comps = this.chart.componentsFromPoint({ x: e.clientX, y: e.clientY }).map(c => c.key);
+            this.rangeRef = comps.indexOf('y-axis') !== -1 ? 'rangeY' : comps.indexOf('x-axis') !== -1 ? 'rangeX' : '';
+            if (!this.rangeRef) {
+              return;
+            }
             // Fetch the range component instance and trigger the start event
             this.chart.component(this.rangeRef).emit('rangeStart', mouseEventToRangeEvent(e));
             this.started = true;
@@ -60,8 +72,10 @@
             }
           },
           mouseup: function(e) {
-            this.chart.component(this.rangeRef).emit('rangeEnd', mouseEventToRangeEvent(e));
-            this.started = false;
+            if (this.rangeRef) {
+              this.chart.component(this.rangeRef).emit('rangeEnd', mouseEventToRangeEvent(e));
+              this.started = false;
+            }
           }
         }
       }],
@@ -149,7 +163,7 @@
                 component: 'y-axis' // Use the y-axis as our target and interaction trigger
               },
               bubbles: {
-                align: 'end'
+                align: 'end',
               }
             }
         }]

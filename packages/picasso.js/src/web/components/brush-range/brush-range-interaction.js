@@ -162,6 +162,7 @@ export function start({
   if (state.started) {
     return;
   }
+  state.edit = null;
   const x = (e.center.x - e.deltaX);
   const y = (e.center.y - e.deltaY);
   let target = document.elementFromPoint(x, y);
