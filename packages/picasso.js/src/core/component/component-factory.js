@@ -185,8 +185,8 @@ function componentFactory(definition, context = {}) {
     theme,
     renderer // Used by tests
   } = context;
-  const config = context.settings || {};
   const emitter = EventEmitter.mixin({});
+  let config = context.settings || {};
   let settings = extend(true, {}, defaultSettings, config);
   let data = [];
   let scale;
@@ -302,6 +302,7 @@ function componentFactory(definition, context = {}) {
   // Set new settings - will trigger mapping of data and creation of scale / formatter.
   fn.set = (opts = {}) => {
     if (opts.settings) {
+      config = opts.settings;
       settings = extend(true, {}, defaultSettings, opts.settings);
       dockConfig = createDockConfig(createDockDefinition(settings, preferredSize), dockConfigCallbackContext);
     }
