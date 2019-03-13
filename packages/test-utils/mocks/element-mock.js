@@ -46,6 +46,13 @@ function element(name, rect = { x: 0, y: 0, width: 100, height: 100 }) {
       el.parentNode = null;
       el.parentElement = this;
     },
+    insertBefore(el, ref) {
+      const idx = this.children.indexOf(el);
+      if (idx !== -1 && el !== ref) {
+        this.children.splice(idx, 1);
+      }
+      this.children.splice(this.children.indexOf(ref), el === ref ? 1 : 0, el);
+    },
     addEventListener(key, val) {
       const obj = {};
       obj[key] = val;

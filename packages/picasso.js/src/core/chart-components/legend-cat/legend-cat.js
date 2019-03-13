@@ -106,6 +106,9 @@ const component = {
     if (renderElement && renderElement.parentNode) {
       this.navigationRenderer.renderer.appendTo(renderElement.parentNode);
       this.titleRenderer.renderer.appendTo(renderElement.parentNode);
+
+      renderElement.parentNode.insertBefore(this.navigationRenderer.renderer.element(), renderElement);
+      renderElement.parentNode.insertBefore(this.titleRenderer.renderer.element(), renderElement);
     }
     this.navigationRenderer.render({
       rect: this.state.views.layout.navigation,
@@ -188,6 +191,12 @@ const component = {
   beforeDestroy() {
     this.navigationRenderer.renderer.destroy();
     this.titleRenderer.renderer.destroy();
+  },
+  additionalElements() {
+    return [
+      this.titleRenderer.renderer.element(),
+      this.navigationRenderer.renderer.element()
+    ];
   },
   _DO_NOT_USE_getInfo() {
     return {

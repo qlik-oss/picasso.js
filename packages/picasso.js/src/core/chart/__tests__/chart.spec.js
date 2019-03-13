@@ -1,6 +1,6 @@
 import componentFactoryFixture from '../../../../test/helpers/component-factory-fixture';
 import elementMock from 'test-utils/mocks/element-mock';
-import chart from '..';
+import chart, { orderComponents } from '..';
 
 describe('Chart', () => {
   describe('lifecycle methods', () => {
@@ -166,6 +166,47 @@ describe('Chart', () => {
       chartInstance.update({ partialData: true, excludeFromUpdate: ['comp1'] });
       expect(comp1UpdatedCb).to.have.been.calledTwice;
       expect(comp2UpdatedCb).to.have.been.calledTwice;
+    });
+  });
+
+  describe('orderComponents', () => {
+    let visible;
+    let el;
+    beforeEach(() => {
+      const sub = ['b-1', 'b-2'].map(elementMock);
+      visible = ['a', 'b', 'c'].map(elementMock).map(e => ({
+        instance: {
+          renderer: () => ({
+            element: () => e
+          }),
+          def: {
+            additionalElements: e.name === 'b' ? () => sub : undefined
+          }
+        }
+      }));
+      el = elementMock('div');
+    });
+
+    it('should inject missing elements', () => {
+      orderComponents(el, visible);
+      let order = el.children.map(e => e.name);
+      expect(order).to.eql(['a', 'b-1', 'b-2', 'b', 'c']);
+    });
+
+    it('should re-order existing elements', () => {
+      orderComponents(el, visible); // initial will inject children into el
+
+      orderComponents(el, visible); // re-order when el is already populated
+      const order = el.children.map(e => e.name);
+      expect(order).to.eql(['a', 'b-1', 'b-2', 'b', 'c']);
+    });
+
+    it('should re-order existing elements with explicit order', () => {
+      orderComponents(el, visible); // initial will inject children into el
+
+      orderComponents(el, visible, [2, 0, 1]); // re-order when el is already populated
+      const order = el.children.map(e => e.name);
+      expect(order).to.eql(['b-1', 'b-2', 'b', 'c', 'a']);
     });
   });
 });

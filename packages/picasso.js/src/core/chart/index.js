@@ -75,6 +75,50 @@ function addComponentDelta(shape, containerBounds, componentBounds) {
   return deltaShape;
 }
 
+const moveToPosition = (element, comp, index) => {
+  const el = comp.instance.renderer().element();
+  if (isNaN(index) || !el || !element || !element.children) { return; }
+  const nodes = element.children;
+  const i = Math.max(0, index);
+  const node = nodes[i];
+  const additionalEl = comp.instance.def.additionalElements && comp.instance.def.additionalElements().filter(Boolean);
+  if (element.insertBefore && typeof node !== 'undefined') {
+    element.insertBefore(el, nodes[i]);
+    if (additionalEl) {
+      additionalEl.forEach((ae) => {
+        element.insertBefore(ae, el);
+      });
+    }
+  } else {
+    if (additionalEl) {
+      additionalEl.forEach((ae) => {
+        element.appendChild(ae, el);
+      });
+    }
+    element.appendChild(el);
+  }
+};
+
+export function orderComponents(element, visibleComponents, order) {
+  const elToIdx = [];
+  let numElements = 0;
+  const ordered = order ? visibleComponents.slice().sort((a, b) => order[visibleComponents.indexOf(a)] - order[visibleComponents.indexOf(b)]) : visibleComponents;
+  ordered.forEach((comp) => {
+    elToIdx.push(numElements);
+
+    // assume each component has at least one element
+    numElements++;
+
+    // check additional elements
+    const additionalEl = comp.instance.def.additionalElements && comp.instance.def.additionalElements();
+    if (additionalEl) {
+      numElements += additionalEl.length;
+    }
+  });
+
+  ordered.forEach((comp, i) => moveToPosition(element, comp, elToIdx[i]));
+}
+
 function chartFn(definition, context) {
   /**
    * @typedef {object} chart-definition
@@ -185,22 +229,12 @@ function chartFn(definition, context) {
     const dockLayout = createDockLayout(settings.dockLayout);
     components.forEach((c) => { dockLayout.addComponent(c.instance, c.key); });
 
-    const { visible, hidden } = dockLayout.layout(element);
+    const { visible, hidden, order } = dockLayout.layout(element);
     return {
       visible: visible.map(v => findComponent(v)),
-      hidden: hidden.map(h => findComponent(h))
+      hidden: hidden.map(h => findComponent(h)),
+      order
     };
-  };
-
-  const moveToPosition = (comp, index) => {
-    const el = comp.instance.renderer().element();
-    if (isNaN(index) || !el || !element || !element.childNodes) { return; }
-    const nodes = element.childNodes;
-    const i = Math.min(nodes.length - 1, Math.max(index, 0));
-    const node = nodes[i];
-    if (element.insertBefore && typeof node !== 'undefined') {
-      element.insertBefore(el, nodes[i]);
-    }
   };
 
   const created = createCallback('created');
@@ -412,6 +446,7 @@ function chartFn(definition, context) {
    */
   instance.update = (newProps = {}) => {
     const { partialData, excludeFromUpdate = [] } = newProps;
+    let visibleOrder;
     if (newProps.data) {
       data = newProps.data;
     }
@@ -485,9 +520,10 @@ function chartFn(definition, context) {
       });
       toRenderOrUpdate = toUpdate;
     } else {
-      const { visible, hidden } = layout(currentComponents); // Relayout
+      const { visible, hidden, order } = layout(currentComponents); // Relayout
       visibleComponents = visible;
       toRenderOrUpdate = visible;
+      visibleOrder = order;
 
       visible.forEach((comp) => {
         if (comp.updateWith && comp.visible) {
@@ -520,7 +556,7 @@ function chartFn(definition, context) {
     // Ensure that displayOrder is keept, only do so on re-layout update.
     // Which is only the case if partialData is false.
     if (!partialData) {
-      visibleComponents.forEach((comp, i) => moveToPosition(comp, i));
+      orderComponents(element, visibleComponents, visibleOrder);
     }
 
     toRender.forEach(comp => comp.instance.mounted());

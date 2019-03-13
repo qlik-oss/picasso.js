@@ -232,6 +232,7 @@ function positionComponents(components, logicalContainerRect, reducedRect, conta
 
   const referencedComponents = {};
   const referenceArray = components.slice();
+  const elementOrder = referenceArray.slice().sort((a, b) => a.config.displayOrder() - b.config.displayOrder());
   components.sort((a, b) => {
     if (b.referencedDocks.length > 0) {
       return -1;
@@ -317,6 +318,8 @@ function positionComponents(components, logicalContainerRect, reducedRect, conta
     c.instance.resize(rect, outerRect, logicalContainerRect);
     c.cachedSize = undefined;
   });
+
+  return components.map(c => elementOrder.indexOf(c));
 }
 
 function checkShowSettings(components, hiddenComponents, settings, logicalContainerRect) {
@@ -393,9 +396,10 @@ export default function dockLayout(initialSettings) {
     const [logicalContainerRect, containerRect] = resolveLayout(container, settings);
     checkShowSettings(components, hiddenComponents, settings, logicalContainerRect);
     const reduced = reduceLayoutRect(logicalContainerRect, components, hiddenComponents, settings);
-    positionComponents(components, logicalContainerRect, reduced, containerRect);
+    const order = positionComponents(components, logicalContainerRect, reduced, containerRect);
     return {
       visible: components.map(c => c.instance),
+      order,
       hidden: hiddenComponents
     };
   };
