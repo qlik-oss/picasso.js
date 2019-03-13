@@ -105,7 +105,7 @@ components: [
               },
               placements: [
                 {
-                  position: 'info',
+                  position: 'into',
                   fill: ({ data }) => { return '#333'; } // select a color contrasting the containing slice
                 }
               ]
