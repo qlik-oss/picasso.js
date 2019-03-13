@@ -239,7 +239,7 @@ export default function buildRange({
 
   const valStart = start < end ? vStart : vEnd;
   const valEnd = start < end ? vEnd : vStart;
-  const [min, max] = hasScale ? state.scale.domain() : [vStart, vEnd];
+  const [min, max] = hasScale ? state.scale.domain() : [Math.min(vStart, vEnd), Math.max(vStart, vEnd)];
 
   if (valStart >= min && valStart <= max) {
     els.push(buildLine({

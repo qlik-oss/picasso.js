@@ -73,7 +73,7 @@ describe('Brush Area Directional', () => {
         componentFixture.simulateRender(size);
         instance.def.start({ center: { x: 0, y: 0 }, deltaX: 0, deltaY: 0 });
         instance.def.move({ center: { x: 100, y: 0 }, deltaX: 0, deltaY: 0 });
-        instance.def.end({ center: { x: 50, y: 0 }, deltaX: 0, deltaY: 0 });
+        instance.def.end();
         rendererOutput = componentFixture.getRenderOutput();
       });
 
@@ -253,6 +253,28 @@ describe('Brush Area Directional', () => {
         };
 
         expect(bubbleRight).to.deep.equal(expectedBubbleRight);
+      });
+    });
+
+    describe('horizontal negative active drag', () => {
+      beforeEach(() => {
+        instance = componentFixture.simulateCreate(brushAreaDir, config);
+        componentFixture.simulateRender(size);
+        instance.def.start({ center: { x: 100, y: 0 }, deltaX: 0, deltaY: 0 });
+        instance.def.move({ center: { x: 0, y: 0 }, deltaX: 0, deltaY: 0 }); // move to the left (negative)
+        rendererOutput = componentFixture.getRenderOutput();
+      });
+
+      it('left edge node', () => {
+        const edgeLeft = rendererOutput[0];
+        expect(edgeLeft.data['data-key']).to.equal('brush-area-dir-edge--1');
+        expect(edgeLeft.data.style.left).to.equal('0px');
+      });
+
+      it('right edge node', () => {
+        const edgeRight = rendererOutput[1];
+        expect(edgeRight.data['data-key']).to.equal('brush-area-dir-edge--1');
+        expect(edgeRight.data.style.left).to.equal('95px');
       });
     });
 
