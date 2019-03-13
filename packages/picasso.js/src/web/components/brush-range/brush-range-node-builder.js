@@ -241,7 +241,10 @@ export default function buildRange({
   const valEnd = start < end ? vEnd : vStart;
   const [min, max] = hasScale ? state.scale.domain() : [Math.min(vStart, vEnd), Math.max(vStart, vEnd)];
 
-  if (valStart >= min && valStart <= max) {
+  const isStartVisible = valStart + 1e-5 >= min && valStart - 1e-5 <= max; // accept minor floating point difference
+  const isEndVisible = valEnd - 1e-5 <= max && valEnd + 1e-5 >= min;
+
+  if (isStartVisible) {
     els.push(buildLine({
       h: state.h,
       isVertical,
@@ -254,7 +257,7 @@ export default function buildRange({
     }));
   }
 
-  if (valEnd <= max && valEnd >= min) {
+  if (isEndVisible) {
     els.push(buildLine({
       h: state.h,
       isVertical,
@@ -280,7 +283,7 @@ export default function buildRange({
 
     const range = [vStart, vEnd];
 
-    if (valStart >= min && valStart <= max) {
+    if (isStartVisible) {
       els.push(buildBubble({
         h: state.h,
         isVertical,
@@ -296,7 +299,7 @@ export default function buildRange({
       }));
     }
 
-    if (valEnd <= max && valEnd >= min) {
+    if (isEndVisible) {
       els.push(buildBubble({
         h: state.h,
         isVertical,
