@@ -24,7 +24,7 @@ jobs:
     steps:
       - checkout
       - restore_cache: *restore_yarn_cache
-      - run: yarn
+      - run: yarn install --frozen-lockfile
       - save_cache: *save_yarn_cache
       - store_artifacts:
           path: package.json
