@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.21.0](https://github.com/qlik-oss/picasso.js/compare/v0.20.0...v0.21.0) (2019-03-14)
+
+
+### Bug Fixes
+
+* keep track of element order ([#323](https://github.com/qlik-oss/picasso.js/issues/323)) ([0d06be7](https://github.com/qlik-oss/picasso.js/commit/0d06be7))
+* update component config ([#321](https://github.com/qlik-oss/picasso.js/issues/321)) ([900b02a](https://github.com/qlik-oss/picasso.js/commit/900b02a))
+* **brush-area-dir:** render negative ranges ([#324](https://github.com/qlik-oss/picasso.js/issues/324)) ([cc22eda](https://github.com/qlik-oss/picasso.js/commit/cc22eda))
+* **brush-range:** handle floating point ([#325](https://github.com/qlik-oss/picasso.js/issues/325)) ([b2b4fda](https://github.com/qlik-oss/picasso.js/commit/b2b4fda))
+* **component-factory:** remove context event listeners on unmount ([#319](https://github.com/qlik-oss/picasso.js/issues/319)) ([a49dd62](https://github.com/qlik-oss/picasso.js/commit/a49dd62))
+* **label:** take orientation into account when checking label visibility ([#313](https://github.com/qlik-oss/picasso.js/issues/313)) ([65f7247](https://github.com/qlik-oss/picasso.js/commit/65f7247))
+* **tooltip:** clean up dispatcher events ([#318](https://github.com/qlik-oss/picasso.js/issues/318)) ([81f6f3b](https://github.com/qlik-oss/picasso.js/commit/81f6f3b))
+
+
+### Features
+
+* **brush-range:** editable bubbles ([#320](https://github.com/qlik-oss/picasso.js/issues/320)) ([44decb5](https://github.com/qlik-oss/picasso.js/commit/44decb5))
+
+
+
+
+
 # [0.20.0](https://github.com/qlik-oss/picasso.js/compare/v0.19.0...v0.20.0) (2019-02-14)
 
 

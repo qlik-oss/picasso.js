@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.21.0](https://github.com/qlik-oss/picasso.js/compare/v0.20.0...v0.21.0) (2019-03-14)
+
+
+### Features
+
+* **brush-range:** editable bubbles ([#320](https://github.com/qlik-oss/picasso.js/issues/320)) ([44decb5](https://github.com/qlik-oss/picasso.js/commit/44decb5))
+
+
+
+
+
 # [0.20.0](https://github.com/qlik-oss/picasso.js/compare/v0.19.0...v0.20.0) (2019-02-14)
 
 
