@@ -210,4 +210,43 @@ describe('line component', () => {
 
     expect(rendererOutput).to.deep.equal([]);
   });
+
+  it('should render minorTicks with correct color', () => {
+    const config = {
+      shapeFn,
+      x: { scale: 'x' },
+      y: { scale: 'y' },
+      ticks: {
+        stroke: t => (t.data.dir === 'x' ? 'red' : 'blue')
+      }
+    };
+
+    componentFixture.simulateCreate(lineComponent, config);
+    rendererOutput = componentFixture.simulateRender(opts);
+
+    expect(rendererOutput).to.deep.equal([
+      {
+        stroke: 'red',
+        strokeWidth: 1,
+        strokeDasharray: undefined,
+        type: 'line',
+        flipXY: false,
+        x1: 49.5,
+        x2: 49.5,
+        y1: -0.5,
+        y2: 199.5
+      },
+      {
+        stroke: 'blue',
+        strokeWidth: 1,
+        strokeDasharray: undefined,
+        type: 'line',
+        flipXY: true,
+        x1: -0.5,
+        x2: 99.5,
+        y1: 99.5,
+        y2: 99.5
+      }
+    ]);
+  });
 });

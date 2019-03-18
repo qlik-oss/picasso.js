@@ -22,7 +22,7 @@ const gridLineComponent = {
   created() {
   },
 
-  require: ['chart', 'renderer'],
+  require: ['chart', 'renderer', 'resolver'],
   defaultSettings: {
     displayOrder: 0,
     style: { // Theming style
@@ -72,29 +72,42 @@ const gridLineComponent = {
     // This makes the transposer flip them individually
     this.lines.y = this.lines.y.map(i => extend(i, { flipXY: true }));
 
-    // Define a style that differs between major and minor ticks.
-    let style = {};
+    let addTicks = ({ dir, isMinor }) => {
+      let items = this.lines[dir].filter(tick => tick.isMinor === isMinor);
+      let settings = isMinor ? this.settings.minorTicks : this.settings.ticks;
+      let ticks = this.resolver.resolve({
+        settings,
+        data: {
+          items,
+          dir
+        }
+      }).items;
 
-    // Loop through all X and Y lines
-    [...this.lines.x, ...this.lines.y].forEach((p) => {
-      style = p.isMinor ? this.settings.minorTicks : this.settings.ticks;
+      ticks.forEach((style) => {
+        let p = style.data;
 
-      // If the style's show is falsy, don't renderer this item (to respect axis settings).
-      if (style.show) {
-        // Use the transposer to handle actual positioning
-        this.blueprint.push({
-          type: 'line',
-          x1: p.position,
-          y1: 0,
-          x2: p.position,
-          y2: 1,
-          stroke: style.stroke || 'black',
-          strokeWidth: typeof style.strokeWidth !== 'undefined' ? style.strokeWidth : 1,
-          strokeDasharray: typeof style.strokeDasharray !== 'undefined' ? style.strokeDasharray : undefined,
-          flipXY: p.flipXY || false // This flips individual points (Y-lines)
-        });
-      }
-    });
+        // If the style's show is falsy, don't renderer this item (to respect axis settings).
+        if (style.show) {
+          // Use the transposer to handle actual positioning
+          this.blueprint.push({
+            type: 'line',
+            x1: p.position,
+            y1: 0,
+            x2: p.position,
+            y2: 1,
+            stroke: style.stroke || 'black',
+            strokeWidth: typeof style.strokeWidth !== 'undefined' ? style.strokeWidth : 1,
+            strokeDasharray: typeof style.strokeDasharray !== 'undefined' ? style.strokeDasharray : undefined,
+            flipXY: p.flipXY || false // This flips individual points (Y-lines)
+          });
+        }
+      });
+    };
+
+    addTicks({ dir: 'x', isMinor: false });
+    addTicks({ dir: 'x', isMinor: true });
+    addTicks({ dir: 'y', isMinor: false });
+    addTicks({ dir: 'y', isMinor: true });
 
     return this.blueprint.output();
   }
