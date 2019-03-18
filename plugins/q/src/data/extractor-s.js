@@ -97,74 +97,76 @@ function cellToValue({
 export default function extract(config, dataset, cache, util) {
   const cfgs = Array.isArray(config) ? config : [config];
   let dataItems = [];
-  cfgs.forEach((cfg) => {
-    if (typeof cfg.field !== 'undefined') {
+  for (let i = 0; i < cfgs.length; i++) {
+    if (typeof cfgs[i].field !== 'undefined') {
       const cube = dataset.raw();
       const sourceKey = dataset.key();
-      const f = typeof cfg.field === 'object' ? cfg.field : dataset.field(cfg.field);
-      const { props, main } = util.normalizeConfig(cfg, dataset);
+      const f = typeof cfgs[i].field === 'object' ? cfgs[i].field : dataset.field(cfgs[i].field);
+      const { props, main } = util.normalizeConfig(cfgs[i], dataset);
       const propsArr = Object.keys(props);
 
-      const track = !!cfg.trackBy;
-      const trackType = typeof cfg.trackBy;
+      const track = !!cfgs[i].trackBy;
+      const trackType = typeof cfgs[i].trackBy;
       const tracker = {};
       const trackedItems = [];
       const items = [];
 
-      cube.qDataPages.forEach((page) => {
-        const fn = getFieldAccessor(f, page, { cache });
+      for (let j = 0; j < cube.qDataPages.length; j++) {
+        const fn = getFieldAccessor(f, cube.qDataPages[j], { cache });
         if (fn === -1) {
-          return;
+          continue;
         }
-        page.qMatrix.forEach((row, i) => {
-          const rowIdx = page.qArea.qTop + i;
-          const mainCell = extend({ qRow: rowIdx }, fn(row));
+        for (let k = 0; k < cube.qDataPages[j].qMatrix.length; k++) {
+          const rowIdx = cube.qDataPages[j].qArea.qTop + k;
+          const mainCell = extend({ qRow: rowIdx }, fn(cube.qDataPages[j].qMatrix[k]));
           const ret = datumExtract(main, mainCell, { key: sourceKey });
           const exclude = main.filter && !main.filter(mainCell);
           if (exclude) {
-            return;
+            continue;
           }
 
-          // loop through all props that need to be mapped and
-          // assign 'value' and 'source' to each property
-          propsArr.forEach((prop) => {
-            const p = props[prop];
+          for (let l = 0; l < propsArr.length; l++) {
+            const p = props[propsArr[l]];
             let arr = p.fields || [p];
 
             if (p.fields) {
-              ret[prop] = [];
+              ret[propsArr[l]] = [];
             }
-            arr.forEach((pp, fidx) => {
+
+            // loop through all props that need to be mapped and
+            // assign 'value' and 'source' to each property
+            for (let m = 0; m < arr.length; m++) {
               cellToValue({
                 cache,
                 f,
                 mainCell,
-                p: pp,
-                prop,
+                p: arr[m],
+                prop: propsArr[l],
                 props,
-                page,
+                page: cube.qDataPages[j],
                 rowIdx,
-                row,
+                row: cube.qDataPages[j].qMatrix[k],
                 sourceKey,
-                target: p.fields ? ret[prop] : ret,
-                targetProp: p.fields ? fidx : prop
+                target: p.fields ? ret[propsArr[l]] : ret,
+                targetProp: p.fields ? m : propsArr[l]
               });
-            });
+            }
+
             if (p.fields) {
-              const fieldValues = ret[prop].map(v => v.value);
-              const fieldLabels = ret[prop].map(v => v.label);
-              ret[prop] = {
+              const fieldValues = ret[propsArr[l]].map(v => v.value);
+              const fieldLabels = ret[propsArr[l]].map(v => v.label);
+              ret[propsArr[l]] = {
                 value: typeof p.value === 'function' ? p.value(fieldValues) : typeof p.value !== 'undefined' ? p.value : fieldValues,
-                label: typeof p.label === 'function' ? p.label(fieldLabels) : typeof p.label !== 'undefined' ? String(p.label) : String(ret[prop].value)
+                label: typeof p.label === 'function' ? p.label(fieldLabels) : typeof p.label !== 'undefined' ? String(p.label) : String(ret[propsArr[l]].value)
               };
             }
-          });
+          }
 
           // collect items based on the trackBy value
           // items with the same trackBy value are placed in an array and reduced later
           if (track) {
             util.track({
-              cfg,
+              cfg: cfgs[i],
               itemData: mainCell,
               obj: ret,
               target: trackedItems,
@@ -174,8 +176,8 @@ export default function extract(config, dataset, cache, util) {
           }
 
           items.push(ret);
-        });
-      });
+        }
+      }
 
       // reduce if items have been grouped
       if (track) {
@@ -188,6 +190,6 @@ export default function extract(config, dataset, cache, util) {
         dataItems.push(...items);
       }
     }
-  });
+  }
   return dataItems;
 }
