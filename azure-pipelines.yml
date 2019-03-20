@@ -1,0 +1,17 @@
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+# https://github.com/Microsoft/azure-pipelines-image-generation/tree/master/images
+
+trigger:
+- master
+
+pr:
+- master
+
+pool:
+  vmImage: 'Ubuntu-16.04'
+
+steps:
+- bash: |
+    yarn install --frozen-lockfile --ignore-optional
+    yarn run build
+  displayName: 'yarn install and build'
