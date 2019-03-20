@@ -61,6 +61,12 @@
         "mocha/no-exclusive-tests": "error",
         "no-unused-expressions": 0
       }
+    },
+    {
+      "files": ["**/test/protractor/**/*.js"],
+      "env": {
+        "protractor": true
+      }
     }
   ]
 }

@@ -18,6 +18,7 @@
     "test:integration:ci": "node ./test/scripts/start-puppet.js",
     "test:integration:local": "aw puppet -c aw.config.js --testExt '*.int.js'",
     "test:integration:server": "rollup -c ./test/integration/rollup.config.js",
+    "test:ptor": "aw protractor -c aw.config.ptor.js",
     "test:unit": "aw -c aw.config.js --testExt '*.spec.js'",
     "test:unit:watch": "aw -c aw.config.js --testExt '*.spec.js' -w"
   },
@@ -50,6 +51,7 @@
     "husky": "^1.3.1",
     "lerna": "^3.13.1",
     "mocha-junit-reporter": "^1.18.0",
+    "protractor": "^5.4.2",
     "rollup": "^1.6.0",
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-commonjs": "^9.2.2",
