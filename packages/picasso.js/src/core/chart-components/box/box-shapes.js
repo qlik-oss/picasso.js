@@ -189,9 +189,10 @@ export function horizontalLine({
  * @ignore
  */
 export function getBoxWidth(bandwidth, item, maxMajorWidth) {
+  const { width, maxWidthPx, minWidthPx } = item.box;
   const sign = bandwidth >= 0 ? 1 : -1;
-  let boxWidth = Math.min(sign * bandwidth * item.box.width, isNaN(item.box.maxWidthPx) ? maxMajorWidth : item.box.maxWidthPx / maxMajorWidth);
-  boxWidth = isNaN(item.box.minWidthPx) ? boxWidth : Math.max(item.box.minWidthPx / maxMajorWidth, boxWidth);
+  let boxWidth = Math.min(sign * bandwidth * width, isNaN(maxWidthPx) ? maxMajorWidth : maxWidthPx / maxMajorWidth);
+  boxWidth = isNaN(minWidthPx) ? boxWidth : Math.max(minWidthPx / maxMajorWidth, boxWidth);
   return boxWidth * sign;
 }
 
@@ -208,24 +209,132 @@ export function buildShapes({
   // }
 
   const output = [];
+  const majorItems = resolved.major.items;
 
-  let major = null;
-  const items = resolved.major.items;
+  if (!majorItems.length) {
+    return output;
+  }
 
-  for (let i = 0, len = items.length; i < len; i++) {
-    const d = items[i].data;
-    let children = [];
+  const rendWidth = width;
+  const rendHeight = height;
+  const maxMajorWidth = flipXY ? height : width;
+  const majorSettings = resolved.major.settings;
+  const minorProps = ['start', 'end', 'min', 'max', 'med'].filter(prop => typeof resolved.minor.settings[prop] !== 'undefined');
+  const numMinorProps = minorProps.length;
+  const nonOobKeys = keys.filter(key => key !== 'oob');
+
+  let children;
+  let major;
+  let minorItem;
+  let boxWidth;
+  let boxPadding;
+  let boxCenter;
+  let isLowerOutOfBounds;
+  let isHigherOutOfBounds;
+  let isOutOfBounds;
+  const numKeys = keys ? keys.length : 0;
+  const numNonOobKeys = nonOobKeys ? nonOobKeys.length : 0;
+
+  function addBox() {
+    /* THE BOX */
+    if (minorItem.box && isNumber(minorItem.start) && isNumber(minorItem.end)) {
+      children.push(box({
+        item: minorItem, boxWidth, boxPadding, rendWidth, rendHeight, flipXY
+      }));
+    }
+  }
+
+  function addLine() {
+    /* LINES MIN - START, END - MAX */
+    if (isNumber(minorItem.min) && isNumber(minorItem.start)) {
+      children.push(verticalLine({
+        item: minorItem, from: minorItem.min, to: minorItem.start, boxCenter, rendWidth, rendHeight, flipXY
+      }));
+    }
+
+    if (isNumber(minorItem.max) && isNumber(minorItem.end)) {
+      children.push(verticalLine({
+        item: minorItem, from: minorItem.max, to: minorItem.end, boxCenter, rendWidth, rendHeight, flipXY
+      }));
+    }
+  }
+
+  function addMedian() {
+    /* MEDIAN */
+    if (minorItem.median && isNumber(minorItem.med)) {
+      children.push(horizontalLine({
+        item: minorItem, key: 'median', position: minorItem.med, width: boxWidth, boxCenter, rendWidth, rendHeight, flipXY
+      }));
+    }
+  }
+
+  function addWhisker() {
+    /* WHISKERS */
+    if (minorItem.whisker) {
+      const whiskerWidth = boxWidth * minorItem.whisker.width;
+
+      if (isNumber(minorItem.min)) {
+        children.push(horizontalLine({
+          item: minorItem, key: 'whisker', position: minorItem.min, width: whiskerWidth, boxCenter, rendWidth, rendHeight, flipXY
+        }));
+      }
+
+      if (isNumber(minorItem.max)) {
+        children.push(horizontalLine({
+          item: minorItem, key: 'whisker', position: minorItem.max, width: whiskerWidth, boxCenter, rendWidth, rendHeight, flipXY
+        }));
+      }
+    }
+  }
+
+  function addOutOfBounds() {
+    /* OUT OF BOUNDS */
+    if (isLowerOutOfBounds) {
+      children.push(oob({
+        item: minorItem, value: 0, boxCenter, rendWidth, rendHeight, flipXY, symbol
+      }));
+    } else if (isHigherOutOfBounds) {
+      children.push(oob({
+        item: minorItem, value: 1, boxCenter, rendWidth, rendHeight, flipXY, symbol
+      }));
+    }
+  }
+
+  const addMarkerList = {
+    box: addBox,
+    line: addLine,
+    median: addMedian,
+    whisker: addWhisker
+  };
+
+  function getAllValidValues() {
+    let value;
+    let allValidValues = [];
+    for (let n = 0; n < numMinorProps; n++) {
+      value = minorItem[minorProps[n]];
+      if (isNumber(value)) {
+        allValidValues[allValidValues.length] = value;
+      }
+    }
+    return allValidValues;
+  }
+
+  for (let i = 0, len = majorItems.length; i < len; i++) {
+    children = [];
+    major = null;
+    const majorItem = majorItems[i];
+    const d = majorItem.data;
 
     let majorVal = null;
     let majorEndVal = null;
 
-    if (typeof resolved.major.settings.binStart !== 'undefined') { // if start and end is defined
-      majorVal = resolved.major.items[i].binStart;
-      majorEndVal = resolved.major.items[i].binEnd;
-      major = resolved.major.settings.binStart.scale;
+    if (typeof majorSettings.binStart !== 'undefined') { // if start and end is defined
+      majorVal = majorItem.binStart;
+      majorEndVal = majorItem.binEnd;
+      major = majorSettings.binStart.scale;
     } else {
-      major = resolved.major.settings.major.scale;
-      majorVal = major ? resolved.major.items[i].major : 0;
+      major = majorSettings.major.scale;
+      majorVal = major ? majorItem.major : 0;
     }
 
     let bandwidth = 0;
@@ -238,83 +347,32 @@ export function buildShapes({
       bandwidth = majorEndVal - majorVal;
     }
 
-    let item = extend({}, {
+    minorItem = extend({}, {
       major: majorVal,
       majorEnd: majorEndVal
     }, resolved.minor.items[i]);
 
-    keys.forEach(key => (item[key] = resolved[key].items[i]));
-
-    const maxMajorWidth = flipXY ? height : width;
-    const boxWidth = getBoxWidth(bandwidth, item, maxMajorWidth);
-    const boxPadding = (bandwidth - boxWidth) / 2;
-    const boxCenter = boxPadding + item.major + (boxWidth / 2);
-
-    const rendWidth = width;
-    const rendHeight = height;
-
-
-    const allValidValues = [item.min, item.start, item.med, item.end, item.max].filter(isNumber);
-
-    const isLowerOutOfBounds = Math.min(...allValidValues) < 0 && Math.max(...allValidValues) < 0;
-    const isHigherOutOfBounds = Math.min(...allValidValues) > 1 && Math.max(...allValidValues) > 1;
-    const isOutOfBounds = isLowerOutOfBounds || isHigherOutOfBounds;
-
-    /* OUT OF BOUNDS */
-    if (item.oob.show && isLowerOutOfBounds) {
-      children.push(oob({
-        item, value: 0, boxCenter, rendWidth, rendHeight, flipXY, symbol
-      }));
+    for (let j = 0; j < numKeys; j++) {
+      minorItem[keys[j]] = resolved[keys[j]].items[i];
     }
 
-    if (item.oob.show && isHigherOutOfBounds) {
-      children.push(oob({
-        item, value: 1, boxCenter, rendWidth, rendHeight, flipXY, symbol
-      }));
-    }
+    boxWidth = getBoxWidth(bandwidth, minorItem, maxMajorWidth);
+    boxPadding = (bandwidth - boxWidth) / 2;
+    boxCenter = boxPadding + minorItem.major + (boxWidth / 2);
+    const allValidValues = getAllValidValues();
+    const max = Math.max(...allValidValues);
+    const min = Math.min(...allValidValues);
 
-    /* THE BOX */
-    if (!isOutOfBounds && item.box.show && isNumber(item.start) && isNumber(item.end)) {
-      children.push(box({
-        item, boxWidth, boxPadding, rendWidth, rendHeight, flipXY
-      }));
-    }
+    isLowerOutOfBounds = min < 0 && max < 0;
+    isHigherOutOfBounds = min > 1 && max > 1;
+    isOutOfBounds = isLowerOutOfBounds || isHigherOutOfBounds;
 
-    /* LINES MIN - START, END - MAX */
-    if (!isOutOfBounds && item.line.show && isNumber(item.min) && isNumber(item.start)) {
-      children.push(verticalLine({
-        item, from: item.min, to: item.start, boxCenter, rendWidth, rendHeight, flipXY
-      }));
-    }
-
-    if (!isOutOfBounds && item.line.show && isNumber(item.max) && isNumber(item.end)) {
-      children.push(verticalLine({
-        item, from: item.max, to: item.end, boxCenter, rendWidth, rendHeight, flipXY
-      }));
-    }
-
-    /* MEDIAN */
-    if (!isOutOfBounds && item.median.show && isNumber(item.med)) {
-      children.push(horizontalLine({
-        item, key: 'median', position: item.med, width: boxWidth, boxCenter, rendWidth, rendHeight, flipXY
-      }));
-    }
-
-    /* WHISKERS */
-    if (!isOutOfBounds && item.whisker.show) {
-      const whiskerWidth = boxWidth * item.whisker.width;
-
-      if (isNumber(item.min)) {
-        children.push(horizontalLine({
-          item, key: 'whisker', position: item.min, width: whiskerWidth, boxCenter, rendWidth, rendHeight, flipXY
-        }));
+    if (!isOutOfBounds) {
+      for (let k = 0; k < numNonOobKeys; k++) {
+        addMarkerList[nonOobKeys[k]]();
       }
-
-      if (isNumber(item.max)) {
-        children.push(horizontalLine({
-          item, key: 'whisker', position: item.max, width: whiskerWidth, boxCenter, rendWidth, rendHeight, flipXY
-        }));
-      }
+    } else if (minorItem.oob) {
+      addOutOfBounds();
     }
 
     const container = {

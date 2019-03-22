@@ -73,10 +73,15 @@ const component = {
 
     const { style, resolver, symbol } = this;
 
+    const keys = dataKeys.filter(key => !this.settings.settings[key] || this.settings.settings[key].show !== false);
+    const defaultSettings = {};
+
+    keys.forEach(key => defaultSettings[key] = DEFAULT_DATA_SETTINGS[key]);
+
     const resolved = complexResolver({
-      keys: dataKeys,
+      keys,
       data,
-      defaultSettings: DEFAULT_DATA_SETTINGS,
+      defaultSettings,
       style,
       settings: this.settings.settings,
       width,
@@ -93,7 +98,7 @@ const component = {
       height,
       flipXY,
       resolved,
-      keys: dataKeys,
+      keys,
       symbol
     });
 
