@@ -165,6 +165,21 @@ describe('Axis size calculator', () => {
         expect(state.labels.activeMode).to.equals('tilted');
       });
 
+      it('should switch to tilted orientation if tiltThreshold is set to 1', () => {
+        settings.dock = 'bottom';
+        settings.align = 'bottom';
+        settings.labels.show = true;
+        settings.labels.mode = 'auto';
+        rect.width = 5;
+        state.labels.activeMode = 'horizontal';
+        settings.labels.tiltThreshold = 1;
+        isDiscrete = true;
+
+        sizeFn(rect);
+
+        expect(state.labels.activeMode).to.equals('tilted');
+      });
+
       it('should if set use maxGlyphCount to determine if horizontal size limit is reached', () => {
         settings.dock = 'bottom';
         settings.align = 'bottom';
