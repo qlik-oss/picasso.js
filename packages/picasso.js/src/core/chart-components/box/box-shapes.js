@@ -307,16 +307,24 @@ export function buildShapes({
     whisker: addWhisker
   };
 
-  function getAllValidValues() {
+  function checkOutOfBounds() {
     let value;
-    let allValidValues = [];
+    let max = -Number.MAX_VALUE;
+    let min = Number.MAX_VALUE;
     for (let n = 0; n < numMinorProps; n++) {
       value = minorItem[minorProps[n]];
       if (isNumber(value)) {
-        allValidValues[allValidValues.length] = value;
+        if (max < value) {
+          max = value;
+        }
+        if (min > value) {
+          min = value;
+        }
       }
     }
-    return allValidValues;
+    isLowerOutOfBounds = max < 0 && max !== -Number.MAX_VALUE;
+    isHigherOutOfBounds = min > 1 && min !== Number.MAX_VALUE;
+    isOutOfBounds = isLowerOutOfBounds || isHigherOutOfBounds;
   }
 
   for (let i = 0, len = majorItems.length; i < len; i++) {
@@ -359,13 +367,8 @@ export function buildShapes({
     boxWidth = getBoxWidth(bandwidth, minorItem, maxMajorWidth);
     boxPadding = (bandwidth - boxWidth) / 2;
     boxCenter = boxPadding + minorItem.major + (boxWidth / 2);
-    const allValidValues = getAllValidValues();
-    const max = Math.max(...allValidValues);
-    const min = Math.min(...allValidValues);
 
-    isLowerOutOfBounds = min < 0 && max < 0;
-    isHigherOutOfBounds = min > 1 && max > 1;
-    isOutOfBounds = isLowerOutOfBounds || isHigherOutOfBounds;
+    checkOutOfBounds();
 
     if (!isOutOfBounds) {
       for (let k = 0; k < numNonOobKeys; k++) {
