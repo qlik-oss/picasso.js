@@ -151,28 +151,29 @@ function doIt({
     }
 
     for (let j = 0; j < arr.length; j++) {
+      const p = arr[j];
       let fn;
       let str;
       let value;
       let nodes;
       let cells;
       let label;
-      if (arr[j].type === 'primitive') {
-        value = arr[j].value;
-        label = String(arr[j].value);
+      if (p.type === 'primitive') {
+        value = p.value;
+        label = String(p.value);
       } else {
-        if (typeof arr[j].value === 'function') {
-          fn = v => arr[j].value(v, item);
+        if (typeof p.value === 'function') {
+          fn = v => p.value(v, item);
         }
-        if (typeof arr[j].label === 'function') {
-          str = v => arr[j].label(v, item);
+        if (typeof p.label === 'function') {
+          str = v => p.label(v, item);
         }
-        if (arr[j].accessor) {
-          nodes = arr[j].accessor(item);
+        if (p.accessor) {
+          nodes = p.accessor(item);
           if (Array.isArray(nodes)) { // propably descendants
-            cells = nodes.map(arr[j].valueAccessor);
-            if (arr[j].attrAccessor) {
-              cells = cells.map(arr[j].attrAccessor);
+            cells = nodes.map(p.valueAccessor);
+            if (p.attrAccessor) {
+              cells = cells.map(p.attrAccessor);
             }
             if (fn) {
               value = cells.map(fn);
@@ -182,10 +183,10 @@ function doIt({
               label = cells.map(str);
               str = null;
             }
-            value = arr[j].reduce ? arr[j].reduce(value) : value;
-            label = arr[j].reduceLabel ? arr[j].reduceLabel(label, value) : String(value);
+            value = p.reduce ? p.reduce(value) : value;
+            label = p.reduceLabel ? p.reduceLabel(label, value) : String(value);
           } else {
-            value = arr[j].attrAccessor ? arr[j].attrAccessor(arr[j].valueAccessor(nodes)) : arr[j].valueAccessor(nodes);
+            value = p.attrAccessor ? p.attrAccessor(p.valueAccessor(nodes)) : p.valueAccessor(nodes);
             label = value;
           }
         } else {
@@ -203,8 +204,8 @@ function doIt({
           value: v,
           label: str ? str(label) : (label != null ? label : String(v))
         };
-        if (arr[j].field) {
-          ret[propsArr[i]].source = { field: arr[j].field.key(), key: sourceKey };
+        if (p.field) {
+          ret[propsArr[i]].source = { field: p.field.key(), key: sourceKey };
         }
       }
     }
@@ -289,12 +290,13 @@ const attachPropsAccessors = ({
     const pCfg = props[propsArr[i]];
     const arr = pCfg.fields ? pCfg.fields : [pCfg];
     for (let j = 0; j < arr.length; j++) {
-      if (arr[j].field !== f) {
-        const depthObject = getFieldDepth(arr[j].field, { cube, cache });
+      const p = arr[j];
+      if (p.field !== f) {
+        const depthObject = getFieldDepth(p.field, { cube, cache });
         const accessors = getFieldAccessor(itemDepthObject, depthObject);
-        arr[j].accessor = accessors.nodeFn; // nodes accessor
-        arr[j].valueAccessor = accessors.valueFn; // cell accessor
-        arr[j].attrAccessor = accessors.attrFn; // attr cell accessor
+        p.accessor = accessors.nodeFn; // nodes accessor
+        p.valueAccessor = accessors.valueFn; // cell accessor
+        p.attrAccessor = accessors.attrFn; // attr cell accessor
       }
     }
   }
