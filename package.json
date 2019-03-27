@@ -14,12 +14,12 @@
     "lint": "cross-env FORCE_COLOR=1 lerna run lint",
     "link": "lerna link",
     "test": "npm run test:unit && npm run test:component",
-    "test:component": "aw -c aw.config.js --type component",
+    "test:component": "aw -c aw.config.js --testExt '*.comp.js'",
     "test:integration:ci": "node ./test/scripts/start-puppet.js",
-    "test:integration:local": "aw puppet -c aw.config.js --type integration",
+    "test:integration:local": "aw puppet -c aw.config.js --testExt '*.int.js'",
     "test:integration:server": "rollup -c ./test/integration/rollup.config.js",
-    "test:unit": "aw -c aw.config.js",
-    "test:unit:watch": "aw -c aw.config.js -w"
+    "test:unit": "aw -c aw.config.js --testExt '*.spec.js'",
+    "test:unit:watch": "aw -c aw.config.js --testExt '*.spec.js' -w"
   },
   "husky": {
     "hooks": {
@@ -31,7 +31,7 @@
     "yarn": "~1.9.2 || > 1.9.10"
   },
   "devDependencies": {
-    "@after-work.js/aw": "^5.1.3",
+    "@after-work.js/aw": "^6.0.3",
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.4.0",
     "@babel/plugin-transform-react-jsx": "^7.3.0",
