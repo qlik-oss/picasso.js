@@ -145,11 +145,8 @@ export default function resolveSettings(comp) {
   } else {
     const labels = comp.scale.labels ? comp.scale.labels() : null;
     data.items = domain.map((d, idx) => {
-      let datum = comp.scale.datum ? extend({}, comp.scale.datum(d)) : { value: d };
-      if (comp.scale.datum) {
-        datum = extend({}, comp.scale.datum(d));
-        datum.value = d;
-      }
+      const datum = comp.scale.datum ? extend({}, comp.scale.datum(d)) : { value: d };
+      datum.value = d;
 
       if (comp.scale.label) {
         datum.label = comp.scale.label(d);
