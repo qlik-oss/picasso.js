@@ -140,6 +140,7 @@ function discreteCalcMaxTextRect({
 function continuousCalcMaxTextRect({
   measureText, settings, innerRect, ticks, tilted, layered
 }) {
+  const PADDING = 0;
   const h = measureText({
     text: 'M',
     fontSize: settings.labels.fontSize,
@@ -150,12 +151,12 @@ function continuousCalcMaxTextRect({
   if (settings.align === 'left' || settings.align === 'right') {
     textRect.width = innerRect.width - labelsSpacing(settings) - settings.paddingEnd;
   } else if (layered) {
-    textRect.width = (innerRect.width / majorTicks(ticks).length) * 0.75 * 2;
+    textRect.width = ((innerRect.width / majorTicks(ticks).length) * 2) - PADDING;
   } else if (tilted) {
     const radians = Math.abs(settings.labels.tiltAngle) * (Math.PI / 180);
     textRect.width = (innerRect.height - labelsSpacing(settings) - settings.paddingEnd - (h * Math.cos(radians))) / Math.sin(radians);
   } else {
-    textRect.width = (innerRect.width / majorTicks(ticks).length) * 0.75;
+    textRect.width = (innerRect.width / majorTicks(ticks).length) - PADDING;
   }
 
   textRect.width = getClampedValue({ value: textRect.width, maxValue: settings.labels.maxLengthPx, minValue: settings.labels.minLengthPx });

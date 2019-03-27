@@ -15,7 +15,7 @@ function clampEnds(struct, buildOpts) {
     return;
   }
 
-  const outerBoundaryMultipler = 0.75;
+  const outerBoundaryMultipler = 0.5;
   if (buildOpts.align === 'top' || buildOpts.align === 'bottom') {
     const leftBoundary = 0;
     const rightBoundary = buildOpts.outerRect.width;
