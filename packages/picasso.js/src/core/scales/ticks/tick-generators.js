@@ -148,15 +148,16 @@ function ticksByValue({ values, scale, formatter = v => v }) {
       return val <= scale.max() && val >= scale.min() && ary.indexOf(v) === i;
     })
     .map((v) => {
-      const value = isObject(v) ? v.value : v;
+      const isObj = isObject(v);
+      const value = isObj ? v.value : v;
       const position = scale(value);
       return {
         position,
         value,
-        label: isObject(v) && typeof v.label !== 'undefined' ? v.label : formatter(value),
-        isMinor: false,
-        start: isObject(v) && !isNaN(v.start) ? clamp(scale(v.start)) : position, // TODOHandle end < start?
-        end: isObject(v) && !isNaN(v.end) ? clamp(scale(v.end)) : position // TODO Handle start > end?
+        label: isObj && typeof v.label !== 'undefined' ? v.label : formatter(value),
+        isMinor: isObj ? !!v.isMinor : false,
+        start: isObj && !isNaN(v.start) ? clamp(scale(v.start)) : position, // TODOHandle end < start?
+        end: isObj && !isNaN(v.end) ? clamp(scale(v.end)) : position // TODO Handle start > end?
       };
     });
 }
