@@ -29,6 +29,11 @@ function isValidText(text) {
   return (type === 'string' || type === 'number') && text !== '';
 }
 
+export function isTextInRect(rect, textMetrics, opts) {
+  return opts.rotate ? !(rect.width < opts.fontSize || rect.width < textMetrics.height || rect.height < textMetrics.width)
+    : !(rect.height < opts.fontSize || rect.width < textMetrics.width || rect.height < textMetrics.height);
+}
+
 export function placeTextInRect(rect, text, opts) {
   const label = {
     type: 'text',
@@ -46,8 +51,7 @@ export function placeTextInRect(rect, text, opts) {
   };
 
   const textMetrics = opts.textMetrics;
-
-  if (!opts.overflow && (rect.width < opts.fontSize || rect.height < textMetrics.height)) {
+  if (!opts.overflow && !isTextInRect(rect, textMetrics, opts)) {
     return false;
   }
 
