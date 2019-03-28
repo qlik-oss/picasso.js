@@ -81,9 +81,10 @@ const moveToPosition = (element, comp, index) => {
   const nodes = element.children;
   const i = Math.max(0, index);
   const node = nodes[i];
+  if (el === node) { return; }
   const additionalEl = comp.instance.def.additionalElements && comp.instance.def.additionalElements().filter(Boolean);
   if (element.insertBefore && typeof node !== 'undefined') {
-    element.insertBefore(el, nodes[i]);
+    element.insertBefore(el, node);
     if (additionalEl) {
       additionalEl.forEach((ae) => {
         element.insertBefore(ae, el);
