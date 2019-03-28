@@ -30,8 +30,8 @@ function isValidText(text) {
 }
 
 export function isTextInRect(rect, textMetrics, opts) {
-  return opts.rotate ? !(rect.width < opts.fontSize || rect.width < textMetrics.height || rect.height < textMetrics.width)
-    : !(rect.height < opts.fontSize || rect.width < textMetrics.width || rect.height < textMetrics.height);
+  return opts.rotate ? !(rect.width < textMetrics.height || rect.height < textMetrics.width)
+    : !(rect.width < textMetrics.width || rect.height < textMetrics.height);
 }
 
 export function placeTextInRect(rect, text, opts) {

@@ -69,38 +69,30 @@ describe('labeling - bars', () => {
 
   describe('is text in rect', () => {
     describe('when rotate = false', () => {
-      it('should return false if rect height < fontSize', () => {
-        expect(isTextInRect({ width: 100, height: 5 }, { width: 1, height: 1 }, { fontSize: 10, rotate: false })).to.equal(false);
-      });
-
       it('should return false if rect width < text width', () => {
-        expect(isTextInRect({ width: 20, height: 100 }, { width: 30, height: 1 }, { fontSize: 10, rotate: false })).to.equal(false);
+        expect(isTextInRect({ width: 20, height: 100 }, { width: 30, height: 1 }, { rotate: false })).to.equal(false);
       });
 
       it('should return false if rect height < text height', () => {
-        expect(isTextInRect({ width: 20, height: 30 }, { width: 10, height: 50 }, { fontSize: 10, rotate: false })).to.equal(false);
+        expect(isTextInRect({ width: 20, height: 30 }, { width: 10, height: 50 }, { rotate: false })).to.equal(false);
       });
 
-      it('should return true if rect height >= fontSize,  rect width >= text width, and rect height >= text height', () => {
-        expect(isTextInRect({ width: 30, height: 50 }, { width: 20, height: 40 }, { fontSize: 10, rotate: false })).to.equal(true);
+      it('should return true if rect width >= text width, and rect height >= text height', () => {
+        expect(isTextInRect({ width: 30, height: 50 }, { width: 20, height: 40 }, { rotate: false })).to.equal(true);
       });
     });
 
     describe('when rotate = true', () => {
-      it('should return false if rect width < fontSize', () => {
-        expect(isTextInRect({ width: 5, height: 100 }, { width: 1, height: 1 }, { fontSize: 10, rotate: true })).to.equal(false);
-      });
-
       it('should return false if rect height < text width', () => {
-        expect(isTextInRect({ width: 100, height: 20 }, { width: 30, height: 1 }, { fontSize: 10, rotate: true })).to.equal(false);
+        expect(isTextInRect({ width: 100, height: 20 }, { width: 30, height: 1 }, { rotate: true })).to.equal(false);
       });
 
       it('should return false if rect width < text height', () => {
-        expect(isTextInRect({ width: 30, height: 20 }, { width: 10, height: 50 }, { fontSize: 10, rotate: true })).to.equal(false);
+        expect(isTextInRect({ width: 30, height: 20 }, { width: 10, height: 50 }, { rotate: true })).to.equal(false);
       });
 
-      it('should return true if rect width >= fontSize,  rect height >= text width, and rect width >= text height', () => {
-        expect(isTextInRect({ width: 50, height: 30 }, { width: 20, height: 40 }, { fontSize: 10, rotate: true })).to.equal(true);
+      it('should return true if rect height >= text width, and rect width >= text height', () => {
+        expect(isTextInRect({ width: 50, height: 30 }, { width: 20, height: 40 }, { rotate: true })).to.equal(true);
       });
     });
   });
