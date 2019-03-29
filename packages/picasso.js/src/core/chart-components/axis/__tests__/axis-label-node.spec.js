@@ -261,7 +261,6 @@ describe('Axis Label Node', () => {
         tick = createTick(0, 0);
         expected.x = 0;
         expected.anchor = 'start';
-        expected.maxWidth *= 0.75;
         expect(buildLabel(tick, buildOpts)).to.deep.include(expected);
       });
 
@@ -276,7 +275,6 @@ describe('Axis Label Node', () => {
         tick = createTick(1, 1);
         expected.x = 50;
         expected.anchor = 'end';
-        expected.maxWidth *= 0.75;
         expect(buildLabel(tick, buildOpts)).to.deep.include(expected);
       });
 
@@ -304,7 +302,6 @@ describe('Axis Label Node', () => {
         tick = createTick(0, 0);
         expected.x = 0;
         expected.anchor = 'start';
-        expected.maxWidth *= 0.75;
         expect(buildLabel(tick, buildOpts)).to.deep.include(expected);
       });
 
@@ -319,7 +316,6 @@ describe('Axis Label Node', () => {
         tick = createTick(1, 1);
         expected.x = 50;
         expected.anchor = 'end';
-        expected.maxWidth *= 0.75;
         expect(buildLabel(tick, buildOpts)).to.deep.include(expected);
       });
 
