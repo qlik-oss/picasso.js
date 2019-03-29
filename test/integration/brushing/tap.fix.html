@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Basic bar chart</title>
+    <meta charset="utf-8">
+    <base href="/">
+    <script src="node_modules/hammerjs/hammer.min.js"></script>
+    <script src="packages/picasso.js/dist/picasso.js"></script>
+    <script src="plugins/hammer/dist/picasso-hammer.js"></script>
+    <script src="bundle.js"></script>
+    <style>
+      html, body, .container {
+        width: 100%;
+        height: 100%;
+      }
+      ul {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container"></div>
+    <ul></ul>
+    <script type="text/javascript">
+      var t = Date.now();
+      function log(e, type, d) {
+        var li = document.createElement('li');
+        li.innerText = [d, type, e.clientX, e.clientY].join(', ');
+        document.querySelector('ul').appendChild(li);
+      }
+      var element = document.querySelector('.container');
+      element.addEventListener('mousedown', function(e) { log(e, 'down', Date.now() - t); });
+      element.addEventListener('mouseup', function(e) { log(e, 'up', Date.now() - t); });
+      var picassochart = window.picasso.chart({
+        element: element,
+        data: [{
+          type: 'matrix',
+          data: [
+            ['Year', 'Month', 'Sales', 'Margin'],
+            ['2010', 'Jan', 1106, 7],
+            ['2010', 'Feb', 5444, 53],
+            ['2010', 'Mar', 147, 64],
+            ['2010', 'Apr', 7499, 47],
+            ['2010', 'May', 430, 62],
+            ['2010', 'June', 9735, 13],
+            ['2010', 'July', 7435, 15],
+          ]
+        }],
+        settings: {
+          scales: {
+            y: {
+              data: { field: 'Sales' },
+              invert: true,
+              include: [0]
+            },
+            c: {
+              data: { field: 'Sales' },
+              type: 'color'
+            },
+            t: { data: { extract: { field: 'Month' } }, padding: 0.3 },
+          },
+          components: [{
+            key: 'y-axis',
+            type: 'axis',
+            dock: 'left',
+            scale: 'y'
+          }, {
+            key: 'x-axis',
+            type: 'axis',
+            dock: 'bottom',
+            scale: 't'
+          }, {
+            key: 'bars',
+            type: 'box',
+            brush: {
+              _trigger: [{
+                contexts: ['highlight'],
+                on: 'tap',
+                action: 'toggle'
+              }],
+              consume: [{
+                context: 'highlight',
+                style: {
+                  inactive: {
+                    opacity: 0.4
+                  }
+                },
+              }]
+            },
+            data: {
+              extract: {
+                field: 'Month',
+                props: {
+                  start: 0,
+                  end: { field: 'Sales' }
+                }
+              }
+            },
+            settings: {
+              major: { scale: 't' },
+              minor: { scale: 'y' },
+              box: {
+                fill: { scale: 'c', ref: 'end' }
+              }
+            }
+          }]
+        }
+      });
+      element.addEventListener('click', function(e) {
+        var shapes = picassochart.shapesAt({ x: e.clientX, y: e.clientY });
+        log(e, 'click', Date.now() - t);
+        picassochart.brushFromShapes(shapes, {
+          components: [{
+            key: 'bars',
+            contexts: ['highlight'],
+          }]
+        });
+      });
+    </script>
+  </body>
+</html>

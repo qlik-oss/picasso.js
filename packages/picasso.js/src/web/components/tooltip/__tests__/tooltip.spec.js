@@ -216,7 +216,7 @@ describe('Tooltip', () => {
         x: 0,
         y: 0,
         width: 100,
-        height: 100,
+        height: 50,
         scaleRatio: { x: 0, y: 0 }
       };
 
@@ -229,6 +229,7 @@ describe('Tooltip', () => {
       componentFixture.simulateRender({ inner: container, outer: container });
 
       expect(stub).to.have.been.called;
+      expect(componentFixture.mocks().renderer.size).to.have.been.calledWith({ width: 100, height: 50 });
     });
 
     it('should apply appendTo on updated', () => {
@@ -237,6 +238,7 @@ describe('Tooltip', () => {
       componentFixture.simulateUpdate(config);
 
       expect(stub).to.have.been.called;
+      expect(componentFixture.mocks().renderer.size).to.have.been.calledWith({ width: 100, height: 50 });
     });
   });
 });

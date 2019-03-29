@@ -59,7 +59,7 @@ function shouldAutoTilt({
 }) {
   const glyphCount = settings.labels.maxGlyphCount;
   const m = state.labels.activeMode === 'layered' ? 2 : 1;
-  const magicSizeRatioMultipler = 0.7; // So that if less the 70% of labels are visible, toggle on tilt
+  const magicSizeRatioMultipler = settings.labels.tiltThreshold ? settings.labels.tiltThreshold : 0.7; // So that if less the 70% of labels are visible, toggle on tilt or use variable tiltThreshold
   const ellipsCharSize = measure('…').width; // include ellipsed char in calc as it's generally large then the char it replaces
   const size = rect.width;
   let maxLabelWidth = 0;
