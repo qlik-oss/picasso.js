@@ -37,8 +37,8 @@ To have a tick representing a range, it is possible to define a set of custom ti
   domain: [0, 10],
   ticks: {
     values: [
-      { value: 3, start: 2, end: 4, label: '$3' },
-      { value: 6, start: 5, end: 7, label: '$6' }
+      { value: 3, start: 2, end: 4, label: '$3', isMinor: false },
+      { value: 6, start: 5, end: 7, label: '$6', isMinor: false }
     ]
   }
 }

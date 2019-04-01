@@ -140,8 +140,8 @@ function doIt({
   ret,
   sourceKey
 }) {
-  propsArr.forEach((prop) => {
-    const pCfg = props[prop];
+  for (let i = 0; i < propsArr.length; i++) {
+    const pCfg = props[propsArr[i]];
     const arr = pCfg.fields || [pCfg];
     let coll;
     let collStr;
@@ -149,7 +149,9 @@ function doIt({
       coll = [];
       collStr = [];
     }
-    arr.forEach((p) => {
+
+    for (let j = 0; j < arr.length; j++) {
+      const p = arr[j];
       let fn;
       let str;
       let value;
@@ -198,22 +200,22 @@ function doIt({
         collStr.push(str && label != null ? str(label) : (label != null ? label : String(v)));
       } else {
         const v = fn ? fn(value) : value;
-        ret[prop] = {
+        ret[propsArr[i]] = {
           value: v,
           label: str ? str(label) : (label != null ? label : String(v))
         };
         if (p.field) {
-          ret[prop].source = { field: p.field.key(), key: sourceKey };
+          ret[propsArr[i]].source = { field: p.field.key(), key: sourceKey };
         }
       }
-    });
+    }
     if (coll) {
-      ret[prop] = {
+      ret[propsArr[i]] = {
         value: typeof pCfg.value === 'function' ? pCfg.value(coll, item) : coll,
         label: typeof pCfg.label === 'function' ? pCfg.label(collStr, item) : collStr
       };
     }
-  });
+  }
 }
 
 const getHierarchy = (cube, cache, config) => {
@@ -284,10 +286,11 @@ const attachPropsAccessors = ({
   itemDepthObject,
   f
 }) => {
-  propsArr.forEach((prop) => {
-    const pCfg = props[prop];
+  for (let i = 0; i < propsArr.length; i++) {
+    const pCfg = props[propsArr[i]];
     const arr = pCfg.fields ? pCfg.fields : [pCfg];
-    arr.forEach((p) => {
+    for (let j = 0; j < arr.length; j++) {
+      const p = arr[j];
       if (p.field !== f) {
         const depthObject = getFieldDepth(p.field, { cube, cache });
         const accessors = getFieldAccessor(itemDepthObject, depthObject);
@@ -295,8 +298,8 @@ const attachPropsAccessors = ({
         p.valueAccessor = accessors.valueFn; // cell accessor
         p.attrAccessor = accessors.attrFn; // attr cell accessor
       }
-    });
-  });
+    }
+  }
 };
 
 export function augment(config = {}, dataset, cache, util) {
@@ -350,12 +353,12 @@ export function augment(config = {}, dataset, cache, util) {
   const replicaDescendants = replica.descendants();
   const descendants = h.descendants();
 
-  descendants.forEach((node, idx) => {
-    const propsArr = propDefs[node.depth].propsArr;
-    const props = propDefs[node.depth].props;
-    const main = propDefs[node.depth].main;
+  for (let i = 0; i < descendants.length; i++) {
+    const propsArr = propDefs[descendants[i].depth].propsArr;
+    const props = propDefs[descendants[i].depth].props;
+    const main = propDefs[descendants[i].depth].main;
 
-    const item = replicaDescendants[idx];
+    const item = replicaDescendants[i];
     const itemData = item.data; // main.valueAccessor(currentOriginal);
 
     const ret = datumExtract(main, itemData, { key: sourceKey });
@@ -368,25 +371,25 @@ export function augment(config = {}, dataset, cache, util) {
       sourceKey,
       isTree: true
     });
-    node.data = ret;
-  });
+    descendants[i].data = ret;
+  }
   return h;
 }
 
 export function extract(config, dataset, cache, util) {
   const cfgs = Array.isArray(config) ? config : [config];
   let dataItems = [];
-  cfgs.forEach((cfg) => {
-    if (typeof cfg.field !== 'undefined') {
+  for (let g = 0; g < cfgs.length; g++) {
+    if (typeof cfgs[g].field !== 'undefined') {
       const cube = dataset.raw();
       const sourceKey = dataset.key();
       const h = getHierarchy(cube, cache, config);
       if (!h) {
-        return;
+        continue;
       }
 
-      const f = typeof cfg.field === 'object' ? cfg.field : dataset.field(cfg.field);
-      const { props, main } = util.normalizeConfig(cfg, dataset);
+      const f = typeof cfgs[g].field === 'object' ? cfgs[g].field : dataset.field(cfgs[g].field);
+      const { props, main } = util.normalizeConfig(cfgs[g], dataset);
       const propsArr = Object.keys(props);
 
       const itemDepthObject = getFieldDepth(f, { cube, cache });
@@ -401,8 +404,8 @@ export function extract(config, dataset, cache, util) {
         f
       });
 
-      const track = !!cfg.trackBy;
-      const trackType = typeof cfg.trackBy;
+      const track = !!cfgs[g].trackBy;
+      const trackType = typeof cfgs[g].trackBy;
       const tracker = {};
       const trackedItems = [];
 
@@ -428,7 +431,7 @@ export function extract(config, dataset, cache, util) {
         // items with the same trackBy value are placed in an array and reduced later
         if (track) {
           util.track({
-            cfg,
+            cfg: cfgs[g],
             itemData,
             obj: ret,
             target: trackedItems,
@@ -449,6 +452,6 @@ export function extract(config, dataset, cache, util) {
         dataItems.push(...mapped);
       }
     }
-  });
+  }
   return dataItems;
 }

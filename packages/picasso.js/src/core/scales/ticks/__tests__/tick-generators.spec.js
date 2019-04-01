@@ -10,7 +10,7 @@ describe('Tick generators', () => {
   const d3formatter = formatter('d3-number')('');
   let input;
 
-  describe('continues tick generator', () => {
+  describe('continuous tick generator', () => {
     beforeEach(() => {
       settings = extend(true, {}, { ticks: DEFAULT_TICKS_SETTINGS, minorTicks: DEFAULT_MINORTICKS_SETTINGS });
       settings.paddingStart = 0;
@@ -66,6 +66,27 @@ describe('Tick generators', () => {
           expect(ticks[i].position).to.equal(e.position);
           expect(ticks[i].start).to.equal(e.start);
           expect(ticks[i].end).to.equal(e.end);
+        });
+      });
+
+      it('should generate ticks from objects with isMinor property', () => {
+        settings.ticks.values = [
+          {
+            value: 0.1, start: 0, end: 0.2, isMinor: true
+          },
+          0.3
+        ];
+        const ticks = scale.ticks(input);
+        [
+          {
+            position: 0.1, start: 0, end: 0.2, isMinor: true
+          },
+          { position: 0.3, start: 0.3, end: 0.3 }
+        ].forEach((e, i) => {
+          expect(ticks[i].position).to.equal(e.position);
+          expect(ticks[i].start).to.equal(e.start);
+          expect(ticks[i].end).to.equal(e.end);
+          expect(ticks[i].isMinor).to.equal(!!e.isMinor);
         });
       });
 

@@ -5,6 +5,7 @@ import {
   testRectRect
 } from '../../math/narrow-phase-collision';
 import { getClampedValue } from './axis-label-size';
+import getHorizontalContinuousWidth from './get-continuous-label-rect';
 
 function tickSpacing(settings) {
   let spacing = 0;
@@ -49,23 +50,23 @@ function tickBandwidth(scale, tick) {
   return tick ? Math.abs(tick.end - tick.start) : scale.bandwidth();
 }
 
-function labelBuilder(ticks, buildOpts, tickFn) {
-  return ticks.map((tick) => {
-    tickFn(tick);
+function labelBuilder(ticks, buildOpts, resolveTickOpts) {
+  return ticks.map((tick, idx) => {
+    resolveTickOpts(tick, idx);
     const label = buildLabel(tick, buildOpts);
     label.data = tick.data;
     return label;
   });
 }
 
-function layeredLabelBuilder(ticks, buildOpts, settings, tickFn) {
+function layeredLabelBuilder(ticks, buildOpts, settings, resolveTickOpts) {
   const padding = buildOpts.padding;
   const spacing = labelsSpacing(settings);
-  return ticks.map((tick, i) => {
-    tickFn(tick);
+  return ticks.map((tick, idx) => {
+    resolveTickOpts(tick, idx);
     const padding2 = spacing + buildOpts.maxHeight + settings.labels.margin;
-    buildOpts.layer = i % 2;
-    buildOpts.padding = i % 2 === 0 ? padding : padding2;
+    buildOpts.layer = idx % 2;
+    buildOpts.padding = idx % 2 === 0 ? padding : padding2;
     const label = buildLabel(tick, buildOpts);
     label.data = tick.data;
     return label;
@@ -138,7 +139,7 @@ function discreteCalcMaxTextRect({
 }
 
 function continuousCalcMaxTextRect({
-  measureText, settings, innerRect, ticks, tilted, layered
+  measureText, settings, innerRect, outerRect, tilted, layered, tick, index, major
 }) {
   const h = measureText({
     text: 'M',
@@ -149,13 +150,18 @@ function continuousCalcMaxTextRect({
   const textRect = { width: 0, height: h };
   if (settings.align === 'left' || settings.align === 'right') {
     textRect.width = innerRect.width - labelsSpacing(settings) - settings.paddingEnd;
-  } else if (layered) {
-    textRect.width = (innerRect.width / majorTicks(ticks).length) * 0.75 * 2;
   } else if (tilted) {
     const radians = Math.abs(settings.labels.tiltAngle) * (Math.PI / 180);
     textRect.width = (innerRect.height - labelsSpacing(settings) - settings.paddingEnd - (h * Math.cos(radians))) / Math.sin(radians);
   } else {
-    textRect.width = (innerRect.width / majorTicks(ticks).length) * 0.75;
+    textRect.width = getHorizontalContinuousWidth({
+      layered,
+      major,
+      innerRect,
+      outerRect,
+      tick,
+      index
+    });
   }
 
   textRect.width = getClampedValue({ value: textRect.width, maxValue: settings.labels.maxLengthPx, minValue: settings.labels.minLengthPx });
@@ -172,15 +178,15 @@ function getStepSizeFn({
 }
 
 export default function nodeBuilder(isDiscrete) {
-  let calcMaxTextRectFn;
+  let resolveLabelRect;
 
   function continuous() {
-    calcMaxTextRectFn = continuousCalcMaxTextRect;
+    resolveLabelRect = continuousCalcMaxTextRect;
     return continuous;
   }
 
   function discrete() {
-    calcMaxTextRectFn = discreteCalcMaxTextRect;
+    resolveLabelRect = discreteCalcMaxTextRect;
     return discrete;
   }
 
@@ -221,13 +227,13 @@ export default function nodeBuilder(isDiscrete) {
       buildOpts.angle = settings.labels.tiltAngle;
       buildOpts.paddingEnd = settings.paddingEnd;
       buildOpts.textBounds = textBounds;
-      const tickFn = (tick) => {
-        const maxSize = calcMaxTextRectFn({
-          measureText, settings, innerRect, ticks, scale, tilted, layered, tick
+      const resolveTickOpts = (tick, index) => {
+        buildOpts.textRect = calcActualTextRect({ tick, measureText, style: buildOpts.style });
+        const maxSize = resolveLabelRect({
+          measureText, settings, innerRect, outerRect, scale, tilted, layered, tick, major, index
         });
         buildOpts.maxWidth = maxSize.width;
         buildOpts.maxHeight = maxSize.height;
-        buildOpts.textRect = calcActualTextRect({ tick, measureText, style: buildOpts.style });
         buildOpts.stepSize = getStepSizeFn({
           innerRect, scale, ticks, settings, tick
         });
@@ -235,9 +241,9 @@ export default function nodeBuilder(isDiscrete) {
 
       let labelNodes = [];
       if (layered && (settings.align === 'top' || settings.align === 'bottom')) {
-        labelNodes = layeredLabelBuilder(major, buildOpts, settings, tickFn);
+        labelNodes = layeredLabelBuilder(major, buildOpts, settings, resolveTickOpts);
       } else {
-        labelNodes = labelBuilder(major, buildOpts, tickFn);
+        labelNodes = labelBuilder(major, buildOpts, resolveTickOpts);
       }
 
       // Remove labels (and paired tick) that are overlapping

@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.22.0](https://github.com/qlik-oss/picasso.js/compare/v0.21.0...v0.22.0) (2019-04-01)
+
+
+### Bug Fixes
+
+* only move elements that have new position ([#344](https://github.com/qlik-oss/picasso.js/issues/344)) ([0b2b5f6](https://github.com/qlik-oss/picasso.js/commit/0b2b5f6))
+* **axis:** ellipsis threshold for continuous horizontal axis ([#347](https://github.com/qlik-oss/picasso.js/issues/347)) ([f921ade](https://github.com/qlik-oss/picasso.js/commit/f921ade))
+* **bar-label:** require label to be fully inside a bar ([#343](https://github.com/qlik-oss/picasso.js/issues/343)) ([c0acb62](https://github.com/qlik-oss/picasso.js/commit/c0acb62))
+* **dock-layout:** floor instead of ceil when rounding container values ([#345](https://github.com/qlik-oss/picasso.js/issues/345)) ([7f28718](https://github.com/qlik-oss/picasso.js/commit/7f28718))
+* **tooltip:** scaling when using appendTo ([#341](https://github.com/qlik-oss/picasso.js/issues/341)) ([fd66ca2](https://github.com/qlik-oss/picasso.js/commit/fd66ca2))
+
+
+### Features
+
+* **axis:** add tiltThreshold ([#338](https://github.com/qlik-oss/picasso.js/issues/338)) ([8087912](https://github.com/qlik-oss/picasso.js/commit/8087912))
+* **grid-lines:** support callbacks in grid-line settings ([#332](https://github.com/qlik-oss/picasso.js/issues/332)) ([e467375](https://github.com/qlik-oss/picasso.js/commit/e467375))
+* **linear-scale:** allow custom minor tick values ([#339](https://github.com/qlik-oss/picasso.js/issues/339)) ([70daf2e](https://github.com/qlik-oss/picasso.js/commit/70daf2e))
+
+
+### Performance Improvements
+
+* **canvas-renderer:** set text context only when needed ([#328](https://github.com/qlik-oss/picasso.js/issues/328)) ([5a7b58d](https://github.com/qlik-oss/picasso.js/commit/5a7b58d))
+* **q:** switch for each loops to for loops in extractor-t ([#340](https://github.com/qlik-oss/picasso.js/issues/340)) ([a56ca70](https://github.com/qlik-oss/picasso.js/commit/a56ca70))
+
+
+
+
+
 # [0.21.0](https://github.com/qlik-oss/picasso.js/compare/v0.20.0...v0.21.0) (2019-03-14)
 
 

@@ -364,14 +364,9 @@ const component = {
           scale: this.chart.scale
         }
       }) : this.props.appendTo;
-      const bounds = this.state.targetElement.getBoundingClientRect();
-      const size = {
-        width: bounds.width,
-        height: bounds.height,
-        scaleRatio: this.renderer.size().scaleRatio
-      };
+      const { width, height } = this.state.targetElement.getBoundingClientRect();
       this.renderer.destroy();
-      this.rect = this.renderer.size(size);
+      this.rect = this.renderer.size({ width, height });
       this.renderer.appendTo(this.state.targetElement);
     } else {
       this.state.targetElement = this.renderer.element();

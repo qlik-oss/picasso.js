@@ -3,7 +3,7 @@
   "info": {
     "name": "picasso.js",
     "description": "A charting library streamlined for building visualizations for the Qlik Sense Analytics platform.",
-    "version": "0.19.0",
+    "version": "0.21.0",
     "license": "MIT"
   },
   "entries": {
@@ -1214,6 +1214,13 @@
               "description": "Tilting angle in degrees. Capped between -90 and 90. Only applicable when labels are in `tilted` mode.",
               "optional": true,
               "defaultValue": 40,
+              "type": "number"
+            },
+            "tiltThreshold": {
+              "description": "Threshold for toggle of tilted labels. Capped between 0 and 1. For example, if it is set to 0.7, then tilted labels will be toggled if less than 70% of the labels are visible.",
+              "stability": "experimental",
+              "optional": true,
+              "defaultValue": 0.7,
               "type": "number"
             },
             "maxEdgeBleed": {
