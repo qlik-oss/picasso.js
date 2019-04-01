@@ -246,17 +246,44 @@ describe('Brush Range', () => {
     });
   });
 
-  describe('should renderer linear range', () => {
+  describe('linear', () => {
     beforeEach(() => {
       const scale = linearScale();
       scale.type = 'linear';
       scale.data = () => ({
         fields: [{
-          id: () => '',
+          id: () => 'foo',
           formatter: () => (v => v)
         }]
       });
       chartMock.scale = sandbox.stub().returns(scale);
+    });
+
+    describe('on render', () => {
+      it('should return empty when not observed nor brushed from this component', () => {
+        instance = componentFixture.simulateCreate(brushRange, config);
+        chartMock.brush().setRange('foo', { min: 0, max: 10 });
+        componentFixture.simulateRender(size);
+        rendererOutput = componentFixture.getRenderOutput();
+        expect(rendererOutput.length).to.equal(0);
+      });
+
+      it('should return nodes from existing brush when observed', () => {
+        instance = componentFixture.simulateCreate(brushRange, {
+          settings: {
+            scale: 'a',
+            direction: 'horizontal',
+            target: null,
+            brush: {
+              observe: true
+            }
+          }
+        });
+        chartMock.brush().setRange('foo', { min: 0, max: 10 });
+        componentFixture.simulateRender(size);
+        rendererOutput = componentFixture.getRenderOutput();
+        expect(rendererOutput.length).to.equal(1);
+      });
     });
 
     describe('horizontal', () => {
