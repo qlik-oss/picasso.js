@@ -15,21 +15,18 @@ function clampEnds(struct, buildOpts) {
     return;
   }
 
-  const outerBoundaryMultipler = 0.75;
   if (buildOpts.align === 'top' || buildOpts.align === 'bottom') {
     const leftBoundary = 0;
     const rightBoundary = buildOpts.outerRect.width;
-    const textWidth = Math.min((buildOpts.maxWidth * outerBoundaryMultipler) / 2, buildOpts.textRect.width / 2);
+    const textWidth = Math.min(buildOpts.maxWidth / 2, buildOpts.textRect.width / 2);
     const leftTextBoundary = struct.x - textWidth;
     const rightTextBoundary = struct.x + textWidth;
     if (leftTextBoundary < leftBoundary) {
       struct.anchor = 'start';
       struct.x = buildOpts.innerRect.x - buildOpts.outerRect.x;
-      struct.maxWidth *= outerBoundaryMultipler;
     } else if (rightTextBoundary > rightBoundary) {
       struct.anchor = 'end';
       struct.x = buildOpts.innerRect.width + buildOpts.innerRect.x;
-      struct.maxWidth *= outerBoundaryMultipler;
     }
   } else {
     const topBoundary = 0;
