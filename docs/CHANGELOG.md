@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.22.0](https://github.com/qlik-oss/picasso.js/compare/v0.21.0...v0.22.0) (2019-04-01)
+
+
+### Features
+
+* **axis:** add tiltThreshold ([#338](https://github.com/qlik-oss/picasso.js/issues/338)) ([8087912](https://github.com/qlik-oss/picasso.js/commit/8087912))
+* **linear-scale:** allow custom minor tick values ([#339](https://github.com/qlik-oss/picasso.js/issues/339)) ([70daf2e](https://github.com/qlik-oss/picasso.js/commit/70daf2e))
+
+
+
+
+
 # [0.21.0](https://github.com/qlik-oss/picasso.js/compare/v0.20.0...v0.21.0) (2019-03-14)
 
 
