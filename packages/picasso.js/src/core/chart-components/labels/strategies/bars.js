@@ -193,21 +193,27 @@ function approxTextBounds(label, textMetrics, rotated, rect) {
   const y = label.y + label.dy;
   const width = rotated ? textMetrics.width : Math.min(textMetrics.width, rect.width);
   const height = rotated ? Math.min(textMetrics.height, rect.height) : textMetrics.height;
-  const PADDING_OFFSET = 0.1; // Needed to support a case when multiple bars are on the same location
+  const PADDING_OFFSET = 1e-6; // Needed to support a case when multiple bars are on the same location
 
-  const bounds = {
+  let bounds = {
     x: x - PADDING - PADDING_OFFSET,
-    y: y - height - PADDING - PADDING_OFFSET,
+    y: y - height * 0.75 - PADDING - PADDING_OFFSET,
     width: width + (PADDING * 2) - PADDING_OFFSET,
     height: height + (PADDING * 2) - PADDING_OFFSET
   };
 
   if (rotated) {
-    const o = {
-      x: x - (height / 2),
-      y: y - (height / 2)
+    const o = { x, y };
+    const labelBounds = {
+      x, y, width, height
     };
-    return pointsToRect(rectToPoints(bounds).map(p => rotate(p, toRadians(-90), o)));
+    const rotatedBounds = pointsToRect(rectToPoints(labelBounds).map(p => rotate(p, toRadians(-90), o)));
+    bounds = {
+      x: rotatedBounds.x + height * 0.25 - PADDING - PADDING_OFFSET,
+      y: rotatedBounds.y - PADDING - PADDING_OFFSET,
+      width: rotatedBounds.width + (PADDING * 2) - PADDING_OFFSET,
+      height: rotatedBounds.height + (PADDING * 2) - PADDING_OFFSET
+    };
   }
   return bounds;
 }
