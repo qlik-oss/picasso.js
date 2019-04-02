@@ -197,7 +197,7 @@ function approxTextBounds(label, textMetrics, rotated, rect) {
 
   let bounds = {
     x: x - PADDING - PADDING_OFFSET,
-    y: y - height * 0.75 - PADDING - PADDING_OFFSET, // This magic number 0.75 is used to fit with the magic number used placeTextInRect
+    y: y - height * 0.75 - PADDING - PADDING_OFFSET, // bounds is based on text-before-edge so it needs to shift up 75% to match the label is based on alphabetical
     width: width + (PADDING * 2) - PADDING_OFFSET,
     height: height + (PADDING * 2) - PADDING_OFFSET
   };
@@ -209,7 +209,7 @@ function approxTextBounds(label, textMetrics, rotated, rect) {
     };
     const rotatedBounds = pointsToRect(rectToPoints(labelBounds).map(p => rotate(p, toRadians(-90), o)));
     bounds = {
-      x: rotatedBounds.x + height * 0.25 - PADDING - PADDING_OFFSET,
+      x: rotatedBounds.x + height * 0.25 - PADDING - PADDING_OFFSET, // bounds is based on text-before-edge and then flipped to the left so it needs to shift rigth about 25% (100% - 75%) to match the label is based on alphabetical
       y: rotatedBounds.y - PADDING - PADDING_OFFSET,
       width: rotatedBounds.width + (PADDING * 2) - PADDING_OFFSET,
       height: rotatedBounds.height + (PADDING * 2) - PADDING_OFFSET
