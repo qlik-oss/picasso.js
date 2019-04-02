@@ -197,7 +197,7 @@ function approxTextBounds(label, textMetrics, rotated, rect) {
 
   let bounds = {
     x: x - PADDING - PADDING_OFFSET,
-    y: y - height * 0.75 - PADDING - PADDING_OFFSET,
+    y: y - height * 0.75 - PADDING - PADDING_OFFSET, // This magic number 0.75 is used to fit with the magic number used placeTextInRect
     width: width + (PADDING * 2) - PADDING_OFFSET,
     height: height + (PADDING * 2) - PADDING_OFFSET
   };
