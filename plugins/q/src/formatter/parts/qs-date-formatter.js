@@ -5,6 +5,8 @@ const DAYS_ABBR = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const MONTHS_ABBR = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
+const SECONDS_PER_DAY = 86400;
+
 function pad(s, n) {
   for (let i = s.length; i < n; i++) {
     s = `0${s}`;
@@ -76,7 +78,14 @@ function parseInterval(days, pattern) {
     date;
 
   if (/w+|t+/gi.test(pattern)) {
-    date = new Date(Date.UTC(1899, 11, 30 + Math.floor(days), 0, 0, 24 * 60 * 60 * (days - Math.floor(days))));
+    date = new Date(Date.UTC(
+      1899,
+      11,
+      30 + Math.floor(days),
+      0,
+      0,
+      Math.round(SECONDS_PER_DAY * (days - Math.floor(days)))
+    ));
     if (isNaN(date.getTime())) {
       date = null;
     }

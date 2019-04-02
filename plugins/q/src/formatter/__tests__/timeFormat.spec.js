@@ -367,7 +367,9 @@ describe('qlik timeFormat', () => {
       preNoon,
       noon,
       noon59,
-      noon60;
+      noon60,
+      roundingError1,
+      roundingError2;
     beforeEach(() => {
       n = timeFormat(null);
       midnight = 41753; // 00:00:00 -> 12:00:00 am
@@ -377,6 +379,8 @@ describe('qlik timeFormat', () => {
       noon = 41753.5; // 12:00:00 -> 12:00:00 pm
       noon59 = 41753.54098; // 12:59:00 -> 12:59:00 pm
       noon60 = 41753.54167; // 13:00:00 -> 1:00:00 pm
+      roundingError1 = 40039.229166666664;
+      roundingError2 = 40331.416666666664;
     });
 
     describe('Hours', () => {
@@ -402,6 +406,8 @@ describe('qlik timeFormat', () => {
         expect(n.format('h TT', noon)).to.equal('12 PM');
         expect(n.format('h tT', noon59)).to.equal('12 pP');
         expect(n.format('h Tt', noon60)).to.equal('1 Pp');
+        expect(n.format('hh:mm tt', roundingError1)).to.equal('05:30 am');
+        expect(n.format('hh:mm tt', roundingError2)).to.equal('10:00 am');
 
         expect(n.format('ttTTTttTt', noon)).to.equal('pmPMPpmPp');
       });
@@ -471,8 +477,8 @@ describe('qlik timeFormat', () => {
 
       // expect( n.format( new Date(Date.UTC( 2014, 0, 1, 13, 55, 30, 123 ), 'h:m:s[.ffff]' ) ).to.equal( '13:55.30.1230' ); // TODO?
 
-      expect(n.format('YYYY-MM-DD hh:mm:ss.ffff', d)).to.equal('2014-04-24 13:55:40.9870');
-      expect(n.format('DD/MM -YY h:m:s.fff TT', d)).to.equal('24/04 -14 1:55:40.987 PM');
+      expect(n.format('YYYY-MM-DD hh:mm:ss.ffff', d)).to.equal('2014-04-24 13:55:40.9880');
+      expect(n.format('DD/MM -YY h:m:s.fff TT', d)).to.equal('24/04 -14 1:55:40.988 PM');
 
       expect(n.format('WWWW MMMMMM DD YYYY @ hh:mm:ss', d)).to.equal('Thursday April 24 2014 @ 13:55:40');
     });

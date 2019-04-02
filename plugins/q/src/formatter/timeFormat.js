@@ -2,8 +2,18 @@ import dateFormatFactory from './parts/qs-date-formatter';
 import { TYPES } from './constants';
 import memoize from './memoize';
 
+const MS_PER_DAY = 86400000;
+
 export function QlikTimeToDate(value) {
-  return new Date(Date.UTC(1899, 11, 30 + Math.floor(value), 0, 0, 0, 1000 * 24 * 60 * 60 * (value - Math.floor(value))));
+  return new Date(Date.UTC(
+    1899,
+    11,
+    30 + Math.floor(value),
+    0,
+    0,
+    0,
+    Math.round(MS_PER_DAY * (value - Math.floor(value)))
+  ));
 }
 
 export default function formatter(pattern, qtype = 'TS', localeInfo = null) {
