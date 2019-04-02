@@ -1,4 +1,4 @@
-import { buildShapes } from './box-shapes';
+import buildShapes from './box-shapes';
 import complexResolver from './box-resolver';
 
 const DEFAULT_DATA_SETTINGS = {
