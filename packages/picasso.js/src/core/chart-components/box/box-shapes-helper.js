@@ -1,8 +1,6 @@
 import extend from 'extend';
 import { resolveDiff } from './box-math';
 
-import { isNumber } from '../../utils/is-number';
-
 /**
  * Out of bounds shape
  * @param {object} params parameters
