@@ -324,7 +324,7 @@ const brushRangeComponent = {
 
     this.state.ranges = ranges(this.state, this.state.brushInstance);
 
-    return [nodes(this.state)];
+    return (this.state.observeBrush || this.state.sourcedFromThisComponent) ? [nodes(this.state)] : [];
   },
   mounted() {
     if (this.state.observeBrush && this.state.brushInstance) {
@@ -351,6 +351,7 @@ const brushRangeComponent = {
     }
     end(this.state, ranges);
     render(this.state);
+    this.state.sourcedFromThisComponent = true;
     this.state.active = null;
   },
   move(e) {
@@ -368,6 +369,7 @@ const brushRangeComponent = {
     this.state.renderer.render([]);
     this.state.started = false;
     this.state.active = null;
+    this.state.sourcedFromThisComponent = false;
   },
   bubbleStart(e) {
     if (!this.state.editable) {
