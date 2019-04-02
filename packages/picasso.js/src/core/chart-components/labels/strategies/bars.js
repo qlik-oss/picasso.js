@@ -194,10 +194,11 @@ function approxTextBounds(label, textMetrics, rotated, rect) {
   const width = rotated ? textMetrics.width : Math.min(textMetrics.width, rect.width);
   const height = rotated ? Math.min(textMetrics.height, rect.height) : textMetrics.height;
   const PADDING_OFFSET = 1e-6; // Needed to support a case when multiple bars are on the same location
+  const delta = 0.75; // the difference between text-before-edge and alphabetical
 
   let bounds = {
     x: x - PADDING - PADDING_OFFSET,
-    y: y - height * 0.75 - PADDING - PADDING_OFFSET, // bounds is based on text-before-edge so it needs to shift up 75% to match the label is based on alphabetical
+    y: y - height * delta - PADDING - PADDING_OFFSET, // bounds is based on text-before-edge so it needs to shift up 75% to match the label is based on alphabetical
     width: width + (PADDING * 2) - PADDING_OFFSET,
     height: height + (PADDING * 2) - PADDING_OFFSET
   };
@@ -209,7 +210,7 @@ function approxTextBounds(label, textMetrics, rotated, rect) {
     };
     const rotatedBounds = pointsToRect(rectToPoints(labelBounds).map(p => rotate(p, toRadians(-90), o)));
     bounds = {
-      x: rotatedBounds.x + height * 0.25 - PADDING - PADDING_OFFSET, // bounds is based on text-before-edge and then flipped to the left so it needs to shift rigth about 25% (100% - 75%) to match the label is based on alphabetical
+      x: rotatedBounds.x + height * (1 - delta) - PADDING - PADDING_OFFSET, // bounds is based on text-before-edge and then flipped to the left so it needs to shift rigth about 25% (100% - 75%) to match the label is based on alphabetical
       y: rotatedBounds.y - PADDING - PADDING_OFFSET,
       width: rotatedBounds.width + (PADDING * 2) - PADDING_OFFSET,
       height: rotatedBounds.height + (PADDING * 2) - PADDING_OFFSET
