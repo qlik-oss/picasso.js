@@ -153,7 +153,9 @@ function resetState() {
 const definition = {
   require: ['chart', 'renderer'],
   defaultSettings: {
-    displayOrder: 99,
+    layout: {
+      displayOrder: 99
+    },
     settings: DEFAULT_SETTINGS,
     style: {
       area: '$selection-area-target'

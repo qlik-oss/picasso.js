@@ -34,7 +34,9 @@ describe('Component', () => {
     resize = sinon.spy();
     definition = {
       defaultSettings: {
-        dock: 'top',
+        layout: {
+          dock: 'top'
+        },
         style: {
           strokeWidth: 5
         },
@@ -114,22 +116,6 @@ describe('Component', () => {
   });
 
   it('should call lifecycle methods with correct context when rendering', () => {
-    /* const config = {
-      key1: 'override',
-      key2: false
-    };
-    const expectedContext = {
-      settings: {s
-        dock: 'top',
-        style: {
-          strokeWidth: 5
-        },
-        key1: 'override',
-        key2: false
-      },
-      data: []
-    }; */
-
     createAndRenderComponent();
 
     expect(created).to.have.been.calledOnce;

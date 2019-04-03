@@ -24,7 +24,9 @@ const gridLineComponent = {
 
   require: ['chart', 'renderer', 'resolver'],
   defaultSettings: {
-    displayOrder: 0,
+    layout: {
+      displayOrder: 0
+    },
     style: { // Theming style
       ticks: '$guide-line',
       minorTicks: '$guide-line--minor'

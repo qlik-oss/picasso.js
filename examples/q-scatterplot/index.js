@@ -9,11 +9,15 @@
     components: [{
       type: 'axis',
       scale: 'y',
-      dock: 'left'
+      layout: {
+        dock: 'left'
+      }
     }, {
       type: 'axis',
       scale: 'x',
-      dock: 'bottom'
+      layout: {
+        dock: 'bottom'
+      }
     }, {
       type: "point",
       data: {

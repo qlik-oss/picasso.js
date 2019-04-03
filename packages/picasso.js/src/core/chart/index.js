@@ -30,11 +30,12 @@ import themeFn from '../theme';
  * @property {function} [beforeDestroy]
  * @property {function} [destroyed]
  * @property {brush-setting} [brush] see [brushing](./brushing.md)
- * @property {number} [displayOrder = 0]
- * @property {number} [prioOrder = 0]
+ * @property {object} [layout] Layout settings
+ * @property {number} [layout.displayOrder = 0]
+ * @property {number} [layout.prioOrder = 0]
+ * @property {string | {width: string, height: string}} [layout.minimumLayoutMode] Refer to layout sizes defined by layoutModes in dockLayout
+ * @property {string} [layout.dock] left, right, top or bottom
  * @property {boolean} [show = true] If the component should be rendered
- * @property {string | {width: string, height: string}} [minimumLayoutMode] Refer to layout sizes defined by layoutModes in dockLayout
- * @property {string} [dock] left, right, top or bottom
  * @property {string} [scale] Named scale. Will be provided to the component if it ask for it.
  * @property {string} [formatter] Named formatter. Fallback to create formatter from scale. Will be provided to the component if it ask for it.
  */
@@ -251,7 +252,7 @@ function chartFn(definition, context) {
     });
     let layoutSettings;
     if (settings.dockLayout) {
-      console.warn('Deprecation Warning: dockLayout property should be renamed to "strategy"');
+      logger.warn('Deprecation Warning: dockLayout property should be renamed to "strategy"');
       layoutSettings = settings.dockLayout;
     } else {
       layoutSettings = settings.strategy;

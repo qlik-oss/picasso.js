@@ -108,9 +108,11 @@ function filterUndefinedValue(line) {
  */
 
 const refLineComponent = {
-  require: ['chart', 'renderer', 'dockConfig'],
+  require: ['chart', 'renderer'],
   defaultSettings: {
-    displayOrder: 0,
+    layout: {
+      displayOrder: 0
+    },
     style: {
       oob: {
         show: true,

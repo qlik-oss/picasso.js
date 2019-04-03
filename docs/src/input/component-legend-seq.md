@@ -78,7 +78,9 @@ chartSettings = {
   components: [
     {
       type: 'legend-seq',
-      dock: 'right',
+      layout: {
+        dock: 'right',
+      },
       key: 'myLegend' // Reference by the brush-range component,
       settings: {
         fill: 'sequential-color-scale',
@@ -88,7 +90,9 @@ chartSettings = {
     {
       type: 'brush-range',
       key: 'myBrushRange',
-      dock: '@myLegend', // Legend reference
+      layout: {
+        dock: '@myLegend', // Legend reference
+      },
       settings: {
         brush: 'highlight',
         scale: 'linear-scale',

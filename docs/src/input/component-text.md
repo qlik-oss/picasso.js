@@ -22,7 +22,9 @@ No interaction is supported.
 {
   type: 'text',
   text: 'My title',
-  dock: 'top'
+  layout: {
+    dock: 'top'
+  }
 }
 ```
 

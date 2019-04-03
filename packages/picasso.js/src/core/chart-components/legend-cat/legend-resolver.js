@@ -113,6 +113,7 @@ const DEFAULT_SETTINGS = {
 export default function resolveSettings(comp) {
   const domain = comp.scale.domain();
   let data = { items: [] };
+  const dock = comp.settings.layout.dock;
   if (comp.scale.type === 'threshold-color') {
     const fields = comp.scale.data().fields;
     const sourceField = fields[0];
@@ -136,8 +137,7 @@ export default function resolveSettings(comp) {
       }
       data.items.push(it);
     }
-
-    const orientation = comp.settings.dock === 'top' || comp.settings.dock === 'bottom' ? 'horizontal' : 'vertical';
+    const orientation = dock === 'top' || dock === 'bottom' ? 'horizontal' : 'vertical';
 
     if (orientation === 'vertical') {
       data.items.reverse();
@@ -211,7 +211,7 @@ export default function resolveSettings(comp) {
   }
 
   if (comp.scale.type === 'threshold-color') {
-    const orientation = comp.settings.dock === 'top' || comp.settings.dock === 'bottom' ? 'horizontal' : 'vertical';
+    const orientation = dock === 'top' || dock === 'bottom' ? 'horizontal' : 'vertical';
 
     if (orientation === 'vertical') {
       items.items.reverse().forEach(range);

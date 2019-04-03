@@ -19,7 +19,9 @@ picasso.chart({
       settings: { /* ... */ }
     }, {
       type: 'axis',
-      dock: 'bottom',
+      layout: {
+        dock: 'bottom'
+      }
       scale: 'x'
     }]
   }
@@ -28,11 +30,12 @@ picasso.chart({
 
 Some properties are general and can be used on all components:
 
-* `dock` *string*. Dock setting. Any of `top` | `right` | `bottom` | `left`
 * `show` *boolean*. True if component should be rendered.
-* `displayOrder` *number*. The order in which components are rendered (similar to css z-index).
-* `prioOrder` *number*. The order in which components are docked from the center area,
-* `minimumLayoutMode` *string*. 
+* `layout` *object*. Layout settings
+* `layout.dock` *string*. Dock setting. Any of `top` | `right` | `bottom` | `left`
+* `layout.displayOrder` *number*. The order in which components are rendered (similar to css z-index).
+* `layout.prioOrder` *number*. The order in which components are docked from the center area,
+* `layout.minimumLayoutMode` *string*. 
 * `data` *object*. See [data section](./data.md).
 * `settings` *object*.
 * `created` *function*. Lifecycle hook.
@@ -56,10 +59,6 @@ A custom component can be registered using the `picasso.component` registry:
 
 - `name` *string*. Name of the component to register.
 - `definition` *object*
-  * `dock` *string* (optional).
-  * `displayOrder` *number* (optional).
-  * `prioOrder` *number* (optional). 
-  * `minimumLayoutMode` *string* (optional). 
   * `created` *function* (optional). Lifecycle hook.
   * `beforeMount` *function* (optional). Lifecycle hook.
   * `mounted` *function* (optional). Lifecycle hook.

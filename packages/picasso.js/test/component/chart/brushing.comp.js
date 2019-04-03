@@ -154,7 +154,9 @@ describe('Brushing', () => {
         type: 'axis',
         scale: 'd0',
         brush,
-        dock: 'top'
+        layout: {
+          dock: 'top'
+        }
       };
 
       settings = {

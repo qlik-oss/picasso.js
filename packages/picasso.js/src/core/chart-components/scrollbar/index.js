@@ -11,7 +11,7 @@
  */
 
 function start(_scrollbar, pos) {
-  const dock = _scrollbar.settings.dock;
+  const dock = _scrollbar.settings.layout.dock;
   const invert = _scrollbar.settings.settings.invert;
   const horizontal = dock === 'top' || dock === 'bottom';
   const lengthAttr = horizontal ? 'width' : 'height';
@@ -140,7 +140,7 @@ const scrollbarComponent = {
   },
 
   render: function render(h) {
-    const dock = this.settings.dock;
+    const dock = this.settings.layout.dock;
     const invert = this.settings.settings.invert;
     const horizontal = dock === 'top' || dock === 'bottom';
     const lengthAttr = horizontal ? 'width' : 'height';

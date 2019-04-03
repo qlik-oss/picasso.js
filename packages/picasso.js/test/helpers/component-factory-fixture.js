@@ -31,7 +31,9 @@ export default function componentFactoryFixture() {
       dataset: sandbox.stub(),
       container: sandbox.stub(),
       formatter: sandbox.stub(),
-      logger: sandbox.stub(),
+      logger: () => ({
+        warn: sandbox.stub()
+      }),
       element: elementMock()
     };
 

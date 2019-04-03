@@ -25,6 +25,9 @@ describe('reference lines', () => {
       brush: () => ({
         on: () => {}
       }),
+      logger: () => ({
+        warn: () => {}
+      }),
       container: () => ({}),
       table: () => table,
       dataset: () => dataset,

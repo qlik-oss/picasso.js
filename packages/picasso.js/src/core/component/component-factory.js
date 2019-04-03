@@ -139,10 +139,10 @@ function prepareContext(ctx, definition, opts) {
   });
 }
 
-function createDockDefinition(settings, preferredSize) {
+function createDockDefinition(settings, preferredSize, logger) {
   const getLayoutProperty = (propName) => {
     if (settings[propName]) {
-      console.warn(`Deprecation Warning the ${propName} property should be moved into layout: {} property`); // eslint-disable-line no-console
+      logger.warn(`Deprecation Warning the ${propName} property should be moved into layout: {} property`); // eslint-disable-line no-console
       return settings[propName];
     }
     return settings.layout ? settings.layout[propName] : undefined;
@@ -153,6 +153,14 @@ function createDockDefinition(settings, preferredSize) {
   def.dock = getLayoutProperty('dock');
   def.prioOrder = getLayoutProperty('prioOrder');
   def.minimumLayoutMode = getLayoutProperty('minimumLayoutMode');
+
+  // move layout properties to layout object
+  settings.layout = settings.layout || {};
+  settings.layout.displayOrder = settings.layout.displayOrder || def.displayOrder;
+  settings.layout.dock = settings.layout.dock || def.dock;
+  settings.layout.prioOrder = settings.layout.prioOrder || def.prioOrder;
+  settings.layout.minimumLayoutMode = settings.layout.minimumLayoutMode || def.minimumLayoutMode;
+
   // not directly a dock layout property
   def.show = settings.show;
   def.preferredSize = preferredSize;
@@ -310,7 +318,7 @@ function componentFactory(definition, context = {}) {
   brushArgs.renderer = rend;
 
   const dockConfigCallbackContext = { resources: chart.logger ? { logger: chart.logger() } : {} };
-  let dockConfig = createDockConfig(createDockDefinition(settings, preferredSize), dockConfigCallbackContext);
+  let dockConfig = createDockConfig(createDockDefinition(settings, preferredSize, chart.logger()), dockConfigCallbackContext);
 
   const appendComponentMeta = (node) => {
     node.key = settings.key;
@@ -326,7 +334,7 @@ function componentFactory(definition, context = {}) {
     if (opts.settings) {
       config = opts.settings;
       settings = extend(true, {}, defaultSettings, opts.settings);
-      dockConfig = createDockConfig(createDockDefinition(settings, preferredSize), dockConfigCallbackContext);
+      dockConfig = createDockConfig(createDockDefinition(settings, preferredSize, chart.logger()), dockConfigCallbackContext);
     }
 
     if (settings.scale) {

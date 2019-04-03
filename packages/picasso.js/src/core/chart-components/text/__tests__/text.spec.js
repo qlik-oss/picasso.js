@@ -52,6 +52,7 @@ describe('Text component', () => {
 
     config = {
       text: 'Testing',
+      layout: {},
       settings: {}
     };
 
@@ -68,7 +69,7 @@ describe('Text component', () => {
   describe('Dock', () => {
     describe('Left', () => {
       beforeEach(() => {
-        config.dock = 'left';
+        config.layout.dock = 'left';
       });
 
       describe('Anchor', () => {
@@ -173,7 +174,7 @@ describe('Text component', () => {
 
     describe('Right', () => {
       beforeEach(() => {
-        config.dock = 'right';
+        config.layout.dock = 'right';
       });
 
       describe('Anchor', () => {
@@ -278,7 +279,7 @@ describe('Text component', () => {
 
     describe('Top', () => {
       beforeEach(() => {
-        config.dock = 'top';
+        config.layout.dock = 'top';
       });
 
       describe('Anchor', () => {
@@ -409,7 +410,7 @@ describe('Text component', () => {
 
     describe('Bottom', () => {
       beforeEach(() => {
-        config.dock = 'bottom';
+        config.layout.dock = 'bottom';
       });
 
       describe('Anchor', () => {
@@ -541,7 +542,7 @@ describe('Text component', () => {
 
   describe('Settings', () => {
     it('maxLengthPx', () => {
-      config.dock = 'left';
+      config.layout.dock = 'left';
       config.settings.maxLengthPx = 33;
       const node = simulateRender();
 
@@ -553,7 +554,7 @@ describe('Text component', () => {
     });
 
     it('maxLengthPx should default to 80% of height', () => {
-      config.dock = 'left';
+      config.layout.dock = 'left';
       const node = simulateRender();
 
       const expected = {
@@ -564,7 +565,7 @@ describe('Text component', () => {
     });
 
     it('maxLengthPx should default to 80% of width', () => {
-      config.dock = 'bottom';
+      config.layout.dock = 'bottom';
       const node = simulateRender();
 
       const expected = {
@@ -578,7 +579,7 @@ describe('Text component', () => {
       scale.data = () => ({
         fields: [{ title: () => 'fakeTitle1', formatter: () => undefined }, { title: () => 'fakeTitle2', formatter: () => undefined }]
       });
-      config.dock = 'left';
+      config.layout.dock = 'left';
       config.scale = 'x';
       config.text = undefined;
       config.settings.join = '#';
@@ -590,7 +591,7 @@ describe('Text component', () => {
       scale.data = () => ({
         fields: [{ title: () => 'fakeTitle1', formatter: () => undefined }, { title: () => 'fakeTitle2', formatter: () => undefined }]
       });
-      config.dock = 'left';
+      config.layout.dock = 'left';
       config.scale = 'x';
       config.text = undefined;
       config.settings.join = '';
@@ -602,12 +603,12 @@ describe('Text component', () => {
   describe('Lifecycle', () => {
     describe('Update', () => {
       beforeEach(() => {
-        config.dock = 'left';
+        config.layout.dock = 'left';
         simulateRender();
       });
 
       it('should update dock', () => {
-        config.dock = 'bottom';
+        config.layout.dock = 'bottom';
         const node = simulateUpdate();
 
         const expected = {
@@ -690,21 +691,21 @@ describe('Text component', () => {
   describe('preferredSize', () => {
     it('should return same size for all dock areas', () => {
       ['left', 'right', 'top', 'bottom'].forEach((dock) => {
-        config.dock = dock;
+        config.layout.dock = dock;
         const size = simulateLayout();
         expect(size).to.equal(15);
       });
     });
 
     it('should be affected by padding start', () => {
-      config.dock = 'left';
+      config.layout.dock = 'left';
       config.settings.paddingStart = 33;
       const size = simulateLayout();
       expect(size).to.equal(43);
     });
 
     it('should be affected by padding end', () => {
-      config.dock = 'left';
+      config.layout.dock = 'left';
       config.settings.paddingStart = 33;
       const size = simulateLayout();
       expect(size).to.equal(43);
@@ -713,21 +714,21 @@ describe('Text component', () => {
 
   describe('Source', () => {
     it('string', () => {
-      config.dock = 'left';
+      config.layout.dock = 'left';
       config.text = 'myString';
       const node = simulateRender();
       expect(node.text).to.equal(config.text);
     });
 
     it('function', () => {
-      config.dock = 'left';
+      config.layout.dock = 'left';
       config.text = () => 'myFunc';
       const node = simulateRender();
       expect(node.text).to.equal('myFunc');
     });
 
     it('scale by reference', () => {
-      config.dock = 'left';
+      config.layout.dock = 'left';
       config.scale = 'x';
       config.text = undefined;
       const node = simulateRender();
@@ -738,7 +739,7 @@ describe('Text component', () => {
       scale.data = () => ({
         fields: [{ title: () => 'fakeTitle1', formatter: () => undefined }, { title: () => 'fakeTitle2', formatter: () => undefined }]
       });
-      config.dock = 'left';
+      config.layout.dock = 'left';
       config.scale = 'x';
       config.text = undefined;
       const node = simulateRender();

@@ -213,7 +213,9 @@ function resetState() {
 const brushLassoComponent = {
   require: ['chart', 'renderer', 'settings'],
   defaultSettings: {
-    displayOrder: 0,
+    layout: {
+      displayOrder: 0
+    },
     settings: {
       brush: {
         components: []

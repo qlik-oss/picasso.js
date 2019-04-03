@@ -764,40 +764,47 @@
           "optional": true,
           "type": "brush-setting"
         },
-        "displayOrder": {
+        "layout": {
+          "description": "Layout settings",
           "optional": true,
-          "defaultValue": 0,
-          "type": "number"
-        },
-        "prioOrder": {
-          "optional": true,
-          "defaultValue": 0,
-          "type": "number"
+          "kind": "object",
+          "entries": {
+            "displayOrder": {
+              "optional": true,
+              "defaultValue": 0,
+              "type": "number"
+            },
+            "prioOrder": {
+              "optional": true,
+              "defaultValue": 0,
+              "type": "number"
+            },
+            "minimumLayoutMode": {
+              "description": "Refer to layout sizes defined by layoutModes in dockLayout",
+              "optional": true,
+              "kind": "union",
+              "items": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "Object"
+                }
+              ],
+              "type": "any"
+            },
+            "dock": {
+              "description": "left, right, top or bottom",
+              "optional": true,
+              "type": "string"
+            }
+          }
         },
         "show": {
           "description": "If the component should be rendered",
           "optional": true,
           "defaultValue": true,
           "type": "boolean"
-        },
-        "minimumLayoutMode": {
-          "description": "Refer to layout sizes defined by layoutModes in dockLayout",
-          "optional": true,
-          "kind": "union",
-          "items": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "Object"
-            }
-          ],
-          "type": "any"
-        },
-        "dock": {
-          "description": "left, right, top or bottom",
-          "optional": true,
-          "type": "string"
         },
         "scale": {
           "description": "Named scale. Will be provided to the component if it ask for it.",

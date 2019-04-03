@@ -126,9 +126,11 @@ function generateTitle({
 const textComponent = {
   require: ['renderer', 'chart'],
   defaultSettings: {
-    dock: 'bottom',
-    displayOrder: 0,
-    prioOrder: 0,
+    layout: {
+      dock: 'bottom',
+      displayOrder: 0,
+      prioOrder: 0
+    },
     settings: {
       paddingStart: 5,
       paddingEnd: 5,
@@ -173,7 +175,7 @@ const textComponent = {
     const nodes = [];
     nodes.push(generateTitle({
       title,
-      dock: this.settings.dock,
+      dock: this.settings.layout.dock,
       definitionSettings,
       rect,
       measureText: this.renderer.measureText,

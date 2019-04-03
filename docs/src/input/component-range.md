@@ -19,7 +19,9 @@ components: [
   },
   {
     type: 'range',
-    dock: '@here', // dock to same area as component with key: 'here'
+    layout: {
+      dock: '@here' // dock to same area as component with key: 'here'
+    },
     ...
   }
 ]

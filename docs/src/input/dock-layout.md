@@ -111,21 +111,24 @@ The following properties are available in the chart settings definition:
 
 The following dock properties are available in the component definition:
 
-* `dock` *string*. Dock setting. Any of `top` | `right` | `bottom` | `left`
 * `show` *boolean*. True if component should be rendered.
-* `displayOrder` *number*. The order in which components are rendered (similar to css z-index).
-* `prioOrder` *number*. The order in which components are docked from the center area.
-* `minimumLayoutMode` *string*. 
+* `layout`*object*. Layout settings
+* `layout.dock` *string*. Dock setting. Any of `top` | `right` | `bottom` | `left`
+* `layout.displayOrder` *number*. The order in which components are rendered (similar to css z-index).
+* `layout.prioOrder` *number*. The order in which components are docked from the center area.
+* `layout.minimumLayoutMode` *string*. 
 
 **Example**
   ```js
   components: [{
     type: 'my-component',
-    show: true,
-    dock: 'left',
-    displayOrder: 0,
-    prioOrder: 0,
-    minimumLayoutMode: 'S',
+    layout: {
+      show: true,
+      dock: 'left',
+      displayOrder: 0,
+      prioOrder: 0,
+      minimumLayoutMode: 'S',
+    },
   }]
   ```
 
