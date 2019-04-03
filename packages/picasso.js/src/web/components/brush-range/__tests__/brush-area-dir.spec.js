@@ -199,7 +199,8 @@ describe('Brush Area Directional', () => {
                 transform: 'translate(-50%,0)',
                 fontSize: '14px',
                 fontFamily: 'Arial',
-                color: '#595959'
+                color: '#595959',
+                cursor: 'ew-resize'
               }
             },
             children: ['-']
@@ -245,7 +246,8 @@ describe('Brush Area Directional', () => {
                 transform: 'translate(-50%,0)',
                 fontSize: '14px',
                 fontFamily: 'Arial',
-                color: '#595959'
+                color: '#595959',
+                cursor: 'ew-resize'
               }
             },
             children: ['-']
@@ -411,7 +413,8 @@ describe('Brush Area Directional', () => {
                 transform: 'translate(0,-50%)',
                 fontSize: '14px',
                 fontFamily: 'Arial',
-                color: '#595959'
+                color: '#595959',
+                cursor: 'ns-resize'
               }
             },
             children: ['-']
@@ -457,7 +460,8 @@ describe('Brush Area Directional', () => {
                 transform: 'translate(0,-50%)',
                 fontSize: '14px',
                 fontFamily: 'Arial',
-                color: '#595959'
+                color: '#595959',
+                cursor: 'ns-resize'
               }
             },
             children: ['-']

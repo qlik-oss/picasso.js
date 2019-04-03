@@ -106,7 +106,8 @@ function buildBubble({
     minWidth: '50px',
     minHeight: '1em',
     pointerEvents: 'auto',
-    transform: isVertical ? 'translate(0,-50%)' : 'translate(-50%,0)'
+    transform: isVertical ? 'translate(0,-50%)' : 'translate(-50%,0)',
+    cursor: isVertical ? 'ns-resize' : 'ew-resize'
   };
 
   let currentBorderColor = state.style.bubble.stroke;
