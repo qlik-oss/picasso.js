@@ -345,9 +345,6 @@ const component = {
     }
     this.init(settings);
   },
-  beforeRender(opts) {
-    this.rect = opts.size;
-  },
   render(h) {
     this.h = h;
     return []; // Nothing to render initially.
@@ -366,7 +363,7 @@ const component = {
       }) : this.props.appendTo;
       const { width, height } = this.state.targetElement.getBoundingClientRect();
       this.renderer.destroy();
-      this.rect = this.renderer.size({ width, height });
+      this.renderer.size({ width, height });
       this.renderer.appendTo(this.state.targetElement);
     } else {
       this.state.targetElement = this.renderer.element();

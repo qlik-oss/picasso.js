@@ -144,13 +144,6 @@ const textComponent = {
   },
 
   created() {
-    this.rect = {
-      x: 0,
-      y: 0,
-      width: 0,
-      height: 0
-    };
-
     this.definitionSettings = this.settings.settings;
 
     const text = this.settings.text;

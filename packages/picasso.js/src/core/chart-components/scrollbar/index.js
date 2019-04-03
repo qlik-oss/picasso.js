@@ -128,14 +128,6 @@ const scrollbarComponent = {
       width: 16 // 32 for touch
     }
   },
-  created: function created() {
-    this.rect = {
-      x: 0,
-      y: 0,
-      width: 0,
-      height: 0
-    };
-  },
 
   preferredSize: function preferredSize(rect) {
     const scrollState = this.chart.scroll(this.settings.scroll).getState();
@@ -145,12 +137,6 @@ const scrollbarComponent = {
       return toLargeSize;
     }
     return this.settings.settings.width;
-  },
-
-  resize: function resize(opts) {
-    const inner = opts.inner;
-    this.rect = inner;
-    return inner;
   },
 
   render: function render(h) {

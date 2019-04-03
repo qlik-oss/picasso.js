@@ -58,13 +58,7 @@ const component = {
     }
   },
   created() {
-    this.rect = {
-      x: 0, y: 0, width: 0, height: 0
-    };
     this.state = {};
-  },
-  beforeRender(opts) {
-    this.rect = opts.size;
   },
   render({ data }) {
     const { width, height } = this.rect;

@@ -180,9 +180,6 @@ const definition = {
     return 0;
   },
   render() {},
-  beforeRender({ size }) {
-    this.rect = size.computedInner;
-  },
   start(e) {
     this.state.boundingRect = this.renderer.element().getBoundingClientRect();
     const p = getLocalPoint(this, e, false);

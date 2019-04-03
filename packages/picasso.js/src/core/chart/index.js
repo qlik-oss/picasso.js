@@ -1,6 +1,6 @@
 import extend from 'extend';
 
-import createDockLayout from '../dock-layout/dock-layout';
+import createDockLayout from '../layout/dock/docker';
 import {
   detectTouchSupport,
   isValidTapEvent
@@ -226,15 +226,46 @@ function chartFn(definition, context) {
     return -1;
   };
 
-  const layout = (components) => {
-    const dockLayout = createDockLayout(settings.dockLayout);
-    components.forEach((c) => { dockLayout.addComponent(c.instance, c.key); });
-
-    const { visible, hidden, order } = dockLayout.layout(element);
+  function getElementRect(el) {
+    if (typeof el.getBoundingClientRect === 'function') {
+      const { width, height } = el.getBoundingClientRect();
+      return {
+        x: 0, y: 0, width, height
+      };
+    }
     return {
-      visible: visible.map(v => findComponent(v)),
-      hidden: hidden.map(h => findComponent(h)),
-      order
+      x: 0, y: 0, width: 0, height: 0
+    };
+  }
+
+  const layout = (components) => {
+    const vcomponents = components.map((c) => {
+      const dockConfig = c.instance.dockConfig();
+      return {
+        instance: c.instance,
+        resize: c.instance.resize,
+        getPreferredSize: dockConfig.computePreferredSize.bind(dockConfig),
+        userSettings: c.settings,
+        layoutComponents: () => {}
+      };
+    });
+    let layoutSettings;
+    if (settings.dockLayout) {
+      console.warn('Deprecation Warning: dockLayout property should be renamed to "strategy"');
+      layoutSettings = settings.dockLayout;
+    } else {
+      layoutSettings = settings.strategy;
+    }
+
+    const dockLayout = createDockLayout(layoutSettings);
+
+    const rect = getElementRect(element);
+
+    const { visible, hidden } = dockLayout.layout(rect, vcomponents);
+    return {
+      visible: visible.map(v => findComponent(v.instance)),
+      hidden: hidden.map(h => findComponent(h.instance)),
+      order: visible
     };
   };
 

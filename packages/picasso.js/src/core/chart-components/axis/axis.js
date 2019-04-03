@@ -43,7 +43,7 @@ function resolveLocalSettings({
   const defaultStgns = extend(true, {}, state.isDiscrete ? DEFAULT_DISCRETE_SETTINGS : DEFAULT_CONTINUOUS_SETTINGS, style);
   const localStgns = extend(true, {}, defaultStgns, settings.settings);
 
-  const dock = settings.dock || state.defaultDock;
+  const dock = (settings.layout ? settings.layout.dock : settings.dock) || state.defaultDock;
   localStgns.dock = dock;
   localStgns.align = resolveAlign(settings.settings.align, dock);
   localStgns.labels.tiltAngle = Math.max(-90, Math.min(localStgns.labels.tiltAngle, 90));

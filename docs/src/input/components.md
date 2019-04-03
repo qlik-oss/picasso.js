@@ -76,9 +76,6 @@ Let's make a component that draws a red line across its entire display area:
 
 ```js
 picasso.component('drawLine', {
-  beforeRender(opts) {
-    this.rect = opts.size;
-  },
   render() {
     return [{
       type: 'line',

@@ -150,9 +150,7 @@ const refLineComponent = {
     return 30;
   },
 
-  beforeRender(opts) {
-    this.rect = opts.size;
-
+  beforeRender() {
     this.blueprint = transposer();
 
     this.blueprint.width = this.rect.width;
