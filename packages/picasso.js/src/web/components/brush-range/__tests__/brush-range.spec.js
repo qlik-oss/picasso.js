@@ -87,7 +87,8 @@ describe('Brush Range', () => {
       transform: 'translate(-50%,0)',
       fontSize: '14px',
       fontFamily: 'Georgia',
-      color: '#595959'
+      color: '#595959',
+      cursor: 'ew-resize'
     };
 
     rootBubbleStyle = {
@@ -455,6 +456,7 @@ describe('Brush Range', () => {
 
       it('top bubble node correctly', () => {
         bubbleStyle.transform = 'translate(0,-50%)';
+        bubbleStyle.cursor = 'ns-resize';
         rootBubbleStyle.top = '0px';
         rootBubbleStyle.left = '0';
         const bubbleTop = rendererOutput[2];
@@ -481,6 +483,7 @@ describe('Brush Range', () => {
 
       it('bottom bubble node correctly', () => {
         bubbleStyle.transform = 'translate(0,-50%)';
+        bubbleStyle.cursor = 'ns-resize';
         rootBubbleStyle.top = '150px';
         rootBubbleStyle.left = '0';
         const bubbleBottom = rendererOutput[3];
