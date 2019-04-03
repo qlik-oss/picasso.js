@@ -58,6 +58,12 @@ export default function complexResolver({
   }
 
   const minorSettings = settings.minor || {};
+  const defaultMinorSettings = {};
+  ['start', 'end', 'min', 'max', 'med'].forEach((prop) => {
+    if (minorSettings[prop] || (data.items && data.items.length && data.items[0][prop])) {
+      defaultMinorSettings[prop] = { scale: minorSettings.scale, ref: prop };
+    }
+  });
 
   const minorResolved = resolver.resolve({
     data,
@@ -66,13 +72,7 @@ export default function complexResolver({
       end: 1
     },
     scaled,
-    settings: extend(true, {}, {
-      start: { scale: minorSettings.scale, ref: 'start' },
-      end: { scale: minorSettings.scale, ref: 'end' },
-      min: { scale: minorSettings.scale, ref: 'min' },
-      max: { scale: minorSettings.scale, ref: 'max' },
-      med: { scale: minorSettings.scale, ref: 'med' }
-    }, minorSettings)
+    settings: extend(true, {}, defaultMinorSettings, minorSettings)
   });
 
   let key;
@@ -82,13 +82,15 @@ export default function complexResolver({
   };
 
   for (let ki = 0, len = keys.length; ki < len; ki++) {
-    key = keys[ki];
-    ext[key] = resolver.resolve({
-      data,
-      defaults: defaults[key],
-      settings: settings[key],
-      scaled
-    });
+    if (!settings[key] || settings[key].show !== false) {
+      key = keys[ki];
+      ext[key] = resolver.resolve({
+        data,
+        defaults: defaults[key],
+        settings: settings[key],
+        scaled
+      });
+    }
   }
 
   return ext;
