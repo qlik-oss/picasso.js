@@ -2,12 +2,6 @@ import extend from 'extend';
 import {
   testRectRect
 } from '../../../math/narrow-phase-collision';
-import { rotate } from '../../../math/vector';
-import {
-  rectToPoints,
-  pointsToRect
-} from '../../../geometry/util';
-import { toRadians } from '../../../math/angles';
 import filterOverlapping from './bars-overlapping-filter';
 
 const LINE_HEIGHT = 1.5;
@@ -189,26 +183,20 @@ export function findBestPlacement({
 }
 
 function approxTextBounds(label, textMetrics, rotated, rect) {
-  const x = label.x + label.dx;
-  const y = label.y + label.dy;
-  const width = rotated ? textMetrics.width : Math.min(textMetrics.width, rect.width);
-  const height = rotated ? Math.min(textMetrics.height, rect.height) : textMetrics.height;
-  const PADDING_OFFSET = 0.1; // Needed to support a case when multiple bars are on the same location
-
+  const x0 = label.x + label.dx;
+  const y0 = label.y + label.dy;
+  const height = rotated ? Math.min(textMetrics.width, rect.height) : Math.min(textMetrics.height, rect.width);
+  const width = rotated ? Math.min(textMetrics.height, rect.height) : Math.min(textMetrics.width, rect.width);
+  const offset = 0.8 * textMetrics.height; // the distance between text-before-edge and alphabetical
+  const PADDING_OFFSET = 1e-9; // Needed to support a case when multiple bars are on the same location
+  const x = rotated ? x0 - offset : x0;
+  const y = rotated ? y0 : y0 - offset;
   const bounds = {
     x: x - PADDING - PADDING_OFFSET,
-    y: y - height - PADDING - PADDING_OFFSET,
+    y: y - PADDING - PADDING_OFFSET,
     width: width + (PADDING * 2) - PADDING_OFFSET,
     height: height + (PADDING * 2) - PADDING_OFFSET
   };
-
-  if (rotated) {
-    const o = {
-      x: x - (height / 2),
-      y: y - (height / 2)
-    };
-    return pointsToRect(rectToPoints(bounds).map(p => rotate(p, toRadians(-90), o)));
-  }
   return bounds;
 }
 
