@@ -14,8 +14,7 @@ describe('line component', () => {
 
   beforeEach(() => {
     xTick = {
-      position: 0.5,
-      isMinor: false
+      position: 0.5
     };
     yTick = {
       position: 0.5,
