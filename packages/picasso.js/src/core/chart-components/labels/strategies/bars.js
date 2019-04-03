@@ -182,7 +182,10 @@ export function findBestPlacement({
   return { bounds, placement };
 }
 
-function approxTextBounds(label, textMetrics, rotated, rect) {
+function approxTextBounds(label, textMetrics, rotated, rect, padding = {}) {
+  const {
+    top = PADDING, bottom = PADDING, left = PADDING, right = PADDING
+  } = padding;
   const x0 = label.x + label.dx;
   const y0 = label.y + label.dy;
   const height = rotated ? Math.min(textMetrics.width, rect.height) : Math.min(textMetrics.height, rect.width);
@@ -192,10 +195,10 @@ function approxTextBounds(label, textMetrics, rotated, rect) {
   const x = rotated ? x0 - offset : x0;
   const y = rotated ? y0 : y0 - offset;
   const bounds = {
-    x: x - PADDING - PADDING_OFFSET,
-    y: y - PADDING - PADDING_OFFSET,
-    width: width + (PADDING * 2) - PADDING_OFFSET,
-    height: height + (PADDING * 2) - PADDING_OFFSET
+    x: x - left - PADDING_OFFSET,
+    y: y - top - PADDING_OFFSET,
+    width: width + (left + right) - PADDING_OFFSET,
+    height: height + (top + bottom) - PADDING_OFFSET
   };
   return bounds;
 }
@@ -298,17 +301,25 @@ export function placeInBars(
           if (typeof linkData !== 'undefined') {
             label.data = linkData;
           }
+          if (typeof placement.background === 'object') {
+            label.backgroundColor = typeof placement.background.fill === 'function' ? placement.background.fill(arg, i) : placement.background.fill;
+            if (typeof label.backgroundColor !== 'undefined') {
+              label.backgroundBounds = approxTextBounds(label, measured, isRotated, bounds, placement.background.padding);
+            }
+          }
           labels.push(label);
           postFilterContext.labels.push({
             node,
-            textBounds: approxTextBounds(label, measured, isRotated, bounds)
+            textBounds: approxTextBounds(label, measured, isRotated, bounds, placement.padding)
           });
         }
       }
     }
   }
 
-  return labels.filter(postFilter(postFilterContext));
+  const filteredLabels = labels.filter(postFilter(postFilterContext));
+  const filteredBounds = filteredLabels.filter(lb => typeof lb.backgroundBounds !== 'undefined').map(lb => ({ type: 'rect', fill: lb.backgroundColor, ...lb.backgroundBounds }));
+  return [...filteredBounds, ...filteredLabels];
 }
 
 export function precalculate({
