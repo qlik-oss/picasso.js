@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.22.1](https://github.com/qlik-oss/picasso.js/compare/v0.22.0...v0.22.1) (2019-04-04)
+
+
+### Bug Fixes
+
+* **bar-labels:** fix the calculation of the bounds of a label when it is rotated -90 degree ([#351](https://github.com/qlik-oss/picasso.js/issues/351)) ([31a2347](https://github.com/qlik-oss/picasso.js/commit/31a2347))
+* **grid-line:** broken for discrete scale ([#352](https://github.com/qlik-oss/picasso.js/issues/352)) ([bf5cb24](https://github.com/qlik-oss/picasso.js/commit/bf5cb24))
+* **q-time-format:** floating precision ([#349](https://github.com/qlik-oss/picasso.js/issues/349)) ([5151022](https://github.com/qlik-oss/picasso.js/commit/5151022))
+* **range-brush:** only render nodes from observed or active brush ([#350](https://github.com/qlik-oss/picasso.js/issues/350)) ([655c32c](https://github.com/qlik-oss/picasso.js/commit/655c32c))
+* **range-brush:** show resize icon on bubble hover ([#353](https://github.com/qlik-oss/picasso.js/issues/353)) ([8523113](https://github.com/qlik-oss/picasso.js/commit/8523113))
+
+
+### Performance Improvements
+
+* **box:** improve performance for boxes ([#335](https://github.com/qlik-oss/picasso.js/issues/335)) ([037bef2](https://github.com/qlik-oss/picasso.js/commit/037bef2))
+
+
+
+
+
 # [0.22.0](https://github.com/qlik-oss/picasso.js/compare/v0.21.0...v0.22.0) (2019-04-01)
 
 
