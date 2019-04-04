@@ -153,7 +153,8 @@ function resolveTarget(ctx) {
     size: null
   };
   const stngs = ctx.settings.settings;
-  const target = stngs.target ? ctx.chart.component(stngs.target.component) : null;
+  const targets = stngs.target && (stngs.target.components || (stngs.target.component ? [stngs.target.component] : []))
+    .map(c => ctx.chart.component(c)).filter(c => !!c && !!c.rect);
   const targetNodes = stngs.target && stngs.target.selector ? ctx.chart.findShapes(stngs.target.selector) : [];
   const targetFillNodes = stngs.target && stngs.target.fillSelector ? ctx.chart.findShapes(stngs.target.fillSelector) : [];
   if (targetNodes.length > 0) {
@@ -165,13 +166,24 @@ function resolveTarget(ctx) {
       const fillBounds = resolveNodeBounds(targetFillNodes);
       resolved.targetFillRect = fillBounds;
     }
-  } else if (target && target.rect) {
-    const innerRect = target.rect.computedInner;
+  } else if (targets && targets.length > 0) {
+    const targetRect = targets.slice(1).reduce((prev, curr) => ({
+      x0: Math.min(prev.x0, curr.rect.computedInner.x),
+      y0: Math.min(prev.y0, curr.rect.computedInner.y),
+      x1: Math.max(prev.x1, curr.rect.computedInner.x + curr.rect.computedInner.width),
+      y1: Math.max(prev.y1, curr.rect.computedInner.y + curr.rect.computedInner.height)
+    }), {
+      x0: targets[0].rect.computedInner.x,
+      y0: targets[0].rect.computedInner.y,
+      x1: targets[0].rect.computedInner.x + targets[0].rect.computedInner.width,
+      y1: targets[0].rect.computedInner.y + targets[0].rect.computedInner.height
+    });
+
     resolved.targetRect = {
-      x: innerRect.x - ctx.state.rect.x,
-      y: innerRect.y - ctx.state.rect.y,
-      width: innerRect.width,
-      height: innerRect.height
+      x: targetRect.x0 - ctx.state.rect.x,
+      y: targetRect.y0 - ctx.state.rect.y,
+      width: targetRect.x1 - targetRect.x0,
+      height: targetRect.y1 - targetRect.y0
     };
   }
 
@@ -188,7 +200,8 @@ function resolveTarget(ctx) {
  * @property {string} [bubbles.align=start] - Where to anchor bubble [start|end]
  * @property {function} [bubbles.label] - Callback function for the labels
  * @property {object} [target]
- * @property {string} [target.component] - Render matching overlay on target component
+ * @property {string} [target.component] - Render matching overlay on target component. @deprecated Use `components` instead
+ * @property {string[]} [target.components] - Render matching overlay on target components
  * @property {string} [target.selector] - Instead of targeting a component, target one or more shapes
  * @property {string} [target.fillSelector] - Target a subset of the selector as fill area. Only applicable if `selector` property is set
  */

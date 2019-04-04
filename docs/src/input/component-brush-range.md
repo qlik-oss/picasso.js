@@ -12,14 +12,14 @@ No [data](data.md) is required as input directly, instead the data is implicitly
 
 ## Layout
 
-There are two ways to set the layout, either by referencing a `target` component, in which case, the rendering area extends from the `target` component to the start of the opposite docking area. Ex. if `target` is docked to the `right`, then the rendering area includes the `right` area and the `center` area. The other option, which is default, is if no `target` component is configured, then the `center` area is used.
+There are two ways to set the layout, either by referencing a `target` components, in which case, the rendering area extends from the `target` components to the start of the opposite docking area. Ex. if `target` is docked to the `right`, then the rendering area includes the `right` area and the `center` area. The other option, which is default, is if no `target` component is configured, then the `center` area is used.
 
 A `target` is configured in the `target` property:
 
 ```js
 settings: {
   target: {
-    component: 'my-target-component'
+    components: ['my-target-component']
   }
 }
 ```
@@ -102,7 +102,7 @@ components: [
       scale: 'some-linear-scale'
     },
     target: {
-      component: 'target-this-component'
+      components: ['target-this-component']
     }
   },
   ...
