@@ -415,6 +415,18 @@ export function precalculate({
  * @property {number} [labels[].placements[].align=0.5] - Placement of the label along the perpendicular direction of the bar
  * @property {string} [labels[].placements[].fill='#333'] - Color of the label
  * @property {boolean} [labels[].placements[].overflow=false] - True if the label is allowed to overflow the bar
+ * @property {object} labels[].placements[].padding - Padding between the label and the bar
+ * @property {number} [labels[].placements[].padding.top=4] - Padding-top between the label and the bar
+ * @property {number} [labels[].placements[].padding.bottom=4] - Padding-bottom between the label and the bar
+ * @property {number} [labels[].placements[].padding.left=4] - Padding-left between the label and the bar
+ * @property {number} [labels[].placements[].padding.right=4] - Padding-right between the label and the bar
+ * @property {object} labels[].placements[].background - Background of the label
+ * @property {string|function} labels[].placements[].background.fill - Background color of the label
+ * @property {object} labels[].placements[].background.padding - Padding between the label and the background
+ * @property {number} [labels[].placements[].background.padding.top=4] - Padding-top between the label and the background
+ * @property {number} [labels[].placements[].background.padding.bottom=4] - Padding-bottom between the label and the background
+ * @property {number} [labels[].placements[].background.padding.left=4] - Padding-left between the label and the background
+ * @property {number} [labels[].placements[].background.padding.right=4] - Padding-right between the label and the background
  */
 
 export function bars({
