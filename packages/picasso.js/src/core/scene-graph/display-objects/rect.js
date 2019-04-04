@@ -22,7 +22,13 @@ export default class Rect extends DisplayObject {
 
   set(v = {}) {
     const {
-      x = 0, y = 0, width = 0, height = 0, collider
+      x = 0,
+      y = 0,
+      width = 0,
+      height = 0,
+      rx = NaN,
+      ry = NaN,
+      collider
     } = v;
     const opts = extend({
       type: 'rect', x, y, width, height
@@ -45,6 +51,9 @@ export default class Rect extends DisplayObject {
       this.attrs.y = y + height;
       this.attrs.height = -height;
     }
+
+    this.attrs.rx = Math.max(0, rx);
+    this.attrs.ry = Math.max(0, ry);
 
     this.collider = opts;
     this.__boundingRect = { true: null, false: null };
