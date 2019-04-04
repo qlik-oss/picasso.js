@@ -3,9 +3,7 @@ function clampRadius(max, value) {
 }
 
 /**
- * Implementation details follow rx/ry restrictions from https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/rx#rect
- *
- * Solution based on roundedRect function from https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Drawing_shapes#Making_combinations
+ * Implementation details follow rx/ry restrictions from https://svgwg.org/svg2-draft/geometry.html#RX
  *
  * Using Quadratic Bézier curve it's not possible accurately represent a circle or ellipse but should for the case of a rounded rectangle be sufficent.
  * @private
