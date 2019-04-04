@@ -88,11 +88,14 @@ function limitBounds(bounds, view) {
   bounds.height = maxY - minY;
 }
 
-function pad(bounds, padding) {
-  bounds.x += padding;
-  bounds.width -= (padding * 2);
-  bounds.y += padding;
-  bounds.height -= (padding * 2);
+function pad(bounds, padding = {}) {
+  const {
+    top = PADDING, bottom = PADDING, left = PADDING, right = PADDING
+  } = padding;
+  bounds.x += left;
+  bounds.width -= (left + right);
+  bounds.y += top;
+  bounds.height -= (top + bottom);
 }
 
 export function getBarRect({
@@ -156,7 +159,8 @@ export function findBestPlacement({
       bar: node.localBounds,
       view: rect,
       direction,
-      position: placement.position
+      position: placement.position,
+      padding: placement.padding
     });
     boundaries.push(testBounds);
     largest = !p || testBounds.height > largest.height ? testBounds : largest;
