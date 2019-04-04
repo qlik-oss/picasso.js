@@ -30,7 +30,9 @@ Tilted labels are only supported on a discrete axis. When the `mode` property is
 {
   type: 'axis',
   scale: 'myDiscreteScale',
-  dock: 'bottom'
+  layout: {
+    dock: 'bottom'
+  },
   settings: {
     labels: {
       mode: 'tilted',
@@ -50,7 +52,9 @@ Layered labels are only supported on a discrete axis.
 {
   type: 'axis',
   scale: 'myDiscreteScale',
-  dock: 'bottom'
+  layout: {
+    dock: 'bottom'
+  },
   settings: {
     labels: {
       mode: 'layered'

@@ -24,16 +24,16 @@ const gridLineComponent = {
 
   require: ['chart', 'renderer', 'resolver'],
   defaultSettings: {
-    displayOrder: 0,
+    layout: {
+      displayOrder: 0
+    },
     style: { // Theming style
       ticks: '$guide-line',
       minorTicks: '$guide-line--minor'
     }
   },
 
-  beforeRender(opts) {
-    this.rect = opts.size;
-
+  beforeRender() {
     this.blueprint = transposer();
 
     this.blueprint.width = this.rect.width;

@@ -49,14 +49,6 @@ const labelsComponent = {
       label: '$label'
     }
   },
-  created() {
-    this.rect = {
-      x: 0, y: 0, width: 0, height: 0
-    };
-  },
-  beforeRender(opts) {
-    this.rect = opts.size;
-  },
   render() {
     const stngs = this.settings.settings;
     const labels = [];

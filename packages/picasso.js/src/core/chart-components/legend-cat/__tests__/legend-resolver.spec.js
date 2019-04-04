@@ -10,6 +10,7 @@ describe('legend-resolver', () => {
         datum: () => ({ value: 'does not matter' }) // the value in datum is taken from domain
       },
       settings: {
+        layout: {},
         settings: {}
       },
       style: {
@@ -47,6 +48,7 @@ describe('legend-resolver', () => {
         domain: () => [2, 5, 7]
       },
       settings: {
+        layout: {},
         settings: {}
       },
       style: {
@@ -80,6 +82,7 @@ describe('legend-resolver', () => {
         domain: () => [2, 5, 7]
       },
       settings: {
+        layout: {},
         formatter: v => `${v}kr`,
         settings: {}
       },
@@ -116,6 +119,7 @@ describe('legend-resolver', () => {
           datum: d => ({ value: d })
         },
         settings: {
+          layout: {},
           settings: {
             item: {
               show: false,

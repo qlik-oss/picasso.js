@@ -764,40 +764,47 @@
           "optional": true,
           "type": "brush-setting"
         },
-        "displayOrder": {
+        "layout": {
+          "description": "Layout settings",
           "optional": true,
-          "defaultValue": 0,
-          "type": "number"
-        },
-        "prioOrder": {
-          "optional": true,
-          "defaultValue": 0,
-          "type": "number"
+          "kind": "object",
+          "entries": {
+            "displayOrder": {
+              "optional": true,
+              "defaultValue": 0,
+              "type": "number"
+            },
+            "prioOrder": {
+              "optional": true,
+              "defaultValue": 0,
+              "type": "number"
+            },
+            "minimumLayoutMode": {
+              "description": "Refer to layout sizes defined by layoutModes in dockLayout",
+              "optional": true,
+              "kind": "union",
+              "items": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "Object"
+                }
+              ],
+              "type": "any"
+            },
+            "dock": {
+              "description": "left, right, top or bottom",
+              "optional": true,
+              "type": "string"
+            }
+          }
         },
         "show": {
           "description": "If the component should be rendered",
           "optional": true,
           "defaultValue": true,
           "type": "boolean"
-        },
-        "minimumLayoutMode": {
-          "description": "Refer to layout sizes defined by layoutModes in dockLayout",
-          "optional": true,
-          "kind": "union",
-          "items": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "Object"
-            }
-          ],
-          "type": "any"
-        },
-        "dock": {
-          "description": "left, right, top or bottom",
-          "optional": true,
-          "type": "string"
         },
         "scale": {
           "description": "Named scale. Will be provided to the component if it ask for it.",
@@ -3822,102 +3829,6 @@
         }
       }
     },
-    "dock-layout-settings": {
-      "kind": "object",
-      "entries": {
-        "size": {
-          "description": "Physical size. Defaults to the container element.",
-          "optional": true,
-          "kind": "object",
-          "entries": {
-            "width": {
-              "description": "Width in pixels",
-              "optional": true,
-              "type": "number"
-            },
-            "height": {
-              "description": "Height in pixels",
-              "optional": true,
-              "type": "number"
-            }
-          }
-        },
-        "logicalSize": {
-          "description": "Logical size",
-          "optional": true,
-          "kind": "object",
-          "entries": {
-            "width": {
-              "description": "Width in pixels",
-              "optional": true,
-              "type": "number"
-            },
-            "height": {
-              "description": "Height in pixels",
-              "optional": true,
-              "type": "number"
-            },
-            "preserveAspectRatio": {
-              "description": "If true, takes the smallest ratio of width/height between logical and physical size ( physical / logical )",
-              "optional": true,
-              "defaultValue": false,
-              "type": "boolean"
-            },
-            "align": {
-              "description": "Normalized value between 0-1. Defines how the space around the scaled axis is spread in the container, with 0.5 meaning the spread is equal on both sides. Only applicable if preserveAspectRatio is set to true",
-              "optional": true,
-              "defaultValue": 0.5,
-              "type": "number"
-            }
-          }
-        },
-        "center": {
-          "description": "Define how much space the center dock area requires",
-          "optional": true,
-          "kind": "object",
-          "entries": {
-            "minWidthRatio": {
-              "description": "Value between 0 and 1",
-              "optional": true,
-              "defaultValue": 0.5,
-              "type": "number"
-            },
-            "minHeightRatio": {
-              "description": "Value between 0 and 1",
-              "optional": true,
-              "defaultValue": 0.5,
-              "type": "number"
-            },
-            "minWidth": {
-              "description": "Width in pixels",
-              "optional": true,
-              "type": "number"
-            },
-            "minHeight": {
-              "description": "Height in pixels",
-              "optional": true,
-              "type": "number"
-            }
-          }
-        },
-        "layoutModes": {
-          "description": "Dictionary with named sizes",
-          "optional": true,
-          "type": "object",
-          "generics": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "{width:number"
-            },
-            {
-              "type": "height:number}"
-            }
-          ]
-        }
-      }
-    },
     "rect": {
       "kind": "object",
       "entries": {
@@ -4020,6 +3931,261 @@
         "d": {
           "description": "Path definition",
           "type": "string"
+        }
+      }
+    },
+    "computePreferredSize": {
+      "description": "Returns the preferred size of a component.\nThe return value of the function can either be a number representing the required size in the dock direction\nor an object with a `size` and `edgeBleed` property.",
+      "kind": "function",
+      "params": [
+        {
+          "name": "inner",
+          "optional": true,
+          "type": "object"
+        },
+        {
+          "name": "outer",
+          "optional": true,
+          "type": "object"
+        }
+      ],
+      "returns": {
+        "description": "Returns the computed preferred size",
+        "kind": "union",
+        "items": [
+          {
+            "type": "number"
+          },
+          {
+            "type": "object"
+          }
+        ],
+        "type": "any"
+      },
+      "examples": [
+        "dockConfig.computePreferredSize(() => 150); // Require a size of 150 in the dock direction\n\ndockConfig.computePreferredSize(() => ({\n size: 150,\n edgeBleed: {\n   left: 50,\n   right: 50\n }\n})); // Require a size of 150 in the dock direction and a bleed size of 50 to the left and right dock direction"
+      ]
+    },
+    "dock": {
+      "description": "Set the dock direction, supported values are left | right | top | bottom. Any other value will be interpreted as center dock.",
+      "kind": "function",
+      "params": [
+        {
+          "name": "val",
+          "description": "Dock direction",
+          "optional": true,
+          "defaultValue": "''",
+          "type": "string"
+        }
+      ],
+      "returns": {
+        "description": "The current context",
+        "type": "this"
+      },
+      "examples": [
+        "dockConfig.dock('left');"
+      ]
+    },
+    "displayOrder": {
+      "description": "The `displayOrder` property is used by the layout engine to lay out components.\nComponents are interpreted in the ascending order of the `displayOrder` value. The layout engine apply the value in two ways,\nthe first is the order in which components are rendererd. The second is the area components are laid out in\nwhen they have a direction, i.e. docked to either top, bottom, left or right.\n\nIf docked at the same area, the component with a higher `displayOrder` will be rendered\non top of the component with a lower `displayOrder`. It can be seen as defining a z-index.\nA lower `displayOrder` also means that a component will be laid out first in a given direction,\ni.e. laid out closer to the central area (non-directional area) then a component with a higher `displayOrder`.\nIt can in this case be seen as the x-index or y-index.",
+      "kind": "function",
+      "params": [
+        {
+          "name": "val",
+          "description": "The display order",
+          "optional": true,
+          "defaultValue": 0,
+          "type": "number"
+        }
+      ],
+      "returns": {
+        "description": "The current context or display order",
+        "kind": "union",
+        "items": [
+          {
+            "type": "this"
+          },
+          {
+            "type": "number"
+          }
+        ],
+        "type": "any"
+      },
+      "examples": [
+        "dockConfig.displayOrder(99);"
+      ]
+    },
+    "prioOrder": {
+      "description": "The `prioOrder` property is used to define the order in which components are added to the layout engine,\nthis is done before any components are laid out. When there is not enough space to add any more components\nto a given area, all components not all ready added, are then discarded. The `prioOrder` is interpreted\nin the ascending order. Such that a lower value is added to the layout engine first.",
+      "kind": "function",
+      "params": [
+        {
+          "name": "val",
+          "description": "The prio order",
+          "optional": true,
+          "defaultValue": 0,
+          "type": "number"
+        }
+      ],
+      "returns": {
+        "description": "The current context or prio order",
+        "kind": "union",
+        "items": [
+          {
+            "type": "this"
+          },
+          {
+            "type": "number"
+          }
+        ],
+        "type": "any"
+      },
+      "examples": [
+        "dockConfig.prioOrder(-1);"
+      ]
+    },
+    "minimumLayoutMode": {
+      "description": "Ger or set the minimumLayoutMode",
+      "kind": "function",
+      "params": [
+        {
+          "name": "val",
+          "description": "The minimum layout mode",
+          "optional": true,
+          "kind": "union",
+          "items": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object"
+            }
+          ],
+          "type": "any"
+        }
+      ],
+      "returns": {
+        "description": "If no parameter is passed the current context is returned, else the current layout mode.",
+        "kind": "union",
+        "items": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object"
+          },
+          {
+            "type": "this"
+          }
+        ],
+        "type": "any"
+      },
+      "examples": [
+        "dockConfig.minimumLayoutMode('L');\ndockConfig.minimumLayoutMode({ width: 'S', height: 'L' });"
+      ]
+    },
+    "show": {
+      "description": "Set the component visibility. If false the component is not added to the layout engine.",
+      "kind": "function",
+      "params": [
+        {
+          "name": "val",
+          "description": "Toggle visibility",
+          "optional": true,
+          "defaultValue": true,
+          "type": "boolean"
+        }
+      ],
+      "returns": {
+        "description": "The current context or show",
+        "kind": "union",
+        "items": [
+          {
+            "type": "this"
+          },
+          {
+            "type": "boolean"
+          }
+        ],
+        "type": "any"
+      }
+    },
+    "dock-layout-settings": {
+      "kind": "object",
+      "entries": {
+        "logicalSize": {
+          "description": "Logical size",
+          "optional": true,
+          "kind": "object",
+          "entries": {
+            "width": {
+              "description": "Width in pixels",
+              "optional": true,
+              "type": "number"
+            },
+            "height": {
+              "description": "Height in pixels",
+              "optional": true,
+              "type": "number"
+            },
+            "preserveAspectRatio": {
+              "description": "If true, takes the smallest ratio of width/height between logical and physical size ( physical / logical )",
+              "optional": true,
+              "defaultValue": false,
+              "type": "boolean"
+            },
+            "align": {
+              "description": "Normalized value between 0-1. Defines how the space around the scaled axis is spread in the container, with 0.5 meaning the spread is equal on both sides. Only applicable if preserveAspectRatio is set to true",
+              "optional": true,
+              "defaultValue": 0.5,
+              "type": "number"
+            }
+          }
+        },
+        "center": {
+          "description": "Define how much space the center dock area requires",
+          "optional": true,
+          "kind": "object",
+          "entries": {
+            "minWidthRatio": {
+              "description": "Value between 0 and 1",
+              "optional": true,
+              "defaultValue": 0.5,
+              "type": "number"
+            },
+            "minHeightRatio": {
+              "description": "Value between 0 and 1",
+              "optional": true,
+              "defaultValue": 0.5,
+              "type": "number"
+            },
+            "minWidth": {
+              "description": "Width in pixels",
+              "optional": true,
+              "type": "number"
+            },
+            "minHeight": {
+              "description": "Height in pixels",
+              "optional": true,
+              "type": "number"
+            }
+          }
+        },
+        "layoutModes": {
+          "description": "Dictionary with named sizes",
+          "optional": true,
+          "type": "object",
+          "generics": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "{width:number"
+            },
+            {
+              "type": "height:number}"
+            }
+          ]
         }
       }
     },

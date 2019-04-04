@@ -66,17 +66,19 @@ picasso.chart({
       x: { data: { field: 'Margin' } },
       y: { data: { field: 'Sales' } }
     },
-    components: [ // specify how to render the chart
-      {
+    components: [{ // specify how to render the chart
         type: 'axis',
         scale: 'y',
-        dock: 'left'
+        layout: {
+          dock: 'left'
+        }
       }, {
         type: 'axis',
         scale: 'x',
-        dock: 'bottom'
-      },
-      {
+        layout: {
+          dock: 'bottom'
+        }
+      }, {
         type: 'point',
         data: {
           extract: {

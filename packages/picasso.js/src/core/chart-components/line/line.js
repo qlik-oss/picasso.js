@@ -329,9 +329,6 @@ const lineMarkerComponent = {
   },
   created() {
   },
-  beforeRender({ size }) {
-    this.rect = size;
-  },
   render({ data }) {
     const { width, height } = this.rect;
     this.stngs = this.settings.settings || {};

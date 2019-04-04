@@ -34,6 +34,7 @@ describe('Legend Sequential', () => {
 
     componentFixture = componentFactoryFixture();
     userDef = {
+      layout: {},
       settings: {
         fill: 'fillScale',
         major: 'majorScale',
@@ -121,14 +122,14 @@ describe('Legend Sequential', () => {
     });
 
     it('should request to be hidden if tick labels are vertically overlapping', () => {
-      userDef.dock = 'left';
+      userDef.layout.dock = 'left';
       userDef.settings.tick = { anchor: 'left' };
       componentFixture.simulateCreate(legendSeq, userDef);
       expect(componentFixture.simulateLayout(container)).to.equal(100); // Return cointainer width
     });
 
     it('should request to be hidden if tick labels are horizontallay overlapping', () => {
-      userDef.dock = 'top';
+      userDef.layout.dock = 'top';
       userDef.settings.tick = { anchor: 'top' };
       componentFixture.simulateCreate(legendSeq, userDef);
       expect(componentFixture.simulateLayout(container)).to.equal(100); // Return cointainer height
@@ -137,7 +138,7 @@ describe('Legend Sequential', () => {
 
   describe('Vertical layout', () => {
     beforeEach(() => {
-      userDef.dock = 'left';
+      userDef.layout.dock = 'left';
     });
 
     it('should anchor ticks to the right', () => {
@@ -244,7 +245,7 @@ describe('Legend Sequential', () => {
 
   describe('Horizontal layout', () => {
     beforeEach(() => {
-      userDef.dock = 'top';
+      userDef.layout.dock = 'top';
     });
 
     it('should anchor ticks on the top', () => {

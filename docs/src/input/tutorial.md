@@ -107,11 +107,15 @@ Let's add an _x_ and _y_ axis:
 components: [{
   type: 'axis',
   scale: 's',
-  dock: 'left'
+  layout: {
+    dock: 'left'
+  }
 }, {
   type: 'axis',
   scale: 'm',
-  dock: 'bottom'
+  layout: {
+    dock: 'bottom'
+  }
 }]
 ```
 
@@ -220,7 +224,9 @@ And finally add a legend component in order to see the _Year_ each color represe
 components: [{
   type: 'legend-cat',
   scale: 'col',
-  dock: 'top'
+  layout: {
+    dock: 'top'
+  }
 }]
 ```
 

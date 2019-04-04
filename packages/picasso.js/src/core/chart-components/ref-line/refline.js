@@ -108,9 +108,11 @@ function filterUndefinedValue(line) {
  */
 
 const refLineComponent = {
-  require: ['chart', 'renderer', 'dockConfig'],
+  require: ['chart', 'renderer'],
   defaultSettings: {
-    displayOrder: 0,
+    layout: {
+      displayOrder: 0
+    },
     style: {
       oob: {
         show: true,
@@ -150,9 +152,7 @@ const refLineComponent = {
     return 30;
   },
 
-  beforeRender(opts) {
-    this.rect = opts.size;
-
+  beforeRender() {
     this.blueprint = transposer();
 
     this.blueprint.width = this.rect.width;

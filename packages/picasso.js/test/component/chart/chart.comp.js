@@ -242,7 +242,9 @@ describe('Chart', () => {
     function createComp(key, order = key) {
       return {
         key: `comp${key}`,
-        displayOrder: order,
+        layout: {
+          displayOrder: order
+        },
         type: 'custom-log-render'
       };
     }

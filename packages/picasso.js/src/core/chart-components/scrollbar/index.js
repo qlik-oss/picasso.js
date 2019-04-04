@@ -11,7 +11,7 @@
  */
 
 function start(_scrollbar, pos) {
-  const dock = _scrollbar.settings.dock;
+  const dock = _scrollbar.settings.layout.dock;
   const invert = _scrollbar.settings.settings.invert;
   const horizontal = dock === 'top' || dock === 'bottom';
   const lengthAttr = horizontal ? 'width' : 'height';
@@ -128,14 +128,6 @@ const scrollbarComponent = {
       width: 16 // 32 for touch
     }
   },
-  created: function created() {
-    this.rect = {
-      x: 0,
-      y: 0,
-      width: 0,
-      height: 0
-    };
-  },
 
   preferredSize: function preferredSize(rect) {
     const scrollState = this.chart.scroll(this.settings.scroll).getState();
@@ -147,14 +139,8 @@ const scrollbarComponent = {
     return this.settings.settings.width;
   },
 
-  resize: function resize(opts) {
-    const inner = opts.inner;
-    this.rect = inner;
-    return inner;
-  },
-
   render: function render(h) {
-    const dock = this.settings.dock;
+    const dock = this.settings.layout.dock;
     const invert = this.settings.settings.invert;
     const horizontal = dock === 'top' || dock === 'bottom';
     const lengthAttr = horizontal ? 'width' : 'height';

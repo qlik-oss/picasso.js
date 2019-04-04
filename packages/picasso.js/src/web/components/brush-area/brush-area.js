@@ -153,7 +153,9 @@ function resetState() {
 const definition = {
   require: ['chart', 'renderer'],
   defaultSettings: {
-    displayOrder: 99,
+    layout: {
+      displayOrder: 99
+    },
     settings: DEFAULT_SETTINGS,
     style: {
       area: '$selection-area-target'
@@ -180,9 +182,6 @@ const definition = {
     return 0;
   },
   render() {},
-  beforeRender({ size }) {
-    this.rect = size.computedInner;
-  },
   start(e) {
     this.state.boundingRect = this.renderer.element().getBoundingClientRect();
     const p = getLocalPoint(this, e, false);

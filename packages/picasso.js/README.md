@@ -26,12 +26,16 @@ picasso.chart({
       {
         type: 'axis',
         scale: 'budget',
-        dock: 'bottom'
+        layout: {
+          dock: 'bottom'
+        }
       },
       {
         type: 'axis',
         scale: 'sales',
-        dock: 'left'
+        layout: {
+          dock: 'left'
+        }
       },
       {
         type: 'point',

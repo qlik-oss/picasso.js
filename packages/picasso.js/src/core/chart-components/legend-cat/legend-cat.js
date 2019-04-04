@@ -9,15 +9,15 @@ function update(comp) {
   comp.state.resolved = resolveSettings(comp);
   comp.titleRenderer.itemize({
     resolved: comp.state.resolved,
-    dock: comp.settings.dock || 'center'
+    dock: comp.settings.layout.dock || 'center'
   });
   comp.itemRenderer.itemize({
     resolved: comp.state.resolved,
-    dock: comp.settings.dock || 'center'
+    dock: comp.settings.layout.dock || 'center'
   });
   comp.navigationRenderer.itemize({
     resolved: comp.state.resolved,
-    dock: comp.settings.dock || 'center',
+    dock: comp.settings.layout.dock || 'center',
     navigation: comp.settings.settings.navigation
   });
 
@@ -28,7 +28,7 @@ function update(comp) {
 
 function preferredSize(comp, size) {
   let s = 0;
-  const dock = comp.settings.dock || 'center';
+  const dock = comp.settings.layout.dock || 'center';
   const orientation = dock === 'top' || dock === 'bottom' ? 'horizontal' : 'vertical';
   const d = comp.state.display;
   const tempLayout = layout(size.inner, d, orientation, {
@@ -52,7 +52,8 @@ function render(legend) {
     navigationRenderer,
     titleRenderer
   } = legend;
-  const orientation = settings.dock === 'top' || settings.dock === 'bottom' ? 'horizontal' : 'vertical';
+  const dock = settings.layout.dock;
+  const orientation = dock === 'top' || dock === 'bottom' ? 'horizontal' : 'vertical';
   const l = layout(rect, state.display, orientation, {
     itemRenderer,
     navigationRenderer,
@@ -157,9 +158,6 @@ const component = {
     }
   },
   created() {
-    this.rect = {
-      x: 0, y: 0, width: 0, height: 0
-    };
     this.state = {
       interaction: {}
     };
@@ -181,9 +179,6 @@ const component = {
   },
   beforeUpdate() {
     update(this);
-  },
-  beforeRender(opts) {
-    this.rect = opts.size;
   },
   render() {
     return render(this);

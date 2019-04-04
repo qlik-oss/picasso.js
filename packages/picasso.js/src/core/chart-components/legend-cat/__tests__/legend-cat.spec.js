@@ -93,7 +93,9 @@ describe('legend-cat', () => {
   it('should render with nagivation', () => {
     const config = {
       scale: 'long',
-      dock: 'top',
+      layout: {
+        dock: 'top'
+      },
       settings: {
         layout: {
           direction: 'rtl'

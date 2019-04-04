@@ -11,7 +11,7 @@ import {
   brushFromSceneNodes
 } from './brushing';
 import symbolFactory from '../symbols';
-import createDockConfig from '../dock-layout/dock-config';
+import createDockConfig from '../layout/dock/config';
 
 const isReservedProperty = prop => [
   'on', 'preferredSize', 'created', 'beforeMount', 'mounted', 'resize',
@@ -36,6 +36,7 @@ function prepareContext(ctx, definition, opts) {
     dockConfig,
     mediator,
     instance,
+    rect,
     style,
     registries,
     resolver,
@@ -52,6 +53,9 @@ function prepareContext(ctx, definition, opts) {
   }
 
   // TODO add setters and log warnings / errors to console
+  Object.defineProperty(ctx, 'userSettings', {
+    get: settings
+  });
   Object.defineProperty(ctx, 'settings', {
     get: settings
   });
@@ -73,6 +77,11 @@ function prepareContext(ctx, definition, opts) {
   Object.defineProperty(ctx, 'registries', {
     get: registries
   });
+  if (rect) {
+    Object.defineProperty(ctx, 'rect', {
+      get: rect
+    });
+  }
 
   // TODO _DO_NOT_USE_getInfo is a temporary solution to expose info from a component
   // It should replace ASAP with a proper solution.
@@ -130,12 +139,29 @@ function prepareContext(ctx, definition, opts) {
   });
 }
 
-function createDockDefinition(settings, preferredSize) {
+function createDockDefinition(settings, preferredSize, logger) {
+  const getLayoutProperty = (propName) => {
+    if (settings[propName]) {
+      logger.warn(`Deprecation Warning the ${propName} property should be moved into layout: {} property`); // eslint-disable-line no-console
+      return settings[propName];
+    }
+    return settings.layout ? settings.layout[propName] : undefined;
+  };
+
   const def = {};
-  def.displayOrder = settings.displayOrder;
-  def.dock = settings.dock;
-  def.prioOrder = settings.prioOrder;
-  def.minimumLayoutMode = settings.minimumLayoutMode;
+  def.displayOrder = getLayoutProperty('displayOrder');
+  def.dock = getLayoutProperty('dock');
+  def.prioOrder = getLayoutProperty('prioOrder');
+  def.minimumLayoutMode = getLayoutProperty('minimumLayoutMode');
+
+  // move layout properties to layout object
+  settings.layout = settings.layout || {};
+  settings.layout.displayOrder = settings.layout.displayOrder || def.displayOrder;
+  settings.layout.dock = settings.layout.dock || def.dock;
+  settings.layout.prioOrder = settings.layout.prioOrder || def.prioOrder;
+  settings.layout.minimumLayoutMode = settings.layout.minimumLayoutMode || def.minimumLayoutMode;
+
+  // not directly a dock layout property
   def.show = settings.show;
   def.preferredSize = preferredSize;
   return def;
@@ -214,15 +240,17 @@ function componentFactory(definition, context = {}) {
   const instanceContext = extend({}, config);
 
   // Create a callback that calls lifecycle functions in the definition and config (if they exist).
-  function createCallback(method, defaultMethod = () => { }, canBeValue = false) {
+  function createCallback(method, defaultMethod = () => { }, canBeValue = false, alternateMethod) {
     return function cb(...args) {
-      const inDefinition = typeof definition[method] !== 'undefined';
-      const inConfig = typeof config[method] !== 'undefined';
+      const inDefinition = typeof definition[method] !== 'undefined' || typeof definition[alternateMethod] !== 'undefined';
+      const inConfig = typeof config[method] !== 'undefined' || typeof config[alternateMethod] !== 'undefined';
 
       let returnValue;
       if (inDefinition) {
         if (typeof definition[method] === 'function') {
           returnValue = definition[method].call(definitionContext, ...args);
+        } else if (typeof definition[alternateMethod] === 'function') {
+          returnValue = definition[alternateMethod].call(definitionContext, ...args);
         } else if (canBeValue) {
           returnValue = definition[method];
         }
@@ -231,6 +259,8 @@ function componentFactory(definition, context = {}) {
       if (inConfig) {
         if (typeof config[method] === 'function') {
           returnValue = config[method].call(instanceContext, ...args);
+        } else if (typeof config[alternateMethod] === 'function') {
+          returnValue = config[alternateMethod].call(instanceContext, ...args);
         } else if (canBeValue) {
           returnValue = config[method];
         }
@@ -244,7 +274,7 @@ function componentFactory(definition, context = {}) {
     };
   }
 
-  const preferredSize = createCallback('preferredSize', () => 0, true);
+  const preferredSize = createCallback('preferredSize', () => 0, true, 'getPreferredSize');
   const resize = createCallback('resize', ({ inner }) => inner);
   const created = createCallback('created');
   const beforeMount = createCallback('beforeMount');
@@ -288,7 +318,7 @@ function componentFactory(definition, context = {}) {
   brushArgs.renderer = rend;
 
   const dockConfigCallbackContext = { resources: chart.logger ? { logger: chart.logger() } : {} };
-  let dockConfig = createDockConfig(createDockDefinition(settings, preferredSize), dockConfigCallbackContext);
+  let dockConfig = createDockConfig(createDockDefinition(settings, preferredSize, chart.logger()), dockConfigCallbackContext);
 
   const appendComponentMeta = (node) => {
     node.key = settings.key;
@@ -304,7 +334,7 @@ function componentFactory(definition, context = {}) {
     if (opts.settings) {
       config = opts.settings;
       settings = extend(true, {}, defaultSettings, opts.settings);
-      dockConfig = createDockConfig(createDockDefinition(settings, preferredSize), dockConfigCallbackContext);
+      dockConfig = createDockConfig(createDockDefinition(settings, preferredSize, chart.logger()), dockConfigCallbackContext);
     }
 
     if (settings.scale) {
@@ -473,6 +503,7 @@ function componentFactory(definition, context = {}) {
     dockConfig: () => dockConfig,
     mediator: () => mediator,
     instance: () => instanceContext,
+    rect: () => instanceContext.rect,
     style: () => style,
     update: () => updateNodes,
     registries: () => registries,

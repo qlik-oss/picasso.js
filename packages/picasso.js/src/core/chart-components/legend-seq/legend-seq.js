@@ -19,7 +19,7 @@ function resolveAnchor(dock, anchor, map) {
 }
 
 function resolveTickAnchor(settings) {
-  const dock = settings.dock;
+  const dock = settings.layout.dock;
   const anchor = settings.settings.tick.anchor;
 
   const dockAnchorMap = {
@@ -42,7 +42,7 @@ function resolveTitleAnchor(settings) {
     default: 'top'
   };
 
-  const dock = settings.dock;
+  const dock = settings.layout.dock;
   const anchor = settings.settings.title.anchor;
 
   return resolveAnchor(dock, anchor, dockAnchorMap);
@@ -92,7 +92,7 @@ function getTicks(ctx, majorScale) {
 }
 
 function initState(ctx) {
-  const isVertical = ctx.settings.dock !== 'top' && ctx.settings.dock !== 'bottom';
+  const isVertical = ctx.settings.layout.dock !== 'top' && ctx.settings.layout.dock !== 'bottom';
   const titleStgns = ctx.stgns.title;
 
   const fillScale = ctx.chart.scale(ctx.stgns.fill);
@@ -214,8 +214,10 @@ function initState(ctx) {
 const legendDef = {
   require: ['chart', 'settings', 'renderer'],
   defaultSettings: {
-    displayOrder: 0,
-    dock: 'right',
+    layout: {
+      displayOrder: 0,
+      dock: 'right'
+    },
     settings: {
       size: 15,
       length: 0.5,

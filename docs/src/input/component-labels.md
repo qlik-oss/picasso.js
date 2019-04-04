@@ -26,12 +26,16 @@ components: [
   {
     type: 'box',
     key: 'bars',
-    displayOrder: 1,
+    layout: {
+      displayOrder: 1
+    },
     /* ... */
   },
   {
     type: 'labels',
-    displayOrder: 2 // must be larger than the displayOrder for the 'bars' component
+    layout: {
+      displayOrder: 2 // must be larger than the displayOrder for the 'bars' component
+    },
     settings: {
       sources: [{
         component: 'bars',
@@ -83,12 +87,16 @@ components: [
   {
     type: 'pie',
     key: 'myPie',
-    displayOrder: 1,
+    layout: {
+      displayOrder: 1
+    },
     /* ... */
   },
   {
     type: 'labels',
-    displayOrder: 2 // must be larger than the displayOrder for the 'pie' component
+    layout: {
+      displayOrder: 2 // must be larger than the displayOrder for the 'pie' component
+    },
     settings: {
       sources: [{
         component: 'myPie',
@@ -141,12 +149,16 @@ components: [
   {
     type: 'rows',
     key: 'rects',
-    displayOrder: 1,
+    layout: {
+      displayOrder: 1
+    },
     /* ... */
   },
   {
     type: 'labels',
-    displayOrder: 2 // must be larger than the displayOrder for the 'rects' component
+    layout: {
+      displayOrder: 2 // must be larger than the displayOrder for the 'rects' component
+    },
     settings: {
       sources: [{
         component: 'rects',
