@@ -16,7 +16,9 @@ function place(position, direction) {
     view: { width: 200, height: 100 },
     direction,
     position,
-    padding: 2
+    padding: {
+      top: 4, bottom: 4, left: 2, right: 2
+    }
   });
 }
 
@@ -26,43 +28,43 @@ describe('labeling - bars', () => {
   describe('bar rects', () => {
     it('inside', () => {
       expect(place('inside')).to.eql({
-        x: 12, y: 42, width: 16, height: 26
+        x: 12, y: 44, width: 16, height: 22
       });
     });
 
     it('outside-up/opposite-down', () => {
       expect(place('outside', 'up')).to.eql({
-        x: 12, y: 2, width: 16, height: 36
+        x: 12, y: 4, width: 16, height: 32
       });
       expect(place('opposite', 'down')).to.eql({
-        x: 12, y: 2, width: 16, height: 36
+        x: 12, y: 4, width: 16, height: 32
       });
     });
 
     it('outside-down/opposite-up', () => {
       expect(place('outside', 'down')).to.eql({
-        x: 12, y: 72, width: 16, height: 26
+        x: 12, y: 74, width: 16, height: 22
       });
       expect(place('opposite', 'up')).to.eql({
-        x: 12, y: 72, width: 16, height: 26
+        x: 12, y: 74, width: 16, height: 22
       });
     });
 
     it('outside-right/opposite-left', () => {
       expect(place('outside', 'right')).to.eql({
-        x: 32, y: 42, width: 166, height: 26
+        x: 32, y: 44, width: 166, height: 22
       });
       expect(place('opposite', 'left')).to.eql({
-        x: 32, y: 42, width: 166, height: 26
+        x: 32, y: 44, width: 166, height: 22
       });
     });
 
     it('outside-left/opposite-right', () => {
       expect(place('outside', 'left')).to.eql({
-        x: 2, y: 42, width: 6, height: 26
+        x: 2, y: 44, width: 6, height: 22
       });
       expect(place('opposite', 'right')).to.eql({
-        x: 2, y: 42, width: 6, height: 26
+        x: 2, y: 44, width: 6, height: 22
       });
     });
   });

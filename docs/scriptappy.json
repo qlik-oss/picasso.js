@@ -2099,6 +2099,85 @@
                               "optional": true,
                               "defaultValue": false,
                               "type": "boolean"
+                            },
+                            "padding": {
+                              "description": "Padding between the label and the bar",
+                              "kind": "object",
+                              "entries": {
+                                "top": {
+                                  "description": "Padding-top between the label and the bar",
+                                  "optional": true,
+                                  "defaultValue": 4,
+                                  "type": "number"
+                                },
+                                "bottom": {
+                                  "description": "Padding-bottom between the label and the bar",
+                                  "optional": true,
+                                  "defaultValue": 4,
+                                  "type": "number"
+                                },
+                                "left": {
+                                  "description": "Padding-left between the label and the bar",
+                                  "optional": true,
+                                  "defaultValue": 4,
+                                  "type": "number"
+                                },
+                                "right": {
+                                  "description": "Padding-right between the label and the bar",
+                                  "optional": true,
+                                  "defaultValue": 4,
+                                  "type": "number"
+                                }
+                              }
+                            },
+                            "background": {
+                              "description": "Background of the label",
+                              "kind": "object",
+                              "entries": {
+                                "fill": {
+                                  "description": "Background color of the label",
+                                  "kind": "union",
+                                  "items": [
+                                    {
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "function"
+                                    }
+                                  ],
+                                  "type": "any"
+                                },
+                                "padding": {
+                                  "description": "Padding between the label and the background",
+                                  "kind": "object",
+                                  "entries": {
+                                    "top": {
+                                      "description": "Padding-top between the label and the background",
+                                      "optional": true,
+                                      "defaultValue": 4,
+                                      "type": "number"
+                                    },
+                                    "bottom": {
+                                      "description": "Padding-bottom between the label and the background",
+                                      "optional": true,
+                                      "defaultValue": 4,
+                                      "type": "number"
+                                    },
+                                    "left": {
+                                      "description": "Padding-left between the label and the background",
+                                      "optional": true,
+                                      "defaultValue": 4,
+                                      "type": "number"
+                                    },
+                                    "right": {
+                                      "description": "Padding-right between the label and the background",
+                                      "optional": true,
+                                      "defaultValue": 4,
+                                      "type": "number"
+                                    }
+                                  }
+                                }
+                              }
                             }
                           },
                           "kind": "object"

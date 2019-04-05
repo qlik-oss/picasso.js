@@ -88,11 +88,14 @@ function limitBounds(bounds, view) {
   bounds.height = maxY - minY;
 }
 
-function pad(bounds, padding) {
-  bounds.x += padding;
-  bounds.width -= (padding * 2);
-  bounds.y += padding;
-  bounds.height -= (padding * 2);
+function pad(bounds, padding = {}) {
+  const {
+    top = PADDING, bottom = PADDING, left = PADDING, right = PADDING
+  } = padding;
+  bounds.x += left;
+  bounds.width -= (left + right);
+  bounds.y += top;
+  bounds.height -= (top + bottom);
 }
 
 export function getBarRect({
@@ -156,7 +159,8 @@ export function findBestPlacement({
       bar: node.localBounds,
       view: rect,
       direction,
-      position: placement.position
+      position: placement.position,
+      padding: placement.padding
     });
     boundaries.push(testBounds);
     largest = !p || testBounds.height > largest.height ? testBounds : largest;
@@ -182,7 +186,10 @@ export function findBestPlacement({
   return { bounds, placement };
 }
 
-function approxTextBounds(label, textMetrics, rotated, rect) {
+function approxTextBounds(label, textMetrics, rotated, rect, padding = {}) {
+  const {
+    top = PADDING, bottom = PADDING, left = PADDING, right = PADDING
+  } = padding;
   const x0 = label.x + label.dx;
   const y0 = label.y + label.dy;
   const height = rotated ? Math.min(textMetrics.width, rect.height) : Math.min(textMetrics.height, rect.width);
@@ -192,10 +199,10 @@ function approxTextBounds(label, textMetrics, rotated, rect) {
   const x = rotated ? x0 - offset : x0;
   const y = rotated ? y0 : y0 - offset;
   const bounds = {
-    x: x - PADDING - PADDING_OFFSET,
-    y: y - PADDING - PADDING_OFFSET,
-    width: width + (PADDING * 2) - PADDING_OFFSET,
-    height: height + (PADDING * 2) - PADDING_OFFSET
+    x: x - left - PADDING_OFFSET,
+    y: y - top - PADDING_OFFSET,
+    width: width + (left + right) - PADDING_OFFSET,
+    height: height + (top + bottom) - PADDING_OFFSET
   };
   return bounds;
 }
@@ -298,17 +305,25 @@ export function placeInBars(
           if (typeof linkData !== 'undefined') {
             label.data = linkData;
           }
+          if (typeof placement.background === 'object') {
+            label.backgroundColor = typeof placement.background.fill === 'function' ? placement.background.fill(arg, i) : placement.background.fill;
+            if (typeof label.backgroundColor !== 'undefined') {
+              label.backgroundBounds = approxTextBounds(label, measured, isRotated, bounds, placement.background.padding);
+            }
+          }
           labels.push(label);
           postFilterContext.labels.push({
             node,
-            textBounds: approxTextBounds(label, measured, isRotated, bounds)
+            textBounds: approxTextBounds(label, measured, isRotated, bounds, placement.padding)
           });
         }
       }
     }
   }
 
-  return labels.filter(postFilter(postFilterContext));
+  const filteredLabels = labels.filter(postFilter(postFilterContext));
+  const filteredBounds = filteredLabels.filter(lb => typeof lb.backgroundBounds !== 'undefined').map(lb => ({ type: 'rect', fill: lb.backgroundColor, ...lb.backgroundBounds }));
+  return [...filteredBounds, ...filteredLabels];
 }
 
 export function precalculate({
@@ -400,6 +415,18 @@ export function precalculate({
  * @property {number} [labels[].placements[].align=0.5] - Placement of the label along the perpendicular direction of the bar
  * @property {string} [labels[].placements[].fill='#333'] - Color of the label
  * @property {boolean} [labels[].placements[].overflow=false] - True if the label is allowed to overflow the bar
+ * @property {object} labels[].placements[].padding - Padding between the label and the bar
+ * @property {number} [labels[].placements[].padding.top=4] - Padding-top between the label and the bar
+ * @property {number} [labels[].placements[].padding.bottom=4] - Padding-bottom between the label and the bar
+ * @property {number} [labels[].placements[].padding.left=4] - Padding-left between the label and the bar
+ * @property {number} [labels[].placements[].padding.right=4] - Padding-right between the label and the bar
+ * @property {object} labels[].placements[].background - Background of the label
+ * @property {string|function} labels[].placements[].background.fill - Background color of the label
+ * @property {object} labels[].placements[].background.padding - Padding between the label and the background
+ * @property {number} [labels[].placements[].background.padding.top=4] - Padding-top between the label and the background
+ * @property {number} [labels[].placements[].background.padding.bottom=4] - Padding-bottom between the label and the background
+ * @property {number} [labels[].placements[].background.padding.left=4] - Padding-left between the label and the background
+ * @property {number} [labels[].placements[].background.padding.right=4] - Padding-right between the label and the background
  */
 
 export function bars({
