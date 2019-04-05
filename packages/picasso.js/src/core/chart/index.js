@@ -33,7 +33,7 @@ import themeFn from '../theme';
  * @property {object} [layout] Layout settings
  * @property {number} [layout.displayOrder = 0]
  * @property {number} [layout.prioOrder = 0]
- * @property {string | {width: string, height: string}} [layout.minimumLayoutMode] Refer to layout sizes defined by layoutModes in dockLayout
+ * @property {string | {width: string, height: string}} [layout.minimumLayoutMode] Refer to layout sizes defined by layoutModes in `strategy`
  * @property {string} [layout.dock] left, right, top or bottom
  * @property {boolean} [show = true] If the component should be rendered
  * @property {string} [scale] Named scale. Will be provided to the component if it ask for it.
@@ -252,7 +252,7 @@ function chartFn(definition, context) {
     });
     let layoutSettings;
     if (settings.dockLayout) {
-      logger.warn('Deprecation Warning: dockLayout property should be renamed to "strategy"');
+      logger.warn('Deprecation Warning: "dockLayout" property should be renamed to "strategy"');
       layoutSettings = settings.dockLayout;
     } else {
       layoutSettings = settings.strategy;

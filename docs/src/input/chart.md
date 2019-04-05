@@ -15,7 +15,7 @@ The `picasso.chart` function will create and render a chart.
     * `components` Array. [More](./components.md).
     * `scales` Object (optional). Scales to use when rendering. [More](./scales.md).
     * `formatters` Object (optional). Formatters that can be referenced from other components. [More](./formatters.md).
-    * `dockLayout` Object (optional). Layout behavior and responsiveness. [More](./dock-layout.md).
+    * `strategy` Object (optional). Layout behavior and responsiveness. [More](./dock-layout.md).
   * `created` Function (optional). Lifecycle hook.
   * `beforeMount` Function (optional). Lifecycle hook.
   * `mounted` Function (optional). Lifecycle hook.
