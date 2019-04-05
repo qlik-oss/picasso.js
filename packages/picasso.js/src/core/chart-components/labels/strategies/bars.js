@@ -23,6 +23,16 @@ function isValidText(text) {
   return (type === 'string' || type === 'number') && text !== '';
 }
 
+function toBackground(label) {
+  return {
+    type: 'rect',
+    rx: 2,
+    ry: 2,
+    fill: label.backgroundColor,
+    ...label.backgroundBounds
+  };
+}
+
 export function isTextInRect(rect, textMetrics, opts) {
   return opts.rotate ? !(rect.width < textMetrics.height || rect.height < textMetrics.width)
     : !(rect.width < textMetrics.width || rect.height < textMetrics.height);
@@ -322,8 +332,9 @@ export function placeInBars(
   }
 
   const filteredLabels = labels.filter(postFilter(postFilterContext));
-  const filteredBounds = filteredLabels.filter(lb => typeof lb.backgroundBounds !== 'undefined').map(lb => ({ type: 'rect', fill: lb.backgroundColor, ...lb.backgroundBounds }));
-  return [...filteredBounds, ...filteredLabels];
+  const backgrounds = filteredLabels.filter(lb => typeof lb.backgroundBounds !== 'undefined').map(toBackground);
+
+  return [...backgrounds, ...filteredLabels];
 }
 
 export function precalculate({

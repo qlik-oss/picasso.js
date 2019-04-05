@@ -311,6 +311,64 @@ describe('labeling - bars', () => {
       }]]);
     });
 
+    it('should return label with background', () => {
+      findPlacement.returns({
+        bounds: {
+          x: 0, y: 0, width: 10, height: 15
+        },
+        placement: {
+          fill: () => 'blue',
+          justify: 0.2,
+          position: 'opposite',
+          align: 0.4,
+          background: {
+            fill: 'gold',
+            padding: {
+              left: 2,
+              right: 2,
+              top: 2,
+              bottom: 2
+            }
+          }
+        }
+      });
+      placer = (a, b, c) => Object.assign({
+        x: 0, y: 0, dx: 0, dy: 0
+      }, c);
+      let labels = placeInBars({
+        chart,
+        targetNodes: [{
+          node: {},
+          texts: ['a'],
+          measurements: [{ width: 1, height: 2 }],
+          labelSettings: [{ fontSize: '11px', fontFamily: 'bb' }],
+          placementSettings: [{}],
+          direction: 'right'
+        }],
+        collectiveOrientation: 'h'
+      }, findPlacement, placer, postFilter);
+
+      expect(labels[0]).to.containSubset({
+        type: 'rect',
+        rx: 2,
+        ry: 2,
+        x: -2.000000001,
+        y: -3.600000001,
+        width: 4.999999999,
+        height: 5.999999999,
+        fill: 'gold'
+      });
+      expect(labels[1]).to.containSubset({
+        fill: 'blue',
+        fontSize: '11px',
+        fontFamily: 'bb',
+        x: 0,
+        y: 0,
+        dx: 0,
+        dy: 0
+      });
+    });
+
     it('should call placer with certain arguments', () => {
       findPlacement.returns({
         bounds: 'bounds',
