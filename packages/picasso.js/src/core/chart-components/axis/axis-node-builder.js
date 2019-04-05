@@ -6,7 +6,7 @@ import {
 } from '../../math/narrow-phase-collision';
 import { getClampedValue } from './axis-label-size';
 import getHorizontalContinuousWidth from './get-continuous-label-rect';
-import { extendRect } from '../../geometry/util';
+import { expandRect } from '../../geometry/util';
 
 function tickSpacing(settings) {
   let spacing = 0;
@@ -76,8 +76,8 @@ function layeredLabelBuilder(ticks, buildOpts, settings, resolveTickOpts) {
 
 export function filterOverlappingLabels(labels, ticks, buildOpts) {
   let isOverlapping = (i, k) => {
-    const rect1 = extendRect(1, labels[i].boundingRect);
-    const rect2 = extendRect(1, labels[k].boundingRect);
+    const rect1 = expandRect(1, labels[i].boundingRect);
+    const rect2 = expandRect(1, labels[k].boundingRect);
 
     return testRectRect(rect1, rect2);
   };

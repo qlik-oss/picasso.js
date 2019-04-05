@@ -111,7 +111,7 @@ export function getShapeType(shape) {
   return null;
 }
 
-export function extendRect(size, rect) {
+export function expandRect(size, rect) {
   return {
     x: rect.x - size,
     y: rect.y - size,
