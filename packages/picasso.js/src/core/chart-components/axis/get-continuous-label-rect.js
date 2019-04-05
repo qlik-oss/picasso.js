@@ -1,3 +1,5 @@
+const PADDING = 2;
+
 const tickDistance = (rect, start, end) => rect.width * Math.abs(start.position - end.position);
 
 const getLeftEdgeWidth = ({
@@ -9,8 +11,9 @@ const getLeftEdgeWidth = ({
   const leftEdgeBleed = innerRect.x - outerRect.x;
   const left = (innerRect.width * tick.position) + leftEdgeBleed;
   const minDubble = Math.min(nextWidth, left) * 2;
+  const minWidth = tick.position === 0 ? (innerRect.width / 2) - PADDING : 0;
 
-  return Math.max(nextWidth, minDubble);
+  return Math.max(nextWidth, minDubble, minWidth);
 };
 
 const getRightEdgeWidth = ({
@@ -23,8 +26,9 @@ const getRightEdgeWidth = ({
   const rightEdgeBleed = (outerRect.width - innerRect.width) - leftEdgeBleed;
   const right = (innerRect.width - (innerRect.width * tick.position)) + rightEdgeBleed;
   const minDubble = Math.min(prevWidth, right) * 2;
+  const minWidth = tick.position === 1 ? (innerRect.width / 2) - PADDING : 0;
 
-  return Math.max(prevWidth, minDubble);
+  return Math.max(prevWidth, minDubble, minWidth);
 };
 
 export default function getHorizontalWidth({
@@ -35,7 +39,6 @@ export default function getHorizontalWidth({
   tick,
   index
 }) {
-  const PADDING = 2;
   const step = layered ? 2 : 1;
   const prev = major[index - step];
   const next = major[index + step];
