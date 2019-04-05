@@ -52,8 +52,8 @@ export default class Rect extends DisplayObject {
       this.attrs.height = -height;
     }
 
-    this.attrs.rx = rx;
-    this.attrs.ry = ry;
+    if (rx > 0) { this.attrs.rx = rx; }
+    if (ry > 0) { this.attrs.ry = ry; }
 
     this.collider = opts;
     this.__boundingRect = { true: null, false: null };
