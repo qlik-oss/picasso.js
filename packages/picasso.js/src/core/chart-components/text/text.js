@@ -162,10 +162,6 @@ const textComponent = {
     return height + this.definitionSettings.paddingStart + this.definitionSettings.paddingEnd;
   },
 
-  beforeRender(opts) {
-    extend(this.rect, opts.size);
-  },
-
   render() {
     const {
       title,
