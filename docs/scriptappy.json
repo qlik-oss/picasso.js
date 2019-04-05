@@ -3,7 +3,7 @@
   "info": {
     "name": "picasso.js",
     "description": "A charting library streamlined for building visualizations for the Qlik Sense Analytics platform.",
-    "version": "0.22.0",
+    "version": "0.22.1",
     "license": "MIT"
   },
   "entries": {
@@ -780,7 +780,7 @@
               "type": "number"
             },
             "minimumLayoutMode": {
-              "description": "Refer to layout sizes defined by layoutModes in dockLayout",
+              "description": "Refer to layout sizes defined by layoutModes in `strategy`",
               "optional": true,
               "kind": "union",
               "items": [
