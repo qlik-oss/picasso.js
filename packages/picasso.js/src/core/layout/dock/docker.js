@@ -6,7 +6,7 @@ import createRect from './create-rect';
 
 function cacheSize(c, reducedRect, layoutRect) {
   if (typeof c.cachedSize === 'undefined') {
-    let size = c.comp.getPreferredSize(reducedRect, layoutRect);
+    let size = c.comp.preferredSize(reducedRect, layoutRect);
     // backwards compatibility
     if (!isNaN(size)) {
       size = { width: size, height: size };
@@ -348,8 +348,8 @@ function validateComponent(component) {
   if (!component.resize || typeof component.resize !== 'function') {
     throw new Error('Component is missing resize function');
   }
-  if (!component.dockConfig && !component.getPreferredSize) {
-    throw new Error('Component is missing getPreferredSize function');
+  if (!component.dockConfig && !component.preferredSize) {
+    throw new Error('Component is missing preferredSize function');
   }
 }
 

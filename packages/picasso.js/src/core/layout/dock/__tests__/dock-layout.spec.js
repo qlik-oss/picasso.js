@@ -25,7 +25,7 @@ describe('Dock Layout', () => {
       }
     };
 
-    dummy.getPreferredSize = () => ({ width: size, height: size, edgeBleed });
+    dummy.preferredSize = () => ({ width: size, height: size, edgeBleed });
 
     let outerRect = createRect();
     let innerRect = createRect();
@@ -210,7 +210,7 @@ describe('Dock Layout', () => {
       expect(fn).to.throw('Invalid component settings');
       expect(fn2).to.throw('Component is missing resize function');
       expect(fn3).to.throw('Component is missing resize function');
-      expect(fn4).to.throw('Component is missing getPreferredSize function');
+      expect(fn4).to.throw('Component is missing preferredSize function');
     });
 
     it("should remove components that don't fit", () => {
