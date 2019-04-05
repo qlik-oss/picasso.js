@@ -26,8 +26,8 @@ export default class Rect extends DisplayObject {
       y = 0,
       width = 0,
       height = 0,
-      rx = NaN,
-      ry = NaN,
+      rx = 0,
+      ry = 0,
       collider
     } = v;
     const opts = extend({
@@ -52,8 +52,8 @@ export default class Rect extends DisplayObject {
       this.attrs.height = -height;
     }
 
-    this.attrs.rx = Math.max(0, rx);
-    this.attrs.ry = Math.max(0, ry);
+    if (rx > 0) { this.attrs.rx = rx; }
+    if (ry > 0) { this.attrs.ry = ry; }
 
     this.collider = opts;
     this.__boundingRect = { true: null, false: null };
