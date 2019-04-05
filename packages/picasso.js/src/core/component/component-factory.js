@@ -156,10 +156,10 @@ function createDockDefinition(settings, preferredSize, logger) {
 
   // move layout properties to layout object
   settings.layout = settings.layout || {};
-  settings.layout.displayOrder = settings.layout.displayOrder || def.displayOrder;
-  settings.layout.dock = settings.layout.dock || def.dock;
-  settings.layout.prioOrder = settings.layout.prioOrder || def.prioOrder;
-  settings.layout.minimumLayoutMode = settings.layout.minimumLayoutMode || def.minimumLayoutMode;
+  settings.layout.displayOrder = typeof def.displayOrder !== 'undefined' ? def.displayOrder : settings.layout.displayOrder;
+  settings.layout.prioOrder = typeof def.prioOrder !== 'undefined' ? def.prioOrder : settings.layout.prioOrder;
+  settings.layout.dock = def.dock || settings.layout.dock;
+  settings.layout.minimumLayoutMode = def.minimumLayoutMode || settings.layout.minimumLayoutMode;
 
   // not directly a dock layout property
   def.show = settings.show;
