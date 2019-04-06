@@ -245,7 +245,7 @@ function chartFn(definition, context) {
       return {
         instance: c.instance,
         resize: c.instance.resize,
-        getPreferredSize: dockConfig.computePreferredSize.bind(dockConfig),
+        preferredSize: dockConfig.computePreferredSize.bind(dockConfig),
         userSettings: c.settings,
         layoutComponents: () => {}
       };

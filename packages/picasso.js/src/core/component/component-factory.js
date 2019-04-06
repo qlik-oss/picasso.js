@@ -240,17 +240,15 @@ function componentFactory(definition, context = {}) {
   const instanceContext = extend({}, config);
 
   // Create a callback that calls lifecycle functions in the definition and config (if they exist).
-  function createCallback(method, defaultMethod = () => { }, canBeValue = false, alternateMethod) {
+  function createCallback(method, defaultMethod = () => { }, canBeValue = false) {
     return function cb(...args) {
-      const inDefinition = typeof definition[method] !== 'undefined' || typeof definition[alternateMethod] !== 'undefined';
-      const inConfig = typeof config[method] !== 'undefined' || typeof config[alternateMethod] !== 'undefined';
+      const inDefinition = typeof definition[method] !== 'undefined';
+      const inConfig = typeof config[method] !== 'undefined';
 
       let returnValue;
       if (inDefinition) {
         if (typeof definition[method] === 'function') {
           returnValue = definition[method].call(definitionContext, ...args);
-        } else if (typeof definition[alternateMethod] === 'function') {
-          returnValue = definition[alternateMethod].call(definitionContext, ...args);
         } else if (canBeValue) {
           returnValue = definition[method];
         }
@@ -259,8 +257,6 @@ function componentFactory(definition, context = {}) {
       if (inConfig) {
         if (typeof config[method] === 'function') {
           returnValue = config[method].call(instanceContext, ...args);
-        } else if (typeof config[alternateMethod] === 'function') {
-          returnValue = config[alternateMethod].call(instanceContext, ...args);
         } else if (canBeValue) {
           returnValue = config[method];
         }
@@ -274,7 +270,7 @@ function componentFactory(definition, context = {}) {
     };
   }
 
-  const preferredSize = createCallback('preferredSize', () => 0, true, 'getPreferredSize');
+  const preferredSize = createCallback('preferredSize', () => 0, true);
   const resize = createCallback('resize', ({ inner }) => inner);
   const created = createCallback('created');
   const beforeMount = createCallback('beforeMount');
