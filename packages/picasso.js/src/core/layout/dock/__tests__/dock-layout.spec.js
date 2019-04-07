@@ -776,4 +776,21 @@ describe('Dock Layout', () => {
       expect(visible[2]).to.equal(mainComp); // Prio 0
     });
   });
+
+  describe('displayOrder', () => {
+    it('should maintain order of visible components', () => {
+      const mainComp = componentMock({ key: 'main' });
+      const leftComp = componentMock({ displayOrder: 1, dock: 'left', key: 'y' });
+      const onLeft = componentMock({ displayOrder: 0, dock: '@y', key: 'dockAtY' });
+      const onMain = componentMock({ displayOrder: -1, dock: '@main', key: 'dockAtMain' });
+
+      const rect = createRect(0, 0, 1000, 1000);
+      const dl = dockLayout();
+
+      const { visible, order } = dl.layout(rect, [mainComp, leftComp, onLeft, onMain]);
+
+      expect(visible.map(v => v.userSettings.key)).to.eql(['main', 'y', 'dockAtY', 'dockAtMain']);
+      expect(order).to.eql([1, 3, 2, 0]);
+    });
+  });
 });

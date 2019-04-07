@@ -1,4 +1,5 @@
 import extend from 'extend';
+import elementMock from 'test-utils/mocks/element-mock';
 import tooltip from '../tooltip';
 import componentFactoryFixture from '../../../../../test/helpers/component-factory-fixture';
 import * as instanceHandler from '../instance-handler';
@@ -16,6 +17,7 @@ function chartMock() {
     brushFromShapes: sinon.stub(),
     component: sinon.stub().returns(componentMock()),
     element: {
+      ...elementMock(),
       getBoundingClientRect: sinon.stub().returns({
         left: 0,
         top: 0
@@ -224,7 +226,7 @@ describe('Tooltip', () => {
     });
 
     it('should apply appendTo on mounted', () => {
-      const stub = sandbox.stub().returns({ getBoundingClientRect: () => container });
+      const stub = sandbox.stub().returns({ getBoundingClientRect: () => container, appendChild: sandbox.stub() });
       instance.def.props.appendTo = stub;
       componentFixture.simulateRender({ inner: container, outer: container });
 
@@ -233,7 +235,7 @@ describe('Tooltip', () => {
     });
 
     it('should apply appendTo on updated', () => {
-      const stub = sandbox.stub().returns({ getBoundingClientRect: () => container });
+      const stub = sandbox.stub().returns({ getBoundingClientRect: () => container, appendChild: sandbox.stub() });
       config.settings.appendTo = stub;
       componentFixture.simulateUpdate(config);
 

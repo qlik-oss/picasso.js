@@ -227,6 +227,7 @@ function positionComponents({
 
   const referencedComponents = {};
   const referenceArray = visible.slice();
+  const elementOrder = referenceArray.slice().sort((a, b) => a.config.displayOrder() - b.config.displayOrder());
   visible
     .sort((a, b) => {
       if (b.referencedDocks.length > 0) {
@@ -322,6 +323,7 @@ function positionComponents({
       c.cachedSize = undefined;
       c.edgeBleed = undefined;
     });
+  return visible.map(c => elementOrder.indexOf(c));
 }
 
 function checkShowSettings(strategySettings, dockSettings, logicalContainerRect) {
@@ -426,7 +428,7 @@ function dockLayout(initialSettings) {
       hidden,
       settings
     });
-    positionComponents({
+    const order = positionComponents({
       visible,
       layoutRect: logicalContainerRect,
       reducedRect,
@@ -438,7 +440,7 @@ function dockLayout(initialSettings) {
       const r = createRect();
       c.comp.resize(r, r);
     });
-    return { visible: visible.map(v => v.comp), hidden: hidden.map(h => h.comp) };
+    return { visible: visible.map(v => v.comp), hidden: hidden.map(h => h.comp), order };
   };
 
   docker.settings = function settingsFn(s) {
