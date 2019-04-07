@@ -167,6 +167,109 @@ describe('Chart', () => {
       expect(comp1UpdatedCb).to.have.been.calledTwice;
       expect(comp2UpdatedCb).to.have.been.calledTwice;
     });
+
+    it('should maintain displayOrder of components after initial render', () => {
+      const components = {
+        point: {
+          has: () => true,
+          render: sinon.stub()
+        }
+      };
+      const comp = key => components[key];
+      comp.has = () => true;
+      const first = componentFactoryFixture().mocks().renderer;
+      const second = componentFactoryFixture().mocks().renderer;
+      const rendererFactory = sinon.stub();
+      rendererFactory.onFirstCall().returns(() => first);
+      rendererFactory.onSecondCall().returns(() => second);
+
+      chart({
+        ...definition,
+        settings: {
+          components: [{
+            type: 'point',
+            key: 'comp1',
+            layout: {
+              dock: 'left',
+              displayOrder: 2
+            }
+          }, {
+            type: 'point',
+            key: 'comp2',
+            layout: {
+              dock: '@comp1',
+              displayOrder: 1
+            }
+          }]
+        }
+      }, {
+        registries: {
+          component: comp,
+          renderer: rendererFactory
+        }
+      });
+      const order = element.children.map(c => c.attributes['data-key']);
+      expect(order).to.eql(['comp2', 'comp1']);
+    });
+
+    it('should maintain displayOrder of components after update', () => {
+      const components = {
+        point: {
+          has: () => true,
+          render: sinon.stub()
+        }
+      };
+      const comp = key => components[key];
+      comp.has = () => true;
+      const first = componentFactoryFixture().mocks().renderer;
+      const second = componentFactoryFixture().mocks().renderer;
+      const rendererFactory = sinon.stub();
+      rendererFactory.onFirstCall().returns(() => first);
+      rendererFactory.onSecondCall().returns(() => second);
+
+      const chartInstance = chart({
+        ...definition,
+        settings: {
+          components: [{
+            type: 'point',
+            key: 'comp1',
+            layout: {
+              dock: 'left',
+              displayOrder: 1
+            }
+          }, {
+            type: 'point',
+            key: 'comp2',
+            layout: {
+              dock: 'left',
+              displayOrder: 2
+            }
+          }]
+        }
+      }, {
+        registries: {
+          component: comp,
+          renderer: rendererFactory
+        }
+      });
+      expect(element.children.map(c => c.attributes['data-key'])).to.eql(['comp1', 'comp2']);
+      chartInstance.update({
+        settings: {
+          components: [{
+            key: 'comp1',
+            layout: {
+              displayOrder: 2
+            }
+          }, {
+            key: 'comp2',
+            layout: {
+              displayOrder: 1
+            }
+          }]
+        }
+      });
+      expect(element.children.map(c => c.attributes['data-key'])).to.eql(['comp2', 'comp1']);
+    });
   });
 
   describe('orderComponents', () => {

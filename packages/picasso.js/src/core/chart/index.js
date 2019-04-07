@@ -262,11 +262,11 @@ function chartFn(definition, context) {
 
     const rect = getElementRect(element);
 
-    const { visible, hidden } = dockLayout.layout(rect, vcomponents);
+    const { visible, hidden, order } = dockLayout.layout(rect, vcomponents);
     return {
       visible: visible.map(v => findComponent(v.instance)),
       hidden: hidden.map(h => findComponent(h.instance)),
-      order: visible
+      order
     };
   };
 
@@ -317,7 +317,7 @@ function chartFn(definition, context) {
       createComponent(compSettings, element)
     )).filter(c => !!c);
 
-    const { visible, hidden } = layout(currentComponents);
+    const { visible, hidden, order } = layout(currentComponents);
     visibleComponents = visible;
 
     hidden.forEach((comp) => {
@@ -332,6 +332,7 @@ function chartFn(definition, context) {
     visible.forEach(comp => comp.instance.render());
     visible.forEach(comp => comp.instance.mounted());
     visible.forEach((comp) => { comp.visible = true; });
+    orderComponents(element, visibleComponents, order);
   };
 
   function setInteractions(interactions = []) {
