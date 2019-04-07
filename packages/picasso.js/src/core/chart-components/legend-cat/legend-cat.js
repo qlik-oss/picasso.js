@@ -9,16 +9,16 @@ function update(comp) {
   comp.state.resolved = resolveSettings(comp);
   comp.titleRenderer.itemize({
     resolved: comp.state.resolved,
-    dock: comp.settings.layout.dock || 'center'
+    dock: comp.userSettings.layout.dock || 'center'
   });
   comp.itemRenderer.itemize({
     resolved: comp.state.resolved,
-    dock: comp.settings.layout.dock || 'center'
+    dock: comp.userSettings.layout.dock || 'center'
   });
   comp.navigationRenderer.itemize({
     resolved: comp.state.resolved,
-    dock: comp.settings.layout.dock || 'center',
-    navigation: comp.settings.settings.navigation
+    dock: comp.userSettings.layout.dock || 'center',
+    navigation: comp.userSettings.settings.navigation
   });
 
   comp.state.display = {
@@ -28,7 +28,7 @@ function update(comp) {
 
 function preferredSize(comp, size) {
   let s = 0;
-  const dock = comp.settings.layout.dock || 'center';
+  const dock = comp.userSettings.layout.dock || 'center';
   const orientation = dock === 'top' || dock === 'bottom' ? 'horizontal' : 'vertical';
   const d = comp.state.display;
   const tempLayout = layout(size.inner, d, orientation, {
@@ -46,13 +46,13 @@ function preferredSize(comp, size) {
 function render(legend) {
   const {
     rect,
-    settings,
+    userSettings,
     state,
     itemRenderer,
     navigationRenderer,
     titleRenderer
   } = legend;
-  const dock = settings.layout.dock;
+  const dock = userSettings.layout.dock;
   const orientation = dock === 'top' || dock === 'bottom' ? 'horizontal' : 'vertical';
   const l = layout(rect, state.display, orientation, {
     itemRenderer,
@@ -92,7 +92,7 @@ function render(legend) {
 }
 
 const component = {
-  require: ['chart', 'settings', 'renderer', 'update', 'resolver', 'registries'],
+  require: ['chart', 'renderer', 'update', 'resolver', 'registries'],
   defaultSettings: {
     settings: {},
     style: {
@@ -171,7 +171,7 @@ const component = {
     this.navigationRenderer = navigationRendererFactory(this);
     this.titleRenderer = titleRendererFactory(this);
     this.navigationRenderer.renderer = this.registries.renderer('dom')();
-    this.titleRenderer.renderer = this.registries.renderer(this.settings.renderer)();
+    this.titleRenderer.renderer = this.registries.renderer(this.userSettings.renderer)();
     update(this);
   },
   preferredSize(obj) {

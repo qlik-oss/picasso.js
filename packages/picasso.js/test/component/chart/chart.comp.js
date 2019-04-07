@@ -235,7 +235,7 @@ describe('Chart', () => {
     let renderOrder = [];
     p.component('custom-log-render', {
       render() {
-        renderOrder.push(this.settings.key);
+        renderOrder.push(this.userSettings.key);
         return [];
       }
     });

@@ -45,8 +45,8 @@ const gridLineComponent = {
 
   render() {
     // Setup scales
-    this.x = this.settings.x ? this.chart.scale(this.settings.x) : null;
-    this.y = this.settings.y ? this.chart.scale(this.settings.y) : null;
+    this.x = this.userSettings.x ? this.chart.scale(this.userSettings.x) : null;
+    this.y = this.userSettings.y ? this.chart.scale(this.userSettings.y) : null;
     updateScaleSize(this, 'x', this.rect.width);
     updateScaleSize(this, 'y', this.rect.height);
 
@@ -55,8 +55,8 @@ const gridLineComponent = {
       return [];
     }
 
-    this.settings.ticks = extend({ show: true }, this.style.ticks, this.settings.ticks || {});
-    this.settings.minorTicks = extend({ show: false }, this.style.minorTicks, this.settings.minorTicks || {});
+    this.userSettings.ticks = extend({ show: true }, this.style.ticks, this.userSettings.ticks || {});
+    this.userSettings.minorTicks = extend({ show: false }, this.style.minorTicks, this.userSettings.minorTicks || {});
 
     // Setup lines for X and Y
     this.lines = {
@@ -74,7 +74,7 @@ const gridLineComponent = {
 
     let addTicks = ({ dir, isMinor }) => {
       let items = this.lines[dir].filter(tick => !!tick.isMinor === isMinor);
-      let settings = isMinor ? this.settings.minorTicks : this.settings.ticks;
+      let settings = isMinor ? this.userSettings.minorTicks : this.userSettings.ticks;
       let ticks = this.resolver.resolve({
         settings,
         data: {

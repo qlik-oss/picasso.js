@@ -173,13 +173,13 @@ const brushAreaDirectionalComponent = {
   },
   created() {
     this.state = {
-      key: this.settings.key || 'brush-area-dir'
+      key: this.userSettings.key || 'brush-area-dir'
     };
   },
   render(h) {
     this.state.rect = this.rect;
 
-    const stngs = this.settings.settings;
+    const stngs = this.userSettings.settings;
     const direction = stngs.direction === 'vertical' ? VERTICAL : HORIZONTAL;
     const size = this.state.rect[direction === VERTICAL ? 'height' : 'width'];
     const offset = this.renderer.element().getBoundingClientRect();

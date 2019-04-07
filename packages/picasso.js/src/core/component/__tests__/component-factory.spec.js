@@ -349,4 +349,10 @@ describe('Component', () => {
       expect(spy).to.have.been.calledWith({ x: 0 }, ['x'], 'xor');
     });
   });
+  describe('userSettings on a component', () => {
+    it('should contain a userSetting property', () => {
+      const instance = createInstance();
+      expect(instance.ctx.userSettings).to.not.equal(undefined);
+    });
+  });
 });

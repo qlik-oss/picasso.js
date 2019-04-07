@@ -9,7 +9,7 @@ describe('legend-resolver', () => {
         labels: () => ['alpha', 'beta'],
         datum: () => ({ value: 'does not matter' }) // the value in datum is taken from domain
       },
-      settings: {
+      userSettings: {
         layout: {},
         settings: {}
       },
@@ -47,7 +47,7 @@ describe('legend-resolver', () => {
         }),
         domain: () => [2, 5, 7]
       },
-      settings: {
+      userSettings: {
         layout: {},
         settings: {}
       },
@@ -81,7 +81,7 @@ describe('legend-resolver', () => {
         }),
         domain: () => [2, 5, 7]
       },
-      settings: {
+      userSettings: {
         layout: {},
         formatter: v => `${v}kr`,
         settings: {}
@@ -110,15 +110,15 @@ describe('legend-resolver', () => {
 
   describe('resolveSettings', () => {
     let resolved;
-    let settings;
+    let component;
     beforeEach(() => {
-      settings = {
+      component = {
         scale: {
           data: () => ({ fields: [{}] }),
           domain: () => ['a', 'b'],
           datum: d => ({ value: d })
         },
-        settings: {
+        userSettings: {
           layout: {},
           settings: {
             item: {
@@ -142,7 +142,7 @@ describe('legend-resolver', () => {
         }
       };
 
-      resolved = resolveSettings(settings);
+      resolved = resolveSettings(component);
     });
 
     it('should resolve labels per datum', () => {
@@ -162,18 +162,18 @@ describe('legend-resolver', () => {
     });
 
     it('should resolve labels by `label` function if available', () => {
-      settings.scale.label = d => `label ${d}`;
-      settings.scale.domain = () => ['b', 'a'];
-      resolved = resolveSettings(settings);
+      component.scale.label = d => `label ${d}`;
+      component.scale.domain = () => ['b', 'a'];
+      resolved = resolveSettings(component);
 
       expect(resolved.labels.data.items[0]).to.eql({ value: 'b', label: 'label b' });
       expect(resolved.labels.data.items[1]).to.eql({ value: 'a', label: 'label a' });
     });
 
     it('should resolve labels by `labels` function if available', () => {
-      settings.scale.labels = () => ['1', '2']; // Resolved by index
-      settings.scale.domain = () => ['b', 'a'];
-      resolved = resolveSettings(settings);
+      component.scale.labels = () => ['1', '2']; // Resolved by index
+      component.scale.domain = () => ['b', 'a'];
+      resolved = resolveSettings(component);
 
       expect(resolved.labels.data.items[0]).to.eql({ value: 'b', label: '1' });
       expect(resolved.labels.data.items[1]).to.eql({ value: 'a', label: '2' });

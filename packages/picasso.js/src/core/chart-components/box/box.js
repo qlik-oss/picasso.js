@@ -63,11 +63,11 @@ const component = {
   render({ data }) {
     const { width, height } = this.rect;
 
-    const flipXY = this.settings.settings.orientation === 'horizontal';
+    const flipXY = this.userSettings.settings.orientation === 'horizontal';
 
     const { style, resolver, symbol } = this;
 
-    const keys = dataKeys.filter(key => !this.settings.settings[key] || this.settings.settings[key].show !== false);
+    const keys = dataKeys.filter(key => !this.userSettings.settings[key] || this.userSettings.settings[key].show !== false);
     const defaultSettings = {};
 
     keys.forEach(key => defaultSettings[key] = DEFAULT_DATA_SETTINGS[key]);
@@ -77,7 +77,7 @@ const component = {
       data,
       defaultSettings,
       style,
-      settings: this.settings.settings,
+      settings: this.userSettings.settings,
       width,
       height,
       resolver

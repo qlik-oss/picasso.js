@@ -336,7 +336,7 @@ const component = {
     });
   },
   created() {
-    this.init(this.settings);
+    this.init(this.userSettings);
   },
   beforeUpdate({ settings }) {
     if (this.dispatcher) {

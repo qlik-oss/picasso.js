@@ -296,7 +296,7 @@ const legendDef = {
     return prefSize;
   },
   created() {
-    this.stgns = this.settings.settings;
+    this.stgns = this.userSettings.settings;
 
     this.state = initState(this);
   },

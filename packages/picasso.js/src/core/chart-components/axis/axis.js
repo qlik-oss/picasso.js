@@ -38,14 +38,14 @@ function resolveAlign(align, dock) {
 function resolveLocalSettings({
   state,
   style,
-  settings
+  userSettings
 }) {
   const defaultStgns = extend(true, {}, state.isDiscrete ? DEFAULT_DISCRETE_SETTINGS : DEFAULT_CONTINUOUS_SETTINGS, style);
-  const localStgns = extend(true, {}, defaultStgns, settings.settings);
+  const localStgns = extend(true, {}, defaultStgns, userSettings.settings);
 
-  const dock = settings.layout.dock || state.defaultDock;
+  const dock = userSettings.layout.dock || state.defaultDock;
   localStgns.dock = dock;
-  localStgns.align = resolveAlign(settings.settings.align, dock);
+  localStgns.align = resolveAlign(userSettings.settings.align, dock);
   localStgns.labels.tiltAngle = Math.max(-90, Math.min(localStgns.labels.tiltAngle, 90));
 
   return localStgns;
@@ -108,7 +108,7 @@ const axisComponent = {
       this.state.defaultDock = 'left';
     }
 
-    this.setState(this.settings);
+    this.setState(this.userSettings);
   },
   setState() {
     this.state.isDiscrete = !!this.scale.bandwidth;

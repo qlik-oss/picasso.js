@@ -18,12 +18,14 @@ describe('range component', () => {
       render: sinon.stub()
     };
 
-    settings = {};
+    settings = {
+      layout: {}
+    };
 
     context = {
       chart,
       renderer,
-      settings: {
+      userSettings: {
         settings
       },
       rect: {

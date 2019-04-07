@@ -41,7 +41,7 @@ const debugPathToPointsDef = {
     this.renderer.render(circles);
   },
   created() {
-    this.props = this.settings.settings;
+    this.props = this.userSettings.settings;
   },
   resize({ outer, inner }) {
     if (this.props.useOuterRect) {
@@ -54,7 +54,7 @@ const debugPathToPointsDef = {
     this.draw();
   },
   updated() {
-    this.props = this.settings.settings;
+    this.props = this.userSettings.settings;
     this.draw();
   }
 };

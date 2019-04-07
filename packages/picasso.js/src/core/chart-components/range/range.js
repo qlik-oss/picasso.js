@@ -123,7 +123,7 @@ const rangeComponent = {
     this.state = {};
   },
   render() {
-    const stngs = this.settings.settings;
+    const stngs = this.userSettings.settings;
     const brush = this.chart.brush(stngs.brush);
     const direction = stngs.direction || 'horizontal';
     const distance = direction === 'horizontal' ? this.rect.width : this.rect.height;

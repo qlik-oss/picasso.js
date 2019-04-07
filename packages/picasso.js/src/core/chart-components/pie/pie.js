@@ -153,7 +153,7 @@ const pieComponent = {
   render({ data }) {
     const arcValues = [];
     const slices = [];
-    const stngs = this.settings.settings;
+    const stngs = this.userSettings.settings;
     const { items } = this.resolver.resolve({
       data,
       defaults: extend({}, DEFAULT_DATA_SETTINGS.slice, this.style.slice),

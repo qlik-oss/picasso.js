@@ -144,17 +144,17 @@ const component = {
     const resolved = this.resolver.resolve({
       data,
       defaults: extend({}, DEFAULT_DATA_SETTINGS, this.style.item),
-      settings: this.settings.settings,
+      settings: this.userSettings.settings,
       scaled: {
         x: this.rect.width,
         y: this.rect.height
       }
     });
     const { width, height } = this.rect;
-    const limits = extend({}, SIZE_LIMITS, this.settings.settings.sizeLimits);
+    const limits = extend({}, SIZE_LIMITS, this.userSettings.settings.sizeLimits);
     const points = resolved.items;
     const pointSize = getPointSizeLimits(resolved.settings.x, resolved.settings.y, width, height, limits);
-    return createDisplayPoints(points, this.rect, pointSize, this.settings.shapeFn || shapeFactory);
+    return createDisplayPoints(points, this.rect, pointSize, this.userSettings.shapeFn || shapeFactory);
   }
 };
 

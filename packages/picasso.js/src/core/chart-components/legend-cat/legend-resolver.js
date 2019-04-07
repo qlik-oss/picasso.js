@@ -113,14 +113,14 @@ const DEFAULT_SETTINGS = {
 export default function resolveSettings(comp) {
   const domain = comp.scale.domain();
   let data = { items: [] };
-  const dock = comp.settings.layout.dock;
+  const dock = comp.userSettings.layout.dock;
   if (comp.scale.type === 'threshold-color') {
     const fields = comp.scale.data().fields;
     const sourceField = fields[0];
     let formatter = v => String(v);
 
-    if (comp.settings.formatter) {
-      formatter = comp.chart.formatter(comp.settings.formatter);
+    if (comp.userSettings.formatter) {
+      formatter = comp.chart.formatter(comp.userSettings.formatter);
     } else if (sourceField) {
       formatter = sourceField.formatter();
     }
@@ -163,7 +163,7 @@ export default function resolveSettings(comp) {
       fields: comp.scale.data().fields
     },
     defaults: extend(true, {}, DEFAULT_SETTINGS.title, comp.style.title),
-    settings: comp.settings.settings.title
+    settings: comp.userSettings.settings.title
   });
 
   const layout = comp.resolver.resolve({
@@ -171,20 +171,20 @@ export default function resolveSettings(comp) {
       fields: comp.scale.data().fields
     },
     defaults: DEFAULT_SETTINGS.layout,
-    settings: comp.settings.settings.layout
+    settings: comp.userSettings.settings.layout
   });
 
   const labels = comp.resolver.resolve({
     data,
     defaults: extend(true, {}, DEFAULT_SETTINGS.item.label, comp.style.item.label),
-    settings: (comp.settings.settings.item || {}).label
+    settings: (comp.userSettings.settings.item || {}).label
   });
 
-  const shapeSettings = extend(true, {}, (comp.settings.settings.item || {}).shape);
+  const shapeSettings = extend(true, {}, (comp.userSettings.settings.item || {}).shape);
 
-  if (typeof shapeSettings.fill === 'undefined' && comp.settings.scale) {
+  if (typeof shapeSettings.fill === 'undefined' && comp.userSettings.scale) {
     shapeSettings.fill = {
-      scale: comp.settings.scale
+      scale: comp.userSettings.scale
     };
   }
 
@@ -200,7 +200,7 @@ export default function resolveSettings(comp) {
       show: DEFAULT_SETTINGS.item.show
     }),
     settings: {
-      show: (comp.settings.settings.item || {}).show
+      show: (comp.userSettings.settings.item || {}).show
     }
   });
 

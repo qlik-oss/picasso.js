@@ -130,25 +130,25 @@ const scrollbarComponent = {
   },
 
   preferredSize: function preferredSize(rect) {
-    const scrollState = this.chart.scroll(this.settings.scroll).getState();
+    const scrollState = this.chart.scroll(this.userSettings.scroll).getState();
     // hide the scrollbar if it is not possible to scroll
     if (scrollState.viewSize >= scrollState.max - scrollState.min) {
       const toLargeSize = Math.max(rect.width, rect.height);
       return toLargeSize;
     }
-    return this.settings.settings.width;
+    return this.userSettings.settings.width;
   },
 
   render: function render(h) {
-    const dock = this.settings.layout.dock;
-    const invert = this.settings.settings.invert;
+    const dock = this.userSettings.layout.dock;
+    const invert = this.userSettings.settings.invert;
     const horizontal = dock === 'top' || dock === 'bottom';
     const lengthAttr = horizontal ? 'width' : 'height';
 
     const _rect = this.rect;
     const length = _rect[lengthAttr];
 
-    const scrollState = this.chart.scroll(this.settings.scroll).getState();
+    const scrollState = this.chart.scroll(this.userSettings.scroll).getState();
     let thumbStart = (length * (scrollState.start - scrollState.min)) / (scrollState.max - scrollState.min);
     const thumbRange = (length * scrollState.viewSize) / (scrollState.max - scrollState.min);
 
@@ -163,7 +163,7 @@ const scrollbarComponent = {
           position: 'relative',
           width: '100%',
           height: '100%',
-          background: this.settings.settings.backgroundColor,
+          background: this.userSettings.settings.backgroundColor,
           pointerEvents: 'auto'
         }
       },
@@ -175,7 +175,7 @@ const scrollbarComponent = {
           [horizontal ? 'top' : 'left']: '25%',
           [horizontal ? 'height' : 'width']: '50%', // ${width}px
           [lengthAttr]: `${Math.max(1, thumbRange)}px`,
-          background: this.settings.settings.thumbColor
+          background: this.userSettings.settings.thumbColor
         }
       }))
     );

@@ -193,7 +193,7 @@ const definition = {
       return;
     }
 
-    this.state.brushConfig = getBrushConfig(this.settings);
+    this.state.brushConfig = getBrushConfig(this.userSettings);
     this.state.start = getLocalPoint(this, e);
     this.state.active = true;
   },

@@ -331,7 +331,7 @@ const lineMarkerComponent = {
   },
   render({ data }) {
     const { width, height } = this.rect;
-    this.stngs = this.settings.settings || {};
+    this.stngs = this.userSettings.settings || {};
     const missingMinor0 = !this.stngs.coordinates || typeof this.stngs.coordinates.minor0 === 'undefined';
 
     const visibleLayers = calculateVisibleLayers({

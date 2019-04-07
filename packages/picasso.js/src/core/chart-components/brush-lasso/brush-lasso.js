@@ -262,12 +262,12 @@ const brushLassoComponent = {
   },
   start(e) {
     this.state.active = true;
-    this.state.path = initPath(this.settings.settings.lasso);
-    this.state.snapIndicator = initSnapIndicator(this.settings.settings.snapIndicator);
-    this.state.startPoint = initStartPoint(this.settings.settings.startPoint);
+    this.state.path = initPath(this.userSettings.settings.lasso);
+    this.state.snapIndicator = initSnapIndicator(this.userSettings.settings.snapIndicator);
+    this.state.startPoint = initStartPoint(this.userSettings.settings.startPoint);
     this.state.rendererBounds = this.renderer.element().getBoundingClientRect();
     this.state.componentDelta = getComponentDelta(this.chart, this.state.rendererBounds);
-    this.state.brushConfig = getBrushConfig(this.settings);
+    this.state.brushConfig = getBrushConfig(this.userSettings);
 
     const p = getPoint(this.state.rendererBounds, e);
 
@@ -282,7 +282,7 @@ const brushLassoComponent = {
 
     const p = getPoint(this.state.rendererBounds, e);
 
-    if (withinThreshold(p, this.state, this.settings)) {
+    if (withinThreshold(p, this.state, this.userSettings)) {
       showSnapIndicator(this.state, true);
     } else {
       showSnapIndicator(this.state, false);
@@ -304,7 +304,7 @@ const brushLassoComponent = {
 
     showSnapIndicator(this.state, false);
     const p = getPoint(this.state.rendererBounds, e);
-    const shouldSnap = withinThreshold(p, this.state, this.settings);
+    const shouldSnap = withinThreshold(p, this.state, this.userSettings);
 
     if (shouldSnap) {
       doPolygonBrush(this.state, this.chart);

@@ -146,9 +146,9 @@ const textComponent = {
   },
 
   created() {
-    this.definitionSettings = this.settings.settings;
+    this.definitionSettings = this.userSettings.settings;
 
-    const text = this.settings.text;
+    const text = this.userSettings.text;
     const join = this.definitionSettings.join;
     this.title = parseTitle(text, join, this.scale);
   },
@@ -171,7 +171,7 @@ const textComponent = {
     const nodes = [];
     nodes.push(generateTitle({
       title,
-      dock: this.settings.layout.dock,
+      dock: this.userSettings.layout.dock,
       definitionSettings,
       rect,
       measureText: this.renderer.measureText,
@@ -182,10 +182,10 @@ const textComponent = {
 
   beforeUpdate(opts) {
     if (opts.settings) {
-      extend(this.settings, opts.settings);
+      extend(this.userSettings, opts.settings);
       this.definitionSettings = opts.settings.settings;
     }
-    const text = this.settings.text;
+    const text = this.userSettings.text;
     const join = this.definitionSettings.join;
     this.title = parseTitle(text, join, this.scale);
   }

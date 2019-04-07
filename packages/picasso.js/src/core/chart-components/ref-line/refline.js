@@ -163,7 +163,7 @@ const refLineComponent = {
   },
 
   render() {
-    let settings = this.settings;
+    let settings = this.userSettings;
 
     // Setup lines for X and Y
     this.lines = {

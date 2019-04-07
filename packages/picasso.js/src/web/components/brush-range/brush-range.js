@@ -250,7 +250,7 @@ const brushRangeComponent = {
   },
   created() {
     this.state = {
-      key: this.settings.key || 'brush-range'
+      key: this.userSettings.key || 'brush-range'
     };
   },
   beforeRender(opts) {
@@ -264,7 +264,7 @@ const brushRangeComponent = {
     }
   },
   render(h) {
-    const stngs = this.settings.settings;
+    const stngs = this.userSettings.settings;
     this.state.direction = stngs.direction === 'vertical' ? VERTICAL : HORIZONTAL;
     const offset = this.renderer.element().getBoundingClientRect();
     const size = this.state.rect[this.state.direction === VERTICAL ? 'height' : 'width'];

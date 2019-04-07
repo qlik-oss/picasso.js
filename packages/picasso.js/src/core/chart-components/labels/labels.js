@@ -50,7 +50,7 @@ const labelsComponent = {
     }
   },
   render() {
-    const stngs = this.settings.settings;
+    const stngs = this.userSettings.settings;
     const labels = [];
 
     (stngs.sources || []).forEach((source) => {
