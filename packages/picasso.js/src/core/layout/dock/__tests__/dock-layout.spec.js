@@ -635,6 +635,31 @@ describe('Dock Layout', () => {
         height: 1000
       });
     });
+
+    it('should use logicalSize when determining visiblity of components', () => {
+      const container = createRect(0, 0, 1000, 2000);
+      const settings = {
+        layoutModes: {
+          S: { width: 800, height: 100 }
+        },
+        logicalSize: {
+          x: 0,
+          y: 0,
+          width: 799,
+          height: 100
+        }
+      };
+
+      const leftComp = componentMock({ dock: 'left', size: 100, minimumLayoutMode: { width: 'S', height: 'S' } });
+      const mainComp = componentMock();
+
+      dl.settings(settings);
+
+      const { visible, hidden } = dl.layout(container, [mainComp, leftComp]);
+
+      expect(visible).to.include(mainComp);
+      expect(hidden).to.include(leftComp);
+    });
   });
 
   describe('edgeBleed', () => {
