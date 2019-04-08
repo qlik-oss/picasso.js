@@ -420,7 +420,7 @@ function dockLayout(initialSettings) {
 
     const { logicalContainerRect, containerRect } = resolveContainerRects(rect, settings);
 
-    const [visible, hidden] = filterComponents(components, settings, containerRect);
+    const [visible, hidden] = filterComponents(components, settings, logicalContainerRect);
 
     const reducedRect = reduceLayoutRect({
       layoutRect: logicalContainerRect,
