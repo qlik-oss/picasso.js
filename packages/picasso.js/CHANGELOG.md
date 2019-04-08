@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.23.2](https://github.com/qlik-oss/picasso.js/compare/v0.23.1...v0.23.2) (2019-04-08)
+
+
+### Bug Fixes
+
+* **layout:** user logicalSize when determining component visibility ([#368](https://github.com/qlik-oss/picasso.js/issues/368)) ([dfb6a91](https://github.com/qlik-oss/picasso.js/commit/dfb6a91))
+
+
+
+
+
 ## [0.23.1](https://github.com/qlik-oss/picasso.js/compare/v0.23.0...v0.23.1) (2019-04-08)
 
 
