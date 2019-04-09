@@ -14,7 +14,7 @@ describe('Dock Layout', () => {
   } = {}) {
     const dummy = {};
 
-    dummy.userSettings = {
+    dummy.settings = {
       key,
       show,
       layout: {
@@ -192,9 +192,9 @@ describe('Dock Layout', () => {
 
     it('should throw an expection if needed properties are missing', () => {
       const mainComp = {};
-      const leftComp = { userSettings: { layout: { dock: 'left' } } };
-      const rightComp = { userSettings: { layout: { dock: 'right' } }, resize: {} };
-      const asfdComp = { userSettings: { layout: { dock: 'right' } }, resize: () => {} };
+      const leftComp = { settings: { layout: { dock: 'left' } } };
+      const rightComp = { settings: { layout: { dock: 'right' } }, resize: {} };
+      const asfdComp = { settings: { layout: { dock: 'right' } }, resize: () => {} };
       const fn = () => {
         dl.layout(rect, [mainComp]);
       };
@@ -814,7 +814,7 @@ describe('Dock Layout', () => {
 
       const { visible, order } = dl.layout(rect, [mainComp, leftComp, onLeft, onMain]);
 
-      expect(visible.map(v => v.userSettings.key)).to.eql(['main', 'y', 'dockAtY', 'dockAtMain']);
+      expect(visible.map(v => v.settings.key)).to.eql(['main', 'y', 'dockAtY', 'dockAtMain']);
       expect(order).to.eql([1, 3, 2, 0]);
     });
   });

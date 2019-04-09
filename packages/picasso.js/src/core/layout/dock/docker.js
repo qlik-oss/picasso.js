@@ -344,7 +344,7 @@ function checkShowSettings(strategySettings, dockSettings, logicalContainerRect)
 }
 
 function validateComponent(component) {
-  if (!component.settings && !component.userSettings) {
+  if (!component.settings && !component.settings) {
     throw new Error('Invalid component settings');
   }
   if (!component.resize || typeof component.resize !== 'function') {
@@ -367,9 +367,9 @@ function filterComponents(components, settings, rect) {
     if (comp.instance) {
       config = comp.instance.dockConfig();
     } else {
-      config = dockConfig(comp.userSettings.layout);
+      config = dockConfig(comp.settings.layout);
     }
-    const key = comp.userSettings.key;
+    const key = comp.settings.key;
     const d = config.dock();
     const referencedDocks = /@/.test(d) ? d.split(',').map(s => s.replace(/^\s*@/, '')) : [];
     if (checkShowSettings(settings, config, rect)) {
