@@ -6,7 +6,7 @@ import createRect from './create-rect';
 
 function cacheSize(c, reducedRect, layoutRect) {
   if (typeof c.cachedSize === 'undefined') {
-    let size = c.comp.getPreferredSize(reducedRect, layoutRect);
+    let size = c.comp.preferredSize(reducedRect, layoutRect);
     // backwards compatibility
     if (!isNaN(size)) {
       size = { width: size, height: size };
@@ -227,6 +227,7 @@ function positionComponents({
 
   const referencedComponents = {};
   const referenceArray = visible.slice();
+  const elementOrder = referenceArray.slice().sort((a, b) => a.config.displayOrder() - b.config.displayOrder());
   visible
     .sort((a, b) => {
       if (b.referencedDocks.length > 0) {
@@ -322,6 +323,7 @@ function positionComponents({
       c.cachedSize = undefined;
       c.edgeBleed = undefined;
     });
+  return visible.map(c => elementOrder.indexOf(c));
 }
 
 function checkShowSettings(strategySettings, dockSettings, logicalContainerRect) {
@@ -348,8 +350,8 @@ function validateComponent(component) {
   if (!component.resize || typeof component.resize !== 'function') {
     throw new Error('Component is missing resize function');
   }
-  if (!component.dockConfig && !component.getPreferredSize) {
-    throw new Error('Component is missing getPreferredSize function');
+  if (!component.dockConfig && !component.preferredSize) {
+    throw new Error('Component is missing preferredSize function');
   }
 }
 
@@ -418,7 +420,7 @@ function dockLayout(initialSettings) {
 
     const { logicalContainerRect, containerRect } = resolveContainerRects(rect, settings);
 
-    const [visible, hidden] = filterComponents(components, settings, containerRect);
+    const [visible, hidden] = filterComponents(components, settings, logicalContainerRect);
 
     const reducedRect = reduceLayoutRect({
       layoutRect: logicalContainerRect,
@@ -426,7 +428,7 @@ function dockLayout(initialSettings) {
       hidden,
       settings
     });
-    positionComponents({
+    const order = positionComponents({
       visible,
       layoutRect: logicalContainerRect,
       reducedRect,
@@ -438,7 +440,7 @@ function dockLayout(initialSettings) {
       const r = createRect();
       c.comp.resize(r, r);
     });
-    return { visible: visible.map(v => v.comp), hidden: hidden.map(h => h.comp) };
+    return { visible: visible.map(v => v.comp), hidden: hidden.map(h => h.comp), order };
   };
 
   docker.settings = function settingsFn(s) {

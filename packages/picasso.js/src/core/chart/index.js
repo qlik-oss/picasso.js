@@ -33,7 +33,7 @@ import themeFn from '../theme';
  * @property {object} [layout] Layout settings
  * @property {number} [layout.displayOrder = 0]
  * @property {number} [layout.prioOrder = 0]
- * @property {string | {width: string, height: string}} [layout.minimumLayoutMode] Refer to layout sizes defined by layoutModes in dockLayout
+ * @property {string | {width: string, height: string}} [layout.minimumLayoutMode] Refer to layout sizes defined by layoutModes in `strategy`
  * @property {string} [layout.dock] left, right, top or bottom
  * @property {boolean} [show = true] If the component should be rendered
  * @property {string} [scale] Named scale. Will be provided to the component if it ask for it.
@@ -245,14 +245,14 @@ function chartFn(definition, context) {
       return {
         instance: c.instance,
         resize: c.instance.resize,
-        getPreferredSize: dockConfig.computePreferredSize.bind(dockConfig),
+        preferredSize: dockConfig.computePreferredSize.bind(dockConfig),
         userSettings: c.settings,
         layoutComponents: () => {}
       };
     });
     let layoutSettings;
     if (settings.dockLayout) {
-      logger.warn('Deprecation Warning: dockLayout property should be renamed to "strategy"');
+      logger.warn('Deprecation Warning: "dockLayout" property should be renamed to "strategy"');
       layoutSettings = settings.dockLayout;
     } else {
       layoutSettings = settings.strategy;
@@ -262,11 +262,11 @@ function chartFn(definition, context) {
 
     const rect = getElementRect(element);
 
-    const { visible, hidden } = dockLayout.layout(rect, vcomponents);
+    const { visible, hidden, order } = dockLayout.layout(rect, vcomponents);
     return {
       visible: visible.map(v => findComponent(v.instance)),
       hidden: hidden.map(h => findComponent(h.instance)),
-      order: visible
+      order
     };
   };
 
@@ -317,7 +317,7 @@ function chartFn(definition, context) {
       createComponent(compSettings, element)
     )).filter(c => !!c);
 
-    const { visible, hidden } = layout(currentComponents);
+    const { visible, hidden, order } = layout(currentComponents);
     visibleComponents = visible;
 
     hidden.forEach((comp) => {
@@ -332,6 +332,7 @@ function chartFn(definition, context) {
     visible.forEach(comp => comp.instance.render());
     visible.forEach(comp => comp.instance.mounted());
     visible.forEach((comp) => { comp.visible = true; });
+    orderComponents(element, visibleComponents, order);
   };
 
   function setInteractions(interactions = []) {

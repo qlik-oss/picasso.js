@@ -1,5 +1,5 @@
 ---
-title: Dock layout
+title: Dock layout strategy
 ---
 
 The dock layout is the engine that controls how different components are positioned and whether a component is rendered or not, depending on available space, that is, the responsiveness.
@@ -22,7 +22,7 @@ The input value is specified as a number and represents the size in pixels.
 
 **Example**
   ```js
-  dockLayout: {
+  strategy: {
     size: {
       width: 100,
       height: 100
@@ -40,7 +40,7 @@ The input value is specified as a number and represents the size in pixels.
 
 **Example**
   ```js
-  dockLayout: {
+  strategy: {
     logicalSize: {
       width: 150,
       height: 150,
@@ -70,7 +70,7 @@ When configured with either `minWidth/minHeight` or `minWidthRatio/minHeightRati
 
 **Example**
   ```js
-  dockLayout: {
+  strategy: {
     center: {
       minWidthRatio: 0.5,
       minHeightRatio: 0.5,
@@ -86,7 +86,7 @@ The minimum layout mode is a way to tell the layout engine that a component shou
 
 **Example**
   ```js
-  dockLayout: {
+  strategy: {
     layoutModes: {
       S: { width: 150, height: 150 }
       L: { width: 300, height: 300 }
