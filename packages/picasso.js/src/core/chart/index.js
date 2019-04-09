@@ -246,7 +246,7 @@ function chartFn(definition, context) {
         instance: c.instance,
         resize: c.instance.resize,
         preferredSize: dockConfig.computePreferredSize.bind(dockConfig),
-        userSettings: c.settings,
+        settings: c.settings,
         layoutComponents: () => {}
       };
     });

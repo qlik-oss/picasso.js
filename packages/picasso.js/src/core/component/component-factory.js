@@ -53,9 +53,6 @@ function prepareContext(ctx, definition, opts) {
   }
 
   // TODO add setters and log warnings / errors to console
-  Object.defineProperty(ctx, 'userSettings', {
-    get: settings
-  });
   Object.defineProperty(ctx, 'settings', {
     get: settings
   });
