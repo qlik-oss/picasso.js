@@ -16,6 +16,11 @@ import valueCollection from './value-collection';
  */
 const DEFAULT_RANGE_CONFIG = {
   /**
+   * An identifier that represents the data source of the value
+   * @type {string=}
+   */
+  key: undefined,
+  /**
    * Whether or not the minimum value of a range should be included when determening if a value is brushed.
    * @type {boolean=} */
   includeMin: true,

@@ -140,6 +140,11 @@
     "brush-config--ranges": {
       "kind": "object",
       "entries": {
+        "key": {
+          "description": "An identifier that represents the data source of the value",
+          "optional": true,
+          "type": "string"
+        },
         "includeMin": {
           "description": "Whether or not the minimum value of a range should be included when determening if a value is brushed.",
           "optional": true,
