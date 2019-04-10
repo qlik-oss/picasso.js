@@ -5,6 +5,26 @@ import EventEmitter from '../utils/event-emitter';
 import rangeCollection from './range-collection';
 import valueCollection from './value-collection';
 
+/**
+ * @typedef {object} brush-config
+ * @property {Array<brush-config--ranges>} [ranges] - Range configurations
+ */
+
+/**
+ * @typedef {object}
+ * @alias brush-config--ranges
+ */
+const DEFAULT_RANGE_CONFIG = {
+  /**
+   * Whether or not the minimum value of a range should be included when determening if a value is brushed.
+   * @type {boolean=} */
+  includeMin: true,
+  /**
+   * Whether or not the maximum value of a range should be included when determening if a value is brushed.
+   * @type {boolean=} */
+  includeMax: true
+};
+
 function add({
   items,
   collection,
@@ -254,7 +274,8 @@ function updateRange(items, action, {
   ranges,
   interceptors,
   rc,
-  aliases
+  aliases,
+  rangeConfig
 }) {
   const inter = `${action}Ranges`;
   const its = intercept(interceptors[inter], items, aliases);
@@ -262,7 +283,7 @@ function updateRange(items, action, {
   its.forEach((item) => {
     const key = item.key;
     if (!ranges[key]) {
-      ranges[key] = rc();
+      ranges[key] = rc(rangeConfig[key] || rangeConfig._default);
     }
     if (action === 'set') {
       changed = ranges[key][action](item.ranges || item.range) || changed;
@@ -285,6 +306,9 @@ export default function brush({
   let ranges = {};
   let values = {};
   let aliases = {};
+  let rangeConfig = {
+    _default: extend({}, DEFAULT_RANGE_CONFIG)
+  };
   const interceptors = {
     addValues: [],
     removeValues: [],
@@ -361,6 +385,42 @@ export default function brush({
    * @event brush#end
    * @type {string}
    */
+
+
+  /**
+    * Configure the brush instance.
+    *
+    * @param {brush-config} config
+    * @example
+    * brushInstance.configure({
+    *   ranges: [
+    *     { key: 'some key', includeMax: false },
+    *     { includeMax: true, includeMin: true },
+    *   ]
+    * })
+    */
+  fn.configure = (config = {}) => {
+    if (Array.isArray(config.ranges)) {
+      rangeConfig = {
+        _default: extend({}, DEFAULT_RANGE_CONFIG)
+      };
+
+      config.ranges.forEach((cfg) => {
+        if (typeof cfg.key !== 'undefined') {
+          rangeConfig[cfg.key] = extend({}, DEFAULT_RANGE_CONFIG, cfg);
+        } else {
+          rangeConfig._default = extend({}, DEFAULT_RANGE_CONFIG, cfg);
+        }
+      });
+    }
+
+    return {
+      ranges: {
+        sources: Object.keys(rangeConfig).filter(key => key !== '_default').map(key => rangeConfig[key]),
+        default: rangeConfig._default
+      }
+    };
+  };
 
   /**
    * Link this brush to another brush instance.
@@ -717,7 +777,8 @@ export default function brush({
       ranges,
       rc,
       interceptors,
-      aliases
+      aliases,
+      rangeConfig
     });
 
     if (!changed) {
@@ -753,7 +814,8 @@ export default function brush({
       ranges,
       rc,
       interceptors,
-      aliases
+      aliases,
+      rangeConfig
     });
 
     if (!changed) {
@@ -791,7 +853,8 @@ export default function brush({
       ranges,
       rc,
       interceptors,
-      aliases
+      aliases,
+      rangeConfig
     });
 
     if (!changed) {
@@ -830,7 +893,8 @@ export default function brush({
       ranges,
       rc,
       interceptors,
-      aliases
+      aliases,
+      rangeConfig
     });
 
     if (!changed) {

@@ -17,9 +17,7 @@ function index(boundaries, point, after) {
   return i;
 }
 
-function contains(boundaries, point, maxIncludeEql = true, minIncludeEql = false) {
-  const minCondition = minIncludeEql ? lessThanOrEqual : lessThan;
-  const maxCondition = maxIncludeEql ? lessThanOrEqual : lessThan;
+function contains(boundaries, point, minCondition, maxCondition) {
   const len = boundaries.length;
 
   for (let i = 1; i < len; i += 2) {
@@ -30,10 +28,21 @@ function contains(boundaries, point, maxIncludeEql = true, minIncludeEql = false
   return false;
 }
 
-export default function rangeCollection() {
+export default function rangeCollection(config = {}) {
+  let maxCondition;
+  let minCondition;
   let boundaries = [];
 
   function fn() {}
+
+  fn.configure = (c = {}) => {
+    const {
+      includeMax = true,
+      includeMin = true
+    } = c;
+    maxCondition = includeMax ? lessThanOrEqual : lessThan;
+    minCondition = includeMin ? lessThanOrEqual : lessThan;
+  };
 
   fn.add = ({ min, max }) => {
     const i0 = index(boundaries, min);
@@ -88,7 +97,7 @@ export default function rangeCollection() {
     return before;
   };
 
-  fn.containsValue = value => contains(boundaries, value);
+  fn.containsValue = value => contains(boundaries, value, minCondition, maxCondition);
 
   fn.containsRange = ({ min, max }) => {
     const i0 = index(boundaries, min, true);
@@ -114,6 +123,8 @@ export default function rangeCollection() {
     }
     return collection;
   };
+
+  fn.configure(config);
 
   return fn;
 }

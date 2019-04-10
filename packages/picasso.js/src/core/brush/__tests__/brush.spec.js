@@ -868,4 +868,87 @@ describe('brush', () => {
       expect(source._state()).to.eql(target._state());
     });
   });
+
+  describe('configure', () => {
+    beforeEach(() => {
+      b = brush();
+    });
+
+    describe('ranges', () => {
+      it('should be able to configure sourced and default', () => {
+        const config = {
+          ranges: [
+            { includeMin: 0, includeMax: 1 },
+            { key: 'key', includeMin: 123 },
+            { key: 'another key', includeMin: '123', includeMax: 321 }
+          ]
+        };
+
+        expect(b.configure(config)).to.eql({
+          ranges: {
+            sources: [
+              { key: 'key', includeMin: 123, includeMax: true },
+              { key: 'another key', includeMin: '123', includeMax: 321 }
+            ],
+            default: { includeMin: 0, includeMax: 1 }
+          }
+        });
+      });
+
+      it('should be able to configure only default values', () => {
+        const config = {
+          ranges: [
+            { includeMin: 123, includeMax: 321 }
+          ]
+        };
+
+        expect(b.configure(config)).to.eql({
+          ranges: {
+            sources: [],
+            default: { includeMin: 123, includeMax: 321 }
+          }
+        });
+      });
+
+      it('should be able to configure only sourced values', () => {
+        const config = {
+          ranges: [
+            { key: 'key', includeMin: false, includeMax: true },
+            { key: 'another key', includeMin: true, includeMax: false }
+          ]
+        };
+
+        expect(b.configure(config)).to.eql({
+          ranges: {
+            sources: [
+              { key: 'key', includeMin: false, includeMax: true },
+              { key: 'another key', includeMin: true, includeMax: false }
+            ],
+            default: { includeMin: true, includeMax: true }
+          }
+        });
+      });
+
+      it('should handle configure call without any parameter', () => {
+        expect(b.configure()).to.eql({
+          ranges: {
+            sources: [],
+            default: { includeMin: true, includeMax: true }
+          }
+        });
+
+        const config = {
+          ranges: [{ key: 'key', includeMin: 123 }]
+        };
+        b.configure(config);
+
+        expect(b.configure()).to.eql({
+          ranges: {
+            sources: [{ key: 'key', includeMin: 123, includeMax: true }],
+            default: { includeMin: true, includeMax: true }
+          }
+        });
+      });
+    });
+  });
 });
