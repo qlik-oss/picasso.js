@@ -288,7 +288,7 @@ function updateRange(items, action, {
   its.forEach((item) => {
     const key = item.key;
     if (!ranges[key]) {
-      ranges[key] = rc(rangeConfig[key] || rangeConfig._default);
+      ranges[key] = rc(rangeConfig.sources[key] || rangeConfig.default);
     }
     if (action === 'set') {
       changed = ranges[key][action](item.ranges || item.range) || changed;
@@ -312,7 +312,8 @@ export default function brush({
   let values = {};
   let aliases = {};
   let rangeConfig = {
-    _default: extend({}, DEFAULT_RANGE_CONFIG)
+    sources: {},
+    default: extend({}, DEFAULT_RANGE_CONFIG)
   };
   const interceptors = {
     addValues: [],
@@ -405,26 +406,32 @@ export default function brush({
     * })
     */
   fn.configure = (config = {}) => {
-    if (Array.isArray(config.ranges)) {
+    if (Array.isArray(config.ranges) && config.ranges.length) {
       rangeConfig = {
-        _default: extend({}, DEFAULT_RANGE_CONFIG)
+        sources: {},
+        default: extend({}, DEFAULT_RANGE_CONFIG)
       };
 
       config.ranges.forEach((cfg) => {
+        const c = {};
+        Object.keys(DEFAULT_RANGE_CONFIG)
+          .filter(key => key !== 'key')
+          .forEach((attr) => {
+            c[attr] = typeof cfg[attr] !== 'undefined' ? cfg[attr] : DEFAULT_RANGE_CONFIG[attr];
+          });
+
         if (typeof cfg.key !== 'undefined') {
-          rangeConfig[cfg.key] = extend({}, DEFAULT_RANGE_CONFIG, cfg);
+          rangeConfig.sources[cfg.key] = c;
         } else {
-          rangeConfig._default = extend({}, DEFAULT_RANGE_CONFIG, cfg);
+          rangeConfig.default = c;
         }
       });
-    }
 
-    return {
-      ranges: {
-        sources: Object.keys(rangeConfig).filter(key => key !== '_default').map(key => rangeConfig[key]),
-        default: rangeConfig._default
-      }
-    };
+      Object.keys(ranges).forEach(key => ranges[key].configure(rangeConfig.sources[key] || rangeConfig.default));
+
+      // TODO only emit update if config has changed
+      fn.emit('update', [], []);
+    }
   };
 
   /**

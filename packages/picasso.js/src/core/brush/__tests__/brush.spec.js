@@ -870,8 +870,19 @@ describe('brush', () => {
   });
 
   describe('configure', () => {
+    let configureSpy;
+    let updateSpy;
+
     beforeEach(() => {
-      b = brush();
+      configureSpy = sandbox.spy();
+      updateSpy = sandbox.spy();
+      rc = sandbox.stub().returns({
+        add: () => {},
+        configure: configureSpy
+      });
+
+      b = brush({ rc });
+      b.on('update', updateSpy);
     });
 
     describe('ranges', () => {
@@ -884,15 +895,22 @@ describe('brush', () => {
           ]
         };
 
-        expect(b.configure(config)).to.eql({
-          ranges: {
-            sources: [
-              { key: 'key', includeMin: 123, includeMax: true },
-              { key: 'another key', includeMin: '123', includeMax: 321 }
-            ],
-            default: { includeMin: 0, includeMax: 1 }
-          }
-        });
+        b.configure(config);
+
+        b.addRange('key', { min: 0, max: 1 });
+        expect(rc).to.have.been.calledWith({ includeMin: 123, includeMax: true });
+        rc.resetHistory();
+
+        b.addRange('another key', { min: 0, max: 1 });
+        expect(rc).to.have.been.calledWith({ includeMin: '123', includeMax: 321 });
+        rc.resetHistory();
+
+        b.addRange('default', { min: 0, max: 1 });
+        expect(rc).to.have.been.calledWith({ includeMin: 0, includeMax: 1 });
+        rc.resetHistory();
+
+        expect(configureSpy).to.not.have.been.called;
+        expect(updateSpy).to.have.been.calledWith([], []);
       });
 
       it('should be able to configure only default values', () => {
@@ -902,12 +920,13 @@ describe('brush', () => {
           ]
         };
 
-        expect(b.configure(config)).to.eql({
-          ranges: {
-            sources: [],
-            default: { includeMin: 123, includeMax: 321 }
-          }
-        });
+        b.configure(config);
+
+        b.addRange('key', { min: 0, max: 1 });
+        expect(rc).to.have.been.calledWith({ includeMin: 123, includeMax: 321 });
+
+        expect(configureSpy).to.not.have.been.called;
+        expect(updateSpy).to.have.been.calledWith([], []);
       });
 
       it('should be able to configure only sourced values', () => {
@@ -918,36 +937,44 @@ describe('brush', () => {
           ]
         };
 
-        expect(b.configure(config)).to.eql({
-          ranges: {
-            sources: [
-              { key: 'key', includeMin: false, includeMax: true },
-              { key: 'another key', includeMin: true, includeMax: false }
-            ],
-            default: { includeMin: true, includeMax: true }
-          }
-        });
+        b.configure(config);
+
+        b.addRange('key', { min: 0, max: 1 });
+        expect(rc).to.have.been.calledWith({ includeMin: false, includeMax: true });
+        rc.resetHistory();
+
+        b.addRange('another key', { min: 0, max: 1 });
+        expect(rc).to.have.been.calledWith({ includeMin: true, includeMax: false });
+        rc.resetHistory();
+
+        b.addRange('default', { min: 0, max: 1 });
+        expect(rc).to.have.been.calledWith({ includeMin: true, includeMax: true });
+        rc.resetHistory();
+
+        expect(configureSpy).to.not.have.been.called;
+        expect(updateSpy).to.have.been.calledWith([], []);
       });
 
       it('should handle configure call without any parameter', () => {
-        expect(b.configure()).to.eql({
-          ranges: {
-            sources: [],
-            default: { includeMin: true, includeMax: true }
-          }
-        });
+        b.configure();
 
-        const config = {
-          ranges: [{ key: 'key', includeMin: 123 }]
-        };
-        b.configure(config);
+        b.addRange('key', { min: 0, max: 1 });
+        expect(rc).to.have.been.calledWith({ includeMin: true, includeMax: true });
+        expect(configureSpy).to.not.have.been.called;
+      });
 
-        expect(b.configure()).to.eql({
-          ranges: {
-            sources: [{ key: 'key', includeMin: 123, includeMax: true }],
-            default: { includeMin: true, includeMax: true }
-          }
-        });
+      it('should update ranges with new configuration', () => {
+        b.configure();
+
+        b.addRange('key', { min: 0, max: 1 });
+        expect(rc).to.have.been.calledWith({ includeMin: true, includeMax: true });
+        expect(configureSpy).to.not.have.been.called;
+        expect(updateSpy).to.not.have.been.called;
+
+        b.configure({ ranges: [{ includeMin: false }] });
+
+        expect(configureSpy).to.have.been.calledWith({ includeMin: false, includeMax: true });
+        expect(updateSpy).to.have.been.calledWith([], []);
       });
     });
   });
