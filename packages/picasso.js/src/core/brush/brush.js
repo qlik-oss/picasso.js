@@ -415,7 +415,7 @@ export default function brush({
       config.ranges.forEach((cfg) => {
         const c = {};
         Object.keys(DEFAULT_RANGE_CONFIG)
-          .filter(key => key !== 'key')
+          .filter(attr => attr !== 'key')
           .forEach((attr) => {
             c[attr] = typeof cfg[attr] !== 'undefined' ? cfg[attr] : DEFAULT_RANGE_CONFIG[attr];
           });
