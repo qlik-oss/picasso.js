@@ -6,7 +6,8 @@ import createRect from './create-rect';
 
 function cacheSize(c, reducedRect, layoutRect) {
   if (typeof c.cachedSize === 'undefined') {
-    let size = c.comp.preferredSize(reducedRect, layoutRect);
+    const dock = c.config.dock();
+    let size = c.comp.preferredSize({ inner: reducedRect, outer: layoutRect, dock });
     // backwards compatibility
     if (!isNaN(size)) {
       size = { width: size, height: size };
@@ -15,7 +16,6 @@ function cacheSize(c, reducedRect, layoutRect) {
       size.height = size.size;
     }
 
-    const dock = c.config.dock();
     let relevantSize;
     if (dock === 'top' || dock === 'bottom') {
       relevantSize = size.height;
