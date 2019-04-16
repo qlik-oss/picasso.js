@@ -3,7 +3,7 @@
   "info": {
     "name": "picasso.js",
     "description": "A charting library streamlined for building visualizations for the Qlik Sense Analytics platform.",
-    "version": "0.22.1",
+    "version": "0.23.2",
     "license": "MIT"
   },
   "entries": {
@@ -124,11 +124,59 @@
     }
   },
   "definitions": {
+    "brush-config": {
+      "kind": "object",
+      "entries": {
+        "ranges": {
+          "description": "Range configurations",
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/brush-config--ranges"
+          }
+        }
+      }
+    },
+    "brush-config--ranges": {
+      "kind": "object",
+      "entries": {
+        "key": {
+          "description": "An identifier that represents the data source of the value",
+          "optional": true,
+          "type": "string"
+        },
+        "includeMin": {
+          "description": "Whether or not the minimum value of a range should be included when determening if a value is brushed.",
+          "optional": true,
+          "defaultValue": true,
+          "type": "boolean"
+        },
+        "includeMax": {
+          "description": "Whether or not the maximum value of a range should be included when determening if a value is brushed.",
+          "optional": true,
+          "defaultValue": true,
+          "type": "boolean"
+        }
+      }
+    },
     "brush": {
       "description": "A brush context",
       "kind": "interface",
       "params": [],
       "entries": {
+        "configure": {
+          "description": "Configure the brush instance.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "config",
+              "type": "#/definitions/brush-config"
+            }
+          ],
+          "examples": [
+            "brushInstance.configure({\n  ranges: [\n    { key: 'some key', includeMax: false },\n    { includeMax: true, includeMin: true },\n  ]\n})"
+          ]
+        },
         "link": {
           "description": "Link this brush to another brush instance.\n\nWhen linked, the `target` will receive updates whenever this brush changes.",
           "kind": "function",

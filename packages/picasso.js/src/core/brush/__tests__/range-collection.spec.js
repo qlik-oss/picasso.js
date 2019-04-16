@@ -126,6 +126,19 @@ describe('range-collection', () => {
       expect(r.containsValue(20)).to.equal(true);
       expect(r.containsValue(50)).to.equal(true);
       expect(r.containsValue(55)).to.equal(true);
+      expect(r.containsValue(60)).to.equal(true);
+    });
+
+    it('should be able to configure if min/max should be included', () => {
+      r.configure({ includeMax: false, includeMin: false });
+
+      expect(r.containsValue(-10)).to.equal(false);
+      expect(r.containsValue(0)).to.equal(true);
+      expect(r.containsValue(20)).to.equal(false);
+      expect(r.containsValue(35)).to.equal(false);
+      expect(r.containsValue(50)).to.equal(false);
+      expect(r.containsValue(55)).to.equal(true);
+      expect(r.containsValue(60)).to.equal(false);
     });
   });
 
@@ -138,14 +151,27 @@ describe('range-collection', () => {
     });
 
     it('should return true for range inside the collection', () => {
-      expect(r.containsRange({ min: 3, max: 7 })).to.equal(true);
+      expect(r.containsRange({ min: -10, max: 7 })).to.equal(true);
+      expect(r.containsRange({ min: 3, max: 20 })).to.equal(true);
       expect(r.containsRange({ min: 10, max: 7 })).to.equal(true);
+
+      expect(r.containsRange({ min: 50, max: 55 })).to.equal(true);
       expect(r.containsRange({ min: 55, max: 60 })).to.equal(true);
+      expect(r.containsRange({ min: 50, max: 60 })).to.equal(true);
     });
 
-    it('should return false for range inside outside the collection', () => {
-      expect(r.containsRange({ min: -12, max: -5 })).to.equal(false);
-      expect(r.containsRange({ min: 15, max: 55 })).to.equal(false);
+    it('should return false for range inside and outside the collection', () => {
+      expect(r.containsRange({ min: -12, max: -9 })).to.equal(false);
+      expect(r.containsRange({ min: 49, max: 55 })).to.equal(false);
+      expect(r.containsRange({ min: 49, max: 61 })).to.equal(false);
+      expect(r.containsRange({ min: 20, max: 50 })).to.equal(false);
+      expect(r.containsRange({ min: -10, max: 60 })).to.equal(false);
+    });
+
+    it('should return false for range outside the collection', () => {
+      expect(r.containsRange({ min: -20, max: -11 })).to.equal(false);
+      expect(r.containsRange({ min: 21, max: 49 })).to.equal(false);
+      expect(r.containsRange({ min: 61, max: 70 })).to.equal(false);
     });
   });
 

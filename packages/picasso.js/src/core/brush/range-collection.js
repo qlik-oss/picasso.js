@@ -1,3 +1,11 @@
+function lessThanOrEqual(value, limit) {
+  return value <= limit;
+}
+
+function lessThan(value, limit) {
+  return value < limit;
+}
+
 function index(boundaries, point, after) {
   let i = 0;
   while (i < boundaries.length && point > boundaries[i]) {
@@ -9,26 +17,34 @@ function index(boundaries, point, after) {
   return i;
 }
 
-function contains(boundaries, point) {
+function contains(boundaries, point, minCondition, maxCondition) {
   const len = boundaries.length;
 
   for (let i = 1; i < len; i += 2) {
-    if (boundaries[i - 1] <= point && point <= boundaries[i]) {
+    if (minCondition(boundaries[i - 1], point) && maxCondition(point, boundaries[i])) {
       return true;
     }
   }
   return false;
 }
 
-export default function rangeCollection() {
+export default function rangeCollection(config = {}) {
+  let maxCondition;
+  let minCondition;
   let boundaries = [];
 
   function fn() {}
 
-  fn.add = (range) => {
-    const min = range.min;
-    const max = range.max;
+  fn.configure = (c = {}) => {
+    const {
+      includeMax = true,
+      includeMin = true
+    } = c;
+    maxCondition = includeMax ? lessThanOrEqual : lessThan;
+    minCondition = includeMin ? lessThanOrEqual : lessThan;
+  };
 
+  fn.add = ({ min, max }) => {
     const i0 = index(boundaries, min);
     const i1 = index(boundaries, max, true);
 
@@ -46,10 +62,7 @@ export default function rangeCollection() {
     return before !== after;
   };
 
-  fn.remove = (range) => {
-    const min = range.min;
-    const max = range.max;
-
+  fn.remove = ({ min, max }) => {
     const i0 = index(boundaries, min);
     const i1 = index(boundaries, max, true);
 
@@ -84,12 +97,9 @@ export default function rangeCollection() {
     return before;
   };
 
-  fn.containsValue = value => contains(boundaries, value);
+  fn.containsValue = value => contains(boundaries, value, minCondition, maxCondition);
 
-  fn.containsRange = (range) => {
-    const min = range.min;
-    const max = range.max;
-
+  fn.containsRange = ({ min, max }) => {
     const i0 = index(boundaries, min, true);
     const i1 = index(boundaries, max);
 
@@ -113,6 +123,8 @@ export default function rangeCollection() {
     }
     return collection;
   };
+
+  fn.configure(config);
 
   return fn;
 }
