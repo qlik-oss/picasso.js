@@ -332,6 +332,94 @@ describe('Dock Layout', () => {
     });
   });
 
+  describe('Layout', () => {
+    let rect;
+    let dl;
+
+    beforeEach(() => {
+      rect = createRect(500, 500, 1000, 1000);
+      dl = dockLayout();
+    });
+
+    it('should set correct component rects when container rect is not starting in origin', () => {
+      const components = [
+        componentMock({ dock: 'left', size: 50 }),
+        componentMock({ dock: 'right', size: 100 }),
+        componentMock(),
+        componentMock({ dock: 'top', size: 150 }),
+        componentMock({ dock: 'bottom', size: 200 })
+      ];
+
+      dl.layout(rect, components);
+
+      // outer rects
+      expect(components[0].outer, 'Left outerRect had incorrect calculated size').to.deep.include({
+        x: 500,
+        y: 500,
+        width: 50,
+        height: 1000
+      });
+      expect(components[1].outer, 'Right outerRect had incorrect calculated size').to.deep.include({
+        x: 1400,
+        y: 500,
+        width: 100,
+        height: 1000
+      });
+      expect(components[2].outer, 'Main outerRect had incorrect calculated size').to.deep.include({
+        x: 550,
+        y: 650,
+        width: 850,
+        height: 650
+      });
+      expect(components[3].outer, 'Top outerRect had incorrect calculated size').to.deep.include({
+        x: 500,
+        y: 500,
+        width: 1000,
+        height: 150
+      });
+      expect(components[4].outer, 'Bottom outerRect had incorrect calculated size').to.deep.include(
+        {
+          x: 500,
+          y: 1300,
+          width: 1000,
+          height: 200
+        }
+      );
+
+      // main rects
+      expect(components[0].rect, 'Left rect had incorrect calculated size').to.deep.include({
+        x: 500,
+        y: 650,
+        width: 50,
+        height: 650
+      });
+      expect(components[1].rect, 'Right rect had incorrect calculated size').to.deep.include({
+        x: 1400,
+        y: 650,
+        width: 100,
+        height: 650
+      });
+      expect(components[2].rect, 'Main rect had incorrect calculated size').to.deep.include({
+        x: 550,
+        y: 650,
+        width: 850,
+        height: 650
+      });
+      expect(components[3].rect, 'Top rect had incorrect calculated size').to.deep.include({
+        x: 550,
+        y: 500,
+        width: 850,
+        height: 150
+      });
+      expect(components[4].rect, 'Bottom rect had incorrect calculated size').to.deep.include({
+        x: 550,
+        y: 1300,
+        width: 850,
+        height: 200
+      });
+    });
+  });
+
   describe('Settings', () => {
     let settings;
     let container;

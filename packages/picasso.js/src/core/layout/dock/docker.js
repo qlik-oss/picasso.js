@@ -220,7 +220,7 @@ function boundingBox(rects) {
 }
 
 function positionComponents({
-  visible, layoutRect, reducedRect, containerRect
+  visible, layoutRect, reducedRect, containerRect, translation
 }) {
   const vRect = createRect(reducedRect.x, reducedRect.y, reducedRect.width, reducedRect.height);
   const hRect = createRect(reducedRect.x, reducedRect.y, reducedRect.width, reducedRect.height);
@@ -319,6 +319,10 @@ function positionComponents({
       rect.computed = computeRect(rect);
       outerRect.edgeBleed = c.edgeBleed;
       outerRect.computed = computeRect(outerRect);
+      rect.x += translation.x;
+      rect.y += translation.y;
+      outerRect.x += translation.x;
+      outerRect.y += translation.y;
       c.comp.resize(rect, outerRect);
       c.cachedSize = undefined;
       c.edgeBleed = undefined;
@@ -428,11 +432,15 @@ function dockLayout(initialSettings) {
       hidden,
       settings
     });
+
+    const translation = { x: rect.x, y: rect.y };
+
     const order = positionComponents({
       visible,
       layoutRect: logicalContainerRect,
       reducedRect,
-      containerRect
+      containerRect,
+      translation
     });
     hidden.forEach((c) => {
       c.comp.visible = false;
