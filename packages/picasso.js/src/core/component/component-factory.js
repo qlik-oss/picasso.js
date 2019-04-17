@@ -365,12 +365,12 @@ function componentFactory(definition, context = {}) {
     }
     instanceContext.rect = extend(true, {
       computedPhysical: size.computedPhysical,
-      computedOuter: outer.computed,
-      computedInner: inner.computed
+      computedOuter: outer.computed || outer,
+      computedInner: inner.computed || inner
     }, inner);
     size = extend(true, {
-      computedOuter: outer.computed,
-      computedInner: inner.computed
+      computedOuter: outer.computed || outer,
+      computedInner: inner.computed || inner
     }, size);
   };
 
