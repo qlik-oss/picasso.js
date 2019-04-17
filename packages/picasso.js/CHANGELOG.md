@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.24.0](https://github.com/qlik-oss/picasso.js/compare/v0.23.2...v0.24.0) (2019-04-17)
+
+
+### Bug Fixes
+
+* computedInner and computerOuter rect is undefined ([#374](https://github.com/qlik-oss/picasso.js/issues/374)) ([e34683b](https://github.com/qlik-oss/picasso.js/commit/e34683b))
+
+
+### Features
+
+* log warning for unintentional registry use ([#369](https://github.com/qlik-oss/picasso.js/issues/369)) ([3e9621e](https://github.com/qlik-oss/picasso.js/commit/3e9621e))
+* **brush:** configure brush instance ([#371](https://github.com/qlik-oss/picasso.js/issues/371)) ([b73a557](https://github.com/qlik-oss/picasso.js/commit/b73a557))
+
+
+
+
+
 ## [0.23.2](https://github.com/qlik-oss/picasso.js/compare/v0.23.1...v0.23.2) (2019-04-08)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.24.0](https://github.com/qlik-oss/picasso.js/compare/v0.23.2...v0.24.0) (2019-04-17)
+
+
+### Features
+
+* **brush:** configure brush instance ([#371](https://github.com/qlik-oss/picasso.js/issues/371)) ([b73a557](https://github.com/qlik-oss/picasso.js/commit/b73a557))
+
+
+
+
+
 ## [0.23.2](https://github.com/qlik-oss/picasso.js/compare/v0.23.1...v0.23.2) (2019-04-08)
 
 **Note:** Version bump only for package docs
