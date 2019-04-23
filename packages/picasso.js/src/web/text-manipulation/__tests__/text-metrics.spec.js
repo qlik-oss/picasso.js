@@ -4,7 +4,6 @@ describe('text-metrics', () => {
   describe('measureText', () => {
     let sandbox,
       canvasContextMock,
-      canvasMock,
       cacheId = 0,
       fontWasUnset = false;
 
@@ -14,7 +13,7 @@ describe('text-metrics', () => {
       fontFamily: 'Arial'
     };
 
-    beforeEach(() => {
+    before(() => {
       sandbox = sinon.createSandbox();
 
       canvasContextMock = {
@@ -25,19 +24,15 @@ describe('text-metrics', () => {
         })
       };
 
-      canvasMock = {
-        getContext: sandbox.spy(() => canvasContextMock)
-      };
-
       global.document = {
-        createElement: sandbox.spy(() => canvasMock)
+        createElement: sandbox.spy(() => ({ getContext: () => canvasContextMock }))
       };
     });
 
     afterEach(() => {
       fontWasUnset = false;
       canvasContextMock.font = '';
-      sandbox.restore();
+      sandbox.resetHistory();
     });
 
     after(() => {
@@ -61,14 +56,14 @@ describe('text-metrics', () => {
       expect(fontWasUnset).to.equal(false);
     });
 
-    it('should fire measureText twice with correct arguments', () => {
+    it('should fire measureText once with correct arguments', () => {
       argument.fontSize = ++cacheId;
 
       measureText(argument);
 
-      expect(canvasContextMock.measureText.calledTwice).to.equal(true);
-      expect(canvasContextMock.measureText.calledWith('Test')).to.equal(true);
-      expect(canvasContextMock.measureText.calledWith('M')).to.equal(true);
+      expect(canvasContextMock.measureText).to.have.been.calledTwice;
+      expect(canvasContextMock.measureText).to.have.been.calledWith('Test');
+      expect(canvasContextMock.measureText).to.have.been.calledWith('M');
     });
 
     it('should reuse the previously created canvas element', () => {

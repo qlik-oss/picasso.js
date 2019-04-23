@@ -6,33 +6,50 @@ import {
   ELLIPSIS_CHAR
 } from './text-const';
 
-let heightMeasureCache = {},
-  widthMeasureCache = {},
-  canvasCache;
+const BASE_HEIGHT_CHAR = 'M';
+const WIDTH_TO_HEIGHT_MULTIPLIER = 1.2;
 
-function measureTextWidth({ text, fontSize, fontFamily }) {
-  const match = widthMeasureCache[text + fontSize + fontFamily];
-  if (match !== undefined) {
-    return match;
-  }
-  canvasCache = canvasCache || document.createElement('canvas');
-  const g = canvasCache.getContext('2d');
-  g.font = `${fontSize} ${fontFamily}`;
-  const w = g.measureText(text).width;
-  widthMeasureCache[text + fontSize + fontFamily] = w;
-  return w;
+const heightCache = {};
+const widthCache = {};
+const contextCache = {
+  fontSize: undefined,
+  fontFamily: undefined
+};
+let context;
+
+function setContext() {
+  context = context || document.createElement('canvas').getContext('2d');
 }
 
-function measureTextHeight({ fontSize, fontFamily }) {
-  const match = heightMeasureCache[fontSize + fontFamily];
-
-  if (match !== undefined) {
-    return match;
+function setFont(fontSize, fontFamily) {
+  if (contextCache.fontSize === fontSize && contextCache.fontFamily === fontFamily) {
+    return;
   }
-  const text = 'M';
-  const height = measureTextWidth({ text, fontSize, fontFamily }) * 1.2;
-  heightMeasureCache[fontSize + fontFamily] = height;
-  return height;
+
+  context.font = fontSize + ' ' + fontFamily; // eslint-disable-line
+  contextCache.fontSize = fontSize;
+  contextCache.fontFamily = fontFamily;
+}
+
+function measureTextWidth(text, fontSize, fontFamily) {
+  const key = text + fontSize + fontFamily;
+  if (typeof widthCache[key] !== 'number') {
+    setContext();
+    setFont(fontSize, fontFamily);
+    widthCache[key] = context.measureText(text).width;
+  }
+
+  return widthCache[key];
+}
+
+function measureTextHeight(fontSize, fontFamily) {
+  const key = fontSize + fontFamily;
+
+  if (typeof heightCache[key] !== 'number') {
+    heightCache[key] = measureTextWidth(BASE_HEIGHT_CHAR, fontSize, fontFamily) * WIDTH_TO_HEIGHT_MULTIPLIER;
+  }
+
+  return heightCache[key];
 }
 
 /**
@@ -49,9 +66,9 @@ function measureTextHeight({ fontSize, fontFamily }) {
  *  fontFamily: 'Arial'
  * }); // returns { width: 20, height: 12 }
  */
-export function measureText({ text, fontSize, fontFamily }) { // eslint-disable-line import/prefer-default-export
-  const w = measureTextWidth({ text, fontSize, fontFamily });
-  const h = measureTextHeight({ fontSize, fontFamily });
+export function measureText({ text, fontSize, fontFamily }) {
+  const w = measureTextWidth(text, fontSize, fontFamily);
+  const h = measureTextHeight(fontSize, fontFamily);
   return { width: w, height: h };
 }
 
