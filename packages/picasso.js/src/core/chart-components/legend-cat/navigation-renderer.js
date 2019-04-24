@@ -51,7 +51,7 @@ function btn(h, {
     style.background = 'none';
   }
   const attrsMerged = attrs;
-  if (!isActive) {
+  if (!isActive || nav.disabled) {
     attrsMerged.disabled = 'disabled';
   }
 
