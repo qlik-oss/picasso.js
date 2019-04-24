@@ -175,12 +175,12 @@ describe('extract data', () => {
 
   describe('from collection', () => {
     it('should return a collection', () => {
-      let collection = sinon.stub().withArgs('nyckel').returns('my collection');
+      let collection = sinon.stub().withArgs('nyckel').returns({ foo: 'my collection' });
       let d = extract({
         collection: 'nyckel'
       }, { collection });
 
-      expect(d).to.equal('my collection');
+      expect(d).to.eql({ foo: 'my collection' });
     });
   });
 
@@ -193,6 +193,18 @@ describe('extract data', () => {
         { value: 'C', label: 'C' },
         { value: 'B', label: 'B' },
         { value: 'A', label: 'A' }
+      ]);
+    });
+  });
+
+  describe('with filter config', () => {
+    it('should sort values', () => {
+      expect(extract({
+        items: ['A', 'B', 'C'],
+        filter: d => d.label !== 'C'
+      }).items).to.eql([
+        { value: 'A', label: 'A' },
+        { value: 'B', label: 'B' }
       ]);
     });
   });
