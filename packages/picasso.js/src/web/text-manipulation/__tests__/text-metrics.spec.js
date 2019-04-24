@@ -44,7 +44,7 @@ describe('text-metrics', () => {
 
       const result = measureText(argument);
 
-      expect(result).to.deep.equal({ width: 150, height: 180 });
+      expect(result).to.deep.equal({ width: 150, height: 16 });
     });
 
     it('should set the correct font before firing measureText', () => {
@@ -61,9 +61,8 @@ describe('text-metrics', () => {
 
       measureText(argument);
 
-      expect(canvasContextMock.measureText).to.have.been.calledTwice;
+      expect(canvasContextMock.measureText).to.have.been.calledOnce;
       expect(canvasContextMock.measureText).to.have.been.calledWith('Test');
-      expect(canvasContextMock.measureText).to.have.been.calledWith('M');
     });
 
     it('should reuse the previously created canvas element', () => {
@@ -106,32 +105,6 @@ describe('text-metrics', () => {
       measureText(argument);
 
       expect(canvasContextMock.measureText.withArgs('Test').calledTwice).to.equal(true);
-    });
-
-    it('should reuse past height calculations if arguments match previous use case', () => {
-      argument.fontSize = ++cacheId;
-
-      measureText(argument);
-
-      expect(canvasContextMock.measureText.withArgs('M').calledOnce).to.equal(true);
-
-      measureText(argument);
-
-      expect(canvasContextMock.measureText.withArgs('M').calledOnce).to.equal(true);
-    });
-
-    it('should not reuse past height calculations if arguments does not match previous use case', () => {
-      argument.fontSize = ++cacheId;
-
-      measureText(argument);
-
-      expect(canvasContextMock.measureText.withArgs('M').calledOnce).to.equal(true);
-
-      argument.fontSize = ++cacheId;
-
-      measureText(argument);
-
-      expect(canvasContextMock.measureText.withArgs('M').calledTwice).to.equal(true);
     });
   });
 
