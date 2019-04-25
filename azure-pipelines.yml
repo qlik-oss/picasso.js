@@ -17,7 +17,7 @@ steps:
     yarn run build
   displayName: 'yarn install and build'
 
-- bash: npx webdriver-manager update
+- bash: npx webdriver-manager update --versions.standalone 3.141.59
   displayName: 'Update webdriver manager'
 
 - bash: echo "##vso[task.prependpath]$IEWebDriver;"
