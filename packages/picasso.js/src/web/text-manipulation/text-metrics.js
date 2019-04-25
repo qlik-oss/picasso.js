@@ -6,6 +6,7 @@ import {
   ELLIPSIS_CHAR
 } from './text-const';
 import fontSizeToHeight from './font-size-to-height';
+import { includesLineBreak } from './string-tokenizer';
 
 const heightCache = {};
 const widthCache = {};
@@ -135,9 +136,11 @@ function calcTextBounds(attrs, measureFn = measureText) {
  */
 export function textBounds(node, measureFn = measureText) {
   const lineBreakFn = resolveLineBreakAlgorithm(node);
-  if (lineBreakFn) {
-    const fontSize = node['font-size'] || node.fontSize;
-    const fontFamily = node['font-family'] || node.fontFamily;
+  const fontSize = node['font-size'] || node.fontSize;
+  const fontFamily = node['font-family'] || node.fontFamily;
+  const tm = measureFn({ text: node.text, fontFamily, fontSize });
+
+  if (lineBreakFn && (tm.width > node.maxWidth || includesLineBreak(node.text))) {
     const resolvedLineBreaks = lineBreakFn(node, text => measureFn({ text, fontFamily, fontSize }));
     const nodeCopy = extend({}, node);
     let maxWidth = 0;
