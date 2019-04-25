@@ -2,7 +2,7 @@ const BASE = 24;
 const PAD = 4;
 const BUMP = 1e-12;
 const DEFAULT_HEIGHT = 16;
-const TEXT_REGEX = /^\s*([0-9]+|[0-9]+\.{1}[0-9]+)[px]{2}\s*$/i;
+const TEXT_REGEX = /^\s*\d+(\.\d+)?px\s*$/i;
 
 function isValidFontSize(val) {
   const type = typeof val;
