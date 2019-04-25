@@ -46,7 +46,7 @@ function render({
     nodes.push(extend({}, itemized.displayObject, {
       x: align[itemized.displayObject.anchor] || 0,
       y: 0,
-      baseline: 'hanging',
+      baseline: 'text-before-edge',
       title: itemized.displayObject.text
     }));
   }
