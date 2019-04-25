@@ -199,15 +199,17 @@ describe('text-metrics', () => {
 
       describe('wordBreak', () => {
         describe('break-all', () => {
-          it('no other affecting properties', () => {
+          it('should not compute bounds based on line break given no maxWidth is set', () => {
             node.wordBreak = 'break-all';
+            node.maxLines = 2;
+            node.lineHeight = 10;
             bounds = textBounds(node, textMeasureMock);
             expect(bounds).to.deep.equal({
-              x: 1, y: 1.25, width: 4, height: 1.2
+              x: 1, y: 1.25, width: 4, height: 1
             });
           });
 
-          it('with maxWidth, lineHeight and maxLines', () => {
+          it('should compute bounds based on line break given all conditions are meet', () => {
             node.wordBreak = 'break-all';
             node.maxWidth = 1;
             node.lineHeight = 10;
@@ -215,6 +217,29 @@ describe('text-metrics', () => {
             bounds = textBounds(node, textMeasureMock);
             expect(bounds).to.deep.equal({
               x: 1, y: 1.25, width: 1, height: 20
+            });
+          });
+
+          it('should require text width to be more than node maxWidth', () => {
+            node.wordBreak = 'break-all';
+            node.maxWidth = node.text.length + 1;
+            node.lineHeight = 10;
+            node.maxLines = 2;
+            bounds = textBounds(node, textMeasureMock);
+            expect(bounds).to.deep.equal({
+              x: 1, y: 1.25, width: 4, height: 1
+            });
+          });
+
+          it('should compute bounds based on line break given node text contains a line break character', () => {
+            node.text = 'te\nst';
+            node.wordBreak = 'break-all';
+            node.maxWidth = Infinity;
+            node.lineHeight = 10;
+            node.maxLines = 2;
+            bounds = textBounds(node, textMeasureMock);
+            expect(bounds).to.deep.equal({
+              x: 1, y: 1.25, width: 2, height: 20
             });
           });
         });

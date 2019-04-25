@@ -71,16 +71,14 @@ export function onLineBreak(measureText) {
       }
 
       const tm = measureText(item);
-      if (tm.width <= item.maxWidth && !includesLineBreak(item.text)) {
-        return;
+      if (tm.width > item.maxWidth || includesLineBreak(item.text)) {
+        const lineHeight = tm.height * Math.max((isNaN(item.lineHeight) ? DEFAULT_LINE_HEIGHT : item.lineHeight), 0);
+        const diff = lineHeight - tm.height;
+        const halfLead = diff / 2;
+        const result = wordBreakFn(item, wrappedMeasureText(item, measureText));
+
+        state.node = generateLineNodes(result, item, halfLead, tm.height); // Convert node to container
       }
-
-      const lineHeight = tm.height * Math.max((isNaN(item.lineHeight) ? DEFAULT_LINE_HEIGHT : item.lineHeight), 0);
-      const diff = lineHeight - tm.height;
-      const halfLead = diff / 2;
-      const result = wordBreakFn(item, wrappedMeasureText(item, measureText));
-
-      state.node = generateLineNodes(result, item, halfLead, tm.height); // Convert node to container
     }
   };
 }
