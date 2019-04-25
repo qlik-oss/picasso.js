@@ -5,9 +5,7 @@ import {
   DEFAULT_LINE_HEIGHT,
   ELLIPSIS_CHAR
 } from './text-const';
-
-const BASE_HEIGHT_CHAR = 'M';
-const WIDTH_TO_HEIGHT_MULTIPLIER = 1.2;
+import fontSizeToHeight from './font-size-to-height';
 
 const heightCache = {};
 const widthCache = {};
@@ -42,14 +40,12 @@ function measureTextWidth(text, fontSize, fontFamily) {
   return widthCache[key];
 }
 
-function measureTextHeight(fontSize, fontFamily) {
-  const key = fontSize + fontFamily;
-
-  if (typeof heightCache[key] !== 'number') {
-    heightCache[key] = measureTextWidth(BASE_HEIGHT_CHAR, fontSize, fontFamily) * WIDTH_TO_HEIGHT_MULTIPLIER;
+function measureTextHeight(fontSize) {
+  if (typeof heightCache[fontSize] !== 'number') {
+    heightCache[fontSize] = fontSizeToHeight(fontSize);
   }
 
-  return heightCache[key];
+  return heightCache[fontSize];
 }
 
 /**
@@ -68,7 +64,7 @@ function measureTextHeight(fontSize, fontFamily) {
  */
 export function measureText({ text, fontSize, fontFamily }) {
   const w = measureTextWidth(text, fontSize, fontFamily);
-  const h = measureTextHeight(fontSize, fontFamily);
+  const h = measureTextHeight(fontSize);
   return { width: w, height: h };
 }
 
