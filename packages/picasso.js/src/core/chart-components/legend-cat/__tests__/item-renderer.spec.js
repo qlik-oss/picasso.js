@@ -1,4 +1,4 @@
-import {
+import itemRendererFactory, {
   itemize,
   extent,
   spread,
@@ -6,6 +6,7 @@ import {
   createRenderItem,
   parallelize
 } from '../item-renderer';
+import * as symbolFactory from '../../../symbols';
 
 describe('legend-item-renderer', () => {
   describe('itemize', () => {
@@ -238,6 +239,92 @@ describe('legend-item-renderer', () => {
           y: 3 + ((14 - 9) / 2) // y + (maxSymbolSize - labelHeight) / 2
         }]
       });
+    });
+  });
+
+  describe('offset', () => {
+    let sandbox;
+    let legend;
+    let api;
+    let obj;
+    let overflow;
+
+    beforeEach(() => {
+      sandbox = sinon.createSandbox();
+      legend = {
+        renderer: {
+          textBounds: o => ({ width: parseInt(o.fontSize, 10) * 2, height: 20 })
+        }
+      };
+      obj = {
+        viewRect: { x: 1, y: 2 },
+        resolved: {
+          layout: { item: { scrollOffset: 100 } },
+          labels: { items: [{}, { fontSize: 11, data: { label: 'wohoo' } }] },
+          items: { items: [{ show: false }, {}] },
+          symbols: { items: [{}, { size: 17 }] }
+        }
+      };
+      api = itemRendererFactory(legend, {
+        onScroll: () => {}
+      });
+      overflow = 0;
+      sandbox.stub(api, 'getContentOverflow').callsFake(() => overflow);
+      sandbox.stub(symbolFactory, 'default').returns({});
+    });
+
+    afterEach(() => {
+      sandbox.restore();
+    });
+
+    it('should return correct offset after itemize is executed', () => {
+      api.itemize(obj);
+      expect(api.offset()).to.equal(100);
+    });
+
+    it('should return correct offset after itemize and getItemsToRender are executed and overflow = 0', () => {
+      api.itemize(obj);
+      api.getItemsToRender(obj);
+      expect(api.offset()).to.equal(0);
+    });
+
+    it('should return correct offset after itemize and getItemsToRender are executed and overflow < offset', () => {
+      overflow = 5;
+      api.itemize(obj);
+      api.getItemsToRender(obj);
+      expect(api.offset()).to.equal(5);
+    });
+
+    it('should return correct offset after itemize and getItemsToRender are executed and overflow > offset', () => {
+      overflow = 200;
+      api.itemize(obj);
+      api.getItemsToRender(obj);
+      expect(api.offset()).to.equal(100);
+    });
+
+    it('should return correct offset after itemize and getItemsToRender and then itemize are executed', () => {
+      api.itemize(obj);
+      api.getItemsToRender(obj);
+      api.itemize(obj);
+      expect(api.offset()).to.equal(100);
+    });
+
+    it('should return correct offset after itemize and getItemsToRender and then itemize and getItemsToRender are executed and overflow < offset', () => {
+      overflow = 10;
+      api.itemize(obj);
+      api.getItemsToRender(obj);
+      api.itemize(obj);
+      api.getItemsToRender(obj);
+      expect(api.offset()).to.equal(10);
+    });
+
+    it('should return correct offset after itemize and getItemsToRender and then itemize and getItemsToRender are executed and overflow > offset', () => {
+      overflow = 300;
+      api.itemize(obj);
+      api.getItemsToRender(obj);
+      api.itemize(obj);
+      api.getItemsToRender(obj);
+      expect(api.offset()).to.equal(100);
     });
   });
 });
