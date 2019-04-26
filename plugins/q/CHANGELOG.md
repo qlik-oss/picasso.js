@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.25.0](https://github.com/qlik-oss/picasso.js/compare/v0.24.0...v0.25.0) (2019-04-26)
+
+
+### Bug Fixes
+
+* **q:** handle qMode: 'K' in q-brush ([#382](https://github.com/qlik-oss/picasso.js/issues/382)) ([081f582](https://github.com/qlik-oss/picasso.js/commit/081f582))
+
+
+
+
+
 # [0.24.0](https://github.com/qlik-oss/picasso.js/compare/v0.23.2...v0.24.0) (2019-04-17)
 
 **Note:** Version bump only for package picasso-plugin-q

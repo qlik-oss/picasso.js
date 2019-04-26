@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.25.0](https://github.com/qlik-oss/picasso.js/compare/v0.24.0...v0.25.0) (2019-04-26)
+
+
+### Bug Fixes
+
+* **legend-cat:** add enabled/disabled state to navigation buttons ([#383](https://github.com/qlik-oss/picasso.js/issues/383)) ([ef0836f](https://github.com/qlik-oss/picasso.js/commit/ef0836f))
+* **legend-cat:** fix setting initial legend scroll offset ([#379](https://github.com/qlik-oss/picasso.js/issues/379)) ([6f51024](https://github.com/qlik-oss/picasso.js/commit/6f51024))
+* **legend-cat:** title baseline ([#380](https://github.com/qlik-oss/picasso.js/issues/380)) ([8051d6a](https://github.com/qlik-oss/picasso.js/commit/8051d6a))
+* **q:** handle qMode: 'K' in q-brush ([#382](https://github.com/qlik-oss/picasso.js/issues/382)) ([081f582](https://github.com/qlik-oss/picasso.js/commit/081f582))
+* **text-metrics:** condition for using line break when computing bounds ([#385](https://github.com/qlik-oss/picasso.js/issues/385)) ([37433fe](https://github.com/qlik-oss/picasso.js/commit/37433fe))
+* **text-metrics:** height measurement ([#381](https://github.com/qlik-oss/picasso.js/issues/381)) ([a730064](https://github.com/qlik-oss/picasso.js/commit/a730064))
+
+
+### Features
+
+* dock layout for rects not in origin ([#375](https://github.com/qlik-oss/picasso.js/issues/375)) ([ed11dc1](https://github.com/qlik-oss/picasso.js/commit/ed11dc1))
+* filter extracted data ([#376](https://github.com/qlik-oss/picasso.js/issues/376)) ([c84cb02](https://github.com/qlik-oss/picasso.js/commit/c84cb02))
+
+
+### Performance Improvements
+
+* text metrics ([#377](https://github.com/qlik-oss/picasso.js/issues/377)) ([aa42e27](https://github.com/qlik-oss/picasso.js/commit/aa42e27))
+
+
+
+
+
 # [0.24.0](https://github.com/qlik-oss/picasso.js/compare/v0.23.2...v0.24.0) (2019-04-17)
 
 
