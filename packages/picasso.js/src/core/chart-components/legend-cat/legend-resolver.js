@@ -100,7 +100,10 @@ const DEFAULT_SETTINGS = {
       /**
        * @type {function} */
       content: undefined
-    }
+    },
+    /** Whether the button should be disabled or not
+     * @type {boolean=} */
+    disabled: false
   }
 };
 
