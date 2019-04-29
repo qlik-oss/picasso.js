@@ -9,7 +9,7 @@ describe('Line Break Resolver', () => {
     let fn;
 
     beforeEach(() => {
-      node = { type: 'text' };
+      node = { type: 'text', fontSize: '1px' };
       state = { node };
       measureTextSpy = sinon.spy();
       fn = onLineBreak(measureTextMock);

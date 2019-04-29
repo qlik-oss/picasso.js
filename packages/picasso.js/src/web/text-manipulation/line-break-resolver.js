@@ -1,7 +1,8 @@
 import extend from 'extend';
 import { breakAll, breakWord } from './word-break';
-import { DEFAULT_LINE_HEIGHT, ELLIPSIS_CHAR } from './text-const';
+import { ELLIPSIS_CHAR } from './text-const';
 import { includesLineBreak } from './string-tokenizer';
+import { fontSizeToLineHeight } from './font-size-to-height';
 
 function generateLineNodes(result, item, halfLead, height) {
   const container = { type: 'container', children: [] };
@@ -72,8 +73,7 @@ export function onLineBreak(measureText) {
 
       const tm = measureText(item);
       if (tm.width > item.maxWidth || includesLineBreak(item.text)) {
-        const lineHeight = tm.height * Math.max((isNaN(item.lineHeight) ? DEFAULT_LINE_HEIGHT : item.lineHeight), 0);
-        const diff = lineHeight - tm.height;
+        const diff = fontSizeToLineHeight(item) - tm.height;
         const halfLead = diff / 2;
         const result = wordBreakFn(item, wrappedMeasureText(item, measureText));
 

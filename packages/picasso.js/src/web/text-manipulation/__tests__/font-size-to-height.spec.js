@@ -1,4 +1,4 @@
-import fontSizeToHeight from '../font-size-to-height';
+import { fontSizeToHeight } from '../font-size-to-height';
 
 describe('font-size to height', () => {
   it('should use 24px a base for determing height', () => {

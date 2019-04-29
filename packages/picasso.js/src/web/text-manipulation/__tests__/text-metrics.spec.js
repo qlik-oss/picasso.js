@@ -110,7 +110,7 @@ describe('text-metrics', () => {
 
   describe('textBounds', () => {
     const textMeasureMock = ({ text, fontSize, fontFamily }) => ({
-      width: text.length * (fontSize || 1),
+      width: text.length * (parseFloat(fontSize) || 1),
       height: fontFamily || 1
     });
     let node;
@@ -198,6 +198,10 @@ describe('text-metrics', () => {
       });
 
       describe('wordBreak', () => {
+        beforeEach(() => {
+          node.fontSize = '1px';
+        });
+
         describe('break-all', () => {
           it('should not compute bounds based on line break given no maxWidth is set', () => {
             node.wordBreak = 'break-all';
