@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.25.1](https://github.com/qlik-oss/picasso.js/compare/v0.25.0...v0.25.1) (2019-04-29)
+
+
+### Bug Fixes
+
+* **legend-cat:** improve text and shape alignment ([#387](https://github.com/qlik-oss/picasso.js/issues/387)) ([1064f4f](https://github.com/qlik-oss/picasso.js/commit/1064f4f))
+* **legend-seq:** miss-aligned ticks ([#389](https://github.com/qlik-oss/picasso.js/issues/389)) ([c94c339](https://github.com/qlik-oss/picasso.js/commit/c94c339))
+* **text-metrics:** computed line height ([#388](https://github.com/qlik-oss/picasso.js/issues/388)) ([0256e11](https://github.com/qlik-oss/picasso.js/commit/0256e11))
+
+
+
+
+
 # [0.25.0](https://github.com/qlik-oss/picasso.js/compare/v0.24.0...v0.25.0) (2019-04-26)
 
 
