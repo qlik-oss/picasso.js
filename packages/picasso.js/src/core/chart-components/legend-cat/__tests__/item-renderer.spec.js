@@ -231,12 +231,12 @@ describe('legend-item-renderer', () => {
           x: 1 + 7, // x + maxSymbolSize / 2
           y: 3 + 7 // y + maxSymbolSize / 2
         }, {
-          baseline: 'hanging',
+          baseline: 'text-before-edge',
           fontSize: 11,
           anchor: 'start',
           data: 'd',
           x: 1 + 14 + 8, // x + maxSymbolSize + spacing
-          y: 3 + ((14 - 9) / 2) // y + (maxSymbolSize - labelHeight) / 2
+          y: 3 + ((14 - 9) / 2) + 11 * 0.175// y + (maxSymbolSize - labelHeight) / 2 + fontSize * 0.175
         }]
       });
     });
