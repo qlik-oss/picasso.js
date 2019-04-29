@@ -270,6 +270,140 @@ describe('Chart', () => {
       });
       expect(element.children.map(c => c.attributes['data-key'])).to.eql(['comp2', 'comp1']);
     });
+
+    describe('brushFromShapes', () => {
+      let shapes;
+      let config;
+      let comp;
+      let rendererFactory;
+      beforeEach(() => {
+        shapes = [{
+          key: 'foo',
+          data: {
+            source: {
+              field: 'path/to/data'
+            },
+            value: 0
+          }
+        }];
+
+        config = {
+          components: [
+            {
+              action: 'toggle',
+              key: 'foo',
+              contexts: ['selection']
+            },
+            {
+              action: 'set',
+              key: 'bar',
+              contexts: ['hover']
+            }
+          ]
+        };
+
+        const components = {
+          point: {
+            has: () => true,
+            render: sinon.stub()
+          }
+        };
+        comp = key => components[key];
+        comp.has = () => true;
+
+        const first = componentFactoryFixture().mocks().renderer;
+        rendererFactory = sinon.stub();
+        rendererFactory.onFirstCall().returns(() => first);
+      });
+
+      it('should brush on component, which key matches the key of the input shape', () => {
+        const defComp = [{
+          type: 'point',
+          key: 'foo'
+        }];
+
+        const chartInstance = chart({
+          ...definition,
+          settings: {
+            components: defComp
+          }
+        }, {
+          registries:
+          {
+            component: comp,
+            renderer: rendererFactory
+          }
+        });
+
+        chartInstance.brushFromShapes(shapes, config);
+
+        const brushedComponent = chartInstance.component('foo');
+        const nonBrushedComponent = chartInstance.component('bar');
+
+        expect(brushedComponent).to.containSubset(defComp[0]);
+        expect(nonBrushedComponent).to.be.undefined;
+      });
+
+      it('should brush on all components', () => {
+        const defComp = [{
+          type: 'point',
+          key: 'foo'
+        },
+        {
+          type: 'point',
+          key: 'bar'
+        }];
+
+        const second = componentFactoryFixture().mocks().renderer;
+        rendererFactory.onSecondCall().returns(() => second);
+
+        const chartInstance = chart({
+          ...definition,
+          settings: {
+            components: defComp
+          }
+        }, {
+          registries:
+          {
+            component: comp,
+            renderer: rendererFactory
+          }
+        });
+
+        chartInstance.brushFromShapes(shapes, config);
+
+        const b1 = chartInstance.component('foo');
+        const b2 = chartInstance.component('bar');
+
+        expect(b1).to.containSubset(defComp[0]);
+        expect(b2).to.containSubset(defComp[1]);
+      });
+
+      it('should not brush on any components', () => {
+        const defComp = [];
+
+        const chartInstance = chart({
+          ...definition,
+          settings: {
+            components: defComp
+          }
+        }, {
+          registries:
+          {
+            component: comp,
+            renderer: rendererFactory
+          }
+        });
+
+        chartInstance.brushFromShapes(shapes, config);
+
+        const b1 = chartInstance.component('foo');
+        const b2 = chartInstance.component('bar');
+
+        expect(b1).to.be.undefined;
+        expect(b2).to.be.undefined;
+      });
+    });
   });
 
   describe('orderComponents', () => {
