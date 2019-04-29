@@ -127,10 +127,11 @@ export function createTickNodes(ctx, legendNode) {
     let y = 0;
     let dx = 0;
     let dy = 0;
+    let baseline = 'alphabetical';
 
     if (state.isVertical) {
       y = legendNode.y + (legendNode.height * tick.pos);
-      dy = tick.pos === 1 ? -(tick.textMetrics.height / 5) : tick.textMetrics.height;
+      baseline = tick.pos === 0 ? 'text-before-edge' : 'text-after-edge';
     } else {
       x = legendNode.x + (legendNode.width * tick.pos);
     }
@@ -167,7 +168,8 @@ export function createTickNodes(ctx, legendNode) {
       maxWidth: state.isVertical ? settings.tick.maxLengthPx : Math.min(settings.tick.maxLengthPx, state.legend.length() / 2),
       anchor,
       textBoundsFn: ctx.renderer.textBounds,
-      title: tick.label
+      title: tick.label,
+      baseline
     };
 
     return node;
