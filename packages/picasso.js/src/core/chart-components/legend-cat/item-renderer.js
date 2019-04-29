@@ -11,10 +11,10 @@ function placeTextInRect(rect, label, opts) {
   }
 
   const wiggleWidth = Math.max(0, rect.width - textMetrics.width);
-  label.baseline = 'hanging';
+  label.baseline = 'text-before-edge';
   const wiggleHeight = Math.max(0, rect.height - (textMetrics.height));
   label.x = rect.x + (opts.align * wiggleWidth);
-  label.y = rect.y + (opts.justify * wiggleHeight);
+  label.y = rect.y + (opts.justify * wiggleHeight) + parseInt(label.fontSize, 10) * 0.175; // 0.175 - basline offset
 
   return label;
 }
@@ -216,8 +216,8 @@ export function itemize({
     },
     layout: {
       margin: {
-        vertical: typeof resolved.layout.item.vertical !== 'undefined' ? resolved.layout.item.vertical : 8,
-        horizontal: typeof resolved.layout.item.horizontal !== 'undefined' ? resolved.layout.item.horizontal : 8
+        vertical: typeof resolved.layout.item.vertical !== 'undefined' ? resolved.layout.item.vertical : 4,
+        horizontal: typeof resolved.layout.item.horizontal !== 'undefined' ? resolved.layout.item.horizontal : 4
       },
       mode: resolved.layout.item.mode,
       size: resolved.layout.item.size,
