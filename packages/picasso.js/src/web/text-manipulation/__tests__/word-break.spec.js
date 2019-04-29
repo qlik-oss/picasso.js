@@ -7,7 +7,8 @@ describe('Word Break', () => {
     beforeEach(() => {
       node = {
         type: 'text',
-        text: '123456789'
+        text: '123456789',
+        fontSize: '1px'
       };
     });
 
@@ -187,7 +188,8 @@ describe('Word Break', () => {
     beforeEach(() => {
       node = {
         type: 'text',
-        text: 'aaa sss fff ddd'
+        text: 'aaa sss fff ddd',
+        fontSize: '1px'
       };
     });
 

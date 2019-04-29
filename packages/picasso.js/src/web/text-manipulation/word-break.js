@@ -3,22 +3,21 @@ import stringTokenizer, {
   BREAK_ALLOWED
 } from './string-tokenizer';
 import {
-  DEFAULT_LINE_HEIGHT,
   HYPHENS_CHAR
 } from './text-const';
+import { fontSizeToLineHeight } from './font-size-to-height';
 
-function resolveMaxAllowedLines(node, measuredLineHeight) {
+function resolveMaxAllowedLines(node) {
   const maxHeight = node.maxHeight;
-  let maxLines = Math.max(node.maxLines, 1) || Infinity;
+  const maxLines = Math.max(node.maxLines, 1) || Infinity;
 
   if (isNaN(maxHeight)) {
     return maxLines;
   }
 
-  const lineHeight = node.lineHeight || DEFAULT_LINE_HEIGHT;
-  const calcLineHeight = measuredLineHeight * lineHeight;
+  const computedLineHeight = fontSizeToLineHeight(node);
 
-  return Math.max(1, Math.min(Math.floor(maxHeight / calcLineHeight), maxLines));
+  return Math.max(1, Math.min(Math.floor(maxHeight / computedLineHeight), maxLines));
 }
 
 function initState(node, measureText) {
@@ -26,7 +25,7 @@ function initState(node, measureText) {
     lines: [],
     line: '',
     width: 0,
-    maxLines: resolveMaxAllowedLines(node, measureText(node.text).height),
+    maxLines: resolveMaxAllowedLines(node),
     maxWidth: node.maxWidth,
     hyphens: {
       enabled: node.hyphens === 'auto',

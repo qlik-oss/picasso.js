@@ -2,10 +2,12 @@ import extend from 'extend';
 import { resolveLineBreakAlgorithm } from './line-break-resolver';
 import baselineHeuristic from './baseline-heuristic';
 import {
-  DEFAULT_LINE_HEIGHT,
   ELLIPSIS_CHAR
 } from './text-const';
-import fontSizeToHeight from './font-size-to-height';
+import {
+  fontSizeToHeight,
+  fontSizeToLineHeight
+} from './font-size-to-height';
 import { includesLineBreak } from './string-tokenizer';
 
 const heightCache = {};
@@ -156,10 +158,7 @@ export function textBounds(node, measureFn = measureText) {
     }
     nodeCopy.text = widestLine;
     const bounds = calcTextBounds(nodeCopy, measureFn);
-    const lineHeight = bounds.height * Math.max(isNaN(node.lineHeight) ? DEFAULT_LINE_HEIGHT : node.lineHeight, 0);
-    const diff = lineHeight - bounds.height;
-
-    bounds.height = (bounds.height + diff) * resolvedLineBreaks.lines.length;
+    bounds.height = fontSizeToLineHeight(node) * resolvedLineBreaks.lines.length;
 
     return bounds;
   }
