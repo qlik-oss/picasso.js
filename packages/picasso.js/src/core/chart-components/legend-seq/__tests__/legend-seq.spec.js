@@ -69,18 +69,20 @@ describe('Legend Sequential', () => {
       x: 25,
       y: 15,
       dx: 0,
-      dy: 5,
+      dy: 0,
       text: 0,
-      anchor: 'start'
+      anchor: 'start',
+      baseline: 'text-before-edge'
     });
 
     expect(ticks[1]).to.include({
       x: 25,
       y: 50,
       dx: 0,
-      dy: -1,
+      dy: 0,
       text: 1,
-      anchor: 'start'
+      anchor: 'start',
+      baseline: 'text-after-edge'
     });
 
     expect(title).to.include({
@@ -149,18 +151,20 @@ describe('Legend Sequential', () => {
         x: 25,
         y: 15,
         dx: 0,
-        dy: 5,
+        dy: 0,
         text: 0,
-        anchor: 'start'
+        anchor: 'start',
+        baseline: 'text-before-edge'
       });
 
       expect(ticks[1]).to.include({
         x: 25,
         y: 50,
         dx: 0,
-        dy: -1,
+        dy: 0,
         text: 1,
-        anchor: 'start'
+        anchor: 'start',
+        baseline: 'text-after-edge'
       });
 
       const fillBoundary = componentFixture.findNodes(tickFillBoundarySelector)[0];
@@ -184,18 +188,20 @@ describe('Legend Sequential', () => {
         x: 75,
         y: 15,
         dx: 0,
-        dy: 5,
+        dy: 0,
         text: 0,
-        anchor: 'end'
+        anchor: 'end',
+        baseline: 'text-before-edge'
       });
 
       expect(ticks[1]).to.include({
         x: 75,
         y: 50,
         dx: 0,
-        dy: -1,
+        dy: 0,
         text: 1,
-        anchor: 'end'
+        anchor: 'end',
+        baseline: 'text-after-edge'
       });
 
       const fillBoundary = componentFixture.findNodes(tickFillBoundarySelector)[0];
@@ -259,7 +265,8 @@ describe('Legend Sequential', () => {
         dx: 0,
         dy: -1.25,
         text: 0,
-        anchor: 'start'
+        anchor: 'start',
+        baseline: 'alphabetical'
       });
 
       expect(ticks[1]).to.include({
@@ -268,7 +275,8 @@ describe('Legend Sequential', () => {
         dx: 0,
         dy: -1.25,
         text: 1,
-        anchor: 'end'
+        anchor: 'end',
+        baseline: 'alphabetical'
       });
 
       const fillBoundary = componentFixture.findNodes(tickFillBoundarySelector)[0];
@@ -295,7 +303,8 @@ describe('Legend Sequential', () => {
         dx: 0,
         dy: 4,
         text: 0,
-        anchor: 'start'
+        anchor: 'start',
+        baseline: 'alphabetical'
       });
 
       expect(ticks[1]).to.include({
@@ -304,7 +313,8 @@ describe('Legend Sequential', () => {
         dx: 0,
         dy: 4,
         text: 1,
-        anchor: 'end'
+        anchor: 'end',
+        baseline: 'alphabetical'
       });
 
       const fillBoundary = componentFixture.findNodes(tickFillBoundarySelector)[0];
@@ -333,7 +343,8 @@ describe('Legend Sequential', () => {
         dx: 0,
         dy: -1.25,
         text: 0,
-        anchor: 'start'
+        anchor: 'start',
+        baseline: 'alphabetical'
       });
 
       expect(ticks[1]).to.include({
@@ -342,7 +353,8 @@ describe('Legend Sequential', () => {
         dx: 0,
         dy: -1.25,
         text: 1,
-        anchor: 'end'
+        anchor: 'end',
+        baseline: 'alphabetical'
       });
 
       expect(title).to.include({
