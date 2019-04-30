@@ -747,12 +747,9 @@ function chartFn(definition, context) {
   instance.brushFromShapes = (shapes, config = { components: [] }) => {
     for (let i = 0; i < config.components.length; i++) {
       const iKey = config.components[i].key;
-      visibleComponents.forEach((c) => {
-        const isMatchingKeys = iKey === c.key;
-        if (isMatchingKeys) {
+      visibleComponents.filter(c => iKey === c.key).forEach((c) => {
           const compShapes = shapes.filter(shape => shape.key === c.key);
           c.instance.brushFromShapes(compShapes, config.components[i]);
-        }
       });
     }
   };
