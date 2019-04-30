@@ -748,8 +748,8 @@ function chartFn(definition, context) {
     for (let i = 0; i < config.components.length; i++) {
       const iKey = config.components[i].key;
       visibleComponents.filter(c => iKey === c.key).forEach((c) => {
-          const compShapes = shapes.filter(shape => shape.key === c.key);
-          c.instance.brushFromShapes(compShapes, config.components[i]);
+        let compShapes = shapes.filter(shape => shape.key === c.key);
+        c.instance.brushFromShapes(compShapes, config.components[i]);
       });
     }
   };
