@@ -745,20 +745,13 @@ function chartFn(definition, context) {
    * chartInstance.brushFromShapes(shapes, config);
    */
   instance.brushFromShapes = (shapes, config = { components: [] }) => {
-    const configKeys = config.components.map(conf => conf.key);
-    visibleComponents.forEach((c) => {
-      const configIndex = configKeys.indexOf(c.key);
-      if (configIndex !== -1) {
-        const compShapes = [];
-        for (let i = 0, num = shapes.length; i < num; i++) {
-          const shape = shapes[i];
-          if (shape.key === c.key) {
-            compShapes.push(shape);
-          }
-        }
-        c.instance.brushFromShapes(compShapes, config.components[configIndex]);
-      }
-    });
+    for (let i = 0; i < config.components.length; i++) {
+      const iKey = config.components[i].key;
+      visibleComponents.filter(c => iKey === c.key).forEach((c) => {
+        let compShapes = shapes.filter(shape => shape.key === c.key);
+        c.instance.brushFromShapes(compShapes, config.components[i]);
+      });
+    }
   };
 
   /**
