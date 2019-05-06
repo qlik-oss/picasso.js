@@ -42,38 +42,38 @@ function pic(config = {}, registries = {}) {
      * Component registry
      * @type {registry}
      */
-    component: registry(registries.component),
+    component: registry(registries.component, 'component', logger),
     /**
      * Data registry
      * @type {registry}
      */
-    data: registry(registries.data),
+    data: registry(registries.data, 'data', logger),
     /**
      * Formatter registry
      * @type {registry}
      */
-    formatter: registry(registries.formatter),
+    formatter: registry(registries.formatter, 'formatter', logger),
     /**
      * Interaction registry
      * @type {registry}
      */
-    interaction: registry(registries.interaction),
+    interaction: registry(registries.interaction, 'interaction', logger),
     /**
      * Renderer registry
      * @type {registry}
      */
-    renderer: renderer(registries.renderer),
+    renderer: renderer(registries.renderer, 'renderer', logger),
     /**
      * Scale registry
      * @type {registry}
      */
-    scale: registry(registries.scale),
+    scale: registry(registries.scale, 'scale', logger),
     /**
      * Symbol registry
      * @type {registry}
      * @private
      */
-    symbol: registry(registries.symbol),
+    symbol: registry(registries.symbol, 'symbol', logger),
     // -- misc --
     /**
      * log some some stuff

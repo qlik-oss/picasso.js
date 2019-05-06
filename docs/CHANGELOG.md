@@ -3,6 +3,83 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.25.1](https://github.com/qlik-oss/picasso.js/compare/v0.25.0...v0.25.1) (2019-04-29)
+
+**Note:** Version bump only for package docs
+
+
+
+
+
+# [0.25.0](https://github.com/qlik-oss/picasso.js/compare/v0.24.0...v0.25.0) (2019-04-26)
+
+
+### Bug Fixes
+
+* **legend-cat:** add enabled/disabled state to navigation buttons ([#383](https://github.com/qlik-oss/picasso.js/issues/383)) ([ef0836f](https://github.com/qlik-oss/picasso.js/commit/ef0836f))
+
+
+### Features
+
+* filter extracted data ([#376](https://github.com/qlik-oss/picasso.js/issues/376)) ([c84cb02](https://github.com/qlik-oss/picasso.js/commit/c84cb02))
+
+
+
+
+
+# [0.24.0](https://github.com/qlik-oss/picasso.js/compare/v0.23.2...v0.24.0) (2019-04-17)
+
+
+### Features
+
+* **brush:** configure brush instance ([#371](https://github.com/qlik-oss/picasso.js/issues/371)) ([b73a557](https://github.com/qlik-oss/picasso.js/commit/b73a557))
+
+
+
+
+
+## [0.23.2](https://github.com/qlik-oss/picasso.js/compare/v0.23.1...v0.23.2) (2019-04-08)
+
+**Note:** Version bump only for package docs
+
+
+
+
+
+## [0.23.1](https://github.com/qlik-oss/picasso.js/compare/v0.23.0...v0.23.1) (2019-04-08)
+
+**Note:** Version bump only for package docs
+
+
+
+
+
+# [0.23.0](https://github.com/qlik-oss/picasso.js/compare/v0.22.1...v0.23.0) (2019-04-05)
+
+
+### Bug Fixes
+
+* **bar-label:** add padding and background color to bar labels ([#355](https://github.com/qlik-oss/picasso.js/issues/355)) ([c412ae4](https://github.com/qlik-oss/picasso.js/commit/c412ae4))
+
+
+### Documentation
+
+* update dockLayout references ([#362](https://github.com/qlik-oss/picasso.js/issues/362)) ([68c5251](https://github.com/qlik-oss/picasso.js/commit/68c5251))
+
+
+### Features
+
+* **brush-range:** add support for multiple fill targets ([#356](https://github.com/qlik-oss/picasso.js/issues/356)) ([9ad094f](https://github.com/qlik-oss/picasso.js/commit/9ad094f))
+
+
+### BREAKING CHANGES
+
+* rect is now a reserved keyword for components
+
+
+
+
+
 ## [0.22.1](https://github.com/qlik-oss/picasso.js/compare/v0.22.0...v0.22.1) (2019-04-04)
 
 **Note:** Version bump only for package docs

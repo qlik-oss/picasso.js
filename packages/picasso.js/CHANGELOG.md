@@ -3,6 +3,114 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.25.1](https://github.com/qlik-oss/picasso.js/compare/v0.25.0...v0.25.1) (2019-04-29)
+
+
+### Bug Fixes
+
+* **legend-cat:** improve text and shape alignment ([#387](https://github.com/qlik-oss/picasso.js/issues/387)) ([1064f4f](https://github.com/qlik-oss/picasso.js/commit/1064f4f))
+* **legend-seq:** miss-aligned ticks ([#389](https://github.com/qlik-oss/picasso.js/issues/389)) ([c94c339](https://github.com/qlik-oss/picasso.js/commit/c94c339))
+* **text-metrics:** computed line height ([#388](https://github.com/qlik-oss/picasso.js/issues/388)) ([0256e11](https://github.com/qlik-oss/picasso.js/commit/0256e11))
+
+
+
+
+
+# [0.25.0](https://github.com/qlik-oss/picasso.js/compare/v0.24.0...v0.25.0) (2019-04-26)
+
+
+### Bug Fixes
+
+* **legend-cat:** add enabled/disabled state to navigation buttons ([#383](https://github.com/qlik-oss/picasso.js/issues/383)) ([ef0836f](https://github.com/qlik-oss/picasso.js/commit/ef0836f))
+* **legend-cat:** fix setting initial legend scroll offset ([#379](https://github.com/qlik-oss/picasso.js/issues/379)) ([6f51024](https://github.com/qlik-oss/picasso.js/commit/6f51024))
+* **legend-cat:** title baseline ([#380](https://github.com/qlik-oss/picasso.js/issues/380)) ([8051d6a](https://github.com/qlik-oss/picasso.js/commit/8051d6a))
+* **text-metrics:** condition for using line break when computing bounds ([#385](https://github.com/qlik-oss/picasso.js/issues/385)) ([37433fe](https://github.com/qlik-oss/picasso.js/commit/37433fe))
+* **text-metrics:** height measurement ([#381](https://github.com/qlik-oss/picasso.js/issues/381)) ([a730064](https://github.com/qlik-oss/picasso.js/commit/a730064))
+
+
+### Features
+
+* dock layout for rects not in origin ([#375](https://github.com/qlik-oss/picasso.js/issues/375)) ([ed11dc1](https://github.com/qlik-oss/picasso.js/commit/ed11dc1))
+* filter extracted data ([#376](https://github.com/qlik-oss/picasso.js/issues/376)) ([c84cb02](https://github.com/qlik-oss/picasso.js/commit/c84cb02))
+
+
+### Performance Improvements
+
+* text metrics ([#377](https://github.com/qlik-oss/picasso.js/issues/377)) ([aa42e27](https://github.com/qlik-oss/picasso.js/commit/aa42e27))
+
+
+
+
+
+# [0.24.0](https://github.com/qlik-oss/picasso.js/compare/v0.23.2...v0.24.0) (2019-04-17)
+
+
+### Bug Fixes
+
+* computedInner and computerOuter rect is undefined ([#374](https://github.com/qlik-oss/picasso.js/issues/374)) ([e34683b](https://github.com/qlik-oss/picasso.js/commit/e34683b))
+
+
+### Features
+
+* log warning for unintentional registry use ([#369](https://github.com/qlik-oss/picasso.js/issues/369)) ([3e9621e](https://github.com/qlik-oss/picasso.js/commit/3e9621e))
+* **brush:** configure brush instance ([#371](https://github.com/qlik-oss/picasso.js/issues/371)) ([b73a557](https://github.com/qlik-oss/picasso.js/commit/b73a557))
+
+
+
+
+
+## [0.23.2](https://github.com/qlik-oss/picasso.js/compare/v0.23.1...v0.23.2) (2019-04-08)
+
+
+### Bug Fixes
+
+* **layout:** user logicalSize when determining component visibility ([#368](https://github.com/qlik-oss/picasso.js/issues/368)) ([dfb6a91](https://github.com/qlik-oss/picasso.js/commit/dfb6a91))
+
+
+
+
+
+## [0.23.1](https://github.com/qlik-oss/picasso.js/compare/v0.23.0...v0.23.1) (2019-04-08)
+
+
+### Bug Fixes
+
+* **layout:** maintain display-order ([#366](https://github.com/qlik-oss/picasso.js/issues/366)) ([8c349bf](https://github.com/qlik-oss/picasso.js/commit/8c349bf))
+
+
+
+
+
+# [0.23.0](https://github.com/qlik-oss/picasso.js/compare/v0.22.1...v0.23.0) (2019-04-05)
+
+
+### Bug Fixes
+
+* **bar-label:** add padding and background color to bar labels ([#355](https://github.com/qlik-oss/picasso.js/issues/355)) ([c412ae4](https://github.com/qlik-oss/picasso.js/commit/c412ae4))
+* **scene-graph:** zero as default rx/ry ([#358](https://github.com/qlik-oss/picasso.js/issues/358)) ([411c13a](https://github.com/qlik-oss/picasso.js/commit/411c13a))
+* text component issue ([#359](https://github.com/qlik-oss/picasso.js/issues/359)) ([da21220](https://github.com/qlik-oss/picasso.js/commit/da21220))
+
+
+### Documentation
+
+* update dockLayout references ([#362](https://github.com/qlik-oss/picasso.js/issues/362)) ([68c5251](https://github.com/qlik-oss/picasso.js/commit/68c5251))
+
+
+### Features
+
+* **bar-labels:** rounded background ([#360](https://github.com/qlik-oss/picasso.js/issues/360)) ([56ae3b6](https://github.com/qlik-oss/picasso.js/commit/56ae3b6))
+* **brush-range:** add support for multiple fill targets ([#356](https://github.com/qlik-oss/picasso.js/issues/356)) ([9ad094f](https://github.com/qlik-oss/picasso.js/commit/9ad094f))
+* **renderer:** rounded rectangle ([#357](https://github.com/qlik-oss/picasso.js/issues/357)) ([31a5dfd](https://github.com/qlik-oss/picasso.js/commit/31a5dfd))
+
+
+### BREAKING CHANGES
+
+* rect is now a reserved keyword for components
+
+
+
+
+
 ## [0.22.1](https://github.com/qlik-oss/picasso.js/compare/v0.22.0...v0.22.1) (2019-04-04)
 
 

@@ -220,6 +220,20 @@ data: {
 }
 ```
 
+### Filter
+
+A `filter` function can be used to filter the _extracted_ data items:
+
+```js
+data: {
+  extract: [{
+    source: 'Products',
+    field: 'Product',
+  }],
+  filter: d => d.label !== 'Sneakers' // extract everything except Sneakers
+}
+```
+
 ### Stacking
 
 Extracted items can be stacked using a `stack` configuration:

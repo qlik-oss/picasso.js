@@ -2,37 +2,53 @@ import extend from 'extend';
 import { resolveLineBreakAlgorithm } from './line-break-resolver';
 import baselineHeuristic from './baseline-heuristic';
 import {
-  DEFAULT_LINE_HEIGHT,
   ELLIPSIS_CHAR
 } from './text-const';
+import {
+  fontSizeToHeight,
+  fontSizeToLineHeight
+} from './font-size-to-height';
+import { includesLineBreak } from './string-tokenizer';
 
-let heightMeasureCache = {},
-  widthMeasureCache = {},
-  canvasCache;
+const heightCache = {};
+const widthCache = {};
+const contextCache = {
+  fontSize: undefined,
+  fontFamily: undefined
+};
+let context;
 
-function measureTextWidth({ text, fontSize, fontFamily }) {
-  const match = widthMeasureCache[text + fontSize + fontFamily];
-  if (match !== undefined) {
-    return match;
-  }
-  canvasCache = canvasCache || document.createElement('canvas');
-  const g = canvasCache.getContext('2d');
-  g.font = `${fontSize} ${fontFamily}`;
-  const w = g.measureText(text).width;
-  widthMeasureCache[text + fontSize + fontFamily] = w;
-  return w;
+function setContext() {
+  context = context || document.createElement('canvas').getContext('2d');
 }
 
-function measureTextHeight({ fontSize, fontFamily }) {
-  const match = heightMeasureCache[fontSize + fontFamily];
-
-  if (match !== undefined) {
-    return match;
+function setFont(fontSize, fontFamily) {
+  if (contextCache.fontSize === fontSize && contextCache.fontFamily === fontFamily) {
+    return;
   }
-  const text = 'M';
-  const height = measureTextWidth({ text, fontSize, fontFamily }) * 1.2;
-  heightMeasureCache[fontSize + fontFamily] = height;
-  return height;
+
+  context.font = fontSize + ' ' + fontFamily; // eslint-disable-line
+  contextCache.fontSize = fontSize;
+  contextCache.fontFamily = fontFamily;
+}
+
+function measureTextWidth(text, fontSize, fontFamily) {
+  const key = text + fontSize + fontFamily;
+  if (typeof widthCache[key] !== 'number') {
+    setContext();
+    setFont(fontSize, fontFamily);
+    widthCache[key] = context.measureText(text).width;
+  }
+
+  return widthCache[key];
+}
+
+function measureTextHeight(fontSize) {
+  if (typeof heightCache[fontSize] !== 'number') {
+    heightCache[fontSize] = fontSizeToHeight(fontSize);
+  }
+
+  return heightCache[fontSize];
 }
 
 /**
@@ -49,9 +65,9 @@ function measureTextHeight({ fontSize, fontFamily }) {
  *  fontFamily: 'Arial'
  * }); // returns { width: 20, height: 12 }
  */
-export function measureText({ text, fontSize, fontFamily }) { // eslint-disable-line import/prefer-default-export
-  const w = measureTextWidth({ text, fontSize, fontFamily });
-  const h = measureTextHeight({ fontSize, fontFamily });
+export function measureText({ text, fontSize, fontFamily }) {
+  const w = measureTextWidth(text, fontSize, fontFamily);
+  const h = measureTextHeight(fontSize);
   return { width: w, height: h };
 }
 
@@ -122,9 +138,11 @@ function calcTextBounds(attrs, measureFn = measureText) {
  */
 export function textBounds(node, measureFn = measureText) {
   const lineBreakFn = resolveLineBreakAlgorithm(node);
-  if (lineBreakFn) {
-    const fontSize = node['font-size'] || node.fontSize;
-    const fontFamily = node['font-family'] || node.fontFamily;
+  const fontSize = node['font-size'] || node.fontSize;
+  const fontFamily = node['font-family'] || node.fontFamily;
+  const tm = measureFn({ text: node.text, fontFamily, fontSize });
+
+  if (lineBreakFn && (tm.width > node.maxWidth || includesLineBreak(node.text))) {
     const resolvedLineBreaks = lineBreakFn(node, text => measureFn({ text, fontFamily, fontSize }));
     const nodeCopy = extend({}, node);
     let maxWidth = 0;
@@ -140,10 +158,7 @@ export function textBounds(node, measureFn = measureText) {
     }
     nodeCopy.text = widestLine;
     const bounds = calcTextBounds(nodeCopy, measureFn);
-    const lineHeight = bounds.height * Math.max(isNaN(node.lineHeight) ? DEFAULT_LINE_HEIGHT : node.lineHeight, 0);
-    const diff = lineHeight - bounds.height;
-
-    bounds.height = (bounds.height + diff) * resolvedLineBreaks.lines.length;
+    bounds.height = fontSizeToLineHeight(node) * resolvedLineBreaks.lines.length;
 
     return bounds;
   }

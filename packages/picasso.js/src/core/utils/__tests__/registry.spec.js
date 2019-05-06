@@ -2,8 +2,13 @@ import registry from '../registry';
 
 describe('Registry', () => {
   let reg;
+  let logger;
+
   beforeEach(() => {
-    reg = registry();
+    logger = {
+      warn: sinon.spy()
+    };
+    reg = registry('', 'myRegistry', logger);
   });
 
   describe('add', () => {
@@ -29,6 +34,13 @@ describe('Registry', () => {
       reg.register('a', () => {});
       const registered = reg.register('a', () => {});
       expect(registered).to.equal(false);
+    });
+
+    it('should warn if key does not exist', () => {
+      reg.register('spelledCorrect', () => {});
+      const attempt = reg('spelledWrong');
+      expect(attempt).to.equal(undefined);
+      expect(logger.warn).to.have.been.calledOnce;
     });
   });
 });

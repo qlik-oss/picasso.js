@@ -229,6 +229,20 @@ describe('q-brush', () => {
       expect(selections[0].method).to.equal('selectPivotCells');
     });
 
+    it('should have method="selectPivotCells" when qMode="K"', () => {
+      layout.qHyperCube.qMode = 'K';
+
+      const selections = qBrush(brush, { byCells: true }, layout);
+      expect(selections[0].method).to.equal('selectPivotCells');
+    });
+
+    it('should have method="selectPivotCells" when qMode="P"', () => {
+      layout.qHyperCube.qMode = 'P';
+
+      const selections = qBrush(brush, { byCells: true }, layout);
+      expect(selections[0].method).to.equal('selectPivotCells');
+    });
+
     it('should have valid params when primary is not specified', () => {
       layout.qHyperCube.qNoOfLeftDims = 1;
       layout.qHyperCube.qEffectiveInterColumnSortOrder.push(2);

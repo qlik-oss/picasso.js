@@ -14,7 +14,7 @@ describe('Dock Layout', () => {
   } = {}) {
     const dummy = {};
 
-    dummy.userSettings = {
+    dummy.settings = {
       key,
       show,
       layout: {
@@ -25,7 +25,7 @@ describe('Dock Layout', () => {
       }
     };
 
-    dummy.getPreferredSize = () => ({ width: size, height: size, edgeBleed });
+    dummy.preferredSize = () => ({ width: size, height: size, edgeBleed });
 
     let outerRect = createRect();
     let innerRect = createRect();
@@ -192,9 +192,9 @@ describe('Dock Layout', () => {
 
     it('should throw an expection if needed properties are missing', () => {
       const mainComp = {};
-      const leftComp = { userSettings: { layout: { dock: 'left' } } };
-      const rightComp = { userSettings: { layout: { dock: 'right' } }, resize: {} };
-      const asfdComp = { userSettings: { layout: { dock: 'right' } }, resize: () => {} };
+      const leftComp = { settings: { layout: { dock: 'left' } } };
+      const rightComp = { settings: { layout: { dock: 'right' } }, resize: {} };
+      const asfdComp = { settings: { layout: { dock: 'right' } }, resize: () => {} };
       const fn = () => {
         dl.layout(rect, [mainComp]);
       };
@@ -210,7 +210,7 @@ describe('Dock Layout', () => {
       expect(fn).to.throw('Invalid component settings');
       expect(fn2).to.throw('Component is missing resize function');
       expect(fn3).to.throw('Component is missing resize function');
-      expect(fn4).to.throw('Component is missing getPreferredSize function');
+      expect(fn4).to.throw('Component is missing preferredSize function');
     });
 
     it("should remove components that don't fit", () => {
@@ -328,6 +328,94 @@ describe('Dock Layout', () => {
         y: 0,
         width: 700,
         height: 1000
+      });
+    });
+  });
+
+  describe('Layout', () => {
+    let rect;
+    let dl;
+
+    beforeEach(() => {
+      rect = createRect(500, 500, 1000, 1000);
+      dl = dockLayout();
+    });
+
+    it('should set correct component rects when container rect is not starting in origin', () => {
+      const components = [
+        componentMock({ dock: 'left', size: 50 }),
+        componentMock({ dock: 'right', size: 100 }),
+        componentMock(),
+        componentMock({ dock: 'top', size: 150 }),
+        componentMock({ dock: 'bottom', size: 200 })
+      ];
+
+      dl.layout(rect, components);
+
+      // outer rects
+      expect(components[0].outer, 'Left outerRect had incorrect calculated size').to.deep.include({
+        x: 500,
+        y: 500,
+        width: 50,
+        height: 1000
+      });
+      expect(components[1].outer, 'Right outerRect had incorrect calculated size').to.deep.include({
+        x: 1400,
+        y: 500,
+        width: 100,
+        height: 1000
+      });
+      expect(components[2].outer, 'Main outerRect had incorrect calculated size').to.deep.include({
+        x: 550,
+        y: 650,
+        width: 850,
+        height: 650
+      });
+      expect(components[3].outer, 'Top outerRect had incorrect calculated size').to.deep.include({
+        x: 500,
+        y: 500,
+        width: 1000,
+        height: 150
+      });
+      expect(components[4].outer, 'Bottom outerRect had incorrect calculated size').to.deep.include(
+        {
+          x: 500,
+          y: 1300,
+          width: 1000,
+          height: 200
+        }
+      );
+
+      // main rects
+      expect(components[0].rect, 'Left rect had incorrect calculated size').to.deep.include({
+        x: 500,
+        y: 650,
+        width: 50,
+        height: 650
+      });
+      expect(components[1].rect, 'Right rect had incorrect calculated size').to.deep.include({
+        x: 1400,
+        y: 650,
+        width: 100,
+        height: 650
+      });
+      expect(components[2].rect, 'Main rect had incorrect calculated size').to.deep.include({
+        x: 550,
+        y: 650,
+        width: 850,
+        height: 650
+      });
+      expect(components[3].rect, 'Top rect had incorrect calculated size').to.deep.include({
+        x: 550,
+        y: 500,
+        width: 850,
+        height: 150
+      });
+      expect(components[4].rect, 'Bottom rect had incorrect calculated size').to.deep.include({
+        x: 550,
+        y: 1300,
+        width: 850,
+        height: 200
       });
     });
   });
@@ -635,6 +723,31 @@ describe('Dock Layout', () => {
         height: 1000
       });
     });
+
+    it('should use logicalSize when determining visiblity of components', () => {
+      const container = createRect(0, 0, 1000, 2000);
+      const settings = {
+        layoutModes: {
+          S: { width: 800, height: 100 }
+        },
+        logicalSize: {
+          x: 0,
+          y: 0,
+          width: 799,
+          height: 100
+        }
+      };
+
+      const leftComp = componentMock({ dock: 'left', size: 100, minimumLayoutMode: { width: 'S', height: 'S' } });
+      const mainComp = componentMock();
+
+      dl.settings(settings);
+
+      const { visible, hidden } = dl.layout(container, [mainComp, leftComp]);
+
+      expect(visible).to.include(mainComp);
+      expect(hidden).to.include(leftComp);
+    });
   });
 
   describe('edgeBleed', () => {
@@ -774,6 +887,23 @@ describe('Dock Layout', () => {
       expect(visible[0]).to.equal(leftComp); // Prio 1
       expect(visible[1]).to.equal(rightComp); // Prio -1
       expect(visible[2]).to.equal(mainComp); // Prio 0
+    });
+  });
+
+  describe('displayOrder', () => {
+    it('should maintain order of visible components', () => {
+      const mainComp = componentMock({ key: 'main' });
+      const leftComp = componentMock({ displayOrder: 1, dock: 'left', key: 'y' });
+      const onLeft = componentMock({ displayOrder: 0, dock: '@y', key: 'dockAtY' });
+      const onMain = componentMock({ displayOrder: -1, dock: '@main', key: 'dockAtMain' });
+
+      const rect = createRect(0, 0, 1000, 1000);
+      const dl = dockLayout();
+
+      const { visible, order } = dl.layout(rect, [mainComp, leftComp, onLeft, onMain]);
+
+      expect(visible.map(v => v.settings.key)).to.eql(['main', 'y', 'dockAtY', 'dockAtMain']);
+      expect(order).to.eql([1, 3, 2, 0]);
     });
   });
 });

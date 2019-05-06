@@ -20,7 +20,7 @@ export default function componentFactoryFixture() {
   let themeMock;
   let registriesMock;
   const sandbox = sinon.createSandbox();
-  const container = elementMock();
+  let rendererElement;
 
   const fn = function func() {
     chartMock = {
@@ -66,7 +66,13 @@ export default function componentFactoryFixture() {
         return s;
       },
       render: (nodes) => { rendererOutput = nodes; },
-      appendTo: () => {},
+      appendTo: (el) => {
+        if (!rendererElement) {
+          rendererElement = elementMock();
+        }
+        el.appendChild(rendererElement);
+        return rendererElement;
+      },
       measureText: ({ text }) => ({
         width: text.toString().length,
         height: 5
@@ -77,9 +83,10 @@ export default function componentFactoryFixture() {
         width: text.toString().length,
         height: 5
       }),
-      element: () => container,
+      element: () => rendererElement,
       clear: () => {},
-      destroy: () => {}
+      destroy: () => {},
+      setKey: key => rendererElement.setAttribute('data-key', key)
     };
 
     mediatorMock = {
@@ -115,6 +122,8 @@ export default function componentFactoryFixture() {
       registries: registriesMock
     });
 
+    rendererMock.appendTo(chartMock.element);
+
     return comp;
   };
 
@@ -149,7 +158,7 @@ export default function componentFactoryFixture() {
     return rendererOutput;
   };
 
-  fn.simulateLayout = opts => comp.dockConfig().computePreferredSize(opts.inner, opts.outer);
+  fn.simulateLayout = opts => comp.dockConfig().computePreferredSize(opts);
 
   fn.getRenderOutput = () => rendererOutput;
 

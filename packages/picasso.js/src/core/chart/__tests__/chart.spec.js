@@ -167,6 +167,243 @@ describe('Chart', () => {
       expect(comp1UpdatedCb).to.have.been.calledTwice;
       expect(comp2UpdatedCb).to.have.been.calledTwice;
     });
+
+    it('should maintain displayOrder of components after initial render', () => {
+      const components = {
+        point: {
+          has: () => true,
+          render: sinon.stub()
+        }
+      };
+      const comp = key => components[key];
+      comp.has = () => true;
+      const first = componentFactoryFixture().mocks().renderer;
+      const second = componentFactoryFixture().mocks().renderer;
+      const rendererFactory = sinon.stub();
+      rendererFactory.onFirstCall().returns(() => first);
+      rendererFactory.onSecondCall().returns(() => second);
+
+      chart({
+        ...definition,
+        settings: {
+          components: [{
+            type: 'point',
+            key: 'comp1',
+            layout: {
+              dock: 'left',
+              displayOrder: 2
+            }
+          }, {
+            type: 'point',
+            key: 'comp2',
+            layout: {
+              dock: '@comp1',
+              displayOrder: 1
+            }
+          }]
+        }
+      }, {
+        registries: {
+          component: comp,
+          renderer: rendererFactory
+        }
+      });
+      const order = element.children.map(c => c.attributes['data-key']);
+      expect(order).to.eql(['comp2', 'comp1']);
+    });
+
+    it('should maintain displayOrder of components after update', () => {
+      const components = {
+        point: {
+          has: () => true,
+          render: sinon.stub()
+        }
+      };
+      const comp = key => components[key];
+      comp.has = () => true;
+      const first = componentFactoryFixture().mocks().renderer;
+      const second = componentFactoryFixture().mocks().renderer;
+      const rendererFactory = sinon.stub();
+      rendererFactory.onFirstCall().returns(() => first);
+      rendererFactory.onSecondCall().returns(() => second);
+
+      const chartInstance = chart({
+        ...definition,
+        settings: {
+          components: [{
+            type: 'point',
+            key: 'comp1',
+            layout: {
+              dock: 'left',
+              displayOrder: 1
+            }
+          }, {
+            type: 'point',
+            key: 'comp2',
+            layout: {
+              dock: 'left',
+              displayOrder: 2
+            }
+          }]
+        }
+      }, {
+        registries: {
+          component: comp,
+          renderer: rendererFactory
+        }
+      });
+      expect(element.children.map(c => c.attributes['data-key'])).to.eql(['comp1', 'comp2']);
+      chartInstance.update({
+        settings: {
+          components: [{
+            key: 'comp1',
+            layout: {
+              displayOrder: 2
+            }
+          }, {
+            key: 'comp2',
+            layout: {
+              displayOrder: 1
+            }
+          }]
+        }
+      });
+      expect(element.children.map(c => c.attributes['data-key'])).to.eql(['comp2', 'comp1']);
+    });
+
+    describe('brushFromShapes', () => {
+      let shapes;
+      let config;
+      let comp;
+      let rendererFactory;
+      beforeEach(() => {
+        shapes = [{
+          key: 'foo',
+          data: {
+            source: {
+              field: 'path/to/data'
+            },
+            value: 0
+          }
+        }];
+
+        config = {
+          components: [
+            {
+              action: 'toggle',
+              key: 'foo',
+              contexts: ['selection']
+            },
+            {
+              action: 'set',
+              key: 'bar',
+              contexts: ['hover']
+            }
+          ]
+        };
+
+        const components = {
+          point: {
+            has: () => true,
+            render: sinon.stub()
+          }
+        };
+        comp = key => components[key];
+        comp.has = () => true;
+
+        const first = componentFactoryFixture().mocks().renderer;
+        rendererFactory = sinon.stub();
+        rendererFactory.onFirstCall().returns(() => first);
+      });
+
+      it('should brush on component, which key matches the key of the input shape', () => {
+        const defComp = [{
+          type: 'point',
+          key: 'foo'
+        }];
+
+        const chartInstance = chart({
+          ...definition,
+          settings: {
+            components: defComp
+          }
+        }, {
+          registries:
+          {
+            component: comp,
+            renderer: rendererFactory
+          }
+        });
+
+        chartInstance.brushFromShapes(shapes, config);
+
+        const brushedComponent = chartInstance.component('foo');
+        const nonBrushedComponent = chartInstance.component('bar');
+
+        expect(brushedComponent).to.containSubset(defComp[0]);
+        expect(nonBrushedComponent).to.be.undefined;
+      });
+
+      it('should brush on all components', () => {
+        const defComp = [{
+          type: 'point',
+          key: 'foo'
+        },
+        {
+          type: 'point',
+          key: 'bar'
+        }];
+
+        const second = componentFactoryFixture().mocks().renderer;
+        rendererFactory.onSecondCall().returns(() => second);
+
+        const chartInstance = chart({
+          ...definition,
+          settings: {
+            components: defComp
+          }
+        }, {
+          registries:
+          {
+            component: comp,
+            renderer: rendererFactory
+          }
+        });
+
+        chartInstance.brushFromShapes(shapes, config);
+
+        const b1 = chartInstance.component('foo');
+        const b2 = chartInstance.component('bar');
+
+        expect(b1).to.containSubset(defComp[0]);
+        expect(b2).to.containSubset(defComp[1]);
+      });
+
+      it('should not brush on any components', () => {
+        const defComp = [];
+
+        const chartInstance = chart({
+          ...definition,
+          settings: {
+            components: defComp
+          }
+        }, {
+          registries:
+          {
+            component: comp,
+            renderer: rendererFactory
+          }
+        });
+
+        chartInstance.brushFromShapes(shapes, config);
+
+        const b1 = chartInstance.component('foo');
+        const b2 = chartInstance.component('bar');
+
+        expect(b1).to.be.undefined;
+        expect(b2).to.be.undefined;
+      });
+    });
   });
 
   describe('orderComponents', () => {

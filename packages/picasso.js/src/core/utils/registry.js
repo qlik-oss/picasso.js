@@ -1,4 +1,4 @@
-export default function registryFactory(parentRegistry) {
+export default function registryFactory(parentRegistry, registerName = 'unspecified', logger) {
   let defaultValue;
   const reg = {};
   const parent = parentRegistry || {
@@ -72,7 +72,11 @@ export default function registryFactory(parentRegistry) {
     if (typeof value !== 'undefined') {
       return add(key, value);
     }
-    return get(key || defaultValue);
+    const ret = get(key);
+    if (logger && typeof ret === 'undefined') {
+      logger.warn(`${key} does not exist in ${registerName} registry`);
+    }
+    return ret || get(defaultValue);
   }
 
   registry.add = add;

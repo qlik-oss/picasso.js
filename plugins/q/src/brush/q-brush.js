@@ -196,7 +196,7 @@ export default function qBrush(brush, opts = {}, layout) {
 
       if (b.type === 'value' && info.dimensionIdx > -1) {
         if (byCells) {
-          if (layout && layout.qHyperCube && (layout.qHyperCube.qMode === 'P' || layout.qHyperCube.qMode === 'T')) {
+          if (layout && layout.qHyperCube && (layout.qHyperCube.qMode === 'P' || layout.qHyperCube.qMode === 'T' || layout.qHyperCube.qMode === 'K')) {
             const hyperCube = layout.qHyperCube;
             const noOfLeftDims = hyperCube.qNoOfLeftDims;
             const dimInterColSortIdx = hyperCube.qEffectiveInterColumnSortOrder.indexOf(info.dimensionIdx);

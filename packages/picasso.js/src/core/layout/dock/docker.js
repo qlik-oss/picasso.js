@@ -6,7 +6,8 @@ import createRect from './create-rect';
 
 function cacheSize(c, reducedRect, layoutRect) {
   if (typeof c.cachedSize === 'undefined') {
-    let size = c.comp.getPreferredSize(reducedRect, layoutRect);
+    const dock = c.config.dock();
+    let size = c.comp.preferredSize({ inner: reducedRect, outer: layoutRect, dock });
     // backwards compatibility
     if (!isNaN(size)) {
       size = { width: size, height: size };
@@ -15,7 +16,6 @@ function cacheSize(c, reducedRect, layoutRect) {
       size.height = size.size;
     }
 
-    const dock = c.config.dock();
     let relevantSize;
     if (dock === 'top' || dock === 'bottom') {
       relevantSize = size.height;
@@ -220,13 +220,14 @@ function boundingBox(rects) {
 }
 
 function positionComponents({
-  visible, layoutRect, reducedRect, containerRect
+  visible, layoutRect, reducedRect, containerRect, translation
 }) {
   const vRect = createRect(reducedRect.x, reducedRect.y, reducedRect.width, reducedRect.height);
   const hRect = createRect(reducedRect.x, reducedRect.y, reducedRect.width, reducedRect.height);
 
   const referencedComponents = {};
   const referenceArray = visible.slice();
+  const elementOrder = referenceArray.slice().sort((a, b) => a.config.displayOrder() - b.config.displayOrder());
   visible
     .sort((a, b) => {
       if (b.referencedDocks.length > 0) {
@@ -318,10 +319,15 @@ function positionComponents({
       rect.computed = computeRect(rect);
       outerRect.edgeBleed = c.edgeBleed;
       outerRect.computed = computeRect(outerRect);
+      rect.x += translation.x;
+      rect.y += translation.y;
+      outerRect.x += translation.x;
+      outerRect.y += translation.y;
       c.comp.resize(rect, outerRect);
       c.cachedSize = undefined;
       c.edgeBleed = undefined;
     });
+  return visible.map(c => elementOrder.indexOf(c));
 }
 
 function checkShowSettings(strategySettings, dockSettings, logicalContainerRect) {
@@ -342,14 +348,14 @@ function checkShowSettings(strategySettings, dockSettings, logicalContainerRect)
 }
 
 function validateComponent(component) {
-  if (!component.settings && !component.userSettings) {
+  if (!component.settings && !component.settings) {
     throw new Error('Invalid component settings');
   }
   if (!component.resize || typeof component.resize !== 'function') {
     throw new Error('Component is missing resize function');
   }
-  if (!component.dockConfig && !component.getPreferredSize) {
-    throw new Error('Component is missing getPreferredSize function');
+  if (!component.dockConfig && !component.preferredSize) {
+    throw new Error('Component is missing preferredSize function');
   }
 }
 
@@ -365,9 +371,9 @@ function filterComponents(components, settings, rect) {
     if (comp.instance) {
       config = comp.instance.dockConfig();
     } else {
-      config = dockConfig(comp.userSettings.layout);
+      config = dockConfig(comp.settings.layout);
     }
-    const key = comp.userSettings.key;
+    const key = comp.settings.key;
     const d = config.dock();
     const referencedDocks = /@/.test(d) ? d.split(',').map(s => s.replace(/^\s*@/, '')) : [];
     if (checkShowSettings(settings, config, rect)) {
@@ -418,7 +424,7 @@ function dockLayout(initialSettings) {
 
     const { logicalContainerRect, containerRect } = resolveContainerRects(rect, settings);
 
-    const [visible, hidden] = filterComponents(components, settings, containerRect);
+    const [visible, hidden] = filterComponents(components, settings, logicalContainerRect);
 
     const reducedRect = reduceLayoutRect({
       layoutRect: logicalContainerRect,
@@ -426,11 +432,15 @@ function dockLayout(initialSettings) {
       hidden,
       settings
     });
-    positionComponents({
+
+    const translation = { x: rect.x, y: rect.y };
+
+    const order = positionComponents({
       visible,
       layoutRect: logicalContainerRect,
       reducedRect,
-      containerRect
+      containerRect,
+      translation
     });
     hidden.forEach((c) => {
       c.comp.visible = false;
@@ -438,7 +448,7 @@ function dockLayout(initialSettings) {
       const r = createRect();
       c.comp.resize(r, r);
     });
-    return { visible: visible.map(v => v.comp), hidden: hidden.map(h => h.comp) };
+    return { visible: visible.map(v => v.comp), hidden: hidden.map(h => h.comp), order };
   };
 
   docker.settings = function settingsFn(s) {

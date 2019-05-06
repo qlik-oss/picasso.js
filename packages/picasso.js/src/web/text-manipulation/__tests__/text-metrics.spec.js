@@ -4,7 +4,6 @@ describe('text-metrics', () => {
   describe('measureText', () => {
     let sandbox,
       canvasContextMock,
-      canvasMock,
       cacheId = 0,
       fontWasUnset = false;
 
@@ -14,7 +13,7 @@ describe('text-metrics', () => {
       fontFamily: 'Arial'
     };
 
-    beforeEach(() => {
+    before(() => {
       sandbox = sinon.createSandbox();
 
       canvasContextMock = {
@@ -25,19 +24,15 @@ describe('text-metrics', () => {
         })
       };
 
-      canvasMock = {
-        getContext: sandbox.spy(() => canvasContextMock)
-      };
-
       global.document = {
-        createElement: sandbox.spy(() => canvasMock)
+        createElement: sandbox.spy(() => ({ getContext: () => canvasContextMock }))
       };
     });
 
     afterEach(() => {
       fontWasUnset = false;
       canvasContextMock.font = '';
-      sandbox.restore();
+      sandbox.resetHistory();
     });
 
     after(() => {
@@ -49,7 +44,7 @@ describe('text-metrics', () => {
 
       const result = measureText(argument);
 
-      expect(result).to.deep.equal({ width: 150, height: 180 });
+      expect(result).to.deep.equal({ width: 150, height: 16 });
     });
 
     it('should set the correct font before firing measureText', () => {
@@ -61,14 +56,13 @@ describe('text-metrics', () => {
       expect(fontWasUnset).to.equal(false);
     });
 
-    it('should fire measureText twice with correct arguments', () => {
+    it('should fire measureText once with correct arguments', () => {
       argument.fontSize = ++cacheId;
 
       measureText(argument);
 
-      expect(canvasContextMock.measureText.calledTwice).to.equal(true);
-      expect(canvasContextMock.measureText.calledWith('Test')).to.equal(true);
-      expect(canvasContextMock.measureText.calledWith('M')).to.equal(true);
+      expect(canvasContextMock.measureText).to.have.been.calledOnce;
+      expect(canvasContextMock.measureText).to.have.been.calledWith('Test');
     });
 
     it('should reuse the previously created canvas element', () => {
@@ -112,37 +106,11 @@ describe('text-metrics', () => {
 
       expect(canvasContextMock.measureText.withArgs('Test').calledTwice).to.equal(true);
     });
-
-    it('should reuse past height calculations if arguments match previous use case', () => {
-      argument.fontSize = ++cacheId;
-
-      measureText(argument);
-
-      expect(canvasContextMock.measureText.withArgs('M').calledOnce).to.equal(true);
-
-      measureText(argument);
-
-      expect(canvasContextMock.measureText.withArgs('M').calledOnce).to.equal(true);
-    });
-
-    it('should not reuse past height calculations if arguments does not match previous use case', () => {
-      argument.fontSize = ++cacheId;
-
-      measureText(argument);
-
-      expect(canvasContextMock.measureText.withArgs('M').calledOnce).to.equal(true);
-
-      argument.fontSize = ++cacheId;
-
-      measureText(argument);
-
-      expect(canvasContextMock.measureText.withArgs('M').calledTwice).to.equal(true);
-    });
   });
 
   describe('textBounds', () => {
     const textMeasureMock = ({ text, fontSize, fontFamily }) => ({
-      width: text.length * (fontSize || 1),
+      width: text.length * (parseFloat(fontSize) || 1),
       height: fontFamily || 1
     });
     let node;
@@ -230,16 +198,22 @@ describe('text-metrics', () => {
       });
 
       describe('wordBreak', () => {
+        beforeEach(() => {
+          node.fontSize = '1px';
+        });
+
         describe('break-all', () => {
-          it('no other affecting properties', () => {
+          it('should not compute bounds based on line break given no maxWidth is set', () => {
             node.wordBreak = 'break-all';
+            node.maxLines = 2;
+            node.lineHeight = 10;
             bounds = textBounds(node, textMeasureMock);
             expect(bounds).to.deep.equal({
-              x: 1, y: 1.25, width: 4, height: 1.2
+              x: 1, y: 1.25, width: 4, height: 1
             });
           });
 
-          it('with maxWidth, lineHeight and maxLines', () => {
+          it('should compute bounds based on line break given all conditions are meet', () => {
             node.wordBreak = 'break-all';
             node.maxWidth = 1;
             node.lineHeight = 10;
@@ -247,6 +221,29 @@ describe('text-metrics', () => {
             bounds = textBounds(node, textMeasureMock);
             expect(bounds).to.deep.equal({
               x: 1, y: 1.25, width: 1, height: 20
+            });
+          });
+
+          it('should require text width to be more than node maxWidth', () => {
+            node.wordBreak = 'break-all';
+            node.maxWidth = node.text.length + 1;
+            node.lineHeight = 10;
+            node.maxLines = 2;
+            bounds = textBounds(node, textMeasureMock);
+            expect(bounds).to.deep.equal({
+              x: 1, y: 1.25, width: 4, height: 1
+            });
+          });
+
+          it('should compute bounds based on line break given node text contains a line break character', () => {
+            node.text = 'te\nst';
+            node.wordBreak = 'break-all';
+            node.maxWidth = Infinity;
+            node.lineHeight = 10;
+            node.maxLines = 2;
+            bounds = textBounds(node, textMeasureMock);
+            expect(bounds).to.deep.equal({
+              x: 1, y: 1.25, width: 2, height: 20
             });
           });
         });
