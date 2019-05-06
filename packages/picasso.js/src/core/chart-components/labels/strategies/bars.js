@@ -38,6 +38,14 @@ export function isTextInRect(rect, textMetrics, opts) {
     : !(rect.width < textMetrics.width || rect.height < textMetrics.height);
 }
 
+export function placeSegmentInSegment(majorSegmentPosition, majorSegmentSize, minorSegmentSize, align) {
+  const majorSegmentCenter = majorSegmentPosition + majorSegmentSize * 0.5;
+  const offset = (align - 0.5) * (majorSegmentSize - minorSegmentSize);
+  const minorSegmentCenter = majorSegmentCenter + offset;
+  const minorSegmentPosition = minorSegmentCenter - minorSegmentSize * 0.5;
+  return minorSegmentPosition;
+}
+
 export function placeTextInRect(rect, text, opts) {
   const label = {
     type: 'text',
@@ -49,7 +57,7 @@ export function placeTextInRect(rect, text, opts) {
     dy: 0,
     fill: opts.fill,
     anchor: opts.rotate ? 'end' : 'start',
-    baseline: 'alphabetical',
+    baseline: 'central',
     fontSize: `${opts.fontSize}px`,
     fontFamily: opts.fontFamily
   };
@@ -58,30 +66,14 @@ export function placeTextInRect(rect, text, opts) {
   if (!opts.overflow && !isTextInRect(rect, textMetrics, opts)) {
     return false;
   }
-
+  const baseLineOffset = textMetrics.height * 0.5;
   if (opts.rotate) {
-    if (opts.overflow && rect.width < textMetrics.height) {
-      label.x = rect.x + (rect.width / 2); // Use center of the rect
-      label.dx = opts.fontSize * 0.35; // Emulate the baseline heuristic for the 'central' attribute
-    } else {
-      const wiggleHor = Math.max(0, rect.width - (textMetrics.height / (LINE_HEIGHT * 0.8)));
-      label.x = rect.x + (textMetrics.height / LINE_HEIGHT) + (opts.align * wiggleHor);
-    }
-
-    const wiggleVert = Math.max(0, rect.height - textMetrics.width);
-    label.y = rect.y + (opts.justify * wiggleVert);
+    label.x = placeSegmentInSegment(rect.x, rect.width, textMetrics.height, opts.align) + baseLineOffset;
+    label.y = placeSegmentInSegment(rect.y, rect.height, textMetrics.width, opts.justify);
     label.transform = `rotate(-90, ${label.x + label.dx}, ${label.y + label.dy})`;
   } else {
-    if (opts.overflow && rect.height < textMetrics.height) {
-      label.y = rect.y + (rect.height / 2); // Use center of the rect
-      label.dy = opts.fontSize * 0.35; // Emulate the baseline heuristic for the 'central' attribute
-    } else {
-      const wiggleHeight = Math.max(0, rect.height - (textMetrics.height / (LINE_HEIGHT * 0.8))); // 0.8 - MAGIC NUMBER - need to figure out why this works the best
-      label.y = rect.y + (textMetrics.height / LINE_HEIGHT) + (opts.justify * wiggleHeight);
-    }
-
-    const wiggleWidth = Math.max(0, rect.width - textMetrics.width);
-    label.x = rect.x + (opts.align * wiggleWidth);
+    label.x = placeSegmentInSegment(rect.x, rect.width, textMetrics.width, opts.align);
+    label.y = placeSegmentInSegment(rect.y, rect.height, textMetrics.height, opts.justify) + baseLineOffset;
   }
 
   return label;
@@ -204,7 +196,7 @@ function approxTextBounds(label, textMetrics, rotated, rect, padding = {}) {
   const y0 = label.y + label.dy;
   const height = rotated ? Math.min(textMetrics.width, rect.height) : Math.min(textMetrics.height, rect.width);
   const width = rotated ? Math.min(textMetrics.height, rect.height) : Math.min(textMetrics.width, rect.width);
-  const offset = 0.8 * textMetrics.height; // the distance between text-before-edge and alphabetical
+  const offset = textMetrics.height * 0.5;
   const PADDING_OFFSET = 1e-9; // Needed to support a case when multiple bars are on the same location
   const x = rotated ? x0 - offset : x0;
   const y = rotated ? y0 : y0 - offset;
