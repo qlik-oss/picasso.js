@@ -112,6 +112,32 @@ describe('box component', () => {
               end: { value: 0.6 },
               max: { value: 0.8 }
             },
+            fill: '#fff',
+            height: 40,
+            minHeightPx: 1,
+            minWidthPx: 1,
+            show: true,
+            stroke: '#f00',
+            strokeLinejoin: 'round',
+            strokeWidth: 1,
+            type: 'rect',
+            width: 50,
+            x: 50,
+            y: 80,
+            collider: {
+              type: null
+            }
+          },
+          {
+            data: {
+              value: 0.5,
+              // self: { value: 0.5 },
+              min: { value: 0.2 },
+              start: { value: 0.4 },
+              med: { value: 0.5 },
+              end: { value: 0.6 },
+              max: { value: 0.8 }
+            },
             show: true,
             stroke: '#ff0',
             strokeWidth: 1,
@@ -222,32 +248,6 @@ describe('box component', () => {
             x2: 100,
             y1: 160,
             y2: 160,
-            collider: {
-              type: null
-            }
-          },
-          {
-            data: {
-              value: 0.5,
-              // self: { value: 0.5 },
-              min: { value: 0.2 },
-              start: { value: 0.4 },
-              med: { value: 0.5 },
-              end: { value: 0.6 },
-              max: { value: 0.8 }
-            },
-            fill: '#fff',
-            height: 40,
-            minHeightPx: 1,
-            minWidthPx: 1,
-            show: true,
-            stroke: '#f00',
-            strokeLinejoin: 'round',
-            strokeWidth: 1,
-            type: 'rect',
-            width: 50,
-            x: 50,
-            y: 80,
             collider: {
               type: null
             }
@@ -485,6 +485,30 @@ describe('box component', () => {
               min: { value: 0.2 },
               max: { value: 0.8 }
             },
+            fill: '#fff',
+            height: 40,
+            minHeightPx: 1,
+            minWidthPx: 1,
+            show: true,
+            stroke: '#f00',
+            strokeLinejoin: 'miter',
+            strokeWidth: 1,
+            type: 'rect',
+            width: 50,
+            x: 50,
+            y: 80,
+            collider: {
+              type: null
+            }
+          },
+          {
+            data: {
+              self: { value: 0.5 },
+              start: { value: 0.4 },
+              end: { value: 0.6 },
+              min: { value: 0.2 },
+              max: { value: 0.8 }
+            },
             show: true,
             stroke: '#000',
             strokeWidth: 1,
@@ -513,30 +537,6 @@ describe('box component', () => {
             x2: 75,
             y1: 120,
             y2: 160,
-            collider: {
-              type: null
-            }
-          },
-          {
-            data: {
-              self: { value: 0.5 },
-              start: { value: 0.4 },
-              end: { value: 0.6 },
-              min: { value: 0.2 },
-              max: { value: 0.8 }
-            },
-            fill: '#fff',
-            height: 40,
-            minHeightPx: 1,
-            minWidthPx: 1,
-            show: true,
-            stroke: '#f00',
-            strokeLinejoin: 'miter',
-            strokeWidth: 1,
-            type: 'rect',
-            width: 50,
-            x: 50,
-            y: 80,
             collider: {
               type: null
             }
