@@ -2,6 +2,27 @@ import buildShapes from './box-shapes';
 import complexResolver from './box-resolver';
 
 const DEFAULT_DATA_SETTINGS = {
+  oob: {
+    show: true,
+    type: 'n-polygon',
+    fill: '#999',
+    stroke: '#000',
+    strokeWidth: 0,
+    size: 10,
+    sides: 3,
+    startAngle: -90
+  },
+  box: {
+    show: true,
+    fill: '#fff',
+    stroke: '#000',
+    strokeWidth: 1,
+    strokeLinejoin: 'miter',
+    width: 1,
+    maxWidthPx: undefined,
+    minWidthPx: 1,
+    minHeightPx: 1
+  },
   line: {
     show: true,
     stroke: '#000',
@@ -19,27 +40,6 @@ const DEFAULT_DATA_SETTINGS = {
     fill: '',
     type: 'line',
     width: 1
-  },
-  box: {
-    show: true,
-    fill: '#fff',
-    stroke: '#000',
-    strokeWidth: 1,
-    strokeLinejoin: 'miter',
-    width: 1,
-    maxWidthPx: undefined,
-    minWidthPx: 1,
-    minHeightPx: 1
-  },
-  oob: {
-    show: true,
-    type: 'n-polygon',
-    fill: '#999',
-    stroke: '#000',
-    strokeWidth: 0,
-    size: 10,
-    sides: 3,
-    startAngle: -90
   }
 };
 
