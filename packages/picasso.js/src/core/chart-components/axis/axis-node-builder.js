@@ -6,6 +6,7 @@ import {
 } from '../../math/narrow-phase-collision';
 import { getClampedValue } from './axis-label-size';
 import getHorizontalContinuousWidth from './get-continuous-label-rect';
+import { expandRect } from '../../geometry/util';
 
 function tickSpacing(settings) {
   let spacing = 0;
@@ -75,8 +76,8 @@ function layeredLabelBuilder(ticks, buildOpts, settings, resolveTickOpts) {
 
 export function filterOverlappingLabels(labels, ticks, buildOpts) {
   let isOverlapping = (i, k) => {
-    const rect1 = labels[i].boundingRect;
-    const rect2 = labels[k].boundingRect;
+    const rect1 = expandRect(1, labels[i].boundingRect);
+    const rect2 = expandRect(1, labels[k].boundingRect);
 
     return testRectRect(rect1, rect2);
   };
@@ -111,13 +112,9 @@ export function filterOverlappingLabels(labels, ticks, buildOpts) {
 }
 
 function discreteCalcMaxTextRect({
-  measureText, settings, innerRect, scale, tilted, layered, tick
+  textMetrics, settings, innerRect, scale, tilted, layered, tick
 }) {
-  const h = measureText({
-    text: 'M',
-    fontSize: settings.labels.fontSize,
-    fontFamily: settings.labels.fontFamily
-  }).height;
+  const h = textMetrics.height;
 
   const bandwidth = tickBandwidth(scale, tick);
 
@@ -139,13 +136,9 @@ function discreteCalcMaxTextRect({
 }
 
 function continuousCalcMaxTextRect({
-  measureText, settings, innerRect, outerRect, tilted, layered, tick, index, major
+  textMetrics, settings, innerRect, outerRect, tilted, layered, tick, index, major
 }) {
-  const h = measureText({
-    text: 'M',
-    fontSize: settings.labels.fontSize,
-    fontFamily: settings.labels.fontFamily
-  }).height;
+  const h = textMetrics.height;
 
   const textRect = { width: 0, height: h };
   if (settings.align === 'left' || settings.align === 'right') {
@@ -230,7 +223,7 @@ export default function nodeBuilder(isDiscrete) {
       const resolveTickOpts = (tick, index) => {
         buildOpts.textRect = calcActualTextRect({ tick, measureText, style: buildOpts.style });
         const maxSize = resolveLabelRect({
-          measureText, settings, innerRect, outerRect, scale, tilted, layered, tick, major, index
+          textMetrics: buildOpts.textRect, settings, innerRect, outerRect, scale, tilted, layered, tick, major, index
         });
         buildOpts.maxWidth = maxSize.width;
         buildOpts.maxHeight = maxSize.height;
