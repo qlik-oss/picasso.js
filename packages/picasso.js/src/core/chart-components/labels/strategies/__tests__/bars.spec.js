@@ -1,6 +1,7 @@
 import {
   getBarRect,
   isTextInRect,
+  placeSegmentInSegment,
   placeTextInRect,
   // precalculate,
   placeInBars,
@@ -99,6 +100,38 @@ describe('labeling - bars', () => {
     });
   });
 
+  describe('placeSegmentInSegment', () => {
+    it('should return correct position when align = 0 and minorSegmentSize < majorSegmentSize', () => {
+      expect(placeSegmentInSegment(0, 100, 20, 0)).to.equal(0);
+      expect(placeSegmentInSegment(8, 100, 20, 0)).to.equal(8);
+    });
+
+    it('should return correct position when align = 0 and minorSegmentSize > majorSegmentSize', () => {
+      expect(placeSegmentInSegment(0, 100, 200, 0)).to.equal(0);
+      expect(placeSegmentInSegment(8, 100, 200, 0)).to.equal(8);
+    });
+
+    it('should return correct position when align = 1 and minorSegmentSize < majorSegmentSize', () => {
+      expect(placeSegmentInSegment(0, 100, 20, 1)).to.equal(80);
+      expect(placeSegmentInSegment(8, 100, 20, 1)).to.equal(88);
+    });
+
+    it('should return correct position when align = 1 and minorSegmentSize > majorSegmentSize', () => {
+      expect(placeSegmentInSegment(0, 100, 150, 1)).to.equal(-50);
+      expect(placeSegmentInSegment(8, 100, 150, 1)).to.equal(-42);
+    });
+
+    it('should return correct position when align = 0.5 and minorSegmentSize < majorSegmentSize', () => {
+      expect(placeSegmentInSegment(0, 100, 20, 0.5)).to.equal(40);
+      expect(placeSegmentInSegment(8, 100, 20, 0.5)).to.equal(48);
+    });
+
+    it('should return correct position when align = 0.5 and minorSegmentSize > majorSegmentSize', () => {
+      expect(placeSegmentInSegment(0, 100, 150, 0.5)).to.equal(-25);
+      expect(placeSegmentInSegment(8, 100, 150, 0.5)).to.equal(-17);
+    });
+  });
+
   describe('place text in rect', () => {
     it('should wiggle a bit', () => {
       const label = placeTextInRect(
@@ -119,7 +152,7 @@ describe('labeling - bars', () => {
         'a',
         { justify: 0.4, fontSize: 12, textMetrics: { height: 24, width: 40 } }
       );
-      expect(label.y).to.equal(118);
+      expect(label.y).to.equal(112.4);
     });
 
     it('should rotate the label', () => {
@@ -132,7 +165,7 @@ describe('labeling - bars', () => {
           rotate: true, align: 0, justify: 0.0, fontSize: 12, textMetrics: { height: 24, width: 40 }
         }
       );
-      expect(label.transform).to.equal('rotate(-90, 21, 30)');
+      expect(label.transform).to.equal('rotate(-90, 17, 30)');
     });
   });
 
@@ -353,7 +386,7 @@ describe('labeling - bars', () => {
         rx: 2,
         ry: 2,
         x: -2.000000001,
-        y: -3.600000001,
+        y: -3.000000001,
         width: 4.999999999,
         height: 5.999999999,
         fill: 'gold'
@@ -454,12 +487,12 @@ describe('labeling - bars', () => {
         text: 'etikett',
         maxWidth: 32,
         x: 16.4,
-        y: 47.5,
+        y: 45,
         dx: 0,
         dy: 0,
         fill: 'red',
         anchor: 'start',
-        baseline: 'alphabetical',
+        baseline: 'central',
         fontSize: '16px',
         fontFamily: 'simpsons'
       });
