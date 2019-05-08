@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.25.2](https://github.com/qlik-oss/picasso.js/compare/v0.25.1...v0.25.2) (2019-05-08)
+
+**Note:** Version bump only for package picasso-plugin-q
+
+
+
+
+
 ## [0.25.1](https://github.com/qlik-oss/picasso.js/compare/v0.25.0...v0.25.1) (2019-04-29)
 
 **Note:** Version bump only for package picasso-plugin-q
