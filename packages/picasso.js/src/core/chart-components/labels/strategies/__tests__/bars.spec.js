@@ -3,7 +3,7 @@ import {
   isTextInRect,
   placeSegmentInSegment,
   placeTextInRect,
-  // precalculate,
+  precalculate,
   placeInBars,
   findBestPlacement,
   bars
@@ -170,12 +170,7 @@ describe('labeling - bars', () => {
   });
 
   describe('findBestPlacement', () => {
-    const placements = [
-      { position: 'inside' },
-      { position: 'outside' },
-      { position: 'biggest' },
-      { position: 'meh' }
-    ];
+    let placements;
     const rects = {
       inside: {
         x: 10, y: 20, width: 1, height: 2
@@ -192,6 +187,12 @@ describe('labeling - bars', () => {
     };
     const barRect = opts => rects[opts.position];
     beforeEach(() => {
+      placements = [
+        { position: 'inside' },
+        { position: 'outside' },
+        { position: 'biggest' },
+        { position: 'meh' }
+      ];
       // barRect = sinon.stub();
     });
 
@@ -211,6 +212,7 @@ describe('labeling - bars', () => {
     });
 
     it('should find first placement that fits in a vertical bar, horizontally', () => {
+      placements.forEach(p => p.fitsHorizontally = true);
       let p = findBestPlacement({
         direction: '',
         fitsHorizontally: true,
@@ -293,7 +295,7 @@ describe('labeling - bars', () => {
     });
 
     it('should skip label when placement is not possible', () => {
-      findPlacement.returns({});
+      findPlacement.returns({ placement: {} });
       let labels = placeInBars({
         chart,
         targetNodes: [{
@@ -608,6 +610,62 @@ describe('labeling - bars', () => {
       });
 
       expect(labels).to.be.empty;
+    });
+  });
+
+  describe('precalculate', () => {
+    let chart;
+    let renderer;
+    beforeEach(() => {
+      chart = {};
+      renderer = {
+        measureText: data => (data.text === 'label 1' ? { width: 20, height: 10 } : { width: 25, height: 18 })
+      };
+    });
+
+    it('should return some labels', () => {
+      const labelSettings = [{
+        placements: [{
+          position: 'inside', justify: 0.2, align: 0.5, fill: () => 'red'
+        }],
+        label: data => `label ${data.node.id}`
+      }];
+      const placementSettings = [[{
+        position: 'inside', justify: 0.2, align: 0.5, fill: () => 'red'
+      }, {
+        position: 'outside', justify: 0.2, align: 0.5, fill: () => 'red', padding: { left: 1, right: 1 }
+      }]];
+      const settings = {
+        direction: () => 'right',
+        align: 0.4,
+        justify: 0.8,
+        labels: labelSettings
+      };
+      const nodes = [{
+        id: 1,
+        localBounds: {
+          x: 10, y: 20, width: 23, height: 50
+        }
+      }, {
+        id: 1,
+        localBounds: {
+          x: 10, y: 20, width: 40, height: 50
+        }
+      }];
+      precalculate({
+        nodes,
+        rect: {
+          x: 0, y: 0, width: 100, height: 200
+        },
+        chart,
+        settings,
+        labelSettings,
+        placementSettings,
+        renderer
+      });
+
+      expect(placementSettings[0][0].fitsHorizontally).to.eql(false);
+      expect(placementSettings[0][1].fitsHorizontally).to.eql(true);
     });
   });
 });

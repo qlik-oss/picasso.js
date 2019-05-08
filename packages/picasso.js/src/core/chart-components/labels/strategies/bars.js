@@ -140,7 +140,6 @@ export function getBarRect({
 
 export function findBestPlacement({
   direction,
-  fitsHorizontally,
   // lblStngs,
   measured,
   node,
@@ -154,9 +153,11 @@ export function findBestPlacement({
   let placement;
   let testBounds;
   let p;
+  let fitsHorizontally;
   const boundaries = [];
   for (p = 0; p < placementSettings.length; p++) {
     placement = placementSettings[p];
+    fitsHorizontally = placement.fitsHorizontally;
     testBounds = barRect({
       bar: node.localBounds,
       view: rect,
@@ -214,7 +215,6 @@ export function placeInBars(
     chart,
     targetNodes,
     rect,
-    fitsHorizontally,
     collectiveOrientation
   },
   findPlacement = findBestPlacement,
@@ -242,6 +242,7 @@ export function placeInBars(
   let placements;
   let arg;
   let orientation;
+  let fitsHorizontally;
 
   for (let i = 0, len = targetNodes.length; i < len; i++) {
     bounds = null;
@@ -262,7 +263,6 @@ export function placeInBars(
 
       const bestPlacement = findPlacement({
         direction,
-        fitsHorizontally,
         lblStngs,
         measured,
         node,
@@ -274,6 +274,7 @@ export function placeInBars(
 
       bounds = bestPlacement.bounds;
       placement = bestPlacement.placement;
+      fitsHorizontally = placement.fitsHorizontally;
 
       if (bounds && placement) {
         justify = placement.justify;
@@ -341,7 +342,6 @@ export function precalculate({
   const labelStruct = {};
   const targetNodes = [];
   let target;
-  let fitsHorizontally = true;
   let hasHorizontalDirection = false;
   let node;
   let text;
@@ -349,6 +349,10 @@ export function precalculate({
   let measured;
   let lblStng;
   let direction;
+  let placementSetting;
+  placementSettings.forEach((ps) => {
+    ps.forEach(p => p.fitsHorizontally = true);
+  });
 
   for (let i = 0; i < nodes.length; i++) {
     node = nodes[i];
@@ -369,6 +373,7 @@ export function precalculate({
 
     for (let j = 0; j < labelSettings.length; j++) {
       lblStng = labelSettings[j];
+      placementSetting = placementSettings[j];
       text = typeof lblStng.label === 'function' ? lblStng.label(arg, i) : undefined;
       if (!isValidText(text)) {
         continue; // eslint-ignore-line
@@ -384,9 +389,14 @@ export function precalculate({
       target.measurements.push(measured);
       target.texts.push(text);
       target.labelSettings.push(lblStng);
-      target.placementSettings.push(placementSettings[j]);
+      target.placementSettings.push(placementSetting);
       target.direction = direction;
-      fitsHorizontally = fitsHorizontally && measured.width <= (bounds.width - (PADDING * 2));
+      for (let k = 0; k < placementSetting.length; k++) {
+        const {
+          left = PADDING, right = PADDING
+        } = placementSetting[k].padding || {};
+        placementSetting[k].fitsHorizontally = placementSetting[k].fitsHorizontally && measured.width <= (bounds.width - (left + right));
+      }
     }
 
     targetNodes.push(target);
@@ -394,7 +404,6 @@ export function precalculate({
 
   return {
     targetNodes,
-    fitsHorizontally,
     hasHorizontalDirection
   };
 }
@@ -455,7 +464,6 @@ export function bars({
   const placementSettings = settings.labels.map(labelSetting => labelSetting.placements.map(placement => extend({}, defaults, settings, labelSetting, placement)));
 
   const {
-    fitsHorizontally,
     hasHorizontalDirection,
     targetNodes
   } = precalculate({
@@ -477,7 +485,6 @@ export function bars({
     targetNodes,
     stngs: settings,
     rect,
-    fitsHorizontally,
     collectiveOrientation: hasHorizontalDirection ? 'h' : 'v'
   });
 }
