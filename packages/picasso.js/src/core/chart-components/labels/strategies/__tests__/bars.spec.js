@@ -206,8 +206,8 @@ describe('labeling - bars', () => {
         placementSettings: placements,
         rect: {}
       }, barRect);
-      expect(p.placement).to.equal(placements[1]);
-      expect(p.bounds).to.equal(rects.outside);
+      expect(p.placement).to.equal(placements[2]);
+      expect(p.bounds).to.equal(rects.biggest);
     });
 
     it('should find first placement that fits in a vertical bar, horizontally', () => {

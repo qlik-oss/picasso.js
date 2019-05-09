@@ -4,7 +4,6 @@ import {
 } from '../../../math/narrow-phase-collision';
 import filterOverlapping from './bars-overlapping-filter';
 
-const LINE_HEIGHT = 1.5;
 const PADDING = 4;
 // const DOUBLE_PADDING = PADDING * 2;
 
@@ -167,12 +166,12 @@ export function findBestPlacement({
     boundaries.push(testBounds);
     largest = !p || testBounds.height > largest.height ? testBounds : largest;
 
-    if (orientation === 'v' && ((fitsHorizontally && testBounds.height > measured.height * LINE_HEIGHT)
-      || (!fitsHorizontally && testBounds.height > measured.width))) {
+    if (orientation === 'v' && ((fitsHorizontally && testBounds.height >= measured.height)
+      || (!fitsHorizontally && testBounds.height >= measured.width && testBounds.width >= measured.height))) {
       bounds = testBounds;
       break;
-    } else if (orientation === 'h' && (testBounds.height > measured.height)
-      && (testBounds.width > measured.width)) {
+    } else if (orientation === 'h' && (testBounds.height >= measured.height)
+      && (testBounds.width >= measured.width)) {
       bounds = testBounds;
       break;
     }
