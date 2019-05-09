@@ -138,8 +138,96 @@ export function getBarRect({
   return bounds;
 }
 
+export function isBestPlacementFitHorizontally({
+  direction,
+  measured,
+  node,
+  orientation,
+  placementSettings,
+  labelOrientations,
+  rect
+}, barRect = getBarRect) {
+  let largest;
+  let bounds;
+  let placement;
+  let testBounds;
+  let p;
+  let fitsHorizontally;
+  const boundaries = [];
+  for (p = 0; p < placementSettings.length; p++) {
+    placement = placementSettings[p];
+    fitsHorizontally = labelOrientations[p];
+    testBounds = barRect({
+      bar: node.localBounds,
+      view: rect,
+      direction,
+      position: placement.position,
+      padding: placement.padding
+    });
+    boundaries.push(testBounds);
+    largest = !p || testBounds.height > largest.height ? testBounds : largest;
+
+    if (orientation === 'v' && ((fitsHorizontally && testBounds.height > measured.height * LINE_HEIGHT)
+      || (!fitsHorizontally && testBounds.height > measured.width))) {
+      bounds = testBounds;
+      break;
+    } else if (orientation === 'h' && (testBounds.height > measured.height)
+      && (testBounds.width > measured.width)) {
+      bounds = testBounds;
+      break;
+    }
+  }
+
+  if (!bounds) {
+    bounds = largest;
+    p = boundaries.indexOf(bounds);
+  }
+  fitsHorizontally = labelOrientations[p];
+
+  return fitsHorizontally;
+}
+
+export function isAllFitHorizontally({ targetNodes, rect }, isFitHorizontally = isBestPlacementFitHorizontally,) {
+  let target;
+  let node;
+  let text;
+  let measured;
+  let direction;
+  let orientation;
+  let fitsHorizontally;
+
+  for (let i = 0, len = targetNodes.length; i < len; i++) {
+    target = targetNodes[i];
+    node = target.node;
+    direction = target.direction;
+    orientation = direction === 'left' || direction === 'right' ? 'h' : 'v';
+
+    for (let j = 0; j < target.texts.length; j++) {
+      text = target.texts[j];
+      if (!isValidText(text)) {
+        continue;
+      }
+      measured = target.measurements[j];
+      fitsHorizontally = isFitHorizontally({
+        direction,
+        measured,
+        node,
+        orientation,
+        placementSettings: target.placementSettings[j],
+        labelOrientations: target.labelOrientations[j],
+        rect
+      });
+      if (!fitsHorizontally) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
 export function findBestPlacement({
   direction,
+  fitsHorizontally,
   // lblStngs,
   measured,
   node,
@@ -153,11 +241,9 @@ export function findBestPlacement({
   let placement;
   let testBounds;
   let p;
-  let fitsHorizontally;
   const boundaries = [];
   for (p = 0; p < placementSettings.length; p++) {
     placement = placementSettings[p];
-    fitsHorizontally = placement.fitsHorizontally;
     testBounds = barRect({
       bar: node.localBounds,
       view: rect,
@@ -215,6 +301,7 @@ export function placeInBars(
     chart,
     targetNodes,
     rect,
+    fitsHorizontally,
     collectiveOrientation
   },
   findPlacement = findBestPlacement,
@@ -242,7 +329,6 @@ export function placeInBars(
   let placements;
   let arg;
   let orientation;
-  let fitsHorizontally;
 
   for (let i = 0, len = targetNodes.length; i < len; i++) {
     bounds = null;
@@ -263,6 +349,7 @@ export function placeInBars(
 
       const bestPlacement = findPlacement({
         direction,
+        fitsHorizontally,
         lblStngs,
         measured,
         node,
@@ -274,7 +361,6 @@ export function placeInBars(
 
       bounds = bestPlacement.bounds;
       placement = bestPlacement.placement;
-      fitsHorizontally = placement.fitsHorizontally;
 
       if (bounds && placement) {
         justify = placement.justify;
@@ -367,7 +453,8 @@ export function precalculate({
       texts: [],
       measurements: [],
       labelSettings: [],
-      placementSettings: []
+      placementSettings: [],
+      labelOrientations: []
       // direction: 'up'
     };
 
@@ -375,6 +462,7 @@ export function precalculate({
       lblStng = labelSettings[j];
       placementSetting = placementSettings[j];
       text = typeof lblStng.label === 'function' ? lblStng.label(arg, i) : undefined;
+      target.labelOrientations[j] = [];
       if (!isValidText(text)) {
         continue; // eslint-ignore-line
       }
@@ -395,7 +483,8 @@ export function precalculate({
         const {
           left = PADDING, right = PADDING
         } = placementSetting[k].padding || {};
-        placementSetting[k].fitsHorizontally = placementSetting[k].fitsHorizontally && measured.width <= (bounds.width - (left + right));
+        target.labelOrientations[j][k] = measured.width <= (bounds.width - (left + right));
+        placementSetting[k].fitsHorizontally = placementSetting[k].fitsHorizontally && target.labelOrientations[j][k];
       }
     }
 
@@ -448,7 +537,7 @@ export function bars({
   rect,
   renderer,
   style
-}, placer = placeInBars) {
+}, placer = placeInBars, checkAllFitHorizontally = isAllFitHorizontally) {
   const defaults = extend({
     fontSize: 12,
     fontFamily: 'Arial',
@@ -480,11 +569,14 @@ export function bars({
   const side = hasHorizontalDirection ? 'height' : 'width';
   targetNodes.sort((a, b) => (a.node.localBounds[coord] + a.node.localBounds[side]) - (b.node.localBounds[coord] + b.node.localBounds[side]));
 
+  const fitsHorizontally = checkAllFitHorizontally({ targetNodes, rect });
+
   return placer({
     chart,
     targetNodes,
     stngs: settings,
     rect,
+    fitsHorizontally,
     collectiveOrientation: hasHorizontalDirection ? 'h' : 'v'
   });
 }
