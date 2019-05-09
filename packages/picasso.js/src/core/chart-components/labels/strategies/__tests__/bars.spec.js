@@ -6,6 +6,8 @@ import {
   precalculate,
   placeInBars,
   findBestPlacement,
+  isBestPlacementFitHorizontally,
+  isAllFitHorizontally,
   bars
 } from '../bars';
 
@@ -169,8 +171,13 @@ describe('labeling - bars', () => {
     });
   });
 
-  describe('findBestPlacement', () => {
-    let placements;
+  describe('isBestPlacementFitHorizontally', () => {
+    const placements = [
+      { position: 'inside' },
+      { position: 'outside' },
+      { position: 'biggest' },
+      { position: 'meh' }
+    ];
     const rects = {
       inside: {
         x: 10, y: 20, width: 1, height: 2
@@ -187,12 +194,207 @@ describe('labeling - bars', () => {
     };
     const barRect = opts => rects[opts.position];
     beforeEach(() => {
-      placements = [
-        { position: 'inside' },
-        { position: 'outside' },
-        { position: 'biggest' },
-        { position: 'meh' }
-      ];
+      // barRect = sinon.stub();
+    });
+
+    it('should find label orientation for the first placement that fits in a vertical bar', () => {
+      let p = isBestPlacementFitHorizontally({
+        direction: '',
+        measured: { width: 29, height: 50 },
+        node: {},
+        orientation: 'v',
+        placementSettings: placements,
+        labelOrientations: [true, false, true, true],
+        rect: {}
+      }, barRect);
+      expect(p).to.equal(true);
+
+      p = isBestPlacementFitHorizontally({
+        direction: '',
+        measured: { width: 29, height: 50 },
+        node: {},
+        orientation: 'v',
+        placementSettings: placements,
+        labelOrientations: [true, false, false, true],
+        rect: {}
+      }, barRect);
+      expect(p).to.equal(false);
+    });
+
+    it('should find label orientation for the first placement that fits in a vertical bar, horizontally', () => {
+      let p = isBestPlacementFitHorizontally({
+        direction: '',
+        fitsHorizontally: true,
+        lblStngs: { fontSize: 2 },
+        measured: { width: 10, height: 8 },
+        node: {},
+        orientation: 'v',
+        placementSettings: placements,
+        labelOrientations: [true, false, false, true],
+        rect: {}
+      }, barRect);
+      expect(p).to.equal(false);
+
+      p = isBestPlacementFitHorizontally({
+        direction: '',
+        fitsHorizontally: true,
+        lblStngs: { fontSize: 2 },
+        measured: { width: 10, height: 8 },
+        node: {},
+        orientation: 'v',
+        placementSettings: placements,
+        labelOrientations: [true, true, false, true],
+        rect: {}
+      }, barRect);
+      expect(p).to.equal(true);
+    });
+
+    it('should find label orientation for the first placement that fits in a horizontal bar', () => {
+      let p = isBestPlacementFitHorizontally({
+        direction: '',
+        lblStngs: { fontSize: 2 },
+        measured: { width: 4, height: 8 },
+        node: {},
+        orientation: 'h',
+        placementSettings: placements,
+        labelOrientations: [true, true, false, true],
+        rect: {}
+      }, barRect);
+      expect(p).to.equal(true);
+
+      p = isBestPlacementFitHorizontally({
+        direction: '',
+        lblStngs: { fontSize: 2 },
+        measured: { width: 4, height: 8 },
+        node: {},
+        orientation: 'h',
+        placementSettings: placements,
+        labelOrientations: [false, false, false, true],
+        rect: {}
+      }, barRect);
+      expect(p).to.equal(false);
+    });
+
+    it.skip('should find label orientation for the largest rect as fallback, horizontal', () => {
+      let p = isBestPlacementFitHorizontally({
+        direction: '',
+        lblStngs: { fontSize: 2 },
+        measured: { width: 900, height: 800 },
+        node: {},
+        orientation: 'h',
+        placementSettings: placements,
+        labelOrientations: [true, true, false, true],
+        rect: {}
+      }, barRect);
+      expect(p).to.equal(false);
+
+      p = isBestPlacementFitHorizontally({
+        direction: '',
+        lblStngs: { fontSize: 2 },
+        measured: { width: 900, height: 800 },
+        node: {},
+        orientation: 'h',
+        placementSettings: placements,
+        labelOrientations: [false, false, true, false],
+        rect: {}
+      }, barRect);
+      expect(p).to.equal(false);
+    });
+
+    it('should find label orientation for the largest rect as fallback, vertical', () => {
+      let p = isBestPlacementFitHorizontally({
+        direction: '',
+        lblStngs: { fontSize: 2 },
+        measured: { width: 900, height: 800 },
+        node: {},
+        orientation: 'v',
+        placementSettings: placements,
+        labelOrientations: [false, false, true, false],
+        rect: {}
+      }, barRect);
+      expect(p).to.equal(true);
+
+      p = isBestPlacementFitHorizontally({
+        direction: '',
+        lblStngs: { fontSize: 2 },
+        measured: { width: 900, height: 800 },
+        node: {},
+        orientation: 'v',
+        placementSettings: placements,
+        labelOrientations: [false, true, false, false],
+        rect: {}
+      }, barRect);
+      expect(p).to.equal(false);
+    });
+  });
+
+  describe('isAllFitHorizontally', () => {
+    let isFitHorizontally;
+
+    beforeEach(() => {
+      isFitHorizontally = data => data && data.node && data.node.fitsHorizontally;
+    });
+
+    it('should return correct result', () => {
+      let p = isAllFitHorizontally({
+        targetNodes: [{
+          node: { fitsHorizontally: true },
+          texts: ['a'],
+          measurements: [],
+          placementSettings: [],
+          labelOrientations: []
+        }, {
+          node: { fitsHorizontally: true },
+          texts: ['a'],
+          measurements: [],
+          placementSettings: [],
+          labelOrientations: []
+        }]
+      }, isFitHorizontally);
+      expect(p).to.eql(true);
+
+      p = isAllFitHorizontally({
+        targetNodes: [{
+          node: { fitsHorizontally: true },
+          texts: ['a'],
+          measurements: [],
+          placementSettings: [],
+          labelOrientations: []
+        }, {
+          node: { fitsHorizontally: false },
+          texts: ['a'],
+          measurements: [],
+          placementSettings: [],
+          labelOrientations: []
+        }]
+      }, isFitHorizontally);
+      expect(p).to.eql(false);
+    });
+  });
+
+  describe('findBestPlacement', () => {
+    const placements = [
+      { position: 'inside' },
+      { position: 'outside' },
+      { position: 'biggest' },
+      { position: 'meh' }
+    ];
+    const rects = {
+      inside: {
+        x: 10, y: 20, width: 1, height: 2
+      },
+      outside: {
+        x: 10, y: 20, width: 5, height: 30
+      },
+      biggest: {
+        x: 10, y: 20, width: 400, height: 300
+      },
+      meh: {
+        x: 10, y: 20, width: 10, height: 20
+      }
+    };
+    const barRect = opts => rects[opts.position];
+    beforeEach(() => {
       // barRect = sinon.stub();
     });
 
@@ -212,7 +414,6 @@ describe('labeling - bars', () => {
     });
 
     it('should find first placement that fits in a vertical bar, horizontally', () => {
-      placements.forEach(p => p.fitsHorizontally = true);
       let p = findBestPlacement({
         direction: '',
         fitsHorizontally: true,
@@ -295,7 +496,7 @@ describe('labeling - bars', () => {
     });
 
     it('should skip label when placement is not possible', () => {
-      findPlacement.returns({ placement: {} });
+      findPlacement.returns({});
       let labels = placeInBars({
         chart,
         targetNodes: [{
