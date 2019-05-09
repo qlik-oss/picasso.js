@@ -166,16 +166,17 @@ export function isBestPlacementFitHorizontally({
     boundaries.push(testBounds);
     largest = !p || testBounds.height > largest.height ? testBounds : largest;
 
-    if (orientation === 'v' && ((fitsHorizontally && testBounds.height > measured.height)
-      || (!fitsHorizontally && testBounds.height > measured.width && testBounds.width > measured.height))) {
+    if (orientation === 'v' && ((fitsHorizontally && testBounds.height >= measured.height)
+      || (!fitsHorizontally && testBounds.height >= measured.width && testBounds.width >= measured.height))) {
       bounds = testBounds;
       break;
-    } else if (orientation === 'h' && (testBounds.height > measured.height) && (testBounds.width > measured.width)) {
+    } else if (orientation === 'h' && (testBounds.height >= measured.height) && (testBounds.width >= measured.width)) {
       bounds = testBounds;
       break;
     }
   }
 
+  // fallback strategy - place the text in the largest rectangle
   if (!bounds) {
     bounds = largest;
     p = boundaries.indexOf(bounds);
@@ -256,8 +257,7 @@ export function findBestPlacement({
       || (!fitsHorizontally && testBounds.height >= measured.width && testBounds.width >= measured.height))) {
       bounds = testBounds;
       break;
-    } else if (orientation === 'h' && (testBounds.height >= measured.height)
-      && (testBounds.width >= measured.width)) {
+    } else if (orientation === 'h' && (testBounds.height >= measured.height) && (testBounds.width >= measured.width)) {
       bounds = testBounds;
       break;
     }

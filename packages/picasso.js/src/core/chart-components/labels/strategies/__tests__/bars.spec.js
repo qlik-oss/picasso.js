@@ -623,7 +623,7 @@ describe('labeling - bars', () => {
       };
     });
 
-    it('should return some labels', () => {
+    it('should return correct fitsHorizontally for labels', () => {
       const labelSettings = [{
         placements: [{
           position: 'inside', justify: 0.2, align: 0.5, fill: () => 'red'
@@ -652,7 +652,7 @@ describe('labeling - bars', () => {
           x: 10, y: 20, width: 40, height: 50
         }
       }];
-      precalculate({
+      const { targetNodes } = precalculate({
         nodes,
         rect: {
           x: 0, y: 0, width: 100, height: 200
@@ -663,9 +663,8 @@ describe('labeling - bars', () => {
         placementSettings,
         renderer
       });
-
-      expect(placementSettings[0][0].fitsHorizontally).to.eql(false);
-      expect(placementSettings[0][1].fitsHorizontally).to.eql(true);
+      expect(targetNodes[0].labelOrientations).to.deep.eql([[false, true]]);
+      expect(targetNodes[1].labelOrientations).to.deep.eql([[true, true]]);
     });
   });
 });
