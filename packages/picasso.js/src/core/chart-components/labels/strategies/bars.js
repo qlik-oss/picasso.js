@@ -167,12 +167,11 @@ export function isBestPlacementFitHorizontally({
     boundaries.push(testBounds);
     largest = !p || testBounds.height > largest.height ? testBounds : largest;
 
-    if (orientation === 'v' && ((fitsHorizontally && testBounds.height > measured.height * LINE_HEIGHT)
-      || (!fitsHorizontally && testBounds.height > measured.width))) {
+    if (orientation === 'v' && ((fitsHorizontally && testBounds.height > measured.height)
+      || (!fitsHorizontally && testBounds.height > measured.width && testBounds.width > measured.height))) {
       bounds = testBounds;
       break;
-    } else if (orientation === 'h' && (testBounds.height > measured.height)
-      && (testBounds.width > measured.width)) {
+    } else if (orientation === 'h' && (testBounds.height > measured.height) && (testBounds.width > measured.width)) {
       bounds = testBounds;
       break;
     }
@@ -436,9 +435,6 @@ export function precalculate({
   let lblStng;
   let direction;
   let placementSetting;
-  placementSettings.forEach((ps) => {
-    ps.forEach(p => p.fitsHorizontally = true);
-  });
 
   for (let i = 0; i < nodes.length; i++) {
     node = nodes[i];
@@ -477,14 +473,13 @@ export function precalculate({
       target.measurements.push(measured);
       target.texts.push(text);
       target.labelSettings.push(lblStng);
-      target.placementSettings.push(placementSetting);
+      target.placementSettings.push(placementSettings[j]);
       target.direction = direction;
       for (let k = 0; k < placementSetting.length; k++) {
         const {
           left = PADDING, right = PADDING
         } = placementSetting[k].padding || {};
         target.labelOrientations[j][k] = measured.width <= (bounds.width - (left + right));
-        placementSetting[k].fitsHorizontally = placementSetting[k].fitsHorizontally && target.labelOrientations[j][k];
       }
     }
 
