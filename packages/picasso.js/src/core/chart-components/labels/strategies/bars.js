@@ -4,7 +4,6 @@ import {
 } from '../../../math/narrow-phase-collision';
 import filterOverlapping from './bars-overlapping-filter';
 
-const LINE_HEIGHT = 1.5;
 const PADDING = 4;
 // const DOUBLE_PADDING = PADDING * 2;
 
