@@ -10,8 +10,5 @@
       "engines"
     ],
     "enabled": false
-  }, {
-    "packageNames": ["rollup"],
-    "enabled": false
   }]
 }
