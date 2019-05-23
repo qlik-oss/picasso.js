@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.25.3](https://github.com/qlik-oss/picasso.js/compare/v0.25.2...v0.25.3) (2019-05-23)
+
+
+### Bug Fixes
+
+* **bar-label:** update finding best placement in case of a label does not fit horizontally ([#395](https://github.com/qlik-oss/picasso.js/issues/395)) ([4f6b086](https://github.com/qlik-oss/picasso.js/commit/4f6b086))
+
+
+
+
+
 ## [0.25.2](https://github.com/qlik-oss/picasso.js/compare/v0.25.1...v0.25.2) (2019-05-08)
 
 
