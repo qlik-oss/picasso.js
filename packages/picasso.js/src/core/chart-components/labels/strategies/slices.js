@@ -6,7 +6,7 @@ import {
 } from '../../../math/narrow-phase-collision';
 import { rectContainsRect } from '../../../math/intersection';
 
-const LABEL_OVERLAP_THRESHOLD_X = 2;
+const LABEL_OVERLAP_THRESHOLD_X = 4;
 
 function normalize(angle) {
   const PI2 = Math.PI * 2;
