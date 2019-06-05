@@ -6,7 +6,7 @@ import {
 } from '../../../math/narrow-phase-collision';
 import { rectContainsRect } from '../../../math/intersection';
 
-const LABEL_OVERLAP_PADDING_X = 2;
+const LABEL_OVERLAP_THRESHOLD_X = 2;
 
 function normalize(angle) {
   const PI2 = Math.PI * 2;
@@ -127,9 +127,9 @@ function getHorizontalInsideSliceRect({
   }
 
   store.insideLabelBounds.push({
-    x: bounds.x - LABEL_OVERLAP_PADDING_X,
+    x: bounds.x - LABEL_OVERLAP_THRESHOLD_X,
     y: bounds.y,
-    width: bounds.width + (LABEL_OVERLAP_PADDING_X * 2),
+    width: bounds.width + (LABEL_OVERLAP_THRESHOLD_X * 2),
     height: bounds.height
   }); // Copy as bounds is mutated else where
 
