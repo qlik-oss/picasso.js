@@ -1,9 +1,12 @@
 import extend from 'extend';
 import {
   testCircleRect,
-  testRectLine
+  testRectLine,
+  testRectRect
 } from '../../../math/narrow-phase-collision';
 import { rectContainsRect } from '../../../math/intersection';
+
+const LABEL_OVERLAP_THRESHOLD_X = 4;
 
 function normalize(angle) {
   const PI2 = Math.PI * 2;
@@ -94,7 +97,46 @@ function getRectFromCircleIntersection({ radius, size, angle }) {
   return bounds;
 }
 
-function getHorizontalInsideSliceRect({ slice, padding, measured }) {
+function getHorizontalInsideSliceRect({
+  slice, padding, measured, store
+}) {
+  const {
+    start, end, outerRadius
+  } = slice;
+  const middle = normalize((start + end) / 2);
+
+  const size = {
+    width: measured.width + (padding * 2),
+    height: measured.height + (padding * 2)
+  };
+
+  let bounds = getRectFromCircleIntersection({
+    radius: outerRadius,
+    size,
+    angle: middle
+  });
+
+  if (!bounds) { return null; }
+
+  bounds.baseline = 'top';
+
+  pad(bounds, padding);
+
+  if (store.insideLabelBounds.some(rect => testRectRect(rect, bounds))) {
+    return null;
+  }
+
+  store.insideLabelBounds.push({
+    x: bounds.x - LABEL_OVERLAP_THRESHOLD_X,
+    y: bounds.y,
+    width: bounds.width + (LABEL_OVERLAP_THRESHOLD_X * 2),
+    height: bounds.height
+  }); // Copy as bounds is mutated else where
+
+  return bounds;
+}
+
+function getHorizontalIntoSliceRect({ slice, padding, measured }) {
   let {
     start, end, innerRadius, outerRadius
   } = slice;
@@ -430,7 +472,7 @@ function placeTextOnPoint(rect, text, opts) {
 }
 
 export function getSliceRect({
-  slice, direction, position, padding, measured, view, context
+  slice, direction, position, padding, measured, view, context, store
 }) {
   let {
     start,
@@ -446,7 +488,7 @@ export function getSliceRect({
       if (direction === 'rotate') {
         bounds = getRotatedInsideSliceRect({ slice, measured, padding });
       } else {
-        bounds = getHorizontalInsideSliceRect({ slice, measured, padding });
+        bounds = getHorizontalIntoSliceRect({ slice, measured, padding });
       }
       break;
     case 'inside':
@@ -459,7 +501,9 @@ export function getSliceRect({
       if (direction === 'rotate') {
         bounds = getRotatedInsideSliceRect({ slice: s, measured, padding });
       } else {
-        bounds = getHorizontalInsideSliceRect({ slice: s, measured, padding });
+        bounds = getHorizontalInsideSliceRect({
+          slice: s, measured, padding, store
+        });
       }
       break;
     case 'outside':
@@ -492,7 +536,8 @@ function findBestPlacement({
   measured,
   node,
   placementSettings,
-  rect
+  rect,
+  store
 }, sliceRect = getSliceRect) {
   for (let p = 0; p < placementSettings.length; p++) {
     let placement = placementSettings[p];
@@ -503,7 +548,8 @@ function findBestPlacement({
       direction,
       position: placement.position,
       measured,
-      padding: placement.padding
+      padding: placement.padding,
+      store
     });
 
     if (!bounds) {
@@ -598,6 +644,9 @@ export function slices(
 
   const labelStruct = {};
   const labels = [];
+  const store = {
+    insideLabelBounds: []
+  };
 
   nodes = sortNodes(nodes);
   const context = {};
@@ -628,7 +677,8 @@ export function slices(
         measured,
         node,
         placementSettings: placementSettings[j],
-        rect
+        rect,
+        store
       });
 
       let bounds = bestPlacement.bounds;
