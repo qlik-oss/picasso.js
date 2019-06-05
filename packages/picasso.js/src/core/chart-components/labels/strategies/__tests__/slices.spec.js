@@ -16,7 +16,8 @@ describe('labeling - slices', () => {
         },
         position: 'into',
         padding: 1,
-        measured: { width: 6, height: 4 }
+        measured: { width: 6, height: 4 },
+        store: { insideLabelBounds: [] }
       })).to.eql({
         x: 5,
         y: -8,
@@ -37,7 +38,8 @@ describe('labeling - slices', () => {
         },
         position: 'into',
         padding: 1,
-        measured: { width: 6, height: 4 }
+        measured: { width: 6, height: 4 },
+        store: { insideLabelBounds: [] }
       })).to.eql({
         x: 5,
         y: 4,
@@ -58,7 +60,8 @@ describe('labeling - slices', () => {
         },
         position: 'inside',
         padding: 1,
-        measured: { width: 6, height: 4 }
+        measured: { width: 6, height: 4 },
+        store: { insideLabelBounds: [] }
       })).to.eql({
         x: -11,
         y: 4,
@@ -66,6 +69,28 @@ describe('labeling - slices', () => {
         height: 4,
         baseline: 'top'
       });
+    });
+
+    it('inside Q3 - Is overlapping another label', () => {
+      expect(getSliceRect({
+        slice: {
+          offset: { x: 0, y: 0 },
+          start: Math.PI,
+          end: Math.PI + (2 * Math.asin(4 / 5)),
+          innerRadius: 15,
+          outerRadius: 20
+        },
+        position: 'inside',
+        padding: 1,
+        measured: { width: 6, height: 4 },
+        store: {
+          insideLabelBounds: [
+            {
+              x: -13, y: 4, width: 10, height: 4
+            }
+          ]
+        }
+      })).to.eql(null);
     });
 
     it('inside Q4 - Do not fit', () => {
@@ -79,7 +104,8 @@ describe('labeling - slices', () => {
         },
         position: 'into',
         padding: 1,
-        measured: { width: 6, height: 4 }
+        measured: { width: 6, height: 4 },
+        store: { insideLabelBounds: [] }
       })).to.eql(null);
     });
 
