@@ -187,7 +187,7 @@ function getRotatedInsideSliceRect({ slice, measured, padding }) {
       maxWidth = outerRadius - x - (padding * 2);
     }
   }
-  if (maxWidth < 0) {
+  if (maxWidth < 0 || maxWidth < measured.minReqWidth) {
     return null;
   }
 
@@ -250,7 +250,9 @@ function getRotatedOusideSliceRect({
     }
   }
 
-  if (maxWidth <= 0) { return 0; }
+  if (maxWidth <= 0 || maxWidth < measured.minReqWidth) {
+    return null;
+  }
 
   let bounds = {
     x,
@@ -424,6 +426,10 @@ function getHorizontalOusideSliceRect({
     }
   }
 
+  if (maxWidth < measured.minReqWidth) {
+    return null;
+  }
+
   let bounds = {
     x,
     y,
@@ -436,6 +442,7 @@ function getHorizontalOusideSliceRect({
   } else {
     bounds.anchor = 'end';
   }
+
   return bounds;
 }
 
@@ -599,6 +606,23 @@ function sortNodes(nodes) {
   return q1.concat(q2, q4, q3);
 }
 
+function measureText(text, stgns, renderer) {
+  const fontFamily = stgns.fontFamily;
+  const fontSize = `${stgns.fontSize}px`;
+  const metrics = renderer.measureText({ text, fontFamily, fontSize });
+
+  metrics.minReqWidth = Math.min(
+    metrics.width,
+    renderer.measureText({
+      text: `${text[0]}…`,
+      fontFamily,
+      fontSize
+    }).width
+  );
+
+  return metrics;
+}
+
 /**
  * @typedef {object} component--labels~slices-label-strategy
  *
@@ -642,7 +666,6 @@ export function slices(
 
   const placementSettings = settings.labels.map(labelSetting => labelSetting.placements.map(placement => extend({}, defaults, settings, labelSetting, placement)));
 
-  const labelStruct = {};
   const labels = [];
   const store = {
     insideLabelBounds: []
@@ -652,24 +675,18 @@ export function slices(
   const context = {};
 
   for (let i = 0, len = nodes.length; i < len; i++) {
-    let node = nodes[i];
-    let arg = cbContext(node, chart);
+    const node = nodes[i];
+    const arg = cbContext(node, chart);
 
     for (let j = 0; j < labelSettings.length; j++) {
-      let lblStngs = labelSettings[j];
-      let text = typeof lblStngs.label === 'function' ? lblStngs.label(arg, i) : '';
+      const lblStngs = labelSettings[j];
+      const text = typeof lblStngs.label === 'function' ? lblStngs.label(arg, i) : '';
       if (!text) {
         continue;
       }
-      let direction = typeof lblStngs.direction === 'function' ? lblStngs.direction(arg, i) : lblStngs.direction || 'horizontal';
+      const direction = typeof lblStngs.direction === 'function' ? lblStngs.direction(arg, i) : lblStngs.direction || 'horizontal';
       const linkData = typeof lblStngs.linkData === 'function' ? lblStngs.linkData(arg, i) : undefined;
-
-      labelStruct.fontFamily = lblStngs.fontFamily;
-      labelStruct.fontSize = `${lblStngs.fontSize}px`;
-      labelStruct.text = text;
-
-      let measured = renderer.measureText(labelStruct);
-
+      const measured = measureText(text, lblStngs, renderer);
       const bestPlacement = findPlacement({
         context,
         direction,
@@ -681,8 +698,8 @@ export function slices(
         store
       });
 
-      let bounds = bestPlacement.bounds;
-      let placement = bestPlacement.placement;
+      const bounds = bestPlacement.bounds;
+      const placement = bestPlacement.placement;
 
       if (bounds && placement) {
         if (placement.position === 'outside' && direction !== 'rotate') {
@@ -695,9 +712,9 @@ export function slices(
           }
         }
 
-        let fill = typeof placement.fill === 'function' ? placement.fill(arg, i) : placement.fill;
+        const fill = typeof placement.fill === 'function' ? placement.fill(arg, i) : placement.fill;
 
-        let label = placer(bounds, text, {
+        const label = placer(bounds, text, {
           fill,
           fontSize: lblStngs.fontSize,
           fontFamily: lblStngs.fontFamily,

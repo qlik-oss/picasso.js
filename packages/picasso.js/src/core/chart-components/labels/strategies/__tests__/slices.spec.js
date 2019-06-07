@@ -160,6 +160,83 @@ describe('labeling - slices', () => {
       expect(bounds).property('width').to.equal(3);
       expect(bounds).property('height').to.equal(4);
     });
+
+    describe('should require text width to be equal to or larger than first character plus ellipsing', () => {
+      it('given position is `into` and direction `rotate`', () => {
+        expect(getSliceRect({
+          slice: {
+            offset: { x: 0, y: 0 },
+            start: Math.PI / 2,
+            end: (Math.PI / 2) + (2 * Math.asin(3 / 5)),
+            innerRadius: 0,
+            outerRadius: 15
+          },
+          position: 'into',
+          direction: 'rotate',
+          padding: 1,
+          measured: { width: 6, height: 4, minReqWidth: Infinity },
+          store: { insideLabelBounds: [] }
+        })).to.equal(null);
+      });
+
+      it('given position is `inside` and direction `rotate`', () => {
+        expect(getSliceRect({
+          slice: {
+            offset: { x: 0, y: 0 },
+            start: Math.PI / 2,
+            end: (Math.PI / 2) + (2 * Math.asin(3 / 5)),
+            innerRadius: 0,
+            outerRadius: 15
+          },
+          position: 'inside',
+          direction: 'rotate',
+          padding: 1,
+          measured: { width: 6, height: 4, minReqWidth: Infinity },
+          store: { insideLabelBounds: [] }
+        })).to.equal(null);
+      });
+
+      it('given position is `outside` and direction `rotate`', () => {
+        expect(getSliceRect({
+          slice: {
+            offset: { x: 0, y: 0 },
+            start: 0,
+            end: Math.PI,
+            innerRadius: 15,
+            outerRadius: 20
+          },
+          direction: 'rotate',
+          position: 'outside',
+          padding: 1,
+          view: {
+            x: -50, y: -50, width: 100, height: 100
+          },
+          measured: { width: 6, height: 4, minReqWidth: Infinity }
+        })).to.equal(null);
+      });
+
+      it('given position is `outside` and direction `horizontal`', () => {
+        expect(getSliceRect({
+          slice: {
+            offset: { x: 0, y: 0 },
+            start: 0,
+            end: Math.PI,
+            innerRadius: 15,
+            outerRadius: 20
+          },
+          context: {
+            q1maxY: 0, q2minY: 0, q3minY: 0, q4maxY: 0
+          },
+          direction: 'horizontal',
+          position: 'outside',
+          padding: 1,
+          view: {
+            x: -50, y: -50, width: 100, height: 100
+          },
+          measured: { width: 6, height: 4, minReqWidth: Infinity }
+        })).to.equal(null);
+      });
+    });
   });
 
   describe('slice strategy', () => {
@@ -319,7 +396,6 @@ describe('labeling - slices', () => {
           }
         }));
 
-        renderer.measureText.returns({ width: 36, height: 5 });
         return slices({
           settings,
           chart,
@@ -337,6 +413,15 @@ describe('labeling - slices', () => {
           }
         });
       }
+
+      beforeEach(() => {
+        renderer.measureText = (opts) => {
+          if (opts.text.includes('…')) {
+            return { width: 1, height: 1 };
+          }
+          return { width: 36, height: 5 };
+        };
+      });
 
       it('should not add any labels, because they are out of bounds', () => {
         const labels = createLabel([
