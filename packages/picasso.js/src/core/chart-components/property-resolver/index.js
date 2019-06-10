@@ -38,6 +38,10 @@ function isPrimitive(x) {
  */
 
 /**
+ * @typedef {boolean|datum-config|datum-accessor} datum-boolean
+ */
+
+/**
  * Normalizes property settings
  *
  * @ignore
