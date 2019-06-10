@@ -108,6 +108,14 @@ const SETTINGS = {
   }
 };
 
+/**
+ * @type {datum-boolean=}
+ * @memberof component--line-settings.coordinates
+ * @name defined
+ * @default true
+ */
+
+
 function createDisplayLayer(points, {
   generator,
   item,
@@ -146,6 +154,7 @@ function createDisplayLayers(layers, {
     } = layer;
 
     const areaGenerator = area();
+    const defined = stngs.coordinates ? stngs.coordinates.defined : null;
     let lineGenerator;
     let secondaryLineGenerator;
     let minor = { size: height, p: 'y' };
@@ -160,8 +169,12 @@ function createDisplayLayers(layers, {
       [major.p](d => d.major * major.size) // eslint-disable-line no-unexpected-multiline
       [`${minor.p}1`](d => d.minor * minor.size) // eslint-disable-line no-unexpected-multiline
       [`${minor.p}0`](d => d.minor0 * minor.size) // eslint-disable-line no-unexpected-multiline
-      .defined(d => typeof d.minor === 'number' && !isNaN(d.minor))
       .curve(CURVES[layerObj.curve === 'monotone' ? `monotone${major.p}` : layerObj.curve]);
+    if (defined) {
+      areaGenerator.defined(d => typeof d.minor === 'number' && !isNaN(d.minor) && d.defined);
+    } else {
+      areaGenerator.defined(d => typeof d.minor === 'number' && !isNaN(d.minor));
+    }
     lineGenerator = areaGenerator[`line${minor.p.toUpperCase()}1`]();
     secondaryLineGenerator = areaGenerator[`line${minor.p.toUpperCase()}0`]();
 
