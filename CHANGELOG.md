@@ -11,7 +11,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 
 
-# [0.26.0](https://github.com/qlik-oss/picasso.js/compare/v0.25.3...v0.26.0) (2019-06-13)
+# [0.26.0](https://github.com/qlik-oss/picasso.js/compare/v0.25.3...v0.26.0) (2019-06-13) [YANKED]
 
 
 ### Bug Fixes
