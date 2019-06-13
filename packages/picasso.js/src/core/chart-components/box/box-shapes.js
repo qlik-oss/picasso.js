@@ -179,6 +179,9 @@ export default function buildShapes({
 
     if (!isOutOfBounds) {
       for (let k = 0; k < numNonOobKeys; k++) {
+        if (minorItem[nonOobKeys[k]] && minorItem[nonOobKeys[k]].show === false) {
+          continue;
+        }
         addMarkerList[nonOobKeys[k]]();
       }
     } else if (minorItem.oob) {
