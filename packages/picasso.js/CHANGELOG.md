@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.26.0](https://github.com/qlik-oss/picasso.js/compare/v0.25.3...v0.26.0) (2019-06-13)
+
+
+### Bug Fixes
+
+* **box:** evaluate show per shape ([#412](https://github.com/qlik-oss/picasso.js/issues/412)) ([8ac0f53](https://github.com/qlik-oss/picasso.js/commit/8ac0f53))
+* **labels:** require label contain at least first character ([#408](https://github.com/qlik-oss/picasso.js/issues/408)) ([5419983](https://github.com/qlik-oss/picasso.js/commit/5419983))
+* **labels:** too few labels with horizontal inside slice strategy ([#407](https://github.com/qlik-oss/picasso.js/issues/407)) ([597ccb2](https://github.com/qlik-oss/picasso.js/commit/597ccb2))
+
+
+### Features
+
+* **line:** enable config of defined ([#410](https://github.com/qlik-oss/picasso.js/issues/410)) ([4e11f8f](https://github.com/qlik-oss/picasso.js/commit/4e11f8f))
+
+
+
+
+
 ## [0.25.3](https://github.com/qlik-oss/picasso.js/compare/v0.25.2...v0.25.3) (2019-05-23)
 
 

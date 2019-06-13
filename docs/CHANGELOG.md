@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.26.0](https://github.com/qlik-oss/picasso.js/compare/v0.25.3...v0.26.0) (2019-06-13)
+
+
+### Features
+
+* **line:** enable config of defined ([#410](https://github.com/qlik-oss/picasso.js/issues/410)) ([4e11f8f](https://github.com/qlik-oss/picasso.js/commit/4e11f8f))
+
+
+
+
+
 ## [0.25.3](https://github.com/qlik-oss/picasso.js/compare/v0.25.2...v0.25.3) (2019-05-23)
 
 **Note:** Version bump only for package docs
