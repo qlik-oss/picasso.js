@@ -1,5 +1,5 @@
-import componentFactoryFixture from '../../../../test/helpers/component-factory-fixture';
 import elementMock from 'test-utils/mocks/element-mock';
+import componentFactoryFixture from '../../../../test/helpers/component-factory-fixture';
 import chart, { orderComponents } from '..';
 
 describe('Chart', () => {
