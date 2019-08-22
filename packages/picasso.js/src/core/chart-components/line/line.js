@@ -56,6 +56,9 @@ const SETTINGS = {
     layerId: 0
   },
   /**
+   * @type {boolean=} */
+  connect: false,
+  /**
    * @type {string=} */
   orientation: 'horizontal',
   /**
@@ -175,12 +178,14 @@ function createDisplayLayers(layers, {
     } else {
       areaGenerator.defined(d => typeof d.minor === 'number' && !isNaN(d.minor));
     }
+
+    const filteredPoints = stngs.connect ? points.filter(areaGenerator.defined()) : points;
     lineGenerator = areaGenerator[`line${minor.p.toUpperCase()}1`]();
     secondaryLineGenerator = areaGenerator[`line${minor.p.toUpperCase()}0`]();
 
     // area layer
     if (layerStngs.area && areaObj.show !== false) {
-      nodes.push(createDisplayLayer(points, {
+      nodes.push(createDisplayLayer(filteredPoints, {
         data: layer.firstPoint,
         item: areaObj,
         generator: areaGenerator
@@ -189,7 +194,7 @@ function createDisplayLayers(layers, {
 
     // main line layer
     if (lineObj && lineObj.show !== false) {
-      nodes.push(createDisplayLayer(points, {
+      nodes.push(createDisplayLayer(filteredPoints, {
         data: layer.firstPoint,
         item: lineObj,
         generator: lineGenerator
@@ -197,7 +202,7 @@ function createDisplayLayers(layers, {
 
       // secondary line layer, used only when rendering area
       if (!missingMinor0 && layerStngs.area && areaObj.show !== false) {
-        nodes.push(createDisplayLayer(points, {
+        nodes.push(createDisplayLayer(filteredPoints, {
           data: layer.firstPoint,
           item: lineObj,
           generator: secondaryLineGenerator
