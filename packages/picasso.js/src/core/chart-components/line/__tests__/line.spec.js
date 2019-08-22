@@ -187,6 +187,36 @@ describe('line component', () => {
     }]);
   });
 
+  it('should connect points with undefined values', () => {
+    componentFixture.mocks().theme.style.returns({});
+    const config = {
+      data: [2, 3, 4, 1, 2],
+      settings: {
+        coordinates: {
+          major(a, i) { return i; },
+          minor(b) { return b.datum.value; },
+          defined(b) { return b.datum.value !== 4; }
+        },
+        connect: true,
+        layers: {}
+      }
+    };
+
+    componentFixture.simulateCreate(component, config);
+    rendered = componentFixture.simulateRender(opts);
+
+    expect(rendered).to.eql([{
+      type: 'path',
+      d: 'M0,200L200,300L600,100L800,200',
+      fill: 'none',
+      stroke: '#ccc',
+      strokeLinejoin: 'miter',
+      strokeWidth: 1,
+      opacity: 1,
+      data: { value: 2, label: '2' }
+    }]);
+  });
+
   it('should render area which defaults to minor 0', () => {
     componentFixture.mocks().theme.style.returns({
       line: {},
