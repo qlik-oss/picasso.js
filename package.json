@@ -58,7 +58,7 @@
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-serve": "^1.0.1",
     "rollup-plugin-uglify": "^6.0.2",
-    "yargs": "^13.3.0"
+    "yargs": "^14.0.0"
   },
   "workspaces": [
     "docs",
