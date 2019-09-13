@@ -293,6 +293,9 @@ function chartFn(definition, context) {
     if (_settings.palettes) {
       theme.setPalettes(_settings.palettes);
     }
+    if (_settings.style) {
+      theme.setStyle(_settings.style);
+    }
     dataCollection = dataCollections(_settings.collections, { dataset }, { logger });
 
     const deps = {
