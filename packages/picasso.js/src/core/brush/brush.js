@@ -189,7 +189,7 @@ function diff(old, current) {
   const keys = Object.keys(old);
   let key;
   let changedValues;
-  const filterFn = v => current[key].indexOf(v) === -1;
+  const filterFn = (v) => current[key].indexOf(v) === -1;
 
   for (let i = 0, num = keys.length; i < num; i++) {
     key = keys[i];
@@ -268,11 +268,11 @@ function intercept(handlers, items, aliases) {
 }
 
 function toCamelCase(s) {
-  return s.replace(/(-[a-z])/g, $1 => $1.toUpperCase().replace('-', ''));
+  return s.replace(/(-[a-z])/g, ($1) => $1.toUpperCase().replace('-', ''));
 }
 
 function toSnakeCase(s) {
-  return s.replace(/([A-Z])/g, $1 => `-${$1.toLowerCase()}`);
+  return s.replace(/([A-Z])/g, ($1) => `-${$1.toLowerCase()}`);
 }
 
 function updateRange(items, action, {
@@ -339,27 +339,27 @@ export default function brush({
   const links = {
     ls: [],
     clear() {
-      this.ls.forEach(b => b.clear());
+      this.ls.forEach((b) => b.clear());
     },
     start() {
-      this.ls.forEach(b => b.start());
+      this.ls.forEach((b) => b.start());
     },
     end() {
-      this.ls.forEach(b => b.end());
+      this.ls.forEach((b) => b.end());
     },
     update() {
       const s = getState();
-      this.ls.forEach(b => b._state(s));
+      this.ls.forEach((b) => b._state(s));
     },
     updateValues() {
       const s = getState();
-      this.ls.forEach(b => b._state({
+      this.ls.forEach((b) => b._state({
         values: s.values
       }));
     },
     updateRanges() {
       const s = getState();
-      this.ls.forEach(b => b._state({
+      this.ls.forEach((b) => b._state({
         ranges: s.ranges
       }));
     }
@@ -415,7 +415,7 @@ export default function brush({
       config.ranges.forEach((cfg) => {
         const c = {};
         Object.keys(DEFAULT_RANGE_CONFIG)
-          .filter(attr => attr !== 'key')
+          .filter((attr) => attr !== 'key')
           .forEach((attr) => {
             c[attr] = typeof cfg[attr] !== 'undefined' ? cfg[attr] : DEFAULT_RANGE_CONFIG[attr];
           });
@@ -427,7 +427,7 @@ export default function brush({
         }
       });
 
-      Object.keys(ranges).forEach(key => ranges[key].configure(rangeConfig.sources[key] || rangeConfig.default));
+      Object.keys(ranges).forEach((key) => ranges[key].configure(rangeConfig.sources[key] || rangeConfig.default));
 
       // TODO only emit update if config has changed
       fn.emit('update', [], []);
@@ -542,7 +542,7 @@ export default function brush({
    * Clears this brush context
    */
   fn.clear = () => {
-    const removed = fn.brushes().filter(b => b.type === 'value' && b.brush.values().length).map(b => ({ id: b.id, values: b.brush.values() }));
+    const removed = fn.brushes().filter((b) => b.type === 'value' && b.brush.values().length).map((b) => ({ id: b.id, values: b.brush.values() }));
     const hasChanged = Object.keys(ranges).length > 0 || removed.length;
     ranges = {};
     values = {};
@@ -558,13 +558,13 @@ export default function brush({
    */
   fn.brushes = () => {
     let result = [];
-    result = result.concat(Object.keys(ranges).map(key => ({
+    result = result.concat(Object.keys(ranges).map((key) => ({
       type: 'range',
       id: key,
       brush: ranges[key]
     })));
 
-    result = result.concat(Object.keys(values).map(key => ({
+    result = result.concat(Object.keys(values).map((key) => ({
       type: 'value',
       id: key,
       brush: values[key]
@@ -1006,17 +1006,17 @@ export default function brush({
     }
 
     if (props) {
-      status = status.filter(b => props.indexOf(b.key) !== -1);
+      status = status.filter((b) => props.indexOf(b.key) !== -1);
       if (mode === 'and') {
-        return !!status.length && !status.some(s => s.bool === false);
+        return !!status.length && !status.some((s) => s.bool === false);
       }
       if (mode === 'xor') {
-        return !!status.length && status.some(s => s.bool) && status.some(s => s.bool === false);
+        return !!status.length && status.some((s) => s.bool) && status.some((s) => s.bool === false);
       }
       // !mode || mode === 'or'
-      return status.some(s => s.bool);
+      return status.some((s) => s.bool);
     }
-    return status.some(s => s.bool);
+    return status.some((s) => s.bool);
   };
 
   /**
@@ -1077,7 +1077,7 @@ export default function brush({
 
     toRemove.forEach((ic) => {
       const interceptorHandlers = ic.handlers.slice();
-      interceptorHandlers.forEach(handler => fn.removeInterceptor(ic.name, handler));
+      interceptorHandlers.forEach((handler) => fn.removeInterceptor(ic.name, handler));
     });
   };
 

@@ -127,7 +127,7 @@ function pic(config = {}, registries = {}) {
    * @param {chart-definition} definition
    * @returns {chart}
    */
-  picassojs.chart = definition => chart(definition, {
+  picassojs.chart = (definition) => chart(definition, {
     registries: regis,
     logger,
     style: config.style,

@@ -44,7 +44,7 @@ function colliderToShape(node, dpi) {
     const isCollection = node.colliderType === 'collection';
 
     if (isCollection) {
-      const children = node.collider.geometries.map(geometry => geometryToDef(geometry, dpi, mvm));
+      const children = node.collider.geometries.map((geometry) => geometryToDef(geometry, dpi, mvm));
 
       return {
         type: 'container',
@@ -80,7 +80,7 @@ class SceneNode {
     this._collider = () => colliderToShape(node, this._dpi);
     this._desc = node.desc;
     this._tag = node.tag;
-    this._children = () => node.children.map(n => new SceneNode(n));
+    this._children = () => node.children.map((n) => new SceneNode(n));
     this._parent = () => (node.parent ? new SceneNode(node.parent) : null);
 
     this._cache = {

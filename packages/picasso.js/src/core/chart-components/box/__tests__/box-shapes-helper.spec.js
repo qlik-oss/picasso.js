@@ -19,7 +19,7 @@ describe('box shapes', () => {
 
       // We mock the symbol() function here
       let result = oob({
-        value: 1, item, boxCenter: item.major, rendWidth: 100, rendHeight: 100, flipXY: false, symbol: v => v
+        value: 1, item, boxCenter: item.major, rendWidth: 100, rendHeight: 100, flipXY: false, symbol: (v) => v
       });
 
       expect(result).to.eql({
@@ -42,7 +42,7 @@ describe('box shapes', () => {
 
       // We mock the symbol() function here
       let result = oob({
-        value: 0, item, boxCenter: item.major, rendWidth: 100, rendHeight: 100, flipXY: false, symbol: v => v
+        value: 0, item, boxCenter: item.major, rendWidth: 100, rendHeight: 100, flipXY: false, symbol: (v) => v
       });
 
       expect(result).to.eql({
@@ -64,7 +64,7 @@ describe('box shapes', () => {
 
     // We mock the symbol() function here
     let result = oob({
-      value: 1, item, boxCenter: item.major, rendWidth: 200, rendHeight: 150, flipXY: true, symbol: v => v
+      value: 1, item, boxCenter: item.major, rendWidth: 200, rendHeight: 150, flipXY: true, symbol: (v) => v
     });
 
     expect(result).to.eql({
@@ -87,7 +87,7 @@ describe('box shapes', () => {
 
     // We mock the symbol() function here
     let result = oob({
-      value: 0, item, boxCenter: item.major, rendWidth: 200, rendHeight: 150, flipXY: true, symbol: v => v
+      value: 0, item, boxCenter: item.major, rendWidth: 200, rendHeight: 150, flipXY: true, symbol: (v) => v
     });
 
     expect(result).to.eql({

@@ -24,7 +24,7 @@ export function strategy({
   if (!component) {
     return [];
   }
-  const nodes = chart.findShapes(source.selector).filter(n => n.key === source.component);
+  const nodes = chart.findShapes(source.selector).filter((n) => n.key === source.component);
 
   return fn({
     chart,

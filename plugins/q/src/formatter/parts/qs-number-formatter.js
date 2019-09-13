@@ -399,7 +399,7 @@ class NumberFormatter {
       }
 
       if (prep.abbreviate) {
-        const abbrArray = Object.keys(this.abbreviations).map(key => parseInt(key, 10)).sort((a, b) => a - b);
+        const abbrArray = Object.keys(this.abbreviations).map((key) => parseInt(key, 10)).sort((a, b) => a - b);
         let lowerAbbreviation;
         let upperAbbreviation = abbrArray[0];
         i = 0;

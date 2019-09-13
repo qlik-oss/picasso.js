@@ -110,7 +110,7 @@ class Node {
   toJSON() {
     return {
       type: this.type,
-      children: this.children.map(ch => ch.toJSON())
+      children: this.children.map((ch) => ch.toJSON())
     };
   }
 }

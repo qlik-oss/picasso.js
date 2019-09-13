@@ -75,7 +75,7 @@ function localToChartPoint(ctx, p) {
  * @returns {object[]} An Array of brush configurations
  */
 function getBrushConfig(settings) {
-  return settings.settings.brush.components.map(b => (
+  return settings.settings.brush.components.map((b) => (
     {
       key: b.key,
       contexts: b.contexts,

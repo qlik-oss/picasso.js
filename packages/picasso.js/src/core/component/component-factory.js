@@ -13,13 +13,13 @@ import {
 import symbolFactory from '../symbols';
 import createDockConfig from '../layout/dock/config';
 
-const isReservedProperty = prop => [
+const isReservedProperty = (prop) => [
   'on', 'preferredSize', 'created', 'beforeMount', 'mounted', 'resize',
   'beforeUpdate', 'updated', 'beforeRender', 'render', 'beforeUnmount', 'beforeDestroy',
   'destroyed', 'defaultSettings', 'data', 'settings', 'formatter',
   'scale', 'chart', 'dockConfig', 'mediator', 'style', 'resolver', 'registries',
   '_DO_NOT_USE_getInfo', 'symbol', 'isVisible'
-].some(name => name === prop);
+].some((name) => name === prop);
 
 function prepareContext(ctx, definition, opts) {
   const {
@@ -426,7 +426,7 @@ function componentFactory(definition, context = {}) {
     const nodes = brushArgs.nodes = render.call(definitionContext, ...getRenderArgs());
 
     // Reset brush stylers and triggers
-    brushStylers.forEach(b => b.cleanUp());
+    brushStylers.forEach((b) => b.cleanUp());
     brushStylers.length = 0;
     brushTriggers.tap = [];
     brushTriggers.over = [];
@@ -524,7 +524,7 @@ function componentFactory(definition, context = {}) {
       const brusher = chart.brush(brushCtx);
       const sceneNodes = rend.findShapes('*');
       settings.brush.consume
-        .filter(t => t.context === brushCtx)
+        .filter((t) => t.context === brushCtx)
         .forEach((consume) => {
           for (let i = 0; i < sceneNodes.length; i++) {
             const node = sceneNodes[i];
@@ -556,7 +556,7 @@ function componentFactory(definition, context = {}) {
     if (opts && opts.propagation === 'stop' && items.length > 0) {
       shapes = [items.pop().node];
     } else {
-      shapes = items.map(i => i.node);
+      shapes = items.map((i) => i.node);
     }
 
     for (let i = 0, num = shapes.length; i < num; i++) {

@@ -384,7 +384,7 @@ describe('labeling - slices', () => {
             label: () => 'etikett'
           }]
         };
-        const nodes = list.map(l => ({
+        const nodes = list.map((l) => ({
           desc: {
             slice: {
               offset: { x: 10, y: 50 },

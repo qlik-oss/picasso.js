@@ -1,3 +1,5 @@
+/* eslint max-classes-per-file: 0 */
+
 function getBasicEvent(event) {
   let ix;
   let ret;

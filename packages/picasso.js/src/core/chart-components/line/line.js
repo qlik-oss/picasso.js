@@ -169,14 +169,14 @@ function createDisplayLayers(layers, {
     }
 
     areaGenerator
-      [major.p](d => d.major * major.size) // eslint-disable-line no-unexpected-multiline
-      [`${minor.p}1`](d => d.minor * minor.size) // eslint-disable-line no-unexpected-multiline
-      [`${minor.p}0`](d => d.minor0 * minor.size) // eslint-disable-line no-unexpected-multiline
+      [major.p]((d) => d.major * major.size) // eslint-disable-line no-unexpected-multiline
+      [`${minor.p}1`]((d) => d.minor * minor.size) // eslint-disable-line no-unexpected-multiline
+      [`${minor.p}0`]((d) => d.minor0 * minor.size) // eslint-disable-line no-unexpected-multiline
       .curve(CURVES[layerObj.curve === 'monotone' ? `monotone${major.p}` : layerObj.curve]);
     if (defined) {
-      areaGenerator.defined(d => typeof d.minor === 'number' && !isNaN(d.minor) && d.defined);
+      areaGenerator.defined((d) => typeof d.minor === 'number' && !isNaN(d.minor) && d.defined);
     } else {
-      areaGenerator.defined(d => typeof d.minor === 'number' && !isNaN(d.minor));
+      areaGenerator.defined((d) => typeof d.minor === 'number' && !isNaN(d.minor));
     }
 
     const filteredPoints = stngs.connect ? points.filter(areaGenerator.defined()) : points;
@@ -244,8 +244,8 @@ function resolve({
     layerIds[lid].items.push(p);
   }
 
-  const metaLayers = Object.keys(layerIds).map(lid => layerIds[lid]);
-  const layersData = { items: metaLayers.map(layer => layer.firstPoint) };
+  const metaLayers = Object.keys(layerIds).map((lid) => layerIds[lid]);
+  const layersData = { items: metaLayers.map((layer) => layer.firstPoint) };
   const layerStngs = stngs.layers || {};
 
   const layersResolved = resolver.resolve({
@@ -362,11 +362,11 @@ const lineMarkerComponent = {
     });
 
     if (this.stngs.layers && this.stngs.layers.sort) {
-      const sortable = visibleLayers.map(v => ({
+      const sortable = visibleLayers.map((v) => ({
         id: v.layerObj.id,
         data: v.layerObj.data
       }));
-      sortable.sort(this.stngs.layers.sort).map(s => s.id);
+      sortable.sort(this.stngs.layers.sort).map((s) => s.id);
       visibleLayers.sort((a, b) => sortable.indexOf(b.layerObj.id) - sortable.indexOf(a.layerObj.id));
     } else {
       visibleLayers.sort((a, b) => a.median - b.median);

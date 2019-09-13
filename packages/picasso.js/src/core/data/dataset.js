@@ -10,7 +10,7 @@ import {
 } from './util';
 
 const filters = {
-  numeric: values => values.filter(v => typeof v === 'number' && !isNaN(v))
+  numeric: (values) => values.filter((v) => typeof v === 'number' && !isNaN(v))
 };
 
 function createFields({
@@ -36,7 +36,7 @@ function createFields({
   if (parse && typeof parse.fields === 'function') {
     flds = parse.fields(flds.slice());
   } else {
-    flds = headers.map(h => ({
+    flds = headers.map((h) => ({
       key: h,
       title: h
     }));
@@ -65,7 +65,7 @@ function createFields({
       }
     }
   }
-  const fv = Array.isArray(fieldValues) ? (i => fieldValues[i]) : (i => fieldValues[flds[i].key]);
+  const fv = Array.isArray(fieldValues) ? ((i) => fieldValues[i]) : ((i) => fieldValues[flds[i].key]);
   for (let c = 0; c < flds.length; c++) {
     const values = fv(c);
     const numericValues = filters.numeric(values);
@@ -110,7 +110,7 @@ const dsv = ({ data, config }) => {
       }
     }
   }
-  return rows.map(row => row.split(delimiter));
+  return rows.map((row) => row.split(delimiter));
 };
 
 const parseData = ({
@@ -173,7 +173,7 @@ function ds({
      * @param {string} query - The field to find
      * @returns {field}
      */
-    field: query => findField(query, {
+    field: (query) => findField(query, {
       cache,
       matrix: data
     }),
@@ -189,7 +189,7 @@ function ds({
      * @param {data-extract-config} config
      * @returns {Array<datum-extract>}
      */
-    extract: cfg => extract(cfg, dataset, cache),
+    extract: (cfg) => extract(cfg, dataset, cache),
 
     /**
      * @returns {null}

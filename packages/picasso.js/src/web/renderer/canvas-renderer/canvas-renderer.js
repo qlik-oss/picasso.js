@@ -205,13 +205,13 @@ export function renderer(sceneFn = sceneFactory) {
     return doRender;
   };
 
-  canvasRenderer.itemsAt = input => (scene ? scene.getItemsFrom(input) : []);
+  canvasRenderer.itemsAt = (input) => (scene ? scene.getItemsFrom(input) : []);
 
-  canvasRenderer.findShapes = selector => (scene ? scene.findShapes(selector) : []);
+  canvasRenderer.findShapes = (selector) => (scene ? scene.findShapes(selector) : []);
 
   canvasRenderer.clear = () => {
     if (el) {
-      el.width = el.width;
+      el.width = el.width; // eslint-disable-line
     }
     scene = null;
 

@@ -40,7 +40,7 @@ function shouldLineBreak(item) {
 }
 
 function wrappedMeasureText(node, measureText) {
-  return text => measureText({
+  return (text) => measureText({
     text,
     fontSize: node.fontSize,
     fontFamily: node.fontFamily

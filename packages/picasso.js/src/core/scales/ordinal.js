@@ -28,8 +28,8 @@ export default function ordinal(settings = {}, data = {}, resources = {}) {
   const ctx = { data, resources };
   const stgns = resolveSettings(settings, DEFAULT_SETTINGS, ctx);
 
-  const valueFn = typeof settings.value === 'function' ? settings.value : d => d.datum.value;
-  const labelFn = typeof settings.label === 'function' ? settings.label : d => d.datum.label;
+  const valueFn = typeof settings.value === 'function' ? settings.value : (d) => d.datum.value;
+  const labelFn = typeof settings.label === 'function' ? settings.label : (d) => d.datum.label;
   const items = data.items || [];
   const domainToDataMapping = {};
   const values = [];
@@ -49,9 +49,9 @@ export default function ordinal(settings = {}, data = {}, resources = {}) {
 
   fn.labels = () => labels;
 
-  fn.label = domainValue => labels[values.indexOf(domainValue)];
+  fn.label = (domainValue) => labels[values.indexOf(domainValue)];
 
-  fn.datum = domainValue => items[domainToDataMapping[domainValue]];
+  fn.datum = (domainValue) => items[domainToDataMapping[domainValue]];
 
   fn.range(stgns.range);
 

@@ -1,7 +1,7 @@
 import { notNumber } from '../../utils/is-number';
 
 function applyFormat(formatter) {
-  return typeof formatter === 'undefined' ? t => t : t => formatter(t);
+  return typeof formatter === 'undefined' ? (t) => t : (t) => formatter(t);
 }
 
 function clamp(val) {
@@ -45,7 +45,7 @@ function appendMinorTicks(majorTicks, minorCount, scale) {
     }
   }
 
-  return ticks.filter(t => t >= scale.min() && t <= scale.max());
+  return ticks.filter((t) => t >= scale.min() && t <= scale.max());
 }
 
 /**
@@ -140,7 +140,7 @@ function ticksByCount({
     });
 }
 
-function ticksByValue({ values, scale, formatter = v => v }) {
+function ticksByValue({ values, scale, formatter = (v) => v }) {
   return values
     .sort((a, b) => (isObject(a) ? a.value : a) - (isObject(b) ? b.value : b))
     .filter((v, i, ary) => {
@@ -163,7 +163,7 @@ function ticksByValue({ values, scale, formatter = v => v }) {
 }
 
 function forceTicksAtBounds(ticks, scale, formatter) {
-  const ticksP = ticks.map(t => t.position);
+  const ticksP = ticks.map((t) => t.position);
   const range = scale.range();
 
   if (ticksP.indexOf(range[0]) === -1) {
@@ -198,13 +198,13 @@ export function generateContinuousTicks({
   settings,
   scale,
   distance,
-  formatter = val => val
+  formatter = (val) => val
 }) {
   let ticks;
   const minorCount = settings.minorTicks && !notNumber(settings.minorTicks.count) ? Math.min(100, settings.minorTicks.count) : 0;
 
   if (Array.isArray(settings.ticks.values)) {
-    const values = settings.ticks.values.filter(v => (typeof v === 'object' ? !notNumber(v.value) : !notNumber(v)));
+    const values = settings.ticks.values.filter((v) => (typeof v === 'object' ? !notNumber(v.value) : !notNumber(v)));
     ticks = ticksByValue({ values, scale: scale.copy(), formatter });
   } else if (!notNumber(settings.ticks.count)) {
     const count = Math.min(1000, settings.ticks.count);

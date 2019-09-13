@@ -21,7 +21,7 @@ function getColumnOrder(dataset) {
 function getDimensionColumnOrder(cube) {
   const order = cube.qColumnOrder && cube.qColumnOrder.length ? cube.qColumnOrder : cube.qDimensionInfo.map((d, ii) => ii);
 
-  return order.filter(ii => ii < cube.qDimensionInfo.length);
+  return order.filter((ii) => ii < cube.qDimensionInfo.length);
 }
 
 export function getFieldDepth(field, { cube }) {
@@ -94,16 +94,16 @@ function getFieldAccessor(sourceDepthObject, targetDepthObject) {
   let valueFn;
 
   if (targetDepthObject.measureIdx >= 0) {
-    valueFn = node => node.data.qValues[targetDepthObject.measureIdx];
+    valueFn = (node) => node.data.qValues[targetDepthObject.measureIdx];
   } else {
-    valueFn = node => node.data;
+    valueFn = (node) => node.data;
   }
   let attrFn;
 
   if (targetDepthObject.attrDimIdx >= 0) {
-    attrFn = data => data.qAttrDims.qValues[targetDepthObject.attrDimIdx];
+    attrFn = (data) => data.qAttrDims.qValues[targetDepthObject.attrDimIdx];
   } else if (targetDepthObject.attrIdx >= 0) {
-    attrFn = data => data.qAttrExps.qValues[targetDepthObject.attrIdx];
+    attrFn = (data) => data.qAttrExps.qValues[targetDepthObject.attrIdx];
   }
 
   return {
@@ -163,10 +163,10 @@ function doIt({
         label = String(p.value);
       } else {
         if (typeof p.value === 'function') {
-          fn = v => p.value(v, item);
+          fn = (v) => p.value(v, item);
         }
         if (typeof p.label === 'function') {
-          str = v => p.label(v, item);
+          str = (v) => p.label(v, item);
         }
         if (p.accessor) {
           nodes = p.accessor(item);
@@ -225,7 +225,7 @@ const getHierarchy = (cube, cache, config) => {
   if (!root || !root[0]) {
     return null;
   }
-  cache.tree = hierarchy(root[0], config.children || (node => node[childNodes]));
+  cache.tree = hierarchy(root[0], config.children || ((node) => node[childNodes]));
   return cache.tree;
 };
 
@@ -233,10 +233,10 @@ function getHierarchyForSMode(dataset) {
   const matrix = dataset.raw().qDataPages.length ? dataset.raw().qDataPages[0].qMatrix : [];
   const order = getColumnOrder(dataset);
   const fields = dataset.fields();
-  const dimensions = dataset.fields().filter(f => f.type() === 'dimension')
-    .map(f => order.indexOf(fields.indexOf(f)));
-  const measures = dataset.fields().filter(f => f.type() === 'measure')
-    .map(f => order.indexOf(fields.indexOf(f)));
+  const dimensions = dataset.fields().filter((f) => f.type() === 'dimension')
+    .map((f) => order.indexOf(fields.indexOf(f)));
+  const measures = dataset.fields().filter((f) => f.type() === 'measure')
+    .map((f) => order.indexOf(fields.indexOf(f)));
 
   const root = {
     __id: '__root',
@@ -256,7 +256,9 @@ function getHierarchyForSMode(dataset) {
       const cell = row[dimensions[c]];
       const key = `${id}__${cell.qText}`;
       if (!keys[key]) {
-        keys[key] = Object.assign({ __id: key, __parent: id, qValues: [] }, cell);
+        keys[key] = {
+          __id: key, __parent: id, qValues: [], ...cell
+        };
         isNew = true;
       }
       id = key;
@@ -269,11 +271,11 @@ function getHierarchyForSMode(dataset) {
     }
   }
 
-  const nodes = Object.keys(keys).map(key => keys[key]);
+  const nodes = Object.keys(keys).map((key) => keys[key]);
 
   const h = stratify()
-    .id(d => d.__id)
-    .parentId(d => d.__parent)(nodes);
+    .id((d) => d.__id)
+    .parentId((d) => d.__parent)(nodes);
 
   return h;
 }
@@ -333,7 +335,7 @@ export function augment(config = {}, dataset, cache, util) {
       }
     }
 
-    const { props, main } = util.normalizeConfig(Object.assign({}, config, { field: f ? f.key() : undefined }), dataset);
+    const { props, main } = util.normalizeConfig({ ...config, field: f ? f.key() : undefined }, dataset);
     const propsArr = Object.keys(props);
     propDefs[i] = { propsArr, props, main };
 

@@ -108,7 +108,7 @@ describe('property-resolver', () => {
       const normalized = {
         strokeWidth: {
           fn: function fn(b, idx) { return b.scale(b.datum.tjocklek) + idx; },
-          scale: v => v * 2
+          scale: (v) => v * 2
         }
       };
       const idx = 1;
@@ -118,7 +118,7 @@ describe('property-resolver', () => {
 
     it('should resolve fn callback with parameters', () => {
       const normalized = {
-        strokeWidth: { ref: 'stroke', fn: d => d.datum.stroke.tjocklek }
+        strokeWidth: { ref: 'stroke', fn: (d) => d.datum.stroke.tjocklek }
       };
       const resolved = resolveForItem({ datum: { stroke: { tjocklek: 3 } } }, normalized);
       expect(resolved).to.eql({ strokeWidth: 3 });

@@ -190,7 +190,7 @@ describe('labeling - bars', () => {
         x: 10, y: 20, width: 10, height: 20
       }
     };
-    const barRect = opts => rects[opts.position];
+    const barRect = (opts) => rects[opts.position];
     beforeEach(() => {
       // barRect = sinon.stub();
     });
@@ -365,9 +365,9 @@ describe('labeling - bars', () => {
           }
         }
       });
-      placer = (a, b, c) => Object.assign({
-        x: 0, y: 0, dx: 0, dy: 0
-      }, c);
+      placer = (a, b, c) => ({
+        x: 0, y: 0, dx: 0, dy: 0, ...c
+      });
       let labels = placeInBars({
         chart,
         targetNodes: [{

@@ -19,11 +19,11 @@ export function findField(query, { cache }) {
 }
 
 const filters = {
-  numeric: values => values.filter(v => typeof v === 'number' && !isNaN(v))
+  numeric: (values) => values.filter((v) => typeof v === 'number' && !isNaN(v))
 };
 
 const unfilteredReducers = {
-  sum: values => values.reduce((a, b) => a + b, 0)
+  sum: (values) => values.reduce((a, b) => a + b, 0)
 };
 
 // function isPrimitive(x) {
@@ -37,8 +37,8 @@ const unfilteredReducers = {
  * @private
  */
 export const reducers = {
-  first: values => values[0],
-  last: values => values[values.length - 1],
+  first: (values) => values[0],
+  last: (values) => values[values.length - 1],
   min: (values) => {
     const filtered = filters.numeric(values);
     return !filtered.length ? NaN : Math.min.apply(null, filtered);
@@ -75,7 +75,7 @@ function normalizeProperties(cfg, dataset, dataProperties, main) {
       prop.field = mainField;
     } else if (typeof pConfig === 'object') {
       if (pConfig.fields) {
-        prop.fields = pConfig.fields.map(ff => normalizeProperties(cfg, dataset, { main: ff }, main).main);
+        prop.fields = pConfig.fields.map((ff) => normalizeProperties(cfg, dataset, { main: ff }, main).main);
       } else if (typeof pConfig.field !== 'undefined') {
         prop.type = 'field';
         prop.field = dataset.field(pConfig.field);
@@ -199,7 +199,7 @@ export function collect(trackedItems, {
   const mainFormatter = main.field.formatter(); // || (v => v);
   const propsFormatters = {};
   propsArr.forEach((prop) => {
-    propsFormatters[prop] = props[prop].field ? props[prop].field.formatter() : v => v;
+    propsFormatters[prop] = props[prop].field ? props[prop].field.formatter() : (v) => v;
   });
   dataItems.push(...trackedItems.map((t) => {
     const ret = collectItems(t.items, main, mainFormatter);

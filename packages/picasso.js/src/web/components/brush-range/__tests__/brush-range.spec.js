@@ -254,7 +254,7 @@ describe('Brush Range', () => {
       scale.data = () => ({
         fields: [{
           id: () => 'foo',
-          formatter: () => (v => v)
+          formatter: () => ((v) => v)
         }]
       });
       chartMock.scale = sandbox.stub().returns(scale);

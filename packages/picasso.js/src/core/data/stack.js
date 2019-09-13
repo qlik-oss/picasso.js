@@ -58,7 +58,7 @@ function stacked(data, config, ds) {
   }
 
   const keys = Array.apply(null, { length: maxStackCount }).map(Number.call, Number); // eslint-disable-line
-  const matrix = Object.keys(stackIds).map(sid => stackIds[sid].items);
+  const matrix = Object.keys(stackIds).map((sid) => stackIds[sid].items);
 
   const d3Stack = stack()
     .keys(keys)
@@ -86,10 +86,10 @@ function stacked(data, config, ds) {
   let stackedFields = Object.keys(valueFields).map((f) => {
     let dSource = ds(valueFields[f].key);
     return dSource ? dSource.field(valueFields[f].field) : null;
-  }).filter(f => !!f);
+  }).filter((f) => !!f);
 
   const field = fieldFn({
-    title: stackedFields.map(f => f.title()).join(', '),
+    title: stackedFields.map((f) => f.title()).join(', '),
     min: Math.min(...values),
     max: Math.max(...values),
     type: 'measure',

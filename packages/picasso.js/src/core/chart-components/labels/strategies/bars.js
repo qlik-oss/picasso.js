@@ -323,7 +323,7 @@ export function placeInBars(
   }
 
   const filteredLabels = labels.filter(postFilter(postFilterContext));
-  const backgrounds = filteredLabels.filter(lb => typeof lb.backgroundBounds !== 'undefined').map(toBackground);
+  const backgrounds = filteredLabels.filter((lb) => typeof lb.backgroundBounds !== 'undefined').map(toBackground);
 
   return [...backgrounds, ...filteredLabels];
 }
@@ -449,9 +449,9 @@ export function bars({
 
   defaults.fontSize = parseInt(defaults.fontSize, 10);
 
-  const labelSettings = settings.labels.map(labelSetting => extend({}, defaults, settings, labelSetting));
+  const labelSettings = settings.labels.map((labelSetting) => extend({}, defaults, settings, labelSetting));
 
-  const placementSettings = settings.labels.map(labelSetting => labelSetting.placements.map(placement => extend({}, defaults, settings, labelSetting, placement)));
+  const placementSettings = settings.labels.map((labelSetting) => labelSetting.placements.map((placement) => extend({}, defaults, settings, labelSetting, placement)));
 
   const {
     fitsHorizontally,

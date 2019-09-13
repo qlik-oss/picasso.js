@@ -31,7 +31,7 @@ describe('Axis Node Builder', () => {
 
       filterOverlappingLabels(nodes);
 
-      expect(nodes.map(n => n.name)).to.deep.equal(['lower', 'upper']);
+      expect(nodes.map((n) => n.name)).to.deep.equal(['lower', 'upper']);
     });
 
     it('3 vertical nodes, upper node collide with middle node and lower node', () => {
@@ -57,7 +57,7 @@ describe('Axis Node Builder', () => {
 
       filterOverlappingLabels(nodes);
 
-      expect(nodes.map(n => n.name)).to.deep.equal(['upper']);
+      expect(nodes.map((n) => n.name)).to.deep.equal(['upper']);
     });
 
     it('2 vertical nodes, upper node collide with lower node', () => {
@@ -77,7 +77,7 @@ describe('Axis Node Builder', () => {
 
       filterOverlappingLabels(nodes);
 
-      expect(nodes.map(n => n.name)).to.deep.equal(['upper']);
+      expect(nodes.map((n) => n.name)).to.deep.equal(['upper']);
     });
 
     it('1 vertical node', () => {
@@ -91,7 +91,7 @@ describe('Axis Node Builder', () => {
 
       filterOverlappingLabels(nodes);
 
-      expect(nodes.map(n => n.name)).to.deep.equal(['upper']);
+      expect(nodes.map((n) => n.name)).to.deep.equal(['upper']);
     });
 
     it('multiple vertical nodes colliding', () => {
@@ -141,7 +141,7 @@ describe('Axis Node Builder', () => {
 
       filterOverlappingLabels(nodes);
 
-      expect(nodes.map(n => n.name)).to.deep.equal(['lower', 'node2', 'node4', 'upper']);
+      expect(nodes.map((n) => n.name)).to.deep.equal(['lower', 'node2', 'node4', 'upper']);
     });
 
     it('multiple vertical nodes, none colliding', () => {
@@ -191,7 +191,7 @@ describe('Axis Node Builder', () => {
 
       filterOverlappingLabels(nodes);
 
-      expect(nodes.map(n => n.name)).to.deep.equal(['lower', 'node1', 'node2', 'node3', 'node4', 'node5', 'upper']);
+      expect(nodes.map((n) => n.name)).to.deep.equal(['lower', 'node1', 'node2', 'node3', 'node4', 'node5', 'upper']);
     });
   });
 });

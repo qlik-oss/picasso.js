@@ -11,8 +11,8 @@ function ranges(state) {
 
   const sourceData = state.scale.data();
   const sourceFields = sourceData ? sourceData.fields || [] : [];
-  const sources = sourceFields.map(field => field.id());
-  const rangeBrush = brush.brushes().filter(f => f.type === 'range' && sources.indexOf(f.id) !== -1)[0];
+  const sources = sourceFields.map((field) => field.id());
+  const rangeBrush = brush.brushes().filter((f) => f.type === 'range' && sources.indexOf(f.id) !== -1)[0];
 
   if (!rangeBrush) {
     return [];

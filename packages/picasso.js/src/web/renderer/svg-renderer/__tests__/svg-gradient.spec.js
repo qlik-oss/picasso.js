@@ -102,7 +102,7 @@ describe('svg-gradient', () => {
 
     it('should maintain cache', () => {
       const localBucket = [];
-      const localP = gradienter(localBucket, input => input.key);
+      const localP = gradienter(localBucket, (input) => input.key);
       localP.onCreate({ node: { fill: { type: 'gradient', key: 'a' } } });
       localP.onCreate({ node: { fill: { type: 'gradient', key: 'b' } } });
       localP.onCreate({ node: { stroke: { type: 'gradient', key: 'b' } } });

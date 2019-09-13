@@ -58,7 +58,7 @@ export default function scaleBand(settings = {}, data = {}, resources = {}) {
   function augmentScaleBand(band, settings) { // eslint-disable-line no-shadow
     band.data = () => data;
 
-    band.datum = domainValue => items[domainToDataMapping[domainValue]];
+    band.datum = (domainValue) => items[domainToDataMapping[domainValue]];
 
     /**
      * Get the first value of the domain
@@ -118,8 +118,8 @@ export default function scaleBand(settings = {}, data = {}, resources = {}) {
     return newBand;
   };
 
-  const valueFn = typeof settings.value === 'function' ? settings.value : d => d.datum.value;
-  const labelFn = typeof settings.label === 'function' ? settings.label : d => d.datum.label;
+  const valueFn = typeof settings.value === 'function' ? settings.value : (d) => d.datum.value;
+  const labelFn = typeof settings.label === 'function' ? settings.label : (d) => d.datum.label;
 
   for (let i = 0; i < items.length; i++) {
     const arg = extend({ datum: items[i] }, ctx);

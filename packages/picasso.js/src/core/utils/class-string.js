@@ -5,5 +5,5 @@
  * @return {String} Space separated string with class names
  */
 export default function classString(classMap) {
-  return Object.keys(classMap).filter(className => classMap[className]).join(' ');
+  return Object.keys(classMap).filter((className) => classMap[className]).join(' ');
 }

@@ -27,8 +27,8 @@ function ranges(state, brush) {
 
   const sourceData = state.scale.data();
   const sourceFields = sourceData ? sourceData.fields || [] : [];
-  const sources = sourceFields.map(field => field.id());
-  const rangeBrush = brush.brushes().filter(f => f.type === 'range' && sources.indexOf(f.id) !== -1)[0];
+  const sources = sourceFields.map((field) => field.id());
+  const rangeBrush = brush.brushes().filter((f) => f.type === 'range' && sources.indexOf(f.id) !== -1)[0];
 
   if (!rangeBrush) {
     return [];
@@ -38,7 +38,7 @@ function ranges(state, brush) {
 }
 
 function setRanges(state) {
-  let rs = state.ranges.map(r => ({ min: r.min, max: r.max }));
+  let rs = state.ranges.map((r) => ({ min: r.min, max: r.max }));
   if (state.active.idx !== -1) {
     if (state.active.mode === 'modify') {
       rs[state.active.idx].min = Math.min(state.start, state.current);
@@ -63,11 +63,11 @@ function setRanges(state) {
         let oldValues = state.findValues(ordRS);
         let values = state.findValues(rs);
 
-        let addedValues = values.filter(v => oldValues.indexOf(v) === -1);
-        let removedValues = oldValues.filter(v => values.indexOf(v) === -1);
+        let addedValues = values.filter((v) => oldValues.indexOf(v) === -1);
+        let removedValues = oldValues.filter((v) => values.indexOf(v) === -1);
 
-        let addItems = addedValues.map(v => ({ key: field.id(), value: v }));
-        let removeItems = removedValues.map(v => ({ key: field.id(), value: v }));
+        let addItems = addedValues.map((v) => ({ key: field.id(), value: v }));
+        let removeItems = removedValues.map((v) => ({ key: field.id(), value: v }));
 
         state.brushInstance.addAndRemoveValues(addItems, removeItems);
 
@@ -80,7 +80,7 @@ function setRanges(state) {
 }
 
 function setEditedRanges(state, idx, startValue, endValue) {
-  let rs = state.ranges.map(r => ({ min: r.min, max: r.max }));
+  let rs = state.ranges.map((r) => ({ min: r.min, max: r.max }));
   const limitMin = state.scale.min();
   const limitMax = state.scale.max();
   rs[idx] = { min: Math.max(limitMin, Math.min(startValue, endValue)), max: Math.min(limitMax, Math.max(startValue, endValue)) };
@@ -154,7 +154,7 @@ function resolveTarget(ctx) {
   };
   const stngs = ctx.settings.settings;
   const targets = stngs.target && (stngs.target.components || (stngs.target.component ? [stngs.target.component] : []))
-    .map(c => ctx.chart.component(c)).filter(c => !!c && !!c.rect);
+    .map((c) => ctx.chart.component(c)).filter((c) => !!c && !!c.rect);
   const targetNodes = stngs.target && stngs.target.selector ? ctx.chart.findShapes(stngs.target.selector) : [];
   const targetFillNodes = stngs.target && stngs.target.fillSelector ? ctx.chart.findShapes(stngs.target.fillSelector) : [];
   if (targetNodes.length > 0) {
@@ -322,7 +322,7 @@ const brushRangeComponent = {
         };
       }
       this.state.fauxBrushInstance = brushFactory();
-      this.state.findValues = valueRanges => findValues(valueRanges, scale);
+      this.state.findValues = (valueRanges) => findValues(valueRanges, scale);
     } else {
       this.state.editable = true;
       this.state.observeBrush = typeof stngs.brush === 'object' ? stngs.brush.observe : false;

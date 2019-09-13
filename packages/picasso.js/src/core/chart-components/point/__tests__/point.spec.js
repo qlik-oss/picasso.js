@@ -14,7 +14,7 @@ describe('point component', () => {
         x: 10, y: 20, width: 100, height: 200
       }
     };
-    shapeFn = p => p;
+    shapeFn = (p) => p;
     componentFixture = componentFactoryFixture();
     chart = componentFixture.mocks().chart;
 
@@ -180,15 +180,15 @@ describe('point component', () => {
         m3: 1.2
       }],
       settings: {
-        shape: { ref: 'value', fn: s => s.datum.value.shape },
-        label: { ref: 'value', fn: s => s.datum.value.text },
+        shape: { ref: 'value', fn: (s) => s.datum.value.shape },
+        label: { ref: 'value', fn: (s) => s.datum.value.text },
         fill(b) { return b.datum.value.fill; },
-        stroke: { ref: 'value', fn: s => `stroke:${s.datum.value.fill}` },
-        strokeWidth: { ref: 'value', fn: v => v.datum.value.m1 },
-        strokeDasharray: { ref: 'value', fn: s => s.datum.value.text },
-        opacity: { ref: 'value', fn: v => v.datum.value.m1 / 10 },
+        stroke: { ref: 'value', fn: (s) => `stroke:${s.datum.value.fill}` },
+        strokeWidth: { ref: 'value', fn: (v) => v.datum.value.m1 },
+        strokeDasharray: { ref: 'value', fn: (s) => s.datum.value.text },
+        opacity: { ref: 'value', fn: (v) => v.datum.value.m1 / 10 },
         x: { fn(b) { return b.datum.value.m2; } },
-        y: { ref: 'value', fn: v => v.datum.value.m3 },
+        y: { ref: 'value', fn: (v) => v.datum.value.m3 },
         size: { ref: 'value', fn: (v, i) => i },
         sizeLimits: {
           minRelExtent: 0.2,
@@ -252,8 +252,8 @@ describe('point component', () => {
       shapeFn,
       data: [0, 0.4, 1],
       settings: {
-        x: { scale: 'whatever', ref: 'value', fn: v => v.datum.value },
-        size: { ref: 'value', fn: v => v.datum.value },
+        x: { scale: 'whatever', ref: 'value', fn: (v) => v.datum.value },
+        size: { ref: 'value', fn: (v) => v.datum.value },
         sizeLimits: {
           maxRelDiscrete: 2,
           minRelDiscrete: 0.5,
@@ -263,13 +263,13 @@ describe('point component', () => {
       }
     };
 
-    const xScale = v => v;
+    const xScale = (v) => v;
     xScale.bandwidth = () => 0.2; // max size: width * 0.2 * maxRelDiscrete -> 40, // min size: width * 0.2 * minRelDiscrete -> 10
     chart.scale.onCall(0).returns(xScale);
 
     componentFixture.simulateCreate(pointComponent, config);
     renderedPoints = componentFixture.simulateRender(opts);
 
-    expect(renderedPoints.map(p => p.size)).to.deep.equal([10, 10 + (30 * 0.4), 40]);
+    expect(renderedPoints.map((p) => p.size)).to.deep.equal([10, 10 + (30 * 0.4), 40]);
   });
 });

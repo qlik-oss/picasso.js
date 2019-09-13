@@ -42,7 +42,7 @@ function generateRange(domain, colors, min, max) {
   max = domain && domain.length >= 2 ? domain[domain.length - 1] : max;
   const seq = sequential().domain([min, max]).range(colors);
   const values = [min, ...getBreaks(domain), max];
-  return values.map(v => seq(v));
+  return values.map((v) => seq(v));
 }
 
 function generateNiceDomain(range, min, max) {
@@ -120,7 +120,7 @@ export default function scaleThresholdColor(settings = {}, data = {}, resources 
     return d3Scale(v);
   }
 
-  Object.keys(d3Scale).forEach(key => (fn[key] = d3Scale[key]));
+  Object.keys(d3Scale).forEach((key) => (fn[key] = d3Scale[key]));
 
   const fields = data.fields;
 

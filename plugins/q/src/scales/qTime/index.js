@@ -13,8 +13,8 @@ const DEFAULT_SETTINGS = {
 };
 
 function calcMinMax(values) { // TODO To remove, just here for easier usage while developing
-  const min = values[values.length - 1].qTicks.map(t => t.qStart);
-  const max = values[values.length - 1].qTicks.map(t => t.qEnd);
+  const min = values[values.length - 1].qTicks.map((t) => t.qStart);
+  const max = values[values.length - 1].qTicks.map((t) => t.qEnd);
   return { min: Math.min(...min), max: Math.max(...max) };
 }
 
@@ -25,8 +25,8 @@ function getMinMax(settings, data, values) {
   let fieldMax = 1;
 
   if (data && Array.isArray(data.fields)) {
-    fieldMin = Math.min(data.fields.map(f => f.min()));
-    fieldMax = Math.min(data.fields.map(f => f.max()));
+    fieldMin = Math.min(data.fields.map((f) => f.min()));
+    fieldMax = Math.min(data.fields.map((f) => f.max()));
   } else if (Array.isArray(values)) {
     ({ min: fieldMin, max: fieldMax } = calcMinMax(values));
   }
@@ -95,7 +95,7 @@ export default function qTime(settings, data) {
    */
   fn.max = () => Math.max(min, max);
 
-  fn.hasLevel = lvl => levels[lvl] && levels[lvl].index !== null; // Remove, components like the axis should reqiure 0 size if not ticks are available, and thus "disappear"
+  fn.hasLevel = (lvl) => levels[lvl] && levels[lvl].index !== null; // Remove, components like the axis should reqiure 0 size if not ticks are available, and thus "disappear"
 
   if (settings) {
     d3Scale.range(stgns.invert ? [1, 0] : [0, 1]);

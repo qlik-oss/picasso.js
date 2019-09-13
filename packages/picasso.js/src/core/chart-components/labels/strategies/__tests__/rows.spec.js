@@ -35,7 +35,7 @@ describe('labeling - rows', () => {
         nodes,
         renderer,
         style: {}
-      }, bounds => bounds);
+      }, (bounds) => bounds);
 
       expect(labels[0]).to.eql({
         x: 4,
@@ -63,7 +63,7 @@ describe('labeling - rows', () => {
         nodes,
         renderer,
         style: {}
-      }, bounds => bounds);
+      }, (bounds) => bounds);
 
       expect(labels[0]).to.eql({
         x: 10,
@@ -99,7 +99,7 @@ describe('labeling - rows', () => {
         nodes,
         renderer,
         style: {}
-      }, bounds => bounds);
+      }, (bounds) => bounds);
 
       expect(labels[0]).to.eql({
         x: 6,
@@ -135,7 +135,7 @@ describe('labeling - rows', () => {
         nodes,
         renderer,
         style: {}
-      }, bounds => bounds);
+      }, (bounds) => bounds);
 
       expect(labels).to.have.length(0);
     });
@@ -228,7 +228,7 @@ describe('labeling - rows', () => {
         nodes,
         renderer,
         style: {}
-      }, bounds => bounds);
+      }, (bounds) => bounds);
 
       expect(labels[0]).to.containSubset({
         data: 1

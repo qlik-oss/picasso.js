@@ -179,7 +179,7 @@ const axisComponent = {
     this.state.ticks = this.state.pxScale.ticks({
       distance,
       formatter
-    }).filter(t => t.position >= 0 && t.position <= 1);
+    }).filter((t) => t.position >= 0 && t.position <= 1);
   },
   render() {
     const {
