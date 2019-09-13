@@ -1,7 +1,9 @@
+import extend from 'extend';
 import styleResolver from '../style/resolver';
 
 function themeFn(style = {}, palettes = []) {
   let pals = {};
+  let internalStyle = style;
   const setPalettes = (p) => {
     p.forEach((palette) => {
       const pal = Array.isArray(palette.colors[0]) ? palette.colors : [palette.colors];
@@ -44,9 +46,17 @@ function themeFn(style = {}, palettes = []) {
 
     /**
      * Resolve style references
-     * @param {style-object} s - Object containing
+     * @param {style-object} s - Object containing style
      */
-    style: s => styleResolver(s, style)
+    style: s => styleResolver(s, internalStyle),
+
+    /**
+     * Set custom style
+     * @param {style-object} s - Object containing style
+     */
+    setStyle: (s) => {
+      internalStyle = extend({}, style, s);
+    }
   };
 
   setPalettes(palettes);
