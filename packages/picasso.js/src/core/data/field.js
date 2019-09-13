@@ -12,17 +12,17 @@ const getFormatter = (data) => {
 };
 
 const accessors = {
-  id: data => `${data.source}/${data.key || data.title}`,
-  key: data => String(data.key || data.title),
-  tags: data => data.tags,
-  min: data => data.min,
-  max: data => data.max,
-  type: data => data.type,
-  title: data => String(data.title),
-  values: data => data.values,
-  value: v => v,
-  label: v => v,
-  formatter: data => getFormatter(data)
+  id: (data) => `${data.source}/${data.key || data.title}`,
+  key: (data) => String(data.key || data.title),
+  tags: (data) => data.tags,
+  min: (data) => data.min,
+  max: (data) => data.max,
+  type: (data) => data.type,
+  title: (data) => String(data.title),
+  values: (data) => data.values,
+  value: (v) => v,
+  label: (v) => v,
+  formatter: (data) => getFormatter(data)
 };
 
 /**

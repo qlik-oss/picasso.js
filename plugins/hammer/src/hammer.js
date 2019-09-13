@@ -83,10 +83,10 @@ function hammer(chart, mediator, element) {
       const type = getGestureType(gesture.type);
       if (Hammer && Hammer[type]) {
         if (gesture.recognizeWith) {
-          mc.get(gesture.options.event).recognizeWith(gesture.recognizeWith.split(' ').filter(e => e !== ''));
+          mc.get(gesture.options.event).recognizeWith(gesture.recognizeWith.split(' ').filter((e) => e !== ''));
         }
         if (gesture.requireFailure) {
-          mc.get(gesture.options.event).requireFailure(gesture.requireFailure.split(' ').filter(e => e !== ''));
+          mc.get(gesture.options.event).requireFailure(gesture.requireFailure.split(' ').filter((e) => e !== ''));
         }
       }
     });

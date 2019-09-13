@@ -46,8 +46,8 @@ findLeft = binaryLeftSearch) {
   const renderLabels = [];
   const coord = orientation === 'v' ? 'x' : 'y';
   const side = orientation === 'v' ? 'width' : 'height';
-  const getTextBounds = item => item.textBounds;
-  const getNodeBounds = item => item.node.localBounds;
+  const getTextBounds = (item) => item.textBounds;
+  const getNodeBounds = (item) => item.node.localBounds;
 
   return (doNotUse, labelIndex) => {
     const { textBounds: labelBounds, node: labelNode } = labels[labelIndex];

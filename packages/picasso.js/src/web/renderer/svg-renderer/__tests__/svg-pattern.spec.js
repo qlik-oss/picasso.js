@@ -78,7 +78,7 @@ describe('svg-pattern', () => {
 
     it('should maintain cache', () => {
       const localBucket = [];
-      const localP = patternizer(localBucket, input => input.key);
+      const localP = patternizer(localBucket, (input) => input.key);
       localP.onCreate({ node: { fill: { type: 'pattern', shapes: [], key: 'a' } } });
       localP.onCreate({ node: { fill: { type: 'pattern', shapes: [], key: 'b' } } });
       localP.onCreate({ node: { stroke: { type: 'pattern', shapes: [], key: 'b' } } });

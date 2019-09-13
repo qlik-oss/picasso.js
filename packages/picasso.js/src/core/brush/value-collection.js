@@ -19,7 +19,7 @@ export default function valueCollection() {
     return false;
   };
 
-  vc.contains = value => values.indexOf(value) !== -1;
+  vc.contains = (value) => values.indexOf(value) !== -1;
 
   vc.values = () => values.slice();
 

@@ -47,4 +47,4 @@ export default function hsl(colStr) {
  * @example
  * hsl.test( "hsl(120, 50%, 50%)" );
  */
-hsl.test = colStr => typeof colStr === 'string' && (rHsl.test(colStr) || rHsla.test(colStr));
+hsl.test = (colStr) => typeof colStr === 'string' && (rHsl.test(colStr) || rHsla.test(colStr));

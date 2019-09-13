@@ -264,8 +264,8 @@ function chartFn(definition, context) {
 
     const { visible, hidden, order } = dockLayout.layout(rect, vcomponents);
     return {
-      visible: visible.map(v => findComponent(v.instance)),
-      hidden: hidden.map(h => findComponent(h.instance)),
+      visible: visible.map((v) => findComponent(v.instance)),
+      hidden: hidden.map((h) => findComponent(h.instance)),
       order
     };
   };
@@ -288,7 +288,7 @@ function chartFn(definition, context) {
 
     dataset = datasources(_data, { logger, types: registries.data });
     if (!partialData) {
-      Object.keys(brushes).forEach(b => brushes[b].clear());
+      Object.keys(brushes).forEach((b) => brushes[b].clear());
     }
     if (_settings.palettes) {
       theme.setPalettes(_settings.palettes);
@@ -316,9 +316,9 @@ function chartFn(definition, context) {
 
     set(data, settings);
 
-    currentComponents = components.map(compSettings => (
+    currentComponents = components.map((compSettings) => (
       createComponent(compSettings, element)
-    )).filter(c => !!c);
+    )).filter((c) => !!c);
 
     const { visible, hidden, order } = layout(currentComponents);
     visibleComponents = visible;
@@ -328,19 +328,19 @@ function chartFn(definition, context) {
       comp.visible = false;
     });
 
-    visible.forEach(comp => comp.instance.beforeMount());
-    visible.forEach(comp => comp.instance.mount());
-    visible.forEach(comp => comp.instance.beforeRender());
+    visible.forEach((comp) => comp.instance.beforeMount());
+    visible.forEach((comp) => comp.instance.mount());
+    visible.forEach((comp) => comp.instance.beforeRender());
 
-    visible.forEach(comp => comp.instance.render());
-    visible.forEach(comp => comp.instance.mounted());
+    visible.forEach((comp) => comp.instance.render());
+    visible.forEach((comp) => comp.instance.mounted());
     visible.forEach((comp) => { comp.visible = true; });
     orderComponents(element, visibleComponents, order);
   };
 
   function setInteractions(interactions = []) {
     const current = {};
-    const newKeys = interactions.filter(it => !!it.key).map(it => it.key);
+    const newKeys = interactions.filter((it) => !!it.key).map((it) => it.key);
     currentInteractions.forEach((cit) => {
       if (cit.key && newKeys.indexOf(cit.key) !== -1) { // keep old instance
         current[cit.key] = cit;
@@ -406,7 +406,7 @@ function chartFn(definition, context) {
 
     const onBrushTap = (e) => {
       const comps = eventInfo.comps || componentsFromPoint(e);
-      if (comps.every(c => c.instance.def.disableTriggers)) {
+      if (comps.every((c) => c.instance.def.disableTriggers)) {
         return;
       }
 
@@ -505,7 +505,7 @@ function chartFn(definition, context) {
     for (let i = currentComponents.length - 1; i >= 0; i--) {
       const currComp = currentComponents[i];
       // TODO warn when there is no key
-      if (!components.some(c => currComp.hasKey && currComp.key === c.key)) {
+      if (!components.some((c) => currComp.hasKey && currComp.key === c.key)) {
         // Component is removed
         currentComponents.splice(i, 1);
         currComp.instance.destroy();
@@ -533,7 +533,7 @@ function chartFn(definition, context) {
         settings: comp
       };
       return currentComponents[idx];
-    }).filter(c => !!c);
+    }).filter((c) => !!c);
 
     currentComponents.forEach((comp) => {
       if (comp.updateWith) {
@@ -577,10 +577,10 @@ function chartFn(definition, context) {
       });
     }
 
-    toRender.forEach(comp => comp.instance.beforeMount());
-    toRender.forEach(comp => comp.instance.mount());
+    toRender.forEach((comp) => comp.instance.beforeMount());
+    toRender.forEach((comp) => comp.instance.mount());
 
-    toRenderOrUpdate.forEach(comp => comp.instance.beforeRender());
+    toRenderOrUpdate.forEach((comp) => comp.instance.beforeRender());
 
     toRenderOrUpdate.forEach((comp) => {
       if (comp.updateWith && comp.visible) {
@@ -596,8 +596,8 @@ function chartFn(definition, context) {
       orderComponents(element, visibleComponents, visibleOrder);
     }
 
-    toRender.forEach(comp => comp.instance.mounted());
-    toUpdate.forEach(comp => comp.instance.updated());
+    toRender.forEach((comp) => comp.instance.mounted());
+    toUpdate.forEach((comp) => comp.instance.updated());
 
     visibleComponents.forEach((comp) => {
       delete comp.updateWith;
@@ -612,7 +612,7 @@ function chartFn(definition, context) {
    */
   instance.destroy = () => {
     beforeDestroy();
-    currentComponents.forEach(comp => comp.instance.destroy());
+    currentComponents.forEach((comp) => comp.instance.destroy());
     currentComponents = [];
     unmount();
     delete instance.update;
@@ -630,7 +630,7 @@ function chartFn(definition, context) {
    */
   instance.getAffectedShapes = (ctx, mode = 'and', props, key) => {
     const shapes = [];
-    currentComponents.filter(comp => key === undefined || key === null || comp.key === key).forEach((comp) => {
+    currentComponents.filter((comp) => key === undefined || key === null || comp.key === key).forEach((comp) => {
       shapes.push(...comp.instance.getBrushedShapes(ctx, mode, props));
     });
     return shapes;
@@ -659,7 +659,7 @@ function chartFn(definition, context) {
    * @param {point} p - Point with x- and y-cooridnate. The coordinate is relative to the browser viewport.
    * @returns {Array<component-context>} Array of component contexts
    */
-  instance.componentsFromPoint = p => componentsFromPoint(p).map(comp => comp.instance.ctx);
+  instance.componentsFromPoint = (p) => componentsFromPoint(p).map((comp) => comp.instance.ctx);
 
   /**
    * Get all nodes colliding with a geometrical shape (circle, line, rectangle, point, polygon).
@@ -697,10 +697,10 @@ function chartFn(definition, context) {
     let comps = visibleComponents; // Assume that visibleComponents is ordererd according to displayOrder
 
     if (Array.isArray(opts.components) && opts.components.length > 0) {
-      const compKeys = opts.components.map(c => c.key);
+      const compKeys = opts.components.map((c) => c.key);
       comps = visibleComponents
-        .filter(c => compKeys.indexOf(c.key) !== -1)
-        .map(c => ({
+        .filter((c) => compKeys.indexOf(c.key) !== -1)
+        .map((c) => ({
           instance: c.instance,
           opts: opts.components[compKeys.indexOf(c.key)]
         }));
@@ -750,8 +750,8 @@ function chartFn(definition, context) {
   instance.brushFromShapes = (shapes, config = { components: [] }) => {
     for (let i = 0; i < config.components.length; i++) {
       const iKey = config.components[i].key;
-      visibleComponents.filter(c => iKey === c.key).forEach((c) => {
-        let compShapes = shapes.filter(shape => shape.key === c.key);
+      visibleComponents.filter((c) => iKey === c.key).forEach((c) => {
+        let compShapes = shapes.filter((shape) => shape.key === c.key);
         c.instance.brushFromShapes(compShapes, config.components[i]);
       });
     }
@@ -770,9 +770,9 @@ function chartFn(definition, context) {
    * @param {string} key - Get the dataset identified by `key`
    * @returns {dataset}
    */
-  instance.dataset = key => dataset(key);
+  instance.dataset = (key) => dataset(key);
 
-  instance.dataCollection = key => dataCollection(key);
+  instance.dataCollection = (key) => dataCollection(key);
 
   /**
    * Get all registered scales
@@ -878,12 +878,12 @@ function chartFn(definition, context) {
         /** Enable all interaction instances */
         on() {
           addDefaultEventListeners();
-          currentInteractions.forEach(i => i.on());
+          currentInteractions.forEach((i) => i.on());
         },
         /** Disable all interaction instances */
         off() {
           removeDefaultEventListeners();
-          currentInteractions.forEach(i => i.off());
+          currentInteractions.forEach((i) => i.off());
         }
       };
     }

@@ -119,9 +119,9 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
     return doRender;
   };
 
-  svg.itemsAt = input => (scene ? scene.getItemsFrom(input) : []);
+  svg.itemsAt = (input) => (scene ? scene.getItemsFrom(input) : []);
 
-  svg.findShapes = selector => (scene ? scene.findShapes(selector) : []);
+  svg.findShapes = (selector) => (scene ? scene.findShapes(selector) : []);
 
   svg.clear = () => {
     if (!group) {

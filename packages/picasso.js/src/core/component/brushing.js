@@ -262,7 +262,7 @@ export function resolveEvent({
     }
   }
 
-  const nodes = brushCollisions.map(c => c.node);
+  const nodes = brushCollisions.map((c) => c.node);
   brushFromSceneNodes({
     nodes,
     action,

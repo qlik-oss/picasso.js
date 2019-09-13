@@ -134,7 +134,7 @@ function filterReferencedDocks(visible, hidden) {
   for (let i = 0; i < visible.length; ++i) {
     let v = visible[i];
     if (v.referencedDocks.length) {
-      const isAllHidden = v.referencedDocks.every(refDock => hidden.some(h => h.key === refDock));
+      const isAllHidden = v.referencedDocks.every((refDock) => hidden.some((h) => h.key === refDock));
       if (isAllHidden) {
         hidden.push(visible.splice(i, 1)[0]);
       }
@@ -168,7 +168,7 @@ function reduceLayoutRect({
 
   filterReferencedDocks(visible, hidden);
 
-  const filteredUnsortedComps = visible.filter(c => sortedComponents.indexOf(c) !== -1);
+  const filteredUnsortedComps = visible.filter((c) => sortedComponents.indexOf(c) !== -1);
   visible.length = 0;
   visible.push(...filteredUnsortedComps);
   reduceEdgeBleed(layoutRect, reducedRect, edgeBleed);
@@ -298,11 +298,11 @@ function positionComponents({
         default:
           if (c.referencedDocks.length > 0) {
             const refs = c.referencedDocks
-              .map(ref => referencedComponents[ref])
-              .filter(ref => !!ref);
+              .map((ref) => referencedComponents[ref])
+              .filter((ref) => !!ref);
             if (refs.length > 0) {
-              outerRect = boundingBox(refs.map(ref => ref.outerRect));
-              rect = boundingBox(refs.map(ref => ref.r));
+              outerRect = boundingBox(refs.map((ref) => ref.outerRect));
+              rect = boundingBox(refs.map((ref) => ref.r));
             }
           }
           break;
@@ -327,7 +327,7 @@ function positionComponents({
       c.cachedSize = undefined;
       c.edgeBleed = undefined;
     });
-  return visible.map(c => elementOrder.indexOf(c));
+  return visible.map((c) => elementOrder.indexOf(c));
 }
 
 function checkShowSettings(strategySettings, dockSettings, logicalContainerRect) {
@@ -375,7 +375,7 @@ function filterComponents(components, settings, rect) {
     }
     const key = comp.settings.key;
     const d = config.dock();
-    const referencedDocks = /@/.test(d) ? d.split(',').map(s => s.replace(/^\s*@/, '')) : [];
+    const referencedDocks = /@/.test(d) ? d.split(',').map((s) => s.replace(/^\s*@/, '')) : [];
     if (checkShowSettings(settings, config, rect)) {
       visible.push({
         comp,
@@ -448,7 +448,7 @@ function dockLayout(initialSettings) {
       const r = createRect();
       c.comp.resize(r, r);
     });
-    return { visible: visible.map(v => v.comp), hidden: hidden.map(h => h.comp), order };
+    return { visible: visible.map((v) => v.comp), hidden: hidden.map((h) => h.comp), order };
   };
 
   docker.settings = function settingsFn(s) {

@@ -133,7 +133,7 @@ export default function (legend) {
     itemize: (obj) => {
       itemized = itemize(obj);
     },
-    render: obj => render(nav.renderer, obj, itemized, legend),
+    render: (obj) => render(nav.renderer, obj, itemized, legend),
     extent: () => 32,
     spread: () => 64
   };

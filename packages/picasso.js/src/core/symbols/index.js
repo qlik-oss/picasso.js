@@ -56,8 +56,8 @@ function create(options = {}) { // TODO handle reserverd properties x, y, size, 
 
 const symbols = {
   add: (type, fn) => reg.add(type, fn),
-  get: type => reg.get(type),
-  remove: type => reg.remove(type),
+  get: (type) => reg.get(type),
+  remove: (type) => reg.remove(type),
   create
 };
 

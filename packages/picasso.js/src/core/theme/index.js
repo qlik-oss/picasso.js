@@ -9,7 +9,7 @@ function themeFn(style = {}, palettes = []) {
       const pal = Array.isArray(palette.colors[0]) ? palette.colors : [palette.colors];
       pals[palette.key] = {
         colors: pal,
-        sizes: pal.map(colors => (colors ? colors.length : 0))
+        sizes: pal.map((colors) => (colors ? colors.length : 0))
       };
     });
   };
@@ -48,7 +48,7 @@ function themeFn(style = {}, palettes = []) {
      * Resolve style references
      * @param {style-object} s - Object containing style
      */
-    style: s => styleResolver(s, internalStyle),
+    style: (s) => styleResolver(s, internalStyle),
 
     /**
      * Set custom style

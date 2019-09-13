@@ -391,7 +391,7 @@ describe('line component', () => {
           },
           layers: {
             line: {
-              stroke: d => ['red', 'green', 'blue'][Math.round(d.datum.value) - 1]
+              stroke: (d) => ['red', 'green', 'blue'][Math.round(d.datum.value) - 1]
             }
           }
         }
@@ -403,7 +403,7 @@ describe('line component', () => {
     it('should be sorted by median by default', () => {
       componentFixture.simulateCreate(component, config);
       rendered = componentFixture.simulateRender(opts);
-      const order = rendered.map(layer => layer.stroke);
+      const order = rendered.map((layer) => layer.stroke);
       expect(order).to.eql(['red', 'green', 'blue']);
     });
 
@@ -412,7 +412,7 @@ describe('line component', () => {
 
       componentFixture.simulateCreate(component, config);
       rendered = componentFixture.simulateRender(opts);
-      const order = rendered.map(layer => layer.stroke);
+      const order = rendered.map((layer) => layer.stroke);
       expect(order).to.eql(['blue', 'green', 'red']);
     });
   });

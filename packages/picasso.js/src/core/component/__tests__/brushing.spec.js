@@ -253,8 +253,8 @@ describe('Brushing', () => {
         },
         trigger: function trigger(key) {
           this.listeners
-            .filter(listener => typeof listener[key] !== 'undefined')
-            .forEach(listener => listener[key]());
+            .filter((listener) => typeof listener[key] !== 'undefined')
+            .forEach((listener) => listener[key]());
         }
       };
       brusherStub.containsMappedData.onCall(0).returns(false); // Do not match first node but all after
@@ -414,7 +414,7 @@ describe('Brushing', () => {
       brusherStub.trigger('update');
 
       const output = dummyComponent.renderer.render.args[0][0];
-      expect(output.map(n => n.fill)).to.eql(['inactive', 'start', 'active', 'start']);
+      expect(output.map((n) => n.fill)).to.eql(['inactive', 'start', 'active', 'start']);
     });
 
     it('should resolve style function property functions', () => {
@@ -427,10 +427,10 @@ describe('Brushing', () => {
         context: 'test',
         style: {
           active: {
-            fill: shape => `${shape.fill}-active`
+            fill: (shape) => `${shape.fill}-active`
           },
           inactive: {
-            fill: shape => `${shape.fill}-inactive`
+            fill: (shape) => `${shape.fill}-inactive`
           }
         }
       });
@@ -438,7 +438,7 @@ describe('Brushing', () => {
       brusherStub.trigger('update');
 
       const output = dummyComponent.renderer.render.args[0][0];
-      expect(output.map(n => n.fill)).to.eql(['red-inactive', 'green-active']);
+      expect(output.map((n) => n.fill)).to.eql(['red-inactive', 'green-active']);
     });
   });
 });

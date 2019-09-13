@@ -19,7 +19,7 @@ scaleRegistry('categorical-color', categorical);
 export { scaleRegistry as default };
 
 function getTypeFromMeta(fields) {
-  const types = fields.map(field => (field.type() === 'dimension' ? 'band' : 'linear'));
+  const types = fields.map((field) => (field.type() === 'dimension' ? 'band' : 'linear'));
   return types.indexOf('linear') !== -1 ? 'linear' : 'band';
 }
 

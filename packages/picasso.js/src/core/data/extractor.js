@@ -15,14 +15,14 @@ export default function extract(dataConfig, data = {}, opts = {}) {
   const logger = opts.logger;
 
   if (Array.isArray(dataConfig)) { // if data is an array, assume it's manual data input -> normalize
-    extracted.items = dataConfig.map(v => ({ value: v, label: String(v) }));
+    extracted.items = dataConfig.map((v) => ({ value: v, label: String(v) }));
   } else if (dataConfig) {
     if ('collection' in dataConfig) {
       extracted = { ...data.collection(dataConfig.collection) };
     } else {
       const source = data.dataset ? data.dataset(dataConfig.source) : null;
-      let valueFn = dataConfig.value || (d => d);
-      let labelFn = dataConfig.label || (d => d);
+      let valueFn = dataConfig.value || ((d) => d);
+      let labelFn = dataConfig.label || ((d) => d);
       if (dataConfig.groupBy || dataConfig.mapTo) { // DEPRECATION
         logger.warn('Deprecated "data" configuration', dataConfig);
         extracted.items = [];
@@ -30,7 +30,7 @@ export default function extract(dataConfig, data = {}, opts = {}) {
         extracted.root = source.hierarchy ? source.hierarchy(dataConfig.hierarchy) : null;
         extracted.fields = source.fields();
       } else if (dataConfig.items) {
-        extracted.items = dataConfig.items.map(v => ({ value: valueFn(v), label: String(labelFn(v)) }));
+        extracted.items = dataConfig.items.map((v) => ({ value: valueFn(v), label: String(labelFn(v)) }));
       } else if (dataConfig.extract) {
         const extractionsConfigs = Array.isArray(dataConfig.extract) ? dataConfig.extract : [dataConfig.extract];
         extracted.items = [];
@@ -59,11 +59,11 @@ export default function extract(dataConfig, data = {}, opts = {}) {
           }
           extracted.fields.push(f);
           if (!('value' in dataConfig)) {
-            valueFn = f.value || (v => v);
-            labelFn = f.label || (v => v);
+            valueFn = f.value || ((v) => v);
+            labelFn = f.label || ((v) => v);
             extracted.value = valueFn;
           }
-          extracted.items = f.items().map(v => ({ value: valueFn(v), label: String(labelFn(v)), source: { field: dataConfig.field } }));
+          extracted.items = f.items().map((v) => ({ value: valueFn(v), label: String(labelFn(v)), source: { field: dataConfig.field } }));
           // TODO - add source: { key: dataConfig.source, field: dataConfig.field, data: v }
         }
       } else if (dataConfig.fields) {

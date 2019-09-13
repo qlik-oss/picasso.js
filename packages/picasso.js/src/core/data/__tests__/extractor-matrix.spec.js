@@ -2,12 +2,12 @@ import extract from '../extractor-matrix';
 
 describe('straight mapping', () => {
   const fields = [
-    { key: () => 'fkey', items: () => ['SE', 'IT', 'SE'], formatter: () => (v => `_${v}_`) },
-    { key: () => 'fkey2', items: () => [3, 7, 2], formatter: () => (v => `$${v}`) }
+    { key: () => 'fkey', items: () => ['SE', 'IT', 'SE'], formatter: () => ((v) => `_${v}_`) },
+    { key: () => 'fkey2', items: () => [3, 7, 2], formatter: () => ((v) => `$${v}`) }
   ];
 
   const dataset = {
-    field: idx => fields[idx],
+    field: (idx) => fields[idx],
     key: () => 'nyckel'
   };
 
@@ -35,8 +35,8 @@ describe('straight mapping', () => {
   it('should support custom accessor', () => {
     const m = extract({
       field: 0,
-      value: v => `-${v}-`,
-      label: v => `=${v}=`
+      value: (v) => `-${v}-`,
+      label: (v) => `=${v}=`
     }, dataset);
     expect(m).to.eql([
       { value: '-SE-', label: '=SE=', source: { field: 'fkey', key: 'nyckel' } },
@@ -48,7 +48,7 @@ describe('straight mapping', () => {
   it('should return mapped properties from same field', () => {
     const m = extract({
       field: 0,
-      props: { text: { value: v => `(${v})` } }
+      props: { text: { value: (v) => `(${v})` } }
     }, dataset);
     expect(m).to.eql([
       {
@@ -120,7 +120,7 @@ describe('straight mapping', () => {
   it('should filter values on main field', () => {
     const m = extract({
       field: 0,
-      filter: v => v !== 'IT'
+      filter: (v) => v !== 'IT'
     }, dataset);
     expect(m).to.eql([
       { value: 'SE', label: 'SE', source: { field: 'fkey', key: 'nyckel' } },
@@ -131,7 +131,7 @@ describe('straight mapping', () => {
   it('should return collected values', () => {
     const m = extract({
       field: 0,
-      trackBy: v => v,
+      trackBy: (v) => v,
       props: {
         item: { field: 1 }
       }
@@ -154,17 +154,17 @@ describe('straight mapping', () => {
 
   it('should return reduced values', () => {
     const ffs = [
-      { key: () => 'fkey', items: () => ['SE', 'IT', 'SE', 'SE', 'SE'], formatter: () => (v => `_${v}_`) },
-      { key: () => 'fkey2', items: () => [5, 25, 4, 8, 7], formatter: () => (v => `£${v}`) }
+      { key: () => 'fkey', items: () => ['SE', 'IT', 'SE', 'SE', 'SE'], formatter: () => ((v) => `_${v}_`) },
+      { key: () => 'fkey2', items: () => [5, 25, 4, 8, 7], formatter: () => ((v) => `£${v}`) }
     ];
     const ds = {
-      field: idx => ffs[idx],
+      field: (idx) => ffs[idx],
       key: () => 'nyckel'
     };
     const m = extract({
       field: 0,
-      trackBy: v => v,
-      reduce: values => values.join('--'),
+      trackBy: (v) => v,
+      reduce: (values) => values.join('--'),
       props: {
         item: { reduce: 'first' },
         min: { field: 1, reduce: 'min' },

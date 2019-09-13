@@ -331,19 +331,19 @@ describe('q-data-extractor-t', () => {
 
     const fields = [
       {
-        title: () => 'a', value: d => d.qElemNo, label: d => d.qText, key: () => 'qDimensionInfo/0', reduce: values => values.join(', '), formatter: () => (v => `<${v}>`)
+        title: () => 'a', value: (d) => d.qElemNo, label: (d) => d.qText, key: () => 'qDimensionInfo/0', reduce: (values) => values.join(', '), formatter: () => ((v) => `<${v}>`)
       },
       {
-        title: () => 'b', value: d => d.qElemNo, label: d => d.qText, key: () => 'qDimensionInfo/1', reduce: values => values.join(', '), reduceLabel: values => values.join(':'), formatter: () => (v => `<${v}>`)
+        title: () => 'b', value: (d) => d.qElemNo, label: (d) => d.qText, key: () => 'qDimensionInfo/1', reduce: (values) => values.join(', '), reduceLabel: (values) => values.join(':'), formatter: () => ((v) => `<${v}>`)
       },
       {
-        title: () => 'am', value: d => d.qElemNo, label: d => d.qText, key: () => 'qDimensionInfo/0/qMeasureInfo/1', reduce: values => values.join(', '), formatter: () => (v => `=${v}=`)
+        title: () => 'am', value: (d) => d.qElemNo, label: (d) => d.qText, key: () => 'qDimensionInfo/0/qMeasureInfo/1', reduce: (values) => values.join(', '), formatter: () => ((v) => `=${v}=`)
       },
       {
-        title: () => 'c', value: d => d.qValue, label: d => d.qText, key: () => 'qDimensionInfo/1/qMeasureInfo/0', reduce: values => values.join(', '), reduceLabel: (labels, v) => `€€${v}`, formatter: () => (v => `£${v}`)
+        title: () => 'c', value: (d) => d.qValue, label: (d) => d.qText, key: () => 'qDimensionInfo/1/qMeasureInfo/0', reduce: (values) => values.join(', '), reduceLabel: (labels, v) => `€€${v}`, formatter: () => ((v) => `£${v}`)
       },
       {
-        title: () => 'd', value: d => d.qValue, label: d => d.qText, key: () => 'qDimensionInfo/1/qMeasureInfo/1', reduce: values => values.join(', '), formatter: () => (v => `-${v}-`)
+        title: () => 'd', value: (d) => d.qValue, label: (d) => d.qText, key: () => 'qDimensionInfo/1/qMeasureInfo/1', reduce: (values) => values.join(', '), formatter: () => ((v) => `-${v}-`)
       }
     ];
 
@@ -360,10 +360,10 @@ describe('q-data-extractor-t', () => {
     dataset.field.withArgs('qDimensionInfo/1/qMeasureInfo/1').returns(fields[4]);
     const attrDimField = {
       title: () => '',
-      value: v => v.qElemNo,
-      label: v => v.qText,
+      value: (v) => v.qElemNo,
+      label: (v) => v.qText,
       key: () => 'qDimensionInfo/0/qAttrDimInfo/1',
-      reduce: values => values.join(', '),
+      reduce: (values) => values.join(', '),
       formatter: () => (() => '')
     };
     dataset.field.withArgs('firstDimSecondAttrDim').returns(attrDimField);
@@ -371,8 +371,8 @@ describe('q-data-extractor-t', () => {
     const attrExprField = {
       title: () => '',
       key: () => 'qDimensionInfo/1/qAttrExprInfo/0',
-      reduce: values => values.join(', '),
-      reduceLabel: labels => labels.join(':'),
+      reduce: (values) => values.join(', '),
+      reduceLabel: (labels) => labels.join(':'),
       formatter: () => (() => '')
     };
 
@@ -443,7 +443,7 @@ describe('q-data-extractor-t', () => {
     it('should return joined set when array of fields is used', () => {
       const m = extract([
         { field: 'qDimensionInfo/0' },
-        { field: 'qDimensionInfo/0', value: v => v.qText }
+        { field: 'qDimensionInfo/0', value: (v) => v.qText }
       ], dataset, {}, deps);
 
       expect(m).to.eql([
@@ -470,7 +470,7 @@ describe('q-data-extractor-t', () => {
         field: 'qDimensionInfo/0',
         props: {
           descs: {
-            field: 'qDimensionInfo/1/qAttrExprInfo/0', value: v => `-${v.qText}-`, label: v => `~${v.qText}~`
+            field: 'qDimensionInfo/1/qAttrExprInfo/0', value: (v) => `-${v.qText}-`, label: (v) => `~${v.qText}~`
           }
         }
       }, dataset, {}, deps);
@@ -496,7 +496,7 @@ describe('q-data-extractor-t', () => {
         field: 'qDimensionInfo/1',
         props: {
           descs: {
-            field: 'qDimensionInfo/1/qAttrExprInfo/0', value: v => v.qText, label: v => v.qText
+            field: 'qDimensionInfo/1/qAttrExprInfo/0', value: (v) => v.qText, label: (v) => v.qText
           }
         }
       }, dataset, {}, deps);
@@ -538,9 +538,9 @@ describe('q-data-extractor-t', () => {
     it('should return mapped properties from same field', () => {
       const m = extract({
         field: 'qDimensionInfo/1',
-        value: d => d.qElemNo,
+        value: (d) => d.qElemNo,
         props: {
-          text: d => d.qText
+          text: (d) => d.qText
         }
       }, dataset, {}, deps);
 
@@ -581,11 +581,11 @@ describe('q-data-extractor-t', () => {
     it('should return mapped properties to ancestor fields', () => {
       const m = extract({
         field: 'qDimensionInfo/1',
-        value: d => d.qElemNo,
+        value: (d) => d.qElemNo,
         props: {
           parent: {
             field: 'qDimensionInfo/0',
-            value: d => d.qText
+            value: (d) => d.qText
           }
         }
       }, dataset, { fields }, deps);
@@ -627,12 +627,12 @@ describe('q-data-extractor-t', () => {
     it('should return mapped properties to descendant fields', () => {
       const m = extract({
         field: 'qDimensionInfo/0',
-        value: d => d.qElemNo,
+        value: (d) => d.qElemNo,
         props: {
           descs: {
             field: 'qDimensionInfo/1',
-            value: d => d.qText,
-            label: d => `€${d.qText}`
+            value: (d) => d.qText,
+            label: (d) => `€${d.qText}`
           }
         }
       }, dataset, { fields }, deps);
@@ -676,13 +676,13 @@ describe('q-data-extractor-t', () => {
     it('should support track by', () => {
       const m = extract({
         field: 'qDimensionInfo/0',
-        value: d => d.qElemNo,
+        value: (d) => d.qElemNo,
         trackBy: () => -1,
-        reduce: values => values.join('--'),
+        reduce: (values) => values.join('--'),
         props: {
           descs: {
             field: 'qDimensionInfo/1',
-            value: d => d.qText
+            value: (d) => d.qText
           },
           m: {
             field: 'qDimensionInfo/1/qMeasureInfo/1'
@@ -703,15 +703,15 @@ describe('q-data-extractor-t', () => {
     it('should support properties from multiple fields', () => {
       const m = extract({
         field: 'qDimensionInfo/1',
-        value: d => d.qElemNo,
+        value: (d) => d.qElemNo,
         props: {
           id: {
             fields: [
-              { field: 'qDimensionInfo/0', value: v => v.qText },
-              { value: v => v.qText }
+              { field: 'qDimensionInfo/0', value: (v) => v.qText },
+              { value: (v) => v.qText }
             ],
-            value: values => values.join(':'),
-            label: values => values.join('||')
+            value: (values) => values.join(':'),
+            label: (values) => values.join('||')
           }
         }
       }, dataset, { fields }, deps);
@@ -753,15 +753,15 @@ describe('q-data-extractor-t', () => {
     it('should support properties from multiple descendant fields', () => {
       const m = extract({
         field: 'qDimensionInfo/0',
-        value: d => d.qElemNo,
+        value: (d) => d.qElemNo,
         props: {
           id: {
             fields: [
-              { value: v => v.qText },
+              { value: (v) => v.qText },
               { field: 'qDimensionInfo/1/qMeasureInfo/0', reduce: 'sum' }
             ],
-            value: values => values.join(':'),
-            label: labels => labels.join('||')
+            value: (values) => values.join(':'),
+            label: (labels) => labels.join('||')
           }
         }
       }, dataset, { fields }, deps);
@@ -785,8 +785,8 @@ describe('q-data-extractor-t', () => {
     it('should filter main field', () => {
       const m = extract({
         field: 'qDimensionInfo/1',
-        value: d => d.qElemNo,
-        filter: d => d.qElemNo !== 2
+        value: (d) => d.qElemNo,
+        filter: (d) => d.qElemNo !== 2
       }, dataset, { fields }, deps);
 
       expect(m).to.eql([
@@ -887,16 +887,16 @@ describe('q-data-extractor-t', () => {
 
     const fields = [
       {
-        title: () => 'a', value: d => d.qElemNo, key: () => 'qDimensionInfo/0', formatter: () => (v => `<${v}>`)
+        title: () => 'a', value: (d) => d.qElemNo, key: () => 'qDimensionInfo/0', formatter: () => ((v) => `<${v}>`)
       },
       {
-        title: () => 'b', value: d => d.qElemNo, key: () => 'qDimensionInfo/1', reduce: values => values.join(', '), formatter: () => (v => `<${v}>`)
+        title: () => 'b', value: (d) => d.qElemNo, key: () => 'qDimensionInfo/1', reduce: (values) => values.join(', '), formatter: () => ((v) => `<${v}>`)
       },
       {
-        title: () => 'c', value: d => d.qValue, label: d => d.qText, key: () => 'qMeasureInfo/0', formatter: () => (v => `£${v}`)
+        title: () => 'c', value: (d) => d.qValue, label: (d) => d.qText, key: () => 'qMeasureInfo/0', formatter: () => ((v) => `£${v}`)
       },
       {
-        title: () => 'd', value: d => d.qValue, label: d => d.qText, key: () => 'qMeasureInfo/1', formatter: () => (v => `£${v}`)
+        title: () => 'd', value: (d) => d.qValue, label: (d) => d.qText, key: () => 'qMeasureInfo/1', formatter: () => ((v) => `£${v}`)
       }
     ];
 
@@ -927,7 +927,7 @@ describe('q-data-extractor-t', () => {
         field: 'qMeasureInfo/1',
         props: {
           descs: {
-            field: 'qDimensionInfo/1', value: v => v.qText
+            field: 'qDimensionInfo/1', value: (v) => v.qText
           }
         }
       }, dataset, { fields }, deps);
@@ -1017,7 +1017,7 @@ describe('q-data-extractor-t', () => {
 
     const fields = [
       {
-        title: () => '=aggr(...)', value: d => d.qElemNo, key: () => 'qDimensionInfo/0', formatter: () => (() => '')
+        title: () => '=aggr(...)', value: (d) => d.qElemNo, key: () => 'qDimensionInfo/0', formatter: () => (() => '')
       }
     ];
 

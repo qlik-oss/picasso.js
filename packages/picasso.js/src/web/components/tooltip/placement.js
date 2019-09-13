@@ -372,8 +372,8 @@ export default function placement({ width, height }, {
       formatter: chart.formatter,
       scale: chart.scale,
       component: chart.component,
-      getComponentBoundsFromNode: node => getComponentBoundsFromNode(node, state.pointer, chart),
-      getNodeBoundsRelativeToTarget: node => getNodeBoundsRelativeToTarget(node, state.pointer, chart)
+      getComponentBoundsFromNode: (node) => getComponentBoundsFromNode(node, state.pointer, chart),
+      getNodeBoundsRelativeToTarget: (node) => getNodeBoundsRelativeToTarget(node, state.pointer, chart)
     },
     nodes: state.activeNodes,
     pointer: state.pointer,

@@ -2,7 +2,7 @@ import { breakAll, breakWord } from '../word-break';
 
 describe('Word Break', () => {
   describe('breakAll', () => {
-    const measureTextMock = text => ({ width: text.length, height: 1 });
+    const measureTextMock = (text) => ({ width: text.length, height: 1 });
     let node;
     beforeEach(() => {
       node = {
@@ -101,7 +101,7 @@ describe('Word Break', () => {
       it('should continue line-break if a single char is wider then maxWidth', () => {
         node.text = 'ASDFGHJKLÖÄ';
         node.maxWidth = 3;
-        let chunks = breakAll(node, text => ({ width: text === 'G' ? 4 : 1, height: 1 }));
+        let chunks = breakAll(node, (text) => ({ width: text === 'G' ? 4 : 1, height: 1 }));
         expect(chunks).to.deep.equal({
           lines: ['ASD', 'F', 'G', 'HJK', 'LÖÄ'],
           reduced: false
@@ -183,7 +183,7 @@ describe('Word Break', () => {
   });
 
   describe('breakWord', () => {
-    const measureTextMock = text => ({ width: text.length, height: 1 });
+    const measureTextMock = (text) => ({ width: text.length, height: 1 });
     let node;
     beforeEach(() => {
       node = {

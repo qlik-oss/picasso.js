@@ -3,7 +3,7 @@ import hBand from '../h-band';
 
 
 describe('Hierarchical band scale', () => {
-  const childGen = d => ({ value: d });
+  const childGen = (d) => ({ value: d });
   let scale;
   let data;
   let settings;

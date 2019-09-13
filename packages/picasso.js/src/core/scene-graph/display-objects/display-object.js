@@ -73,7 +73,7 @@ class DisplayObject extends Node {
   }
 
   findShapes(selector) {
-    return nodeSelector.find(selector, this).map(node => createSceneNode(node));
+    return nodeSelector.find(selector, this).map((node) => createSceneNode(node));
   }
 
   getItemsFrom(shape) {

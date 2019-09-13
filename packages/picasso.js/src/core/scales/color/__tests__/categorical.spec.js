@@ -4,7 +4,7 @@ describe('categorical', () => {
   it('should return greyish color for unknown values (default)', () => {
     let s = categorical({}, {}, {
       theme: {
-        palette: name => (name === 'unknown' ? ['#d2d2d2'] : [])
+        palette: (name) => (name === 'unknown' ? ['#d2d2d2'] : [])
       }
     });
     expect(s()).to.equal('#d2d2d2');
@@ -21,7 +21,7 @@ describe('categorical', () => {
     const defaultColors = ['fancy'];
     let s = categorical({}, {}, {
       theme: {
-        palette: name => (name === 'categorical' ? defaultColors : [])
+        palette: (name) => (name === 'categorical' ? defaultColors : [])
       }
     });
     expect(s.range()).to.eql(defaultColors);

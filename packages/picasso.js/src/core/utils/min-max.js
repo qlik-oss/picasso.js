@@ -1,7 +1,7 @@
 import { isNumber as numericFilter } from './is-number';
 
-const minAccessor = v => v.min();
-const maxAccessor = v => v.max();
+const minAccessor = (v) => v.min();
+const maxAccessor = (v) => v.max();
 
 /**
  * Calculate the min/max value based on various inputs.

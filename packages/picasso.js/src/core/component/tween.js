@@ -102,7 +102,7 @@ function tween({
       }
       let t = (Date.now() - currentStage.started) / currentStage.duration;
       let currentNodes = [];
-      let tweenedNodes = currentStage.tweens.map(ip => ip(currentStage.easing(Math.min(1, t))));
+      let tweenedNodes = currentStage.tweens.map((ip) => ip(currentStage.easing(Math.min(1, t))));
       currentNodes.push(...tweenedNodes);
       currentNodes.push(...currentStage.nodes);
       // currentNodes.push(...staticNodes);

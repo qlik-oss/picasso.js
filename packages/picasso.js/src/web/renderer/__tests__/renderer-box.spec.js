@@ -128,9 +128,9 @@ describe('renderer-box', () => {
           edgeBleed
         });
         expect(b).to.containSubset({
-          edgeBleed: Object.assign({
-            left: 0, right: 0, top: 0, bottom: 0, bool: true
-          }, edgeBleed)
+          edgeBleed: {
+            left: 0, right: 0, top: 0, bottom: 0, bool: true, ...edgeBleed
+          }
         });
       });
     });

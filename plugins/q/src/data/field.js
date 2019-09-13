@@ -12,8 +12,8 @@ export default function qField({
 } = {}) {
   let values;
 
-  const valueFn = value || (type === 'dimension' ? (d => d.qElemNo) : (d => d.qValue));
-  const labelFn = d => d.qText || '';
+  const valueFn = value || (type === 'dimension' ? ((d) => d.qElemNo) : ((d) => d.qValue));
+  const labelFn = (d) => d.qText || '';
   const reduce = type === 'dimension' ? 'first' : 'avg';
   const formatter = createFromMetaInfo(meta, localeInfo);
   const reduceLabel = type === 'dimension' ? 'first' : (labels, v) => formatter(v);
