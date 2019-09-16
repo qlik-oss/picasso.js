@@ -28,7 +28,7 @@ picasso.chart({
 });
 ```
 
-## API Referance
+## API Reference
 
 ### Settings
 
