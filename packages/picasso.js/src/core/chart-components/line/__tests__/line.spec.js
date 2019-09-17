@@ -32,7 +32,11 @@ describe('line component', () => {
       strokeLinejoin: 'miter',
       strokeWidth: 1,
       opacity: 1,
-      data: { value: 1, label: '1' }
+      data: {
+        value: 1,
+        label: '1',
+        points: config.data.map((p) => ({ label: `${p}`, value: p }))
+      }
     }]);
   });
 
@@ -66,7 +70,7 @@ describe('line component', () => {
       strokeWidth: 4,
       strokeDasharray: '8 4',
       opacity: 1,
-      data: { value: 1, label: '1' }
+      data: { value: 1, label: '1', points: config.data.map((p) => ({ label: `${p}`, value: p })) }
     }]);
   });
 
@@ -97,7 +101,7 @@ describe('line component', () => {
       strokeLinejoin: 'miter',
       strokeWidth: 1,
       opacity: 1,
-      data: { value: 1, label: '1' }
+      data: { value: 1, label: '1', points: config.data.map((p) => ({ label: `${p}`, value: p })) }
     }]);
   });
 
@@ -126,7 +130,7 @@ describe('line component', () => {
       strokeLinejoin: 'miter',
       strokeWidth: 1,
       opacity: 1,
-      data: { value: 2, label: '2' }
+      data: { value: 2, label: '2', points: config.data.map((p) => ({ label: `${p}`, value: p })) }
     }]);
   });
 
@@ -154,7 +158,7 @@ describe('line component', () => {
       strokeLinejoin: 'miter',
       strokeWidth: 1,
       opacity: 1,
-      data: { value: 2, label: '2' }
+      data: { value: 2, label: '2', points: config.data.map((p) => ({ label: `${p}`, value: p })) }
     }]);
   });
 
@@ -183,7 +187,7 @@ describe('line component', () => {
       strokeLinejoin: 'miter',
       strokeWidth: 1,
       opacity: 1,
-      data: { value: 2, label: '2' }
+      data: { value: 2, label: '2', points: config.data.map((p) => ({ label: `${p}`, value: p })) }
     }]);
   });
 
@@ -213,7 +217,7 @@ describe('line component', () => {
       strokeLinejoin: 'miter',
       strokeWidth: 1,
       opacity: 1,
-      data: { value: 2, label: '2' }
+      data: { value: 2, label: '2', points: config.data.map((p) => ({ label: `${p}`, value: p })) }
     }]);
   });
 
@@ -247,7 +251,7 @@ describe('line component', () => {
       strokeLinejoin: 'miter',
       strokeWidth: 1,
       opacity: 1,
-      data: { value: 'A', label: 'A' }
+      data: { value: 'A', label: 'A', points: config.data.map((p) => ({ label: `${p}`, value: p })) }
     }]);
   });
 
@@ -287,7 +291,7 @@ describe('line component', () => {
       strokeLinejoin: undefined,
       strokeWidth: undefined,
       opacity: 0.3,
-      data: { value: 1, label: '1' }
+      data: { value: 1, label: '1', points: config.data.map((p) => ({ label: `${p}`, value: p })) }
     }]);
   });
 
@@ -334,7 +338,7 @@ describe('line component', () => {
         strokeLinejoin: undefined,
         strokeWidth: undefined,
         opacity: 0.3,
-        data: { value: 1, label: '1' }
+        data: { value: 1, label: '1', points: [1, 2, 3].map((p) => ({ label: `${p}`, value: p })) }
       });
     });
 
@@ -347,7 +351,7 @@ describe('line component', () => {
         strokeLinejoin: 'miter',
         strokeWidth: 1,
         opacity: 1,
-        data: { value: 1, label: '1' }
+        data: { value: 1, label: '1', points: [1, 2, 3].map((p) => ({ label: `${p}`, value: p })) }
       });
     });
 
@@ -360,7 +364,7 @@ describe('line component', () => {
         strokeLinejoin: 'miter',
         strokeWidth: 1,
         opacity: 1,
-        data: { value: 1, label: '1' }
+        data: { value: 1, label: '1', points: [1, 2, 3].map((p) => ({ label: `${p}`, value: p })) }
       });
     });
   });
@@ -394,7 +398,7 @@ describe('line component', () => {
         strokeLinejoin: 'miter',
         strokeWidth: 1,
         opacity: 1,
-        data: { value: 1, label: '1' }
+        data: { value: 1, label: '1', points: [1, 2, 1].map((p) => ({ label: `${p}`, value: p })) }
       });
     });
 
@@ -407,7 +411,7 @@ describe('line component', () => {
         strokeLinejoin: 'miter',
         strokeWidth: 1,
         opacity: 1,
-        data: { value: 3, label: '3' }
+        data: { value: 3, label: '3', points: [3, 4, 3].map((p) => ({ label: `${p}`, value: p })) }
       });
     });
   });
