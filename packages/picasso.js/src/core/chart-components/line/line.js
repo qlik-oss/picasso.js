@@ -186,7 +186,7 @@ function createDisplayLayers(layers, {
     // area layer
     if (layerStngs.area && areaObj.show !== false) {
       nodes.push(createDisplayLayer(filteredPoints, {
-        data: layer.firstPoint,
+        data: layer.consumableData,
         item: areaObj,
         generator: areaGenerator
       }));
@@ -195,7 +195,7 @@ function createDisplayLayers(layers, {
     // main line layer
     if (lineObj && lineObj.show !== false) {
       nodes.push(createDisplayLayer(filteredPoints, {
-        data: layer.firstPoint,
+        data: layer.consumableData,
         item: lineObj,
         generator: lineGenerator
       }, 'none'));
@@ -203,7 +203,7 @@ function createDisplayLayers(layers, {
       // secondary line layer, used only when rendering area
       if (!missingMinor0 && layerStngs.area && areaObj.show !== false) {
         nodes.push(createDisplayLayer(filteredPoints, {
-          data: layer.firstPoint,
+          data: layer.consumableData,
           item: lineObj,
           generator: secondaryLineGenerator
         }, 'none'));
@@ -256,13 +256,27 @@ function resolve({
       }
     }
     layerIds[lid] = layerIds[lid] || {
-      order: numLines++, id: lid, items: [], firstPoint: p.data
+      order: numLines++,
+      id: lid,
+      items: [],
+      dataItems: [],
+      consumableData: {}
     };
+    layerIds[lid].dataItems.push(p.data);
     layerIds[lid].items.push(p);
   }
 
-  const metaLayers = Object.keys(layerIds).map((lid) => layerIds[lid]);
-  const layersData = { items: metaLayers.map((layer) => layer.firstPoint) };
+  const metaLayers = Object.keys(layerIds).map((lid) => {
+    layerIds[lid].consumableData = {
+      points: layerIds[lid].dataItems,
+      ...layerIds[lid].dataItems[0]
+    };
+    return layerIds[lid];
+  });
+
+  const layersData = {
+    items: metaLayers.map((layer) => layer.consumableData)
+  };
   const layerStngs = stngs.layers || {};
 
   const layersResolved = resolver.resolve({
@@ -349,7 +363,7 @@ function calculateVisibleLayers(opts) {
       areaObj: areas.items[ix],
       median,
       points,
-      firstPoint: layer.firstPoint
+      consumableData: layer.consumableData
     });
   });
 
