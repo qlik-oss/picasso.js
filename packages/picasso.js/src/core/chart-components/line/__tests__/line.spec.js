@@ -217,6 +217,40 @@ describe('line component', () => {
     }]);
   });
 
+  it('should disconnect lines with unordered domain', () => {
+    const domain = ['A', 'B', 'C', 'D', 'E'];
+    const domainScale = (v) => domain.indexOf(v) / 4;
+    domainScale.domain = () => domain;
+    domainScale.range = () => [0, 1];
+    componentFixture.mocks().theme.style.returns({});
+    componentFixture.mocks().chart.scale.returns(domainScale);
+    const config = {
+      data: ['A', 'B', /* skip C */ 'D', 'E'],
+      settings: {
+        coordinates: {
+          major: { scale: 'x' },
+          minor(b, i) { return 3 - i; },
+          layerId: () => 0
+        },
+        layers: {}
+      }
+    };
+
+    componentFixture.simulateCreate(component, config);
+    rendered = componentFixture.simulateRender(opts);
+
+    expect(rendered).to.eql([{
+      type: 'path',
+      d: 'M0,300L50,200M150,100L200,0',
+      fill: 'none',
+      stroke: '#ccc',
+      strokeLinejoin: 'miter',
+      strokeWidth: 1,
+      opacity: 1,
+      data: { value: 'A', label: 'A' }
+    }]);
+  });
+
   it('should render area which defaults to minor 0', () => {
     componentFixture.mocks().theme.style.returns({
       line: {},
