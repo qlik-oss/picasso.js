@@ -174,9 +174,9 @@ function createDisplayLayers(layers, {
       [`${minor.p}0`]((d) => d.minor0 * minor.size) // eslint-disable-line no-unexpected-multiline
       .curve(CURVES[layerObj.curve === 'monotone' ? `monotone${major.p}` : layerObj.curve]);
     if (defined) {
-      areaGenerator.defined((d) => typeof d.minor === 'number' && !isNaN(d.minor) && d.defined);
+      areaGenerator.defined((d) => !d.dummy && typeof d.minor === 'number' && !isNaN(d.minor) && d.defined);
     } else {
-      areaGenerator.defined((d) => typeof d.minor === 'number' && !isNaN(d.minor));
+      areaGenerator.defined((d) => !d.dummy && typeof d.minor === 'number' && !isNaN(d.minor));
     }
 
     const filteredPoints = stngs.connect ? points.filter(areaGenerator.defined()) : points;
@@ -219,7 +219,8 @@ function resolve({
   stngs,
   rect,
   resolver,
-  style
+  style,
+  domain
 }) {
   const { width, height } = rect;
   const coordinates = resolver.resolve({
@@ -232,12 +233,28 @@ function resolve({
     }
   });
 
+  // there are two cases when a line should be interrupted:
+  // 1. When the minor value is undefined (this case is easily handled by the lineGenerator.defined).
+  // 2. When a line is moving over a domain that may not coincide with the domain on the major scale.
+  // For the second case, dummy points need to be injected in order to create values which will cause gaps as they fulfill the first case.
+  // These dummy points need to be injected only when: the domain is discrete, connect !== false and multiple layers are defined
+  const injectDummy = !stngs.connect && domain.length > 2 && (typeof stngs.coordinates.layerId === 'function' || typeof stngs.coordinates.layerId === 'object');
+
   // collect points into layers
   const layerIds = {};
   let numLines = 0;
   for (let i = 0; i < coordinates.items.length; i++) {
     let p = coordinates.items[i];
     let lid = p.layerId;
+    if (injectDummy) {
+      // inject dummy if the previous point on the major domain is not the same as the prev point on the line's domain.
+      // this works only if a datum's value property is the same primitive as in the domain.
+      const lastItem = layerIds[lid] ? layerIds[lid].items[layerIds[lid].items.length - 1] : null;
+      const lastOrderIdx = lastItem ? domain.indexOf(lastItem.data.value) : null;
+      if (lastItem && domain.indexOf(p.data.value) - 1 !== lastOrderIdx) {
+        layerIds[lid].items.push({ dummy: true });
+      }
+    }
     layerIds[lid] = layerIds[lid] || {
       order: numLines++, id: lid, items: [], firstPoint: p.data
     };
@@ -309,17 +326,19 @@ function calculateVisibleLayers(opts) {
     for (let i = 0; i < layer.items.length; i++) {
       point = layer.items[i];
       pData = point.data;
-      if (isNaN(point.major)) {
-        continue;
-      }
-      if (opts.missingMinor0) {
-        point.minor0 = coordinates.settings.minor.scale ? coordinates.settings.minor.scale(pData.minor0 ? pData.minor0.value : 0) : 0;
-      }
-      if (!isNaN(point.minor)) {
-        values.push(point.minor);
+      if (!point.dummy) {
+        if (isNaN(point.major)) {
+          continue;
+        }
+        if (opts.missingMinor0) {
+          point.minor0 = coordinates.settings.minor.scale ? coordinates.settings.minor.scale(pData.minor0 ? pData.minor0.value : 0) : 0;
+        }
+        if (!isNaN(point.minor)) {
+          values.push(point.minor);
+        }
+        layerObj.data.push(point.data);
       }
       points.push(point);
-      layerObj.data.push(point.data);
     }
 
     const median = values.sort((a, b) => a - b)[Math.floor((values.length - 1) / 2)];
@@ -358,7 +377,8 @@ const lineMarkerComponent = {
       rect: this.rect,
       resolver: this.resolver,
       style: this.style,
-      missingMinor0
+      missingMinor0,
+      domain: this.stngs.coordinates && this.stngs.coordinates.major && this.stngs.coordinates.major.scale ? this.chart.scale(this.stngs.coordinates.major.scale).domain() : []
     });
 
     if (this.stngs.layers && this.stngs.layers.sort) {
