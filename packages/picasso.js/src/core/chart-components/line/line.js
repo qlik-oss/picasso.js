@@ -250,8 +250,8 @@ function resolve({
       // inject dummy if the previous point on the major domain is not the same as the prev point on the line's domain.
       // this works only if a datum's value property is the same primitive as in the domain.
       const lastItem = layerIds[lid] ? layerIds[lid].items[layerIds[lid].items.length - 1] : null;
-      const lastOrderIdx = lastItem ? domain.indexOf(lastItem.data.value) : null;
-      if (lastItem && domain.indexOf(p.data.value) - 1 !== lastOrderIdx) {
+      const lastOrderIdx = lastItem ? domain.indexOf(lastItem.data.major ? lastItem.data.major.value : lastItem.data.value) : null;
+      if (lastItem && domain.indexOf(p.data.major ? p.data.major.value : p.data.value) - 1 !== lastOrderIdx) {
         layerIds[lid].items.push({ dummy: true });
       }
     }
@@ -381,6 +381,7 @@ const lineMarkerComponent = {
   created() {
   },
   render({ data }) {
+    // console.log("DATA", data);
     const { width, height } = this.rect;
     this.stngs = this.settings.settings || {};
     const missingMinor0 = !this.stngs.coordinates || typeof this.stngs.coordinates.minor0 === 'undefined';
