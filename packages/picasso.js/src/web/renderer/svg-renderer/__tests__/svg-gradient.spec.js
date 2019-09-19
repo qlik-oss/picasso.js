@@ -100,6 +100,39 @@ describe('svg-gradient', () => {
       expect(bucket[0].x2).be.closeTo(0, 1e-12);
     });
 
+    it('should create a linear gradient node with custom bounds', () => {
+      const state = {
+        node: {
+          fill: {
+            type: 'gradient',
+            degree: 0,
+            x1: 2,
+            x2: 3,
+            y1: 4,
+            y2: 5,
+            stops: [
+              { offset: 0, color: 'red', opacity: 0 },
+              { offset: 1, color: 'green' }
+            ]
+          }
+        }
+      };
+      p.onCreate(state);
+
+      expect(bucket[0]).to.containSubset({
+        id: 'picasso-gradient-13-2',
+        type: 'linearGradient',
+        x1: 2,
+        x2: 3,
+        y1: 4,
+        y2: 5,
+        children: [
+          { type: 'stop', offset: '0%', style: 'stop-color:red;stop-opacity:0' },
+          { type: 'stop', offset: '100%', style: 'stop-color:green;stop-opacity:1' }
+        ]
+      });
+    });
+
     it('should maintain cache', () => {
       const localBucket = [];
       const localP = gradienter(localBucket, (input) => input.key);
