@@ -26,6 +26,11 @@ export default function createCanvasGradient(g, node, gradient) {
     );
   } else {
     const points = degreesToPoints(degree);
+    ['x1', 'x2', 'y1', 'y2'].forEach((c) => {
+      if (c in gradient) {
+        points[c] = gradient[c];
+      }
+    });
 
     const bounds = node.boundingRect();
 
