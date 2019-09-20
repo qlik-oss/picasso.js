@@ -42,7 +42,8 @@
         "chai": false,
         "expect": false,
         "sinon": false,
-        "page": false
+        "page": false,
+        "aw": false
       },
       "parserOptions": {
         "sourceType": "module",

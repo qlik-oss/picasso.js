@@ -48,7 +48,8 @@ export default class Text extends DisplayObject {
       text,
       title,
       collider,
-      boundingRect
+      boundingRect,
+      ellipsed
     } = v;
 
     super.set(v);
@@ -64,6 +65,10 @@ export default class Text extends DisplayObject {
       this._textBoundsFn = () => boundingRect;
     } else if (typeof textBoundsFn === 'function') {
       this._textBoundsFn = textBoundsFn;
+    }
+
+    if (typeof ellipsed === 'string') {
+      this.ellipsed = ellipsed;
     }
 
     this.collider = extend({ type: hasData(this) ? 'bounds' : null }, collider);

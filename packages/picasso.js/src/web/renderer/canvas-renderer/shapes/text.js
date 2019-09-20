@@ -2,8 +2,8 @@ import { ellipsText, measureText } from '../../../text-manipulation';
 import baselineHeuristic from '../../../text-manipulation/baseline-heuristic';
 import { detectTextDirection, flipTextAnchor } from '../../../../core/utils/rtl-util';
 
-export default function render(t, { g }) {
-  const text = ellipsText(t, measureText);
+export default function render(t, { g, ellipsed }) {
+  const text = ellipsed || ellipsText(t, measureText);
   g.font = `${t['font-size']} ${t['font-family']}`;
 
   const dir = detectTextDirection(t.text);

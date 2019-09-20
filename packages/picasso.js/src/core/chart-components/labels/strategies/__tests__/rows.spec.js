@@ -1,14 +1,24 @@
-import { rows } from '../rows';
+// import { rows } from '../rows';
+
+const mock = ({
+  ellipsText = (n) => n.text
+} = {}) => aw.mock([
+  ['**/text-manipulation/index.js', () => ({ ellipsText })]
+], ['../rows']);
 
 describe('labeling - rows', () => {
   describe('rows strategy', () => {
     let chart;
     let renderer;
+    let rows;
     beforeEach(() => {
       chart = {};
       renderer = {
         measureText: sinon.stub()
       };
+
+      const [m] = mock();
+      rows = m.rows;
     });
 
     it('should support rects', () => {
@@ -200,6 +210,77 @@ describe('labeling - rows', () => {
       }, (bounds, text) => text);
 
       expect(labels).to.eql(['label1']);
+    });
+
+    it('should precalculate ellipsed value', () => {
+      const settings = {
+        align: 0,
+        justify: 0,
+        labels: [{
+          label: () => 'etikett'
+        }]
+      };
+      const nodes = [{
+        type: 'rect',
+        bounds: {
+          x: 0,
+          y: 0,
+          width: 100,
+          height: 100
+        }
+      }];
+      renderer.measureText.returns({ width: 20, height: 10 });
+      const [{ rows: r }] = mock({
+        ellipsText: () => 'et…'
+      });
+      let labels = r({
+        settings,
+        chart,
+        nodes,
+        renderer,
+        style: {}
+      }, (bounds, text) => ({ text }));
+
+      expect(labels[0]).to.eql({
+        ellipsed: 'et…',
+        text: 'etikett'
+      });
+
+      // { text: 'label1', ellipsed: 'label1' }
+    });
+
+    it('should not include labels that are ellipsed to the ellipsis only', () => {
+      const settings = {
+        align: 0,
+        justify: 0,
+        labels: [{
+          label: () => 'etikett'
+        }]
+      };
+      const nodes = [{
+        type: 'rect',
+        bounds: {
+          x: 0,
+          y: 0,
+          width: 100,
+          height: 100
+        }
+      }];
+      renderer.measureText.returns({ width: 20, height: 10 });
+      const [{ rows: r }] = mock({
+        ellipsText: () => '…'
+      });
+      let labels = r({
+        settings,
+        chart,
+        nodes,
+        renderer,
+        style: {}
+      }, (bounds, text) => ({ text }));
+
+      expect(labels.length).to.eql(0);
+
+      // { text: 'label1', ellipsed: 'label1' }
     });
 
     it('should link data', () => {
