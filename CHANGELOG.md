@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.27.0](https://github.com/qlik-oss/picasso.js/compare/v0.26.1...v0.27.0) (2019-09-20)
+
+
+### Bug Fixes
+
+* **labels:** avoid rendering ellipsis only ([#442](https://github.com/qlik-oss/picasso.js/issues/442)) ([7c6c07f](https://github.com/qlik-oss/picasso.js/commit/7c6c07f))
+
+
+### Features
+
+* add style overrides in definition ([#432](https://github.com/qlik-oss/picasso.js/issues/432)) ([efd35b2](https://github.com/qlik-oss/picasso.js/commit/efd35b2))
+* **gradient:** support custom gradient bounds ([#441](https://github.com/qlik-oss/picasso.js/issues/441)) ([c4a1cb6](https://github.com/qlik-oss/picasso.js/commit/c4a1cb6))
+* **line:** add option to connect gaps in lines ([#430](https://github.com/qlik-oss/picasso.js/issues/430)) ([cdcecc3](https://github.com/qlik-oss/picasso.js/commit/cdcecc3))
+* **line:** add points to collected layers ([#439](https://github.com/qlik-oss/picasso.js/issues/439)) ([cbbe821](https://github.com/qlik-oss/picasso.js/commit/cbbe821))
+* **line:** disconnect lines ([#438](https://github.com/qlik-oss/picasso.js/issues/438)) ([5b931b1](https://github.com/qlik-oss/picasso.js/commit/5b931b1))
+* **line:** use major prop if available ([#440](https://github.com/qlik-oss/picasso.js/issues/440)) ([d8f50b9](https://github.com/qlik-oss/picasso.js/commit/d8f50b9))
+
+
+
+
+
 ## [0.26.1](https://github.com/qlik-oss/picasso.js/compare/v0.26.0...v0.26.1) (2019-06-13)
 
 **Note:** Version bump only for package picasso.js
