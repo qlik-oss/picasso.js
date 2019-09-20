@@ -93,7 +93,8 @@ function renderShapes(shapes, g, shapeToCanvasMap, deps) {
       reg.get(shape.type)(shape.attrs, {
         g,
         doFill: 'fill' in shape.attrs && shape.attrs.fill !== 'none',
-        doStroke: 'stroke' in shape.attrs && shape.attrs['stroke-width'] !== 0
+        doStroke: 'stroke' in shape.attrs && shape.attrs['stroke-width'] !== 0,
+        ellipsed: shape.ellipsed
       });
     }
     if (shape.children) {
