@@ -167,10 +167,10 @@ export function findBestPlacement({
     largest = !p || testBounds.height > largest.height ? testBounds : largest;
 
     if (orientation === 'v' && ((fitsHorizontally && testBounds.height >= measured.height)
-      || (!fitsHorizontally && testBounds.height >= measured.width && testBounds.width >= measured.height))) {
+      || (!fitsHorizontally && testBounds.height >= measured.width && (!!placement.overflow || testBounds.width >= measured.height)))) {
       bounds = testBounds;
       break;
-    } else if (orientation === 'h' && (testBounds.height >= measured.height)
+    } else if (orientation === 'h' && (!!placement.overflow || testBounds.height >= measured.height)
       && (testBounds.width >= measured.width)) {
       bounds = testBounds;
       break;
