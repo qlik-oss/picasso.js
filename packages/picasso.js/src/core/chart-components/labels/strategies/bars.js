@@ -32,9 +32,29 @@ function toBackground(label) {
   };
 }
 
-export function isTextInRect(rect, textMetrics, opts) {
-  return opts.rotate ? !(rect.width < textMetrics.height || rect.height < textMetrics.width)
-    : !(rect.width < textMetrics.width || rect.height < textMetrics.height);
+function isFitWidth(rect, label, rotate, ignoreCheck) {
+  return ignoreCheck || (rotate ? rect.width >= label.height : rect.width >= label.width);
+}
+
+function isFitHeight(rect, label, rotate, ignoreCheck) {
+  return ignoreCheck || (rotate ? rect.height >= label.width : rect.height >= label.height);
+}
+
+function isTextFitRect(orientation, rect, label, fitsHorizontally, overflow) {
+  let fitWidth;
+  let fitHeight;
+  if (orientation === 'v') {
+    fitWidth = fitsHorizontally || isFitWidth(rect, label, !fitsHorizontally, overflow);
+    fitHeight = isFitHeight(rect, label, !fitsHorizontally);
+  } else {
+    fitWidth = isFitWidth(rect, label);
+    fitHeight = isFitHeight(rect, label, false, overflow);
+  }
+  return fitWidth && fitHeight;
+}
+
+export function isTextInRect(rect, label, opts) {
+  return isFitWidth(rect, label, opts.rotate) && isFitHeight(rect, label, opts.rotate);
 }
 
 export function placeSegmentInSegment(majorSegmentPosition, majorSegmentSize, minorSegmentSize, align) {
@@ -166,12 +186,7 @@ export function findBestPlacement({
     boundaries.push(testBounds);
     largest = !p || testBounds.height > largest.height ? testBounds : largest;
 
-    if (orientation === 'v' && ((fitsHorizontally && testBounds.height >= measured.height)
-      || (!fitsHorizontally && testBounds.height >= measured.width && (!!placement.overflow || testBounds.width >= measured.height)))) {
-      bounds = testBounds;
-      break;
-    } else if (orientation === 'h' && (!!placement.overflow || testBounds.height >= measured.height)
-      && (testBounds.width >= measured.width)) {
+    if (isTextFitRect(orientation, testBounds, measured, fitsHorizontally, placement.overflow)) {
       bounds = testBounds;
       break;
     }
