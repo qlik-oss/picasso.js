@@ -32,29 +32,29 @@ function toBackground(label) {
   };
 }
 
-function isFitWidth(rect, label, rotate, ignoreCheck) {
-  return ignoreCheck || (rotate ? rect.width >= label.height : rect.width >= label.width);
+function isTextWidthInRectWidth(rect, label, rotate) {
+  return rotate ? rect.width >= label.height : rect.width >= label.width;
 }
 
-function isFitHeight(rect, label, rotate, ignoreCheck) {
-  return ignoreCheck || (rotate ? rect.height >= label.width : rect.height >= label.height);
+function isTextHeightInRectHeight(rect, label, rotate) {
+  return rotate ? rect.height >= label.width : rect.height >= label.height;
 }
 
-function isTextFitRect(orientation, rect, label, fitsHorizontally, overflow) {
+function isGoodPlacement(orientation, rect, label, fitsHorizontally, overflow) {
   let fitWidth;
   let fitHeight;
   if (orientation === 'v') {
-    fitWidth = fitsHorizontally || isFitWidth(rect, label, !fitsHorizontally, overflow);
-    fitHeight = isFitHeight(rect, label, !fitsHorizontally);
+    fitWidth = fitsHorizontally || overflow || isTextWidthInRectWidth(rect, label, true);
+    fitHeight = isTextHeightInRectHeight(rect, label, !fitsHorizontally);
   } else {
-    fitWidth = isFitWidth(rect, label);
-    fitHeight = isFitHeight(rect, label, false, overflow);
+    fitWidth = isTextWidthInRectWidth(rect, label);
+    fitHeight = overflow || isTextHeightInRectHeight(rect, label, false);
   }
   return fitWidth && fitHeight;
 }
 
 export function isTextInRect(rect, label, opts) {
-  return isFitWidth(rect, label, opts.rotate) && isFitHeight(rect, label, opts.rotate);
+  return isTextWidthInRectWidth(rect, label, opts.rotate) && isTextHeightInRectHeight(rect, label, opts.rotate);
 }
 
 export function placeSegmentInSegment(majorSegmentPosition, majorSegmentSize, minorSegmentSize, align) {
@@ -186,7 +186,7 @@ export function findBestPlacement({
     boundaries.push(testBounds);
     largest = !p || testBounds.height > largest.height ? testBounds : largest;
 
-    if (isTextFitRect(orientation, testBounds, measured, fitsHorizontally, placement.overflow)) {
+    if (isGoodPlacement(orientation, testBounds, measured, fitsHorizontally, placement.overflow)) {
       bounds = testBounds;
       break;
     }
