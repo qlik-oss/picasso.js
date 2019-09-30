@@ -192,6 +192,7 @@ describe('labeling - bars', () => {
     };
     const barRect = (opts) => rects[opts.position];
     beforeEach(() => {
+      placements.forEach(p => delete p.overflow);
       // barRect = sinon.stub();
     });
 
@@ -258,6 +259,66 @@ describe('labeling - bars', () => {
         direction: '',
         lblStngs: { fontSize: 2 },
         measured: { width: 900, height: 800 },
+        node: {},
+        orientation: 'v',
+        placementSettings: placements,
+        rect: {}
+      }, barRect);
+      expect(p.placement).to.equal(placements[2]);
+      expect(p.bounds).to.equal(rects.biggest);
+    });
+
+    it('should find placement with overflow and other size is fit, horizontal', () => {
+      placements[3].overflow = true;
+      let p = findBestPlacement({
+        direction: '',
+        lblStngs: { fontSize: 2 },
+        measured: { width: 10, height: 800 },
+        node: {},
+        orientation: 'h',
+        placementSettings: placements,
+        rect: {}
+      }, barRect);
+      expect(p.placement).to.equal(placements[3]);
+      expect(p.bounds).to.equal(rects.meh);
+    });
+
+    it('should find largest rect as fallback when overflow is true but both width and height are not fit , horizontal', () => {
+      placements[3].overflow = true;
+      let p = findBestPlacement({
+        direction: '',
+        lblStngs: { fontSize: 2 },
+        measured: { width: 11, height: 800 },
+        node: {},
+        orientation: 'h',
+        placementSettings: placements,
+        rect: {}
+      }, barRect);
+      expect(p.placement).to.equal(placements[2]);
+      expect(p.bounds).to.equal(rects.biggest);
+    });
+
+    it('should find largest rect as fallback when overflow is true but both width and height are not fit, vertical', () => {
+      placements[3].overflow = true;
+      let p = findBestPlacement({
+        direction: '',
+        lblStngs: { fontSize: 2 },
+        measured: { width: 20, height: 800 },
+        node: {},
+        orientation: 'v',
+        placementSettings: placements,
+        rect: {}
+      }, barRect);
+      expect(p.placement).to.equal(placements[3]);
+      expect(p.bounds).to.equal(rects.meh);
+    });
+
+    it('should find placement with overflow and other size is fit, vertical', () => {
+      placements[3].overflow = true;
+      let p = findBestPlacement({
+        direction: '',
+        lblStngs: { fontSize: 2 },
+        measured: { width: 21, height: 800 },
         node: {},
         orientation: 'v',
         placementSettings: placements,
