@@ -192,8 +192,7 @@ describe('labeling - bars', () => {
     };
     const barRect = (opts) => rects[opts.position];
     beforeEach(() => {
-      placements.forEach(p => delete p.overflow);
-      // barRect = sinon.stub();
+      placements.forEach((p) => delete p.overflow);
     });
 
     it('should find first placement that fits in a vertical bar', () => {
