@@ -192,7 +192,7 @@ describe('labeling - bars', () => {
         x: 10, y: 20, width: 10, height: 20
       }
     };
-    const barRect = opts => rects[opts.position];
+    const barRect = (opts) => rects[opts.position];
     beforeEach(() => {
       // barRect = sinon.stub();
     });
@@ -332,7 +332,7 @@ describe('labeling - bars', () => {
     let isFitHorizontally;
 
     beforeEach(() => {
-      isFitHorizontally = data => data && data.node && data.node.fitsHorizontally;
+      isFitHorizontally = (data) => data && data.node && data.node.fitsHorizontally;
     });
 
     it('should return correct result', () => {
@@ -393,9 +393,9 @@ describe('labeling - bars', () => {
         x: 10, y: 20, width: 10, height: 20
       }
     };
-    const barRect = opts => rects[opts.position];
+    const barRect = (opts) => rects[opts.position];
     beforeEach(() => {
-      placements.forEach(p => delete p.overflow);
+      placements.forEach((p) => delete p.overflow);
     });
 
     it('should find first placement that fits in a vertical bar', () => {
@@ -880,7 +880,7 @@ describe('labeling - bars', () => {
     beforeEach(() => {
       chart = {};
       renderer = {
-        measureText: data => (data.text === 'label 1' ? { width: 20, height: 10 } : { width: 25, height: 18 })
+        measureText: (data) => (data.text === 'label 1' ? { width: 20, height: 10 } : { width: 25, height: 18 })
       };
     });
 
@@ -889,7 +889,7 @@ describe('labeling - bars', () => {
         placements: [{
           position: 'inside', justify: 0.2, align: 0.5, fill: () => 'red'
         }],
-        label: data => `label ${data.node.id}`
+        label: (data) => `label ${data.node.id}`
       }];
       const placementSettings = [[{
         position: 'inside', justify: 0.2, align: 0.5, fill: () => 'red'
