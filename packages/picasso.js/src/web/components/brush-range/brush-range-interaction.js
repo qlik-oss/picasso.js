@@ -152,7 +152,7 @@ export function startArea({
   if (activeRange.mode !== 'modify' && state.targetRect && !testRectPoint(state.targetRect, { x: relX, y: relY })) {
     // do nothing
   } else {
-    Object.keys(tempState).forEach(key => (state[key] = tempState[key]));
+    Object.keys(tempState).forEach((key) => (state[key] = tempState[key]));
   }
 }
 
@@ -258,7 +258,7 @@ export function start({
   if (activeRange.mode !== 'modify' && state.targetRect && !testRectPoint(state.targetRect, { x: relX, y: relY })) {
     // do nothing
   } else {
-    Object.keys(tempState).forEach(key => (state[key] = tempState[key]));
+    Object.keys(tempState).forEach((key) => (state[key] = tempState[key]));
   }
 }
 export function end(state, ranges) {

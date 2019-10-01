@@ -16,7 +16,8 @@ describe('labeling - slices', () => {
         },
         position: 'into',
         padding: 1,
-        measured: { width: 6, height: 4 }
+        measured: { width: 6, height: 4 },
+        store: { insideLabelBounds: [] }
       })).to.eql({
         x: 5,
         y: -8,
@@ -37,7 +38,8 @@ describe('labeling - slices', () => {
         },
         position: 'into',
         padding: 1,
-        measured: { width: 6, height: 4 }
+        measured: { width: 6, height: 4 },
+        store: { insideLabelBounds: [] }
       })).to.eql({
         x: 5,
         y: 4,
@@ -58,7 +60,8 @@ describe('labeling - slices', () => {
         },
         position: 'inside',
         padding: 1,
-        measured: { width: 6, height: 4 }
+        measured: { width: 6, height: 4 },
+        store: { insideLabelBounds: [] }
       })).to.eql({
         x: -11,
         y: 4,
@@ -66,6 +69,28 @@ describe('labeling - slices', () => {
         height: 4,
         baseline: 'top'
       });
+    });
+
+    it('inside Q3 - Is overlapping another label', () => {
+      expect(getSliceRect({
+        slice: {
+          offset: { x: 0, y: 0 },
+          start: Math.PI,
+          end: Math.PI + (2 * Math.asin(4 / 5)),
+          innerRadius: 15,
+          outerRadius: 20
+        },
+        position: 'inside',
+        padding: 1,
+        measured: { width: 6, height: 4 },
+        store: {
+          insideLabelBounds: [
+            {
+              x: -13, y: 4, width: 10, height: 4
+            }
+          ]
+        }
+      })).to.eql(null);
     });
 
     it('inside Q4 - Do not fit', () => {
@@ -79,7 +104,8 @@ describe('labeling - slices', () => {
         },
         position: 'into',
         padding: 1,
-        measured: { width: 6, height: 4 }
+        measured: { width: 6, height: 4 },
+        store: { insideLabelBounds: [] }
       })).to.eql(null);
     });
 
@@ -133,6 +159,83 @@ describe('labeling - slices', () => {
       expect(bounds).property('y').to.closeTo(0, epsilon);
       expect(bounds).property('width').to.equal(3);
       expect(bounds).property('height').to.equal(4);
+    });
+
+    describe('should require text width to be equal to or larger than first character plus ellipsing', () => {
+      it('given position is `into` and direction `rotate`', () => {
+        expect(getSliceRect({
+          slice: {
+            offset: { x: 0, y: 0 },
+            start: Math.PI / 2,
+            end: (Math.PI / 2) + (2 * Math.asin(3 / 5)),
+            innerRadius: 0,
+            outerRadius: 15
+          },
+          position: 'into',
+          direction: 'rotate',
+          padding: 1,
+          measured: { width: 6, height: 4, minReqWidth: Infinity },
+          store: { insideLabelBounds: [] }
+        })).to.equal(null);
+      });
+
+      it('given position is `inside` and direction `rotate`', () => {
+        expect(getSliceRect({
+          slice: {
+            offset: { x: 0, y: 0 },
+            start: Math.PI / 2,
+            end: (Math.PI / 2) + (2 * Math.asin(3 / 5)),
+            innerRadius: 0,
+            outerRadius: 15
+          },
+          position: 'inside',
+          direction: 'rotate',
+          padding: 1,
+          measured: { width: 6, height: 4, minReqWidth: Infinity },
+          store: { insideLabelBounds: [] }
+        })).to.equal(null);
+      });
+
+      it('given position is `outside` and direction `rotate`', () => {
+        expect(getSliceRect({
+          slice: {
+            offset: { x: 0, y: 0 },
+            start: 0,
+            end: Math.PI,
+            innerRadius: 15,
+            outerRadius: 20
+          },
+          direction: 'rotate',
+          position: 'outside',
+          padding: 1,
+          view: {
+            x: -50, y: -50, width: 100, height: 100
+          },
+          measured: { width: 6, height: 4, minReqWidth: Infinity }
+        })).to.equal(null);
+      });
+
+      it('given position is `outside` and direction `horizontal`', () => {
+        expect(getSliceRect({
+          slice: {
+            offset: { x: 0, y: 0 },
+            start: 0,
+            end: Math.PI,
+            innerRadius: 15,
+            outerRadius: 20
+          },
+          context: {
+            q1maxY: 0, q2minY: 0, q3minY: 0, q4maxY: 0
+          },
+          direction: 'horizontal',
+          position: 'outside',
+          padding: 1,
+          view: {
+            x: -50, y: -50, width: 100, height: 100
+          },
+          measured: { width: 6, height: 4, minReqWidth: Infinity }
+        })).to.equal(null);
+      });
     });
   });
 
@@ -281,7 +384,7 @@ describe('labeling - slices', () => {
             label: () => 'etikett'
           }]
         };
-        const nodes = list.map(l => ({
+        const nodes = list.map((l) => ({
           desc: {
             slice: {
               offset: { x: 10, y: 50 },
@@ -293,7 +396,6 @@ describe('labeling - slices', () => {
           }
         }));
 
-        renderer.measureText.returns({ width: 36, height: 5 });
         return slices({
           settings,
           chart,
@@ -311,6 +413,15 @@ describe('labeling - slices', () => {
           }
         });
       }
+
+      beforeEach(() => {
+        renderer.measureText = (opts) => {
+          if (opts.text.includes('…')) {
+            return { width: 1, height: 1 };
+          }
+          return { width: 36, height: 5 };
+        };
+      });
 
       it('should not add any labels, because they are out of bounds', () => {
         const labels = createLabel([

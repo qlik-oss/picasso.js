@@ -93,7 +93,8 @@ function renderShapes(shapes, g, shapeToCanvasMap, deps) {
       reg.get(shape.type)(shape.attrs, {
         g,
         doFill: 'fill' in shape.attrs && shape.attrs.fill !== 'none',
-        doStroke: 'stroke' in shape.attrs && shape.attrs['stroke-width'] !== 0
+        doStroke: 'stroke' in shape.attrs && shape.attrs['stroke-width'] !== 0,
+        ellipsed: shape.ellipsed
       });
     }
     if (shape.children) {
@@ -205,13 +206,13 @@ export function renderer(sceneFn = sceneFactory) {
     return doRender;
   };
 
-  canvasRenderer.itemsAt = input => (scene ? scene.getItemsFrom(input) : []);
+  canvasRenderer.itemsAt = (input) => (scene ? scene.getItemsFrom(input) : []);
 
-  canvasRenderer.findShapes = selector => (scene ? scene.findShapes(selector) : []);
+  canvasRenderer.findShapes = (selector) => (scene ? scene.findShapes(selector) : []);
 
   canvasRenderer.clear = () => {
     if (el) {
-      el.width = el.width;
+      el.width = el.width; // eslint-disable-line
     }
     scene = null;
 

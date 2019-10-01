@@ -23,7 +23,7 @@ function bar(options) {
 
   if (isVertical) {
     const radians = toRadians(90);
-    points = points.map(pp => rotate(pp, radians, p));
+    points = points.map((pp) => rotate(pp, radians, p));
   }
 
   const rect = pointsToRect(points);

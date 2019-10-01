@@ -50,7 +50,7 @@ describe('Axis size calculator', () => {
     const data = null;
     const formatter = null;
     const measureText = ({ text = '' }) => ({ width: text.toString().length, height: 5 });
-    sizeFn = r => calcRequiredSize({
+    sizeFn = (r) => calcRequiredSize({
       settings, rect: r, scale, data, formatter, measureText, isDiscrete, state
     });
   });

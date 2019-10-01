@@ -53,4 +53,4 @@ export default function rgb(colStr) {
  * @example
  * rgb.test( "rgb(120, 50, 50)" );
  */
-rgb.test = colStr => typeof colStr === 'string' && (rRgb.test(colStr) || rRgba.test(colStr) || rRgbPer.test(colStr) || rRgbaPer.test(colStr));
+rgb.test = (colStr) => typeof colStr === 'string' && (rRgb.test(colStr) || rRgba.test(colStr) || rRgbPer.test(colStr) || rRgbaPer.test(colStr));

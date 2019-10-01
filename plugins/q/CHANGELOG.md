@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.26.1](https://github.com/qlik-oss/picasso.js/compare/v0.26.0...v0.26.1) (2019-06-13)
+
+**Note:** Version bump only for package picasso-plugin-q
+
+
+
+
+
+# [0.26.0](https://github.com/qlik-oss/picasso.js/compare/v0.25.3...v0.26.0) (2019-06-13)
+
+**Note:** Version bump only for package picasso-plugin-q
+
+
+
+
+
+## [0.25.3](https://github.com/qlik-oss/picasso.js/compare/v0.25.2...v0.25.3) (2019-05-23)
+
+
+### Bug Fixes
+
+* **formatting:** add sanity check ([#399](https://github.com/qlik-oss/picasso.js/issues/399)) ([e33d2c9](https://github.com/qlik-oss/picasso.js/commit/e33d2c9))
+
+
+
+
+
 ## [0.25.2](https://github.com/qlik-oss/picasso.js/compare/v0.25.1...v0.25.2) (2019-05-08)
 
 **Note:** Version bump only for package picasso-plugin-q

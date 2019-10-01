@@ -68,6 +68,30 @@ describe('canvas-gradient', () => {
       expect(fill()).to.be.equal('dummyGradient-linear');
     });
 
+    it('should create linear gradient with custom gradient bounds', () => {
+      const bounds = {
+        x: 50,
+        y: 30,
+        width: 20,
+        height: 10
+      };
+      shape = dummyRectObject('linear', bounds);
+      shape.fill = {
+        ...shape.fill,
+        x1: 1,
+        x2: 2,
+        y1: 4,
+        y2: 5
+      };
+
+      const fill = createCanvasGradient(canvascontext(), shape, shape.fill);
+
+      expect(fill.args[0]).to.be.equal(bounds.x + bounds.width * shape.fill.x1);
+      expect(fill.args[1]).to.be.equal(bounds.y + bounds.height * shape.fill.y1);
+      expect(fill.args[2]).to.be.equal(bounds.x + bounds.width * shape.fill.x2);
+      expect(fill.args[3]).to.be.equal(bounds.y + bounds.height * shape.fill.y2);
+    });
+
     it('should have been called with proper arguments', () => {
       const bounds = {
         x: 0,

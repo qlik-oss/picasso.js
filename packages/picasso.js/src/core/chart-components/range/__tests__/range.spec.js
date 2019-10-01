@@ -48,7 +48,7 @@ describe('range component', () => {
       brushes: sinon.stub()
     };
 
-    scale = s => s / 100; // assume scale has domain [0, 100]
+    scale = (s) => s / 100; // assume scale has domain [0, 100]
     scale.data = () => ({
       fields: [{
         id: () => 'sales'
@@ -84,7 +84,7 @@ describe('range component', () => {
     it('should render along vertical direction', () => {
       settings.direction = 'vertical';
       const shapes = component.render.call(context);
-      expect(shapes.map(s => ({
+      expect(shapes.map((s) => ({
         width: s.width,
         height: s.height,
         x: s.x,
@@ -107,7 +107,7 @@ describe('range component', () => {
 
     it('should render along horizontal direction', () => {
       const shapes = component.render.call(context);
-      expect(shapes.map(s => ({
+      expect(shapes.map((s) => ({
         width: s.width,
         height: s.height,
         x: s.x,
@@ -130,7 +130,7 @@ describe('range component', () => {
 
     it('should have a default fill of "#ccc"', () => {
       const shapes = component.render.call(context);
-      expect(shapes.map(s => ({
+      expect(shapes.map((s) => ({
         fill: s.fill
       }))).to.eql([
         { fill: '#ccc' },
@@ -141,7 +141,7 @@ describe('range component', () => {
     it('should have a fill of "#f00"', () => {
       settings.fill = '#f00';
       const shapes = component.render.call(context);
-      expect(shapes.map(s => ({
+      expect(shapes.map((s) => ({
         fill: s.fill
       }))).to.eql([
         { fill: '#f00' },
@@ -151,7 +151,7 @@ describe('range component', () => {
 
     it('should have a default opacity of 1', () => {
       const shapes = component.render.call(context);
-      expect(shapes.map(s => ({
+      expect(shapes.map((s) => ({
         opacity: s.opacity
       }))).to.eql([
         { opacity: 1 },
@@ -162,7 +162,7 @@ describe('range component', () => {
     it('should have an opacity of 0.2', () => {
       settings.opacity = 0.2;
       const shapes = component.render.call(context);
-      expect(shapes.map(s => ({
+      expect(shapes.map((s) => ({
         opacity: s.opacity
       }))).to.eql([
         { opacity: 0.2 },

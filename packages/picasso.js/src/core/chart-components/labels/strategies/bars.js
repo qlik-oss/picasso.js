@@ -32,9 +32,29 @@ function toBackground(label) {
   };
 }
 
-export function isTextInRect(rect, textMetrics, opts) {
-  return opts.rotate ? !(rect.width < textMetrics.height || rect.height < textMetrics.width)
-    : !(rect.width < textMetrics.width || rect.height < textMetrics.height);
+function isTextWidthInRectWidth(rect, label, rotate) {
+  return rotate ? rect.width >= label.height : rect.width >= label.width;
+}
+
+function isTextHeightInRectHeight(rect, label, rotate) {
+  return rotate ? rect.height >= label.width : rect.height >= label.height;
+}
+
+function isGoodPlacement(orientation, rect, label, fitsHorizontally, overflow) {
+  let fitWidth;
+  let fitHeight;
+  if (orientation === 'v') {
+    fitWidth = fitsHorizontally || overflow || isTextWidthInRectWidth(rect, label, true);
+    fitHeight = isTextHeightInRectHeight(rect, label, !fitsHorizontally);
+  } else {
+    fitWidth = isTextWidthInRectWidth(rect, label);
+    fitHeight = overflow || isTextHeightInRectHeight(rect, label, false);
+  }
+  return fitWidth && fitHeight;
+}
+
+export function isTextInRect(rect, label, opts) {
+  return isTextWidthInRectWidth(rect, label, opts.rotate) && isTextHeightInRectHeight(rect, label, opts.rotate);
 }
 
 export function placeSegmentInSegment(majorSegmentPosition, majorSegmentSize, minorSegmentSize, align) {
@@ -253,11 +273,7 @@ export function findBestPlacement({
     boundaries.push(testBounds);
     largest = !p || testBounds.height > largest.height ? testBounds : largest;
 
-    if (orientation === 'v' && ((fitsHorizontally && testBounds.height >= measured.height)
-      || (!fitsHorizontally && testBounds.height >= measured.width && testBounds.width >= measured.height))) {
-      bounds = testBounds;
-      break;
-    } else if (orientation === 'h' && (testBounds.height >= measured.height) && (testBounds.width >= measured.width)) {
+    if (isGoodPlacement(orientation, testBounds, measured, fitsHorizontally, placement.overflow)) {
       bounds = testBounds;
       break;
     }
@@ -409,7 +425,7 @@ export function placeInBars(
   }
 
   const filteredLabels = labels.filter(postFilter(postFilterContext));
-  const backgrounds = filteredLabels.filter(lb => typeof lb.backgroundBounds !== 'undefined').map(toBackground);
+  const backgrounds = filteredLabels.filter((lb) => typeof lb.backgroundBounds !== 'undefined').map(toBackground);
 
   return [...backgrounds, ...filteredLabels];
 }
@@ -542,9 +558,9 @@ export function bars({
 
   defaults.fontSize = parseInt(defaults.fontSize, 10);
 
-  const labelSettings = settings.labels.map(labelSetting => extend({}, defaults, settings, labelSetting));
+  const labelSettings = settings.labels.map((labelSetting) => extend({}, defaults, settings, labelSetting));
 
-  const placementSettings = settings.labels.map(labelSetting => labelSetting.placements.map(placement => extend({}, defaults, settings, labelSetting, placement)));
+  const placementSettings = settings.labels.map((labelSetting) => labelSetting.placements.map((placement) => extend({}, defaults, settings, labelSetting, placement)));
 
   const {
     hasHorizontalDirection,

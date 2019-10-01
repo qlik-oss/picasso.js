@@ -142,7 +142,7 @@ describe('picasso.js', () => {
     it('should bind brush event listeners', () => {
       const element = createElement();
       const spy = sinon.spy(element, 'addEventListener');
-      const matchFn = fnName => fn => fn.name === fnName;
+      const matchFn = (fnName) => (fn) => fn.name === fnName;
 
       picasso.chart({
         element

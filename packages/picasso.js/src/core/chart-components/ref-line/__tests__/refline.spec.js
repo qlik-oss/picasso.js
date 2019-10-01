@@ -7,8 +7,8 @@ describe('reference lines', () => {
   let chart;
   let renderer = {
     appendTo: () => {},
-    render: p => (rendererOutput = p),
-    size: rect => rect,
+    render: (p) => (rendererOutput = p),
+    size: (rect) => rect,
     measureText: ({ text, fontSize }) => ({ width: text.length * parseInt(fontSize.replace('px', ''), 10) * 0.6, height: parseInt(fontSize.replace('px', ''), 10) * 1.2 })
   };
   let shapeFn;
@@ -125,10 +125,10 @@ describe('reference lines', () => {
       }
     };
 
-    const xScale = v => v;
+    const xScale = (v) => v;
     chart.scale.withArgs({ scale: 'x' }).returns(xScale);
 
-    const yScale = v => v;
+    const yScale = (v) => v;
     chart.scale.withArgs({ scale: 'y' }).returns(yScale);
 
     createAndRenderComponent({
@@ -208,10 +208,10 @@ describe('reference lines', () => {
       }
     };
 
-    const xScale = v => v;
+    const xScale = (v) => v;
     chart.scale.withArgs({ scale: 'x' }).returns(xScale);
 
-    const yScale = v => v;
+    const yScale = (v) => v;
     chart.scale.withArgs({ scale: 'y' }).returns(yScale);
 
     createAndRenderComponent({
@@ -275,10 +275,10 @@ describe('reference lines', () => {
       }
     };
 
-    const xScale = v => v;
+    const xScale = (v) => v;
     chart.scale.withArgs({ scale: 'x' }).returns(xScale);
 
-    const yScale = v => v;
+    const yScale = (v) => v;
     chart.scale.withArgs({ scale: 'y' }).returns(yScale);
 
     createAndRenderComponent({
@@ -346,7 +346,7 @@ describe('reference lines', () => {
       }
     };
 
-    const yScale = v => v;
+    const yScale = (v) => v;
     chart.scale.withArgs({ scale: 'y' }).returns(yScale);
 
     createAndRenderComponent({
@@ -414,7 +414,7 @@ describe('reference lines', () => {
       }
     };
 
-    const yScale = v => v;
+    const yScale = (v) => v;
     chart.scale.withArgs({ scale: 'y' }).returns(yScale);
 
     createAndRenderComponent({

@@ -11,7 +11,7 @@ describe('Axis', () => {
   let chart;
 
   function verifyNumberOfNodes(type, expectedNbrOfNodes) {
-    const nodes = componentFixture.getRenderOutput().filter(n => n.type === type);
+    const nodes = componentFixture.getRenderOutput().filter((n) => n.type === type);
 
     expect(nodes.length, `Unexpected number of ${type} nodes`).to.equal(expectedNbrOfNodes);
   }
@@ -62,7 +62,7 @@ describe('Axis', () => {
 
         componentFixture.simulateCreate(axisComponent, config);
         componentFixture.simulateRender(opts);
-        const textNodes = componentFixture.getRenderOutput().filter(n => n.type === 'text');
+        const textNodes = componentFixture.getRenderOutput().filter((n) => n.type === 'text');
 
         expect(textNodes[0].maxWidth).to.equal(10);
         expect(textNodes[1].maxWidth).to.equal(10);
@@ -73,7 +73,7 @@ describe('Axis', () => {
 
         componentFixture.simulateCreate(axisComponent, config);
         componentFixture.simulateRender(opts);
-        const textNodes = componentFixture.getRenderOutput().filter(n => n.type === 'text');
+        const textNodes = componentFixture.getRenderOutput().filter((n) => n.type === 'text');
 
         expect(textNodes[0].maxWidth).to.equal(10);
         expect(textNodes[1].maxWidth).to.equal(10);
@@ -85,7 +85,7 @@ describe('Axis', () => {
 
         componentFixture.simulateCreate(axisComponent, config);
         componentFixture.simulateRender(opts);
-        const textNodes = componentFixture.getRenderOutput().filter(n => n.type === 'text');
+        const textNodes = componentFixture.getRenderOutput().filter((n) => n.type === 'text');
 
         expect(textNodes[0].maxWidth).to.equal(10);
         expect(textNodes[1].maxWidth).to.equal(10);
@@ -97,7 +97,7 @@ describe('Axis', () => {
 
         componentFixture.simulateCreate(axisComponent, config);
         componentFixture.simulateRender(opts);
-        const textNodes = componentFixture.getRenderOutput().filter(n => n.type === 'text');
+        const textNodes = componentFixture.getRenderOutput().filter((n) => n.type === 'text');
 
         expect(textNodes[0].maxWidth).to.equal(10);
         expect(textNodes[1].maxWidth).to.equal(10);
@@ -124,7 +124,7 @@ describe('Axis', () => {
 
         componentFixture.simulateCreate(axisComponent, config);
         componentFixture.simulateRender(opts);
-        const textNodes = componentFixture.getRenderOutput().filter(n => n.type === 'text');
+        const textNodes = componentFixture.getRenderOutput().filter((n) => n.type === 'text');
 
         expect(textNodes[0].maxWidth).to.equal(100);
         expect(textNodes[1].maxWidth).to.equal(100);
@@ -135,7 +135,7 @@ describe('Axis', () => {
 
         componentFixture.simulateCreate(axisComponent, config);
         componentFixture.simulateRender(opts);
-        const textNodes = componentFixture.getRenderOutput().filter(n => n.type === 'text');
+        const textNodes = componentFixture.getRenderOutput().filter((n) => n.type === 'text');
 
         expect(textNodes[0].maxWidth).to.equal(100);
         expect(textNodes[1].maxWidth).to.equal(100);
@@ -150,7 +150,7 @@ describe('Axis', () => {
 
         componentFixture.simulateCreate(axisComponent, config);
         componentFixture.simulateRender(opts);
-        const textNodes = componentFixture.getRenderOutput().filter(n => n.type === 'text');
+        const textNodes = componentFixture.getRenderOutput().filter((n) => n.type === 'text');
 
         expect(textNodes[0].maxWidth).to.approximately(127.83348, 0.0001);
         expect(textNodes[1].maxWidth).to.approximately(127.83348, 0.0001);
@@ -162,7 +162,7 @@ describe('Axis', () => {
 
         componentFixture.simulateCreate(axisComponent, config);
         componentFixture.simulateRender(opts);
-        const textNodes = componentFixture.getRenderOutput().filter(n => n.type === 'text');
+        const textNodes = componentFixture.getRenderOutput().filter((n) => n.type === 'text');
 
         expect(textNodes[0].maxWidth).to.equal(100);
         expect(textNodes[1].maxWidth).to.equal(100);

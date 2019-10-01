@@ -56,6 +56,9 @@ const SETTINGS = {
     layerId: 0
   },
   /**
+   * @type {boolean=} */
+  connect: false,
+  /**
    * @type {string=} */
   orientation: 'horizontal',
   /**
@@ -108,6 +111,14 @@ const SETTINGS = {
   }
 };
 
+/**
+ * @type {datum-boolean=}
+ * @memberof component--line-settings.coordinates
+ * @name defined
+ * @default true
+ */
+
+
 function createDisplayLayer(points, {
   generator,
   item,
@@ -146,6 +157,7 @@ function createDisplayLayers(layers, {
     } = layer;
 
     const areaGenerator = area();
+    const defined = stngs.coordinates ? stngs.coordinates.defined : null;
     let lineGenerator;
     let secondaryLineGenerator;
     let minor = { size: height, p: 'y' };
@@ -157,18 +169,24 @@ function createDisplayLayers(layers, {
     }
 
     areaGenerator
-      [major.p](d => d.major * major.size) // eslint-disable-line no-unexpected-multiline
-      [`${minor.p}1`](d => d.minor * minor.size) // eslint-disable-line no-unexpected-multiline
-      [`${minor.p}0`](d => d.minor0 * minor.size) // eslint-disable-line no-unexpected-multiline
-      .defined(d => typeof d.minor === 'number' && !isNaN(d.minor))
+      [major.p]((d) => d.major * major.size) // eslint-disable-line no-unexpected-multiline
+      [`${minor.p}1`]((d) => d.minor * minor.size) // eslint-disable-line no-unexpected-multiline
+      [`${minor.p}0`]((d) => d.minor0 * minor.size) // eslint-disable-line no-unexpected-multiline
       .curve(CURVES[layerObj.curve === 'monotone' ? `monotone${major.p}` : layerObj.curve]);
+    if (defined) {
+      areaGenerator.defined((d) => !d.dummy && typeof d.minor === 'number' && !isNaN(d.minor) && d.defined);
+    } else {
+      areaGenerator.defined((d) => !d.dummy && typeof d.minor === 'number' && !isNaN(d.minor));
+    }
+
+    const filteredPoints = stngs.connect ? points.filter(areaGenerator.defined()) : points;
     lineGenerator = areaGenerator[`line${minor.p.toUpperCase()}1`]();
     secondaryLineGenerator = areaGenerator[`line${minor.p.toUpperCase()}0`]();
 
     // area layer
     if (layerStngs.area && areaObj.show !== false) {
-      nodes.push(createDisplayLayer(points, {
-        data: layer.firstPoint,
+      nodes.push(createDisplayLayer(filteredPoints, {
+        data: layer.consumableData,
         item: areaObj,
         generator: areaGenerator
       }));
@@ -176,16 +194,16 @@ function createDisplayLayers(layers, {
 
     // main line layer
     if (lineObj && lineObj.show !== false) {
-      nodes.push(createDisplayLayer(points, {
-        data: layer.firstPoint,
+      nodes.push(createDisplayLayer(filteredPoints, {
+        data: layer.consumableData,
         item: lineObj,
         generator: lineGenerator
       }, 'none'));
 
       // secondary line layer, used only when rendering area
       if (!missingMinor0 && layerStngs.area && areaObj.show !== false) {
-        nodes.push(createDisplayLayer(points, {
-          data: layer.firstPoint,
+        nodes.push(createDisplayLayer(filteredPoints, {
+          data: layer.consumableData,
           item: lineObj,
           generator: secondaryLineGenerator
         }, 'none'));
@@ -201,7 +219,8 @@ function resolve({
   stngs,
   rect,
   resolver,
-  style
+  style,
+  domain
 }) {
   const { width, height } = rect;
   const coordinates = resolver.resolve({
@@ -214,20 +233,50 @@ function resolve({
     }
   });
 
+  // there are two cases when a line should be interrupted:
+  // 1. When the minor value is undefined (this case is easily handled by the lineGenerator.defined).
+  // 2. When a line is moving over a domain that may not coincide with the domain on the major scale.
+  // For the second case, dummy points need to be injected in order to create values which will cause gaps as they fulfill the first case.
+  // These dummy points need to be injected only when: the domain is discrete, connect !== false and multiple layers are defined
+  const injectDummy = !stngs.connect && domain.length > 2 && (typeof stngs.coordinates.layerId === 'function' || typeof stngs.coordinates.layerId === 'object');
+
   // collect points into layers
   const layerIds = {};
   let numLines = 0;
   for (let i = 0; i < coordinates.items.length; i++) {
     let p = coordinates.items[i];
     let lid = p.layerId;
+    if (injectDummy) {
+      // inject dummy if the previous point on the major domain is not the same as the prev point on the line's domain.
+      // this works only if a datum's value property is the same primitive as in the domain.
+      const lastItem = layerIds[lid] ? layerIds[lid].items[layerIds[lid].items.length - 1] : null;
+      const lastOrderIdx = lastItem ? domain.indexOf(lastItem.data.major ? lastItem.data.major.value : lastItem.data.value) : null;
+      if (lastItem && domain.indexOf(p.data.major ? p.data.major.value : p.data.value) - 1 !== lastOrderIdx) {
+        layerIds[lid].items.push({ dummy: true });
+      }
+    }
     layerIds[lid] = layerIds[lid] || {
-      order: numLines++, id: lid, items: [], firstPoint: p.data
+      order: numLines++,
+      id: lid,
+      items: [],
+      dataItems: [],
+      consumableData: {}
     };
+    layerIds[lid].dataItems.push(p.data);
     layerIds[lid].items.push(p);
   }
 
-  const metaLayers = Object.keys(layerIds).map(lid => layerIds[lid]);
-  const layersData = { items: metaLayers.map(layer => layer.firstPoint) };
+  const metaLayers = Object.keys(layerIds).map((lid) => {
+    layerIds[lid].consumableData = {
+      points: layerIds[lid].dataItems,
+      ...layerIds[lid].dataItems[0]
+    };
+    return layerIds[lid];
+  });
+
+  const layersData = {
+    items: metaLayers.map((layer) => layer.consumableData)
+  };
   const layerStngs = stngs.layers || {};
 
   const layersResolved = resolver.resolve({
@@ -291,17 +340,19 @@ function calculateVisibleLayers(opts) {
     for (let i = 0; i < layer.items.length; i++) {
       point = layer.items[i];
       pData = point.data;
-      if (isNaN(point.major)) {
-        continue;
-      }
-      if (opts.missingMinor0) {
-        point.minor0 = coordinates.settings.minor.scale ? coordinates.settings.minor.scale(pData.minor0 ? pData.minor0.value : 0) : 0;
-      }
-      if (!isNaN(point.minor)) {
-        values.push(point.minor);
+      if (!point.dummy) {
+        if (isNaN(point.major)) {
+          continue;
+        }
+        if (opts.missingMinor0) {
+          point.minor0 = coordinates.settings.minor.scale ? coordinates.settings.minor.scale(pData.minor0 ? pData.minor0.value : 0) : 0;
+        }
+        if (!isNaN(point.minor)) {
+          values.push(point.minor);
+        }
+        layerObj.data.push(point.data);
       }
       points.push(point);
-      layerObj.data.push(point.data);
     }
 
     const median = values.sort((a, b) => a - b)[Math.floor((values.length - 1) / 2)];
@@ -312,7 +363,7 @@ function calculateVisibleLayers(opts) {
       areaObj: areas.items[ix],
       median,
       points,
-      firstPoint: layer.firstPoint
+      consumableData: layer.consumableData
     });
   });
 
@@ -330,6 +381,7 @@ const lineMarkerComponent = {
   created() {
   },
   render({ data }) {
+    // console.log("DATA", data);
     const { width, height } = this.rect;
     this.stngs = this.settings.settings || {};
     const missingMinor0 = !this.stngs.coordinates || typeof this.stngs.coordinates.minor0 === 'undefined';
@@ -340,15 +392,16 @@ const lineMarkerComponent = {
       rect: this.rect,
       resolver: this.resolver,
       style: this.style,
-      missingMinor0
+      missingMinor0,
+      domain: this.stngs.coordinates && this.stngs.coordinates.major && this.stngs.coordinates.major.scale ? this.chart.scale(this.stngs.coordinates.major.scale).domain() : []
     });
 
     if (this.stngs.layers && this.stngs.layers.sort) {
-      const sortable = visibleLayers.map(v => ({
+      const sortable = visibleLayers.map((v) => ({
         id: v.layerObj.id,
         data: v.layerObj.data
       }));
-      sortable.sort(this.stngs.layers.sort).map(s => s.id);
+      sortable.sort(this.stngs.layers.sort).map((s) => s.id);
       visibleLayers.sort((a, b) => sortable.indexOf(b.layerObj.id) - sortable.indexOf(a.layerObj.id));
     } else {
       visibleLayers.sort((a, b) => a.median - b.median);

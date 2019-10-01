@@ -2,7 +2,7 @@ import RgbaColor from '../rgba-color';
 import HslaColor from '../hsla-color';
 
 function hasPropertyCombination(obj, properties) {
-  return properties.every(p => (Object.prototype.hasOwnProperty.call(obj, p)));
+  return properties.every((p) => (Object.prototype.hasOwnProperty.call(obj, p)));
 }
 
 /**

@@ -1,9 +1,12 @@
 import extend from 'extend';
 import {
   testCircleRect,
-  testRectLine
+  testRectLine,
+  testRectRect
 } from '../../../math/narrow-phase-collision';
 import { rectContainsRect } from '../../../math/intersection';
+
+const LABEL_OVERLAP_THRESHOLD_X = 4;
 
 function normalize(angle) {
   const PI2 = Math.PI * 2;
@@ -94,7 +97,46 @@ function getRectFromCircleIntersection({ radius, size, angle }) {
   return bounds;
 }
 
-function getHorizontalInsideSliceRect({ slice, padding, measured }) {
+function getHorizontalInsideSliceRect({
+  slice, padding, measured, store
+}) {
+  const {
+    start, end, outerRadius
+  } = slice;
+  const middle = normalize((start + end) / 2);
+
+  const size = {
+    width: measured.width + (padding * 2),
+    height: measured.height + (padding * 2)
+  };
+
+  let bounds = getRectFromCircleIntersection({
+    radius: outerRadius,
+    size,
+    angle: middle
+  });
+
+  if (!bounds) { return null; }
+
+  bounds.baseline = 'top';
+
+  pad(bounds, padding);
+
+  if (store.insideLabelBounds.some((rect) => testRectRect(rect, bounds))) {
+    return null;
+  }
+
+  store.insideLabelBounds.push({
+    x: bounds.x - LABEL_OVERLAP_THRESHOLD_X,
+    y: bounds.y,
+    width: bounds.width + (LABEL_OVERLAP_THRESHOLD_X * 2),
+    height: bounds.height
+  }); // Copy as bounds is mutated else where
+
+  return bounds;
+}
+
+function getHorizontalIntoSliceRect({ slice, padding, measured }) {
   let {
     start, end, innerRadius, outerRadius
   } = slice;
@@ -145,7 +187,7 @@ function getRotatedInsideSliceRect({ slice, measured, padding }) {
       maxWidth = outerRadius - x - (padding * 2);
     }
   }
-  if (maxWidth < 0) {
+  if (maxWidth < 0 || maxWidth < measured.minReqWidth) {
     return null;
   }
 
@@ -208,7 +250,9 @@ function getRotatedOusideSliceRect({
     }
   }
 
-  if (maxWidth <= 0) { return 0; }
+  if (maxWidth <= 0 || maxWidth < measured.minReqWidth) {
+    return null;
+  }
 
   let bounds = {
     x,
@@ -382,6 +426,10 @@ function getHorizontalOusideSliceRect({
     }
   }
 
+  if (maxWidth < measured.minReqWidth) {
+    return null;
+  }
+
   let bounds = {
     x,
     y,
@@ -394,6 +442,7 @@ function getHorizontalOusideSliceRect({
   } else {
     bounds.anchor = 'end';
   }
+
   return bounds;
 }
 
@@ -430,7 +479,7 @@ function placeTextOnPoint(rect, text, opts) {
 }
 
 export function getSliceRect({
-  slice, direction, position, padding, measured, view, context
+  slice, direction, position, padding, measured, view, context, store
 }) {
   let {
     start,
@@ -446,7 +495,7 @@ export function getSliceRect({
       if (direction === 'rotate') {
         bounds = getRotatedInsideSliceRect({ slice, measured, padding });
       } else {
-        bounds = getHorizontalInsideSliceRect({ slice, measured, padding });
+        bounds = getHorizontalIntoSliceRect({ slice, measured, padding });
       }
       break;
     case 'inside':
@@ -459,7 +508,9 @@ export function getSliceRect({
       if (direction === 'rotate') {
         bounds = getRotatedInsideSliceRect({ slice: s, measured, padding });
       } else {
-        bounds = getHorizontalInsideSliceRect({ slice: s, measured, padding });
+        bounds = getHorizontalInsideSliceRect({
+          slice: s, measured, padding, store
+        });
       }
       break;
     case 'outside':
@@ -492,7 +543,8 @@ function findBestPlacement({
   measured,
   node,
   placementSettings,
-  rect
+  rect,
+  store
 }, sliceRect = getSliceRect) {
   for (let p = 0; p < placementSettings.length; p++) {
     let placement = placementSettings[p];
@@ -503,7 +555,8 @@ function findBestPlacement({
       direction,
       position: placement.position,
       measured,
-      padding: placement.padding
+      padding: placement.padding,
+      store
     });
 
     if (!bounds) {
@@ -553,6 +606,23 @@ function sortNodes(nodes) {
   return q1.concat(q2, q4, q3);
 }
 
+function measureText(text, stgns, renderer) {
+  const fontFamily = stgns.fontFamily;
+  const fontSize = `${stgns.fontSize}px`;
+  const metrics = renderer.measureText({ text, fontFamily, fontSize });
+
+  metrics.minReqWidth = Math.min(
+    metrics.width,
+    renderer.measureText({
+      text: `${text[0]}…`,
+      fontFamily,
+      fontSize
+    }).width
+  );
+
+  return metrics;
+}
+
 /**
  * @typedef {object} component--labels~slices-label-strategy
  *
@@ -592,35 +662,31 @@ export function slices(
 
   defaults.fontSize = parseInt(defaults.fontSize, 10);
 
-  const labelSettings = settings.labels.map(labelSetting => extend({}, defaults, settings, labelSetting));
+  const labelSettings = settings.labels.map((labelSetting) => extend({}, defaults, settings, labelSetting));
 
-  const placementSettings = settings.labels.map(labelSetting => labelSetting.placements.map(placement => extend({}, defaults, settings, labelSetting, placement)));
+  const placementSettings = settings.labels.map((labelSetting) => labelSetting.placements.map((placement) => extend({}, defaults, settings, labelSetting, placement)));
 
-  const labelStruct = {};
   const labels = [];
+  const store = {
+    insideLabelBounds: []
+  };
 
   nodes = sortNodes(nodes);
   const context = {};
 
   for (let i = 0, len = nodes.length; i < len; i++) {
-    let node = nodes[i];
-    let arg = cbContext(node, chart);
+    const node = nodes[i];
+    const arg = cbContext(node, chart);
 
     for (let j = 0; j < labelSettings.length; j++) {
-      let lblStngs = labelSettings[j];
-      let text = typeof lblStngs.label === 'function' ? lblStngs.label(arg, i) : '';
+      const lblStngs = labelSettings[j];
+      const text = typeof lblStngs.label === 'function' ? lblStngs.label(arg, i) : '';
       if (!text) {
         continue;
       }
-      let direction = typeof lblStngs.direction === 'function' ? lblStngs.direction(arg, i) : lblStngs.direction || 'horizontal';
+      const direction = typeof lblStngs.direction === 'function' ? lblStngs.direction(arg, i) : lblStngs.direction || 'horizontal';
       const linkData = typeof lblStngs.linkData === 'function' ? lblStngs.linkData(arg, i) : undefined;
-
-      labelStruct.fontFamily = lblStngs.fontFamily;
-      labelStruct.fontSize = `${lblStngs.fontSize}px`;
-      labelStruct.text = text;
-
-      let measured = renderer.measureText(labelStruct);
-
+      const measured = measureText(text, lblStngs, renderer);
       const bestPlacement = findPlacement({
         context,
         direction,
@@ -628,11 +694,12 @@ export function slices(
         measured,
         node,
         placementSettings: placementSettings[j],
-        rect
+        rect,
+        store
       });
 
-      let bounds = bestPlacement.bounds;
-      let placement = bestPlacement.placement;
+      const bounds = bestPlacement.bounds;
+      const placement = bestPlacement.placement;
 
       if (bounds && placement) {
         if (placement.position === 'outside' && direction !== 'rotate') {
@@ -645,9 +712,9 @@ export function slices(
           }
         }
 
-        let fill = typeof placement.fill === 'function' ? placement.fill(arg, i) : placement.fill;
+        const fill = typeof placement.fill === 'function' ? placement.fill(arg, i) : placement.fill;
 
-        let label = placer(bounds, text, {
+        const label = placer(bounds, text, {
           fill,
           fontSize: lblStngs.fontSize,
           fontFamily: lblStngs.fontFamily,

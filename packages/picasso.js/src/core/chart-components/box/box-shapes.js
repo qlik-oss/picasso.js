@@ -26,9 +26,9 @@ export default function buildShapes({
   const rendHeight = height;
   const maxMajorWidth = flipXY ? height : width;
   const majorSettings = resolved.major.settings;
-  const minorProps = ['start', 'end', 'min', 'max', 'med'].filter(prop => typeof resolved.minor.settings[prop] !== 'undefined');
+  const minorProps = ['start', 'end', 'min', 'max', 'med'].filter((prop) => typeof resolved.minor.settings[prop] !== 'undefined');
   const numMinorProps = minorProps.length;
-  const nonOobKeys = keys.filter(key => key !== 'oob');
+  const nonOobKeys = keys.filter((key) => key !== 'oob');
 
   let children;
   let major;
@@ -179,6 +179,9 @@ export default function buildShapes({
 
     if (!isOutOfBounds) {
       for (let k = 0; k < numNonOobKeys; k++) {
+        if (minorItem[nonOobKeys[k]] && minorItem[nonOobKeys[k]].show === false) {
+          continue;
+        }
         addMarkerList[nonOobKeys[k]]();
       }
     } else if (minorItem.oob) {

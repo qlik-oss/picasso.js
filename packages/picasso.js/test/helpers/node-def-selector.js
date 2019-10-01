@@ -41,7 +41,7 @@ const FILTERS = {
     });
   },
 
-  universal: objects => objects,
+  universal: (objects) => objects,
 
   tag: (c, objects) => { // eslint-disable-line arrow-body-style
     return objects.filter((o) => {
@@ -209,7 +209,7 @@ export default function find(s, object) {
         let idx;
 
         for (let i = 1; i < levels.length; i++) {
-          const levelsNode = levels[i].map(lvl => lvl.node);
+          const levelsNode = levels[i].map((lvl) => lvl.node);
           idx = levelsNode.indexOf(ancestor);
           while (ancestor && idx < 0) {
             ancestor = ancestor.parent;
@@ -222,7 +222,7 @@ export default function find(s, object) {
         return true;
       });
 
-      groupResults.push(selected.map(sel => sel.node));
+      groupResults.push(selected.map((sel) => sel.node));
     }
 
     for (let i = 0, len = groupResults.length; i < len; i++) {

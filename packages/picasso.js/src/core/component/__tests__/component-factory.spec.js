@@ -55,7 +55,7 @@ describe('Component', () => {
       appendTo: () => {},
       render: () => ({}),
       destroy: () => ({}),
-      size: s => s,
+      size: (s) => s,
       element: () => 'elm'
     };
   });
@@ -282,7 +282,7 @@ describe('Component', () => {
     beforeEach(() => {
       shapes = [{ data: 0 }, { data: 1 }, { data: 2 }];
       renderer.findShapes = () => shapes;
-      chart.brush = () => ({ containsMappedData: d => d === 1 || d === 2 });
+      chart.brush = () => ({ containsMappedData: (d) => d === 1 || d === 2 });
       config = {
         key: 'myKey',
         brush: {

@@ -17,7 +17,7 @@ describe('legend-resolver', () => {
         item: {}
       },
       resolver: {
-        resolve: x => x // return param - a simple way to test what params are passed in (and avoid spies)
+        resolve: (x) => x // return param - a simple way to test what params are passed in (and avoid spies)
       }
     });
     expect(resolved.labels).to.eql({
@@ -42,7 +42,7 @@ describe('legend-resolver', () => {
         data: () => ({
           fields: [{
             id: () => 'measure',
-            formatter: () => (v => `$${v}`)
+            formatter: () => ((v) => `$${v}`)
           }]
         }),
         domain: () => [2, 5, 7]
@@ -55,8 +55,8 @@ describe('legend-resolver', () => {
         item: {}
       },
       resolver: {
-        resolve: x => (!x.data.items ? {} : {
-          items: x.data.items.map(d => ({
+        resolve: (x) => (!x.data.items ? {} : {
+          items: x.data.items.map((d) => ({
             data: d
           }))
         })
@@ -83,21 +83,21 @@ describe('legend-resolver', () => {
       },
       settings: {
         layout: {},
-        formatter: v => `${v}kr`,
+        formatter: (v) => `${v}kr`,
         settings: {}
       },
       style: {
         item: {}
       },
       resolver: {
-        resolve: x => (!x.data.items ? {} : {
-          items: x.data.items.map(d => ({
+        resolve: (x) => (!x.data.items ? {} : {
+          items: x.data.items.map((d) => ({
             data: d
           }))
         })
       },
       chart: {
-        formatter: v => v
+        formatter: (v) => v
       }
     });
     expect(resolved.labels).to.eql({
@@ -116,7 +116,7 @@ describe('legend-resolver', () => {
         scale: {
           data: () => ({ fields: [{}] }),
           domain: () => ['a', 'b'],
-          datum: d => ({ value: d })
+          datum: (d) => ({ value: d })
         },
         settings: {
           layout: {},
@@ -138,7 +138,7 @@ describe('legend-resolver', () => {
           item: {}
         },
         resolver: {
-          resolve: x => x // return param - a simple way to test what params are passed in (and avoid spies)
+          resolve: (x) => x // return param - a simple way to test what params are passed in (and avoid spies)
         }
       };
 
@@ -162,7 +162,7 @@ describe('legend-resolver', () => {
     });
 
     it('should resolve labels by `label` function if available', () => {
-      settings.scale.label = d => `label ${d}`;
+      settings.scale.label = (d) => `label ${d}`;
       settings.scale.domain = () => ['b', 'a'];
       resolved = resolveSettings(settings);
 

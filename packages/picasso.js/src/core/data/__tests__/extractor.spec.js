@@ -6,8 +6,8 @@ describe('extract data', () => {
       { v: 3, s: 'A' },
       { v: 4, s: 'B' }
     ],
-    value: d => d.v,
-    label: d => d.s
+    value: (d) => d.v,
+    label: (d) => d.s
   };
 
   const region = {
@@ -15,7 +15,7 @@ describe('extract data', () => {
       { v: 7 },
       { v: 9 }
     ],
-    value: d => d.v
+    value: (d) => d.v
   };
 
   describe('from config as array', () => {
@@ -44,8 +44,8 @@ describe('extract data', () => {
     it('should normalize values', () => {
       expect(extract({
         items: [{ v: 3, s: 'A' }, { v: 5, s: 'B' }, { v: 7, s: 'C' }],
-        value: d => d.v,
-        label: d => d.s
+        value: (d) => d.v,
+        label: (d) => d.s
       }).items).to.eql([
         { value: 3, label: 'A' },
         { value: 5, label: 'B' },
@@ -148,8 +148,8 @@ describe('extract data', () => {
       });
       let d = extract({
         field: 'dim',
-        value: x => x.v + 5,
-        label: v => `<${v.s}>`
+        value: (x) => x.v + 5,
+        label: (v) => `<${v.s}>`
       }, { dataset });
 
       expect(d.items).to.eql([
@@ -201,7 +201,7 @@ describe('extract data', () => {
     it('should sort values', () => {
       expect(extract({
         items: ['A', 'B', 'C'],
-        filter: d => d.label !== 'C'
+        filter: (d) => d.label !== 'C'
       }).items).to.eql([
         { value: 'A', label: 'A' },
         { value: 'B', label: 'B' }

@@ -14,7 +14,7 @@ function DateToQlikTimestamp(date) {
 
 function getFormatter(ticks) {
   let qFmt = HOUR_PATTERN;
-  if (ticks.some(date => date.getUTCSeconds() > 0)) {
+  if (ticks.some((date) => date.getUTCSeconds() > 0)) {
     qFmt = MINUTE_PATTERN;
   }
 

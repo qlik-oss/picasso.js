@@ -1,5 +1,5 @@
-import componentFactoryFixture from '../../../../test/helpers/component-factory-fixture';
 import elementMock from 'test-utils/mocks/element-mock';
+import componentFactoryFixture from '../../../../test/helpers/component-factory-fixture';
 import chart, { orderComponents } from '..';
 
 describe('Chart', () => {
@@ -133,7 +133,7 @@ describe('Chart', () => {
           render: sinon.stub()
         }
       };
-      const comp = key => components[key];
+      const comp = (key) => components[key];
       comp.has = () => true;
       const componentFixture = componentFactoryFixture();
 
@@ -175,7 +175,7 @@ describe('Chart', () => {
           render: sinon.stub()
         }
       };
-      const comp = key => components[key];
+      const comp = (key) => components[key];
       comp.has = () => true;
       const first = componentFactoryFixture().mocks().renderer;
       const second = componentFactoryFixture().mocks().renderer;
@@ -208,7 +208,7 @@ describe('Chart', () => {
           renderer: rendererFactory
         }
       });
-      const order = element.children.map(c => c.attributes['data-key']);
+      const order = element.children.map((c) => c.attributes['data-key']);
       expect(order).to.eql(['comp2', 'comp1']);
     });
 
@@ -219,7 +219,7 @@ describe('Chart', () => {
           render: sinon.stub()
         }
       };
-      const comp = key => components[key];
+      const comp = (key) => components[key];
       comp.has = () => true;
       const first = componentFactoryFixture().mocks().renderer;
       const second = componentFactoryFixture().mocks().renderer;
@@ -252,7 +252,7 @@ describe('Chart', () => {
           renderer: rendererFactory
         }
       });
-      expect(element.children.map(c => c.attributes['data-key'])).to.eql(['comp1', 'comp2']);
+      expect(element.children.map((c) => c.attributes['data-key'])).to.eql(['comp1', 'comp2']);
       chartInstance.update({
         settings: {
           components: [{
@@ -268,7 +268,7 @@ describe('Chart', () => {
           }]
         }
       });
-      expect(element.children.map(c => c.attributes['data-key'])).to.eql(['comp2', 'comp1']);
+      expect(element.children.map((c) => c.attributes['data-key'])).to.eql(['comp2', 'comp1']);
     });
 
     describe('brushFromShapes', () => {
@@ -308,7 +308,7 @@ describe('Chart', () => {
             render: sinon.stub()
           }
         };
-        comp = key => components[key];
+        comp = (key) => components[key];
         comp.has = () => true;
 
         const first = componentFactoryFixture().mocks().renderer;
@@ -411,7 +411,7 @@ describe('Chart', () => {
     let el;
     beforeEach(() => {
       const sub = ['b-1', 'b-2'].map(elementMock);
-      visible = ['a', 'b', 'c'].map(elementMock).map(e => ({
+      visible = ['a', 'b', 'c'].map(elementMock).map((e) => ({
         instance: {
           renderer: () => ({
             element: () => e
@@ -426,7 +426,7 @@ describe('Chart', () => {
 
     it('should inject missing elements', () => {
       orderComponents(el, visible);
-      let order = el.children.map(e => e.name);
+      let order = el.children.map((e) => e.name);
       expect(order).to.eql(['a', 'b-1', 'b-2', 'b', 'c']);
     });
 
@@ -434,7 +434,7 @@ describe('Chart', () => {
       orderComponents(el, visible); // initial will inject children into el
 
       orderComponents(el, visible); // re-order when el is already populated
-      const order = el.children.map(e => e.name);
+      const order = el.children.map((e) => e.name);
       expect(order).to.eql(['a', 'b-1', 'b-2', 'b', 'c']);
     });
 
@@ -442,7 +442,7 @@ describe('Chart', () => {
       orderComponents(el, visible); // initial will inject children into el
 
       orderComponents(el, visible, [2, 0, 1]); // re-order when el is already populated
-      const order = el.children.map(e => e.name);
+      const order = el.children.map((e) => e.name);
       expect(order).to.eql(['b-1', 'b-2', 'b', 'c', 'a']);
     });
   });

@@ -140,16 +140,16 @@ function resolveShape(shape, ratio = 1) {
       _shape.r = shape.r;
       return ['intersectsCircle', _shape];
     case 'rect':
-      _shape = rectToPoints(shape).map(p => scalarMultiply(p, ratio));
+      _shape = rectToPoints(shape).map((p) => scalarMultiply(p, ratio));
       return ['intersectsRect', _shape];
     case 'line':
-      _shape = lineToPoints(shape).map(p => scalarMultiply(p, ratio));
+      _shape = lineToPoints(shape).map((p) => scalarMultiply(p, ratio));
       return ['intersectsLine', _shape];
     case 'point':
       _shape = scalarMultiply(shape, ratio);
       return ['containsPoint', _shape];
     case 'polygon':
-      _shape.vertices = shape.vertices.map(vertex => scalarMultiply(vertex, ratio));
+      _shape.vertices = shape.vertices.map((vertex) => scalarMultiply(vertex, ratio));
       return ['intersectsPolygon', _shape];
     default:
       return [];

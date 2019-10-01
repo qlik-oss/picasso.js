@@ -16,12 +16,12 @@ function dispatcherState() {
 
   fn.set = (s) => {
     state = s;
-    on[state].forEach(event => event(s));
+    on[state].forEach((event) => event(s));
   };
 
   fn.on = (key, event) => {
     if (Array.isArray(key)) {
-      key.forEach(k => on[k].push(event));
+      key.forEach((k) => on[k].push(event));
     } else {
       on[key].push(event);
     }

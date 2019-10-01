@@ -16,8 +16,8 @@ export function getFieldAccessor(field, page, deps) {
   let attrDimIdx = -1;
   if (fieldIdx === -1) {
     for (let i = 0; i < cache.wrappedFields.length; i++) {
-      attrDimIdx = cache.wrappedFields[i].attrDims.map(v => v.instance).indexOf(field);
-      attrIdx = cache.wrappedFields[i].attrExps.map(v => v.instance).indexOf(field);
+      attrDimIdx = cache.wrappedFields[i].attrDims.map((v) => v.instance).indexOf(field);
+      attrIdx = cache.wrappedFields[i].attrExps.map((v) => v.instance).indexOf(field);
       if (attrDimIdx !== -1 || attrIdx !== -1) {
         fieldIdx = i;
         break;
@@ -32,13 +32,13 @@ export function getFieldAccessor(field, page, deps) {
   }
 
   if (attrDimIdx >= 0) {
-    return row => row[fieldIdx].qAttrDims.qValues[attrDimIdx];
+    return (row) => row[fieldIdx].qAttrDims.qValues[attrDimIdx];
   }
   if (attrIdx >= 0) {
-    return row => row[fieldIdx].qAttrExps.qValues[attrIdx];
+    return (row) => row[fieldIdx].qAttrExps.qValues[attrIdx];
   }
 
-  return row => row[fieldIdx];
+  return (row) => row[fieldIdx];
 }
 
 // TODO - handle 'other' value
@@ -153,8 +153,8 @@ export default function extract(config, dataset, cache, util) {
             }
 
             if (p.fields) {
-              const fieldValues = ret[propsArr[l]].map(v => v.value);
-              const fieldLabels = ret[propsArr[l]].map(v => v.label);
+              const fieldValues = ret[propsArr[l]].map((v) => v.value);
+              const fieldLabels = ret[propsArr[l]].map((v) => v.label);
               ret[propsArr[l]] = {
                 value: typeof p.value === 'function' ? p.value(fieldValues) : typeof p.value !== 'undefined' ? p.value : fieldValues,
                 label: typeof p.label === 'function' ? p.label(fieldLabels) : typeof p.label !== 'undefined' ? String(p.label) : String(ret[propsArr[l]].value)

@@ -77,7 +77,7 @@ describe('pie', () => {
     componentFixture.simulateCreate(component, config);
     rendered = componentFixture.simulateRender(opts);
 
-    expect(rendered.map(r => r.data.value)).to.deep.equal([1, 2, 3, 4]);
+    expect(rendered.map((r) => r.data.value)).to.deep.equal([1, 2, 3, 4]);
   });
 
   it('should filter out outerRadius <= innerRadius', () => {
@@ -97,7 +97,7 @@ describe('pie', () => {
     componentFixture.simulateCreate(component, config);
     rendered = componentFixture.simulateRender(opts);
 
-    expect(rendered.map(r => r.data.value)).to.deep.equal([1, 3]);
+    expect(rendered.map((r) => r.data.value)).to.deep.equal([1, 3]);
   });
 
   describe('arcValue', () => {
@@ -159,25 +159,25 @@ describe('pie', () => {
     });
 
     it('should render first slice', () => {
-      d = rendered[0].d.split(/[MALZ]/).map(arr => (arr ? arr.split(',').map(Math.round) : []));
+      d = rendered[0].d.split(/[MALZ]/).map((arr) => (arr ? arr.split(',').map(Math.round) : []));
       expect(d[1]).to.eql([0, -40]); // move to
       expect(d[2]).to.eql([40, 40, 0, 0, 1, 35, 20]); // arc
       expect(d[3]).to.eql([0, 0]); // line to
 
-      const t = rendered[0].transform.split(') ').map(arr => (arr.replace(/translate\(|\)/g, '').split(', ').map(Math.round)));
+      const t = rendered[0].transform.split(') ').map((arr) => (arr.replace(/translate\(|\)/g, '').split(', ').map(Math.round)));
       expect(t[0]).to.eql([7, -4]);
       expect(t[1]).to.eql([50, 100]);
     });
 
     it('should render second slice', () => {
-      d = rendered[1].d.split(/[MALZ]/).map(arr => (arr ? arr.split(',').map(Math.round) : []));
+      d = rendered[1].d.split(/[MALZ]/).map((arr) => (arr ? arr.split(',').map(Math.round) : []));
       expect(d[1]).to.eql([35, 20]); // move to
       expect(d[2]).to.eql([40, 40, 0, 0, 1, -35, 20]); // arc
       expect(d[3]).to.eql([0, 0]); // line to
     });
 
     it('should render third slice', () => {
-      d = rendered[2].d.split(/[MALZ]/).map(arr => (arr ? arr.split(',').map(Math.round) : []));
+      d = rendered[2].d.split(/[MALZ]/).map((arr) => (arr ? arr.split(',').map(Math.round) : []));
       expect(d[1]).to.eql([-35, 20]); // move to
       expect(d[2]).to.eql([40, 40, 0, 0, 1, -0, -40]); // arc
       expect(d[3]).to.eql([0, 0]); // line to

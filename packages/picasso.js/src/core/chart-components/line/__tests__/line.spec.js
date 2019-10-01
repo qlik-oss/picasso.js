@@ -32,7 +32,11 @@ describe('line component', () => {
       strokeLinejoin: 'miter',
       strokeWidth: 1,
       opacity: 1,
-      data: { value: 1, label: '1' }
+      data: {
+        value: 1,
+        label: '1',
+        points: config.data.map((p) => ({ label: `${p}`, value: p }))
+      }
     }]);
   });
 
@@ -66,7 +70,7 @@ describe('line component', () => {
       strokeWidth: 4,
       strokeDasharray: '8 4',
       opacity: 1,
-      data: { value: 1, label: '1' }
+      data: { value: 1, label: '1', points: config.data.map((p) => ({ label: `${p}`, value: p })) }
     }]);
   });
 
@@ -97,7 +101,7 @@ describe('line component', () => {
       strokeLinejoin: 'miter',
       strokeWidth: 1,
       opacity: 1,
-      data: { value: 1, label: '1' }
+      data: { value: 1, label: '1', points: config.data.map((p) => ({ label: `${p}`, value: p })) }
     }]);
   });
 
@@ -126,7 +130,7 @@ describe('line component', () => {
       strokeLinejoin: 'miter',
       strokeWidth: 1,
       opacity: 1,
-      data: { value: 2, label: '2' }
+      data: { value: 2, label: '2', points: config.data.map((p) => ({ label: `${p}`, value: p })) }
     }]);
   });
 
@@ -154,7 +158,137 @@ describe('line component', () => {
       strokeLinejoin: 'miter',
       strokeWidth: 1,
       opacity: 1,
-      data: { value: 2, label: '2' }
+      data: { value: 2, label: '2', points: config.data.map((p) => ({ label: `${p}`, value: p })) }
+    }]);
+  });
+
+  it('should handle custom defined null values', () => {
+    componentFixture.mocks().theme.style.returns({});
+    const config = {
+      data: [2, 3, 4, 1, 2],
+      settings: {
+        coordinates: {
+          major(a, i) { return i; },
+          minor(b) { return b.datum.value; },
+          defined(b) { return b.datum.value !== 4; }
+        },
+        layers: {}
+      }
+    };
+
+    componentFixture.simulateCreate(component, config);
+    rendered = componentFixture.simulateRender(opts);
+
+    expect(rendered).to.eql([{
+      type: 'path',
+      d: 'M0,200L200,300M600,100L800,200',
+      fill: 'none',
+      stroke: '#ccc',
+      strokeLinejoin: 'miter',
+      strokeWidth: 1,
+      opacity: 1,
+      data: { value: 2, label: '2', points: config.data.map((p) => ({ label: `${p}`, value: p })) }
+    }]);
+  });
+
+  it('should connect points with undefined values', () => {
+    componentFixture.mocks().theme.style.returns({});
+    const config = {
+      data: [2, 3, 4, 1, 2],
+      settings: {
+        coordinates: {
+          major(a, i) { return i; },
+          minor(b) { return b.datum.value; },
+          defined(b) { return b.datum.value !== 4; }
+        },
+        connect: true,
+        layers: {}
+      }
+    };
+
+    componentFixture.simulateCreate(component, config);
+    rendered = componentFixture.simulateRender(opts);
+
+    expect(rendered).to.eql([{
+      type: 'path',
+      d: 'M0,200L200,300L600,100L800,200',
+      fill: 'none',
+      stroke: '#ccc',
+      strokeLinejoin: 'miter',
+      strokeWidth: 1,
+      opacity: 1,
+      data: { value: 2, label: '2', points: config.data.map((p) => ({ label: `${p}`, value: p })) }
+    }]);
+  });
+
+  it('should disconnect lines with unordered domain', () => {
+    const domain = ['A', 'B', 'C', 'D', 'E'];
+    const domainScale = (v) => domain.indexOf(v) / 4;
+    domainScale.domain = () => domain;
+    domainScale.range = () => [0, 1];
+    componentFixture.mocks().theme.style.returns({});
+    componentFixture.mocks().chart.scale.returns(domainScale);
+    const config = {
+      data: ['A', 'B', /* skip C */ 'D', 'E'],
+      settings: {
+        coordinates: {
+          major: { scale: 'x' },
+          minor(b, i) { return 3 - i; },
+          layerId: () => 0
+        },
+        layers: {}
+      }
+    };
+
+    componentFixture.simulateCreate(component, config);
+    rendered = componentFixture.simulateRender(opts);
+
+    expect(rendered).to.eql([{
+      type: 'path',
+      d: 'M0,300L50,200M150,100L200,0',
+      fill: 'none',
+      stroke: '#ccc',
+      strokeLinejoin: 'miter',
+      strokeWidth: 1,
+      opacity: 1,
+      data: { value: 'A', label: 'A', points: config.data.map((p) => ({ label: `${p}`, value: p })) }
+    }]);
+  });
+
+  it('should disconnect lines with unordered domain based on major data', () => {
+    const domain = ['A', 'B', 'C', 'D', 'E'];
+    const domainScale = (v) => domain.indexOf(v) / 4;
+    domainScale.domain = () => domain;
+    domainScale.range = () => [0, 1];
+    componentFixture.mocks().theme.style.returns({});
+    componentFixture.mocks().chart.scale.returns(domainScale);
+    const config = {
+      data: {
+        items: ['A', 'B', /* skip C */ 'D', 'E'],
+        map: (d) => ({ value: `-${d.value}-`, major: { value: d.value } })
+      },
+      settings: {
+        coordinates: {
+          major: { scale: 'x' },
+          minor(b, i) { return 3 - i; },
+          layerId: () => 0
+        },
+        layers: {}
+      }
+    };
+
+    componentFixture.simulateCreate(component, config);
+    rendered = componentFixture.simulateRender(opts);
+
+    expect(rendered).to.eql([{
+      type: 'path',
+      d: 'M0,300L50,200M150,100L200,0',
+      fill: 'none',
+      stroke: '#ccc',
+      strokeLinejoin: 'miter',
+      strokeWidth: 1,
+      opacity: 1,
+      data: { value: '-A-', major: { value: 'A' }, points: config.data.items.map((p) => ({ value: `-${p}-`, major: { value: p } })) }
     }]);
   });
 
@@ -194,7 +328,7 @@ describe('line component', () => {
       strokeLinejoin: undefined,
       strokeWidth: undefined,
       opacity: 0.3,
-      data: { value: 1, label: '1' }
+      data: { value: 1, label: '1', points: config.data.map((p) => ({ label: `${p}`, value: p })) }
     }]);
   });
 
@@ -241,7 +375,7 @@ describe('line component', () => {
         strokeLinejoin: undefined,
         strokeWidth: undefined,
         opacity: 0.3,
-        data: { value: 1, label: '1' }
+        data: { value: 1, label: '1', points: [1, 2, 3].map((p) => ({ label: `${p}`, value: p })) }
       });
     });
 
@@ -254,7 +388,7 @@ describe('line component', () => {
         strokeLinejoin: 'miter',
         strokeWidth: 1,
         opacity: 1,
-        data: { value: 1, label: '1' }
+        data: { value: 1, label: '1', points: [1, 2, 3].map((p) => ({ label: `${p}`, value: p })) }
       });
     });
 
@@ -267,7 +401,7 @@ describe('line component', () => {
         strokeLinejoin: 'miter',
         strokeWidth: 1,
         opacity: 1,
-        data: { value: 1, label: '1' }
+        data: { value: 1, label: '1', points: [1, 2, 3].map((p) => ({ label: `${p}`, value: p })) }
       });
     });
   });
@@ -301,7 +435,7 @@ describe('line component', () => {
         strokeLinejoin: 'miter',
         strokeWidth: 1,
         opacity: 1,
-        data: { value: 1, label: '1' }
+        data: { value: 1, label: '1', points: [1, 2, 1].map((p) => ({ label: `${p}`, value: p })) }
       });
     });
 
@@ -314,7 +448,7 @@ describe('line component', () => {
         strokeLinejoin: 'miter',
         strokeWidth: 1,
         opacity: 1,
-        data: { value: 3, label: '3' }
+        data: { value: 3, label: '3', points: [3, 4, 3].map((p) => ({ label: `${p}`, value: p })) }
       });
     });
   });
@@ -332,7 +466,7 @@ describe('line component', () => {
           },
           layers: {
             line: {
-              stroke: d => ['red', 'green', 'blue'][Math.round(d.datum.value) - 1]
+              stroke: (d) => ['red', 'green', 'blue'][Math.round(d.datum.value) - 1]
             }
           }
         }
@@ -344,7 +478,7 @@ describe('line component', () => {
     it('should be sorted by median by default', () => {
       componentFixture.simulateCreate(component, config);
       rendered = componentFixture.simulateRender(opts);
-      const order = rendered.map(layer => layer.stroke);
+      const order = rendered.map((layer) => layer.stroke);
       expect(order).to.eql(['red', 'green', 'blue']);
     });
 
@@ -353,7 +487,7 @@ describe('line component', () => {
 
       componentFixture.simulateCreate(component, config);
       rendered = componentFixture.simulateRender(opts);
-      const order = rendered.map(layer => layer.stroke);
+      const order = rendered.map((layer) => layer.stroke);
       expect(order).to.eql(['blue', 'green', 'red']);
     });
   });

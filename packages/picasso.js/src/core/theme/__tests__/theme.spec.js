@@ -31,4 +31,17 @@ describe('Theme', () => {
     }, []);
     expect(t.style({ title: '$label' })).to.eql({ title: { fontFamily: 'Sans nonsense' } });
   });
+
+  it('should inherit when setting style', () => {
+    const t = themeFn({
+      $font: 'Sans nonsense',
+      $label: {
+        fontFamily: '$font'
+      }
+    }, []);
+    t.setStyle({
+      $font: 'Sans x'
+    });
+    expect(t.style({ title: '$label' })).to.eql({ title: { fontFamily: 'Sans x' } });
+  });
 });

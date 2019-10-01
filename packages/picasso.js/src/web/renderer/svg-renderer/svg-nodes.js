@@ -29,7 +29,7 @@ const maintainer = (element, item) => {
       element.setAttribute('fill', item.fillReference);
     } else if (attr === 'text') {
       element.setAttribute('style', 'white-space: pre');
-      element.textContent = ellipsText(item.attrs, measureText);
+      element.textContent = item.ellipsed || ellipsText(item.attrs, measureText);
       const dir = detectTextDirection(item.attrs.text);
       if (dir === 'rtl') {
         element.setAttribute('direction', 'rtl');

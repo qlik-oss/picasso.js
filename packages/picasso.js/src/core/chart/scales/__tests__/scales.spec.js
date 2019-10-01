@@ -7,7 +7,7 @@ describe('scales', () => {
   describe('collection', () => {
     let fn;
     beforeEach(() => {
-      fn = sinon.spy(def => (typeof def === 'object' && !Object.keys(def).length ? 'fallback' : def));
+      fn = sinon.spy((def) => (typeof def === 'object' && !Object.keys(def).length ? 'fallback' : def));
     });
 
     it('should return fallback scale when unknown config is used', () => {

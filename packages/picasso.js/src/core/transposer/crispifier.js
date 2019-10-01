@@ -24,15 +24,15 @@ export function crispifierFactory(crispMap) {
     crispMap.line = {
       append: ['x1', 'x2', 'y1', 'y2'],
       round: [],
-      condition: item => (item.x1 === item.x2 || item.y1 === item.y2),
-      conditionAppend: item => item.strokeWidth % 2 !== 0
+      condition: (item) => (item.x1 === item.x2 || item.y1 === item.y2),
+      conditionAppend: (item) => item.strokeWidth % 2 !== 0
     };
 
     crispMap.rect = {
       append: ['x', 'y'],
       round: ['width', 'height'],
       condition: () => true,
-      conditionAppend: item => item.strokeWidth % 2 !== 0
+      conditionAppend: (item) => item.strokeWidth % 2 !== 0
     };
   }
 
@@ -91,7 +91,7 @@ export function crispifierFactory(crispMap) {
    * @param  {Array} items  Array of objects to crispify
    * @return {Undefined}    Returns nothing, modifies the original item instead
    */
-  crispItem.multiple = items => items.forEach(item => crispItem(item));
+  crispItem.multiple = (items) => items.forEach((item) => crispItem(item));
 
   return crispItem;
 }

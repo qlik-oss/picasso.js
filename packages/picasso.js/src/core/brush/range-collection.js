@@ -97,7 +97,7 @@ export default function rangeCollection(config = {}) {
     return before;
   };
 
-  fn.containsValue = value => contains(boundaries, value, minCondition, maxCondition);
+  fn.containsValue = (value) => contains(boundaries, value, minCondition, maxCondition);
 
   fn.containsRange = ({ min, max }) => {
     const i0 = index(boundaries, min, true);

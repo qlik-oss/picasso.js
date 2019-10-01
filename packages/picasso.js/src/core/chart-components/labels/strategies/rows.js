@@ -1,5 +1,8 @@
 import extend from 'extend';
 
+import { ellipsText } from '../../../../web/text-manipulation';
+import { ELLIPSIS_CHAR } from '../../../../web/text-manipulation/text-const';
+
 const LINE_HEIGHT = 1.2;
 const CIRCLE_FACTOR = 0.9;
 
@@ -116,7 +119,7 @@ export function rows({
 
   const rowSettings = extend({}, defaults, settings);
 
-  const labelSettings = settings.labels.map(labelSetting => extend({}, rowSettings, labelSetting));
+  const labelSettings = settings.labels.map((labelSetting) => extend({}, rowSettings, labelSetting));
 
   const labelStruct = {};
   const labels = [];
@@ -193,6 +196,14 @@ export function rows({
         textMetrics: measurements[j]
       });
       if (label) {
+        if (label.text && label.text !== ELLIPSIS_CHAR) {
+          const ellipsed = ellipsText(label, renderer.measureText);
+          if (ELLIPSIS_CHAR === ellipsed) {
+            // don't include label if it's only an ellipsis
+            continue;
+          }
+          label.ellipsed = ellipsed;
+        }
         if (typeof linkData !== 'undefined') {
           label.data = linkData;
         }

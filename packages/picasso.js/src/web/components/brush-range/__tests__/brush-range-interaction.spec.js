@@ -17,13 +17,13 @@ describe('BrushRange Interaction', () => {
       },
       multi: true,
       size: 1,
-      scale: x => x
+      scale: (x) => x
     };
     state.scale.min = sinon.stub().returns(0);
     state.scale.max = sinon.stub().returns(1);
-    state.scale.invert = x => x;
-    state.scale.norm = x => x;
-    state.scale.normInvert = x => x;
+    state.scale.invert = (x) => x;
+    state.scale.norm = (x) => x;
+    state.scale.normInvert = (x) => x;
 
     event = {
       center: { x: 0.5, y: 0.5 },

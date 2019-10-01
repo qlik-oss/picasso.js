@@ -24,7 +24,7 @@ class GeometryCollection {
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   containsPoint(p) {
-    return this.geometries.some(geo => geo.containsPoint(p));
+    return this.geometries.some((geo) => geo.containsPoint(p));
   }
 
   /**
@@ -32,7 +32,7 @@ class GeometryCollection {
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsLine(points) {
-    return this.geometries.some(geo => geo.intersectsLine(points));
+    return this.geometries.some((geo) => geo.intersectsLine(points));
   }
 
   /**
@@ -40,7 +40,7 @@ class GeometryCollection {
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsRect(points) {
-    return this.geometries.some(geo => geo.intersectsRect(points));
+    return this.geometries.some((geo) => geo.intersectsRect(points));
   }
 
   /**
@@ -48,7 +48,7 @@ class GeometryCollection {
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsCircle(c) {
-    return this.geometries.some(geo => geo.intersectsCircle(c));
+    return this.geometries.some((geo) => geo.intersectsCircle(c));
   }
 
   /**
@@ -56,7 +56,7 @@ class GeometryCollection {
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsPolygon(polygon) {
-    return this.geometries.some(geo => geo.intersectsPolygon(polygon));
+    return this.geometries.some((geo) => geo.intersectsPolygon(polygon));
   }
 }
 

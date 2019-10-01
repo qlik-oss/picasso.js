@@ -3,7 +3,7 @@ import {
 } from '../node-tree';
 
 function getContent(arr) {
-  return arr.map(a => a.content);
+  return arr.map((a) => a.content);
 }
 
 describe('node-tree', () => {
@@ -18,7 +18,7 @@ describe('node-tree', () => {
     });
 
     it('should store created objects', () => {
-      let fn = s => `step ${s}`,
+      let fn = (s) => `step ${s}`,
         p = {},
         nodes = [{ content: { type: '1' } }, { content: { type: '2' } }];
 

@@ -39,7 +39,7 @@ describe('Stage', () => {
       it('should return child objects that intersect with a point', () => {
         const r = stage.getItemsFrom({ x: 60, y: 60 });
 
-        expect(r.map(rr => rr.node.attrs.fill)).to.deep.equal(['rect1', 'rect2']);
+        expect(r.map((rr) => rr.node.attrs.fill)).to.deep.equal(['rect1', 'rect2']);
       });
 
       it('should travese child objects children and return objects that intersect with a point', () => {
@@ -54,7 +54,7 @@ describe('Stage', () => {
 
         const r = stage.getItemsFrom({ x: 550, y: 550 });
 
-        expect(r.map(rr => rr.node.attrs.fill)).to.deep.equal(['rect3', 'containerRect1', 'containerRect2']);
+        expect(r.map((rr) => rr.node.attrs.fill)).to.deep.equal(['rect3', 'containerRect1', 'containerRect2']);
       });
 
       it('should transform the input point based on the dpi ratio', () => {
@@ -67,7 +67,7 @@ describe('Stage', () => {
         }));
         const r = stage.getItemsFrom({ x: 30, y: 30 });
 
-        expect(r.map(rr => rr.node.attrs.fill)).to.deep.equal(['hit']);
+        expect(r.map((rr) => rr.node.attrs.fill)).to.deep.equal(['hit']);
         expect(r.length).to.equal(1);
       });
     });
@@ -95,7 +95,7 @@ describe('Stage', () => {
           x1: 60, y1: 60, x2: 120, y2: 120
         });
 
-        expect(r.map(rr => rr.node.attrs.fill)).to.deep.equal(['rect1', 'rect2']);
+        expect(r.map((rr) => rr.node.attrs.fill)).to.deep.equal(['rect1', 'rect2']);
       });
 
       it('should transform the input line based on the dpi ratio', () => {
@@ -139,7 +139,7 @@ describe('Stage', () => {
           x: 60, y: 60, width: 120, height: 120
         });
 
-        expect(r.map(rr => rr.node.attrs.fill)).to.deep.equal(['rect1', 'rect2']);
+        expect(r.map((rr) => rr.node.attrs.fill)).to.deep.equal(['rect1', 'rect2']);
       });
 
       it('should transform the input line based on the dpi ratio', () => {

@@ -86,7 +86,7 @@ export default function componentFactoryFixture() {
       element: () => rendererElement,
       clear: () => {},
       destroy: () => {},
-      setKey: key => rendererElement.setAttribute('data-key', key)
+      setKey: (key) => rendererElement.setAttribute('data-key', key)
     };
 
     mediatorMock = {
@@ -158,7 +158,7 @@ export default function componentFactoryFixture() {
     return rendererOutput;
   };
 
-  fn.simulateLayout = opts => comp.dockConfig().computePreferredSize(opts);
+  fn.simulateLayout = (opts) => comp.dockConfig().computePreferredSize(opts);
 
   fn.getRenderOutput = () => rendererOutput;
 
@@ -166,7 +166,7 @@ export default function componentFactoryFixture() {
 
   fn.instance = () => comp;
 
-  fn.findNodes = s => findNodes(s, { children: rendererOutput });
+  fn.findNodes = (s) => findNodes(s, { children: rendererOutput });
 
   return fn();
 }

@@ -41,7 +41,7 @@ const FILTERS = {
     });
   },
 
-  universal: objects => objects,
+  universal: (objects) => objects,
 
   tag: (selector, objects) => { // eslint-disable-line arrow-body-style
     return objects.filter((o) => {
