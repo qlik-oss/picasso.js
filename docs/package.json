@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "glob": "^7.1.4",
-    "handlebars": "^4.2.0",
+    "handlebars": "^4.4.2",
     "handlebars-helpers": "0.10.0",
     "jsdoc": "^3.6.3",
     "rimraf": "^3.0.0",
