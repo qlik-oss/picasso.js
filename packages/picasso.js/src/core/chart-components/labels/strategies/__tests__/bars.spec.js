@@ -204,7 +204,7 @@ describe('labeling - bars', () => {
         node: {},
         orientation: 'v',
         placementSettings: placements,
-        labelOrientations: [true, false, true, true],
+        canFitHorizontally: [true, false, true, true],
         rect: {}
       }, barRect);
       expect(p).to.equal(true);
@@ -215,7 +215,7 @@ describe('labeling - bars', () => {
         node: {},
         orientation: 'v',
         placementSettings: placements,
-        labelOrientations: [true, false, false, true],
+        canFitHorizontally: [true, false, false, true],
         rect: {}
       }, barRect);
       expect(p).to.equal(false);
@@ -230,7 +230,7 @@ describe('labeling - bars', () => {
         node: {},
         orientation: 'v',
         placementSettings: placements,
-        labelOrientations: [true, false, false, true],
+        canFitHorizontally: [true, false, false, true],
         rect: {}
       }, barRect);
       expect(p).to.equal(false);
@@ -243,7 +243,7 @@ describe('labeling - bars', () => {
         node: {},
         orientation: 'v',
         placementSettings: placements,
-        labelOrientations: [true, true, false, true],
+        canFitHorizontally: [true, true, false, true],
         rect: {}
       }, barRect);
       expect(p).to.equal(true);
@@ -257,7 +257,7 @@ describe('labeling - bars', () => {
         node: {},
         orientation: 'h',
         placementSettings: placements,
-        labelOrientations: [true, true, false, true],
+        canFitHorizontally: [true, true, false, true],
         rect: {}
       }, barRect);
       expect(p).to.equal(true);
@@ -269,7 +269,7 @@ describe('labeling - bars', () => {
         node: {},
         orientation: 'h',
         placementSettings: placements,
-        labelOrientations: [false, false, false, true],
+        canFitHorizontally: [false, false, false, true],
         rect: {}
       }, barRect);
       expect(p).to.equal(false);
@@ -283,7 +283,7 @@ describe('labeling - bars', () => {
         node: {},
         orientation: 'h',
         placementSettings: placements,
-        labelOrientations: [true, true, false, true],
+        canFitHorizontally: [true, true, false, true],
         rect: {}
       }, barRect);
       expect(p).to.equal(false);
@@ -295,7 +295,7 @@ describe('labeling - bars', () => {
         node: {},
         orientation: 'h',
         placementSettings: placements,
-        labelOrientations: [false, false, true, false],
+        canFitHorizontally: [false, false, true, false],
         rect: {}
       }, barRect);
       expect(p).to.equal(false);
@@ -309,7 +309,7 @@ describe('labeling - bars', () => {
         node: {},
         orientation: 'v',
         placementSettings: placements,
-        labelOrientations: [false, false, true, false],
+        canFitHorizontally: [false, false, true, false],
         rect: {}
       }, barRect);
       expect(p).to.equal(true);
@@ -321,7 +321,7 @@ describe('labeling - bars', () => {
         node: {},
         orientation: 'v',
         placementSettings: placements,
-        labelOrientations: [false, true, false, false],
+        canFitHorizontally: [false, true, false, false],
         rect: {}
       }, barRect);
       expect(p).to.equal(false);
@@ -342,13 +342,13 @@ describe('labeling - bars', () => {
           texts: ['a'],
           measurements: [],
           placementSettings: [],
-          labelOrientations: []
+          canFitHorizontally: []
         }, {
           node: { fitsHorizontally: true },
           texts: ['a'],
           measurements: [],
           placementSettings: [],
-          labelOrientations: []
+          canFitHorizontally: []
         }]
       }, isFitHorizontally);
       expect(p).to.eql(true);
@@ -359,13 +359,13 @@ describe('labeling - bars', () => {
           texts: ['a'],
           measurements: [],
           placementSettings: [],
-          labelOrientations: []
+          canFitHorizontally: []
         }, {
           node: { fitsHorizontally: false },
           texts: ['a'],
           measurements: [],
           placementSettings: [],
-          labelOrientations: []
+          canFitHorizontally: []
         }]
       }, isFitHorizontally);
       expect(p).to.eql(false);
@@ -924,8 +924,8 @@ describe('labeling - bars', () => {
         placementSettings,
         renderer
       });
-      expect(targetNodes[0].labelOrientations).to.deep.eql([[false, true]]);
-      expect(targetNodes[1].labelOrientations).to.deep.eql([[true, true]]);
+      expect(targetNodes[0].canFitHorizontally).to.deep.eql([[false, true]]);
+      expect(targetNodes[1].canFitHorizontally).to.deep.eql([[true, true]]);
     });
   });
 });

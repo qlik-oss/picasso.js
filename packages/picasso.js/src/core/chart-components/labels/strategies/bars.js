@@ -163,7 +163,7 @@ export function isBestPlacementFitHorizontally({
   node,
   orientation,
   placementSettings,
-  fitsHorizontallyList,
+  canFitHorizontally,
   rect
 }, barRect = getBarRect) {
   let largest;
@@ -175,7 +175,7 @@ export function isBestPlacementFitHorizontally({
   const boundaries = [];
   for (p = 0; p < placementSettings.length; p++) {
     placement = placementSettings[p];
-    fitsHorizontally = fitsHorizontallyList[p];
+    fitsHorizontally = canFitHorizontally[p];
     testBounds = barRect({
       bar: node.localBounds,
       view: rect,
@@ -197,7 +197,7 @@ export function isBestPlacementFitHorizontally({
     bounds = largest;
     p = boundaries.indexOf(bounds);
   }
-  fitsHorizontally = fitsHorizontallyList[p];
+  fitsHorizontally = canFitHorizontally[p];
 
   return fitsHorizontally;
 }
@@ -229,7 +229,7 @@ export function isAllFitHorizontally({ targetNodes, rect }, isFitHorizontally = 
         node,
         orientation,
         placementSettings: target.placementSettings[j],
-        fitsHorizontallyList: target.fitsHorizontallyList[j],
+        canFitHorizontally: target.canFitHorizontally[j],
         rect
       });
       if (!fitsHorizontally) {
@@ -461,7 +461,7 @@ export function precalculate({
       measurements: [],
       labelSettings: [],
       placementSettings: [],
-      fitsHorizontallyList: []
+      canFitHorizontally: []
       // direction: 'up'
     };
 
@@ -469,7 +469,7 @@ export function precalculate({
       lblStng = labelSettings[j];
       placementSetting = placementSettings[j];
       text = typeof lblStng.label === 'function' ? lblStng.label(arg, i) : undefined;
-      target.fitsHorizontallyList[j] = [];
+      target.canFitHorizontally[j] = [];
       if (!isValidText(text)) {
         continue; // eslint-ignore-line
       }
@@ -490,7 +490,7 @@ export function precalculate({
         const {
           left = PADDING, right = PADDING
         } = placementSetting[k].padding || {};
-        target.fitsHorizontallyList[j][k] = measured.width <= (bounds.width - (left + right));
+        target.canFitHorizontally[j][k] = measured.width <= (bounds.width - (left + right));
       }
     }
 
