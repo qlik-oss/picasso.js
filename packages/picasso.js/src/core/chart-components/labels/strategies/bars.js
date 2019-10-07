@@ -163,7 +163,7 @@ export function isBestPlacementFitHorizontally({
   node,
   orientation,
   placementSettings,
-  labelOrientations,
+  fitsHorizontallyList,
   rect
 }, barRect = getBarRect) {
   let largest;
@@ -175,7 +175,7 @@ export function isBestPlacementFitHorizontally({
   const boundaries = [];
   for (p = 0; p < placementSettings.length; p++) {
     placement = placementSettings[p];
-    fitsHorizontally = labelOrientations[p];
+    fitsHorizontally = fitsHorizontallyList[p];
     testBounds = barRect({
       bar: node.localBounds,
       view: rect,
@@ -186,11 +186,7 @@ export function isBestPlacementFitHorizontally({
     boundaries.push(testBounds);
     largest = !p || testBounds.height > largest.height ? testBounds : largest;
 
-    if (orientation === 'v' && ((fitsHorizontally && testBounds.height >= measured.height)
-      || (!fitsHorizontally && testBounds.height >= measured.width && testBounds.width >= measured.height))) {
-      bounds = testBounds;
-      break;
-    } else if (orientation === 'h' && (testBounds.height >= measured.height) && (testBounds.width >= measured.width)) {
+    if (isGoodPlacement(orientation, testBounds, measured, fitsHorizontally, placement.overflow)) {
       bounds = testBounds;
       break;
     }
@@ -201,7 +197,7 @@ export function isBestPlacementFitHorizontally({
     bounds = largest;
     p = boundaries.indexOf(bounds);
   }
-  fitsHorizontally = labelOrientations[p];
+  fitsHorizontally = fitsHorizontallyList[p];
 
   return fitsHorizontally;
 }
@@ -233,7 +229,7 @@ export function isAllFitHorizontally({ targetNodes, rect }, isFitHorizontally = 
         node,
         orientation,
         placementSettings: target.placementSettings[j],
-        labelOrientations: target.labelOrientations[j],
+        fitsHorizontallyList: target.fitsHorizontallyList[j],
         rect
       });
       if (!fitsHorizontally) {
@@ -465,7 +461,7 @@ export function precalculate({
       measurements: [],
       labelSettings: [],
       placementSettings: [],
-      labelOrientations: []
+      fitsHorizontallyList: []
       // direction: 'up'
     };
 
@@ -473,7 +469,7 @@ export function precalculate({
       lblStng = labelSettings[j];
       placementSetting = placementSettings[j];
       text = typeof lblStng.label === 'function' ? lblStng.label(arg, i) : undefined;
-      target.labelOrientations[j] = [];
+      target.fitsHorizontallyList[j] = [];
       if (!isValidText(text)) {
         continue; // eslint-ignore-line
       }
@@ -494,7 +490,7 @@ export function precalculate({
         const {
           left = PADDING, right = PADDING
         } = placementSetting[k].padding || {};
-        target.labelOrientations[j][k] = measured.width <= (bounds.width - (left + right));
+        target.fitsHorizontallyList[j][k] = measured.width <= (bounds.width - (left + right));
       }
     }
 
