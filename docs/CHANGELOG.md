@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.27.0](https://github.com/qlik-oss/picasso.js/compare/v0.26.1...v0.27.0) (2019-09-20)
+
+
+### Features
+
+* **line:** add option to connect gaps in lines ([#430](https://github.com/qlik-oss/picasso.js/issues/430)) ([cdcecc3](https://github.com/qlik-oss/picasso.js/commit/cdcecc3))
+
+
+
+
+
 ## [0.26.1](https://github.com/qlik-oss/picasso.js/compare/v0.26.0...v0.26.1) (2019-06-13)
 
 **Note:** Version bump only for package docs
