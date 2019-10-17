@@ -176,22 +176,24 @@ describe('labeling - bars', () => {
       { position: 'biggest' },
       { position: 'meh' }
     ];
-    const rects = {
-      inside: {
-        x: 10, y: 20, width: 1, height: 2
-      },
-      outside: {
-        x: 10, y: 20, width: 5, height: 30
-      },
-      biggest: {
-        x: 10, y: 20, width: 400, height: 300
-      },
-      meh: {
-        x: 10, y: 20, width: 10, height: 20
-      }
-    };
-    const barRect = (opts) => rects[opts.position];
+    let rects;
+    let barRect;
     beforeEach(() => {
+      rects = {
+        inside: {
+          x: 10, y: 20, width: 1, height: 2
+        },
+        outside: {
+          x: 10, y: 20, width: 5, height: 30
+        },
+        biggest: {
+          x: 10, y: 20, width: 400, height: 300
+        },
+        meh: {
+          x: 10, y: 20, width: 10, height: 20
+        }
+      };
+      barRect = (opts) => rects[opts.position];
       placements.forEach((p) => delete p.overflow);
     });
 
@@ -253,6 +255,25 @@ describe('labeling - bars', () => {
       expect(p.bounds).to.equal(rects.biggest);
     });
 
+    it('should find largest rect as fallback, horizontal, and when all rects have the same height', () => {
+      rects.inside.height = 100;
+      rects.outside.height = 100;
+      rects.biggest.height = 100;
+      rects.meh.height = 100;
+      rects.meh.width = 500;
+      let p = findBestPlacement({
+        direction: '',
+        lblStngs: { fontSize: 2 },
+        measured: { width: 900, height: 800 },
+        node: {},
+        orientation: 'h',
+        placementSettings: placements,
+        rect: {}
+      }, barRect);
+      expect(p.placement).to.equal(placements[3]);
+      expect(p.bounds).to.equal(rects.meh);
+    });
+
     it('should find largest rect as fallback, vertical', () => {
       let p = findBestPlacement({
         direction: '',
@@ -265,6 +286,25 @@ describe('labeling - bars', () => {
       }, barRect);
       expect(p.placement).to.equal(placements[2]);
       expect(p.bounds).to.equal(rects.biggest);
+    });
+
+    it('should find largest rect as fallback, vertical, and when all rects have the same width', () => {
+      rects.inside.width = 100;
+      rects.outside.width = 100;
+      rects.biggest.width = 100;
+      rects.meh.width = 100;
+      rects.outside.height = 500;
+      let p = findBestPlacement({
+        direction: '',
+        lblStngs: { fontSize: 2 },
+        measured: { width: 900, height: 800 },
+        node: {},
+        orientation: 'v',
+        placementSettings: placements,
+        rect: {}
+      }, barRect);
+      expect(p.placement).to.equal(placements[1]);
+      expect(p.bounds).to.equal(rects.outside);
     });
 
     it('should find placement with overflow and other size is fit, horizontal', () => {

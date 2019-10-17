@@ -174,6 +174,7 @@ export function findBestPlacement({
   let testBounds;
   let p;
   const boundaries = [];
+  const dimension = orientation === 'h' ? 'width' : 'height';
   for (p = 0; p < placementSettings.length; p++) {
     placement = placementSettings[p];
     testBounds = barRect({
@@ -184,7 +185,7 @@ export function findBestPlacement({
       padding: placement.padding
     });
     boundaries.push(testBounds);
-    largest = !p || testBounds.height > largest.height ? testBounds : largest;
+    largest = !p || testBounds[dimension] > largest[dimension] ? testBounds : largest;
 
     if (isGoodPlacement(orientation, testBounds, measured, fitsHorizontally, placement.overflow)) {
       bounds = testBounds;
