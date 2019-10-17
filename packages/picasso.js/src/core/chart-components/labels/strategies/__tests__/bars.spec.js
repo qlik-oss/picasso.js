@@ -256,7 +256,10 @@ describe('labeling - bars', () => {
     });
 
     it('should find largest rect as fallback, horizontal, and when all rects have the same height', () => {
-      rects.inside.height = rects.outside.height = rects.biggest.height = rects.meh.height = 100;
+      rects.inside.height = 100;
+      rects.outside.height = 100;
+      rects.biggest.height = 100;
+      rects.meh.height = 100;
       rects.meh.width = 500;
       let p = findBestPlacement({
         direction: '',
@@ -286,7 +289,10 @@ describe('labeling - bars', () => {
     });
 
     it('should find largest rect as fallback, vertical, and when all rects have the same width', () => {
-      rects.inside.width = rects.outside.width = rects.biggest.width = rects.meh.width = 100;
+      rects.inside.width = 100;
+      rects.outside.width = 100;
+      rects.biggest.width = 100;
+      rects.meh.width = 100;
       rects.outside.height = 500;
       let p = findBestPlacement({
         direction: '',
