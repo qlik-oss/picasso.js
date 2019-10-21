@@ -4,6 +4,22 @@ title: Categorical legend
 
 A component that renders a static categorical color legend
 
+## Legend without ties to data
+
+The categorical legend reads it's data straight from a categorical color scale - so it does not need a data source. If you want to compose your own custom legend, without any connection to your loaded data, you'll have to create a scale with the labels and matching colors for it. picasso.js allows you to do this inline instead of globally. If you want a categorical legend showing the 3 data points, here's an example using 2010 with "red" color, 2011 with "blue" color, and 2012 with "orange" color:
+
+```js
+{
+  type: 'legend-cat',
+  scale: {
+    data: ['2010', '2011', '2012'],
+    range: ['red', 'blue', 'orange'],
+    type: 'categorical-color'
+  },
+  dock: 'top'
+}
+```
+
 ## Overflow
 
 When all the items in the legend don't fit in the designated space, a navigation component will be added to the legend, which will make it possible to navigate to items currently not in view.
