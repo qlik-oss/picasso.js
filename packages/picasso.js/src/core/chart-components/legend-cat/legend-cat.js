@@ -92,7 +92,7 @@ function render(legend) {
 }
 
 const component = {
-  require: ['chart', 'settings', 'renderer', 'update', 'resolver', 'registries'],
+  require: ['chart', 'settings', 'renderer', 'update', 'resolver', 'registries', 'symbol'],
   defaultSettings: {
     settings: {},
     style: {

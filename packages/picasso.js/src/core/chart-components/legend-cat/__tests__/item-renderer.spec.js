@@ -6,7 +6,6 @@ import itemRendererFactory, {
   createRenderItem,
   parallelize
 } from '../item-renderer';
-import * as symbolFactory from '../../../symbols';
 
 describe('legend-item-renderer', () => {
   describe('itemize', () => {
@@ -213,7 +212,7 @@ describe('legend-item-renderer', () => {
           maxItemBounds: { width: 17, height: 15 },
           maxLabelBounds: { width: 20, height: 10 }
         },
-        symbolFn: (coord) => coord
+        createSymbol: (coord) => coord
       });
 
       expect(item.item).to.eql({
@@ -254,7 +253,8 @@ describe('legend-item-renderer', () => {
       legend = {
         renderer: {
           textBounds: (o) => ({ width: parseInt(o.fontSize, 10) * 2, height: 20 })
-        }
+        },
+        symbol: (item) => item
       };
       obj = {
         viewRect: { x: 1, y: 2 },
@@ -270,7 +270,6 @@ describe('legend-item-renderer', () => {
       });
       overflow = 0;
       sandbox.stub(api, 'getContentOverflow').callsFake(() => overflow);
-      sandbox.stub(symbolFactory, 'default').returns({});
     });
 
     afterEach(() => {

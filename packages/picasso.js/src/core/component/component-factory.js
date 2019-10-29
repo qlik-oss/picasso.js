@@ -10,7 +10,7 @@ import {
   resolveOverEvent,
   brushFromSceneNodes
 } from './brushing';
-import symbolFactory from '../symbols';
+import createSymbolFactory from '../symbols';
 import createDockConfig from '../layout/dock/config';
 
 const isReservedProperty = (prop) => [
@@ -501,7 +501,7 @@ function componentFactory(definition, context = {}) {
     update: () => updateNodes,
     registries: () => registries,
     resolver: () => resolver,
-    symbol: () => symbolFactory
+    symbol: () => createSymbolFactory(registries.symbol)
   });
 
   prepareContext(instanceContext, config, {
