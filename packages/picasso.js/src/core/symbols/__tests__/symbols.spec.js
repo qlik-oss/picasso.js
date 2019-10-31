@@ -1,10 +1,11 @@
-import create, { symbols as register } from '..';
+import create, { symbolRegistry as register } from '..';
 
 function fixDecimals(str, precision = 5) {
   return str.replace(/\.([0-9]+)/gi, (match, g) => `.${g.substr(0, precision)}`);
 }
 
 describe('Symbols', () => {
+  const createSymbol = create(register);
   let input;
   let symbol;
 
@@ -31,7 +32,7 @@ describe('Symbols', () => {
       register.add('myNewSymbol', myNewSymbol);
 
       input.type = 'myNewSymbol';
-      const mySym = create(input);
+      const mySym = createSymbol(input);
       expect(mySym).to.deep.equal({
         type: 'myCustomSymbol',
         x: 10,
@@ -52,7 +53,7 @@ describe('Symbols', () => {
       register.add('myNewSymbol', myNewSymbol);
 
       input.type = 'myNewSymbol';
-      const mySym = create(input);
+      const mySym = createSymbol(input);
       expect(mySym).to.deep.equal({
         fill: 'red', // Default append style
         stroke: 'brown',
@@ -70,7 +71,7 @@ describe('Symbols', () => {
     });
 
     it('should output a circle', () => {
-      symbol = create(input);
+      symbol = createSymbol(input);
 
       expect(symbol).to.deep.equal({
         type: 'circle',
@@ -92,7 +93,7 @@ describe('Symbols', () => {
     });
 
     it('should output a bar', () => {
-      symbol = create(input);
+      symbol = createSymbol(input);
 
       expect(symbol).to.deep.equal({
         type: 'rect',
@@ -111,7 +112,7 @@ describe('Symbols', () => {
     describe('Options', () => {
       it('direction - vertical', () => {
         input.direction = 'vertical';
-        symbol = create(input);
+        symbol = createSymbol(input);
 
         expect(symbol).to.deep.equal({
           type: 'rect',
@@ -135,7 +136,7 @@ describe('Symbols', () => {
     });
 
     it('should output a cross', () => {
-      symbol = create(input);
+      symbol = createSymbol(input);
 
       expect(symbol).to.deep.equal({
         type: 'path',
@@ -151,7 +152,7 @@ describe('Symbols', () => {
     describe('Options', () => {
       it('width', () => {
         input.width = 1;
-        symbol = create(input);
+        symbol = createSymbol(input);
 
         expect(symbol).to.deep.equal({
           type: 'path',
@@ -172,7 +173,7 @@ describe('Symbols', () => {
     });
 
     it('should output a diamond', () => {
-      symbol = create(input);
+      symbol = createSymbol(input);
 
       expect(symbol).to.deep.equal({
         type: 'path',
@@ -202,7 +203,7 @@ describe('Symbols', () => {
     });
 
     it('should output a horizontal line', () => {
-      symbol = create(input);
+      symbol = createSymbol(input);
 
       expect(symbol).to.deep.equal({
         type: 'line',
@@ -222,7 +223,7 @@ describe('Symbols', () => {
     describe('Options', () => {
       it('direction - vertical', () => {
         input.direction = 'vertical';
-        symbol = create(input);
+        symbol = createSymbol(input);
 
         expect(symbol).to.deep.equal({
           type: 'line',
@@ -247,7 +248,7 @@ describe('Symbols', () => {
     });
 
     it('should output a n-polygon', () => {
-      symbol = create(input);
+      symbol = createSymbol(input);
 
       symbol.d = fixDecimals(symbol.d);
 
@@ -265,7 +266,7 @@ describe('Symbols', () => {
     describe('Options', () => {
       it('sides', () => {
         input.sides = 5;
-        symbol = create(input);
+        symbol = createSymbol(input);
 
         symbol.d = fixDecimals(symbol.d);
 
@@ -282,7 +283,7 @@ describe('Symbols', () => {
 
       it('startAngle', () => {
         input.startAngle = 45;
-        symbol = create(input);
+        symbol = createSymbol(input);
 
         symbol.d = fixDecimals(symbol.d);
 
@@ -305,7 +306,7 @@ describe('Symbols', () => {
     });
 
     it('should output a saltire', () => {
-      symbol = create(input);
+      symbol = createSymbol(input);
 
       expect(symbol).to.deep.equal({
         type: 'path',
@@ -321,7 +322,7 @@ describe('Symbols', () => {
     describe('Options', () => {
       it('width', () => {
         input.width = 1;
-        symbol = create(input);
+        symbol = createSymbol(input);
 
         expect(symbol).to.deep.equal({
           type: 'path',
@@ -342,7 +343,7 @@ describe('Symbols', () => {
     });
 
     it('should output a square', () => {
-      symbol = create(input);
+      symbol = createSymbol(input);
 
       expect(symbol).to.deep.equal({
         type: 'rect',
@@ -365,7 +366,7 @@ describe('Symbols', () => {
     });
 
     it('should output a star', () => {
-      symbol = create(input);
+      symbol = createSymbol(input);
 
       symbol.d = fixDecimals(symbol.d);
 
@@ -383,7 +384,7 @@ describe('Symbols', () => {
     describe('Options', () => {
       it('points', () => {
         input.points = 6;
-        symbol = create(input);
+        symbol = createSymbol(input);
 
         symbol.d = fixDecimals(symbol.d);
 
@@ -400,7 +401,7 @@ describe('Symbols', () => {
 
       it('startAngle', () => {
         input.startAngle = 45;
-        symbol = create(input);
+        symbol = createSymbol(input);
 
         symbol.d = fixDecimals(symbol.d);
 
@@ -417,7 +418,7 @@ describe('Symbols', () => {
 
       it('innerRadius', () => {
         input.innerRadius = input.size * 0.9;
-        symbol = create(input);
+        symbol = createSymbol(input);
 
         symbol.d = fixDecimals(symbol.d);
 
@@ -440,7 +441,7 @@ describe('Symbols', () => {
     });
 
     it('should output a triangle', () => {
-      symbol = create(input);
+      symbol = createSymbol(input);
 
       expect(symbol).to.deep.equal({
         type: 'path',
@@ -456,7 +457,7 @@ describe('Symbols', () => {
     describe('Options', () => {
       it('direction - up', () => {
         input.direction = 'up';
-        symbol = create(input);
+        symbol = createSymbol(input);
 
         expect(symbol).to.deep.equal({
           type: 'path',
@@ -471,7 +472,7 @@ describe('Symbols', () => {
 
       it('direction - down', () => {
         input.direction = 'down';
-        symbol = create(input);
+        symbol = createSymbol(input);
 
         expect(symbol).to.deep.equal({
           type: 'path',
@@ -486,7 +487,7 @@ describe('Symbols', () => {
 
       it('direction - left', () => {
         input.direction = 'left';
-        symbol = create(input);
+        symbol = createSymbol(input);
 
         expect(symbol).to.deep.equal({
           type: 'path',
@@ -501,7 +502,7 @@ describe('Symbols', () => {
 
       it('direction - right', () => {
         input.direction = 'right';
-        symbol = create(input);
+        symbol = createSymbol(input);
 
         expect(symbol).to.deep.equal({
           type: 'path',

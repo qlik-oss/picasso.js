@@ -1,5 +1,4 @@
 import extend from 'extend';
-import symbolFactory from '../../symbols';
 
 /* eslint no-mixed-operators:0 */
 
@@ -34,7 +33,7 @@ export function createRenderItem({
   y,
   item,
   globalMetrics,
-  symbolFn = symbolFactory,
+  createSymbol,
   direction = 'ltr'
 }) {
   let label = item.label.displayObject;
@@ -59,7 +58,7 @@ export function createRenderItem({
     justify: typeof symbolItem.justify === 'undefined' ? 0.5 : symbolItem.justify
   });
 
-  const symbol = symbolFn(extend({}, symbolItem, wiggled));
+  const symbol = createSymbol(extend({}, symbolItem, wiggled));
 
   delete symbol.collider;
 
@@ -96,7 +95,8 @@ export function getItemsToRender({
 }, rect, {
   itemized,
   create = createRenderItem,
-  parallels
+  parallels,
+  createSymbol
 }) {
   const direction = itemized.layout.direction;
   const globalMetrics = itemized.globalMetrics;
@@ -120,7 +120,8 @@ export function getItemsToRender({
       x: direction === 'rtl' ? viewRect.x + shift + viewRect.width - fixedWidth - (x - rect.x) : x,
       item: legendItems[i],
       globalMetrics,
-      direction
+      direction,
+      createSymbol
     });
 
     if ((isHorizontal && x >= viewRect.x - fixedWidth) || (!isHorizontal && y >= viewRect.y - fixedHeight)) {
@@ -290,7 +291,7 @@ export default function (legend, {
       containerRect[offsetProperty] -= offset;
       containerRect[offsetProperty === 'x' ? 'width' : 'height'] = ext;
 
-      return getItemsToRender(obj, containerRect, { itemized, parallels });
+      return getItemsToRender(obj, containerRect, { itemized, parallels, createSymbol: legend.symbol });
     },
     parallelize: (availableExtent, availableSpread) => {
       parallels = parallelize(availableExtent, availableSpread, itemized);
