@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.27.1](https://github.com/qlik-oss/picasso.js/compare/v0.27.0...v0.27.1) (2019-11-04)
+
+
+### Bug Fixes
+
+* **bar-label:** take overflow into account when finding best placement for bar label ([#444](https://github.com/qlik-oss/picasso.js/issues/444)) ([ee408b9](https://github.com/qlik-oss/picasso.js/commit/ee408b9))
+* **labels:** consider orientation when determining largest rect ([#447](https://github.com/qlik-oss/picasso.js/issues/447)) ([9255c1b](https://github.com/qlik-oss/picasso.js/commit/9255c1b))
+* fix custom line sorting ([#452](https://github.com/qlik-oss/picasso.js/issues/452)) ([0e9d9fd](https://github.com/qlik-oss/picasso.js/commit/0e9d9fd))
+* unable to use custom symbols ([#451](https://github.com/qlik-oss/picasso.js/issues/451)) ([fa621c0](https://github.com/qlik-oss/picasso.js/commit/fa621c0))
+
+
+
+
+
 # [0.27.0](https://github.com/qlik-oss/picasso.js/compare/v0.26.1...v0.27.0) (2019-09-20)
 
 
