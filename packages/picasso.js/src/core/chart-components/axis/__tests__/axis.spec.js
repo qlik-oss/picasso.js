@@ -169,6 +169,41 @@ describe('Axis', () => {
       });
     });
 
+    describe('paddingStart', () => {
+      beforeEach(() => {
+        scale = band();
+        scale.domain(['A', 'B']);
+        chart.scale.returns(scale);
+        config.layout = { dock: 'center' };
+        config.settings.align = 'left';
+      });
+
+      it('should equal padding given as number', () => {
+        config.settings.align = 'left';
+        config.settings.paddingStart = 11;
+        componentFixture.simulateCreate(axisComponent, config);
+        expect(componentFixture.instance().def.state.settings.paddingStart).to.equal(11);
+      });
+
+      it('should equal default padding as fallback', () => {
+        config.settings.align = 'left';
+        config.settings.paddingStart = undefined;
+        componentFixture.simulateCreate(axisComponent, config);
+        expect(componentFixture.instance().def.state.settings.paddingStart).to.equal(0);
+      });
+
+      it('should equal padding given as func', () => {
+        config.settings.align = 'bottom';
+        config.settings.paddingStart = (theChart, state) => {
+          expect(Object.keys(theChart)).to.contain('scale', 'expected chart to have property scale');
+          expect(Object.keys(state)).to.contain('settings', 'expected state to have property settings');
+          return 12;
+        };
+        componentFixture.simulateCreate(axisComponent, config);
+        expect(componentFixture.instance().def.state.settings.paddingStart).to.equal(12);
+      });
+    });
+
     describe('Defaults', () => {
       ['left', 'right', 'top', 'bottom'].forEach((d) => {
         it(`should default align when docked at ${d}`, () => {
