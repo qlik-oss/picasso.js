@@ -22,13 +22,10 @@ function alignTransform({ align, inner }) {
 function resolveAlign(align, dock) {
   const horizontal = ['top', 'bottom'];
   const vertical = ['left', 'right'];
-
-  const docksHorizontally = horizontal.includes(dock);
-  const docksVertically = vertical.includes(dock);
-  const alignsHorizontally = horizontal.includes(align);
-  const alignsVertically = vertical.includes(align);
-
-  if ((alignsHorizontally && !docksVertically) || (alignsVertically && !docksHorizontally)) {
+  if (horizontal.indexOf(align) !== -1 && vertical.indexOf(dock) === -1) {
+    return align;
+  }
+  if (vertical.indexOf(align) !== -1 && horizontal.indexOf(dock) === -1) {
     return align;
   }
   return dock; // Invalid align, return current dock as default
@@ -41,8 +38,7 @@ function resolveAlign(align, dock) {
 function resolveLocalSettings({
   state,
   style,
-  settings,
-  chart
+  settings
 }) {
   const defaultStgns = extend(true, {}, state.isDiscrete ? DEFAULT_DISCRETE_SETTINGS : DEFAULT_CONTINUOUS_SETTINGS, style);
   const localStgns = extend(true, {}, defaultStgns, settings.settings);
@@ -52,8 +48,9 @@ function resolveLocalSettings({
   localStgns.align = resolveAlign(settings.settings.align, dock);
   localStgns.labels.tiltAngle = Math.max(-90, Math.min(localStgns.labels.tiltAngle, 90));
 
-  const { paddingStart } = localStgns;
-  localStgns.paddingStart = typeof paddingStart === 'function' ? paddingStart.call(null, chart, state) : paddingStart;
+  const { paddingStart, paddingEnd } = localStgns;
+  localStgns.paddingStart = typeof paddingStart === 'function' ? paddingStart.call(null) : paddingStart;
+  localStgns.paddingEnd = typeof paddingEnd === 'function' ? paddingEnd.call(null) : paddingEnd;
 
   return localStgns;
 }

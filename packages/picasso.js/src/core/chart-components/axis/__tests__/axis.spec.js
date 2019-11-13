@@ -169,7 +169,7 @@ describe('Axis', () => {
       });
     });
 
-    describe('paddingStart', () => {
+    describe('padding', () => {
       beforeEach(() => {
         scale = band();
         scale.domain(['A', 'B']);
@@ -178,31 +178,57 @@ describe('Axis', () => {
         config.settings.align = 'left';
       });
 
-      it('should equal padding given as number', () => {
-        config.settings.align = 'left';
-        config.settings.paddingStart = 11;
-        componentFixture.simulateCreate(axisComponent, config);
-        expect(componentFixture.instance().def.state.settings.paddingStart).to.equal(11);
+      describe('paddingStart', () => {
+        const DEFAULT_PADDING_START = 0;
+
+        it('should equal padding given as number', () => {
+          config.settings.align = 'left';
+          config.settings.paddingStart = 11;
+          componentFixture.simulateCreate(axisComponent, config);
+          expect(componentFixture.instance().def.state.settings.paddingStart).to.equal(11);
+        });
+
+        it('should equal default padding as fallback', () => {
+          config.settings.align = 'left';
+          config.settings.paddingStart = undefined;
+          componentFixture.simulateCreate(axisComponent, config);
+          expect(componentFixture.instance().def.state.settings.paddingStart).to.equal(DEFAULT_PADDING_START);
+        });
+
+        it('should equal padding given as func', () => {
+          config.settings.align = 'bottom';
+          config.settings.paddingStart = () => 12;
+          componentFixture.simulateCreate(axisComponent, config);
+          expect(componentFixture.instance().def.state.settings.paddingStart).to.equal(12);
+        });
       });
 
-      it('should equal default padding as fallback', () => {
-        config.settings.align = 'left';
-        config.settings.paddingStart = undefined;
-        componentFixture.simulateCreate(axisComponent, config);
-        expect(componentFixture.instance().def.state.settings.paddingStart).to.equal(0);
-      });
+      describe('paddingEnd', () => {
+        const DEFAULT_PADDING_END = 10;
 
-      it('should equal padding given as func', () => {
-        config.settings.align = 'bottom';
-        config.settings.paddingStart = (theChart, state) => {
-          expect(Object.keys(theChart)).to.contain('scale', 'expected chart to have property scale');
-          expect(Object.keys(state)).to.contain('settings', 'expected state to have property settings');
-          return 12;
-        };
-        componentFixture.simulateCreate(axisComponent, config);
-        expect(componentFixture.instance().def.state.settings.paddingStart).to.equal(12);
+        it('should equal padding given as number', () => {
+          config.settings.align = 'left';
+          config.settings.paddingEnd = 11;
+          componentFixture.simulateCreate(axisComponent, config);
+          expect(componentFixture.instance().def.state.settings.paddingEnd).to.equal(11);
+        });
+
+        it('should equal default padding as fallback', () => {
+          config.settings.align = 'left';
+          config.settings.paddingEnd = undefined;
+          componentFixture.simulateCreate(axisComponent, config);
+          expect(componentFixture.instance().def.state.settings.paddingEnd).to.equal(DEFAULT_PADDING_END);
+        });
+
+        it('should equal padding given as func', () => {
+          config.settings.align = 'bottom';
+          config.settings.paddingEnd = () => 12;
+          componentFixture.simulateCreate(axisComponent, config);
+          expect(componentFixture.instance().def.state.settings.paddingEnd).to.equal(12);
+        });
       });
     });
+
 
     describe('Defaults', () => {
       ['left', 'right', 'top', 'bottom'].forEach((d) => {
