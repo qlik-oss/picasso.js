@@ -86,7 +86,7 @@ Under the hood, `maxGlyphCount` is a multiplier on the size of the character `M`
 
 ### Using paddingStart
 
-The `paddingStart` property adds padding to the opposite side of where the axis is *docked* (or *aligned* when using `dock: center`). It can be specified as either a number of a function, which will then receive parameters `chart` and `state`.
+The `paddingStart` property adds padding to the opposite side of where the axis is *docked* (or *aligned* when using `dock: center`). It can be specified as either a number or a function (does not receive any parameters).
 
 Specified as a number, in this case `100px` padding will be added the right side of the axis:
 ```js
@@ -100,7 +100,7 @@ Specified as a number, in this case `100px` padding will be added the right side
 }
 ```
 
-In this example we use a function to move the axis next to a specific element:
+In this example we use a function to move the axis next to a specific element (e.g. useful when adding one axis per bar in a bar chart):
 ```js
 {
   type: 'axis',
@@ -108,15 +108,20 @@ In this example we use a function to move the axis next to a specific element:
   dock: 'center',
   settings: {
     align: 'left',
-    paddingStart: (chart, state) => {
+    paddingStart: () => {
       // Move the axis next to a specific element
       const label = 'A value on the major axis';
-      const scale = chart.scale('myMajorScale');
-      return scale(label) * scale'myMajorScale').bandwidth() + state.innerRect.width;
+      const majorScale = chart.scale('myMajorScale');
+      return chartWidth * (majorScale(label) + majorScale.bandwidth());
     }
   }
 }
 ```
+
+### Using paddingEnd
+
+The `paddingEnd` property can be used in the same way as `paddingStart`. If not specified it defaults to `10`. It will add padding to the same side as the axis is *docked* (or *aligned* when using `dock: center`).
+
 
 ## Formatting
 
