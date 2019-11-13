@@ -400,9 +400,8 @@ const lineMarkerComponent = {
       const sortable = visibleLayers.map((v) => ({
         id: v.layerObj.id,
         data: v.layerObj.data
-      }));
-      sortable.sort(this.stngs.layers.sort).map((s) => s.id);
-      visibleLayers.sort((a, b) => sortable.indexOf(b.layerObj.id) - sortable.indexOf(a.layerObj.id));
+      })).sort(this.stngs.layers.sort).map((s) => s.id);
+      visibleLayers.sort((a, b) => sortable.indexOf(a.layerObj.id) - sortable.indexOf(b.layerObj.id));
     } else {
       visibleLayers.sort((a, b) => a.median - b.median);
     }

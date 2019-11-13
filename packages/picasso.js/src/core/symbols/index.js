@@ -11,18 +11,18 @@ import cross from './cross';
 import bar from './bar';
 import registry from '../utils/registry';
 
-const reg = registry();
+const parentReg = registry();
 
-reg.add('circle', circle);
-reg.add('diamond', diamond);
-reg.add('saltire', saltire);
-reg.add('square', square);
-reg.add('triangle', triangle);
-reg.add('line', line);
-reg.add('star', star);
-reg.add('n-polygon', nPolygon);
-reg.add('cross', cross);
-reg.add('bar', bar);
+parentReg.add('circle', circle);
+parentReg.add('diamond', diamond);
+parentReg.add('saltire', saltire);
+parentReg.add('square', square);
+parentReg.add('triangle', triangle);
+parentReg.add('line', line);
+parentReg.add('star', star);
+parentReg.add('n-polygon', nPolygon);
+parentReg.add('cross', cross);
+parentReg.add('bar', bar);
 
 function applyOpts(obj, opts = {}) {
   Object.keys(opts).forEach((key) => {
@@ -39,7 +39,8 @@ function applyOpts(obj, opts = {}) {
  * @param {symbol--bar|symbol--circle|symbol--cross|symbol--diamond|symbol--line|symbol--n-polygon|symbol--saltire|symbol--square|symbol--star|symbol--triangle} options - Options definition may contain any of the supported display-object attributes
  * @returns {object} A node definition
  */
-function create(options = {}) { // TODO handle reserverd properties x, y, size, data, etc..
+const create = (reg = parentReg) => (options = {}) => {
+  // TODO handle reserverd properties x, y, size, data, etc..
   const fn = reg.get(options.type);
   if (fn) {
     const s = fn(options);
@@ -52,19 +53,11 @@ function create(options = {}) { // TODO handle reserverd properties x, y, size, 
     return s;
   }
   return fn;
-}
-
-const symbols = {
-  add: (type, fn) => reg.add(type, fn),
-  get: (type) => reg.get(type),
-  remove: (type) => reg.remove(type),
-  create
 };
 
 export {
   create as default,
-  symbols,
-  reg as symbolRegistry
+  parentReg as symbolRegistry
 };
 
 /**

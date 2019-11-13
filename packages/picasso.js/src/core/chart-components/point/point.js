@@ -1,6 +1,5 @@
 import extend from 'extend';
 import { notNumber } from '../../utils/is-number';
-import shapeFactory from '../../symbols';
 
 const DEFAULT_ERROR_SETTINGS = {
   errorShape: {
@@ -128,7 +127,7 @@ function createDisplayPoints(dataPoints, {
 }
 
 const component = {
-  require: ['chart', 'resolver'],
+  require: ['chart', 'resolver', 'symbol'],
   defaultSettings: {
     settings: {},
     data: {},
@@ -154,7 +153,7 @@ const component = {
     const limits = extend({}, SIZE_LIMITS, this.settings.settings.sizeLimits);
     const points = resolved.items;
     const pointSize = getPointSizeLimits(resolved.settings.x, resolved.settings.y, width, height, limits);
-    return createDisplayPoints(points, this.rect, pointSize, this.settings.shapeFn || shapeFactory);
+    return createDisplayPoints(points, this.rect, pointSize, this.settings.shapeFn || this.symbol);
   }
 };
 

@@ -91,7 +91,8 @@ describe('Component', () => {
         theme: {
           palette: sinon.stub(),
           style: sinon.stub()
-        }
+        },
+        registries: {}
       };
 
       let fn;
