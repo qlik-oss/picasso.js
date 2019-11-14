@@ -84,6 +84,45 @@ Under the hood, `maxGlyphCount` is a multiplier on the size of the character `M`
 }
 ```
 
+### Using paddingStart
+
+The `paddingStart` property adds padding to the opposite side of where the axis is *docked* (or *aligned* when using `dock: center`). It can be specified as either a number or a function (does not receive any parameters).
+
+Specified as a number, in this case `100px` padding will be added the right side of the axis:
+```js
+{
+  type: 'axis',
+  scale: 'myScale',
+  dock: 'left',
+  settings: {
+    paddingStart: 100,
+  }
+}
+```
+
+In this example we use a function to move the axis next to a specific element (e.g. useful when adding one axis per bar in a bar chart):
+```js
+{
+  type: 'axis',
+  scale: 'myScale',
+  dock: 'center',
+  settings: {
+    align: 'left',
+    paddingStart: () => {
+      // Move the axis next to a specific element
+      const label = 'A value on the major axis';
+      const majorScale = chart.scale('myMajorScale');
+      return chartWidth * (majorScale(label) + majorScale.bandwidth());
+    }
+  }
+}
+```
+
+### Using paddingEnd
+
+The `paddingEnd` property can be used in the same way as `paddingStart`. If not specified it defaults to `10`. It will add padding to the same side as the axis is *docked* (or *aligned* when using `dock: center`).
+
+
 ## Formatting
 
 Label formatting is derived from the scale and the data itself. But as with any component, it is possible to reference a [custom formatter](formatters.md) using the `formatter` property.

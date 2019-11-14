@@ -48,6 +48,10 @@ function resolveLocalSettings({
   localStgns.align = resolveAlign(settings.settings.align, dock);
   localStgns.labels.tiltAngle = Math.max(-90, Math.min(localStgns.labels.tiltAngle, 90));
 
+  const { paddingStart, paddingEnd } = localStgns;
+  localStgns.paddingStart = typeof paddingStart === 'function' ? paddingStart.call(null) : paddingStart;
+  localStgns.paddingEnd = typeof paddingEnd === 'function' ? paddingEnd.call(null) : paddingEnd;
+
   return localStgns;
 }
 
