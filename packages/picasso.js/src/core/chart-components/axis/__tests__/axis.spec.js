@@ -169,6 +169,67 @@ describe('Axis', () => {
       });
     });
 
+    describe('padding', () => {
+      beforeEach(() => {
+        scale = band();
+        scale.domain(['A', 'B']);
+        chart.scale.returns(scale);
+        config.layout = { dock: 'center' };
+        config.settings.align = 'left';
+      });
+
+      describe('paddingStart', () => {
+        const DEFAULT_PADDING_START = 0;
+
+        it('should equal padding given as number', () => {
+          config.settings.align = 'left';
+          config.settings.paddingStart = 11;
+          componentFixture.simulateCreate(axisComponent, config);
+          expect(componentFixture.instance().def.state.settings.paddingStart).to.equal(11);
+        });
+
+        it('should equal default padding as fallback', () => {
+          config.settings.align = 'left';
+          config.settings.paddingStart = undefined;
+          componentFixture.simulateCreate(axisComponent, config);
+          expect(componentFixture.instance().def.state.settings.paddingStart).to.equal(DEFAULT_PADDING_START);
+        });
+
+        it('should equal padding given as func', () => {
+          config.settings.align = 'bottom';
+          config.settings.paddingStart = () => 12;
+          componentFixture.simulateCreate(axisComponent, config);
+          expect(componentFixture.instance().def.state.settings.paddingStart).to.equal(12);
+        });
+      });
+
+      describe('paddingEnd', () => {
+        const DEFAULT_PADDING_END = 10;
+
+        it('should equal padding given as number', () => {
+          config.settings.align = 'left';
+          config.settings.paddingEnd = 11;
+          componentFixture.simulateCreate(axisComponent, config);
+          expect(componentFixture.instance().def.state.settings.paddingEnd).to.equal(11);
+        });
+
+        it('should equal default padding as fallback', () => {
+          config.settings.align = 'left';
+          config.settings.paddingEnd = undefined;
+          componentFixture.simulateCreate(axisComponent, config);
+          expect(componentFixture.instance().def.state.settings.paddingEnd).to.equal(DEFAULT_PADDING_END);
+        });
+
+        it('should equal padding given as func', () => {
+          config.settings.align = 'bottom';
+          config.settings.paddingEnd = () => 12;
+          componentFixture.simulateCreate(axisComponent, config);
+          expect(componentFixture.instance().def.state.settings.paddingEnd).to.equal(12);
+        });
+      });
+    });
+
+
     describe('Defaults', () => {
       ['left', 'right', 'top', 'bottom'].forEach((d) => {
         it(`should default align when docked at ${d}`, () => {
