@@ -36,6 +36,8 @@ function stacked(data, config, ds) {
   const offset = config.offset || 'none';
   const order = config.order || 'none';
   const valueRef = config.valueRef || '';
+  const stackOrder = {};
+  let count = 0;
 
   let maxStackCount = 0;
 
@@ -44,6 +46,9 @@ function stacked(data, config, ds) {
   for (let i = 0; i < data.items.length; i++) {
     let p = data.items[i];
     let sourceField = valueRef ? p[valueRef] : null;
+    if (!(p.value in stackOrder)) {
+      stackOrder[p.value] = count++;
+    }
     if (sourceField && sourceField.source) {
       let ff = `${sourceField.source.key || ''}/${sourceField.source.field}`;
       if (!valueFields[ff]) {
@@ -52,7 +57,7 @@ function stacked(data, config, ds) {
     }
     let sid = stackFn(p);
     stackIds[sid] = stackIds[sid] || { items: [] };
-    stackIds[sid].items.push(p);
+    stackIds[sid].items[stackOrder[p.value]] = p;
 
     maxStackCount = Math.max(maxStackCount, stackIds[sid].items.length);
   }
