@@ -36,25 +36,50 @@ function stacked(data, config, ds) {
   const offset = config.offset || 'none';
   const order = config.order || 'none';
   const valueRef = config.valueRef || '';
+  const itemOrderKeyFn = config.itemOrderKey;
 
+  let count = 0;
   let maxStackCount = 0;
-
   let valueFields = {};
+  let idList = {};
+  let id;
 
-  for (let i = 0; i < data.items.length; i++) {
-    let p = data.items[i];
-    let sourceField = valueRef ? p[valueRef] : null;
-    if (sourceField && sourceField.source) {
-      let ff = `${sourceField.source.key || ''}/${sourceField.source.field}`;
-      if (!valueFields[ff]) {
-        valueFields[ff] = sourceField.source;
+  if (typeof itemOrderKeyFn === 'function') {
+    for (let i = 0; i < data.items.length; i++) {
+      let p = data.items[i];
+      let sourceField = valueRef ? p[valueRef] : null;
+      id = itemOrderKeyFn(p);
+      if (!(id in idList)) {
+        idList[id] = count++;
       }
-    }
-    let sid = stackFn(p);
-    stackIds[sid] = stackIds[sid] || { items: [] };
-    stackIds[sid].items.push(p);
+      if (sourceField && sourceField.source) {
+        let ff = `${sourceField.source.key || ''}/${sourceField.source.field}`;
+        if (!valueFields[ff]) {
+          valueFields[ff] = sourceField.source;
+        }
+      }
+      let sid = stackFn(p);
+      stackIds[sid] = stackIds[sid] || { items: [] };
+      stackIds[sid].items[idList[id]] = p;
 
-    maxStackCount = Math.max(maxStackCount, stackIds[sid].items.length);
+      maxStackCount = Math.max(maxStackCount, stackIds[sid].items.length);
+    }
+  } else {
+    for (let i = 0; i < data.items.length; i++) {
+      let p = data.items[i];
+      let sourceField = valueRef ? p[valueRef] : null;
+      if (sourceField && sourceField.source) {
+        let ff = `${sourceField.source.key || ''}/${sourceField.source.field}`;
+        if (!valueFields[ff]) {
+          valueFields[ff] = sourceField.source;
+        }
+      }
+      let sid = stackFn(p);
+      stackIds[sid] = stackIds[sid] || { items: [] };
+      stackIds[sid].items.push(p);
+
+      maxStackCount = Math.max(maxStackCount, stackIds[sid].items.length);
+    }
   }
 
   const keys = Array.apply(null, { length: maxStackCount }).map(Number.call, Number); // eslint-disable-line
