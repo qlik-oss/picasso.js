@@ -44,7 +44,7 @@ function stacked(data, config, ds) {
   let idList = {};
   let id;
 
-  if (typeof itemOrderKeyFn === 'function') {
+  if (order === 'none' && typeof itemOrderKeyFn === 'function') {
     for (let i = 0; i < data.items.length; i++) {
       let p = data.items[i];
       let sourceField = valueRef ? p[valueRef] : null;
