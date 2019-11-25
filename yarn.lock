@@ -2,31 +2,31 @@
 # yarn lockfile v1
 
 
-"@after-work.js/aw@^6.0.8":
-  version "6.0.8"
-  resolved "https://registry.yarnpkg.com/@after-work.js/aw/-/aw-6.0.8.tgz#dacfb1efa65bc2c4857027cc119954e3d7bb6b70"
-  integrity sha512-+/B+Q8DfDsp3KNpcZeunQYpyuJYpzliMre/C31YQ1Q4diSJRbfXEchrudGvrhWCY59eFr2HBYMIs/Ovx8vCvQA==
+"@after-work.js/aw@^6.0.10":
+  version "6.0.10"
+  resolved "https://registry.yarnpkg.com/@after-work.js/aw/-/aw-6.0.10.tgz#3906f62b14b259c47b7ffd11ae11d941fc7b0164"
+  integrity sha512-QiqQOOeVujHBJIB2hQGV0Hx20ERp/KYlnJ1ih1OMxQzCqhAaqrsybDH2dLHXhvPdmsnJBTXzVrRCiJGzZBDzSA==
   dependencies:
-    "@after-work.js/cdp" "6.0.8"
-    "@after-work.js/cli" "6.0.8"
-    "@after-work.js/node" "6.0.8"
-    "@after-work.js/protractor" "6.0.8"
-    "@after-work.js/puppeteer" "6.0.8"
-    "@after-work.js/serve" "6.0.8"
+    "@after-work.js/cdp" "6.0.10"
+    "@after-work.js/cli" "6.0.10"
+    "@after-work.js/node" "6.0.10"
+    "@after-work.js/protractor" "6.0.10"
+    "@after-work.js/puppeteer" "6.0.10"
+    "@after-work.js/serve" "6.0.10"
 
-"@after-work.js/cdp@6.0.8":
-  version "6.0.8"
-  resolved "https://registry.yarnpkg.com/@after-work.js/cdp/-/cdp-6.0.8.tgz#9536551e39065396b5a5b2f6d5d8dc09c94125f7"
-  integrity sha512-p2U+lXw0qv7SjToR5MWpOT8P/YgHkVgS4W66SHZSCPmXovZGkjUOKKCLFDDnNZtAo9MPuGDqKJ5yv3GeTkFzPA==
+"@after-work.js/cdp@6.0.10":
+  version "6.0.10"
+  resolved "https://registry.yarnpkg.com/@after-work.js/cdp/-/cdp-6.0.10.tgz#fc89aa3233457d76e6b4ce0b4953a3c15d10b5f5"
+  integrity sha512-44KC2KnTucC9lceE6GZWNTtrf3sdLzyJ/V7USZ0Cb4JiGuwgktoe5SADNoJ3ZxM/aBZiDNXky0gOXoNvs35HyA==
   dependencies:
-    "@after-work.js/interactive-plugin" "6.0.8"
-    "@after-work.js/server" "6.0.8"
-    "@after-work.js/transform" "6.0.8"
-    "@after-work.js/utils" "6.0.8"
-    "@after-work.js/watch-plugin" "6.0.8"
+    "@after-work.js/interactive-plugin" "6.0.10"
+    "@after-work.js/server" "6.0.10"
+    "@after-work.js/transform" "6.0.10"
+    "@after-work.js/utils" "6.0.10"
+    "@after-work.js/watch-plugin" "6.0.10"
     chokidar "3.0.2"
     chrome-launcher "0.11.2"
-    chrome-remote-interface "0.27.2"
+    chrome-remote-interface "0.28.0"
     chrome-unmirror "0.1.0"
     globby "10.0.1"
     import-cwd "3.0.0"
@@ -35,80 +35,80 @@
     source-map-support "0.5.13"
     test-exclude "5.2.3"
 
-"@after-work.js/chai-plugin-screenshot@6.0.8":
-  version "6.0.8"
-  resolved "https://registry.yarnpkg.com/@after-work.js/chai-plugin-screenshot/-/chai-plugin-screenshot-6.0.8.tgz#8c6a8fdeb9a124898b048d6465c4856640582648"
-  integrity sha512-jCXs1hb6Q53VmdGlvCH3DgyvusBXDBqeW1dOYotsTKkM/A8VmV6zRCFqkX1ubVZxOZj3RZXhu/j6T7lfBsctLg==
+"@after-work.js/chai-plugin-screenshot@6.0.10":
+  version "6.0.10"
+  resolved "https://registry.yarnpkg.com/@after-work.js/chai-plugin-screenshot/-/chai-plugin-screenshot-6.0.10.tgz#d9adb2550c7066b255e6f259d4d0662571cbaf09"
+  integrity sha512-PWepCfXSpgNnQgJJyV3enknSmlbvqf28XfVax1mZoYwX6ZyliLOl+j/IJkOYZgY964G4Lo4dW2d0NXkh4ZGlvg==
   dependencies:
-    "@after-work.js/utils" "6.0.8"
-    jimp "0.6.4"
+    "@after-work.js/utils" "6.0.10"
+    jimp "0.6.8"
     mkdirp "0.5.1"
 
-"@after-work.js/chai-plugin-snapshot@6.0.8":
-  version "6.0.8"
-  resolved "https://registry.yarnpkg.com/@after-work.js/chai-plugin-snapshot/-/chai-plugin-snapshot-6.0.8.tgz#3221c4593cce2afaa62785d52c9682eccf74654f"
-  integrity sha512-AV3sNqVrArOrmk1XHVSpZ2ywe1nfuVhcm2u52fPshLpwyRI2ux3qbPs2Ak9cP4QcdGYSCf6Tf2/TAT94Qb3APQ==
+"@after-work.js/chai-plugin-snapshot@6.0.10":
+  version "6.0.10"
+  resolved "https://registry.yarnpkg.com/@after-work.js/chai-plugin-snapshot/-/chai-plugin-snapshot-6.0.10.tgz#19549d258f95e089217d41ebaefba426f73bb8e4"
+  integrity sha512-EFhB3QLwezKytZx7kY6r2rEU+NCG60blz5BDfbFISm8yRgQV8tPfZxPL9zRQMKphlMNGU7E06x3dNE8b62cU+A==
   dependencies:
-    "@after-work.js/transform" "6.0.8"
-    "@after-work.js/utils" "6.0.8"
-    jest-snapshot "24.8.0"
+    "@after-work.js/transform" "6.0.10"
+    "@after-work.js/utils" "6.0.10"
+    jest-snapshot "24.9.0"
 
-"@after-work.js/cli@6.0.8":
-  version "6.0.8"
-  resolved "https://registry.yarnpkg.com/@after-work.js/cli/-/cli-6.0.8.tgz#27d65e2da8e11ce30d81b8e302d12334b14d734a"
-  integrity sha512-CO3S63b/j8e013iwE4iDGc+FsTA0Ax+M4e6eDAkXTrftj8YxOQUGZr4G+sK/KgZdhikdXToKRpYXyt/TuLdMeA==
+"@after-work.js/cli@6.0.10":
+  version "6.0.10"
+  resolved "https://registry.yarnpkg.com/@after-work.js/cli/-/cli-6.0.10.tgz#7bb2a0c3950224954cc98705f2b456d39e1c9ef5"
+  integrity sha512-nqngJFj9NpzXGpnmFMKvdHx9HpMibx69LVwvciL/dI6DwD23AsAcOu2D/XiKNKZizrK5t3xQvYO2X4aqPFOkdw==
   dependencies:
-    "@after-work.js/chai-plugin-screenshot" "6.0.8"
-    "@after-work.js/chai-plugin-snapshot" "6.0.8"
-    "@after-work.js/interactive-plugin" "6.0.8"
-    "@after-work.js/utils" "6.0.8"
+    "@after-work.js/chai-plugin-screenshot" "6.0.10"
+    "@after-work.js/chai-plugin-snapshot" "6.0.10"
+    "@after-work.js/interactive-plugin" "6.0.10"
+    "@after-work.js/utils" "6.0.10"
     chai "4.2.0"
     chai-as-promised "7.1.1"
     chai-subset "1.6.0"
     import-cwd "3.0.0"
-    sinon "7.4.1"
+    sinon "7.4.2"
     sinon-chai "3.3.0"
     source-map-support "0.5.13"
-    yargs "13.3.0"
+    yargs "14.0.0"
 
-"@after-work.js/interactive-plugin@6.0.8":
-  version "6.0.8"
-  resolved "https://registry.yarnpkg.com/@after-work.js/interactive-plugin/-/interactive-plugin-6.0.8.tgz#2a7041a2d1bc82f98b28c981fb046f06e2f24eb4"
-  integrity sha512-RnFW7Awm66xAgyE8nQIjoFsz0mt9tAUDerQlvaZkMZxaAFdYYcHqEZ9ETDeFSG4bKB02YUOypLki0blaMeienA==
+"@after-work.js/interactive-plugin@6.0.10":
+  version "6.0.10"
+  resolved "https://registry.yarnpkg.com/@after-work.js/interactive-plugin/-/interactive-plugin-6.0.10.tgz#19d74074f633abf45e1553cc7b59477ccad178c8"
+  integrity sha512-P7PW0na9qvNMJldVVFSZVXPa0YEmII073Ej7L3WI4OfloSZLGMqrClZvqhzyAW1hkMfAvwuWbHXNAmisbAxe/A==
   dependencies:
-    "@after-work.js/utils" "6.0.8"
+    "@after-work.js/utils" "6.0.10"
     fuzzy "0.1.3"
     globby "10.0.1"
     import-cwd "3.0.0"
-    inquirer "6.5.1"
+    inquirer "7.0.0"
     inquirer-checkbox-plus-prompt "1.0.1"
 
-"@after-work.js/node@6.0.8":
-  version "6.0.8"
-  resolved "https://registry.yarnpkg.com/@after-work.js/node/-/node-6.0.8.tgz#0bbbb346d3fb15b5815f59f2dab472122d304254"
-  integrity sha512-r1Uc0taVQ4dy+fKMmQNOx0cZ+juWVHT3ZpDuIFak/oDBxMXOVYbSqU6feZ69PBjnP+ukKtFBfCH08EMX7sMDyA==
+"@after-work.js/node@6.0.10":
+  version "6.0.10"
+  resolved "https://registry.yarnpkg.com/@after-work.js/node/-/node-6.0.10.tgz#bf3196c9adc9570d8dfea40198a62b626e285b63"
+  integrity sha512-XEDUcjB4o4OAHM1RZbLqRIRN9G8yH/mVnsAzqxWNZky2n6sVLQ5TresK9wr94UTQaEJSeRN+8g0+Hn9i3cO1kw==
   dependencies:
-    "@after-work.js/interactive-plugin" "6.0.8"
-    "@after-work.js/preset-plugin" "6.0.8"
-    "@after-work.js/register" "6.0.8"
-    "@after-work.js/transform" "6.0.8"
-    "@after-work.js/utils" "6.0.8"
-    "@after-work.js/watch-plugin" "6.0.8"
+    "@after-work.js/interactive-plugin" "6.0.10"
+    "@after-work.js/preset-plugin" "6.0.10"
+    "@after-work.js/register" "6.0.10"
+    "@after-work.js/transform" "6.0.10"
+    "@after-work.js/utils" "6.0.10"
+    "@after-work.js/watch-plugin" "6.0.10"
     chokidar "3.0.2"
     globby "10.0.1"
     import-cwd "3.0.0"
     mocha "6.2.0"
     nyc "14.1.1"
 
-"@after-work.js/preset-plugin@6.0.8":
-  version "6.0.8"
-  resolved "https://registry.yarnpkg.com/@after-work.js/preset-plugin/-/preset-plugin-6.0.8.tgz#7111d415fbf1b487660a1808904e5da1e52d3ab3"
-  integrity sha512-5CBGp2CbIU/FiPfXwpuvNZHEFJlMz5bewvAiYFkQ48wXVf8TSR9y5g1Zy+O3TQNE6yIXAukMlkfvRO1eXeFaYQ==
+"@after-work.js/preset-plugin@6.0.10":
+  version "6.0.10"
+  resolved "https://registry.yarnpkg.com/@after-work.js/preset-plugin/-/preset-plugin-6.0.10.tgz#4f694b9152f4d5783bf919bd0ec74f2e58ca0210"
+  integrity sha512-Vn+Ddk4dQMmpNGq9bHEdLbY6b4iXJsJ4V2BbtoLwHqM9codAw8Gn/eBi+LZAaT1uM+akGqdp1A1mtdt+sYAHFQ==
   dependencies:
-    "@after-work.js/chai-plugin-screenshot" "6.0.8"
-    "@after-work.js/chai-plugin-snapshot" "6.0.8"
-    "@after-work.js/interactive-plugin" "6.0.8"
-    "@after-work.js/utils" "6.0.8"
+    "@after-work.js/chai-plugin-screenshot" "6.0.10"
+    "@after-work.js/chai-plugin-snapshot" "6.0.10"
+    "@after-work.js/interactive-plugin" "6.0.10"
+    "@after-work.js/utils" "6.0.10"
     chai "4.2.0"
     chai-as-promised "7.1.1"
     chai-subset "1.6.0"
@@ -116,49 +116,49 @@
     sinon "6.3.5"
     sinon-chai "3.3.0"
 
-"@after-work.js/protractor@6.0.8":
-  version "6.0.8"
-  resolved "https://registry.yarnpkg.com/@after-work.js/protractor/-/protractor-6.0.8.tgz#aac94df0f81ba7271838b80d477f86cf2325d604"
-  integrity sha512-ELVz9GbxTgw5MGtuQJJ4ndvpxFC8bjO+EMGSafyoRI75ykSiipFrBK2pv+y3c8ZHj4qiluy33OW2u51EObBlAw==
+"@after-work.js/protractor@6.0.10":
+  version "6.0.10"
+  resolved "https://registry.yarnpkg.com/@after-work.js/protractor/-/protractor-6.0.10.tgz#c0f7d38ad77efea0ed5d58450f55245e57c0532a"
+  integrity sha512-ChQ2NfpxXaOXGgPKctihORDdivPn3jmj3s0mjHgjs9xZIQal1OV2VTw44oBk+s+wAdTbz6ULafmFHAq+n1NRFw==
   dependencies:
-    "@after-work.js/preset-plugin" "6.0.8"
-    "@after-work.js/register" "6.0.8"
-    "@after-work.js/server" "6.0.8"
-    "@after-work.js/utils" "6.0.8"
+    "@after-work.js/preset-plugin" "6.0.10"
+    "@after-work.js/register" "6.0.10"
+    "@after-work.js/server" "6.0.10"
+    "@after-work.js/utils" "6.0.10"
     extend "3.0.2"
     globby "10.0.1"
-    handlebars "4.1.2"
-    highlight.js "9.15.9"
+    handlebars "4.2.0"
+    highlight.js "9.15.10"
     import-cwd "3.0.0"
-    jimp "0.6.4"
+    jimp "0.6.8"
     mkdirp "0.5.1"
     mocha "6.2.0"
     moment "2.24.0"
-    yargs "13.3.0"
+    yargs "14.0.0"
 
-"@after-work.js/puppeteer@6.0.8":
-  version "6.0.8"
-  resolved "https://registry.yarnpkg.com/@after-work.js/puppeteer/-/puppeteer-6.0.8.tgz#c2414ef45905c82895554f76037c67759d52670f"
-  integrity sha512-qBp/WzFkxVZhcH40903lspbUo+8FmQGXXqBfUnGLe0deESMmkD9Cfa7TagYyH3IjjqAw2Fc3Qz2brM7Mx4sMhw==
+"@after-work.js/puppeteer@6.0.10":
+  version "6.0.10"
+  resolved "https://registry.yarnpkg.com/@after-work.js/puppeteer/-/puppeteer-6.0.10.tgz#abffeadb64193c6fb71b1481fdd68e7672a78725"
+  integrity sha512-Iauv55bfG0BwpeXPzM/chVTFP0I73IfFbzG+u+JoFP1AHYapL3Ea46fK/Erwc7P+X6RH87zIu7K/frjSACTQHw==
   dependencies:
-    "@after-work.js/interactive-plugin" "6.0.8"
-    "@after-work.js/node" "6.0.8"
-    "@after-work.js/preset-plugin" "6.0.8"
-    "@after-work.js/register" "6.0.8"
-    "@after-work.js/server" "6.0.8"
-    "@after-work.js/utils" "6.0.8"
-    "@after-work.js/watch-plugin" "6.0.8"
+    "@after-work.js/interactive-plugin" "6.0.10"
+    "@after-work.js/node" "6.0.10"
+    "@after-work.js/preset-plugin" "6.0.10"
+    "@after-work.js/register" "6.0.10"
+    "@after-work.js/server" "6.0.10"
+    "@after-work.js/utils" "6.0.10"
+    "@after-work.js/watch-plugin" "6.0.10"
     chrome-launcher "0.11.2"
     import-cwd "3.0.0"
     puppeteer-core "1.19.0"
 
-"@after-work.js/register@6.0.8":
-  version "6.0.8"
-  resolved "https://registry.yarnpkg.com/@after-work.js/register/-/register-6.0.8.tgz#ba929178fb9c5159eedc44088602a0a989cb7d77"
-  integrity sha512-yMb++j5JXXbboWRazRnM1P1tXwH3qJpUUU8aSua37esRXeh9LTVvIz0Fzo/QxSvsR6k+xPepYJRVHRqtDX2MKA==
+"@after-work.js/register@6.0.10":
+  version "6.0.10"
+  resolved "https://registry.yarnpkg.com/@after-work.js/register/-/register-6.0.10.tgz#b04b0a3bd2b9ce0a51d7acadd726b8b580a8caa0"
+  integrity sha512-MWXdMKXfBmGsdi6dMhjLCIz3+sEwU3AXNXoBuG87o/9vLudcSP9y4tXYeB+nb4GhOgzn088T05ghqGj238yjzg==
   dependencies:
-    "@after-work.js/transform" "6.0.8"
-    "@after-work.js/utils" "6.0.8"
+    "@after-work.js/transform" "6.0.10"
+    "@after-work.js/utils" "6.0.10"
     find-cache-dir "3.0.0"
     import-cwd "3.0.0"
     minimatch "3.0.4"
@@ -166,51 +166,51 @@
     require-from-string "2.0.2"
     source-map-support "0.5.13"
 
-"@after-work.js/serve@6.0.8":
-  version "6.0.8"
-  resolved "https://registry.yarnpkg.com/@after-work.js/serve/-/serve-6.0.8.tgz#0f2b6d479b0d32ea14e3ef0d57adaecdeee09676"
-  integrity sha512-DsgUOhfkpRN7ry7i2gyIQXikkT8yk18/RuFqUszrU2BBbXu1y7zfVneBVv3atItuFPrBENXypva4Gq/9pq4l1A==
+"@after-work.js/serve@6.0.10":
+  version "6.0.10"
+  resolved "https://registry.yarnpkg.com/@after-work.js/serve/-/serve-6.0.10.tgz#af479c7cd51a9bf6c8a7cdc3e5951feb2909061d"
+  integrity sha512-t5URmirJesvcssHMNszbgYlezsRvlG7wMAD8Bi2pY5s9lJ2EJWMZ24i2N+PJhOonzwGnNPPBrkao27dM+5qNqA==
   dependencies:
-    "@after-work.js/server" "6.0.8"
+    "@after-work.js/server" "6.0.10"
 
-"@after-work.js/server@6.0.8":
-  version "6.0.8"
-  resolved "https://registry.yarnpkg.com/@after-work.js/server/-/server-6.0.8.tgz#feecde7be22f62c96cd6c21895e06fb27565bc79"
-  integrity sha512-VkbCjtkdOg2XI8QnsLQBwjrTkQga9Ssq2QnZvetisZXJCOp1MI886MqqksSsW7w4AMZ0RjbqshGjJsRS0k8NoQ==
+"@after-work.js/server@6.0.10":
+  version "6.0.10"
+  resolved "https://registry.yarnpkg.com/@after-work.js/server/-/server-6.0.10.tgz#1c28d5980cf5c11ed1393d6a34d4a97f68f057ba"
+  integrity sha512-6WO9mLfjDELzdb5s9Tpba6S2GjmOoRbgVt+aI14cE28J8iQkS5wJa/Nrq0QaEVNkoJS8OnDSFsLAJinOlQYvBA==
   dependencies:
-    "@after-work.js/transform-middleware" "6.0.8"
-    "@after-work.js/utils" "6.0.8"
+    "@after-work.js/transform-middleware" "6.0.10"
+    "@after-work.js/utils" "6.0.10"
     express "4.17.1"
-    http-proxy-middleware "0.19.1"
+    http-proxy-middleware "0.20.0"
     import-cwd "3.0.0"
     serve-favicon "2.5.0"
     test-exclude "5.2.3"
 
-"@after-work.js/transform-middleware@6.0.8":
-  version "6.0.8"
-  resolved "https://registry.yarnpkg.com/@after-work.js/transform-middleware/-/transform-middleware-6.0.8.tgz#9f718fc708da6fd85dfa8851bd5fc9f5e98643c0"
-  integrity sha512-I4kuy3a3IaJ/AaVUC11Fs3vkyfJH1/caZ9tk2k4FDlAWYAOMCtQxZtiYWo8weJ3PsOPZM48e9Cb6y8/8gdXltA==
+"@after-work.js/transform-middleware@6.0.10":
+  version "6.0.10"
+  resolved "https://registry.yarnpkg.com/@after-work.js/transform-middleware/-/transform-middleware-6.0.10.tgz#239bf37ccf4c423c29b47427909f6a477d81ca84"
+  integrity sha512-xWgi+Vm9ZWSse14Be2AF9e1HFlvoYWfBp2T95OSndNJvmP1DPAyBFrQ9Zcoz3g1mUbxY5+WZmV2bWuDcfl3ymw==
   dependencies:
-    "@after-work.js/transform" "6.0.8"
-    "@after-work.js/utils" "6.0.8"
+    "@after-work.js/transform" "6.0.10"
+    "@after-work.js/utils" "6.0.10"
     import-cwd "3.0.0"
     nyc "14.1.1"
     test-exclude "5.2.3"
-    yargs "13.3.0"
+    yargs "14.0.0"
 
-"@after-work.js/transform@6.0.8":
-  version "6.0.8"
-  resolved "https://registry.yarnpkg.com/@after-work.js/transform/-/transform-6.0.8.tgz#555f6edb60e4fe66dfd437b0f1be6a9647764e54"
-  integrity sha512-72OVCnC/+/sB5l28rGO9pIwOyhQBsEWrjKZHqED04DD49zx7kYvXFJ59uErZFKGGApwQ76RSXcWSVf+zOBSMhA==
+"@after-work.js/transform@6.0.10":
+  version "6.0.10"
+  resolved "https://registry.yarnpkg.com/@after-work.js/transform/-/transform-6.0.10.tgz#9ec16e821ec4ab4d92a1920357aeed93b0d5a1a5"
+  integrity sha512-B/bsC/EzchtCcYttghxwQljikIpZJQxMlfiYzmJE6kv63R5GMJQ9uvoZZ3rKYCFDms6r2eT5Jl4XbbQ5jRs49w==
   dependencies:
-    "@after-work.js/utils" "6.0.8"
+    "@after-work.js/utils" "6.0.10"
     find-cache-dir "3.0.0"
     import-cwd "3.0.0"
 
-"@after-work.js/utils@6.0.8":
-  version "6.0.8"
-  resolved "https://registry.yarnpkg.com/@after-work.js/utils/-/utils-6.0.8.tgz#a8dc24f4a5fd04bdee92eff537c5146cd21f4e1b"
-  integrity sha512-yF/b8PvUsdabHiV9++N8YD/D41KxiXr6JrlJ8ouIcTEZhtI1/ZC2wK1XwbRYi+sJM99ViykdgYSCugzFFDkWOg==
+"@after-work.js/utils@6.0.10":
+  version "6.0.10"
+  resolved "https://registry.yarnpkg.com/@after-work.js/utils/-/utils-6.0.10.tgz#eb5a430907dbc59a95a3f440461fb7563bdd4d65"
+  integrity sha512-B1FWQUt/VCEudJLoUYz92dVLn2QLdDa2RyzaxqbhN4JHAFb6C8l0Zs4Nd5Wm0kYOEFG1+z50QbDcW5WnJ+Y5aA==
   dependencies:
     debug "4.1.1"
     globby "10.0.1"
@@ -218,12 +218,12 @@
     minimatch "3.0.4"
     npmlog "4.1.2"
 
-"@after-work.js/watch-plugin@6.0.8":
-  version "6.0.8"
-  resolved "https://registry.yarnpkg.com/@after-work.js/watch-plugin/-/watch-plugin-6.0.8.tgz#39ddff4e75c99bcf9a261a8923318860284bfca6"
-  integrity sha512-0Cj8XED6N5XSzf84n0ZuUQZSdm9xKS4DZDMabWdg+hgvUuu95+u/Fkz+VCS0S7IGjFaDL9h6nkFGdn/yI2YiGA==
+"@after-work.js/watch-plugin@6.0.10":
+  version "6.0.10"
+  resolved "https://registry.yarnpkg.com/@after-work.js/watch-plugin/-/watch-plugin-6.0.10.tgz#82f74f499e39fd4dfbde8174824079160ec930b9"
+  integrity sha512-oZ3BdjRew8Dr+vSDE9RhGwHlwTqPFxBzshHFqyjI37comv1XfQoYuSG5x7RfRfcTSqF4uu5V3E70xALbMqZZeA==
   dependencies:
-    "@after-work.js/utils" "6.0.8"
+    "@after-work.js/utils" "6.0.10"
     chokidar "3.0.2"
     globby "10.0.1"
 
@@ -803,13 +803,6 @@
     "@babel/helper-regex" "^7.4.4"
     regexpu-core "^4.5.4"
 
-"@babel/polyfill@^7.0.0":
-  version "7.4.4"
-  resolved "https://registry.yarnpkg.com/@babel/polyfill/-/polyfill-7.4.4.tgz#78801cf3dbe657844eeabf31c1cae3828051e893"
-  dependencies:
-    core-js "^2.6.5"
-    regenerator-runtime "^0.13.2"
-
 "@babel/preset-env@^7.6.0":
   version "7.6.0"
   resolved "https://registry.yarnpkg.com/@babel/preset-env/-/preset-env-7.6.0.tgz#aae4141c506100bb2bfaa4ac2a5c12b395619e50"
@@ -1155,14 +1148,6 @@
     unique-filename "^1.1.1"
     which "^1.3.1"
 
-"@jest/console@^24.7.1":
-  version "24.7.1"
-  resolved "https://registry.yarnpkg.com/@jest/console/-/console-24.7.1.tgz#32a9e42535a97aedfe037e725bd67e954b459545"
-  dependencies:
-    "@jest/source-map" "^24.3.0"
-    chalk "^2.0.1"
-    slash "^2.0.0"
-
 "@jest/console@^24.9.0":
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/@jest/console/-/console-24.9.0.tgz#79b1bc06fb74a8cfb01cbdedf945584b1b9707f0"
@@ -1171,14 +1156,6 @@
     "@jest/source-map" "^24.9.0"
     chalk "^2.0.1"
     slash "^2.0.0"
-
-"@jest/source-map@^24.3.0":
-  version "24.3.0"
-  resolved "https://registry.yarnpkg.com/@jest/source-map/-/source-map-24.3.0.tgz#563be3aa4d224caf65ff77edc95cd1ca4da67f28"
-  dependencies:
-    callsites "^3.0.0"
-    graceful-fs "^4.1.15"
-    source-map "^0.6.0"
 
 "@jest/source-map@^24.9.0":
   version "24.9.0"
@@ -1189,14 +1166,6 @@
     graceful-fs "^4.1.15"
     source-map "^0.6.0"
 
-"@jest/test-result@^24.8.0":
-  version "24.8.0"
-  resolved "https://registry.yarnpkg.com/@jest/test-result/-/test-result-24.8.0.tgz#7675d0aaf9d2484caa65e048d9b467d160f8e9d3"
-  dependencies:
-    "@jest/console" "^24.7.1"
-    "@jest/types" "^24.8.0"
-    "@types/istanbul-lib-coverage" "^2.0.0"
-
 "@jest/test-result@^24.9.0":
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/@jest/test-result/-/test-result-24.9.0.tgz#11796e8aa9dbf88ea025757b3152595ad06ba0ca"
@@ -1205,14 +1174,6 @@
     "@jest/console" "^24.9.0"
     "@jest/types" "^24.9.0"
     "@types/istanbul-lib-coverage" "^2.0.0"
-
-"@jest/types@^24.8.0":
-  version "24.8.0"
-  resolved "https://registry.yarnpkg.com/@jest/types/-/types-24.8.0.tgz#f31e25948c58f0abd8c845ae26fcea1491dea7ad"
-  dependencies:
-    "@types/istanbul-lib-coverage" "^2.0.0"
-    "@types/istanbul-reports" "^1.1.1"
-    "@types/yargs" "^12.0.9"
 
 "@jest/types@^24.9.0":
   version "24.9.0"
@@ -1249,7 +1210,7 @@
     pixelmatch "^4.0.2"
     tinycolor2 "^1.4.1"
 
-"@jimp/custom@^0.6.4":
+"@jimp/custom@^0.6.8":
   version "0.6.8"
   resolved "https://registry.yarnpkg.com/@jimp/custom/-/custom-0.6.8.tgz#0476d7b3f5da3121d98895a2e14f2899e602f2b6"
   integrity sha512-FrYlzZRVXP2vuVwd7Nc2dlK+iZk4g6IaT1Ib8Z6vU5Kkwlt83FJIPJ2UUFABf3bF5big0wkk8ZUihWxE4Nzdng==
@@ -1413,7 +1374,7 @@
     "@jimp/utils" "^0.6.8"
     core-js "^2.5.7"
 
-"@jimp/plugins@^0.6.4":
+"@jimp/plugins@^0.6.8":
   version "0.6.8"
   resolved "https://registry.yarnpkg.com/@jimp/plugins/-/plugins-0.6.8.tgz#5618170a986ced1ea795adcd9376122f2543b856"
   integrity sha512-fMcTI72Vn/Lz6JftezTURmyP5ml/xGMe0Ljx2KRJ85IWyP33vDmGIUuutFiBEbh2+y7lRT+aTSmjs0QGa/xTmQ==
@@ -1455,7 +1416,7 @@
     core-js "^2.5.7"
     utif "^2.0.1"
 
-"@jimp/types@^0.6.4":
+"@jimp/types@^0.6.8":
   version "0.6.8"
   resolved "https://registry.yarnpkg.com/@jimp/types/-/types-0.6.8.tgz#4510eb635cd00b201745d70e38f791748baa7075"
   integrity sha512-vCZ/Cp2osy69VP21XOBACfHI5HeR60Rfd4Jidj4W73UL+HrFWOtyQiJ7hlToyu1vI5mR/NsUQpzyQvz56ADm5A==
@@ -2269,7 +2230,7 @@
     array-from "^2.1.1"
     lodash "^4.17.11"
 
-"@sinonjs/samsam@^3.3.2":
+"@sinonjs/samsam@^3.3.3":
   version "3.3.3"
   resolved "https://registry.yarnpkg.com/@sinonjs/samsam/-/samsam-3.3.3.tgz#46682efd9967b259b81136b9f120fd54585feb4a"
   integrity sha512-bKCMKZvWIjYD0BLGnNrxVuw4dkWCYsLqFOUWw8VgKF/+5Y+mE7LfHWPIYoDXowH+3a9LsWDMo0uAP8YDosPvHQ==
@@ -2364,10 +2325,6 @@
   version "13.1.0"
   resolved "https://registry.yarnpkg.com/@types/yargs-parser/-/yargs-parser-13.1.0.tgz#c563aa192f39350a1d18da36c5a8da382bbd8228"
   integrity sha512-gCubfBUZ6KxzoibJ+SCUc/57Ms1jz5NjHe4+dI2krNmU5zCPAphyLJYyTOg06ueIyfj+SaCUqmzun7ImlxDcKg==
-
-"@types/yargs@^12.0.9":
-  version "12.0.12"
-  resolved "https://registry.yarnpkg.com/@types/yargs/-/yargs-12.0.12.tgz#45dd1d0638e8c8f153e87d296907659296873916"
 
 "@types/yargs@^13.0.0":
   version "13.0.2"
@@ -3321,10 +3278,10 @@ chrome-launcher@0.11.2:
     mkdirp "0.5.1"
     rimraf "^2.6.1"
 
-chrome-remote-interface@0.27.2:
-  version "0.27.2"
-  resolved "https://registry.yarnpkg.com/chrome-remote-interface/-/chrome-remote-interface-0.27.2.tgz#e5605605f092b7ef8575d95304e004039c9d0ab9"
-  integrity sha512-pVLljQ29SAx8KIv5tSa9sIf8GrEsAZdPJoeWOmY3/nrIzFmE+EryNNHvDkddGod0cmAFTv+GmPG0uvzxi2NWsA==
+chrome-remote-interface@0.28.0:
+  version "0.28.0"
+  resolved "https://registry.yarnpkg.com/chrome-remote-interface/-/chrome-remote-interface-0.28.0.tgz#dfafff3538ad549cfe161b4c4f0d5ff19aed6f2d"
+  integrity sha512-md2qSn6rc/fADlN+Blk2UWNg0SGPYjH2s68piaPN9e62HItKm6uWeXXHh0+28Bq10oaWw8fzNAm1itDFJ+nS4w==
   dependencies:
     commander "2.11.x"
     ws "^6.1.0"
@@ -3633,7 +3590,7 @@ core-js-pure@3.1.2:
   resolved "https://registry.yarnpkg.com/core-js-pure/-/core-js-pure-3.1.2.tgz#62fc435f35b7374b9b782013cdcb2f97e9f6dffa"
   integrity sha512-5ckIdBF26B3ldK9PM177y2ZcATP2oweam9RskHSoqfZCrJ2As6wVg8zJ1zTriFsZf6clj/N1ThDFRGaomMsh9w==
 
-core-js@^2.4.0, core-js@^2.5.0, core-js@^2.5.7, core-js@^2.6.5:
+core-js@^2.4.0, core-js@^2.5.0, core-js@^2.5.7:
   version "2.6.7"
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.7.tgz#c2b19af9b50ec49c356ee087d6155632a889e968"
 
@@ -4042,10 +3999,6 @@ dezalgo@^1.0.0:
     asap "^2.0.0"
     wrappy "1"
 
-diff-sequences@^24.3.0:
-  version "24.3.0"
-  resolved "https://registry.yarnpkg.com/diff-sequences/-/diff-sequences-24.3.0.tgz#0f20e8a1df1abddaf4d9c226680952e64118b975"
-
 diff-sequences@^24.9.0:
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/diff-sequences/-/diff-sequences-24.9.0.tgz#5715d6244e2aa65f48bba0bc972db0b0b11e95b5"
@@ -4448,7 +4401,7 @@ expand-brackets@^2.1.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
-expect@^24.8.0:
+expect@^24.9.0:
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/expect/-/expect-24.9.0.tgz#b75165b4817074fa4a157794f46fe9f1ba15b6ca"
   integrity sha512-wvVAx8XIol3Z5m9zvZXiyZOQ+sRJqNTIm6sGjdWlaZIeupQGO3WbYI+15D/AmEwZywL6wtJkbAbJtzkOfBuR0Q==
@@ -5186,9 +5139,10 @@ handlebars-utils@^1.0.2, handlebars-utils@^1.0.4, handlebars-utils@^1.0.6:
     kind-of "^6.0.0"
     typeof-article "^0.1.1"
 
-handlebars@4.1.2, handlebars@^4.0.11, handlebars@^4.1.0, handlebars@^4.1.2:
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.1.2.tgz#b6b37c1ced0306b221e094fc7aca3ec23b131b67"
+handlebars@4.2.0, handlebars@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.2.0.tgz#57ce8d2175b9bbb3d8b3cf3e4217b1aec8ddcb2e"
+  integrity sha512-Kb4xn5Qh1cxAKvQnzNWZ512DhABzyFNmsaJf3OAkWNa4NkaqWcNI8Tao8Tasi0/F4JD9oyG0YxuFyvyR57d+Gw==
   dependencies:
     neo-async "^2.6.0"
     optimist "^0.6.1"
@@ -5196,10 +5150,9 @@ handlebars@4.1.2, handlebars@^4.0.11, handlebars@^4.1.0, handlebars@^4.1.2:
   optionalDependencies:
     uglify-js "^3.1.4"
 
-handlebars@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.2.0.tgz#57ce8d2175b9bbb3d8b3cf3e4217b1aec8ddcb2e"
-  integrity sha512-Kb4xn5Qh1cxAKvQnzNWZ512DhABzyFNmsaJf3OAkWNa4NkaqWcNI8Tao8Tasi0/F4JD9oyG0YxuFyvyR57d+Gw==
+handlebars@^4.0.11, handlebars@^4.1.0, handlebars@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.1.2.tgz#b6b37c1ced0306b221e094fc7aca3ec23b131b67"
   dependencies:
     neo-async "^2.6.0"
     optimist "^0.6.1"
@@ -5304,10 +5257,10 @@ helper-md@^0.2.2:
     fs-exists-sync "^0.1.0"
     remarkable "^1.6.2"
 
-highlight.js@9.15.9:
-  version "9.15.9"
-  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.15.9.tgz#865257da1dbb4a58c4552d46c4b3854f77f0e6d5"
-  integrity sha512-M0zZvfLr5p0keDMCAhNBp03XJbKBxUx5AfyfufMdFMEP4N/Xj6dh0IqC75ys7BAzceR34NgcvXjupRVaHBPPVQ==
+highlight.js@9.15.10:
+  version "9.15.10"
+  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.15.10.tgz#7b18ed75c90348c045eef9ed08ca1319a2219ad2"
+  integrity sha512-RoV7OkQm0T3os3Dd2VHLNMoaoDVx77Wygln3n9l5YV172XonWG6rgQD3XnF/BuFFZw9A0TJgmMSO8FEWQgvcXw==
 
 highlight.js@^9.12.0:
   version "9.15.6"
@@ -5357,14 +5310,15 @@ http-proxy-agent@^2.1.0:
     agent-base "4"
     debug "3.1.0"
 
-http-proxy-middleware@0.19.1:
-  version "0.19.1"
-  resolved "https://registry.yarnpkg.com/http-proxy-middleware/-/http-proxy-middleware-0.19.1.tgz#183c7dc4aa1479150306498c210cdaf96080a43a"
+http-proxy-middleware@0.20.0:
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/http-proxy-middleware/-/http-proxy-middleware-0.20.0.tgz#5b128f7207985c4ea91b53fab8ad897a48c690d6"
+  integrity sha512-dNJAk71nEJhPiAczQH9hGvE/MT9kEs+zn2Dh+Hi94PGZe1GluQirC7mw5rdREUtWx6qGS1Gu0bZd4qEAg+REgw==
   dependencies:
     http-proxy "^1.17.0"
-    is-glob "^4.0.0"
-    lodash "^4.17.11"
-    micromatch "^3.1.10"
+    is-glob "^4.0.1"
+    lodash "^4.17.14"
+    micromatch "^4.0.2"
 
 http-proxy@^1.17.0:
   version "1.17.0"
@@ -5554,10 +5508,10 @@ inquirer-checkbox-plus-prompt@1.0.1:
     inquirer "^5.1.0"
     lodash "^4.17.5"
 
-inquirer@6.5.1:
-  version "6.5.1"
-  resolved "https://registry.yarnpkg.com/inquirer/-/inquirer-6.5.1.tgz#8bfb7a5ac02dac6ff641ac4c5ff17da112fcdb42"
-  integrity sha512-uxNHBeQhRXIoHWTSNYUFhQVrHYFThIt6IVo2fFmSe8aBwdR3/w6b58hJpiL/fMukFkvGzjg+hSxFtwvVmKZmXw==
+inquirer@7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/inquirer/-/inquirer-7.0.0.tgz#9e2b032dde77da1db5db804758b8fea3a970519a"
+  integrity sha512-rSdC7zelHdRQFkWnhsMu2+2SO41mpv2oF2zy4tMhmiLWkcKbOAs87fWAJhVXttKVwhdZvymvnuM95EyEXg2/tQ==
   dependencies:
     ansi-escapes "^4.2.1"
     chalk "^2.4.2"
@@ -6028,15 +5982,6 @@ jasminewd2@^2.1.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/jasminewd2/-/jasminewd2-2.2.0.tgz#e37cf0b17f199cce23bea71b2039395246b4ec4e"
 
-jest-diff@^24.8.0:
-  version "24.8.0"
-  resolved "https://registry.yarnpkg.com/jest-diff/-/jest-diff-24.8.0.tgz#146435e7d1e3ffdf293d53ff97e193f1d1546172"
-  dependencies:
-    chalk "^2.0.1"
-    diff-sequences "^24.3.0"
-    jest-get-type "^24.8.0"
-    pretty-format "^24.8.0"
-
 jest-diff@^24.9.0:
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/jest-diff/-/jest-diff-24.9.0.tgz#931b7d0d5778a1baf7452cb816e325e3724055da"
@@ -6047,23 +5992,10 @@ jest-diff@^24.9.0:
     jest-get-type "^24.9.0"
     pretty-format "^24.9.0"
 
-jest-get-type@^24.8.0:
-  version "24.8.0"
-  resolved "https://registry.yarnpkg.com/jest-get-type/-/jest-get-type-24.8.0.tgz#a7440de30b651f5a70ea3ed7ff073a32dfe646fc"
-
 jest-get-type@^24.9.0:
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/jest-get-type/-/jest-get-type-24.9.0.tgz#1684a0c8a50f2e4901b6644ae861f579eed2ef0e"
   integrity sha512-lUseMzAley4LhIcpSP9Jf+fTrQ4a1yHQwLNeeVa2cEmbCGeoZAtYPOIv8JaxLD/sUpKxetKGP+gsHl8f8TSj8Q==
-
-jest-matcher-utils@^24.8.0:
-  version "24.8.0"
-  resolved "https://registry.yarnpkg.com/jest-matcher-utils/-/jest-matcher-utils-24.8.0.tgz#2bce42204c9af12bde46f83dc839efe8be832495"
-  dependencies:
-    chalk "^2.0.1"
-    jest-diff "^24.8.0"
-    jest-get-type "^24.8.0"
-    pretty-format "^24.8.0"
 
 jest-matcher-utils@^24.9.0:
   version "24.9.0"
@@ -6074,19 +6006,6 @@ jest-matcher-utils@^24.9.0:
     jest-diff "^24.9.0"
     jest-get-type "^24.9.0"
     pretty-format "^24.9.0"
-
-jest-message-util@^24.8.0:
-  version "24.8.0"
-  resolved "https://registry.yarnpkg.com/jest-message-util/-/jest-message-util-24.8.0.tgz#0d6891e72a4beacc0292b638685df42e28d6218b"
-  dependencies:
-    "@babel/code-frame" "^7.0.0"
-    "@jest/test-result" "^24.8.0"
-    "@jest/types" "^24.8.0"
-    "@types/stack-utils" "^1.0.1"
-    chalk "^2.0.1"
-    micromatch "^3.1.10"
-    slash "^2.0.0"
-    stack-utils "^1.0.1"
 
 jest-message-util@^24.9.0:
   version "24.9.0"
@@ -6111,7 +6030,7 @@ jest-regex-util@^24.9.0:
   resolved "https://registry.yarnpkg.com/jest-regex-util/-/jest-regex-util-24.9.0.tgz#c13fb3380bde22bf6575432c493ea8fe37965636"
   integrity sha512-05Cmb6CuxaA+Ys6fjr3PhvV3bGQmO+2p2La4hFbU+W5uOc479f7FdLXUWXw4pYMAhhSZIuKHwSXSu6CsSBAXQA==
 
-jest-resolve@^24.8.0:
+jest-resolve@^24.9.0:
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/jest-resolve/-/jest-resolve-24.9.0.tgz#dff04c7687af34c4dd7e524892d9cf77e5d17321"
   integrity sha512-TaLeLVL1l08YFZAt3zaPtjiVvyy4oSA6CRe+0AFPPVX3Q/VI0giIWWoAvoS5L96vj9Dqxj4fB5p2qrHCmTU/MQ==
@@ -6122,23 +6041,24 @@ jest-resolve@^24.8.0:
     jest-pnp-resolver "^1.2.1"
     realpath-native "^1.1.0"
 
-jest-snapshot@24.8.0:
-  version "24.8.0"
-  resolved "https://registry.yarnpkg.com/jest-snapshot/-/jest-snapshot-24.8.0.tgz#3bec6a59da2ff7bc7d097a853fb67f9d415cb7c6"
-  integrity sha512-5ehtWoc8oU9/cAPe6fez6QofVJLBKyqkY2+TlKTOf0VllBB/mqUNdARdcjlZrs9F1Cv+/HKoCS/BknT0+tmfPg==
+jest-snapshot@24.9.0:
+  version "24.9.0"
+  resolved "https://registry.yarnpkg.com/jest-snapshot/-/jest-snapshot-24.9.0.tgz#ec8e9ca4f2ec0c5c87ae8f925cf97497b0e951ba"
+  integrity sha512-uI/rszGSs73xCM0l+up7O7a40o90cnrk429LOiK3aeTvfC0HHmldbd81/B7Ix81KSFe1lwkbl7GnBGG4UfuDew==
   dependencies:
     "@babel/types" "^7.0.0"
-    "@jest/types" "^24.8.0"
+    "@jest/types" "^24.9.0"
     chalk "^2.0.1"
-    expect "^24.8.0"
-    jest-diff "^24.8.0"
-    jest-matcher-utils "^24.8.0"
-    jest-message-util "^24.8.0"
-    jest-resolve "^24.8.0"
+    expect "^24.9.0"
+    jest-diff "^24.9.0"
+    jest-get-type "^24.9.0"
+    jest-matcher-utils "^24.9.0"
+    jest-message-util "^24.9.0"
+    jest-resolve "^24.9.0"
     mkdirp "^0.5.1"
     natural-compare "^1.4.0"
-    pretty-format "^24.8.0"
-    semver "^5.5.0"
+    pretty-format "^24.9.0"
+    semver "^6.2.0"
 
 jest-worker@^24.0.0:
   version "24.6.0"
@@ -6147,16 +6067,16 @@ jest-worker@^24.0.0:
     merge-stream "^1.0.1"
     supports-color "^6.1.0"
 
-jimp@0.6.4:
-  version "0.6.4"
-  resolved "https://registry.yarnpkg.com/jimp/-/jimp-0.6.4.tgz#266c5777752a6edb4227792ef288198a1e99102f"
-  integrity sha512-WQVMoNhkcq/fgthZOWeMdIguCVPg+t4PDFfSxvbNcrECwl8eq3/Ou2whcFWWjyW45m43yAJEY2UT7acDKl6uSQ==
+jimp@0.6.8:
+  version "0.6.8"
+  resolved "https://registry.yarnpkg.com/jimp/-/jimp-0.6.8.tgz#63074984337cc469cd4030946e503e7c02a18b5c"
+  integrity sha512-F7emeG7Hp61IM8VFbNvWENLTuHe0ghizWPuP4JS9ujx2r5mCVYEd/zdaz6M2M42ZdN41blxPajLWl9FXo7Mr2Q==
   dependencies:
-    "@babel/polyfill" "^7.0.0"
-    "@jimp/custom" "^0.6.4"
-    "@jimp/plugins" "^0.6.4"
-    "@jimp/types" "^0.6.4"
+    "@jimp/custom" "^0.6.8"
+    "@jimp/plugins" "^0.6.8"
+    "@jimp/types" "^0.6.8"
     core-js "^2.5.7"
+    regenerator-runtime "^0.13.3"
 
 jpeg-js@^0.3.4:
   version "0.3.5"
@@ -7093,7 +7013,7 @@ nise@^1.4.5:
     lolex "^2.3.2"
     path-to-regexp "^1.7.0"
 
-nise@^1.5.1:
+nise@^1.5.2:
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/nise/-/nise-1.5.2.tgz#b6d29af10e48b321b307e10e065199338eeb2652"
   integrity sha512-/6RhOUlicRCbE9s+94qCUsyE+pKlVJ5AhIv+jEE7ESKwnbXqulKZ1FYU+XAtHHWE9TinYvAxDUJAb912PwPoWA==
@@ -7863,15 +7783,6 @@ prelude-ls@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.1.2.tgz#21932a549f5e52ffd9a827f570e04be62a97da54"
 
-pretty-format@^24.8.0:
-  version "24.8.0"
-  resolved "https://registry.yarnpkg.com/pretty-format/-/pretty-format-24.8.0.tgz#8dae7044f58db7cb8be245383b565a963e3c27f2"
-  dependencies:
-    "@jest/types" "^24.8.0"
-    ansi-regex "^4.0.0"
-    ansi-styles "^3.2.0"
-    react-is "^16.8.4"
-
 pretty-format@^24.9.0:
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/pretty-format/-/pretty-format-24.9.0.tgz#12fac31b37019a4eea3c11aa9a959eb7628aa7c9"
@@ -8242,9 +8153,10 @@ regenerator-runtime@^0.11.0:
   version "0.11.1"
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.11.1.tgz#be05ad7f9bf7d22e056f9726cee5017fbf19e2e9"
 
-regenerator-runtime@^0.13.2:
-  version "0.13.2"
-  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.2.tgz#32e59c9a6fb9b1a4aff09b4930ca2d4477343447"
+regenerator-runtime@^0.13.3:
+  version "0.13.3"
+  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.3.tgz#7cf6a77d8f5c6f60eb73c5fc1955b2ceb01e6bf5"
+  integrity sha512-naKIZz2GQ8JWh///G7L3X6LaQUAMp2lvb1rvwwsURe/VXwD6VMfr+/1NuNw3ag8v2kY1aQ/go5SNn79O9JU7yw==
 
 regenerator-transform@^0.14.0:
   version "0.14.0"
@@ -8787,17 +8699,17 @@ sinon@6.3.5:
     supports-color "^5.5.0"
     type-detect "^4.0.8"
 
-sinon@7.4.1:
-  version "7.4.1"
-  resolved "https://registry.yarnpkg.com/sinon/-/sinon-7.4.1.tgz#bcd0c63953893e87fa0cc502f52489c32a83d4d9"
-  integrity sha512-7s9buHGHN/jqoy/v4bJgmt0m1XEkCEd/tqdHXumpBp0JSujaT4Ng84JU5wDdK4E85ZMq78NuDe0I3NAqXY8TFg==
+sinon@7.4.2:
+  version "7.4.2"
+  resolved "https://registry.yarnpkg.com/sinon/-/sinon-7.4.2.tgz#ecd54158fef2fcfbdb231a3fa55140e8cb02ad6c"
+  integrity sha512-pY5RY99DKelU3pjNxcWo6XqeB1S118GBcVIIdDi6V+h6hevn1izcg2xv1hTHW/sViRXU7sUOxt4wTUJ3gsW2CQ==
   dependencies:
     "@sinonjs/commons" "^1.4.0"
     "@sinonjs/formatio" "^3.2.1"
-    "@sinonjs/samsam" "^3.3.2"
+    "@sinonjs/samsam" "^3.3.3"
     diff "^3.5.0"
     lolex "^4.2.0"
-    nise "^1.5.1"
+    nise "^1.5.2"
     supports-color "^5.5.0"
 
 slash@^1.0.0:
@@ -9870,12 +9782,13 @@ yargs@13.2.2:
     y18n "^4.0.0"
     yargs-parser "^13.0.0"
 
-yargs@13.3.0, yargs@^13.2.2:
-  version "13.3.0"
-  resolved "https://registry.yarnpkg.com/yargs/-/yargs-13.3.0.tgz#4c657a55e07e5f2cf947f8a366567c04a0dedc83"
-  integrity sha512-2eehun/8ALW8TLoIl7MVaRUrg+yCnenu8B4kBlRxj3GJGDKU1Og7sMXPNm1BYyM1DOJmTZ4YeN/Nwxv+8XJsUA==
+yargs@14.0.0:
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-14.0.0.tgz#ba4cacc802b3c0b3e36a9e791723763d57a85066"
+  integrity sha512-ssa5JuRjMeZEUjg7bEL99AwpitxU/zWGAGpdj0di41pOEmJti8NR6kyUIJBkR78DTYNPZOU08luUo0GTHuB+ow==
   dependencies:
     cliui "^5.0.0"
+    decamelize "^1.2.0"
     find-up "^3.0.0"
     get-caller-file "^2.0.1"
     require-directory "^2.1.1"
@@ -9919,6 +9832,22 @@ yargs@^12.0.1, yargs@^12.0.5:
     which-module "^2.0.0"
     y18n "^3.2.1 || ^4.0.0"
     yargs-parser "^11.1.1"
+
+yargs@^13.2.2:
+  version "13.3.0"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-13.3.0.tgz#4c657a55e07e5f2cf947f8a366567c04a0dedc83"
+  integrity sha512-2eehun/8ALW8TLoIl7MVaRUrg+yCnenu8B4kBlRxj3GJGDKU1Og7sMXPNm1BYyM1DOJmTZ4YeN/Nwxv+8XJsUA==
+  dependencies:
+    cliui "^5.0.0"
+    find-up "^3.0.0"
+    get-caller-file "^2.0.1"
+    require-directory "^2.1.1"
+    require-main-filename "^2.0.0"
+    set-blocking "^2.0.0"
+    string-width "^3.0.0"
+    which-module "^2.0.0"
+    y18n "^4.0.0"
+    yargs-parser "^13.1.1"
 
 yauzl@2.4.1:
   version "2.4.1"
