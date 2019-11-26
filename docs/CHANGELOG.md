@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.28.0](https://github.com/qlik-oss/picasso.js/compare/v0.27.1...v0.28.0) (2019-11-26)
+
+
+### Features
+
+* **axis:** allow setting paddingStart and paddingEnd as either a func or a number ([#453](https://github.com/qlik-oss/picasso.js/issues/453)) ([4cb3663](https://github.com/qlik-oss/picasso.js/commit/4cb3663))
+
+
+
+
+
 ## [0.27.1](https://github.com/qlik-oss/picasso.js/compare/v0.27.0...v0.27.1) (2019-11-04)
 
 **Note:** Version bump only for package docs

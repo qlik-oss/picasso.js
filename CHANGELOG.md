@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.28.0](https://github.com/qlik-oss/picasso.js/compare/v0.27.1...v0.28.0) (2019-11-26)
+
+
+### Bug Fixes
+
+* **collision:** fix checking point inside polygon ([#463](https://github.com/qlik-oss/picasso.js/issues/463)) ([4e2474e](https://github.com/qlik-oss/picasso.js/commit/4e2474e))
+
+
+### Features
+
+* **axis:** allow setting paddingStart and paddingEnd as either a func or a number ([#453](https://github.com/qlik-oss/picasso.js/issues/453)) ([4cb3663](https://github.com/qlik-oss/picasso.js/commit/4cb3663))
+* **line:** add option to hide minor0 line ([#460](https://github.com/qlik-oss/picasso.js/issues/460)) ([7987ce1](https://github.com/qlik-oss/picasso.js/commit/7987ce1))
+
+
+
+
+
 ## [0.27.1](https://github.com/qlik-oss/picasso.js/compare/v0.27.0...v0.27.1) (2019-11-04)
 
 

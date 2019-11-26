@@ -1,6 +1,6 @@
 {
   "name": "picasso-plugin-hammer",
-  "version": "0.27.1",
+  "version": "0.28.0",
   "description": "Hammer JS interaction plugin for picasso.js",
   "license": "MIT",
   "author": "QlikTech International AB",
@@ -20,6 +20,6 @@
     "prepublishOnly": "rm -rf dist && npm run build"
   },
   "devDependencies": {
-    "test-utils": "^0.27.1"
+    "test-utils": "^0.28.0"
   }
 }
