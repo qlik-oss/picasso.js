@@ -332,6 +332,120 @@ describe('line component', () => {
     }]);
   });
 
+  it('should default to rendering minor0 line when has minor0', () => {
+    componentFixture.mocks().theme.style.returns({
+      line: {},
+      area: {
+        fill: 'red',
+        opacity: 0.3
+      }
+    });
+
+    const config = {
+      data: [1, 2, 3],
+      settings: {
+        coordinates: {
+          major(a, i) { return i % 3; },
+          minor(b) { return b.datum.value; },
+          minor0(c) { return c.datum.value / 2; }
+        },
+        layers: {
+          line: {
+            show: true
+          },
+          area: {
+            fill: 'blue'
+          }
+        }
+      }
+    };
+
+    componentFixture.simulateCreate(component, config);
+
+    rendered = componentFixture.simulateRender(opts);
+    expect(rendered).to.eql([{
+      type: 'path',
+      d: 'M0,100L200,200L400,300L400,150L200,100L0,50Z',
+      fill: 'blue',
+      stroke: undefined,
+      strokeLinejoin: undefined,
+      strokeWidth: undefined,
+      opacity: 0.3,
+      data: { value: 1, label: '1', points: config.data.map((p) => ({ label: `${p}`, value: p })) }
+    }, {
+      type: 'path',
+      d: 'M0,100L200,200L400,300',
+      fill: 'none',
+      stroke: '#ccc',
+      strokeLinejoin: 'miter',
+      strokeWidth: 1,
+      opacity: 1,
+      data: { value: 1, label: '1', points: config.data.map((p) => ({ label: `${p}`, value: p })) }
+    }, {
+      type: 'path',
+      d: 'M0,50L200,100L400,150',
+      fill: 'none',
+      stroke: '#ccc',
+      strokeLinejoin: 'miter',
+      strokeWidth: 1,
+      opacity: 1,
+      data: { value: 1, label: '1', points: config.data.map((p) => ({ label: `${p}`, value: p })) }
+    }]);
+  });
+
+  it('should not render minor0 line when has minor0 and showMinor0 is false', () => {
+    componentFixture.mocks().theme.style.returns({
+      line: {},
+      area: {
+        fill: 'red',
+        opacity: 0.3
+      }
+    });
+
+    const config = {
+      data: [1, 2, 3],
+      settings: {
+        coordinates: {
+          major(a, i) { return i % 3; },
+          minor(b) { return b.datum.value; },
+          minor0(c) { return c.datum.value / 2; }
+        },
+        layers: {
+          line: {
+            show: true,
+            showMinor0: false
+          },
+          area: {
+            fill: 'blue'
+          }
+        }
+      }
+    };
+
+    componentFixture.simulateCreate(component, config);
+
+    rendered = componentFixture.simulateRender(opts);
+    expect(rendered).to.eql([{
+      type: 'path',
+      d: 'M0,100L200,200L400,300L400,150L200,100L0,50Z',
+      fill: 'blue',
+      stroke: undefined,
+      strokeLinejoin: undefined,
+      strokeWidth: undefined,
+      opacity: 0.3,
+      data: { value: 1, label: '1', points: config.data.map((p) => ({ label: `${p}`, value: p })) }
+    }, {
+      type: 'path',
+      d: 'M0,100L200,200L400,300',
+      fill: 'none',
+      stroke: '#ccc',
+      strokeLinejoin: 'miter',
+      strokeWidth: 1,
+      opacity: 1,
+      data: { value: 1, label: '1', points: config.data.map((p) => ({ label: `${p}`, value: p })) }
+    }]);
+  });
+
   describe('range', () => {
     let forward;
     let backward;

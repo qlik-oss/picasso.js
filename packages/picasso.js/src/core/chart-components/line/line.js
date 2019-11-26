@@ -93,7 +93,10 @@ const SETTINGS = {
       opacity: 1,
       /**
        * @type {boolean=} */
-      show: true
+      show: true,
+      /**
+       * @type {boolean=} */
+      showMinor0: true
     },
     /**
      * @typedef {object} */
@@ -201,7 +204,7 @@ function createDisplayLayers(layers, {
       }, 'none'));
 
       // secondary line layer, used only when rendering area
-      if (!missingMinor0 && layerStngs.area && areaObj.show !== false) {
+      if (!missingMinor0 && layerStngs.area && areaObj.show !== false && lineObj.showMinor0 !== false) {
         nodes.push(createDisplayLayer(filteredPoints, {
           data: layer.consumableData,
           item: lineObj,
