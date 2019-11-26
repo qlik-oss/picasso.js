@@ -3079,17 +3079,9 @@
             },
             "show": {
               "description": "Whether or not to show the point",
+              "optional": true,
               "defaultValue": true,
-              "kind": "union",
-              "items": [
-                {
-                  "type": "function"
-                },
-                {
-                  "type": "boolean"
-                }
-              ],
-              "type": "any"
+              "type": "#/definitions/datum-boolean"
             },
             "sizeLimits": {
               "kind": "object",
