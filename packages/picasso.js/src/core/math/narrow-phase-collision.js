@@ -225,18 +225,39 @@ export function testPolygonPoint(polygon, point) {
   if (toFewEdges(polygon) || !testRectPoint(polygon.boundingRect(), point)) {
     return false;
   }
-
-  let even = true;
-  const num = polygon.vertices.length;
-  const rayStart = { x: polygon.xMin - 1, y: point.y };
-
-  for (let i = 0; i < num - 1; i++) {
-    const edge = pointsToLine(polygon.edges[i]);
-    if (!(edge.y1 < point.y && edge.y2 < point.y) && !(edge.y1 > point.y && edge.y2 > point.y)) { // filterout any edges that does not cross the ray
-      even = testLineLine(edge, pointsToLine([rayStart, point])) ? !even : even;
+  const { x, y } = point;
+  const vertices = polygon.vertices;
+  let inside;
+  let l;
+  let j;
+  let i;
+  let tx;
+  for (inside = false, i = -1, l = vertices.length, j = l - 1; ++i < l; j = i) {
+    if (vertices[i].x === x && vertices[i].y === y) {
+      // polygon vertice
+      return true;
+    }
+    if (
+      vertices[i].y === vertices[j].y
+      && vertices[i].y === y
+      && (x - vertices[i].x) * (x - vertices[j].x) <= 0
+    ) {
+      // on horizontal edge of polygon
+      return true;
+    }
+    if ((vertices[i].y < y && y <= vertices[j].y) || (vertices[j].y < y && y <= vertices[i].y)) {
+      tx = ((vertices[j].x - vertices[i].x) * (y - vertices[i].y)) / (vertices[j].y - vertices[i].y)
+        + vertices[i].x;
+      if (x === tx) {
+        // on polygon edge
+        return true;
+      }
+      if (x < tx) {
+        inside = !inside;
+      }
     }
   }
-  return !even;
+  return inside;
 }
 
 /**

@@ -131,6 +131,66 @@ describe('GeoPolygon', () => {
 
   describe('Intersection', () => {
     describe('Point', () => {
+      const poly1 = create({
+        vertices: [
+          { x: 1, y: 1 },
+          { x: 5, y: 1 },
+          { x: 1, y: 5 },
+          { x: 1, y: 1 }
+        ]
+      });
+      const poly2 = create({
+        vertices: [
+          { x: 1, y: 1 },
+          { x: 3, y: 3 },
+          { x: 1, y: 5 },
+          { x: 1, y: 1 }
+        ]
+      });
+      const poly3 = create({
+        vertices: [
+          { x: 1, y: 3 },
+          { x: 3, y: 5 },
+          { x: 5, y: 3 },
+          { x: 3, y: 1 },
+          { x: 1, y: 3 }
+        ]
+      });
+      const poly4 = create({
+        vertices: [
+          { x: 1, y: 1 },
+          { x: 1, y: 3 },
+          { x: 3, y: 3 },
+          { x: 5, y: 5 },
+          { x: 5, y: 1 },
+          { x: 1, y: 1 }
+        ]
+      });
+      const poly5 = create({
+        vertices: [
+          { x: 1, y: 1 },
+          { x: 1, y: 5 },
+          { x: 3, y: 3 },
+          { x: 5, y: 5 },
+          { x: 7, y: 3 },
+          { x: 9, y: 5 },
+          { x: 9, y: 1 },
+          { x: 1, y: 1 }
+        ]
+      });
+      const poly6 = create({
+        vertices: [
+          { x: 1, y: 1 },
+          { x: 1, y: 5 },
+          { x: 9, y: 5 },
+          { x: 9, y: 1 },
+          { x: 7, y: 3 },
+          { x: 5, y: 1 },
+          { x: 3, y: 3 },
+          { x: 1, y: 1 }
+        ]
+      });
+
       it('convex polygon', () => {
         const inside = { x: 25, y: 12.5 }; // "center" of triangle
         const outside = { x: 75, y: 12.5 }; // "right" side of triangle
@@ -169,6 +229,112 @@ describe('GeoPolygon', () => {
           ]
         });
         expect(polygon.containsPoint(p)).to.equal(false);
+      });
+
+      it('should return true if the point is coincident with a vertex of the polygon', () => {
+        expect(poly1.containsPoint({ x: 1, y: 1 })).to.equal(true);
+        expect(poly1.containsPoint({ x: 5, y: 1 })).to.equal(true);
+        expect(poly1.containsPoint({ x: 1, y: 5 })).to.equal(true);
+
+        expect(poly2.containsPoint({ x: 1, y: 1 })).to.equal(true);
+        expect(poly2.containsPoint({ x: 3, y: 3 })).to.equal(true);
+        expect(poly2.containsPoint({ x: 1, y: 5 })).to.equal(true);
+
+        expect(poly3.containsPoint({ x: 1, y: 3 })).to.equal(true);
+        expect(poly3.containsPoint({ x: 3, y: 5 })).to.equal(true);
+        expect(poly3.containsPoint({ x: 5, y: 3 })).to.equal(true);
+        expect(poly3.containsPoint({ x: 3, y: 1 })).to.equal(true);
+
+        expect(poly4.containsPoint({ x: 1, y: 1 })).to.equal(true);
+        expect(poly4.containsPoint({ x: 1, y: 3 })).to.equal(true);
+        expect(poly4.containsPoint({ x: 3, y: 3 })).to.equal(true);
+        expect(poly4.containsPoint({ x: 5, y: 5 })).to.equal(true);
+        expect(poly4.containsPoint({ x: 5, y: 1 })).to.equal(true);
+
+        expect(poly5.containsPoint({ x: 1, y: 1 })).to.equal(true);
+        expect(poly5.containsPoint({ x: 1, y: 5 })).to.equal(true);
+        expect(poly5.containsPoint({ x: 3, y: 3 })).to.equal(true);
+        expect(poly5.containsPoint({ x: 5, y: 5 })).to.equal(true);
+        expect(poly5.containsPoint({ x: 7, y: 3 })).to.equal(true);
+        expect(poly5.containsPoint({ x: 9, y: 5 })).to.equal(true);
+        expect(poly5.containsPoint({ x: 9, y: 1 })).to.equal(true);
+      });
+      it('should return true if the point is on an edge of the polygon', () => {
+        expect(poly1.containsPoint({ x: 2, y: 1 })).to.equal(true);
+        expect(poly1.containsPoint({ x: 1, y: 2 })).to.equal(true);
+        expect(poly1.containsPoint({ x: 3, y: 3 })).to.equal(true);
+
+        expect(poly2.containsPoint({ x: 2, y: 2 })).to.equal(true);
+        expect(poly2.containsPoint({ x: 1, y: 2 })).to.equal(true);
+        expect(poly2.containsPoint({ x: 1, y: 3 })).to.equal(true);
+        expect(poly2.containsPoint({ x: 2, y: 4 })).to.equal(true);
+
+        expect(poly3.containsPoint({ x: 2, y: 4 })).to.equal(true);
+        expect(poly3.containsPoint({ x: 4, y: 4 })).to.equal(true);
+        expect(poly3.containsPoint({ x: 4, y: 2 })).to.equal(true);
+        expect(poly3.containsPoint({ x: 2, y: 2 })).to.equal(true);
+
+        expect(poly4.containsPoint({ x: 1, y: 2 })).to.equal(true);
+        expect(poly4.containsPoint({ x: 2, y: 3 })).to.equal(true);
+        expect(poly4.containsPoint({ x: 4, y: 4 })).to.equal(true);
+        expect(poly4.containsPoint({ x: 5, y: 3 })).to.equal(true);
+        expect(poly4.containsPoint({ x: 3, y: 1 })).to.equal(true);
+
+        expect(poly5.containsPoint({ x: 1, y: 3 })).to.equal(true);
+        expect(poly5.containsPoint({ x: 2, y: 4 })).to.equal(true);
+        expect(poly5.containsPoint({ x: 4, y: 4 })).to.equal(true);
+        expect(poly5.containsPoint({ x: 6, y: 4 })).to.equal(true);
+        expect(poly5.containsPoint({ x: 8, y: 4 })).to.equal(true);
+        expect(poly5.containsPoint({ x: 9, y: 3 })).to.equal(true);
+        expect(poly5.containsPoint({ x: 5, y: 1 })).to.equal(true);
+      });
+      it('should calculate that these points are outside', () => {
+        expect(poly1.containsPoint({ x: 10, y: 10 })).to.equal(false);
+        expect(poly1.containsPoint({ x: 1, y: 10 })).to.equal(false);
+        expect(poly1.containsPoint({ x: 4, y: 4 })).to.equal(false);
+      });
+      it('should return true if the point is inside and the horizontal line of the point goes through a vertex of the polygon', () => {
+        expect(poly2.containsPoint({ x: 2, y: 3 })).to.equal(true);
+
+        expect(poly3.containsPoint({ x: 3, y: 3 })).to.equal(true);
+
+        expect(poly5.containsPoint({ x: 2, y: 3 })).to.equal(true);
+        expect(poly5.containsPoint({ x: 5, y: 3 })).to.equal(true);
+        expect(poly5.containsPoint({ x: 8, y: 3 })).to.equal(true);
+
+        expect(poly6.containsPoint({ x: 2, y: 3 })).to.equal(true);
+        expect(poly6.containsPoint({ x: 5, y: 3 })).to.equal(true);
+        expect(poly6.containsPoint({ x: 8, y: 3 })).to.equal(true);
+      });
+      it('should return true if the point is inside and the horizontal line of the point goes through an edge of the polygon', () => {
+        expect(poly4.containsPoint({ x: 4, y: 3 })).to.equal(true);
+      });
+      it('should return false if the point is outside and the horizontal line of the point goes through an edge of the polygon', () => {
+        expect(poly4.containsPoint({ x: 0, y: 3 })).to.equal(false);
+        expect(poly4.containsPoint({ x: 6, y: 3 })).to.equal(false);
+      });
+      it('should return false if the point is outside and the horizontal line of the point goes through a vertex of the polygon', () => {
+        expect(poly2.containsPoint({ x: 0, y: 5 })).to.equal(false);
+        expect(poly2.containsPoint({ x: 0, y: 3 })).to.equal(false);
+        expect(poly2.containsPoint({ x: 0, y: 1 })).to.equal(false);
+        expect(poly2.containsPoint({ x: 4, y: 5 })).to.equal(false);
+        expect(poly2.containsPoint({ x: 4, y: 3 })).to.equal(false);
+        expect(poly2.containsPoint({ x: 4, y: 1 })).to.equal(false);
+
+        expect(poly3.containsPoint({ x: 0, y: 3 })).to.equal(false);
+        expect(poly3.containsPoint({ x: 6, y: 3 })).to.equal(false);
+
+        expect(poly5.containsPoint({ x: 0, y: 5 })).to.equal(false);
+        expect(poly5.containsPoint({ x: 3, y: 5 })).to.equal(false);
+        expect(poly5.containsPoint({ x: 7, y: 5 })).to.equal(false);
+        expect(poly5.containsPoint({ x: 10, y: 5 })).to.equal(false);
+        expect(poly5.containsPoint({ x: 0, y: 3 })).to.equal(false);
+        expect(poly5.containsPoint({ x: 10, y: 3 })).to.equal(false);
+
+        expect(poly6.containsPoint({ x: 0, y: 1 })).to.equal(false);
+        expect(poly6.containsPoint({ x: 3, y: 1 })).to.equal(false);
+        expect(poly6.containsPoint({ x: 7, y: 1 })).to.equal(false);
+        expect(poly6.containsPoint({ x: 10, y: 1 })).to.equal(false);
       });
     });
 
