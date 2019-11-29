@@ -1,5 +1,5 @@
 import extend from 'extend';
-import { notNumber, isNumber } from '../../utils/is-number';
+import { notNumber } from '../../utils/is-number';
 
 const DEFAULT_ERROR_SETTINGS = {
   errorShape: {
