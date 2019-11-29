@@ -1,5 +1,5 @@
 import extend from 'extend';
-import { notNumber } from '../../utils/is-number';
+import { notNumber, isNumber } from '../../utils/is-number';
 
 const DEFAULT_ERROR_SETTINGS = {
   errorShape: {
@@ -11,6 +11,8 @@ const DEFAULT_ERROR_SETTINGS = {
     strokeWidth: 0
   }
 };
+
+const PX_RX = /px$/;
 
 /**
   * @typedef {object}
@@ -105,8 +107,12 @@ function createDisplayPoints(dataPoints, {
   width, height
 }, pointSize, shapeFn) {
   return dataPoints.filter((p) => p.show !== false && !isNaN(p.x + p.y)).map((p) => {
-    const s = notNumber(p.size) ? DEFAULT_ERROR_SETTINGS.errorShape : p;
-    const size = pointSize.min + (s.size * (pointSize.max - pointSize.min));
+    let s = p;
+    let size = PX_RX.test(p.size) ? parseInt(p.size, 10) : pointSize.min + (s.size * (pointSize.max - pointSize.min));
+    if (notNumber(size)) {
+      s = DEFAULT_ERROR_SETTINGS.errorShape;
+      size = pointSize.min + (s.size * (pointSize.max - pointSize.min));
+    }
     const shapeSpec = {
       type: s.shape === 'rect' ? 'square' : s.shape,
       label: p.label,
