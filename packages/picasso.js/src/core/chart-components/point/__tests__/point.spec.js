@@ -247,6 +247,38 @@ describe('point component', () => {
     }]);
   });
 
+  it('should render points with function settings and size has px format', () => {
+    const config = {
+      shapeFn,
+      data: ['a'],
+      settings: {
+        size: () => '15px'
+      }
+    };
+
+    componentFixture.simulateCreate(pointComponent, config);
+    renderedPoints = componentFixture.simulateRender(opts);
+
+    expect(renderedPoints[0].size).to.equal(15);
+  });
+
+  it('should render points with data settings and size has px format', () => {
+    const config = {
+      shapeFn,
+      data: [{}, {}, {}],
+      settings: {
+        size: { ref: 'value', fn: (v, i) => `${i + 30}px` }
+      }
+    };
+
+    componentFixture.simulateCreate(pointComponent, config);
+    renderedPoints = componentFixture.simulateRender(opts);
+
+    expect(renderedPoints[0].size).to.equal(30);
+    expect(renderedPoints[1].size).to.equal(31);
+    expect(renderedPoints[2].size).to.equal(32);
+  });
+
   it('should render points with limited size when using discrete scale', () => {
     const config = {
       shapeFn,
