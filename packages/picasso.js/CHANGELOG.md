@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.29.0](https://github.com/qlik-oss/picasso.js/compare/v0.28.0...v0.29.0) (2019-12-02)
+
+
+### Features
+
+* **point:** add control to show/hide a point in a point component ([#464](https://github.com/qlik-oss/picasso.js/issues/464)) ([ff210d4](https://github.com/qlik-oss/picasso.js/commit/ff210d4))
+* **point:** support setting point size as px ([#465](https://github.com/qlik-oss/picasso.js/issues/465)) ([d3de30a](https://github.com/qlik-oss/picasso.js/commit/d3de30a))
+
+
+
+
+
 # [0.28.0](https://github.com/qlik-oss/picasso.js/compare/v0.27.1...v0.28.0) (2019-11-26)
 
 
