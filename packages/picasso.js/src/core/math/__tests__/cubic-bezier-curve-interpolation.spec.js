@@ -36,4 +36,14 @@ describe('Cubic Bezier curve', () => {
 
     approxEqual(pts, exp);
   });
+
+  it('should split curve a maximum amount of times', () => {
+    const m = 1e13; // Trigger max nbr of points by using a very large curve
+    p2.x *= m;
+    p2.y *= m;
+    p3.x *= m;
+    const pts = cubicToPoints(p0, p1, p2, p3);
+
+    expect(pts).to.be.of.length(257);
+  });
 });
