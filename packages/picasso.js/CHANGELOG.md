@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.29.1](https://github.com/qlik-oss/picasso.js/compare/v0.29.0...v0.29.1) (2019-12-05)
+
+
+### Performance Improvements
+
+* improve curve to points ([#466](https://github.com/qlik-oss/picasso.js/issues/466)) ([d5bb189](https://github.com/qlik-oss/picasso.js/commit/d5bb189))
+
+
+
+
+
 # [0.29.0](https://github.com/qlik-oss/picasso.js/compare/v0.28.0...v0.29.0) (2019-12-02)
 
 
