@@ -2,8 +2,8 @@ import flatness from './curve-flattness';
 
 function mid(p0, p1) {
   return {
-    x: (p0.x + p1.x) / 2,
-    y: (p0.y + p1.y) / 2
+    x: (p0.x + p1.x) * 0.5,
+    y: (p0.y + p1.y) * 0.5
   };
 }
 
@@ -20,6 +20,8 @@ function interpolate(t, s, cp1, cp2, e) {
 /**
  * Recursive subdivision of a curve using de Casteljau algorithm.
  * Splits the curve into multiple line segments where each segments is choosen based on a level of flatness.
+ *
+ * At most it will be able to generate 2**maxNbrOfSplits + 1 = 257 points
  * @ignore
  * @param {point} s - Start point
  * @param {point} cp1 - First control point
@@ -28,15 +30,14 @@ function interpolate(t, s, cp1, cp2, e) {
  * @param {array} points - Initial set of points
  * @returns {point[]} Array of points
  */
-function toPoints(s, cp1, cp2, e, points = []) {
-  if (flatness(s, cp1, cp2, e) <= 10) {
-    // Poor man's Set
-    if (points.indexOf(s) === -1) {
+function toPoints(s, cp1, cp2, e, points = [], maxNbrOfSplits = 8) {
+  if (maxNbrOfSplits < 1 || flatness(s, cp1, cp2, e) <= 10) {
+    if (points[points.length - 1] !== s) {
       points.push(s);
     }
-    if (points.indexOf(e) === -1) {
-      points.push(e);
-    }
+
+    points.push(e);
+
     return points;
   }
 
@@ -54,8 +55,8 @@ function toPoints(s, cp1, cp2, e, points = []) {
   const q0 = mid(m0, m1); // New cp2 for left curve
   const q1 = mid(m1, m2); // New cp1 for right curve
 
-  toPoints(s, m0, q0, b, points); // left curve
-  toPoints(b, q1, m2, e, points); // Right curve
+  toPoints(s, m0, q0, b, points, maxNbrOfSplits - 1); // left curve
+  toPoints(b, q1, m2, e, points, maxNbrOfSplits - 1); // Right curve
 
   return points;
 }
