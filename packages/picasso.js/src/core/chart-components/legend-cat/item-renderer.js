@@ -256,7 +256,9 @@ export function parallelize(availableExtent, availableSpread, itemized) {
 
   if (availableSpread != null) {
     const spreadProperty = itemized.layout.orientation === 'horizontal' ? 'height' : 'width';
-    const numAllowed = Math.floor(availableSpread / (4 + itemized.globalMetrics.maxItemBounds[spreadProperty]));
+    const spreadMargin = spreadProperty === 'width' ? 'horizontal' : 'vertical';
+    const spreadMarginSize = itemized.layout.margin[spreadMargin] || 4;
+    const numAllowed = Math.floor((availableSpread + spreadMarginSize) / (spreadMarginSize + itemized.globalMetrics.maxItemBounds[spreadProperty]));
     numNeeded = Math.min(numNeeded, numAllowed);
   }
 
