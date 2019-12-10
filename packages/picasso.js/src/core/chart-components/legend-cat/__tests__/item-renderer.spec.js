@@ -119,6 +119,32 @@ describe('legend-item-renderer', () => {
         globalMetrics: { maxItemBounds: { width: 10, height: 20 } }
       })).to.equal(2);
     });
+
+    describe('horizontal layout', () => {
+      it('should not overflow allowed spread of two rows', () => {
+        // 25 in width + 4 spacing should fit two rows and result in 3 columns
+        // 3 columns = 25 * 3 + 2 * 4 = 83
+        // limit spread to 38 should limit the parallels to 2
+        // 2 rows = 17 * 2 + 4 = 38
+        expect(parallelize(83, 38, {
+          items: [1, 2, 3, 4, 5, 6],
+          layout: { size: 5, margin: { vertical: 4, horizontal: 6 }, orientation: 'horizontal' },
+          globalMetrics: { maxItemBounds: { width: 25, height: 17 } }
+        })).to.equal(2);
+      });
+
+      it('should not overflow allowed spread of one row', () => {
+        // 25 in width + 4 spacing should fit one row and result in 3 columns
+        // 3 columns = 25 * 3 + 2 * 4 = 83
+        // limit spread to 37 should limit the parallels to 1
+        // 1 row = 17
+        expect(parallelize(83, 37, {
+          items: [1, 2, 3, 4, 5, 6],
+          layout: { size: 5, margin: { vertical: 4, horizontal: 6 }, orientation: 'horizontal' },
+          globalMetrics: { maxItemBounds: { width: 25, height: 17 } }
+        })).to.equal(1);
+      });
+    });
   });
 
   describe('getItemsToRender', () => {

@@ -250,14 +250,15 @@ export function parallelize(availableExtent, availableSpread, itemized) {
   const count = itemized.items.length;
   const extentProperty = itemized.layout.orientation === 'horizontal' ? 'width' : 'height';
   const margin = extentProperty === 'width' ? 'horizontal' : 'vertical';
-  const marginSize = itemized.layout.margin[margin];
   const extentInPx = (itemized.globalMetrics.maxItemBounds[extentProperty] * count)
-    + ((count - 1) * marginSize);
+    + ((count - 1) * itemized.layout.margin[margin]);
   let numNeeded = Math.ceil(extentInPx / availableExtent);
 
   if (availableSpread != null) {
     const spreadProperty = itemized.layout.orientation === 'horizontal' ? 'height' : 'width';
-    const numAllowed = Math.floor((availableSpread + marginSize) / (marginSize + itemized.globalMetrics.maxItemBounds[spreadProperty]));
+    const spreadMargin = spreadProperty === 'width' ? 'horizontal' : 'vertical';
+    const spreadMarginSize = itemized.layout.margin[spreadMargin] || 4;
+    const numAllowed = Math.floor((availableSpread + spreadMarginSize) / (spreadMarginSize + itemized.globalMetrics.maxItemBounds[spreadProperty]));
     numNeeded = Math.min(numNeeded, numAllowed);
   }
 
