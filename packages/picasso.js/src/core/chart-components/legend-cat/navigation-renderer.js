@@ -110,7 +110,8 @@ function render(renderer, {
     direction: order[0],
     attrs: {
       'data-action': 'next',
-      'data-component-key': legend.settings.key
+      'data-component-key': legend.settings.key,
+      tabindex: -1
     },
     nav: itemized.navigation
   }), btn(h, {
@@ -119,7 +120,8 @@ function render(renderer, {
     direction: order[1],
     attrs: {
       'data-action': 'prev',
-      'data-component-key': legend.settings.key
+      'data-component-key': legend.settings.key,
+      tabindex: -1
     },
     nav: itemized.navigation
   })])];
