@@ -30,6 +30,7 @@ function btn(h, {
 }) {
   let c = {};
   let content = '';
+  const attrsMerged = attrs;
   if (nav && nav.button) {
     if (typeof nav.button.class === 'function') {
       c = nav.button.class({ direction });
@@ -38,6 +39,9 @@ function btn(h, {
     }
     if (typeof nav.button.content === 'function') {
       content = nav.button.content(h, { direction });
+    }
+    if (nav.button.tabIndex !== undefined) {
+      attrsMerged.tabindex = nav.button.tabIndex;
     }
   }
   const style = {
@@ -50,7 +54,7 @@ function btn(h, {
     style.border = '0';
     style.background = 'none';
   }
-  const attrsMerged = attrs;
+
   if (!isActive || (nav && nav.disabled)) {
     attrsMerged.disabled = 'disabled';
   }
@@ -110,8 +114,7 @@ function render(renderer, {
     direction: order[0],
     attrs: {
       'data-action': 'next',
-      'data-component-key': legend.settings.key,
-      tabindex: -1
+      'data-component-key': legend.settings.key
     },
     nav: itemized.navigation
   }), btn(h, {
@@ -120,8 +123,7 @@ function render(renderer, {
     direction: order[1],
     attrs: {
       'data-action': 'prev',
-      'data-component-key': legend.settings.key,
-      tabindex: -1
+      'data-component-key': legend.settings.key
     },
     nav: itemized.navigation
   })])];

@@ -99,7 +99,10 @@ const DEFAULT_SETTINGS = {
       class: undefined,
       /**
        * @type {function} */
-      content: undefined
+      content: undefined,
+      /**
+       * @type {number=} */
+      tabIndex: undefined
     },
     /** Whether the button should be disabled or not
      * @type {boolean=} */
