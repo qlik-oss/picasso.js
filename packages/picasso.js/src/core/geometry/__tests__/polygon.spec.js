@@ -1,7 +1,7 @@
 import { create } from '../polygon';
 import { rectToPoints, lineToPoints } from '../util';
 
-describe('GeoPolygon', () => {
+describe('Polygon', () => {
   let polygon;
   const convexPolygon = [
     { x: 0, y: 25 },

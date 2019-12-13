@@ -80,7 +80,7 @@ class GeoRect {
   }
 
   /**
-   * @param {GeoPolygon} polygon
+   * @param {Polygon} polygon
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsPolygon(polygon) {
