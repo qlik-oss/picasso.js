@@ -31,10 +31,10 @@ function removeDuplicates(vertices) {
 }
 
 /**
- * Construct a new GeoPolygon instance
+ * Construct a new Polygon instance
  * @private
  */
-class GeoPolygon {
+class Polygon {
   constructor({ vertices = [] } = {}) {
     this.set({ vertices });
   }
@@ -117,7 +117,7 @@ class GeoPolygon {
   /**
    * Check if polygon intersects another polygon.
    * Supports convex, concave and self-intersecting polygons (filled area).
-   * @param {GeoPolygon} polygon
+   * @param {Polygon} polygon
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsPolygon(polygon) {
@@ -180,17 +180,17 @@ class GeoPolygon {
 
 
 /**
-* Construct a new GeoPolygon instance
+* Construct a new Polygon instance
 * @param {object} input An object with a vertices property
 * @param {point[]} [input.vertices=[]] Vertices are represented as an array of points.
-* @returns {GeoPolygon} GeoPolygon instance
+* @returns {Polygon} Polygon instance
 * @private
 */
 function create(...a) {
-  return new GeoPolygon(...a);
+  return new Polygon(...a);
 }
 
 export {
   create,
-  GeoPolygon as default
+  Polygon as default
 };
