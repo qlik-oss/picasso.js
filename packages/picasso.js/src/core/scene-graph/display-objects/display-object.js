@@ -233,6 +233,7 @@ class DisplayObject extends Node {
       case 'rect':
       case 'circle':
       case 'polygon':
+      case 'geopolygon':
       case 'polyline':
         this._collider.fn = geometry(this._collider.type, this._collider.definition);
         break;

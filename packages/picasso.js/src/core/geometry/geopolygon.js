@@ -1,14 +1,16 @@
+import { create as createPolygon } from './polygon';
 import {
   pointsToLine,
   pointsToRect
 } from './util';
 import {
-  testCirclePolygon,
-  testPolygonPoint,
-  testPolygonLine,
-  testPolygonRect,
+  testCircleGeoPolygon,
+  testGeoPolygonPoint,
+  testGeoPolygonLine,
+  testGeoPolygonRect,
   testRectRect,
-  testRectContainsRect
+  testRectContainsRect,
+  testPolygonLine
 } from '../math/narrow-phase-collision';
 
 function close(vertices) {
@@ -31,10 +33,10 @@ function removeDuplicates(vertices) {
   }
 }
 
-function testPolygonPolygon(polygon1, polygon2) {
+function testGeoPolygonPolygon(geopolygon, polygon) {
   let intersects = false;
-  for (let i = 0, len = polygon2.edges.length; i < len; i++) {
-    intersects = testPolygonLine(polygon1, pointsToLine(polygon2.edges[i]));
+  for (let i = 0, len = polygon.edges.length; i < len; i++) {
+    intersects = testGeoPolygonLine(geopolygon, pointsToLine(polygon.edges[i]));
     if (intersects === true) {
       break;
     }
@@ -42,12 +44,38 @@ function testPolygonPolygon(polygon1, polygon2) {
   return intersects;
 }
 
+function testPolygonGeoPolygon(polygon, geopolygon) {
+  let intersects = false;
+  const { numPolygons, polygons } = geopolygon;
+  for (let n = 0; n < numPolygons; n++) {
+    let polygon2 = polygons[n];
+    for (let i = 0, len = polygon2.edges.length; i < len; i++) {
+      intersects = testPolygonLine(polygon, pointsToLine(polygon2.edges[i]));
+      if (intersects === true) {
+        return true;
+      }
+    }
+    return false;
+  }
+  for (let i = 0, len = polygon.edges.length; i < len; i++) {
+    intersects = testGeoPolygonLine(geopolygon, pointsToLine(polygon.edges[i]));
+    if (intersects === true) {
+      break;
+    }
+  }
+  return intersects;
+}
 /**
- * Construct a new Polygon instance
+ * A geo-polygon is a polygon which is similar to a polygon in GeoJson. A typical geopolygon is an array of polygons where the first polygon is an outer polygon and the rest are inner polygons
  * @private
  */
-class Polygon {
-  constructor({ vertices = [] } = {}) {
+
+/**
+ * Construct a new GeoPolygon instance
+ * @private
+ */
+class GeoPolygon {
+  constructor({ vertices = [[]] } = {}) {
     this.set({ vertices });
   }
 
@@ -55,35 +83,28 @@ class Polygon {
    * Set the vertices.
    * If vertices doesn't close the polygon, a closing vertice is appended.
    * @param {object} input An object with a vertices property
-   * @param {point[]} [input.vertices=[]] Vertices are represented as an array of points.
+   * @param {Array} [input.vertices=[]] Vertices are represented as an array of arrays of points.
    */
   set({ vertices = [] } = {}) {
-    this.type = 'polygon';
+    this.type = 'geopolygon';
     this.vertices = vertices.slice();
-    this.edges = [];
-
-    removeDuplicates(this.vertices);
-
-    if (this.vertices.length <= 2) {
-      return;
-    }
-
-    close(this.vertices);
-
+    this.numPolygons = this.vertices.length;
+    this.polygons = [];
     this.xMin = NaN;
     this.yMin = NaN;
     this.xMax = NaN;
     this.yMax = NaN;
 
-    for (let i = 0; i < this.vertices.length; i++) {
-      if (i < this.vertices.length - 1) {
-        this.edges.push([this.vertices[i], this.vertices[i + 1]]);
+    for (let i = 0; i < this.numPolygons; i++) {
+      removeDuplicates(this.vertices[i]);
+      if (this.vertices[i].length > 2) {
+        close(this.vertices[i]);
       }
-
-      this.xMin = isNaN(this.xMin) ? this.vertices[i].x : Math.min(this.xMin, this.vertices[i].x);
-      this.xMax = isNaN(this.xMax) ? this.vertices[i].x : Math.max(this.xMax, this.vertices[i].x);
-      this.yMin = isNaN(this.yMin) ? this.vertices[i].y : Math.min(this.yMin, this.vertices[i].y);
-      this.yMax = isNaN(this.yMax) ? this.vertices[i].y : Math.max(this.yMax, this.vertices[i].y);
+      this.polygons[i] = createPolygon({ vertices: this.vertices[i] });
+      this.xMin = isNaN(this.xMin) ? this.polygons[i].xMin : Math.min(this.xMin, this.polygons[i].xMin);
+      this.xMax = isNaN(this.xMax) ? this.polygons[i].xMax : Math.max(this.xMax, this.polygons[i].xMax);
+      this.yMin = isNaN(this.yMin) ? this.polygons[i].yMin : Math.min(this.yMin, this.polygons[i].yMin);
+      this.yMax = isNaN(this.yMax) ? this.polygons[i].yMax : Math.max(this.yMax, this.polygons[i].yMax);
     }
 
     this._bounds = null;
@@ -91,13 +112,13 @@ class Polygon {
   }
 
   /**
-   * Check if a point is inside the area of the polygon.
+   * Check if a point is inside the area of the geopolygon.
    * Supports convex, concave and self-intersecting polygons (filled area).
    * @param {point} point
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   containsPoint(point) {
-    return testPolygonPoint(this, point);
+    return testGeoPolygonPoint(this, point);
   }
 
   /**
@@ -107,7 +128,7 @@ class Polygon {
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsCircle(circle) {
-    return testCirclePolygon(circle, this);
+    return testCircleGeoPolygon(circle, this);
   }
 
   /**
@@ -115,7 +136,7 @@ class Polygon {
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsLine(points) {
-    return testPolygonLine(this, pointsToLine((points)));
+    return testGeoPolygonLine(this, pointsToLine((points)));
   }
 
   /**
@@ -123,7 +144,7 @@ class Polygon {
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsRect(points) {
-    return testPolygonRect(this, pointsToRect(points));
+    return testGeoPolygonRect(this, pointsToRect(points));
   }
 
   /**
@@ -138,10 +159,10 @@ class Polygon {
     if (!testRectRect(rect1, rect2)) {
       return false;
     }
-    if (testRectContainsRect(rect1, rect2)) {
-      return testPolygonPolygon(this, polygon);
+    if (testRectContainsRect(rect2, rect1)) {
+      return testPolygonGeoPolygon(polygon, this);
     }
-    return testPolygonPolygon(polygon, this);
+    return testGeoPolygonPolygon(this, polygon);
   }
 
   /**
@@ -188,17 +209,17 @@ class Polygon {
 
 
 /**
-* Construct a new Polygon instance
+* Construct a new GeoPolygon instance
 * @param {object} input An object with a vertices property
 * @param {point[]} [input.vertices=[]] Vertices are represented as an array of points.
 * @returns {Polygon} Polygon instance
 * @private
 */
 function create(...a) {
-  return new Polygon(...a);
+  return new GeoPolygon(...a);
 }
 
 export {
   create,
-  Polygon as default
+  GeoPolygon as default
 };

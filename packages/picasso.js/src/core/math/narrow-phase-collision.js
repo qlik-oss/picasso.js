@@ -371,6 +371,33 @@ export function testRectRect(rect1, rect2) {
 }
 
 /**
+   * Test if a rectangle contains  another rectangle. If so, returns true and false otherwise.
+   * Both rectangles must have a width and height greather then 0.
+   * @private
+   * @param {object} rect
+   * @param {number} rect.x - x-coordinate
+   * @param {number} rect.y - y-coordinate
+   * @param {number} rect.width - width
+   * @param {number} rect.height - height
+   * @param {object} rect
+   * @param {number} rect.x - x-coordinate
+   * @param {number} rect.y - y-coordinate
+   * @param {number} rect.width - width
+   * @param {number} rect.height - height
+   * @return {boolean} true if rectangle collide with rectangle
+  */
+export function testRectContainsRect(rect1, rect2) {
+  if (rectHasNoSize(rect1) || rectHasNoSize(rect2)) {
+    return false;
+  }
+  const points = [{ x: rect2.x, y: rect2.y },
+    { x: rect2.x + rect2.width, y: rect2.y },
+    { x: rect2.x + rect2.width, y: rect2.y + rect2.height },
+    { x: rect2.x, y: rect2.y + rect2.height }];
+  return points.every((p) => testRectPoint(rect1, p));
+}
+
+/**
    * Test if a Rectangle contains a Point. If so, returns true and false otherwise.
    * Rectangle must have a width and height greather then 0.
    * @private
@@ -517,4 +544,154 @@ export function testLinePoint(line, point) {
 
   const [p1, p2] = lineToPoints(line);
   return isPointOnLine(p1, p2, point);
+}
+
+/**
+   * Test if a Circle collide with GeoPolygon. If so, returns true and false otherwise.
+   * Circle muse have a radius greater then 0.
+   * @private
+   * @param {object} circle
+   * @param {number} circle.cx - center x-coordinate
+   * @param {number} circle.cy - center y-coordinate
+   * @param {number} circle.r - circle radius
+   * @param {object} geopolygon
+   * @param {Array} geopolygon.polygons - Array of polygons
+   * @return {boolean} true if circle collide with polygon
+  */
+export function testCircleGeoPolygon(circle, geopolygon) {
+  if (circleHasNoSize(circle)) {
+    return false;
+  }
+  const center = { x: circle.cx, y: circle.cy };
+  if (testGeoPolygonPoint(geopolygon, center)) {
+    return true;
+  }
+  const { numPolygons, polygons } = geopolygon;
+  for (let n = 0; n < numPolygons; n++) {
+    const polygon = polygons[n];
+    const num = polygon.edges.length;
+    for (let i = 0; i < num; i++) {
+      const edge = pointsToLine(polygon.edges[i]);
+      if (testCircleLine(circle, edge)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+/**
+   * Test if a GeoPolygon contains a Point. If so, returns true and false otherwise.
+   * @private
+   * @param {object} geopolygon
+   * @param {Array} geopolygon.vertices - Array of of arrays of vertices
+   * @param {object} point
+   * @param {number} point.x - x-coordinate
+   * @param {number} point.y - y-coordinate
+   * @return {boolean} true if polygon conatins point
+  */
+export function testGeoPolygonPoint(geopolygon, point) {
+  if (!testRectPoint(geopolygon.boundingRect(), point)) {
+    return false;
+  }
+  const { x, y } = point;
+  const numPolygons = geopolygon.numPolygons;
+  let inside = false;
+  let vertices;
+  let n;
+  let l;
+  let j;
+  let i;
+  let tx;
+  for (n = 0; n < numPolygons; n++) {
+    vertices = geopolygon.vertices[n];
+    for (i = -1, l = vertices.length, j = l - 1; ++i < l; j = i) {
+      if (vertices[i].x === x && vertices[i].y === y) {
+      // polygon vertice
+        return true;
+      }
+      if (
+        vertices[i].y === vertices[j].y
+      && vertices[i].y === y
+      && (x - vertices[i].x) * (x - vertices[j].x) <= 0
+      ) {
+      // on horizontal edge of polygon
+        return true;
+      }
+      if ((vertices[i].y < y && y <= vertices[j].y) || (vertices[j].y < y && y <= vertices[i].y)) {
+        tx = ((vertices[j].x - vertices[i].x) * (y - vertices[i].y)) / (vertices[j].y - vertices[i].y)
+        + vertices[i].x;
+        if (x === tx) {
+        // on polygon edge
+          return true;
+        }
+        if (x < tx) {
+          inside = !inside;
+        }
+      }
+    }
+  }
+  return inside;
+}
+
+/**
+   * Test if a GeoPolygon collider with a line. If so, returns true and false otherwise.
+   * Line must have length greater then 0.
+   * @private
+   * @param {object} geopolygon
+   * @param {Array} geopolygon.polygons - Array of polygons
+   * @param {object} line
+   * @param {number} line.x1 - x-coordinate
+   * @param {number} line.y1 - y-coordinate
+   * @param {number} line.x1 - x-coordinate
+   * @param {number} line.y1 - y-coordinate
+   * @return {boolean} true if polygon collider with line
+  */
+export function testGeoPolygonLine(geopolygon, line) {
+  const [p1, p2] = lineToPoints(line);
+  if (testGeoPolygonPoint(geopolygon, p1) || testGeoPolygonPoint(geopolygon, p2)) {
+    return true;
+  }
+  const { numPolygons, polygons } = geopolygon;
+  for (let n = 0; n < numPolygons; n++) {
+    const polygon = polygons[n];
+    for (let i = 0, num = polygon.edges.length; i < num; i++) {
+      const edge = pointsToLine(polygon.edges[i]);
+      if (testLineLine(line, edge)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+/**
+   * Test if a GeoPolygon collider with a rectangle. If so, returns true and false otherwise.
+   * Rectangle must have width and height greater than 0.
+   * @private
+   * @param {object} geopolygon
+   * @param {Array} geopolygon.polygons - Array of polygons
+   * @param {object} rect
+   * @param {number} rect.x - x-coordinate
+   * @param {number} rect.y - y-coordinate
+   * @param {number} rect.width - width
+   * @param {number} rect.height - height
+   * @return {boolean} true if polygon collider with rect
+  */
+export function testGeoPolygonRect(geopolygon, rect) {
+  const [p1, p2, p3, p4] = rectToPoints(rect);
+  if (testGeoPolygonPoint(geopolygon, p1) || testGeoPolygonPoint(geopolygon, p2) || testGeoPolygonPoint(geopolygon, p3) || testGeoPolygonPoint(geopolygon, p4)) {
+    return true;
+  }
+  const { numPolygons, polygons } = geopolygon;
+  for (let n = 0; n < numPolygons; n++) {
+    const polygon = polygons[n];
+    for (let i = 0, num = polygon.edges.length; i < num; i++) {
+      const edge = pointsToLine(polygon.edges[i]);
+      if (testRectLine(rect, edge)) {
+        return true;
+      }
+    }
+  }
+  return false;
 }

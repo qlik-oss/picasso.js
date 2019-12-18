@@ -34,11 +34,20 @@ export default class Path extends DisplayObject {
     this.segments = [];
     this.points = [];
     this.attrs.d = v.d;
+    this.__boundingRect = { true: null, false: null };
+    this.__bounds = { true: null, false: null };
 
     if (Array.isArray(v.collider) || (typeof v.collider === 'object' && typeof v.collider.type !== 'undefined')) {
       this.collider = v.collider;
     } else if (v.d) {
       this.segments = pathToSegments(v.d);
+      if (this.segments.length > 1 && this.segments.every((segment) => isClosed(segment))) {
+        this.collider = extend({
+          type: 'geopolygon',
+          vertices: this.segments
+        }, v.collider);
+        return;
+      }
       this.segments.forEach((segment) => {
         if (segment.length <= 1) {
           // Omit empty and single point segments
@@ -58,9 +67,6 @@ export default class Path extends DisplayObject {
         }
       });
     }
-
-    this.__boundingRect = { true: null, false: null };
-    this.__bounds = { true: null, false: null };
   }
 
   boundingRect(includeTransform = false) {
