@@ -208,7 +208,7 @@ export default function qBrush(brush, opts = {}, layout) {
               };
             }
 
-            if (b.id === primarySource || (!primarySource && methods.selectPivotCells.cells.length === 0)) {
+            if (b.id === primarySource || !primarySource) {
               const validValues = b.brush.values()
                 .map((s) => +s)
                 .filter((v) => !isNaN(v));
