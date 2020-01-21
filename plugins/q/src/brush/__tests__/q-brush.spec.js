@@ -265,6 +265,21 @@ describe('q-brush', () => {
             qCol: 2,
             qRow: 7,
             qType: 'L'
+          },
+          {
+            qCol: 1,
+            qRow: 1,
+            qType: 'L'
+          },
+          {
+            qCol: 1,
+            qRow: 6,
+            qType: 'L'
+          },
+          {
+            qCol: 1,
+            qRow: 4,
+            qType: 'L'
           }
         ]
       ]);
@@ -324,7 +339,7 @@ describe('q-brush', () => {
       ]);
     });
 
-    it('should get left dimension, when qNoOfLeftDims = -1', () => {
+    it('should get left dimensions, when qNoOfLeftDims = -1', () => {
       layout.qHyperCube.qNoOfLeftDims = -1;
 
       const selections = qBrush(brush, { byCells: true }, layout);
@@ -344,6 +359,21 @@ describe('q-brush', () => {
           {
             qCol: 2,
             qRow: 7,
+            qType: 'L'
+          },
+          {
+            qCol: 1,
+            qRow: 1,
+            qType: 'L'
+          },
+          {
+            qCol: 1,
+            qRow: 6,
+            qType: 'L'
+          },
+          {
+            qCol: 1,
+            qRow: 4,
             qType: 'L'
           }
         ]
