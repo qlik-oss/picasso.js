@@ -66,6 +66,12 @@ picasso.chart({
 
 ## [More examples](https://picassojs.com/examples.html)
 
+## Run examples locally
+
+See and try out picasso features by starting the development studio by running:
+
+`yarn start`
+
 ## Contributing
 
 Please follow the instructions in our [contributing guide](./.github/CONTRIBUTING.md).
