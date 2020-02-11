@@ -2,21 +2,32 @@ const palettes = [
   {
     key: 'categorical',
     colors: [
-      ['#a54343', '#d76c6c', '#ec983d', '#ecc43d', '#f9ec86', '#cbe989', '#70ba6e', '#578b60', '#79d69f', '#26a0a7', '#138185', '#65d3da'] // breeze colors
-    ]
+      [
+        '#a54343',
+        '#d76c6c',
+        '#ec983d',
+        '#ecc43d',
+        '#f9ec86',
+        '#cbe989',
+        '#70ba6e',
+        '#578b60',
+        '#79d69f',
+        '#26a0a7',
+        '#138185',
+        '#65d3da',
+      ], // breeze colors
+    ],
   },
   {
     key: 'diverging',
     colors: [
-      ['#3d52a1', '#3a89c9', '#77b7e5', '#b4ddf7', '#e6f5fe', '#ffe3aa', '#f9bd7e', '#ed875e', '#d24d3e', '#ae1c3e']
-    ]
+      ['#3d52a1', '#3a89c9', '#77b7e5', '#b4ddf7', '#e6f5fe', '#ffe3aa', '#f9bd7e', '#ed875e', '#d24d3e', '#ae1c3e'],
+    ],
   },
   {
     key: 'sequential',
-    colors: [
-      ['rgb(180,221,212)', 'rgb(34, 83, 90)']
-    ]
-  }
+    colors: [['rgb(180,221,212)', 'rgb(34, 83, 90)']],
+  },
 ];
 
 /* eslint quote-props: 0 */
@@ -54,7 +65,7 @@ const style = {
 
   // spacing
   '$spacing--s': 4,
-  '$spacing': 8,
+  $spacing: 8,
   '$spacing--l': 12,
   // -------------------------
 
@@ -63,92 +74,93 @@ const style = {
   '$font-color--inverted': '$gray-90',
   '$guide-color': '$gray-90',
   '$guide-color--inverted': '$gray-35',
-  '$border': '$border-80',
+  $border: '$border-80',
   '$border--inverted': '$border-10',
   // -------------------------
 
   // -- MIXINS --
   // data points
-  '$shape': { // data shape
+  $shape: {
+    // data shape
     fill: '$primary-blue',
     strokeWidth: 1,
-    stroke: '$border'
+    stroke: '$border',
   },
 
-  '$shape-outline': { // data shape which usually does not have a fill, e.g. the line in a linechart
+  '$shape-outline': {
+    // data shape which usually does not have a fill, e.g. the line in a linechart
     stroke: '$primary-blue',
-    strokeWidth: 2
+    strokeWidth: 2,
   },
 
-  '$shape-guide': { // lines that somehow belongs to a data shape, e.g. whiskers in a boxplot
+  '$shape-guide': {
+    // lines that somehow belongs to a data shape, e.g. whiskers in a boxplot
     stroke: '$guide-color',
-    strokeWidth: 1
+    strokeWidth: 1,
   },
 
   '$shape-guide--inverted': {
     '@extend': '$shape-guide',
-    stroke: '$guide-color--inverted'
+    stroke: '$guide-color--inverted',
   },
 
-  '$label': {
+  $label: {
     fontSize: '$font-size',
     fontFamily: '$font-family',
-    fill: '$font-color'
+    fill: '$font-color',
   },
 
   '$label--inverted': {
-    '$extend': '$label',
-    fill: '$font-color--inverted'
+    $extend: '$label',
+    fill: '$font-color--inverted',
   },
 
   // user interface
-  '$label-overlay': { // e.g. selection range bubble
+  '$label-overlay': {
+    // e.g. selection range bubble
     fontSize: '$font-size--l',
     fontFamily: '$font-family',
     fill: '$gray-100', // background fill
     color: '$font-color',
     stroke: '$guide-color--inverted',
     strokeWidth: 1,
-    borderRadius: 4
+    borderRadius: 4,
   },
 
-  '$title': {
+  $title: {
     '@extend': '$label',
-    fontSize: '$font-size--l'
+    fontSize: '$font-size--l',
   },
 
   '$guide-line': {
     strokeWidth: 1,
-    stroke: '$guide-color'
+    stroke: '$guide-color',
   },
 
   '$guide-line--minor': {
     strokeWidth: 1,
-    stroke: '$gray-95' // needs alias
+    stroke: '$gray-95', // needs alias
   },
 
   '$padding--s': {
     left: '$spacing--s',
     right: '$spacing--s',
     top: '$spacing--s',
-    bottom: '$spacing--s'
+    bottom: '$spacing--s',
   },
 
-  '$padding': {
+  $padding: {
     left: '$spacing',
     right: '$spacing',
     top: '$spacing',
-    bottom: '$spacing'
+    bottom: '$spacing',
   },
 
   '$selection-area-target': {
     fill: '$primary-green',
     strokeWidth: 0,
-    opacity: 0.2
-  }
+    opacity: 0.2,
+  },
 };
 
-export {
-  style,
-  palettes
-};
+export { style, palettes };

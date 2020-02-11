@@ -4,13 +4,13 @@ import resolveSettings from '../settings-resolver';
 const DEFAULT_SETTINGS = {
   domain: [],
   range: [],
-  unknown: undefined
+  unknown: undefined,
 };
 
 const DEFAULT_EXPLICIT_SETTINGS = {
   domain: [],
   range: [],
-  override: false
+  override: false,
 };
 
 /**
@@ -73,7 +73,7 @@ export default function scaleCategorical(settings = {}, data = {}, resources = {
     } else {
       // inject explicit colors
       const order = explicitDomain.map((d, i) => [domain.indexOf(d), d, explicitRange[i]]).sort((a, b) => a[0] - b[0]);
-      order.forEach((v) => {
+      order.forEach(v => {
         const idx = domain.indexOf(v[1]);
         if (idx !== -1) {
           range.splice(idx, 0, v[2]);

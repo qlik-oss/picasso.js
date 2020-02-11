@@ -36,10 +36,7 @@ export default function rangeCollection(config = {}) {
   function fn() {}
 
   fn.configure = (c = {}) => {
-    const {
-      includeMax = true,
-      includeMin = true
-    } = c;
+    const { includeMax = true, includeMin = true } = c;
     maxCondition = includeMax ? lessThanOrEqual : lessThan;
     minCondition = includeMin ? lessThanOrEqual : lessThan;
   };
@@ -79,7 +76,7 @@ export default function rangeCollection(config = {}) {
     return before !== after;
   };
 
-  fn.set = (range) => {
+  fn.set = range => {
     const before = boundaries.join(',');
     boundaries = [];
     if (Array.isArray(range)) {
@@ -97,7 +94,7 @@ export default function rangeCollection(config = {}) {
     return before;
   };
 
-  fn.containsValue = (value) => contains(boundaries, value, minCondition, maxCondition);
+  fn.containsValue = value => contains(boundaries, value, minCondition, maxCondition);
 
   fn.containsRange = ({ min, max }) => {
     const i0 = index(boundaries, min, true);
@@ -106,7 +103,7 @@ export default function rangeCollection(config = {}) {
     return i0 === i1 && i1 % 2 === 1;
   };
 
-  fn.toggle = (range) => {
+  fn.toggle = range => {
     if (fn.containsRange(range)) {
       return fn.remove(range);
     }
@@ -118,7 +115,7 @@ export default function rangeCollection(config = {}) {
     for (let i = 1; i < boundaries.length; i += 2) {
       collection.push({
         min: boundaries[i - 1],
-        max: boundaries[i]
+        max: boundaries[i],
       });
     }
     return collection;

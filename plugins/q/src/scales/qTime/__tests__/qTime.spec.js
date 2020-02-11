@@ -9,26 +9,26 @@ describe('Scale - qTime', () => {
     values = [
       {
         qTags: ['$year'],
-        qTicks: tickGen(1, 1, 'Y')
+        qTicks: tickGen(1, 1, 'Y'),
       },
       {
         qTags: ['$quarter'],
-        qTicks: tickGen(4, 4, 'Q')
+        qTicks: tickGen(4, 4, 'Q'),
       },
       {
         qTags: ['$week'],
-        qTicks: tickGen(52, 1, 'W')
+        qTicks: tickGen(52, 1, 'W'),
       },
       {
         qTags: ['$day'],
-        qTicks: tickGen(30, 1, '')
-      }
+        qTicks: tickGen(30, 1, ''),
+      },
     ];
 
     settings = {
       values,
       maxWidth: 10000, // Omit width as a limiter
-      measureText: ({ text }) => ({ width: text.length })
+      measureText: ({ text }) => ({ width: text.length }),
     };
   });
 
@@ -53,9 +53,7 @@ describe('Scale - qTime', () => {
   describe('min/max', () => {
     it('should derive min/max from data fields', () => {
       const data = {
-        fields: [
-          { min: () => 10, max: () => 20 }
-        ]
+        fields: [{ min: () => 10, max: () => 20 }],
       };
 
       const i = qTime(settings, data);

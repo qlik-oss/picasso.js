@@ -18,8 +18,12 @@ describe('picasso-interactions', () => {
 
     await $('rect[data-value="Apr"]').click();
     await $('rect[data-value="June"]').click();
-    const aprIsSelected = await browser.executeScript('return picassochart.brush("highlight").containsValue("0/Month", "Apr")');
-    const juneIsSelected = await browser.executeScript('return picassochart.brush("highlight").containsValue("0/Month", "June")');
+    const aprIsSelected = await browser.executeScript(
+      'return picassochart.brush("highlight").containsValue("0/Month", "Apr")'
+    );
+    const juneIsSelected = await browser.executeScript(
+      'return picassochart.brush("highlight").containsValue("0/Month", "June")'
+    );
 
     const snap2 = await browser.takeScreenshot();
     store(snap2, 'test/protractor/snapshot2.png');

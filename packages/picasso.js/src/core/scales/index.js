@@ -1,4 +1,3 @@
-
 export function updateScaleSize(object, path, size) {
   const o = object[path];
   if (o && o.scale && o.scale.pxScale) {

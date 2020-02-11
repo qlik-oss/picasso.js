@@ -5,7 +5,7 @@ function checkText(text) {
 }
 
 function appendStyle(struct, buildOpts) {
-  ['fill', 'fontSize', 'fontFamily'].forEach((style) => {
+  ['fill', 'fontSize', 'fontFamily'].forEach(style => {
     struct[style] = buildOpts.style[style];
   });
 }
@@ -70,11 +70,11 @@ function appendTilting(struct, buildOpts) {
     }
 
     struct.transform = `rotate(${r}, ${struct.x}, ${struct.y})`;
-    struct.anchor = (buildOpts.align === 'bottom') === (buildOpts.angle < 0) ? 'start' : 'end';
+    struct.anchor = (buildOpts.align === 'bottom') === buildOpts.angle < 0 ? 'start' : 'end';
 
     // adjustForEnds
     const textWidth = Math.cos(radians) * buildOpts.maxWidth;
-    if ((buildOpts.align === 'bottom') === (buildOpts.angle < 0)) {
+    if ((buildOpts.align === 'bottom') === buildOpts.angle < 0) {
       // right
       const rightBoundary = buildOpts.outerRect.width - buildOpts.paddingEnd;
       const rightTextBoundary = struct.x + textWidth;
@@ -95,23 +95,23 @@ function appendTilting(struct, buildOpts) {
 function bandwidthCollider(tick, struct, buildOpts) {
   if (buildOpts.align === 'bottom' || buildOpts.align === 'top') {
     const tickCenter = tick.position * buildOpts.innerRect.width;
-    const leftBoundary = tickCenter + (buildOpts.innerRect.x - buildOpts.outerRect.x - (buildOpts.stepSize / 2));
+    const leftBoundary = tickCenter + (buildOpts.innerRect.x - buildOpts.outerRect.x - buildOpts.stepSize / 2);
     struct.collider = {
       type: 'rect',
       x: leftBoundary,
       y: 0,
       width: leftBoundary < 0 ? buildOpts.stepSize + leftBoundary : buildOpts.stepSize, // Adjust collider so that it doesnt extend onto neighbor collider
-      height: buildOpts.innerRect.height
+      height: buildOpts.innerRect.height,
     };
   } else {
     const tickCenter = tick.position * buildOpts.innerRect.height;
-    const topBoundary = tickCenter + (buildOpts.innerRect.y - buildOpts.outerRect.y - (buildOpts.stepSize / 2));
+    const topBoundary = tickCenter + (buildOpts.innerRect.y - buildOpts.outerRect.y - buildOpts.stepSize / 2);
     struct.collider = {
       type: 'rect',
       x: 0,
       y: topBoundary,
       width: buildOpts.innerRect.width,
-      height: topBoundary < 0 ? buildOpts.stepSize + topBoundary : buildOpts.stepSize // Adjust collider so that it doesnt extend onto neighbor collider
+      height: topBoundary < 0 ? buildOpts.stepSize + topBoundary : buildOpts.stepSize, // Adjust collider so that it doesnt extend onto neighbor collider
     };
   }
 
@@ -119,9 +119,9 @@ function bandwidthCollider(tick, struct, buildOpts) {
   const collider = struct.collider;
   collider.x = Math.max(collider.x, 0);
   collider.y = Math.max(collider.y, 0);
-  const widthClip = (collider.x + collider.width) - (buildOpts.outerRect.x + buildOpts.outerRect.width);
+  const widthClip = collider.x + collider.width - (buildOpts.outerRect.x + buildOpts.outerRect.width);
   collider.width = widthClip > 0 ? collider.width - widthClip : collider.width;
-  const heightClip = (collider.y + collider.height) - (buildOpts.outerRect.y + buildOpts.outerRect.height);
+  const heightClip = collider.y + collider.height - (buildOpts.outerRect.y + buildOpts.outerRect.height);
   collider.height = heightClip > 0 ? collider.height - heightClip : collider.height;
 }
 
@@ -132,8 +132,8 @@ function boundsCollider(tick, struct) {
       { x: struct.boundingRect.x, y: struct.boundingRect.y },
       { x: struct.boundingRect.x + struct.boundingRect.width, y: struct.boundingRect.y },
       { x: struct.boundingRect.x + struct.boundingRect.width, y: struct.boundingRect.y + struct.boundingRect.height },
-      { x: struct.boundingRect.x, y: struct.boundingRect.y + struct.boundingRect.height }
-    ]
+      { x: struct.boundingRect.x, y: struct.boundingRect.y + struct.boundingRect.height },
+    ],
   };
 }
 
@@ -147,19 +147,19 @@ function tiltedCollider(tick, struct, buildOpts) {
   // Generate starting points at bandwidth boundaries
   const points = [
     { x: struct.x - halfWidth, y },
-    { x: struct.x + halfWidth, y }
-  ].map((p) => rotateVector(p, radians, { x: struct.x, y: struct.y })); // Rotate around center point to counteract labels rotation
+    { x: struct.x + halfWidth, y },
+  ].map(p => rotateVector(p, radians, { x: struct.x, y: struct.y })); // Rotate around center point to counteract labels rotation
 
   // Append points to wrap polygon around label
   const margin = 10; // extend slightly to handle single char labels better
   const leftPoint = {
     x: startAnchor ? struct.boundingRect.x + struct.boundingRect.width + margin : struct.boundingRect.x - margin,
-    y: struct.boundingRect.y + struct.boundingRect.height
+    y: struct.boundingRect.y + struct.boundingRect.height,
   };
 
   const rightPoint = {
     x: startAnchor ? struct.boundingRect.x + struct.boundingRect.width + margin : struct.boundingRect.x - margin,
-    y: struct.boundingRect.y
+    y: struct.boundingRect.y,
   };
 
   const orderedPoints = radians >= 0 ? [leftPoint, rightPoint] : [rightPoint, leftPoint];
@@ -167,7 +167,7 @@ function tiltedCollider(tick, struct, buildOpts) {
 
   struct.collider = {
     type: 'polygon',
-    vertices: points
+    vertices: points,
   };
 }
 
@@ -189,7 +189,7 @@ function wiggle(buildOpts, isVertical) {
   const a = isNaN(buildOpts.style.align) ? 0.5 : Math.min(Math.max(buildOpts.style.align, 0), 1);
   let w = 0;
   if (buildOpts.tilted) {
-    w = (buildOpts.stepSize * a);
+    w = buildOpts.stepSize * a;
   } else {
     const size = isVertical ? buildOpts.textRect.height : buildOpts.textRect.width;
     w = Math.max(0, buildOpts.stepSize - size) * a;
@@ -205,17 +205,23 @@ export default function buildNode(tick, buildOpts) {
     x: 0,
     y: 0,
     maxWidth: buildOpts.maxWidth,
-    maxHeight: buildOpts.maxHeight
+    maxHeight: buildOpts.maxHeight,
   };
 
   if (buildOpts.align === 'top' || buildOpts.align === 'bottom') {
-    struct.x = (tick.start * buildOpts.innerRect.width) + (buildOpts.innerRect.x - buildOpts.outerRect.x) + wiggle(buildOpts, false);
+    struct.x =
+      tick.start * buildOpts.innerRect.width +
+      (buildOpts.innerRect.x - buildOpts.outerRect.x) +
+      wiggle(buildOpts, false);
     struct.y = buildOpts.align === 'top' ? buildOpts.innerRect.height : 0;
     struct.anchor = buildOpts.stepSize ? 'start' : 'middle';
 
     struct.x += isNaN(buildOpts.style.offset) ? 0 : +buildOpts.style.offset;
   } else {
-    struct.y = (tick.start * buildOpts.innerRect.height) + (buildOpts.innerRect.y - buildOpts.outerRect.y) + wiggle(buildOpts, true);
+    struct.y =
+      tick.start * buildOpts.innerRect.height +
+      (buildOpts.innerRect.y - buildOpts.outerRect.y) +
+      wiggle(buildOpts, true);
     struct.x = buildOpts.align === 'left' ? buildOpts.innerRect.width : 0;
     struct.anchor = buildOpts.align === 'left' ? 'end' : 'start';
     struct.baseline = buildOpts.stepSize ? 'text-before-edge' : 'central';

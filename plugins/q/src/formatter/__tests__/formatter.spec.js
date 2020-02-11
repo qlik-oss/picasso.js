@@ -12,38 +12,9 @@ const qLocaleInfo = {
   qDateFmt: 'YYYY-MM-DD',
   qTimestampFmt: 'YYYY-MM-DD hh:mm:ss[.fff]',
   qCalendarStrings: {
-    qDayNames: [
-      'mån',
-      'tis',
-      'ons',
-      'tor',
-      'fre',
-      'lör',
-      'sön'
-    ],
-    qMonthNames: [
-      'jan',
-      'feb',
-      'mar',
-      'apr',
-      'maj',
-      'jun',
-      'jul',
-      'aug',
-      'sep',
-      'okt',
-      'nov',
-      'dec'
-    ],
-    qLongDayNames: [
-      'måndag',
-      'tisdag',
-      'onsdag',
-      'torsdag',
-      'fredag',
-      'lördag',
-      'söndag'
-    ],
+    qDayNames: ['mån', 'tis', 'ons', 'tor', 'fre', 'lör', 'sön'],
+    qMonthNames: ['jan', 'feb', 'mar', 'apr', 'maj', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'],
+    qLongDayNames: ['måndag', 'tisdag', 'onsdag', 'torsdag', 'fredag', 'lördag', 'söndag'],
     qLongMonthNames: [
       'januari',
       'februari',
@@ -56,13 +27,13 @@ const qLocaleInfo = {
       'september',
       'oktober',
       'november',
-      'december'
-    ]
+      'december',
+    ],
   },
   qFirstWeekDay: 0,
   qReferenceDay: 4,
   qFirstMonthOfYear: 1,
-  qCollation: 'sv-SE'
+  qCollation: 'sv-SE',
 };
 
 describe('qs-formatter', () => {
@@ -73,7 +44,7 @@ describe('qs-formatter', () => {
   it('should create an abbreviation formatter when qIsAutoFormat=true', () => {
     const f = createFromMetaInfo({
       qIsAutoFormat: true,
-      qNumFormat: {}
+      qNumFormat: {},
     });
     expect(f.pattern()).to.equal('#.##A');
   });
@@ -81,8 +52,8 @@ describe('qs-formatter', () => {
     const f = createFromMetaInfo({
       qIsAutoFormat: false,
       qNumFormat: {
-        qType: 'U'
-      }
+        qType: 'U',
+      },
     });
     expect(f.pattern()).to.equal('#.##A');
   });
@@ -91,40 +62,49 @@ describe('qs-formatter', () => {
     const f = createFromMetaInfo({
       qNumFormat: {
         qType: 'M',
-        qFmt: 'money!'
+        qFmt: 'money!',
       },
-      qIsAutoFormat: true
+      qIsAutoFormat: true,
     });
     expect(f.pattern()).to.equal('money!');
   });
 
   it('should create locale specific numeric pattern', () => {
-    const f = createFromMetaInfo({
-      qIsAutoFormat: true
-    }, {
-      qDecimalSep: 'dec'
-    });
+    const f = createFromMetaInfo(
+      {
+        qIsAutoFormat: true,
+      },
+      {
+        qDecimalSep: 'dec',
+      }
+    );
     expect(f.pattern()).to.equal('#dec##A');
   });
 
   it('should create locale specific date pattern', () => {
-    const f = createFromMetaInfo({
-      qNumFormat: {
-        qType: 'D',
-        qFmt: 'YYYY MMMM WWWW'
+    const f = createFromMetaInfo(
+      {
+        qNumFormat: {
+          qType: 'D',
+          qFmt: 'YYYY MMMM WWWW',
+        },
+        qIsAutoFormat: true,
       },
-      qIsAutoFormat: true
-    }, qLocaleInfo);
+      qLocaleInfo
+    );
     expect(f(3)).to.equal('1900 januari tisdag');
   });
 
   it('should use default values if localeInfo object is empty', () => {
-    const f = createFromMetaInfo({
-      qNumFormat: {
-        qIsAutoFormat: true
+    const f = createFromMetaInfo(
+      {
+        qNumFormat: {
+          qIsAutoFormat: true,
+        },
+        qIsAutoFormat: true,
       },
-      qIsAutoFormat: true
-    }, {});
+      {}
+    );
     expect(f(3)).to.equal('3');
   });
 });

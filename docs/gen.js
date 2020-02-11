@@ -40,7 +40,7 @@ function domkdir(curpath, skipFile) {
  */
 function registerTemplates(cb) {
   glob(`${MD_TEMPLATES_FOLDER}**/*.md`, {}, (err, files) => {
-    files.forEach((file) => {
+    files.forEach(file => {
       const title = path.basename(file, '.md');
       const content = `${fs.readFileSync(file)}`;
       handlebars.registerPartial(title, content);
@@ -51,7 +51,10 @@ function registerTemplates(cb) {
   handlebars.registerPartial(undefined, '{{undefinedpartial}}');
 }
 
-handlebars.registerHelper('undefinedpartial', () => 'This partial does not exists. This may most certainly be caused by a missing file.');
+handlebars.registerHelper(
+  'undefinedpartial',
+  () => 'This partial does not exists. This may most certainly be caused by a missing file.'
+);
 
 /**
  * POSTPROCESS
@@ -60,14 +63,15 @@ function postProcessTemplate(item) {
   return `#%#%#%#%# DOCS-GEN-POSTPROCESS: ${item} #%#%#%#%#`;
 }
 
-handlebars.registerHelper('postprocess', function (item) { // eslint-disable-line
+handlebars.registerHelper('postprocess', function(item) {
+  // eslint-disable-line
   this._post.push(item);
 
   return postProcessTemplate(item);
 });
 
 function doPostProcess(content, jsdocdata) {
-  jsdocdata._post.forEach((item) => {
+  jsdocdata._post.forEach(item => {
     const itemTemplate = handlebars.compile(fs.readFileSync(path.resolve(`${POSTPROCESS_ROOT}${item}.md`)).toString());
     content = content.replace(postProcessTemplate(item), itemTemplate(jsdocdata));
   });
@@ -79,7 +83,7 @@ function doPostProcess(content, jsdocdata) {
  */
 function compileMarkdownFiles(jsdocdata) {
   glob(`${MD_INPUT_FOLDER}/**/*.md`, {}, (err, files) => {
-    files.forEach((file) => {
+    files.forEach(file => {
       const relativePath = path.relative(MD_INPUT_FOLDER, file);
       const template = handlebars.compile(`${fs.readFileSync(file)}`);
       let title = path.basename(file, '.md');
@@ -107,25 +111,25 @@ handlebars.registerHelper('ifCond', function ifCond(v1, operator, v2, options) {
   // https://stackoverflow.com/revisions/16315366/1
   switch (operator) {
     case '==':
-      return (v1 == v2) ? options.fn(this) : options.inverse(this); // eslint-disable-line eqeqeq
+      return v1 == v2 ? options.fn(this) : options.inverse(this); // eslint-disable-line eqeqeq
     case '===':
-      return (v1 === v2) ? options.fn(this) : options.inverse(this);
+      return v1 === v2 ? options.fn(this) : options.inverse(this);
     case '!=':
-      return (v1 != v2) ? options.fn(this) : options.inverse(this);// eslint-disable-line eqeqeq
+      return v1 != v2 ? options.fn(this) : options.inverse(this); // eslint-disable-line eqeqeq
     case '!==':
-      return (v1 !== v2) ? options.fn(this) : options.inverse(this);
+      return v1 !== v2 ? options.fn(this) : options.inverse(this);
     case '<':
-      return (v1 < v2) ? options.fn(this) : options.inverse(this);
+      return v1 < v2 ? options.fn(this) : options.inverse(this);
     case '<=':
-      return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+      return v1 <= v2 ? options.fn(this) : options.inverse(this);
     case '>':
-      return (v1 > v2) ? options.fn(this) : options.inverse(this);
+      return v1 > v2 ? options.fn(this) : options.inverse(this);
     case '>=':
-      return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+      return v1 >= v2 ? options.fn(this) : options.inverse(this);
     case '&&':
-      return (v1 && v2) ? options.fn(this) : options.inverse(this);
+      return v1 && v2 ? options.fn(this) : options.inverse(this);
     case '||':
-      return (v1 || v2) ? options.fn(this) : options.inverse(this);
+      return v1 || v2 ? options.fn(this) : options.inverse(this);
     default:
       return options.inverse(this);
   }
@@ -145,7 +149,7 @@ handlebars.registerHelper('anchor', (...args) => {
 });
 
 handlebars.registerHelper('no', v => v || 'No');
-handlebars.registerHelper('nocust', (v, fb) => v || (fb || 'No'));
+handlebars.registerHelper('nocust', (v, fb) => v || fb || 'No');
 
 handlebars.registerHelper('med', (node, options) => {
   const context = node;
@@ -176,7 +180,7 @@ handlebars.registerHelper('typedef', (node, options) => {
   return new handlebars.SafeString(t);
 });
 
-handlebars.registerHelper('sample', (node) => {
+handlebars.registerHelper('sample', node => {
   if (!node) {
     return '';
   }
@@ -188,7 +192,8 @@ handlebars.registerHelper('sample', (node) => {
     } else {
       s = `/* ${node.kind || node.type} */`;
     }
-  } else if (defaultType === 'string' && node.defaultValue[0] !== "'") { // add quotes
+  } else if (defaultType === 'string' && node.defaultValue[0] !== "'") {
+    // add quotes
     s = `'${node.defaultValue}'`;
   } else {
     s = node.defaultValue;
@@ -196,11 +201,13 @@ handlebars.registerHelper('sample', (node) => {
   return new handlebars.SafeString(s);
 });
 
-handlebars.registerHelper('helperMissing', (context) => {
+handlebars.registerHelper('helperMissing', context => {
   // log(`Template defines {{ ${context.name} }}, but not provided in context`);
   return '';
 });
 
 rimraf.sync(`${MD_OUTPUT_FOLDER}*`);
 
-registerTemplates(() => { compileMarkdownFiles(spec); });
+registerTemplates(() => {
+  compileMarkdownFiles(spec);
+});

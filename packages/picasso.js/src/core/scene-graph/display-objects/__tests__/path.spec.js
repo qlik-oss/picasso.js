@@ -43,22 +43,22 @@ describe('Path', () => {
           x: 0,
           y: 0,
           width: 1,
-          height: 2
-        }
+          height: 2,
+        },
       });
       expect(path.colliderType).to.equal('rect');
     });
 
     it('deduce polygon collider from data path', () => {
       path = create({
-        d: 'M0 0 L10 0, 10 10, 0 10 Z'
+        d: 'M0 0 L10 0, 10 10, 0 10 Z',
       });
       expect(path.colliderType).to.equal('polygon');
     });
 
     it('deduce polyline collider from data path', () => {
       path = create({
-        d: 'M0 0 L10 0, 10 10, 0 10'
+        d: 'M0 0 L10 0, 10 10, 0 10',
       });
       expect(path.colliderType).to.equal('polyline');
     });
@@ -67,8 +67,8 @@ describe('Path', () => {
       path = create({
         d: 'M0 0 L10 0, 10 10, 0 10',
         collider: {
-          visual: true
-        }
+          visual: true,
+        },
       });
       expect(path.colliderType).to.equal('polygon'); // Polyline is transform to polygon
     });
@@ -78,7 +78,10 @@ describe('Path', () => {
     it('should handle default values', () => {
       path = create();
       expect(path.boundingRect()).to.deep.equal({
-        x: 0, y: 0, width: 0, height: 0
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
       });
     });
 
@@ -86,7 +89,10 @@ describe('Path', () => {
       d = 'M0 0 L100 0 L100 150 L0 150';
       path = create({ d });
       expect(path.boundingRect()).to.deep.equal({
-        x: 0, y: 0, width: 100, height: 150
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 150,
       });
     });
 
@@ -96,7 +102,10 @@ describe('Path', () => {
       path = create({ d, transform });
       path.resolveLocalTransform();
       expect(path.boundingRect(true)).to.deep.equal({
-        x: 10, y: 15, width: 100, height: 150
+        x: 10,
+        y: 15,
+        width: 100,
+        height: 150,
       });
     });
 
@@ -104,13 +113,19 @@ describe('Path', () => {
       d = 'M0 0 L100 0 L100 150 L0 150 Z';
       path = create({ d });
       expect(path.boundingRect()).to.deep.equal({
-        x: 0, y: 0, width: 100, height: 150
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 150,
       });
 
       d = 'M0 0 L100 0 L100 150 L0 150 z';
       path = create({ d });
       expect(path.boundingRect()).to.deep.equal({
-        x: 0, y: 0, width: 100, height: 150
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 150,
       });
     });
 
@@ -118,7 +133,10 @@ describe('Path', () => {
       d = 'M0 0 l 100 0 l 0 150 l -100 0';
       path = create({ d });
       expect(path.boundingRect()).to.deep.equal({
-        x: 0, y: 0, width: 100, height: 150
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 150,
       });
     });
 
@@ -126,7 +144,10 @@ describe('Path', () => {
       d = 'M0 0 L 100 0 m 0 150 L 100 150';
       path = create({ d });
       expect(path.boundingRect()).to.deep.equal({
-        x: 0, y: 0, width: 100, height: 150
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 150,
       });
     });
 
@@ -136,10 +157,13 @@ describe('Path', () => {
         { x: 0, y: 0 },
         { x: 100, y: 0 },
         { x: 100, y: 150 },
-        { x: 0, y: 150 }
+        { x: 0, y: 150 },
       ];
       expect(path.boundingRect()).to.deep.equal({
-        x: 0, y: 0, width: 100, height: 150
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 150,
       });
     });
 
@@ -147,7 +171,10 @@ describe('Path', () => {
       d = 'M0 0 L100 0 L100 150 K150 150 L0 150'; // Ignore K and threat it as 4 L arguments
       path = create({ d });
       expect(path.boundingRect()).to.deep.equal({
-        x: 0, y: 0, width: 150, height: 150
+        x: 0,
+        y: 0,
+        width: 150,
+        height: 150,
       });
     });
 
@@ -155,7 +182,10 @@ describe('Path', () => {
       d = 'M0 0 L100 0 L100 150 well hello there L0 150';
       path = create({ d });
       expect(path.boundingRect()).to.deep.equal({
-        x: 0, y: 0, width: 100, height: 150
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 150,
       });
     });
 
@@ -163,7 +193,10 @@ describe('Path', () => {
       d = 'M0 0 L100.1 0 L100.1 150.2 L0 150.2';
       path = create({ d });
       expect(path.boundingRect()).to.deep.equal({
-        x: 0, y: 0, width: 100.1, height: 150.2
+        x: 0,
+        y: 0,
+        width: 100.1,
+        height: 150.2,
       });
     });
   });
@@ -175,7 +208,7 @@ describe('Path', () => {
         { x: 0, y: 0 },
         { x: 0, y: 0 },
         { x: 0, y: 0 },
-        { x: 0, y: 0 }
+        { x: 0, y: 0 },
       ]);
     });
 
@@ -186,7 +219,7 @@ describe('Path', () => {
         { x: 0, y: 0 },
         { x: 100, y: 0 },
         { x: 100, y: 150 },
-        { x: 0, y: 150 }
+        { x: 0, y: 150 },
       ]);
     });
 
@@ -199,7 +232,7 @@ describe('Path', () => {
         { x: 10, y: 15 },
         { x: 110, y: 15 },
         { x: 110, y: 165 },
-        { x: 10, y: 165 }
+        { x: 10, y: 165 },
       ]);
     });
 
@@ -210,7 +243,7 @@ describe('Path', () => {
         { x: 0, y: 0 },
         { x: 100, y: 0 },
         { x: 100, y: 150 },
-        { x: 0, y: 150 }
+        { x: 0, y: 150 },
       ]);
     });
 
@@ -221,7 +254,7 @@ describe('Path', () => {
         { x: 0, y: 0 },
         { x: 100, y: 0 },
         { x: 100, y: 150 },
-        { x: 0, y: 150 }
+        { x: 0, y: 150 },
       ]);
     });
 
@@ -232,7 +265,7 @@ describe('Path', () => {
         { x: 0, y: 0 },
         { x: 100, y: 0 },
         { x: 100, y: 150 },
-        { x: 0, y: 150 }
+        { x: 0, y: 150 },
       ]);
     });
   });

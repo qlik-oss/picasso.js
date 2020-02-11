@@ -13,9 +13,11 @@ reg.add('line', line);
 reg.add('polygon', polygon);
 reg.add('polyline', polyline);
 
-export function create(type, input) { // eslint-disable-line import/prefer-default-export
+/* eslint-disable import/prefer-default-export */
+export function create(type, input) {
   return reg.get(type)(input);
 }
+/* eslint-enable import/prefer-default-export */
 
 /**
  * @typedef {object} rect

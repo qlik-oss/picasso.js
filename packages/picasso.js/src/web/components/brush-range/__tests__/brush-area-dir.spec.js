@@ -16,24 +16,30 @@ describe('Brush Area Directional', () => {
   beforeEach(() => {
     size = {
       inner: {
-        x: 0, y: 0, width: 100, height: 150
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 150,
       },
       outer: {
-        x: 0, y: 0, width: 100, height: 150
-      }
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 150,
+      },
     };
 
     global.document = {
       elementFromPoint: sinon.stub(),
-      createElement: sinon.stub().returns({ bind: elementMock })
+      createElement: sinon.stub().returns({ bind: elementMock }),
     };
 
     componentFixture = componentFactoryFixture();
     config = {
       settings: {
         direction: 'horizontal',
-        target: null // Remove target to reduce complexity and dependencies on other components
-      }
+        target: null, // Remove target to reduce complexity and dependencies on other components
+      },
     };
 
     sandbox = componentFixture.sandbox();
@@ -45,11 +51,9 @@ describe('Brush Area Directional', () => {
     theme = componentFixture.mocks().theme;
     theme.style.returns({
       line: {
-        stroke: 'rgba(50, 50, 50, 0.8)'
+        stroke: 'rgba(50, 50, 50, 0.8)',
       },
-      target: {
-
-      },
+      target: {},
       bubble: {
         fontFamily: 'Arial',
         fontSize: '14px',
@@ -57,8 +61,8 @@ describe('Brush Area Directional', () => {
         color: '#595959',
         borderRadius: 4,
         stroke: '#666',
-        strokeWidth: 1
-      }
+        strokeWidth: 1,
+      },
     });
   });
 
@@ -98,24 +102,26 @@ describe('Brush Area Directional', () => {
               top: '0px',
               height: '100%',
               width: '5px',
-              pointerEvents: 'auto'
-            }
-          },
-          children: [{
-            sel: 'div',
-            data: {
-              style: {
-                backgroundColor: 'rgba(50, 50, 50, 0.8)',
-                position: 'absolute',
-                height: '100%',
-                width: '1px',
-                left: '0',
-                top: '0',
-                pointerEvents: 'none'
-              }
+              pointerEvents: 'auto',
             },
-            children: []
-          }]
+          },
+          children: [
+            {
+              sel: 'div',
+              data: {
+                style: {
+                  backgroundColor: 'rgba(50, 50, 50, 0.8)',
+                  position: 'absolute',
+                  height: '100%',
+                  width: '1px',
+                  left: '0',
+                  top: '0',
+                  pointerEvents: 'none',
+                },
+              },
+              children: [],
+            },
+          ],
         };
         expect(edgeLeft).to.deep.equal(expectedEdgeLeft);
       });
@@ -141,24 +147,26 @@ describe('Brush Area Directional', () => {
               top: '0px',
               height: '100%',
               width: '5px',
-              pointerEvents: 'auto'
-            }
-          },
-          children: [{
-            sel: 'div',
-            data: {
-              style: {
-                backgroundColor: 'rgba(50, 50, 50, 0.8)',
-                position: 'absolute',
-                height: '100%',
-                width: '1px',
-                right: '0',
-                bottom: '0',
-                pointerEvents: 'none'
-              }
+              pointerEvents: 'auto',
             },
-            children: []
-          }]
+          },
+          children: [
+            {
+              sel: 'div',
+              data: {
+                style: {
+                  backgroundColor: 'rgba(50, 50, 50, 0.8)',
+                  position: 'absolute',
+                  height: '100%',
+                  width: '1px',
+                  right: '0',
+                  bottom: '0',
+                  pointerEvents: 'none',
+                },
+              },
+              children: [],
+            },
+          ],
         };
         expect(edgeRight).to.deep.equal(expectedEdgeRight);
       });
@@ -172,39 +180,41 @@ describe('Brush Area Directional', () => {
               position: 'absolute',
               top: '0',
               left: '0px',
-              transform: 'none'
-            }
-          },
-          children: [{
-            sel: 'div',
-            data: {
-              'data-other-value': 100,
-              'data-idx': 0,
-              'data-bidx': 0,
-              'data-key': 'brush-area-dir-bubble-0',
-              style: {
-                position: 'relative',
-                borderRadius: '4px',
-                border: '1px solid #666',
-                backgroundColor: '#fff',
-                padding: '4px 8px',
-                textAlign: 'center',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-                maxWidth: '150px',
-                minWidth: '50px',
-                minHeight: '1em',
-                pointerEvents: 'auto',
-                transform: 'translate(-50%,0)',
-                fontSize: '14px',
-                fontFamily: 'Arial',
-                color: '#595959',
-                cursor: 'ew-resize'
-              }
+              transform: 'none',
             },
-            children: ['-']
-          }]
+          },
+          children: [
+            {
+              sel: 'div',
+              data: {
+                'data-other-value': 100,
+                'data-idx': 0,
+                'data-bidx': 0,
+                'data-key': 'brush-area-dir-bubble-0',
+                style: {
+                  position: 'relative',
+                  borderRadius: '4px',
+                  border: '1px solid #666',
+                  backgroundColor: '#fff',
+                  padding: '4px 8px',
+                  textAlign: 'center',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  maxWidth: '150px',
+                  minWidth: '50px',
+                  minHeight: '1em',
+                  pointerEvents: 'auto',
+                  transform: 'translate(-50%,0)',
+                  fontSize: '14px',
+                  fontFamily: 'Arial',
+                  color: '#595959',
+                  cursor: 'ew-resize',
+                },
+              },
+              children: ['-'],
+            },
+          ],
         };
 
         expect(bubbleLeft).to.deep.equal(expectedBubbleLeft);
@@ -219,39 +229,41 @@ describe('Brush Area Directional', () => {
               position: 'absolute',
               top: '0',
               left: '100px',
-              transform: 'none'
-            }
-          },
-          children: [{
-            sel: 'div',
-            data: {
-              'data-other-value': 0,
-              'data-idx': 0,
-              'data-bidx': 1,
-              'data-key': 'brush-area-dir-bubble-0',
-              style: {
-                position: 'relative',
-                borderRadius: '4px',
-                border: '1px solid #666',
-                backgroundColor: '#fff',
-                padding: '4px 8px',
-                textAlign: 'center',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-                maxWidth: '150px',
-                minWidth: '50px',
-                minHeight: '1em',
-                pointerEvents: 'auto',
-                transform: 'translate(-50%,0)',
-                fontSize: '14px',
-                fontFamily: 'Arial',
-                color: '#595959',
-                cursor: 'ew-resize'
-              }
+              transform: 'none',
             },
-            children: ['-']
-          }]
+          },
+          children: [
+            {
+              sel: 'div',
+              data: {
+                'data-other-value': 0,
+                'data-idx': 0,
+                'data-bidx': 1,
+                'data-key': 'brush-area-dir-bubble-0',
+                style: {
+                  position: 'relative',
+                  borderRadius: '4px',
+                  border: '1px solid #666',
+                  backgroundColor: '#fff',
+                  padding: '4px 8px',
+                  textAlign: 'center',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  maxWidth: '150px',
+                  minWidth: '50px',
+                  minHeight: '1em',
+                  pointerEvents: 'auto',
+                  transform: 'translate(-50%,0)',
+                  fontSize: '14px',
+                  fontFamily: 'Arial',
+                  color: '#595959',
+                  cursor: 'ew-resize',
+                },
+              },
+              children: ['-'],
+            },
+          ],
         };
 
         expect(bubbleRight).to.deep.equal(expectedBubbleRight);
@@ -312,24 +324,26 @@ describe('Brush Area Directional', () => {
               top: '0px',
               height: '5px',
               width: '100%',
-              pointerEvents: 'auto'
-            }
-          },
-          children: [{
-            sel: 'div',
-            data: {
-              style: {
-                backgroundColor: 'rgba(50, 50, 50, 0.8)',
-                position: 'absolute',
-                height: '1px',
-                width: '100%',
-                left: '0',
-                top: '0',
-                pointerEvents: 'none'
-              }
+              pointerEvents: 'auto',
             },
-            children: []
-          }]
+          },
+          children: [
+            {
+              sel: 'div',
+              data: {
+                style: {
+                  backgroundColor: 'rgba(50, 50, 50, 0.8)',
+                  position: 'absolute',
+                  height: '1px',
+                  width: '100%',
+                  left: '0',
+                  top: '0',
+                  pointerEvents: 'none',
+                },
+              },
+              children: [],
+            },
+          ],
         };
         expect(edgeTop).to.deep.equal(expectedEdgeTop);
       });
@@ -355,24 +369,26 @@ describe('Brush Area Directional', () => {
               top: '145px',
               height: '5px',
               width: '100%',
-              pointerEvents: 'auto'
-            }
-          },
-          children: [{
-            sel: 'div',
-            data: {
-              style: {
-                backgroundColor: 'rgba(50, 50, 50, 0.8)',
-                position: 'absolute',
-                height: '1px',
-                width: '100%',
-                right: '0',
-                bottom: '0',
-                pointerEvents: 'none'
-              }
+              pointerEvents: 'auto',
             },
-            children: []
-          }]
+          },
+          children: [
+            {
+              sel: 'div',
+              data: {
+                style: {
+                  backgroundColor: 'rgba(50, 50, 50, 0.8)',
+                  position: 'absolute',
+                  height: '1px',
+                  width: '100%',
+                  right: '0',
+                  bottom: '0',
+                  pointerEvents: 'none',
+                },
+              },
+              children: [],
+            },
+          ],
         };
         expect(edgeBottom).to.deep.equal(expectedEdgeBottom);
       });
@@ -386,39 +402,41 @@ describe('Brush Area Directional', () => {
               position: 'absolute',
               top: '0px',
               left: '0',
-              transform: 'none'
-            }
-          },
-          children: [{
-            sel: 'div',
-            data: {
-              'data-other-value': 150,
-              'data-idx': 0,
-              'data-bidx': 0,
-              'data-key': 'brush-area-dir-bubble-0',
-              style: {
-                position: 'relative',
-                borderRadius: '4px',
-                border: '1px solid #666',
-                backgroundColor: '#fff',
-                padding: '4px 8px',
-                textAlign: 'center',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-                maxWidth: '150px',
-                minWidth: '50px',
-                minHeight: '1em',
-                pointerEvents: 'auto',
-                transform: 'translate(0,-50%)',
-                fontSize: '14px',
-                fontFamily: 'Arial',
-                color: '#595959',
-                cursor: 'ns-resize'
-              }
+              transform: 'none',
             },
-            children: ['-']
-          }]
+          },
+          children: [
+            {
+              sel: 'div',
+              data: {
+                'data-other-value': 150,
+                'data-idx': 0,
+                'data-bidx': 0,
+                'data-key': 'brush-area-dir-bubble-0',
+                style: {
+                  position: 'relative',
+                  borderRadius: '4px',
+                  border: '1px solid #666',
+                  backgroundColor: '#fff',
+                  padding: '4px 8px',
+                  textAlign: 'center',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  maxWidth: '150px',
+                  minWidth: '50px',
+                  minHeight: '1em',
+                  pointerEvents: 'auto',
+                  transform: 'translate(0,-50%)',
+                  fontSize: '14px',
+                  fontFamily: 'Arial',
+                  color: '#595959',
+                  cursor: 'ns-resize',
+                },
+              },
+              children: ['-'],
+            },
+          ],
         };
 
         expect(bubbleTop).to.deep.equal(expectedBubbleTop);
@@ -433,39 +451,41 @@ describe('Brush Area Directional', () => {
               position: 'absolute',
               top: '150px',
               left: '0',
-              transform: 'none'
-            }
-          },
-          children: [{
-            sel: 'div',
-            data: {
-              'data-other-value': 0,
-              'data-idx': 0,
-              'data-bidx': 1,
-              'data-key': 'brush-area-dir-bubble-0',
-              style: {
-                position: 'relative',
-                borderRadius: '4px',
-                border: '1px solid #666',
-                backgroundColor: '#fff',
-                padding: '4px 8px',
-                textAlign: 'center',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-                maxWidth: '150px',
-                minWidth: '50px',
-                minHeight: '1em',
-                pointerEvents: 'auto',
-                transform: 'translate(0,-50%)',
-                fontSize: '14px',
-                fontFamily: 'Arial',
-                color: '#595959',
-                cursor: 'ns-resize'
-              }
+              transform: 'none',
             },
-            children: ['-']
-          }]
+          },
+          children: [
+            {
+              sel: 'div',
+              data: {
+                'data-other-value': 0,
+                'data-idx': 0,
+                'data-bidx': 1,
+                'data-key': 'brush-area-dir-bubble-0',
+                style: {
+                  position: 'relative',
+                  borderRadius: '4px',
+                  border: '1px solid #666',
+                  backgroundColor: '#fff',
+                  padding: '4px 8px',
+                  textAlign: 'center',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap',
+                  maxWidth: '150px',
+                  minWidth: '50px',
+                  minHeight: '1em',
+                  pointerEvents: 'auto',
+                  transform: 'translate(0,-50%)',
+                  fontSize: '14px',
+                  fontFamily: 'Arial',
+                  color: '#595959',
+                  cursor: 'ns-resize',
+                },
+              },
+              children: ['-'],
+            },
+          ],
         };
 
         expect(bubbleBottom).to.deep.equal(expectedBubbleBottom);

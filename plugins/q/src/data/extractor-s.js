@@ -16,8 +16,8 @@ export function getFieldAccessor(field, page, deps) {
   let attrDimIdx = -1;
   if (fieldIdx === -1) {
     for (let i = 0; i < cache.wrappedFields.length; i++) {
-      attrDimIdx = cache.wrappedFields[i].attrDims.map((v) => v.instance).indexOf(field);
-      attrIdx = cache.wrappedFields[i].attrExps.map((v) => v.instance).indexOf(field);
+      attrDimIdx = cache.wrappedFields[i].attrDims.map(v => v.instance).indexOf(field);
+      attrIdx = cache.wrappedFields[i].attrExps.map(v => v.instance).indexOf(field);
       if (attrDimIdx !== -1 || attrIdx !== -1) {
         fieldIdx = i;
         break;
@@ -32,13 +32,13 @@ export function getFieldAccessor(field, page, deps) {
   }
 
   if (attrDimIdx >= 0) {
-    return (row) => row[fieldIdx].qAttrDims.qValues[attrDimIdx];
+    return row => row[fieldIdx].qAttrDims.qValues[attrDimIdx];
   }
   if (attrIdx >= 0) {
-    return (row) => row[fieldIdx].qAttrExps.qValues[attrIdx];
+    return row => row[fieldIdx].qAttrExps.qValues[attrIdx];
   }
 
-  return (row) => row[fieldIdx];
+  return row => row[fieldIdx];
 }
 
 // TODO - handle 'other' value
@@ -51,38 +51,34 @@ export function getFieldAccessor(field, page, deps) {
 //   }
 // };
 
-function datumExtract(propCfg, cell, {
-  key
-}) {
+function datumExtract(propCfg, cell, { key }) {
   const datum = {
-    value: typeof propCfg.value === 'function' ? propCfg.value(cell) : typeof propCfg.value !== 'undefined' ? propCfg.value : cell // eslint-disable-line no-nested-ternary
+    value:
+      typeof propCfg.value === 'function'
+        ? propCfg.value(cell)
+        : typeof propCfg.value !== 'undefined'
+        ? propCfg.value
+        : cell, // eslint-disable-line no-nested-ternary
   };
 
-  datum.label = typeof propCfg.label === 'function' ? propCfg.label(cell) : typeof propCfg.label !== 'undefined' ? String(propCfg.label) : String(datum.value); // eslint-disable-line no-nested-ternary
+  datum.label =
+    typeof propCfg.label === 'function'
+      ? propCfg.label(cell)
+      : typeof propCfg.label !== 'undefined'
+      ? String(propCfg.label)
+      : String(datum.value); // eslint-disable-line no-nested-ternary
 
   if (propCfg.field) {
     datum.source = {
       key,
-      field: propCfg.field.key()
+      field: propCfg.field.key(),
     };
   }
 
   return datum;
 }
 
-function cellToValue({
-  cache,
-  f,
-  mainCell,
-  p,
-  prop,
-  page,
-  rowIdx,
-  row,
-  sourceKey,
-  target,
-  targetProp
-}) {
+function cellToValue({ cache, f, mainCell, p, prop, page, rowIdx, row, sourceKey, target, targetProp }) {
   let propCell = mainCell;
   if (p.field && p.field !== f) {
     const propCellFn = getFieldAccessor(p.field, page, { cache });
@@ -148,16 +144,26 @@ export default function extract(config, dataset, cache, util) {
                 row: cube.qDataPages[j].qMatrix[k],
                 sourceKey,
                 target: p.fields ? ret[propsArr[l]] : ret,
-                targetProp: p.fields ? m : propsArr[l]
+                targetProp: p.fields ? m : propsArr[l],
               });
             }
 
             if (p.fields) {
-              const fieldValues = ret[propsArr[l]].map((v) => v.value);
-              const fieldLabels = ret[propsArr[l]].map((v) => v.label);
+              const fieldValues = ret[propsArr[l]].map(v => v.value);
+              const fieldLabels = ret[propsArr[l]].map(v => v.label);
               ret[propsArr[l]] = {
-                value: typeof p.value === 'function' ? p.value(fieldValues) : typeof p.value !== 'undefined' ? p.value : fieldValues,
-                label: typeof p.label === 'function' ? p.label(fieldLabels) : typeof p.label !== 'undefined' ? String(p.label) : String(ret[propsArr[l]].value)
+                value:
+                  typeof p.value === 'function'
+                    ? p.value(fieldValues)
+                    : typeof p.value !== 'undefined'
+                    ? p.value
+                    : fieldValues,
+                label:
+                  typeof p.label === 'function'
+                    ? p.label(fieldLabels)
+                    : typeof p.label !== 'undefined'
+                    ? String(p.label)
+                    : String(ret[propsArr[l]].value),
               };
             }
           }
@@ -171,7 +177,7 @@ export default function extract(config, dataset, cache, util) {
               obj: ret,
               target: trackedItems,
               tracker,
-              trackType
+              trackType,
             });
           }
 
@@ -181,11 +187,13 @@ export default function extract(config, dataset, cache, util) {
 
       // reduce if items have been grouped
       if (track) {
-        dataItems.push(...util.collect(trackedItems, {
-          main,
-          propsArr,
-          props
-        }));
+        dataItems.push(
+          ...util.collect(trackedItems, {
+            main,
+            propsArr,
+            props,
+          })
+        );
       } else {
         dataItems.push(...items);
       }

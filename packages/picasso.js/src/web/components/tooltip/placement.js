@@ -5,7 +5,7 @@ function getDockTransform(offset = 0) {
     left: `translate(-100%,-50%) translateX(${-offset}px)`,
     right: `translate(${offset}px, -50%)`,
     top: `translate(-50%, -100%) translateY(${-offset}px)`,
-    bottom: `translate(-50%, ${offset}px)`
+    bottom: `translate(-50%, ${offset}px)`,
   };
 }
 
@@ -14,7 +14,7 @@ function getDockOffset(width, height, offset = 0) {
     left: { x: -width - offset, y: -height / 2 },
     right: { x: offset, y: -height / 2 },
     top: { x: -width / 2, y: -height - offset },
-    bottom: { x: -width / 2, y: offset }
+    bottom: { x: -width / 2, y: offset },
   };
 }
 
@@ -23,23 +23,23 @@ function getComputedArrowStyle(offset) {
     left: {
       left: '100%',
       top: `calc(50% - ${offset}px)`,
-      borderWidth: `${offset}px`
+      borderWidth: `${offset}px`,
     },
     right: {
       left: `${-offset * 2}px`,
       top: `calc(50% - ${offset}px)`,
-      borderWidth: `${offset}px`
+      borderWidth: `${offset}px`,
     },
     top: {
       left: `calc(50% - ${offset}px)`,
       top: '100%',
-      borderWidth: `${offset}px`
+      borderWidth: `${offset}px`,
     },
     bottom: {
       left: `calc(50% - ${offset}px)`,
       top: `${-offset * 2}px`,
-      borderWidth: `${offset}px`
-    }
+      borderWidth: `${offset}px`,
+    },
   };
 }
 
@@ -48,7 +48,7 @@ function isInsideArea(area, vx, vy, width, height, offset) {
     x: vx + offset.x,
     y: vy + offset.y,
     width,
-    height
+    height,
   };
 
   if (rect.x < 0 || rect.y < 0) {
@@ -64,51 +64,35 @@ function isInsideArea(area, vx, vy, width, height, offset) {
  * @param {vx} vx X-coordinate realative to the area
  * @param {vy} vy Y-coordinate realative to the area
  */
-export function calcOffset({
-  area, vx, vy, width, height, offset
-}) {
+export function calcOffset({ area, vx, vy, width, height, offset }) {
   const rect = {
     x: vx + offset.x,
     y: vy + offset.y,
     width,
-    height
+    height,
   };
 
   let offsetX = rect.x < 0 ? -rect.x : 0;
   let offsetY = rect.y < 0 ? -rect.y : 0;
 
-  offsetX += rect.x + rect.width > area.width
-    ? -((rect.x + rect.width) - area.width) : 0;
-  offsetY += rect.y + rect.height > area.height
-    ? -((rect.y + rect.height) - area.height) : 0;
+  offsetX += rect.x + rect.width > area.width ? -(rect.x + rect.width - area.width) : 0;
+  offsetY += rect.y + rect.height > area.height ? -(rect.y + rect.height - area.height) : 0;
 
   return {
     x: offsetX,
-    y: offsetY
+    y: offsetY,
   };
 }
 
-function alignToBounds({
-  resources,
-  nodes,
-  pointer,
-  width: elmWidth,
-  height: elmHeight,
-  options
-}) {
+function alignToBounds({ resources, nodes, pointer, width: elmWidth, height: elmHeight, options }) {
   const { targetBounds } = pointer;
-  const {
-    x,
-    y,
-    width,
-    height
-  } = resources.getNodeBoundsRelativeToTarget(nodes[0]);
+  const { x, y, width, height } = resources.getNodeBoundsRelativeToTarget(nodes[0]);
 
   const docks = {
-    left: { x, y: y + (height / 2) },
-    right: { x: x + width, y: y + (height / 2) },
-    top: { x: x + (width / 2), y },
-    bottom: { x: x + (width / 2), y: y + height }
+    left: { x, y: y + height / 2 },
+    right: { x: x + width, y: y + height / 2 },
+    top: { x: x + width / 2, y },
+    bottom: { x: x + width / 2, y: y + height },
   };
 
   // Check if explicit dock
@@ -119,16 +103,16 @@ function alignToBounds({
       computedTooltipStyle: {
         left: `${docks[options.dock].x}px`,
         top: `${docks[options.dock].y}px`,
-        transform
+        transform,
       },
       computedArrowStyle: getComputedArrowStyle(options.offset)[options.dock],
-      dock: options.dock
+      dock: options.dock,
     };
   }
 
   const area = {
     width: options.area === 'target' ? targetBounds.width : window.innerWidth,
-    height: options.area === 'target' ? targetBounds.height : window.innerHeight
+    height: options.area === 'target' ? targetBounds.height : window.innerHeight,
   };
   const dockOffsets = getDockOffset(elmWidth, elmHeight, options.offset);
   const dockOrder = ['top', 'left', 'right', 'bottom'];
@@ -142,10 +126,10 @@ function alignToBounds({
         computedTooltipStyle: {
           left: `${docks[dock].x}px`,
           top: `${docks[dock].y}px`,
-          transform: dockTransforms[dock]
+          transform: dockTransforms[dock],
         },
         computedArrowStyle: getComputedArrowStyle(options.offset)[dock],
-        dock
+        dock,
       };
     }
   }
@@ -154,25 +138,15 @@ function alignToBounds({
     computedTooltipStyle: {
       left: `${docks.top.x}px`,
       top: `${docks.top.y}px`,
-      transform: dockTransforms.top
+      transform: dockTransforms.top,
     },
     computedArrowStyle: getComputedArrowStyle(options.offset).top,
-    dock: 'top'
+    dock: 'top',
   };
 }
 
-function alignToPoint({
-  options,
-  pointer,
-  width,
-  height,
-  dockOrder,
-  x,
-  y
-}) {
-  const {
-    targetBounds
-  } = pointer;
+function alignToPoint({ options, pointer, width, height, dockOrder, x, y }) {
+  const { targetBounds } = pointer;
 
   // Check if explicit dock
   const dockTransforms = getDockTransform(options.offset);
@@ -182,16 +156,16 @@ function alignToPoint({
       computedTooltipStyle: {
         left: `${x}px`,
         top: `${y}px`,
-        transform
+        transform,
       },
       computedArrowStyle: getComputedArrowStyle(options.offset)[options.dock],
-      dock: options.dock
+      dock: options.dock,
     };
   }
 
   const area = {
     width: options.area === 'target' ? targetBounds.width : window.innerWidth,
-    height: options.area === 'target' ? targetBounds.height : window.innerHeight
+    height: options.area === 'target' ? targetBounds.height : window.innerHeight,
   };
   const dockOffsets = getDockOffset(width, height, options.offset);
 
@@ -204,13 +178,18 @@ function alignToPoint({
     const dock = dockOrder[i];
 
     const offset = calcOffset({
-      area, vx, vy, width, height, offset: dockOffsets[dock]
+      area,
+      vx,
+      vy,
+      width,
+      height,
+      offset: dockOffsets[dock],
     });
 
     const computedTooltipStyle = {
       left: `${x}px`,
       top: `${y}px`,
-      transform: dockTransforms[dock]
+      transform: dockTransforms[dock],
     };
     const computedArrowStyle = getComputedArrowStyle(options.offset)[dock];
 
@@ -230,8 +209,8 @@ function alignToPoint({
       dock,
       rect: {
         width,
-        height
-      }
+        height,
+      },
     };
 
     if (offset.x === 0 && offset.y === 0) {
@@ -248,16 +227,8 @@ function alignToPoint({
   return results[0];
 }
 
-function alignToPointer({
-  options,
-  pointer,
-  width,
-  height
-}) {
-  const {
-    x,
-    y
-  } = pointer;
+function alignToPointer({ options, pointer, width, height }) {
+  const { x, y } = pointer;
 
   return alignToPoint({
     x,
@@ -266,36 +237,25 @@ function alignToPointer({
     width,
     height,
     options,
-    dockOrder: ['top', 'left', 'right', 'bottom']
+    dockOrder: ['top', 'left', 'right', 'bottom'],
   });
 }
 
-function alignToSlice({
-  options,
-  pointer,
-  width,
-  height,
-  nodes,
-  resources
-}) {
+function alignToSlice({ options, pointer, width, height, nodes, resources }) {
   const node = nodes[0];
   const { dx, dy } = pointer;
   const componentBounds = resources.getComponentBoundsFromNode(node);
 
   // cx and cy relative to targetBounds
   const center = {
-    x: dx + componentBounds.x + (componentBounds.width / 2),
-    y: dy + componentBounds.y + (componentBounds.height / 2)
+    x: dx + componentBounds.x + componentBounds.width / 2,
+    y: dy + componentBounds.y + componentBounds.height / 2,
   };
 
-  const {
-    start,
-    end,
-    outerRadius
-  } = node.desc.slice;
+  const { start, end, outerRadius } = node.desc.slice;
 
   // Node origin is at 12 o clock, clockwise, but Math uses 3 a clock, so it's transformed to origin at 3 a clock
-  const middle = ((start + end) / 2) - (Math.PI / 2);
+  const middle = (start + end) / 2 - Math.PI / 2;
   const PI2 = Math.PI * 2;
   const radians = ((middle % PI2) + PI2) % PI2;
   let dockOrder = ['top', 'left', 'right', 'bottom'];
@@ -313,18 +273,19 @@ function alignToSlice({
   }
 
   return alignToPoint({
-    x: center.x + (outerRadius * componentBounds.scaleRatio.x * Math.cos(radians)),
-    y: center.y + (outerRadius * componentBounds.scaleRatio.y * Math.sin(radians)),
+    x: center.x + outerRadius * componentBounds.scaleRatio.x * Math.cos(radians),
+    y: center.y + outerRadius * componentBounds.scaleRatio.y * Math.sin(radians),
     pointer,
     width,
     height,
     options,
-    dockOrder
+    dockOrder,
   });
 }
 
 function getComponentBoundsFromNode(node, pointer, chart) {
-  const comp = node.key ? chart.component(node.key)
+  const comp = node.key
+    ? chart.component(node.key)
     : chart.componentsFromPoint({ x: pointer.clientX, y: pointer.clientY })[0];
 
   if (!comp) {
@@ -335,8 +296,8 @@ function getComponentBoundsFromNode(node, pointer, chart) {
       height: 0,
       scaleRatio: {
         x: 1,
-        y: 1
-      }
+        y: 1,
+      },
     };
   }
 
@@ -352,33 +313,29 @@ function getNodeBoundsRelativeToTarget(node, pointer, chart) {
     x: componentBounds.x + pointer.dx + bounds.x,
     y: componentBounds.y + pointer.dy + bounds.y,
     width: bounds.width,
-    height: bounds.height
+    height: bounds.height,
   };
 }
 
 const STRATEGIES = {
   bounds: alignToBounds,
   pointer: alignToPointer,
-  slice: alignToSlice
+  slice: alignToSlice,
 };
 
-export default function placement({ width, height }, {
-  chart,
-  state,
-  props
-}) {
+export default function placement({ width, height }, { chart, state, props }) {
   const propCtx = {
     resources: {
       formatter: chart.formatter,
       scale: chart.scale,
       component: chart.component,
-      getComponentBoundsFromNode: (node) => getComponentBoundsFromNode(node, state.pointer, chart),
-      getNodeBoundsRelativeToTarget: (node) => getNodeBoundsRelativeToTarget(node, state.pointer, chart)
+      getComponentBoundsFromNode: node => getComponentBoundsFromNode(node, state.pointer, chart),
+      getNodeBoundsRelativeToTarget: node => getNodeBoundsRelativeToTarget(node, state.pointer, chart),
     },
     nodes: state.activeNodes,
     pointer: state.pointer,
     width,
-    height
+    height,
   };
   const type = typeof props.placement;
 
@@ -391,7 +348,7 @@ export default function placement({ width, height }, {
     type: 'pointer',
     offset: 8,
     dock: 'auto',
-    area: 'viewport'
+    area: 'viewport',
   };
   if (type === 'function') {
     // Custom placement function
@@ -409,12 +366,7 @@ export default function placement({ width, height }, {
   propCtx.options = opts;
   const plcm = STRATEGIES[opts.type](propCtx);
 
-  let {
-    x: minX,
-    y: minY,
-    width: maxX,
-    height: maxY
-  } = propCtx.resources.getComponentBoundsFromNode(propCtx.nodes[0]);
+  let { x: minX, y: minY, width: maxX, height: maxY } = propCtx.resources.getComponentBoundsFromNode(propCtx.nodes[0]);
   minX += propCtx.pointer.dx;
   maxX += minX;
   minY += propCtx.pointer.dy;

@@ -9,7 +9,10 @@ describe('canvas-gradient', () => {
   beforeEach(() => {
     el = elementMock('canvas');
     document = {
-      createElement: sinon.stub().withArgs('canvas').returns(el)
+      createElement: sinon
+        .stub()
+        .withArgs('canvas')
+        .returns(el),
     };
     z = patternizer(document);
   });
@@ -17,7 +20,7 @@ describe('canvas-gradient', () => {
   describe('create', () => {
     it('should return a pattern', () => {
       const p = z.create({
-        shapes: []
+        shapes: [],
       });
 
       expect(p.constructor.name).to.equal('CanvasPattern');
@@ -41,9 +44,13 @@ describe('canvas-gradient', () => {
         fill: 'red',
         shapes: [
           {
-            type: 'rect', x: 0, y: 1, width: 2, height: 3
-          }
-        ]
+            type: 'rect',
+            x: 0,
+            y: 1,
+            width: 2,
+            height: 3,
+          },
+        ],
       });
 
       expect(ctx.save.calledBefore(ctx.rect)).to.equal(true);

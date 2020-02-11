@@ -32,15 +32,19 @@ export default function resolveLevels({ data, settings }) {
     if (qOuterWidthAvailablePerTick > MIN_REQ_OUTER_WIDTH && qOuter.qTags.indexOf('$hidden') === -1) {
       const i = findNonQualified(data, o + 1);
       const qInner = data[i];
-      const qInnerTotalWidth = qInner ? qInner.qTicks
-        .reduce((prev, curr) => prev + measureText({ text: curr.qText, fontSize: '16px', fontFamily: 'Arial' }).width, 0) : 0;
+      const qInnerTotalWidth = qInner
+        ? qInner.qTicks.reduce(
+            (prev, curr) => prev + measureText({ text: curr.qText, fontSize: '16px', fontFamily: 'Arial' }).width,
+            0
+          )
+        : 0;
 
       if (qInnerTotalWidth < maxWidth) {
         outer.index = o;
         inner.index = i;
         outer.minor = inner.index;
         inner.minor = i !== null ? findNonQualified(data, inner.index + 1) : null;
-        if (inner.minor !== null && (maxWidth / data[inner.minor].qTicks.length) < MIN_REQ_MINOR_WIDTH) {
+        if (inner.minor !== null && maxWidth / data[inner.minor].qTicks.length < MIN_REQ_MINOR_WIDTH) {
           inner.minor = null;
         }
         break;

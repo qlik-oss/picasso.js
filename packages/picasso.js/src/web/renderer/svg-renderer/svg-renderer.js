@@ -35,7 +35,7 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
 
   const defs = {
     type: 'defs',
-    children: []
+    children: [],
   };
   const patterns = patternizer(defs.children);
   const gradients = gradienter(defs.children);
@@ -44,7 +44,7 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
 
   svg.root = () => group;
 
-  svg.appendTo = (element) => {
+  svg.appendTo = element => {
     if (!el) {
       el = element.ownerDocument.createElementNS(ns, 'svg');
       el.style.position = 'absolute';
@@ -62,7 +62,7 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
     return el;
   };
 
-  svg.render = (nodes) => {
+  svg.render = nodes => {
     if (!el) {
       return false;
     }
@@ -84,7 +84,9 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
     const sceneContainer = {
       type: 'container',
       children: Array.isArray(nodes) ? [...nodes, defs] : nodes,
-      transform: rect.edgeBleed.bool ? `translate(${rect.edgeBleed.left * scaleX}, ${rect.edgeBleed.top * scaleY})` : ''
+      transform: rect.edgeBleed.bool
+        ? `translate(${rect.edgeBleed.left * scaleX}, ${rect.edgeBleed.top * scaleY})`
+        : '',
     };
 
     if (scaleX !== 1 || scaleY !== 1) {
@@ -95,16 +97,16 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
       items: [sceneContainer],
       on: {
         create: [
-          (state) => {
+          state => {
             state.node.fillReference = undefined;
             state.node.strokeReference = undefined;
           },
           gradients.onCreate,
           patterns.onCreate,
           onLineBreak(svg.measureText),
-          injectTextBoundsFn(svg)
-        ]
-      }
+          injectTextBoundsFn(svg),
+        ],
+      },
     });
     const hasChangedScene = scene ? !newScene.equals(scene) : true;
 
@@ -119,9 +121,9 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
     return doRender;
   };
 
-  svg.itemsAt = (input) => (scene ? scene.getItemsFrom(input) : []);
+  svg.itemsAt = input => (scene ? scene.getItemsFrom(input) : []);
 
-  svg.findShapes = (selector) => (scene ? scene.findShapes(selector) : []);
+  svg.findShapes = selector => (scene ? scene.findShapes(selector) : []);
 
   svg.clear = () => {
     if (!group) {
@@ -143,7 +145,7 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
     group = null;
   };
 
-  svg.size = (opts) => {
+  svg.size = opts => {
     if (opts) {
       const newRect = createRendererBox(opts);
 

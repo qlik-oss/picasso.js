@@ -23,7 +23,7 @@ export default function gradienter(bucket, hasher = hashObject) {
           gradient.type = 'radialGradient';
         } else {
           gradient = degreesToPoints(degree);
-          ['x1', 'x2', 'y1', 'y2'].forEach((c) => {
+          ['x1', 'x2', 'y1', 'y2'].forEach(c => {
             if (c in item[attr]) {
               gradient[c] = item[attr][c];
             }
@@ -35,7 +35,7 @@ export default function gradienter(bucket, hasher = hashObject) {
         gradient.children = stops.map(({ offset, color, opacity }) => ({
           type: 'stop',
           offset: `${offset * 100}%`,
-          style: `stop-color:${color};stop-opacity:${typeof opacity !== 'undefined' ? opacity : 1}`
+          style: `stop-color:${color};stop-opacity:${typeof opacity !== 'undefined' ? opacity : 1}`,
         }));
 
         bucket.push(gradient);
@@ -61,7 +61,7 @@ export default function gradienter(bucket, hasher = hashObject) {
     },
     clear() {
       cache = {};
-    }
+    },
   };
 
   return p;

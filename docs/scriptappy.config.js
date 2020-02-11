@@ -1,6 +1,6 @@
 module.exports = {
   spec: {
-    validate: true
+    validate: true,
   },
   parse: {
     rules: {
@@ -11,7 +11,7 @@ module.exports = {
       'no-duplicate-references': 2,
       'no-untreated-kinds': 2,
       'no-default-exports-wo-name': 2,
-      'no-unknown-promise': 2
-    }
-  }
+      'no-unknown-promise': 2,
+    },
+  },
 };

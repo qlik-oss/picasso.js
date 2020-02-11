@@ -6,7 +6,7 @@ const LAYOUT_TO_PROP = [
   ['qDimensionInfo', 'qDimensions'],
   ['qMeasureInfo', 'qMeasures'],
   ['qAttrDimInfo', 'qAttributeDimensions'],
-  ['qAttrExprInfo', 'qAttributeExpressions']
+  ['qAttrExprInfo', 'qAttributeExpressions'],
 ];
 
 const DIM_RX = /\/qDimensionInfo(?:\/(\d+))?/;
@@ -16,15 +16,15 @@ const ATTR_EXPR_RX = /\/qAttrExprInfo\/(\d+)/;
 const HC_RX = /\/?qHyperCube/;
 const TD_RX = /\/?qTreeData/;
 
-const SHORTEN_HC = (path) => `${path.substr(0, path.indexOf('/qHyperCubeDef') + 14)}`; // 14 = length of '/qHyperCubeDef'
-const SHORTEN_TD = (path) => `${path.substr(0, path.indexOf('/qTreeDataDef') + 13)}`; // 13 = length of '/qTreeDataDef'
+const SHORTEN_HC = path => `${path.substr(0, path.indexOf('/qHyperCubeDef') + 14)}`; // 14 = length of '/qHyperCubeDef'
+const SHORTEN_TD = path => `${path.substr(0, path.indexOf('/qTreeDataDef') + 13)}`; // 13 = length of '/qTreeDataDef'
 
 export function extractFieldFromId(id, layout) {
   let path = id;
   let dimensionIdx = -1;
   let measureIdx = -1;
   let pathToCube = '';
-  let shortenizer = (p) => p;
+  let shortenizer = p => p;
   if (HC_RX.test(id)) {
     pathToCube = `${path.substr(0, path.indexOf('qHyperCube') + 10)}`; // 10 = length of 'qHyperCube'
     shortenizer = SHORTEN_HC;
@@ -75,9 +75,7 @@ export function extractFieldFromId(id, layout) {
       } else {
         measureIdx = hc.qDimensionInfo.reduce((v, dim) => v + dim.qAttrExprInfo.length, measureIdx);
         // offset by total number of attr expr in measures before 'index'
-        measureIdx = hc.qMeasureInfo
-          .slice(0, offset)
-          .reduce((v, meas) => v + meas.qAttrExprInfo.length, measureIdx);
+        measureIdx = hc.qMeasureInfo.slice(0, offset).reduce((v, meas) => v + meas.qAttrExprInfo.length, measureIdx);
       }
 
       // offset by the actual column value for the attribute expression itself
@@ -105,7 +103,7 @@ export function extractFieldFromId(id, layout) {
   return {
     measureIdx,
     dimensionIdx,
-    path
+    path,
   };
 }
 
@@ -127,7 +125,7 @@ export default function qBrush(brush, opts = {}, layout) {
   const methods = {};
   const isActive = brush.isActive();
   let hasValues = false;
-  brush.brushes().forEach((b) => {
+  brush.brushes().forEach(b => {
     const info = extractFieldFromId(b.id, layout);
     if (b.type === 'range' && info.measureIdx > -1 && info.dimensionIdx > -1) {
       const ranges = b.brush.ranges();
@@ -136,19 +134,21 @@ export default function qBrush(brush, opts = {}, layout) {
         if (!methods.multiRangeSelectTreeDataValues) {
           methods.multiRangeSelectTreeDataValues = {
             path: info.path,
-            ranges: []
+            ranges: [],
           };
         }
-        ranges.forEach((range) => methods.multiRangeSelectTreeDataValues.ranges.push({
-          qMeasureIx: info.measureIdx,
-          qDimensionIx: info.dimensionIdx,
-          qRange: {
-            qMin: range.min,
-            qMax: range.max,
-            qMinInclEq: true,
-            qMaxInclEq: true
-          }
-        }));
+        ranges.forEach(range =>
+          methods.multiRangeSelectTreeDataValues.ranges.push({
+            qMeasureIx: info.measureIdx,
+            qDimensionIx: info.dimensionIdx,
+            qRange: {
+              qMin: range.min,
+              qMax: range.max,
+              qMinInclEq: true,
+              qMaxInclEq: true,
+            },
+          })
+        );
       }
     } else {
       if (b.type === 'range' && info.measureIdx > -1) {
@@ -158,18 +158,20 @@ export default function qBrush(brush, opts = {}, layout) {
           if (!methods.rangeSelectHyperCubeValues) {
             methods.rangeSelectHyperCubeValues = {
               path: info.path,
-              ranges: []
+              ranges: [],
             };
           }
-          ranges.forEach((range) => methods.rangeSelectHyperCubeValues.ranges.push({
-            qMeasureIx: info.measureIdx,
-            qRange: {
-              qMin: range.min,
-              qMax: range.max,
-              qMinInclEq: true,
-              qMaxInclEq: true
-            }
-          }));
+          ranges.forEach(range =>
+            methods.rangeSelectHyperCubeValues.ranges.push({
+              qMeasureIx: info.measureIdx,
+              qRange: {
+                qMin: range.min,
+                qMax: range.max,
+                qMinInclEq: true,
+                qMaxInclEq: true,
+              },
+            })
+          );
         }
       }
       if (b.type === 'range' && info.dimensionIdx > -1) {
@@ -179,24 +181,30 @@ export default function qBrush(brush, opts = {}, layout) {
           if (!methods.selectHyperCubeContinuousRange) {
             methods.selectHyperCubeContinuousRange = {
               path: info.path,
-              ranges: []
+              ranges: [],
             };
           }
-          ranges.forEach((range) => methods.selectHyperCubeContinuousRange.ranges.push({
-            qDimIx: info.dimensionIdx,
-            qRange: {
-              qMin: range.min,
-              qMax: range.max,
-              qMinInclEq: true,
-              qMaxInclEq: false
-            }
-          }));
+          ranges.forEach(range =>
+            methods.selectHyperCubeContinuousRange.ranges.push({
+              qDimIx: info.dimensionIdx,
+              qRange: {
+                qMin: range.min,
+                qMax: range.max,
+                qMinInclEq: true,
+                qMaxInclEq: false,
+              },
+            })
+          );
         }
       }
 
       if (b.type === 'value' && info.dimensionIdx > -1) {
         if (byCells) {
-          if (layout && layout.qHyperCube && (layout.qHyperCube.qMode === 'P' || layout.qHyperCube.qMode === 'T' || layout.qHyperCube.qMode === 'K')) {
+          if (
+            layout &&
+            layout.qHyperCube &&
+            (layout.qHyperCube.qMode === 'P' || layout.qHyperCube.qMode === 'T' || layout.qHyperCube.qMode === 'K')
+          ) {
             const hyperCube = layout.qHyperCube;
             const noOfLeftDims = hyperCube.qNoOfLeftDims;
             const dimInterColSortIdx = hyperCube.qEffectiveInterColumnSortOrder.indexOf(info.dimensionIdx);
@@ -204,29 +212,30 @@ export default function qBrush(brush, opts = {}, layout) {
             if (!methods.selectPivotCells) {
               methods.selectPivotCells = {
                 path: info.path,
-                cells: []
+                cells: [],
               };
             }
 
             if (b.id === primarySource || !primarySource) {
-              const validValues = b.brush.values()
-                .map((s) => +s)
-                .filter((v) => !isNaN(v));
+              const validValues = b.brush
+                .values()
+                .map(s => +s)
+                .filter(v => !isNaN(v));
 
               if ((noOfLeftDims === 0 || dimInterColSortIdx >= noOfLeftDims) && noOfLeftDims > -1) {
-                validValues.forEach((val) => {
+                validValues.forEach(val => {
                   methods.selectPivotCells.cells.push({
                     qType: 'T',
                     qCol: val,
-                    qRow: dimInterColSortIdx - noOfLeftDims
+                    qRow: dimInterColSortIdx - noOfLeftDims,
                   });
                 });
               } else {
-                validValues.forEach((val) => {
+                validValues.forEach(val => {
                   methods.selectPivotCells.cells.push({
                     qType: 'L',
                     qCol: info.dimensionIdx,
-                    qRow: val
+                    qRow: val,
                   });
                 });
               }
@@ -236,24 +245,28 @@ export default function qBrush(brush, opts = {}, layout) {
             if (!methods.selectHyperCubeCells) {
               methods.selectHyperCubeCells = {
                 path: info.path,
-                cols: []
+                cols: [],
               };
             }
 
             methods.selectHyperCubeCells.cols.push(info.dimensionIdx);
             if (b.id === primarySource || (!primarySource && !methods.selectHyperCubeCells.values)) {
-              methods.selectHyperCubeCells.values = b.brush.values()
-                .map((s) => +s)
-                .filter((v) => !isNaN(v));
+              methods.selectHyperCubeCells.values = b.brush
+                .values()
+                .map(s => +s)
+                .filter(v => !isNaN(v));
               hasValues = !!methods.selectHyperCubeCells.values.length;
             }
           }
         } else {
-          const values = b.brush.values().map((s) => +s).filter((v) => !isNaN(v));
+          const values = b.brush
+            .values()
+            .map(s => +s)
+            .filter(v => !isNaN(v));
           hasValues = !!values.length;
           selections.push({
             params: [info.path, info.dimensionIdx, values, false],
-            method: 'selectHyperCubeValues'
+            method: 'selectHyperCubeValues',
           });
         }
       }
@@ -261,23 +274,25 @@ export default function qBrush(brush, opts = {}, layout) {
   });
 
   if (!hasValues && isActive) {
-    return [{
-      method: 'resetMadeSelections',
-      params: []
-    }];
+    return [
+      {
+        method: 'resetMadeSelections',
+        params: [],
+      },
+    ];
   }
 
   if (methods.rangeSelectHyperCubeValues) {
     selections.push({
       method: 'rangeSelectHyperCubeValues',
-      params: [methods.rangeSelectHyperCubeValues.path, methods.rangeSelectHyperCubeValues.ranges, [], true]
+      params: [methods.rangeSelectHyperCubeValues.path, methods.rangeSelectHyperCubeValues.ranges, [], true],
     });
   }
 
   if (methods.selectHyperCubeContinuousRange) {
     selections.push({
       method: 'selectHyperCubeContinuousRange',
-      params: [methods.selectHyperCubeContinuousRange.path, methods.selectHyperCubeContinuousRange.ranges]
+      params: [methods.selectHyperCubeContinuousRange.path, methods.selectHyperCubeContinuousRange.ranges],
     });
   }
 
@@ -287,25 +302,22 @@ export default function qBrush(brush, opts = {}, layout) {
       params: [
         methods.selectHyperCubeCells.path,
         methods.selectHyperCubeCells.values,
-        methods.selectHyperCubeCells.cols
-      ]
+        methods.selectHyperCubeCells.cols,
+      ],
     });
   }
 
   if (methods.selectPivotCells) {
     selections.push({
       method: 'selectPivotCells',
-      params: [
-        methods.selectPivotCells.path,
-        methods.selectPivotCells.cells
-      ]
+      params: [methods.selectPivotCells.path, methods.selectPivotCells.cells],
     });
   }
 
   if (methods.multiRangeSelectTreeDataValues) {
     selections.push({
       method: 'multiRangeSelectTreeDataValues',
-      params: [methods.multiRangeSelectTreeDataValues.path, methods.multiRangeSelectTreeDataValues.ranges]
+      params: [methods.multiRangeSelectTreeDataValues.path, methods.multiRangeSelectTreeDataValues.ranges],
     });
   }
 

@@ -1,18 +1,7 @@
-import {
-  getMoveDelta,
-  nodes
-} from './brush-range-node-builder';
-import {
-  startArea,
-  moveArea,
-  endArea
-} from './brush-range-interaction';
+import { getMoveDelta, nodes } from './brush-range-node-builder';
+import { startArea, moveArea, endArea } from './brush-range-interaction';
 import rangeCollection from '../../../core/brush/range-collection';
-import {
-  TARGET_SIZE,
-  VERTICAL,
-  HORIZONTAL
-} from './brush-range-const';
+import { TARGET_SIZE, VERTICAL, HORIZONTAL } from './brush-range-const';
 
 function render(state) {
   state.renderer.render(nodes(state));
@@ -27,7 +16,7 @@ function shapesFromRange(state, brushRange) {
     x: state.direction ? brushRange.min + state.rect.x : state.rect.x,
     y: state.direction ? state.rect.y : brushRange.min + state.rect.y,
     width: state.direction ? brushRange.max - brushRange.min : state.rect.width + state.rect.x,
-    height: state.direction ? state.rect.height + state.rect.y : brushRange.max - brushRange.min
+    height: state.direction ? state.rect.height + state.rect.y : brushRange.max - brushRange.min,
   };
   return state.chart.shapesAt(shapeAt, state.settings.brush);
 }
@@ -37,7 +26,7 @@ function brushFromShape(state, newShapes) {
 }
 
 function setRanges(state) {
-  const rs = state.ranges.map((r) => ({ min: r.min, max: r.max }));
+  const rs = state.ranges.map(r => ({ min: r.min, max: r.max }));
 
   if (state.active.idx !== -1) {
     if (state.active.mode === 'modify') {
@@ -51,14 +40,14 @@ function setRanges(state) {
   } else {
     rs.push({
       min: Math.min(state.start, state.current),
-      max: Math.max(state.start, state.current)
+      max: Math.max(state.start, state.current),
     });
   }
 
   state.rc.set(rs);
 
   const shapes = [];
-  rs.forEach((range) => {
+  rs.forEach(range => {
     shapes.push(...shapesFromRange(state, range));
   });
 
@@ -72,7 +61,7 @@ function getBubbleLabel(state, value, range) {
     x: state.direction ? min + state.rect.x : state.rect.x,
     y: state.direction ? state.rect.y : min + state.rect.y,
     width: state.direction ? max - min : state.rect.width + state.rect.x,
-    height: state.direction ? state.rect.height + state.rect.y : max - min
+    height: state.direction ? state.rect.height + state.rect.y : max - min,
   };
 
   const shapes = state.chart.shapesAt(shapeAt, state.settings.brush);
@@ -94,7 +83,10 @@ function getBubbleLabel(state, value, range) {
     }
 
     // Max value
-    if (bounds0[state.cssCoord.coord] + bounds0[state.cssCoord.area] >= bounds1[state.cssCoord.coord] + bounds1[state.cssCoord.area]) {
+    if (
+      bounds0[state.cssCoord.coord] + bounds0[state.cssCoord.area] >=
+      bounds1[state.cssCoord.coord] + bounds1[state.cssCoord.area]
+    ) {
       return s0;
     }
     return s1;
@@ -155,25 +147,33 @@ const brushAreaDirectionalComponent = {
     settings: {
       bubbles: {
         show: true,
-        align: 'start'
-      }
+        align: 'start',
+      },
     },
     style: {
       bubble: '$label-overlay',
       line: '$shape-guide--inverted',
-      target: '$selection-area-target'
-    }
+      target: '$selection-area-target',
+    },
   },
   renderer: 'dom',
   on: {
-    areaStart(e) { this.start(e); },
-    areaMove(e) { this.move(e); },
-    areaEnd(e) { this.end(e); },
-    areaClear(e) { this.clear(e); }
+    areaStart(e) {
+      this.start(e);
+    },
+    areaMove(e) {
+      this.move(e);
+    },
+    areaEnd(e) {
+      this.end(e);
+    },
+    areaClear(e) {
+      this.clear(e);
+    },
   },
   created() {
     this.state = {
-      key: this.settings.key || 'brush-area-dir'
+      key: this.settings.key || 'brush-area-dir',
     };
   },
   render(h) {
@@ -185,26 +185,34 @@ const brushAreaDirectionalComponent = {
     const offset = this.renderer.element().getBoundingClientRect();
 
     const targets = (stngs.target ? stngs.target.components || [stngs.target.component] : [])
-      .map((c) => this.chart.component(c)).filter((c) => !!c && !!c.rect);
+      .map(c => this.chart.component(c))
+      .filter(c => !!c && !!c.rect);
 
-    const targetRect = targets[0] ? targets.slice(1).reduce((prev, curr) => ({
-      x0: Math.min(prev.x0, curr.rect.x),
-      y0: Math.min(prev.y0, curr.rect.y),
-      x1: Math.max(prev.x1, curr.rect.x + curr.rect.width),
-      y1: Math.max(prev.y1, curr.rect.y + curr.rect.height)
-    }), {
-      x0: targets[0].rect.x,
-      y0: targets[0].rect.y,
-      x1: targets[0].rect.x + targets[0].rect.width,
-      y1: targets[0].rect.y + targets[0].rect.height
-    }) : null;
+    const targetRect = targets[0]
+      ? targets.slice(1).reduce(
+          (prev, curr) => ({
+            x0: Math.min(prev.x0, curr.rect.x),
+            y0: Math.min(prev.y0, curr.rect.y),
+            x1: Math.max(prev.x1, curr.rect.x + curr.rect.width),
+            y1: Math.max(prev.y1, curr.rect.y + curr.rect.height),
+          }),
+          {
+            x0: targets[0].rect.x,
+            y0: targets[0].rect.y,
+            x1: targets[0].rect.x + targets[0].rect.width,
+            y1: targets[0].rect.y + targets[0].rect.height,
+          }
+        )
+      : null;
 
-    this.state.targetRect = targetRect ? {
-      x: targetRect.x0 - this.rect.x,
-      y: targetRect.y0 - this.rect.y,
-      width: targetRect.x1 - targetRect.x0,
-      height: targetRect.y1 - targetRect.y0
-    } : null;
+    this.state.targetRect = targetRect
+      ? {
+          x: targetRect.x0 - this.rect.x,
+          y: targetRect.y0 - this.rect.y,
+          width: targetRect.x1 - targetRect.x0,
+          height: targetRect.y1 - targetRect.y0,
+        }
+      : null;
 
     this.state.style = this.style;
     this.state.chart = this.chart;
@@ -220,7 +228,7 @@ const brushAreaDirectionalComponent = {
       offset: this.state.direction === VERTICAL ? 'top' : 'left',
       coord: this.state.direction === VERTICAL ? 'y' : 'x',
       pos: this.state.direction === VERTICAL ? 'deltaY' : 'deltaX',
-      area: this.state.direction === VERTICAL ? 'height' : 'width'
+      area: this.state.direction === VERTICAL ? 'height' : 'width',
     };
 
     this.state.format = function getFormat(v, r) {
@@ -235,7 +243,7 @@ const brushAreaDirectionalComponent = {
       state: this.state,
       renderer: this.renderer,
       ranges,
-      targetSize: TARGET_SIZE
+      targetSize: TARGET_SIZE,
     });
   },
   end() {
@@ -258,7 +266,7 @@ const brushAreaDirectionalComponent = {
       this.state.rc.clear();
     }
     this.state.renderer.render([]);
-  }
+  },
 };
 
 export default brushAreaDirectionalComponent;

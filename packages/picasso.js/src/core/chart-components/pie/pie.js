@@ -49,8 +49,8 @@ const DEFAULT_DATA_SETTINGS = {
     cornerRadius: 0,
     /** Radial offset of the slice
      * @type {number=} */
-    offset: 0
-  }
+    offset: 0,
+  },
 };
 
 /**
@@ -87,20 +87,18 @@ const DEFAULT_DATA_SETTINGS = {
 
 function offsetSlice(centroid, offset, outerRadius, innerRadius) {
   let [vx, vy] = centroid;
-  const vlen = Math.sqrt((vx * vx) + (vy * vy));
+  const vlen = Math.sqrt(vx * vx + vy * vy);
   vx /= vlen;
   vy /= vlen;
   const diff = outerRadius - innerRadius;
   return { x: vx * offset * diff, y: vy * offset * diff };
 }
 
-function createDisplayPies(arcData, {
-  x, y, width, height
-}, slices, sum) {
+function createDisplayPies(arcData, { x, y, width, height }, slices, sum) {
   const arcGen = arc();
-  const center = { x: x + (width / 2), y: y + (height / 2) };
-  const innerRadius = (Math.min(width, height) / 2);
-  const outerRadius = (Math.min(width, height) / 2);
+  const center = { x: x + width / 2, y: y + height / 2 };
+  const innerRadius = Math.min(width, height) / 2;
+  const outerRadius = Math.min(width, height) / 2;
   const cornerRadius = outerRadius / 100;
   return arcData.map((a, i) => {
     const slice = slices[i];
@@ -121,8 +119,8 @@ function createDisplayPies(arcData, {
         end: a.endAngle,
         innerRadius: ir,
         outerRadius: or,
-        offset: { x: center.x + offset.x, y: center.y + offset.y }
-      }
+        offset: { x: center.x + offset.x, y: center.y + offset.y },
+      },
     };
 
     return slice;
@@ -143,12 +141,12 @@ const pieComponent = {
       startAngle: 0,
       endAngle: 2 * Math.PI,
       padAngle: 0,
-      slice: {}
+      slice: {},
     },
     style: {
-      slice: '$shape'
+      slice: '$shape',
     },
-    data: {}
+    data: {},
   },
   render({ data }) {
     const arcValues = [];
@@ -157,7 +155,7 @@ const pieComponent = {
     const { items } = this.resolver.resolve({
       data,
       defaults: extend({}, DEFAULT_DATA_SETTINGS.slice, this.style.slice),
-      settings: stngs.slice
+      settings: stngs.slice,
     });
 
     let sum = 0;
@@ -176,13 +174,8 @@ const pieComponent = {
     pieGen.padAngle(stngs.padAngle);
     const arcData = pieGen(arcValues);
 
-    return createDisplayPies(
-      arcData,
-      extend({}, this.rect, { x: 0, y: 0 }),
-      slices,
-      sum
-    );
-  }
+    return createDisplayPies(arcData, extend({}, this.rect, { x: 0, y: 0 }), slices, sum);
+  },
 };
 
 export default pieComponent;

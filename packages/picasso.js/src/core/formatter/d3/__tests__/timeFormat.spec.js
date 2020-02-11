@@ -25,8 +25,21 @@ describe('d3 timeFormat', () => {
       periods: ['fm', 'em'],
       days: ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'],
       shortDays: ['Sön', 'Mån', 'Tis', 'Ons', 'Tor', 'Fre', 'Lör'],
-      months: ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December'],
-      shortMonths: ['Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec']
+      months: [
+        'Januari',
+        'Februari',
+        'Mars',
+        'April',
+        'Maj',
+        'Juni',
+        'Juli',
+        'Augusti',
+        'September',
+        'Oktober',
+        'November',
+        'December',
+      ],
+      shortMonths: ['Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'],
     });
 
     expect(formatter(new Date(2013, 10, 18))).to.equal('Måndag, November 18, 2013');

@@ -2,24 +2,18 @@ import extend from 'extend';
 import field from './field';
 import extract from './extractor-matrix';
 
-import {
-  findField,
-  getPropsInfo,
-  collect,
-  track
-} from './util';
+import { findField, getPropsInfo, collect, track } from './util';
 
 const filters = {
-  numeric: (values) => values.filter((v) => typeof v === 'number' && !isNaN(v))
+  numeric: values => values.filter(v => typeof v === 'number' && !isNaN(v)),
 };
 
-function createFields({
-  source, data, cache, config
-}) {
+function createFields({ source, data, cache, config }) {
   let headers;
   let content = data;
   const parse = config && config.parse;
-  if (Array.isArray(data[0])) { // assume 2d matrix of data
+  if (Array.isArray(data[0])) {
+    // assume 2d matrix of data
     if (parse && parse.headers === false) {
       headers = data[0].map((v, i) => i);
     } else {
@@ -36,9 +30,9 @@ function createFields({
   if (parse && typeof parse.fields === 'function') {
     flds = parse.fields(flds.slice());
   } else {
-    flds = headers.map((h) => ({
+    flds = headers.map(h => ({
       key: h,
-      title: h
+      title: h,
     }));
   }
 
@@ -47,7 +41,9 @@ function createFields({
     fieldValues = flds.map(() => []);
   } else {
     fieldValues = {};
-    flds.forEach((f) => { fieldValues[f.key] = []; });
+    flds.forEach(f => {
+      fieldValues[f.key] = [];
+    });
   }
 
   for (let r = 0; r < content.length; r++) {
@@ -65,7 +61,7 @@ function createFields({
       }
     }
   }
-  const fv = Array.isArray(fieldValues) ? ((i) => fieldValues[i]) : ((i) => fieldValues[flds[i].key]);
+  const fv = Array.isArray(fieldValues) ? i => fieldValues[i] : i => fieldValues[flds[i].key];
   for (let c = 0; c < flds.length; c++) {
     const values = fv(c);
     const numericValues = filters.numeric(values);
@@ -74,18 +70,26 @@ function createFields({
     const min = isMeasure ? Math.min(...numericValues) : NaN;
     const max = isMeasure ? Math.max(...numericValues) : NaN;
 
-    cache.fields.push(field(extend({
-      source,
-      key: c,
-      title: flds[c].title,
-      values,
-      min,
-      max,
-      type
-    }, flds[c]), {
-      value: flds[c].value,
-      label: flds[c].label
-    }));
+    cache.fields.push(
+      field(
+        extend(
+          {
+            source,
+            key: c,
+            title: flds[c].title,
+            values,
+            min,
+            max,
+            type,
+          },
+          flds[c]
+        ),
+        {
+          value: flds[c].value,
+          label: flds[c].label,
+        }
+      )
+    );
   }
 }
 
@@ -96,7 +100,8 @@ const dsv = ({ data, config }) => {
   let delimiter = ',';
   if (config && config.parse && config.parse.delimiter) {
     delimiter = config.parse.delimiter;
-  } else if (row0) { // guess delimiter
+  } else if (row0) {
+    // guess delimiter
     const guesses = [/,/, /\t/, /;/];
     for (let i = 0; i < guesses.length; i++) {
       const d = guesses[i];
@@ -110,18 +115,17 @@ const dsv = ({ data, config }) => {
       }
     }
   }
-  return rows.map((row) => row.split(delimiter));
+  return rows.map(row => row.split(delimiter));
 };
 
-const parseData = ({
-  key, data, cache, config
-}) => {
+const parseData = ({ key, data, cache, config }) => {
   if (!data) {
     return;
   }
   let dd = data;
 
-  if (typeof dd === 'string') { // assume dsv
+  if (typeof dd === 'string') {
+    // assume dsv
     dd = dsv({ data, config });
   }
 
@@ -133,7 +137,7 @@ const parseData = ({
     data: dd,
     cache,
     source: key,
-    config
+    config,
   });
 };
 
@@ -142,13 +146,9 @@ const parseData = ({
  * @private
  * @return {dataset}
  */
-function ds({
-  key,
-  data,
-  config
-} = {}) {
+function ds({ key, data, config } = {}) {
   const cache = {
-    fields: []
+    fields: [],
   };
 
   /**
@@ -173,10 +173,11 @@ function ds({
      * @param {string} query - The field to find
      * @returns {field}
      */
-    field: (query) => findField(query, {
-      cache,
-      matrix: data
-    }),
+    field: query =>
+      findField(query, {
+        cache,
+        matrix: data,
+      }),
 
     /**
      * Get all fields within this dataset
@@ -189,16 +190,19 @@ function ds({
      * @param {data-extract-config} config
      * @returns {Array<datum-extract>}
      */
-    extract: (cfg) => extract(cfg, dataset, cache),
+    extract: cfg => extract(cfg, dataset, cache),
 
     /**
      * @returns {null}
      */
-    hierarchy: () => null
+    hierarchy: () => null,
   };
 
   parseData({
-    key, data, config, cache
+    key,
+    data,
+    config,
+    cache,
   });
 
   return dataset;
@@ -207,7 +211,7 @@ function ds({
 ds.util = {
   normalizeConfig: getPropsInfo,
   collect,
-  track
+  track,
 };
 
 export { ds as default };

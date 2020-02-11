@@ -15,10 +15,7 @@ import sequentialLegend from '../core/chart-components/legend-seq';
 import lineComponent from '../core/chart-components/line';
 import brushAreaComponent from '../web/components/brush-area';
 import tooltipComponent from '../web/components/tooltip';
-import {
-  debugCollider,
-  debugPathToPoints
-} from '../core/chart-components/debug';
+import { debugCollider, debugPathToPoints } from '../core/chart-components/debug';
 
 export default [
   boxComponent,
@@ -39,5 +36,5 @@ export default [
   brushAreaComponent,
   tooltipComponent,
   debugCollider,
-  debugPathToPoints
+  debugPathToPoints,
 ];

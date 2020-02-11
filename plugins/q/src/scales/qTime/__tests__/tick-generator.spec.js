@@ -17,7 +17,7 @@ describe('qTime - Tick generator', () => {
     beforeEach(() => {
       qTicks = [
         { qStart: 0, qEnd: 1, qText: 'Day 1' },
-        { qStart: 1, qEnd: 2, qText: 'Day 2' }
+        { qStart: 1, qEnd: 2, qText: 'Day 2' },
       ];
     });
 
@@ -28,11 +28,21 @@ describe('qTime - Tick generator', () => {
       const ticks = tickFn.transformTicks(qTicks);
 
       expect(ticks[0]).to.deep.equal({
-        value: 0.5, position: 0.25, start: 0, end: 0.5, label: 'Day 1', isMinor: false
+        value: 0.5,
+        position: 0.25,
+        start: 0,
+        end: 0.5,
+        label: 'Day 1',
+        isMinor: false,
       });
 
       expect(ticks[1]).to.deep.equal({
-        value: 1.5, position: 0.75, start: 0.5, end: 1, label: 'Day 2', isMinor: false
+        value: 1.5,
+        position: 0.75,
+        start: 0.5,
+        end: 1,
+        label: 'Day 2',
+        isMinor: false,
       });
     });
 
@@ -44,11 +54,21 @@ describe('qTime - Tick generator', () => {
       const ticks = tickFn.transformTicks(qTicks);
 
       expect(ticks[0]).to.deep.equal({
-        value: 0, position: 0, start: 0, end: 0.5, label: 'Day 1', isMinor: false
+        value: 0,
+        position: 0,
+        start: 0,
+        end: 0.5,
+        label: 'Day 1',
+        isMinor: false,
       });
 
       expect(ticks[1]).to.deep.equal({
-        value: 1, position: 0.5, start: 0.5, end: 1, label: 'Day 2', isMinor: false
+        value: 1,
+        position: 0.5,
+        start: 0.5,
+        end: 1,
+        label: 'Day 2',
+        isMinor: false,
       });
     });
 
@@ -60,11 +80,21 @@ describe('qTime - Tick generator', () => {
       const ticks = tickFn.transformTicks(qTicks);
 
       expect(ticks[0]).to.deep.equal({
-        value: 1, position: 0.5, start: 0, end: 0.5, label: 'Day 1', isMinor: false
+        value: 1,
+        position: 0.5,
+        start: 0,
+        end: 0.5,
+        label: 'Day 1',
+        isMinor: false,
       });
 
       expect(ticks[1]).to.deep.equal({
-        value: 2, position: 1, start: 0.5, end: 1, label: 'Day 2', isMinor: false
+        value: 2,
+        position: 1,
+        start: 0.5,
+        end: 1,
+        label: 'Day 2',
+        isMinor: false,
       });
     });
   });
@@ -72,7 +102,7 @@ describe('qTime - Tick generator', () => {
   describe('createTicks', () => {
     it('should format with hh:mm:ss given any date tick seconds value > 0', () => {
       const qTime = 34206;
-      scale.domain([qTime, qTime + (1 / 24 / 60)]); // 1 minute time span
+      scale.domain([qTime, qTime + 1 / 24 / 60]); // 1 minute time span
       tickFn = tickGenerator(scale, settings);
 
       const ticks = tickFn.createTicks(120);
@@ -82,7 +112,7 @@ describe('qTime - Tick generator', () => {
 
     it('should format with hh:mm given all date ticks have seconds value of 0', () => {
       const qTime = 34206;
-      scale.domain([qTime, qTime + ((1 / 24 / 60) * 5)]); // 5 minute time span
+      scale.domain([qTime, qTime + (1 / 24 / 60) * 5]); // 5 minute time span
       tickFn = tickGenerator(scale, settings);
 
       const ticks = tickFn.createTicks(180);
@@ -119,7 +149,7 @@ describe('qTime - Tick generator', () => {
         start: 0.5,
         end: 1,
         label: '12:00',
-        isMinor: false
+        isMinor: false,
       });
     });
   });

@@ -14,16 +14,16 @@ describe('stack', () => {
         { minor: { value: 6, source: valueField }, stack: 1 },
         { minor: { value: 7, source: valueField }, stack: 1 },
         { minor: { value: 8, source: valueField }, stack: 2 },
-        { minor: { value: 9, source: valueField }, stack: 3 }
+        { minor: { value: 9, source: valueField }, stack: 3 },
       ],
-      fields: []
+      fields: [],
     };
   });
 
   it('should attach generated field', () => {
     stack(data, {
-      stackKey: (v) => v.stack,
-      value: (v) => v.minor.value
+      stackKey: v => v.stack,
+      value: v => v.minor.value,
     });
     expect(data.fields[0].min()).to.eql(0);
     expect(data.fields[0].max()).to.eql(23);
@@ -31,8 +31,8 @@ describe('stack', () => {
 
   it('should attach start and end properties', () => {
     stack(data, {
-      stackKey: (v) => v.stack,
-      value: (v) => v.minor.value
+      stackKey: v => v.stack,
+      value: v => v.minor.value,
     });
     expect(data.items[8].start).to.eql({ value: 3 });
     expect(data.items[8].end).to.eql({ value: 12 });

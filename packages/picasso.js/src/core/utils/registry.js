@@ -4,7 +4,7 @@ export default function registryFactory(parentRegistry, registerName = 'unspecif
   const parent = parentRegistry || {
     get: () => undefined,
     has: () => false,
-    default: () => undefined
+    default: () => undefined,
   };
 
   defaultValue = parent.default();
@@ -52,7 +52,7 @@ export default function registryFactory(parentRegistry, registerName = 'unspecif
   }
 
   function getValues() {
-    return Object.keys(reg).map((key) => reg[key]);
+    return Object.keys(reg).map(key => reg[key]);
   }
 
   function deflt(d) {

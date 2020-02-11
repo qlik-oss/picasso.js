@@ -2,17 +2,9 @@ import 'path2d-polyfill';
 import extend from 'extend';
 import about from './about';
 
-import {
-  chart,
-  renderer
-} from './core';
+import { chart, renderer } from './core';
 
-
-import {
-  components,
-  scales,
-  renderers
-} from './api';
+import { components, scales, renderers } from './api';
 
 import componentRegistry from './core/component';
 import dataRegistry from './core/data';
@@ -80,7 +72,7 @@ function pic(config = {}, registries = {}) {
      * @type {logger}
      * @private
      */
-    logger
+    logger,
   };
 
   if (config.renderer && config.renderer.prio) {
@@ -106,7 +98,7 @@ function pic(config = {}, registries = {}) {
       palettes: config.palettes.concat(cfg.palettes || []),
       style: extend({}, config.style, cfg.style),
       logger: cfg.logger || config.logger,
-      renderer: cfg.renderer || config.renderer
+      renderer: cfg.renderer || config.renderer,
     };
     return pic(cc, regis);
   }
@@ -127,15 +119,16 @@ function pic(config = {}, registries = {}) {
    * @param {chart-definition} definition
    * @returns {chart}
    */
-  picassojs.chart = (definition) => chart(definition, {
-    registries: regis,
-    logger,
-    style: config.style,
-    palettes: config.palettes
-  });
+  picassojs.chart = definition =>
+    chart(definition, {
+      registries: regis,
+      logger,
+      style: config.style,
+      palettes: config.palettes,
+    });
   picassojs.config = () => config;
 
-  Object.keys(regis).forEach((key) => {
+  Object.keys(regis).forEach(key => {
     picassojs[key] = regis[key];
   });
 
@@ -148,24 +141,27 @@ function pic(config = {}, registries = {}) {
   return picassojs;
 }
 
-const p = pic({
-  renderer: {
-    prio: ['svg', 'canvas']
+const p = pic(
+  {
+    renderer: {
+      prio: ['svg', 'canvas'],
+    },
+    logger: {
+      level: 0,
+    },
+    style,
+    palettes,
   },
-  logger: {
-    level: 0
-  },
-  style,
-  palettes
-}, {
-  component: componentRegistry,
-  data: dataRegistry,
-  formatter: formatterRegistry,
-  interaction: interactionRegistry,
-  renderer: renderer(),
-  scale: scaleRegistry,
-  symbol: symbolRegistry
-});
+  {
+    component: componentRegistry,
+    data: dataRegistry,
+    formatter: formatterRegistry,
+    interaction: interactionRegistry,
+    renderer: renderer(),
+    scale: scaleRegistry,
+    symbol: symbolRegistry,
+  }
+);
 
 components.forEach(p.use);
 renderers.forEach(p.use);

@@ -11,7 +11,7 @@ describe('Line', () => {
       x1: 0,
       y1: 0,
       x2: 0,
-      y2: 0
+      y2: 0,
     };
   });
 
@@ -47,7 +47,11 @@ describe('Line', () => {
     it('should set correct values', () => {
       line = createLine(shape);
       line.set({
-        x1: 10, y1: 20, x2: 100, y2: 200, collider: { type: 'rect' }
+        x1: 10,
+        y1: 20,
+        x2: 100,
+        y2: 200,
+        collider: { type: 'rect' },
       });
       expect(line.attrs.x1).to.be.equal(10);
       expect(line.attrs.y1).to.be.equal(20);
@@ -79,7 +83,10 @@ describe('Line', () => {
     it('should handle default values', () => {
       line = createLine(shape);
       expect(line.boundingRect()).to.deep.equal({
-        x: 0, y: 0, width: 0, height: 0
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
       });
     });
 
@@ -90,7 +97,10 @@ describe('Line', () => {
       shape.y2 = 200;
       line = createLine(shape);
       expect(line.boundingRect()).to.deep.equal({
-        x: 10, y: 20, width: 90, height: 180
+        x: 10,
+        y: 20,
+        width: 90,
+        height: 180,
       });
     });
 
@@ -103,7 +113,10 @@ describe('Line', () => {
       line = createLine(shape);
       line.resolveLocalTransform();
       expect(line.boundingRect(true)).to.deep.equal({
-        x: 2, y: 6, width: 4, height: 6
+        x: 2,
+        y: 6,
+        width: 4,
+        height: 6,
       });
     });
 
@@ -116,7 +129,10 @@ describe('Line', () => {
       line = createLine(shape);
       line.resolveLocalTransform();
       expect(line.boundingRect(true)).to.deep.equal({
-        x: 2, y: 4, width: 2, height: 2
+        x: 2,
+        y: 4,
+        width: 2,
+        height: 2,
       });
     });
 
@@ -130,7 +146,10 @@ describe('Line', () => {
       line.resolveLocalTransform();
       // TODO Should height/width be zero on a axis aligned line? Account for EPSILON?
       expect(line.boundingRect(true)).to.deep.equal({
-        x: 2.1213203435596424, y: 0.7071067811865477, width: 2.8284271247461903, height: 1
+        x: 2.1213203435596424,
+        y: 0.7071067811865477,
+        width: 2.8284271247461903,
+        height: 1,
       });
     });
 
@@ -141,7 +160,10 @@ describe('Line', () => {
       shape.y2 = -4;
       line = createLine(shape);
       expect(line.boundingRect()).to.deep.equal({
-        x: -3, y: -4, width: 2, height: 2
+        x: -3,
+        y: -4,
+        width: 2,
+        height: 2,
       });
     });
   });
@@ -153,7 +175,7 @@ describe('Line', () => {
         { x: 0, y: 0 },
         { x: 0, y: 0 },
         { x: 0, y: 0 },
-        { x: 0, y: 0 }
+        { x: 0, y: 0 },
       ];
       expect(line.bounds()).to.deep.equal(e);
     });
@@ -168,7 +190,7 @@ describe('Line', () => {
         { x: 1, y: 2 },
         { x: 3, y: 2 },
         { x: 3, y: 4 },
-        { x: 1, y: 4 }
+        { x: 1, y: 4 },
       ];
       expect(line.bounds()).to.deep.equal(e);
     });
@@ -185,7 +207,7 @@ describe('Line', () => {
         { x: 2, y: 6 },
         { x: 6, y: 6 },
         { x: 6, y: 12 },
-        { x: 2, y: 12 }
+        { x: 2, y: 12 },
       ];
       expect(line.bounds(true)).to.deep.equal(e);
     });
@@ -202,7 +224,7 @@ describe('Line', () => {
         { x: 2, y: 4 },
         { x: 4, y: 4 },
         { x: 4, y: 6 },
-        { x: 2, y: 6 }
+        { x: 2, y: 6 },
       ];
       expect(line.bounds(true)).to.deep.equal(e);
     });
@@ -219,7 +241,7 @@ describe('Line', () => {
         { x: 2.1213203435596424, y: 0.7071067811865477 },
         { x: 4.949747468305833, y: 0.7071067811865477 },
         { x: 4.949747468305833, y: 1.7071067811865477 },
-        { x: 2.1213203435596424, y: 1.7071067811865477 }
+        { x: 2.1213203435596424, y: 1.7071067811865477 },
       ];
       expect(line.bounds(true)).to.deep.equal(e);
     });
@@ -234,7 +256,7 @@ describe('Line', () => {
         { x: -3, y: -4 },
         { x: -1, y: -4 },
         { x: -1, y: -2 },
-        { x: -3, y: -2 }
+        { x: -3, y: -2 },
       ];
       expect(line.bounds()).to.deep.equal(e);
     });
@@ -265,7 +287,10 @@ describe('Line', () => {
       line = createLine(shape);
       line.resolveLocalTransform();
       const rect = {
-        x: 1, y: 5, width: 1, height: 1
+        x: 1,
+        y: 5,
+        width: 1,
+        height: 1,
       };
 
       expect(line.intersectsRect(rect)).to.equal(true);
@@ -282,7 +307,10 @@ describe('Line', () => {
       line = createLine(shape);
       line.resolveLocalTransform();
       const l = {
-        x1: 1, y1: 5, x2: 2, y2: 5
+        x1: 1,
+        y1: 5,
+        x2: 2,
+        y2: 5,
       };
 
       expect(line.intersectsLine(l)).to.equal(true);
@@ -318,7 +346,7 @@ describe('Line', () => {
         { x: 0, y: 25 },
         { x: 25, y: 0 },
         { x: 50, y: 25 },
-        { x: 0, y: 25 }
+        { x: 0, y: 25 },
       ];
 
       expect(line.intersectsPolygon({ vertices })).to.equal(true);

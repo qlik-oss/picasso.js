@@ -9,29 +9,48 @@ function createFields(path, obj, prefix, parentKey, opts) {
   return (obj[path] || []).map((meta, i) => {
     const fieldKey = `${parentKey ? `${parentKey}/` : ''}${path}/${i}`;
     const f = {
-      instance: field(extend({
-        id: `${prefix ? `${prefix}/` : ''}${fieldKey}`,
-        key: fieldKey,
-        meta
-      }, opts))
+      instance: field(
+        extend(
+          {
+            id: `${prefix ? `${prefix}/` : ''}${fieldKey}`,
+            key: fieldKey,
+            meta,
+          },
+          opts
+        )
+      ),
     };
-    f.attrDims = createFields('qAttrDimInfo', meta, prefix, fieldKey, extend({}, opts, { value: (v) => v.qElemNo, type: 'dimension' }));
-    f.attrExps = createFields('qAttrExprInfo', meta, prefix, fieldKey, extend({}, opts, { value: (v) => v.qNum, type: 'measure' }));
-    f.measures = createFields('qMeasureInfo', meta, prefix, fieldKey, extend({}, opts, { value: (v) => v.qValue, type: 'measure' }));
+    f.attrDims = createFields(
+      'qAttrDimInfo',
+      meta,
+      prefix,
+      fieldKey,
+      extend({}, opts, { value: v => v.qElemNo, type: 'dimension' })
+    );
+    f.attrExps = createFields(
+      'qAttrExprInfo',
+      meta,
+      prefix,
+      fieldKey,
+      extend({}, opts, { value: v => v.qNum, type: 'measure' })
+    );
+    f.measures = createFields(
+      'qMeasureInfo',
+      meta,
+      prefix,
+      fieldKey,
+      extend({}, opts, { value: v => v.qValue, type: 'measure' })
+    );
     return f;
   });
 }
 
-export default function q({
-  key,
-  data,
-  config = {}
-} = {}) {
+export default function q({ key, data, config = {} } = {}) {
   const cache = {
     fields: [],
     wrappedFields: [],
     allFields: [],
-    virtualFields: []
+    virtualFields: [],
   };
 
   const cube = data;
@@ -52,17 +71,17 @@ export default function q({
     fieldExtractor: null,
     pages: null,
     hierarchy: () => null,
-    virtualFields: config.virtualFields
+    virtualFields: config.virtualFields,
   };
 
   const dataset = {
     key: () => key,
     raw: () => cube,
-    field: (query) => findField(query, opts),
+    field: query => findField(query, opts),
     fields: () => cache.fields.slice(),
-    extract: (extractionConfig) => opts.extractor(extractionConfig, dataset, cache, deps),
-    hierarchy: (hierarchyConfig) => opts.hierarchy(hierarchyConfig, dataset, cache, deps),
-    _cache: () => cache
+    extract: extractionConfig => opts.extractor(extractionConfig, dataset, cache, deps),
+    hierarchy: hierarchyConfig => opts.hierarchy(hierarchyConfig, dataset, cache, deps),
+    _cache: () => cache,
   };
 
   if (cube.qMode === 'K' || cube.qMode === 'T' || (!cube.qMode && cube.qNodesOnDim)) {
@@ -77,18 +96,22 @@ export default function q({
     opts.extractor = () => []; // TODO - throw unsupported error?
   }
 
-  opts.fieldExtractor = (f) => opts.extractor({ field: f }, dataset, cache, deps);
+  opts.fieldExtractor = f => opts.extractor({ field: f }, dataset, cache, deps);
 
-  const dimAcc = cube.qMode === 'S' ? ((d) => d.qElemNumber) : undefined;
-  const measAcc = cube.qMode === 'S' ? ((d) => d.qNum) : undefined;
+  const dimAcc = cube.qMode === 'S' ? d => d.qElemNumber : undefined;
+  const measAcc = cube.qMode === 'S' ? d => d.qNum : undefined;
 
-  cache.wrappedFields.push(...createFields('qDimensionInfo', cube, key, '', extend({}, opts, { value: dimAcc, type: 'dimension' })));
-  cache.wrappedFields.push(...createFields('qMeasureInfo', cube, key, '', extend({}, opts, { value: measAcc, type: 'measure' })));
+  cache.wrappedFields.push(
+    ...createFields('qDimensionInfo', cube, key, '', extend({}, opts, { value: dimAcc, type: 'dimension' }))
+  );
+  cache.wrappedFields.push(
+    ...createFields('qMeasureInfo', cube, key, '', extend({}, opts, { value: measAcc, type: 'measure' }))
+  );
 
-  cache.fields = cache.wrappedFields.map((f) => f.instance);
+  cache.fields = cache.wrappedFields.map(f => f.instance);
 
-  const traverse = (arr) => {
-    arr.forEach((f) => {
+  const traverse = arr => {
+    arr.forEach(f => {
       cache.allFields.push(f.instance);
       traverse(f.measures);
       traverse(f.attrDims);
@@ -98,7 +121,7 @@ export default function q({
 
   traverse(cache.wrappedFields);
 
-  (config.virtualFields || []).forEach((v) => {
+  (config.virtualFields || []).forEach(v => {
     // key: 'temporal',
     // from: 'qDimensionInfo/0',
     // override: {
@@ -109,12 +132,12 @@ export default function q({
       meta: sourceField.raw(),
       id: `${key}/${v.key}`,
       sourceField,
-      fieldExtractor: (ff) => opts.extractor({ field: ff }, dataset, cache, deps),
+      fieldExtractor: ff => opts.extractor({ field: ff }, dataset, cache, deps),
       key: v.key,
       type: sourceField.type(),
       localeInfo: opts.localeInfo,
       value: sourceField.value,
-      ...(v.override || {})
+      ...(v.override || {}),
     });
     cache.virtualFields.push(f);
   });

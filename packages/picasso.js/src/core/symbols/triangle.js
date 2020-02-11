@@ -6,7 +6,7 @@ const DIRECTION_TO_ANGLE = {
   up: 0,
   down: 180,
   left: 90,
-  right: -90
+  right: -90,
 };
 
 /**
@@ -18,23 +18,23 @@ function triangle(options) {
   const size = options.size;
   const p = { x: options.x, y: options.y };
   const directionAngle = DIRECTION_TO_ANGLE[options.direction] || 0;
-  const halfSize = (size / 2);
+  const halfSize = size / 2;
   const left = options.x - halfSize;
   const top = options.y - halfSize;
   let points = [
     { x: left, y: top + size },
     { x: left + halfSize, y: top },
     { x: left + size, y: top + size },
-    { x: left, y: top + size }
+    { x: left, y: top + size },
   ];
 
   const radians = toRadians(directionAngle);
-  points = points.map((pp) => rotate(pp, radians, p));
+  points = points.map(pp => rotate(pp, radians, p));
 
   return {
     type: 'path',
     fill: 'black',
-    d: pointsToPath(points)
+    d: pointsToPath(points),
   };
 }
 

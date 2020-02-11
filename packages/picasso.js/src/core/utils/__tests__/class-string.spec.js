@@ -5,7 +5,7 @@ describe('class string', () => {
     const classMap = {
       'class-A': true,
       'class-B': false,
-      'class-C': true
+      'class-C': true,
     };
     expect(classString(classMap)).to.be.equal('class-A class-C');
   });

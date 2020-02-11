@@ -10,7 +10,7 @@ export const DEFAULT_SETTINGS = {
   align: 0.5,
   invert: false,
   maxPxStep: NaN,
-  range: [0, 1]
+  range: [0, 1],
 };
 
 /**
@@ -55,36 +55,36 @@ export default function scaleBand(settings = {}, data = {}, resources = {}) {
   const labels = [];
 
   // I would like to define this outside of scaleBand but it cause the documentation to be in the wrong order
-  function augmentScaleBand(band, settings) { // eslint-disable-line no-shadow
-    band.data = () => data;
+  function augmentScaleBand(fband, fsettings) {
+    fband.data = () => data;
 
-    band.datum = (domainValue) => items[domainToDataMapping[domainValue]];
+    fband.datum = domainValue => items[domainToDataMapping[domainValue]];
 
     /**
      * Get the first value of the domain
      * @return { number }
      */
-    band.start = function start() {
-      return band.domain()[0];
+    fband.start = function start() {
+      return fband.domain()[0];
     };
 
     /**
      * Get the last value of the domain
      * @return { number }
      */
-    band.end = function end() {
-      return band.domain()[band.domain().length - 1];
+    fband.end = function end() {
+      return fband.domain()[fband.domain().length - 1];
     };
 
-    band.labels = () => labels;
+    fband.labels = () => labels;
 
     /**
      * Generate discrete ticks
      * @return {Object[]} Array of ticks
      */
-    band.ticks = function ticks(input = {}) {
-      input.scale = band;
-      return generateDiscreteTicks(input, settings.trackBy || 'label');
+    fband.ticks = function ticks(input = {}) {
+      input.scale = fband;
+      return generateDiscreteTicks(input, fsettings.trackBy || 'label');
     };
   }
   augmentScaleBand(band, settings);
@@ -102,7 +102,7 @@ export default function scaleBand(settings = {}, data = {}, resources = {}) {
       return band;
     }
     const n = band.domain().length;
-    const sizeRelativeToStep = Math.max(1, (n - band.paddingInner()) + (2 * band.paddingOuter()));
+    const sizeRelativeToStep = Math.max(1, n - band.paddingInner() + 2 * band.paddingOuter());
 
     if (sizeRelativeToStep * max >= size) {
       return band;
@@ -118,8 +118,8 @@ export default function scaleBand(settings = {}, data = {}, resources = {}) {
     return newBand;
   };
 
-  const valueFn = typeof settings.value === 'function' ? settings.value : (d) => d.datum.value;
-  const labelFn = typeof settings.label === 'function' ? settings.label : (d) => d.datum.label;
+  const valueFn = typeof settings.value === 'function' ? settings.value : d => d.datum.value;
+  const labelFn = typeof settings.label === 'function' ? settings.label : d => d.datum.label;
 
   for (let i = 0; i < items.length; i++) {
     const arg = extend({ datum: items[i] }, ctx);
@@ -134,8 +134,12 @@ export default function scaleBand(settings = {}, data = {}, resources = {}) {
   band.domain(values);
   band.range(stgns.invert ? stgns.range.slice().reverse() : stgns.range);
   band.padding(isNaN(stgns.padding) ? 0 : stgns.padding);
-  if (!isNaN(stgns.paddingInner)) { band.paddingInner(stgns.paddingInner); }
-  if (!isNaN(stgns.paddingOuter)) { band.paddingOuter(stgns.paddingOuter); }
+  if (!isNaN(stgns.paddingInner)) {
+    band.paddingInner(stgns.paddingInner);
+  }
+  if (!isNaN(stgns.paddingOuter)) {
+    band.paddingOuter(stgns.paddingOuter);
+  }
   band.align(isNaN(stgns.align) ? 0.5 : stgns.align);
 
   return band;

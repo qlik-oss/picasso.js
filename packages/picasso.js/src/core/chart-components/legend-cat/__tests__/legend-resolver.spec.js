@@ -7,21 +7,26 @@ describe('legend-resolver', () => {
         data: () => ({ fields: [{}] }),
         domain: () => ['a', 'b'],
         labels: () => ['alpha', 'beta'],
-        datum: () => ({ value: 'does not matter' }) // the value in datum is taken from domain
+        datum: () => ({ value: 'does not matter' }), // the value in datum is taken from domain
       },
       settings: {
         layout: {},
-        settings: {}
+        settings: {},
       },
       style: {
-        item: {}
+        item: {},
       },
       resolver: {
-        resolve: (x) => x // return param - a simple way to test what params are passed in (and avoid spies)
-      }
+        resolve: x => x, // return param - a simple way to test what params are passed in (and avoid spies)
+      },
     });
     expect(resolved.labels).to.eql({
-      data: { items: [{ value: 'a', label: 'alpha' }, { value: 'b', label: 'beta' }] },
+      data: {
+        items: [
+          { value: 'a', label: 'alpha' },
+          { value: 'b', label: 'beta' },
+        ],
+      },
       defaults: {
         fontSize: '12px',
         fontFamily: 'Arial',
@@ -29,9 +34,9 @@ describe('legend-resolver', () => {
         wordBreak: 'none',
         maxLines: 2,
         maxWidth: 136,
-        lineHeight: 1.2
+        lineHeight: 1.2,
       },
-      settings: undefined
+      settings: undefined,
     });
   });
 
@@ -40,33 +45,38 @@ describe('legend-resolver', () => {
       scale: {
         type: 'threshold-color',
         data: () => ({
-          fields: [{
-            id: () => 'measure',
-            formatter: () => ((v) => `$${v}`)
-          }]
+          fields: [
+            {
+              id: () => 'measure',
+              formatter: () => v => `$${v}`,
+            },
+          ],
         }),
-        domain: () => [2, 5, 7]
+        domain: () => [2, 5, 7],
       },
       settings: {
         layout: {},
-        settings: {}
+        settings: {},
       },
       style: {
-        item: {}
+        item: {},
       },
       resolver: {
-        resolve: (x) => (!x.data.items ? {} : {
-          items: x.data.items.map((d) => ({
-            data: d
-          }))
-        })
-      }
+        resolve: x =>
+          !x.data.items
+            ? {}
+            : {
+                items: x.data.items.map(d => ({
+                  data: d,
+                })),
+              },
+      },
     });
     expect(resolved.labels).to.eql({
       items: [
         { data: { label: '$5 - < $7', value: [5, 7], source: { field: 'measure' } } },
-        { data: { label: '$2 - < $5', value: [2, 5], source: { field: 'measure' } } }
-      ]
+        { data: { label: '$2 - < $5', value: [2, 5], source: { field: 'measure' } } },
+      ],
     });
   });
 
@@ -75,36 +85,41 @@ describe('legend-resolver', () => {
       scale: {
         type: 'threshold-color',
         data: () => ({
-          fields: [{
-            id: () => 'measure'
-          }]
+          fields: [
+            {
+              id: () => 'measure',
+            },
+          ],
         }),
-        domain: () => [2, 5, 7]
+        domain: () => [2, 5, 7],
       },
       settings: {
         layout: {},
-        formatter: (v) => `${v}kr`,
-        settings: {}
+        formatter: v => `${v}kr`,
+        settings: {},
       },
       style: {
-        item: {}
+        item: {},
       },
       resolver: {
-        resolve: (x) => (!x.data.items ? {} : {
-          items: x.data.items.map((d) => ({
-            data: d
-          }))
-        })
+        resolve: x =>
+          !x.data.items
+            ? {}
+            : {
+                items: x.data.items.map(d => ({
+                  data: d,
+                })),
+              },
       },
       chart: {
-        formatter: (v) => v
-      }
+        formatter: v => v,
+      },
     });
     expect(resolved.labels).to.eql({
       items: [
         { data: { label: '5kr - < 7kr', value: [5, 7], source: { field: 'measure' } } },
-        { data: { label: '2kr - < 5kr', value: [2, 5], source: { field: 'measure' } } }
-      ]
+        { data: { label: '2kr - < 5kr', value: [2, 5], source: { field: 'measure' } } },
+      ],
     });
   });
 
@@ -116,7 +131,7 @@ describe('legend-resolver', () => {
         scale: {
           data: () => ({ fields: [{}] }),
           domain: () => ['a', 'b'],
-          datum: (d) => ({ value: d })
+          datum: d => ({ value: d }),
         },
         settings: {
           layout: {},
@@ -124,22 +139,22 @@ describe('legend-resolver', () => {
             item: {
               show: false,
               label: { font: 'Arial' },
-              shape: { size: 17 }
+              shape: { size: 17 },
             },
             title: {
-              font: 'red'
+              font: 'red',
             },
             layout: {
-              whatevz: 'yes'
-            }
-          }
+              whatevz: 'yes',
+            },
+          },
         },
         style: {
-          item: {}
+          item: {},
         },
         resolver: {
-          resolve: (x) => x // return param - a simple way to test what params are passed in (and avoid spies)
-        }
+          resolve: x => x, // return param - a simple way to test what params are passed in (and avoid spies)
+        },
       };
 
       resolved = resolveSettings(settings);
@@ -155,14 +170,14 @@ describe('legend-resolver', () => {
           wordBreak: 'none',
           maxLines: 2,
           maxWidth: 136,
-          lineHeight: 1.2
+          lineHeight: 1.2,
         },
-        settings: { font: 'Arial' }
+        settings: { font: 'Arial' },
       });
     });
 
     it('should resolve labels by `label` function if available', () => {
-      settings.scale.label = (d) => `label ${d}`;
+      settings.scale.label = d => `label ${d}`;
       settings.scale.domain = () => ['b', 'a'];
       resolved = resolveSettings(settings);
 
@@ -183,9 +198,9 @@ describe('legend-resolver', () => {
       expect(resolved.items).to.eql({
         data: { items: [{ value: 'a' }, { value: 'b' }] },
         defaults: {
-          show: true
+          show: true,
         },
-        settings: { show: false }
+        settings: { show: false },
       });
     });
 
@@ -194,9 +209,9 @@ describe('legend-resolver', () => {
         data: { items: [{ value: 'a' }, { value: 'b' }] },
         defaults: {
           type: 'square',
-          size: 12
+          size: 12,
         },
-        settings: { size: 17 }
+        settings: { size: 17 },
       });
     });
 
@@ -212,9 +227,9 @@ describe('legend-resolver', () => {
           wordBreak: 'none',
           maxLines: 2,
           maxWidth: 156,
-          lineHeight: 1.25
+          lineHeight: 1.25,
         },
-        settings: { font: 'red' }
+        settings: { font: 'red' },
       });
     });
 
@@ -224,9 +239,9 @@ describe('legend-resolver', () => {
         defaults: {
           direction: 'ltr',
           size: 1,
-          scrollOffset: 0
+          scrollOffset: 0,
         },
-        settings: { whatevz: 'yes' }
+        settings: { whatevz: 'yes' },
       });
     });
   });

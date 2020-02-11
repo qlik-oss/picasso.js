@@ -10,6 +10,6 @@ export default {
    * interpolate( 10, 20, 0.2 ); // 12
    */
   interpolate(from, to, t) {
-    return (from * (1 - t)) + (to * t);
-  }
+    return from * (1 - t) + to * t;
+  },
 };

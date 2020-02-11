@@ -2,7 +2,20 @@ import { TYPES } from '../constants';
 
 const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 const DAYS_ABBR = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const MONTHS = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
 const MONTHS_ABBR = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 const SECONDS_PER_DAY = 86400;
@@ -19,7 +32,8 @@ function parseDate(d, twelveFormat) {
   let day = d.getUTCDay() - 1;
   if (twelveFormat) {
     h %= 12;
-    if (!h) { // h == 0 -> 12
+    if (!h) {
+      // h == 0 -> 12
       h = 12;
     }
   }
@@ -37,7 +51,7 @@ function parseDate(d, twelveFormat) {
     m: d.getUTCMinutes(),
     s: d.getUTCSeconds(),
     f: d.getUTCMilliseconds(),
-    t: d.getUTCHours() >= 12 ? 'pm' : 'am'
+    t: d.getUTCHours() >= 12 ? 'pm' : 'am',
   };
 }
 
@@ -63,7 +77,7 @@ function parseIntervalDays(days) {
     h: Math.floor(h),
     m: Math.floor(m),
     s: Math.floor(s),
-    f: Math.round(ms)
+    f: Math.round(ms),
   };
 }
 
@@ -78,14 +92,9 @@ function parseInterval(days, pattern) {
     date;
 
   if (/w+|t+/gi.test(pattern)) {
-    date = new Date(Date.UTC(
-      1899,
-      11,
-      30 + Math.floor(days),
-      0,
-      0,
-      Math.round(SECONDS_PER_DAY * (days - Math.floor(days)))
-    ));
+    date = new Date(
+      Date.UTC(1899, 11, 30 + Math.floor(days), 0, 0, Math.round(SECONDS_PER_DAY * (days - Math.floor(days))))
+    );
     if (isNaN(date.getTime())) {
       date = null;
     }
@@ -121,49 +130,56 @@ function parseInterval(days, pattern) {
     m,
     s,
     f,
-    t: someT
+    t: someT,
   };
 }
 
 function getMasks(inst, d) {
   return {
     'Y+|y+': {
-      Y: `${Number((`${d.year}`).slice(-2))}`,
-      YY: pad((`${d.year}`).slice(-2), 2),
-      YYY: pad((`${d.year}`).slice(-3), 3),
-      def(m) { // default
-        return pad((`${d.year}`), m.length);
-      }
+      Y: `${Number(`${d.year}`.slice(-2))}`,
+      YY: pad(`${d.year}`.slice(-2), 2),
+      YYY: pad(`${d.year}`.slice(-3), 3),
+      def(m) {
+        // default
+        return pad(`${d.year}`, m.length);
+      },
     },
     'M+': {
       M: d.month + 1,
       MM: pad(`${d.month + 1}`, 2),
       MMM: inst.locale_months_abbr[d.month],
-      def: inst.locale_months[d.month]
+      def: inst.locale_months[d.month],
     },
     'W+|w+': {
       W: d.day,
       WW: pad(`${d.day}`, 2),
       WWW: inst.locale_days_abbr[d.day],
-      def: inst.locale_days[d.day]
+      def: inst.locale_days[d.day],
     },
     'D+|d+': {
       D: d.date,
       def(m) {
         return pad(`${d.date}`, m.length);
-      }
+      },
     },
     'h+|H+': {
       h: d.h,
-      def(m) { return pad(`${d.h}`, m.length); }
+      def(m) {
+        return pad(`${d.h}`, m.length);
+      },
     },
     'm+': {
       m: d.m,
-      def(m) { return pad(`${d.m}`, m.length); }
+      def(m) {
+        return pad(`${d.m}`, m.length);
+      },
     },
     's+|S+': {
       s: d.s,
-      def(m) { return pad(`${d.s}`, m.length); }
+      def(m) {
+        return pad(`${d.s}`, m.length);
+      },
     },
     'f+|F+': {
       def(m) {
@@ -177,7 +193,7 @@ function getMasks(inst, d) {
           f = f.slice(0, m.length);
         }
         return f;
-      }
+      },
     },
     't{1,2}|T{1,2}': {
       def(m) {
@@ -187,8 +203,8 @@ function getMasks(inst, d) {
         }
         t = t.slice(0, m.length);
         return t;
-      }
-    }
+      },
+    },
   };
 }
 
@@ -207,7 +223,7 @@ class DateFormatter {
         qLongDayNames: DAYS,
         qDayNames: DAYS_ABBR,
         qLongMonthNames: MONTHS,
-        qMonthNames: MONTHS_ABBR
+        qMonthNames: MONTHS_ABBR,
       };
     }
 
@@ -221,7 +237,7 @@ class DateFormatter {
       const patternMap = {
         [TYPES.TIME]: info.qTimeFmt || 'hh:mm:ss',
         [TYPES.DATE]: info.qDateFmt || 'YYYY-MM-DD',
-        [TYPES.DATE_TIME]: info.qTimestampFmt || 'YYYY-MM-DD hh:mm:ss'
+        [TYPES.DATE_TIME]: info.qTimestampFmt || 'YYYY-MM-DD hh:mm:ss',
       };
 
       pattern = patternMap[qtype];
@@ -257,7 +273,7 @@ class DateFormatter {
     }
 
     pattern = pattern.replace(/\[.+]|\[|]/g, '');
-    const hasTwelveFlag = /t+/ig.test(pattern);
+    const hasTwelveFlag = /t+/gi.test(pattern);
     let parsedDate;
 
     if (date instanceof Date) {
@@ -282,7 +298,7 @@ class DateFormatter {
     }
     const dateTimeRegex = new RegExp(masksArr.join('|'), 'g');
 
-    const result = pattern.replace(dateTimeRegex, (m) => {
+    const result = pattern.replace(dateTimeRegex, m => {
       let r;
       let mask;
       for (mask in masks) {

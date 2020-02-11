@@ -36,7 +36,9 @@ function contextFactory(whitelist = []) {
     // Only inherit whitelisted properties
     for (let i = 0; i < whitelist.length; i++) {
       key = whitelist[i];
-      if (typeof current[key] !== 'undefined') { obj[key] = current[key]; }
+      if (typeof current[key] !== 'undefined') {
+        obj[key] = current[key];
+      }
     }
 
     // Extend the new object with the saved item

@@ -8,8 +8,8 @@ function lineAngle(p0, p1) {
 // TODO Find a more accurate method to find the open and closed points
 function rotatePoint(p, angle, radius) {
   return {
-    x: p.x + (Math.cos(angle) * radius),
-    y: p.y + (Math.sin(angle) * radius)
+    x: p.x + Math.cos(angle) * radius,
+    y: p.y + Math.sin(angle) * radius,
   };
 }
 
@@ -67,9 +67,6 @@ export default function polylineToPolygonCollider(points, radius, opts = {}) {
 
   return {
     type: 'polygon',
-    vertices: [
-      ...open,
-      ...close
-    ]
+    vertices: [...open, ...close],
   };
 }

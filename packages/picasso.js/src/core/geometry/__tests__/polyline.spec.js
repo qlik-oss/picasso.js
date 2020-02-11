@@ -10,7 +10,7 @@ describe('Polyline', () => {
     points = [
       { x: 1, y: 2 },
       { x: 3, y: 4 },
-      { x: 5, y: 6 }
+      { x: 5, y: 6 },
     ];
   });
 
@@ -32,11 +32,17 @@ describe('Polyline', () => {
       expect(p.points()).to.deep.equal(points);
       expect(p.segments).to.deep.equal([
         {
-          x1: 1, y1: 2, x2: 3, y2: 4
+          x1: 1,
+          y1: 2,
+          x2: 3,
+          y2: 4,
         },
         {
-          x1: 3, y1: 4, x2: 5, y2: 6
-        }
+          x1: 3,
+          y1: 4,
+          x2: 5,
+          y2: 6,
+        },
       ]);
     });
   });
@@ -49,11 +55,17 @@ describe('Polyline', () => {
       expect(p.points()).to.deep.equal(points);
       expect(p.segments).to.deep.equal([
         {
-          x1: 1, y1: 2, x2: 3, y2: 4
+          x1: 1,
+          y1: 2,
+          x2: 3,
+          y2: 4,
         },
         {
-          x1: 3, y1: 4, x2: 5, y2: 6
-        }
+          x1: 3,
+          y1: 4,
+          x2: 5,
+          y2: 6,
+        },
       ]);
     });
   });
@@ -90,17 +102,31 @@ describe('Polyline', () => {
     it('should return true if intersection', () => {
       p = create({ points });
 
-      expect(p.intersectsLine(lineToPoints({
-        x1: 3, y1: 2, x2: 1, y2: 4
-      }))).to.be.true;
+      expect(
+        p.intersectsLine(
+          lineToPoints({
+            x1: 3,
+            y1: 2,
+            x2: 1,
+            y2: 4,
+          })
+        )
+      ).to.be.true;
     });
 
     it('should return false if no intersection', () => {
       p = create({ points });
 
-      expect(p.intersectsLine(lineToPoints({
-        x1: 30, y1: 20, x2: 10, y2: 40
-      }))).to.be.false;
+      expect(
+        p.intersectsLine(
+          lineToPoints({
+            x1: 30,
+            y1: 20,
+            x2: 10,
+            y2: 40,
+          })
+        )
+      ).to.be.false;
     });
   });
 
@@ -108,17 +134,31 @@ describe('Polyline', () => {
     it('should return true if intersection', () => {
       p = create({ points });
 
-      expect(p.intersectsRect(rectToPoints({
-        x: 1, y: 4, width: 10, height: 10
-      }))).to.be.true;
+      expect(
+        p.intersectsRect(
+          rectToPoints({
+            x: 1,
+            y: 4,
+            width: 10,
+            height: 10,
+          })
+        )
+      ).to.be.true;
     });
 
     it('should return false if no intersection', () => {
       p = create({ points });
 
-      expect(p.intersectsRect(rectToPoints({
-        x: 10, y: 40, width: 10, height: 10
-      }))).to.be.false;
+      expect(
+        p.intersectsRect(
+          rectToPoints({
+            x: 10,
+            y: 40,
+            width: 10,
+            height: 10,
+          })
+        )
+      ).to.be.false;
     });
   });
 
@@ -129,8 +169,8 @@ describe('Polyline', () => {
         vertices: [
           { x: 3, y: 2 },
           { x: 1, y: 4 },
-          { x: 0, y: 0 }
-        ]
+          { x: 0, y: 0 },
+        ],
       });
 
       expect(p.intersectsPolygon(pgon)).to.be.true;
@@ -142,8 +182,8 @@ describe('Polyline', () => {
         vertices: [
           { x: 30, y: 20 },
           { x: 10, y: 40 },
-          { x: 10, y: 10 }
-        ]
+          { x: 10, y: 10 },
+        ],
       });
 
       expect(p.intersectsPolygon(pgon)).to.be.false;

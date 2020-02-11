@@ -24,6 +24,8 @@ reg.add('radialGradient', gradientItem);
 reg.add('stop', gradientItem);
 reg.add('pattern', patternItem);
 
-export function create(type, input) { // eslint-disable-line import/prefer-default-export
+/* eslint-disable import/prefer-default-export */
+export function create(type, input) {
   return reg.get(type)(input);
 }
+/* eslint-enable import/prefer-default-export */

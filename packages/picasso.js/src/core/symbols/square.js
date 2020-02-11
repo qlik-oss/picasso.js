@@ -8,10 +8,10 @@ function square(options) {
   return {
     type: 'rect',
     fill: 'black',
-    x: options.x - (size / 2),
-    y: options.y - (size / 2),
+    x: options.x - size / 2,
+    y: options.y - size / 2,
     width: size,
-    height: size
+    height: size,
   };
 }
 

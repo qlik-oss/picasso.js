@@ -11,8 +11,8 @@ function ranges(state) {
 
   const sourceData = state.scale.data();
   const sourceFields = sourceData ? sourceData.fields || [] : [];
-  const sources = sourceFields.map((field) => field.id());
-  const rangeBrush = brush.brushes().filter((f) => f.type === 'range' && sources.indexOf(f.id) !== -1)[0];
+  const sources = sourceFields.map(field => field.id());
+  const rangeBrush = brush.brushes().filter(f => f.type === 'range' && sources.indexOf(f.id) !== -1)[0];
 
   if (!rangeBrush) {
     return [];
@@ -25,7 +25,7 @@ function shapes(state) {
   const isVertical = state.direction === 'vertical';
   const size = state.rect[isVertical ? 'height' : 'width'];
   const otherSize = state.rect[isVertical ? 'width' : 'height'];
-  return ranges(state).map((range) => {
+  return ranges(state).map(range => {
     const start = state.scale(range.min) * size;
     const end = state.scale(range.max) * size;
     const low = Math.min(start, end);
@@ -37,7 +37,7 @@ function shapes(state) {
       x: isVertical ? 0 : low,
       width: isVertical ? otherSize : s,
       y: isVertical ? low : 0,
-      height: isVertical ? s : otherSize
+      height: isVertical ? s : otherSize,
     };
   });
 }
@@ -116,7 +116,7 @@ function teardown(state) {
 const rangeComponent = {
   require: ['chart', 'settings', 'renderer'],
   defaultSettings: {
-    settings: {}
+    settings: {},
   },
   preferredSize: () => 50,
   created() {
@@ -141,7 +141,7 @@ const rangeComponent = {
   },
   beforeDestroy() {
     teardown(this.state);
-  }
+  },
 };
 
 export default rangeComponent;

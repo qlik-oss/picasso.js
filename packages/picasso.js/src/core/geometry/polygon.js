@@ -1,13 +1,10 @@
-import {
-  pointsToLine,
-  pointsToRect
-} from './util';
+import { pointsToLine, pointsToRect } from './util';
 import {
   testCirclePolygon,
   testPolygonPoint,
   testPolygonLine,
   testPolygonRect,
-  testRectRect
+  testRectRect,
 } from '../math/narrow-phase-collision';
 
 function close(vertices) {
@@ -103,7 +100,7 @@ class Polygon {
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsLine(points) {
-    return testPolygonLine(this, pointsToLine((points)));
+    return testPolygonLine(this, pointsToLine(points));
   }
 
   /**
@@ -154,7 +151,7 @@ class Polygon {
         { x: this.xMin, y: this.yMin },
         { x: this.xMax, y: this.yMin },
         { x: this.xMax, y: this.yMax },
-        { x: this.xMin, y: this.yMax }
+        { x: this.xMin, y: this.yMax },
       ];
     }
 
@@ -171,26 +168,22 @@ class Polygon {
         x: this.xMin,
         y: this.yMin,
         width: this.xMax - this.xMin,
-        height: this.yMax - this.yMin
+        height: this.yMax - this.yMin,
       };
     }
     return this._boundingRect;
   }
 }
 
-
 /**
-* Construct a new Polygon instance
-* @param {object} input An object with a vertices property
-* @param {point[]} [input.vertices=[]] Vertices are represented as an array of points.
-* @returns {Polygon} Polygon instance
-* @private
-*/
+ * Construct a new Polygon instance
+ * @param {object} input An object with a vertices property
+ * @param {point[]} [input.vertices=[]] Vertices are represented as an array of points.
+ * @returns {Polygon} Polygon instance
+ * @private
+ */
 function create(...a) {
   return new Polygon(...a);
 }
 
-export {
-  create,
-  Polygon as default
-};
+export { create, Polygon as default };

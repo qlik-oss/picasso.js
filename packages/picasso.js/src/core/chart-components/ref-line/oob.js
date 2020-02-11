@@ -30,7 +30,7 @@ function directionTriangle(x, y, r, d = 'bottom') {
   r *= 0.75;
   if (d === 'left' || d === 'right') {
     let right = d === 'right';
-    x += (right ? r * 1.5 : -(r * 1.5));
+    x += right ? r * 1.5 : -(r * 1.5);
     return `
       M ${x} ${y - r}
       L ${x} ${y + r}
@@ -38,7 +38,7 @@ function directionTriangle(x, y, r, d = 'bottom') {
     `;
   }
   let bottom = d === 'bottom';
-  y += (bottom ? r * 1.5 : -(r * 1.5));
+  y += bottom ? r * 1.5 : -(r * 1.5);
   return `
     M ${x - r} ${y}
     L ${x + r} ${y}
@@ -55,9 +55,7 @@ function directionTriangle(x, y, r, d = 'bottom') {
  * @param {object[]} items - Array of all items (for collision detection)
  * @ignore
  */
-export function oobManager({
-  blueprint, oob, settings, items
-}) {
+export function oobManager({ blueprint, oob, settings, items }) {
   const oobKeys = Object.keys(oob);
   let style = settings.style.oob || {};
 
@@ -66,22 +64,23 @@ export function oobManager({
     const value = oob[key];
 
     if (value.length > 0) {
-      let position = (key.charAt(1));
+      let position = key.charAt(1);
       let flipXY = key.charAt(0) === 'y';
 
-      let xPadding = style.padding.x + (style.width);
+      let xPadding = style.padding.x + style.width;
       let yPadding = style.padding.y + style.width;
       let direction = 'bottom';
 
       if (flipXY) {
-        direction = (position === '1' ? 'bottom' : 'top');
+        direction = position === '1' ? 'bottom' : 'top';
       } else {
-        direction = (position === '1' ? 'right' : 'left');
+        direction = position === '1' ? 'right' : 'left';
       }
 
       let indicator = blueprint.processItem({
-        fn: ({ width, height }) => { /* eslint no-loop-func: 0 */
-          let x = (position * width) + (position === '1' ? -xPadding : xPadding);
+        fn: ({ width, height }) => {
+          /* eslint no-loop-func: 0 */
+          let x = position * width + (position === '1' ? -xPadding : xPadding);
           let y = flipXY ? yPadding : height - yPadding;
 
           if (style.type === 'arc') {
@@ -92,7 +91,7 @@ export function oobManager({
               y,
               stroke: style.stroke,
               fill: style.fill,
-              strokeWidth: style.strokeWidth || 0
+              strokeWidth: style.strokeWidth || 0,
             };
           }
 
@@ -105,10 +104,10 @@ export function oobManager({
             fill: style.fill,
             strokeWidth: style.strokeWidth || 0,
             opacity: style.opacity,
-            data: value
+            data: value,
           };
         },
-        flipXY
+        flipXY,
       });
 
       let x = indicator.cx || indicator.x;
@@ -117,14 +116,14 @@ export function oobManager({
       let text = {
         type: 'text',
         text: value.length || '',
-        x: x - (style.width * 0.4),
-        y: y + (style.width * 0.4),
+        x: x - style.width * 0.4,
+        y: y + style.width * 0.4,
         fontFamily: style.text.fontFamily,
         fontSize: `${style.width * 1.3}px`,
         stroke: style.text.stroke,
         fill: style.text.fill,
         strokeWidth: style.text.strokeWidth || 0,
-        opacity: style.text.opacity
+        opacity: style.text.opacity,
       };
 
       let triangle = {
@@ -135,7 +134,7 @@ export function oobManager({
         stroke: style.triangle.stroke,
         fill: style.triangle.fill,
         strokeWidth: style.triangle.strokeWidth || 0,
-        opacity: style.triangle.opacity
+        opacity: style.triangle.opacity,
       };
 
       items.push(indicator, text, triangle);

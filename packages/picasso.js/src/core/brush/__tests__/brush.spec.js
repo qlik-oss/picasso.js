@@ -79,12 +79,15 @@ describe('brush', () => {
       vc.add.returns(true);
       b.addValues([
         { key: 'products', value: 'cars' },
-        { key: '_aliased', value: 'sweden' }
+        { key: '_aliased', value: 'sweden' },
       ]);
-      expect(cb).to.have.been.calledWith([
-        { id: 'products', values: ['cars'] },
-        { id: 'region', values: ['sweden'] }
-      ], []);
+      expect(cb).to.have.been.calledWith(
+        [
+          { id: 'products', values: ['cars'] },
+          { id: 'region', values: ['sweden'] },
+        ],
+        []
+      );
     });
   });
 
@@ -96,7 +99,7 @@ describe('brush', () => {
       expect(b.brushes()).to.eql([
         { type: 'range', id: 'sales', brush: rc },
         { type: 'range', id: 'region', brush: rc },
-        { type: 'value', id: 'products', brush: vc }
+        { type: 'value', id: 'products', brush: vc },
       ]);
     });
 
@@ -116,7 +119,7 @@ describe('brush', () => {
     beforeEach(() => {
       v = {
         add: sandbox.stub(),
-        values: sandbox.stub()
+        values: sandbox.stub(),
       };
       vcc = sandbox.stub().returns(v);
       bb = brush({ vc: vcc, rc: noop });
@@ -168,7 +171,7 @@ describe('brush', () => {
       v = {
         remove: sandbox.stub(),
         add: sandbox.stub(),
-        values: sandbox.stub()
+        values: sandbox.stub(),
       };
       vcc = sandbox.stub().returns(v);
       bb = brush({ vc: vcc, rc: noop });
@@ -260,7 +263,7 @@ describe('brush', () => {
     beforeEach(() => {
       v = {
         add: sandbox.stub(),
-        contains: sandbox.stub()
+        contains: sandbox.stub(),
       };
       vcc = sandbox.stub().returns(v);
       bb = brush({ vc: vcc, rc: noop });
@@ -301,7 +304,7 @@ describe('brush', () => {
     beforeEach(() => {
       v = {
         add: sandbox.stub(),
-        containsValue: sandbox.stub()
+        containsValue: sandbox.stub(),
       };
       rcc = sandbox.stub().returns(v);
       bb = brush({ vc: noop, rc: rcc });
@@ -342,7 +345,7 @@ describe('brush', () => {
     beforeEach(() => {
       v = {
         add: sandbox.stub(),
-        containsRange: sandbox.stub()
+        containsRange: sandbox.stub(),
       };
       rcc = sandbox.stub().returns(v);
       bb = brush({ vc: noop, rc: rcc });
@@ -410,11 +413,11 @@ describe('brush', () => {
       v = {
         add: sandbox.stub(),
         containsValue: sandbox.stub(),
-        containsRange: sandbox.stub()
+        containsRange: sandbox.stub(),
       };
       val = {
         add: sandbox.stub(),
-        contains: sandbox.stub()
+        contains: sandbox.stub(),
       };
       rcc = sandbox.stub().returns(v);
       vcc = sandbox.stub().returns(val);
@@ -422,7 +425,7 @@ describe('brush', () => {
       d = {
         x: { value: 7, source: { field: 'sales', type: 'quant' } },
         span: { value: [5, 10], source: { field: 'margin', type: 'quant' } },
-        self: { value: 'Cars', source: { field: 'products' } }
+        self: { value: 'Cars', source: { field: 'products' } },
       };
     });
 
@@ -465,7 +468,7 @@ describe('brush', () => {
 
     it('should return true when data contains a brushed value from an aliased key', () => {
       const aliasedData = {
-        ali: { value: 'Bikes', source: { field: '_alias' } }
+        ali: { value: 'Bikes', source: { field: '_alias' } },
       };
       bb.addKeyAlias('_alias', 'products');
       bb.addValue('products');
@@ -484,9 +487,11 @@ describe('brush', () => {
     it('should return false when data has no source', () => {
       bb.addRange('sales');
       v.containsValue.returns(true);
-      expect(bb.containsMappedData({
-        x: { value: 7 }
-      })).to.equal(false);
+      expect(
+        bb.containsMappedData({
+          x: { value: 7 },
+        })
+      ).to.equal(false);
       expect(v.containsValue.callCount).to.equal(0);
     });
 
@@ -520,7 +525,7 @@ describe('brush', () => {
       v = {
         add: sandbox.stub(),
         remove: sandbox.stub(),
-        contains: sandbox.stub()
+        contains: sandbox.stub(),
       };
       vcoll = sandbox.stub().returns(v);
     });
@@ -532,34 +537,35 @@ describe('brush', () => {
         { key: 'regions', value: 'south' },
         { key: 'products', value: 'Bike' },
         { key: 'products', value: 'Bike' },
-        { key: 'products', value: 'Bike' }
+        { key: 'products', value: 'Bike' },
       ];
       const toggled = toggle({
         items,
         vc: vcoll,
-        values: {}
+        values: {},
       });
 
-      expect(toggled).to.deep.equal([[
-        { id: 'products', values: ['Bike'] },
-        { id: 'regions', values: ['south'] }
-      ], []]);
+      expect(toggled).to.deep.equal([
+        [
+          { id: 'products', values: ['Bike'] },
+          { id: 'regions', values: ['south'] },
+        ],
+        [],
+      ]);
     });
 
     it('should toggle on new values', () => {
       const items = [
         { key: 'products', value: 'Bike' },
-        { key: 'products', value: 0 }
+        { key: 'products', value: 0 },
       ];
       const toggled = toggle({
         items,
         vc: vcoll,
-        values: {}
+        values: {},
       });
 
-      const expectAdded = [
-        { id: 'products', values: ['Bike', 0] }
-      ];
+      const expectAdded = [{ id: 'products', values: ['Bike', 0] }];
       expect(toggled[0]).to.eql(expectAdded);
     });
 
@@ -567,18 +573,16 @@ describe('brush', () => {
       const items = [
         { key: 'products', value: 'Bike' },
         { key: 'products', value: 'Existing' },
-        { key: 'products', value: 'Car' }
+        { key: 'products', value: 'Car' },
       ];
       v.contains.withArgs('Existing').returns(true);
       const toggled = toggle({
         items,
         vc: vcoll,
-        values: {}
+        values: {},
       });
 
-      const expectRemoved = [
-        { id: 'products', values: ['Existing'] }
-      ];
+      const expectRemoved = [{ id: 'products', values: ['Existing'] }];
       expect(toggled[1]).to.eql(expectRemoved);
     });
   });
@@ -592,19 +596,17 @@ describe('brush', () => {
         add: sandbox.stub(),
         remove: sandbox.stub(),
         contains: sandbox.stub(),
-        values: sandbox.stub()
+        values: sandbox.stub(),
       };
       vcoll = sandbox.stub().returns(v);
     });
 
     it('should add the new values', () => {
-      const items = [
-        { key: 'products', value: 'Bike' }
-      ];
+      const items = [{ key: 'products', value: 'Bike' }];
       const changed = set({
         items,
         vc: vcoll,
-        vCollection: {}
+        vCollection: {},
       });
 
       expect(changed[0]).to.eql([{ id: 'products', values: ['Bike'] }]);
@@ -613,15 +615,15 @@ describe('brush', () => {
     it('should not add existing values', () => {
       v.values.returns(['Bike']); // existing values
       const items = [
-        { key: 'products', value: 'Bike' } // new values
+        { key: 'products', value: 'Bike' }, // new values
       ];
       v.contains.withArgs('Bike').returns(true);
       const changed = set({
         items,
         vc: vcoll,
         vCollection: {
-          products: v
-        }
+          products: v,
+        },
       });
 
       expect(changed[0]).to.eql([]);
@@ -630,15 +632,15 @@ describe('brush', () => {
     it('should not remove existing values', () => {
       v.values.returns(['Bike']); // existing values
       const items = [
-        { key: 'products', value: 'Bike' } // new values
+        { key: 'products', value: 'Bike' }, // new values
       ];
       v.contains.withArgs('Bike').returns(true);
       const changed = set({
         items,
         vc: vcoll,
         vCollection: {
-          products: v
-        }
+          products: v,
+        },
       });
 
       expect(changed[1]).to.eql([]);
@@ -648,7 +650,7 @@ describe('brush', () => {
       v.values.returns([0, 'Cars', 'Skateboards']); // existing values
       const items = [
         { key: 'products', value: 'Bike' }, // new value
-        { key: 'products', value: 'Skateboards' } // add existing value
+        { key: 'products', value: 'Skateboards' }, // add existing value
       ];
       v.contains.withArgs('Cars').returns(true);
       v.contains.withArgs(0).returns(true);
@@ -656,8 +658,8 @@ describe('brush', () => {
         items,
         vc: vcoll,
         vCollection: {
-          products: v
-        }
+          products: v,
+        },
       });
 
       expect(changed[1]).to.eql([{ id: 'products', values: [0, 'Cars'] }]);
@@ -670,8 +672,8 @@ describe('brush', () => {
         items,
         vc: vcoll,
         vCollection: {
-          products: v
-        }
+          products: v,
+        },
       });
 
       expect(changed[1]).to.eql([{ id: 'products', values: ['Cars', 'Skateboards'] }]);
@@ -684,18 +686,21 @@ describe('brush', () => {
         { key: 'regions', value: 'south' },
         { key: 'products', value: 'Bike' },
         { key: 'products', value: 'Bike' },
-        { key: 'products', value: 'Bike' }
+        { key: 'products', value: 'Bike' },
       ];
       const changed = set({
         items,
         vc: vcoll,
-        vCollection: {}
+        vCollection: {},
       });
 
-      expect(changed).to.deep.equal([[
-        { id: 'products', values: ['Bike'] },
-        { id: 'regions', values: ['south'] }
-      ], []]);
+      expect(changed).to.deep.equal([
+        [
+          { id: 'products', values: ['Bike'] },
+          { id: 'regions', values: ['south'] },
+        ],
+        [],
+      ]);
     });
   });
 
@@ -761,7 +766,7 @@ describe('brush', () => {
       v = {
         remove: sandbox.stub(),
         add: sandbox.stub(),
-        values: sandbox.stub()
+        values: sandbox.stub(),
       };
       vcc = sandbox.stub().returns(v);
       bb = brush({ vc: vcc, rc: noop });
@@ -878,7 +883,7 @@ describe('brush', () => {
       updateSpy = sandbox.spy();
       rc = sandbox.stub().returns({
         add: () => {},
-        configure: configureSpy
+        configure: configureSpy,
       });
 
       b = brush({ rc });
@@ -891,8 +896,8 @@ describe('brush', () => {
           ranges: [
             { includeMin: 0, includeMax: 1 },
             { key: 'key', includeMin: 123 },
-            { key: 'another key', includeMin: '123', includeMax: 321 }
-          ]
+            { key: 'another key', includeMin: '123', includeMax: 321 },
+          ],
         };
 
         b.configure(config);
@@ -915,9 +920,7 @@ describe('brush', () => {
 
       it('should be able to configure only default values', () => {
         const config = {
-          ranges: [
-            { includeMin: 123, includeMax: 321 }
-          ]
+          ranges: [{ includeMin: 123, includeMax: 321 }],
         };
 
         b.configure(config);
@@ -933,8 +936,8 @@ describe('brush', () => {
         const config = {
           ranges: [
             { key: 'key', includeMin: false, includeMax: true },
-            { key: 'another key', includeMin: true, includeMax: false }
-          ]
+            { key: 'another key', includeMin: true, includeMax: false },
+          ],
         };
 
         b.configure(config);

@@ -5,12 +5,12 @@
   },
   "parserOptions": {
     "sourceType": "module",
-    "ecmaVersion": 2018,
     "ecmaFeatures": {
       "jsx": true
     }
   },
-  "extends": "airbnb-base",
+  "extends": ["airbnb-base", "prettier"],
+  "plugins": ["prettier"],
   "rules": {
     "max-len": 0,
     "no-bitwise": 0,
@@ -23,12 +23,12 @@
     "no-continue": 0,
     "import/no-extraneous-dependencies": [2, { "devDependencies": true }],
     "no-plusplus": 0,
-    "comma-dangle": [2, "never"],
     "curly": [2, "all"],
     "no-restricted-globals": ["off", "isNaN"],
     "prefer-destructuring": 0,
     "no-multi-assign": 0,
-    "no-return-assign": 0
+    "no-return-assign": 0,
+    "prettier/prettier": 2
   },
   "overrides": [
     {
@@ -49,9 +49,7 @@
         "sourceType": "module",
         "ecmaVersion": 2018
       },
-      "plugins": [
-        "mocha"
-      ],
+      "plugins": ["mocha"],
       "rules": {
         "import/no-extraneous-dependencies": [
           "error",

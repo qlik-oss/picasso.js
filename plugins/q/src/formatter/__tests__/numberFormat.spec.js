@@ -18,8 +18,8 @@ describe('numberFormat', () => {
         it('should format scientific notation', () => {
           f = formatter('###0', '', ',');
 
-          expect(f(1.5e+24)).to.equal('1,5e+24');
-          expect(f(1.567e+33)).to.equal('1,567e+33');
+          expect(f(1.5e24)).to.equal('1,5e+24');
+          expect(f(1.567e33)).to.equal('1,567e+33');
           expect(f(1e-107)).to.equal('1e-107');
         });
 
@@ -90,7 +90,7 @@ describe('numberFormat', () => {
 
           f = formatter('#########', ',', '.');
 
-          expect(f(0.100500)).to.equal('0.1005');
+          expect(f(0.1005)).to.equal('0.1005');
           expect(f(1.2345)).to.equal('1.2345');
 
           f = formatter('##########', ',', '.');
@@ -285,7 +285,7 @@ describe('numberFormat', () => {
 
         it('should support custom abbreviations', () => {
           let localeInfo = {
-            qNumericalAbbreviation: '-6:u;-3:x;2:h;6:test'
+            qNumericalAbbreviation: '-6:u;-3:x;2:h;6:test',
           };
           f = formatter('#,###.0A', ',', '', '', localeInfo);
 
@@ -349,7 +349,7 @@ describe('numberFormat', () => {
 
         it.skip('should use list separator from locale info', () => {
           f = formatter('0.0|(0.0)|zero', '', '', '', {
-            qListSep: '|'
+            qListSep: '|',
           });
           expect(f(1)).to.equal('1.0');
           expect(f(-2)).to.equal('(2.0)');
@@ -485,7 +485,7 @@ describe('numberFormat', () => {
           it('should use the passed arguments instead of the ones passed at construction', () => {
             f = formatter('0');
 
-            expect(f.format('###0', 1.5e+24, '', ',')).to.equal('1,5e+24');
+            expect(f.format('###0', 1.5e24, '', ',')).to.equal('1,5e+24');
             expect(f.format('##', 0.12345, ',', '.')).to.equal('0.12');
             expect(f.format('###', 1.2345, ',', '.')).to.equal('1.23');
             expect(f.format('#.###,###', 123456789.987, '.', ',')).to.equal('123.456.789,987');
@@ -555,7 +555,7 @@ describe('numberFormat', () => {
 
         describe('format', () => {
           it('should use the passed arguments instead of the ones passed at construction', () => {
-            expect(f.format('###0', 1.5e+24, '', ',')).to.equal('1,5e+24');
+            expect(f.format('###0', 1.5e24, '', ',')).to.equal('1,5e+24');
             expect(f.format('##', 0.12345, ',', '.')).to.equal('0.12');
             expect(f.format('###', 1.2345, ',', '.')).to.equal('1.23');
             expect(f.format('#.###,###', 123456789.987, '.', ',')).to.equal('123.456.789,987');

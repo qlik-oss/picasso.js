@@ -21,15 +21,21 @@ describe('Legend Sequential', () => {
   beforeEach(() => {
     container = {
       inner: {
-        x: 0, y: 0, width: 100, height: 100
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 100,
       },
       outer: {
-        x: 0, y: 0, width: 100, height: 100
-      }
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 100,
+      },
     };
 
     theme = {
-      palette: () => ['rgb(180,221,212)', 'rgb(34, 83, 90)']
+      palette: () => ['rgb(180,221,212)', 'rgb(34, 83, 90)'],
     };
 
     componentFixture = componentFactoryFixture();
@@ -39,21 +45,21 @@ describe('Legend Sequential', () => {
         fill: 'fillScale',
         major: 'majorScale',
         title: {
-          text: 'testing'
-        }
-      }
+          text: 'testing',
+        },
+      },
     };
 
     chartMock = componentFixture.mocks().chart;
 
     const seqScale = sequentialScale({}, null, { theme });
     seqScale.data = () => ({
-      fields: [{ formatter: () => undefined }]
+      fields: [{ formatter: () => undefined }],
     });
     chartMock.scale.withArgs('fillScale').returns(seqScale);
     const linScale = linearScale();
     linScale.data = () => ({
-      fields: [{ formatter: () => undefined, title: () => 'scaleTitle' }]
+      fields: [{ formatter: () => undefined, title: () => 'scaleTitle' }],
     });
     chartMock.scale.withArgs('majorScale').returns(linScale);
   });
@@ -72,7 +78,7 @@ describe('Legend Sequential', () => {
       dy: 0,
       text: 0,
       anchor: 'start',
-      baseline: 'text-before-edge'
+      baseline: 'text-before-edge',
     });
 
     expect(ticks[1]).to.include({
@@ -82,21 +88,21 @@ describe('Legend Sequential', () => {
       dy: 0,
       text: 1,
       anchor: 'start',
-      baseline: 'text-after-edge'
+      baseline: 'text-after-edge',
     });
 
     expect(title).to.include({
       x: 5,
       y: 10,
       anchor: 'start',
-      text: 'testing'
+      text: 'testing',
     });
 
     expect(gradientNode).to.include({
       x: 5,
       y: 15,
       width: 15,
-      height: 35
+      height: 35,
     });
 
     expect(componentFixture.simulateLayout(container)).to.equal(31);
@@ -112,7 +118,7 @@ describe('Legend Sequential', () => {
       x: 5,
       y: 10,
       anchor: 'start',
-      text: 'scaleTitle'
+      text: 'scaleTitle',
     });
 
     expect(componentFixture.simulateLayout(container)).to.equal(31);
@@ -154,7 +160,7 @@ describe('Legend Sequential', () => {
         dy: 0,
         text: 0,
         anchor: 'start',
-        baseline: 'text-before-edge'
+        baseline: 'text-before-edge',
       });
 
       expect(ticks[1]).to.include({
@@ -164,7 +170,7 @@ describe('Legend Sequential', () => {
         dy: 0,
         text: 1,
         anchor: 'start',
-        baseline: 'text-after-edge'
+        baseline: 'text-after-edge',
       });
 
       const fillBoundary = componentFixture.findNodes(tickFillBoundarySelector)[0];
@@ -174,7 +180,7 @@ describe('Legend Sequential', () => {
         height: 35,
         fill: 'transparent',
         x: 20,
-        y: 15
+        y: 15,
       });
 
       expect(componentFixture.simulateLayout(container)).to.equal(31);
@@ -191,7 +197,7 @@ describe('Legend Sequential', () => {
         dy: 0,
         text: 0,
         anchor: 'end',
-        baseline: 'text-before-edge'
+        baseline: 'text-before-edge',
       });
 
       expect(ticks[1]).to.include({
@@ -201,7 +207,7 @@ describe('Legend Sequential', () => {
         dy: 0,
         text: 1,
         anchor: 'end',
-        baseline: 'text-after-edge'
+        baseline: 'text-after-edge',
       });
 
       const fillBoundary = componentFixture.findNodes(tickFillBoundarySelector)[0];
@@ -209,7 +215,7 @@ describe('Legend Sequential', () => {
         width: 0,
         height: 35,
         x: 80,
-        y: 15
+        y: 15,
       });
 
       expect(componentFixture.simulateLayout(container)).to.equal(31);
@@ -234,17 +240,19 @@ describe('Legend Sequential', () => {
 
       expect(gradientNode.fill).to.deep.equal({
         type: 'gradient',
-        stops: [{
-          color: 'rgb(34, 83, 90)',
-          offset: 0,
-          type: 'stop'
-        },
-        {
-          color: 'rgb(180, 221, 212)',
-          offset: 1,
-          type: 'stop'
-        }],
-        degree: 90
+        stops: [
+          {
+            color: 'rgb(34, 83, 90)',
+            offset: 0,
+            type: 'stop',
+          },
+          {
+            color: 'rgb(180, 221, 212)',
+            offset: 1,
+            type: 'stop',
+          },
+        ],
+        degree: 90,
       });
     });
   });
@@ -266,7 +274,7 @@ describe('Legend Sequential', () => {
         dy: -1.25,
         text: 0,
         anchor: 'start',
-        baseline: 'alphabetical'
+        baseline: 'alphabetical',
       });
 
       expect(ticks[1]).to.include({
@@ -276,7 +284,7 @@ describe('Legend Sequential', () => {
         dy: -1.25,
         text: 1,
         anchor: 'end',
-        baseline: 'alphabetical'
+        baseline: 'alphabetical',
       });
 
       const fillBoundary = componentFixture.findNodes(tickFillBoundarySelector)[0];
@@ -286,7 +294,7 @@ describe('Legend Sequential', () => {
         height: 0,
         fill: 'transparent',
         x: 39.5,
-        y: 80
+        y: 80,
       });
 
       expect(componentFixture.simulateLayout(container)).to.equal(35);
@@ -304,7 +312,7 @@ describe('Legend Sequential', () => {
         dy: 4,
         text: 0,
         anchor: 'start',
-        baseline: 'alphabetical'
+        baseline: 'alphabetical',
       });
 
       expect(ticks[1]).to.include({
@@ -314,7 +322,7 @@ describe('Legend Sequential', () => {
         dy: 4,
         text: 1,
         anchor: 'end',
-        baseline: 'alphabetical'
+        baseline: 'alphabetical',
       });
 
       const fillBoundary = componentFixture.findNodes(tickFillBoundarySelector)[0];
@@ -324,7 +332,7 @@ describe('Legend Sequential', () => {
         height: 0,
         fill: 'transparent',
         x: 39.5,
-        y: 20
+        y: 20,
       });
 
       expect(componentFixture.simulateLayout(container)).to.equal(35);
@@ -344,7 +352,7 @@ describe('Legend Sequential', () => {
         dy: -1.25,
         text: 0,
         anchor: 'start',
-        baseline: 'alphabetical'
+        baseline: 'alphabetical',
       });
 
       expect(ticks[1]).to.include({
@@ -354,20 +362,20 @@ describe('Legend Sequential', () => {
         dy: -1.25,
         text: 1,
         anchor: 'end',
-        baseline: 'alphabetical'
+        baseline: 'alphabetical',
       });
 
       expect(title).to.include({
         x: 65.5,
         y: 95,
-        anchor: 'start'
+        anchor: 'start',
       });
 
       expect(gradientNode).to.include({
         x: 27.5,
         y: 80,
         width: 33,
-        height: 15
+        height: 15,
       });
 
       expect(componentFixture.simulateLayout(container)).to.equal(35);
@@ -392,17 +400,19 @@ describe('Legend Sequential', () => {
 
       expect(gradientNode.fill).to.deep.equal({
         type: 'gradient',
-        stops: [{
-          color: 'rgb(180, 221, 212)',
-          offset: 0,
-          type: 'stop'
-        },
-        {
-          color: 'rgb(34, 83, 90)',
-          offset: 1,
-          type: 'stop'
-        }],
-        degree: 180
+        stops: [
+          {
+            color: 'rgb(180, 221, 212)',
+            offset: 0,
+            type: 'stop',
+          },
+          {
+            color: 'rgb(34, 83, 90)',
+            offset: 1,
+            type: 'stop',
+          },
+        ],
+        degree: 180,
       });
     });
   });

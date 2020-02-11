@@ -5,7 +5,7 @@ import { createLineWithLabel } from './lines-and-labels';
 
 function createOobData(line) {
   const data = {
-    value: line.value
+    value: line.value,
   };
 
   if (line.label) {
@@ -111,7 +111,7 @@ const refLineComponent = {
   require: ['chart', 'renderer'],
   defaultSettings: {
     layout: {
-      displayOrder: 0
+      displayOrder: 0,
     },
     style: {
       oob: {
@@ -126,26 +126,26 @@ const refLineComponent = {
           stroke: 'transparent',
           fill: '#fff',
           strokeWidth: 0,
-          opacity: 1
+          opacity: 1,
         },
         triangle: {
           fill: '#4D4D4D',
           stroke: 'transparent',
           strokeWidth: 0,
-          opacity: 1
+          opacity: 1,
         },
         padding: {
           x: 28,
-          y: 5
-        }
+          y: 5,
+        },
       },
       line: {
-        stroke: '#000'
+        stroke: '#000',
       },
       label: {
-        strokeWidth: 0
-      }
-    }
+        strokeWidth: 0,
+      },
+    },
   },
 
   preferredSize() {
@@ -168,7 +168,7 @@ const refLineComponent = {
     // Setup lines for X and Y
     this.lines = {
       x: [],
-      y: []
+      y: [],
     };
 
     this.lines.x = (settings.lines && settings.lines.x) || [];
@@ -182,11 +182,11 @@ const refLineComponent = {
       x0: [],
       x1: [],
       y0: [],
-      y1: []
+      y1: [],
     };
 
     // Convert a value to an actual position using the scale
-    this.lines.x = this.lines.x.filter(filterUndefinedValue).map((line) => {
+    this.lines.x = this.lines.x.filter(filterUndefinedValue).map(line => {
       if (line.scale) {
         let scale = this.chart.scale(line.scale);
         return extend(line, { scale, position: scale(line.value) });
@@ -196,7 +196,7 @@ const refLineComponent = {
     });
     // Set all Y lines to flipXY by default
     // This makes the transposer flip them individually
-    this.lines.y = this.lines.y.filter(filterUndefinedValue).map((line) => {
+    this.lines.y = this.lines.y.filter(filterUndefinedValue).map(line => {
       if (line.scale) {
         let scale = this.chart.scale(line.scale);
         return extend(line, { scale, position: scale(line.value), flipXY: true });
@@ -206,7 +206,7 @@ const refLineComponent = {
     });
 
     // Move out of bounds lines (OOB) to separate rendering
-    this.lines.x = this.lines.x.filter((line) => {
+    this.lines.x = this.lines.x.filter(line => {
       if (line.position < 0 || line.position > 1) {
         oob[`x${line.position > 1 ? 1 : 0}`].push(createOobData(line));
         return false;
@@ -214,7 +214,7 @@ const refLineComponent = {
       return true;
     });
 
-    this.lines.y = this.lines.y.filter((line) => {
+    this.lines.y = this.lines.y.filter(line => {
       if (line.position < 0 || line.position > 1) {
         oob[`y${line.position > 1 ? 1 : 0}`].push(createOobData(line));
         return false;
@@ -225,13 +225,18 @@ const refLineComponent = {
     let items = [];
 
     // Loop through all X and Y lines
-    [...this.lines.x, ...this.lines.y].forEach((p) => {
+    [...this.lines.x, ...this.lines.y].forEach(p => {
       let show = p.show === true || typeof p.show === 'undefined';
 
       if (show) {
         // Create line with labels
         createLineWithLabel({
-          chart: this.chart, blueprint: this.blueprint, renderer: this.renderer, p, settings, items
+          chart: this.chart,
+          blueprint: this.blueprint,
+          renderer: this.renderer,
+          p,
+          settings,
+          items,
         });
       }
     });
@@ -239,12 +244,15 @@ const refLineComponent = {
     // Handle out of bounds
     if (settings.style.oob.show) {
       oobManager({
-        blueprint: this.blueprint, oob, settings, items
+        blueprint: this.blueprint,
+        oob,
+        settings,
+        items,
       });
     }
 
     return items;
-  }
+  },
 };
 
 export default refLineComponent;

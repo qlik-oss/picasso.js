@@ -10,7 +10,7 @@ describe('crispifier', () => {
       y: 150,
       width: 200,
       height: 250,
-      strokeWidth: 0
+      strokeWidth: 0,
     };
 
     crispifier(dummy);
@@ -30,7 +30,7 @@ describe('crispifier', () => {
       y: 150,
       width: 200,
       height: 250,
-      strokeWidth: 1
+      strokeWidth: 1,
     };
 
     crispifier(dummy);
@@ -50,7 +50,7 @@ describe('crispifier', () => {
       y1: 150,
       x2: 100,
       y2: 150,
-      strokeWidth: 3
+      strokeWidth: 3,
     };
 
     crispifier(dummy);
@@ -70,7 +70,7 @@ describe('crispifier', () => {
       y1: 150,
       x2: 100,
       y2: 150,
-      strokeWidth: 10
+      strokeWidth: 10,
     };
 
     crispifier(dummy);
@@ -90,7 +90,7 @@ describe('crispifier', () => {
       y1: 150,
       x2: 200,
       y2: 250,
-      strokeWidth: 3
+      strokeWidth: 3,
     };
 
     crispifier(dummy);
@@ -110,7 +110,7 @@ describe('crispifier', () => {
       y: 150,
       width: 200,
       height: 250,
-      strokeWidth: 1
+      strokeWidth: 1,
     };
 
     const dummyLine = {
@@ -119,7 +119,7 @@ describe('crispifier', () => {
       y1: 150,
       x2: 100,
       y2: 150,
-      strokeWidth: 3
+      strokeWidth: 3,
     };
 
     crispifier(dummyRect);

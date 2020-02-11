@@ -3,7 +3,7 @@
 function getBasicEvent(event) {
   let ix;
   let ret;
-  ['start', 'end'].forEach((s) => {
+  ['start', 'end'].forEach(s => {
     ix = event.indexOf(s);
     if (ix >= 0) {
       ret = event.substring(0, ix);
@@ -67,7 +67,7 @@ class BaseGesture {
   }
 
   recognizeWith(events) {
-    events.forEach((event) => {
+    events.forEach(event => {
       if (this.manager.get(event)) {
         this._recognizeWith.push(event);
       } else {
@@ -77,7 +77,7 @@ class BaseGesture {
   }
 
   requireFailure(events) {
-    events.forEach((event) => {
+    events.forEach(event => {
       if (this.manager.get(event)) {
         this._requireFailure.push(event);
       } else {

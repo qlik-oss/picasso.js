@@ -1,7 +1,7 @@
 export default function resolveSettings(settings = {}, defaultSettings = {}, context = {}) {
   const stngs = {};
 
-  Object.keys(defaultSettings).forEach((key) => {
+  Object.keys(defaultSettings).forEach(key => {
     const type = typeof settings[key];
 
     if (type === 'function') {

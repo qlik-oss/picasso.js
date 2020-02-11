@@ -47,6 +47,6 @@ export function collection(formattersConfig, data, deps, fn = create) {
     all() {
       Object.keys(formattersConfig).forEach(this.get);
       return formatters;
-    }
+    },
   };
 }

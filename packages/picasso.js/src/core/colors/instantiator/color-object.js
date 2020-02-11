@@ -2,7 +2,7 @@ import RgbaColor from '../rgba-color';
 import HslaColor from '../hsla-color';
 
 function hasPropertyCombination(obj, properties) {
-  return properties.every((p) => (Object.prototype.hasOwnProperty.call(obj, p)));
+  return properties.every(p => Object.prototype.hasOwnProperty.call(obj, p));
 }
 
 /**
@@ -41,8 +41,10 @@ export default function colorObject(colorObj) {
  * @example
  * colorObject.test( { r:255, g: 123, b: 123 } );
  */
-colorObject.test = (obj) => {
-  if (obj === null || obj === undefined || typeof obj !== 'object') { return false; }
+colorObject.test = obj => {
+  if (obj === null || obj === undefined || typeof obj !== 'object') {
+    return false;
+  }
 
   // Doesnt really work out well if any of the proparties have invalid values
   return typeof colorObject.getColorType(obj) !== 'undefined';
@@ -57,12 +59,18 @@ colorObject.test = (obj) => {
  * @example
  * colorObject.getColorType( { r:255, g: 123, b: 123 } )
  */
-colorObject.getColorType = (obj) => {
-  if (obj === null || typeof obj !== 'object') { return undefined; }
+colorObject.getColorType = obj => {
+  if (obj === null || typeof obj !== 'object') {
+    return undefined;
+  }
 
-  if (hasPropertyCombination(obj, ['r', 'g', 'b'])) { return 'rgb'; }
+  if (hasPropertyCombination(obj, ['r', 'g', 'b'])) {
+    return 'rgb';
+  }
 
-  if (hasPropertyCombination(obj, ['h', 's', 'l'])) { return 'hsl'; }
+  if (hasPropertyCombination(obj, ['h', 's', 'l'])) {
+    return 'hsl';
+  }
 
   return undefined;
 };
