@@ -18,7 +18,7 @@ describe('OrdinalScale', () => {
     const fields = [];
     const dataset = {
       fields: [{}],
-      items
+      items,
     };
     beforeEach(() => {
       items = [];
@@ -33,13 +33,13 @@ describe('OrdinalScale', () => {
     });
 
     it('should set domain to correct field values', () => {
-      items = ['A', 'B', 'C'].map((v) => ({ value: v }));
+      items = ['A', 'B', 'C'].map(v => ({ value: v }));
       scale = band(settings, { fields: [], items });
       expect(scale.domain()).to.deep.equal(['A', 'B', 'C']);
     });
 
     it('should return correct field values', () => {
-      items = ['A', 'B', 'C'].map((v) => ({ value: v, id: v }));
+      items = ['A', 'B', 'C'].map(v => ({ value: v, id: v }));
       scale = band(settings, { fields: [], items });
       expect(scale('A')).to.equal(0);
       expect(scale('B')).to.equal(1 / 3);
@@ -47,16 +47,17 @@ describe('OrdinalScale', () => {
     });
 
     it('should return mapped datum values', () => {
-      items = ['A', 'B', 'C'].map((v) => ({ value: v, id: v }));
+      items = ['A', 'B', 'C'].map(v => ({ value: v, id: v }));
       scale = band(settings, { fields: [], items });
       expect(scale.datum('B')).to.eql({
-        value: 'B', id: 'B'
+        value: 'B',
+        id: 'B',
       });
     });
 
     describe('with maxPxStep', () => {
       it('with start align should adjust correctly', () => {
-        items = ['A', 'B'].map((v) => ({ value: v, id: v }));
+        items = ['A', 'B'].map(v => ({ value: v, id: v }));
         settings.maxPxStep = 10;
         settings.align = 0;
         scale = band(settings, { fields: [], items });
@@ -67,7 +68,7 @@ describe('OrdinalScale', () => {
       });
 
       it('with padding should return correct step size', () => {
-        items = ['A', 'B'].map((v) => ({ value: v, id: v }));
+        items = ['A', 'B'].map(v => ({ value: v, id: v }));
         settings.maxPxStep = 10;
         settings.padding = 0.1;
         scale = band(settings, fields, dataset);
@@ -76,7 +77,7 @@ describe('OrdinalScale', () => {
       });
 
       it('with center align and padding should return correct step size', () => {
-        items = ['A', 'B'].map((v) => ({ value: v, id: v }));
+        items = ['A', 'B'].map(v => ({ value: v, id: v }));
         settings.maxPxStep = 10;
         settings.paddingOuter = 1;
         settings.align = 0.5;
@@ -96,7 +97,7 @@ describe('OrdinalScale', () => {
       });
 
       it('should not affect maxPxStep setting', () => {
-        items = ['A', 'B'].map((v) => ({ value: v, id: v }));
+        items = ['A', 'B'].map(v => ({ value: v, id: v }));
         settings.maxPxStep = 10;
         settings.range = sinon.stub().returns([0.2, 0.8]);
         settings.align = 0;
@@ -109,7 +110,7 @@ describe('OrdinalScale', () => {
       });
 
       it('should use range fn when maxPxStep does not take effect', () => {
-        items = ['A', 'B'].map((v) => ({ value: v, id: v }));
+        items = ['A', 'B'].map(v => ({ value: v, id: v }));
         settings.maxPxStep = 80;
         settings.range = sinon.stub().returns([-0.2, 1.8]);
         scale = band(settings, { fields: [], items });
@@ -118,7 +119,7 @@ describe('OrdinalScale', () => {
       });
 
       it('should reverse range when setting invert=true', () => {
-        items = ['A', 'B'].map((v) => ({ value: v, id: v }));
+        items = ['A', 'B'].map(v => ({ value: v, id: v }));
         settings.invert = true;
         settings.range = sinon.stub().returns([1, 2]);
         scale = band(settings, { fields: [], items });
@@ -126,7 +127,7 @@ describe('OrdinalScale', () => {
       });
 
       it('should be possible to set an array', () => {
-        items = ['A', 'B'].map((v) => ({ value: v, id: v }));
+        items = ['A', 'B'].map(v => ({ value: v, id: v }));
         settings.range = [2, 3];
         scale = band(settings, { fields: [], items });
         expect(scale.range()).to.deep.equal([2, 3]);
@@ -135,7 +136,9 @@ describe('OrdinalScale', () => {
   });
 
   it('should accept domain and range parameters', () => {
-    scale = band().domain(['Jan', 'Apr']).range([50, 100]);
+    scale = band()
+      .domain(['Jan', 'Apr'])
+      .range([50, 100]);
     expect(scale.domain()).to.deep.equal(['Jan', 'Apr']);
     expect(scale.range()).to.deep.equal([50, 100]);
   });

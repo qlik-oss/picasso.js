@@ -1,8 +1,5 @@
 import extend from 'extend';
-import {
-  testRectRect,
-  testRectLine
-} from '../../math/narrow-phase-collision';
+import { testRectRect, testRectLine } from '../../math/narrow-phase-collision';
 
 export function refLabelDefaultSettings() {
   return {
@@ -17,8 +14,8 @@ export function refLabelDefaultSettings() {
       fill: '#fff',
       stroke: 'transparent',
       strokeWidth: 0,
-      opacity: 0.5
-    }
+      opacity: 0.5,
+    },
   };
 }
 
@@ -64,9 +61,7 @@ export function alignmentToNumber(align) {
  * @param {object[]} items - Array of all items (for collision detection)
  * @ignore
  */
-export function createLineWithLabel({
-  chart, blueprint, renderer, p, settings, items
-}) {
+export function createLineWithLabel({ chart, blueprint, renderer, p, settings, items }) {
   let doesNotCollide = true;
   let line = false;
   let rect = false;
@@ -83,7 +78,7 @@ export function createLineWithLabel({
     y2: 1,
     stroke: style.stroke || 'black',
     strokeWidth: style.strokeWidth || 1,
-    flipXY: p.flipXY || false // This flips individual points (Y-lines)
+    flipXY: p.flipXY || false, // This flips individual points (Y-lines)
   });
 
   if (p.label) {
@@ -91,7 +86,7 @@ export function createLineWithLabel({
     let formatter;
     let measuredValue = {
       width: 0,
-      height: 0
+      height: 0,
     };
     let valueString = '';
 
@@ -115,7 +110,7 @@ export function createLineWithLabel({
       measuredValue = renderer.measureText({
         text: valueString,
         fontFamily: item.fontFamily,
-        fontSize: item.fontSize
+        fontSize: item.fontSize,
       });
     }
 
@@ -123,12 +118,12 @@ export function createLineWithLabel({
     let measuredLabel = renderer.measureText({
       text: item.text || '',
       fontFamily: item.fontFamily,
-      fontSize: item.fontSize
+      fontSize: item.fontSize,
     });
 
     let measured = {
       width: measuredLabel.width + measuredValue.width,
-      height: Math.max(measuredLabel.height, measuredValue.height)
+      height: Math.max(measuredLabel.height, measuredValue.height),
     };
 
     let labelPadding = item.padding;
@@ -138,17 +133,17 @@ export function createLineWithLabel({
     let align = alignmentToNumber(p.flipXY ? item.vAlign : item.align);
     let vAlign = alignmentToNumber(p.flipXY ? item.align : item.vAlign);
 
-    let calcWidth = Math.min(1 + measured.width + (labelPadding * 2), item.maxWidth * blueprint.width, item.maxWidthPx);
-    let calcHeight = measured.height + (labelPadding * 2);
+    let calcWidth = Math.min(1 + measured.width + labelPadding * 2, item.maxWidth * blueprint.width, item.maxWidthPx);
+    let calcHeight = measured.height + labelPadding * 2;
 
-    let rectWidth = (p.flipXY ? calcHeight : calcWidth);
-    let rectHeight = (p.flipXY ? calcWidth : calcHeight);
+    let rectWidth = p.flipXY ? calcHeight : calcWidth;
+    let rectHeight = p.flipXY ? calcWidth : calcHeight;
 
     rect = blueprint.processItem({
       fn: ({ width, height }) => {
-        let x = (p.position * width) - ((p.flipXY ? calcHeight : calcWidth) * (1 - align));
+        let x = p.position * width - (p.flipXY ? calcHeight : calcWidth) * (1 - align);
         x = p.flipXY ? x : Math.max(x, 0);
-        const y = Math.max(Math.abs((vAlign * height) - (rectHeight * vAlign)), 0);
+        const y = Math.max(Math.abs(vAlign * height - rectHeight * vAlign), 0);
         return {
           type: 'rect',
           x,
@@ -158,15 +153,17 @@ export function createLineWithLabel({
           stroke: item.background.stroke,
           strokeWidth: item.background.strokeWidth,
           fill: item.background.fill,
-          opacity: item.background.opacity
+          opacity: item.background.opacity,
         };
       },
-      flipXY: p.flipXY || false // This flips individual points (Y-lines)
+      flipXY: p.flipXY || false, // This flips individual points (Y-lines)
     });
 
     if (
-      rect.x < -1 || (rect.x + rect.width) > (blueprint.width + 1)
-      || rect.y < -1 || (rect.y + rect.height) > (blueprint.height + 1)
+      rect.x < -1 ||
+      rect.x + rect.width > blueprint.width + 1 ||
+      rect.y < -1 ||
+      rect.y + rect.height > blueprint.height + 1
     ) {
       // do not create labels if out of bounds
       rect = undefined;
@@ -182,9 +179,9 @@ export function createLineWithLabel({
         fontFamily: item.fontFamily,
         fontSize: item.fontSize,
         x: rect.x + labelPadding,
-        y: rect.y + (rect.height / 2) + (measured.height / 3),
-        maxWidth: rect.width - (labelPadding * 2) - measuredValue.width,
-        anchor: 'start'
+        y: rect.y + rect.height / 2 + measured.height / 3,
+        maxWidth: rect.width - labelPadding * 2 - measuredValue.width,
+        anchor: 'start',
       };
 
       if (valueString) {
@@ -195,8 +192,8 @@ export function createLineWithLabel({
           opacity: item.opacity,
           fontFamily: item.fontFamily,
           fontSize: item.fontSize,
-          x: label.x + 3 + (rect.width - (measuredValue.width + (labelPadding * 2))),
-          y: label.y
+          x: label.x + 3 + (rect.width - (measuredValue.width + labelPadding * 2)),
+          y: label.y,
         };
       }
 

@@ -3,7 +3,7 @@ import formatterFn from '../formatter';
 
 // TODO - decide whether usage of .call() is appropriate when invoking accessors, if yes then arrow functions are not allowed!
 
-const getFormatter = (data) => {
+const getFormatter = data => {
   if (typeof data.formatter === 'function') {
     return data.formatter();
   }
@@ -12,17 +12,17 @@ const getFormatter = (data) => {
 };
 
 const accessors = {
-  id: (data) => `${data.source}/${data.key || data.title}`,
-  key: (data) => String(data.key || data.title),
-  tags: (data) => data.tags,
-  min: (data) => data.min,
-  max: (data) => data.max,
-  type: (data) => data.type,
-  title: (data) => String(data.title),
-  values: (data) => data.values,
-  value: (v) => v,
-  label: (v) => v,
-  formatter: (data) => getFormatter(data)
+  id: data => `${data.source}/${data.key || data.title}`,
+  key: data => String(data.key || data.title),
+  tags: data => data.tags,
+  min: data => data.min,
+  max: data => data.max,
+  type: data => data.type,
+  title: data => String(data.title),
+  values: data => data.values,
+  value: v => v,
+  label: v => v,
+  formatter: data => getFormatter(data),
 };
 
 /**
@@ -30,24 +30,26 @@ const accessors = {
  * @ignore
  * @return {field} Data field
  */
-export default function field(data, {
-  id = accessors.id,
-  key = accessors.key,
-  min = accessors.min,
-  max = accessors.max,
-  type = accessors.type,
-  tags = accessors.tags,
-  title = accessors.title,
-  values = accessors.values,
-  value = accessors.value,
-  label = accessors.label,
-  formatter = accessors.formatter
-} = {}) {
+export default function field(
+  data,
+  {
+    id = accessors.id,
+    key = accessors.key,
+    min = accessors.min,
+    max = accessors.max,
+    type = accessors.type,
+    tags = accessors.tags,
+    title = accessors.title,
+    values = accessors.values,
+    value = accessors.value,
+    label = accessors.label,
+    formatter = accessors.formatter,
+  } = {}
+) {
   /**
    * @alias field
    */
   const f = {
-
     /**
      * Returns this field's id
      * @returns {string}
@@ -107,7 +109,7 @@ export default function field(data, {
     formatter: () => formatter(data),
 
     value,
-    label
+    label,
   };
 
   return f;

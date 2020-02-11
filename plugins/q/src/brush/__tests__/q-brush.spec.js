@@ -7,7 +7,7 @@ describe('q-brush', () => {
   beforeEach(() => {
     brush = {
       isActive: sinon.stub(),
-      brushes: sinon.stub()
+      brushes: sinon.stub(),
     };
   });
 
@@ -18,13 +18,15 @@ describe('q-brush', () => {
 
   it('should reset made selections when brush is active but contain no values', () => {
     brush.isActive.returns(true);
-    brush.brushes.returns([{
-      id: 'qHyperCube/qDimensionInfo/2',
-      type: 'value',
-      brush: {
-        values: () => []
-      }
-    }]);
+    brush.brushes.returns([
+      {
+        id: 'qHyperCube/qDimensionInfo/2',
+        type: 'value',
+        brush: {
+          values: () => [],
+        },
+      },
+    ]);
     const selections = qBrush(brush);
     expect(selections[0].method).to.equal('resetMadeSelections');
     expect(selections[0].params).to.eql([]);
@@ -32,13 +34,15 @@ describe('q-brush', () => {
 
   describe('selectHyperCubeValues', () => {
     beforeEach(() => {
-      brush.brushes.returns([{
-        id: 'qHyperCube/qDimensionInfo/2',
-        type: 'value',
-        brush: {
-          values: () => [3, 2, 7]
-        }
-      }]);
+      brush.brushes.returns([
+        {
+          id: 'qHyperCube/qDimensionInfo/2',
+          type: 'value',
+          brush: {
+            values: () => [3, 2, 7],
+          },
+        },
+      ]);
     });
 
     it('should have method="selectHyperCubeValues"', () => {
@@ -48,30 +52,31 @@ describe('q-brush', () => {
 
     it('should have valid params', () => {
       const selections = qBrush(brush);
-      expect(selections[0].params).to.eql([
-        '/qHyperCubeDef',
-        2,
-        [3, 2, 7],
-        false
-      ]);
+      expect(selections[0].params).to.eql(['/qHyperCubeDef', 2, [3, 2, 7], false]);
     });
   });
 
   describe('rangeSelectHyperCubeValues', () => {
     beforeEach(() => {
-      brush.brushes.returns([{
-        id: '/qHyperCube/qMeasureInfo/3',
-        type: 'range',
-        brush: {
-          ranges: () => [{ min: 13, max: 17 }, { min: 4, max: 9 }]
-        }
-      }, {
-        id: '/qHyperCube/qMeasureInfo/1',
-        type: 'range',
-        brush: {
-          ranges: () => [{ min: -13, max: 6 }]
-        }
-      }]);
+      brush.brushes.returns([
+        {
+          id: '/qHyperCube/qMeasureInfo/3',
+          type: 'range',
+          brush: {
+            ranges: () => [
+              { min: 13, max: 17 },
+              { min: 4, max: 9 },
+            ],
+          },
+        },
+        {
+          id: '/qHyperCube/qMeasureInfo/1',
+          type: 'range',
+          brush: {
+            ranges: () => [{ min: -13, max: 6 }],
+          },
+        },
+      ]);
     });
 
     it('should have method="rangeSelectHyperCubeValues"', () => {
@@ -87,43 +92,58 @@ describe('q-brush', () => {
           {
             qMeasureIx: 3,
             qRange: {
-              qMin: 13, qMax: 17, qMinInclEq: true, qMaxInclEq: true
-            }
+              qMin: 13,
+              qMax: 17,
+              qMinInclEq: true,
+              qMaxInclEq: true,
+            },
           },
           {
             qMeasureIx: 3,
             qRange: {
-              qMin: 4, qMax: 9, qMinInclEq: true, qMaxInclEq: true
-            }
+              qMin: 4,
+              qMax: 9,
+              qMinInclEq: true,
+              qMaxInclEq: true,
+            },
           },
           {
             qMeasureIx: 1,
             qRange: {
-              qMin: -13, qMax: 6, qMinInclEq: true, qMaxInclEq: true
-            }
-          }
+              qMin: -13,
+              qMax: 6,
+              qMinInclEq: true,
+              qMaxInclEq: true,
+            },
+          },
         ],
         [],
-        true
+        true,
       ]);
     });
   });
 
   describe('selectHyperCubeContinuousRange', () => {
     beforeEach(() => {
-      brush.brushes.returns([{
-        id: '/qHyperCube/qDimensionInfo/1',
-        type: 'range',
-        brush: {
-          ranges: () => [{ min: 11, max: 23 }, { min: 3, max: 8 }]
-        }
-      }, {
-        id: '/qHyperCube/qDimensionInfo/2',
-        type: 'range',
-        brush: {
-          ranges: () => [{ min: -3, max: 1 }]
-        }
-      }]);
+      brush.brushes.returns([
+        {
+          id: '/qHyperCube/qDimensionInfo/1',
+          type: 'range',
+          brush: {
+            ranges: () => [
+              { min: 11, max: 23 },
+              { min: 3, max: 8 },
+            ],
+          },
+        },
+        {
+          id: '/qHyperCube/qDimensionInfo/2',
+          type: 'range',
+          brush: {
+            ranges: () => [{ min: -3, max: 1 }],
+          },
+        },
+      ]);
     });
 
     it('should have method="selectHyperCubeContinuousRange"', () => {
@@ -139,41 +159,53 @@ describe('q-brush', () => {
           {
             qDimIx: 1,
             qRange: {
-              qMin: 11, qMax: 23, qMinInclEq: true, qMaxInclEq: false
-            }
+              qMin: 11,
+              qMax: 23,
+              qMinInclEq: true,
+              qMaxInclEq: false,
+            },
           },
           {
             qDimIx: 1,
             qRange: {
-              qMin: 3, qMax: 8, qMinInclEq: true, qMaxInclEq: false
-            }
+              qMin: 3,
+              qMax: 8,
+              qMinInclEq: true,
+              qMaxInclEq: false,
+            },
           },
           {
             qDimIx: 2,
             qRange: {
-              qMin: -3, qMax: 1, qMinInclEq: true, qMaxInclEq: false
-            }
-          }
-        ]
+              qMin: -3,
+              qMax: 1,
+              qMinInclEq: true,
+              qMaxInclEq: false,
+            },
+          },
+        ],
       ]);
     });
   });
 
   describe('selectHyperCubeCells', () => {
     beforeEach(() => {
-      brush.brushes.returns([{
-        id: 'layers/0/qHyperCube/qDimensionInfo/2',
-        type: 'value',
-        brush: {
-          values: () => [3, 2, 7]
-        }
-      }, {
-        id: '/layers/0/qHyperCube/qDimensionInfo/1',
-        type: 'value',
-        brush: {
-          values: () => [1, 6, 4]
-        }
-      }]);
+      brush.brushes.returns([
+        {
+          id: 'layers/0/qHyperCube/qDimensionInfo/2',
+          type: 'value',
+          brush: {
+            values: () => [3, 2, 7],
+          },
+        },
+        {
+          id: '/layers/0/qHyperCube/qDimensionInfo/1',
+          type: 'value',
+          brush: {
+            values: () => [1, 6, 4],
+          },
+        },
+      ]);
     });
 
     it('should have method="selectHyperCubeCells"', () => {
@@ -183,44 +215,39 @@ describe('q-brush', () => {
 
     it('should have valid params when primary is not specified', () => {
       const selections = qBrush(brush, { byCells: true });
-      expect(selections[0].params).to.eql([
-        '/layers/0/qHyperCubeDef',
-        [3, 2, 7],
-        [2, 1]
-      ]);
+      expect(selections[0].params).to.eql(['/layers/0/qHyperCubeDef', [3, 2, 7], [2, 1]]);
     });
 
     it('should have valid params when primary is specified', () => {
       const selections = qBrush(brush, { byCells: true, primarySource: '/layers/0/qHyperCube/qDimensionInfo/1' });
-      expect(selections[0].params).to.eql([
-        '/layers/0/qHyperCubeDef',
-        [1, 6, 4],
-        [2, 1]
-      ]);
+      expect(selections[0].params).to.eql(['/layers/0/qHyperCubeDef', [1, 6, 4], [2, 1]]);
     });
   });
 
   describe('selectPivotCells', () => {
     beforeEach(() => {
-      brush.brushes.returns([{
-        id: 'layers/0/qHyperCube/qDimensionInfo/2',
-        type: 'value',
-        brush: {
-          values: () => [3, 2, 7]
-        }
-      }, {
-        id: '/layers/0/qHyperCube/qDimensionInfo/1',
-        type: 'value',
-        brush: {
-          values: () => [1, 6, 4]
-        }
-      }]);
+      brush.brushes.returns([
+        {
+          id: 'layers/0/qHyperCube/qDimensionInfo/2',
+          type: 'value',
+          brush: {
+            values: () => [3, 2, 7],
+          },
+        },
+        {
+          id: '/layers/0/qHyperCube/qDimensionInfo/1',
+          type: 'value',
+          brush: {
+            values: () => [1, 6, 4],
+          },
+        },
+      ]);
 
       layout = {
         qHyperCube: {
           qEffectiveInterColumnSortOrder: [],
-          qMode: 'T'
-        }
+          qMode: 'T',
+        },
       };
     });
 
@@ -254,34 +281,34 @@ describe('q-brush', () => {
           {
             qCol: 2,
             qRow: 3,
-            qType: 'L'
+            qType: 'L',
           },
           {
             qCol: 2,
             qRow: 2,
-            qType: 'L'
+            qType: 'L',
           },
           {
             qCol: 2,
             qRow: 7,
-            qType: 'L'
+            qType: 'L',
           },
           {
             qCol: 1,
             qRow: 1,
-            qType: 'L'
+            qType: 'L',
           },
           {
             qCol: 1,
             qRow: 6,
-            qType: 'L'
+            qType: 'L',
           },
           {
             qCol: 1,
             qRow: 4,
-            qType: 'L'
-          }
-        ]
+            qType: 'L',
+          },
+        ],
       ]);
     });
 
@@ -289,26 +316,30 @@ describe('q-brush', () => {
       layout.qHyperCube.qNoOfLeftDims = 1;
       layout.qHyperCube.qEffectiveInterColumnSortOrder.push(1);
 
-      const selections = qBrush(brush, { byCells: true, primarySource: '/layers/0/qHyperCube/qDimensionInfo/1' }, layout);
+      const selections = qBrush(
+        brush,
+        { byCells: true, primarySource: '/layers/0/qHyperCube/qDimensionInfo/1' },
+        layout
+      );
       expect(selections[0].params).to.eql([
         '/layers/0/qHyperCubeDef',
         [
           {
             qCol: 1,
             qRow: 1,
-            qType: 'L'
+            qType: 'L',
           },
           {
             qCol: 1,
             qRow: 6,
-            qType: 'L'
+            qType: 'L',
           },
           {
             qCol: 1,
             qRow: 4,
-            qType: 'L'
-          }
-        ]
+            qType: 'L',
+          },
+        ],
       ]);
     });
 
@@ -316,26 +347,30 @@ describe('q-brush', () => {
       layout.qHyperCube.qNoOfLeftDims = 0;
       layout.qHyperCube.qEffectiveInterColumnSortOrder.push(1);
 
-      const selections = qBrush(brush, { byCells: true, primarySource: '/layers/0/qHyperCube/qDimensionInfo/1' }, layout);
+      const selections = qBrush(
+        brush,
+        { byCells: true, primarySource: '/layers/0/qHyperCube/qDimensionInfo/1' },
+        layout
+      );
       expect(selections[0].params).to.eql([
         '/layers/0/qHyperCubeDef',
         [
           {
             qCol: 1,
             qRow: 0,
-            qType: 'T'
+            qType: 'T',
           },
           {
             qCol: 6,
             qRow: 0,
-            qType: 'T'
+            qType: 'T',
           },
           {
             qCol: 4,
             qRow: 0,
-            qType: 'T'
-          }
-        ]
+            qType: 'T',
+          },
+        ],
       ]);
     });
 
@@ -349,34 +384,34 @@ describe('q-brush', () => {
           {
             qCol: 2,
             qRow: 3,
-            qType: 'L'
+            qType: 'L',
           },
           {
             qCol: 2,
             qRow: 2,
-            qType: 'L'
+            qType: 'L',
           },
           {
             qCol: 2,
             qRow: 7,
-            qType: 'L'
+            qType: 'L',
           },
           {
             qCol: 1,
             qRow: 1,
-            qType: 'L'
+            qType: 'L',
           },
           {
             qCol: 1,
             qRow: 6,
-            qType: 'L'
+            qType: 'L',
           },
           {
             qCol: 1,
             qRow: 4,
-            qType: 'L'
-          }
-        ]
+            qType: 'L',
+          },
+        ],
       ]);
     });
 
@@ -384,11 +419,7 @@ describe('q-brush', () => {
       layout.qHyperCube.qMode = 'S';
 
       const selections = qBrush(brush, { byCells: true }, layout);
-      expect(selections[0].params).to.eql([
-        '/layers/0/qHyperCubeDef',
-        [3, 2, 7],
-        [2, 1]
-      ]);
+      expect(selections[0].params).to.eql(['/layers/0/qHyperCubeDef', [3, 2, 7], [2, 1]]);
     });
   });
 
@@ -403,7 +434,7 @@ describe('q-brush', () => {
       expect(v).to.eql({
         path: '/qHyperCubeDef',
         dimensionIdx: 3,
-        measureIdx: -1
+        measureIdx: -1,
       });
     });
 
@@ -412,7 +443,7 @@ describe('q-brush', () => {
       expect(v).to.eql({
         path: '/qHyperCubeDef',
         dimensionIdx: -1,
-        measureIdx: 2
+        measureIdx: 2,
       });
     });
 
@@ -421,7 +452,7 @@ describe('q-brush', () => {
       expect(v).to.eql({
         path: '/qHyperCubeDef/qDimensions/2/qAttributeDimensions/5',
         dimensionIdx: 0,
-        measureIdx: -1
+        measureIdx: -1,
       });
     });
 
@@ -430,7 +461,7 @@ describe('q-brush', () => {
       expect(v).to.eql({
         path: '/qHyperCubeDef/qDimensions/2/qAttributeDimensions/5',
         dimensionIdx: 3,
-        measureIdx: -1
+        measureIdx: -1,
       });
     });
 
@@ -439,7 +470,7 @@ describe('q-brush', () => {
       expect(v).to.eql({
         path: '/qHyperCubeDef/qMeasures/2/qAttributeDimensions/4',
         dimensionIdx: 0,
-        measureIdx: -1
+        measureIdx: -1,
       });
     });
 
@@ -448,7 +479,7 @@ describe('q-brush', () => {
       expect(v).to.eql({
         path: '/qHyperCubeDef/qMeasures/2/qAttributeDimensions/4',
         dimensionIdx: 3,
-        measureIdx: -1
+        measureIdx: -1,
       });
     });
 
@@ -456,13 +487,13 @@ describe('q-brush', () => {
       let v = extractFieldFromId('/qHyperCube/qMeasureInfo/1/qAttrExprInfo/1', {
         qHyperCube: {
           qDimensionInfo: [{ qAttrExprInfo: [{}, {}] }],
-          qMeasureInfo: [{ qAttrExprInfo: [{}, {}] }, { qAttrExprInfo: [{}, {}, {}] }]
-        }
+          qMeasureInfo: [{ qAttrExprInfo: [{}, {}] }, { qAttrExprInfo: [{}, {}, {}] }],
+        },
       });
       expect(v).to.eql({
         path: '/qHyperCubeDef',
         dimensionIdx: -1,
-        measureIdx: 7
+        measureIdx: 7,
       });
     });
 
@@ -471,7 +502,7 @@ describe('q-brush', () => {
       expect(v).to.eql({
         path: '/qHyperCubeDef',
         measureIdx: 3,
-        dimensionIdx: -1
+        dimensionIdx: -1,
       });
     });
 
@@ -479,13 +510,13 @@ describe('q-brush', () => {
       let v = extractFieldFromId('/qHyperCube/qDimensionInfo/1/qAttrExprInfo/1', {
         qHyperCube: {
           qDimensionInfo: [{ qAttrExprInfo: [{}, {}] }, { qAttrExprInfo: [{}, {}, {}] }],
-          qMeasureInfo: [{}, {}, {}]
-        }
+          qMeasureInfo: [{}, {}, {}],
+        },
       });
       expect(v).to.eql({
         path: '/qHyperCubeDef',
         measureIdx: 6,
-        dimensionIdx: -1
+        dimensionIdx: -1,
       });
     });
 
@@ -494,7 +525,7 @@ describe('q-brush', () => {
       expect(v).to.eql({
         path: '/qHyperCubeDef',
         measureIdx: 1,
-        dimensionIdx: -1
+        dimensionIdx: -1,
       });
     });
 
@@ -503,7 +534,7 @@ describe('q-brush', () => {
       expect(v).to.eql({
         path: '/qTreeDataDef',
         dimensionIdx: 3,
-        measureIdx: 2
+        measureIdx: 2,
       });
     });
 
@@ -513,33 +544,48 @@ describe('q-brush', () => {
         qTreeData: {
           qDimensionInfo: [
             { qMeasureInfo: [{}, { qAttrExprInfo: [{}, {}] }], qAttrExprInfo: [{}, {}] },
-            { qMeasureInfo: [], qAttrExprInfo: [{}, { /* target */ }, {}] }
-          ]
-        }
+            {
+              qMeasureInfo: [],
+              qAttrExprInfo: [
+                {},
+                {
+                  /* target */
+                },
+                {},
+              ],
+            },
+          ],
+        },
       });
       expect(v).to.eql({
         path: '/qTreeDataDef',
         measureIdx: 6,
-        dimensionIdx: -1
+        dimensionIdx: -1,
       });
     });
   });
 
   describe('multiRangeSelectTreeDataValues', () => {
     beforeEach(() => {
-      brush.brushes.returns([{
-        id: '/qTreeData/qDimensionInfo/1/qMeasureInfo/2',
-        type: 'range',
-        brush: {
-          ranges: () => [{ min: 13, max: 17 }, { min: 4, max: 9 }]
-        }
-      }, {
-        id: '/qTreeData/qDimensionInfo/2/qMeasureInfo/1',
-        type: 'range',
-        brush: {
-          ranges: () => [{ min: -13, max: 6 }]
-        }
-      }]);
+      brush.brushes.returns([
+        {
+          id: '/qTreeData/qDimensionInfo/1/qMeasureInfo/2',
+          type: 'range',
+          brush: {
+            ranges: () => [
+              { min: 13, max: 17 },
+              { min: 4, max: 9 },
+            ],
+          },
+        },
+        {
+          id: '/qTreeData/qDimensionInfo/2/qMeasureInfo/1',
+          type: 'range',
+          brush: {
+            ranges: () => [{ min: -13, max: 6 }],
+          },
+        },
+      ]);
     });
 
     it('should have method="multiRangeSelectTreeDataValues"', () => {
@@ -556,24 +602,33 @@ describe('q-brush', () => {
             qMeasureIx: 2,
             qDimensionIx: 1,
             qRange: {
-              qMin: 13, qMax: 17, qMinInclEq: true, qMaxInclEq: true
-            }
+              qMin: 13,
+              qMax: 17,
+              qMinInclEq: true,
+              qMaxInclEq: true,
+            },
           },
           {
             qMeasureIx: 2,
             qDimensionIx: 1,
             qRange: {
-              qMin: 4, qMax: 9, qMinInclEq: true, qMaxInclEq: true
-            }
+              qMin: 4,
+              qMax: 9,
+              qMinInclEq: true,
+              qMaxInclEq: true,
+            },
           },
           {
             qMeasureIx: 1,
             qDimensionIx: 2,
             qRange: {
-              qMin: -13, qMax: 6, qMinInclEq: true, qMaxInclEq: true
-            }
-          }
-        ]
+              qMin: -13,
+              qMax: 6,
+              qMinInclEq: true,
+              qMaxInclEq: true,
+            },
+          },
+        ],
       ]);
     });
   });

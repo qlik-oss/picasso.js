@@ -6,9 +6,9 @@ describe('JSON Path mashup resolver', () => {
       obj = {
         path: {
           to: {
-            paradise: 'heaven'
-          }
-        }
+            paradise: 'heaven',
+          },
+        },
       };
     expect(resolve(p, obj)).to.equal('heaven');
   });
@@ -16,7 +16,7 @@ describe('JSON Path mashup resolver', () => {
   it('should resolve path to array index', () => {
     let p = '/cars/1',
       obj = {
-        cars: ['first', 'second']
+        cars: ['first', 'second'],
       };
 
     expect(resolve(p, obj)).to.equal('second');
@@ -28,8 +28,8 @@ describe('JSON Path mashup resolver', () => {
         cars: [
           { brand: 'BMW', color: 'red' },
           { brand: 'Mercedes', color: 'silver' },
-          { brand: 'Volvo', color: 'black' }
-        ]
+          { brand: 'Volvo', color: 'black' },
+        ],
       };
 
     expect(resolve(p, obj)).to.deep.equal(['BMW', 'Mercedes', 'Volvo']);
@@ -41,8 +41,8 @@ describe('JSON Path mashup resolver', () => {
         cars: [
           { brand: 'BMW', color: 'red' },
           { brand: 'Mercedes', color: 'silver' },
-          { brand: 'Volvo', color: 'black' }
-        ]
+          { brand: 'Volvo', color: 'black' },
+        ],
       };
 
     expect(resolve(p, obj)).to.deep.equal(['BMW', 'Mercedes']);
@@ -54,8 +54,8 @@ describe('JSON Path mashup resolver', () => {
         cars: [
           { brand: 'BMW', color: 'red' },
           { brand: 'Mercedes', color: 'silver' },
-          { brand: 'Volvo', color: 'black' }
-        ]
+          { brand: 'Volvo', color: 'black' },
+        ],
       };
 
     expect(resolve(p, obj)).to.deep.equal(['Mercedes', 'Volvo']);

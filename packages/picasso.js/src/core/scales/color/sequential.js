@@ -9,7 +9,7 @@ const DEFAULT_SETTINGS = {
   range: [],
   invert: false,
   min: NaN,
-  max: NaN
+  max: NaN,
 };
 
 function generateDomain(range, min, max) {
@@ -22,7 +22,7 @@ function generateDomain(range, min, max) {
 
   domain.push(min);
   for (let i = 1; i < len - 1; i++) {
-    domain.push(min + (part * i));
+    domain.push(min + part * i);
   }
   domain.push(max);
 
@@ -55,7 +55,9 @@ function generateDomain(range, min, max) {
  */
 
 export default function scaleSequentialColor(settings = {}, data = {}, resources = {}) {
-  const s = linear(settings, data, resources).clamp(true).interpolate(interpolateRgb);
+  const s = linear(settings, data, resources)
+    .clamp(true)
+    .interpolate(interpolateRgb);
   const stgns = resolveSettings(settings, DEFAULT_SETTINGS, { data, resources });
   const isDomain = Array.isArray(stgns.domain) && stgns.domain.length;
   const isRange = Array.isArray(stgns.range) && stgns.range.length;

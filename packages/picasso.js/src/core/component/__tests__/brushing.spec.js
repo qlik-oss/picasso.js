@@ -1,7 +1,4 @@
-import {
-  styler,
-  resolveTapEvent
-} from '../brushing';
+import { styler, resolveTapEvent } from '../brushing';
 
 describe('Brushing', () => {
   let nodes;
@@ -14,33 +11,33 @@ describe('Brushing', () => {
         source: { field: 'a' },
         self: {
           source: { field: 'foo', key: 'cube' },
-          value: 1337
-        }
+          value: 1337,
+        },
       },
       {
         value: 13,
         source: { field: 'b' },
         self: {
           source: { field: 'bar', key: 'corp' },
-          value: 42
-        }
+          value: 42,
+        },
       },
       {
         value: 9,
         source: { field: 'c' },
         self: {
           source: { field: 'bez', key: 'table' },
-          value: 33
-        }
+          value: 33,
+        },
       },
       {
         value: 9,
         source: { field: 'c' },
         self: {
           source: { field: 'bez', key: 'table' },
-          value: [33, 56]
-        }
-      }
+          value: [33, 56],
+        },
+      },
     ];
 
     nodes = [
@@ -48,14 +45,14 @@ describe('Brushing', () => {
         type: 'rect',
         fill: 'yellow',
         stroke: 'pink',
-        data: data[0]
+        data: data[0],
       },
       {
         type: 'rect',
         fill: 'yellow',
         stroke: 'pink',
-        data: data[1]
-      }
+        data: data[1],
+      },
     ];
   });
 
@@ -71,7 +68,7 @@ describe('Brushing', () => {
         toggleValues: sinon.spy(),
         addValues: sinon.spy(),
         removeValues: sinon.spy(),
-        toggleRanges: sinon.spy()
+        toggleRanges: sinon.spy(),
       };
 
       config = {
@@ -79,67 +76,65 @@ describe('Brushing', () => {
           itemsAt: sinon.stub().returns([]),
           element: () => ({
             getBoundingClientRect: sinon.stub().returns({
-              left: 0, top: 0, width: 100, height: 100
-            })
-          })
+              left: 0,
+              top: 0,
+              width: 100,
+              height: 100,
+            }),
+          }),
         },
         chart: {
-          brush: sinon.stub().returns(brushContext)
+          brush: sinon.stub().returns(brushContext),
         },
-        data
+        data,
       };
 
       trigger = {
         contexts: ['test'],
-        data: ['self']
+        data: ['self'],
       };
 
       eventMock = {
         clientX: 50,
-        clientY: 50
+        clientY: 50,
       };
     });
 
     it('should bin multiple collisions into a single brush call', () => {
-      config.renderer.itemsAt.returns([
-        { node: { data: data[0] } },
-        { node: { data: data[1] } }
-      ]);
+      config.renderer.itemsAt.returns([{ node: { data: data[0] } }, { node: { data: data[1] } }]);
 
       resolveTapEvent({ e: eventMock, t: trigger, config });
 
       expect(brushContext.toggleValues.callCount).to.equal(1);
       expect(brushContext.toggleValues.args[0][0]).to.deep.equal([
         { key: `${data[0].self.source.key}/${data[0].self.source.field}`, value: data[0].self.value },
-        { key: `${data[1].self.source.key}/${data[1].self.source.field}`, value: data[1].self.value }
+        { key: `${data[1].self.source.key}/${data[1].self.source.field}`, value: data[1].self.value },
       ]);
     });
 
     it('should bin multiple collisions into a single brush call using node.data property', () => {
-      config.renderer.itemsAt.returns([
-        { node: { data: data[0] } },
-        { node: { data: data[1] } }
-      ]);
+      config.renderer.itemsAt.returns([{ node: { data: data[0] } }, { node: { data: data[1] } }]);
 
       resolveTapEvent({ e: eventMock, t: trigger, config });
 
       expect(brushContext.toggleValues.callCount).to.equal(1);
       expect(brushContext.toggleValues.args[0][0]).to.deep.equal([
         { key: `${data[0].self.source.key}/${data[0].self.source.field}`, value: data[0].self.value },
-        { key: `${data[1].self.source.key}/${data[1].self.source.field}`, value: data[1].self.value }
+        { key: `${data[1].self.source.key}/${data[1].self.source.field}`, value: data[1].self.value },
       ]);
     });
 
     it('should call range brush when data value is an array', () => {
-      config.renderer.itemsAt.returns([
-        { node: { data: data[3] } }
-      ]);
+      config.renderer.itemsAt.returns([{ node: { data: data[3] } }]);
 
       resolveTapEvent({ e: eventMock, t: trigger, config });
 
       expect(brushContext.toggleRanges.callCount).to.equal(1);
       expect(brushContext.toggleRanges.args[0][0]).to.deep.equal([
-        { key: `${data[3].self.source.key}/${data[3].self.source.field}`, range: { min: data[3].self.value[0], max: data[3].self.value[1] } }
+        {
+          key: `${data[3].self.source.key}/${data[3].self.source.field}`,
+          range: { min: data[3].self.value[0], max: data[3].self.value[1] },
+        },
       ]);
     });
 
@@ -201,9 +196,7 @@ describe('Brushing', () => {
 
     describe('touch events', () => {
       beforeEach(() => {
-        eventMock.changedTouches = [
-          { clientX: 50, clientY: 50 }
-        ];
+        eventMock.changedTouches = [{ clientX: 50, clientY: 50 }];
       });
 
       it('should resolve collisions with a touchRadius if configured', () => {
@@ -215,7 +208,7 @@ describe('Brushing', () => {
         expect(config.renderer.itemsAt.args[0][0]).to.deep.equal({
           cx: 50,
           cy: 50,
-          r: radius
+          r: radius,
         });
       });
     });
@@ -231,16 +224,13 @@ describe('Brushing', () => {
       nodes[1].data = data[1];
       dummyComponent = {
         chart: {
-          brush: sinon.stub()
+          brush: sinon.stub(),
         },
-        data: [
-          { self: 0 },
-          { self: 1 }
-        ],
+        data: [{ self: 0 }, { self: 1 }],
         nodes,
         renderer: {
-          render: sinon.spy()
-        }
+          render: sinon.spy(),
+        },
       };
 
       brusherStub = {
@@ -252,10 +242,8 @@ describe('Brushing', () => {
           this.listeners.push(obj);
         },
         trigger: function trigger(key) {
-          this.listeners
-            .filter((listener) => typeof listener[key] !== 'undefined')
-            .forEach((listener) => listener[key]());
-        }
+          this.listeners.filter(listener => typeof listener[key] !== 'undefined').forEach(listener => listener[key]());
+        },
       };
       brusherStub.containsMappedData.onCall(0).returns(false); // Do not match first node but all after
       brusherStub.containsMappedData.returns(true);
@@ -265,12 +253,12 @@ describe('Brushing', () => {
         context: 'test',
         style: {
           inactive: {
-            fill: 'inactiveFill'
+            fill: 'inactiveFill',
           },
           active: {
-            stroke: 'activeStroke'
-          }
-        }
+            stroke: 'activeStroke',
+          },
+        },
       };
     });
 
@@ -285,10 +273,10 @@ describe('Brushing', () => {
       styler(dummyComponent, consume);
       brusherStub.trigger('start');
 
-      dummyComponent.renderer.render.args[0][0].forEach((node) => {
+      dummyComponent.renderer.render.args[0][0].forEach(node => {
         expect(node.__style).to.deep.equal({
           fill: 'yellow',
-          stroke: 'pink'
+          stroke: 'pink',
         });
       });
     });
@@ -297,7 +285,7 @@ describe('Brushing', () => {
       styler(dummyComponent, consume);
       brusherStub.trigger('start');
 
-      dummyComponent.renderer.render.args[0][0].forEach((node) => {
+      dummyComponent.renderer.render.args[0][0].forEach(node => {
         expect(node.fill).to.deep.equal('inactiveFill');
       });
     });
@@ -307,7 +295,7 @@ describe('Brushing', () => {
       brusherStub.trigger('start');
       brusherStub.trigger('end');
 
-      dummyComponent.renderer.render.args[0][0].forEach((node) => {
+      dummyComponent.renderer.render.args[0][0].forEach(node => {
         expect(node.__style).to.equal(undefined);
       });
     });
@@ -334,7 +322,7 @@ describe('Brushing', () => {
             type: 'circle',
             fill: 'yellow',
             stroke: 'updateThis',
-            data: data[0]
+            data: data[0],
           },
           {
             type: 'container',
@@ -343,11 +331,11 @@ describe('Brushing', () => {
                 type: 'line',
                 fill: 'yellow',
                 stroke: 'updateThis',
-                data: data[0]
-              }
-            ]
-          }
-        ]
+                data: data[0],
+              },
+            ],
+          },
+        ],
       });
       styler(dummyComponent, consume);
       brusherStub.trigger('start');
@@ -372,13 +360,13 @@ describe('Brushing', () => {
         {
           type: 'circle',
           fill: 'doNotUpdate',
-          stroke: 'doNotUpdate'
+          stroke: 'doNotUpdate',
         },
         {
           type: 'line',
           fill: 'updateThis',
-          data: data[1]
-        }
+          data: data[1],
+        },
       ];
       styler(dummyComponent, consume);
       brusherStub.trigger('start');
@@ -395,50 +383,52 @@ describe('Brushing', () => {
         { type: 'a', fill: 'start', data: {} },
         { type: 'b', fill: 'start', data: {} },
         { type: 'c', fill: 'start', data: {} },
-        { type: 'd', fill: 'start', data: {} }
+        { type: 'd', fill: 'start', data: {} },
       ];
 
       styler(dummyComponent, {
         context: 'test',
-        filter(n) { return n.type === 'a' || n.type === 'c'; },
+        filter(n) {
+          return n.type === 'a' || n.type === 'c';
+        },
         style: {
           active: {
-            fill: 'active'
+            fill: 'active',
           },
           inactive: {
-            fill: 'inactive'
-          }
-        }
+            fill: 'inactive',
+          },
+        },
       });
       brusherStub.trigger('start');
       brusherStub.trigger('update');
 
       const output = dummyComponent.renderer.render.args[0][0];
-      expect(output.map((n) => n.fill)).to.eql(['inactive', 'start', 'active', 'start']);
+      expect(output.map(n => n.fill)).to.eql(['inactive', 'start', 'active', 'start']);
     });
 
     it('should resolve style function property functions', () => {
       dummyComponent.nodes = [
         { type: 'a', fill: 'red', data: {} },
-        { type: 'b', fill: 'green', data: {} }
+        { type: 'b', fill: 'green', data: {} },
       ];
 
       styler(dummyComponent, {
         context: 'test',
         style: {
           active: {
-            fill: (shape) => `${shape.fill}-active`
+            fill: shape => `${shape.fill}-active`,
           },
           inactive: {
-            fill: (shape) => `${shape.fill}-inactive`
-          }
-        }
+            fill: shape => `${shape.fill}-inactive`,
+          },
+        },
       });
       brusherStub.trigger('start');
       brusherStub.trigger('update');
 
       const output = dummyComponent.renderer.render.args[0][0];
-      expect(output.map((n) => n.fill)).to.eql(['red-inactive', 'green-active']);
+      expect(output.map(n => n.fill)).to.eql(['red-inactive', 'green-active']);
     });
   });
 });

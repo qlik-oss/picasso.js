@@ -10,7 +10,7 @@ describe('Circle', () => {
     shape = {
       cx: 0,
       cy: 0,
-      r: 0
+      r: 0,
     };
   });
 
@@ -43,7 +43,10 @@ describe('Circle', () => {
     it('should set correct values', () => {
       circle = createCircle(shape);
       circle.set({
-        cx: 99, cy: 999, r: 9, collider: { type: 'rect' }
+        cx: 99,
+        cy: 999,
+        r: 9,
+        collider: { type: 'rect' },
       });
       expect(circle.attrs.cx).to.be.equal(99);
       expect(circle.attrs.cy).to.be.equal(999);
@@ -93,7 +96,10 @@ describe('Circle', () => {
     it('should handle default values', () => {
       circle = createCircle(shape);
       expect(circle.boundingRect()).to.deep.equal({
-        x: 0, y: 0, width: 0, height: 0
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
       });
     });
 
@@ -103,7 +109,10 @@ describe('Circle', () => {
       shape.r = 5;
       circle = createCircle(shape);
       expect(circle.boundingRect()).to.deep.equal({
-        x: 5, y: 15, width: 10, height: 10
+        x: 5,
+        y: 15,
+        width: 10,
+        height: 10,
       });
     });
 
@@ -115,7 +124,10 @@ describe('Circle', () => {
       circle = createCircle(shape);
       circle.resolveLocalTransform();
       expect(circle.boundingRect(true)).to.deep.equal({
-        x: 10, y: 45, width: 20, height: 30
+        x: 10,
+        y: 45,
+        width: 20,
+        height: 30,
       });
     });
 
@@ -127,7 +139,10 @@ describe('Circle', () => {
       circle = createCircle(shape);
       circle.resolveLocalTransform();
       expect(circle.boundingRect(true)).to.deep.equal({
-        x: 10, y: 25, width: 10, height: 10
+        x: 10,
+        y: 25,
+        width: 10,
+        height: 10,
       });
     });
 
@@ -139,7 +154,10 @@ describe('Circle', () => {
       circle = createCircle(shape);
       circle.resolveLocalTransform();
       expect(circle.boundingRect(true)).to.deep.equal({
-        x: 14.14213562373095, y: 1.7763568394002505e-15, width: 14.14213562373095, height: 14.14213562373095
+        x: 14.14213562373095,
+        y: 1.7763568394002505e-15,
+        width: 14.14213562373095,
+        height: 14.14213562373095,
       });
     });
 
@@ -149,7 +167,10 @@ describe('Circle', () => {
       shape.r = 5;
       circle = createCircle(shape);
       expect(circle.boundingRect()).to.deep.equal({
-        x: -15, y: -25, width: 10, height: 10
+        x: -15,
+        y: -25,
+        width: 10,
+        height: 10,
       });
     });
   });
@@ -161,7 +182,7 @@ describe('Circle', () => {
         { x: 0, y: 0 },
         { x: 0, y: 0 },
         { x: 0, y: 0 },
-        { x: 0, y: 0 }
+        { x: 0, y: 0 },
       ];
       expect(circle.bounds()).to.deep.equal(e);
     });
@@ -175,7 +196,7 @@ describe('Circle', () => {
         { x: 5, y: 15 },
         { x: 15, y: 15 },
         { x: 15, y: 25 },
-        { x: 5, y: 25 }
+        { x: 5, y: 25 },
       ];
       expect(circle.bounds()).to.deep.equal(e);
     });
@@ -191,7 +212,7 @@ describe('Circle', () => {
         { x: 10, y: 45 },
         { x: 30, y: 45 },
         { x: 30, y: 75 },
-        { x: 10, y: 75 }
+        { x: 10, y: 75 },
       ];
       expect(circle.bounds(true)).to.deep.equal(e);
     });
@@ -207,7 +228,7 @@ describe('Circle', () => {
         { x: 10, y: 25 },
         { x: 20, y: 25 },
         { x: 20, y: 35 },
-        { x: 10, y: 35 }
+        { x: 10, y: 35 },
       ];
       expect(circle.bounds(true)).to.deep.equal(e);
     });
@@ -223,7 +244,7 @@ describe('Circle', () => {
         { x: 14.14213562373095, y: 1.7763568394002505e-15 },
         { x: 28.2842712474619, y: 1.7763568394002505e-15 },
         { x: 28.2842712474619, y: 14.142135623730951 },
-        { x: 14.14213562373095, y: 14.142135623730951 }
+        { x: 14.14213562373095, y: 14.142135623730951 },
       ];
       expect(circle.bounds(true)).to.deep.equal(e);
     });
@@ -237,7 +258,7 @@ describe('Circle', () => {
         { x: -15, y: -25 },
         { x: -5, y: -25 },
         { x: -5, y: -15 },
-        { x: -15, y: -15 }
+        { x: -15, y: -15 },
       ];
       expect(circle.bounds()).to.deep.equal(e);
     });
@@ -265,9 +286,14 @@ describe('Circle', () => {
       circle = createCircle(shape);
       circle.resolveLocalTransform();
 
-      expect(circle.intersectsLine({
-        x1: 15, y1: 30, x2: 16, y2: 31
-      })).to.equal(true);
+      expect(
+        circle.intersectsLine({
+          x1: 15,
+          y1: 30,
+          x2: 16,
+          y2: 31,
+        })
+      ).to.equal(true);
     });
   });
 
@@ -280,9 +306,14 @@ describe('Circle', () => {
       circle = createCircle(shape);
       circle.resolveLocalTransform();
 
-      expect(circle.intersectsRect({
-        x: 15, y: 30, width: 1, height: 1
-      })).to.equal(true);
+      expect(
+        circle.intersectsRect({
+          x: 15,
+          y: 30,
+          width: 1,
+          height: 1,
+        })
+      ).to.equal(true);
     });
   });
 
@@ -312,7 +343,7 @@ describe('Circle', () => {
         { x: 0, y: 25 },
         { x: 25, y: 0 },
         { x: 50, y: 25 },
-        { x: 0, y: 25 }
+        { x: 0, y: 25 },
       ];
 
       expect(circle.intersectsPolygon({ vertices })).to.equal(true);

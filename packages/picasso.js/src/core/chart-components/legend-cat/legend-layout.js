@@ -1,12 +1,12 @@
 import extend from 'extend';
 /* eslint no-mixed-operators:0 */
 
-export default function layout(rect, display, orientation, {
-  itemRenderer,
-  navigationRenderer,
-  titleRenderer,
-  isPreliminary = false
-}) {
+export default function layout(
+  rect,
+  display,
+  orientation,
+  { itemRenderer, navigationRenderer, titleRenderer, isPreliminary = false }
+) {
   let title;
   let content;
   let navigation;
@@ -15,15 +15,15 @@ export default function layout(rect, display, orientation, {
   const paddedRect = {
     x: display.spacing,
     y: display.spacing,
-    width: rect.width - (2 * display.spacing),
-    height: rect.height - (2 * display.spacing)
+    width: rect.width - 2 * display.spacing,
+    height: rect.height - 2 * display.spacing,
   };
 
   title = {
     x: paddedRect.x,
     y: paddedRect.y,
     width: paddedRect.width,
-    height: titleRenderer.spread()
+    height: titleRenderer.spread(),
   };
 
   if (orientation === 'horizontal') {
@@ -70,7 +70,7 @@ export default function layout(rect, display, orientation, {
       x: paddedRect.x,
       y: paddedRect.y,
       width: titleRenderer.extent(),
-      height: titleRenderer.spread()
+      height: titleRenderer.spread(),
     };
 
     // available space for items without navigation UI
@@ -84,20 +84,26 @@ export default function layout(rect, display, orientation, {
     content = {
       x: title.x + title.width + (title.width ? display.spacing : 0),
       y: paddedRect.y + Math.max(0, (navigationSpread - spread) / 2),
-      width: paddedRect.width - navigationSize - title.width - (navigationSize ? display.spacing : 0) - (title.width ? display.spacing : 0),
-      height: availableSpreadForItems
+      width:
+        paddedRect.width -
+        navigationSize -
+        title.width -
+        (navigationSize ? display.spacing : 0) -
+        (title.width ? display.spacing : 0),
+      height: availableSpreadForItems,
     };
     navigation = {
       x: content.x + content.width + (navigationSize ? display.spacing : 0),
       y: paddedRect.y,
       width: navigationSize,
-      height: paddedRect.height
+      height: paddedRect.height,
     };
 
     title.y = content.y;
 
     const isRtl = itemRenderer.direction() === 'rtl';
-    if (isRtl) { // switch title, content and navigation
+    if (isRtl) {
+      // switch title, content and navigation
       navigation.x = paddedRect.x;
       content.x = navigation.x + navigation.width + (navigation.width ? display.spacing : 0);
       title.x = content.x + content.width + (title.width ? display.spacing : 0);
@@ -122,24 +128,33 @@ export default function layout(rect, display, orientation, {
       x: paddedRect.x,
       y: paddedRect.y + paddedRect.height - navigationSize,
       width: paddedRect.width,
-      height: navigationSize
+      height: navigationSize,
     };
 
     content = {
       x: paddedRect.x,
       y: title.y + title.height + (title.height ? display.spacing : 0),
       width: paddedRect.width,
-      height: paddedRect.height - title.height - (title.height ? display.spacing : 0) - navigation.height - (navigation.height ? display.spacing : 0)
+      height:
+        paddedRect.height -
+        title.height -
+        (title.height ? display.spacing : 0) -
+        navigation.height -
+        (navigation.height ? display.spacing : 0),
     };
 
-    preferredSize = Math.max(titleRenderer.extent(), navigationSize ? navigationRenderer.spread() : 0, itemRenderer.spread());
+    preferredSize = Math.max(
+      titleRenderer.extent(),
+      navigationSize ? navigationRenderer.spread() : 0,
+      itemRenderer.spread()
+    );
   }
 
   content = extend({}, rect, {
     x: rect.x + content.x,
     y: rect.y + content.y,
     width: content.width,
-    height: content.height
+    height: content.height,
   });
 
   navigation.x += rect.x;
@@ -153,6 +168,6 @@ export default function layout(rect, display, orientation, {
     content: extend({}, rect, content),
     navigation: extend({}, rect, navigation),
     orientation,
-    preferredSize
+    preferredSize,
   };
 }

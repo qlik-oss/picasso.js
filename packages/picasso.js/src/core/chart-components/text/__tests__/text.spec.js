@@ -3,7 +3,7 @@ import textComponent from '../text';
 import band from '../../../scales/band';
 
 function assertNodeProperties(node, expected) {
-  Object.keys(expected).forEach((key) => {
+  Object.keys(expected).forEach(key => {
     expect(node).to.have.property(key, expected[key]);
   });
 }
@@ -42,27 +42,33 @@ describe('Text component', () => {
     theme.style.returns({
       text: {
         fontFamily: 'Arial',
-        fontSize: '15px'
-      }
+        fontSize: '15px',
+      },
     });
 
     scale.data = () => ({
-      fields: [{ title: () => 'fakeTitle', formatter: () => undefined }]
+      fields: [{ title: () => 'fakeTitle', formatter: () => undefined }],
     });
 
     config = {
       text: 'Testing',
       layout: {},
-      settings: {}
+      settings: {},
     };
 
     opts = {
       inner: {
-        x: 0, y: 0, width: 100, height: 100
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 100,
       },
       outer: {
-        x: 0, y: 0, width: 100, height: 100
-      }
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 100,
+      },
     };
   });
 
@@ -82,7 +88,7 @@ describe('Text component', () => {
             dx: -1.6666666666666667,
             dy: 0,
             anchor: 'middle',
-            transform: 'rotate(270, 93.33333333333333, 50)'
+            transform: 'rotate(270, 93.33333333333333, 50)',
           };
 
           assertNodeProperties(node, expected);
@@ -98,7 +104,7 @@ describe('Text component', () => {
             dx: -1.6666666666666667,
             dy: 0,
             anchor: 'middle',
-            transform: 'rotate(270, 93.33333333333333, 50)'
+            transform: 'rotate(270, 93.33333333333333, 50)',
           };
 
           assertNodeProperties(node, expected);
@@ -114,7 +120,7 @@ describe('Text component', () => {
             dx: -1.6666666666666667,
             dy: 0,
             anchor: 'end',
-            transform: 'rotate(270, 93.33333333333333, 5)'
+            transform: 'rotate(270, 93.33333333333333, 5)',
           };
 
           assertNodeProperties(node, expected);
@@ -130,7 +136,7 @@ describe('Text component', () => {
             dx: -1.6666666666666667,
             dy: 0,
             anchor: 'start',
-            transform: 'rotate(270, 93.33333333333333, 95)'
+            transform: 'rotate(270, 93.33333333333333, 95)',
           };
 
           assertNodeProperties(node, expected);
@@ -148,7 +154,7 @@ describe('Text component', () => {
             dx: -1.6666666666666667,
             dy: 0,
             anchor: 'middle',
-            transform: 'rotate(270, 88.33333333333333, 50)'
+            transform: 'rotate(270, 88.33333333333333, 50)',
           };
 
           assertNodeProperties(node, expected);
@@ -164,7 +170,7 @@ describe('Text component', () => {
             dx: -1.6666666666666667,
             dy: 0,
             anchor: 'middle',
-            transform: 'rotate(270, 93.33333333333333, 50)'
+            transform: 'rotate(270, 93.33333333333333, 50)',
           };
 
           assertNodeProperties(node, expected);
@@ -187,7 +193,7 @@ describe('Text component', () => {
             dx: 1.6666666666666667,
             dy: 0,
             anchor: 'middle',
-            transform: 'rotate(90, 6.666666666666667, 50)'
+            transform: 'rotate(90, 6.666666666666667, 50)',
           };
 
           assertNodeProperties(node, expected);
@@ -203,7 +209,7 @@ describe('Text component', () => {
             dx: 1.6666666666666667,
             dy: 0,
             anchor: 'middle',
-            transform: 'rotate(90, 6.666666666666667, 50)'
+            transform: 'rotate(90, 6.666666666666667, 50)',
           };
 
           assertNodeProperties(node, expected);
@@ -219,7 +225,7 @@ describe('Text component', () => {
             dx: 1.6666666666666667,
             dy: 0,
             anchor: 'start',
-            transform: 'rotate(90, 6.666666666666667, 5)'
+            transform: 'rotate(90, 6.666666666666667, 5)',
           };
 
           assertNodeProperties(node, expected);
@@ -235,7 +241,7 @@ describe('Text component', () => {
             dx: 1.6666666666666667,
             dy: 0,
             anchor: 'end',
-            transform: 'rotate(90, 6.666666666666667, 95)'
+            transform: 'rotate(90, 6.666666666666667, 95)',
           };
 
           assertNodeProperties(node, expected);
@@ -253,7 +259,7 @@ describe('Text component', () => {
             dx: 1.6666666666666667,
             dy: 0,
             anchor: 'middle',
-            transform: 'rotate(90, 11.666666666666666, 50)'
+            transform: 'rotate(90, 11.666666666666666, 50)',
           };
 
           assertNodeProperties(node, expected);
@@ -269,7 +275,7 @@ describe('Text component', () => {
             dx: 1.6666666666666667,
             dy: 0,
             anchor: 'middle',
-            transform: 'rotate(90, 6.666666666666667, 50)'
+            transform: 'rotate(90, 6.666666666666667, 50)',
           };
 
           assertNodeProperties(node, expected);
@@ -291,7 +297,7 @@ describe('Text component', () => {
             y: 95,
             dx: 0,
             dy: -0.8333333333333334,
-            anchor: 'middle'
+            anchor: 'middle',
           };
 
           assertNodeProperties(node, expected);
@@ -306,7 +312,7 @@ describe('Text component', () => {
             y: 95,
             dx: 0,
             dy: -0.8333333333333334,
-            anchor: 'middle'
+            anchor: 'middle',
           };
 
           assertNodeProperties(node, expected);
@@ -321,7 +327,7 @@ describe('Text component', () => {
             y: 95,
             dx: 0,
             dy: -0.8333333333333334,
-            anchor: 'start'
+            anchor: 'start',
           };
 
           assertNodeProperties(node, expected);
@@ -336,7 +342,7 @@ describe('Text component', () => {
             y: 95,
             dx: 0,
             dy: -0.8333333333333334,
-            anchor: 'end'
+            anchor: 'end',
           };
 
           assertNodeProperties(node, expected);
@@ -353,7 +359,7 @@ describe('Text component', () => {
             y: 90,
             dx: 0,
             dy: -0.8333333333333334,
-            anchor: 'middle'
+            anchor: 'middle',
           };
 
           assertNodeProperties(node, expected);
@@ -368,7 +374,7 @@ describe('Text component', () => {
             y: 95,
             dx: 0,
             dy: -0.8333333333333334,
-            anchor: 'middle'
+            anchor: 'middle',
           };
 
           assertNodeProperties(node, expected);
@@ -384,7 +390,7 @@ describe('Text component', () => {
             y: 95,
             dx: 0,
             dy: -0.8333333333333334,
-            anchor: 'start'
+            anchor: 'start',
           };
 
           assertNodeProperties(node, expected);
@@ -400,7 +406,7 @@ describe('Text component', () => {
             y: 95,
             dx: 0,
             dy: -0.8333333333333334,
-            anchor: 'end'
+            anchor: 'end',
           };
 
           assertNodeProperties(node, expected);
@@ -422,7 +428,7 @@ describe('Text component', () => {
             y: 10,
             dx: 0,
             dy: -1.6666666666666667,
-            anchor: 'middle'
+            anchor: 'middle',
           };
 
           assertNodeProperties(node, expected);
@@ -437,7 +443,7 @@ describe('Text component', () => {
             y: 10,
             dx: 0,
             dy: -1.6666666666666667,
-            anchor: 'middle'
+            anchor: 'middle',
           };
 
           assertNodeProperties(node, expected);
@@ -452,7 +458,7 @@ describe('Text component', () => {
             y: 10,
             dx: 0,
             dy: -1.6666666666666667,
-            anchor: 'start'
+            anchor: 'start',
           };
 
           assertNodeProperties(node, expected);
@@ -467,7 +473,7 @@ describe('Text component', () => {
             y: 10,
             dx: 0,
             dy: -1.6666666666666667,
-            anchor: 'end'
+            anchor: 'end',
           };
 
           assertNodeProperties(node, expected);
@@ -484,7 +490,7 @@ describe('Text component', () => {
             y: 15,
             dx: 0,
             dy: -1.6666666666666667,
-            anchor: 'middle'
+            anchor: 'middle',
           };
 
           assertNodeProperties(node, expected);
@@ -499,7 +505,7 @@ describe('Text component', () => {
             y: 10,
             dx: 0,
             dy: -1.6666666666666667,
-            anchor: 'middle'
+            anchor: 'middle',
           };
 
           assertNodeProperties(node, expected);
@@ -515,7 +521,7 @@ describe('Text component', () => {
             y: 10,
             dx: 0,
             dy: -1.6666666666666667,
-            anchor: 'start'
+            anchor: 'start',
           };
 
           assertNodeProperties(node, expected);
@@ -531,7 +537,7 @@ describe('Text component', () => {
             y: 10,
             dx: 0,
             dy: -1.6666666666666667,
-            anchor: 'end'
+            anchor: 'end',
           };
 
           assertNodeProperties(node, expected);
@@ -547,7 +553,7 @@ describe('Text component', () => {
       const node = simulateRender();
 
       const expected = {
-        maxWidth: config.settings.maxLengthPx
+        maxWidth: config.settings.maxLengthPx,
       };
 
       assertNodeProperties(node, expected);
@@ -558,7 +564,7 @@ describe('Text component', () => {
       const node = simulateRender();
 
       const expected = {
-        maxWidth: opts.inner.height * 0.8
+        maxWidth: opts.inner.height * 0.8,
       };
 
       assertNodeProperties(node, expected);
@@ -569,7 +575,7 @@ describe('Text component', () => {
       const node = simulateRender();
 
       const expected = {
-        maxWidth: opts.inner.width * 0.8
+        maxWidth: opts.inner.width * 0.8,
       };
 
       assertNodeProperties(node, expected);
@@ -577,7 +583,10 @@ describe('Text component', () => {
 
     it('join character', () => {
       scale.data = () => ({
-        fields: [{ title: () => 'fakeTitle1', formatter: () => undefined }, { title: () => 'fakeTitle2', formatter: () => undefined }]
+        fields: [
+          { title: () => 'fakeTitle1', formatter: () => undefined },
+          { title: () => 'fakeTitle2', formatter: () => undefined },
+        ],
       });
       config.layout.dock = 'left';
       config.scale = 'x';
@@ -589,7 +598,10 @@ describe('Text component', () => {
 
     it('join as empty string', () => {
       scale.data = () => ({
-        fields: [{ title: () => 'fakeTitle1', formatter: () => undefined }, { title: () => 'fakeTitle2', formatter: () => undefined }]
+        fields: [
+          { title: () => 'fakeTitle1', formatter: () => undefined },
+          { title: () => 'fakeTitle2', formatter: () => undefined },
+        ],
       });
       config.layout.dock = 'left';
       config.scale = 'x';
@@ -616,7 +628,7 @@ describe('Text component', () => {
           y: 10,
           dx: 0,
           dy: -1.6666666666666667,
-          anchor: 'middle'
+          anchor: 'middle',
         };
 
         assertNodeProperties(node, expected);
@@ -627,7 +639,7 @@ describe('Text component', () => {
         const node = simulateUpdate();
 
         const expected = {
-          text: config.text
+          text: config.text,
         };
 
         assertNodeProperties(node, expected);
@@ -639,7 +651,7 @@ describe('Text component', () => {
           const node = simulateUpdate();
 
           const expected = {
-            maxWidth: config.settings.maxLengthPx
+            maxWidth: config.settings.maxLengthPx,
           };
 
           assertNodeProperties(node, expected);
@@ -650,8 +662,8 @@ describe('Text component', () => {
             text: {
               fontSize: 'thick and slim',
               fontFamily: 'nice family',
-              fill: 'good color'
-            }
+              fill: 'good color',
+            },
           });
           // config.settings.style = {
           //   fontSize: 'thick and slim',
@@ -663,7 +675,7 @@ describe('Text component', () => {
           const expected = {
             fontSize: 'thick and slim',
             fontFamily: 'nice family',
-            fill: 'good color'
+            fill: 'good color',
           };
 
           assertNodeProperties(node, expected);
@@ -679,7 +691,7 @@ describe('Text component', () => {
             dx: -1.6666666666666667,
             dy: 0,
             anchor: 'end',
-            transform: 'rotate(270, 93.33333333333333, 5)'
+            transform: 'rotate(270, 93.33333333333333, 5)',
           };
 
           assertNodeProperties(node, expected);
@@ -690,7 +702,7 @@ describe('Text component', () => {
 
   describe('preferredSize', () => {
     it('should return same size for all dock areas', () => {
-      ['left', 'right', 'top', 'bottom'].forEach((dock) => {
+      ['left', 'right', 'top', 'bottom'].forEach(dock => {
         config.layout.dock = dock;
         const size = simulateLayout();
         expect(size).to.equal(15);
@@ -737,7 +749,10 @@ describe('Text component', () => {
 
     it('scale by reference with multiple sources', () => {
       scale.data = () => ({
-        fields: [{ title: () => 'fakeTitle1', formatter: () => undefined }, { title: () => 'fakeTitle2', formatter: () => undefined }]
+        fields: [
+          { title: () => 'fakeTitle1', formatter: () => undefined },
+          { title: () => 'fakeTitle2', formatter: () => undefined },
+        ],
       });
       config.layout.dock = 'left';
       config.scale = 'x';

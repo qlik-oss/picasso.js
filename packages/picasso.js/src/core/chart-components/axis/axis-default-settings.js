@@ -22,77 +22,77 @@ const DEFAULT_DISCRETE_SETTINGS = {
    */
   labels: {
     /** Toggle labels on/off
-    * @type {boolean=} */
+     * @type {boolean=} */
     show: true,
     /** Tilting angle in degrees. Capped between -90 and 90. Only applicable when labels are in `tilted` mode.
-    * @type {number=} */
+     * @type {number=} */
     tiltAngle: 40,
     /** Threshold for toggle of tilted labels. Capped between 0 and 1. For example, if it is set to 0.7, then tilted labels will be toggled if less than 70% of the labels are visible.
-    * @type {number=}
-    * @experimental */
+     * @type {number=}
+     * @experimental */
     tiltThreshold: 0.7,
     /** Control the amount of space (in pixels) that labes can occupy outside their docking area. Only applicable when labels are in `tilted` mode.
-    * @type {number=} */
+     * @type {number=} */
     maxEdgeBleed: Infinity,
     /** Space in pixels between the tick and label.
-    * @type {number=} */
+     * @type {number=} */
     margin: 4,
     /** Max length of labels in pixels
-    * @type {number=} */
+     * @type {number=} */
     maxLengthPx: 150,
     /** Min length of labels in pixels. Labels will always at least require this much space
-    * @type {number=} */
+     * @type {number=} */
     minLengthPx: 0,
     /** Control how labels arrange themself. Availabe modes are `auto`, `horizontal`, `layered` and `tilted`. When set to `auto` the axis determines the best possible layout in the current context.
-    * @type {string=} */
+     * @type {string=} */
     mode: 'auto',
     /** When only a sub-set of data is available, ex. when paging. This property can be used to let the axis estimate how much space the labels will consume, allowing it to give a consistent space estimate over the entire dataset when paging.
-    * @type {number=} */
+     * @type {number=} */
     maxGlyphCount: NaN,
     /** Align act as a slider for the text bounding rect over the item bandwidth, given that the item have a bandwidth. Except when labels are tilted, then the align is a pure align that shifts the position of the label anchoring point.
-    * @type {number=} */
+     * @type {number=} */
     align: 0.5,
     /** Offset in pixels along the axis direction.
-    * @type {number=} */
+     * @type {number=} */
     offset: 0,
     /**
      * Toggle whether labels should be filtered if they are overlapping. Filtering may be applied in a non-sequential order.
      * If labels are overlapping and this setting is toggled off, the axis will automatically hide.
      * @type {boolean=}
      */
-    filterOverlapping: false
+    filterOverlapping: false,
   },
   /**
    * @typedef {object}
    */
   ticks: {
     /** Toggle ticks on/off
-    * @type {boolean=} */
+     * @type {boolean=} */
     show: false,
     /** Space in pixels between the ticks and the line.
-    * @type {number=} */
+     * @type {number=} */
     margin: 0,
     /** Size of the ticks in pixels.
-    * @type {number=} */
-    tickSize: 4
+     * @type {number=} */
+    tickSize: 4,
   },
   /**
    * @typedef {object}
    */
   line: {
     /** Toggle line on/off
-    * @type {boolean=} */
-    show: false
+     * @type {boolean=} */
+    show: false,
   },
   /** Padding in direction perpendicular to the axis
-    * @type {number=} */
+   * @type {number=} */
   paddingStart: 0,
   /** Padding in direction perpendicular to the axis
-    * @type {number=} */
+   * @type {number=} */
   paddingEnd: 10,
   /** Set the anchoring point of the axis. Avaialable options are `auto/left/right/bottom/top`. In `auto` the axis determines the best option. The options are restricted based on the axis orientation, a vertical axis may only anchor on `left` or `right`
-    * @type {string=} */
-  align: 'auto'
+   * @type {string=} */
+  align: 'auto',
 };
 
 /**
@@ -106,78 +106,75 @@ const DEFAULT_CONTINUOUS_SETTINGS = {
    */
   labels: {
     /** Toggle labels on/off
-    * @type {boolean=} */
+     * @type {boolean=} */
     show: true,
     /** Space in pixels between the tick and label.
-    * @type {number=} */
+     * @type {number=} */
     margin: 4,
     /** Max length of labels in pixels
-    * @type {number=} */
+     * @type {number=} */
     maxLengthPx: 150,
     /** Min length of labels in pixels. Labels will always at least require this much space
-    * @type {number=} */
+     * @type {number=} */
     minLengthPx: 0,
     /** Align act as a slider for the text bounding rect over the item bandwidth, given that the item have a bandwidth.
-    * @type {number=} */
+     * @type {number=} */
     align: 0.5,
     /** Offset in pixels along the axis direction.
-    * @type {number=} */
+     * @type {number=} */
     offset: 0,
     /**
      * Toggle whether labels should be filtered if they are overlapping. Filtering may be applied in a non-sequential order.
      * If labels are overlapping and this setting is toggled off, the axis will automatically hide.
      * @type {boolean=}
      */
-    filterOverlapping: true
+    filterOverlapping: true,
   },
   /**
    * @typedef {object}
    */
   ticks: {
     /** Toggle ticks on/off
-    * @type {boolean=} */
+     * @type {boolean=} */
     show: true,
     /** Space in pixels between the ticks and the line.
-    * @type {number=} */
+     * @type {number=} */
     margin: 0,
     /** Size of the ticks in pixels.
-    * @type {number=} */
-    tickSize: 8
+     * @type {number=} */
+    tickSize: 8,
   },
   /**
    * @typedef {object}
    */
   minorTicks: {
     /** Toggle minor-ticks on/off
-    * @type {boolean=} */
+     * @type {boolean=} */
     show: false,
     /** Size of the ticks in pixels.
-    * @type {number=} */
+     * @type {number=} */
     tickSize: 3,
     /** Space in pixels between the ticks and the line.
-    * @type {number=} */
-    margin: 0
+     * @type {number=} */
+    margin: 0,
   },
   /**
    * @typedef {object}
    */
   line: {
     /** Toggle line on/off
-    * @type {boolean=} */
-    show: true
+     * @type {boolean=} */
+    show: true,
   },
   /** Padding in direction perpendicular to the axis
-    * @type {number=} */
+   * @type {number=} */
   paddingStart: 0,
   /** Padding in direction perpendicular to the axis
-    * @type {number=} */
+   * @type {number=} */
   paddingEnd: 10,
   /** Set the anchoring point of the axis. Avaialable options are `auto/left/right/bottom/top`. In `auto` the axis determines the best option. The options are restricted based on the axis orientation, a vertical axis may only anchor on `left` or `right`
-    * @type {string=} */
-  align: 'auto'
+   * @type {string=} */
+  align: 'auto',
 };
 
-export {
-  DEFAULT_DISCRETE_SETTINGS,
-  DEFAULT_CONTINUOUS_SETTINGS
-};
+export { DEFAULT_DISCRETE_SETTINGS, DEFAULT_CONTINUOUS_SETTINGS };

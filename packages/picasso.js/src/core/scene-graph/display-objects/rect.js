@@ -1,9 +1,6 @@
 import extend from 'extend';
 import DisplayObject from './display-object';
-import {
-  rectToPoints,
-  getMinMax
-} from '../../geometry/util';
+import { rectToPoints, getMinMax } from '../../geometry/util';
 
 /**
  * @extends node-def
@@ -21,18 +18,17 @@ export default class Rect extends DisplayObject {
   }
 
   set(v = {}) {
-    const {
-      x = 0,
-      y = 0,
-      width = 0,
-      height = 0,
-      rx = 0,
-      ry = 0,
+    const { x = 0, y = 0, width = 0, height = 0, rx = 0, ry = 0, collider } = v;
+    const opts = extend(
+      {
+        type: 'rect',
+        x,
+        y,
+        width,
+        height,
+      },
       collider
-    } = v;
-    const opts = extend({
-      type: 'rect', x, y, width, height
-    }, collider);
+    );
 
     super.set(v);
 
@@ -52,8 +48,12 @@ export default class Rect extends DisplayObject {
       this.attrs.height = -height;
     }
 
-    if (rx > 0) { this.attrs.rx = rx; }
-    if (ry > 0) { this.attrs.ry = ry; }
+    if (rx > 0) {
+      this.attrs.rx = rx;
+    }
+    if (ry > 0) {
+      this.attrs.ry = ry;
+    }
 
     this.collider = opts;
     this.__boundingRect = { true: null, false: null };
@@ -72,7 +72,7 @@ export default class Rect extends DisplayObject {
       x: xMin,
       y: yMin,
       width: xMax - xMin,
-      height: yMax - yMin
+      height: yMax - yMin,
     };
 
     return this.__boundingRect[includeTransform];
@@ -88,7 +88,7 @@ export default class Rect extends DisplayObject {
       { x: rect.x, y: rect.y },
       { x: rect.x + rect.width, y: rect.y },
       { x: rect.x + rect.width, y: rect.y + rect.height },
-      { x: rect.x, y: rect.y + rect.height }
+      { x: rect.x, y: rect.y + rect.height },
     ];
 
     return this.__bounds[includeTransform];

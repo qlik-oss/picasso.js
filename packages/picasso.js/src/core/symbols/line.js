@@ -5,7 +5,7 @@ function createRectCollider({ x, y, size }) {
     x: x - r,
     y: y - r,
     width: size,
-    height: size
+    height: size,
   };
 }
 
@@ -28,7 +28,7 @@ function line(options) {
     y1: y - (isVertical ? r : 0),
     x2: x + (isVertical ? 0 : r),
     y2: y + (isVertical ? r : 0),
-    collider: createRectCollider(options) // TODO Use visual collider?
+    collider: createRectCollider(options), // TODO Use visual collider?
   };
 }
 

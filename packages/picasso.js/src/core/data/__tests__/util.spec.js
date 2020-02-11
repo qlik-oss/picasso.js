@@ -1,7 +1,4 @@
-import {
-  getPropsInfo,
-  collect
-} from '../util';
+import { getPropsInfo, collect } from '../util';
 
 describe('data-util', () => {
   let ds;
@@ -9,7 +6,7 @@ describe('data-util', () => {
   beforeEach(() => {
     ds = {
       field: sinon.stub(),
-      key: 'nyckel'
+      key: 'nyckel',
     };
   });
 
@@ -20,11 +17,14 @@ describe('data-util', () => {
       ds.field.withArgs('f').returns({
         key: () => 'country',
         reduce: reduceFn,
-        value: valueFn
+        value: valueFn,
       });
-      const p = getPropsInfo({
-        field: 'f'
-      }, ds);
+      const p = getPropsInfo(
+        {
+          field: 'f',
+        },
+        ds
+      );
 
       expect(p.main.value).to.equal(valueFn);
       expect(p.main.reduce).to.equal(reduceFn);
@@ -37,24 +37,30 @@ describe('data-util', () => {
       ds.field.withArgs('f').returns({
         key: () => 'country',
         reduce: 'foo',
-        value: 'foooo'
+        value: 'foooo',
       });
       ds.field.withArgs('f2').returns({
         key: () => 'region',
         reduce: 'reg',
-        value: 'regg'
+        value: 'regg',
       });
-      const p = getPropsInfo({
-        field: 'f',
-        value: valueFn,
-        reduce: reduceFn,
-        label: labelFn,
-        props: {
-          x: {
-            field: 'f2', value: 'val', reduce: 'sum', label: 'etikett'
-          }
-        }
-      }, ds);
+      const p = getPropsInfo(
+        {
+          field: 'f',
+          value: valueFn,
+          reduce: reduceFn,
+          label: labelFn,
+          props: {
+            x: {
+              field: 'f2',
+              value: 'val',
+              reduce: 'sum',
+              label: 'etikett',
+            },
+          },
+        },
+        ds
+      );
 
       expect(p.main.value).to.equal(valueFn);
       expect(p.main.reduce).to.equal(reduceFn);
@@ -75,35 +81,38 @@ describe('data-util', () => {
         reduce: () => 'red',
         reduceLabel: () => 'pink',
         value: 'foooo',
-        label: 'lbl'
+        label: 'lbl',
       };
       const region = {
         key: () => 'region',
         reduce: 'reg',
         reduceLabel: 'foo',
-        value: 'regg'
+        value: 'regg',
       };
       ds.field.withArgs('f').returns(country);
       ds.field.withArgs('f2').returns(region);
-      const p = getPropsInfo({
-        field: 'f',
-        value: valueFn,
-        reduce: reduceFn,
-        props: {
-          x: {
-            fields: [
-              {
-                field: 'f2',
-                value: 'val',
-                reduce: reduceFn2,
-                reduceLabel: reduceLbl
-              },
-              { }
-            ],
-            reduce: multiReduceFn
-          }
-        }
-      }, ds);
+      const p = getPropsInfo(
+        {
+          field: 'f',
+          value: valueFn,
+          reduce: reduceFn,
+          props: {
+            x: {
+              fields: [
+                {
+                  field: 'f2',
+                  value: 'val',
+                  reduce: reduceFn2,
+                  reduceLabel: reduceLbl,
+                },
+                {},
+              ],
+              reduce: multiReduceFn,
+            },
+          },
+        },
+        ds
+      );
 
       expect(p.props.x.fields.length).to.equal(2);
       expect(p.props.x.reduce).to.equal(multiReduceFn);
@@ -113,64 +122,76 @@ describe('data-util', () => {
         value: 'val',
         reduce: reduceFn2,
         reduceLabel: reduceLbl,
-        label: undefined
+        label: undefined,
       });
-      expect(p.props.x.fields[1]).to.eql({
-        field: country,
-        value: 'foooo',
-        reduce: country.reduce,
-        reduceLabel: country.reduceLabel,
-        label: 'lbl'
-      }, 'sdfsdf');
+      expect(p.props.x.fields[1]).to.eql(
+        {
+          field: country,
+          value: 'foooo',
+          reduce: country.reduce,
+          reduceLabel: country.reduceLabel,
+          label: 'lbl',
+        },
+        'sdfsdf'
+      );
     });
 
     it('should convert string reducer to a function', () => {
       ds.field.withArgs('f').returns({
         key: () => 'country',
-        reduce: 'avg'
+        reduce: 'avg',
       });
-      const p = getPropsInfo({
-        field: 'f'
-      }, ds);
+      const p = getPropsInfo(
+        {
+          field: 'f',
+        },
+        ds
+      );
 
       expect(p.main.reduce).to.be.a('function');
     });
 
     it('should accept a filter function', () => {
       ds.field.withArgs('f').returns({
-        key: () => 'country'
+        key: () => 'country',
       });
-      const p = getPropsInfo({
-        field: 'f',
-        filter: () => {}
-      }, ds);
+      const p = getPropsInfo(
+        {
+          field: 'f',
+          filter: () => {},
+        },
+        ds
+      );
 
       expect(p.main.filter).to.be.a('function');
     });
 
     it('should accept primitives and functions', () => {
       const f = {
-        key: () => 'country'
+        key: () => 'country',
       };
       ds.field.withArgs('f').returns(f);
       const fn = () => 3;
-      const p = getPropsInfo({
-        field: 'f',
-        props: {
-          x: 0,
-          y: fn
-        }
-      }, ds);
+      const p = getPropsInfo(
+        {
+          field: 'f',
+          props: {
+            x: 0,
+            y: fn,
+          },
+        },
+        ds
+      );
 
       expect(p.props.x).to.eql({
         type: 'primitive',
-        value: 0
+        value: 0,
       });
       expect(p.props.y).to.eql({
         field: f,
         type: 'function',
         value: fn,
-        label: fn
+        label: fn,
       });
     });
   });
@@ -187,24 +208,24 @@ describe('data-util', () => {
               value: 3,
               label: 'three',
               source: 'kjella',
-              p: { value: 3.1, label: 'one', source: 'kp' }
+              p: { value: 3.1, label: 'one', source: 'kp' },
             },
             {
               value: 7,
               label: 'seven',
               source: 'kjella',
-              p: { value: 7.2, label: 'two', source: 'kp' }
-            }
-          ]
-        }
+              p: { value: 7.2, label: 'two', source: 'kp' },
+            },
+          ],
+        },
       ];
 
       mainField = {
-        formatter: () => ((v) => `$${v}`)
+        formatter: () => v => `$${v}`,
       };
 
       pField = {
-        formatter: () => ((v) => `£${v}`)
+        formatter: () => v => `£${v}`,
       };
     });
 
@@ -212,68 +233,74 @@ describe('data-util', () => {
       const main = { field: mainField };
 
       const props = {
-        p: { field: pField }
+        p: { field: pField },
       };
 
       const propsArr = Object.keys(props);
       const items = collect(tracked, { main, props, propsArr });
 
-      expect(items).to.eql([{
-        value: [3, 7],
-        label: '$3,7',
-        source: 'kjella',
-        p: { value: [3.1, 7.2], label: '£3.1,7.2', source: 'kp' }
-      }]);
+      expect(items).to.eql([
+        {
+          value: [3, 7],
+          label: '$3,7',
+          source: 'kjella',
+          p: { value: [3.1, 7.2], label: '£3.1,7.2', source: 'kp' },
+        },
+      ]);
     });
 
     it('should reduce value and labels', () => {
       const main = {
         field: mainField,
-        reduce: (values) => values.join('::'),
-        reduceLabel: (labels) => labels.join('-')
+        reduce: values => values.join('::'),
+        reduceLabel: labels => labels.join('-'),
       };
 
       const props = {
         p: {
           field: pField,
-          reduce: (values) => values.join('|'),
-          reduceLabel: (labels, value) => `~${value}`
-        }
+          reduce: values => values.join('|'),
+          reduceLabel: (labels, value) => `~${value}`,
+        },
       };
       const propsArr = Object.keys(props);
 
       const items = collect(tracked, { main, props, propsArr });
 
-      expect(items).to.eql([{
-        value: '3::7',
-        label: 'three-seven',
-        source: 'kjella',
-        p: { value: '3.1|7.2', label: '~3.1|7.2', source: 'kp' }
-      }]);
+      expect(items).to.eql([
+        {
+          value: '3::7',
+          label: 'three-seven',
+          source: 'kjella',
+          p: { value: '3.1|7.2', label: '~3.1|7.2', source: 'kp' },
+        },
+      ]);
     });
 
     it('should reduce labels using field formatter when reduceLabel is not defined', () => {
       const main = {
         field: mainField,
-        reduce: (values) => values.join('::')
+        reduce: values => values.join('::'),
       };
 
       const props = {
         p: {
           field: pField,
-          reduce: (values) => values.join('|')
-        }
+          reduce: values => values.join('|'),
+        },
       };
       const propsArr = Object.keys(props);
 
       const items = collect(tracked, { main, props, propsArr });
 
-      expect(items).to.eql([{
-        value: '3::7',
-        label: '$3::7',
-        source: 'kjella',
-        p: { value: '3.1|7.2', label: '£3.1|7.2', source: 'kp' }
-      }]);
+      expect(items).to.eql([
+        {
+          value: '3::7',
+          label: '$3::7',
+          source: 'kjella',
+          p: { value: '3.1|7.2', label: '£3.1|7.2', source: 'kp' },
+        },
+      ]);
     });
   });
 });

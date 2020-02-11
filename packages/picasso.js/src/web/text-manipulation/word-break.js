@@ -1,10 +1,5 @@
-import stringTokenizer, {
-  MANDATORY,
-  BREAK_ALLOWED
-} from './string-tokenizer';
-import {
-  HYPHENS_CHAR
-} from './text-const';
+import stringTokenizer, { MANDATORY, BREAK_ALLOWED } from './string-tokenizer';
+import { HYPHENS_CHAR } from './text-const';
 import { fontSizeToLineHeight } from './font-size-to-height';
 
 function resolveMaxAllowedLines(node) {
@@ -30,8 +25,8 @@ function initState(node, measureText) {
     hyphens: {
       enabled: node.hyphens === 'auto',
       char: HYPHENS_CHAR,
-      metrics: measureText(HYPHENS_CHAR)
-    }
+      metrics: measureText(HYPHENS_CHAR),
+    },
   };
 }
 
@@ -78,14 +73,18 @@ function insertHyphenAndJump(state, token, iterator) {
 function breakSequence(state, token, measureText) {
   const charTokenIterator = stringTokenizer({
     string: token.value,
-    measureText
+    measureText,
   });
 
   while (state.lines.length < state.maxLines) {
     let charToken = charTokenIterator.next();
     if (charToken.done) {
       break;
-    } else if (state.width + charToken.width > state.maxWidth && charToken.breakOpportunity === BREAK_ALLOWED && state.line.length > 0) {
+    } else if (
+      state.width + charToken.width > state.maxWidth &&
+      charToken.breakOpportunity === BREAK_ALLOWED &&
+      state.line.length > 0
+    ) {
       charToken = state.hyphens.enabled ? insertHyphenAndJump(state, charToken, charTokenIterator) : charToken;
       newLine(state);
       appendToLine(state, charToken);
@@ -101,7 +100,7 @@ export function breakAll(node, measureText) {
     string: text,
     separator: '',
     measureText,
-    noBreakAllowedIdentifiers: [(chunk, i) => i === 0]
+    noBreakAllowedIdentifiers: [(chunk, i) => i === 0],
   });
   const state = initState(node, measureText);
   let reduced = true;
@@ -116,7 +115,8 @@ export function breakAll(node, measureText) {
     } else if (token.breakOpportunity === MANDATORY) {
       newLine(state);
     } else if (state.width + token.width > state.maxWidth && token.breakOpportunity === BREAK_ALLOWED) {
-      if (token.suppress) { // Token is suppressable and can be ignored
+      if (token.suppress) {
+        // Token is suppressable and can be ignored
         state.width += token.width;
       } else {
         token = state.hyphens.enabled ? insertHyphenAndJump(state, token, iterator) : token;
@@ -130,7 +130,7 @@ export function breakAll(node, measureText) {
 
   return {
     lines: state.lines,
-    reduced
+    reduced,
   };
 }
 
@@ -139,7 +139,7 @@ export function breakWord(node, measureText) {
   const iterator = stringTokenizer({
     string: text,
     separator: /(\s|-|\u2010)/,
-    measureText
+    measureText,
   });
   const state = initState(node, measureText);
   let reduced = true;
@@ -154,9 +154,11 @@ export function breakWord(node, measureText) {
     } else if (token.breakOpportunity === MANDATORY) {
       newLine(state);
     } else if (state.width + token.width > state.maxWidth && token.breakOpportunity === BREAK_ALLOWED) {
-      if (token.suppress) { // Token is suppressable and can be ignored
+      if (token.suppress) {
+        // Token is suppressable and can be ignored
         newLine(state);
-      } else if (token.width > state.maxWidth) { // Single sequence is wider then maxWidth, break sequence into multiple lines
+      } else if (token.width > state.maxWidth) {
+        // Single sequence is wider then maxWidth, break sequence into multiple lines
         breakSequence(state, token, measureText);
       } else {
         newLine(state);
@@ -169,6 +171,6 @@ export function breakWord(node, measureText) {
 
   return {
     lines: state.lines,
-    reduced
+    reduced,
   };
 }

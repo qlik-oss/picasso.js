@@ -19,7 +19,7 @@ scaleRegistry('categorical-color', categorical);
 export { scaleRegistry as default };
 
 function getTypeFromMeta(fields) {
-  const types = fields.map((field) => (field.type() === 'dimension' ? 'band' : 'linear'));
+  const types = fields.map(field => (field.type() === 'dimension' ? 'band' : 'linear'));
   return types.indexOf('linear') !== -1 ? 'linear' : 'band';
 }
 
@@ -36,14 +36,15 @@ function deduceScaleTypeFromData(data) {
 
 export function create(options, d, deps) {
   let dataSourceConfig = options.data;
-  if (options.source) { // DEPRECATION
+  if (options.source) {
+    // DEPRECATION
     deps.logger.warn('Deprecated: Scale data source configuration');
     dataSourceConfig = {
-      extract: []
+      extract: [],
     };
-    (Array.isArray(options.source) ? options.source : [options.source]).forEach((source) => {
+    (Array.isArray(options.source) ? options.source : [options.source]).forEach(source => {
       dataSourceConfig.extract.push({
-        field: source
+        field: source,
       });
     });
   }
@@ -90,6 +91,6 @@ export function collection(scalesConfig, data, deps, fn = create) {
     all() {
       Object.keys(scalesConfig).forEach(this.get);
       return scales;
-    }
+    },
   };
 }

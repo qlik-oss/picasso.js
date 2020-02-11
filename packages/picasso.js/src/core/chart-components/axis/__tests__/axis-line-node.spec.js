@@ -2,10 +2,16 @@ import buildLine from '../axis-line-node';
 
 describe('Axis Line Node', () => {
   const innerRect = {
-    x: 0, y: 0, width: 0, height: 0
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
   };
   const outerRect = {
-    x: 0, y: 0, width: 0, height: 0
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
   };
 
   beforeEach(() => {
@@ -20,8 +26,7 @@ describe('Axis Line Node', () => {
   });
 
   describe('Line', () => {
-    let buildOpts,
-      expected;
+    let buildOpts, expected;
 
     beforeEach(() => {
       buildOpts = {
@@ -29,7 +34,7 @@ describe('Axis Line Node', () => {
         align: 'bottom',
         innerRect,
         outerRect,
-        padding: 10
+        padding: 10,
       };
       expected = {
         type: 'line',
@@ -40,8 +45,8 @@ describe('Axis Line Node', () => {
         y1: 0,
         y2: 0,
         collider: {
-          type: null
-        }
+          type: null,
+        },
       };
     });
 

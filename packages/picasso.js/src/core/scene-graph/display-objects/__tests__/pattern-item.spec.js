@@ -24,7 +24,7 @@ describe('GradientItem', () => {
         height: 4,
         id: 'customId',
         patternUnits: 'units',
-        notToBeAttached: 'asdf'
+        notToBeAttached: 'asdf',
       });
 
       expect(item.attrs.x).to.equal(0);
@@ -52,7 +52,7 @@ describe('GradientItem', () => {
         height: 4,
         id: 'customId',
         patternUnits: 'units',
-        notToBeAttached: 'asdf'
+        notToBeAttached: 'asdf',
       });
 
       expect(item.attrs.x).to.equal(0);

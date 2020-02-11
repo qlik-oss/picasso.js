@@ -10,7 +10,7 @@ describe('Transform resolver', () => {
       translate: sandbox.spy(),
       rotate: sandbox.spy(),
       scale: sandbox.spy(),
-      transform: sandbox.spy()
+      transform: sandbox.spy(),
     };
   });
 

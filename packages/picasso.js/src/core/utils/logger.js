@@ -3,13 +3,10 @@ const LOG_LEVEL = {
   ERROR: 1,
   WARN: 2,
   INFO: 3,
-  DEBUG: 4
+  DEBUG: 4,
 };
 
-const loggerFn = ({
-  level = LOG_LEVEL.OFF,
-  pipe = console
-} = {}) => {
+const loggerFn = ({ level = LOG_LEVEL.OFF, pipe = console } = {}) => {
   let currentlevel = level;
 
   const LOG_FN = {
@@ -17,11 +14,13 @@ const loggerFn = ({
     [LOG_LEVEL.ERROR]: (...args) => pipe.error(...args),
     [LOG_LEVEL.WARN]: (...args) => pipe.warn(...args),
     [LOG_LEVEL.INFO]: (...args) => pipe.info(...args),
-    [LOG_LEVEL.DEBUG]: (...args) => pipe.log(...args)
+    [LOG_LEVEL.DEBUG]: (...args) => pipe.log(...args),
   };
 
   const log = (lev, ...args) => {
-    if (!lev || currentlevel < lev) { return; }
+    if (!lev || currentlevel < lev) {
+      return;
+    }
 
     (LOG_FN[lev] || LOG_FN[LOG_LEVEL.DEBUG])(...args);
   };
@@ -68,14 +67,14 @@ const loggerFn = ({
      * Set the current log level
      * @param {number} lev - The log level
      */
-    level: (lev) => {
+    level: lev => {
       if (typeof lev === 'number') {
         currentlevel = lev;
       }
       return currentlevel;
     },
 
-    LOG_LEVEL
+    LOG_LEVEL,
   };
 };
 

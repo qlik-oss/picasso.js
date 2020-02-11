@@ -1,18 +1,16 @@
 import cubicToPoints from './cubic-bezier-curve-interpolation';
 
 function interpolate(t, s, cp, e) {
-  const td = (1 - t);
+  const td = 1 - t;
 
-  return (Math.pow(td, 2) * s)
-    + (2 * td * t * cp)
-    + (Math.pow(t, 2) * e);
+  return Math.pow(td, 2) * s + 2 * td * t * cp + Math.pow(t, 2) * e;
 }
 
 function toCubic(s, cp, e) {
-  const cp1x = s.x + ((2 / 3) * (cp.x - s.x));
-  const cp1y = s.y + ((2 / 3) * (cp.y - s.y));
-  const cp2x = e.x + ((2 / 3) * (cp.x - e.x));
-  const cp2y = e.y + ((2 / 3) * (cp.y - e.y));
+  const cp1x = s.x + (2 / 3) * (cp.x - s.x);
+  const cp1y = s.y + (2 / 3) * (cp.y - s.y);
+  const cp2x = e.x + (2 / 3) * (cp.x - e.x);
+  const cp2y = e.y + (2 / 3) * (cp.y - e.y);
   const cp1 = { x: cp1x, y: cp1y };
   const cp2 = { x: cp2x, y: cp2y };
 
@@ -34,7 +32,4 @@ function toPoints(s, cp, e) {
   return cubicToPoints(s, cp1, cp2, e);
 }
 
-export {
-  interpolate,
-  toPoints as default
-};
+export { interpolate, toPoints as default };

@@ -14,17 +14,23 @@ describe('box component', () => {
     // };
     const dataset = {
       field: sinon.stub(),
-      extract: sinon.stub()
+      extract: sinon.stub(),
     };
     opts = {
       inner: {
-        x: 10, y: 20, width: 100, height: 200
-      }
+        x: 10,
+        y: 20,
+        width: 100,
+        height: 200,
+      },
     };
 
     componentFixture = componentFactoryFixture();
 
-    shapeFn = (type, p) => { p.type = type; return p; };
+    shapeFn = (type, p) => {
+      p.type = type;
+      return p;
+    };
     chart = componentFixture.mocks().chart;
     chart.dataset.returns(dataset);
     // chart.table.returns(table);
@@ -33,7 +39,7 @@ describe('box component', () => {
   it('should not render boxes with default settings', () => {
     const config = {
       shapeFn,
-      data: []
+      data: [],
     };
 
     componentFixture.simulateCreate(boxMarker, config);
@@ -46,7 +52,7 @@ describe('box component', () => {
     const config = {
       shapeFn,
       data: {
-        extract: {}
+        extract: {},
       },
       settings: {
         major: { scale: 'x' },
@@ -54,32 +60,34 @@ describe('box component', () => {
         box: {
           width: 1,
           stroke: '#f00',
-          strokeLinejoin: 'round'
+          strokeLinejoin: 'round',
         },
         whisker: {
-          stroke: '#0f0'
+          stroke: '#0f0',
         },
         median: {
-          stroke: '#00f'
+          stroke: '#00f',
         },
         line: {
-          stroke: '#ff0'
-        }
-      }
+          stroke: '#ff0',
+        },
+      },
     };
 
-    chart.dataset().extract.returns([{
-      value: 0.5,
-      min: { value: 0.2 },
-      start: { value: 0.4 },
-      med: { value: 0.5 },
-      end: { value: 0.6 },
-      max: { value: 0.8 }
-    }]);
+    chart.dataset().extract.returns([
+      {
+        value: 0.5,
+        min: { value: 0.2 },
+        start: { value: 0.4 },
+        med: { value: 0.5 },
+        end: { value: 0.6 },
+        max: { value: 0.8 },
+      },
+    ]);
 
-    const xScale = (v) => v;
+    const xScale = v => v;
     xScale.bandwidth = () => 0.5;
-    const yScale = (v) => v;
+    const yScale = v => v;
     chart.scale.withArgs('x').returns(xScale);
     chart.scale.withArgs('y').returns(yScale);
 
@@ -96,10 +104,10 @@ describe('box component', () => {
           start: { value: 0.4 },
           med: { value: 0.5 },
           end: { value: 0.6 },
-          max: { value: 0.8 }
+          max: { value: 0.8 },
         },
         collider: {
-          type: 'bounds'
+          type: 'bounds',
         },
         children: [
           {
@@ -110,7 +118,7 @@ describe('box component', () => {
               start: { value: 0.4 },
               med: { value: 0.5 },
               end: { value: 0.6 },
-              max: { value: 0.8 }
+              max: { value: 0.8 },
             },
             fill: '#fff',
             height: 40,
@@ -125,8 +133,8 @@ describe('box component', () => {
             x: 50,
             y: 80,
             collider: {
-              type: null
-            }
+              type: null,
+            },
           },
           {
             data: {
@@ -136,7 +144,7 @@ describe('box component', () => {
               start: { value: 0.4 },
               med: { value: 0.5 },
               end: { value: 0.6 },
-              max: { value: 0.8 }
+              max: { value: 0.8 },
             },
             show: true,
             stroke: '#ff0',
@@ -147,8 +155,8 @@ describe('box component', () => {
             y1: 80,
             y2: 40,
             collider: {
-              type: null
-            }
+              type: null,
+            },
           },
           {
             data: {
@@ -158,7 +166,7 @@ describe('box component', () => {
               start: { value: 0.4 },
               med: { value: 0.5 },
               end: { value: 0.6 },
-              max: { value: 0.8 }
+              max: { value: 0.8 },
             },
             show: true,
             stroke: '#ff0',
@@ -169,8 +177,8 @@ describe('box component', () => {
             y1: 120,
             y2: 160,
             collider: {
-              type: null
-            }
+              type: null,
+            },
           },
           {
             cx: 75,
@@ -182,7 +190,7 @@ describe('box component', () => {
               start: { value: 0.4 },
               med: { value: 0.5 },
               end: { value: 0.6 },
-              max: { value: 0.8 }
+              max: { value: 0.8 },
             },
             show: true,
             stroke: '#00f',
@@ -195,8 +203,8 @@ describe('box component', () => {
             y2: 100,
             r: 25,
             collider: {
-              type: null
-            }
+              type: null,
+            },
           },
           {
             cx: 75,
@@ -208,7 +216,7 @@ describe('box component', () => {
               start: { value: 0.4 },
               med: { value: 0.5 },
               end: { value: 0.6 },
-              max: { value: 0.8 }
+              max: { value: 0.8 },
             },
             fill: '',
             r: 25,
@@ -222,8 +230,8 @@ describe('box component', () => {
             y1: 40,
             y2: 40,
             collider: {
-              type: null
-            }
+              type: null,
+            },
           },
           {
             cx: 75,
@@ -235,7 +243,7 @@ describe('box component', () => {
               start: { value: 0.4 },
               med: { value: 0.5 },
               end: { value: 0.6 },
-              max: { value: 0.8 }
+              max: { value: 0.8 },
             },
             fill: '',
             r: 25,
@@ -249,11 +257,11 @@ describe('box component', () => {
             y1: 160,
             y2: 160,
             collider: {
-              type: null
-            }
-          }
-        ]
-      }
+              type: null,
+            },
+          },
+        ],
+      },
     ]);
   });
 
@@ -261,39 +269,43 @@ describe('box component', () => {
     const config = {
       shapeFn,
       data: {
-        extract: {}
+        extract: {},
       },
       settings: {
         major: { scale: 'x' },
         minor: { scale: 'y' },
         oob: {
-          fill: 'red'
-        }
-      }
+          fill: 'red',
+        },
+      },
     };
 
-    chart.dataset().extract.returns([{
-      value: -0.5,
-      min: { value: -0.2 },
-      start: { value: -0.4 },
-      med: { value: -0.5 },
-      end: { value: -0.6 },
-      max: { value: -0.8 }
-    }]);
+    chart.dataset().extract.returns([
+      {
+        value: -0.5,
+        min: { value: -0.2 },
+        start: { value: -0.4 },
+        med: { value: -0.5 },
+        end: { value: -0.6 },
+        max: { value: -0.8 },
+      },
+    ]);
 
-    const xScale = (v) => v;
+    const xScale = v => v;
     xScale.bandwidth = () => 0.5;
-    const yScale = (v) => v;
+    const yScale = v => v;
     chart.scale.withArgs('x').returns(xScale);
     chart.scale.withArgs('y').returns(yScale);
 
     componentFixture.simulateCreate(boxMarker, config);
     rendererOutput = componentFixture.simulateRender(opts)[0].children;
 
-    expect(rendererOutput).to.containSubset([{
-      type: 'path',
-      fill: 'red'
-    }]);
+    expect(rendererOutput).to.containSubset([
+      {
+        type: 'path',
+        fill: 'red',
+      },
+    ]);
   });
 
   it('should accept only end variable and draw a simple bar chart', () => {
@@ -304,20 +316,22 @@ describe('box component', () => {
         major: { scale: 'x', ref: 'self' },
         minor: { scale: 'y' },
         box: {
-          stroke: '#f00'
-        }
-      }
+          stroke: '#f00',
+        },
+      },
     };
 
-    chart.dataset().extract.returns([{
-      self: { value: 0.5 },
-      start: { value: 0 },
-      end: { value: 0.6 }
-    }]);
+    chart.dataset().extract.returns([
+      {
+        self: { value: 0.5 },
+        start: { value: 0 },
+        end: { value: 0.6 },
+      },
+    ]);
 
-    const xScale = (v) => v;
+    const xScale = v => v;
     xScale.bandwidth = () => 0.5;
-    const yScale = (v) => v;
+    const yScale = v => v;
     chart.scale.withArgs('x').returns(xScale);
     chart.scale.withArgs('y').returns(yScale);
 
@@ -330,17 +344,17 @@ describe('box component', () => {
         data: {
           self: { value: 0.5 },
           start: { value: 0 },
-          end: { value: 0.6 }
+          end: { value: 0.6 },
         },
         collider: {
-          type: 'bounds'
+          type: 'bounds',
         },
         children: [
           {
             data: {
               self: { value: 0.5 },
               start: { value: 0 },
-              end: { value: 0.6 }
+              end: { value: 0.6 },
             },
             fill: '#fff',
             height: 120,
@@ -355,11 +369,11 @@ describe('box component', () => {
             x: 50,
             y: 0,
             collider: {
-              type: null
-            }
-          }
-        ]
-      }
+              type: null,
+            },
+          },
+        ],
+      },
     ]);
   });
 
@@ -371,20 +385,22 @@ describe('box component', () => {
         major: { scale: 'x', ref: 'self' },
         minor: { scale: 'y' },
         box: {
-          stroke: '#f00'
-        }
-      }
+          stroke: '#f00',
+        },
+      },
     };
 
-    chart.dataset().extract.returns([{
-      self: { value: 0.5 },
-      start: { value: 0.2 },
-      end: { value: 0.6 }
-    }]);
+    chart.dataset().extract.returns([
+      {
+        self: { value: 0.5 },
+        start: { value: 0.2 },
+        end: { value: 0.6 },
+      },
+    ]);
 
-    const xScale = (v) => v;
+    const xScale = v => v;
     xScale.bandwidth = () => 0.5;
-    const yScale = (v) => v;
+    const yScale = v => v;
     chart.scale.withArgs('x').returns(xScale);
     chart.scale.withArgs('y').returns(yScale);
 
@@ -397,17 +413,17 @@ describe('box component', () => {
         data: {
           self: { value: 0.5 },
           start: { value: 0.2 },
-          end: { value: 0.6 }
+          end: { value: 0.6 },
         },
         collider: {
-          type: 'bounds'
+          type: 'bounds',
         },
         children: [
           {
             data: {
               self: { value: 0.5 },
               start: { value: 0.2 },
-              end: { value: 0.6 }
+              end: { value: 0.6 },
             },
             fill: '#fff',
             height: 80,
@@ -422,11 +438,11 @@ describe('box component', () => {
             x: 50,
             y: 40,
             collider: {
-              type: null
-            }
-          }
-        ]
-      }
+              type: null,
+            },
+          },
+        ],
+      },
     ]);
   });
 
@@ -438,25 +454,27 @@ describe('box component', () => {
         major: { scale: 'x', ref: 'self' },
         minor: { scale: 'y' },
         box: {
-          stroke: '#f00'
+          stroke: '#f00',
         },
         whisker: {
-          show: false
-        }
-      }
+          show: false,
+        },
+      },
     };
 
-    chart.dataset().extract.returns([{
-      self: { value: 0.5 },
-      start: { value: 0.4 },
-      end: { value: 0.6 },
-      min: { value: 0.2 },
-      max: { value: 0.8 }
-    }]);
+    chart.dataset().extract.returns([
+      {
+        self: { value: 0.5 },
+        start: { value: 0.4 },
+        end: { value: 0.6 },
+        min: { value: 0.2 },
+        max: { value: 0.8 },
+      },
+    ]);
 
-    const xScale = (v) => v;
+    const xScale = v => v;
     xScale.bandwidth = () => 0.5;
-    const yScale = (v) => v;
+    const yScale = v => v;
     chart.scale.withArgs('x').returns(xScale);
     chart.scale.withArgs('y').returns(yScale);
 
@@ -471,10 +489,10 @@ describe('box component', () => {
           start: { value: 0.4 },
           end: { value: 0.6 },
           min: { value: 0.2 },
-          max: { value: 0.8 }
+          max: { value: 0.8 },
         },
         collider: {
-          type: 'bounds'
+          type: 'bounds',
         },
         children: [
           {
@@ -483,7 +501,7 @@ describe('box component', () => {
               start: { value: 0.4 },
               end: { value: 0.6 },
               min: { value: 0.2 },
-              max: { value: 0.8 }
+              max: { value: 0.8 },
             },
             fill: '#fff',
             height: 40,
@@ -498,8 +516,8 @@ describe('box component', () => {
             x: 50,
             y: 80,
             collider: {
-              type: null
-            }
+              type: null,
+            },
           },
           {
             data: {
@@ -507,7 +525,7 @@ describe('box component', () => {
               start: { value: 0.4 },
               end: { value: 0.6 },
               min: { value: 0.2 },
-              max: { value: 0.8 }
+              max: { value: 0.8 },
             },
             show: true,
             stroke: '#000',
@@ -518,8 +536,8 @@ describe('box component', () => {
             y1: 80,
             y2: 40,
             collider: {
-              type: null
-            }
+              type: null,
+            },
           },
           {
             data: {
@@ -527,7 +545,7 @@ describe('box component', () => {
               start: { value: 0.4 },
               end: { value: 0.6 },
               min: { value: 0.2 },
-              max: { value: 0.8 }
+              max: { value: 0.8 },
             },
             show: true,
             stroke: '#000',
@@ -538,11 +556,11 @@ describe('box component', () => {
             y1: 120,
             y2: 160,
             collider: {
-              type: null
-            }
-          }
-        ]
-      }
+              type: null,
+            },
+          },
+        ],
+      },
     ]);
   });
 
@@ -555,12 +573,12 @@ describe('box component', () => {
         minor: { scale: 'y' },
         box: {
           stroke: '#f00',
-          maxWidthPx: 100
+          maxWidthPx: 100,
         },
         whisker: {
-          show: false
-        }
-      }
+          show: false,
+        },
+      },
     };
 
     const dataset = [
@@ -569,52 +587,55 @@ describe('box component', () => {
         start: { value: 0.4 },
         end: { value: 0.6 },
         min: { value: 0.2 },
-        max: { value: 0.8 }
+        max: { value: 0.8 },
       },
       {
         self: { value: 2 },
         start: { value: 0.4 },
         end: { value: 0.6 },
         min: { value: 0.2 },
-        max: { value: 0.8 }
+        max: { value: 0.8 },
       },
       {
         self: { value: 3 },
         start: { value: 0.4 },
         end: { value: 0.6 },
         min: { value: 0.2 },
-        max: { value: 0.8 }
+        max: { value: 0.8 },
       },
       {
         self: { value: 4 },
         start: { value: 0.4 },
         end: { value: 0.6 },
         min: { value: 0.2 },
-        max: { value: 0.8 }
+        max: { value: 0.8 },
       },
       {
         self: { value: 5 },
         start: { value: 0.4 },
         end: { value: 0.6 },
         min: { value: 0.2 },
-        max: { value: 0.8 }
-      }
+        max: { value: 0.8 },
+      },
     ];
 
     opts = {
       inner: {
-        x: 0, y: 0, width: 200, height: 20
-      }
+        x: 0,
+        y: 0,
+        width: 200,
+        height: 20,
+      },
     };
 
     chart.dataset().extract.returns(dataset);
 
     const xDomain = [1, 2, 3, 4, 5];
-    const xScale = (v) => xDomain.indexOf(v) * 0.2;
+    const xScale = v => xDomain.indexOf(v) * 0.2;
     xScale.domain = () => xDomain;
     xScale.bandwidth = () => 0.2;
 
-    const yScale = (v) => (v - 0.2) / 0.6;
+    const yScale = v => (v - 0.2) / 0.6;
     chart.scale.withArgs('x').returns(xScale);
     chart.scale.withArgs('y').returns(yScale);
 
@@ -641,11 +662,11 @@ describe('box component', () => {
           start: { value: 0.4 },
           end: { value: 0.6 },
           min: { value: 0.2 },
-          max: { value: 0.8 }
+          max: { value: 0.8 },
         },
         collider: {
-          type: null
-        }
+          type: null,
+        },
       },
       {
         type: 'rect',
@@ -666,11 +687,11 @@ describe('box component', () => {
           start: { value: 0.4 },
           end: { value: 0.6 },
           min: { value: 0.2 },
-          max: { value: 0.8 }
+          max: { value: 0.8 },
         },
         collider: {
-          type: null
-        }
+          type: null,
+        },
       },
       {
         type: 'rect',
@@ -691,11 +712,11 @@ describe('box component', () => {
           start: { value: 0.4 },
           end: { value: 0.6 },
           min: { value: 0.2 },
-          max: { value: 0.8 }
+          max: { value: 0.8 },
         },
         collider: {
-          type: null
-        }
+          type: null,
+        },
       },
       {
         type: 'rect',
@@ -716,11 +737,11 @@ describe('box component', () => {
           start: { value: 0.4 },
           end: { value: 0.6 },
           min: { value: 0.2 },
-          max: { value: 0.8 }
+          max: { value: 0.8 },
         },
         collider: {
-          type: null
-        }
+          type: null,
+        },
       },
       {
         type: 'rect',
@@ -741,16 +762,16 @@ describe('box component', () => {
           start: { value: 0.4 },
           end: { value: 0.6 },
           min: { value: 0.2 },
-          max: { value: 0.8 }
+          max: { value: 0.8 },
         },
         collider: {
-          type: null
-        }
-      }
+          type: null,
+        },
+      },
     ];
 
-    const children = rendererOutput.map((c) => c.children);
-    const rects = [].concat(...children).filter((o) => o.type === 'rect');
+    const children = rendererOutput.map(c => c.children);
+    const rects = [].concat(...children).filter(o => o.type === 'rect');
     expect(rects).to.deep.equal(items);
   });
 });

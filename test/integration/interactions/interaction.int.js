@@ -2,15 +2,16 @@
 
 const iPad = {
   name: 'iPad landscape',
-  userAgent: 'Mozilla/5.0 (iPad; CPU OS 11_0 like Mac OS X) AppleWebKit/604.1.34 (KHTML, like Gecko) Version/11.0 Mobile/15A5341f Safari/604.1',
+  userAgent:
+    'Mozilla/5.0 (iPad; CPU OS 11_0 like Mac OS X) AppleWebKit/604.1.34 (KHTML, like Gecko) Version/11.0 Mobile/15A5341f Safari/604.1',
   viewport: {
     width: 1024,
     height: 768,
     deviceScaleFactor: 2,
     isMobile: true,
     hasTouch: true,
-    isLandscape: true
-  }
+    isLandscape: true,
+  },
 };
 
 describe('picasso-interactions', () => {
@@ -100,7 +101,9 @@ describe('picasso-interactions', () => {
     await page.mouse.down();
     await page.mouse.move(label2.x + label2.width / 2, label2.y + label2.height / 2);
     await page.mouse.up();
-    let rangeSelect = await page.evaluate(() => picassochart.brush('highlight').containsRange('0/Sales', { min: 4100, max: 8000 }));
+    let rangeSelect = await page.evaluate(() =>
+      picassochart.brush('highlight').containsRange('0/Sales', { min: 4100, max: 8000 })
+    );
     expect(rangeSelect).to.equal(true, 'The rangeselect contained at least values between 4100-8000');
   });
 
@@ -121,7 +124,9 @@ describe('picasso-interactions', () => {
     await page.mouse.down();
     await page.mouse.move(label3.x + label3.width / 2, label3.y + label3.height / 2);
     await page.mouse.up();
-    let rangeSelect = await page.evaluate(() => picassochart.brush('highlight').containsRange('0/Sales', { min: 2100, max: 3800 }));
+    let rangeSelect = await page.evaluate(() =>
+      picassochart.brush('highlight').containsRange('0/Sales', { min: 2100, max: 3800 })
+    );
     expect(rangeSelect).to.equal(true, 'The rangeselect contained at least values between 2100-3800');
   });
 
@@ -145,7 +150,9 @@ describe('picasso-interactions', () => {
     await page.mouse.down();
     await page.mouse.move(label3.x + label3.width / 2, label3.y + label3.height / 2);
     await page.mouse.up();
-    let rangeSelect = await page.evaluate(() => picassochart.brush('highlight').containsRange('0/Sales', { min: 3100, max: 3800 }));
+    let rangeSelect = await page.evaluate(() =>
+      picassochart.brush('highlight').containsRange('0/Sales', { min: 3100, max: 3800 })
+    );
     expect(rangeSelect).to.equal(true, 'The rangeselect contained at least values between 3100-3800');
   });
 
@@ -169,7 +176,9 @@ describe('picasso-interactions', () => {
     await page.keyboard.type('2100.25');
     await page.keyboard.press('Enter');
 
-    let rangeSelect = await page.evaluate(() => picassochart.brush('highlight').containsRange('0/Sales', { min: 2100.25, max: 6500.125 }));
+    let rangeSelect = await page.evaluate(() =>
+      picassochart.brush('highlight').containsRange('0/Sales', { min: 2100.25, max: 6500.125 })
+    );
     expect(rangeSelect).to.equal(true, 'The rangeselect contained at least values between 2100.25-6500.125');
   });
 
@@ -275,7 +284,9 @@ describe('picasso-interactions', () => {
     await page.mouse.down();
     await page.mouse.move(dest.x + dest.width / 2, dest.y + dest.height);
     await page.mouse.up();
-    let rangeSelect = await page.evaluate(() => picassochart.brush('highlight').containsRange('0/Sales', { min: 0, max: 5800 }));
+    let rangeSelect = await page.evaluate(() =>
+      picassochart.brush('highlight').containsRange('0/Sales', { min: 0, max: 5800 })
+    );
     expect(rangeSelect).to.equal(true, 'The rangeselect contained at least values between 10-1500');
   });
 });

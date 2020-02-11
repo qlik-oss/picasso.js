@@ -1,10 +1,7 @@
 import numberFormat from './numberFormat';
 import timeFormat from './timeFormat';
 
-export {
-  numberFormat,
-  timeFormat
-};
+export { numberFormat, timeFormat };
 
 export function createFromMetaInfo(meta, localeInfo) {
   if (meta && meta.qNumFormat && ['D', 'T', 'TS', 'IV'].indexOf(meta.qNumFormat.qType) !== -1) {

@@ -2,11 +2,7 @@ import render from '../circle';
 
 describe('circle', () => {
   describe('render', () => {
-    let sandbox,
-      g,
-      falsys,
-      truthys,
-      circle;
+    let sandbox, g, falsys, truthys, circle;
 
     beforeEach(() => {
       sandbox = sinon.createSandbox();
@@ -16,7 +12,7 @@ describe('circle', () => {
         moveTo: sandbox.spy(),
         arc: sandbox.spy(),
         fill: sandbox.spy(),
-        stroke: sandbox.spy()
+        stroke: sandbox.spy(),
       };
 
       falsys = [false, null, undefined, 0, NaN, ''];
@@ -51,7 +47,7 @@ describe('circle', () => {
     });
 
     it('should not fire fill if fill condition is falsy', () => {
-      falsys.forEach((value) => {
+      falsys.forEach(value => {
         render(circle, { g, doFill: value, doStroke: false });
 
         expect(g.fill.called).to.equal(false);
@@ -59,7 +55,7 @@ describe('circle', () => {
     });
 
     it('should fire fill if fill condition is truthy', () => {
-      truthys.forEach((value) => {
+      truthys.forEach(value => {
         g.fill.resetHistory();
 
         render(circle, { g, doFill: value, doStroke: false });
@@ -69,7 +65,7 @@ describe('circle', () => {
     });
 
     it('should not fire stroke if stroke condition is falsy', () => {
-      falsys.forEach((value) => {
+      falsys.forEach(value => {
         render(circle, { g, doFill: false, doStroke: value });
 
         expect(g.stroke.called).to.equal(false);
@@ -77,7 +73,7 @@ describe('circle', () => {
     });
 
     it('should fire stroke if stroke condition is truthy', () => {
-      truthys.forEach((value) => {
+      truthys.forEach(value => {
         g.stroke.resetHistory();
 
         render(circle, { g, doFill: false, doStroke: value });

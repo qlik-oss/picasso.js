@@ -22,10 +22,10 @@ function hyphenationAllowed(c) {
 }
 
 function resolveBreakOpportunity(chunk, i, chunks, mandatory, noBreakAllowed) {
-  if (mandatory.some((fn) => fn(chunk, i, chunks))) {
+  if (mandatory.some(fn => fn(chunk, i, chunks))) {
     return MANDATORY;
   }
-  if (noBreakAllowed.some((fn) => fn(chunk, i, chunks))) {
+  if (noBreakAllowed.some(fn => fn(chunk, i, chunks))) {
     return NO_BREAK;
   }
 
@@ -49,39 +49,33 @@ export default function stringTokenizer({
   string,
   separator = '',
   reverse = false,
-  measureText = (text) => ({ width: text.length, height: 1 }),
+  measureText = text => ({ width: text.length, height: 1 }),
   mandatoryBreakIdentifiers = [includesLineBreak],
   noBreakAllowedIdentifiers = [],
-  suppressIdentifier = [includesWhiteSpace, includesLineBreak, (chunk) => chunk === ''],
-  hyphenationIdentifiers = [hyphenationAllowed]
+  suppressIdentifier = [includesWhiteSpace, includesLineBreak, chunk => chunk === ''],
+  hyphenationIdentifiers = [hyphenationAllowed],
 } = {}) {
   const chunks = String(string).split(separator);
   cleanEmptyChunks(chunks);
   const length = chunks.length;
-  const isNotDone = reverse ? (p) => p >= 0 : (p) => p < length;
+  const isNotDone = reverse ? p => p >= 0 : p => p < length;
   let position = reverse ? length : -1; // Set init position 1 step before or after to make first next call go to first position
 
   function peek(peekAt) {
     const i = clamp(peekAt, 0, length - 1);
     const chunk = chunks[i];
     const textMeasure = measureText(chunk);
-    const opportunity = resolveBreakOpportunity(
-      chunk,
-      i,
-      chunks,
-      mandatoryBreakIdentifiers,
-      noBreakAllowedIdentifiers
-    );
+    const opportunity = resolveBreakOpportunity(chunk, i, chunks, mandatoryBreakIdentifiers, noBreakAllowedIdentifiers);
 
     return {
       index: i,
       value: chunk,
       breakOpportunity: opportunity,
-      suppress: suppressIdentifier.some((fn) => fn(chunk, i, chunks)),
-      hyphenation: hyphenationIdentifiers.some((fn) => fn(chunk, i, chunks)),
+      suppress: suppressIdentifier.some(fn => fn(chunk, i, chunks)),
+      hyphenation: hyphenationIdentifiers.some(fn => fn(chunk, i, chunks)),
       width: textMeasure.width,
       height: textMeasure.height,
-      done: false
+      done: false,
     };
   }
 
@@ -105,6 +99,6 @@ export default function stringTokenizer({
   return {
     next,
     peek,
-    length
+    length,
   };
 }

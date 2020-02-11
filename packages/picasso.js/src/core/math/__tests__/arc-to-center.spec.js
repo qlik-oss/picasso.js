@@ -32,7 +32,7 @@ describe('Arc to center', () => {
       cx: 10,
       cy: 0,
       rx: 10,
-      ry: 10
+      ry: 10,
     });
   });
 
@@ -46,7 +46,7 @@ describe('Arc to center', () => {
       cx: 0,
       cy: 10,
       rx: 10,
-      ry: 10
+      ry: 10,
     });
   });
 
@@ -60,7 +60,7 @@ describe('Arc to center', () => {
       cx: 0,
       cy: 10,
       rx: 10,
-      ry: 10
+      ry: 10,
     });
   });
 
@@ -75,7 +75,7 @@ describe('Arc to center', () => {
       cx: 10,
       cy: 0,
       rx: 10,
-      ry: 10
+      ry: 10,
     });
   });
 
@@ -114,7 +114,7 @@ describe('Arc to center', () => {
       cx: 10,
       cy: 0,
       rx: 10,
-      ry: 10
+      ry: 10,
     });
   });
 
@@ -131,7 +131,7 @@ describe('Arc to center', () => {
       cx: 0,
       cy: 10,
       rx: 10,
-      ry: 10
+      ry: 10,
     });
   });
 

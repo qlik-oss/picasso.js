@@ -3,12 +3,13 @@ import bandScale, { DEFAULT_SETTINGS } from './band';
 import resolveSettings from './settings-resolver';
 
 const DEFAULT_TICKS_SETTINGS = {
-  depth: 0
+  depth: 0,
 };
 
 function keyGen(node, valueFn, ctx) {
-  return node.ancestors()
-    .map((a) => valueFn(extend({ datum: a.data }, ctx)))
+  return node
+    .ancestors()
+    .map(a => valueFn(extend({ datum: a.data }, ctx)))
     .reverse()
     .slice(1) // Delete root node
     .toString();
@@ -25,11 +26,14 @@ function flattenTree(rootNode, settings, ctx) {
   let expando = 0;
   if (!rootNode) {
     return {
-      values, labels, items, ticks
+      values,
+      labels,
+      items,
+      ticks,
     };
   }
 
-  rootNode.eachAfter((node) => {
+  rootNode.eachAfter(node => {
     if (node.depth > 0) {
       const key = keyGen(node, valueFn, ctx);
       const leaves = node.leaves() || [node]; // If leaf node returns itself
@@ -44,7 +48,7 @@ function flattenTree(rootNode, settings, ctx) {
         label,
         leftEdge: keyGen(leaves[0], valueFn, ctx),
         rightEdge: keyGen(leaves[Math.max(leaves.length - 1, 0)], valueFn, ctx),
-        node
+        node,
         // isTick: ticksDepth === null ? !isBranch : node.depth === ticksDepth
       };
 
@@ -70,7 +74,10 @@ function flattenTree(rootNode, settings, ctx) {
   }
 
   return {
-    values, labels, items, ticks
+    values,
+    labels,
+    items,
+    ticks,
   };
 }
 
@@ -85,7 +92,7 @@ function flattenTree(rootNode, settings, ctx) {
  */
 
 /**
-  * Hierarchical band scale, that is an augmented band scale, that takes hierarchical data as input
+ * Hierarchical band scale, that is an augmented band scale, that takes hierarchical data as input
  * @alias scaleHierarchicalBand
  * @private
  * @param { Object } settings
@@ -98,14 +105,12 @@ export default function scaleHierarchicalBand(settings = {}, data = {}, resource
   const ctx = { data, resources };
   const stgns = resolveSettings(settings, DEFAULT_SETTINGS, ctx);
   stgns.ticks = resolveSettings(settings.ticks, DEFAULT_TICKS_SETTINGS, ctx);
-  stgns.value = typeof settings.value === 'function' ? settings.value : (d) => d.datum.value;
-  stgns.label = typeof settings.label === 'function' ? settings.label : (d) => d.datum.value;
+  stgns.value = typeof settings.value === 'function' ? settings.value : d => d.datum.value;
+  stgns.label = typeof settings.label === 'function' ? settings.label : d => d.datum.value;
 
   let bandInstance = bandScale(stgns);
 
-  const {
-    values, labels, items, ticks
-  } = flattenTree(data.root, stgns, ctx);
+  const { values, labels, items, ticks } = flattenTree(data.root, stgns, ctx);
 
   /**
    * @alias h-band
@@ -166,7 +171,7 @@ export default function scaleHierarchicalBand(settings = {}, data = {}, resource
    * @param { Object[] } val - Array where each value is a reference to a node, going from depth 1 to n.
    * @return { Object } The datum
    */
-  hBand.datum = (val) => {
+  hBand.datum = val => {
     const item = items[String(val)];
     if (item) {
       return item.node.data;
@@ -185,16 +190,17 @@ export default function scaleHierarchicalBand(settings = {}, data = {}, resource
    * Generate discrete ticks
    * @return { Object[] } Ticks for each leaf node
    */
-  hBand.ticks = () => { // eslint-disable-line arrow-body-style
-    return ticks.map((item) => {
+  hBand.ticks = () => {
+    // eslint-disable-line arrow-body-style
+    return ticks.map(item => {
       const start = hBand(item.key);
       const bandwidth = hBand.bandwidth(item.key);
       return {
-        position: start + (bandwidth / 2),
+        position: start + bandwidth / 2,
         label: item.label,
         data: item.node.data,
         start,
-        end: start + bandwidth
+        end: start + bandwidth,
       };
     });
   };

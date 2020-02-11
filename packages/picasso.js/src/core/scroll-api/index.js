@@ -68,9 +68,12 @@ export default function scrollApi() {
      */
     getState() {
       return {
-        min, max, start, viewSize
+        min,
+        max,
+        start,
+        viewSize,
       };
-    }
+    },
   };
 
   EventEmitter.mixin(s);

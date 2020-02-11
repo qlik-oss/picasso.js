@@ -20,7 +20,7 @@ function dockConfig(settings = {}, callbackContext = {}) {
     prioOrder = 0,
     preferredSize = 0,
     minimumLayoutMode,
-    show = true
+    show = true,
   } = settings;
 
   // avoid empty string dock
@@ -30,7 +30,6 @@ function dockConfig(settings = {}, callbackContext = {}) {
    * @private
    */
   return {
-
     /**
      * Returns the preferred size of a component.
      * The return value of the function can either be a number representing the required size in the dock direction
@@ -140,7 +139,7 @@ function dockConfig(settings = {}, callbackContext = {}) {
         return this;
       }
       return typeof show === 'function' ? show(callbackContext) : show;
-    }
+    },
   };
 }
 

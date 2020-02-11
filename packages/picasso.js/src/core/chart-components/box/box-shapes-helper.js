@@ -14,9 +14,7 @@ import { resolveDiff } from './box-math';
  * @param {function} params.symbol Symbol library function from component
  * @ignore
  */
-export function oob({
-  item, value, boxCenter, rendWidth, rendHeight, flipXY, symbol
-}) {
+export function oob({ item, value, boxCenter, rendWidth, rendHeight, flipXY, symbol }) {
   let x = 'x';
   let y = 'y';
   let calcwidth = rendWidth;
@@ -31,11 +29,13 @@ export function oob({
     startAngle = value < 0.5 ? 180 : 0;
   }
 
-  return symbol(extend({}, item.oob, {
-    [x]: boxCenter * calcwidth,
-    [y]: Math.max((item.oob.size / 2), Math.min(value * calcheight, calcheight - (item.oob.size / 2))),
-    startAngle
-  }));
+  return symbol(
+    extend({}, item.oob, {
+      [x]: boxCenter * calcwidth,
+      [y]: Math.max(item.oob.size / 2, Math.min(value * calcheight, calcheight - item.oob.size / 2)),
+      startAngle,
+    })
+  );
 }
 
 /**
@@ -49,9 +49,7 @@ export function oob({
  * @param {boolean} params.flipXY wether or not to flip X and Y coordinates together with Width and Height
  * @ignore
  */
-export function box({
-  item, boxWidth, boxPadding, rendWidth, rendHeight, flipXY
-}) {
+export function box({ item, boxWidth, boxPadding, rendWidth, rendHeight, flipXY }) {
   let x = 'x';
   let y = 'y';
   let width = 'width';
@@ -69,7 +67,10 @@ export function box({
   }
 
   const { actualDiff, actualLow } = resolveDiff({
-    start: item.start, end: item.end, minPx: item.box.minHeightPx, maxPx: calcheight
+    start: item.start,
+    end: item.end,
+    minPx: item.box.minHeightPx,
+    maxPx: calcheight,
   });
 
   return extend({}, item.box, {
@@ -80,8 +81,8 @@ export function box({
     [width]: boxWidth * calcwidth,
     data: item.data || {},
     collider: {
-      type: null
-    }
+      type: null,
+    },
   });
 }
 
@@ -97,9 +98,7 @@ export function box({
  * @param {boolean} params.flipXY wether or not to flip X and Y coordinates together with Width and Height
  * @ignore
  */
-export function verticalLine({
-  item, from, to, boxCenter, rendWidth, rendHeight, flipXY
-}) {
+export function verticalLine({ item, from, to, boxCenter, rendWidth, rendHeight, flipXY }) {
   let x1 = 'x1';
   let y1 = 'y1';
   let x2 = 'x2';
@@ -124,8 +123,8 @@ export function verticalLine({
     [x2]: boxCenter * calcwidth,
     data: item.data || {},
     collider: {
-      type: null
-    }
+      type: null,
+    },
   });
 }
 
@@ -142,9 +141,7 @@ export function verticalLine({
  * @param {boolean} params.flipXY wether or not to flip X and Y coordinates together with Width and Height
  * @ignore
  */
-export function horizontalLine({
-  item, key, position, width, boxCenter, rendWidth, rendHeight, flipXY
-}) {
+export function horizontalLine({ item, key, position, width, boxCenter, rendWidth, rendHeight, flipXY }) {
   let x1 = 'x1';
   let y1 = 'y1';
   let x2 = 'x2';
@@ -174,8 +171,8 @@ export function horizontalLine({
     width: width * calcwidth,
     data: item.data || {},
     collider: {
-      type: null
-    }
+      type: null,
+    },
   });
 }
 

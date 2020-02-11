@@ -8,7 +8,7 @@ describe('interaction plugin api', () => {
   it('should register new interaction', () => {
     const myObj = {
       a: 'a',
-      b: 'b'
+      b: 'b',
     };
     interaction('test', myObj);
     expect(interaction('test')).to.equal(myObj);

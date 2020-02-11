@@ -9,5 +9,5 @@ export const TYPES = {
   DATE: 'D',
   TIME: 'T',
   DATE_TIME: 'TS',
-  INTERVAL: 'IV'
+  INTERVAL: 'IV',
 };

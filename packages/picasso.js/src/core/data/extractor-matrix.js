@@ -1,22 +1,26 @@
-import {
-  getPropsInfo,
-  collect,
-  track as storeTracked
-} from './util';
+import { getPropsInfo, collect, track as storeTracked } from './util';
 
-function datumExtract(propCfg, cell, {
-  key
-}) {
+function datumExtract(propCfg, cell, { key }) {
   const datum = {
-    value: typeof propCfg.value === 'function' ? propCfg.value(cell) : typeof propCfg.value !== 'undefined' ? propCfg.value : cell // eslint-disable-line no-nested-ternary
+    value:
+      typeof propCfg.value === 'function' // eslint-disable-line no-nested-ternary
+        ? propCfg.value(cell)
+        : typeof propCfg.value !== 'undefined'
+        ? propCfg.value
+        : cell,
   };
 
-  datum.label = typeof propCfg.label === 'function' ? propCfg.label(cell) : typeof propCfg.label !== 'undefined' ? String(propCfg.label) : String(datum.value); // eslint-disable-line no-nested-ternary
+  datum.label =
+    typeof propCfg.label === 'function' // eslint-disable-line no-nested-ternary
+      ? propCfg.label(cell)
+      : typeof propCfg.label !== 'undefined'
+      ? String(propCfg.label)
+      : String(datum.value);
 
   if (propCfg.field) {
     datum.source = {
       key,
-      field: propCfg.field.key()
+      field: propCfg.field.key(),
     };
   }
 
@@ -26,7 +30,7 @@ function datumExtract(propCfg, cell, {
 export default function extract(config, dataset) {
   const cfgs = Array.isArray(config) ? config : [config];
   let dataItems = [];
-  cfgs.forEach((cfg) => {
+  cfgs.forEach(cfg => {
     if (typeof cfg.field !== 'undefined') {
       const f = dataset.field(cfg.field);
       const sourceKey = dataset.key();
@@ -53,7 +57,7 @@ export default function extract(config, dataset) {
 
         // loop through all props that need to be mapped and
         // assign 'value' and 'source' to each property
-        propsArr.forEach((prop) => {
+        propsArr.forEach(prop => {
           const p = props[prop];
           let propCell = p.field ? p.field.items()[idx] : mainCell;
           ret[prop] = datumExtract(p, propCell, { key: sourceKey });
@@ -68,7 +72,7 @@ export default function extract(config, dataset) {
             obj: ret,
             target: trackedItems,
             tracker,
-            trackType
+            trackType,
           });
         }
 
@@ -77,11 +81,13 @@ export default function extract(config, dataset) {
 
       // reduce if items have been grouped
       if (track) {
-        dataItems.push(...collect(trackedItems, {
-          main,
-          propsArr,
-          props
-        }));
+        dataItems.push(
+          ...collect(trackedItems, {
+            main,
+            propsArr,
+            props,
+          })
+        );
       } else {
         dataItems.push(...mapped);
       }

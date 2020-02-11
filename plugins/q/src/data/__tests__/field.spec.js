@@ -12,8 +12,8 @@ describe('q-field', () => {
         qFallbackTitle: 'TITLE',
         qNumFormat: {
           qType: 'M',
-          qFmt: '$#-###A'
-        }
+          qFmt: '$#-###A',
+        },
       },
       type,
       id: 'unique',
@@ -21,8 +21,8 @@ describe('q-field', () => {
       fieldExtractor: fe,
       localeInfo: {
         qThousandSep: '-',
-        qNumericalAbbreviation: '3:x'
-      }
+        qNumericalAbbreviation: '3:x',
+      },
     };
   }
   function mField(mode, fe) {

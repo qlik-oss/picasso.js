@@ -14,23 +14,26 @@ describe('line component', () => {
 
   beforeEach(() => {
     xTick = {
-      position: 0.5
+      position: 0.5,
     };
     yTick = {
       position: 0.5,
-      isMinor: false
+      isMinor: false,
     };
     xScale = {
-      cachedTicks: () => [xTick]
+      cachedTicks: () => [xTick],
     };
     yScale = {
-      cachedTicks: () => [yTick]
+      cachedTicks: () => [yTick],
     };
 
     opts = {
       inner: {
-        x: 10, y: 20, width: 100, height: 200
-      }
+        x: 10,
+        y: 20,
+        width: 100,
+        height: 200,
+      },
     };
 
     componentFixture = componentFactoryFixture();
@@ -38,11 +41,11 @@ describe('line component', () => {
     chart = componentFixture.mocks().chart;
     componentFixture.mocks().theme.style.returns({
       ticks: {
-        stroke: 'red'
+        stroke: 'red',
       },
       minorTicks: {
-        stroke: 'blue'
-      }
+        stroke: 'blue',
+      },
     });
     // chart.dataset = () => ({
     //   extract: componentFixture.sandbox().stub()
@@ -54,7 +57,7 @@ describe('line component', () => {
 
   it('should not render lines with default settings and no scales', () => {
     const config = {
-      shapeFn
+      shapeFn,
     };
 
     componentFixture.simulateCreate(lineComponent, config);
@@ -67,7 +70,7 @@ describe('line component', () => {
     const config = {
       shapeFn,
       x: { scale: 'x' },
-      y: { scale: 'y' }
+      y: { scale: 'y' },
     };
 
     componentFixture.simulateCreate(lineComponent, config);
@@ -83,7 +86,7 @@ describe('line component', () => {
         x1: 49.5,
         x2: 49.5,
         y1: -0.5,
-        y2: 199.5
+        y2: 199.5,
       },
       {
         stroke: 'red',
@@ -94,15 +97,15 @@ describe('line component', () => {
         x1: -0.5,
         x2: 99.5,
         y1: 99.5,
-        y2: 99.5
-      }
+        y2: 99.5,
+      },
     ]);
   });
 
   it('should render X scale lines only', () => {
     const config = {
       shapeFn,
-      x: { scale: 'x' }
+      x: { scale: 'x' },
     };
 
     componentFixture.simulateCreate(lineComponent, config);
@@ -118,15 +121,15 @@ describe('line component', () => {
         x1: 49.5,
         x2: 49.5,
         y1: -0.5,
-        y2: 199.5
-      }
+        y2: 199.5,
+      },
     ]);
   });
 
   it('should render Y scale lines only', () => {
     const config = {
       shapeFn,
-      y: { scale: 'y' }
+      y: { scale: 'y' },
     };
 
     componentFixture.simulateCreate(lineComponent, config);
@@ -142,8 +145,8 @@ describe('line component', () => {
         x1: -0.5,
         x2: 99.5,
         y1: 99.5,
-        y2: 99.5
-      }
+        y2: 99.5,
+      },
     ]);
   });
 
@@ -153,8 +156,8 @@ describe('line component', () => {
       x: { scale: 'x' },
       y: { scale: 'y' },
       minorTicks: {
-        show: true
-      }
+        show: true,
+      },
     };
 
     xTick.isMinor = true;
@@ -173,7 +176,7 @@ describe('line component', () => {
         x1: 49.5,
         x2: 49.5,
         y1: -0.5,
-        y2: 199.5
+        y2: 199.5,
       },
       {
         stroke: 'blue',
@@ -184,8 +187,8 @@ describe('line component', () => {
         x1: -0.5,
         x2: 99.5,
         y1: 99.5,
-        y2: 99.5
-      }
+        y2: 99.5,
+      },
     ]);
   });
 
@@ -195,11 +198,11 @@ describe('line component', () => {
       x: { scale: 'x' },
       y: { scale: 'y' },
       minorTicks: {
-        show: false
+        show: false,
       },
       ticks: {
-        show: false
-      }
+        show: false,
+      },
     };
 
     xTick.isMinor = true;
@@ -216,8 +219,8 @@ describe('line component', () => {
       x: { scale: 'x' },
       y: { scale: 'y' },
       ticks: {
-        stroke: (t) => (t.data.dir === 'x' ? 'red' : 'blue')
-      }
+        stroke: t => (t.data.dir === 'x' ? 'red' : 'blue'),
+      },
     };
 
     componentFixture.simulateCreate(lineComponent, config);
@@ -233,7 +236,7 @@ describe('line component', () => {
         x1: 49.5,
         x2: 49.5,
         y1: -0.5,
-        y2: 199.5
+        y2: 199.5,
       },
       {
         stroke: 'blue',
@@ -244,8 +247,8 @@ describe('line component', () => {
         x1: -0.5,
         x2: 99.5,
         y1: 99.5,
-        y2: 99.5
-      }
+        y2: 99.5,
+      },
     ]);
   });
 });

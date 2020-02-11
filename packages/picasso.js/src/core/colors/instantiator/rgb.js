@@ -14,11 +14,11 @@ const rRgb = /^\s*rgb\(\s*(-?\d{1,3})\s*,\s*(-?\d{1,3})\s*,\s*(-?\d{1,3})\s*\)\s
  * @example
  * rgb( "rgb(120, 50, 50)" );
  * rgb( "rgb(120, 50, 50, 0.5)" );
-*/
+ */
 export default function rgb(colStr) {
-  const ary = (rRgb.exec(colStr) || rRgba.exec(colStr) || rRgbPer.exec(colStr) || rRgbaPer.exec(colStr) || []);
+  const ary = rRgb.exec(colStr) || rRgba.exec(colStr) || rRgbPer.exec(colStr) || rRgbaPer.exec(colStr) || [];
 
-  const [r, g, b, a] = ary.slice(1, 5).map((val) => {
+  const [r, g, b, a] = ary.slice(1, 5).map(val => {
     // Last value is the Alpha which may or may not be present
     if (ary.indexOf(val) === 4) {
       val = parseFloat(val);
@@ -53,4 +53,6 @@ export default function rgb(colStr) {
  * @example
  * rgb.test( "rgb(120, 50, 50)" );
  */
-rgb.test = (colStr) => typeof colStr === 'string' && (rRgb.test(colStr) || rRgba.test(colStr) || rRgbPer.test(colStr) || rRgbaPer.test(colStr));
+rgb.test = colStr =>
+  typeof colStr === 'string' &&
+  (rRgb.test(colStr) || rRgba.test(colStr) || rRgbPer.test(colStr) || rRgbaPer.test(colStr));

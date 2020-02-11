@@ -14,14 +14,14 @@ describe('canvas-gradient', () => {
       stops: [
         {
           offset: 0,
-          color: 'blue'
+          color: 'blue',
         },
         {
           offset: 0.5,
-          color: 'green'
-        }
-      ]
-    }
+          color: 'green',
+        },
+      ],
+    },
   });
 
   beforeEach(() => {
@@ -43,17 +43,17 @@ describe('canvas-gradient', () => {
         x: 0,
         y: 30,
         width: 20,
-        height: 10
+        height: 10,
       };
       shape = dummyRectObject('radial', bounds);
 
       const fill = createCanvasGradient(canvascontext(), shape, shape.fill);
 
-      expect(fill.args[0]).to.be.equal(bounds.x + (bounds.width / 2));
-      expect(fill.args[1]).to.be.equal(bounds.y + (bounds.height / 2));
+      expect(fill.args[0]).to.be.equal(bounds.x + bounds.width / 2);
+      expect(fill.args[1]).to.be.equal(bounds.y + bounds.height / 2);
       expect(fill.args[2]).to.be.equal(1e-5);
-      expect(fill.args[3]).to.be.equal(bounds.x + (bounds.width / 2));
-      expect(fill.args[4]).to.be.equal(bounds.y + (bounds.height / 2));
+      expect(fill.args[3]).to.be.equal(bounds.x + bounds.width / 2);
+      expect(fill.args[4]).to.be.equal(bounds.y + bounds.height / 2);
       expect(fill.args[5]).to.be.equal(Math.max(bounds.width, bounds.height) / 2);
     });
   });
@@ -73,7 +73,7 @@ describe('canvas-gradient', () => {
         x: 50,
         y: 30,
         width: 20,
-        height: 10
+        height: 10,
       };
       shape = dummyRectObject('linear', bounds);
       shape.fill = {
@@ -81,7 +81,7 @@ describe('canvas-gradient', () => {
         x1: 1,
         x2: 2,
         y1: 4,
-        y2: 5
+        y2: 5,
       };
 
       const fill = createCanvasGradient(canvascontext(), shape, shape.fill);
@@ -97,7 +97,7 @@ describe('canvas-gradient', () => {
         x: 0,
         y: 30,
         width: 20,
-        height: 10
+        height: 10,
       };
       shape = dummyRectObject('linear', bounds);
 
@@ -116,7 +116,7 @@ describe('canvas-gradient', () => {
 
       expect(grad.stops).to.eql([
         [0, 'blue'],
-        [0.5, 'green']
+        [0.5, 'green'],
       ]);
     });
   });

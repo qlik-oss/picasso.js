@@ -17,16 +17,16 @@ export default function createCanvasGradient(g, node, gradient) {
     const bounds = node.boundingRect();
 
     newGradient = g.createRadialGradient(
-      bounds.x + (bounds.width / 2),
-      bounds.y + (bounds.height / 2),
+      bounds.x + bounds.width / 2,
+      bounds.y + bounds.height / 2,
       1e-5,
-      bounds.x + (bounds.width / 2),
-      bounds.y + (bounds.height / 2),
-      (Math.max(bounds.width, bounds.height) / 2)
+      bounds.x + bounds.width / 2,
+      bounds.y + bounds.height / 2,
+      Math.max(bounds.width, bounds.height) / 2
     );
   } else {
     const points = degreesToPoints(degree);
-    ['x1', 'x2', 'y1', 'y2'].forEach((c) => {
+    ['x1', 'x2', 'y1', 'y2'].forEach(c => {
       if (c in gradient) {
         points[c] = gradient[c];
       }
@@ -35,10 +35,10 @@ export default function createCanvasGradient(g, node, gradient) {
     const bounds = node.boundingRect();
 
     newGradient = g.createLinearGradient(
-      bounds.x + (points.x1 * bounds.width),
-      bounds.y + (points.y1 * bounds.height),
-      bounds.x + (points.x2 * bounds.width),
-      bounds.y + (points.y2 * bounds.height)
+      bounds.x + points.x1 * bounds.width,
+      bounds.y + points.y1 * bounds.height,
+      bounds.x + points.x2 * bounds.width,
+      bounds.y + points.y2 * bounds.height
     );
   }
 

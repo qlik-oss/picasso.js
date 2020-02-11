@@ -2,16 +2,14 @@ import scene from '../scene';
 import { create as createStage } from '../display-objects/stage';
 
 describe('Scene', () => {
-  let stage,
-    rect,
-    container;
+  let stage, rect, container;
 
   beforeEach(() => {
     rect = {
-      type: 'rect'
+      type: 'rect',
     };
     container = {
-      type: 'container'
+      type: 'container',
     };
   });
 
@@ -45,8 +43,8 @@ describe('Scene', () => {
       stage = scene({
         items: [rect, rect],
         on: {
-          create: [spy]
-        }
+          create: [spy],
+        },
       });
 
       expect(spy.callCount).to.equal(2); // should be evaluated for every item
@@ -71,12 +69,12 @@ describe('Scene', () => {
       expect(r1do.modelViewMatrix.elements).to.deep.equal([
         [1, 0, 50],
         [0, 1, 50],
-        [0, 0, 1]
+        [0, 0, 1],
       ]);
       expect(r2do.modelViewMatrix.elements).to.deep.equal([
         [1, 0, 20],
         [0, 1, 20],
-        [0, 0, 1]
+        [0, 0, 1],
       ]);
       expect(r3do.modelViewMatrix).to.equal(undefined);
     });
@@ -97,17 +95,17 @@ describe('Scene', () => {
       expect(c1do.modelViewMatrix.elements).to.deep.equal([
         [1, 0, 50],
         [0, 1, 50],
-        [0, 0, 1]
+        [0, 0, 1],
       ]);
       expect(c2do.modelViewMatrix.elements).to.deep.equal([
         [1, 0, 70],
         [0, 1, 70],
-        [0, 0, 1]
+        [0, 0, 1],
       ]);
       expect(r1do.modelViewMatrix.elements).to.deep.equal([
         [1, 0, 70],
         [0, 1, 70],
-        [0, 0, 1]
+        [0, 0, 1],
       ]);
     });
 
@@ -126,26 +124,38 @@ describe('Scene', () => {
       const r1do = c1do.children[0];
       const r2do = c1do.children[1];
       const r3do = stage.children[2];
-      expect(r0do.modelViewMatrix.elements).to.deep.equal([
-        [1, 0, 3],
-        [0, 1, 3],
-        [0, 0, 1]
-      ], 'r0do');
-      expect(c1do.modelViewMatrix.elements).to.deep.equal([
-        [1, 0, 100],
-        [0, 1, 100],
-        [0, 0, 1]
-      ], 'c1do');
-      expect(r1do.modelViewMatrix.elements).to.deep.equal([
-        [1, 0, 100],
-        [0, 1, 100],
-        [0, 0, 1]
-      ], 'r1do');
-      expect(r2do.modelViewMatrix.elements).to.deep.equal([
-        [1, 0, 150],
-        [0, 1, 150],
-        [0, 0, 1]
-      ], 'r2do');
+      expect(r0do.modelViewMatrix.elements).to.deep.equal(
+        [
+          [1, 0, 3],
+          [0, 1, 3],
+          [0, 0, 1],
+        ],
+        'r0do'
+      );
+      expect(c1do.modelViewMatrix.elements).to.deep.equal(
+        [
+          [1, 0, 100],
+          [0, 1, 100],
+          [0, 0, 1],
+        ],
+        'c1do'
+      );
+      expect(r1do.modelViewMatrix.elements).to.deep.equal(
+        [
+          [1, 0, 100],
+          [0, 1, 100],
+          [0, 0, 1],
+        ],
+        'r1do'
+      );
+      expect(r2do.modelViewMatrix.elements).to.deep.equal(
+        [
+          [1, 0, 150],
+          [0, 1, 150],
+          [0, 0, 1],
+        ],
+        'r2do'
+      );
       expect(r3do.modelViewMatrix).to.equal(undefined, 'r3do');
     });
   });

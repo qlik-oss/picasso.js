@@ -10,7 +10,7 @@ import {
   curveCatmullRom,
   curveMonotoneX,
   curveMonotoneY,
-  curveNatural
+  curveNatural,
 } from 'd3-shape';
 
 const CURVES = {
@@ -23,7 +23,7 @@ const CURVES = {
   catmullRom: curveCatmullRom,
   monotonex: curveMonotoneX,
   monotoney: curveMonotoneY,
-  natural: curveNatural
+  natural: curveNatural,
 };
 
 /**
@@ -53,7 +53,7 @@ const SETTINGS = {
     major: 0.5,
     /**
      * @type {number=} */
-    layerId: 0
+    layerId: 0,
   },
   /**
    * @type {boolean=} */
@@ -96,7 +96,7 @@ const SETTINGS = {
       show: true,
       /**
        * @type {boolean=} */
-      showMinor0: true
+      showMinor0: true,
     },
     /**
      * @typedef {object} */
@@ -109,9 +109,9 @@ const SETTINGS = {
       opacity: 0.8,
       /**
        * @type {boolean=} */
-      show: true
-    }
-  }
+      show: true,
+    },
+  },
 };
 
 /**
@@ -121,12 +121,7 @@ const SETTINGS = {
  * @default true
  */
 
-
-function createDisplayLayer(points, {
-  generator,
-  item,
-  data
-}, fill = '') {
+function createDisplayLayer(points, { generator, item, data }, fill = '') {
   const path = generator(points);
   const d = {
     type: 'path',
@@ -136,7 +131,7 @@ function createDisplayLayer(points, {
     strokeWidth: item.strokeWidth,
     strokeLinejoin: item.strokeLinejoin,
     fill: fill || item.fill,
-    data
+    data,
   };
 
   if (item.strokeDasharray) {
@@ -146,18 +141,11 @@ function createDisplayLayer(points, {
   return d;
 }
 
-function createDisplayLayers(layers, {
-  width,
-  height,
-  missingMinor0,
-  stngs
-}) {
+function createDisplayLayers(layers, { width, height, missingMinor0, stngs }) {
   const nodes = [];
   const layerStngs = stngs.layers || {};
-  layers.forEach((layer) => {
-    const {
-      lineObj, layerObj, areaObj, points
-    } = layer;
+  layers.forEach(layer => {
+    const { lineObj, layerObj, areaObj, points } = layer;
 
     const areaGenerator = area();
     const defined = stngs.coordinates ? stngs.coordinates.defined : null;
@@ -171,15 +159,14 @@ function createDisplayLayers(layers, {
       minor = extend(true, {}, temp);
     }
 
-    areaGenerator
-      [major.p]((d) => d.major * major.size) // eslint-disable-line no-unexpected-multiline
-      [`${minor.p}1`]((d) => d.minor * minor.size) // eslint-disable-line no-unexpected-multiline
-      [`${minor.p}0`]((d) => d.minor0 * minor.size) // eslint-disable-line no-unexpected-multiline
+    areaGenerator[major.p](d => d.major * major.size) // eslint-disable-line no-unexpected-multiline
+      [`${minor.p}1`](d => d.minor * minor.size) // eslint-disable-line no-unexpected-multiline
+      [`${minor.p}0`](d => d.minor0 * minor.size) // eslint-disable-line no-unexpected-multiline
       .curve(CURVES[layerObj.curve === 'monotone' ? `monotone${major.p}` : layerObj.curve]);
     if (defined) {
-      areaGenerator.defined((d) => !d.dummy && typeof d.minor === 'number' && !isNaN(d.minor) && d.defined);
+      areaGenerator.defined(d => !d.dummy && typeof d.minor === 'number' && !isNaN(d.minor) && d.defined);
     } else {
-      areaGenerator.defined((d) => !d.dummy && typeof d.minor === 'number' && !isNaN(d.minor));
+      areaGenerator.defined(d => !d.dummy && typeof d.minor === 'number' && !isNaN(d.minor));
     }
 
     const filteredPoints = stngs.connect ? points.filter(areaGenerator.defined()) : points;
@@ -188,28 +175,42 @@ function createDisplayLayers(layers, {
 
     // area layer
     if (layerStngs.area && areaObj.show !== false) {
-      nodes.push(createDisplayLayer(filteredPoints, {
-        data: layer.consumableData,
-        item: areaObj,
-        generator: areaGenerator
-      }));
+      nodes.push(
+        createDisplayLayer(filteredPoints, {
+          data: layer.consumableData,
+          item: areaObj,
+          generator: areaGenerator,
+        })
+      );
     }
 
     // main line layer
     if (lineObj && lineObj.show !== false) {
-      nodes.push(createDisplayLayer(filteredPoints, {
-        data: layer.consumableData,
-        item: lineObj,
-        generator: lineGenerator
-      }, 'none'));
+      nodes.push(
+        createDisplayLayer(
+          filteredPoints,
+          {
+            data: layer.consumableData,
+            item: lineObj,
+            generator: lineGenerator,
+          },
+          'none'
+        )
+      );
 
       // secondary line layer, used only when rendering area
       if (!missingMinor0 && layerStngs.area && areaObj.show !== false && lineObj.showMinor0 !== false) {
-        nodes.push(createDisplayLayer(filteredPoints, {
-          data: layer.consumableData,
-          item: lineObj,
-          generator: secondaryLineGenerator
-        }, 'none'));
+        nodes.push(
+          createDisplayLayer(
+            filteredPoints,
+            {
+              data: layer.consumableData,
+              item: lineObj,
+              generator: secondaryLineGenerator,
+            },
+            'none'
+          )
+        );
       }
     }
   });
@@ -217,14 +218,7 @@ function createDisplayLayers(layers, {
   return nodes;
 }
 
-function resolve({
-  data,
-  stngs,
-  rect,
-  resolver,
-  style,
-  domain
-}) {
+function resolve({ data, stngs, rect, resolver, style, domain }) {
   const { width, height } = rect;
   const coordinates = resolver.resolve({
     data,
@@ -232,8 +226,8 @@ function resolve({
     settings: stngs.coordinates || {},
     scaled: {
       major: stngs.orientation === 'vertical' ? height : width,
-      minor: stngs.orientation === 'vertical' ? width : height
-    }
+      minor: stngs.orientation === 'vertical' ? width : height,
+    },
   });
 
   // there are two cases when a line should be interrupted:
@@ -241,7 +235,10 @@ function resolve({
   // 2. When a line is moving over a domain that may not coincide with the domain on the major scale.
   // For the second case, dummy points need to be injected in order to create values which will cause gaps as they fulfill the first case.
   // These dummy points need to be injected only when: the domain is discrete, connect !== false and multiple layers are defined
-  const injectDummy = !stngs.connect && domain.length > 2 && (typeof stngs.coordinates.layerId === 'function' || typeof stngs.coordinates.layerId === 'object');
+  const injectDummy =
+    !stngs.connect &&
+    domain.length > 2 &&
+    (typeof stngs.coordinates.layerId === 'function' || typeof stngs.coordinates.layerId === 'object');
 
   // collect points into layers
   const layerIds = {};
@@ -253,7 +250,9 @@ function resolve({
       // inject dummy if the previous point on the major domain is not the same as the prev point on the line's domain.
       // this works only if a datum's value property is the same primitive as in the domain.
       const lastItem = layerIds[lid] ? layerIds[lid].items[layerIds[lid].items.length - 1] : null;
-      const lastOrderIdx = lastItem ? domain.indexOf(lastItem.data.major ? lastItem.data.major.value : lastItem.data.value) : null;
+      const lastOrderIdx = lastItem
+        ? domain.indexOf(lastItem.data.major ? lastItem.data.major.value : lastItem.data.value)
+        : null;
       if (lastItem && domain.indexOf(p.data.major ? p.data.major.value : p.data.value) - 1 !== lastOrderIdx) {
         layerIds[lid].items.push({ dummy: true });
       }
@@ -263,22 +262,22 @@ function resolve({
       id: lid,
       items: [],
       dataItems: [],
-      consumableData: {}
+      consumableData: {},
     };
     layerIds[lid].dataItems.push(p.data);
     layerIds[lid].items.push(p);
   }
 
-  const metaLayers = Object.keys(layerIds).map((lid) => {
+  const metaLayers = Object.keys(layerIds).map(lid => {
     layerIds[lid].consumableData = {
       points: layerIds[lid].dataItems,
-      ...layerIds[lid].dataItems[0]
+      ...layerIds[lid].dataItems[0],
     };
     return layerIds[lid];
   });
 
   const layersData = {
-    items: metaLayers.map((layer) => layer.consumableData)
+    items: metaLayers.map(layer => layer.consumableData),
   };
   const layerStngs = stngs.layers || {};
 
@@ -286,24 +285,24 @@ function resolve({
     data: layersData,
     defaults: {
       curve: SETTINGS.layers.curve,
-      show: SETTINGS.layers.show
+      show: SETTINGS.layers.show,
     },
     settings: {
       curve: layerStngs.curve,
-      show: layerStngs.show
-    }
+      show: layerStngs.show,
+    },
   });
 
   const linesResolved = resolver.resolve({
     data: layersData,
     defaults: extend({}, SETTINGS.layers.line, style.line),
-    settings: layerStngs.line
+    settings: layerStngs.line,
   });
 
   const areasResolved = resolver.resolve({
     data: layersData,
     defaults: extend({}, SETTINGS.layers.area, style.area),
-    settings: layerStngs.area
+    settings: layerStngs.area,
   });
 
   return {
@@ -311,18 +310,12 @@ function resolve({
     metaLayers,
     layers: layersResolved,
     lines: linesResolved,
-    areas: areasResolved
+    areas: areasResolved,
   };
 }
 
 function calculateVisibleLayers(opts) {
-  const {
-    metaLayers,
-    coordinates,
-    layers,
-    lines,
-    areas
-  } = resolve(opts);
+  const { metaLayers, coordinates, layers, lines, areas } = resolve(opts);
 
   const visibleLayers = [];
   metaLayers.forEach((layer, ix) => {
@@ -348,7 +341,9 @@ function calculateVisibleLayers(opts) {
           continue;
         }
         if (opts.missingMinor0) {
-          point.minor0 = coordinates.settings.minor.scale ? coordinates.settings.minor.scale(pData.minor0 ? pData.minor0.value : 0) : 0;
+          point.minor0 = coordinates.settings.minor.scale
+            ? coordinates.settings.minor.scale(pData.minor0 ? pData.minor0.value : 0)
+            : 0;
         }
         if (!isNaN(point.minor)) {
           values.push(point.minor);
@@ -366,7 +361,7 @@ function calculateVisibleLayers(opts) {
       areaObj: areas.items[ix],
       median,
       points,
-      consumableData: layer.consumableData
+      consumableData: layer.consumableData,
     });
   });
 
@@ -378,11 +373,10 @@ const lineMarkerComponent = {
   defaultSettings: {
     style: {
       area: '$shape',
-      line: '$shape-outline'
-    }
+      line: '$shape-outline',
+    },
   },
-  created() {
-  },
+  created() {},
   render({ data }) {
     // console.log("DATA", data);
     const { width, height } = this.rect;
@@ -396,14 +390,20 @@ const lineMarkerComponent = {
       resolver: this.resolver,
       style: this.style,
       missingMinor0,
-      domain: this.stngs.coordinates && this.stngs.coordinates.major && this.stngs.coordinates.major.scale ? this.chart.scale(this.stngs.coordinates.major.scale).domain() : []
+      domain:
+        this.stngs.coordinates && this.stngs.coordinates.major && this.stngs.coordinates.major.scale
+          ? this.chart.scale(this.stngs.coordinates.major.scale).domain()
+          : [],
     });
 
     if (this.stngs.layers && this.stngs.layers.sort) {
-      const sortable = visibleLayers.map((v) => ({
-        id: v.layerObj.id,
-        data: v.layerObj.data
-      })).sort(this.stngs.layers.sort).map((s) => s.id);
+      const sortable = visibleLayers
+        .map(v => ({
+          id: v.layerObj.id,
+          data: v.layerObj.data,
+        }))
+        .sort(this.stngs.layers.sort)
+        .map(s => s.id);
       visibleLayers.sort((a, b) => sortable.indexOf(a.layerObj.id) - sortable.indexOf(b.layerObj.id));
     } else {
       visibleLayers.sort((a, b) => a.median - b.median);
@@ -414,9 +414,9 @@ const lineMarkerComponent = {
       width,
       height,
       missingMinor0,
-      stngs: this.stngs
+      stngs: this.stngs,
     });
-  }
+  },
 };
 
 export default lineMarkerComponent;

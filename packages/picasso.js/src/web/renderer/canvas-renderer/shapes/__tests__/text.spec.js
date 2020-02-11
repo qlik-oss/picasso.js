@@ -16,7 +16,7 @@ describe('text', () => {
         textAlign: '',
         textBaseline: '',
         fillText: sandbox.spy(),
-        canvas: {}
+        canvas: {},
       };
 
       sandbox.stub(textManipulation, 'ellipsText').callsFake(() => '...');
@@ -29,7 +29,7 @@ describe('text', () => {
         'font-size': '15px',
         'font-family': 'sans',
         'text-anchor': '',
-        'dominant-baseline': ''
+        'dominant-baseline': '',
       };
     });
 
@@ -65,10 +65,10 @@ describe('text', () => {
         { value: 'start', expected: 'start' },
         { value: 'end', expected: 'end' },
         { value: 'middle', expected: 'center' },
-        { value: 'inherit', expected: 'inherit' }
+        { value: 'inherit', expected: 'inherit' },
       ];
 
-      cases.forEach((fixture) => {
+      cases.forEach(fixture => {
         it(`should be set correctly when text-anchor is ${fixture.value}`, () => {
           text['text-anchor'] = fixture.value;
 
@@ -85,7 +85,7 @@ describe('text', () => {
         text['font-size'] = '10px';
         render(text, { g });
 
-        expect(g.fillText.args[0][2]).to.equal((2 + 4) - 2); // Validate y params
+        expect(g.fillText.args[0][2]).to.equal(2 + 4 - 2); // Validate y params
       });
     });
   });

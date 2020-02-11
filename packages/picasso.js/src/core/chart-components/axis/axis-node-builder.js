@@ -1,9 +1,7 @@
 import buildLine from './axis-line-node';
 import buildLabel from './axis-label-node';
 import buildTick from './axis-tick-node';
-import {
-  testRectRect
-} from '../../math/narrow-phase-collision';
+import { testRectRect } from '../../math/narrow-phase-collision';
 import { getClampedValue } from './axis-label-size';
 import getHorizontalContinuousWidth from './get-continuous-label-rect';
 import { expandRect } from '../../geometry/util';
@@ -31,20 +29,20 @@ function calcActualTextRect({ style, measureText, tick }) {
   return measureText({
     text: tick.label,
     fontSize: style.fontSize,
-    fontFamily: style.fontFamily
+    fontFamily: style.fontFamily,
   });
 }
 
 function majorTicks(ticks) {
-  return ticks.filter((t) => !t.isMinor);
+  return ticks.filter(t => !t.isMinor);
 }
 
 function minorTicks(ticks) {
-  return ticks.filter((t) => t.isMinor);
+  return ticks.filter(t => t.isMinor);
 }
 
 function tickBuilder(ticks, buildOpts) {
-  return ticks.map((tick) => buildTick(tick, buildOpts));
+  return ticks.map(tick => buildTick(tick, buildOpts));
 }
 
 function tickBandwidth(scale, tick) {
@@ -95,14 +93,20 @@ export function filterOverlappingLabels(labels, ticks, buildOpts) {
   }
 
   for (let i = 0; i <= labels.length - 1; i++) {
-    for (let k = i + 1; k <= Math.min(i + 5, i + (labels.length - 1)); k++) { // TODO Find a better way to handle exteme/layered labels then to iterare over ~5 next labels
+    for (let k = i + 1; k <= Math.min(i + 5, i + (labels.length - 1)); k++) {
+      // TODO Find a better way to handle exteme/layered labels then to iterare over ~5 next labels
       if (labels[i] && labels[k] && isOverlapping(i, k)) {
-        if (k === labels.length - 1) { // On collition with last label, remove current label instead
+        if (k === labels.length - 1) {
+          // On collition with last label, remove current label instead
           labels.splice(i, 1);
-          if (ticks) { ticks.splice(i, 1); }
+          if (ticks) {
+            ticks.splice(i, 1);
+          }
         } else {
           labels.splice(k, 1);
-          if (ticks) { ticks.splice(k, 1); }
+          if (ticks) {
+            ticks.splice(k, 1);
+          }
         }
         k--;
         i--;
@@ -111,9 +115,7 @@ export function filterOverlappingLabels(labels, ticks, buildOpts) {
   }
 }
 
-function discreteCalcMaxTextRect({
-  textMetrics, settings, innerRect, scale, tilted, layered, tick
-}) {
+function discreteCalcMaxTextRect({ textMetrics, settings, innerRect, scale, tilted, layered, tick }) {
   const h = textMetrics.height;
 
   const bandwidth = tickBandwidth(scale, tick);
@@ -122,21 +124,34 @@ function discreteCalcMaxTextRect({
   if (settings.align === 'left' || settings.align === 'right') {
     textRect.width = innerRect.width - labelsSpacing(settings) - settings.paddingEnd;
   } else if (layered) {
-    textRect.width = (bandwidth * innerRect.width) * 2;
+    textRect.width = bandwidth * innerRect.width * 2;
   } else if (tilted) {
     const radians = Math.abs(settings.labels.tiltAngle) * (Math.PI / 180);
-    textRect.width = (innerRect.height - labelsSpacing(settings) - settings.paddingEnd - (h * Math.cos(radians))) / Math.sin(radians);
+    textRect.width =
+      (innerRect.height - labelsSpacing(settings) - settings.paddingEnd - h * Math.cos(radians)) / Math.sin(radians);
   } else {
     textRect.width = bandwidth * innerRect.width;
   }
 
-  textRect.width = getClampedValue({ value: textRect.width, maxValue: settings.labels.maxLengthPx, minValue: settings.labels.minLengthPx });
+  textRect.width = getClampedValue({
+    value: textRect.width,
+    maxValue: settings.labels.maxLengthPx,
+    minValue: settings.labels.minLengthPx,
+  });
 
   return textRect;
 }
 
 function continuousCalcMaxTextRect({
-  textMetrics, settings, innerRect, outerRect, tilted, layered, tick, index, major
+  textMetrics,
+  settings,
+  innerRect,
+  outerRect,
+  tilted,
+  layered,
+  tick,
+  index,
+  major,
 }) {
   const h = textMetrics.height;
 
@@ -145,7 +160,8 @@ function continuousCalcMaxTextRect({
     textRect.width = innerRect.width - labelsSpacing(settings) - settings.paddingEnd;
   } else if (tilted) {
     const radians = Math.abs(settings.labels.tiltAngle) * (Math.PI / 180);
-    textRect.width = (innerRect.height - labelsSpacing(settings) - settings.paddingEnd - (h * Math.cos(radians))) / Math.sin(radians);
+    textRect.width =
+      (innerRect.height - labelsSpacing(settings) - settings.paddingEnd - h * Math.cos(radians)) / Math.sin(radians);
   } else {
     textRect.width = getHorizontalContinuousWidth({
       layered,
@@ -153,18 +169,20 @@ function continuousCalcMaxTextRect({
       innerRect,
       outerRect,
       tick,
-      index
+      index,
     });
   }
 
-  textRect.width = getClampedValue({ value: textRect.width, maxValue: settings.labels.maxLengthPx, minValue: settings.labels.minLengthPx });
+  textRect.width = getClampedValue({
+    value: textRect.width,
+    maxValue: settings.labels.maxLengthPx,
+    minValue: settings.labels.minLengthPx,
+  });
 
   return textRect;
 }
 
-function getStepSizeFn({
-  innerRect, scale, settings, tick
-}) {
+function getStepSizeFn({ innerRect, scale, settings, tick }) {
   const size = settings.align === 'top' || settings.align === 'bottom' ? innerRect.width : innerRect.height;
   const bandwidth = tickBandwidth(scale, tick);
   return size * bandwidth;
@@ -183,16 +201,14 @@ export default function nodeBuilder(isDiscrete) {
     return discrete;
   }
 
-  function build({
-    settings, scale, innerRect, outerRect, measureText, ticks, state, textBounds
-  }) {
+  function build({ settings, scale, innerRect, outerRect, measureText, ticks, state, textBounds }) {
     const nodes = [];
     const major = majorTicks(ticks);
     const minor = minorTicks(ticks);
     const buildOpts = {
       innerRect,
       align: settings.align,
-      outerRect
+      outerRect,
     };
     const tilted = state.labels.activeMode === 'tilted';
     const layered = state.labels.activeMode === 'layered';
@@ -223,12 +239,25 @@ export default function nodeBuilder(isDiscrete) {
       const resolveTickOpts = (tick, index) => {
         buildOpts.textRect = calcActualTextRect({ tick, measureText, style: buildOpts.style });
         const maxSize = resolveLabelRect({
-          textMetrics: buildOpts.textRect, settings, innerRect, outerRect, scale, tilted, layered, tick, major, index
+          textMetrics: buildOpts.textRect,
+          settings,
+          innerRect,
+          outerRect,
+          scale,
+          tilted,
+          layered,
+          tick,
+          major,
+          index,
         });
         buildOpts.maxWidth = maxSize.width;
         buildOpts.maxHeight = maxSize.height;
         buildOpts.stepSize = getStepSizeFn({
-          innerRect, scale, ticks, settings, tick
+          innerRect,
+          scale,
+          ticks,
+          settings,
+          tick,
         });
       };
 

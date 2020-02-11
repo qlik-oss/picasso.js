@@ -1,16 +1,16 @@
 const creators = [];
 
 /**
-  * Color instantiator
-  * @private
-  * @param { ...Object } ...c The color representation, can be any type that is recognized by a registered color instantiator
-  * @return { RgbaColor | HslaColor } Color instance, the type returned depends on the color instantiator that recognizes the color
-  * @example
-  * color( "#fff" );
-  * color( "rgb(0, 0, 0)" );
-  * color( "hsl(0, 50%, 50%)" );
-  * color( "red" );
-  */
+ * Color instantiator
+ * @private
+ * @param { ...Object } ...c The color representation, can be any type that is recognized by a registered color instantiator
+ * @return { RgbaColor | HslaColor } Color instance, the type returned depends on the color instantiator that recognizes the color
+ * @example
+ * color( "#fff" );
+ * color( "rgb(0, 0, 0)" );
+ * color( "hsl(0, 50%, 50%)" );
+ * color( "red" );
+ */
 function color(...c) {
   for (let i = 0; i < creators.length; i++) {
     if (creators[i].test(...c)) {

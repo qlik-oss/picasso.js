@@ -11,7 +11,7 @@ describe('axis - get horizontal continuous label width', () => {
       outerRect: { x: 0, width: 100 },
       tick: { position: 0 },
       layered: false,
-      index: 0
+      index: 0,
     };
   });
 

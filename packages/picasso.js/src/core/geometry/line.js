@@ -4,7 +4,7 @@ import {
   testPolygonLine,
   testRectLine,
   testLinePoint,
-  testLineLine
+  testLineLine,
 } from '../math/narrow-phase-collision';
 
 /**
@@ -12,17 +12,17 @@ import {
  * @private
  */
 class GeoLine {
-  constructor({
-    x1 = 0, y1 = 0, x2 = 0, y2 = 0, tolerance = 0
-  } = {}) {
+  constructor({ x1 = 0, y1 = 0, x2 = 0, y2 = 0, tolerance = 0 } = {}) {
     this.set({
-      x1, y1, x2, y2, tolerance
+      x1,
+      y1,
+      x2,
+      y2,
+      tolerance,
     });
   }
 
-  set({
-    x1 = 0, y1 = 0, x2 = 0, y2 = 0, tolerance = 0
-  } = {}) {
+  set({ x1 = 0, y1 = 0, x2 = 0, y2 = 0, tolerance = 0 } = {}) {
     this.type = 'line';
     this.x1 = x1;
     this.y1 = y1;
@@ -87,7 +87,7 @@ class GeoLine {
   points() {
     return [
       { x: this.x1, y: this.y1 },
-      { x: this.x2, y: this.y2 }
+      { x: this.x2, y: this.y2 },
     ];
   }
 }
@@ -96,7 +96,4 @@ function create(...args) {
   return new GeoLine(...args);
 }
 
-export {
-  GeoLine as default,
-  create
-};
+export { GeoLine as default, create };

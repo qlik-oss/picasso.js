@@ -15,7 +15,7 @@ function element(name, rect = { x: 0, y: 0, width: 100, height: 100 }) {
       },
       createElement(tag) {
         return element(tag);
-      }
+      },
     },
     cloneNode(b) {
       const ret = element(this.name);
@@ -66,21 +66,19 @@ function element(name, rect = { x: 0, y: 0, width: 100, height: 100 }) {
       }
     },
     trigger(listenerKey, arg) {
-      this.listeners
-        .filter(l => typeof l[listenerKey] !== 'undefined')
-        .forEach(l => l[listenerKey].call(this, arg));
+      this.listeners.filter(l => typeof l[listenerKey] !== 'undefined').forEach(l => l[listenerKey].call(this, arg));
     },
     getBoundingClientRect() {
       return {
         left: rect.x,
         top: rect.y,
         width: rect.width,
-        height: rect.height
+        height: rect.height,
       };
     },
     contains(target) {
       return this.children.indexOf(target) !== -1;
-    }
+    },
   };
 
   let context2d;

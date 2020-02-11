@@ -12,16 +12,19 @@ describe('settings resolver', () => {
       norm,
       datum,
       data,
-      idx
+      idx,
     });
     updateScaleSize = sinon.stub();
-    res = settingsResolver({
-      chart: 'c'
-    }, {
-      normalizeSettings,
-      resolveForItem,
-      updateScaleSize
-    });
+    res = settingsResolver(
+      {
+        chart: 'c',
+      },
+      {
+        normalizeSettings,
+        resolveForItem,
+        updateScaleSize,
+      }
+    );
   });
 
   it('should call externals with proper arguments', () => {
@@ -29,22 +32,24 @@ describe('settings resolver', () => {
       settings: 's',
       defaults: 'd',
       data: {
-        items: ['a']
-      }
+        items: ['a'],
+      },
     });
-    expect(resolved.items).to.eql([{
-      norm: 's-d-c',
-      datum: 'a',
-      data: 'a',
-      idx: 0
-    }]);
+    expect(resolved.items).to.eql([
+      {
+        norm: 's-d-c',
+        datum: 'a',
+        data: 'a',
+        idx: 0,
+      },
+    ]);
   });
 
   it('should call externals with proper arguments when no dataset is provided', () => {
     const resolved = res.resolve({
       settings: 's',
       defaults: 'd',
-      data: 'a'
+      data: 'a',
     });
 
     expect(resolved).to.eql({
@@ -53,8 +58,8 @@ describe('settings resolver', () => {
         norm: 's-d-c',
         datum: undefined,
         data: 'a',
-        idx: -1
-      }
+        idx: -1,
+      },
     });
   });
 });

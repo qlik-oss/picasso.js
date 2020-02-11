@@ -27,7 +27,7 @@ function geometryToDef(geometry, dpi, mvm) {
     const path = pointsToPath(points, type === 'polygon');
     def = {
       type: 'path',
-      d: path
+      d: path,
     };
   }
 
@@ -44,11 +44,11 @@ function colliderToShape(node, dpi) {
     const isCollection = node.colliderType === 'collection';
 
     if (isCollection) {
-      const children = node.collider.geometries.map((geometry) => geometryToDef(geometry, dpi, mvm));
+      const children = node.collider.geometries.map(geometry => geometryToDef(geometry, dpi, mvm));
 
       return {
         type: 'container',
-        children
+        children,
       };
     }
 
@@ -64,13 +64,19 @@ function colliderToShape(node, dpi) {
 class SceneNode {
   constructor(node) {
     this._bounds = (includeTransform = true) => {
-      const {
-        x, y, width, height
-      } = node.boundingRect ? node.boundingRect(includeTransform) : {
-        x: 0, y: 0, width: 0, height: 0
-      };
+      const { x, y, width, height } = node.boundingRect
+        ? node.boundingRect(includeTransform)
+        : {
+            x: 0,
+            y: 0,
+            width: 0,
+            height: 0,
+          };
       return {
-        x, y, width, height
+        x,
+        y,
+        width,
+        height,
       };
     };
     this._attrs = node.attrs;
@@ -80,11 +86,11 @@ class SceneNode {
     this._collider = () => colliderToShape(node, this._dpi);
     this._desc = node.desc;
     this._tag = node.tag;
-    this._children = () => node.children.map((n) => new SceneNode(n));
+    this._children = () => node.children.map(n => new SceneNode(n));
     this._parent = () => (node.parent ? new SceneNode(node.parent) : null);
 
     this._cache = {
-      elementBoundingRect: null
+      elementBoundingRect: null,
     };
     this._getElementBoundingRect = () => {
       if (!this._cache.elementBoundingRect && this.element) {
@@ -153,18 +159,18 @@ class SceneNode {
   }
 
   /**
-  * Key of the component this shape belongs to
-  * @type {string}
-  * @private
-  */
+   * Key of the component this shape belongs to
+   * @type {string}
+   * @private
+   */
   set key(k) {
     this._key = k;
   }
 
   /**
-  * Key of the component this shape belongs to
-  * @type {string}
-  */
+   * Key of the component this shape belongs to
+   * @type {string}
+   */
   get key() {
     return this._key;
   }
@@ -258,7 +264,4 @@ function create(...a) {
   return new SceneNode(...a);
 }
 
-export {
-  create as default,
-  SceneNode
-};
+export { create as default, SceneNode };

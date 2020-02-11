@@ -6,7 +6,7 @@ import * as instanceHandler from '../instance-handler';
 
 function componentMock() {
   return {
-    emit: sinon.stub()
+    emit: sinon.stub(),
   };
 }
 
@@ -20,9 +20,9 @@ function chartMock() {
       ...elementMock(),
       getBoundingClientRect: sinon.stub().returns({
         left: 0,
-        top: 0
-      })
-    }
+        top: 0,
+      }),
+    },
   };
 }
 
@@ -46,9 +46,9 @@ describe('Tooltip', () => {
 
     config = {
       settings: {
-        filter: (nodes) => nodes,
-        isEqual: isEql
-      }
+        filter: nodes => nodes,
+        isEqual: isEql,
+      },
     };
 
     instance = componentFixture.simulateCreate(tooltip, config);
@@ -57,8 +57,8 @@ describe('Tooltip', () => {
         x: 0,
         y: 0,
         width: 100,
-        height: 100
-      }
+        height: 100,
+      },
     }); // To attach h to context
 
     invokeSpy = sandbox.stub(instance.def, 'invokeRenderer');
@@ -219,7 +219,7 @@ describe('Tooltip', () => {
         y: 0,
         width: 100,
         height: 50,
-        scaleRatio: { x: 0, y: 0 }
+        scaleRatio: { x: 0, y: 0 },
       };
 
       componentFixture.mocks().renderer.size = sandbox.stub().returns(container);

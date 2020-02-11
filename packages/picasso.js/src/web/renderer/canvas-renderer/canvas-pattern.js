@@ -4,7 +4,7 @@ function getPattern(pattern, dummyCanvas, ctx) {
   ctx.save();
   ctx.fillStyle = pattern.fill;
 
-  pattern.shapes.forEach((s) => {
+  pattern.shapes.forEach(s => {
     switch (s.type) {
       case 'rect':
         ctx.rect(s.x, s.y, s.width, s.height);
@@ -35,6 +35,6 @@ export default function patternizer(document) {
     },
     clear() {
       cache = {};
-    }
+    },
   };
 }

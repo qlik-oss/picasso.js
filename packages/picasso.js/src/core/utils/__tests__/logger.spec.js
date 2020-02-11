@@ -14,7 +14,7 @@ describe('logger', () => {
     log: () => {},
     warn: () => {},
     info: () => {},
-    error: () => {}
+    error: () => {},
   };
 
   let spyLog;

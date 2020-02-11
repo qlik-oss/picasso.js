@@ -21,8 +21,8 @@ describe('native interaction mixin', () => {
         },
         mouseup() {
           // handle mouseup
-        }
-      }
+        },
+      },
     };
     nativeInteraction = native(chart, mediator, element);
   });
@@ -64,7 +64,7 @@ describe('native interaction mixin', () => {
     settings.events = {
       mousemove() {},
       mouseleave() {},
-      mouseenter() {}
+      mouseenter() {},
     };
     nativeInteraction.set(settings);
     expect(element.listeners.length).to.equal(3);

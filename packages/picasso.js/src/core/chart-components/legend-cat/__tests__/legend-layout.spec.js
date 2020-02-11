@@ -5,39 +5,44 @@ describe('legend layout', () => {
     spread: () => 11,
     extent: () => 13,
     parallelize: () => {},
-    direction: () => 'ltr'
+    direction: () => 'ltr',
   };
   const navigationRenderer = {
     spread: () => 41,
-    extent: () => 17
+    extent: () => 17,
   };
   const titleRenderer = {
     spread: () => 19,
-    extent: () => 21
+    extent: () => 21,
   };
 
   const display = {
-    spacing: 7
+    spacing: 7,
   };
 
   describe('vertical', () => {
-    const boxes = layout({
-      x: 0,
-      y: 0,
-      width: 200,
-      height: 100
-    }, display, 'vertical', {
-      itemRenderer,
-      titleRenderer,
-      navigationRenderer
-    });
+    const boxes = layout(
+      {
+        x: 0,
+        y: 0,
+        width: 200,
+        height: 100,
+      },
+      display,
+      'vertical',
+      {
+        itemRenderer,
+        titleRenderer,
+        navigationRenderer,
+      }
+    );
 
     it('should position title at top', () => {
       expect(boxes.title).to.eql({
         x: 7,
         y: 7,
         width: 200 - 14,
-        height: 19
+        height: 19,
       });
     });
 
@@ -46,7 +51,7 @@ describe('legend layout', () => {
         x: 7,
         y: 93,
         width: 200 - 14,
-        height: 0
+        height: 0,
       });
     });
 
@@ -55,7 +60,7 @@ describe('legend layout', () => {
         x: 7,
         y: 7 + 19 + 7,
         width: 200 - 14,
-        height: 100 - 14 - 7 - 19
+        height: 100 - 14 - 7 - 19,
       });
     });
 
@@ -66,23 +71,28 @@ describe('legend layout', () => {
 
   describe('horizontal', () => {
     describe('without overflow', () => {
-      const boxes = layout({
-        x: 0,
-        y: 0,
-        width: 200,
-        height: 100
-      }, display, 'horizontal', {
-        itemRenderer,
-        titleRenderer,
-        navigationRenderer
-      });
+      const boxes = layout(
+        {
+          x: 0,
+          y: 0,
+          width: 200,
+          height: 100,
+        },
+        display,
+        'horizontal',
+        {
+          itemRenderer,
+          titleRenderer,
+          navigationRenderer,
+        }
+      );
 
       it('should position title at left', () => {
         expect(boxes.title).to.eql({
           x: 7,
           y: 7,
           width: 21,
-          height: 19
+          height: 19,
         });
       });
 
@@ -91,7 +101,7 @@ describe('legend layout', () => {
           x: 193,
           y: 7,
           width: 0,
-          height: 86
+          height: 86,
         });
       });
 
@@ -100,7 +110,7 @@ describe('legend layout', () => {
           x: 7 + 21 + 7,
           y: 7,
           width: 200 - 35 - 7,
-          height: 86
+          height: 86,
         });
       });
 
@@ -110,31 +120,36 @@ describe('legend layout', () => {
     });
 
     describe('with overflow, rtl and no title', () => {
-      const boxes = layout({
-        x: 0,
-        y: 0,
-        width: 200,
-        height: 100
-      }, display, 'horizontal', {
-        itemRenderer: {
-          direction: () => 'rtl',
-          parallelize: () => {},
-          spread: () => 11,
-          extent: () => 200 - 13 // 1px less than available space
+      const boxes = layout(
+        {
+          x: 0,
+          y: 0,
+          width: 200,
+          height: 100,
         },
-        titleRenderer: {
-          spread: () => 19,
-          extent: () => 0
-        },
-        navigationRenderer
-      });
+        display,
+        'horizontal',
+        {
+          itemRenderer: {
+            direction: () => 'rtl',
+            parallelize: () => {},
+            spread: () => 11,
+            extent: () => 200 - 13, // 1px less than available space
+          },
+          titleRenderer: {
+            spread: () => 19,
+            extent: () => 0,
+          },
+          navigationRenderer,
+        }
+      );
 
       it('should not show title', () => {
         expect(boxes.title).to.eql({
           x: 193,
           y: 22,
           width: 0,
-          height: 19
+          height: 19,
         });
       });
 
@@ -143,7 +158,7 @@ describe('legend layout', () => {
           x: 7,
           y: 7,
           width: 17,
-          height: 86
+          height: 86,
         });
       });
 
@@ -152,7 +167,7 @@ describe('legend layout', () => {
           x: 7 + 17 + 7,
           y: 22,
           width: 200 - 31 - 7,
-          height: 86
+          height: 86,
         });
       });
     });

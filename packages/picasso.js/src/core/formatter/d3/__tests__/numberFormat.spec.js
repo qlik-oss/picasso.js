@@ -20,7 +20,7 @@ describe('d3 numberFormat', () => {
       decimal: ',',
       thousands: '\u00a0',
       grouping: [3],
-      currency: ['', 'SEK']
+      currency: ['', 'SEK'],
     });
 
     expect(formatter(0.123)).to.equal('0,12');

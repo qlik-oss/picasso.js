@@ -1,13 +1,10 @@
-import {
-  pointsToLine,
-  pointsToRect
-} from './util';
+import { pointsToLine, pointsToRect } from './util';
 import {
   testCircleLine,
   testPolygonLine,
   testLinePoint,
   testLineLine,
-  testRectLine
+  testRectLine,
 } from '../math/narrow-phase-collision';
 
 function pointsAreNotEqual(p0, p1) {
@@ -35,7 +32,7 @@ class GeoPolyline {
             x1: this._points[i].x,
             y1: this._points[i].y,
             x2: this._points[i + 1].x,
-            y2: this._points[i + 1].y
+            y2: this._points[i + 1].y,
           });
         }
       }
@@ -47,7 +44,7 @@ class GeoPolyline {
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   containsPoint(point) {
-    return this.segments.some((line) => testLinePoint(line, point));
+    return this.segments.some(line => testLinePoint(line, point));
   }
 
   /**
@@ -55,7 +52,7 @@ class GeoPolyline {
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsCircle(circle) {
-    return this.segments.some((line) => testCircleLine(circle, line));
+    return this.segments.some(line => testCircleLine(circle, line));
   }
 
   /**
@@ -64,7 +61,7 @@ class GeoPolyline {
    */
   intersectsLine(points) {
     const testLine = pointsToLine(points);
-    return this.segments.some((line) => testLineLine(line, testLine));
+    return this.segments.some(line => testLineLine(line, testLine));
   }
 
   /**
@@ -73,7 +70,7 @@ class GeoPolyline {
    */
   intersectsRect(points) {
     const rect = pointsToRect(points);
-    return this.segments.some((line) => testRectLine(rect, line));
+    return this.segments.some(line => testRectLine(rect, line));
   }
 
   /**
@@ -82,7 +79,7 @@ class GeoPolyline {
    */
   intersectsPolygon(polygon) {
     // This is a unoptimized solution and should be replaced by a more efficient algorithm.
-    return this.segments.some((line) => testPolygonLine(polygon, line));
+    return this.segments.some(line => testPolygonLine(polygon, line));
   }
 
   /**
@@ -98,7 +95,4 @@ function create(...a) {
   return new GeoPolyline(...a);
 }
 
-export {
-  create,
-  GeoPolyline as default
-};
+export { create, GeoPolyline as default };

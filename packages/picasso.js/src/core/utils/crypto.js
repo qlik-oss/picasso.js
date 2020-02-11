@@ -23,7 +23,7 @@ export function hashObject(item) {
 
   for (i = 0, len = item.length; i < len; i++) {
     chr = item.charCodeAt(i);
-    hash = ((hash << 5) - hash) + chr;
+    hash = (hash << 5) - hash + chr;
     hash &= hash; // Convert to 32bit integer
   }
 

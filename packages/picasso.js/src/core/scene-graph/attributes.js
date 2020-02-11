@@ -18,7 +18,7 @@ const mappedAttributes = {
   maxWidth: 'maxWidth',
   transform: 'transform',
   strokeDasharray: 'stroke-dasharray',
-  id: 'id'
+  id: 'id',
 };
 
 /**
@@ -30,7 +30,7 @@ const mappedAttributes = {
  * @param {object} source - Source object
  */
 function assignMappedAttribute(target, source) {
-  Object.keys(mappedAttributes).forEach((key) => {
+  Object.keys(mappedAttributes).forEach(key => {
     const sourceValue = source[key];
     if (typeof sourceValue !== 'undefined') {
       const mappedKey = mappedAttributes[key];

@@ -26,10 +26,7 @@ function tree() {
   return new TreeItemRenderer(createTree, creator, maintainer, destroyer);
 }
 
-export {
-  TreeItemRenderer as default,
-  tree
-};
+export { TreeItemRenderer as default, tree };
 
 /**
  * Create an SVGElement and attach to parent.

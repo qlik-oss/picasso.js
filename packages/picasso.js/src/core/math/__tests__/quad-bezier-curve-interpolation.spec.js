@@ -2,7 +2,7 @@ import quadToPoints from '../quad-bezier-curve-interpolation';
 
 function approxEqual(ary, expected) {
   ary.forEach((item, i) => {
-    Object.keys(expected[i]).forEach((key) => {
+    Object.keys(expected[i]).forEach(key => {
       expect(item[key]).to.approximately(expected[i][key], 0.001);
     });
   });
@@ -27,7 +27,7 @@ describe('Quad Bezier curve', () => {
       { x: 3.125000000000001, y: 21.875 },
       { x: 12.500000000000002, y: 37.5 },
       { x: 28.125, y: 46.875 },
-      { x: 50, y: 50 }
+      { x: 50, y: 50 },
     ];
 
     approxEqual(pts, exp);
