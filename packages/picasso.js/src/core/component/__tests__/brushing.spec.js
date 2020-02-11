@@ -241,8 +241,10 @@ describe('Brushing', () => {
           obj[key] = fn;
           this.listeners.push(obj);
         },
-        trigger: function trigger(key) {
-          this.listeners.filter(listener => typeof listener[key] !== 'undefined').forEach(listener => listener[key]());
+        trigger: function trigger(key, ...args) {
+          this.listeners
+            .filter(listener => typeof listener[key] !== 'undefined')
+            .forEach(listener => listener[key](...args));
         },
       };
       brusherStub.containsMappedData.onCall(0).returns(false); // Do not match first node but all after
@@ -298,6 +300,41 @@ describe('Brushing', () => {
       dummyComponent.renderer.render.args[0][0].forEach(node => {
         expect(node.__style).to.equal(undefined);
       });
+    });
+
+    it('start and end should call renderer.render by default', () => {
+      styler(dummyComponent, consume);
+      brusherStub.trigger('start');
+      brusherStub.trigger('end');
+
+      expect(dummyComponent.renderer.render.calledTwice).to.be.true;
+    });
+
+    it('start, end and update should call renderer.render if supressRender=false is passed', () => {
+      styler(dummyComponent, consume);
+      brusherStub.trigger('start', { suppressRender: false });
+      brusherStub.trigger('end', { suppressRender: false });
+
+      expect(dummyComponent.renderer.render.calledTwice).to.be.true;
+    });
+
+    it('start and end should not call renderer.render if supressRender=true is passed', () => {
+      styler(dummyComponent, consume);
+      brusherStub.trigger('start', { suppressRender: true });
+      brusherStub.trigger('end', { suppressRender: true });
+
+      expect(dummyComponent.renderer.render.callCount).to.equal(0);
+    });
+
+    it('end should restore all original styling values if supressRender=true is passed but not call render', () => {
+      styler(dummyComponent, consume);
+      brusherStub.trigger('start');
+      brusherStub.trigger('end', { suppressRender: true });
+
+      dummyComponent.renderer.render.args[0][0].forEach(node => {
+        expect(node.__style).to.equal(undefined);
+      });
+      expect(dummyComponent.renderer.render.calledOnce).to.be.true;
     });
 
     it('update should apply styling values', () => {

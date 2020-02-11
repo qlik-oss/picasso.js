@@ -479,12 +479,13 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    * Starts this brush context
    *
    * Starts this brush context and emits a 'start' event if it is not already started.
+   * @param {...any} args - arguments to be passed to 'start' listeners
    * @emits brush#start
    */
-  fn.start = () => {
+  fn.start = (...args) => {
     if (!activated) {
       activated = true;
-      fn.emit('start');
+      fn.emit('start', ...args);
       links.start();
     }
   };
@@ -493,16 +494,17 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    * Ends this brush context
    *
    * Ends this brush context and emits an 'end' event if it is not already ended.
+   * @param {...any} args - arguments to be passed to 'end' listeners
    * @emits brush#end
    */
-  fn.end = () => {
+  fn.end = (...args) => {
     if (!activated) {
       return;
     }
     activated = false;
     ranges = {};
     values = {};
-    fn.emit('end');
+    fn.emit('end', ...args);
     links.end();
   };
 

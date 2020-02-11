@@ -39,11 +39,11 @@ describe('brush', () => {
   });
 
   describe('events', () => {
-    it('should emit a start event when started', () => {
+    it('should emit a start event with paremeters when started', () => {
       const cb = sandbox.spy();
       b.on('start', cb);
-      b.start();
-      expect(cb.callCount).to.equal(1);
+      b.start(1, '2', false);
+      expect(cb.withArgs(1, '2', false).calledOnce).to.be.true;
     });
 
     it('should not emit a start event when alredy started', () => {
@@ -55,12 +55,12 @@ describe('brush', () => {
       expect(cb.callCount).to.equal(1);
     });
 
-    it('should emit an end event when ended', () => {
+    it('should emit an end event with parameters when ended', () => {
       const cb = sandbox.spy();
       b.on('end', cb);
       b.start();
-      b.end();
-      expect(cb.callCount).to.equal(1);
+      b.end(1, '2', false);
+      expect(cb.withArgs(1, '2', false).calledOnce).to.be.true;
       b.end();
       expect(cb.callCount).to.equal(1);
     });
