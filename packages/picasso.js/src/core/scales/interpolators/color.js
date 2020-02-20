@@ -11,5 +11,5 @@ export default {
    */
   interpolate(from, to, t) {
     return interpolators.interpolate(from, to, t);
-  }
+  },
 };

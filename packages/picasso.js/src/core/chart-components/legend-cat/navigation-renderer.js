@@ -5,29 +5,23 @@ const DIR = {
   up: '\u25B2',
   right: '\u25B6',
   down: '\u25BC',
-  left: '\u25C0'
+  left: '\u25C0',
 };
 
 function itemize({
   // resolved,
   dock,
-  navigation
+  navigation,
 }) {
   return {
     layout: {
-      orientation: dock === 'top' || dock === 'bottom' ? 'vertical' : 'horizontal'
+      orientation: dock === 'top' || dock === 'bottom' ? 'vertical' : 'horizontal',
     },
-    navigation
+    navigation,
   };
 }
 
-function btn(h, {
-  size,
-  isActive,
-  direction,
-  nav,
-  attrs
-}) {
+function btn(h, { size, isActive, direction, nav, attrs }) {
   let c = {};
   let content = '';
   const attrsMerged = attrs;
@@ -47,10 +41,11 @@ function btn(h, {
   const style = {
     width: `${size}px`,
     minWidth: `${size}px`,
-    height: `${size}px`
+    height: `${size}px`,
   };
 
-  if (!Object.keys(c).length) { // if no classes are set, add some basic styling
+  if (!Object.keys(c).length) {
+    // if no classes are set, add some basic styling
     style.border = '0';
     style.background = 'none';
   }
@@ -59,20 +54,31 @@ function btn(h, {
     attrsMerged.disabled = 'disabled';
   }
 
-  return h('button', extend({
-    class: classString(c),
-    style
-  }, attrsMerged), [content || h('span', {
-    style: {
-      pointerEvents: 'none'
-    }
-  }, [DIR[direction]])]);
+  return h(
+    'button',
+    extend(
+      {
+        class: classString(c),
+        style,
+      },
+      attrsMerged
+    ),
+    [
+      content ||
+        h(
+          'span',
+          {
+            style: {
+              pointerEvents: 'none',
+            },
+          },
+          [DIR[direction]]
+        ),
+    ]
+  );
 }
 
-function render(renderer, {
-  rect,
-  itemRenderer
-}, itemized, legend) {
+function render(renderer, { rect, itemRenderer }, itemized, legend) {
   if (!renderer || !renderer.renderArgs) {
     return;
   }
@@ -98,48 +104,57 @@ function render(renderer, {
     order.reverse();
   }
 
-  const nodes = [h('div', {
-    style: {
-      position: 'relative',
-      display: 'flex',
-      'flex-direction': isVertical ? 'column' : 'row',
-      'justify-content': 'center',
-      height: '100%',
-      pointerEvents: 'auto'
-    },
-    dir: isRtl && !isVertical ? 'rtl' : 'ltr'
-  }, [btn(h, {
-    size: buttonSize,
-    isActive: hasNext,
-    direction: order[0],
-    attrs: {
-      'data-action': 'next',
-      'data-component-key': legend.settings.key
-    },
-    nav: itemized.navigation
-  }), btn(h, {
-    size: buttonSize,
-    isActive: hasPrev,
-    direction: order[1],
-    attrs: {
-      'data-action': 'prev',
-      'data-component-key': legend.settings.key
-    },
-    nav: itemized.navigation
-  })])];
+  const nodes = [
+    h(
+      'div',
+      {
+        style: {
+          position: 'relative',
+          display: 'flex',
+          'flex-direction': isVertical ? 'column' : 'row',
+          'justify-content': 'center',
+          height: '100%',
+          pointerEvents: 'auto',
+        },
+        dir: isRtl && !isVertical ? 'rtl' : 'ltr',
+      },
+      [
+        btn(h, {
+          size: buttonSize,
+          isActive: hasNext,
+          direction: order[0],
+          attrs: {
+            'data-action': 'next',
+            'data-component-key': legend.settings.key,
+          },
+          nav: itemized.navigation,
+        }),
+        btn(h, {
+          size: buttonSize,
+          isActive: hasPrev,
+          direction: order[1],
+          attrs: {
+            'data-action': 'prev',
+            'data-component-key': legend.settings.key,
+          },
+          nav: itemized.navigation,
+        }),
+      ]
+    ),
+  ];
   renderer.render(nodes);
 }
 
-export default function (legend) {
+export default function(legend) {
   let itemized;
 
   const nav = {
-    itemize: (obj) => {
+    itemize: obj => {
       itemized = itemize(obj);
     },
-    render: (obj) => render(nav.renderer, obj, itemized, legend),
+    render: obj => render(nav.renderer, obj, itemized, legend),
     extent: () => 32,
-    spread: () => 64
+    spread: () => 64,
   };
 
   return nav;

@@ -12,7 +12,8 @@ describe('renderer', () => {
     expect(renderer).to.be.a('function');
   });
 
-  it.skip('should throw error when type does not exist', () => { // TODO - decide how to handle non-existent types in registry.js
+  it.skip('should throw error when type does not exist', () => {
+    // TODO - decide how to handle non-existent types in registry.js
     expect(renderer.bind(renderer, 'dummy')).to.throw("Renderer of type 'dummy' does not exist");
   });
 

@@ -4,12 +4,13 @@ const SELECTOR_MAPS = {
   type: /^\w[\w-]+/,
   attr: /^\[\w(?:[\w\._-]+)?(?:[!]?=['\"][\w\s*#_-]*['\"])?\]/,
   universal: /^(\*)/,
-  tag: /^\.(\w+)/
+  tag: /^\.(\w+)/,
 };
 
 const FILTERS = {
-  type: (c, objects) => { // eslint-disable-line arrow-body-style
-    return objects.filter((o) => {
+  type: (c, objects) => {
+    // eslint-disable-line arrow-body-style
+    return objects.filter(o => {
       const type = o.type;
 
       if (type) {
@@ -19,11 +20,13 @@ const FILTERS = {
     });
   },
 
-  attr: (attr, operator, value, objects) => { // eslint-disable-line arrow-body-style
-    return objects.filter((o) => {
+  attr: (attr, operator, value, objects) => {
+    // eslint-disable-line arrow-body-style
+    return objects.filter(o => {
       const v = o.attrs[attr];
 
-      if (!operator) { // TODO handle undefined differently for != operator? As display object may very well have a default rendering color
+      if (!operator) {
+        // TODO handle undefined differently for != operator? As display object may very well have a default rendering color
         return typeof v !== 'undefined';
       }
       if (typeof v === 'undefined') {
@@ -41,37 +44,40 @@ const FILTERS = {
     });
   },
 
-  universal: (objects) => objects,
+  universal: objects => objects,
 
-  tag: (selector, objects) => { // eslint-disable-line arrow-body-style
-    return objects.filter((o) => {
+  tag: (selector, objects) => {
+    // eslint-disable-line arrow-body-style
+    return objects.filter(o => {
       const tag = o.tag;
       if (tag) {
-        return tag
-          .trim()
-          .split(/\s+/)
-          .indexOf(selector.replace('.', '')) !== -1;
+        return (
+          tag
+            .trim()
+            .split(/\s+/)
+            .indexOf(selector.replace('.', '')) !== -1
+        );
       }
       return false;
     });
-  }
+  },
 };
 
 /**
-* Filters out objects of given type and value
-* @ignore
-* @example
-* filter(
-*   {type:'type', value:'Circle'},
-*   [new Circle(), new Rectangle()]
-* )
-* // [Circle]
-* @param {Object} token
-* @param {Array} objects
-* @returns {Object[]} Objects that fulfill the type and value
-*/
+ * Filters out objects of given type and value
+ * @ignore
+ * @example
+ * filter(
+ *   {type:'type', value:'Circle'},
+ *   [new Circle(), new Rectangle()]
+ * )
+ * // [Circle]
+ * @param {Object} token
+ * @param {Array} objects
+ * @returns {Object[]} Objects that fulfill the type and value
+ */
 export function filter(token, objects) {
-  if (!objects || !objects.length || !token || (typeof FILTERS[token.type] !== 'function')) {
+  if (!objects || !objects.length || !token || typeof FILTERS[token.type] !== 'function') {
     return [];
   }
 
@@ -90,14 +96,14 @@ export function filter(token, objects) {
 }
 
 /**
-* Tokenizes a string into supported selectors
-* @ignore
-*
-* @example
-* tokenize("Circle[color='red']")
-*
-* @param {String} s
-*/
+ * Tokenizes a string into supported selectors
+ * @ignore
+ *
+ * @example
+ * tokenize("Circle[color='red']")
+ *
+ * @param {String} s
+ */
 export function tokenize(s) {
   const groups = [];
   let sub;
@@ -105,17 +111,17 @@ export function tokenize(s) {
   let match;
   let validSelector;
 
-  s.split(/\s*,\s*/).forEach((group) => {
+  s.split(/\s*,\s*/).forEach(group => {
     group = group.trim();
     sub = [];
-    const selectorMapsIterator = (key) => {
+    const selectorMapsIterator = key => {
       match = group.match(SELECTOR_MAPS[key]);
       if (match) {
         validSelector = true;
         group = group.slice(match[0].length);
         info = {
           type: key,
-          value: match[0]
+          value: match[0],
         };
 
         if (key === 'attr') {
@@ -136,7 +142,7 @@ export function tokenize(s) {
         validSelector = true;
         sub.push({
           type: ' ',
-          value: match[0]
+          value: match[0],
         });
         group = group.slice(match[0].length);
       }
@@ -173,7 +179,7 @@ function find(s, object) {
       const levels = [];
       let filtered = descendants.slice();
       let hasRemainder = false;
-      tokens.reverse().forEach((token) => {
+      tokens.reverse().forEach(token => {
         if (token.type === ' ') {
           levels.push(filtered);
           filtered = descendants.slice();
@@ -189,7 +195,7 @@ function find(s, object) {
         levels.push(filtered);
       }
 
-      const selected = levels[0].filter((node) => {
+      const selected = levels[0].filter(node => {
         let ancestor = node.parent;
         let idx;
 
@@ -222,5 +228,5 @@ function find(s, object) {
 }
 
 export default {
-  find
+  find,
 };

@@ -3,9 +3,7 @@ import createRendererBox from '../renderer-box';
 import create from '../index';
 
 export default function renderer(opts = {}) {
-  const {
-    createElement = document.createElement.bind(document)
-  } = opts;
+  const { createElement = document.createElement.bind(document) } = opts;
 
   let el;
   let rect = createRendererBox();
@@ -17,7 +15,7 @@ export default function renderer(opts = {}) {
 
   dom.root = () => el;
 
-  dom.appendTo = (element) => {
+  dom.appendTo = element => {
     if (!el) {
       el = createElement('div');
       el.style.position = 'absolute';
@@ -31,7 +29,7 @@ export default function renderer(opts = {}) {
     return el;
   };
 
-  dom.render = (nodes) => {
+  dom.render = nodes => {
     if (!el) {
       return false;
     }
@@ -77,7 +75,7 @@ export default function renderer(opts = {}) {
     dNode = null;
   };
 
-  dom.size = (inner) => {
+  dom.size = inner => {
     if (inner) {
       rect = createRendererBox(inner);
     }

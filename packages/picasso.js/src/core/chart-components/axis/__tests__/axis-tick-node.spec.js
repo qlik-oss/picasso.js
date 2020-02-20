@@ -2,10 +2,16 @@ import buildTick from '../axis-tick-node';
 
 describe('Axis Tick Node', () => {
   const innerRect = {
-    x: 0, y: 0, width: 0, height: 0
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
   };
   const outerRect = {
-    x: 0, y: 0, width: 0, height: 0
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
   };
 
   beforeEach(() => {
@@ -20,9 +26,7 @@ describe('Axis Tick Node', () => {
   });
 
   describe('Tick', () => {
-    let buildOpts,
-      tick,
-      expected;
+    let buildOpts, tick, expected;
 
     beforeEach(() => {
       buildOpts = {
@@ -31,7 +35,7 @@ describe('Axis Tick Node', () => {
         align: 'bottom',
         padding: 10,
         innerRect,
-        outerRect
+        outerRect,
       };
       tick = { position: 0.5 };
       expected = {
@@ -43,8 +47,8 @@ describe('Axis Tick Node', () => {
         y1: 0,
         y2: 0,
         collider: {
-          type: null
-        }
+          type: null,
+        },
       };
     });
 

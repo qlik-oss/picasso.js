@@ -17,23 +17,17 @@ export function reduceToLeafNodes(nodes = []) {
   }, []);
 }
 
-export function styler(obj, {
-  context,
-  data,
-  style,
-  filter,
-  mode
-}) {
+export function styler(obj, { context, data, style, filter, mode }) {
   const brusher = obj.chart.brush(context);
   const dataProps = data;
   const active = style.active || {};
   const inactive = style.inactive || {};
   const styleProps = [];
-  Object.keys(active).forEach((key) => {
+  Object.keys(active).forEach(key => {
     styleProps.push(key);
   });
 
-  Object.keys(inactive).forEach((key) => {
+  Object.keys(inactive).forEach(key => {
     if (styleProps.indexOf(key) === -1) {
       styleProps.push(key);
     }
@@ -57,7 +51,8 @@ export function styler(obj, {
     let nodeData;
     let globalChanged = false;
 
-    for (let i = 0; i < len; i++) { // TODO - update only added and removed nodes
+    for (let i = 0; i < len; i++) {
+      // TODO - update only added and removed nodes
       nodeData = nodes[i].data;
       if (!nodeData) {
         continue;
@@ -65,7 +60,7 @@ export function styler(obj, {
 
       if (!nodes[i].__style) {
         nodes[i].__style = {};
-        styleProps.forEach((s) => {
+        styleProps.forEach(s => {
           nodes[i].__style[s] = nodes[i][s]; // store original value
         });
       }
@@ -73,16 +68,18 @@ export function styler(obj, {
       const isActive = brusher.containsMappedData(nodeData, dataProps, mode);
       const activeIdx = activeNodes.indexOf(nodes[i]);
       let changed = false;
-      if (isActive && activeIdx === -1) { // activated
+      if (isActive && activeIdx === -1) {
+        // activated
         activeNodes.push(nodes[i]);
         changed = true;
-      } else if (!isActive && activeIdx !== -1) { // was active
+      } else if (!isActive && activeIdx !== -1) {
+        // was active
         activeNodes.splice(activeIdx, 1);
         changed = true;
       }
       if (changed || globalActivation) {
         const original = extend({}, nodes[i], nodes[i].__style);
-        styleProps.forEach((s) => {
+        styleProps.forEach(s => {
           if (isActive && s in active) {
             nodes[i][s] = typeof active[s] === 'function' ? active[s].call(null, original) : active[s];
           } else if (!isActive && s in inactive) {
@@ -107,7 +104,7 @@ export function styler(obj, {
       }
 
       nodes[i].__style = nodes[i].__style || {};
-      styleProps.forEach((s) => {
+      styleProps.forEach(s => {
         nodes[i].__style[s] = nodes[i][s]; // store original value
         if (s in inactive) {
           nodes[i][s] = typeof inactive[s] === 'function' ? inactive[s].call(null, nodes[i]) : inactive[s];
@@ -125,7 +122,7 @@ export function styler(obj, {
 
     for (let i = 0; i < len; i++) {
       if (nodes[i].__style) {
-        Object.keys(nodes[i].__style).forEach((s) => {
+        Object.keys(nodes[i].__style).forEach(s => {
           nodes[i][s] = nodes[i].__style[s];
         });
         nodes[i].__style = undefined;
@@ -162,16 +159,11 @@ export function styler(obj, {
       return brusher.isActive();
     },
     update: externalUpdate,
-    cleanUp
+    cleanUp,
   };
 }
 
-export function brushDataPoints({
-  dataPoints,
-  action,
-  chart,
-  trigger
-}) {
+export function brushDataPoints({ dataPoints, action, chart, trigger }) {
   if (!trigger) {
     return;
   }
@@ -180,11 +172,11 @@ export function brushDataPoints({
 
   let rangeBrush = {
     items: [],
-    actionFn: 'toggleRanges'
+    actionFn: 'toggleRanges',
   };
   let valueBrush = {
     items: [],
-    actionFn: 'toggleValues'
+    actionFn: 'toggleValues',
   };
 
   if (['add', 'remove', 'set', 'toggle'].indexOf(action) !== -1) {
@@ -197,7 +189,7 @@ export function brushDataPoints({
     if (!dataPoint) {
       continue;
     }
-    dataProps.forEach((p) => {
+    dataProps.forEach(p => {
       let d = dataPoint && !p ? dataPoint : dataPoint[p];
       if (d) {
         let it = { key: d.source.field };
@@ -215,7 +207,7 @@ export function brushDataPoints({
     });
   }
 
-  trigger.contexts.forEach((c) => {
+  trigger.contexts.forEach(c => {
     if (rangeBrush.items.length) {
       chart.brush(c)[rangeBrush.actionFn](rangeBrush.items);
     } else {
@@ -224,12 +216,7 @@ export function brushDataPoints({
   });
 }
 
-export function brushFromSceneNodes({
-  nodes,
-  action,
-  chart,
-  trigger
-}) {
+export function brushFromSceneNodes({ nodes, action, chart, trigger }) {
   const dataPoints = [];
   for (let i = 0; i < nodes.length; i++) {
     const node = nodes[i];
@@ -243,13 +230,11 @@ export function brushFromSceneNodes({
     dataPoints,
     action,
     chart,
-    trigger
+    trigger,
   });
 }
 
-export function resolveEvent({
-  collisions, t, config, action
-}) {
+export function resolveEvent({ collisions, t, config, action }) {
   let brushCollisions = [];
   let resolved = false;
 
@@ -262,13 +247,13 @@ export function resolveEvent({
     }
   }
 
-  const nodes = brushCollisions.map((c) => c.node);
+  const nodes = brushCollisions.map(c => c.node);
   brushFromSceneNodes({
     nodes,
     action,
     chart: config.chart,
     data: config.data,
-    trigger: t
+    trigger: t,
   });
 
   return resolved;
@@ -281,14 +266,14 @@ function touchSingleContactPoint(e, rect) {
 
   return {
     x: e.changedTouches[0].clientX - rect.left,
-    y: e.changedTouches[0].clientY - rect.top
+    y: e.changedTouches[0].clientY - rect.top,
   };
 }
 
 function singleContactPoint(e, rect) {
   return {
     x: e.clientX - rect.left,
-    y: e.clientY - rect.top
+    y: e.clientY - rect.top,
   };
 }
 
@@ -296,7 +281,8 @@ function resolveCollisions(e, t, renderer) {
   const rect = renderer.element().getBoundingClientRect();
   let p = isTouchEvent(e) ? touchSingleContactPoint(e, rect) : singleContactPoint(e, rect);
 
-  if (p === null || p.x < 0 || p.y < 0 || p.x > rect.width || p.y > rect.height) { // TODO include radius in this check?
+  if (p === null || p.x < 0 || p.y < 0 || p.x > rect.width || p.y > rect.height) {
+    // TODO include radius in this check?
     return [];
   }
 
@@ -304,7 +290,7 @@ function resolveCollisions(e, t, renderer) {
     p = {
       cx: p.x,
       cy: p.y,
-      r: t.touchRadius // TODO Use touch event radius/width value (Need to handle dpi scaling as well)
+      r: t.touchRadius, // TODO Use touch event radius/width value (Need to handle dpi scaling as well)
     };
   }
 
@@ -325,7 +311,10 @@ export function resolveTapEvent({ e, t, config }) {
   const collisions = resolveCollisions(e, t, config.renderer);
 
   return resolveEvent({
-    collisions, t, config, action: resolveAction(t.action, e, 'toggle')
+    collisions,
+    t,
+    config,
+    action: resolveAction(t.action, e, 'toggle'),
   });
 }
 
@@ -333,6 +322,9 @@ export function resolveOverEvent({ e, t, config }) {
   const collisions = resolveCollisions(e, t, config.renderer);
 
   return resolveEvent({
-    collisions, t, config, action: resolveAction(t.action, e, 'set')
+    collisions,
+    t,
+    config,
+    action: resolveAction(t.action, e, 'set'),
   });
 }

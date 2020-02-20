@@ -43,9 +43,22 @@ describe('qlik timeFormat', () => {
         qCalendarStrings: {
           qLongDayNames: ['Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag', 'Söndag'],
           qDayNames: ['Mån', 'Tis', 'Ons', 'Tor', 'Fre', 'Lör', 'Sön'],
-          qLongMonthNames: ['Januari', 'Februari', 'Mars', 'April', 'Maj', 'Juni', 'Juli', 'Augusti', 'September', 'Oktober', 'November', 'December'],
-          qMonthNames: ['Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec']
-        }
+          qLongMonthNames: [
+            'Januari',
+            'Februari',
+            'Mars',
+            'April',
+            'Maj',
+            'Juni',
+            'Juli',
+            'Augusti',
+            'September',
+            'Oktober',
+            'November',
+            'December',
+          ],
+          qMonthNames: ['Jan', 'Feb', 'Mar', 'Apr', 'Maj', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'],
+        },
       });
 
       expect(formatter('41596')).to.equal('Måndag, November 18, 2013');
@@ -55,7 +68,7 @@ describe('qlik timeFormat', () => {
       const formatter = timeFormat('', 'D');
 
       formatter.locale({
-        qDateFmt: 'YYYY-MM-DD'
+        qDateFmt: 'YYYY-MM-DD',
       });
 
       expect(formatter('41596')).to.equal('2013-11-18');
@@ -109,18 +122,7 @@ describe('qlik timeFormat', () => {
   });
 
   describe('Months', () => {
-    let _0,
-      _1,
-      _2,
-      _3,
-      _4,
-      _5,
-      _6,
-      _7,
-      _8,
-      _9,
-      _10,
-      _11;
+    let _0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11;
     beforeEach(() => {
       n = timeFormat();
       _0 = DateToQlikTime(new Date(Date.UTC(2014, 0, 1)));
@@ -203,13 +205,7 @@ describe('qlik timeFormat', () => {
   });
 
   describe('Weekdays', () => {
-    let mon,
-      tue,
-      wed,
-      thu,
-      fri,
-      sat,
-      sun;
+    let mon, tue, wed, thu, fri, sat, sun;
     beforeEach(() => {
       n = timeFormat(null);
       mon = DateToQlikTime(new Date(Date.UTC(2014, 0, 6)));
@@ -311,9 +307,7 @@ describe('qlik timeFormat', () => {
   });
 
   describe('Day', () => {
-    let _1,
-      _15,
-      _31;
+    let _1, _15, _31;
     beforeEach(() => {
       n = timeFormat(null);
       _1 = DateToQlikTime(new Date(Date.UTC(2014, 0, 1)));
@@ -359,22 +353,13 @@ describe('qlik timeFormat', () => {
     });
   });
 
-
   describe('Time', () => {
-    let midnight,
-      midnight59,
-      midnight60,
-      preNoon,
-      noon,
-      noon59,
-      noon60,
-      roundingError1,
-      roundingError2;
+    let midnight, midnight59, midnight60, preNoon, noon, noon59, noon60, roundingError1, roundingError2;
     beforeEach(() => {
       n = timeFormat(null);
       midnight = 41753; // 00:00:00 -> 12:00:00 am
-      midnight59 = 41753.0416600; // 00:59:00 -> 12:59:00 am
-      midnight60 = 41753.0416700; // 01:00:00 -> 1:00:00 am
+      midnight59 = 41753.04166; // 00:59:00 -> 12:59:00 am
+      midnight60 = 41753.04167; // 01:00:00 -> 1:00:00 am
       preNoon = 41753.499309; // 11:59:00 -> 11:59:00 am
       noon = 41753.5; // 12:00:00 -> 12:00:00 pm
       noon59 = 41753.54098; // 12:59:00 -> 12:59:00 pm

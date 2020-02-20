@@ -7,7 +7,7 @@ function computeRect(rect) {
     x: rect.x,
     y: rect.y,
     width: rect.width,
-    height: rect.height
+    height: rect.height,
   };
 }
 
@@ -25,16 +25,16 @@ export default function componentFactoryFixture() {
   const fn = function func() {
     chartMock = {
       brush: () => ({
-        on: () => {}
+        on: () => {},
       }),
       scale: sandbox.stub(),
       dataset: sandbox.stub(),
       container: sandbox.stub(),
       formatter: sandbox.stub(),
       logger: () => ({
-        warn: sandbox.stub()
+        warn: sandbox.stub(),
       }),
-      element: elementMock()
+      element: elementMock(),
     };
 
     rendererMock = {
@@ -46,27 +46,32 @@ export default function componentFactoryFixture() {
           height: rect.height || 100,
           margin: {
             left: 0,
-            top: 0
+            top: 0,
           },
           scaleRatio: {
             x: 1,
-            y: 1
+            y: 1,
           },
           edgeBleed: {
-            left: 0, top: 0, right: 0, bottom: 0
-          }
+            left: 0,
+            top: 0,
+            right: 0,
+            bottom: 0,
+          },
         };
 
         s.computedPhysical = {
           x: s.x,
           y: s.y,
           width: s.width,
-          height: s.height
+          height: s.height,
         };
         return s;
       },
-      render: (nodes) => { rendererOutput = nodes; },
-      appendTo: (el) => {
+      render: nodes => {
+        rendererOutput = nodes;
+      },
+      appendTo: el => {
         if (!rendererElement) {
           rendererElement = elementMock();
         }
@@ -75,31 +80,31 @@ export default function componentFactoryFixture() {
       },
       measureText: ({ text }) => ({
         width: text.toString().length,
-        height: 5
+        height: 5,
       }),
       textBounds: ({ text, x, y }) => ({
         x: x || 0,
         y: y || 0,
         width: text.toString().length,
-        height: 5
+        height: 5,
       }),
       element: () => rendererElement,
       clear: () => {},
       destroy: () => {},
-      setKey: (key) => rendererElement.setAttribute('data-key', key)
+      setKey: key => rendererElement.setAttribute('data-key', key),
     };
 
     mediatorMock = {
-      on: sandbox.stub()
+      on: sandbox.stub(),
     };
 
     themeMock = {
       palette: sandbox.stub(),
-      style: sandbox.stub()
+      style: sandbox.stub(),
     };
 
     registriesMock = {
-      renderer: sandbox.stub()
+      renderer: sandbox.stub(),
     };
 
     return fn;
@@ -109,7 +114,7 @@ export default function componentFactoryFixture() {
     chart: chartMock,
     renderer: rendererMock,
     theme: themeMock,
-    registries: registriesMock
+    registries: registriesMock,
   });
 
   fn.simulateCreate = (componentDef, settings) => {
@@ -119,7 +124,7 @@ export default function componentFactoryFixture() {
       renderer: rendererMock,
       mediator: mediatorMock,
       theme: themeMock,
-      registries: registriesMock
+      registries: registriesMock,
     });
 
     rendererMock.appendTo(chartMock.element);
@@ -127,11 +132,8 @@ export default function componentFactoryFixture() {
     return comp;
   };
 
-  fn.simulateRender = (opts) => {
-    const {
-      inner,
-      outer
-    } = opts;
+  fn.simulateRender = opts => {
+    const { inner, outer } = opts;
     if (inner && !inner.computed) {
       inner.computed = computeRect(inner);
     }
@@ -148,7 +150,7 @@ export default function componentFactoryFixture() {
     return rendererOutput;
   };
 
-  fn.simulateUpdate = (settings) => {
+  fn.simulateUpdate = settings => {
     comp.set({ settings });
     comp.beforeUpdate(settings);
     comp.beforeRender();
@@ -158,7 +160,7 @@ export default function componentFactoryFixture() {
     return rendererOutput;
   };
 
-  fn.simulateLayout = (opts) => comp.dockConfig().computePreferredSize(opts);
+  fn.simulateLayout = opts => comp.dockConfig().computePreferredSize(opts);
 
   fn.getRenderOutput = () => rendererOutput;
 
@@ -166,7 +168,7 @@ export default function componentFactoryFixture() {
 
   fn.instance = () => comp;
 
-  fn.findNodes = (s) => findNodes(s, { children: rendererOutput });
+  fn.findNodes = s => findNodes(s, { children: rendererOutput });
 
   return fn();
 }

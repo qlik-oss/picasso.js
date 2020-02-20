@@ -1,7 +1,5 @@
 import extend from 'extend';
-import {
-  testRectRect
-} from '../../../math/narrow-phase-collision';
+import { testRectRect } from '../../../math/narrow-phase-collision';
 import filterOverlapping from './bars-overlapping-filter';
 
 const PADDING = 4;
@@ -13,7 +11,7 @@ function cbContext(node, chart) {
     data: node.data,
     scale: chart.scale,
     formatter: chart.formatter,
-    dataset: chart.dataset
+    dataset: chart.dataset,
   };
 }
 
@@ -28,7 +26,7 @@ function toBackground(label) {
     rx: 2,
     ry: 2,
     fill: label.backgroundColor,
-    ...label.backgroundBounds
+    ...label.backgroundBounds,
   };
 }
 
@@ -78,7 +76,7 @@ export function placeTextInRect(rect, text, opts) {
     anchor: opts.rotate ? 'end' : 'start',
     baseline: 'central',
     fontSize: `${opts.fontSize}px`,
-    fontFamily: opts.fontFamily
+    fontFamily: opts.fontFamily,
   };
 
   const textMetrics = opts.textMetrics;
@@ -110,18 +108,14 @@ function limitBounds(bounds, view) {
 }
 
 function pad(bounds, padding = {}) {
-  const {
-    top = PADDING, bottom = PADDING, left = PADDING, right = PADDING
-  } = padding;
+  const { top = PADDING, bottom = PADDING, left = PADDING, right = PADDING } = padding;
   bounds.x += left;
-  bounds.width -= (left + right);
+  bounds.width -= left + right;
   bounds.y += top;
-  bounds.height -= (top + bottom);
+  bounds.height -= top + bottom;
 }
 
-export function getBarRect({
-  bar, view, direction, position, padding = PADDING
-}) {
+export function getBarRect({ bar, view, direction, position, padding = PADDING }) {
   const bounds = {};
   extend(bounds, bar);
 
@@ -157,17 +151,20 @@ export function getBarRect({
   return bounds;
 }
 
-export function findBestPlacement({
-  direction,
-  fitsHorizontally,
-  // lblStngs,
-  measured,
-  node,
-  orientation,
-  // placements,
-  placementSettings,
-  rect
-}, barRect = getBarRect) {
+export function findBestPlacement(
+  {
+    direction,
+    fitsHorizontally,
+    // lblStngs,
+    measured,
+    node,
+    orientation,
+    // placements,
+    placementSettings,
+    rect,
+  },
+  barRect = getBarRect
+) {
   let largest;
   let bounds;
   let placement;
@@ -182,7 +179,7 @@ export function findBestPlacement({
       view: rect,
       direction,
       position: placement.position,
-      padding: placement.padding
+      padding: placement.padding,
     });
     boundaries.push(testBounds);
     largest = !p || testBounds[dimension] > largest[dimension] ? testBounds : largest;
@@ -204,9 +201,7 @@ export function findBestPlacement({
 }
 
 function approxTextBounds(label, textMetrics, rotated, rect, padding = {}) {
-  const {
-    top = PADDING, bottom = PADDING, left = PADDING, right = PADDING
-  } = padding;
+  const { top = PADDING, bottom = PADDING, left = PADDING, right = PADDING } = padding;
   const x0 = label.x + label.dx;
   const y0 = label.y + label.dy;
   const height = rotated ? Math.min(textMetrics.width, rect.height) : Math.min(textMetrics.height, rect.width);
@@ -219,19 +214,13 @@ function approxTextBounds(label, textMetrics, rotated, rect, padding = {}) {
     x: x - left - PADDING_OFFSET,
     y: y - top - PADDING_OFFSET,
     width: width + (left + right) - PADDING_OFFSET,
-    height: height + (top + bottom) - PADDING_OFFSET
+    height: height + (top + bottom) - PADDING_OFFSET,
   };
   return bounds;
 }
 
 export function placeInBars(
-  {
-    chart,
-    targetNodes,
-    rect,
-    fitsHorizontally,
-    collectiveOrientation
-  },
+  { chart, targetNodes, rect, fitsHorizontally, collectiveOrientation },
   findPlacement = findBestPlacement,
   placer = placeTextInRect,
   postFilter = filterOverlapping
@@ -241,7 +230,7 @@ export function placeInBars(
     container: rect,
     targetNodes,
     labels: [],
-    orientation: collectiveOrientation
+    orientation: collectiveOrientation,
   };
   let label;
   let target;
@@ -284,7 +273,7 @@ export function placeInBars(
         orientation,
         placements,
         placementSettings: target.placementSettings[j],
-        rect
+        rect,
       });
 
       bounds = bestPlacement.bounds;
@@ -315,7 +304,7 @@ export function placeInBars(
           fontFamily: lblStngs.fontFamily,
           textMetrics: measured,
           rotate: isRotated,
-          overflow: !!overflow
+          overflow: !!overflow,
         });
 
         if (label) {
@@ -323,15 +312,24 @@ export function placeInBars(
             label.data = linkData;
           }
           if (typeof placement.background === 'object') {
-            label.backgroundColor = typeof placement.background.fill === 'function' ? placement.background.fill(arg, i) : placement.background.fill;
+            label.backgroundColor =
+              typeof placement.background.fill === 'function'
+                ? placement.background.fill(arg, i)
+                : placement.background.fill;
             if (typeof label.backgroundColor !== 'undefined') {
-              label.backgroundBounds = approxTextBounds(label, measured, isRotated, bounds, placement.background.padding);
+              label.backgroundBounds = approxTextBounds(
+                label,
+                measured,
+                isRotated,
+                bounds,
+                placement.background.padding
+              );
             }
           }
           labels.push(label);
           postFilterContext.labels.push({
             node,
-            textBounds: approxTextBounds(label, measured, isRotated, bounds, placement.padding)
+            textBounds: approxTextBounds(label, measured, isRotated, bounds, placement.padding),
           });
         }
       }
@@ -339,20 +337,12 @@ export function placeInBars(
   }
 
   const filteredLabels = labels.filter(postFilter(postFilterContext));
-  const backgrounds = filteredLabels.filter((lb) => typeof lb.backgroundBounds !== 'undefined').map(toBackground);
+  const backgrounds = filteredLabels.filter(lb => typeof lb.backgroundBounds !== 'undefined').map(toBackground);
 
   return [...backgrounds, ...filteredLabels];
 }
 
-export function precalculate({
-  nodes,
-  rect,
-  chart,
-  labelSettings,
-  placementSettings,
-  settings,
-  renderer
-}) {
+export function precalculate({ nodes, rect, chart, labelSettings, placementSettings, settings, renderer }) {
   const labelStruct = {};
   const targetNodes = [];
   let target;
@@ -378,7 +368,7 @@ export function precalculate({
       texts: [],
       measurements: [],
       labelSettings: [],
-      placementSettings: []
+      placementSettings: [],
       // direction: 'up'
     };
 
@@ -401,7 +391,7 @@ export function precalculate({
       target.labelSettings.push(lblStng);
       target.placementSettings.push(placementSettings[j]);
       target.direction = direction;
-      fitsHorizontally = fitsHorizontally && measured.width <= (bounds.width - (PADDING * 2));
+      fitsHorizontally = fitsHorizontally && measured.width <= bounds.width - PADDING * 2;
     }
 
     targetNodes.push(target);
@@ -410,7 +400,7 @@ export function precalculate({
   return {
     targetNodes,
     fitsHorizontally,
-    hasHorizontalDirection
+    hasHorizontalDirection,
   };
 }
 
@@ -447,45 +437,42 @@ export function precalculate({
  * @property {number} [labels[].placements[].background.padding.right=4] - Padding-right between the label and the background
  */
 
-export function bars({
-  settings,
-  chart,
-  nodes,
-  rect,
-  renderer,
-  style
-}, placer = placeInBars) {
-  const defaults = extend({
-    fontSize: 12,
-    fontFamily: 'Arial',
-    align: 0.5,
-    justify: 0,
-    fill: '#333'
-  }, style.label);
+export function bars({ settings, chart, nodes, rect, renderer, style }, placer = placeInBars) {
+  const defaults = extend(
+    {
+      fontSize: 12,
+      fontFamily: 'Arial',
+      align: 0.5,
+      justify: 0,
+      fill: '#333',
+    },
+    style.label
+  );
 
   defaults.fontSize = parseInt(defaults.fontSize, 10);
 
-  const labelSettings = settings.labels.map((labelSetting) => extend({}, defaults, settings, labelSetting));
+  const labelSettings = settings.labels.map(labelSetting => extend({}, defaults, settings, labelSetting));
 
-  const placementSettings = settings.labels.map((labelSetting) => labelSetting.placements.map((placement) => extend({}, defaults, settings, labelSetting, placement)));
+  const placementSettings = settings.labels.map(labelSetting =>
+    labelSetting.placements.map(placement => extend({}, defaults, settings, labelSetting, placement))
+  );
 
-  const {
-    fitsHorizontally,
-    hasHorizontalDirection,
-    targetNodes
-  } = precalculate({
+  const { fitsHorizontally, hasHorizontalDirection, targetNodes } = precalculate({
     nodes,
     chart,
     renderer,
     settings,
     rect,
     labelSettings,
-    placementSettings
+    placementSettings,
   });
 
   const coord = hasHorizontalDirection ? 'y' : 'x';
   const side = hasHorizontalDirection ? 'height' : 'width';
-  targetNodes.sort((a, b) => (a.node.localBounds[coord] + a.node.localBounds[side]) - (b.node.localBounds[coord] + b.node.localBounds[side]));
+  targetNodes.sort(
+    (a, b) =>
+      a.node.localBounds[coord] + a.node.localBounds[side] - (b.node.localBounds[coord] + b.node.localBounds[side])
+  );
 
   return placer({
     chart,
@@ -493,6 +480,6 @@ export function bars({
     stngs: settings,
     rect,
     fitsHorizontally,
-    collectiveOrientation: hasHorizontalDirection ? 'h' : 'v'
+    collectiveOrientation: hasHorizontalDirection ? 'h' : 'v',
   });
 }

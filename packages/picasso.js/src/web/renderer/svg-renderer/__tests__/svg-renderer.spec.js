@@ -2,17 +2,12 @@ import element from 'test-utils/mocks/element-mock';
 import renderer from '../svg-renderer';
 
 describe('svg renderer', () => {
-  let sandbox,
-    tree,
-    ns,
-    treeRenderer,
-    svg,
-    scene;
+  let sandbox, tree, ns, treeRenderer, svg, scene;
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
     treeRenderer = {
-      render: sandbox.spy()
+      render: sandbox.spy(),
     };
     scene = sandbox.stub();
     tree = sandbox.stub().returns(treeRenderer);
@@ -57,8 +52,7 @@ describe('svg renderer', () => {
   });
 
   describe('render', () => {
-    let items,
-      s;
+    let items, s;
 
     beforeEach(() => {
       items = ['a'];
@@ -76,7 +70,7 @@ describe('svg renderer', () => {
       const sceneContainer = {
         type: 'container',
         children: [...items, { type: 'defs', children: [] }],
-        transform: ''
+        transform: '',
       };
       const actual = scene.args[0][0].items;
       delete actual[0].children[1].disabled;
@@ -88,7 +82,11 @@ describe('svg renderer', () => {
       scene.returns(s);
       svg.appendTo(element('div'));
       svg.size({
-        x: 50, y: 100, width: 200, height: 400, scaleRatio: { x: 1, y: 1 }
+        x: 50,
+        y: 100,
+        width: 200,
+        height: 400,
+        scaleRatio: { x: 1, y: 1 },
       });
       svg.render(items);
 
@@ -103,14 +101,18 @@ describe('svg renderer', () => {
     it('should scale from logical size to physical size', () => {
       const scaleRatio = { x: 2, y: 3 };
       const size = {
-        x: 50, y: 100, width: 200, height: 400, scaleRatio
+        x: 50,
+        y: 100,
+        width: 200,
+        height: 400,
+        scaleRatio,
       };
       const expectedInputShapes = [
         {
           type: 'container',
           children: [s],
-          transform: `scale(${scaleRatio.x}, ${scaleRatio.y})`
-        }
+          transform: `scale(${scaleRatio.x}, ${scaleRatio.y})`,
+        },
       ];
       scene.returns(s);
       svg.appendTo(element('div'));
@@ -137,7 +139,7 @@ describe('svg renderer', () => {
       svg.appendTo(element('div'));
       scene.returns({
         children: [],
-        equals: () => true
+        equals: () => true,
       });
       expect(svg.render()).to.equal(true);
       expect(svg.render()).to.equal(false);
@@ -160,7 +162,7 @@ describe('svg renderer', () => {
       svg.appendTo(element('div'));
       scene.returns({
         children: [],
-        equals: () => true
+        equals: () => true,
       });
       expect(svg.render()).to.equal(true);
       svg.clear();
@@ -191,33 +193,39 @@ describe('svg renderer', () => {
     let items;
 
     beforeEach(() => {
-      items = [{
-        type: 'circle',
-        cx: 138.2,
-        cy: 80.1,
-        r: 10.14121384712747,
-        opacity: 0.0850144505610413,
-        fill: '#440154',
-        stroke: '#ccc',
-        strokeWidth: 0
-      }, {
-        type: 'rect',
-        x: 109.87669609109648,
-        y: 131.87669609109648,
-        width: 56.64660781780709,
-        height: 56.64660781780709,
-        opacity: 0.30146790367742315,
-        fill: '#482979',
-        stroke: '#ccc',
-        strokeWidth: 0
-      }];
+      items = [
+        {
+          type: 'circle',
+          cx: 138.2,
+          cy: 80.1,
+          r: 10.14121384712747,
+          opacity: 0.0850144505610413,
+          fill: '#440154',
+          stroke: '#ccc',
+          strokeWidth: 0,
+        },
+        {
+          type: 'rect',
+          x: 109.87669609109648,
+          y: 131.87669609109648,
+          width: 56.64660781780709,
+          height: 56.64660781780709,
+          opacity: 0.30146790367742315,
+          fill: '#482979',
+          stroke: '#ccc',
+          strokeWidth: 0,
+        },
+      ];
       svg = renderer(tree, ns); // Don't mock the scene function
     });
 
     it('should return shapes at a point', () => {
       svg.appendTo(element('div'));
       svg.size({
-        x: 100, y: 100, width: 400, height: 400
+        x: 100,
+        y: 100,
+        width: 400,
+        height: 400,
       });
       svg.render(items);
 
@@ -239,12 +247,18 @@ describe('svg renderer', () => {
     it('should return shapes at a line', () => {
       svg.appendTo(element('div'));
       svg.size({
-        x: 100, y: 100, width: 400, height: 400
+        x: 100,
+        y: 100,
+        width: 400,
+        height: 400,
       });
       svg.render(items);
 
       const shapes = svg.itemsAt({
-        x1: 130, x2: 130, y1: 0, y2: 320
+        x1: 130,
+        x2: 130,
+        y1: 0,
+        y2: 320,
       });
       expect(shapes.length).to.equal(2);
     });
@@ -252,12 +266,18 @@ describe('svg renderer', () => {
     it('should return shapes at a rect', () => {
       svg.appendTo(element('div'));
       svg.size({
-        x: 100, y: 100, width: 400, height: 400
+        x: 100,
+        y: 100,
+        width: 400,
+        height: 400,
       });
       svg.render(items);
 
       const shapes = svg.itemsAt({
-        x: 100, y: 100, width: 50, height: 50
+        x: 100,
+        y: 100,
+        width: 50,
+        height: 50,
       });
       expect(shapes.length).to.equal(1);
     });
@@ -274,8 +294,11 @@ describe('svg renderer', () => {
         scaleRatio: { x: 3, y: 4 },
         margin: { left: 5, top: 6 },
         edgeBleed: {
-          left: 7, right: 8, top: 9, bottom: 10
-        }
+          left: 7,
+          right: 8,
+          top: 9,
+          bottom: 10,
+        },
       });
       expect(svg.size()).to.deep.equal({
         x: 50,
@@ -285,14 +308,18 @@ describe('svg renderer', () => {
         scaleRatio: { x: 3, y: 4 },
         margin: { left: 5, top: 6 },
         edgeBleed: {
-          left: 7, right: 8, top: 9, bottom: 10, bool: true
+          left: 7,
+          right: 8,
+          top: 9,
+          bottom: 10,
+          bool: true,
         },
         computedPhysical: {
           x: 134,
           y: 370,
           width: 645,
-          height: 1676
-        }
+          height: 1676,
+        },
       });
     });
 
@@ -305,8 +332,11 @@ describe('svg renderer', () => {
         scaleRatio: { x: undefined, y: undefined },
         margin: { left: undefined, top: undefined },
         edgeBleed: {
-          left: undefined, right: undefined, top: undefined, bottom: undefined
-        }
+          left: undefined,
+          right: undefined,
+          top: undefined,
+          bottom: undefined,
+        },
       });
       expect(svg.size()).to.deep.equal({
         x: 0,
@@ -316,11 +346,18 @@ describe('svg renderer', () => {
         scaleRatio: { x: 1, y: 1 },
         margin: { left: 0, top: 0 },
         edgeBleed: {
-          left: 0, right: 0, top: 0, bottom: 0, bool: false
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0,
+          bool: false,
         },
         computedPhysical: {
-          x: 0, y: 0, width: 0, height: 0
-        }
+          x: 0,
+          y: 0,
+          width: 0,
+          height: 0,
+        },
       });
     });
   });

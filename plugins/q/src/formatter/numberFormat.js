@@ -5,7 +5,7 @@ export default function formatter(pattern, thousand, decimal, qType, localeInfo)
   const qformat = numberFormatFactory(localeInfo, pattern, thousand, decimal, qType);
   const memoized = memoize(qformat.formatValue.bind(qformat), {
     // Handle NaN and cases where toString yields different result than +operator. Ex. a Date.
-    toKey: (value) => (isNaN(value) ? value : +value)
+    toKey: value => (isNaN(value) ? value : +value),
   });
 
   /**
@@ -19,26 +19,26 @@ export default function formatter(pattern, thousand, decimal, qType, localeInfo)
   }
 
   /**
-    * Format a value according to a specific pattern
-    * that is not the one specified in the constructor
-    *
-    * @param  {String} p   Pattern
-    * @param  {Number} v   Value
-    * @param  {String} t   Thousand
-    * @param  {String} d   Decimal
-    * @return {String}     Formatted value
-    */
+   * Format a value according to a specific pattern
+   * that is not the one specified in the constructor
+   *
+   * @param  {String} p   Pattern
+   * @param  {Number} v   Value
+   * @param  {String} t   Thousand
+   * @param  {String} d   Decimal
+   * @return {String}     Formatted value
+   */
   format.format = function formatFn(p, v, t, d) {
     memoized.clear();
     return qformat.format(v, p, t, d);
   };
 
   /**
-    * Change the pattern on existing formatter
-    *
-    * @param  {String} p     Pattern (optional)
-    * @return {String}       Returns the pattern
-    */
+   * Change the pattern on existing formatter
+   *
+   * @param  {String} p     Pattern (optional)
+   * @return {String}       Returns the pattern
+   */
   format.pattern = function patternFn(p) {
     if (p) {
       memoized.clear();

@@ -2,48 +2,31 @@ const PADDING = 2;
 
 const tickDistance = (rect, start, end) => rect.width * Math.abs(start.position - end.position);
 
-const getLeftEdgeWidth = ({
-  innerRect,
-  outerRect,
-  tick,
-  nextWidth
-}) => {
+const getLeftEdgeWidth = ({ innerRect, outerRect, tick, nextWidth }) => {
   const leftEdgeBleed = innerRect.x - outerRect.x;
-  const left = (innerRect.width * tick.position) + leftEdgeBleed;
+  const left = innerRect.width * tick.position + leftEdgeBleed;
   const minDubble = Math.min(nextWidth, left) * 2;
-  const minWidth = tick.position === 0 ? (innerRect.width / 2) - PADDING : 0;
+  const minWidth = tick.position === 0 ? innerRect.width / 2 - PADDING : 0;
 
   return Math.max(nextWidth, minDubble, minWidth);
 };
 
-const getRightEdgeWidth = ({
-  innerRect,
-  outerRect,
-  tick,
-  prevWidth
-}) => {
+const getRightEdgeWidth = ({ innerRect, outerRect, tick, prevWidth }) => {
   const leftEdgeBleed = innerRect.x - outerRect.x;
-  const rightEdgeBleed = (outerRect.width - innerRect.width) - leftEdgeBleed;
-  const right = (innerRect.width - (innerRect.width * tick.position)) + rightEdgeBleed;
+  const rightEdgeBleed = outerRect.width - innerRect.width - leftEdgeBleed;
+  const right = innerRect.width - innerRect.width * tick.position + rightEdgeBleed;
   const minDubble = Math.min(prevWidth, right) * 2;
-  const minWidth = tick.position === 1 ? (innerRect.width / 2) - PADDING : 0;
+  const minWidth = tick.position === 1 ? innerRect.width / 2 - PADDING : 0;
 
   return Math.max(prevWidth, minDubble, minWidth);
 };
 
-export default function getHorizontalWidth({
-  layered,
-  major,
-  innerRect,
-  outerRect,
-  tick,
-  index
-}) {
+export default function getHorizontalWidth({ layered, major, innerRect, outerRect, tick, index }) {
   const step = layered ? 2 : 1;
   const prev = major[index - step];
   const next = major[index + step];
-  const prevWidth = prev ? (tickDistance(innerRect, tick, prev) / 2) - PADDING : Infinity;
-  const nextWidth = next ? (tickDistance(innerRect, tick, next) / 2) - PADDING : Infinity;
+  const prevWidth = prev ? tickDistance(innerRect, tick, prev) / 2 - PADDING : Infinity;
+  const nextWidth = next ? tickDistance(innerRect, tick, next) / 2 - PADDING : Infinity;
 
   if (major.length < 2) {
     return innerRect.width;
@@ -54,7 +37,7 @@ export default function getHorizontalWidth({
       innerRect,
       outerRect,
       tick,
-      nextWidth
+      nextWidth,
     });
   }
 
@@ -63,7 +46,7 @@ export default function getHorizontalWidth({
       innerRect,
       outerRect,
       tick,
-      prevWidth
+      prevWidth,
     });
   }
 

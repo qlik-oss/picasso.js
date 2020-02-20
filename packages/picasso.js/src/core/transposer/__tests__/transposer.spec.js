@@ -71,7 +71,7 @@ describe('transposer', () => {
       x: 0.25,
       y: 0.75,
       width: 0.375,
-      height: 0.125
+      height: 0.125,
     };
 
     draw = transposer(dummy);
@@ -93,7 +93,7 @@ describe('transposer', () => {
       x: 0.25,
       y: 0.75,
       width: 0.375,
-      height: 0.125
+      height: 0.125,
     };
 
     draw = transposer(dummy);

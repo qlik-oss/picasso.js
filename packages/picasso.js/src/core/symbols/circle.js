@@ -8,7 +8,7 @@ function circle(options) {
     fill: 'black',
     cx: options.x,
     cy: options.y,
-    r: options.size / 2
+    r: options.size / 2,
   };
 }
 

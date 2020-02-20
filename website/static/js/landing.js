@@ -7,7 +7,7 @@
 
     function transform() {
       var s = ['components'];
-      s.push('state-' + (Math.min(2, Math.floor(scrollPosY/120))));
+      s.push('state-' + Math.min(2, Math.floor(scrollPosY / 120)));
       document.querySelector('#threed-chart').className = s.join(' ');
     }
 
@@ -21,11 +21,11 @@
       scrollPosY = Math.max(0, window.scrollY);
 
       if (!timer) {
-        timer = window.requestAnimationFrame(function () {
+        timer = window.requestAnimationFrame(function() {
           transform();
           timer = null;
         });
       }
     });
   });
-}());
+})();

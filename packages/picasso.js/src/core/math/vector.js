@@ -1,21 +1,21 @@
 export function add(v1, v2) {
   return {
     x: v1.x + v2.x,
-    y: v1.y + v2.y
+    y: v1.y + v2.y,
   };
 }
 
 export function sub(v1, v2) {
   return {
     x: v1.x - v2.x,
-    y: v1.y - v2.y
+    y: v1.y - v2.y,
   };
 }
 
 export function scalarMultiply(v, s) {
   return {
     x: v.x * s,
-    y: v.y * s
+    y: v.y * s,
   };
 }
 
@@ -44,18 +44,18 @@ export function distance(v1, v2) {
 }
 
 export function determinant(v1, v2) {
-  return (v1.x * v2.y) - (v2.x * v1.y);
+  return v1.x * v2.y - v2.x * v1.y;
 }
 
 export function dot(v1, v2) {
-  return (v1.x * v2.x) + (v1.y * v2.y);
+  return v1.x * v2.x + v1.y * v2.y;
 }
 
 export function projectOnto(v1, v2) {
   const m = dot(v1, v2) / dot(v2, v2) || 1;
   return {
     x: v2.x * m,
-    y: v2.y * m
+    y: v2.y * m,
   };
 }
 
@@ -66,8 +66,8 @@ export function rotate(v, radians, origin = { x: 0, y: 0 }) {
   const t1 = sub(v, origin);
 
   const t2 = {
-    x: (cos * t1.x) - (sin * t1.y),
-    y: (sin * t1.x) + (cos * t1.y)
+    x: cos * t1.x - sin * t1.y,
+    y: sin * t1.x + cos * t1.y,
   };
 
   return add(t2, origin);
@@ -79,5 +79,5 @@ export function unit(v) {
 }
 
 export function cross(u, v, a) {
-  return ((v.x - u.x) * (a.y - u.y)) - ((v.y - u.y) * (v.x - u.x));
+  return (v.x - u.x) * (a.y - u.y) - (v.y - u.y) * (v.x - u.x);
 }

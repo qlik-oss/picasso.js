@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.29.2](https://github.com/qlik-oss/picasso.js/compare/v0.29.1...v0.29.2) (2020-01-22)
+
+
+### Bug Fixes
+
+* **legend:** fix calculating legend size ([#467](https://github.com/qlik-oss/picasso.js/issues/467)) ([d4b2870](https://github.com/qlik-oss/picasso.js/commit/d4b2870))
+
+
+
+
+
 ## [0.29.1](https://github.com/qlik-oss/picasso.js/compare/v0.29.0...v0.29.1) (2019-12-05)
 
 

@@ -25,7 +25,7 @@ describe('GradientItem', () => {
         id: 'customId',
         offset: 0.5,
         style: 'styleTest',
-        notToBeAttached: 'asdf'
+        notToBeAttached: 'asdf',
       });
 
       expect(item.attrs.x1).to.be.equal(0);
@@ -55,7 +55,7 @@ describe('GradientItem', () => {
         id: 'customId',
         offset: 0.5,
         style: 'styleTest',
-        notToBeAttached: 'asdf'
+        notToBeAttached: 'asdf',
       });
 
       expect(item.attrs.x1).to.be.equal(1);

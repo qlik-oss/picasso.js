@@ -7,14 +7,14 @@ describe('Intersection', () => {
         x: 20,
         y: 50,
         width: 10,
-        height: 30
+        height: 30,
       };
 
       const parentRect = {
         x: 10,
         y: 10,
         height: 120,
-        width: 110
+        width: 110,
       };
 
       expect(rectContainsRect(childRect, parentRect)).to.equal(true);
@@ -25,14 +25,14 @@ describe('Intersection', () => {
         x: 20,
         y: 5,
         width: 10,
-        height: 30
+        height: 30,
       };
 
       const parentRect = {
         x: 10,
         y: 40,
         height: 120,
-        width: 110
+        width: 110,
       };
 
       expect(rectContainsRect(childRect, parentRect)).to.equal(false);
@@ -43,14 +43,14 @@ describe('Intersection', () => {
         x: 20,
         y: 30,
         width: 120,
-        height: 30
+        height: 30,
       };
 
       const parentRect = {
         x: 10,
         y: 40,
         height: 120,
-        width: 110
+        width: 110,
       };
 
       expect(rectContainsRect(childRect, parentRect)).to.equal(false);
@@ -61,14 +61,14 @@ describe('Intersection', () => {
         x: 20,
         y: 30,
         width: 50,
-        height: 130
+        height: 130,
       };
 
       const parentRect = {
         x: 10,
         y: 40,
         height: 120,
-        width: 110
+        width: 110,
       };
 
       expect(rectContainsRect(childRect, parentRect)).to.equal(false);
@@ -79,14 +79,14 @@ describe('Intersection', () => {
         x: 20,
         y: 30,
         width: 150,
-        height: 130
+        height: 130,
       };
 
       const parentRect = {
         x: 10,
         y: 40,
         height: 120,
-        width: 110
+        width: 110,
       };
 
       expect(rectContainsRect(childRect, parentRect)).to.equal(false);

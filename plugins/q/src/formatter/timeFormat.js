@@ -5,21 +5,15 @@ import memoize from './memoize';
 const MS_PER_DAY = 86400000;
 
 export function QlikTimeToDate(value) {
-  return new Date(Date.UTC(
-    1899,
-    11,
-    30 + Math.floor(value),
-    0,
-    0,
-    0,
-    Math.round(MS_PER_DAY * (value - Math.floor(value)))
-  ));
+  return new Date(
+    Date.UTC(1899, 11, 30 + Math.floor(value), 0, 0, 0, Math.round(MS_PER_DAY * (value - Math.floor(value))))
+  );
 }
 
 export default function formatter(pattern, qtype = 'TS', localeInfo = null) {
   let qformat = dateFormatFactory(localeInfo, pattern, qtype);
   let memoized = memoize(qformat.format.bind(qformat), {
-    toKey: (date) => ((typeof date === 'object' && typeof date.getTime === 'function') ? date.getTime() : date)
+    toKey: date => (typeof date === 'object' && typeof date.getTime === 'function' ? date.getTime() : date),
   });
 
   /**
@@ -47,13 +41,13 @@ export default function formatter(pattern, qtype = 'TS', localeInfo = null) {
   }
 
   /**
-    * Format a value according to a specific pattern
-    * that is not the one specified in the constructor
-    *
-    * @param  {String} p   Pattern
-    * @param  {Date} v   Value
-    * @return {String}     Formatted value
-    */
+   * Format a value according to a specific pattern
+   * that is not the one specified in the constructor
+   *
+   * @param  {String} p   Pattern
+   * @param  {Date} v   Value
+   * @return {String}     Formatted value
+   */
   format.format = function formatFn(p, v) {
     memoized.clear();
     v = prepare(v);
@@ -69,7 +63,7 @@ export default function formatter(pattern, qtype = 'TS', localeInfo = null) {
   format.locale = function locale(li) {
     qformat = dateFormatFactory(li, pattern, qtype);
     memoized = memoize(qformat.format.bind(qformat), {
-      toKey: (date) => (typeof date === 'object' ? date.getTime() : date)
+      toKey: date => (typeof date === 'object' ? date.getTime() : date),
     });
     return this;
   };

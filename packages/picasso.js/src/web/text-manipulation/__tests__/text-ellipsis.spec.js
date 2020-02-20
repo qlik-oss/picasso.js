@@ -7,7 +7,10 @@ describe('Text Manipulation', () => {
 
     beforeEach(() => {
       textNode = {
-        text: 'test', 'font-size': 13, 'font-family': 'Arial', maxWidth: 5
+        text: 'test',
+        'font-size': 13,
+        'font-family': 'Arial',
+        maxWidth: 5,
       };
     });
 

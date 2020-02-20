@@ -23,10 +23,12 @@ function appendPadding(struct, buildOpts) {
 function adjustForEnds(struct, buildOpts) {
   const halfWidth = struct.strokeWidth / 2;
 
-  if (struct.x1 === buildOpts.innerRect.width) { // outer end tick
+  if (struct.x1 === buildOpts.innerRect.width) {
+    // outer end tick
     struct.x1 -= halfWidth;
     struct.x2 -= halfWidth;
-  } else if (struct.x1 === 0) { // outer start tick
+  } else if (struct.x1 === 0) {
+    // outer start tick
     struct.x1 += halfWidth;
     struct.x2 += halfWidth;
   } else if (struct.y1 === buildOpts.innerRect.height) {
@@ -46,16 +48,17 @@ export default function buildNode(tick, buildOpts) {
     y1: 0,
     y2: 0,
     collider: {
-      type: null
-    }
+      type: null,
+    },
   };
 
   if (buildOpts.align === 'top' || buildOpts.align === 'bottom') {
-    struct.x1 = struct.x2 = (tick.position * buildOpts.innerRect.width) + (buildOpts.innerRect.x - buildOpts.outerRect.x);
+    struct.x1 = struct.x2 = tick.position * buildOpts.innerRect.width + (buildOpts.innerRect.x - buildOpts.outerRect.x);
     struct.y1 = buildOpts.align === 'top' ? buildOpts.innerRect.height : 0;
     struct.y2 = buildOpts.align === 'top' ? struct.y1 - buildOpts.tickSize : struct.y1 + buildOpts.tickSize;
   } else {
-    struct.y1 = struct.y2 = (tick.position * (buildOpts.innerRect.height)) + (buildOpts.innerRect.y - buildOpts.outerRect.y);
+    struct.y1 = struct.y2 =
+      tick.position * buildOpts.innerRect.height + (buildOpts.innerRect.y - buildOpts.outerRect.y);
     struct.x1 = buildOpts.align === 'left' ? buildOpts.innerRect.width : 0;
     struct.x2 = buildOpts.align === 'left' ? struct.x1 - buildOpts.tickSize : struct.x1 + buildOpts.tickSize;
   }

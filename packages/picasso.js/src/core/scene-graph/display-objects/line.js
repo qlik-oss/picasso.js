@@ -1,9 +1,6 @@
 import extend from 'extend';
 import DisplayObject from './display-object';
-import {
-  lineToPoints,
-  getMinMax
-} from '../../geometry/util';
+import { lineToPoints, getMinMax } from '../../geometry/util';
 
 /**
  * @extends node-def
@@ -21,9 +18,7 @@ export default class Line extends DisplayObject {
   }
 
   set(v = {}) {
-    const {
-      x1 = 0, y1 = 0, x2 = 0, y2 = 0, collider
-    } = v;
+    const { x1 = 0, y1 = 0, x2 = 0, y2 = 0, collider } = v;
     super.set(v);
     this.attrs.x1 = x1;
     this.attrs.y1 = y1;
@@ -35,7 +30,7 @@ export default class Line extends DisplayObject {
       x1,
       y1,
       x2,
-      y2
+      y2,
     };
     this.collider = extend(defaultCollider, collider);
     this.__boundingRect = { true: null, false: null };
@@ -59,7 +54,7 @@ export default class Line extends DisplayObject {
       x: xMin,
       y: yMin,
       width: hasSize ? Math.max(1, xMax - xMin) : 0,
-      height: hasSize ? Math.max(1, yMax - yMin) : 0
+      height: hasSize ? Math.max(1, yMax - yMin) : 0,
     };
     return this.__boundingRect[includeTransform];
   }
@@ -73,7 +68,7 @@ export default class Line extends DisplayObject {
       { x: rect.x, y: rect.y },
       { x: rect.x + rect.width, y: rect.y },
       { x: rect.x + rect.width, y: rect.y + rect.height },
-      { x: rect.x, y: rect.y + rect.height }
+      { x: rect.x, y: rect.y + rect.height },
     ];
     return this.__bounds[includeTransform];
   }

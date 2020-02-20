@@ -11,7 +11,7 @@ describe('Rect', () => {
       x: 0,
       y: 0,
       width: 0,
-      height: 0
+      height: 0,
     };
   });
 
@@ -47,7 +47,11 @@ describe('Rect', () => {
     it('should set correct values', () => {
       rect = createRect(shape);
       rect.set({
-        x: 99, y: 999, width: 1337, height: 101, collider: { type: 'circle' }
+        x: 99,
+        y: 999,
+        width: 1337,
+        height: 101,
+        collider: { type: 'circle' },
       });
       expect(rect.attrs.x).to.be.equal(99);
       expect(rect.attrs.y).to.be.equal(999);
@@ -78,7 +82,10 @@ describe('Rect', () => {
     it('should handle default values', () => {
       rect = createRect(shape);
       expect(rect.boundingRect()).to.deep.equal({
-        x: 0, y: 0, width: 0, height: 0
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
       });
     });
 
@@ -89,7 +96,10 @@ describe('Rect', () => {
       shape.height = 25;
       rect = createRect(shape);
       expect(rect.boundingRect()).to.deep.equal({
-        x: 10, y: 20, width: 15, height: 25
+        x: 10,
+        y: 20,
+        width: 15,
+        height: 25,
       });
     });
 
@@ -102,7 +112,10 @@ describe('Rect', () => {
       rect = createRect(shape);
       rect.resolveLocalTransform();
       expect(rect.boundingRect(true)).to.deep.equal({
-        x: 20, y: 60, width: 30, height: 75
+        x: 20,
+        y: 60,
+        width: 30,
+        height: 75,
       });
     });
 
@@ -115,7 +128,10 @@ describe('Rect', () => {
       rect = createRect(shape);
       rect.resolveLocalTransform();
       expect(rect.boundingRect(true)).to.deep.equal({
-        x: 11, y: 22, width: 15, height: 25
+        x: 11,
+        y: 22,
+        width: 15,
+        height: 25,
       });
     });
 
@@ -128,7 +144,10 @@ describe('Rect', () => {
       rect = createRect(shape);
       rect.resolveLocalTransform();
       expect(rect.boundingRect(true)).to.deep.equal({
-        x: 21.213203435596427, y: -3.535533905932734, width: 28.284271247461902, height: 28.2842712474619
+        x: 21.213203435596427,
+        y: -3.535533905932734,
+        width: 28.284271247461902,
+        height: 28.2842712474619,
       });
     });
 
@@ -139,7 +158,10 @@ describe('Rect', () => {
       shape.height = 25;
       rect = createRect(shape);
       expect(rect.boundingRect()).to.deep.equal({
-        x: -10, y: -20, width: 15, height: 25
+        x: -10,
+        y: -20,
+        width: 15,
+        height: 25,
       });
     });
   });
@@ -151,7 +173,7 @@ describe('Rect', () => {
         { x: 0, y: 0 },
         { x: 0, y: 0 },
         { x: 0, y: 0 },
-        { x: 0, y: 0 }
+        { x: 0, y: 0 },
       ];
       expect(rect.bounds()).to.deep.equal(e);
     });
@@ -166,7 +188,7 @@ describe('Rect', () => {
         { x: 10, y: 20 },
         { x: 25, y: 20 },
         { x: 25, y: 45 },
-        { x: 10, y: 45 }
+        { x: 10, y: 45 },
       ];
       expect(rect.bounds()).to.deep.equal(e);
     });
@@ -183,7 +205,7 @@ describe('Rect', () => {
         { x: 20, y: 60 },
         { x: 50, y: 60 },
         { x: 50, y: 135 },
-        { x: 20, y: 135 }
+        { x: 20, y: 135 },
       ];
       expect(rect.bounds(true)).to.deep.equal(e);
     });
@@ -200,7 +222,7 @@ describe('Rect', () => {
         { x: 15, y: 30 },
         { x: 30, y: 30 },
         { x: 30, y: 55 },
-        { x: 15, y: 55 }
+        { x: 15, y: 55 },
       ];
       expect(rect.bounds(true)).to.deep.equal(e);
     });
@@ -217,7 +239,7 @@ describe('Rect', () => {
         { x: 21.213203435596427, y: -3.535533905932734 },
         { x: 49.49747468305833, y: -3.535533905932734 },
         { x: 49.49747468305833, y: 24.748737341529164 },
-        { x: 21.213203435596427, y: 24.748737341529164 }
+        { x: 21.213203435596427, y: 24.748737341529164 },
       ];
       expect(rect.bounds(true)).to.deep.equal(e);
     });
@@ -232,7 +254,7 @@ describe('Rect', () => {
         { x: -10, y: -20 },
         { x: 5, y: -20 },
         { x: 5, y: 5 },
-        { x: -10, y: 5 }
+        { x: -10, y: 5 },
       ];
       expect(rect.bounds()).to.deep.equal(e);
     });
@@ -262,9 +284,14 @@ describe('Rect', () => {
       rect = createRect(shape);
       rect.resolveLocalTransform();
 
-      expect(rect.intersectsLine({
-        x1: 15, y1: 30, x2: 16, y2: 31
-      })).to.equal(true);
+      expect(
+        rect.intersectsLine({
+          x1: 15,
+          y1: 30,
+          x2: 16,
+          y2: 31,
+        })
+      ).to.equal(true);
     });
   });
 
@@ -278,9 +305,14 @@ describe('Rect', () => {
       rect = createRect(shape);
       rect.resolveLocalTransform();
 
-      expect(rect.intersectsRect({
-        x: 15, y: 30, width: 1, height: 1
-      })).to.equal(true);
+      expect(
+        rect.intersectsRect({
+          x: 15,
+          y: 30,
+          width: 1,
+          height: 1,
+        })
+      ).to.equal(true);
     });
   });
 
@@ -312,7 +344,7 @@ describe('Rect', () => {
         { x: 0, y: 25 },
         { x: 25, y: 0 },
         { x: 50, y: 25 },
-        { x: 0, y: 25 }
+        { x: 0, y: 25 },
       ];
 
       expect(rect.intersectsPolygon({ vertices })).to.equal(true);

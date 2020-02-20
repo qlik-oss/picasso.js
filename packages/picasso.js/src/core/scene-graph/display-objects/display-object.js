@@ -32,7 +32,7 @@ class DisplayObject extends Node {
     this._collider = {
       type: null,
       definition: null,
-      fn: null
+      fn: null,
     };
     this._attrs = {};
     this._node = null;
@@ -41,13 +41,7 @@ class DisplayObject extends Node {
   set(v = {}) {
     this.node = v;
 
-    const {
-      data,
-      desc,
-      tag,
-      strokeReference,
-      fillReference
-    } = v;
+    const { data, desc, tag, strokeReference, fillReference } = v;
 
     assignMappedAttribute(this.attrs, v);
 
@@ -73,7 +67,7 @@ class DisplayObject extends Node {
   }
 
   findShapes(selector) {
-    return nodeSelector.find(selector, this).map((node) => createSceneNode(node));
+    return nodeSelector.find(selector, this).map(node => createSceneNode(node));
   }
 
   getItemsFrom(shape) {
@@ -101,7 +95,9 @@ class DisplayObject extends Node {
   }
 
   resolveLocalTransform(m = new Matrix()) {
-    if (typeof this.attrs.transform !== 'undefined') { resolveTransform(this.attrs.transform, m); }
+    if (typeof this.attrs.transform !== 'undefined') {
+      resolveTransform(this.attrs.transform, m);
+    }
     this.modelViewMatrix = m.clone();
   }
 
@@ -160,7 +156,8 @@ class DisplayObject extends Node {
   }
 
   get stage() {
-    if (this._parent && !this._stage) { // lazy evaluation
+    if (this._parent && !this._stage) {
+      // lazy evaluation
       this._stage = this._parent.stage;
     } else if (!this._parent && this._stage !== this) {
       this._stage = null;
@@ -191,7 +188,7 @@ class DisplayObject extends Node {
   }
 
   set collider(definition) {
-    const type = Array.isArray(definition) ? 'collection' : (definition && definition.type);
+    const type = Array.isArray(definition) ? 'collection' : definition && definition.type;
     if (typeof type !== 'string') {
       // Non string type definition resets the collider
       this._collider.type = null;

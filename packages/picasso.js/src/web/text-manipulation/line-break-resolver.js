@@ -7,7 +7,8 @@ import { fontSizeToLineHeight } from './font-size-to-height';
 function generateLineNodes(result, item, halfLead, height) {
   const container = { type: 'container', children: [] };
 
-  if (typeof item.id !== 'undefined') { // TODO also inherit data attribute and more?
+  if (typeof item.id !== 'undefined') {
+    // TODO also inherit data attribute and more?
     container.id = item.id;
   }
 
@@ -40,17 +41,18 @@ function shouldLineBreak(item) {
 }
 
 function wrappedMeasureText(node, measureText) {
-  return (text) => measureText({
-    text,
-    fontSize: node.fontSize,
-    fontFamily: node.fontFamily
-  });
+  return text =>
+    measureText({
+      text,
+      fontSize: node.fontSize,
+      fontFamily: node.fontFamily,
+    });
 }
 
 export function resolveLineBreakAlgorithm(node) {
   const WORDBREAK = {
     'break-all': breakAll,
-    'break-word': breakWord
+    'break-word': breakWord,
   };
 
   return WORDBREAK[node.wordBreak];
@@ -63,7 +65,7 @@ export function resolveLineBreakAlgorithm(node) {
  * @returns {function} Event function to convert a text node into multiple nodes
  */
 export function onLineBreak(measureText) {
-  return (state) => {
+  return state => {
     const item = state.node;
     if (shouldLineBreak(item)) {
       const wordBreakFn = resolveLineBreakAlgorithm(item);

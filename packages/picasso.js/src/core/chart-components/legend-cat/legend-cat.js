@@ -9,20 +9,20 @@ function update(comp) {
   comp.state.resolved = resolveSettings(comp);
   comp.titleRenderer.itemize({
     resolved: comp.state.resolved,
-    dock: comp.settings.layout.dock || 'center'
+    dock: comp.settings.layout.dock || 'center',
   });
   comp.itemRenderer.itemize({
     resolved: comp.state.resolved,
-    dock: comp.settings.layout.dock || 'center'
+    dock: comp.settings.layout.dock || 'center',
   });
   comp.navigationRenderer.itemize({
     resolved: comp.state.resolved,
     dock: comp.settings.layout.dock || 'center',
-    navigation: comp.settings.settings.navigation
+    navigation: comp.settings.settings.navigation,
   });
 
   comp.state.display = {
-    spacing: 8
+    spacing: 8,
   };
 }
 
@@ -35,7 +35,7 @@ function preferredSize(comp, size) {
     itemRenderer: comp.itemRenderer,
     navigationRenderer: comp.navigationRenderer,
     titleRenderer: comp.titleRenderer,
-    isPreliminary: true
+    isPreliminary: true,
   });
   s += d.spacing; // start padding in both vertical and horizontal mode
   s += tempLayout.preferredSize;
@@ -44,20 +44,13 @@ function preferredSize(comp, size) {
 }
 
 function render(legend) {
-  const {
-    rect,
-    settings,
-    state,
-    itemRenderer,
-    navigationRenderer,
-    titleRenderer
-  } = legend;
+  const { rect, settings, state, itemRenderer, navigationRenderer, titleRenderer } = legend;
   const dock = settings.layout.dock;
   const orientation = dock === 'top' || dock === 'bottom' ? 'horizontal' : 'vertical';
   const l = layout(rect, state.display, orientation, {
     itemRenderer,
     navigationRenderer,
-    titleRenderer
+    titleRenderer,
   });
 
   legend.renderer.size(l.content);
@@ -72,20 +65,20 @@ function render(legend) {
   // l.title.y += rect.y;
 
   let contentItems = itemRenderer.getItemsToRender({
-    viewRect: extend({}, l.content, { x: 0, y: 0 })
+    viewRect: extend({}, l.content, { x: 0, y: 0 }),
   });
 
   navigationRenderer.render({
     rect: l.navigation,
-    itemRenderer
+    itemRenderer,
   });
 
   titleRenderer.render({
-    rect: l.title
+    rect: l.title,
   });
 
   legend.state.views = {
-    layout: l
+    layout: l,
   };
 
   return contentItems;
@@ -98,10 +91,10 @@ const component = {
     style: {
       item: {
         label: '$label',
-        shape: '$shape'
+        shape: '$shape',
       },
-      title: '$title'
-    }
+      title: '$title',
+    },
   },
   mounted(renderElement) {
     if (renderElement && renderElement.parentNode) {
@@ -113,11 +106,11 @@ const component = {
     }
     this.navigationRenderer.render({
       rect: this.state.views.layout.navigation,
-      itemRenderer: this.itemRenderer
+      itemRenderer: this.itemRenderer,
     });
 
     this.titleRenderer.render({
-      rect: this.state.views.layout.title
+      rect: this.state.views.layout.title,
     });
   },
   beforeUnmount() {
@@ -140,7 +133,10 @@ const component = {
       if (!this.state.interaction.started) {
         return;
       }
-      const delta = this.itemRenderer.orientation() === 'horizontal' ? (this.itemRenderer.direction() === 'rtl' ? -1 : 1) * e.deltaX : e.deltaY;
+      const delta =
+        this.itemRenderer.orientation() === 'horizontal'
+          ? (this.itemRenderer.direction() === 'rtl' ? -1 : 1) * e.deltaX
+          : e.deltaY;
       this.itemRenderer.scroll(delta - this.state.interaction.delta);
       this.state.interaction.delta = delta;
     },
@@ -155,18 +151,18 @@ const component = {
     },
     prev() {
       this.itemRenderer.prev();
-    }
+    },
   },
   created() {
     this.state = {
-      interaction: {}
+      interaction: {},
     };
     this.onScroll = () => {
       const items = render(this);
       this.update(items);
     };
     this.itemRenderer = itemRendererFactory(this, {
-      onScroll: this.onScroll
+      onScroll: this.onScroll,
     });
     this.navigationRenderer = navigationRendererFactory(this);
     this.titleRenderer = titleRendererFactory(this);
@@ -188,16 +184,13 @@ const component = {
     this.titleRenderer.renderer.destroy();
   },
   additionalElements() {
-    return [
-      this.titleRenderer.renderer.element(),
-      this.navigationRenderer.renderer.element()
-    ];
+    return [this.titleRenderer.renderer.element(), this.navigationRenderer.renderer.element()];
   },
   _DO_NOT_USE_getInfo() {
     return {
-      offset: this.itemRenderer.offset()
+      offset: this.itemRenderer.offset(),
     };
-  }
+  },
 };
 
 export default component;

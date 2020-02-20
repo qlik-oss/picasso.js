@@ -21,9 +21,12 @@ export default class Container extends DisplayObject {
     super.set(v);
 
     const { collider } = v;
-    const opts = extend({
-      type: null
-    }, collider);
+    const opts = extend(
+      {
+        type: null,
+      },
+      collider
+    );
 
     this.collider = opts;
     this.__boundingRect = { true: null, false: null };
@@ -60,9 +63,15 @@ export default class Container extends DisplayObject {
       this.appendChildRect(this.children[i], includeTransform);
     }
 
-    this.__boundingRect[includeTransform] = extend({
-      x: 0, y: 0, width: 0, height: 0
-    }, this.__boundingRect[includeTransform]);
+    this.__boundingRect[includeTransform] = extend(
+      {
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+      },
+      this.__boundingRect[includeTransform]
+    );
 
     return this.__boundingRect[includeTransform];
   }
@@ -77,7 +86,7 @@ export default class Container extends DisplayObject {
       { x: rect.x, y: rect.y },
       { x: rect.x + rect.width, y: rect.y },
       { x: rect.x + rect.width, y: rect.y + rect.height },
-      { x: rect.x, y: rect.y + rect.height }
+      { x: rect.x, y: rect.y + rect.height },
     ];
     return this.__bounds[includeTransform];
   }
@@ -87,9 +96,16 @@ export default class Container extends DisplayObject {
 
     if (this._collider && this._collider.type === 'bounds') {
       this.appendChildRect(c, true);
-      const opts = extend({
-        type: 'bounds', x: 0, y: 0, width: 0, height: 0
-      }, this.__boundingRect.true);
+      const opts = extend(
+        {
+          type: 'bounds',
+          x: 0,
+          y: 0,
+          width: 0,
+          height: 0,
+        },
+        this.__boundingRect.true
+      );
       this.collider = opts;
     }
 
@@ -104,9 +120,16 @@ export default class Container extends DisplayObject {
       for (let i = 0; i < num; i++) {
         this.appendChildRect(children[i], true);
       }
-      const opts = extend({
-        type: 'bounds', x: 0, y: 0, width: 0, height: 0
-      }, this.__boundingRect.true);
+      const opts = extend(
+        {
+          type: 'bounds',
+          x: 0,
+          y: 0,
+          width: 0,
+          height: 0,
+        },
+        this.__boundingRect.true
+      );
       this.collider = opts;
     }
 

@@ -1,4 +1,3 @@
-
 import componentFactory from '../../../component/component-factory';
 import refLineComponent from '../refline';
 
@@ -7,47 +6,50 @@ describe('reference lines', () => {
   let chart;
   let renderer = {
     appendTo: () => {},
-    render: (p) => (rendererOutput = p),
-    size: (rect) => rect,
-    measureText: ({ text, fontSize }) => ({ width: text.length * parseInt(fontSize.replace('px', ''), 10) * 0.6, height: parseInt(fontSize.replace('px', ''), 10) * 1.2 })
+    render: p => (rendererOutput = p),
+    size: rect => rect,
+    measureText: ({ text, fontSize }) => ({
+      width: text.length * parseInt(fontSize.replace('px', ''), 10) * 0.6,
+      height: parseInt(fontSize.replace('px', ''), 10) * 1.2,
+    }),
   };
   let shapeFn;
 
   beforeEach(() => {
     const table = {
-      findField: sinon.stub()
+      findField: sinon.stub(),
     };
     const dataset = {
-      map: sinon.stub()
+      map: sinon.stub(),
     };
-    shapeFn = (type, p) => { p.type = type; return p; };
+    shapeFn = (type, p) => {
+      p.type = type;
+      return p;
+    };
     chart = {
       brush: () => ({
-        on: () => {}
+        on: () => {},
       }),
       logger: () => ({
-        warn: () => {}
+        warn: () => {},
       }),
       container: () => ({}),
       table: () => table,
       dataset: () => dataset,
-      scale: sinon.stub()
+      scale: sinon.stub(),
     };
   });
 
   function createAndRenderComponent(opts) {
-    const {
-      config,
-      inner
-    } = opts;
+    const { config, inner } = opts;
     const instance = componentFactory(refLineComponent, {
       settings: config,
       chart,
       renderer,
       theme: {
         style: sinon.stub(),
-        palette: sinon.stub()
-      }
+        palette: sinon.stub(),
+      },
     });
     instance.beforeMount();
     instance.resize(inner);
@@ -59,14 +61,17 @@ describe('reference lines', () => {
 
   it('should not render lines with default settings and no scales', () => {
     const config = {
-      shapeFn
+      shapeFn,
     };
 
     createAndRenderComponent({
       inner: {
-        x: 37, y: 0, width: 870, height: 813
+        x: 37,
+        y: 0,
+        width: 870,
+        height: 813,
       },
-      config
+      config,
     });
 
     expect(rendererOutput).to.deep.equal([]);
@@ -79,23 +84,26 @@ describe('reference lines', () => {
         x: [
           {
             line: { stroke: 'green' },
-            label: { text: 'Oops' }
-          }
+            label: { text: 'Oops' },
+          },
         ],
         y: [
           {
             line: { stroke: 'green' },
-            label: { text: 'Oops' }
-          }
-        ]
-      }
+            label: { text: 'Oops' },
+          },
+        ],
+      },
     };
 
     createAndRenderComponent({
       inner: {
-        x: 37, y: 0, width: 870, height: 813
+        x: 37,
+        y: 0,
+        width: 870,
+        height: 813,
       },
-      config
+      config,
     });
 
     expect(rendererOutput).to.deep.equal([]);
@@ -111,31 +119,34 @@ describe('reference lines', () => {
             scale: { scale: 'x' },
             line: {
               stroke: 'green',
-              strokeWidth: 2
+              strokeWidth: 2,
             },
             label: {
               text: 'اسم عربي',
               padding: 10,
               fontSize: '20px',
               vAlign: 1,
-              align: 0
-            }
-          }
-        ]
-      }
+              align: 0,
+            },
+          },
+        ],
+      },
     };
 
-    const xScale = (v) => v;
+    const xScale = v => v;
     chart.scale.withArgs({ scale: 'x' }).returns(xScale);
 
-    const yScale = (v) => v;
+    const yScale = v => v;
     chart.scale.withArgs({ scale: 'y' }).returns(yScale);
 
     createAndRenderComponent({
       inner: {
-        x: 37, y: 0, width: 870, height: 813
+        x: 37,
+        y: 0,
+        width: 870,
+        height: 813,
       },
-      config
+      config,
     });
 
     expect(rendererOutput).to.deep.equal([
@@ -147,7 +158,7 @@ describe('reference lines', () => {
         x1: 261,
         x2: 261,
         y1: 0,
-        y2: 813
+        y2: 813,
       },
       {
         fill: '#fff',
@@ -158,7 +169,7 @@ describe('reference lines', () => {
         type: 'rect',
         width: 189,
         x: 72,
-        y: 769
+        y: 769,
       },
       {
         anchor: 'start',
@@ -170,7 +181,7 @@ describe('reference lines', () => {
         text: 'اسم عربي',
         type: 'text',
         x: 82,
-        y: 799
+        y: 799,
       },
       {
         fill: 'green',
@@ -180,8 +191,8 @@ describe('reference lines', () => {
         text: ' (0.3)',
         type: 'text',
         x: 182,
-        y: 799
-      }
+        y: 799,
+      },
     ]);
   });
 
@@ -194,31 +205,34 @@ describe('reference lines', () => {
             value: 0.3,
             line: {
               stroke: 'green',
-              strokeWidth: 2
+              strokeWidth: 2,
             },
             label: {
               text: 'asdftest',
               padding: 10,
               fontSize: '20px',
               vAlign: 1,
-              align: 0
-            }
-          }
-        ]
-      }
+              align: 0,
+            },
+          },
+        ],
+      },
     };
 
-    const xScale = (v) => v;
+    const xScale = v => v;
     chart.scale.withArgs({ scale: 'x' }).returns(xScale);
 
-    const yScale = (v) => v;
+    const yScale = v => v;
     chart.scale.withArgs({ scale: 'y' }).returns(yScale);
 
     createAndRenderComponent({
       inner: {
-        x: 37, y: 0, width: 870, height: 813
+        x: 37,
+        y: 0,
+        width: 870,
+        height: 813,
       },
-      config
+      config,
     });
 
     expect(rendererOutput).to.deep.equal([
@@ -230,7 +244,7 @@ describe('reference lines', () => {
         x1: 0,
         x2: 870,
         y1: 244,
-        y2: 244
+        y2: 244,
       },
       {
         fill: '#fff',
@@ -241,7 +255,7 @@ describe('reference lines', () => {
         type: 'rect',
         width: 117,
         x: 0,
-        y: 244
+        y: 244,
       },
       {
         anchor: 'start',
@@ -253,8 +267,8 @@ describe('reference lines', () => {
         text: 'asdftest',
         type: 'text',
         x: 10,
-        y: 274
-      }
+        y: 274,
+      },
     ]);
   });
 
@@ -268,24 +282,27 @@ describe('reference lines', () => {
             label: {
               text: 'QwErTy',
               vAlign: 0,
-              align: 1
-            }
-          }
-        ]
-      }
+              align: 1,
+            },
+          },
+        ],
+      },
     };
 
-    const xScale = (v) => v;
+    const xScale = v => v;
     chart.scale.withArgs({ scale: 'x' }).returns(xScale);
 
-    const yScale = (v) => v;
+    const yScale = v => v;
     chart.scale.withArgs({ scale: 'y' }).returns(yScale);
 
     createAndRenderComponent({
       inner: {
-        x: 37, y: 0, width: 870, height: 813
+        x: 37,
+        y: 0,
+        width: 870,
+        height: 813,
       },
-      config
+      config,
     });
 
     expect(rendererOutput).to.deep.equal([
@@ -297,7 +314,7 @@ describe('reference lines', () => {
         x1: -0.5,
         x2: 869.5,
         y1: 243.5,
-        y2: 243.5
+        y2: 243.5,
       },
       {
         fill: '#fff',
@@ -308,7 +325,7 @@ describe('reference lines', () => {
         type: 'rect',
         width: 54,
         x: 816,
-        y: 219
+        y: 219,
       },
       {
         anchor: 'start',
@@ -320,8 +337,8 @@ describe('reference lines', () => {
         text: 'QwErTy',
         type: 'text',
         x: 821,
-        y: 235.8
-      }
+        y: 235.8,
+      },
     ]);
   });
 
@@ -333,27 +350,30 @@ describe('reference lines', () => {
           {
             value: 10,
             label: {
-              text: 'QwErTy'
-            }
+              text: 'QwErTy',
+            },
           },
           {
             value: 20,
             label: {
-              text: 'Oops.. I did it again'
-            }
-          }
-        ]
-      }
+              text: 'Oops.. I did it again',
+            },
+          },
+        ],
+      },
     };
 
-    const yScale = (v) => v;
+    const yScale = v => v;
     chart.scale.withArgs({ scale: 'y' }).returns(yScale);
 
     createAndRenderComponent({
       inner: {
-        x: 0, y: 0, width: 100, height: 200
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 200,
       },
-      config
+      config,
     });
 
     expect(rendererOutput).to.deep.equal([
@@ -369,13 +389,13 @@ describe('reference lines', () => {
         data: [
           {
             label: 'QwErTy',
-            value: 10
+            value: 10,
           },
           {
             label: 'Oops.. I did it again',
-            value: 20
-          }
-        ]
+            value: 20,
+          },
+        ],
       },
       {
         type: 'text',
@@ -387,7 +407,7 @@ describe('reference lines', () => {
         stroke: 'transparent',
         fill: '#fff',
         strokeWidth: 0,
-        opacity: 1
+        opacity: 1,
       },
       {
         type: 'path',
@@ -397,8 +417,8 @@ describe('reference lines', () => {
         stroke: 'transparent',
         fill: '#4D4D4D',
         strokeWidth: 0,
-        opacity: 1
-      }
+        opacity: 1,
+      },
     ]);
   });
 
@@ -408,20 +428,23 @@ describe('reference lines', () => {
       lines: {
         y: [
           {
-            value: 10
-          }
-        ]
-      }
+            value: 10,
+          },
+        ],
+      },
     };
 
-    const yScale = (v) => v;
+    const yScale = v => v;
     chart.scale.withArgs({ scale: 'y' }).returns(yScale);
 
     createAndRenderComponent({
       inner: {
-        x: 0, y: 0, width: 100, height: 200
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 200,
       },
-      config
+      config,
     });
 
     expect(rendererOutput).to.deep.equal([
@@ -436,9 +459,9 @@ describe('reference lines', () => {
         opacity: 1,
         data: [
           {
-            value: 10
-          }
-        ]
+            value: 10,
+          },
+        ],
       },
       {
         type: 'text',
@@ -450,7 +473,7 @@ describe('reference lines', () => {
         stroke: 'transparent',
         fill: '#fff',
         strokeWidth: 0,
-        opacity: 1
+        opacity: 1,
       },
       {
         type: 'path',
@@ -460,8 +483,8 @@ describe('reference lines', () => {
         stroke: 'transparent',
         fill: '#4D4D4D',
         strokeWidth: 0,
-        opacity: 1
-      }
+        opacity: 1,
+      },
     ]);
   });
 });

@@ -20,15 +20,9 @@ class Footer extends React.Component {
         <section className="sitemap">
           <div>
             <h5>Docs</h5>
-            <a href={this.docUrl('installation.html', this.props.language)}>
-              Getting Started
-            </a>
-            <a href={this.docUrl('tutorial.html', this.props.language)}>
-              Tutorial
-            </a>
-            <a href={this.pageUrl('examples.html', this.props.language)}>
-              Examples
-            </a>
+            <a href={this.docUrl('installation.html', this.props.language)}>Getting Started</a>
+            <a href={this.docUrl('tutorial.html', this.props.language)}>Tutorial</a>
+            <a href={this.pageUrl('examples.html', this.props.language)}>Examples</a>
           </div>
           <div>
             <h5>Links</h5>
@@ -44,10 +38,7 @@ class Footer extends React.Component {
           </div>
         </section>
 
-        <a
-          href="https://github.com/qlik-oss/"
-          target="_blank"
-          className="qlikOpenSource">
+        <a href="https://github.com/qlik-oss/" target="_blank" className="qlikOpenSource">
           <img
             src={this.props.config.baseUrl + 'img/QlikLogo-White.png'}
             alt="Qlik Open Source"
@@ -55,9 +46,7 @@ class Footer extends React.Component {
             height="85"
           />
         </a>
-        <section className="copyright">
-          Copyright &copy; {currentYear} QlikTech International AB.
-        </section>
+        <section className="copyright">Copyright &copy; {currentYear} QlikTech International AB.</section>
       </footer>
     );
   }

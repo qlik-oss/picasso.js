@@ -16,13 +16,13 @@ describe('Component', () => {
   beforeEach(() => {
     chart = {
       brush: () => ({
-        on: () => {}
+        on: () => {},
       }),
       container: () => ({}),
       table: () => ({}),
       dataset: () => ({}),
       scale: sinon.stub(),
-      logger: () => 'logger'
+      logger: () => 'logger',
     };
     created = sinon.spy();
     beforeMount = sinon.spy();
@@ -35,12 +35,12 @@ describe('Component', () => {
     definition = {
       defaultSettings: {
         layout: {
-          dock: 'top'
+          dock: 'top',
         },
         style: {
-          strokeWidth: 5
+          strokeWidth: 5,
         },
-        key1: 'value1'
+        key1: 'value1',
       },
       created,
       beforeMount,
@@ -49,14 +49,14 @@ describe('Component', () => {
       render,
       resize,
       beforeUpdate,
-      updated
+      updated,
     };
     renderer = {
       appendTo: () => {},
       render: () => ({}),
       destroy: () => ({}),
-      size: (s) => s,
-      element: () => 'elm'
+      size: s => s,
+      element: () => 'elm',
     };
   });
 
@@ -67,8 +67,8 @@ describe('Component', () => {
       renderer,
       theme: {
         palette: sinon.stub(),
-        style: sinon.stub()
-      }
+        style: sinon.stub(),
+      },
     });
   }
 
@@ -90,9 +90,9 @@ describe('Component', () => {
         renderer,
         theme: {
           palette: sinon.stub(),
-          style: sinon.stub()
+          style: sinon.stub(),
         },
-        registries: {}
+        registries: {},
       };
 
       let fn;
@@ -101,7 +101,7 @@ describe('Component', () => {
         defaultSettings: {},
         created() {
           fn = this.symbol;
-        }
+        },
       };
 
       componentFactory(definition, opts);
@@ -203,7 +203,7 @@ describe('Component', () => {
       shapes = [{ data: 0 }, { data: 1 }, { data: 2 }];
       renderer.findShapes = () => shapes;
       config = {
-        key: 'myKey'
+        key: 'myKey',
       };
 
       instance = createAndRenderComponent(config);
@@ -215,7 +215,7 @@ describe('Component', () => {
       expect(s).to.deep.equal([
         { data: 0, key: 'myKey', element: 'elm' },
         { data: 1, key: 'myKey', element: 'elm' },
-        { data: 2, key: 'myKey', element: 'elm' }
+        { data: 2, key: 'myKey', element: 'elm' },
       ]);
     });
   });
@@ -226,14 +226,10 @@ describe('Component', () => {
     let shapes;
 
     beforeEach(() => {
-      shapes = [
-        { node: { data: 0 } },
-        { node: { data: 1 } },
-        { node: { data: 2 } }
-      ];
+      shapes = [{ node: { data: 0 } }, { node: { data: 1 } }, { node: { data: 2 } }];
       renderer.itemsAt = () => shapes;
       config = {
-        key: 'myKey'
+        key: 'myKey',
       };
 
       instance = createAndRenderComponent(config);
@@ -245,7 +241,7 @@ describe('Component', () => {
       expect(s).to.deep.equal([
         { data: 0, key: 'myKey', element: 'elm' },
         { data: 1, key: 'myKey', element: 'elm' },
-        { data: 2, key: 'myKey', element: 'elm' }
+        { data: 2, key: 'myKey', element: 'elm' },
       ]);
     });
 
@@ -253,9 +249,7 @@ describe('Component', () => {
       // Last shape is the shape that is visibly "on top"
       const s = instance.shapesAt({ x: 0, y: 0 }, { propagation: 'stop' });
 
-      expect(s).to.deep.equal([
-        { data: 2, key: 'myKey', element: 'elm' }
-      ]);
+      expect(s).to.deep.equal([{ data: 2, key: 'myKey', element: 'elm' }]);
     });
   });
 
@@ -265,7 +259,10 @@ describe('Component', () => {
     beforeEach(() => {
       instance = createAndRenderComponent({
         key: 'myKey',
-        eventListeners: [{ event: 'event1', listener: () => {} }, { event: 'event2', listener: () => {} }]
+        eventListeners: [
+          { event: 'event1', listener: () => {} },
+          { event: 'event2', listener: () => {} },
+        ],
       });
     });
 
@@ -283,16 +280,16 @@ describe('Component', () => {
     beforeEach(() => {
       shapes = [{ data: 0 }, { data: 1 }, { data: 2 }];
       renderer.findShapes = () => shapes;
-      chart.brush = () => ({ containsMappedData: (d) => d === 1 || d === 2 });
+      chart.brush = () => ({ containsMappedData: d => d === 1 || d === 2 });
       config = {
         key: 'myKey',
         brush: {
           consume: [
             {
-              context: 'test'
-            }
-          ]
-        }
+              context: 'test',
+            },
+          ],
+        },
       };
 
       instance = createAndRenderComponent(config);
@@ -305,7 +302,7 @@ describe('Component', () => {
       const rMatch = instance.getBrushedShapes('test');
       expect(rMatch).to.deep.equal([
         { data: 1, key: 'myKey', element: 'elm' },
-        { data: 2, key: 'myKey', element: 'elm' }
+        { data: 2, key: 'myKey', element: 'elm' },
       ]);
     });
 
@@ -316,7 +313,7 @@ describe('Component', () => {
       instance = createAndRenderComponent(config);
       expect(instance.getBrushedShapes('test')).to.deep.equal([
         { data: 1, key: 'myKey', element: 'elm' },
-        { data: 2, key: 'myKey', element: 'elm' }
+        { data: 2, key: 'myKey', element: 'elm' },
       ]);
     });
 
@@ -326,7 +323,7 @@ describe('Component', () => {
       });
       const spy = sinon.spy();
       chart.brush = () => ({
-        containsMappedData: spy
+        containsMappedData: spy,
       });
 
       instance = createAndRenderComponent(config);
@@ -340,7 +337,7 @@ describe('Component', () => {
       });
       const spy = sinon.spy();
       chart.brush = () => ({
-        containsMappedData: spy
+        containsMappedData: spy,
       });
 
       config.brush.consume = [{ context: 'test', data: ['x'] }];

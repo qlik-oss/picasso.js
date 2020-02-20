@@ -18,12 +18,12 @@ function bar(options) {
     { x: p.x - r, y: p.y + halfWidth },
     { x: p.x - r, y: p.y - halfWidth },
     { x: p.x + r, y: p.y - halfWidth },
-    { x: p.x + r, y: p.y + halfWidth }
+    { x: p.x + r, y: p.y + halfWidth },
   ];
 
   if (isVertical) {
     const radians = toRadians(90);
-    points = points.map((pp) => rotate(pp, radians, p));
+    points = points.map(pp => rotate(pp, radians, p));
   }
 
   const rect = pointsToRect(points);

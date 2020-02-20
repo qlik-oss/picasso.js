@@ -3,12 +3,7 @@ import extractor from './extractor';
 import render from './render';
 import timeSpanDispatcher from './timespan-dispatcher';
 import placement from './placement';
-import {
-  setActive,
-  removeActive,
-  cancelActive,
-  remove
-} from './instance-handler';
+import { setActive, removeActive, cancelActive, remove } from './instance-handler';
 
 /**
  * @typedef {object}
@@ -30,19 +25,19 @@ const DEFAULT_SETTINGS = {
    * @type {function=}
    * @returns {array} An array of nodes
    */
-  filter: (nodes) => nodes.filter((node) => node.data && typeof node.data.value !== 'undefined'),
+  filter: nodes => nodes.filter(node => node.data && typeof node.data.value !== 'undefined'),
   /**
    * Extract data from a node.
    * @type {function=}
    * @returns {object} An array of data
    */
-  extract: (ctx) => ctx.node.data.value,
+  extract: ctx => ctx.node.data.value,
   /**
    * Content generator. Extracted data is available in the `data` property, where each value in the area is the extracted datum from a node.
    * @type {function=}
    * @returns {object[]} Array of h objects
    */
-  content: ({ h, data }) => data.map((datum) => h('div', {}, datum)),
+  content: ({ h, data }) => data.map(datum => h('div', {}, datum)),
   /**
    * Comparison function. If evaluted to true, the incoming nodes in the `show` event are ignored. If evaluated to false, any active tooltip is cleared and a new tooltip is queued.
    *
@@ -50,9 +45,10 @@ const DEFAULT_SETTINGS = {
    * @type {function=}
    * @returns {boolean}
    */
-  isEqual: (prev, curr) => prev.length
-    && prev.length === curr.length
-    && prev.every((p, i) => curr[i] && JSON.stringify(p.data) === JSON.stringify(curr[i].data)),
+  isEqual: (prev, curr) =>
+    prev.length &&
+    prev.length === curr.length &&
+    prev.every((p, i) => curr[i] && JSON.stringify(p.data) === JSON.stringify(curr[i].data)),
   /**
    * @typedef {object=}
    */
@@ -78,22 +74,22 @@ const DEFAULT_SETTINGS = {
      * Available options are: [viewport | target]
      * @type {number=}
      */
-    area: 'viewport'
+    area: 'viewport',
   },
   /**
    * Set tooltip class.
-  * @type {object<string, boolean>=}
-  */
+   * @type {object<string, boolean>=}
+   */
   tooltipClass: {},
   /**
    * Set content class.
-  * @type {object<string, boolean>=}
-  */
+   * @type {object<string, boolean>=}
+   */
   contentClass: {},
   /**
    * Set arrow class.
-  * @type {object<string, boolean>=}
-  */
+   * @type {object<string, boolean>=}
+   */
   arrowClass: {},
   /**
    * Content direction [ltr | rtl]
@@ -129,7 +125,7 @@ const DEFAULT_SETTINGS = {
    * Component lifecycle hook. Called after the tooltip is hidden.
    * @type {function=}
    */
-  afterHide: undefined
+  afterHide: undefined,
 };
 
 const DEFAULT_STYLE = {
@@ -142,7 +138,7 @@ const DEFAULT_STYLE = {
     lineHeight: '$line-height',
     borderRadius: '4px',
     padding: '8px',
-    opacity: 0.9
+    opacity: 0.9,
   },
   arrow: {
     position: 'absolute',
@@ -150,28 +146,28 @@ const DEFAULT_STYLE = {
     height: '0px',
     borderStyle: 'solid',
     color: '$gray-25',
-    opacity: 0.9
+    opacity: 0.9,
   },
   'arrow-bottom': {
     borderTopColor: 'transparent',
     borderLeftColor: 'transparent',
-    borderRightColor: 'transparent'
+    borderRightColor: 'transparent',
   },
   'arrow-top': {
     borderBottomColor: 'transparent',
     borderLeftColor: 'transparent',
-    borderRightColor: 'transparent'
+    borderRightColor: 'transparent',
   },
   'arrow-right': {
     borderTopColor: 'transparent',
     borderLeftColor: 'transparent',
-    borderBottomColor: 'transparent'
+    borderBottomColor: 'transparent',
   },
   'arrow-left': {
     borderTopColor: 'transparent',
     borderBottomColor: 'transparent',
-    borderRightColor: 'transparent'
-  }
+    borderRightColor: 'transparent',
+  },
 };
 
 function toPoint(event, { chart, state }) {
@@ -205,7 +201,7 @@ function toPoint(event, { chart, state }) {
     clientX,
     clientY,
     targetBounds, // Target bounding rect
-    chartBounds // Chart bounding rect
+    chartBounds, // Chart bounding rect
   };
 }
 
@@ -213,7 +209,7 @@ const component = {
   require: ['chart', 'renderer'],
   defaultSettings: {
     settings: DEFAULT_SETTINGS,
-    style: DEFAULT_STYLE
+    style: DEFAULT_STYLE,
   },
   renderer: 'dom',
   on: {
@@ -225,7 +221,7 @@ const component = {
     },
     prevent(p) {
       this.prevent(p);
-    }
+    },
   },
   hide() {
     this.dispatcher.clear();
@@ -244,10 +240,12 @@ const component = {
     if (Array.isArray(nodes)) {
       fNodes = this.props.filter(nodes);
     } else {
-      fNodes = this.props.filter(this.chart.shapesAt({
-        x: this.state.pointer.cx,
-        y: this.state.pointer.cy
-      }));
+      fNodes = this.props.filter(
+        this.chart.shapesAt({
+          x: this.state.pointer.cx,
+          y: this.state.pointer.cy,
+        })
+      );
     }
 
     if (this.props.isEqual(this.state.activeNodes, fNodes)) {
@@ -258,11 +256,7 @@ const component = {
     this.state.activeNodes = fNodes;
 
     if (this.state.activeNodes.length) {
-      this.dispatcher.invoke(
-        () => this.invokeRenderer(this.state.activeNodes),
-        duration,
-        delay
-      );
+      this.dispatcher.invoke(() => this.invokeRenderer(this.state.activeNodes), duration, delay);
     }
   },
   prevent(p) {
@@ -273,12 +267,12 @@ const component = {
       activeNodes: [],
       pointer: {},
       targetElement: null,
-      prevent: false
+      prevent: false,
     };
     this.props = settings.settings;
     this.dispatcher = timeSpanDispatcher({
       defaultDuration: this.props.duration,
-      defaultDelay: this.props.delay
+      defaultDelay: this.props.delay,
     });
 
     const instanceId = this.dispatcher.clear;
@@ -291,8 +285,8 @@ const component = {
         this.props.beforeShow.call(undefined, {
           resources: {
             formatter: this.chart.formatter,
-            scale: this.chart.scale
-          }
+            scale: this.chart.scale,
+          },
         });
       }
     });
@@ -301,8 +295,8 @@ const component = {
       const listenerCtx = {
         resources: {
           formatter: this.chart.formatter,
-          scale: this.chart.scale
-        }
+          scale: this.chart.scale,
+        },
       };
 
       if (typeof this.props.beforeHide === 'function') {
@@ -329,8 +323,8 @@ const component = {
           element: this.state.tooltipElm,
           resources: {
             formatter: this.chart.formatter,
-            scale: this.chart.scale
-          }
+            scale: this.chart.scale,
+          },
         });
       }
     });
@@ -355,12 +349,15 @@ const component = {
   },
   appendTo() {
     if (this.props.appendTo) {
-      this.state.targetElement = typeof this.props.appendTo === 'function' ? this.props.appendTo({
-        resources: {
-          formatter: this.chart.formatter,
-          scale: this.chart.scale
-        }
-      }) : this.props.appendTo;
+      this.state.targetElement =
+        typeof this.props.appendTo === 'function'
+          ? this.props.appendTo({
+              resources: {
+                formatter: this.chart.formatter,
+                scale: this.chart.scale,
+              },
+            })
+          : this.props.appendTo;
       const { width, height } = this.state.targetElement.getBoundingClientRect();
       this.renderer.destroy();
       this.renderer.size({ width, height });
@@ -381,7 +378,7 @@ const component = {
     const pseudoElement = render(items, { style: { left: '0px', top: '0px', visibility: 'hidden' } }, this);
     const pos = placement(pseudoElement.getBoundingClientRect(), this);
     this.state.tooltipElm = render(items, pos, this);
-  }
+  },
 };
 
 export { component as default };

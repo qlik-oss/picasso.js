@@ -26,7 +26,10 @@ export function lineToPoints(line) {
   const y1 = line.y1 || 0;
   const x2 = line.x2 || 0;
   const y2 = line.y2 || 0;
-  return [{ x: x1, y: y1 }, { x: x2, y: y2 }];
+  return [
+    { x: x1, y: y1 },
+    { x: x2, y: y2 },
+  ];
 }
 
 /**
@@ -39,7 +42,7 @@ export function rectToPoints(rect) {
     { x: rect.x, y: rect.y },
     { x: rect.x + rect.width, y: rect.y },
     { x: rect.x + rect.width, y: rect.y + rect.height },
-    { x: rect.x, y: rect.y + rect.height }
+    { x: rect.x, y: rect.y + rect.height },
   ];
 }
 
@@ -50,7 +53,7 @@ export function pointsToRect(points) {
     x: xMin,
     y: yMin,
     width: xMax - xMin,
-    height: yMax - yMin
+    height: yMax - yMin,
   };
 }
 
@@ -58,7 +61,7 @@ export function pointsToCircle(points, r) {
   return {
     cx: points[0].x,
     cy: points[0].y,
-    r
+    r,
   };
 }
 
@@ -67,7 +70,7 @@ export function pointsToLine(points) {
     x1: points[0].x,
     y1: points[0].y,
     x2: points[1].x,
-    y2: points[1].y
+    y2: points[1].y,
   };
 }
 
@@ -86,11 +89,18 @@ export function arrayToPoint(ary) {
  */
 export function getShapeType(shape) {
   const {
-    x, y, // Point
-    width, height, // Rect
-    x1, x2, y1, y2, // Line
-    cx, cy, r, // Circle
-    vertices // Polygon
+    x,
+    y, // Point
+    width,
+    height, // Rect
+    x1,
+    x2,
+    y1,
+    y2, // Line
+    cx,
+    cy,
+    r, // Circle
+    vertices, // Polygon
   } = shape || {};
 
   if (isNumber(cx) && isNumber(cy) && isNumber(r)) {
@@ -116,6 +126,6 @@ export function expandRect(size, rect) {
     x: rect.x - size,
     y: rect.y - size,
     width: rect.width + size,
-    height: rect.height + size
+    height: rect.height + size,
   };
 }

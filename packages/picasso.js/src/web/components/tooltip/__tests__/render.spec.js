@@ -8,32 +8,32 @@ describe('render', () => {
     placement = {
       computedTooltipStyle: {
         left: 1,
-        top: 2
-      }
+        top: 2,
+      },
     };
     context = {
       renderer: {
         render: sinon.spy(),
-        element: sinon.stub().returns({ children: [0] })
+        element: sinon.stub().returns({ children: [0] }),
       },
       h: sinon.stub().returns('CALLED'),
       style: {
         content: {
-          testStyle: 'testing'
+          testStyle: 'testing',
         },
         arrow: {
-          arrowTestStyle: 'test2'
-        }
+          arrowTestStyle: 'test2',
+        },
       },
       props: {
         content: sinon.spy(),
         contentClass: {
-          testClass: true
+          testClass: true,
         },
         arrowClass: {
-          class: true
-        }
-      }
+          class: true,
+        },
+      },
     };
   });
 
@@ -45,17 +45,17 @@ describe('render', () => {
     expect(context.h.args[0][0]).to.equal('div');
     expect(context.h.args[0][1]).to.containSubset({
       style: {
-        testStyle: 'testing'
+        testStyle: 'testing',
       },
-      class: 'pic-tooltip-content testClass'
+      class: 'pic-tooltip-content testClass',
     });
 
     // Arrow call
     expect(context.h.args[1][1]).to.containSubset({
       class: 'pic-tooltip-arrow class',
       style: {
-        arrowTestStyle: 'test2'
-      }
+        arrowTestStyle: 'test2',
+      },
     });
 
     // Container call
@@ -64,14 +64,14 @@ describe('render', () => {
         display: 'inline-block',
         position: 'relative',
         left: 1,
-        top: 2
-      }
+        top: 2,
+      },
     });
 
     expect(context.props.content).to.have.been.calledWith({
       h: context.h,
       style: context.style,
-      data
+      data,
     });
 
     expect(context.renderer.render).to.have.been.calledWith('CALLED');

@@ -1,8 +1,7 @@
 import { ELLIPSIS_CHAR } from './text-const';
 
-export default function ellipsText({
-  text, 'font-size': fontSize, 'font-family': fontFamily, maxWidth
-}, measureText) { // eslint-disable-line import/prefer-default-export
+export default function ellipsText({ text, 'font-size': fontSize, 'font-family': fontFamily, maxWidth }, measureText) {
+  // eslint-disable-line import/prefer-default-export
   text = typeof text === 'string' ? text : `${text}`;
   if (maxWidth === undefined) {
     return text;
@@ -20,7 +19,8 @@ export default function ellipsText({
     textWidth = measureText({ text: reduceText, fontSize, fontFamily }).width;
     if (textWidth <= maxWidth) {
       min = reduceIndex + 1;
-    } else { // textWidth > maxWidth
+    } else {
+      // textWidth > maxWidth
       max = reduceIndex - 1;
     }
   }

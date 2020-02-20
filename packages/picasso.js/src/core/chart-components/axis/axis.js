@@ -1,10 +1,7 @@
 import extend from 'extend';
 
 import nodeBuilder from './axis-node-builder';
-import {
-  DEFAULT_CONTINUOUS_SETTINGS,
-  DEFAULT_DISCRETE_SETTINGS
-} from './axis-default-settings';
+import { DEFAULT_CONTINUOUS_SETTINGS, DEFAULT_DISCRETE_SETTINGS } from './axis-default-settings';
 import calcRequiredSize from './axis-size-calculator';
 import crispify from '../../transposer/crispifier';
 import { scaleWithSize } from '../../scales';
@@ -35,12 +32,13 @@ function resolveAlign(align, dock) {
  * @ignore
  * @param {object} context - The component context
  */
-function resolveLocalSettings({
-  state,
-  style,
-  settings
-}) {
-  const defaultStgns = extend(true, {}, state.isDiscrete ? DEFAULT_DISCRETE_SETTINGS : DEFAULT_CONTINUOUS_SETTINGS, style);
+function resolveLocalSettings({ state, style, settings }) {
+  const defaultStgns = extend(
+    true,
+    {},
+    state.isDiscrete ? DEFAULT_DISCRETE_SETTINGS : DEFAULT_CONTINUOUS_SETTINGS,
+    style
+  );
   const localStgns = extend(true, {}, defaultStgns, settings.settings);
 
   const dock = settings.layout.dock || state.defaultDock;
@@ -76,15 +74,15 @@ const axisComponent = {
   defaultSettings: {
     layout: {
       displayOrder: 0,
-      prioOrder: 0
+      prioOrder: 0,
     },
     settings: {},
     style: {
       labels: '$label',
       ticks: '$guide-line',
       minorTicks: '$guide-line--minor',
-      line: '$guide-line'
-    }
+      line: '$guide-line',
+    },
   },
   created() {
     // State is a representation of properties that are private to this component defintion and may be modified by only in this context.
@@ -92,18 +90,24 @@ const axisComponent = {
       isDiscrete: !!this.scale.bandwidth,
       isHorizontal: false,
       labels: {
-        activeMode: 'horizontal'
+        activeMode: 'horizontal',
       },
       ticks: [],
       innerRect: {
-        width: 0, height: 0, x: 0, y: 0
+        width: 0,
+        height: 0,
+        x: 0,
+        y: 0,
       },
       outerRect: {
-        width: 0, height: 0, x: 0, y: 0
+        width: 0,
+        height: 0,
+        x: 0,
+        y: 0,
       },
       defaultDock: undefined,
       concreteNodeBuilder: undefined,
-      settings: undefined
+      settings: undefined,
     };
 
     if (this.state.isDiscrete) {
@@ -126,11 +130,7 @@ const axisComponent = {
     this.state.labels.activeMode = updateActiveMode(this.state, this.state.settings, this.state.isDiscrete);
   },
   preferredSize(opts) {
-    const {
-      formatter,
-      state,
-      scale
-    } = this;
+    const { formatter, state, scale } = this;
 
     const distance = this.state.isHorizontal ? opts.inner.width : opts.inner.height;
 
@@ -143,27 +143,26 @@ const axisComponent = {
       measureText: this.renderer.measureText,
       scale: this.state.pxScale,
       settings: this.state.settings,
-      state
+      state,
     });
 
     return reqSize;
   },
   beforeUpdate(opts = {}) {
-    const {
-      settings
-    } = opts;
+    const { settings } = opts;
     this.setState(settings);
   },
   resize(opts) {
-    const {
-      inner,
-      outer
-    } = opts;
+    const { inner, outer } = opts;
 
-    const extendedInner = extend({}, inner, alignTransform({
-      align: this.state.settings.align,
-      inner
-    }));
+    const extendedInner = extend(
+      {},
+      inner,
+      alignTransform({
+        align: this.state.settings.align,
+        inner,
+      })
+    );
 
     const finalOuter = outer || extendedInner;
     extend(this.state.innerRect, extendedInner);
@@ -172,40 +171,39 @@ const axisComponent = {
     return outer;
   },
   beforeRender() {
-    const {
-      scale,
-      formatter
-    } = this;
+    const { scale, formatter } = this;
 
     const distance = this.state.isHorizontal ? this.state.innerRect.width : this.state.innerRect.height;
 
     this.state.pxScale = scaleWithSize(scale, distance);
-    this.state.ticks = this.state.pxScale.ticks({
-      distance,
-      formatter
-    }).filter((t) => t.position >= 0 && t.position <= 1);
+    this.state.ticks = this.state.pxScale
+      .ticks({
+        distance,
+        formatter,
+      })
+      .filter(t => t.position >= 0 && t.position <= 1);
   },
   render() {
-    const {
-      state
-    } = this;
+    const { state } = this;
 
     const nodes = [];
-    nodes.push(...this.state.concreteNodeBuilder.build({
-      settings: this.state.settings,
-      scale: this.state.pxScale,
-      innerRect: this.state.innerRect,
-      outerRect: this.state.outerRect,
-      measureText: this.renderer.measureText,
-      textBounds: this.renderer.textBounds,
-      ticks: this.state.ticks,
-      state
-    }));
+    nodes.push(
+      ...this.state.concreteNodeBuilder.build({
+        settings: this.state.settings,
+        scale: this.state.pxScale,
+        innerRect: this.state.innerRect,
+        outerRect: this.state.outerRect,
+        measureText: this.renderer.measureText,
+        textBounds: this.renderer.textBounds,
+        ticks: this.state.ticks,
+        state,
+      })
+    );
 
     crispify.multiple(nodes);
 
     return nodes;
-  }
+  },
 };
 
 export default axisComponent;

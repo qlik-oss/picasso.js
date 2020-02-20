@@ -8,7 +8,7 @@
  */
 export function angleToPoints(angle) {
   let segment = Math.floor((angle / Math.PI) * 2) + 2;
-  let diagonal = ((0.5 * segment) + 0.25) * Math.PI;
+  let diagonal = (0.5 * segment + 0.25) * Math.PI;
   let op = Math.cos(Math.abs(diagonal - angle)) * Math.sqrt(2);
   let x = op * Math.cos(angle);
   let y = op * Math.sin(angle);
@@ -17,7 +17,7 @@ export function angleToPoints(angle) {
     x1: x < 0 ? 1 : 0,
     y1: y < 0 ? 1 : 0,
     x2: x >= 0 ? x : x + 1,
-    y2: y >= 0 ? y : y + 1
+    y2: y >= 0 ? y : y + 1,
   };
 }
 
@@ -29,7 +29,7 @@ export function angleToPoints(angle) {
  * @return {number}         Radians
  */
 export function toRadians(d) {
-  return ((-d) / 180) * Math.PI;
+  return (-d / 180) * Math.PI;
 }
 
 /**

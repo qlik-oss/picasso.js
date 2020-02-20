@@ -41,29 +41,35 @@ export default class Path extends DisplayObject {
       this.collider = v.collider;
     } else if (v.d) {
       this.segments = pathToSegments(v.d);
-      if (this.segments.length > 1 && this.segments.every((segment) => isClosed(segment))) {
+      if (this.segments.length > 1 && this.segments.every(segment => isClosed(segment))) {
         this.collider = extend({
           type: 'geopolygon',
           vertices: this.segments
         }, v.collider);
         return;
       }
-      this.segments.forEach((segment) => {
+      this.segments.forEach(segment => {
         if (segment.length <= 1) {
           // Omit empty and single point segments
         } else if (isClosed(segment)) {
-          this.collider = extend({
-            type: 'polygon',
-            vertices: segment
-          }, v.collider);
+          this.collider = extend(
+            {
+              type: 'polygon',
+              vertices: segment,
+            },
+            v.collider
+          );
         } else if (typeof v.collider === 'object' && v.collider.visual) {
           const size = this.attrs['stroke-width'] / 2;
           this.collider = polylineToPolygonCollider(segment, size, v.collider);
         } else {
-          this.collider = extend({
-            type: 'polyline',
-            points: segment
-          }, v.collider);
+          this.collider = extend(
+            {
+              type: 'polyline',
+              points: segment,
+            },
+            v.collider
+          );
         }
       });
     }
@@ -79,14 +85,15 @@ export default class Path extends DisplayObject {
       this.points = flatten(this.segments);
     }
 
-    const pt = includeTransform && this.modelViewMatrix ? this.modelViewMatrix.transformPoints(this.points) : this.points;
+    const pt =
+      includeTransform && this.modelViewMatrix ? this.modelViewMatrix.transformPoints(this.points) : this.points;
     const [xMin, yMin, xMax, yMax] = getMinMax(pt);
 
     this.__boundingRect[includeTransform] = {
       x: xMin || 0,
       y: yMin || 0,
-      width: (xMax - xMin) || 0,
-      height: (yMax - yMin) || 0
+      width: xMax - xMin || 0,
+      height: yMax - yMin || 0,
     };
 
     return this.__boundingRect[includeTransform];
@@ -102,7 +109,7 @@ export default class Path extends DisplayObject {
       { x: rect.x, y: rect.y },
       { x: rect.x + rect.width, y: rect.y },
       { x: rect.x + rect.width, y: rect.y + rect.height },
-      { x: rect.x, y: rect.y + rect.height }
+      { x: rect.x, y: rect.y + rect.height },
     ];
     return this.__bounds[includeTransform];
   }

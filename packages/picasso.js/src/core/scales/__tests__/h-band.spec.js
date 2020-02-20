@@ -1,9 +1,8 @@
 import { hierarchy } from 'd3-hierarchy';
 import hBand from '../h-band';
 
-
 describe('Hierarchical band scale', () => {
-  const childGen = (d) => ({ value: d });
+  const childGen = d => ({ value: d });
   let scale;
   let data;
   let settings;
@@ -14,15 +13,17 @@ describe('Hierarchical band scale', () => {
     data = {
       root: hierarchy({
         value: 'root',
-        children: [{
-          value: 'left',
-          children: leftChildren
-        },
-        {
-          value: 'right',
-          children: rightChildren
-        }]
-      })
+        children: [
+          {
+            value: 'left',
+            children: leftChildren,
+          },
+          {
+            value: 'right',
+            children: rightChildren,
+          },
+        ],
+      }),
     };
 
     settings = {};
@@ -70,7 +71,7 @@ describe('Hierarchical band scale', () => {
 
     it('should return correct bandwidth for a branch node', () => {
       scale = hBand(settings, data);
-      expect(scale.bandwidth(['left'])).to.approximately(0.500, 0.001);
+      expect(scale.bandwidth(['left'])).to.approximately(0.5, 0.001);
       expect(scale.bandwidth(['right'])).to.approximately(0.333, 0.001);
     });
 
@@ -89,7 +90,7 @@ describe('Hierarchical band scale', () => {
 
     it('should return correct step size for a branch nodes', () => {
       scale = hBand(settings, data);
-      expect(scale.step(['left'])).to.approximately(0.500, 0.001);
+      expect(scale.step(['left'])).to.approximately(0.5, 0.001);
       expect(scale.step(['right'])).to.approximately(0.333, 0.001);
     });
 
@@ -242,7 +243,7 @@ describe('Hierarchical band scale', () => {
       const pxScale = scale.pxScale(100);
 
       expect(pxScale.step(['left'])).to.approximately(0.1 * 3, 0.000001);
-      expect(pxScale.bandwidth(['left'])).to.approximately((0.1 * 3) - 0.05, 0.000001); // Leaf node step size * 3 leaf nodes - padding
+      expect(pxScale.bandwidth(['left'])).to.approximately(0.1 * 3 - 0.05, 0.000001); // Leaf node step size * 3 leaf nodes - padding
       expect(pxScale(['left'])).to.approximately(0.225, 0.000001);
       expect(pxScale(['right'])).to.approximately(0.625, 0.000001);
     });

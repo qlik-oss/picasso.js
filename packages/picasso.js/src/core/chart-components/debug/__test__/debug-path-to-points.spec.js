@@ -10,11 +10,17 @@ describe('debug-path-to-points', () => {
     componentFixture = componentFactoryFixture();
     opts = {
       inner: {
-        x: 0, y: 0, width: 100, height: 100
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 100,
       },
       outer: {
-        x: 0, y: 0, width: 100, height: 100
-      }
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 100,
+      },
     };
 
     componentFixture.mocks().chart.findShapes = () => shapes;
@@ -22,12 +28,14 @@ describe('debug-path-to-points', () => {
   });
 
   it('should render transformed path', () => {
-    shapes = [{
-      key: '',
-      attrs: {
-        d: 'M0 0, L10 10'
-      }
-    }];
+    shapes = [
+      {
+        key: '',
+        attrs: {
+          d: 'M0 0, L10 10',
+        },
+      },
+    ];
     const out = componentFixture.simulateRender(opts);
 
     expect(out).to.eql([
@@ -39,7 +47,7 @@ describe('debug-path-to-points', () => {
         fill: 'transparent',
         stroke: 'lime',
         opacity: 1,
-        collider: { type: null }
+        collider: { type: null },
       },
       {
         type: 'circle',
@@ -49,8 +57,8 @@ describe('debug-path-to-points', () => {
         fill: 'transparent',
         stroke: 'lime',
         opacity: 1,
-        collider: { type: null }
-      }
+        collider: { type: null },
+      },
     ]);
   });
 });

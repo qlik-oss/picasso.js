@@ -1,9 +1,6 @@
 import extend from 'extend';
 import DisplayObject from './display-object';
-import {
-  rectToPoints,
-  getMinMax
-} from '../../geometry/util';
+import { rectToPoints, getMinMax } from '../../geometry/util';
 
 function hasData({ data, _boundingRect, _textBoundsFn }) {
   return typeof data !== 'undefined' && data !== null && (_boundingRect || _textBoundsFn);
@@ -39,18 +36,7 @@ export default class Text extends DisplayObject {
   }
 
   set(v = {}) {
-    const {
-      x = 0,
-      y = 0,
-      dx = 0,
-      dy = 0,
-      textBoundsFn,
-      text,
-      title,
-      collider,
-      boundingRect,
-      ellipsed
-    } = v;
+    const { x = 0, y = 0, dx = 0, dy = 0, textBoundsFn, text, title, collider, boundingRect, ellipsed } = v;
 
     super.set(v);
     this.attrs.x = x;
@@ -90,7 +76,7 @@ export default class Text extends DisplayObject {
         x: 0,
         y: 0,
         width: 0,
-        height: 0
+        height: 0,
       };
     }
 
@@ -102,7 +88,7 @@ export default class Text extends DisplayObject {
       x: xMin,
       y: yMin,
       width: xMax - xMin,
-      height: yMax - yMin
+      height: yMax - yMin,
     };
 
     return this.__boundingRect[includeTransform];
@@ -118,7 +104,7 @@ export default class Text extends DisplayObject {
       { x: rect.x, y: rect.y },
       { x: rect.x + rect.width, y: rect.y },
       { x: rect.x + rect.width, y: rect.y + rect.height },
-      { x: rect.x, y: rect.y + rect.height }
+      { x: rect.x, y: rect.y + rect.height },
     ];
     return this.__bounds[includeTransform];
   }

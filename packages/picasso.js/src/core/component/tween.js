@@ -1,9 +1,6 @@
 import extend from 'extend';
 import { interpolateObject } from 'd3-interpolate';
-import {
-  easeCubic,
-  easeElasticOut
-} from 'd3-ease';
+import { easeCubic, easeElasticOut } from 'd3-ease';
 
 /* globals window */
 
@@ -17,12 +14,7 @@ function nodeId(node, i) {
   return i;
 }
 
-function tween({
-  old,
-  current
-}, {
-  renderer
-}, config) {
+function tween({ old, current }, { renderer }, config) {
   let ticker;
   // let staticNodes = [];
   let toBeUpdated = [];
@@ -48,13 +40,18 @@ function tween({
           ids[id] = false;
         } else {
           entered.nodes.push(node);
-          entered.ips.push(interpolateObject({
-            r: 0.001,
-            opacity: 0
-          }, node));
+          entered.ips.push(
+            interpolateObject(
+              {
+                r: 0.001,
+                opacity: 0,
+              },
+              node
+            )
+          );
         }
       });
-      Object.keys(ids).forEach((key) => {
+      Object.keys(ids).forEach(key => {
         if (ids[key]) {
           exited.nodes.push(ids[key]);
           exited.ips.push(interpolateObject(ids[key], extend({}, ids[key], { r: 0.0001, opacity: 0 })));
@@ -65,7 +62,7 @@ function tween({
           easing: easeCubic,
           duration: 200,
           tweens: exited.ips,
-          nodes: [...toBeUpdated]
+          nodes: [...toBeUpdated],
         });
       }
       if (updated.ips.length) {
@@ -73,7 +70,7 @@ function tween({
           easing: easeCubic,
           duration: 400,
           tweens: updated.ips,
-          nodes: []
+          nodes: [],
         });
       }
       if (entered.ips.length) {
@@ -81,7 +78,7 @@ function tween({
           easing: easeElasticOut,
           duration: 1200,
           tweens: entered.ips,
-          nodes: [...updated.nodes]
+          nodes: [...updated.nodes],
         });
       }
       // console.log(stages);
@@ -102,7 +99,7 @@ function tween({
       }
       let t = (Date.now() - currentStage.started) / currentStage.duration;
       let currentNodes = [];
-      let tweenedNodes = currentStage.tweens.map((ip) => ip(currentStage.easing(Math.min(1, t))));
+      let tweenedNodes = currentStage.tweens.map(ip => ip(currentStage.easing(Math.min(1, t))));
       currentNodes.push(...tweenedNodes);
       currentNodes.push(...currentStage.nodes);
       // currentNodes.push(...staticNodes);
@@ -124,7 +121,7 @@ function tween({
         window.cancelAnimationFrame(ticker);
         ticker = false;
       }
-    }
+    },
   };
 
   return tweener;

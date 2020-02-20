@@ -7,7 +7,7 @@ describe('colorKeyWord', () => {
 
     const methods = ['test'];
 
-    methods.forEach((method) => {
+    methods.forEach(method => {
       expect(Object.prototype.hasOwnProperty.call(colorKeyWord, method)).to.equal(true);
       expect(typeof colorKeyWord[method] === 'function').to.equal(true);
     });
@@ -56,7 +56,7 @@ describe('colorKeyWord', () => {
     });
 
     it('should return false if keyword is not a string', () => {
-      [true, 0, {}, () => { }].forEach((keyword) => {
+      [true, 0, {}, () => {}].forEach(keyword => {
         expect(colorKeyWord.test(keyword)).to.equal(false);
       });
     });

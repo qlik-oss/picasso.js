@@ -1,14 +1,6 @@
 import getLabelSize from './axis-label-size';
 
-export default function calcRequiredSize({
-  isDiscrete,
-  rect,
-  formatter,
-  measureText,
-  scale,
-  settings,
-  state
-}) {
+export default function calcRequiredSize({ isDiscrete, rect, formatter, measureText, scale, settings, state }) {
   let size = 0;
 
   const { size: labelSize, edgeBleed, isToLarge } = getLabelSize({
@@ -18,7 +10,7 @@ export default function calcRequiredSize({
     measureText,
     scale,
     settings,
-    state
+    state,
   });
 
   size += labelSize;

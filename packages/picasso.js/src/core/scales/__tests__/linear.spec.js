@@ -66,7 +66,10 @@ describe('LinearScale', () => {
   });
 
   it('should support clamping a linearly interpolated value', () => {
-    lin.domain([-10, 10]).range([10, 20]).clamp(true);
+    lin
+      .domain([-10, 10])
+      .range([10, 20])
+      .clamp(true);
     expect(lin(-100)).to.equal(10);
     expect(lin(100)).to.equal(20);
   });
@@ -100,7 +103,10 @@ describe('LinearScale', () => {
   });
 
   it('should support grouping values', () => {
-    lin.domain([-10, 10]).range([-100, 100]).classify(5);
+    lin
+      .domain([-10, 10])
+      .range([-100, 100])
+      .classify(5);
     expect(lin.domain().length).to.equal(10);
     expect(lin.range().length).to.equal(10);
     expect(lin(-10)).to.equal(-80);
@@ -108,7 +114,10 @@ describe('LinearScale', () => {
   });
 
   it('should support grouping negative values', () => {
-    lin.domain([-20, -10]).range([-200, -100]).classify(2);
+    lin
+      .domain([-20, -10])
+      .range([-200, -100])
+      .classify(2);
     expect(lin.domain().length).to.equal(4);
     expect(lin.range().length).to.equal(4);
     expect(lin(-20)).to.equal(-175);
@@ -116,7 +125,10 @@ describe('LinearScale', () => {
   });
 
   it('should support grouping a negative value range', () => {
-    lin.domain([10, -10]).range([-100, 100]).classify(2);
+    lin
+      .domain([10, -10])
+      .range([-100, 100])
+      .classify(2);
     expect(lin.domain().length).to.equal(4);
     expect(lin.range().length).to.equal(4);
     expect(lin(10)).to.equal(-50);
@@ -197,14 +209,17 @@ describe('LinearScale', () => {
     });
 
     it('should scale a single color over lightness when using classify', () => {
-      lin.domain([0, 1]).range(['hsl(0, 100%, 20%)', 'hsl(0, 100%, 80%)']).classify(4);
+      lin
+        .domain([0, 1])
+        .range(['hsl(0, 100%, 20%)', 'hsl(0, 100%, 80%)'])
+        .classify(4);
       expect(lin(0)).to.equal('rgb(121, 19, 19)'); // First interval
       expect(lin(0.2)).to.equal('rgb(121, 19, 19)');
       expect(lin(0.5)).to.equal('rgb(198, 96, 96)'); // Second interval
       expect(lin(0.6)).to.equal('rgb(198, 96, 96)');
       expect(lin(0.75)).to.equal('rgb(236, 134, 134)'); // Thrid interval
       expect(lin(0.85)).to.equal('rgb(236, 134, 134)');
-      expect(lin(0.90)).to.equal('rgb(236, 134, 134)'); // Fourth interval
+      expect(lin(0.9)).to.equal('rgb(236, 134, 134)'); // Fourth interval
       expect(lin(1)).to.equal('rgb(236, 134, 134)');
     });
   });

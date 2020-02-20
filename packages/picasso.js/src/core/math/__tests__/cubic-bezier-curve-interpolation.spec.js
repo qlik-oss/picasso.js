@@ -2,7 +2,7 @@ import cubicToPoints from '../cubic-bezier-curve-interpolation';
 
 function approxEqual(ary, expected) {
   ary.forEach((item, i) => {
-    Object.keys(expected[i]).forEach((key) => {
+    Object.keys(expected[i]).forEach(key => {
       expect(item[key]).to.approximately(expected[i][key], 0.001);
     });
   });
@@ -31,7 +31,7 @@ describe('Cubic Bezier curve', () => {
       { x: 25, y: 37.5 },
       { x: 42.1875, y: 28.125 },
       { x: 47.8515625, y: 16.40625 },
-      { x: 50, y: 0 }
+      { x: 50, y: 0 },
     ];
 
     approxEqual(pts, exp);

@@ -19,11 +19,11 @@ export function findField(query, { cache }) {
 }
 
 const filters = {
-  numeric: (values) => values.filter((v) => typeof v === 'number' && !isNaN(v))
+  numeric: values => values.filter(v => typeof v === 'number' && !isNaN(v)),
 };
 
 const unfilteredReducers = {
-  sum: (values) => values.reduce((a, b) => a + b, 0)
+  sum: values => values.reduce((a, b) => a + b, 0),
 };
 
 // function isPrimitive(x) {
@@ -37,34 +37,34 @@ const unfilteredReducers = {
  * @private
  */
 export const reducers = {
-  first: (values) => values[0],
-  last: (values) => values[values.length - 1],
-  min: (values) => {
+  first: values => values[0],
+  last: values => values[values.length - 1],
+  min: values => {
     const filtered = filters.numeric(values);
     return !filtered.length ? NaN : Math.min.apply(null, filtered);
   },
-  max: (values) => {
+  max: values => {
     const filtered = filters.numeric(values);
     return !filtered.length ? NaN : Math.max.apply(null, filtered);
   },
-  sum: (values) => {
+  sum: values => {
     const filtered = filters.numeric(values);
     return !filtered.length ? NaN : filtered.reduce((a, b) => a + b, 0);
   },
-  avg: (values) => {
+  avg: values => {
     const filtered = filters.numeric(values);
     const len = filtered.length;
     return !len ? NaN : unfilteredReducers.sum(filtered) / len;
-  }
+  },
 };
 
 function normalizeProperties(cfg, dataset, dataProperties, main) {
   // console.log('======', cfg, main, dataset);
   const props = {};
   const mainField = main.field || (typeof cfg.field !== 'undefined' ? dataset.field(cfg.field) : null);
-  Object.keys(dataProperties).forEach((key) => {
+  Object.keys(dataProperties).forEach(key => {
     const pConfig = dataProperties[key];
-    const prop = props[key] = {};
+    const prop = (props[key] = {});
     if (['number', 'string', 'boolean'].indexOf(typeof pConfig) !== -1) {
       prop.type = 'primitive';
       prop.value = pConfig;
@@ -75,7 +75,7 @@ function normalizeProperties(cfg, dataset, dataProperties, main) {
       prop.field = mainField;
     } else if (typeof pConfig === 'object') {
       if (pConfig.fields) {
-        prop.fields = pConfig.fields.map((ff) => normalizeProperties(cfg, dataset, { main: ff }, main).main);
+        prop.fields = pConfig.fields.map(ff => normalizeProperties(cfg, dataset, { main: ff }, main).main);
       } else if (typeof pConfig.field !== 'undefined') {
         prop.type = 'field';
         prop.field = dataset.field(pConfig.field);
@@ -109,7 +109,8 @@ function normalizeProperties(cfg, dataset, dataProperties, main) {
       } else if (pConfig.reduceLabel) {
         prop.reduceLabel = reducers[pConfig.reduceLabel];
       } else if (prop.field && prop.field.reduceLabel) {
-        prop.reduceLabel = typeof prop.field.reduceLabel === 'string' ? reducers[prop.field.reduceLabel] : prop.field.reduceLabel;
+        prop.reduceLabel =
+          typeof prop.field.reduceLabel === 'string' ? reducers[prop.field.reduceLabel] : prop.field.reduceLabel;
       }
     }
   });
@@ -147,11 +148,19 @@ cfg = {
 */
 export function getPropsInfo(cfg, dataset) {
   // console.log('222', cfg);
-  const { main } = normalizeProperties(cfg, dataset, {
-    main: {
-      value: cfg.value, label: cfg.label, reduce: cfg.reduce, filter: cfg.filter
-    }
-  }, {});
+  const { main } = normalizeProperties(
+    cfg,
+    dataset,
+    {
+      main: {
+        value: cfg.value,
+        label: cfg.label,
+        reduce: cfg.reduce,
+        filter: cfg.filter,
+      },
+    },
+    {}
+  );
   const props = normalizeProperties(cfg, dataset, cfg.props || {}, main);
   return { props, main };
 }
@@ -169,13 +178,13 @@ function collectItems(items, cfg, formatter, prop) {
   const reduce = cfg.reduce;
   const reduceLabel = cfg.reduceLabel;
   const v = reduce ? reduce(values) : values;
-  const b = reduceLabel ? reduceLabel(labels, v) : (formatter ? formatter(v) : String(v)); // eslint-disable-line no-nested-ternary
+  const b = reduceLabel ? reduceLabel(labels, v) : formatter ? formatter(v) : String(v); // eslint-disable-line no-nested-ternary
 
   // // ret[prop].label = String(propsFormatters[prop](ret[prop].value));
 
   const ret = {
     value: v,
-    label: b
+    label: b,
   };
   if (prop && items[0][prop].source) {
     ret.source = items[0][prop].source;
@@ -190,43 +199,34 @@ function collectItems(items, cfg, formatter, prop) {
 }
 
 // collect items that have been grouped and reduce per group and property
-export function collect(trackedItems, {
-  main,
-  propsArr,
-  props
-}) {
+export function collect(trackedItems, { main, propsArr, props }) {
   let dataItems = [];
   const mainFormatter = main.field.formatter(); // || (v => v);
   const propsFormatters = {};
-  propsArr.forEach((prop) => {
-    propsFormatters[prop] = props[prop].field ? props[prop].field.formatter() : (v) => v;
+  propsArr.forEach(prop => {
+    propsFormatters[prop] = props[prop].field ? props[prop].field.formatter() : v => v;
   });
-  dataItems.push(...trackedItems.map((t) => {
-    const ret = collectItems(t.items, main, mainFormatter);
+  dataItems.push(
+    ...trackedItems.map(t => {
+      const ret = collectItems(t.items, main, mainFormatter);
 
-    propsArr.forEach((prop) => {
-      ret[prop] = collectItems(t.items, props[prop], propsFormatters[prop], prop);
-    });
-    return ret;
-  }));
+      propsArr.forEach(prop => {
+        ret[prop] = collectItems(t.items, props[prop], propsFormatters[prop], prop);
+      });
+      return ret;
+    })
+  );
 
   return dataItems;
 }
 
-export function track({
-  cfg,
-  itemData,
-  obj,
-  target,
-  tracker,
-  trackType
-}) {
+export function track({ cfg, itemData, obj, target, tracker, trackType }) {
   const trackId = trackType === 'function' ? cfg.trackBy(itemData) : itemData[cfg.trackBy];
   let trackedItem = tracker[trackId];
   if (!trackedItem) {
     trackedItem = tracker[trackId] = {
       items: [],
-      id: trackId
+      id: trackId,
     };
     target.push(trackedItem);
   }

@@ -2,9 +2,7 @@ import themeFn from '..';
 
 describe('Theme', () => {
   it('should find a palette', () => {
-    const t = themeFn({}, [
-      { key: 'pal', colors: [['a', 'b']] }
-    ]);
+    const t = themeFn({}, [{ key: 'pal', colors: [['a', 'b']] }]);
     expect(t.palette('pal')).to.eql(['a', 'b']);
   });
 
@@ -15,32 +13,38 @@ describe('Theme', () => {
         colors: [
           ['a', 'b'],
           ['a', 'b', 'c', 'd'],
-          ['a', 'b', 'c', 'd', 'e']
-        ]
-      }
+          ['a', 'b', 'c', 'd', 'e'],
+        ],
+      },
     ]);
     expect(t.palette('pal', 4)).to.eql(['a', 'b', 'c', 'd']);
   });
 
   it('should resolve a style', () => {
-    const t = themeFn({
-      $font: 'Sans nonsense',
-      $label: {
-        fontFamily: '$font'
-      }
-    }, []);
+    const t = themeFn(
+      {
+        $font: 'Sans nonsense',
+        $label: {
+          fontFamily: '$font',
+        },
+      },
+      []
+    );
     expect(t.style({ title: '$label' })).to.eql({ title: { fontFamily: 'Sans nonsense' } });
   });
 
   it('should inherit when setting style', () => {
-    const t = themeFn({
-      $font: 'Sans nonsense',
-      $label: {
-        fontFamily: '$font'
-      }
-    }, []);
+    const t = themeFn(
+      {
+        $font: 'Sans nonsense',
+        $label: {
+          fontFamily: '$font',
+        },
+      },
+      []
+    );
     t.setStyle({
-      $font: 'Sans x'
+      $font: 'Sans x',
     });
     expect(t.style({ title: '$label' })).to.eql({ title: { fontFamily: 'Sans x' } });
   });

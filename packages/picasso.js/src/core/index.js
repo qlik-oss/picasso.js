@@ -7,14 +7,4 @@ import field from './data/field';
 import formatter from './formatter';
 import interaction from './interaction';
 
-export {
-  chart,
-  rendererFactory,
-  rendererFactory as renderer,
-  data,
-  formatter,
-  dataset,
-  field,
-  component,
-  interaction
-};
+export { chart, rendererFactory, rendererFactory as renderer, data, formatter, dataset, field, component, interaction };

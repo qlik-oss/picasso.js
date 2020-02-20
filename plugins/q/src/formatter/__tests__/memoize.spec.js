@@ -4,7 +4,7 @@ describe('memoize', () => {
   let func;
 
   beforeEach(() => {
-    func = memoize((val) => `$${val}`);
+    func = memoize(val => `$${val}`);
   });
 
   it('should cache return value', () => {
@@ -50,7 +50,7 @@ describe('memoize', () => {
   });
 
   it('should behave as a first-in-first-out cache when max size is reached', () => {
-    func = memoize((val) => `$${val}`, { size: 1 });
+    func = memoize(val => `$${val}`, { size: 1 });
     expect(func(1)).to.equal('$1'); // Calls set
     expect(func(2)).to.equal('$2'); // Calls set and purge the previous call from the cache
     expect(func.size()).to.equal(1);
@@ -59,7 +59,7 @@ describe('memoize', () => {
   });
 
   it('should use cache key from optional toKey function', () => {
-    func = memoize((val) => `$${val}`, { toKey: (arg) => `KEY_${arg}` });
+    func = memoize(val => `$${val}`, { toKey: arg => `KEY_${arg}` });
     expect(func(123)).to.equal('$123');
     expect(func.has('KEY_123')).to.be.true;
     expect(func.get('KEY_123')).to.equal('$123');

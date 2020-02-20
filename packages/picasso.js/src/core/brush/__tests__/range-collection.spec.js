@@ -28,7 +28,7 @@ describe('range-collection', () => {
       expect(r.ranges()).to.eql([
         { min: -6, max: -3 },
         { min: -2, max: 4 },
-        { min: 10, max: 11 }
+        { min: 10, max: 11 },
       ]);
     });
 
@@ -39,7 +39,7 @@ describe('range-collection', () => {
       r.add({ min: 30, max: 50 });
       expect(r.ranges()).to.eql([
         { min: -4, max: 7 },
-        { min: 30, max: 50 }
+        { min: 30, max: 50 },
       ]);
     });
 
@@ -63,16 +63,14 @@ describe('range-collection', () => {
       r.remove({ min: -2, max: 4 });
       expect(r.ranges()).to.eql([
         { min: -10, max: -2 },
-        { min: 4, max: 20 }
+        { min: 4, max: 20 },
       ]);
     });
 
     it('should change the span of the range collection', () => {
       r.remove({ min: -15, max: -5 });
       r.remove({ min: 18, max: 24 });
-      expect(r.ranges()).to.eql([
-        { min: -5, max: 18 }
-      ]);
+      expect(r.ranges()).to.eql([{ min: -5, max: 18 }]);
     });
 
     it('should return true when collection changes', () => {
@@ -184,16 +182,14 @@ describe('range-collection', () => {
 
     it('should add to existing range', () => {
       r.toggle({ min: 5, max: 14 });
-      expect(r.ranges()).to.eql([
-        { min: -5, max: 14 }
-      ]);
+      expect(r.ranges()).to.eql([{ min: -5, max: 14 }]);
     });
 
     it('should remove from existing range', () => {
       r.toggle({ min: -2, max: 6 });
       expect(r.ranges()).to.eql([
         { min: -5, max: -2 },
-        { min: 6, max: 10 }
+        { min: 6, max: 10 },
       ]);
     });
   });

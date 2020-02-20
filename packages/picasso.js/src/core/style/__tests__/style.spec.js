@@ -17,8 +17,8 @@ describe('Style resolver', () => {
             source: '/qMeasureInfo/1',
             fn: function fn(index) {
               return index > 1 ? 0.5 : null;
-            }
-          }
+            },
+          },
         },
         whisker: {
           type: 'circle',
@@ -29,12 +29,12 @@ describe('Style resolver', () => {
             return null;
           },
           fill: 'red',
-          width: 1
+          width: 1,
         },
         med: {
           stroke: '#00f',
           strokeWidth: 6,
-          fill: 0
+          fill: 0,
         },
         line: {
           stroke: function stroke(item, index) {
@@ -44,16 +44,16 @@ describe('Style resolver', () => {
             fn: function fn() {
               return 5;
             },
-            source: '/qMeasureInfo/1'
+            source: '/qMeasureInfo/1',
           },
-          fill: { source: '/qMeasureInfo/0', type: 'color' }
+          fill: { source: '/qMeasureInfo/0', type: 'color' },
         },
         title: {
           main: {
-            nullValue: null
-          }
-        }
-      }
+            nullValue: null,
+          },
+        },
+      },
     };
   });
 
@@ -83,12 +83,12 @@ describe('Style resolver', () => {
   });
   it('should fallback throught functions', () => {
     const result = resolveStyle({ stroke: 'default' }, settings, 'style.line');
-    const output = [0, 1, 2].map((item) => result.stroke.fn(undefined, null, item));
+    const output = [0, 1, 2].map(item => result.stroke.fn(undefined, null, item));
     expect(output).to.deep.equal(['style.line.stroke', 'style.stroke', 'stroke']);
   });
   it('should possibly return null', () => {
     const result = resolveStyle({ otherThing: 'default' }, settings, 'style.whisker');
-    const output = [0, 1, 2].map((item) => result.otherThing.fn(undefined, null, item));
+    const output = [0, 1, 2].map(item => result.otherThing.fn(undefined, null, item));
     expect(output).to.deep.equal(['thing', null, null]);
   });
   it('should return explicitly set null values', () => {

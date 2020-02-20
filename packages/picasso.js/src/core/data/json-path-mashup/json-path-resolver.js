@@ -30,7 +30,7 @@ function resolve(path, obj) {
         const allowedIndexes = arr[i].split(',');
         container = container.filter((v, i2) => allowedIndexes.indexOf(`${i2}`) !== -1);
       }
-      return container.map((v) => resolve(arr.slice(i + 1).join('/'), v));
+      return container.map(v => resolve(arr.slice(i + 1).join('/'), v));
     }
   }
 

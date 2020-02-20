@@ -12,14 +12,14 @@ const utils = {
    * @param { String } direction Allowed values are top, bottom, left or right
    * @param { LinearScale | RgbaColor[] | HslaColor[] | String[] } colors Color scale or Array of colors
    * @param { Boolean } percentage TRUE if the representation should be in percentage
-     * @returns { String } Full CSS string representation of the linear-gradient property
-     */
+   * @returns { String } Full CSS string representation of the linear-gradient property
+   */
   linearGradient: (direction, colors, percentage) => {
     let cssColors;
     if (typeof colors === 'function' && colors.domain) {
       const inputDomain = colors.domain();
 
-      cssColors = inputDomain.map((d) => colors(d)).join();
+      cssColors = inputDomain.map(d => colors(d)).join();
     } else if (colors.constructor === Array) {
       cssColors = colors;
     }
@@ -57,7 +57,7 @@ const utils = {
       return (l1 + 0.05) / (l2 + 0.05);
     }
     return (l2 + 0.05) / (l1 + 0.05);
-  }
+  },
 };
 
 export default utils;

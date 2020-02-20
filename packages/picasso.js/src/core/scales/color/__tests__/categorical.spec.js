@@ -2,28 +2,36 @@ import categorical from '../categorical';
 
 describe('categorical', () => {
   it('should return greyish color for unknown values (default)', () => {
-    let s = categorical({}, {}, {
-      theme: {
-        palette: (name) => (name === 'unknown' ? ['#d2d2d2'] : [])
+    let s = categorical(
+      {},
+      {},
+      {
+        theme: {
+          palette: name => (name === 'unknown' ? ['#d2d2d2'] : []),
+        },
       }
-    });
+    );
     expect(s()).to.equal('#d2d2d2');
   });
 
   it('should return red color for unknown values', () => {
     let s = categorical({
-      unknown: 'red'
+      unknown: 'red',
     });
     expect(s()).to.equal('red');
   });
 
   it('should return default range from theme', () => {
     const defaultColors = ['fancy'];
-    let s = categorical({}, {}, {
-      theme: {
-        palette: (name) => (name === 'categorical' ? defaultColors : [])
+    let s = categorical(
+      {},
+      {},
+      {
+        theme: {
+          palette: name => (name === 'categorical' ? defaultColors : []),
+        },
       }
-    });
+    );
     expect(s.range()).to.eql(defaultColors);
   });
 
@@ -36,8 +44,8 @@ describe('categorical', () => {
         range: ['blue', 'red'],
         explicit: {
           domain: ['Italy', 'USA', 'Sweden'],
-          range: ['green', 'starspangled', 'yellow']
-        }
+          range: ['green', 'starspangled', 'yellow'],
+        },
       };
       s = categorical(settings);
     });

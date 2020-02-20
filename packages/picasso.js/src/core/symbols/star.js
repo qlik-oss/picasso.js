@@ -13,34 +13,34 @@ function star(options) {
   const points = [];
   const outerRadius = size / 2;
   const drawPoints = options.points || 5;
-  const innerRadius = (Math.min(options.innerRadius || size / 2, size) / 2);
+  const innerRadius = Math.min(options.innerRadius || size / 2, size) / 2;
   const startAngle = isNaN(options.startAngle) ? 90 : options.startAngle;
   const angle = 360 / drawPoints;
 
   for (let i = 1; i <= drawPoints; i++) {
-    const pAngle = (angle * i) + startAngle;
+    const pAngle = angle * i + startAngle;
     const radians = toRadians(pAngle);
-    const innerRadians = toRadians(pAngle + (angle / 2));
+    const innerRadians = toRadians(pAngle + angle / 2);
     const y = Math.sin(radians);
     const x = Math.cos(radians);
     const iy = Math.sin(innerRadians);
     const ix = Math.cos(innerRadians);
 
     points.push({
-      x: options.x + (x * outerRadius),
-      y: options.y + (y * outerRadius)
+      x: options.x + x * outerRadius,
+      y: options.y + y * outerRadius,
     });
 
     points.push({
-      x: options.x + (ix * innerRadius),
-      y: options.y + (iy * innerRadius)
+      x: options.x + ix * innerRadius,
+      y: options.y + iy * innerRadius,
     });
   }
 
   return {
     type: 'path',
     fill: 'black',
-    d: pointsToPath(points)
+    d: pointsToPath(points),
   };
 }
 

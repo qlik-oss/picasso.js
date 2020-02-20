@@ -11,6 +11,7 @@
     "build:website": "cd website && yarn install && yarn run build",
     "bump": "lerna publish --no-push",
     "clean": "lerna clean",
+    "format": "prettier --write '**/*.js'",
     "lint": "cross-env FORCE_COLOR=1 lerna run lint",
     "link": "lerna link",
     "test": "npm run test:unit && npm run test:component",
@@ -24,6 +25,7 @@
   },
   "husky": {
     "hooks": {
+      "pre-commit": "pretty-quick --staged",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
@@ -44,13 +46,17 @@
     "cross-env": "^5.2.1",
     "eslint": "^6.3.0",
     "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-mocha": "^6.1.1",
+    "eslint-plugin-prettier": "^3.1.2",
     "extend": "^3.0.2",
     "globby": "^10.0.1",
     "husky": "^3.0.5",
     "lerna": "^3.16.4",
     "mocha-junit-reporter": "^1.23.1",
+    "prettier": "^1.19.1",
+    "pretty-quick": "^2.0.1",
     "protractor": "^5.4.2",
     "rollup": "^1.21.2",
     "rollup-plugin-babel": "^4.3.3",

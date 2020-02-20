@@ -147,7 +147,7 @@ const colorStruct = {
   white: { r: 255, g: 255, b: 255 },
   whitesmoke: { r: 245, g: 245, b: 245 },
   yellow: { r: 255, g: 255, b: 0 },
-  yellowgreen: { r: 154, g: 205, b: 50 }
+  yellowgreen: { r: 154, g: 205, b: 50 },
 };
 
 /**
@@ -175,7 +175,7 @@ export default function colorKeyWord(colStr) {
  * @example
  * colorKeyWord.test( "yellowgreen" );
  */
-colorKeyWord.test = (colStr) => {
+colorKeyWord.test = colStr => {
   if (colStr === null || colStr === undefined || typeof colStr !== 'string') {
     return false;
   }
