@@ -42,10 +42,13 @@ export default class Path extends DisplayObject {
     } else if (v.d) {
       this.segments = pathToSegments(v.d);
       if (this.segments.length > 1 && this.segments.every(segment => isClosed(segment))) {
-        this.collider = extend({
-          type: 'geopolygon',
-          vertices: this.segments
-        }, v.collider);
+        this.collider = extend(
+          {
+            type: 'geopolygon',
+            vertices: this.segments,
+          },
+          v.collider
+        );
         return;
       }
       this.segments.forEach(segment => {
