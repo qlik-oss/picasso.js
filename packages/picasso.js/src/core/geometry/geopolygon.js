@@ -5,9 +5,8 @@ import {
   testGeoPolygonPoint,
   testGeoPolygonLine,
   testGeoPolygonRect,
-  testRectRect,
-  testRectContainsRect,
-  testPolygonLine,
+  testGeoPolygonPolygon,
+  testGeoPolygonGeoPolygon,
 } from '../math/narrow-phase-collision';
 
 function close(vertices) {
@@ -30,38 +29,6 @@ function removeDuplicates(vertices) {
   }
 }
 
-function testGeoPolygonPolygon(geopolygon, polygon) {
-  let intersects = false;
-  for (let i = 0, len = polygon.edges.length; i < len; i++) {
-    intersects = testGeoPolygonLine(geopolygon, pointsToLine(polygon.edges[i]));
-    if (intersects === true) {
-      break;
-    }
-  }
-  return intersects;
-}
-
-function testPolygonGeoPolygon(polygon, geopolygon) {
-  let intersects = false;
-  const { numPolygons, polygons } = geopolygon;
-  for (let n = 0; n < numPolygons; n++) {
-    let polygon2 = polygons[n];
-    for (let i = 0, len = polygon2.edges.length; i < len; i++) {
-      intersects = testPolygonLine(polygon, pointsToLine(polygon2.edges[i]));
-      if (intersects === true) {
-        return true;
-      }
-    }
-    return false;
-  }
-  for (let i = 0, len = polygon.edges.length; i < len; i++) {
-    intersects = testGeoPolygonLine(geopolygon, pointsToLine(polygon.edges[i]));
-    if (intersects === true) {
-      break;
-    }
-  }
-  return intersects;
-}
 /**
  * A geo-polygon is a polygon which is similar to a polygon in GeoJson. A typical geopolygon is an array of polygons where the first polygon is an outer polygon and the rest are inner polygons
  * @private
@@ -145,21 +112,23 @@ class GeoPolygon {
   }
 
   /**
-   * Check if polygon intersects another polygon.
+   * Check if geopolygon intersects another polygon.
    * Supports convex, concave and self-intersecting polygons (filled area).
    * @param {Polygon} polygon
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsPolygon(polygon) {
-    const rect1 = this.boundingRect();
-    const rect2 = polygon.boundingRect();
-    if (!testRectRect(rect1, rect2)) {
-      return false;
-    }
-    if (testRectContainsRect(rect2, rect1)) {
-      return testPolygonGeoPolygon(polygon, this);
-    }
     return testGeoPolygonPolygon(this, polygon);
+  }
+
+  /**
+   * Check if geopolygon intersects another geopolygon.
+   * Supports convex, concave and self-intersecting polygons (filled area).
+   * @param {GeoPolygon} geopolygon
+   * @returns {boolean} True if there is an intersection, false otherwise
+   */
+  intersectsGeoPolygon(geopolygon) {
+    return testGeoPolygonGeoPolygon(this, geopolygon);
   }
 
   /**

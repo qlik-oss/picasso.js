@@ -5,6 +5,7 @@ import {
   testLinePoint,
   testLineLine,
   testRectLine,
+  testGeoPolygonLine,
 } from '../math/narrow-phase-collision';
 
 function pointsAreNotEqual(p0, p1) {
@@ -80,6 +81,15 @@ class GeoPolyline {
   intersectsPolygon(polygon) {
     // This is a unoptimized solution and should be replaced by a more efficient algorithm.
     return this.segments.some(line => testPolygonLine(polygon, line));
+  }
+
+  /**
+   * @param {GeoPolygon} geopolygon
+   * @returns {boolean} True if there is an intersection, false otherwise
+   */
+  intersectsGeoPolygon(geopolygon) {
+    // This is a unoptimized solution and should be replaced by a more efficient algorithm.
+    return this.segments.some(line => testGeoPolygonLine(geopolygon, line));
   }
 
   /**

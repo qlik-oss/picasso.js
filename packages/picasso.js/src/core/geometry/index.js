@@ -56,6 +56,11 @@ export function create(type, input) {
  */
 
 /**
+ * @typedef {object} geopolygon
+ * @property {Array<polygon>} polygons - Array of polygons
+ */
+
+/**
  * @typedef {object} polyline
  * @property {Array<point>} points - Array of connected points
  */

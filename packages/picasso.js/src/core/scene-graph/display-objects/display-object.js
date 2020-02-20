@@ -94,6 +94,10 @@ class DisplayObject extends Node {
     return hasCollisionOnNode(this, polygon);
   }
 
+  intersectsGeoPolygon(geopolygon) {
+    return hasCollisionOnNode(this, geopolygon);
+  }
+
   resolveLocalTransform(m = new Matrix()) {
     if (typeof this.attrs.transform !== 'undefined') {
       resolveTransform(this.attrs.transform, m);

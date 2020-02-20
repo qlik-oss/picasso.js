@@ -5,6 +5,7 @@ import {
   testRectLine,
   testLinePoint,
   testLineLine,
+  testGeoPolygonLine,
 } from '../math/narrow-phase-collision';
 
 /**
@@ -78,6 +79,14 @@ class GeoLine {
    */
   intersectsPolygon(polygon) {
     return testPolygonLine(polygon, this);
+  }
+
+  /**
+   * @param {GeoPolygon} geopolygon
+   * @returns {boolean} True if there is an intersection, false otherwise
+   */
+  intersectsGeoPolygon(geopolygon) {
+    return testGeoPolygonLine(geopolygon, this);
   }
 
   /**

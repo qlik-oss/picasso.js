@@ -4,8 +4,8 @@ import {
   testPolygonPoint,
   testPolygonLine,
   testPolygonRect,
-  testRectRect,
-  testRectContainsRect,
+  testPolygonPolygon,
+  testGeoPolygonPolygon,
 } from '../math/narrow-phase-collision';
 
 function close(vertices) {
@@ -26,17 +26,6 @@ function removeDuplicates(vertices) {
       i--;
     }
   }
-}
-
-function testPolygonPolygon(polygon1, polygon2) {
-  let intersects = false;
-  for (let i = 0, len = polygon2.edges.length; i < len; i++) {
-    intersects = testPolygonLine(polygon1, pointsToLine(polygon2.edges[i]));
-    if (intersects === true) {
-      break;
-    }
-  }
-  return intersects;
 }
 
 /**
@@ -130,15 +119,16 @@ class Polygon {
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsPolygon(polygon) {
-    const rect1 = this.boundingRect();
-    const rect2 = polygon.boundingRect();
-    if (!testRectRect(rect1, rect2)) {
-      return false;
-    }
-    if (testRectContainsRect(rect1, rect2)) {
-      return testPolygonPolygon(this, polygon);
-    }
-    return testPolygonPolygon(polygon, this);
+    return testPolygonPolygon(this, polygon);
+  }
+
+  /**
+   * Check if polygon intersects a geopolygon.
+   * @param {GeoPolygon} geopolygon
+   * @returns {boolean} True if there is an intersection, false otherwise
+   */
+  intersectsGeoPolygon(geopolygon) {
+    return testGeoPolygonPolygon(geopolygon, this);
   }
 
   /**

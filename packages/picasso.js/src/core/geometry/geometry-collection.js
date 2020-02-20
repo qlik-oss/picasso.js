@@ -58,6 +58,14 @@ class GeometryCollection {
   intersectsPolygon(polygon) {
     return this.geometries.some(geo => geo.intersectsPolygon(polygon));
   }
+
+  /**
+   * @param {GeoPolygon} geopolygon
+   * @returns {boolean} True if there is an intersection, false otherwise
+   */
+  intersectsGeoPolygon(geopolygon) {
+    return this.geometries.some(geo => geo.intersectsGeoPolygon(geopolygon));
+  }
 }
 
 function create(...args) {

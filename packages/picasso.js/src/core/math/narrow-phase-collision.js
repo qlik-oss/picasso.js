@@ -20,6 +20,57 @@ function toFewEdges(polygon) {
   return polygon.edges.length <= 2;
 }
 
+// Only when the polygon1's bounds is not inside the polygon2's bounds
+function testPolygonPolygonSubCase(polygon1, polygon2) {
+  let intersects = false;
+  for (let i = 0, len = polygon2.edges.length; i < len; i++) {
+    intersects = testPolygonLine(polygon1, pointsToLine(polygon2.edges[i]));
+    if (intersects === true) {
+      return true;
+    }
+  }
+  return false;
+}
+
+// Only when the geopolygon's bounds is not inside the polygon's bounds
+function testGeoPolygonPolygonCase1(geopolygon, polygon) {
+  let intersects = false;
+  for (let i = 0, len = polygon.edges.length; i < len; i++) {
+    intersects = testGeoPolygonLine(geopolygon, pointsToLine(polygon.edges[i]));
+    if (intersects === true) {
+      return true;
+    }
+  }
+  return false;
+}
+
+// Only when the geopolygon's bounds is inside the polygon's bounds
+function testGeoPolygonPolygonCase2(geopolygon, polygon) {
+  let intersects = false;
+  const { numPolygons, polygons } = geopolygon;
+  for (let n = 0; n < numPolygons; n++) {
+    intersects = testPolygonPolygon(polygon, polygons[n]);
+    if (intersects === true) {
+      return true;
+    }
+  }
+  return false;
+}
+
+// Only when the geopolygon1's bounds is not inside the geopolygon2's bounds
+function testGeoPolygonGeoPolygonSubCase(geopolygon1, geopolygon2) {
+  let intersects = false;
+  const { numPolygons, polygons } = geopolygon2;
+  for (let n = 0; n < numPolygons; n++) {
+    let polygon = polygons[n];
+    intersects = testGeoPolygonPolygon(geopolygon1, polygon);
+    if (intersects === true) {
+      return true;
+    }
+  }
+  return false;
+}
+
 /**
  * Test if a Circle contains a point. If so, returns true and false otherwise.
  * Circle muse have a radius greater then 0.
@@ -544,6 +595,61 @@ export function testLinePoint(line, point) {
 
   const [p1, p2] = lineToPoints(line);
   return isPointOnLine(p1, p2, point);
+}
+
+/**
+ * Test if a polygon intersects another polygon.
+ * Supports convex, concave and self-intersecting polygons (filled area).
+ * @param {object} polygon
+ * @param {object} polygon
+ * @returns {boolean} True if there is an intersection, false otherwise
+ */
+export function testPolygonPolygon(polygon1, polygon2) {
+  const rect1 = polygon1.boundingRect();
+  const rect2 = polygon2.boundingRect();
+  if (!testRectRect(rect1, rect2)) {
+    return false;
+  }
+  if (testRectContainsRect(rect1, rect2)) {
+    return testPolygonPolygonSubCase(polygon1, polygon2);
+  }
+  return testPolygonPolygonSubCase(polygon2, polygon1);
+}
+
+/**
+ * Test if a geopolygon intersects a polygon.
+ * @param {object} geopolygon
+ * @param {object} polygon
+ * @returns {boolean} True if there is an intersection, false otherwise
+ */
+export function testGeoPolygonPolygon(geopolygon, polygon) {
+  const rect1 = geopolygon.boundingRect();
+  const rect2 = polygon.boundingRect();
+  if (!testRectRect(rect1, rect2)) {
+    return false;
+  }
+  if (testRectContainsRect(rect2, rect1)) {
+    return testGeoPolygonPolygonCase2(geopolygon, polygon);
+  }
+  return testGeoPolygonPolygonCase1(geopolygon, polygon);
+}
+
+/**
+ * Test if a geopolygon intersects another geopolygon.
+ * @param {object} geopolygon
+ * @param {object} geopolygon
+ * @returns {boolean} True if there is an intersection, false otherwise
+ */
+export function testGeoPolygonGeoPolygon(geopolygon1, geopolygon2) {
+  const rect1 = geopolygon1.boundingRect();
+  const rect2 = geopolygon2.boundingRect();
+  if (!testRectRect(rect1, rect2)) {
+    return false;
+  }
+  if (testRectContainsRect(rect2, rect1)) {
+    return testGeoPolygonGeoPolygonSubCase(geopolygon2, geopolygon1);
+  }
+  return testGeoPolygonGeoPolygonSubCase(geopolygon1, geopolygon2);
 }
 
 /**
