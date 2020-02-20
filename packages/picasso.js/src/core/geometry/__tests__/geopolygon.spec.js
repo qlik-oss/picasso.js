@@ -3,57 +3,68 @@ import { rectToPoints, lineToPoints } from '../util';
 
 describe('GeoPolygon', () => {
   let geopolygon;
-  const convexPolygon = [[
-    { x: 0, y: 25 },
-    { x: 25, y: 0 },
-    { x: 50, y: 25 },
-    { x: 0, y: 25 }
-  ]]; // Triangle
-  const concavePolygon = [[
-    { x: 0, y: 0 },
-    { x: 0, y: 50 },
-    { x: 25, y: 25 },
-    { x: 50, y: 50 },
-    { x: 50, y: 0 },
-    { x: 0, y: 0 }
-  ]];
-  const selfIntersectingPolygon = [[
-    { x: 0, y: 0 },
-    { x: 50, y: 50 },
-    { x: 50, y: 0 },
-    { x: 0, y: 50 },
-    { x: 0, y: 0 }
-  ]]; // butterfly quadrilateral
+  const convexPolygon = [
+    [
+      { x: 0, y: 25 },
+      { x: 25, y: 0 },
+      { x: 50, y: 25 },
+      { x: 0, y: 25 },
+    ],
+  ]; // Triangle
+  const concavePolygon = [
+    [
+      { x: 0, y: 0 },
+      { x: 0, y: 50 },
+      { x: 25, y: 25 },
+      { x: 50, y: 50 },
+      { x: 50, y: 0 },
+      { x: 0, y: 0 },
+    ],
+  ];
+  const selfIntersectingPolygon = [
+    [
+      { x: 0, y: 0 },
+      { x: 50, y: 50 },
+      { x: 50, y: 0 },
+      { x: 0, y: 50 },
+      { x: 0, y: 0 },
+    ],
+  ]; // butterfly quadrilateral
 
-  const squarePolygon = [[
-    { x: 0, y: 0 },
-    { x: 0, y: 50 },
-    { x: 50, y: 50 },
-    { x: 50, y: 0 },
-    { x: 0, y: 0 }
-  ]];
+  const squarePolygon = [
+    [
+      { x: 0, y: 0 },
+      { x: 0, y: 50 },
+      { x: 50, y: 50 },
+      { x: 50, y: 0 },
+      { x: 0, y: 0 },
+    ],
+  ];
 
-  const polygonWithHole = [[
-    { x: 0, y: 0 },
-    { x: 0, y: 100 },
-    { x: 100, y: 100 },
-    { x: 100, y: 0 },
-    { x: 0, y: 0 }
-  ], [
-    { x: 20, y: 40 },
-    { x: 20, y: 60 },
-    { x: 40, y: 60 },
-    { x: 40, y: 80 },
-    { x: 60, y: 80 },
-    { x: 60, y: 60 },
-    { x: 80, y: 60 },
-    { x: 80, y: 40 },
-    { x: 60, y: 40 },
-    { x: 60, y: 20 },
-    { x: 40, y: 20 },
-    { x: 40, y: 40 },
-    { x: 20, y: 40 }
-  ]];
+  const polygonWithHole = [
+    [
+      { x: 0, y: 0 },
+      { x: 0, y: 100 },
+      { x: 100, y: 100 },
+      { x: 100, y: 0 },
+      { x: 0, y: 0 },
+    ],
+    [
+      { x: 20, y: 40 },
+      { x: 20, y: 60 },
+      { x: 40, y: 60 },
+      { x: 40, y: 80 },
+      { x: 60, y: 80 },
+      { x: 60, y: 60 },
+      { x: 80, y: 60 },
+      { x: 80, y: 40 },
+      { x: 60, y: 40 },
+      { x: 60, y: 20 },
+      { x: 40, y: 20 },
+      { x: 40, y: 40 },
+      { x: 20, y: 40 },
+    ],
+  ];
 
   describe('constructor', () => {
     it('should set correct default values when no arguments passed', () => {
@@ -65,26 +76,39 @@ describe('GeoPolygon', () => {
       geopolygon = create({ vertices: convexPolygon });
       expect(geopolygon.vertices).to.deep.equal(convexPolygon);
       expect(geopolygon.polygons[0].edges).to.deep.equal([
-        [{ x: 0, y: 25 }, { x: 25, y: 0 }],
-        [{ x: 25, y: 0 }, { x: 50, y: 25 }],
-        [{ x: 50, y: 25 }, { x: 0, y: 25 }]
+        [
+          { x: 0, y: 25 },
+          { x: 25, y: 0 },
+        ],
+        [
+          { x: 25, y: 0 },
+          { x: 50, y: 25 },
+        ],
+        [
+          { x: 50, y: 25 },
+          { x: 0, y: 25 },
+        ],
       ]);
     });
 
     it('should close edges if not already closed', () => {
       geopolygon = create({
-        vertices: [[
+        vertices: [
+          [
+            { x: 0, y: 25 },
+            { x: 25, y: 0 },
+            { x: 50, y: 25 },
+          ],
+        ],
+      });
+      expect(geopolygon.vertices).to.deep.equal([
+        [
           { x: 0, y: 25 },
           { x: 25, y: 0 },
-          { x: 50, y: 25 }
-        ]]
-      });
-      expect(geopolygon.vertices).to.deep.equal([[
-        { x: 0, y: 25 },
-        { x: 25, y: 0 },
-        { x: 50, y: 25 },
-        { x: 0, y: 25 }
-      ]]);
+          { x: 50, y: 25 },
+          { x: 0, y: 25 },
+        ],
+      ]);
     });
   });
 
@@ -101,32 +125,45 @@ describe('GeoPolygon', () => {
       geopolygon.set({ vertices: convexPolygon });
       expect(geopolygon.vertices).to.deep.equal(convexPolygon);
       expect(geopolygon.polygons[0].edges).to.deep.equal([
-        [{ x: 0, y: 25 }, { x: 25, y: 0 }],
-        [{ x: 25, y: 0 }, { x: 50, y: 25 }],
-        [{ x: 50, y: 25 }, { x: 0, y: 25 }]
+        [
+          { x: 0, y: 25 },
+          { x: 25, y: 0 },
+        ],
+        [
+          { x: 25, y: 0 },
+          { x: 50, y: 25 },
+        ],
+        [
+          { x: 50, y: 25 },
+          { x: 0, y: 25 },
+        ],
       ]);
     });
 
     it('should remove any duplicate sibling vertices', () => {
       geopolygon = create();
       geopolygon.set({
-        vertices: [[
+        vertices: [
+          [
+            { x: 0, y: 0 },
+            { x: 0, y: 0 }, // Remove
+            { x: 10, y: 0 },
+            { x: 0, y: 10 },
+            { x: 10, y: 0 }, // Do not remove
+            { x: 10, y: 0 }, // Remove
+            { x: 0, y: 0 },
+          ],
+        ],
+      });
+      expect(geopolygon.vertices).to.deep.equal([
+        [
           { x: 0, y: 0 },
-          { x: 0, y: 0 }, // Remove
           { x: 10, y: 0 },
           { x: 0, y: 10 },
-          { x: 10, y: 0 }, // Do not remove
-          { x: 10, y: 0 }, // Remove
-          { x: 0, y: 0 }
-        ]]
-      });
-      expect(geopolygon.vertices).to.deep.equal([[
-        { x: 0, y: 0 },
-        { x: 10, y: 0 },
-        { x: 0, y: 10 },
-        { x: 10, y: 0 },
-        { x: 0, y: 0 }
-      ]]);
+          { x: 10, y: 0 },
+          { x: 0, y: 0 },
+        ],
+      ]);
     });
   });
 
@@ -137,23 +174,25 @@ describe('GeoPolygon', () => {
         { x: 0, y: 0 },
         { x: 50, y: 0 },
         { x: 50, y: 50 },
-        { x: 0, y: 50 }
+        { x: 0, y: 50 },
       ]);
     });
 
     it('should handle negative points', () => {
       geopolygon = create({
-        vertices: [[
-          { x: -20, y: -10 },
-          { x: 0, y: -10 },
-          { x: 20, y: 10 }
-        ]]
+        vertices: [
+          [
+            { x: -20, y: -10 },
+            { x: 0, y: -10 },
+            { x: 20, y: 10 },
+          ],
+        ],
       });
       expect(geopolygon.bounds()).to.deep.equal([
         { x: -20, y: -10 },
         { x: 20, y: -10 },
         { x: 20, y: 10 },
-        { x: -20, y: 10 }
+        { x: -20, y: 10 },
       ]);
     });
   });
@@ -161,63 +200,75 @@ describe('GeoPolygon', () => {
   describe('Intersection', () => {
     describe('Point', () => {
       const poly1 = create({
-        vertices: [[
-          { x: 1, y: 1 },
-          { x: 5, y: 1 },
-          { x: 1, y: 5 },
-          { x: 1, y: 1 }
-        ]]
+        vertices: [
+          [
+            { x: 1, y: 1 },
+            { x: 5, y: 1 },
+            { x: 1, y: 5 },
+            { x: 1, y: 1 },
+          ],
+        ],
       });
       const poly2 = create({
-        vertices: [[
-          { x: 1, y: 1 },
-          { x: 3, y: 3 },
-          { x: 1, y: 5 },
-          { x: 1, y: 1 }
-        ]]
+        vertices: [
+          [
+            { x: 1, y: 1 },
+            { x: 3, y: 3 },
+            { x: 1, y: 5 },
+            { x: 1, y: 1 },
+          ],
+        ],
       });
       const poly3 = create({
-        vertices: [[
-          { x: 1, y: 3 },
-          { x: 3, y: 5 },
-          { x: 5, y: 3 },
-          { x: 3, y: 1 },
-          { x: 1, y: 3 }
-        ]]
+        vertices: [
+          [
+            { x: 1, y: 3 },
+            { x: 3, y: 5 },
+            { x: 5, y: 3 },
+            { x: 3, y: 1 },
+            { x: 1, y: 3 },
+          ],
+        ],
       });
       const poly4 = create({
-        vertices: [[
-          { x: 1, y: 1 },
-          { x: 1, y: 3 },
-          { x: 3, y: 3 },
-          { x: 5, y: 5 },
-          { x: 5, y: 1 },
-          { x: 1, y: 1 }
-        ]]
+        vertices: [
+          [
+            { x: 1, y: 1 },
+            { x: 1, y: 3 },
+            { x: 3, y: 3 },
+            { x: 5, y: 5 },
+            { x: 5, y: 1 },
+            { x: 1, y: 1 },
+          ],
+        ],
       });
       const poly5 = create({
-        vertices: [[
-          { x: 1, y: 1 },
-          { x: 1, y: 5 },
-          { x: 3, y: 3 },
-          { x: 5, y: 5 },
-          { x: 7, y: 3 },
-          { x: 9, y: 5 },
-          { x: 9, y: 1 },
-          { x: 1, y: 1 }
-        ]]
+        vertices: [
+          [
+            { x: 1, y: 1 },
+            { x: 1, y: 5 },
+            { x: 3, y: 3 },
+            { x: 5, y: 5 },
+            { x: 7, y: 3 },
+            { x: 9, y: 5 },
+            { x: 9, y: 1 },
+            { x: 1, y: 1 },
+          ],
+        ],
       });
       const poly6 = create({
-        vertices: [[
-          { x: 1, y: 1 },
-          { x: 1, y: 5 },
-          { x: 9, y: 5 },
-          { x: 9, y: 1 },
-          { x: 7, y: 3 },
-          { x: 5, y: 1 },
-          { x: 3, y: 3 },
-          { x: 1, y: 1 }
-        ]]
+        vertices: [
+          [
+            { x: 1, y: 1 },
+            { x: 1, y: 5 },
+            { x: 9, y: 5 },
+            { x: 9, y: 1 },
+            { x: 7, y: 3 },
+            { x: 5, y: 1 },
+            { x: 3, y: 3 },
+            { x: 1, y: 1 },
+          ],
+        ],
       });
 
       it('convex polygon', () => {
@@ -272,9 +323,7 @@ describe('GeoPolygon', () => {
         const p = { x: 10, y: 10 };
 
         geopolygon = create({
-          vertices: [[
-            { x: 10, y: 10 }
-          ]]
+          vertices: [[{ x: 10, y: 10 }]],
         });
         expect(geopolygon.containsPoint(p)).to.equal(false);
       });
@@ -424,9 +473,7 @@ describe('GeoPolygon', () => {
         const c = { cx: 0, cy: 0, r: 2 };
 
         geopolygon = create({
-          vertices: [[
-            { x: 0, y: 0 }
-          ]]
+          vertices: [[{ x: 0, y: 0 }]],
         });
         expect(geopolygon.intersectsCircle(c)).to.equal(false);
       });
@@ -435,7 +482,10 @@ describe('GeoPolygon', () => {
     describe('intersectsLine', () => {
       it('should intersect line', () => {
         const line = {
-          x1: 25, y1: 20, x2: 25, y2: 10
+          x1: 25,
+          y1: 20,
+          x2: 25,
+          y2: 10,
         }; // Both points inside polygon
         geopolygon = create({ vertices: convexPolygon });
         expect(geopolygon.intersectsLine(lineToPoints(line))).to.equal(true);
@@ -445,7 +495,10 @@ describe('GeoPolygon', () => {
     describe('intersectsRect', () => {
       it('should intersect rect', () => {
         const rect = {
-          x: 25, y: 10, width: 6, height: 6
+          x: 25,
+          y: 10,
+          width: 6,
+          height: 6,
         };
         geopolygon = create({ vertices: convexPolygon });
         expect(geopolygon.intersectsRect(rectToPoints(rect))).to.equal(true);
@@ -455,53 +508,59 @@ describe('GeoPolygon', () => {
     describe('intersectsPolygon', () => {
       it('convex polygon', () => {
         geopolygon = create({ vertices: convexPolygon });
-        const geopolygon2 = create({ vertices: [convexPolygon[0].map((p) => ({ x: p.x + 3, y: p.y + 3 }))] });
+        const geopolygon2 = create({ vertices: [convexPolygon[0].map(p => ({ x: p.x + 3, y: p.y + 3 }))] });
         expect(geopolygon.intersectsPolygon(geopolygon2.polygons[0])).to.be.true;
       });
 
       it('concave polygon', () => {
         geopolygon = create({ vertices: concavePolygon });
-        const geopolygon2 = create({ vertices: [concavePolygon[0].map((p) => ({ x: p.x + 3, y: p.y + 3 }))] });
+        const geopolygon2 = create({ vertices: [concavePolygon[0].map(p => ({ x: p.x + 3, y: p.y + 3 }))] });
         expect(geopolygon.intersectsPolygon(geopolygon2.polygons[0])).to.be.true;
       });
 
       it('self-intersecting polygon', () => {
         geopolygon = create({ vertices: selfIntersectingPolygon });
-        const geopolygon2 = create({ vertices: [selfIntersectingPolygon[0].map((p) => ({ x: p.x + 3, y: p.y + 3 }))] });
+        const geopolygon2 = create({ vertices: [selfIntersectingPolygon[0].map(p => ({ x: p.x + 3, y: p.y + 3 }))] });
         expect(geopolygon.intersectsPolygon(geopolygon2.polygons[0])).to.be.true;
       });
 
       it('fully contains another polygon, case 1', () => {
         geopolygon = create({ vertices: selfIntersectingPolygon });
-        const vertices = [[
-          { x: 3, y: 15 },
-          { x: 3, y: 25 },
-          { x: 6, y: 15 }
-        ]];
+        const vertices = [
+          [
+            { x: 3, y: 15 },
+            { x: 3, y: 25 },
+            { x: 6, y: 15 },
+          ],
+        ];
         const geopolygon2 = create({ vertices });
         expect(geopolygon.polygons[0].intersectsPolygon(geopolygon2.polygons[0])).to.be.true;
       });
 
       it('fully contains another polygon, case 2', () => {
         geopolygon = create({ vertices: squarePolygon });
-        const vertices = [[
-          { x: 3, y: 15 },
-          { x: 3, y: 25 },
-          { x: 6, y: 15 }
-        ]];
+        const vertices = [
+          [
+            { x: 3, y: 15 },
+            { x: 3, y: 25 },
+            { x: 6, y: 15 },
+          ],
+        ];
         const geopolygon2 = create({ vertices });
         expect(geopolygon.intersectsPolygon(geopolygon2.polygons[0])).to.be.true;
       });
 
       it('fully being contained by another polygon', () => {
         geopolygon = create({ vertices: selfIntersectingPolygon });
-        const vertices = [[
-          { x: -10, y: -10 },
-          { x: -10, y: 110 },
-          { x: 110, y: 110 },
-          { x: 110, y: -10 },
-          { x: -10, y: -10 }
-        ]];
+        const vertices = [
+          [
+            { x: -10, y: -10 },
+            { x: -10, y: 110 },
+            { x: 110, y: 110 },
+            { x: 110, y: -10 },
+            { x: -10, y: -10 },
+          ],
+        ];
         const geopolygon2 = create({ vertices });
         expect(geopolygon.intersectsPolygon(geopolygon2.polygons[0])).to.be.true;
       });

@@ -30,7 +30,7 @@ describe('Polygon', () => {
     { x: 0, y: 50 },
     { x: 50, y: 50 },
     { x: 50, y: 0 },
-    { x: 0, y: 0 }
+    { x: 0, y: 0 },
   ];
 
   describe('constructor', () => {
@@ -467,7 +467,7 @@ describe('Polygon', () => {
         const vertices = [
           { x: 3, y: 15 },
           { x: 3, y: 25 },
-          { x: 6, y: 15 }
+          { x: 6, y: 15 },
         ];
         const pgon2 = create({ vertices });
         expect(polygon.intersectsPolygon(pgon2)).to.be.true;
@@ -480,7 +480,7 @@ describe('Polygon', () => {
           { x: -10, y: 60 },
           { x: 60, y: 60 },
           { x: 60, y: -10 },
-          { x: -10, y: -10 }
+          { x: -10, y: -10 },
         ];
         const pgon2 = create({ vertices });
         expect(polygon.intersectsPolygon(pgon2)).to.be.true;

@@ -5,7 +5,7 @@ import {
   testPolygonLine,
   testPolygonRect,
   testRectRect,
-  testRectContainsRect
+  testRectContainsRect,
 } from '../math/narrow-phase-collision';
 
 function close(vertices) {

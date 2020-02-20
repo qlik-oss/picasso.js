@@ -1,8 +1,5 @@
 import { create as createPolygon } from './polygon';
-import {
-  pointsToLine,
-  pointsToRect
-} from './util';
+import { pointsToLine, pointsToRect } from './util';
 import {
   testCircleGeoPolygon,
   testGeoPolygonPoint,
@@ -10,7 +7,7 @@ import {
   testGeoPolygonRect,
   testRectRect,
   testRectContainsRect,
-  testPolygonLine
+  testPolygonLine,
 } from '../math/narrow-phase-collision';
 
 function close(vertices) {
@@ -136,7 +133,7 @@ class GeoPolygon {
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsLine(points) {
-    return testGeoPolygonLine(this, pointsToLine((points)));
+    return testGeoPolygonLine(this, pointsToLine(points));
   }
 
   /**
@@ -183,7 +180,7 @@ class GeoPolygon {
         { x: this.xMin, y: this.yMin },
         { x: this.xMax, y: this.yMin },
         { x: this.xMax, y: this.yMax },
-        { x: this.xMin, y: this.yMax }
+        { x: this.xMin, y: this.yMax },
       ];
     }
 
@@ -200,26 +197,22 @@ class GeoPolygon {
         x: this.xMin,
         y: this.yMin,
         width: this.xMax - this.xMin,
-        height: this.yMax - this.yMin
+        height: this.yMax - this.yMin,
       };
     }
     return this._boundingRect;
   }
 }
 
-
 /**
-* Construct a new GeoPolygon instance
-* @param {object} input An object with a vertices property
-* @param {point[]} [input.vertices=[]] Vertices are represented as an array of points.
-* @returns {Polygon} Polygon instance
-* @private
-*/
+ * Construct a new GeoPolygon instance
+ * @param {object} input An object with a vertices property
+ * @param {point[]} [input.vertices=[]] Vertices are represented as an array of points.
+ * @returns {Polygon} Polygon instance
+ * @private
+ */
 function create(...a) {
   return new GeoPolygon(...a);
 }
 
-export {
-  create,
-  GeoPolygon as default
-};
+export { create, GeoPolygon as default };
