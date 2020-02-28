@@ -11,13 +11,12 @@ Typically used to create:
 - Candlestick
 - Gantt
 
-
 ## How the box component works
 
 > This assumes that you have some basic knowledge of how scales and components work in picasso.js.
 > If you don't, please read the tutorials first.
 
-The box component, in comparison to other components, does not rely entirely on settings. 
+The box component, in comparison to other components, does not rely entirely on settings.
 It presumes certain values have been bound to the data, and will behave differently depending
 on what data props are mapped to the component.
 
@@ -65,9 +64,10 @@ look something like this:
 
 ![Boxplot example](/img/boxplot.png)
 
-### Bar chart example 
+### Bar chart example
+
 You don't need to include all of the props mentioned above, if you just specify start and end, you'll only
-get a rectangle between start and end. If you specify `start`, `end` and `med`, you'll only get those, 
+get a rectangle between start and end. If you specify `start`, `end` and `med`, you'll only get those,
 and not the low/high whiskers, for example.
 
 The props do not need to be mapped to a data source either, they can be static, so to create a bar chart,
@@ -108,7 +108,7 @@ therefore render a bit weird if you try to create a candlestick chart with raw '
 You should probably sort the values so the values always will be in numerical order,
 but that doesn't limit you from creating a candlestick chart.
 
-In this example, `open` and `close` is mapped to the data, and 
+In this example, `open` and `close` is mapped to the data, and
 can be accessed these from a function created for the fill of the box.
 
 Example:
@@ -124,7 +124,7 @@ Example:
           field: 'low'
         },
         start: {
-          field: 'open-close-low' 
+          field: 'open-close-low'
         },
         open: {
           field: 'open'
@@ -160,16 +160,16 @@ Example:
 Candlestick example:
 ![Candlestick example](/img/candlestick-chart.png)
 
-### Out of bounds *EXPERIMENTAL*
+### Out of bounds _EXPERIMENTAL_
 
-> Please note - this is an experimental feature and may be subject to change or removal without deprecation 
+> Please note - this is an experimental feature and may be subject to change or removal without deprecation
 
-If a box or all of it's data is "out of bounds" i.e. outside of the renderable area, the box will not be rendered at all, 
+If a box or all of it's data is "out of bounds" i.e. outside of the renderable area, the box will not be rendered at all,
 instead the marker will display an arrow pointing towards where the box is. It's known as the "out of bounds arrow".
 
-The OOB feature can be turned off using 
+The OOB feature can be turned off using
 
-```js 
+```js
 {
   type: 'box',
   data: {
@@ -188,7 +188,6 @@ The OOB feature can be turned off using
 Out of bounds arrow example:
 ![Out of bounds arrow example](/img/box-oob-arrow.png)
 
-
-## API Reference 
+## API Reference
 
 {{>struct definitions.component--box.definitions.settings name='settings'}}

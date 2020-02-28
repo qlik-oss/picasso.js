@@ -26,7 +26,7 @@ class Person {
   name() {
     return {
       first: 'John',
-      last: 'Doe'
+      last: 'Doe',
     };
   }
 }
@@ -62,9 +62,7 @@ split the entity and `export`:
  */
 function foo() {}
 
-export {
-  foo as default
-}
+export { foo as default };
 ```
 
 ### Structs
@@ -84,11 +82,11 @@ const DEFAULTS = {
    * @typedef {object} */
   stroke: {
     /** Stroke color
-      * @type {string=} */
+     * @type {string=} */
     color: 'green',
     /** Stroke width
      * @type {number=} */
-    width: 1
-  }
-}
+    width: 1,
+  },
+};
 ```

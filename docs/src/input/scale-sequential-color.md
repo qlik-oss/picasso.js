@@ -14,16 +14,16 @@ picasso.chart({
         type: 'sequential-color',
         min: 0,
         max: 100,
-        range: ['red', 'blue']
-      }
+        range: ['red', 'blue'],
+      },
     },
     components: [
       {
         type: 'some-component',
-        scale: 'myScale'
-      }
-    ]
-  }
+        scale: 'myScale',
+      },
+    ],
+  },
 });
 ```
 

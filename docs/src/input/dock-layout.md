@@ -21,14 +21,15 @@ By explicitly setting a size, it is possible to override both width and height o
 The input value is specified as a number and represents the size in pixels.
 
 **Example**
-  ```js
-  strategy: {
-    size: {
-      width: 100,
-      height: 100
-    }
+
+```js
+strategy: {
+  size: {
+    width: 100,
+    height: 100
   }
-  ```
+}
+```
 
 ### Logical size
 
@@ -39,16 +40,17 @@ The default logical size is equal to the physical size.
 The input value is specified as a number and represents the size in pixels.
 
 **Example**
-  ```js
-  strategy: {
-    logicalSize: {
-      width: 150,
-      height: 150,
-      preserveAspectRatio: false,
-      align: 0.5
-    }
+
+```js
+strategy: {
+  logicalSize: {
+    width: 150,
+    height: 150,
+    preserveAspectRatio: false,
+    align: 0.5
   }
-  ```
+}
+```
 
 ## Responsiveness
 
@@ -69,37 +71,39 @@ It is possible to control the amount of space required by the center area with p
 When configured with either `minWidth/minHeight` or `minWidthRatio/minHeightRatio`, the minimum required space of the center area is set to that size. However the center area can never be larger than logical size and will clamp to logical size. If `minWidth` and `minWidthRatio` are set, the absolute size from `minWidth` has precedence over `minWidthRatio`.
 
 **Example**
-  ```js
-  strategy: {
-    center: {
-      minWidthRatio: 0.5,
-      minHeightRatio: 0.5,
-      minWidth: 10,
-      minHeight: 10
-    }
+
+```js
+strategy: {
+  center: {
+    minWidthRatio: 0.5,
+    minHeightRatio: 0.5,
+    minWidth: 10,
+    minHeight: 10
   }
-  ```
+}
+```
 
 ### Minimum layout mode
 
 The minimum layout mode is a way to tell the layout engine that a component should be discarded if the logical size is below a certain threshold in width or height.
 
 **Example**
-  ```js
-  strategy: {
-    layoutModes: {
-      S: { width: 150, height: 150 }
-      L: { width: 300, height: 300 }
-    }
-  }
 
-  // in the component definition
-  {
-    type: 'my-component',
-    minimumLayoutMode: 'S',
-    settings...
+```js
+strategy: {
+  layoutModes: {
+    S: { width: 150, height: 150 }
+    L: { width: 300, height: 300 }
   }
-  ```
+}
+
+// in the component definition
+{
+  type: 'my-component',
+  minimumLayoutMode: 'S',
+  settings...
+}
+```
 
 ## Chart instance configuration
 
@@ -111,16 +115,18 @@ The following properties are available in the chart settings definition:
 
 The following dock properties are available in the component definition:
 
-* `show` *boolean*. True if component should be rendered.
-* `layout`*object*. Layout settings
-* `layout.dock` *string*. Dock setting. Any of `top` | `right` | `bottom` | `left`
-* `layout.displayOrder` *number*. The order in which components are rendered (similar to css z-index).
-* `layout.prioOrder` *number*. The order in which components are docked from the center area.
-* `layout.minimumLayoutMode` *string*. 
+- `show` _boolean_. True if component should be rendered.
+- `layout`_object_. Layout settings
+- `layout.dock` _string_. Dock setting. Any of `top` | `right` | `bottom` | `left`
+- `layout.displayOrder` _number_. The order in which components are rendered (similar to css z-index).
+- `layout.prioOrder` _number_. The order in which components are docked from the center area.
+- `layout.minimumLayoutMode` _string_.
 
 **Example**
-  ```js
-  components: [{
+
+```js
+components: [
+  {
     type: 'my-component',
     layout: {
       show: true,
@@ -129,8 +135,9 @@ The following dock properties are available in the component definition:
       prioOrder: 0,
       minimumLayoutMode: 'S',
     },
-  }]
-  ```
+  },
+];
+```
 
 ### Working with `displayOrder`
 

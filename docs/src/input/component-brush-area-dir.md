@@ -17,20 +17,21 @@ A `target` is configured in the `target` property:
 ```js
 settings: {
   target: {
-    components: ['my-target-component']
+    components: ['my-target-component'];
   }
 }
 ```
 
 The bubble labels are derived from the brush `data` property. If omitted the `self` data value is used.
+
 ```js
 settings: {
   brush: [
     {
       key: 'brush-this-component',
-      data: ['some data property on brush-this-component']
-    }
-  ]
+      data: ['some data property on brush-this-component'],
+    },
+  ];
 }
 ```
 
@@ -38,10 +39,10 @@ settings: {
 
 There are four different types of listeners available.
 
-* `areaStart`: initialize the brush
-* `areaMove`: change the size of the area or move the current active area
-* `areaEnd`: end the current active area
-* `areaClear`: cancel the active area
+- `areaStart`: initialize the brush
+- `areaMove`: change the size of the area or move the current active area
+- `areaEnd`: end the current active area
+- `areaClear`: cancel the active area
 
 The events are triggered from the component instance and expect an event object as parameter with the following properties:
 
@@ -49,10 +50,10 @@ The events are triggered from the component instance and expect an event object 
 const param = {
   center: {
     x: 1,
-    y: 2
+    y: 2,
   },
   deltaX: 0,
-  deltaY: 0
+  deltaY: 0,
 };
 
 compInstance.emit('rangeStart', param);

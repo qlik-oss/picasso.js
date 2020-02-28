@@ -1,5 +1,6 @@
 {{#if title}}## {{ title }}
 {{/if}}
+
 ```js
 {{#if name}}{{name}}: {{/if}}{
 {{#each entries}}
@@ -12,8 +13,10 @@
 **Definitions**
 
 {{#each definitions}}
+
 ```js
 {{>substruct this name=@key}}
 ```
+
 {{/each}}
 {{/if}}
