@@ -29,7 +29,9 @@ This dataset type understands the QIX hypercube format and its internals, making
 const ds = picasso.data('q')({
   key: 'qHyperCube', // path to the hypercube from the layout
   data: layout.qHyperCube,
-  config: { /* ... */ }
+  config: {
+    /* ... */
+  },
 });
 ```
 
@@ -53,20 +55,21 @@ The `config` object allows for further configuration:
       - `value`: `<function>` - Value accessor.
       - `label`: `<function>` - Label accessor.
 
-
 ```js
 const ds = picasso.data('q')({
   key: 'qHyperCube',
   data: layout.qHyperCube,
   config: {
-    virtualFields: [{
-      key: 'surpriseMe',
-      from: 'qMeasureInfo/0',
-      override: {
-        value: v => v.qValue * Math.random(),
-      }
-    }]
-  }
+    virtualFields: [
+      {
+        key: 'surpriseMe',
+        from: 'qMeasureInfo/0',
+        override: {
+          value: v => v.qValue * Math.random(),
+        },
+      },
+    ],
+  },
 });
 
 ds.field('surpriseMe').items(); // -> array of random numbers multiplied with the value from first measure
@@ -120,14 +123,14 @@ We can extract the unique _Month_ values using:
 ```js
 ds.extract({
   field: 'Month',
-  trackBy: v => v.qElemNumber
+  trackBy: v => v.qElemNumber,
 });
 
 // output
 [
   { value: 0, label: 'Jan', source: { key: 'qHyperCube', field: 'qDimensionInfo/1' } },
-  { value: 1, label: 'Feb', source: { key: 'qHyperCube', field: 'qDimensionInfo/1' } }
-]
+  { value: 1, label: 'Feb', source: { key: 'qHyperCube', field: 'qDimensionInfo/1' } },
+];
 ```
 
 and attach aggregated properties on each item using `props`:
@@ -161,6 +164,7 @@ ds.extract({
 ```
 
 The default `value` accessor for a field depends on the field type and the `qMode`property of the hypercube:
+
 - For measures and attribute expressions: `cell => cell.qNum` or `cell => cell.qValue`
 - For dimensions and attribute dimensions: `cell => cell.qElemNumber` or `cell => cell.qElemNo`
 
@@ -268,13 +272,13 @@ const selection = picassoQ.selections(b, { byCells: true })[0];
 // }
 ```
 
-Row indices are used from the first dimension that adds a value to a brush,  `qDimensionInfo/1`, in the case above.
+Row indices are used from the first dimension that adds a value to a brush, `qDimensionInfo/1`, in the case above.
 To use values from another dimension, `primarySource` should be set:
 
 ```js
 const selection = picassoQ.selections(b, {
   byCells: true,
-  primarySource: 'qHyperCube/qDimensionInfo/0'
+  primarySource: 'qHyperCube/qDimensionInfo/0',
 })[0];
 // {
 //   method: 'selectHyperCubeCells',
@@ -286,7 +290,7 @@ const selection = picassoQ.selections(b, {
 // }
 ```
 
-It is also possible to get a selectPivotCells call by providing the layout: 
+It is also possible to get a selectPivotCells call by providing the layout:
 
 ```js
 const selection = picassoQ.selections(b, { byCells: true }, layout)[0];
@@ -295,11 +299,10 @@ const selection = picassoQ.selections(b, { byCells: true }, layout)[0];
 //   params: [
 //     '/qHyperCubeDef',
 //     [{qType: 'L', qCol: 1, qRow: 10}, {qType: 'L', qCol: 1, qRow: 13}], // Array of NxSelectionCell for pivot data
-//     
+//
 //   ]
 // }
 ```
-
 
 ### By attribute dimension
 
@@ -349,6 +352,7 @@ const selection = picassoQ.selections(b, {}, layout)[0];
 ```
 
 Assuming a `layout` of:
+
 ```js
 {
   qHyperCube: {
@@ -376,8 +380,7 @@ which results in `2 + 1 + 2 + 2 = 7`
 
 The `q` plugin comes bundled with a [formatter](formatters.md) attached the to data `field`. To use it, no configuration other then using the [q-dataset](plugin-q.md#q-dataset) is required.
 
-
-[LocaleInfo]: https://core.qlik.com/services/qix-engine/apis/qix/definitions/#localeinfo
+[localeinfo]: https://core.qlik.com/services/qix-engine/apis/qix/definitions/#localeinfo
 [object]: https://core.qlik.com/services/qix-engine/apis/qix/definitions/#localeinfo
 [string]: https://core.qlik.com/services/qix-engine/apis/qix/definitions/#localeinfo
 [function]: https://core.qlik.com/services/qix-engine/apis/qix/definitions/#localeinfo

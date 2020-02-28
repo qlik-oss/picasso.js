@@ -38,6 +38,46 @@ export const DEFAULT_SETTINGS = {
  */
 
 export default function scaleBand(settings = {}, data = {}, resources = {}) {
+  const ctx = { data, resources };
+  const stgns = resolveSettings(settings, DEFAULT_SETTINGS, ctx);
+  const items = data.items || [];
+  const domainToDataMapping = {};
+  const values = [];
+  const labels = [];
+
+  // I would like to define this outside of scaleBand but it cause the documentation to be in the wrong order
+  function augmentScaleBand(band, fsettings) {
+    band.data = () => data;
+
+    band.datum = domainValue => items[domainToDataMapping[domainValue]];
+
+    /**
+     * Get the first value of the domain
+     * @return { number }
+     */
+    band.start = function start() {
+      return band.domain()[0];
+    };
+
+    /**
+     * Get the last value of the domain
+     * @return { number }
+     */
+    band.end = function end() {
+      return band.domain()[band.domain().length - 1];
+    };
+
+    band.labels = () => labels;
+
+    /**
+     * Generate discrete ticks
+     * @return {Object[]} Array of ticks
+     */
+    band.ticks = function ticks(input = {}) {
+      input.scale = band;
+      return generateDiscreteTicks(input, fsettings.trackBy || 'label');
+    };
+  }
   /**
    * An augmented {@link https://github.com/d3/d3-scale#_band|d3 band scale}
    * @alias band
@@ -47,46 +87,6 @@ export default function scaleBand(settings = {}, data = {}, resources = {}) {
    * @return { number }
    */
   const band = d3ScaleBand();
-  const ctx = { data, resources };
-  const stgns = resolveSettings(settings, DEFAULT_SETTINGS, ctx);
-  const items = data.items || [];
-  const domainToDataMapping = {};
-  const values = [];
-  const labels = [];
-
-  // I would like to define this outside of scaleBand but it cause the documentation to be in the wrong order
-  function augmentScaleBand(fband, fsettings) {
-    fband.data = () => data;
-
-    fband.datum = domainValue => items[domainToDataMapping[domainValue]];
-
-    /**
-     * Get the first value of the domain
-     * @return { number }
-     */
-    fband.start = function start() {
-      return fband.domain()[0];
-    };
-
-    /**
-     * Get the last value of the domain
-     * @return { number }
-     */
-    fband.end = function end() {
-      return fband.domain()[fband.domain().length - 1];
-    };
-
-    fband.labels = () => labels;
-
-    /**
-     * Generate discrete ticks
-     * @return {Object[]} Array of ticks
-     */
-    fband.ticks = function ticks(input = {}) {
-      input.scale = fband;
-      return generateDiscreteTicks(input, fsettings.trackBy || 'label');
-    };
-  }
   augmentScaleBand(band, settings);
 
   /**

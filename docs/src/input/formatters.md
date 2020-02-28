@@ -74,7 +74,7 @@ The following configuration will use the formatter defined on the _Sales_ `field
 {
   myFormatter: {
     data: {
-      fields: ['Sales']
+      fields: ['Sales'];
     }
   }
 }

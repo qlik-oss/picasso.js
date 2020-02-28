@@ -27,44 +27,50 @@ components: [
     type: 'box',
     key: 'bars',
     layout: {
-      displayOrder: 1
+      displayOrder: 1,
     },
     /* ... */
   },
   {
     type: 'labels',
     layout: {
-      displayOrder: 2 // must be larger than the displayOrder for the 'bars' component
+      displayOrder: 2, // must be larger than the displayOrder for the 'bars' component
     },
     settings: {
-      sources: [{
-        component: 'bars',
-        selector: 'rect', // select all 'rect' shapes from the 'bars' component
-        strategy: {
-          type: 'bar', // the strategy type
-          settings: {
-            direction: function({ data }) { // data argument is the data bound to the shape in the referenced component
-              return data && data.end.value > data.start.value ? 'up' : 'down'
-            },
-            fontFamily: 'Helvetica',
-            fontSize: 14,
-            align: 0.5,
-            justify: 1,
-            labels: [{
-              label({ data }) {
-                return data ? data.end.label : '';
+      sources: [
+        {
+          component: 'bars',
+          selector: 'rect', // select all 'rect' shapes from the 'bars' component
+          strategy: {
+            type: 'bar', // the strategy type
+            settings: {
+              direction: function({ data }) {
+                // data argument is the data bound to the shape in the referenced component
+                return data && data.end.value > data.start.value ? 'up' : 'down';
               },
-              placements: [ // label placements in prio order. Label will be placed in the first place it fits into
-                { position: 'inside', fill: '#fff' },
-                { position: 'outside', fill: '#666' }
-              ]
-            }]
-          }
-        }
-      }]
-    }
-  }
-]
+              fontFamily: 'Helvetica',
+              fontSize: 14,
+              align: 0.5,
+              justify: 1,
+              labels: [
+                {
+                  label({ data }) {
+                    return data ? data.end.label : '';
+                  },
+                  placements: [
+                    // label placements in prio order. Label will be placed in the first place it fits into
+                    { position: 'inside', fill: '#fff' },
+                    { position: 'outside', fill: '#666' },
+                  ],
+                },
+              ],
+            },
+          },
+        },
+      ],
+    },
+  },
+];
 ```
 
 ### `slices`
@@ -88,49 +94,56 @@ components: [
     type: 'pie',
     key: 'myPie',
     layout: {
-      displayOrder: 1
+      displayOrder: 1,
     },
     /* ... */
   },
   {
     type: 'labels',
     layout: {
-      displayOrder: 2 // must be larger than the displayOrder for the 'pie' component
+      displayOrder: 2, // must be larger than the displayOrder for the 'pie' component
     },
     settings: {
-      sources: [{
-        component: 'myPie',
-        selector: 'path', // select all 'path' shapes from the 'pie' component
-        strategy: {
-          type: 'slice', // the strategy type
-          settings: {
-            direction: 'horizontal',
-            fontFamily: 'Helvetica',
-            fontSize: 14,
-            labels: [{
-              label({ data }) { // dimension label
-                return data ? data.label : '';
-              },
-              placements: [
+      sources: [
+        {
+          component: 'myPie',
+          selector: 'path', // select all 'path' shapes from the 'pie' component
+          strategy: {
+            type: 'slice', // the strategy type
+            settings: {
+              direction: 'horizontal',
+              fontFamily: 'Helvetica',
+              fontSize: 14,
+              labels: [
                 {
-                  position: 'info',
-                  fill: ({ data }) => { return '#333'; } // select a color contrasting the containing slice
-                }
-              ]
-            }, { // data label
-              label({ data }) {
-                return data ? data.arc.label : '';
-              },
-              placements: [
-                { position: 'inside', fill: '#fff' }
-              ]
-            } ]
-          }
-        }
-      }]
-    }
-  }
-]
+                  label({ data }) {
+                    // dimension label
+                    return data ? data.label : '';
+                  },
+                  placements: [
+                    {
+                      position: 'info',
+                      fill: ({ data }) => {
+                        return '#333';
+                      }, // select a color contrasting the containing slice
+                    },
+                  ],
+                },
+                {
+                  // data label
+                  label({ data }) {
+                    return data ? data.arc.label : '';
+                  },
+                  placements: [{ position: 'inside', fill: '#fff' }],
+                },
+              ],
+            },
+          },
+        },
+      ],
+    },
+  },
+];
 ```
 
 ### `rows`
@@ -150,44 +163,53 @@ components: [
     type: 'rows',
     key: 'rects',
     layout: {
-      displayOrder: 1
+      displayOrder: 1,
     },
     /* ... */
   },
   {
     type: 'labels',
     layout: {
-      displayOrder: 2 // must be larger than the displayOrder for the 'rects' component
+      displayOrder: 2, // must be larger than the displayOrder for the 'rects' component
     },
     settings: {
-      sources: [{
-        component: 'rects',
-        selector: 'rect', // select all 'rect' shapes from the 'rects'
-        strategy: {
-          type: 'rows', // the strategy type
-          settings: {
-            fontFamily: 'Helvetica',
-            fontSize: 14,
-            fill: ({ data }) => { return '#333'; }, // select a color contrasting the containing shape
-            padding: 4,
-            justify: 0.5,
-            align: 0.5,
-            labels: [{
-              fontSize: 24, // change this label to a larger font size
-              label({ data }) { // dimension label
-                return data ? data.label : '';
-              }
-            }, { // data label
-              label({ data }) {
-                return data ? data.value.label : '';
-              }
-            } ]
-          }
-        }
-      }]
-    }
-  }
-]
+      sources: [
+        {
+          component: 'rects',
+          selector: 'rect', // select all 'rect' shapes from the 'rects'
+          strategy: {
+            type: 'rows', // the strategy type
+            settings: {
+              fontFamily: 'Helvetica',
+              fontSize: 14,
+              fill: ({ data }) => {
+                return '#333';
+              }, // select a color contrasting the containing shape
+              padding: 4,
+              justify: 0.5,
+              align: 0.5,
+              labels: [
+                {
+                  fontSize: 24, // change this label to a larger font size
+                  label({ data }) {
+                    // dimension label
+                    return data ? data.label : '';
+                  },
+                },
+                {
+                  // data label
+                  label({ data }) {
+                    return data ? data.value.label : '';
+                  },
+                },
+              ],
+            },
+          },
+        },
+      ],
+    },
+  },
+];
 ```
 
 ![Rows labeling strategy](/img/rows-labels.png)
@@ -201,7 +223,7 @@ settings: {
   sources: [{ // components to use as input to a labeling strategy
     component: 'bar', // component key
     selector: 'rect', // component shape selector
-    strategy: { /* strategy */ }, 
+    strategy: { /* strategy */ },
   }],
 }
 ```

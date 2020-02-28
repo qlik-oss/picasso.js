@@ -12,10 +12,10 @@ Since this component depends on other referenced components, it's important that
 
 There are four different types of listeners that can be utilized to visualize a lasso and brush on components.
 
-* `lassoStart`: initializs the lasso. This will make the other listeners active. If a `lassoStart` has not been triggered, the other listeners have no effect.
-* `lassoMove`: to create a lasso, at least one `lassoMove` has to be triggered. On each consecutive `lassoMove`, a brush event is triggered for the line segment between the previous `lassoMove` coordinate and the current coordinate.
-* `lassoEnd`: if within snap threshold, the lasso is closed and a brush event is triggered on the area of the enclosed lasso; if not - no brush is triggered.
-* `lassoCancel`: cancel the current lasso by removing the visual parts and trigger an `end` event for the brush contexts.
+- `lassoStart`: initializs the lasso. This will make the other listeners active. If a `lassoStart` has not been triggered, the other listeners have no effect.
+- `lassoMove`: to create a lasso, at least one `lassoMove` has to be triggered. On each consecutive `lassoMove`, a brush event is triggered for the line segment between the previous `lassoMove` coordinate and the current coordinate.
+- `lassoEnd`: if within snap threshold, the lasso is closed and a brush event is triggered on the area of the enclosed lasso; if not - no brush is triggered.
+- `lassoCancel`: cancel the current lasso by removing the visual parts and trigger an `end` event for the brush contexts.
 
 The events are triggered from the component instance and expect an event object as parameter with the following properties:
 
@@ -23,8 +23,8 @@ The events are triggered from the component instance and expect an event object 
 const param = {
   center: {
     x: 1,
-    y: 2
-  }
+    y: 2,
+  },
 };
 
 compInstance.emit('lassoStart', param);

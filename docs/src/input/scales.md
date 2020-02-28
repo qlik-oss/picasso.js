@@ -19,16 +19,16 @@ const chartInstance = picasso.chart({
       nameOfMyScale: {
         type: 'type-of-scale',
         data,
-        aScaleProperty: true // Add scale setting properties here
-      }
+        aScaleProperty: true, // Add scale setting properties here
+      },
     },
     components: [
       {
         type: 'some-component',
-        scale: 'nameOfMyScale' // Pass the scale instance to the component
-      }
-    ]
-  }
+        scale: 'nameOfMyScale', // Pass the scale instance to the component
+      },
+    ],
+  },
 });
 
 chartInstance.scales('nameOfMyScale'); // Returns a scale instance

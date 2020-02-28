@@ -13,16 +13,16 @@ picasso.chart({
       myScale: {
         type: 'categorical-color',
         data: ['d1', 'd2'],
-        range: ['red', 'blue']
-      }
+        range: ['red', 'blue'],
+      },
     },
     components: [
       {
         type: 'some-component',
-        scale: 'myScale'
-      }
-    ]
-  }
+        scale: 'myScale',
+      },
+    ],
+  },
 });
 ```
 
