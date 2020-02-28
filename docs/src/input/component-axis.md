@@ -24,7 +24,7 @@ A vertical axis is limited to only horizontal labels. While a horizontal axis ha
 
 ### Tilted labels
 
-Tilted labels are only supported on a discrete axis. When the `mode` property is set to `auto`, labels are tilted when there is not enough space available. 
+Tilted labels are only supported on a discrete axis. When the `mode` property is set to `auto`, labels are tilted when there is not enough space available.
 
 ```js
 {
@@ -86,9 +86,10 @@ Under the hood, `maxGlyphCount` is a multiplier on the size of the character `M`
 
 ### Using paddingStart
 
-The `paddingStart` property adds padding to the opposite side of where the axis is *docked* (or *aligned* when using `dock: center`). It can be specified as either a number or a function (does not receive any parameters).
+The `paddingStart` property adds padding to the opposite side of where the axis is _docked_ (or _aligned_ when using `dock: center`). It can be specified as either a number or a function (does not receive any parameters).
 
 Specified as a number, in this case `100px` padding will be added the right side of the axis:
+
 ```js
 {
   type: 'axis',
@@ -101,6 +102,7 @@ Specified as a number, in this case `100px` padding will be added the right side
 ```
 
 In this example we use a function to move the axis next to a specific element (e.g. useful when adding one axis per bar in a bar chart):
+
 ```js
 {
   type: 'axis',
@@ -120,8 +122,7 @@ In this example we use a function to move the axis next to a specific element (e
 
 ### Using paddingEnd
 
-The `paddingEnd` property can be used in the same way as `paddingStart`. If not specified it defaults to `10`. It will add padding to the same side as the axis is *docked* (or *aligned* when using `dock: center`).
-
+The `paddingEnd` property can be used in the same way as `paddingStart`. If not specified it defaults to `10`. It will add padding to the same side as the axis is _docked_ (or _aligned_ when using `dock: center`).
 
 ## Formatting
 

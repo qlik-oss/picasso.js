@@ -26,38 +26,40 @@ In order to instantiate a chart, we need three things:
 ```js
 picasso.chart({
   element: document.querySelector('#container'),
-  data: [{
-    type: 'matrix',
-    data: [
-      ['Year', 'Month', 'Sales', 'Margin'],
-      ['2010', 'Jan', 1106, 7],
-      ['2010', 'Feb', 5444, 53],
-      ['2010', 'Mar', 147, 64],
-      ['2010', 'Apr', 7499, 47],
-      ['2010', 'May', 430, 62],
-      ['2010', 'June', 9735, 13],
-      ['2010', 'July', 7435, 15],
-      ['2011', 'Jan', 1482, 45],
-      ['2011', 'Feb', 2659, 76],
-      ['2011', 'Mar', 1261, 73],
-      ['2011', 'Apr', 3085, 56],
-      ['2011', 'May', 3035, 91],
-      ['2011', 'June', 7691, 88],
-      ['2011', 'July', 3012, 81],
-      ['2012', 'Jan', 7980, 61],
-      ['2012', 'Feb', 2564, 22],
-      ['2012', 'Mar', 7957, 98],
-      ['2012', 'Apr', 5809, 1],
-      ['2012', 'May', 429, 2],
-      ['2012', 'June', 6757, 77],
-      ['2012', 'July', 9415, 92]
-    ]
-  }],
+  data: [
+    {
+      type: 'matrix',
+      data: [
+        ['Year', 'Month', 'Sales', 'Margin'],
+        ['2010', 'Jan', 1106, 7],
+        ['2010', 'Feb', 5444, 53],
+        ['2010', 'Mar', 147, 64],
+        ['2010', 'Apr', 7499, 47],
+        ['2010', 'May', 430, 62],
+        ['2010', 'June', 9735, 13],
+        ['2010', 'July', 7435, 15],
+        ['2011', 'Jan', 1482, 45],
+        ['2011', 'Feb', 2659, 76],
+        ['2011', 'Mar', 1261, 73],
+        ['2011', 'Apr', 3085, 56],
+        ['2011', 'May', 3035, 91],
+        ['2011', 'June', 7691, 88],
+        ['2011', 'July', 3012, 81],
+        ['2012', 'Jan', 7980, 61],
+        ['2012', 'Feb', 2564, 22],
+        ['2012', 'Mar', 7957, 98],
+        ['2012', 'Apr', 5809, 1],
+        ['2012', 'May', 429, 2],
+        ['2012', 'June', 6757, 77],
+        ['2012', 'July', 9415, 92],
+      ],
+    },
+  ],
   settings: {
     scales: {},
-    components: []
-  }
-})
+    components: [],
+  },
+});
 ```
 
 The target `element` needs to have a `width` and `height` defined, the chart will adapt itself to its size.
@@ -104,19 +106,22 @@ Which component to use is specified by its `type`, and each `type` usually has i
 Let's add an _x_ and _y_ axis:
 
 ```js
-components: [{
-  type: 'axis',
-  scale: 's',
-  layout: {
-    dock: 'left'
-  }
-}, {
-  type: 'axis',
-  scale: 'm',
-  layout: {
-    dock: 'bottom'
-  }
-}]
+components: [
+  {
+    type: 'axis',
+    scale: 's',
+    layout: {
+      dock: 'left',
+    },
+  },
+  {
+    type: 'axis',
+    scale: 'm',
+    layout: {
+      dock: 'bottom',
+    },
+  },
+];
 ```
 
 An `axis` requires a `scale` value which references one of the `scales` defined earlier.
@@ -134,18 +139,20 @@ In addition, the axes are docked to the `left` and `bottom` respectively.
 Now let's add the `point` component:
 
 ```js
-components: [{
-  type: 'point',
-  data: {
-    extract: {
-      field: 'Month',
-      props: {
-        y: { field: 'Sales' },
-        mar: { field: 'Margin' }
-      }
-    }
-  }
-}]
+components: [
+  {
+    type: 'point',
+    data: {
+      extract: {
+        field: 'Month',
+        props: {
+          y: { field: 'Sales' },
+          mar: { field: 'Margin' },
+        },
+      },
+    },
+  },
+];
 ```
 
 We want to use this component to draw a bubble for each row in the previously provided data set, and we want to map _Margin_ to the _x_ position while _Sales_ is mapped to _y_.
@@ -172,9 +179,11 @@ There are three ways to define the value for a visual property:
 - An object containing a reference to a `scale` and an extracted data value
 
   For the `x` position we use `m` as scale and reference the `mar` property in the extracted item. In cases when the visual property has the same name as the data property there is no need to set an explicit `ref`, as is the case with `y`.
+
 - A function, which is executed once per data item
 
   The `size` of each bubble will be randomized between 0-1
+
 - A constant
 
   The `opacity` for all bubbles is set to `0.8`
@@ -206,7 +215,9 @@ Then attach a `fill` property to the data items in the `point` component:
 
 ```js
 props: {
-  fill: { field: 'Year' }
+  fill: {
+    field: 'Year';
+  }
 }
 ```
 
@@ -214,20 +225,24 @@ Define which scale to use for the `fill` property of the bubbles:
 
 ```js
 settings: {
-  fill: { scale: 'col' }
+  fill: {
+    scale: 'col';
+  }
 }
 ```
 
 And finally add a legend component in order to see the _Year_ each color represents:
 
 ```js
-components: [{
-  type: 'legend-cat',
-  scale: 'col',
-  layout: {
-    dock: 'top'
-  }
-}]
+components: [
+  {
+    type: 'legend-cat',
+    scale: 'col',
+    layout: {
+      dock: 'top',
+    },
+  },
+];
 ```
 
 <iframe width="100%" height="400" src="//jsfiddle.net/nqo2dsrs/4/embedded/result,js/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
@@ -271,24 +286,30 @@ Multiple brushes can be triggered and consumed, which ones is identified by prov
 We can add almost the same definition to the legend:
 
 ```js
-components: [{
-  type: 'legend-cat',
-  brush: {
-    trigger: [{
-      contexts: ['highlight'],
-      on: 'tap',
-      action: 'toggle'
-    }],
-    consume: [{
-      context: 'highlight',
-      style: {
-        inactive: {
-          opacity: 0.4
-        }
-      }
-    }]
-  }
-}]
+components: [
+  {
+    type: 'legend-cat',
+    brush: {
+      trigger: [
+        {
+          contexts: ['highlight'],
+          on: 'tap',
+          action: 'toggle',
+        },
+      ],
+      consume: [
+        {
+          context: 'highlight',
+          style: {
+            inactive: {
+              opacity: 0.4,
+            },
+          },
+        },
+      ],
+    },
+  },
+];
 ```
 
 The only difference here is the missing `data` limitation, which is not needed since the legend only contains data from the _Year_ field.

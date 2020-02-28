@@ -1,3 +1,4 @@
 {{#each _registry}}
-* <a href="#{{ this}}">{{ this }}</a>
-{{/each}}
+
+- <a href="#{{ this}}">{{ this }}</a>
+  {{/each}}

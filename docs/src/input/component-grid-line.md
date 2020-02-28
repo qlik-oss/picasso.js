@@ -2,7 +2,6 @@
 title: Grid
 ---
 
-
 ![Grid line component](/img/grid-line-comp.png)
 
 ## Basic grid
@@ -52,7 +51,7 @@ You do not have to specify both the X and Y axis in case you are drawing a box p
 ```
 
 In this example, we are using both X and Y scales. We are showing major ticks as a red, 5px line with 3px dashes with 3px gaps. The settings for minor ticks are a blue, 1px line.
-However, since the minor ticks have the variable *show* set to false, they will not be rendered. They may still be rendered on the axis if you have enabled them there.
+However, since the minor ticks have the variable _show_ set to false, they will not be rendered. They may still be rendered on the axis if you have enabled them there.
 
 ## API Reference
 
