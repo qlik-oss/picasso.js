@@ -8,13 +8,14 @@ Brushing in a component is handled in two ways: _trigger_ and _consume_.
 
 `trigger` controls how the component reacts to various user actions like 'tapping on a shape':
 
-* `on`: type of interaction to react to
-* `action`: type of action to respond with.  _Optional_
-* `contexts`: name of the brushing contexts to affect
-* `data`: the mapped data properties to add to the brush. _Optional_
-* `propagation`: control the event propagation when multiple shapes are tapped. Disabled by default. _Optional_
-* `globalPropagation`: control the event propagation between components. Disabled by default. _Optional_
-* `touchRadius`: extend contact area for touch events. Disabled by default. _Optional_
+- `on`: type of interaction to react to
+- `action`: type of action to respond with. _Optional_
+- `contexts`: name of the brushing contexts to affect
+- `data`: the mapped data properties to add to the brush. _Optional_
+- `propagation`: control the event propagation when multiple shapes are tapped. Disabled by default. _Optional_
+- `globalPropagation`: control the event propagation between components. Disabled by default. _Optional_
+- `touchRadius`: extend contact area for touch events. Disabled by default. _Optional_
+- `mouseRadius`: extend contact area for regular mouse events. Disabled by default. _Optional_
 
 ```js
 trigger: [{
@@ -24,7 +25,8 @@ trigger: [{
   data: ['x'],
   propagation: 'stop', // 'stop' => prevent trigger from propagating further than the first shape
   globalPropagation: 'stop', // 'stop' => prevent trigger of same type to be triggered on other components
-  touchRadius: 24
+  touchRadius: 24,
+  mouseRadius: 10
 }],
 ```
 
@@ -32,29 +34,30 @@ trigger: [{
 
 `consume` controls how the component uses active brushes.
 
-* `context`: name of the brush context to observe
-* `data`: the mapped data properties to observe. _Optional_
-* `mode`: data properties operator: `and`, `or`, `xor`. _Optional_
-* `filter`: a filtering function. _Optional_
-* `style`: the style to apply to the shapes of the component
-  * `active`: the style of _active_ data points
-  * `inactive`: the style of _inactive_ data points
+- `context`: name of the brush context to observe
+- `data`: the mapped data properties to observe. _Optional_
+- `mode`: data properties operator: `and`, `or`, `xor`. _Optional_
+- `filter`: a filtering function. _Optional_
+- `style`: the style to apply to the shapes of the component
+  - `active`: the style of _active_ data points
+  - `inactive`: the style of _inactive_ data points
 
 ```js
-consume: [{
-  context: 'selection',
-  data: ['x'],
-  filter: shape => shape.type === 'circle',
-  style: {
-    active: {
-      fill: 'red',
-      stroke: '#333',
-      strokeWidth: shape => shape.strokeWidth * 2
+consume: [
+  {
+    context: 'selection',
+    data: ['x'],
+    filter: shape => shape.type === 'circle',
+    style: {
+      active: {
+        fill: 'red',
+        stroke: '#333',
+        strokeWidth: shape => shape.strokeWidth * 2,
+      },
+      inactive: {},
     },
-    inactive: {
-    }
-  }
-}]
+  },
+];
 ```
 
 ## Programmatic changes

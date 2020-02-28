@@ -292,6 +292,12 @@ function resolveCollisions(e, t, renderer) {
       cy: p.y,
       r: t.touchRadius, // TODO Use touch event radius/width value (Need to handle dpi scaling as well)
     };
+  } else if (t.mouseRadius > 0 && !isTouchEvent(e)) {
+    p = {
+      cx: p.x,
+      cy: p.y,
+      r: t.mouseRadius,
+    };
   }
 
   return renderer.itemsAt(p);
