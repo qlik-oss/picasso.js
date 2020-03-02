@@ -39,7 +39,7 @@ describe('brush', () => {
   });
 
   describe('events', () => {
-    it('should emit a start event with paremeters when started', () => {
+    it('should emit a start event with parameters when started', () => {
       const cb = sandbox.spy();
       b.on('start', cb);
       b.start(1, '2', false);
