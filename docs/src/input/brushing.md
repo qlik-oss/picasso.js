@@ -15,6 +15,7 @@ Brushing in a component is handled in two ways: _trigger_ and _consume_.
 - `propagation`: control the event propagation when multiple shapes are tapped. Disabled by default. _Optional_
 - `globalPropagation`: control the event propagation between components. Disabled by default. _Optional_
 - `touchRadius`: extend contact area for touch events. Disabled by default. _Optional_
+- `mouseRadius`: extend contact area for regular mouse events. Disabled by default. _Optional_
 
 ```js
 trigger: [{
@@ -24,7 +25,8 @@ trigger: [{
   data: ['x'],
   propagation: 'stop', // 'stop' => prevent trigger from propagating further than the first shape
   globalPropagation: 'stop', // 'stop' => prevent trigger of same type to be triggered on other components
-  touchRadius: 24
+  touchRadius: 24,
+  mouseRadius: 10
 }],
 ```
 

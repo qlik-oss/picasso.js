@@ -212,6 +212,19 @@ describe('Brushing', () => {
         });
       });
     });
+
+    it('should resolve collisions with a mouseRadius if configured', () => {
+      const radius = 15;
+      trigger.mouseRadius = radius;
+
+      resolveTapEvent({ e: eventMock, t: trigger, config });
+
+      expect(config.renderer.itemsAt.args[0][0]).to.deep.equal({
+        cx: 50,
+        cy: 50,
+        r: radius,
+      });
+    });
   });
 
   describe('Styler', () => {
