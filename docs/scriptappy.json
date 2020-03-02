@@ -4415,34 +4415,6 @@
         }
       }
     },
-    "fband.start": {
-      "description": "Get the first value of the domain",
-      "kind": "function",
-      "params": [],
-      "returns": {
-        "type": "number"
-      }
-    },
-    "fband.end": {
-      "description": "Get the last value of the domain",
-      "kind": "function",
-      "params": [],
-      "returns": {
-        "type": "number"
-      }
-    },
-    "fband.ticks": {
-      "description": "Generate discrete ticks",
-      "kind": "function",
-      "params": [],
-      "returns": {
-        "description": "Array of ticks",
-        "kind": "array",
-        "items": {
-          "type": "Object"
-        }
-      }
-    },
     "scale--categorical-color": {
       "kind": "object",
       "entries": {
