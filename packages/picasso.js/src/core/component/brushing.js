@@ -95,7 +95,8 @@ export function styler(obj, { context, data, style, filter, mode }) {
     return globalChanged;
   };
 
-  const onStart = () => {
+  const onStart = (opts = { suppressRender: false }) => {
+    const { suppressRender } = opts;
     const nodes = getNodes();
     const len = nodes.length;
     for (let i = 0; i < len; i++) {
@@ -113,10 +114,13 @@ export function styler(obj, { context, data, style, filter, mode }) {
     }
     globalActivation = true;
     activeNodes.length = 0;
-    obj.renderer.render(obj.nodes);
+    if (!suppressRender) {
+      obj.renderer.render(obj.nodes);
+    }
   };
 
-  const onEnd = () => {
+  const onEnd = (opts = { suppressRender: false }) => {
+    const { suppressRender } = opts;
     const nodes = getNodes();
     const len = nodes.length;
 
@@ -129,9 +133,11 @@ export function styler(obj, { context, data, style, filter, mode }) {
       }
     }
     activeNodes.length = 0;
-    obj.renderer.render(obj.nodes);
+    if (!suppressRender) {
+      obj.renderer.render(obj.nodes);
+    }
   };
-  const onUpdate = (/* added, removed */) => {
+  const onUpdate = () => {
     const changed = update();
     if (changed) {
       obj.renderer.render(obj.nodes);

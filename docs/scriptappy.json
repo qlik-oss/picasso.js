@@ -191,7 +191,14 @@
         "start": {
           "description": "Starts this brush context\n\nStarts this brush context and emits a 'start' event if it is not already started.",
           "kind": "function",
-          "params": [],
+          "params": [
+            {
+              "name": "args",
+              "description": "arguments to be passed to 'start' listeners",
+              "variable": true,
+              "type": "any"
+            }
+          ],
           "emits": [
             {
               "type": "#/definitions/brush/events/start"
@@ -201,7 +208,14 @@
         "end": {
           "description": "Ends this brush context\n\nEnds this brush context and emits an 'end' event if it is not already ended.",
           "kind": "function",
-          "params": [],
+          "params": [
+            {
+              "name": "args",
+              "description": "arguments to be passed to 'end' listeners",
+              "variable": true,
+              "type": "any"
+            }
+          ],
           "emits": [
             {
               "type": "#/definitions/brush/events/end"
