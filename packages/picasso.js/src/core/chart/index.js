@@ -55,6 +55,16 @@ function addComponentDelta(shape, containerBounds, componentBounds) {
         v.y += dy;
       }
       break;
+    case 'geopolygon': // vertices is 2D array
+      for (let n = 0; n < deltaShape.vertices.length; n++) {
+        const vertices = deltaShape.vertices[n];
+        for (let i = 0, num = vertices.length; i < num; i++) {
+          const v = vertices[i];
+          v.x += dx;
+          v.y += dy;
+        }
+      }
+      break;
     case 'line':
       deltaShape.x1 += dx;
       deltaShape.y1 += dy;
@@ -683,9 +693,9 @@ function chartFn(definition, context) {
   instance.componentsFromPoint = p => componentsFromPoint(p).map(comp => comp.instance.ctx);
 
   /**
-   * Get all nodes colliding with a geometrical shape (circle, line, rectangle, point, polygon).
+   * Get all nodes colliding with a geometrical shape (circle, line, rectangle, point, polygon, geopolygon).
    *
-   * The input shape is identified based on the geometrical attributes in the following order: circle => line => rectangle => point => polygon.
+   * The input shape is identified based on the geometrical attributes in the following order: circle => line => rectangle => point => polygon => geopolygon.
    * Note that not all nodes on a scene have collision detection enabled.
    * @param {line|rect|point|circle} shape - A geometrical shape. Coordinates are relative to the top-left corner of the chart instance container.
    * @param {object} opts - Options

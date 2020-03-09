@@ -100,7 +100,7 @@ export function getShapeType(shape) {
     cx,
     cy,
     r, // Circle
-    vertices, // Polygon
+    vertices, // Polygon or GeoPolygon
   } = shape || {};
 
   if (isNumber(cx) && isNumber(cy) && isNumber(r)) {
@@ -116,7 +116,7 @@ export function getShapeType(shape) {
     return 'point';
   }
   if (Array.isArray(vertices)) {
-    return 'polygon';
+    return vertices.every(item => Array.isArray(item)) ? 'geopolygon' : 'polygon';
   }
   return null;
 }

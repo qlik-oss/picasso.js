@@ -5,6 +5,7 @@ import {
   testCircleLine,
   testCircleCircle,
   testCirclePolygon,
+  testCircleGeoPolygon,
 } from '../math/narrow-phase-collision';
 
 /**
@@ -71,6 +72,14 @@ class GeoCircle {
    */
   intersectsPolygon(polygon) {
     return testCirclePolygon(this, polygon);
+  }
+
+  /**
+   * @param {GeoPolygon} geopolygon
+   * @returns {boolean} True if there is an intersection, false otherwise
+   */
+  intersectsGeoPolygon(geopolygon) {
+    return testCircleGeoPolygon(this, geopolygon);
   }
 
   /**

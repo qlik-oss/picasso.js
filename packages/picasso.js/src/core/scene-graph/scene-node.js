@@ -10,7 +10,14 @@ function appendDpi(points, dpi) {
 
 function geometryToDef(geometry, dpi, mvm) {
   const type = geometry.type;
-  const points = mvm ? mvm.transformPoints(geometry.points()) : geometry.points();
+  let points = geometry.points();
+  if (mvm) {
+    if (points.every(item => Array.isArray(item))) {
+      points = points.map(item => mvm.transformPoints(item));
+    } else {
+      points = mvm.transformPoints(points);
+    }
+  }
   appendDpi(points, dpi);
   let def = null;
 
@@ -25,6 +32,15 @@ function geometryToDef(geometry, dpi, mvm) {
     def.type = type;
   } else if (type === 'polygon' || type === 'polyline') {
     const path = pointsToPath(points, type === 'polygon');
+    def = {
+      type: 'path',
+      d: path,
+    };
+  } else if (type === 'geopolygon') {
+    let path = '';
+    for (let i = 0; i < points.length; i++) {
+      path += pointsToPath(points[i], true);
+    }
     def = {
       type: 'path',
       d: path,

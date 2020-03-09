@@ -1,6 +1,7 @@
 import createCollision from './collision';
 import { scalarMultiply } from '../math/vector';
 import { create as createPolygon } from '../geometry/polygon';
+import { create as createGeoPolygon } from '../geometry/geopolygon';
 import { lineToPoints, rectToPoints, getShapeType } from '../geometry/util';
 
 function appendParentNode(node, collision) {
@@ -77,7 +78,11 @@ function inverseTransform(node, input) {
   }
 
   if (Array.isArray(transformedInput.vertices)) {
-    transformedInput = createPolygon(transformedInput); // TODO Shouldn't have to do this here, currently its beacause a collision algorithm optimization, i.e. caching of polygon bounds
+    if (transformedInput.vertices.every(item => Array.isArray(item))) {
+      transformedInput = createGeoPolygon(transformedInput);
+    } else {
+      transformedInput = createPolygon(transformedInput); // TODO Shouldn't have to do this here, currently its beacause a collision algorithm optimization, i.e. caching of polygon bounds
+    }
   }
 
   return transformedInput;
@@ -155,6 +160,9 @@ function resolveShape(shape, ratio = 1) {
     case 'polygon':
       _shape.vertices = shape.vertices.map(vertex => scalarMultiply(vertex, ratio));
       return ['intersectsPolygon', _shape];
+    case 'geopolygon':
+      _shape.vertices = shape.vertices.map(vertices => vertices.map(vertex => scalarMultiply(vertex, ratio)));
+      return ['intersectsGeoPolygon', _shape];
     default:
       return [];
   }

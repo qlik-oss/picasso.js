@@ -2,6 +2,7 @@ import { create as rect } from './rect';
 import { create as circle } from './circle';
 import { create as line } from './line';
 import { create as polygon } from './polygon';
+import { create as geopolygon } from './geopolygon';
 import { create as polyline } from './polyline';
 import registry from '../utils/registry';
 
@@ -11,6 +12,7 @@ reg.add('rect', rect);
 reg.add('circle', circle);
 reg.add('line', line);
 reg.add('polygon', polygon);
+reg.add('geopolygon', geopolygon);
 reg.add('polyline', polyline);
 
 /* eslint-disable import/prefer-default-export */
@@ -51,6 +53,11 @@ export function create(type, input) {
 /**
  * @typedef {object} polygon
  * @property {Array<point>} points - Array of connected points
+ */
+
+/**
+ * @typedef {object} geopolygon
+ * @property {Array<polygon>} polygons - Array of polygons
  */
 
 /**

@@ -36,7 +36,7 @@ function create() {
 
     /**
      * Get nodes renderer at area
-     * @param {point|circle|rect|line|polygon} geometry - Get nodes that intersects with geometry
+     * @param {point|circle|rect|line|polygon|geopolygon} geometry - Get nodes that intersects with geometry
      * @returns {SceneNode[]}
      */
     itemsAt: () => [],
