@@ -8,9 +8,10 @@ describe('hammer interaction mixin', () => {
   let chart;
   let settings;
   let hammerInteraction;
+  let Hammer;
 
   beforeEach(() => {
-    hammerMock();
+    Hammer = hammerMock();
     element = createElement('div');
     mediator = {};
     chart = {};
@@ -31,7 +32,7 @@ describe('hammer interaction mixin', () => {
         },
       ],
     };
-    hammerInteraction = hammer(chart, mediator, element);
+    hammerInteraction = hammer(Hammer)(chart, mediator, element);
   });
 
   it('should add ', () => {
