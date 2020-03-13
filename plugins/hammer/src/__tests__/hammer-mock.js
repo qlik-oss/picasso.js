@@ -105,7 +105,6 @@ function hammerMock() {
   Hammer.Manager = Manager;
   Hammer.Tap = Tap;
   Hammer.Pan = Pan;
-  global.Hammer = Hammer;
   return Hammer;
 }
 
