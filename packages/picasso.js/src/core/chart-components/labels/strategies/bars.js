@@ -281,7 +281,6 @@ export function placeInBars(
 
       if (bounds && placement) {
         justify = placement.justify;
-        fill = typeof placement.fill === 'function' ? placement.fill(arg, i) : placement.fill;
         const linkData = typeof lblStngs.linkData === 'function' ? lblStngs.linkData(arg, i) : undefined;
         const overflow = typeof placement.overflow === 'function' ? placement.overflow(arg, i) : placement.overflow;
 
@@ -297,7 +296,6 @@ export function placeInBars(
 
         const isRotated = !(collectiveOrientation === 'h' || fitsHorizontally);
         label = placer(bounds, text, {
-          fill,
           justify: orientation === 'h' ? placement.align : justify,
           align: orientation === 'h' ? justify : placement.align,
           fontSize: lblStngs.fontSize,
@@ -308,13 +306,16 @@ export function placeInBars(
         });
 
         if (label) {
+          const textBounds = approxTextBounds(label, measured, isRotated, bounds, placement.padding);
+          fill = typeof placement.fill === 'function' ? placement.fill(arg, i, textBounds) : placement.fill;
+          label.fill = fill;
           if (typeof linkData !== 'undefined') {
             label.data = linkData;
           }
           if (typeof placement.background === 'object') {
             label.backgroundColor =
               typeof placement.background.fill === 'function'
-                ? placement.background.fill(arg, i)
+                ? placement.background.fill(arg, i, textBounds)
                 : placement.background.fill;
             if (typeof label.backgroundColor !== 'undefined') {
               label.backgroundBounds = approxTextBounds(
@@ -329,7 +330,7 @@ export function placeInBars(
           labels.push(label);
           postFilterContext.labels.push({
             node,
-            textBounds: approxTextBounds(label, measured, isRotated, bounds, placement.padding),
+            textBounds,
           });
         }
       }

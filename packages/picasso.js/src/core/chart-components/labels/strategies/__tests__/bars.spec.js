@@ -542,7 +542,6 @@ describe('labeling - bars', () => {
           'bounds',
           'a',
           {
-            fill: 'blue',
             justify: 0.4,
             align: 0.8,
             fontSize: '11px',
@@ -657,7 +656,6 @@ describe('labeling - bars', () => {
         postFilter
       );
       expect(placer.firstCall).to.have.been.calledWithExactly('bounds', 'a', {
-        fill: 'blue',
         justify: 0.4,
         align: 0.7,
         fontSize: '11px',
