@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.30.0](https://github.com/qlik-oss/picasso.js/compare/v0.29.2...v0.30.0) (2020-03-17)
+
+### Features
+
+- **brush:** suppress paint on brush.end() and brush.start() ([#482](https://github.com/qlik-oss/picasso.js/issues/482)) ([798df69](https://github.com/qlik-oss/picasso.js/commit/798df69))
+- mouse radius property on brushing api ([#480](https://github.com/qlik-oss/picasso.js/issues/480)) ([4f5a83b](https://github.com/qlik-oss/picasso.js/commit/4f5a83b))
+
 ## [0.29.2](https://github.com/qlik-oss/picasso.js/compare/v0.29.1...v0.29.2) (2020-01-22)
 
 **Note:** Version bump only for package docs
