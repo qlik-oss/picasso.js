@@ -307,7 +307,7 @@ export function placeInBars(
 
         if (label) {
           const textBounds = approxTextBounds(label, measured, isRotated, bounds, placement.padding);
-          fill = typeof placement.fill === 'function' ? placement.fill(arg, i, textBounds) : placement.fill;
+          fill = typeof placement.fill === 'function' ? placement.fill({ ...arg, textBounds }, i) : placement.fill;
           label.fill = fill;
           if (typeof linkData !== 'undefined') {
             label.data = linkData;
@@ -315,7 +315,7 @@ export function placeInBars(
           if (typeof placement.background === 'object') {
             label.backgroundColor =
               typeof placement.background.fill === 'function'
-                ? placement.background.fill(arg, i, textBounds)
+                ? placement.background.fill({ ...arg, textBounds }, i)
                 : placement.background.fill;
             if (typeof label.backgroundColor !== 'undefined') {
               label.backgroundBounds = approxTextBounds(
