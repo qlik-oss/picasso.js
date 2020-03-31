@@ -643,6 +643,8 @@ function chartFn(definition, context) {
     beforeDestroy();
     currentComponents.forEach(comp => comp.instance.destroy());
     currentComponents = [];
+    currentInteractions.forEach(inter => inter.destroy());
+    currentInteractions = [];
     unmount();
     delete instance.update;
     delete instance.destroy;
