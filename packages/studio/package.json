@@ -15,7 +15,6 @@
   "bugs": {
     "url": "https://github.com/qlik-oss/picasso.js/issues"
   },
-  "homepage": "https://picassojs.studio",
   "repository": {
     "type": "git",
     "url": "https://github.com/qlik-oss/picasso.js.git"
@@ -42,7 +41,8 @@
     "react-split-pane": "^0.1.89",
     "resizable-panels-react": "^2.0.8",
     "run-script": "^0.1.1",
-    "slug": "^2.1.1"
+    "slug": "^2.1.1",
+    "qix-faker": "0.3.0"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "^7.8.3",
