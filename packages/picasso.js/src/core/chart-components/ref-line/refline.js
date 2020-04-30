@@ -64,7 +64,7 @@ function filterUndefinedValue(line) {
 
 /**
  * @typedef {object} component--ref-line.line
- * @property {number} value - The value of the reference line. If a scale is specified, it is applied.
+ * @property {number|function} value - The value of the reference line. If a scale is specified, it is applied.
  * @property {Scale} [scale=undefined] - Scale to use (if undefined will use normalized value 0-1)
  * @property {refline-generic-object} [line=refline-generic-object] - The style of the line
  * @property {refline-line-label} [label=refline-line-label] - The label style of the line
@@ -187,6 +187,10 @@ const refLineComponent = {
 
     // Convert a value to an actual position using the scale
     this.lines.x = this.lines.x.filter(filterUndefinedValue).map(line => {
+      if (typeof line.value === 'function') {
+        line.value = line.value();
+      }
+
       if (line.scale) {
         let scale = this.chart.scale(line.scale);
         return extend(line, { scale, position: scale(line.value) });
@@ -197,6 +201,10 @@ const refLineComponent = {
     // Set all Y lines to flipXY by default
     // This makes the transposer flip them individually
     this.lines.y = this.lines.y.filter(filterUndefinedValue).map(line => {
+      if (typeof line.value === 'function') {
+        line.value = line.value();
+      }
+
       if (line.scale) {
         let scale = this.chart.scale(line.scale);
         return extend(line, { scale, position: scale(line.value), flipXY: true });
