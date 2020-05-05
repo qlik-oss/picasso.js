@@ -196,6 +196,53 @@ describe('reference lines', () => {
     ]);
   });
 
+  it('should support value as a function', () => {
+    const config = {
+      shapeFn,
+      lines: {
+        x: [
+          {
+            value: () => 0.3,
+            scale: { scale: 'x' },
+            line: {
+              stroke: 'green',
+              strokeWidth: 2,
+            },
+          },
+        ],
+      },
+    };
+
+    const xScale = v => v;
+    chart.scale.withArgs({ scale: 'x' }).returns(xScale);
+
+    const yScale = v => v;
+    chart.scale.withArgs({ scale: 'y' }).returns(yScale);
+
+    createAndRenderComponent({
+      inner: {
+        x: 37,
+        y: 0,
+        width: 870,
+        height: 813,
+      },
+      config,
+    });
+
+    expect(rendererOutput).to.deep.equal([
+      {
+        flipXY: false,
+        stroke: 'green',
+        strokeWidth: 2,
+        type: 'line',
+        x1: 261,
+        x2: 261,
+        y1: 0,
+        y2: 813,
+      },
+    ]);
+  });
+
   it('should render basic line with label on Y without scale', () => {
     const config = {
       shapeFn,
