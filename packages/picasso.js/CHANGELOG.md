@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.31.0](https://github.com/qlik-oss/picasso.js/compare/v0.30.0...v0.31.0) (2020-05-07)
+
+### Features
+
+- ref-line value as a function ([#492](https://github.com/qlik-oss/picasso.js/issues/492)) ([c4a4692](https://github.com/qlik-oss/picasso.js/commit/c4a469265fb6ae0b63f9fa0cd53f77c1b7c35ba6))
+
 # [0.30.0](https://github.com/qlik-oss/picasso.js/compare/v0.29.2...v0.30.0) (2020-03-17)
 
 ### Features

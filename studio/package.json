@@ -1,7 +1,7 @@
 {
   "name": "studio",
   "private": true,
-  "version": "0.18.2",
+  "version": "0.31.0",
   "description": "An interactive playground tool for picasso development",
   "license": "MIT",
   "author": "QlikTech International AB",
@@ -34,6 +34,7 @@
     "hammerjs": "2.0.8",
     "monaco-editor": "0.20.0",
     "prop-types": "15.7.2",
+    "qix-faker": "0.3.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-monaco-editor": "0.36.0",
@@ -41,8 +42,7 @@
     "react-split-pane": "0.1.91",
     "resizable-panels-react": "2.0.8",
     "run-script": "0.1.1",
-    "slug": "2.1.1",
-    "qix-faker": "0.3.0"
+    "slug": "2.1.1"
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "7.8.3",
@@ -65,8 +65,8 @@
     "webpack-dev-server": "3.10.3"
   },
   "peerDependencies": {
-    "picasso.js": "*",
     "picasso-plugin-hammer": "*",
-    "picasso-plugin-q": "*"
+    "picasso-plugin-q": "*",
+    "picasso.js": "*"
   }
 }
