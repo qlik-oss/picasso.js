@@ -39,7 +39,7 @@ Button.defaultProps = {
   target: '_self',
 };
 
-const SplashContainer = props => (
+const SplashContainer = (props) => (
   <div className="homeContainer">
     <div className="homeSplashFade">
       <div className="wrapper homeWrapper">{props.children}</div>
@@ -71,13 +71,13 @@ const SplashContainer = props => (
   </div>
 );
 
-const Logo = props => (
+const Logo = (props) => (
   <div className="logo">
     <img src={props.img_src} />
   </div>
 );
 
-const PromoSection = props => (
+const PromoSection = (props) => (
   <div className="section promoSection">
     <div className="promoRow">
       <div className="pluginRowBlock">{props.children}</div>
@@ -105,7 +105,7 @@ class HomeSplash extends React.Component {
   }
 }
 
-const Block = props => (
+const Block = (props) => (
   <Container padding={['bottom', 'top']} id={props.id} background={props.background}>
     <GridBlock contents={props.children} layout={props.layout} />
   </Container>
@@ -124,7 +124,7 @@ const Block = props => (
 //   </Block>
 // );
 
-const Components = props => (
+const Components = (props) => (
   <Container padding={['bottom', 'top']}>
     <div className="gridBlock">
       <div className="blockElement imageAlignSide twoByGridBlock">
@@ -185,7 +185,7 @@ const Components = props => (
   </Container>
 );
 
-const Extensible = props => (
+const Extensible = (props) => (
   <Block>
     {[
       {
@@ -199,7 +199,7 @@ const Extensible = props => (
   </Block>
 );
 
-const Interactive = props => (
+const Interactive = (props) => (
   <Block>
     {[
       {
@@ -213,7 +213,7 @@ const Interactive = props => (
   </Block>
 );
 
-const Responsive = props => (
+const Responsive = (props) => (
   <Block>
     {[
       {
@@ -227,7 +227,7 @@ const Responsive = props => (
   </Block>
 );
 
-const Themeable = props => (
+const Themeable = (props) => (
   <Block>
     {[
       {

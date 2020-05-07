@@ -9,7 +9,7 @@ describe('dom renderer', () => {
     sandbox = sinon.createSandbox();
     rend = renderer({
       createElement: element,
-      createTextNode: text => text,
+      createTextNode: (text) => text,
     });
   });
 

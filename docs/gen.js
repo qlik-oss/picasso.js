@@ -40,7 +40,7 @@ function domkdir(curpath, skipFile) {
  */
 function registerTemplates(cb) {
   glob(`${MD_TEMPLATES_FOLDER}**/*.md`, {}, (err, files) => {
-    files.forEach(file => {
+    files.forEach((file) => {
       const title = path.basename(file, '.md');
       const content = `${fs.readFileSync(file)}`;
       handlebars.registerPartial(title, content);
@@ -63,7 +63,7 @@ function postProcessTemplate(item) {
   return `#%#%#%#%# DOCS-GEN-POSTPROCESS: ${item} #%#%#%#%#`;
 }
 
-handlebars.registerHelper('postprocess', function(item) {
+handlebars.registerHelper('postprocess', function (item) {
   // eslint-disable-line
   this._post.push(item);
 
@@ -71,7 +71,7 @@ handlebars.registerHelper('postprocess', function(item) {
 });
 
 function doPostProcess(content, jsdocdata) {
-  jsdocdata._post.forEach(item => {
+  jsdocdata._post.forEach((item) => {
     const itemTemplate = handlebars.compile(fs.readFileSync(path.resolve(`${POSTPROCESS_ROOT}${item}.md`)).toString());
     content = content.replace(postProcessTemplate(item), itemTemplate(jsdocdata));
   });
@@ -83,7 +83,7 @@ function doPostProcess(content, jsdocdata) {
  */
 function compileMarkdownFiles(jsdocdata) {
   glob(`${MD_INPUT_FOLDER}/**/*.md`, {}, (err, files) => {
-    files.forEach(file => {
+    files.forEach((file) => {
       const relativePath = path.relative(MD_INPUT_FOLDER, file);
       const template = handlebars.compile(`${fs.readFileSync(file)}`);
       let title = path.basename(file, '.md');
@@ -148,7 +148,7 @@ handlebars.registerHelper('anchor', (...args) => {
   return new handlebars.SafeString(`<a name='${name}' href='#${name}'># </a>`);
 });
 
-handlebars.registerHelper('no', v => v || 'No');
+handlebars.registerHelper('no', (v) => v || 'No');
 handlebars.registerHelper('nocust', (v, fb) => v || fb || 'No');
 
 handlebars.registerHelper('med', (node, options) => {
@@ -165,7 +165,7 @@ handlebars.registerHelper('typedef', (node, options) => {
   }
   let t = '';
   if (node.kind === 'union' && node.items) {
-    t = node.items.map(tt => tt.type).join(' | ');
+    t = node.items.map((tt) => tt.type).join(' | ');
     t = options.fn(t).replace(' | ', ' &#124; ');
     // console.log(t, new handlebars.SafeString(t));
   } else if (node.kind === 'array' && node.items) {
@@ -180,7 +180,7 @@ handlebars.registerHelper('typedef', (node, options) => {
   return new handlebars.SafeString(t);
 });
 
-handlebars.registerHelper('sample', node => {
+handlebars.registerHelper('sample', (node) => {
   if (!node) {
     return '';
   }
@@ -188,7 +188,7 @@ handlebars.registerHelper('sample', node => {
   let s = '';
   if (defaultType === 'undefined') {
     if (node.kind === 'union' && node.items) {
-      s = `/* ${node.items.map(tt => tt.type).join(' | ')} */`;
+      s = `/* ${node.items.map((tt) => tt.type).join(' | ')} */`;
     } else {
       s = `/* ${node.kind || node.type} */`;
     }
@@ -201,7 +201,7 @@ handlebars.registerHelper('sample', node => {
   return new handlebars.SafeString(s);
 });
 
-handlebars.registerHelper('helperMissing', context => {
+handlebars.registerHelper('helperMissing', (context) => {
   // log(`Template defines {{ ${context.name} }}, but not provided in context`);
   return '';
 });

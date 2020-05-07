@@ -49,8 +49,8 @@ function getMinMax(settings, fields) {
   let fieldMin = 0;
   let fieldMax = 1;
   if (fields && fields[0]) {
-    const minValues = fields.map(m => m.min()).filter(v => !isNaN(v));
-    const maxValues = fields.map(m => m.max()).filter(v => !isNaN(v));
+    const minValues = fields.map((m) => m.min()).filter((v) => !isNaN(v));
+    const maxValues = fields.map((m) => m.max()).filter((v) => !isNaN(v));
     fieldMin = minValues.length ? Math.min(...minValues) : Number.NaN;
     fieldMax = maxValues.length ? Math.max(...maxValues) : Number.NaN;
 
@@ -70,7 +70,7 @@ function getMinMax(settings, fields) {
     }
 
     if (Array.isArray(settings.include)) {
-      const i = settings.include.filter(n => !isNaN(n));
+      const i = settings.include.filter((n) => !isNaN(n));
       fieldMin = Math.min(...i, fieldMin);
       fieldMax = Math.max(...i, fieldMax);
     }

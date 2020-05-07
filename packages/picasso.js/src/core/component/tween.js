@@ -51,7 +51,7 @@ function tween({ old, current }, { renderer }, config) {
           );
         }
       });
-      Object.keys(ids).forEach(key => {
+      Object.keys(ids).forEach((key) => {
         if (ids[key]) {
           exited.nodes.push(ids[key]);
           exited.ips.push(interpolateObject(ids[key], extend({}, ids[key], { r: 0.0001, opacity: 0 })));
@@ -99,7 +99,7 @@ function tween({ old, current }, { renderer }, config) {
       }
       let t = (Date.now() - currentStage.started) / currentStage.duration;
       let currentNodes = [];
-      let tweenedNodes = currentStage.tweens.map(ip => ip(currentStage.easing(Math.min(1, t))));
+      let tweenedNodes = currentStage.tweens.map((ip) => ip(currentStage.easing(Math.min(1, t))));
       currentNodes.push(...tweenedNodes);
       currentNodes.push(...currentStage.nodes);
       // currentNodes.push(...staticNodes);

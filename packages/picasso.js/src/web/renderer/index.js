@@ -90,7 +90,7 @@ function create() {
      */
     textBounds,
 
-    setKey: key => {
+    setKey: (key) => {
       renderer.element().setAttribute('data-key', key);
     },
   };

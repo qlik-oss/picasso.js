@@ -150,7 +150,7 @@ describe('renderer-box', () => {
 
   describe('edgeBleed', () => {
     const props = ['left', 'right', 'top', 'bottom'];
-    props.forEach(prop => {
+    props.forEach((prop) => {
       it(`should return ${prop} value given input is valid`, () => {
         const edgeBleed = {};
         edgeBleed[prop] = 123;

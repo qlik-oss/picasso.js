@@ -8,11 +8,11 @@
     "spec": "jsdoc -r ../packages/picasso.js/src -p ../packages/picasso.js/package.json -X | scriptappy-from-jsdoc -c ./scriptappy.config.js"
   },
   "devDependencies": {
-    "glob": "^7.1.4",
-    "handlebars": "^4.2.0",
+    "glob": "7.1.6",
+    "handlebars": "4.7.6",
     "handlebars-helpers": "0.10.0",
-    "jsdoc": "^3.6.3",
-    "rimraf": "^3.0.0",
-    "scriptappy-from-jsdoc": "^0.6.0"
+    "jsdoc": "3.6.4",
+    "rimraf": "3.0.2",
+    "scriptappy-from-jsdoc": "0.6.0"
   }
 }

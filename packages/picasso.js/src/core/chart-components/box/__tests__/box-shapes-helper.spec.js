@@ -18,7 +18,7 @@ describe('box shapes', () => {
         rendWidth: 100,
         rendHeight: 100,
         flipXY: false,
-        symbol: v => v,
+        symbol: (v) => v,
       });
 
       expect(result).to.eql({
@@ -47,7 +47,7 @@ describe('box shapes', () => {
         rendWidth: 100,
         rendHeight: 100,
         flipXY: false,
-        symbol: v => v,
+        symbol: (v) => v,
       });
 
       expect(result).to.eql({
@@ -75,7 +75,7 @@ describe('box shapes', () => {
       rendWidth: 200,
       rendHeight: 150,
       flipXY: true,
-      symbol: v => v,
+      symbol: (v) => v,
     });
 
     expect(result).to.eql({
@@ -104,7 +104,7 @@ describe('box shapes', () => {
       rendWidth: 200,
       rendHeight: 150,
       flipXY: true,
-      symbol: v => v,
+      symbol: (v) => v,
     });
 
     expect(result).to.eql({

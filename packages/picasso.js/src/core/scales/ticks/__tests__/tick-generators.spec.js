@@ -124,13 +124,13 @@ describe('Tick generators', () => {
       it('should only generate unique ticks by values', () => {
         settings.ticks.values = [0.1, 0.1, 0.3, 0.4, 0.3, 0.5];
         const ticks = scale.ticks(input);
-        expect(ticks.map(t => t.value)).to.deep.equal([0.1, 0.3, 0.4, 0.5]);
+        expect(ticks.map((t) => t.value)).to.deep.equal([0.1, 0.3, 0.4, 0.5]);
       });
 
       it('should sort ticks by values', () => {
         settings.ticks.values = [0.3, 0.1, 0.5, 0.4];
         const ticks = scale.ticks(input);
-        expect(ticks.map(t => t.value)).to.deep.equal([0.1, 0.3, 0.4, 0.5]);
+        expect(ticks.map((t) => t.value)).to.deep.equal([0.1, 0.3, 0.4, 0.5]);
       });
     });
 
@@ -151,7 +151,7 @@ describe('Tick generators', () => {
         settings.minorTicks.count = 1;
         const ticks = scale.ticks(input);
         expect(ticks.length).to.equal(11);
-        expect(ticks.filter(t => t.isMinor).length).to.equal(5);
+        expect(ticks.filter((t) => t.isMinor).length).to.equal(5);
       });
     });
 
@@ -194,7 +194,7 @@ describe('Tick generators', () => {
         settings.minorTicks.count = 1;
         const ticks = scale.ticks(input);
         expect(ticks.length).to.equal(5);
-        expect(ticks.filter(t => t.isMinor).length).to.equal(2);
+        expect(ticks.filter((t) => t.isMinor).length).to.equal(2);
       });
     });
 
@@ -204,7 +204,7 @@ describe('Tick generators', () => {
         settings.ticks.forceBounds = true;
         scale.domain([-99, 99]);
         const ticks = scale.ticks(input);
-        const majorTicks = ticks.filter(t => !t.isMinor);
+        const majorTicks = ticks.filter((t) => !t.isMinor);
         expect(majorTicks[0]).to.deep.equal({
           position: 0,
           start: 0,
@@ -231,7 +231,7 @@ describe('Tick generators', () => {
         };
         scale.domain([-50, 450]);
         const ticks = scale.ticks(input);
-        const majorTicks = ticks.filter(t => !t.isMinor);
+        const majorTicks = ticks.filter((t) => !t.isMinor);
 
         expect(majorTicks[0]).to.deep.equal({
           start: 0,
@@ -261,7 +261,7 @@ describe('Tick generators', () => {
 
     describe('unitDivider', () => {
       it('should use fallback divider if unitDivider is not a number', () => {
-        ['3', 'asd', null, false, true, NaN, () => {}, undefined, ' ', {}].forEach(type => {
+        ['3', 'asd', null, false, true, NaN, () => {}, undefined, ' ', {}].forEach((type) => {
           looseDistanceBasedGenerator({ distance: 100, unitDivider: type, scale });
           expect(scale.ticks).to.have.been.calledWith(2);
         });
@@ -290,7 +290,7 @@ describe('Tick generators', () => {
 
     describe('distance', () => {
       it('should handle if distance is not a number', () => {
-        ['3', 'asd', null, false, true, NaN, () => {}, undefined, ' ', {}].forEach(type => {
+        ['3', 'asd', null, false, true, NaN, () => {}, undefined, ' ', {}].forEach((type) => {
           looseDistanceBasedGenerator({ distance: type, scale });
           expect(scale.ticks).to.have.been.calledWith(2);
         });
@@ -328,8 +328,8 @@ describe('Tick generators', () => {
     it('should generate ticks by data', () => {
       scale = band(
         {
-          value: d => d.datum,
-          label: d => d.datum,
+          value: (d) => d.datum,
+          label: (d) => d.datum,
         },
         { items: data }
       );
@@ -364,8 +364,8 @@ describe('Tick generators', () => {
     it('should support duplicate labels by separating values and labels', () => {
       scale = band(
         {
-          value: item => item.datum.id.value,
-          label: item => item.datum.value,
+          value: (item) => item.datum.id.value,
+          label: (item) => item.datum.value,
         },
         {
           items: [

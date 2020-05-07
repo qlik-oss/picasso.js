@@ -8,7 +8,7 @@ function parseTitle(text, join, scale) {
     title = text;
   } else if (scale) {
     let data = scale.data();
-    const titles = (data.fields || []).map(field => field.title());
+    const titles = (data.fields || []).map((field) => field.title());
     title = titles.join(join);
   }
 

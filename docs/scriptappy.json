@@ -3,7 +3,7 @@
   "info": {
     "name": "picasso.js",
     "description": "A charting library streamlined for building visualizations for the Qlik Sense Analytics platform.",
-    "version": "0.29.2",
+    "version": "0.30.0",
     "license": "MIT"
   },
   "entries": {
@@ -984,7 +984,7 @@
           }
         },
         "shapesAt": {
-          "description": "Get all nodes colliding with a geometrical shape (circle, line, rectangle, point, polygon).\n\nThe input shape is identified based on the geometrical attributes in the following order: circle => line => rectangle => point => polygon.\nNote that not all nodes on a scene have collision detection enabled.",
+          "description": "Get all nodes colliding with a geometrical shape (circle, line, rectangle, point, polygon, geopolygon).\n\nThe input shape is identified based on the geometrical attributes in the following order: circle => line => rectangle => point => polygon => geopolygon.\nNote that not all nodes on a scene have collision detection enabled.",
           "kind": "function",
           "params": [
             {
@@ -3424,7 +3424,16 @@
           "entries": {
             "value": {
               "description": "The value of the reference line. If a scale is specified, it is applied.",
-              "type": "number"
+              "kind": "union",
+              "items": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "function"
+                }
+              ],
+              "type": "any"
             },
             "scale": {
               "description": "Scale to use (if undefined will use normalized value 0-1)",
@@ -4090,6 +4099,18 @@
         }
       }
     },
+    "geopolygon": {
+      "kind": "object",
+      "entries": {
+        "polygons": {
+          "description": "Array of polygons",
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/polygon"
+          }
+        }
+      }
+    },
     "polyline": {
       "kind": "object",
       "entries": {
@@ -4356,6 +4377,60 @@
             }
           ]
         }
+      }
+    },
+    "testPolygonPolygon": {
+      "description": "Test if a polygon intersects another polygon.\nSupports convex, concave and self-intersecting polygons (filled area).",
+      "kind": "function",
+      "params": [
+        {
+          "name": "polygon",
+          "type": "object"
+        },
+        {
+          "name": "polygon",
+          "type": "object"
+        }
+      ],
+      "returns": {
+        "description": "True if there is an intersection, false otherwise",
+        "type": "boolean"
+      }
+    },
+    "testGeoPolygonPolygon": {
+      "description": "Test if a geopolygon intersects a polygon.",
+      "kind": "function",
+      "params": [
+        {
+          "name": "geopolygon",
+          "type": "object"
+        },
+        {
+          "name": "polygon",
+          "type": "object"
+        }
+      ],
+      "returns": {
+        "description": "True if there is an intersection, false otherwise",
+        "type": "boolean"
+      }
+    },
+    "testGeoPolygonGeoPolygon": {
+      "description": "Test if a geopolygon intersects another geopolygon.",
+      "kind": "function",
+      "params": [
+        {
+          "name": "geopolygon",
+          "type": "object"
+        },
+        {
+          "name": "geopolygon",
+          "type": "object"
+        }
+      ],
+      "returns": {
+        "description": "True if there is an intersection, false otherwise",
+        "type": "boolean"
       }
     },
     "scale--band": {
@@ -5996,6 +6071,9 @@
                 },
                 {
                   "type": "#/definitions/polygon"
+                },
+                {
+                  "type": "#/definitions/geopolygon"
                 }
               ],
               "type": "any"

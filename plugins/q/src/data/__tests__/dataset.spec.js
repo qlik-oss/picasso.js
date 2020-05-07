@@ -213,12 +213,7 @@ describe('q-data', () => {
     });
 
     it('should have link to its origin', () => {
-      expect(
-        d
-          .field('temporal')
-          .origin()
-          .key()
-      ).to.equal('qMeasureInfo/2');
+      expect(d.field('temporal').origin().key()).to.equal('qMeasureInfo/2');
     });
   });
 
@@ -247,8 +242,8 @@ describe('q-data', () => {
       });
 
       it('items', () => {
-        expect(f.items().map(v => v.value)).to.eql([3]);
-        expect(f.items().map(v => v.label)).to.eql(['three']);
+        expect(f.items().map((v) => v.value)).to.eql([3]);
+        expect(f.items().map((v) => v.label)).to.eql(['three']);
       });
     });
 
@@ -259,8 +254,8 @@ describe('q-data', () => {
       });
 
       it('items', () => {
-        expect(f.items().map(v => v.value)).to.eql([3.6]);
-        expect(f.items().map(v => v.label)).to.eql(['$$3.6']);
+        expect(f.items().map((v) => v.value)).to.eql([3.6]);
+        expect(f.items().map((v) => v.label)).to.eql(['$$3.6']);
       });
     });
 
@@ -271,8 +266,8 @@ describe('q-data', () => {
       });
 
       it('items', () => {
-        expect(f.items().map(v => v.value)).to.eql([37.6]);
-        expect(f.items().map(v => v.label)).to.eql(['$37.6']);
+        expect(f.items().map((v) => v.value)).to.eql([37.6]);
+        expect(f.items().map((v) => v.label)).to.eql(['$37.6']);
       });
     });
 
@@ -283,8 +278,8 @@ describe('q-data', () => {
       });
 
       it('items', () => {
-        expect(f.items().map(v => v.value)).to.eql([7]);
-        expect(f.items().map(v => v.label)).to.eql(['seven']);
+        expect(f.items().map((v) => v.value)).to.eql([7]);
+        expect(f.items().map((v) => v.label)).to.eql(['seven']);
       });
     });
 
@@ -337,8 +332,8 @@ describe('q-data', () => {
       });
 
       it('items', () => {
-        expect(f.items().map(v => v.value)).to.eql([7]);
-        expect(f.items().map(v => v.label)).to.eql(['$34']);
+        expect(f.items().map((v) => v.value)).to.eql([7]);
+        expect(f.items().map((v) => v.label)).to.eql(['$34']);
       });
     });
 
@@ -349,8 +344,8 @@ describe('q-data', () => {
       });
 
       it('items', () => {
-        expect(f.items().map(v => v.value)).to.eql([32.3]);
-        expect(f.items().map(v => v.label)).to.eql(['$32.3']);
+        expect(f.items().map((v) => v.value)).to.eql([32.3]);
+        expect(f.items().map((v) => v.label)).to.eql(['$32.3']);
       });
     });
 
@@ -361,8 +356,8 @@ describe('q-data', () => {
       });
 
       it('items', () => {
-        expect(f.items().map(v => v.value)).to.eql([37.6]);
-        expect(f.items().map(v => v.label)).to.eql(['$37.6']);
+        expect(f.items().map((v) => v.value)).to.eql([37.6]);
+        expect(f.items().map((v) => v.label)).to.eql(['$37.6']);
       });
     });
 
@@ -373,8 +368,8 @@ describe('q-data', () => {
       });
 
       it('items', () => {
-        expect(f.items().map(v => v.value)).to.eql([7]);
-        expect(f.items().map(v => v.label)).to.eql(['seven']);
+        expect(f.items().map((v) => v.value)).to.eql([7]);
+        expect(f.items().map((v) => v.label)).to.eql(['seven']);
       });
     });
 
@@ -400,8 +395,8 @@ describe('q-data', () => {
       });
 
       it('items', () => {
-        expect(f.items().map(v => v.value)).to.eql([9]);
-        expect(f.items().map(v => v.label)).to.eql(['nine']);
+        expect(f.items().map((v) => v.value)).to.eql([9]);
+        expect(f.items().map((v) => v.label)).to.eql(['nine']);
       });
     });
 
@@ -412,8 +407,8 @@ describe('q-data', () => {
       });
 
       it('items', () => {
-        expect(f.items().map(v => v.value)).to.eql([31.3]);
-        expect(f.items().map(v => v.label)).to.eql(['$31.3']);
+        expect(f.items().map((v) => v.value)).to.eql([31.3]);
+        expect(f.items().map((v) => v.label)).to.eql(['$31.3']);
       });
     });
 
@@ -424,8 +419,8 @@ describe('q-data', () => {
       });
 
       it('items', () => {
-        expect(f.items().map(v => v.value)).to.eql([37.6]);
-        expect(f.items().map(v => v.label)).to.eql(['$37.6']);
+        expect(f.items().map((v) => v.value)).to.eql([37.6]);
+        expect(f.items().map((v) => v.label)).to.eql(['$37.6']);
       });
     });
 
@@ -436,8 +431,8 @@ describe('q-data', () => {
       });
 
       it('items', () => {
-        expect(f.items().map(v => v.value)).to.eql([7]);
-        expect(f.items().map(v => v.label)).to.eql(['seven']);
+        expect(f.items().map((v) => v.value)).to.eql([7]);
+        expect(f.items().map((v) => v.label)).to.eql(['seven']);
       });
     });
 
@@ -462,8 +457,8 @@ describe('q-data', () => {
       });
 
       it('items', () => {
-        expect(f.items().map(v => v.value)).to.eql([9]);
-        expect(f.items().map(v => v.label)).to.eql(['nine']);
+        expect(f.items().map((v) => v.value)).to.eql([9]);
+        expect(f.items().map((v) => v.label)).to.eql(['nine']);
       });
     });
 
@@ -474,8 +469,8 @@ describe('q-data', () => {
       });
 
       it('items', () => {
-        expect(f.items().map(v => v.value)).to.eql([31.3]);
-        expect(f.items().map(v => v.label)).to.eql(['$31.3']);
+        expect(f.items().map((v) => v.value)).to.eql([31.3]);
+        expect(f.items().map((v) => v.label)).to.eql(['$31.3']);
       });
     });
 
@@ -486,8 +481,8 @@ describe('q-data', () => {
       });
 
       it('items', () => {
-        expect(f.items().map(v => v.value)).to.eql([37.6]);
-        expect(f.items().map(v => v.label)).to.eql(['$37.6']);
+        expect(f.items().map((v) => v.value)).to.eql([37.6]);
+        expect(f.items().map((v) => v.label)).to.eql(['$37.6']);
       });
     });
 
@@ -498,8 +493,8 @@ describe('q-data', () => {
       });
 
       it('items', () => {
-        expect(f.items().map(v => v.value)).to.eql([7]);
-        expect(f.items().map(v => v.label)).to.eql(['seven']);
+        expect(f.items().map((v) => v.value)).to.eql([7]);
+        expect(f.items().map((v) => v.label)).to.eql(['seven']);
       });
     });
 
@@ -592,12 +587,12 @@ describe('q-data', () => {
     });
 
     it('should return false when search by function misses', () => {
-      const f = d.field(ff => ff.title() === 'nope');
+      const f = d.field((ff) => ff.title() === 'nope');
       expect(f).to.equal(false);
     });
 
     it('should find field by function', () => {
-      const f = d.field(ff => ff.title() === 'm attr expr title');
+      const f = d.field((ff) => ff.title() === 'm attr expr title');
       expect(f).to.not.equal(false);
       expect(f.title()).to.eql('m attr expr title');
     });

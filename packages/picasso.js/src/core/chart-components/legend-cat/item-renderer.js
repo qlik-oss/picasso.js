@@ -256,7 +256,7 @@ export function parallelize(availableExtent, availableSpread, itemized) {
   return Math.max(1, Math.min(numNeeded, numInput));
 }
 
-export default function(legend, { onScroll = () => {} }) {
+export default function (legend, { onScroll = () => {} }) {
   let itemized;
   let parallels;
   let viewRect;
@@ -265,11 +265,11 @@ export default function(legend, { onScroll = () => {} }) {
   let overflow = 0;
 
   const api = {
-    itemize: obj => {
+    itemize: (obj) => {
       itemized = itemize(obj, legend.renderer);
       offset = !isNaN(itemized.layout.scrollOffset) ? itemized.layout.scrollOffset : offset; // Set the initial offset
     },
-    getItemsToRender: obj => {
+    getItemsToRender: (obj) => {
       viewRect = obj.viewRect;
       overflow = api.getContentOverflow(viewRect);
       const ext = api.extent();
@@ -325,7 +325,7 @@ export default function(legend, { onScroll = () => {} }) {
     prev: () => {
       api.scroll(api.getPrevSize());
     },
-    scroll: delta => {
+    scroll: (delta) => {
       const current = Math.max(0, Math.min(overflow, offset - delta));
       if (current === offset) {
         return;

@@ -144,7 +144,7 @@ function createDisplayLayer(points, { generator, item, data }, fill = '') {
 function createDisplayLayers(layers, { width, height, missingMinor0, stngs }) {
   const nodes = [];
   const layerStngs = stngs.layers || {};
-  layers.forEach(layer => {
+  layers.forEach((layer) => {
     const { lineObj, layerObj, areaObj, points } = layer;
 
     const areaGenerator = area();
@@ -159,14 +159,14 @@ function createDisplayLayers(layers, { width, height, missingMinor0, stngs }) {
       minor = extend(true, {}, temp);
     }
 
-    areaGenerator[major.p](d => d.major * major.size) // eslint-disable-line no-unexpected-multiline
-      [`${minor.p}1`](d => d.minor * minor.size) // eslint-disable-line no-unexpected-multiline
-      [`${minor.p}0`](d => d.minor0 * minor.size) // eslint-disable-line no-unexpected-multiline
+    areaGenerator[major.p]((d) => d.major * major.size) // eslint-disable-line no-unexpected-multiline
+      [`${minor.p}1`]((d) => d.minor * minor.size) // eslint-disable-line no-unexpected-multiline
+      [`${minor.p}0`]((d) => d.minor0 * minor.size) // eslint-disable-line no-unexpected-multiline
       .curve(CURVES[layerObj.curve === 'monotone' ? `monotone${major.p}` : layerObj.curve]);
     if (defined) {
-      areaGenerator.defined(d => !d.dummy && typeof d.minor === 'number' && !isNaN(d.minor) && d.defined);
+      areaGenerator.defined((d) => !d.dummy && typeof d.minor === 'number' && !isNaN(d.minor) && d.defined);
     } else {
-      areaGenerator.defined(d => !d.dummy && typeof d.minor === 'number' && !isNaN(d.minor));
+      areaGenerator.defined((d) => !d.dummy && typeof d.minor === 'number' && !isNaN(d.minor));
     }
 
     const filteredPoints = stngs.connect ? points.filter(areaGenerator.defined()) : points;
@@ -268,7 +268,7 @@ function resolve({ data, stngs, rect, resolver, style, domain }) {
     layerIds[lid].items.push(p);
   }
 
-  const metaLayers = Object.keys(layerIds).map(lid => {
+  const metaLayers = Object.keys(layerIds).map((lid) => {
     layerIds[lid].consumableData = {
       points: layerIds[lid].dataItems,
       ...layerIds[lid].dataItems[0],
@@ -277,7 +277,7 @@ function resolve({ data, stngs, rect, resolver, style, domain }) {
   });
 
   const layersData = {
-    items: metaLayers.map(layer => layer.consumableData),
+    items: metaLayers.map((layer) => layer.consumableData),
   };
   const layerStngs = stngs.layers || {};
 
@@ -398,12 +398,12 @@ const lineMarkerComponent = {
 
     if (this.stngs.layers && this.stngs.layers.sort) {
       const sortable = visibleLayers
-        .map(v => ({
+        .map((v) => ({
           id: v.layerObj.id,
           data: v.layerObj.data,
         }))
         .sort(this.stngs.layers.sort)
-        .map(s => s.id);
+        .map((s) => s.id);
       visibleLayers.sort((a, b) => sortable.indexOf(a.layerObj.id) - sortable.indexOf(b.layerObj.id));
     } else {
       visibleLayers.sort((a, b) => a.median - b.median);

@@ -43,7 +43,7 @@ describe('Line Break Resolver', () => {
       node.maxWidth = 3;
       fn(state);
       expect(state.node.type).to.equal('container');
-      state.node.children.forEach(c => {
+      state.node.children.forEach((c) => {
         expect(c._lineBreak).to.be.true;
       });
     });

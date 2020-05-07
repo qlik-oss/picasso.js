@@ -51,14 +51,14 @@ function render({ rect }, renderer, itemized) {
   renderer.render(nodes);
 }
 
-export default function(legend) {
+export default function (legend) {
   let itemized;
 
   const api = {
-    itemize: obj => {
+    itemize: (obj) => {
       itemized = itemize(obj, legend);
     },
-    render: obj => {
+    render: (obj) => {
       render(obj, api.renderer, itemized);
     },
     spread: () => (itemized ? itemized.bounds.height : 0),

@@ -39,7 +39,7 @@ describe('line component', () => {
         data: {
           value: 1,
           label: '1',
-          points: config.data.map(p => ({ label: `${p}`, value: p })),
+          points: config.data.map((p) => ({ label: `${p}`, value: p })),
         },
       },
     ]);
@@ -76,7 +76,7 @@ describe('line component', () => {
         strokeWidth: 4,
         strokeDasharray: '8 4',
         opacity: 1,
-        data: { value: 1, label: '1', points: config.data.map(p => ({ label: `${p}`, value: p })) },
+        data: { value: 1, label: '1', points: config.data.map((p) => ({ label: `${p}`, value: p })) },
       },
     ]);
   });
@@ -109,7 +109,7 @@ describe('line component', () => {
         strokeLinejoin: 'miter',
         strokeWidth: 1,
         opacity: 1,
-        data: { value: 1, label: '1', points: config.data.map(p => ({ label: `${p}`, value: p })) },
+        data: { value: 1, label: '1', points: config.data.map((p) => ({ label: `${p}`, value: p })) },
       },
     ]);
   });
@@ -144,7 +144,7 @@ describe('line component', () => {
         strokeLinejoin: 'miter',
         strokeWidth: 1,
         opacity: 1,
-        data: { value: 2, label: '2', points: config.data.map(p => ({ label: `${p}`, value: p })) },
+        data: { value: 2, label: '2', points: config.data.map((p) => ({ label: `${p}`, value: p })) },
       },
     ]);
   });
@@ -178,7 +178,7 @@ describe('line component', () => {
         strokeLinejoin: 'miter',
         strokeWidth: 1,
         opacity: 1,
-        data: { value: 2, label: '2', points: config.data.map(p => ({ label: `${p}`, value: p })) },
+        data: { value: 2, label: '2', points: config.data.map((p) => ({ label: `${p}`, value: p })) },
       },
     ]);
   });
@@ -215,7 +215,7 @@ describe('line component', () => {
         strokeLinejoin: 'miter',
         strokeWidth: 1,
         opacity: 1,
-        data: { value: 2, label: '2', points: config.data.map(p => ({ label: `${p}`, value: p })) },
+        data: { value: 2, label: '2', points: config.data.map((p) => ({ label: `${p}`, value: p })) },
       },
     ]);
   });
@@ -253,14 +253,14 @@ describe('line component', () => {
         strokeLinejoin: 'miter',
         strokeWidth: 1,
         opacity: 1,
-        data: { value: 2, label: '2', points: config.data.map(p => ({ label: `${p}`, value: p })) },
+        data: { value: 2, label: '2', points: config.data.map((p) => ({ label: `${p}`, value: p })) },
       },
     ]);
   });
 
   it('should disconnect lines with unordered domain', () => {
     const domain = ['A', 'B', 'C', 'D', 'E'];
-    const domainScale = v => domain.indexOf(v) / 4;
+    const domainScale = (v) => domain.indexOf(v) / 4;
     domainScale.domain = () => domain;
     domainScale.range = () => [0, 1];
     componentFixture.mocks().theme.style.returns({});
@@ -291,14 +291,14 @@ describe('line component', () => {
         strokeLinejoin: 'miter',
         strokeWidth: 1,
         opacity: 1,
-        data: { value: 'A', label: 'A', points: config.data.map(p => ({ label: `${p}`, value: p })) },
+        data: { value: 'A', label: 'A', points: config.data.map((p) => ({ label: `${p}`, value: p })) },
       },
     ]);
   });
 
   it('should disconnect lines with unordered domain based on major data', () => {
     const domain = ['A', 'B', 'C', 'D', 'E'];
-    const domainScale = v => domain.indexOf(v) / 4;
+    const domainScale = (v) => domain.indexOf(v) / 4;
     domainScale.domain = () => domain;
     domainScale.range = () => [0, 1];
     componentFixture.mocks().theme.style.returns({});
@@ -306,7 +306,7 @@ describe('line component', () => {
     const config = {
       data: {
         items: ['A', 'B', /* skip C */ 'D', 'E'],
-        map: d => ({ value: `-${d.value}-`, major: { value: d.value } }),
+        map: (d) => ({ value: `-${d.value}-`, major: { value: d.value } }),
       },
       settings: {
         coordinates: {
@@ -335,7 +335,7 @@ describe('line component', () => {
         data: {
           value: '-A-',
           major: { value: 'A' },
-          points: config.data.items.map(p => ({ value: `-${p}-`, major: { value: p } })),
+          points: config.data.items.map((p) => ({ value: `-${p}-`, major: { value: p } })),
         },
       },
     ]);
@@ -382,7 +382,7 @@ describe('line component', () => {
         strokeLinejoin: undefined,
         strokeWidth: undefined,
         opacity: 0.3,
-        data: { value: 1, label: '1', points: config.data.map(p => ({ label: `${p}`, value: p })) },
+        data: { value: 1, label: '1', points: config.data.map((p) => ({ label: `${p}`, value: p })) },
       },
     ]);
   });
@@ -433,7 +433,7 @@ describe('line component', () => {
         strokeLinejoin: undefined,
         strokeWidth: undefined,
         opacity: 0.3,
-        data: { value: 1, label: '1', points: config.data.map(p => ({ label: `${p}`, value: p })) },
+        data: { value: 1, label: '1', points: config.data.map((p) => ({ label: `${p}`, value: p })) },
       },
       {
         type: 'path',
@@ -443,7 +443,7 @@ describe('line component', () => {
         strokeLinejoin: 'miter',
         strokeWidth: 1,
         opacity: 1,
-        data: { value: 1, label: '1', points: config.data.map(p => ({ label: `${p}`, value: p })) },
+        data: { value: 1, label: '1', points: config.data.map((p) => ({ label: `${p}`, value: p })) },
       },
       {
         type: 'path',
@@ -453,7 +453,7 @@ describe('line component', () => {
         strokeLinejoin: 'miter',
         strokeWidth: 1,
         opacity: 1,
-        data: { value: 1, label: '1', points: config.data.map(p => ({ label: `${p}`, value: p })) },
+        data: { value: 1, label: '1', points: config.data.map((p) => ({ label: `${p}`, value: p })) },
       },
     ]);
   });
@@ -505,7 +505,7 @@ describe('line component', () => {
         strokeLinejoin: undefined,
         strokeWidth: undefined,
         opacity: 0.3,
-        data: { value: 1, label: '1', points: config.data.map(p => ({ label: `${p}`, value: p })) },
+        data: { value: 1, label: '1', points: config.data.map((p) => ({ label: `${p}`, value: p })) },
       },
       {
         type: 'path',
@@ -515,7 +515,7 @@ describe('line component', () => {
         strokeLinejoin: 'miter',
         strokeWidth: 1,
         opacity: 1,
-        data: { value: 1, label: '1', points: config.data.map(p => ({ label: `${p}`, value: p })) },
+        data: { value: 1, label: '1', points: config.data.map((p) => ({ label: `${p}`, value: p })) },
       },
     ]);
   });
@@ -568,7 +568,7 @@ describe('line component', () => {
         strokeLinejoin: undefined,
         strokeWidth: undefined,
         opacity: 0.3,
-        data: { value: 1, label: '1', points: [1, 2, 3].map(p => ({ label: `${p}`, value: p })) },
+        data: { value: 1, label: '1', points: [1, 2, 3].map((p) => ({ label: `${p}`, value: p })) },
       });
     });
 
@@ -581,7 +581,7 @@ describe('line component', () => {
         strokeLinejoin: 'miter',
         strokeWidth: 1,
         opacity: 1,
-        data: { value: 1, label: '1', points: [1, 2, 3].map(p => ({ label: `${p}`, value: p })) },
+        data: { value: 1, label: '1', points: [1, 2, 3].map((p) => ({ label: `${p}`, value: p })) },
       });
     });
 
@@ -594,7 +594,7 @@ describe('line component', () => {
         strokeLinejoin: 'miter',
         strokeWidth: 1,
         opacity: 1,
-        data: { value: 1, label: '1', points: [1, 2, 3].map(p => ({ label: `${p}`, value: p })) },
+        data: { value: 1, label: '1', points: [1, 2, 3].map((p) => ({ label: `${p}`, value: p })) },
       });
     });
   });
@@ -632,7 +632,7 @@ describe('line component', () => {
         strokeLinejoin: 'miter',
         strokeWidth: 1,
         opacity: 1,
-        data: { value: 1, label: '1', points: [1, 2, 1].map(p => ({ label: `${p}`, value: p })) },
+        data: { value: 1, label: '1', points: [1, 2, 1].map((p) => ({ label: `${p}`, value: p })) },
       });
     });
 
@@ -645,7 +645,7 @@ describe('line component', () => {
         strokeLinejoin: 'miter',
         strokeWidth: 1,
         opacity: 1,
-        data: { value: 3, label: '3', points: [3, 4, 3].map(p => ({ label: `${p}`, value: p })) },
+        data: { value: 3, label: '3', points: [3, 4, 3].map((p) => ({ label: `${p}`, value: p })) },
       });
     });
   });
@@ -669,7 +669,7 @@ describe('line component', () => {
           },
           layers: {
             line: {
-              stroke: d => ['red', 'green', 'blue'][Math.round(d.datum.value) - 1],
+              stroke: (d) => ['red', 'green', 'blue'][Math.round(d.datum.value) - 1],
             },
           },
         },
@@ -681,7 +681,7 @@ describe('line component', () => {
     it('should be sorted by median by default', () => {
       componentFixture.simulateCreate(component, config);
       rendered = componentFixture.simulateRender(opts);
-      const order = rendered.map(layer => layer.stroke);
+      const order = rendered.map((layer) => layer.stroke);
       expect(order).to.eql(['red', 'green', 'blue']);
     });
 
@@ -690,7 +690,7 @@ describe('line component', () => {
 
       componentFixture.simulateCreate(component, config);
       rendered = componentFixture.simulateRender(opts);
-      const order = rendered.map(layer => layer.stroke);
+      const order = rendered.map((layer) => layer.stroke);
       expect(order).to.eql(['blue', 'green', 'red']);
     });
   });

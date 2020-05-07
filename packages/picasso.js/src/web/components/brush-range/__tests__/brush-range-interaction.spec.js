@@ -17,13 +17,13 @@ describe('BrushRange Interaction', () => {
       },
       multi: true,
       size: 1,
-      scale: x => x,
+      scale: (x) => x,
     };
     state.scale.min = sinon.stub().returns(0);
     state.scale.max = sinon.stub().returns(1);
-    state.scale.invert = x => x;
-    state.scale.norm = x => x;
-    state.scale.normInvert = x => x;
+    state.scale.invert = (x) => x;
+    state.scale.norm = (x) => x;
+    state.scale.normInvert = (x) => x;
 
     event = {
       center: { x: 0.5, y: 0.5 },
@@ -168,12 +168,7 @@ describe('BrushRange Interaction', () => {
       it('should detect drag in bubbles', () => {
         const bubbleElement = {
           hasAttribute: sinon.stub().returns(true),
-          getAttribute: sinon
-            .stub()
-            .withArgs('data-idx')
-            .returns('0')
-            .withArgs('data-other-value')
-            .returns('0'),
+          getAttribute: sinon.stub().withArgs('data-idx').returns('0').withArgs('data-other-value').returns('0'),
         };
         global.document.elementFromPoint.returns(bubbleElement);
         element.contains.returns(true);

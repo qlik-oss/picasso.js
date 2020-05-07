@@ -16,7 +16,7 @@ const rHsl = /^\s*hsl\(\s*(-?\d+\.?\d*)\s*,\s*(-?\d+\.?\d*%{1})\s*,\s*(-?\d+\.?\
 export default function hsl(colStr) {
   const match = rHsl.exec(colStr) || rHsla.exec(colStr) || [];
 
-  const [h, s, l, a] = match.slice(1).map(v => {
+  const [h, s, l, a] = match.slice(1).map((v) => {
     let returnVal = parseFloat(v);
 
     switch (match.indexOf(v)) {
@@ -47,4 +47,4 @@ export default function hsl(colStr) {
  * @example
  * hsl.test( "hsl(120, 50%, 50%)" );
  */
-hsl.test = colStr => typeof colStr === 'string' && (rHsl.test(colStr) || rHsla.test(colStr));
+hsl.test = (colStr) => typeof colStr === 'string' && (rHsl.test(colStr) || rHsla.test(colStr));

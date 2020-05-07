@@ -26,7 +26,7 @@ function brushFromShape(state, newShapes) {
 }
 
 function setRanges(state) {
-  const rs = state.ranges.map(r => ({ min: r.min, max: r.max }));
+  const rs = state.ranges.map((r) => ({ min: r.min, max: r.max }));
 
   if (state.active.idx !== -1) {
     if (state.active.mode === 'modify') {
@@ -47,7 +47,7 @@ function setRanges(state) {
   state.rc.set(rs);
 
   const shapes = [];
-  rs.forEach(range => {
+  rs.forEach((range) => {
     shapes.push(...shapesFromRange(state, range));
   });
 
@@ -185,8 +185,8 @@ const brushAreaDirectionalComponent = {
     const offset = this.renderer.element().getBoundingClientRect();
 
     const targets = (stngs.target ? stngs.target.components || [stngs.target.component] : [])
-      .map(c => this.chart.component(c))
-      .filter(c => !!c && !!c.rect);
+      .map((c) => this.chart.component(c))
+      .filter((c) => !!c && !!c.rect);
 
     const targetRect = targets[0]
       ? targets.slice(1).reduce(

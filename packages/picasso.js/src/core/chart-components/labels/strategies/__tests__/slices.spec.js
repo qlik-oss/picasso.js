@@ -140,24 +140,12 @@ describe('labeling - slices', () => {
           height: 100,
         },
       });
-      expect(bounds)
-        .property('anchor')
-        .to.equal('start');
-      expect(bounds)
-        .property('angle')
-        .to.equal(0);
-      expect(bounds)
-        .property('x')
-        .to.equal(21);
-      expect(bounds)
-        .property('y')
-        .to.closeTo(0, epsilon);
-      expect(bounds)
-        .property('width')
-        .to.equal(6);
-      expect(bounds)
-        .property('height')
-        .to.equal(4);
+      expect(bounds).property('anchor').to.equal('start');
+      expect(bounds).property('angle').to.equal(0);
+      expect(bounds).property('x').to.equal(21);
+      expect(bounds).property('y').to.closeTo(0, epsilon);
+      expect(bounds).property('width').to.equal(6);
+      expect(bounds).property('height').to.equal(4);
     });
 
     it('rotated into', () => {
@@ -181,24 +169,12 @@ describe('labeling - slices', () => {
           height: 100,
         },
       });
-      expect(bounds)
-        .property('anchor')
-        .to.equal('end');
-      expect(bounds)
-        .property('angle')
-        .to.equal(0);
-      expect(bounds)
-        .property('x')
-        .to.equal(19);
-      expect(bounds)
-        .property('y')
-        .to.closeTo(0, epsilon);
-      expect(bounds)
-        .property('width')
-        .to.equal(3);
-      expect(bounds)
-        .property('height')
-        .to.equal(4);
+      expect(bounds).property('anchor').to.equal('end');
+      expect(bounds).property('angle').to.equal(0);
+      expect(bounds).property('x').to.equal(19);
+      expect(bounds).property('y').to.closeTo(0, epsilon);
+      expect(bounds).property('width').to.equal(3);
+      expect(bounds).property('height').to.equal(4);
     });
 
     describe('should require text width to be equal to or larger than first character plus ellipsing', () => {
@@ -455,7 +431,7 @@ describe('labeling - slices', () => {
             },
           ],
         };
-        const nodes = list.map(l => ({
+        const nodes = list.map((l) => ({
           desc: {
             slice: {
               offset: { x: 10, y: 50 },
@@ -489,7 +465,7 @@ describe('labeling - slices', () => {
       }
 
       beforeEach(() => {
-        renderer.measureText = opts => {
+        renderer.measureText = (opts) => {
           if (opts.text.includes('…')) {
             return { width: 1, height: 1 };
           }

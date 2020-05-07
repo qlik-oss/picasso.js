@@ -11,7 +11,7 @@ describe('Axis', () => {
   let chart;
 
   function verifyNumberOfNodes(type, expectedNbrOfNodes) {
-    const nodes = componentFixture.getRenderOutput().filter(n => n.type === type);
+    const nodes = componentFixture.getRenderOutput().filter((n) => n.type === type);
 
     expect(nodes.length, `Unexpected number of ${type} nodes`).to.equal(expectedNbrOfNodes);
   }
@@ -68,7 +68,7 @@ describe('Axis', () => {
 
         componentFixture.simulateCreate(axisComponent, config);
         componentFixture.simulateRender(opts);
-        const textNodes = componentFixture.getRenderOutput().filter(n => n.type === 'text');
+        const textNodes = componentFixture.getRenderOutput().filter((n) => n.type === 'text');
 
         expect(textNodes[0].maxWidth).to.equal(10);
         expect(textNodes[1].maxWidth).to.equal(10);
@@ -79,7 +79,7 @@ describe('Axis', () => {
 
         componentFixture.simulateCreate(axisComponent, config);
         componentFixture.simulateRender(opts);
-        const textNodes = componentFixture.getRenderOutput().filter(n => n.type === 'text');
+        const textNodes = componentFixture.getRenderOutput().filter((n) => n.type === 'text');
 
         expect(textNodes[0].maxWidth).to.equal(10);
         expect(textNodes[1].maxWidth).to.equal(10);
@@ -91,7 +91,7 @@ describe('Axis', () => {
 
         componentFixture.simulateCreate(axisComponent, config);
         componentFixture.simulateRender(opts);
-        const textNodes = componentFixture.getRenderOutput().filter(n => n.type === 'text');
+        const textNodes = componentFixture.getRenderOutput().filter((n) => n.type === 'text');
 
         expect(textNodes[0].maxWidth).to.equal(10);
         expect(textNodes[1].maxWidth).to.equal(10);
@@ -103,7 +103,7 @@ describe('Axis', () => {
 
         componentFixture.simulateCreate(axisComponent, config);
         componentFixture.simulateRender(opts);
-        const textNodes = componentFixture.getRenderOutput().filter(n => n.type === 'text');
+        const textNodes = componentFixture.getRenderOutput().filter((n) => n.type === 'text');
 
         expect(textNodes[0].maxWidth).to.equal(10);
         expect(textNodes[1].maxWidth).to.equal(10);
@@ -130,7 +130,7 @@ describe('Axis', () => {
 
         componentFixture.simulateCreate(axisComponent, config);
         componentFixture.simulateRender(opts);
-        const textNodes = componentFixture.getRenderOutput().filter(n => n.type === 'text');
+        const textNodes = componentFixture.getRenderOutput().filter((n) => n.type === 'text');
 
         expect(textNodes[0].maxWidth).to.equal(100);
         expect(textNodes[1].maxWidth).to.equal(100);
@@ -141,7 +141,7 @@ describe('Axis', () => {
 
         componentFixture.simulateCreate(axisComponent, config);
         componentFixture.simulateRender(opts);
-        const textNodes = componentFixture.getRenderOutput().filter(n => n.type === 'text');
+        const textNodes = componentFixture.getRenderOutput().filter((n) => n.type === 'text');
 
         expect(textNodes[0].maxWidth).to.equal(100);
         expect(textNodes[1].maxWidth).to.equal(100);
@@ -156,7 +156,7 @@ describe('Axis', () => {
 
         componentFixture.simulateCreate(axisComponent, config);
         componentFixture.simulateRender(opts);
-        const textNodes = componentFixture.getRenderOutput().filter(n => n.type === 'text');
+        const textNodes = componentFixture.getRenderOutput().filter((n) => n.type === 'text');
 
         expect(textNodes[0].maxWidth).to.approximately(127.83348, 0.0001);
         expect(textNodes[1].maxWidth).to.approximately(127.83348, 0.0001);
@@ -168,7 +168,7 @@ describe('Axis', () => {
 
         componentFixture.simulateCreate(axisComponent, config);
         componentFixture.simulateRender(opts);
-        const textNodes = componentFixture.getRenderOutput().filter(n => n.type === 'text');
+        const textNodes = componentFixture.getRenderOutput().filter((n) => n.type === 'text');
 
         expect(textNodes[0].maxWidth).to.equal(100);
         expect(textNodes[1].maxWidth).to.equal(100);
@@ -236,7 +236,7 @@ describe('Axis', () => {
     });
 
     describe('Defaults', () => {
-      ['left', 'right', 'top', 'bottom'].forEach(d => {
+      ['left', 'right', 'top', 'bottom'].forEach((d) => {
         it(`should default align when docked at ${d}`, () => {
           config.dock = d;
           componentFixture.simulateCreate(axisComponent, config);
@@ -290,7 +290,7 @@ describe('Axis', () => {
       chart.scale.returns(scale);
     });
 
-    ['left', 'right', 'top', 'bottom'].forEach(d => {
+    ['left', 'right', 'top', 'bottom'].forEach((d) => {
       it(`should align to ${d}`, () => {
         config.settings.align = d;
         componentFixture.simulateCreate(axisComponent, config);
@@ -337,7 +337,7 @@ describe('Axis', () => {
       chart.scale.returns(scale);
     });
 
-    ['left', 'right', 'top', 'bottom'].forEach(d => {
+    ['left', 'right', 'top', 'bottom'].forEach((d) => {
       it(`should align to ${d}`, () => {
         config.settings.align = d;
         componentFixture.simulateCreate(axisComponent, config);
@@ -348,7 +348,7 @@ describe('Axis', () => {
       });
     });
 
-    ['top', 'bottom'].forEach(d => {
+    ['top', 'bottom'].forEach((d) => {
       it(`should support layered labels for ${d} aligned axis`, () => {
         config.settings.align = d;
         config.settings.labels = { mode: 'layered' };

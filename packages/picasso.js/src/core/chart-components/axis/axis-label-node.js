@@ -5,7 +5,7 @@ function checkText(text) {
 }
 
 function appendStyle(struct, buildOpts) {
-  ['fill', 'fontSize', 'fontFamily'].forEach(style => {
+  ['fill', 'fontSize', 'fontFamily'].forEach((style) => {
     struct[style] = buildOpts.style[style];
   });
 }
@@ -148,7 +148,7 @@ function tiltedCollider(tick, struct, buildOpts) {
   const points = [
     { x: struct.x - halfWidth, y },
     { x: struct.x + halfWidth, y },
-  ].map(p => rotateVector(p, radians, { x: struct.x, y: struct.y })); // Rotate around center point to counteract labels rotation
+  ].map((p) => rotateVector(p, radians, { x: struct.x, y: struct.y })); // Rotate around center point to counteract labels rotation
 
   // Append points to wrap polygon around label
   const margin = 10; // extend slightly to handle single char labels better

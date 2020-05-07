@@ -44,9 +44,7 @@ const palettes = {
 
     const from = rangeCal(min, max, colorPalette);
 
-    return linear()
-      .domain(from)
-      .range(colorPalette);
+    return linear().domain(from).range(colorPalette);
   },
 
   /**
@@ -60,9 +58,7 @@ const palettes = {
 
     const from = rangeCal(min, max, colorPalette);
 
-    return linear()
-      .domain(from)
-      .range(colorPalette);
+    return linear().domain(from).range(colorPalette);
   },
 
   /**

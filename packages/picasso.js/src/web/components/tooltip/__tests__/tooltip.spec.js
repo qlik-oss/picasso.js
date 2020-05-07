@@ -46,7 +46,7 @@ describe('Tooltip', () => {
 
     config = {
       settings: {
-        filter: nodes => nodes,
+        filter: (nodes) => nodes,
         isEqual: isEql,
       },
     };

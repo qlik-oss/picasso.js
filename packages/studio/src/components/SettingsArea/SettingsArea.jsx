@@ -12,7 +12,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import SettingsType from '../../core/types';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(4),
     margin: 'auto',
@@ -27,7 +27,7 @@ const SettingsArea = ({ settings, onSettingsChanged }) => {
   // const [state, setState] = React.useState(settings);
 
   const handleChange = React.useCallback(
-    event => {
+    (event) => {
       const { name, value, checked } = event.target;
       const paths = name.split('.');
       const lastPath = paths.splice(paths.length - 1, 1);

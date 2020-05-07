@@ -435,19 +435,19 @@ describe('Polygon', () => {
     describe('intersectsPolygon', () => {
       it('convex polygon', () => {
         polygon = create({ vertices: convexPolygon });
-        const pgon2 = create({ vertices: convexPolygon.map(p => ({ x: p.x + 3, y: p.y + 3 })) });
+        const pgon2 = create({ vertices: convexPolygon.map((p) => ({ x: p.x + 3, y: p.y + 3 })) });
         expect(polygon.intersectsPolygon(pgon2)).to.be.true;
       });
 
       it('concave polygon', () => {
         polygon = create({ vertices: concavePolygon });
-        const pgon2 = create({ vertices: concavePolygon.map(p => ({ x: p.x + 3, y: p.y + 3 })) });
+        const pgon2 = create({ vertices: concavePolygon.map((p) => ({ x: p.x + 3, y: p.y + 3 })) });
         expect(polygon.intersectsPolygon(pgon2)).to.be.true;
       });
 
       it('self-intersecting polygon', () => {
         polygon = create({ vertices: selfIntersectingPolygon });
-        const pgon2 = create({ vertices: selfIntersectingPolygon.map(p => ({ x: p.x + 3, y: p.y + 3 })) });
+        const pgon2 = create({ vertices: selfIntersectingPolygon.map((p) => ({ x: p.x + 3, y: p.y + 3 })) });
         expect(polygon.intersectsPolygon(pgon2)).to.be.true;
       });
 

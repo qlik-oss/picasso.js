@@ -40,7 +40,7 @@ export default function datasets(dataSources, { types, logger }) {
    * @param {string} key - The dataset identifier
    * @returns {dataset}
    */
-  const fn = key => {
+  const fn = (key) => {
     if (key) {
       return data[key];
     }

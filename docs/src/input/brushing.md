@@ -47,12 +47,12 @@ consume: [
   {
     context: 'selection',
     data: ['x'],
-    filter: shape => shape.type === 'circle',
+    filter: (shape) => shape.type === 'circle',
     style: {
       active: {
         fill: 'red',
         stroke: '#333',
-        strokeWidth: shape => shape.strokeWidth * 2,
+        strokeWidth: (shape) => shape.strokeWidth * 2,
       },
       inactive: {},
     },

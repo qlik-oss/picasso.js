@@ -64,9 +64,7 @@ describe('TreeNode', () => {
 
         n.addChild(a).addChild(b);
 
-        a.addChild(a1)
-          .addChild(a2)
-          .addChild(a3);
+        a.addChild(a1).addChild(a2).addChild(a3);
         b.addChild(b1).addChild(b2);
       });
       afterEach(() => {

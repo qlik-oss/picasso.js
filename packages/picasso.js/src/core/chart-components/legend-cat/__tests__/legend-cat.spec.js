@@ -42,7 +42,7 @@ describe('legend-cat', () => {
       .registries.renderer.withArgs('dom')
       .returns(() => domRenderer);
     chart = componentFixture.mocks().chart;
-    const scale = d => `-${d}-`;
+    const scale = (d) => `-${d}-`;
     scale.domain = () => [1];
     scale.data = () => [1];
     scale.labels = () => ['first'];
@@ -127,7 +127,7 @@ describe('legend-cat', () => {
     };
 
     chart = componentFixture.mocks().chart;
-    const scale = d => `-${d}-`;
+    const scale = (d) => `-${d}-`;
     scale.domain = () => [1];
     scale.data = () => [1];
     scale.labels = () => ['fidfd fg dt'];

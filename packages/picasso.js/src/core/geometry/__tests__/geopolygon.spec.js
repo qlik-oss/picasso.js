@@ -508,19 +508,19 @@ describe('GeoPolygon', () => {
     describe('intersectsPolygon', () => {
       it('convex polygon', () => {
         geopolygon = create({ vertices: convexPolygon });
-        const geopolygon2 = create({ vertices: [convexPolygon[0].map(p => ({ x: p.x + 3, y: p.y + 3 }))] });
+        const geopolygon2 = create({ vertices: [convexPolygon[0].map((p) => ({ x: p.x + 3, y: p.y + 3 }))] });
         expect(geopolygon.intersectsPolygon(geopolygon2.polygons[0])).to.be.true;
       });
 
       it('concave polygon', () => {
         geopolygon = create({ vertices: concavePolygon });
-        const geopolygon2 = create({ vertices: [concavePolygon[0].map(p => ({ x: p.x + 3, y: p.y + 3 }))] });
+        const geopolygon2 = create({ vertices: [concavePolygon[0].map((p) => ({ x: p.x + 3, y: p.y + 3 }))] });
         expect(geopolygon.intersectsPolygon(geopolygon2.polygons[0])).to.be.true;
       });
 
       it('self-intersecting polygon', () => {
         geopolygon = create({ vertices: selfIntersectingPolygon });
-        const geopolygon2 = create({ vertices: [selfIntersectingPolygon[0].map(p => ({ x: p.x + 3, y: p.y + 3 }))] });
+        const geopolygon2 = create({ vertices: [selfIntersectingPolygon[0].map((p) => ({ x: p.x + 3, y: p.y + 3 }))] });
         expect(geopolygon.intersectsPolygon(geopolygon2.polygons[0])).to.be.true;
       });
 

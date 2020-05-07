@@ -28,7 +28,7 @@ describe('Symbols', () => {
     });
 
     it('should accept new symbols to be registered', () => {
-      const myNewSymbol = options => ({ ...options, type: 'myCustomSymbol' }); // Just return input
+      const myNewSymbol = (options) => ({ ...options, type: 'myCustomSymbol' }); // Just return input
       register.add('myNewSymbol', myNewSymbol);
 
       input.type = 'myNewSymbol';

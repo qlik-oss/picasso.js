@@ -5,7 +5,7 @@ import extract from './extractor-matrix';
 import { findField, getPropsInfo, collect, track } from './util';
 
 const filters = {
-  numeric: values => values.filter(v => typeof v === 'number' && !isNaN(v)),
+  numeric: (values) => values.filter((v) => typeof v === 'number' && !isNaN(v)),
 };
 
 function createFields({ source, data, cache, config }) {
@@ -30,7 +30,7 @@ function createFields({ source, data, cache, config }) {
   if (parse && typeof parse.fields === 'function') {
     flds = parse.fields(flds.slice());
   } else {
-    flds = headers.map(h => ({
+    flds = headers.map((h) => ({
       key: h,
       title: h,
     }));
@@ -41,7 +41,7 @@ function createFields({ source, data, cache, config }) {
     fieldValues = flds.map(() => []);
   } else {
     fieldValues = {};
-    flds.forEach(f => {
+    flds.forEach((f) => {
       fieldValues[f.key] = [];
     });
   }
@@ -61,7 +61,7 @@ function createFields({ source, data, cache, config }) {
       }
     }
   }
-  const fv = Array.isArray(fieldValues) ? i => fieldValues[i] : i => fieldValues[flds[i].key];
+  const fv = Array.isArray(fieldValues) ? (i) => fieldValues[i] : (i) => fieldValues[flds[i].key];
   for (let c = 0; c < flds.length; c++) {
     const values = fv(c);
     const numericValues = filters.numeric(values);
@@ -115,7 +115,7 @@ const dsv = ({ data, config }) => {
       }
     }
   }
-  return rows.map(row => row.split(delimiter));
+  return rows.map((row) => row.split(delimiter));
 };
 
 const parseData = ({ key, data, cache, config }) => {
@@ -173,7 +173,7 @@ function ds({ key, data, config } = {}) {
      * @param {string} query - The field to find
      * @returns {field}
      */
-    field: query =>
+    field: (query) =>
       findField(query, {
         cache,
         matrix: data,
@@ -190,7 +190,7 @@ function ds({ key, data, config } = {}) {
      * @param {data-extract-config} config
      * @returns {Array<datum-extract>}
      */
-    extract: cfg => extract(cfg, dataset, cache),
+    extract: (cfg) => extract(cfg, dataset, cache),
 
     /**
      * @returns {null}

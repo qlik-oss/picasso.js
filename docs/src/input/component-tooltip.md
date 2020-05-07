@@ -91,7 +91,7 @@ The `content` setting is responsible for generating virtual nodes using the Hype
 ```js
 {
   settings: {
-    content: ({ h, data }) => data.map(datum => h('div', {}, datum));
+    content: ({ h, data }) => data.map((datum) => h('div', {}, datum));
   }
 }
 ```

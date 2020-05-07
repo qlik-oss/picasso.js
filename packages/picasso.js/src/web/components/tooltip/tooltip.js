@@ -25,19 +25,19 @@ const DEFAULT_SETTINGS = {
    * @type {function=}
    * @returns {array} An array of nodes
    */
-  filter: nodes => nodes.filter(node => node.data && typeof node.data.value !== 'undefined'),
+  filter: (nodes) => nodes.filter((node) => node.data && typeof node.data.value !== 'undefined'),
   /**
    * Extract data from a node.
    * @type {function=}
    * @returns {object} An array of data
    */
-  extract: ctx => ctx.node.data.value,
+  extract: (ctx) => ctx.node.data.value,
   /**
    * Content generator. Extracted data is available in the `data` property, where each value in the area is the extracted datum from a node.
    * @type {function=}
    * @returns {object[]} Array of h objects
    */
-  content: ({ h, data }) => data.map(datum => h('div', {}, datum)),
+  content: ({ h, data }) => data.map((datum) => h('div', {}, datum)),
   /**
    * Comparison function. If evaluted to true, the incoming nodes in the `show` event are ignored. If evaluated to false, any active tooltip is cleared and a new tooltip is queued.
    *

@@ -66,7 +66,9 @@ function element(name, rect = { x: 0, y: 0, width: 100, height: 100 }) {
       }
     },
     trigger(listenerKey, arg) {
-      this.listeners.filter(l => typeof l[listenerKey] !== 'undefined').forEach(l => l[listenerKey].call(this, arg));
+      this.listeners
+        .filter((l) => typeof l[listenerKey] !== 'undefined')
+        .forEach((l) => l[listenerKey].call(this, arg));
     },
     getBoundingClientRect() {
       return {

@@ -1,5 +1,5 @@
-(function() {
-  (function() {
+(function () {
+  (function () {
     function render(that, state, renderit) {
       var sx = that.drawing.sx;
       var sy = that.drawing.sy;
@@ -48,15 +48,15 @@
         },
       },
       require: ['chart', 'renderer'],
-      created: function() {
+      created: function () {
         this.state = {
           points: [],
         };
       },
-      beforeRender: function(opts) {
+      beforeRender: function (opts) {
         this.rect = opts.size;
       },
-      render: function() {
+      render: function () {
         this.drawing = {
           el: this.renderer.element().getBoundingClientRect(),
           sx: this.chart.scale('x'),
@@ -65,17 +65,17 @@
         return render(this, this.state);
       },
       on: {
-        start: function(e) {
+        start: function (e) {
           this.drawing.el = this.renderer.element().getBoundingClientRect();
           var p = getPoint(e, this);
           this.state.points = [p, p];
           render(this, this.state);
         },
-        move: function(e) {
+        move: function (e) {
           this.state.points[1] = getPoint(e, this);
           render(this, this.state, true);
         },
-        end: function(e) {
+        end: function (e) {
           this.state.points[1] = getPoint(e, this);
           render(this, this.state, true);
         },
@@ -154,8 +154,8 @@
               event: 'draw',
             },
             events: {
-              drawstart: function(e) {
-                var hitComp = this.chart.componentsFromPoint({ x: e.center.x, y: e.center.y }).filter(function(c) {
+              drawstart: function (e) {
+                var hitComp = this.chart.componentsFromPoint({ x: e.center.x, y: e.center.y }).filter(function (c) {
                   return c.settings.key === 'drawOnMe';
                 })[0];
                 if (!hitComp) {
@@ -163,10 +163,10 @@
                 }
                 this.chart.component('drawOnMe').emit('start', e);
               },
-              drawmove: function(e) {
+              drawmove: function (e) {
                 this.chart.component('drawOnMe').emit('move', e);
               },
-              drawend: function(e) {
+              drawend: function (e) {
                 this.chart.component('drawOnMe').emit('end', e);
               },
             },
@@ -186,7 +186,7 @@
     settings: settings,
   });
 
-  window.onresize = function() {
+  window.onresize = function () {
     pic.update();
   };
 })();

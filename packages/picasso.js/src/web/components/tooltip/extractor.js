@@ -12,7 +12,7 @@ export default function extractor(nodes, { chart, scale, props, h }) {
   };
 
   const data = [];
-  nodes.forEach(node => {
+  nodes.forEach((node) => {
     if (typeof props.extract === 'function') {
       const ctx = extend({ node }, dataCtx);
       data.push(props.extract(ctx));

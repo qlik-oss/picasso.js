@@ -82,7 +82,7 @@ describe('Hypercube generator', () => {
       1,
       3,
       5,
-      row => row,
+      (row) => row,
       () => Math.random()
     );
 

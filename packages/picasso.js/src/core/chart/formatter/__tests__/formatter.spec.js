@@ -4,7 +4,7 @@ describe('chart formatters', () => {
   describe('collection', () => {
     let fn;
     beforeEach(() => {
-      fn = sinon.spy(def => (typeof def === 'object' && !Object.keys(def).length ? 'fallback' : def));
+      fn = sinon.spy((def) => (typeof def === 'object' && !Object.keys(def).length ? 'fallback' : def));
     });
 
     it('should return fallback formatter when unknown config is used', () => {
@@ -58,7 +58,7 @@ describe('chart formatters', () => {
           get: sinon.stub(),
         },
       };
-      formatterFn = pattern => value => `${pattern}${value}`;
+      formatterFn = (pattern) => (value) => `${pattern}${value}`;
     });
 
     it('should throw when type is not registered', () => {
@@ -120,7 +120,7 @@ describe('chart formatters', () => {
       const extractor = () => ({
         fields: [
           {
-            formatter: () => value => `${value} %%% `,
+            formatter: () => (value) => `${value} %%% `,
           },
         ],
       });

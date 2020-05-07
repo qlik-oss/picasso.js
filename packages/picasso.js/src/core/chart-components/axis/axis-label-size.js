@@ -26,10 +26,10 @@ function isHorizontalLabelOverlapping({ majorTicks, measureText, rect, state }) 
   const m = state.labels.activeMode === 'layered' ? 2 : 1;
   const size = rect.width;
   const tickSize = majorTicks
-    .map(tick => tick.label)
-    .map(l => `${l.slice(0, 1)}${l.length > 1 ? '…' : ''}`) // Measure the size of 1 chars + the ellips char.
+    .map((tick) => tick.label)
+    .map((l) => `${l.slice(0, 1)}${l.length > 1 ? '…' : ''}`) // Measure the size of 1 chars + the ellips char.
     .map(measureText)
-    .map(r => r.width);
+    .map((r) => r.width);
   for (let i = 0; i < majorTicks.length; ++i) {
     const tick = majorTicks[i];
     const d1 = m * size * Math.abs(tick.start - tick.end);
@@ -145,7 +145,7 @@ export default function getSize({ isDiscrete, rect, formatter, measureText, scal
       })
       .filter(isMajorTick);
 
-    const measure = text => {
+    const measure = (text) => {
       const m = measureText({
         text,
         fontSize: settings.labels.fontSize,
@@ -189,12 +189,12 @@ export default function getSize({ isDiscrete, rect, formatter, measureText, scal
     let sizeFromTextRect;
     if (state.labels.activeMode === 'tilted') {
       const radians = Math.abs(settings.labels.tiltAngle) * (Math.PI / 180); // angle in radians
-      sizeFromTextRect = r =>
+      sizeFromTextRect = (r) =>
         getClampedValue({ value: r.width, maxValue, minValue }) * Math.sin(radians) + r.height * Math.cos(radians);
     } else if (horizontal) {
-      sizeFromTextRect = r => r.height;
+      sizeFromTextRect = (r) => r.height;
     } else {
-      sizeFromTextRect = r => getClampedValue({ value: r.width, maxValue, minValue });
+      sizeFromTextRect = (r) => getClampedValue({ value: r.width, maxValue, minValue });
     }
 
     let labels;
@@ -207,7 +207,7 @@ export default function getSize({ isDiscrete, rect, formatter, measureText, scal
       }
       labels = [label];
     } else {
-      labels = majorTicks.map(tick => tick.label);
+      labels = majorTicks.map((tick) => tick.label);
     }
     const tickMeasures = labels.map(measure);
     const labelSizes = tickMeasures.map(sizeFromTextRect);
@@ -224,7 +224,7 @@ export default function getSize({ isDiscrete, rect, formatter, measureText, scal
       const radians = Math.abs(settings.labels.tiltAngle) * (Math.PI / 180); // angle in radians
       const h = measureText('M').height;
       const maxWidth = (textSize - h * Math.cos(radians)) / Math.sin(radians);
-      const labelWidth = r => Math.min(maxWidth, r.width) * Math.cos(radians) + r.height;
+      const labelWidth = (r) => Math.min(maxWidth, r.width) * Math.cos(radians) + r.height;
       const adjustByPosition = (s, i) => {
         const pos = majorTicks[i] ? majorTicks[i].position : 0;
         if (extendLeft) {

@@ -57,7 +57,7 @@ describe('polygon to polygon collider', () => {
     const out = polylineToPolygonCollider(points, radius, opts);
 
     out.vertices.forEach((p, i) => {
-      Object.keys(p).forEach(coord => {
+      Object.keys(p).forEach((coord) => {
         expect(p[coord]).to.approximately(expected[i][coord], 0.0001);
       });
     });
@@ -93,7 +93,7 @@ describe('polygon to polygon collider', () => {
     const out = polylineToPolygonCollider(points, radius, opts);
 
     out.vertices.forEach((p, i) => {
-      Object.keys(p).forEach(coord => {
+      Object.keys(p).forEach((coord) => {
         expect(p[coord]).to.approximately(expected[i][coord], 0.0001);
       });
     });
@@ -121,7 +121,7 @@ describe('polygon to polygon collider', () => {
     const out = polylineToPolygonCollider(points, radius, opts);
 
     out.vertices.forEach((p, i) => {
-      Object.keys(p).forEach(coord => {
+      Object.keys(p).forEach((coord) => {
         expect(p[coord]).to.approximately(expected[i][coord], 0.0001);
       });
     });
@@ -157,7 +157,7 @@ describe('polygon to polygon collider', () => {
     const out = polylineToPolygonCollider(points, radius, opts);
 
     out.vertices.forEach((p, i) => {
-      Object.keys(p).forEach(coord => {
+      Object.keys(p).forEach((coord) => {
         expect(p[coord]).to.approximately(expected[i][coord], 0.0001);
       });
     });
@@ -182,7 +182,7 @@ describe('polygon to polygon collider', () => {
     const out = polylineToPolygonCollider(points, radius, opts);
 
     out.vertices.forEach((p, i) => {
-      Object.keys(p).forEach(coord => {
+      Object.keys(p).forEach((coord) => {
         expect(p[coord]).to.approximately(expected[i][coord], 0.0001);
       });
     });
@@ -215,7 +215,7 @@ describe('polygon to polygon collider', () => {
     const out = polylineToPolygonCollider(points, radius, opts);
 
     out.vertices.forEach((p, i) => {
-      Object.keys(p).forEach(coord => {
+      Object.keys(p).forEach((coord) => {
         expect(p[coord]).to.approximately(expected[i][coord], 0.01);
       });
     });
@@ -240,7 +240,7 @@ describe('polygon to polygon collider', () => {
     const out = polylineToPolygonCollider(points, radius, opts);
 
     out.vertices.forEach((p, i) => {
-      Object.keys(p).forEach(coord => {
+      Object.keys(p).forEach((coord) => {
         expect(p[coord]).to.approximately(expected[i][coord], 0.0001);
       });
     });
@@ -273,7 +273,7 @@ describe('polygon to polygon collider', () => {
     const out = polylineToPolygonCollider(points, radius, opts);
 
     out.vertices.forEach((p, i) => {
-      Object.keys(p).forEach(coord => {
+      Object.keys(p).forEach((coord) => {
         expect(p[coord]).to.approximately(expected[i][coord], 0.001);
       });
     });
@@ -301,7 +301,7 @@ describe('polygon to polygon collider', () => {
     const out = polylineToPolygonCollider(points, radius, opts);
 
     out.vertices.forEach((p, i) => {
-      Object.keys(p).forEach(coord => {
+      Object.keys(p).forEach((coord) => {
         expect(p[coord]).to.approximately(expected[i][coord], 0.01);
       });
     });
@@ -329,7 +329,7 @@ describe('polygon to polygon collider', () => {
     const out = polylineToPolygonCollider(points, radius, opts);
 
     out.vertices.forEach((p, i) => {
-      Object.keys(p).forEach(coord => {
+      Object.keys(p).forEach((coord) => {
         expect(p[coord]).to.approximately(expected[i][coord], 0.01);
       });
     });

@@ -70,10 +70,10 @@ const gridLineComponent = {
 
     // Set all Y lines to flipXY by default
     // This makes the transposer flip them individually
-    this.lines.y = this.lines.y.map(i => extend(i, { flipXY: true }));
+    this.lines.y = this.lines.y.map((i) => extend(i, { flipXY: true }));
 
     let addTicks = ({ dir, isMinor }) => {
-      let items = this.lines[dir].filter(tick => !!tick.isMinor === isMinor);
+      let items = this.lines[dir].filter((tick) => !!tick.isMinor === isMinor);
       let settings = isMinor ? this.settings.minorTicks : this.settings.ticks;
       let ticks = this.resolver.resolve({
         settings,
@@ -83,7 +83,7 @@ const gridLineComponent = {
         },
       }).items;
 
-      ticks.forEach(style => {
+      ticks.forEach((style) => {
         let p = style.data;
 
         // If the style's show is falsy, don't renderer this item (to respect axis settings).

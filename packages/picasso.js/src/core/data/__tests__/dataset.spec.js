@@ -12,7 +12,7 @@ describe('dataset', () => {
       hierarchy: 'function',
     };
 
-    Object.keys(api).forEach(key => {
+    Object.keys(api).forEach((key) => {
       it(`#${key}`, () => {
         expect(d[key]).to.be.a(api[key]);
       });
@@ -67,15 +67,15 @@ describe('dataset', () => {
                   key: 'product',
                   title: flds[0],
                   formatter: {},
-                  value: v => v,
-                  label: v => `#${v}`,
+                  value: (v) => v,
+                  label: (v) => `#${v}`,
                 },
                 {
                   key: 'sales',
                   title: 'Sell sell sell',
                   formatter: {},
-                  value: v => v + 4,
-                  label: v => `-${v}-`,
+                  value: (v) => v + 4,
+                  label: (v) => `-${v}-`,
                 },
                 {
                   key: 'extra',
@@ -84,8 +84,8 @@ describe('dataset', () => {
                     type: 'd3-number',
                     format: '.3f',
                   },
-                  value: v => v,
-                  label: v => `${v * 100}%`,
+                  value: (v) => v,
+                  label: (v) => `${v * 100}%`,
                 },
               ];
             },
@@ -168,15 +168,15 @@ describe('dataset', () => {
                   key: 'product',
                   title: flds[0],
                   formatter: {},
-                  value: v => v,
-                  label: v => `#${v}`,
+                  value: (v) => v,
+                  label: (v) => `#${v}`,
                 },
                 {
                   key: 'sales',
                   title: 'Sell sell sell',
                   formatter: {},
-                  value: v => v + 4,
-                  label: v => `-${v}-`,
+                  value: (v) => v + 4,
+                  label: (v) => `-${v}-`,
                 },
                 {
                   key: 'extra',
@@ -185,8 +185,8 @@ describe('dataset', () => {
                     type: 'd3-number',
                     format: '.3f',
                   },
-                  value: v => v,
-                  label: v => `${v * 100}%`,
+                  value: (v) => v,
+                  label: (v) => `${v * 100}%`,
                   dummy: 20,
                 },
               ];

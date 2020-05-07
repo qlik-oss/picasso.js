@@ -91,7 +91,7 @@ interactions: [
         },
         recognizeWith: 'doubleTap tap',
         events: {
-          tripleTap: function(e) {
+          tripleTap: function (e) {
             console.log('triple tapped');
           },
         },
@@ -105,7 +105,7 @@ interactions: [
         recognizeWith: 'tap',
         requireFailure: 'tripleTap',
         events: {
-          doubleTap: function(e) {
+          doubleTap: function (e) {
             console.log('double tapped');
           },
         },
@@ -117,7 +117,7 @@ interactions: [
         },
         requireFailure: 'doubleTap tripleTap',
         events: {
-          tap: function(e) {
+          tap: function (e) {
             console.log('tapped');
           },
         },

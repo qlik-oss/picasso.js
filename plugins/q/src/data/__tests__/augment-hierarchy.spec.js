@@ -140,9 +140,9 @@ describe('augment-hierarchy', () => {
 
     it('should add a data property per node', () => {
       const m = q({ key: 'nyckel', data: cube }).hierarchy({
-        value: d => d.qText,
+        value: (d) => d.qText,
       });
-      expect(m.descendants().map(child => child.data.value)).to.eql([
+      expect(m.descendants().map((child) => child.data.value)).to.eql([
         '_rooot',
         'Alpha',
         'Beta',
@@ -164,13 +164,13 @@ describe('augment-hierarchy', () => {
         props: {
           dimOne: {
             field: 'qDimensionInfo/0',
-            value: d => d.qText,
-            reduce: values => values.join(', '),
+            value: (d) => d.qText,
+            reduce: (values) => values.join(', '),
           },
         },
       });
       // console.log(stackedPageWithoutPseudo.qData[0]);
-      expect(m.descendants().map(child => child.data.dimOne.value)).to.eql([
+      expect(m.descendants().map((child) => child.data.dimOne.value)).to.eql([
         'Alpha, Beta',
         'Alpha',
         'Beta',
@@ -192,13 +192,13 @@ describe('augment-hierarchy', () => {
         props: {
           desc: {
             field: 'qDimensionInfo/1',
-            value: d => d.qText,
-            reduce: values => values.join(', '),
+            value: (d) => d.qText,
+            reduce: (values) => values.join(', '),
           },
         },
       });
       // console.log(stackedPageWithoutPseudo.qData[0]);
-      expect(m.descendants().map(child => child.data.desc.value)).to.eql([
+      expect(m.descendants().map((child) => child.data.desc.value)).to.eql([
         'total: $666, a1, a2, total: $667, b1, b3', // descendants of '__root', with reduction (join) applied
         'total: $666, a1, a2', // children of 'Alpha', with reduction applied
         'total: $667, b1, b3', // children of 'Beta', with reduction applied
@@ -220,14 +220,14 @@ describe('augment-hierarchy', () => {
         props: {
           desc: {
             field: 'qMeasureInfo/0',
-            value: d => (d ? d.qValue : d),
-            reduce: values => values.join('---'),
+            value: (d) => (d ? d.qValue : d),
+            reduce: (values) => values.join('---'),
           },
-          p: d => d.qText,
+          p: (d) => d.qText,
         },
       });
       // console.log(stackedPageWithoutPseudo.qData[0]);
-      expect(m.descendants().map(child => child.data.desc.value)).to.eql([
+      expect(m.descendants().map((child) => child.data.desc.value)).to.eql([
         '45---32---13---17', // descendants of '__root', with reduction applied
         '45---32', // measure nodes in 'Alpha', with reduction applied
         '13---17', // measure nodes in 'Beta', with reduction applied
@@ -246,18 +246,18 @@ describe('augment-hierarchy', () => {
 
     it('should add a data property for multiple fields', () => {
       const m = q({ key: 'nyckel', data: cube }).hierarchy({
-        children: node => (node.qSubNodes ? node.qSubNodes.filter(n => n.qType !== 'T') : null),
+        children: (node) => (node.qSubNodes ? node.qSubNodes.filter((n) => n.qType !== 'T') : null),
         props: {
           id: {
             fields: [
-              { field: 'qDimensionInfo/0', value: d => d.qText, reduce: values => values.join('--') },
-              { field: 'qDimensionInfo/1', value: d => d.qText, reduce: values => values.join('_') },
+              { field: 'qDimensionInfo/0', value: (d) => d.qText, reduce: (values) => values.join('--') },
+              { field: 'qDimensionInfo/1', value: (d) => d.qText, reduce: (values) => values.join('_') },
             ],
             value: (values, node) => values.slice(0, node.depth).join('>>'),
           },
         },
       });
-      expect(m.descendants().map(child => child.data.id.value)).to.eql([
+      expect(m.descendants().map((child) => child.data.id.value)).to.eql([
         '', // root
         'Alpha',
         'Beta',
@@ -316,16 +316,16 @@ describe('augment-hierarchy', () => {
         data: cube,
       });
       const h = d.hierarchy({
-        value: v => (v ? v.qText : '__'),
+        value: (v) => (v ? v.qText : '__'),
         props: {
           v: {
             field: 'qMeasureInfo/0',
-            value: v => (v ? v.qNum : NaN),
+            value: (v) => (v ? v.qNum : NaN),
           },
         },
       });
 
-      expect(h.descendants().map(child => child.data.v.value)).to.eql([6, 4, 10, 3, 5, 10]);
+      expect(h.descendants().map((child) => child.data.v.value)).to.eql([6, 4, 10, 3, 5, 10]);
     });
 
     it('hierarchy - should handle empty qColumnOrder', () => {
@@ -356,16 +356,16 @@ describe('augment-hierarchy', () => {
         data: cube,
       });
       const h = d.hierarchy({
-        value: v => (v ? v.qText : '__'),
+        value: (v) => (v ? v.qText : '__'),
         props: {
           v: {
             field: 'qMeasureInfo/0',
-            value: v => (v ? v.qNum : NaN),
+            value: (v) => (v ? v.qNum : NaN),
           },
         },
       });
 
-      expect(h.descendants().map(child => child.data.v.value)).to.eql([6, 4, 10, 3, 5, 10]);
+      expect(h.descendants().map((child) => child.data.v.value)).to.eql([6, 4, 10, 3, 5, 10]);
     });
 
     it('hierarchy - should handle if qColumnOrder doesnt contain a reference to all fields', () => {
@@ -396,16 +396,16 @@ describe('augment-hierarchy', () => {
         data: cube,
       });
       const h = d.hierarchy({
-        value: v => (v ? v.qText : '__'),
+        value: (v) => (v ? v.qText : '__'),
         props: {
           v: {
             field: 'qMeasureInfo/0',
-            value: v => (v ? v.qNum : NaN),
+            value: (v) => (v ? v.qNum : NaN),
           },
         },
       });
 
-      expect(h.descendants().map(child => child.data.v.value)).to.eql([6, 4, 10, 3, 5, 10]);
+      expect(h.descendants().map((child) => child.data.v.value)).to.eql([6, 4, 10, 3, 5, 10]);
     });
   });
 });

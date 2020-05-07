@@ -6,7 +6,7 @@ function diff(from, to) {
   const updatedOld = [];
   let fromIds;
   let toIds;
-  const idMapper = a => a.id;
+  const idMapper = (a) => a.id;
   const nodeMapper = (node, i) => {
     let id;
     if (typeof node === 'object') {

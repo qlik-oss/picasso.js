@@ -51,7 +51,7 @@ describe('Axis Label Node', () => {
         maxWidth: textRect.width,
         maxHeight: textRect.height,
         textRect,
-        textBounds: node => textBounds(node, measureTextMock),
+        textBounds: (node) => textBounds(node, measureTextMock),
         stepSize: 0,
       };
       tick = createTick(0.5, 0.5);

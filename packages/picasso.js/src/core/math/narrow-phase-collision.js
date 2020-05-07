@@ -440,7 +440,7 @@ export function testRectContainsRect(rect1, rect2) {
     { x: rect2.x + rect2.width, y: rect2.y + rect2.height },
     { x: rect2.x, y: rect2.y + rect2.height },
   ];
-  return points.every(p => testRectPoint(rect1, p));
+  return points.every((p) => testRectPoint(rect1, p));
 }
 
 /**

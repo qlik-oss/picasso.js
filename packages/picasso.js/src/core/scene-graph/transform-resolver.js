@@ -10,7 +10,7 @@ function parseTransform(transform) {
 
     commands.push({
       cmd: m[1],
-      args: args.filter(a => a.trim().length > 0).map(a => Number(a)),
+      args: args.filter((a) => a.trim().length > 0).map((a) => Number(a)),
     });
   }
   /* eslint-enable no-cond-assign */

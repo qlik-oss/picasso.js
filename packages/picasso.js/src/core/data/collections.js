@@ -4,7 +4,7 @@ import extract from './extractor';
 function create(config, d, opts, extractor = extract) {
   const collections = {};
 
-  (config || []).forEach(cfg => {
+  (config || []).forEach((cfg) => {
     if (!cfg.key) {
       throw new Error('Data collection is missing "key" property');
     }
@@ -14,7 +14,7 @@ function create(config, d, opts, extractor = extract) {
     collections[cfg.key] = () => extractor(cfg.data, d, opts);
   });
 
-  const fn = key => {
+  const fn = (key) => {
     let k;
     let cfg;
     if (typeof key === 'string') {

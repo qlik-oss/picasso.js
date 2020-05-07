@@ -30,8 +30,8 @@ Values can be blocked from being added to the brush by intercepting the `add-val
 The following will remove the value 'Bike':
 
 ```js
-brush.intercept('add-values', items => {
-  return items.filter(item => item.value !== 'Bike');
+brush.intercept('add-values', (items) => {
+  return items.filter((item) => item.value !== 'Bike');
 });
 ```
 

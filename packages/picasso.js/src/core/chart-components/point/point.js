@@ -115,8 +115,8 @@ function getPointSizeLimits(x, y, width, height, limits) {
 
 function createDisplayPoints(dataPoints, { width, height }, pointSize, shapeFn) {
   return dataPoints
-    .filter(p => p.show !== false && !isNaN(p.x + p.y))
-    .map(p => {
+    .filter((p) => p.show !== false && !isNaN(p.x + p.y))
+    .map((p) => {
       let s = p;
       let size = PX_RX.test(p.size) ? parseInt(p.size, 10) : pointSize.min + s.size * (pointSize.max - pointSize.min);
       if (notNumber(size)) {
@@ -152,7 +152,7 @@ const component = {
     data: {},
     animations: {
       enabled: false,
-      trackBy: node => node.data.value,
+      trackBy: (node) => node.data.value,
     },
     style: {
       item: '$shape',

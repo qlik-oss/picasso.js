@@ -83,7 +83,7 @@ We can extract the unique _Month_ values using:
 ```js
 ds.extract({
   field: 'Month',
-  trackBy: v => v.qElemNumber,
+  trackBy: (v) => v.qElemNumber,
 });
 
 // output

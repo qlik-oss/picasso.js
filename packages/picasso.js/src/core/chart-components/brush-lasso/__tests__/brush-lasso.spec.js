@@ -20,10 +20,7 @@ describe('brush-lasso', () => {
 
     instance = componentFixture.simulateCreate(brushLasso, config);
     chartMock = componentFixture.mocks().chart;
-    chartMock.shapesAt = componentFixture
-      .sandbox()
-      .stub()
-      .returns([]);
+    chartMock.shapesAt = componentFixture.sandbox().stub().returns([]);
     chartMock.brushFromShapes = componentFixture.sandbox().stub();
   });
 
@@ -103,7 +100,7 @@ describe('brush-lasso', () => {
     instance.def.move({ center: { x: 6, y: 0 } });
     rendererOutput = componentFixture.getRenderOutput();
 
-    expect(rendererOutput.some(node => node.type === 'line')).to.equal(false);
+    expect(rendererOutput.some((node) => node.type === 'line')).to.equal(false);
   });
 
   // TODO Currently does allow it, TBD if it should continues to

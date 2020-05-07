@@ -110,7 +110,7 @@ describe('Container', () => {
           transform: 'scale(2, 3)',
         }),
       ]);
-      container.children.forEach(c => c.resolveGlobalTransform());
+      container.children.forEach((c) => c.resolveGlobalTransform());
       expect(container.boundingRect(true)).to.deep.equal({
         x: -20,
         y: -60,
@@ -144,7 +144,7 @@ describe('Container', () => {
           transform: 'translate(1, 2)',
         }),
       ]);
-      container.children.forEach(c => c.resolveGlobalTransform());
+      container.children.forEach((c) => c.resolveGlobalTransform());
       expect(container.boundingRect(true)).to.deep.equal({
         x: -18,
         y: -54,
@@ -175,7 +175,7 @@ describe('Container', () => {
           height: 2,
         }), // x,y
       ]);
-      container.children.forEach(c => c.resolveGlobalTransform());
+      container.children.forEach((c) => c.resolveGlobalTransform());
       expect(container.boundingRect(true)).to.deep.equal({
         x: -20,
         y: -60,
@@ -206,7 +206,7 @@ describe('Container', () => {
           height: 2,
         }), // x,y
       ]);
-      container.children.forEach(c => c.resolveGlobalTransform());
+      container.children.forEach((c) => c.resolveGlobalTransform());
       expect(container.boundingRect(true)).to.deep.equal({
         x: -8,
         y: -17,
@@ -237,7 +237,7 @@ describe('Container', () => {
           height: 2,
         }),
       ]);
-      container.children.forEach(c => c.resolveGlobalTransform());
+      container.children.forEach((c) => c.resolveGlobalTransform());
       expect(container.boundingRect(true)).to.deep.equal({
         x: -17.677669529663685,
         y: -21.213203435596427,
@@ -314,7 +314,7 @@ describe('Container', () => {
           transform: 'scale(2, 3)',
         }),
       ]);
-      container.children.forEach(c => c.resolveGlobalTransform());
+      container.children.forEach((c) => c.resolveGlobalTransform());
 
       expect(container.bounds(true)).to.deep.equal([
         { x: -20, y: -60 },
@@ -349,7 +349,7 @@ describe('Container', () => {
           transform: 'translate(1, 2)',
         }),
       ]);
-      container.children.forEach(c => c.resolveGlobalTransform());
+      container.children.forEach((c) => c.resolveGlobalTransform());
       expect(container.bounds(true)).to.deep.equal([
         { x: -18, y: -54 },
         { x: 22, y: -54 },
@@ -380,7 +380,7 @@ describe('Container', () => {
           height: 2,
         }), // x,y
       ]);
-      container.children.forEach(c => c.resolveGlobalTransform());
+      container.children.forEach((c) => c.resolveGlobalTransform());
       expect(container.bounds(true)).to.deep.equal([
         { x: -20, y: -60 },
         { x: 20, y: -60 },
@@ -411,7 +411,7 @@ describe('Container', () => {
           height: 2,
         }), // x,y
       ]);
-      container.children.forEach(c => c.resolveGlobalTransform());
+      container.children.forEach((c) => c.resolveGlobalTransform());
       expect(container.bounds(true)).to.deep.equal([
         { x: -8, y: -17 },
         { x: 12, y: -17 },
@@ -442,7 +442,7 @@ describe('Container', () => {
           height: 2,
         }),
       ]);
-      container.children.forEach(c => c.resolveGlobalTransform());
+      container.children.forEach((c) => c.resolveGlobalTransform());
       expect(container.bounds(true)).to.deep.equal([
         { x: -17.677669529663685, y: -21.213203435596427 },
         { x: 7.778174593052022, y: -21.213203435596427 },
@@ -1404,7 +1404,7 @@ describe('Container', () => {
 
         const items = container.getItemsFrom({ x: 550, y: 550 });
 
-        expect(items.map(i => i.node.attrs.fill)).to.deep.equal(['container']);
+        expect(items.map((i) => i.node.attrs.fill)).to.deep.equal(['container']);
       });
 
       it('should include childrens children', () => {
@@ -1441,7 +1441,7 @@ describe('Container', () => {
 
         const items = container.getItemsFrom({ x: 1550, y: 1550 });
 
-        expect(items.map(i => i.node.attrs.fill)).to.deep.equal(['container']);
+        expect(items.map((i) => i.node.attrs.fill)).to.deep.equal(['container']);
       });
 
       it('should return empty result if no collision is detected', () => {
@@ -1525,7 +1525,7 @@ describe('Container', () => {
 
         const items = container.getItemsFrom({ x: 550, y: 550 });
 
-        expect(items.map(i => i.node.attrs.fill)).to.deep.equal(['containerRect2']);
+        expect(items.map((i) => i.node.attrs.fill)).to.deep.equal(['containerRect2']);
       });
 
       it('should include childrens children', () => {
@@ -1562,7 +1562,7 @@ describe('Container', () => {
 
         const items = container.getItemsFrom({ x: 550, y: 550 });
 
-        expect(items.map(i => i.node.attrs.fill)).to.deep.equal(['containerRect3']);
+        expect(items.map((i) => i.node.attrs.fill)).to.deep.equal(['containerRect3']);
       });
 
       it('should ignore children with no collider', () => {
@@ -1589,7 +1589,7 @@ describe('Container', () => {
 
         const items = container.getItemsFrom({ x: 550, y: 550 });
 
-        expect(items.map(i => i.node.attrs.fill)).to.deep.equal(['containerRect1']);
+        expect(items.map((i) => i.node.attrs.fill)).to.deep.equal(['containerRect1']);
       });
 
       it('should return empty result if there are no children', () => {
@@ -1634,7 +1634,7 @@ describe('Container', () => {
 
         const items = container.getItemsFrom({ x: 550, y: 550 });
 
-        expect(items.map(i => i.node.attrs.fill)).to.deep.equal(['containerRect1', 'containerRect2']);
+        expect(items.map((i) => i.node.attrs.fill)).to.deep.equal(['containerRect1', 'containerRect2']);
       });
 
       it('should include childrens children', () => {
@@ -1671,7 +1671,7 @@ describe('Container', () => {
 
         const items = container.getItemsFrom({ x: 1550, y: 1550 });
 
-        expect(items.map(i => i.node.attrs.fill)).to.deep.equal(['containerRect3']);
+        expect(items.map((i) => i.node.attrs.fill)).to.deep.equal(['containerRect3']);
       });
 
       it('should return ignore children with no collider', () => {
@@ -1698,7 +1698,7 @@ describe('Container', () => {
 
         const items = container.getItemsFrom({ x: 550, y: 550 });
 
-        expect(items.map(i => i.node.attrs.fill)).to.deep.equal(['containerRect1']);
+        expect(items.map((i) => i.node.attrs.fill)).to.deep.equal(['containerRect1']);
       });
 
       it('should return empty result if there are no children', () => {
@@ -1760,7 +1760,7 @@ describe('Container', () => {
 
         const items = container.getItemsFrom({ x: 550, y: 550 });
 
-        expect(items.map(i => i.node.attrs.fill)).to.deep.equal(['container']);
+        expect(items.map((i) => i.node.attrs.fill)).to.deep.equal(['container']);
       });
 
       it('should return the colliding container if child collider also matches', () => {
@@ -1786,7 +1786,7 @@ describe('Container', () => {
 
         const items = container.getItemsFrom({ x: 550, y: 550 });
 
-        expect(items.map(i => i.node.attrs.fill)).to.deep.equal(['container']);
+        expect(items.map((i) => i.node.attrs.fill)).to.deep.equal(['container']);
       });
 
       it('should not collide if custom collider doesnt but child collider does', () => {

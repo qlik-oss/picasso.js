@@ -48,7 +48,7 @@ describe('range component', () => {
       brushes: sinon.stub(),
     };
 
-    scale = s => s / 100; // assume scale has domain [0, 100]
+    scale = (s) => s / 100; // assume scale has domain [0, 100]
     scale.data = () => ({
       fields: [
         {
@@ -87,7 +87,7 @@ describe('range component', () => {
       settings.direction = 'vertical';
       const shapes = component.render.call(context);
       expect(
-        shapes.map(s => ({
+        shapes.map((s) => ({
           width: s.width,
           height: s.height,
           x: s.x,
@@ -112,7 +112,7 @@ describe('range component', () => {
     it('should render along horizontal direction', () => {
       const shapes = component.render.call(context);
       expect(
-        shapes.map(s => ({
+        shapes.map((s) => ({
           width: s.width,
           height: s.height,
           x: s.x,
@@ -137,7 +137,7 @@ describe('range component', () => {
     it('should have a default fill of "#ccc"', () => {
       const shapes = component.render.call(context);
       expect(
-        shapes.map(s => ({
+        shapes.map((s) => ({
           fill: s.fill,
         }))
       ).to.eql([{ fill: '#ccc' }, { fill: '#ccc' }]);
@@ -147,7 +147,7 @@ describe('range component', () => {
       settings.fill = '#f00';
       const shapes = component.render.call(context);
       expect(
-        shapes.map(s => ({
+        shapes.map((s) => ({
           fill: s.fill,
         }))
       ).to.eql([{ fill: '#f00' }, { fill: '#f00' }]);
@@ -156,7 +156,7 @@ describe('range component', () => {
     it('should have a default opacity of 1', () => {
       const shapes = component.render.call(context);
       expect(
-        shapes.map(s => ({
+        shapes.map((s) => ({
           opacity: s.opacity,
         }))
       ).to.eql([{ opacity: 1 }, { opacity: 1 }]);
@@ -166,7 +166,7 @@ describe('range component', () => {
       settings.opacity = 0.2;
       const shapes = component.render.call(context);
       expect(
-        shapes.map(s => ({
+        shapes.map((s) => ({
           opacity: s.opacity,
         }))
       ).to.eql([{ opacity: 0.2 }, { opacity: 0.2 }]);

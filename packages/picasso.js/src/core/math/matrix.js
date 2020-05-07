@@ -241,7 +241,7 @@ class Matrix {
   }
 
   toString() {
-    return `${this._elements.map(r => r.join('\t')).join('\n')}`;
+    return `${this._elements.map((r) => r.join('\t')).join('\n')}`;
   }
 
   isIdentity() {

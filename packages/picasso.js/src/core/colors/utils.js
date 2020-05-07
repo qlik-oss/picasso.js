@@ -19,7 +19,7 @@ const utils = {
     if (typeof colors === 'function' && colors.domain) {
       const inputDomain = colors.domain();
 
-      cssColors = inputDomain.map(d => colors(d)).join();
+      cssColors = inputDomain.map((d) => colors(d)).join();
     } else if (colors.constructor === Array) {
       cssColors = colors;
     }

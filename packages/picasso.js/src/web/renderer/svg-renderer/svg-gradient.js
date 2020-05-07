@@ -23,7 +23,7 @@ export default function gradienter(bucket, hasher = hashObject) {
           gradient.type = 'radialGradient';
         } else {
           gradient = degreesToPoints(degree);
-          ['x1', 'x2', 'y1', 'y2'].forEach(c => {
+          ['x1', 'x2', 'y1', 'y2'].forEach((c) => {
             if (c in item[attr]) {
               gradient[c] = item[attr][c];
             }

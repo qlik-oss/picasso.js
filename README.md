@@ -52,9 +52,9 @@ picasso.chart({
           { sales: 9873, margin: 0.9, budget: 3453 },
         ],
         settings: {
-          x: { scale: 'budget', fn: d => d.scale(d.datum.value.budget) },
-          y: { scale: 'sales', fn: d => d.scale(d.datum.value.sales) },
-          size: d => d.datum.value.margin,
+          x: { scale: 'budget', fn: (d) => d.scale(d.datum.value.budget) },
+          y: { scale: 'sales', fn: (d) => d.scale(d.datum.value.sales) },
+          size: (d) => d.datum.value.margin,
         },
       },
     ],

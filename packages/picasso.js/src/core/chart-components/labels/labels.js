@@ -18,7 +18,7 @@ export function strategy({ chart, source, rect, renderer, style }, fn) {
   if (!component) {
     return [];
   }
-  const nodes = chart.findShapes(source.selector).filter(n => n.key === source.component);
+  const nodes = chart.findShapes(source.selector).filter((n) => n.key === source.component);
 
   return fn({
     chart,
@@ -47,7 +47,7 @@ const labelsComponent = {
     const stngs = this.settings.settings;
     const labels = [];
 
-    (stngs.sources || []).forEach(source => {
+    (stngs.sources || []).forEach((source) => {
       if (source.strategy && strategies[source.strategy.type] && source.component) {
         labels.push(
           ...strategy(

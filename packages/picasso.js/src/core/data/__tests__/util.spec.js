@@ -221,11 +221,11 @@ describe('data-util', () => {
       ];
 
       mainField = {
-        formatter: () => v => `$${v}`,
+        formatter: () => (v) => `$${v}`,
       };
 
       pField = {
-        formatter: () => v => `£${v}`,
+        formatter: () => (v) => `£${v}`,
       };
     });
 
@@ -252,14 +252,14 @@ describe('data-util', () => {
     it('should reduce value and labels', () => {
       const main = {
         field: mainField,
-        reduce: values => values.join('::'),
-        reduceLabel: labels => labels.join('-'),
+        reduce: (values) => values.join('::'),
+        reduceLabel: (labels) => labels.join('-'),
       };
 
       const props = {
         p: {
           field: pField,
-          reduce: values => values.join('|'),
+          reduce: (values) => values.join('|'),
           reduceLabel: (labels, value) => `~${value}`,
         },
       };
@@ -280,13 +280,13 @@ describe('data-util', () => {
     it('should reduce labels using field formatter when reduceLabel is not defined', () => {
       const main = {
         field: mainField,
-        reduce: values => values.join('::'),
+        reduce: (values) => values.join('::'),
       };
 
       const props = {
         p: {
           field: pField,
-          reduce: values => values.join('|'),
+          reduce: (values) => values.join('|'),
         },
       };
       const propsArr = Object.keys(props);

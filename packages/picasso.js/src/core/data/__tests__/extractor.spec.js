@@ -6,13 +6,13 @@ describe('extract data', () => {
       { v: 3, s: 'A' },
       { v: 4, s: 'B' },
     ],
-    value: d => d.v,
-    label: d => d.s,
+    value: (d) => d.v,
+    label: (d) => d.s,
   };
 
   const region = {
     items: () => [{ v: 7 }, { v: 9 }],
-    value: d => d.v,
+    value: (d) => d.v,
   };
 
   describe('from config as array', () => {
@@ -48,8 +48,8 @@ describe('extract data', () => {
             { v: 5, s: 'B' },
             { v: 7, s: 'C' },
           ],
-          value: d => d.v,
-          label: d => d.s,
+          value: (d) => d.v,
+          label: (d) => d.s,
         }).items
       ).to.eql([
         { value: 3, label: 'A' },
@@ -175,8 +175,8 @@ describe('extract data', () => {
       let d = extract(
         {
           field: 'dim',
-          value: x => x.v + 5,
-          label: v => `<${v.s}>`,
+          value: (x) => x.v + 5,
+          label: (v) => `<${v.s}>`,
         },
         { dataset }
       );
@@ -207,10 +207,7 @@ describe('extract data', () => {
 
   describe('from collection', () => {
     it('should return a collection', () => {
-      let collection = sinon
-        .stub()
-        .withArgs('nyckel')
-        .returns({ foo: 'my collection' });
+      let collection = sinon.stub().withArgs('nyckel').returns({ foo: 'my collection' });
       let d = extract(
         {
           collection: 'nyckel',
@@ -242,7 +239,7 @@ describe('extract data', () => {
       expect(
         extract({
           items: ['A', 'B', 'C'],
-          filter: d => d.label !== 'C',
+          filter: (d) => d.label !== 'C',
         }).items
       ).to.eql([
         { value: 'A', label: 'A' },

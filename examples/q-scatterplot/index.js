@@ -1,4 +1,4 @@
-(function() {
+(function () {
   picasso.use(picassoQ); // register q plugin
 
   var settings = {

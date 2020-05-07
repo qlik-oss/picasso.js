@@ -119,7 +119,7 @@ function pic(config = {}, registries = {}) {
    * @param {chart-definition} definition
    * @returns {chart}
    */
-  picassojs.chart = definition =>
+  picassojs.chart = (definition) =>
     chart(definition, {
       registries: regis,
       logger,
@@ -128,7 +128,7 @@ function pic(config = {}, registries = {}) {
     });
   picassojs.config = () => config;
 
-  Object.keys(regis).forEach(key => {
+  Object.keys(regis).forEach((key) => {
     picassojs[key] = regis[key];
   });
 

@@ -41,7 +41,7 @@ export default class Path extends DisplayObject {
       this.collider = v.collider;
     } else if (v.d) {
       this.segments = pathToSegments(v.d);
-      if (this.segments.length > 1 && this.segments.every(segment => isClosed(segment))) {
+      if (this.segments.length > 1 && this.segments.every((segment) => isClosed(segment))) {
         this.collider = extend(
           {
             type: 'geopolygon',
@@ -51,7 +51,7 @@ export default class Path extends DisplayObject {
         );
         return;
       }
-      this.segments.forEach(segment => {
+      this.segments.forEach((segment) => {
         if (segment.length <= 1) {
           // Omit empty and single point segments
         } else if (isClosed(segment)) {

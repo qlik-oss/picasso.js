@@ -83,7 +83,7 @@ describe('Chart', () => {
       }); // Select all shapes in the chart
       const expectedShapes = instance.findShapes('circle');
 
-      expect(shapes.map(s => s.attrs)).to.deep.equal(expectedShapes.map(s => s.attrs).reverse()); // Reverse because findShapes do lookup down-n-up
+      expect(shapes.map((s) => s.attrs)).to.deep.equal(expectedShapes.map((s) => s.attrs).reverse()); // Reverse because findShapes do lookup down-n-up
     });
 
     it('should be possible to do lookup on specific components', () => {
@@ -109,7 +109,7 @@ describe('Chart', () => {
       ); // Select all shapes in key2 component
       const expectedShapes = instance.findShapes('circle[fill="green"]'); // All shapes in key2 component are circles with fill=green
 
-      expect(shapes.map(s => s.attrs)).to.deep.equal(expectedShapes.map(s => s.attrs));
+      expect(shapes.map((s) => s.attrs)).to.deep.equal(expectedShapes.map((s) => s.attrs));
     });
 
     it('should stop propagation to other components if a match is found', () => {
@@ -135,7 +135,7 @@ describe('Chart', () => {
       ); // Should start on top (visible top) component and propagation down until a match is found
       const expectedShapes = instance.findShapes('circle[fill="blue"]');
 
-      expect(shapes.map(s => s.attrs)).to.deep.equal(expectedShapes.map(s => s.attrs));
+      expect(shapes.map((s) => s.attrs)).to.deep.equal(expectedShapes.map((s) => s.attrs));
     });
 
     it('should stop propagation in component if a match is found', () => {
@@ -160,7 +160,7 @@ describe('Chart', () => {
         }
       );
 
-      expect(shapes.map(s => s.attrs.fill)).to.deep.equal(['blue', 'blue', 'green', 'red']); // Only return 1 circle for each component except blue which doesnt have propagation set to stop
+      expect(shapes.map((s) => s.attrs.fill)).to.deep.equal(['blue', 'blue', 'green', 'red']); // Only return 1 circle for each component except blue which doesnt have propagation set to stop
     });
   });
 
@@ -199,7 +199,7 @@ describe('Chart', () => {
       });
 
       const brushedShapes = instance.findShapes('circle');
-      expect(brushedShapes.map(s => s.attrs.fill)).to.deep.equal(['black', 'black']);
+      expect(brushedShapes.map((s) => s.attrs.fill)).to.deep.equal(['black', 'black']);
     });
 
     it('should not brush provided shapes doesnt have a their parent component configured', () => {
@@ -236,7 +236,7 @@ describe('Chart', () => {
       });
 
       const brushedShapes = instance.findShapes('circle');
-      expect(brushedShapes.map(s => s.attrs.fill)).to.deep.equal(['red', 'red']);
+      expect(brushedShapes.map((s) => s.attrs.fill)).to.deep.equal(['red', 'red']);
     });
   });
 

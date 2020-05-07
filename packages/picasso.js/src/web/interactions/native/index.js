@@ -33,7 +33,7 @@ function native(chart, mediator, element) {
     if (!settings.enable) {
       return; // interaction is disabled
     }
-    Object.keys(settings.events).forEach(key => {
+    Object.keys(settings.events).forEach((key) => {
       const listener = settings.events[key].bind(instance);
       element.addEventListener(key, listener);
       nativeEvents.push({ key, listener });

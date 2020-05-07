@@ -10,7 +10,7 @@ const SELECTOR_MAPS = {
 const FILTERS = {
   type: (c, objects) => {
     // eslint-disable-line arrow-body-style
-    return objects.filter(o => {
+    return objects.filter((o) => {
       const type = o.type;
 
       if (type) {
@@ -22,7 +22,7 @@ const FILTERS = {
 
   attr: (attr, operator, value, objects) => {
     // eslint-disable-line arrow-body-style
-    return objects.filter(o => {
+    return objects.filter((o) => {
       const v = o.attrs[attr];
 
       if (!operator) {
@@ -44,19 +44,14 @@ const FILTERS = {
     });
   },
 
-  universal: objects => objects,
+  universal: (objects) => objects,
 
   tag: (selector, objects) => {
     // eslint-disable-line arrow-body-style
-    return objects.filter(o => {
+    return objects.filter((o) => {
       const tag = o.tag;
       if (tag) {
-        return (
-          tag
-            .trim()
-            .split(/\s+/)
-            .indexOf(selector.replace('.', '')) !== -1
-        );
+        return tag.trim().split(/\s+/).indexOf(selector.replace('.', '')) !== -1;
       }
       return false;
     });
@@ -111,10 +106,10 @@ export function tokenize(s) {
   let match;
   let validSelector;
 
-  s.split(/\s*,\s*/).forEach(group => {
+  s.split(/\s*,\s*/).forEach((group) => {
     group = group.trim();
     sub = [];
-    const selectorMapsIterator = key => {
+    const selectorMapsIterator = (key) => {
       match = group.match(SELECTOR_MAPS[key]);
       if (match) {
         validSelector = true;
@@ -179,7 +174,7 @@ function find(s, object) {
       const levels = [];
       let filtered = descendants.slice();
       let hasRemainder = false;
-      tokens.reverse().forEach(token => {
+      tokens.reverse().forEach((token) => {
         if (token.type === ' ') {
           levels.push(filtered);
           filtered = descendants.slice();
@@ -195,7 +190,7 @@ function find(s, object) {
         levels.push(filtered);
       }
 
-      const selected = levels[0].filter(node => {
+      const selected = levels[0].filter((node) => {
         let ancestor = node.parent;
         let idx;
 

@@ -267,7 +267,7 @@ describe('Brush Range', () => {
         fields: [
           {
             id: () => 'foo',
-            formatter: () => v => v,
+            formatter: () => (v) => v,
           },
         ],
       });

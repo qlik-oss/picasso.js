@@ -15,7 +15,7 @@ const creator = (type, parent) => {
   return el;
 };
 
-const destroyer = el => {
+const destroyer = (el) => {
   if (el.parentNode) {
     el.parentNode.removeChild(el);
   }

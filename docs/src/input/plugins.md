@@ -27,7 +27,7 @@ where `myPlugin` is a function in which the variuos registries are used:
 ```js
 // my-plugin.js
 
-export default function(picasso) {
+export default function (picasso) {
   picasso.component('my-component-1', {
     /* ... */
   });

@@ -40,18 +40,14 @@ function getBreaks(domain) {
 function generateRange(domain, colors, min, max) {
   min = domain[0];
   max = domain && domain.length >= 2 ? domain[domain.length - 1] : max;
-  const seq = sequential()
-    .domain([min, max])
-    .range(colors);
+  const seq = sequential().domain([min, max]).range(colors);
   const values = [min, ...getBreaks(domain), max];
-  return values.map(v => seq(v));
+  return values.map((v) => seq(v));
 }
 
 function generateNiceDomain(range, min, max) {
   const numPoints = range.length === 2 ? 10 : Math.max(1, range.length);
-  const lin = scaleLinear()
-    .domain([min, max])
-    .nice(numPoints);
+  const lin = scaleLinear().domain([min, max]).nice(numPoints);
   const domain = lin.ticks(numPoints);
 
   if (!range || !range.length) {
@@ -124,7 +120,7 @@ export default function scaleThresholdColor(settings = {}, data = {}, resources 
     return d3Scale(v);
   }
 
-  Object.keys(d3Scale).forEach(key => (fn[key] = d3Scale[key]));
+  Object.keys(d3Scale).forEach((key) => (fn[key] = d3Scale[key]));
 
   const fields = data.fields;
 

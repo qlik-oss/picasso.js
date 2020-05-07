@@ -30,7 +30,7 @@ describe('component - label', () => {
           },
           rect: {},
         },
-        opts => opts.nodes
+        (opts) => opts.nodes
       );
       expect(labels).to.eql([{ key: 'bars' }, { key: 'bars' }]);
     });

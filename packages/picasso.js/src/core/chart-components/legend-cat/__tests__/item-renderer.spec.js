@@ -21,7 +21,7 @@ describe('legend-item-renderer', () => {
           },
         },
         {
-          textBounds: obj => ({ width: parseInt(obj.fontSize, 10) * 2, height: 20 }),
+          textBounds: (obj) => ({ width: parseInt(obj.fontSize, 10) * 2, height: 20 }),
         }
       );
     });
@@ -287,7 +287,7 @@ describe('legend-item-renderer', () => {
           maxItemBounds: { width: 17, height: 15 },
           maxLabelBounds: { width: 20, height: 10 },
         },
-        createSymbol: coord => coord,
+        createSymbol: (coord) => coord,
       });
 
       expect(item.item).to.eql({
@@ -330,9 +330,9 @@ describe('legend-item-renderer', () => {
       sandbox = sinon.createSandbox();
       legend = {
         renderer: {
-          textBounds: o => ({ width: parseInt(o.fontSize, 10) * 2, height: 20 }),
+          textBounds: (o) => ({ width: parseInt(o.fontSize, 10) * 2, height: 20 }),
         },
-        symbol: item => item,
+        symbol: (item) => item,
       };
       obj = {
         viewRect: { x: 1, y: 2 },

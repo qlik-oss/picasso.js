@@ -19,11 +19,11 @@ export function findField(query, { cache }) {
 }
 
 const filters = {
-  numeric: values => values.filter(v => typeof v === 'number' && !isNaN(v)),
+  numeric: (values) => values.filter((v) => typeof v === 'number' && !isNaN(v)),
 };
 
 const unfilteredReducers = {
-  sum: values => values.reduce((a, b) => a + b, 0),
+  sum: (values) => values.reduce((a, b) => a + b, 0),
 };
 
 // function isPrimitive(x) {
@@ -37,21 +37,21 @@ const unfilteredReducers = {
  * @private
  */
 export const reducers = {
-  first: values => values[0],
-  last: values => values[values.length - 1],
-  min: values => {
+  first: (values) => values[0],
+  last: (values) => values[values.length - 1],
+  min: (values) => {
     const filtered = filters.numeric(values);
     return !filtered.length ? NaN : Math.min.apply(null, filtered);
   },
-  max: values => {
+  max: (values) => {
     const filtered = filters.numeric(values);
     return !filtered.length ? NaN : Math.max.apply(null, filtered);
   },
-  sum: values => {
+  sum: (values) => {
     const filtered = filters.numeric(values);
     return !filtered.length ? NaN : filtered.reduce((a, b) => a + b, 0);
   },
-  avg: values => {
+  avg: (values) => {
     const filtered = filters.numeric(values);
     const len = filtered.length;
     return !len ? NaN : unfilteredReducers.sum(filtered) / len;
@@ -62,7 +62,7 @@ function normalizeProperties(cfg, dataset, dataProperties, main) {
   // console.log('======', cfg, main, dataset);
   const props = {};
   const mainField = main.field || (typeof cfg.field !== 'undefined' ? dataset.field(cfg.field) : null);
-  Object.keys(dataProperties).forEach(key => {
+  Object.keys(dataProperties).forEach((key) => {
     const pConfig = dataProperties[key];
     const prop = (props[key] = {});
     if (['number', 'string', 'boolean'].indexOf(typeof pConfig) !== -1) {
@@ -75,7 +75,7 @@ function normalizeProperties(cfg, dataset, dataProperties, main) {
       prop.field = mainField;
     } else if (typeof pConfig === 'object') {
       if (pConfig.fields) {
-        prop.fields = pConfig.fields.map(ff => normalizeProperties(cfg, dataset, { main: ff }, main).main);
+        prop.fields = pConfig.fields.map((ff) => normalizeProperties(cfg, dataset, { main: ff }, main).main);
       } else if (typeof pConfig.field !== 'undefined') {
         prop.type = 'field';
         prop.field = dataset.field(pConfig.field);
@@ -203,14 +203,14 @@ export function collect(trackedItems, { main, propsArr, props }) {
   let dataItems = [];
   const mainFormatter = main.field.formatter(); // || (v => v);
   const propsFormatters = {};
-  propsArr.forEach(prop => {
-    propsFormatters[prop] = props[prop].field ? props[prop].field.formatter() : v => v;
+  propsArr.forEach((prop) => {
+    propsFormatters[prop] = props[prop].field ? props[prop].field.formatter() : (v) => v;
   });
   dataItems.push(
-    ...trackedItems.map(t => {
+    ...trackedItems.map((t) => {
       const ret = collectItems(t.items, main, mainFormatter);
 
-      propsArr.forEach(prop => {
+      propsArr.forEach((prop) => {
         ret[prop] = collectItems(t.items, props[prop], propsFormatters[prop], prop);
       });
       return ret;

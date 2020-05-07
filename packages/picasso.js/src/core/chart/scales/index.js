@@ -19,7 +19,7 @@ scaleRegistry('categorical-color', categorical);
 export { scaleRegistry as default };
 
 function getTypeFromMeta(fields) {
-  const types = fields.map(field => (field.type() === 'dimension' ? 'band' : 'linear'));
+  const types = fields.map((field) => (field.type() === 'dimension' ? 'band' : 'linear'));
   return types.indexOf('linear') !== -1 ? 'linear' : 'band';
 }
 
@@ -42,7 +42,7 @@ export function create(options, d, deps) {
     dataSourceConfig = {
       extract: [],
     };
-    (Array.isArray(options.source) ? options.source : [options.source]).forEach(source => {
+    (Array.isArray(options.source) ? options.source : [options.source]).forEach((source) => {
       dataSourceConfig.extract.push({
         field: source,
       });

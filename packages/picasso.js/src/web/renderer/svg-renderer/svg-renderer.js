@@ -44,7 +44,7 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
 
   svg.root = () => group;
 
-  svg.appendTo = element => {
+  svg.appendTo = (element) => {
     if (!el) {
       el = element.ownerDocument.createElementNS(ns, 'svg');
       el.style.position = 'absolute';
@@ -62,7 +62,7 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
     return el;
   };
 
-  svg.render = nodes => {
+  svg.render = (nodes) => {
     if (!el) {
       return false;
     }
@@ -97,7 +97,7 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
       items: [sceneContainer],
       on: {
         create: [
-          state => {
+          (state) => {
             state.node.fillReference = undefined;
             state.node.strokeReference = undefined;
           },
@@ -121,9 +121,9 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
     return doRender;
   };
 
-  svg.itemsAt = input => (scene ? scene.getItemsFrom(input) : []);
+  svg.itemsAt = (input) => (scene ? scene.getItemsFrom(input) : []);
 
-  svg.findShapes = selector => (scene ? scene.findShapes(selector) : []);
+  svg.findShapes = (selector) => (scene ? scene.findShapes(selector) : []);
 
   svg.clear = () => {
     if (!group) {
@@ -145,7 +145,7 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
     group = null;
   };
 
-  svg.size = opts => {
+  svg.size = (opts) => {
     if (opts) {
       const newRect = createRendererBox(opts);
 

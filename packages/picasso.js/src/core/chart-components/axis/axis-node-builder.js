@@ -34,15 +34,15 @@ function calcActualTextRect({ style, measureText, tick }) {
 }
 
 function majorTicks(ticks) {
-  return ticks.filter(t => !t.isMinor);
+  return ticks.filter((t) => !t.isMinor);
 }
 
 function minorTicks(ticks) {
-  return ticks.filter(t => t.isMinor);
+  return ticks.filter((t) => t.isMinor);
 }
 
 function tickBuilder(ticks, buildOpts) {
-  return ticks.map(tick => buildTick(tick, buildOpts));
+  return ticks.map((tick) => buildTick(tick, buildOpts));
 }
 
 function tickBandwidth(scale, tick) {

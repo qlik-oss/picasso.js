@@ -51,7 +51,7 @@ describe('line', () => {
     });
 
     it('should not fire stroke if stroke condition is falsy', () => {
-      falsys.forEach(value => {
+      falsys.forEach((value) => {
         render(line, { g, doStroke: value });
 
         expect(g.stroke.called).to.equal(false);
@@ -59,7 +59,7 @@ describe('line', () => {
     });
 
     it('should fire stroke if stroke condition is truthy', () => {
-      truthys.forEach(value => {
+      truthys.forEach((value) => {
         g.stroke.resetHistory();
 
         render(line, { g, doStroke: value });

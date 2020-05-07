@@ -10,7 +10,7 @@ const SELECTOR_MAPS = {
 const FILTERS = {
   type: (c, objects) => {
     // eslint-disable-line arrow-body-style
-    return objects.filter(o => {
+    return objects.filter((o) => {
       const type = o.node.type;
 
       if (type) {
@@ -22,7 +22,7 @@ const FILTERS = {
 
   attr: (attr, operator, value, objects) => {
     // eslint-disable-line arrow-body-style
-    return objects.filter(o => {
+    return objects.filter((o) => {
       const v = o.node[attr];
 
       if (!operator) {
@@ -43,11 +43,11 @@ const FILTERS = {
     });
   },
 
-  universal: objects => objects,
+  universal: (objects) => objects,
 
   tag: (c, objects) => {
     // eslint-disable-line arrow-body-style
-    return objects.filter(o => {
+    return objects.filter((o) => {
       const tag = o.node.tag;
       if (tag) {
         return tag.indexOf(c.replace('.', '')) !== -1;
@@ -105,10 +105,10 @@ export function tokenize(s) {
   let match;
   let validSelector;
 
-  s.split(/\s*,\s*/).forEach(group => {
+  s.split(/\s*,\s*/).forEach((group) => {
     group = group.trim();
     sub = [];
-    const selectorMapsIterator = key => {
+    const selectorMapsIterator = (key) => {
       match = group.match(SELECTOR_MAPS[key]);
       if (match) {
         validSelector = true;
@@ -191,7 +191,7 @@ export default function find(s, object) {
       const levels = [];
       let filtered = descendants.slice();
       let hasRemainder = false;
-      tokens.reverse().forEach(token => {
+      tokens.reverse().forEach((token) => {
         if (token.type === ' ') {
           levels.push(filtered);
           filtered = descendants.slice();
@@ -207,12 +207,12 @@ export default function find(s, object) {
         levels.push(filtered);
       }
 
-      const selected = levels[0].filter(node => {
+      const selected = levels[0].filter((node) => {
         let ancestor = node.parent;
         let idx;
 
         for (let i = 1; i < levels.length; i++) {
-          const levelsNode = levels[i].map(lvl => lvl.node);
+          const levelsNode = levels[i].map((lvl) => lvl.node);
           idx = levelsNode.indexOf(ancestor);
           while (ancestor && idx < 0) {
             ancestor = ancestor.parent;
@@ -225,7 +225,7 @@ export default function find(s, object) {
         return true;
       });
 
-      groupResults.push(selected.map(sel => sel.node));
+      groupResults.push(selected.map((sel) => sel.node));
     }
 
     for (let i = 0, len = groupResults.length; i < len; i++) {

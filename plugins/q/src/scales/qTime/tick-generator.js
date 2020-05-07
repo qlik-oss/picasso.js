@@ -14,7 +14,7 @@ function DateToQlikTimestamp(date) {
 
 function getFormatter(ticks) {
   let qFmt = HOUR_PATTERN;
-  if (ticks.some(date => date.getUTCSeconds() > 0)) {
+  if (ticks.some((date) => date.getUTCSeconds() > 0)) {
     qFmt = MINUTE_PATTERN;
   }
 
@@ -27,7 +27,7 @@ export default function tickGenerator(scale, settings) {
   const fn = function fn() {};
 
   fn.transformTicks = function transformTicks(qTicks) {
-    return qTicks.map(qt => {
+    return qTicks.map((qt) => {
       let value = (qt.qStart + qt.qEnd) / 2;
       if (settings.anchor === 'start') {
         value = qt.qStart;
@@ -56,7 +56,7 @@ export default function tickGenerator(scale, settings) {
     const formatter = getFormatter(ticks);
     const interval = ticks.length > 1 ? ticks[1] - ticks[0] : 0; // Assumes uniformly-spaced ticks
 
-    return ticks.map(date => {
+    return ticks.map((date) => {
       const qtTime = DateToQlikTimestamp(date);
       const start = timeScale(date);
       return {

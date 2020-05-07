@@ -219,7 +219,7 @@ describe('line component', () => {
       x: { scale: 'x' },
       y: { scale: 'y' },
       ticks: {
-        stroke: t => (t.data.dir === 'x' ? 'red' : 'blue'),
+        stroke: (t) => (t.data.dir === 'x' ? 'red' : 'blue'),
       },
     };
 

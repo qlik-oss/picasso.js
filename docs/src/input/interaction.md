@@ -38,17 +38,17 @@ interactions: [
   {
     type: 'native',
     key: 'here',
-    enable: function() {
+    enable: function () {
       // bool or function
       this.chart /*...*/;
       return true;
     },
     events: {
-      mousemove: function(e) {
+      mousemove: function (e) {
         // key should point to a native event
         // handle event here
       },
-      keydown: function(e) {
+      keydown: function (e) {
         // handle event here
       },
     },

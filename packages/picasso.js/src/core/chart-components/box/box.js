@@ -67,10 +67,10 @@ const component = {
 
     const { style, resolver, symbol } = this;
 
-    const keys = dataKeys.filter(key => !this.settings.settings[key] || this.settings.settings[key].show !== false);
+    const keys = dataKeys.filter((key) => !this.settings.settings[key] || this.settings.settings[key].show !== false);
     const defaultSettings = {};
 
-    keys.forEach(key => (defaultSettings[key] = DEFAULT_DATA_SETTINGS[key]));
+    keys.forEach((key) => (defaultSettings[key] = DEFAULT_DATA_SETTINGS[key]));
 
     const resolved = complexResolver({
       keys,

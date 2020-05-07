@@ -1,5 +1,5 @@
 export default function memoize(func, opts = {}) {
-  const { size = 5000, multipleArguments = false, toKey = arg => arg } = opts;
+  const { size = 5000, multipleArguments = false, toKey = (arg) => arg } = opts;
   let cache = Object.create(null);
   let index = Object.create(null);
   let counter = 0;
@@ -16,7 +16,7 @@ export default function memoize(func, opts = {}) {
       return cacher.set(k, func(...args));
     };
   } else {
-    cacher = arg => {
+    cacher = (arg) => {
       k = toKey(arg);
       if (cacher.has(k)) {
         return cacher.get(k);
@@ -38,9 +38,9 @@ export default function memoize(func, opts = {}) {
     return val;
   };
 
-  cacher.get = key => cache[key];
+  cacher.get = (key) => cache[key];
 
-  cacher.has = key => key in cache;
+  cacher.has = (key) => key in cache;
 
   cacher.clear = () => {
     cache = Object.create(null);

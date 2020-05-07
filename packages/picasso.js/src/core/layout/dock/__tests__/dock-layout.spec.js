@@ -885,7 +885,7 @@ describe('Dock Layout', () => {
 
       const { visible, order } = dl.layout(rect, [mainComp, leftComp, onLeft, onMain]);
 
-      expect(visible.map(v => v.settings.key)).to.eql(['main', 'y', 'dockAtY', 'dockAtMain']);
+      expect(visible.map((v) => v.settings.key)).to.eql(['main', 'y', 'dockAtY', 'dockAtMain']);
       expect(order).to.eql([1, 3, 2, 0]);
     });
   });

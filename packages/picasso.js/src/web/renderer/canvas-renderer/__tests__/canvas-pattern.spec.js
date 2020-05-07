@@ -9,10 +9,7 @@ describe('canvas-gradient', () => {
   beforeEach(() => {
     el = elementMock('canvas');
     document = {
-      createElement: sinon
-        .stub()
-        .withArgs('canvas')
-        .returns(el),
+      createElement: sinon.stub().withArgs('canvas').returns(el),
     };
     z = patternizer(document);
   });

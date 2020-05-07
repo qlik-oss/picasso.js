@@ -124,7 +124,7 @@ function resolveAttribute(root, steps, attribute, defaultVal) {
 export function resolveStyle(defaults, styleRoot, path) {
   const steps = path ? path.split('.') : [];
   const ret = {};
-  Object.keys(defaults).forEach(s => {
+  Object.keys(defaults).forEach((s) => {
     const def = defaults[s] === null && typeof GLOBAL_DEFAULTS[s] !== 'undefined' ? GLOBAL_DEFAULTS[s] : defaults[s];
     ret[s] = resolveAttribute(styleRoot, steps.concat(), s, def);
   });
@@ -141,14 +141,14 @@ export function resolveStyle(defaults, styleRoot, path) {
 export function resolveForDataValues(styles, dataValues, index) {
   const ret = {};
   if (dataValues) {
-    Object.keys(styles).forEach(s => {
+    Object.keys(styles).forEach((s) => {
       ret[s] =
         styles[s] && typeof styles[s].fn === 'function'
           ? styles[s].fn(undefined, dataValues[s][index], index, dataValues[s])
           : styles[s];
     });
   } else {
-    Object.keys(styles).forEach(s => {
+    Object.keys(styles).forEach((s) => {
       ret[s] = styles[s] && typeof styles[s].fn === 'function' ? styles[s].fn() : styles[s];
     });
   }
@@ -161,7 +161,7 @@ function isPrimitive(v) {
 
 export function resolveForDataObject(props, dataObj, index, allData, contextProps) {
   const ret = {};
-  Object.keys(props).forEach(s => {
+  Object.keys(props).forEach((s) => {
     const exists = typeof props[s] !== 'undefined';
     const hasScale = exists && typeof props[s].scale === 'function';
     const hasExplicitDataProp = exists && !!props[s].ref;

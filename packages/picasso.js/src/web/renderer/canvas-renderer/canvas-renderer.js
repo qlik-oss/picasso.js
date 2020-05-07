@@ -138,7 +138,7 @@ export function renderer(sceneFn = sceneFactory) {
 
   canvasRenderer.root = () => el;
 
-  canvasRenderer.appendTo = element => {
+  canvasRenderer.appendTo = (element) => {
     if (!el) {
       el = element.ownerDocument.createElement('canvas');
       el.style.position = 'absolute';
@@ -152,7 +152,7 @@ export function renderer(sceneFn = sceneFactory) {
     return el;
   };
 
-  canvasRenderer.render = shapes => {
+  canvasRenderer.render = (shapes) => {
     if (!el) {
       return false;
     }
@@ -210,9 +210,9 @@ export function renderer(sceneFn = sceneFactory) {
     return doRender;
   };
 
-  canvasRenderer.itemsAt = input => (scene ? scene.getItemsFrom(input) : []);
+  canvasRenderer.itemsAt = (input) => (scene ? scene.getItemsFrom(input) : []);
 
-  canvasRenderer.findShapes = selector => (scene ? scene.findShapes(selector) : []);
+  canvasRenderer.findShapes = (selector) => (scene ? scene.findShapes(selector) : []);
 
   canvasRenderer.clear = () => {
     if (el) {
@@ -223,7 +223,7 @@ export function renderer(sceneFn = sceneFactory) {
     return canvasRenderer;
   };
 
-  canvasRenderer.size = opts => {
+  canvasRenderer.size = (opts) => {
     if (opts) {
       const newRect = createRendererBox(opts);
 

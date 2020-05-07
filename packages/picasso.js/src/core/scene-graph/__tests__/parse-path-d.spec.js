@@ -2,7 +2,7 @@ import pathToSegments from '../parse-path-d';
 
 function approxEqual(ary, expected) {
   ary.forEach((item, i) => {
-    Object.keys(expected[i]).forEach(key => {
+    Object.keys(expected[i]).forEach((key) => {
       expect(item[key]).to.approximately(expected[i][key], 0.001);
     });
   });

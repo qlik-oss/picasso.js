@@ -44,7 +44,7 @@ components: [
           strategy: {
             type: 'bar', // the strategy type
             settings: {
-              direction: function({ data }) {
+              direction: function ({ data }) {
                 // data argument is the data bound to the shape in the referenced component
                 return data && data.end.value > data.start.value ? 'up' : 'down';
               },

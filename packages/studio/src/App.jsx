@@ -25,7 +25,7 @@ const App = ({ location, history }) => {
 
   React.useEffect(() => {
     if (selected && selected.id !== pathname.substr(1) && localList) {
-      let [sel] = examples.concat(localList).filter(ex => ex.id === pathname.substr(1));
+      let [sel] = examples.concat(localList).filter((ex) => ex.id === pathname.substr(1));
       if (!sel) {
         [sel] = examples;
       }
@@ -35,7 +35,7 @@ const App = ({ location, history }) => {
     }
   }, [selected, pathname, localList]);
 
-  const onItemAdded = title => {
+  const onItemAdded = (title) => {
     const result = localRepo.new({ title });
     if (result && result.id) {
       setLocalList(localRepo.list());
@@ -43,7 +43,7 @@ const App = ({ location, history }) => {
     }
   };
 
-  const onItemRemoved = id => {
+  const onItemRemoved = (id) => {
     const result = localRepo.delete(id);
     const next = (result && result.id) || (examples && examples[examples.length - 1].id) || '';
     setLocalList(localRepo.list());
@@ -51,7 +51,7 @@ const App = ({ location, history }) => {
   };
 
   const onCodeUpdated = React.useCallback(
-    codeData => {
+    (codeData) => {
       if (selected) {
         let { code, data } = codeData;
         if (typeof code === 'undefined') {
@@ -60,7 +60,7 @@ const App = ({ location, history }) => {
         if (typeof data === 'undefined') {
           data = selected.data;
         }
-        const isLocal = localList.filter(l => selected.id === l.id).length === 1;
+        const isLocal = localList.filter((l) => selected.id === l.id).length === 1;
         if (isLocal) {
           localRepo.update({ id: selected.id, code, data });
         } else {

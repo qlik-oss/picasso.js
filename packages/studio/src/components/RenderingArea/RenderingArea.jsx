@@ -23,7 +23,7 @@ import SettingsType from '../../core/types';
 picasso.use(picQ);
 picasso.use(picHammer);
 
-const useClasses = makeStyles(theme => ({
+const useClasses = makeStyles((theme) => ({
   root: {
     background: 'white',
   },

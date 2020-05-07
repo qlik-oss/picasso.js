@@ -89,10 +89,7 @@ describe('Sequential', () => {
     });
 
     it('should scale a single color over lightness when using classify', () => {
-      seq
-        .domain([0, 1])
-        .range(['hsl(0, 100%, 20%)', 'hsl(0, 100%, 80%)'])
-        .classify(4);
+      seq.domain([0, 1]).range(['hsl(0, 100%, 20%)', 'hsl(0, 100%, 80%)']).classify(4);
       expect(seq(0)).to.equal('rgb(121, 19, 19)'); // First interval
       expect(seq(0.2)).to.equal('rgb(121, 19, 19)');
       expect(seq(0.5)).to.equal('rgb(198, 96, 96)'); // Second interval

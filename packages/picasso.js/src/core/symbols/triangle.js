@@ -29,7 +29,7 @@ function triangle(options) {
   ];
 
   const radians = toRadians(directionAngle);
-  points = points.map(pp => rotate(pp, radians, p));
+  points = points.map((pp) => rotate(pp, radians, p));
 
   return {
     type: 'path',

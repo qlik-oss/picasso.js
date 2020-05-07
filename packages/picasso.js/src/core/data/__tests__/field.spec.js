@@ -57,11 +57,11 @@ describe('Field', () => {
           values: [{ v: 1 }, { v: 6 }, { v: 6 }],
         },
         {
-          min: d => d.mm.qMin,
-          max: d => d.mm.maximum,
-          tags: d => d.meta.taggar.map(x => x.v),
-          title: d => d.t,
-          values: d => d.values.map(x => x.v),
+          min: (d) => d.mm.qMin,
+          max: (d) => d.mm.maximum,
+          tags: (d) => d.meta.taggar.map((x) => x.v),
+          title: (d) => d.t,
+          values: (d) => d.values.map((x) => x.v),
         }
       );
     });

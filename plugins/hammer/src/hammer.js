@@ -55,7 +55,7 @@ function hammered(Hammered) {
       if (!settings.enable) {
         return; // interaction is disabled
       }
-      settings.gestures.forEach(gesture => {
+      settings.gestures.forEach((gesture) => {
         gesture.options = gesture.options || {};
         // handle action enable
         if (gesture.options.enable === undefined) {
@@ -70,7 +70,7 @@ function hammered(Hammered) {
           gesture.options.event = gesture.options.event || gesture.type.toLowerCase();
           mc = mc || new Hammered.Manager(element);
           mc.add(new Hammered[type](gesture.options));
-          Object.keys(gesture.events).forEach(eventName => {
+          Object.keys(gesture.events).forEach((eventName) => {
             gesture.events[eventName] = gesture.events[eventName].bind(instance);
             mc.on(eventName, gesture.events[eventName]);
           });
@@ -79,14 +79,14 @@ function hammered(Hammered) {
       });
 
       // setup mixing hammer gestures
-      settings.gestures.forEach(gesture => {
+      settings.gestures.forEach((gesture) => {
         const type = getGestureType(gesture.type);
         if (Hammered && Hammered[type]) {
           if (gesture.recognizeWith) {
-            mc.get(gesture.options.event).recognizeWith(gesture.recognizeWith.split(' ').filter(e => e !== ''));
+            mc.get(gesture.options.event).recognizeWith(gesture.recognizeWith.split(' ').filter((e) => e !== ''));
           }
           if (gesture.requireFailure) {
-            mc.get(gesture.options.event).requireFailure(gesture.requireFailure.split(' ').filter(e => e !== ''));
+            mc.get(gesture.options.event).requireFailure(gesture.requireFailure.split(' ').filter((e) => e !== ''));
           }
         }
       });
@@ -97,8 +97,8 @@ function hammered(Hammered) {
      */
     function removeAddedEvents() {
       // remove hammer recognizers and registered events
-      hammerGestures.forEach(gesture => {
-        Object.keys(gesture.events).forEach(eventName => {
+      hammerGestures.forEach((gesture) => {
+        Object.keys(gesture.events).forEach((eventName) => {
           mc.off(eventName, gesture.events[eventName]);
         });
         mc.remove(gesture.options.event);
