@@ -6220,6 +6220,11 @@ extsprintf@^1.2.0:
   resolved "https://registry.yarnpkg.com/extsprintf/-/extsprintf-1.4.0.tgz#e2689f8f356fad62cca65a3a91c5df5f9551692f"
   integrity sha1-4mifjzVvrWLMplo6kcXfX5VRaS8=
 
+faker@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/faker/-/faker-4.1.0.tgz#1e45bbbecc6774b3c195fad2835109c6d748cc3f"
+  integrity sha1-HkW7vsxndLPBlfrSg1EJxtdIzD8=
+
 "falsey@^0.3.2":
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/falsey/-/falsey-0.3.2.tgz#b21c90c5c34660fc192bf909575db95b6880d597"
@@ -10836,10 +10841,10 @@ prettier-linter-helpers@^1.0.0:
   dependencies:
     fast-diff "^1.1.2"
 
-prettier@^1.19.1:
-  version "1.19.1"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.19.1.tgz#f7d7f5ff8a9cd872a7be4ca142095956a60797cb"
-  integrity sha512-s7PoyDv/II1ObgQunCbB9PdLmUcBZcnWOcxDh7O0N/UwDEsHyqkW+Qh28jW+mVuCdx7gLB0BotYI1Y6uI9iyew==
+prettier@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.0.5.tgz#d6d56282455243f2f92cc1716692c08aa31522d4"
+  integrity sha512-7PtVymN48hGcO4fGjybyBSIWDsLU4H4XlvOHfq91pz9kkGlonzwTfYkaIEwiRg/dAJF9YlbsduBAgtYLi+8cFg==
 
 pretty-error@^2.0.2:
   version "2.1.1"
@@ -11066,6 +11071,13 @@ q@^1.1.2, q@^1.4.1, q@^1.5.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
   integrity sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=
+
+qix-faker@0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/qix-faker/-/qix-faker-0.3.0.tgz#63911eff5f2153bf93b6176faea8ffd833922435"
+  integrity sha512-S1oK/8Bl+MhIJHrn0KrPqmP6fqhNPNThPxaOLzKwDYHzF/st0wUfT+UBOhCyxpZJhhKmrp8SwJs0t3rpqRPo4A==
+  dependencies:
+    faker "^4.1.0"
 
 qs@6.7.0:
   version "6.7.0"
