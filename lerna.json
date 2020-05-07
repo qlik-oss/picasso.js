@@ -1,12 +1,11 @@
 {
-  "packages": ["docs", "packages/*", "plugins/*"],
   "command": {
     "version": {
       "allowBranch": "master",
       "conventionalCommits": true,
       "forcePublish": true,
       "message": "chore(release): %s 🚀",
-      "ignore": ["test-utils", "docs"]
+      "ignore": ["test-utils", "docs", "studio"]
     }
   },
   "version": "0.30.0",

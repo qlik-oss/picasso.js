@@ -9,9 +9,9 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import runScript from 'run-script';
 import 'hammerjs';
 
-import picasso from '../../../../picasso.js/src';
-import picQ from '../../../../../plugins/q/src';
-import picHammer from '../../../../../plugins/hammer/src';
+import picasso from 'picasso.js/src';
+import picQ from 'picasso-plugin-q/src';
+import picHammer from 'picasso-plugin-hammer/src';
 
 import { useResize } from '../../core/hooks';
 

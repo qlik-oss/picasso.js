@@ -13,7 +13,11 @@ module.exports = {
       },
       {
         test: /\.jsx?$/,
-        include: [path.resolve(__dirname, '../picasso.js/src'), path.resolve(__dirname, '../../plugins/**/src')],
+        include: [
+          path.resolve(__dirname, '../packages/picasso.js/src'),
+          path.resolve(__dirname, '../plugins/hammer/src'),
+          path.resolve(__dirname, '../plugins/q/src'),
+        ],
         exclude: [/node_modules/],
         use: {
           loader: 'babel-loader',
