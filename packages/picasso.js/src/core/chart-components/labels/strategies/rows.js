@@ -110,7 +110,7 @@ export function rows({ settings, chart, nodes, renderer, style }, placer = place
 
   const rowSettings = extend({}, defaults, settings);
 
-  const labelSettings = settings.labels.map(labelSetting => extend({}, rowSettings, labelSetting));
+  const labelSettings = settings.labels.map((labelSetting) => extend({}, rowSettings, labelSetting));
 
   const labelStruct = {};
   const labels = [];

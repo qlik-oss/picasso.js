@@ -78,7 +78,7 @@ function inverseTransform(node, input) {
   }
 
   if (Array.isArray(transformedInput.vertices)) {
-    if (transformedInput.vertices.every(item => Array.isArray(item))) {
+    if (transformedInput.vertices.every((item) => Array.isArray(item))) {
       transformedInput = createGeoPolygon(transformedInput);
     } else {
       transformedInput = createPolygon(transformedInput); // TODO Shouldn't have to do this here, currently its beacause a collision algorithm optimization, i.e. caching of polygon bounds
@@ -149,19 +149,19 @@ function resolveShape(shape, ratio = 1) {
       _shape.r = shape.r;
       return ['intersectsCircle', _shape];
     case 'rect':
-      _shape = rectToPoints(shape).map(p => scalarMultiply(p, ratio));
+      _shape = rectToPoints(shape).map((p) => scalarMultiply(p, ratio));
       return ['intersectsRect', _shape];
     case 'line':
-      _shape = lineToPoints(shape).map(p => scalarMultiply(p, ratio));
+      _shape = lineToPoints(shape).map((p) => scalarMultiply(p, ratio));
       return ['intersectsLine', _shape];
     case 'point':
       _shape = scalarMultiply(shape, ratio);
       return ['containsPoint', _shape];
     case 'polygon':
-      _shape.vertices = shape.vertices.map(vertex => scalarMultiply(vertex, ratio));
+      _shape.vertices = shape.vertices.map((vertex) => scalarMultiply(vertex, ratio));
       return ['intersectsPolygon', _shape];
     case 'geopolygon':
-      _shape.vertices = shape.vertices.map(vertices => vertices.map(vertex => scalarMultiply(vertex, ratio)));
+      _shape.vertices = shape.vertices.map((vertices) => vertices.map((vertex) => scalarMultiply(vertex, ratio)));
       return ['intersectsGeoPolygon', _shape];
     default:
       return [];

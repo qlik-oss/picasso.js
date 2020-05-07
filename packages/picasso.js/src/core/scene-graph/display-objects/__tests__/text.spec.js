@@ -10,7 +10,7 @@ describe('Text', () => {
     width: 50,
     height: 100,
   };
-  const textBoundsMock = args => {
+  const textBoundsMock = (args) => {
     mockedBounds.x = args.x;
     mockedBounds.x += args.dx || 0;
     mockedBounds.y = args.y;

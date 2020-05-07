@@ -251,7 +251,7 @@ describe('Threshold', () => {
       settings.range = ['black', 'rgb(240, 0, 0)'];
       settings.domain = [5, 15, 25, 35, 45];
       ths = threshold(settings, { fields }, { theme });
-      const result = [0, 30, 90, 150, 210, 240].map(v => `rgb(${v}, ${0}, ${0})`);
+      const result = [0, 30, 90, 150, 210, 240].map((v) => `rgb(${v}, ${0}, ${0})`);
       expect(ths.range()).to.deep.equal(result);
     });
   });

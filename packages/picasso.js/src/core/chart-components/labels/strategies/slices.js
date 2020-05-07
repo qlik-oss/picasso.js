@@ -126,7 +126,7 @@ function getHorizontalInsideSliceRect({ slice, padding, measured, store }) {
 
   pad(bounds, padding);
 
-  if (store.insideLabelBounds.some(rect => testRectRect(rect, bounds))) {
+  if (store.insideLabelBounds.some((rect) => testRectRect(rect, bounds))) {
     return null;
   }
 
@@ -674,10 +674,10 @@ export function slices(
 
   defaults.fontSize = parseInt(defaults.fontSize, 10);
 
-  const labelSettings = settings.labels.map(labelSetting => extend({}, defaults, settings, labelSetting));
+  const labelSettings = settings.labels.map((labelSetting) => extend({}, defaults, settings, labelSetting));
 
-  const placementSettings = settings.labels.map(labelSetting =>
-    labelSetting.placements.map(placement => extend({}, defaults, settings, labelSetting, placement))
+  const placementSettings = settings.labels.map((labelSetting) =>
+    labelSetting.placements.map((placement) => extend({}, defaults, settings, labelSetting, placement))
   );
 
   const labels = [];

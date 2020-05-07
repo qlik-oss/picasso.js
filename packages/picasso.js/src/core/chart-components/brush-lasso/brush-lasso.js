@@ -29,7 +29,7 @@ function appendToPath(state, p) {
 }
 
 function render(state, renderer) {
-  const nodes = [state.startPoint, state.path, state.snapIndicator].filter(node => node.visible);
+  const nodes = [state.startPoint, state.path, state.snapIndicator].filter((node) => node.visible);
 
   renderer.render(nodes);
 }
@@ -80,7 +80,7 @@ function doPolygonBrush(state, chart) {
   if (state.active) {
     const dx = state.componentDelta.x;
     const dy = state.componentDelta.y;
-    const vertices = state.points.map(p => ({
+    const vertices = state.points.map((p) => ({
       x: p.x + dx,
       y: p.y + dy,
     }));
@@ -142,7 +142,7 @@ function initStartPoint(stgns) {
 }
 
 function getBrushConfig(settings) {
-  return settings.settings.brush.components.map(b => ({
+  return settings.settings.brush.components.map((b) => ({
     key: b.key,
     contexts: b.contexts || ['lassoBrush'],
     data: b.data || [''],
@@ -151,8 +151,8 @@ function getBrushConfig(settings) {
 }
 
 function endBrush(state, chart) {
-  state.brushConfig.forEach(config => {
-    config.contexts.forEach(context => {
+  state.brushConfig.forEach((config) => {
+    config.contexts.forEach((context) => {
       chart.brush(context).end();
     });
   });

@@ -4,7 +4,7 @@ import hammer from './hammer';
 export default function initialize(picassoOrHammer) {
   const isPicasso = typeof picassoOrHammer.interaction === 'function';
   if (!isPicasso) {
-    return picasso => {
+    return (picasso) => {
       picasso.interaction('hammer', hammer(picassoOrHammer));
     };
   }

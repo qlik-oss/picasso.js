@@ -42,7 +42,7 @@ function start(_scrollbar, pos) {
     }
   }
 
-  const update = p => {
+  const update = (p) => {
     let offset = p[horizontal ? 'x' : 'y'];
     if (invert) {
       offset = length - offset;
@@ -59,7 +59,7 @@ function start(_scrollbar, pos) {
     const scrollStart = currentMove.startScroll + scrollMove;
     scroll.moveTo(scrollStart);
   };
-  const end = p => {
+  const end = (p) => {
     let offset = p[horizontal ? 'x' : 'y'];
     if (invert) {
       offset = length - offset;

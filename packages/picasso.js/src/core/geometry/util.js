@@ -116,7 +116,7 @@ export function getShapeType(shape) {
     return 'point';
   }
   if (Array.isArray(vertices)) {
-    return vertices.every(item => Array.isArray(item)) ? 'geopolygon' : 'polygon';
+    return vertices.every((item) => Array.isArray(item)) ? 'geopolygon' : 'polygon';
   }
   return null;
 }

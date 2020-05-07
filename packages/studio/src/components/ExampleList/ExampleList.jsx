@@ -21,7 +21,7 @@ import SubDivider from '../SubDivider/SubDivider';
 import ListItemLink from '../ListItemLink/ListItemLink';
 import PicassoIcon from './picasso-logo.svg';
 
-const useClasses = makeStyles(theme => ({
+const useClasses = makeStyles((theme) => ({
   root: {
     width: '100%',
     color: theme.palette.text.primary,
@@ -49,7 +49,7 @@ const ExampleList = ({ entries, locals, selected, onItemAdded, onItemRemoved }) 
   };
 
   const onRemoveClicked = React.useCallback(() => {
-    if (selected && locals.filter(l => l.id === selected.id).length) {
+    if (selected && locals.filter((l) => l.id === selected.id).length) {
       setShowConfirmRemove(true);
     }
   }, [selected, locals]);
@@ -74,7 +74,7 @@ const ExampleList = ({ entries, locals, selected, onItemAdded, onItemRemoved }) 
     setShowConfirmRemove(false);
   };
 
-  const handleKeyPressed = event => {
+  const handleKeyPressed = (event) => {
     if (event.key === 'Enter') {
       const name = event.target.value;
       if (name !== '') {
@@ -85,7 +85,7 @@ const ExampleList = ({ entries, locals, selected, onItemAdded, onItemRemoved }) 
     }
   };
 
-  const exampleEntries = entries.map(entry => (
+  const exampleEntries = entries.map((entry) => (
     <ListItemLink
       key={entry.id}
       to={`/${entry.id}`}
@@ -93,7 +93,7 @@ const ExampleList = ({ entries, locals, selected, onItemAdded, onItemRemoved }) 
       primary={entry.title}
     />
   ));
-  const localEntries = locals.map(entry => (
+  const localEntries = locals.map((entry) => (
     <ListItemLink
       key={entry.id}
       to={`/${entry.id}`}

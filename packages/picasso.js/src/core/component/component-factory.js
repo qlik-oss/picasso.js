@@ -8,7 +8,7 @@ import { styler as brushStyler, resolveTapEvent, resolveOverEvent, brushFromScen
 import createSymbolFactory from '../symbols';
 import createDockConfig from '../layout/dock/config';
 
-const isReservedProperty = prop =>
+const isReservedProperty = (prop) =>
   [
     'on',
     'preferredSize',
@@ -37,7 +37,7 @@ const isReservedProperty = prop =>
     '_DO_NOT_USE_getInfo',
     'symbol',
     'isVisible',
-  ].some(name => name === prop);
+  ].some((name) => name === prop);
 
 function prepareContext(ctx, definition, opts) {
   const { require = [] } = definition;
@@ -103,7 +103,7 @@ function prepareContext(ctx, definition, opts) {
     ctx._DO_NOT_USE_getInfo = _DO_NOT_USE_getInfo;
   }
 
-  Object.keys(definition).forEach(key => {
+  Object.keys(definition).forEach((key) => {
     if (!isReservedProperty(key)) {
       // Add non-lifecycle methods to the context
       if (typeof definition[key] === 'function') {
@@ -115,7 +115,7 @@ function prepareContext(ctx, definition, opts) {
   });
 
   // Add properties to context
-  require.forEach(req => {
+  require.forEach((req) => {
     if (req === 'renderer') {
       Object.defineProperty(ctx, 'renderer', {
         get: renderer,
@@ -147,13 +147,13 @@ function prepareContext(ctx, definition, opts) {
     }
   });
 
-  Object.keys(mediatorSettings).forEach(eventName => {
+  Object.keys(mediatorSettings).forEach((eventName) => {
     ctx.mediator.on(eventName, mediatorSettings[eventName].bind(ctx));
   });
 }
 
 function createDockDefinition(settings, preferredSize, logger) {
-  const getLayoutProperty = propName => {
+  const getLayoutProperty = (propName) => {
     if (settings[propName]) {
       logger.warn(`Deprecation Warning the ${propName} property should be moved into layout: {} property`); // eslint-disable-line no-console
       return settings[propName];
@@ -183,7 +183,7 @@ function createDockDefinition(settings, preferredSize, logger) {
 
 function setUpEmitter(ctx, emitter, settings) {
   // Object.defineProperty(ctx, 'emitter', )
-  Object.keys(settings.on || {}).forEach(event => {
+  Object.keys(settings.on || {}).forEach((event) => {
     ctx.eventListeners = ctx.eventListeners || [];
     const listener = settings.on[event].bind(ctx);
     ctx.eventListeners.push({ event, listener });
@@ -296,7 +296,7 @@ function componentFactory(definition, context = {}) {
 
   const addBrushStylers = () => {
     if (settings.brush) {
-      (settings.brush.consume || []).forEach(b => {
+      (settings.brush.consume || []).forEach((b) => {
         if (b.context && b.style) {
           brushStylers.push(brushStyler(brushArgs, b));
         }
@@ -306,7 +306,7 @@ function componentFactory(definition, context = {}) {
 
   const addBrushTriggers = () => {
     if (settings.brush) {
-      (settings.brush.trigger || []).forEach(t => {
+      (settings.brush.trigger || []).forEach((t) => {
         if (t.on === 'over') {
           brushTriggers.over.push(t);
         } else {
@@ -330,7 +330,7 @@ function componentFactory(definition, context = {}) {
     dockConfigCallbackContext
   );
 
-  const appendComponentMeta = node => {
+  const appendComponentMeta = (node) => {
     node.key = settings.key;
     node.element = rend.element();
   };
@@ -459,7 +459,7 @@ function componentFactory(definition, context = {}) {
     const nodes = (brushArgs.nodes = render.call(definitionContext, ...getRenderArgs()));
 
     // Reset brush stylers and triggers
-    brushStylers.forEach(b => b.cleanUp());
+    brushStylers.forEach((b) => b.cleanUp());
     brushStylers.length = 0;
     brushTriggers.tap = [];
     brushTriggers.over = [];
@@ -469,7 +469,7 @@ function componentFactory(definition, context = {}) {
       addBrushTriggers();
     }
 
-    brushStylers.forEach(bs => {
+    brushStylers.forEach((bs) => {
       if (bs.isActive()) {
         bs.update();
       }
@@ -512,9 +512,9 @@ function componentFactory(definition, context = {}) {
    * @deprecated
    * @ignore
    */
-  const updateNodes = nodes => {
+  const updateNodes = (nodes) => {
     brushArgs.nodes = nodes;
-    brushStylers.forEach(bs => {
+    brushStylers.forEach((bs) => {
       if (bs.isActive()) {
         bs.update();
       }
@@ -561,8 +561,8 @@ function componentFactory(definition, context = {}) {
       const brusher = chart.brush(brushCtx);
       const sceneNodes = rend.findShapes('*');
       settings.brush.consume
-        .filter(t => t.context === brushCtx)
-        .forEach(consume => {
+        .filter((t) => t.context === brushCtx)
+        .forEach((consume) => {
           for (let i = 0; i < sceneNodes.length; i++) {
             const node = sceneNodes[i];
             if (node.data && brusher.containsMappedData(node.data, props || consume.data, mode)) {
@@ -577,7 +577,7 @@ function componentFactory(definition, context = {}) {
     return shapes;
   };
 
-  fn.findShapes = selector => {
+  fn.findShapes = (selector) => {
     const shapes = rend.findShapes(selector);
     for (let i = 0, num = shapes.length; i < num; i++) {
       appendComponentMeta(shapes[i]);
@@ -593,7 +593,7 @@ function componentFactory(definition, context = {}) {
     if (opts && opts.propagation === 'stop' && items.length > 0) {
       shapes = [items.pop().node];
     } else {
-      shapes = items.map(i => i.node);
+      shapes = items.map((i) => i.node);
     }
 
     for (let i = 0, num = shapes.length; i < num; i++) {
@@ -636,12 +636,12 @@ function componentFactory(definition, context = {}) {
   fn.mounted = () => mounted(element);
 
   fn.unmount = () => {
-    [instanceContext, definitionContext].forEach(ctx => {
+    [instanceContext, definitionContext].forEach((ctx) => {
       tearDownEmitter(ctx, emitter);
     });
     brushTriggers.tap = [];
     brushTriggers.over = [];
-    brushStylers.forEach(bs => {
+    brushStylers.forEach((bs) => {
       bs.cleanUp();
     });
     brushStylers.length = 0;
@@ -650,16 +650,16 @@ function componentFactory(definition, context = {}) {
     isVisible = false;
   };
 
-  fn.onBrushTap = e => {
-    brushTriggers.tap.forEach(t => {
+  fn.onBrushTap = (e) => {
+    brushTriggers.tap.forEach((t) => {
       if (resolveTapEvent({ e, t, config: brushArgs }) && t.globalPropagation === 'stop') {
         chart.toggleBrushing(true);
       }
     });
   };
 
-  fn.onBrushOver = e => {
-    brushTriggers.over.forEach(t => {
+  fn.onBrushOver = (e) => {
+    brushTriggers.over.forEach((t) => {
       if (resolveOverEvent({ e, t, config: brushArgs }) && t.globalPropagation === 'stop') {
         chart.toggleBrushing(true);
       }

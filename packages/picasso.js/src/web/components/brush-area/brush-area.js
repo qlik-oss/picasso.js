@@ -75,7 +75,7 @@ function localToChartPoint(ctx, p) {
  * @returns {object[]} An Array of brush configurations
  */
 function getBrushConfig(settings) {
-  return settings.settings.brush.components.map(b => ({
+  return settings.settings.brush.components.map((b) => ({
     key: b.key,
     contexts: b.contexts,
     data: b.data,
@@ -90,9 +90,9 @@ function getBrushConfig(settings) {
  * @param {object} chart - Chart instance
  */
 function doEndBrush(state, chart) {
-  state.brushConfig.forEach(config => {
+  state.brushConfig.forEach((config) => {
     if (Array.isArray(config.contexts)) {
-      config.contexts.forEach(context => {
+      config.contexts.forEach((context) => {
         chart.brush(context).end();
       });
     }

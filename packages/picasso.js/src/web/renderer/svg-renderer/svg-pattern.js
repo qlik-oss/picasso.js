@@ -24,7 +24,7 @@ export default function patternizer(bucket, hasher = hashObject) {
         inputs.stroke = state.node.stroke;
       }
 
-      Object.keys(inputs).forEach(key => {
+      Object.keys(inputs).forEach((key) => {
         let url = '';
         const input = inputs[key];
         const patternHash = hasher(input);
@@ -47,7 +47,7 @@ export default function patternizer(bucket, hasher = hashObject) {
             fill: input.fill,
           };
 
-          input.shapes.forEach(s => {
+          input.shapes.forEach((s) => {
             pn.children.push(s);
           });
 

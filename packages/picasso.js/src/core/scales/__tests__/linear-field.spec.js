@@ -105,7 +105,7 @@ describe('Linear data scale', () => {
       });
 
       it('should handle truty values', () => {
-        truty.forEach(t => {
+        truty.forEach((t) => {
           settings.invert = t;
           dataScale = linear(settings, fields);
           expect(dataScale.range()).to.deep.equal([1, 0], `truty value ${t} was not handled correctly`);
@@ -113,7 +113,7 @@ describe('Linear data scale', () => {
       });
 
       it('should handle falsy values', () => {
-        falsy.forEach(t => {
+        falsy.forEach((t) => {
           settings.invert = t;
           dataScale = linear(settings, fields);
           expect(dataScale.range()).to.deep.equal([0, 1], `falsy value ${t} was not handled correctly`);
@@ -147,7 +147,7 @@ describe('Linear data scale', () => {
       });
 
       it('should ignore non-numeric values', () => {
-        notNumbers.forEach(n => {
+        notNumbers.forEach((n) => {
           settings.expand = n;
           dataScale = linear(settings, fields);
           expect(dataScale.domain()).to.deep.equal([0, 100]);
@@ -189,7 +189,7 @@ describe('Linear data scale', () => {
       });
 
       it('should ignore non-numeric values', () => {
-        notNumbers.forEach(n => {
+        notNumbers.forEach((n) => {
           settings.min = () => n;
           settings.max = () => n;
           dataScale = linear(settings, fields);

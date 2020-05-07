@@ -68,10 +68,10 @@ export default function componentFactoryFixture() {
         };
         return s;
       },
-      render: nodes => {
+      render: (nodes) => {
         rendererOutput = nodes;
       },
-      appendTo: el => {
+      appendTo: (el) => {
         if (!rendererElement) {
           rendererElement = elementMock();
         }
@@ -91,7 +91,7 @@ export default function componentFactoryFixture() {
       element: () => rendererElement,
       clear: () => {},
       destroy: () => {},
-      setKey: key => rendererElement.setAttribute('data-key', key),
+      setKey: (key) => rendererElement.setAttribute('data-key', key),
     };
 
     mediatorMock = {
@@ -132,7 +132,7 @@ export default function componentFactoryFixture() {
     return comp;
   };
 
-  fn.simulateRender = opts => {
+  fn.simulateRender = (opts) => {
     const { inner, outer } = opts;
     if (inner && !inner.computed) {
       inner.computed = computeRect(inner);
@@ -150,7 +150,7 @@ export default function componentFactoryFixture() {
     return rendererOutput;
   };
 
-  fn.simulateUpdate = settings => {
+  fn.simulateUpdate = (settings) => {
     comp.set({ settings });
     comp.beforeUpdate(settings);
     comp.beforeRender();
@@ -160,7 +160,7 @@ export default function componentFactoryFixture() {
     return rendererOutput;
   };
 
-  fn.simulateLayout = opts => comp.dockConfig().computePreferredSize(opts);
+  fn.simulateLayout = (opts) => comp.dockConfig().computePreferredSize(opts);
 
   fn.getRenderOutput = () => rendererOutput;
 
@@ -168,7 +168,7 @@ export default function componentFactoryFixture() {
 
   fn.instance = () => comp;
 
-  fn.findNodes = s => findNodes(s, { children: rendererOutput });
+  fn.findNodes = (s) => findNodes(s, { children: rendererOutput });
 
   return fn();
 }

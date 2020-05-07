@@ -186,7 +186,7 @@ const refLineComponent = {
     };
 
     // Convert a value to an actual position using the scale
-    this.lines.x = this.lines.x.filter(filterUndefinedValue).map(line => {
+    this.lines.x = this.lines.x.filter(filterUndefinedValue).map((line) => {
       if (typeof line.value === 'function') {
         line.value = line.value();
       }
@@ -200,7 +200,7 @@ const refLineComponent = {
     });
     // Set all Y lines to flipXY by default
     // This makes the transposer flip them individually
-    this.lines.y = this.lines.y.filter(filterUndefinedValue).map(line => {
+    this.lines.y = this.lines.y.filter(filterUndefinedValue).map((line) => {
       if (typeof line.value === 'function') {
         line.value = line.value();
       }
@@ -214,7 +214,7 @@ const refLineComponent = {
     });
 
     // Move out of bounds lines (OOB) to separate rendering
-    this.lines.x = this.lines.x.filter(line => {
+    this.lines.x = this.lines.x.filter((line) => {
       if (line.position < 0 || line.position > 1) {
         oob[`x${line.position > 1 ? 1 : 0}`].push(createOobData(line));
         return false;
@@ -222,7 +222,7 @@ const refLineComponent = {
       return true;
     });
 
-    this.lines.y = this.lines.y.filter(line => {
+    this.lines.y = this.lines.y.filter((line) => {
       if (line.position < 0 || line.position > 1) {
         oob[`y${line.position > 1 ? 1 : 0}`].push(createOobData(line));
         return false;
@@ -233,7 +233,7 @@ const refLineComponent = {
     let items = [];
 
     // Loop through all X and Y lines
-    [...this.lines.x, ...this.lines.y].forEach(p => {
+    [...this.lines.x, ...this.lines.y].forEach((p) => {
       let show = p.show === true || typeof p.show === 'undefined';
 
       if (show) {

@@ -145,14 +145,14 @@ function render(renderer, { rect, itemRenderer }, itemized, legend) {
   renderer.render(nodes);
 }
 
-export default function(legend) {
+export default function (legend) {
   let itemized;
 
   const nav = {
-    itemize: obj => {
+    itemize: (obj) => {
       itemized = itemize(obj);
     },
-    render: obj => render(nav.renderer, obj, itemized, legend),
+    render: (obj) => render(nav.renderer, obj, itemized, legend),
     extent: () => 32,
     spread: () => 64,
   };

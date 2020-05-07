@@ -16,15 +16,15 @@ const ATTR_EXPR_RX = /\/qAttrExprInfo\/(\d+)/;
 const HC_RX = /\/?qHyperCube/;
 const TD_RX = /\/?qTreeData/;
 
-const SHORTEN_HC = path => `${path.substr(0, path.indexOf('/qHyperCubeDef') + 14)}`; // 14 = length of '/qHyperCubeDef'
-const SHORTEN_TD = path => `${path.substr(0, path.indexOf('/qTreeDataDef') + 13)}`; // 13 = length of '/qTreeDataDef'
+const SHORTEN_HC = (path) => `${path.substr(0, path.indexOf('/qHyperCubeDef') + 14)}`; // 14 = length of '/qHyperCubeDef'
+const SHORTEN_TD = (path) => `${path.substr(0, path.indexOf('/qTreeDataDef') + 13)}`; // 13 = length of '/qTreeDataDef'
 
 export function extractFieldFromId(id, layout) {
   let path = id;
   let dimensionIdx = -1;
   let measureIdx = -1;
   let pathToCube = '';
-  let shortenizer = p => p;
+  let shortenizer = (p) => p;
   if (HC_RX.test(id)) {
     pathToCube = `${path.substr(0, path.indexOf('qHyperCube') + 10)}`; // 10 = length of 'qHyperCube'
     shortenizer = SHORTEN_HC;
@@ -125,7 +125,7 @@ export default function qBrush(brush, opts = {}, layout) {
   const methods = {};
   const isActive = brush.isActive();
   let hasValues = false;
-  brush.brushes().forEach(b => {
+  brush.brushes().forEach((b) => {
     const info = extractFieldFromId(b.id, layout);
     if (b.type === 'range' && info.measureIdx > -1 && info.dimensionIdx > -1) {
       const ranges = b.brush.ranges();
@@ -137,7 +137,7 @@ export default function qBrush(brush, opts = {}, layout) {
             ranges: [],
           };
         }
-        ranges.forEach(range =>
+        ranges.forEach((range) =>
           methods.multiRangeSelectTreeDataValues.ranges.push({
             qMeasureIx: info.measureIdx,
             qDimensionIx: info.dimensionIdx,
@@ -161,7 +161,7 @@ export default function qBrush(brush, opts = {}, layout) {
               ranges: [],
             };
           }
-          ranges.forEach(range =>
+          ranges.forEach((range) =>
             methods.rangeSelectHyperCubeValues.ranges.push({
               qMeasureIx: info.measureIdx,
               qRange: {
@@ -184,7 +184,7 @@ export default function qBrush(brush, opts = {}, layout) {
               ranges: [],
             };
           }
-          ranges.forEach(range =>
+          ranges.forEach((range) =>
             methods.selectHyperCubeContinuousRange.ranges.push({
               qDimIx: info.dimensionIdx,
               qRange: {
@@ -219,11 +219,11 @@ export default function qBrush(brush, opts = {}, layout) {
             if (b.id === primarySource || !primarySource) {
               const validValues = b.brush
                 .values()
-                .map(s => +s)
-                .filter(v => !isNaN(v));
+                .map((s) => +s)
+                .filter((v) => !isNaN(v));
 
               if ((noOfLeftDims === 0 || dimInterColSortIdx >= noOfLeftDims) && noOfLeftDims > -1) {
-                validValues.forEach(val => {
+                validValues.forEach((val) => {
                   methods.selectPivotCells.cells.push({
                     qType: 'T',
                     qCol: val,
@@ -231,7 +231,7 @@ export default function qBrush(brush, opts = {}, layout) {
                   });
                 });
               } else {
-                validValues.forEach(val => {
+                validValues.forEach((val) => {
                   methods.selectPivotCells.cells.push({
                     qType: 'L',
                     qCol: info.dimensionIdx,
@@ -253,16 +253,16 @@ export default function qBrush(brush, opts = {}, layout) {
             if (b.id === primarySource || (!primarySource && !methods.selectHyperCubeCells.values)) {
               methods.selectHyperCubeCells.values = b.brush
                 .values()
-                .map(s => +s)
-                .filter(v => !isNaN(v));
+                .map((s) => +s)
+                .filter((v) => !isNaN(v));
               hasValues = !!methods.selectHyperCubeCells.values.length;
             }
           }
         } else {
           const values = b.brush
             .values()
-            .map(s => +s)
-            .filter(v => !isNaN(v));
+            .map((s) => +s)
+            .filter((v) => !isNaN(v));
           hasValues = !!values.length;
           selections.push({
             params: [info.path, info.dimensionIdx, values, false],

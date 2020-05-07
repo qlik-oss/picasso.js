@@ -23,11 +23,11 @@ export function styler(obj, { context, data, style, filter, mode }) {
   const active = style.active || {};
   const inactive = style.inactive || {};
   const styleProps = [];
-  Object.keys(active).forEach(key => {
+  Object.keys(active).forEach((key) => {
     styleProps.push(key);
   });
 
-  Object.keys(inactive).forEach(key => {
+  Object.keys(inactive).forEach((key) => {
     if (styleProps.indexOf(key) === -1) {
       styleProps.push(key);
     }
@@ -60,7 +60,7 @@ export function styler(obj, { context, data, style, filter, mode }) {
 
       if (!nodes[i].__style) {
         nodes[i].__style = {};
-        styleProps.forEach(s => {
+        styleProps.forEach((s) => {
           nodes[i].__style[s] = nodes[i][s]; // store original value
         });
       }
@@ -79,7 +79,7 @@ export function styler(obj, { context, data, style, filter, mode }) {
       }
       if (changed || globalActivation) {
         const original = extend({}, nodes[i], nodes[i].__style);
-        styleProps.forEach(s => {
+        styleProps.forEach((s) => {
           if (isActive && s in active) {
             nodes[i][s] = typeof active[s] === 'function' ? active[s].call(null, original) : active[s];
           } else if (!isActive && s in inactive) {
@@ -105,7 +105,7 @@ export function styler(obj, { context, data, style, filter, mode }) {
       }
 
       nodes[i].__style = nodes[i].__style || {};
-      styleProps.forEach(s => {
+      styleProps.forEach((s) => {
         nodes[i].__style[s] = nodes[i][s]; // store original value
         if (s in inactive) {
           nodes[i][s] = typeof inactive[s] === 'function' ? inactive[s].call(null, nodes[i]) : inactive[s];
@@ -126,7 +126,7 @@ export function styler(obj, { context, data, style, filter, mode }) {
 
     for (let i = 0; i < len; i++) {
       if (nodes[i].__style) {
-        Object.keys(nodes[i].__style).forEach(s => {
+        Object.keys(nodes[i].__style).forEach((s) => {
           nodes[i][s] = nodes[i].__style[s];
         });
         nodes[i].__style = undefined;
@@ -195,7 +195,7 @@ export function brushDataPoints({ dataPoints, action, chart, trigger }) {
     if (!dataPoint) {
       continue;
     }
-    dataProps.forEach(p => {
+    dataProps.forEach((p) => {
       let d = dataPoint && !p ? dataPoint : dataPoint[p];
       if (d) {
         let it = { key: d.source.field };
@@ -213,7 +213,7 @@ export function brushDataPoints({ dataPoints, action, chart, trigger }) {
     });
   }
 
-  trigger.contexts.forEach(c => {
+  trigger.contexts.forEach((c) => {
     if (rangeBrush.items.length) {
       chart.brush(c)[rangeBrush.actionFn](rangeBrush.items);
     } else {
@@ -253,7 +253,7 @@ export function resolveEvent({ collisions, t, config, action }) {
     }
   }
 
-  const nodes = brushCollisions.map(c => c.node);
+  const nodes = brushCollisions.map((c) => c.node);
   brushFromSceneNodes({
     nodes,
     action,

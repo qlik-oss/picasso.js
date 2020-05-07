@@ -13,7 +13,7 @@ export function QlikTimeToDate(value) {
 export default function formatter(pattern, qtype = 'TS', localeInfo = null) {
   let qformat = dateFormatFactory(localeInfo, pattern, qtype);
   let memoized = memoize(qformat.format.bind(qformat), {
-    toKey: date => (typeof date === 'object' && typeof date.getTime === 'function' ? date.getTime() : date),
+    toKey: (date) => (typeof date === 'object' && typeof date.getTime === 'function' ? date.getTime() : date),
   });
 
   /**
@@ -63,7 +63,7 @@ export default function formatter(pattern, qtype = 'TS', localeInfo = null) {
   format.locale = function locale(li) {
     qformat = dateFormatFactory(li, pattern, qtype);
     memoized = memoize(qformat.format.bind(qformat), {
-      toKey: date => (typeof date === 'object' ? date.getTime() : date),
+      toKey: (date) => (typeof date === 'object' ? date.getTime() : date),
     });
     return this;
   };

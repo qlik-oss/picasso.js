@@ -1,6 +1,6 @@
 // import { rows } from '../rows';
 
-const mock = ({ ellipsText = n => n.text } = {}) =>
+const mock = ({ ellipsText = (n) => n.text } = {}) =>
   aw.mock([['**/text-manipulation/index.js', () => ({ ellipsText })]], ['../rows']);
 
 describe('labeling - rows', () => {
@@ -48,7 +48,7 @@ describe('labeling - rows', () => {
           renderer,
           style: {},
         },
-        bounds => bounds
+        (bounds) => bounds
       );
 
       expect(labels[0]).to.eql({
@@ -83,7 +83,7 @@ describe('labeling - rows', () => {
           renderer,
           style: {},
         },
-        bounds => bounds
+        (bounds) => bounds
       );
 
       expect(labels[0]).to.eql({
@@ -126,7 +126,7 @@ describe('labeling - rows', () => {
           renderer,
           style: {},
         },
-        bounds => bounds
+        (bounds) => bounds
       );
 
       expect(labels[0]).to.eql({
@@ -169,7 +169,7 @@ describe('labeling - rows', () => {
           renderer,
           style: {},
         },
-        bounds => bounds
+        (bounds) => bounds
       );
 
       expect(labels).to.have.length(0);
@@ -356,7 +356,7 @@ describe('labeling - rows', () => {
           renderer,
           style: {},
         },
-        bounds => bounds
+        (bounds) => bounds
       );
 
       expect(labels[0]).to.containSubset({

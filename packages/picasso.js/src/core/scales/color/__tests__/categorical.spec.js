@@ -7,7 +7,7 @@ describe('categorical', () => {
       {},
       {
         theme: {
-          palette: name => (name === 'unknown' ? ['#d2d2d2'] : []),
+          palette: (name) => (name === 'unknown' ? ['#d2d2d2'] : []),
         },
       }
     );
@@ -28,7 +28,7 @@ describe('categorical', () => {
       {},
       {
         theme: {
-          palette: name => (name === 'categorical' ? defaultColors : []),
+          palette: (name) => (name === 'categorical' ? defaultColors : []),
         },
       }
     );

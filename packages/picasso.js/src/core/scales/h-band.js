@@ -9,7 +9,7 @@ const DEFAULT_TICKS_SETTINGS = {
 function keyGen(node, valueFn, ctx) {
   return node
     .ancestors()
-    .map(a => valueFn(extend({ datum: a.data }, ctx)))
+    .map((a) => valueFn(extend({ datum: a.data }, ctx)))
     .reverse()
     .slice(1) // Delete root node
     .toString();
@@ -33,7 +33,7 @@ function flattenTree(rootNode, settings, ctx) {
     };
   }
 
-  rootNode.eachAfter(node => {
+  rootNode.eachAfter((node) => {
     if (node.depth > 0) {
       const key = keyGen(node, valueFn, ctx);
       const leaves = node.leaves() || [node]; // If leaf node returns itself
@@ -105,8 +105,8 @@ export default function scaleHierarchicalBand(settings = {}, data = {}, resource
   const ctx = { data, resources };
   const stgns = resolveSettings(settings, DEFAULT_SETTINGS, ctx);
   stgns.ticks = resolveSettings(settings.ticks, DEFAULT_TICKS_SETTINGS, ctx);
-  stgns.value = typeof settings.value === 'function' ? settings.value : d => d.datum.value;
-  stgns.label = typeof settings.label === 'function' ? settings.label : d => d.datum.value;
+  stgns.value = typeof settings.value === 'function' ? settings.value : (d) => d.datum.value;
+  stgns.label = typeof settings.label === 'function' ? settings.label : (d) => d.datum.value;
 
   let bandInstance = bandScale(stgns);
 
@@ -171,7 +171,7 @@ export default function scaleHierarchicalBand(settings = {}, data = {}, resource
    * @param { Object[] } val - Array where each value is a reference to a node, going from depth 1 to n.
    * @return { Object } The datum
    */
-  hBand.datum = val => {
+  hBand.datum = (val) => {
     const item = items[String(val)];
     if (item) {
       return item.node.data;
@@ -192,7 +192,7 @@ export default function scaleHierarchicalBand(settings = {}, data = {}, resource
    */
   hBand.ticks = () => {
     // eslint-disable-line arrow-body-style
-    return ticks.map(item => {
+    return ticks.map((item) => {
       const start = hBand(item.key);
       const bandwidth = hBand.bandwidth(item.key);
       return {

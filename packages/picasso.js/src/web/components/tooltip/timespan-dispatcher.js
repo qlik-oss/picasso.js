@@ -14,21 +14,21 @@ function dispatcherState() {
   };
   let state;
 
-  fn.set = s => {
+  fn.set = (s) => {
     state = s;
-    on[state].forEach(event => event(s));
+    on[state].forEach((event) => event(s));
   };
 
   fn.on = (key, event) => {
     if (Array.isArray(key)) {
-      key.forEach(k => on[k].push(event));
+      key.forEach((k) => on[k].push(event));
     } else {
       on[key].push(event);
     }
   };
 
   fn.destroy = () => {
-    Object.keys(on).forEach(key => {
+    Object.keys(on).forEach((key) => {
       on[key].length = 0;
     });
   };

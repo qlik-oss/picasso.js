@@ -1,7 +1,7 @@
 import create, { binaryLeftSearch } from '../bars-overlapping-filter';
 
 describe('binaryLeftSearch', () => {
-  const extractBounds = item => item.rect;
+  const extractBounds = (item) => item.rect;
   let ary;
 
   beforeEach(() => {

@@ -44,7 +44,7 @@ const useClasses = makeStyles({
   },
 });
 
-const TabPanel = props => {
+const TabPanel = (props) => {
   const { children, value, index } = props;
   if (value === index) {
     return <>{children}</>;
@@ -83,7 +83,7 @@ const CodeArea = ({ selected, codeUpdated }) => {
   }, [selected]);
 
   const onCodeChange = React.useCallback(
-    newCode => {
+    (newCode) => {
       setCodeModified(true);
       setRenderCode(newCode);
       codeUpdated({ code: newCode });
@@ -92,7 +92,7 @@ const CodeArea = ({ selected, codeUpdated }) => {
   );
 
   const onDataChange = React.useCallback(
-    newData => {
+    (newData) => {
       setCodeModified(true);
       setRenderData(newData);
       codeUpdated({ data: newData });
@@ -106,7 +106,7 @@ const CodeArea = ({ selected, codeUpdated }) => {
     setCurrentTab(v);
   };
 
-  const onSettingsChanged = newSettings => {
+  const onSettingsChanged = (newSettings) => {
     storage.setLocalStorage('pic.studio.settings', newSettings);
     setCodeModified(false);
     setSettings(newSettings);

@@ -175,7 +175,7 @@ export default function colorKeyWord(colStr) {
  * @example
  * colorKeyWord.test( "yellowgreen" );
  */
-colorKeyWord.test = colStr => {
+colorKeyWord.test = (colStr) => {
   if (colStr === null || colStr === undefined || typeof colStr !== 'string') {
     return false;
   }

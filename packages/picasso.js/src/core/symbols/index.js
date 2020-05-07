@@ -25,7 +25,7 @@ parentReg.add('cross', cross);
 parentReg.add('bar', bar);
 
 function applyOpts(obj, opts = {}) {
-  Object.keys(opts).forEach(key => {
+  Object.keys(opts).forEach((key) => {
     if (typeof mappedAttributes[key] !== 'undefined' && key !== 'transform') {
       obj[key] = opts[key];
     }

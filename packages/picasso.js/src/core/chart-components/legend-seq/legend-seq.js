@@ -152,12 +152,12 @@ function initState(ctx) {
     ticks: {
       values: tickValues,
       anchor: tickAnchor,
-      length: Math.min(Math.max(...tickValues.map(t => t.textMetrics.width)), ctx.stgns.tick.maxLengthPx),
+      length: Math.min(Math.max(...tickValues.map((t) => t.textMetrics.width)), ctx.stgns.tick.maxLengthPx),
       requiredHeight: () =>
         tickAnchor === 'top'
-          ? Math.max(...state.ticks.values.map(t => t.textMetrics.height)) + ctx.stgns.tick.padding
+          ? Math.max(...state.ticks.values.map((t) => t.textMetrics.height)) + ctx.stgns.tick.padding
           : 0,
-      height: Math.max(...tickValues.map(t => t.textMetrics.height)),
+      height: Math.max(...tickValues.map((t) => t.textMetrics.height)),
     },
     legend: {
       fillScale,
@@ -281,7 +281,7 @@ const legendDef = {
       if (tWidth > this.state.legend.length()) {
         return maxSize;
       }
-      prefSize += Math.max(...state.ticks.values.map(t => t.textMetrics.height));
+      prefSize += Math.max(...state.ticks.values.map((t) => t.textMetrics.height));
     }
     prefSize += this.stgns.tick.padding;
 

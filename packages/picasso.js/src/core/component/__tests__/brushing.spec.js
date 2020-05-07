@@ -256,8 +256,8 @@ describe('Brushing', () => {
         },
         trigger: function trigger(key, ...args) {
           this.listeners
-            .filter(listener => typeof listener[key] !== 'undefined')
-            .forEach(listener => listener[key](...args));
+            .filter((listener) => typeof listener[key] !== 'undefined')
+            .forEach((listener) => listener[key](...args));
         },
       };
       brusherStub.containsMappedData.onCall(0).returns(false); // Do not match first node but all after
@@ -288,7 +288,7 @@ describe('Brushing', () => {
       styler(dummyComponent, consume);
       brusherStub.trigger('start');
 
-      dummyComponent.renderer.render.args[0][0].forEach(node => {
+      dummyComponent.renderer.render.args[0][0].forEach((node) => {
         expect(node.__style).to.deep.equal({
           fill: 'yellow',
           stroke: 'pink',
@@ -300,7 +300,7 @@ describe('Brushing', () => {
       styler(dummyComponent, consume);
       brusherStub.trigger('start');
 
-      dummyComponent.renderer.render.args[0][0].forEach(node => {
+      dummyComponent.renderer.render.args[0][0].forEach((node) => {
         expect(node.fill).to.deep.equal('inactiveFill');
       });
     });
@@ -310,7 +310,7 @@ describe('Brushing', () => {
       brusherStub.trigger('start');
       brusherStub.trigger('end');
 
-      dummyComponent.renderer.render.args[0][0].forEach(node => {
+      dummyComponent.renderer.render.args[0][0].forEach((node) => {
         expect(node.__style).to.equal(undefined);
       });
     });
@@ -344,7 +344,7 @@ describe('Brushing', () => {
       brusherStub.trigger('start');
       brusherStub.trigger('end', { suppressRender: true });
 
-      dummyComponent.renderer.render.args[0][0].forEach(node => {
+      dummyComponent.renderer.render.args[0][0].forEach((node) => {
         expect(node.__style).to.equal(undefined);
       });
       expect(dummyComponent.renderer.render.calledOnce).to.be.true;
@@ -454,7 +454,7 @@ describe('Brushing', () => {
       brusherStub.trigger('update');
 
       const output = dummyComponent.renderer.render.args[0][0];
-      expect(output.map(n => n.fill)).to.eql(['inactive', 'start', 'active', 'start']);
+      expect(output.map((n) => n.fill)).to.eql(['inactive', 'start', 'active', 'start']);
     });
 
     it('should resolve style function property functions', () => {
@@ -467,10 +467,10 @@ describe('Brushing', () => {
         context: 'test',
         style: {
           active: {
-            fill: shape => `${shape.fill}-active`,
+            fill: (shape) => `${shape.fill}-active`,
           },
           inactive: {
-            fill: shape => `${shape.fill}-inactive`,
+            fill: (shape) => `${shape.fill}-inactive`,
           },
         },
       });
@@ -478,7 +478,7 @@ describe('Brushing', () => {
       brusherStub.trigger('update');
 
       const output = dummyComponent.renderer.render.args[0][0];
-      expect(output.map(n => n.fill)).to.eql(['red-inactive', 'green-active']);
+      expect(output.map((n) => n.fill)).to.eql(['red-inactive', 'green-active']);
     });
   });
 });

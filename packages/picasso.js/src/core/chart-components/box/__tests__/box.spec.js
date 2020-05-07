@@ -85,9 +85,9 @@ describe('box component', () => {
       },
     ]);
 
-    const xScale = v => v;
+    const xScale = (v) => v;
     xScale.bandwidth = () => 0.5;
-    const yScale = v => v;
+    const yScale = (v) => v;
     chart.scale.withArgs('x').returns(xScale);
     chart.scale.withArgs('y').returns(yScale);
 
@@ -291,9 +291,9 @@ describe('box component', () => {
       },
     ]);
 
-    const xScale = v => v;
+    const xScale = (v) => v;
     xScale.bandwidth = () => 0.5;
-    const yScale = v => v;
+    const yScale = (v) => v;
     chart.scale.withArgs('x').returns(xScale);
     chart.scale.withArgs('y').returns(yScale);
 
@@ -329,9 +329,9 @@ describe('box component', () => {
       },
     ]);
 
-    const xScale = v => v;
+    const xScale = (v) => v;
     xScale.bandwidth = () => 0.5;
-    const yScale = v => v;
+    const yScale = (v) => v;
     chart.scale.withArgs('x').returns(xScale);
     chart.scale.withArgs('y').returns(yScale);
 
@@ -398,9 +398,9 @@ describe('box component', () => {
       },
     ]);
 
-    const xScale = v => v;
+    const xScale = (v) => v;
     xScale.bandwidth = () => 0.5;
-    const yScale = v => v;
+    const yScale = (v) => v;
     chart.scale.withArgs('x').returns(xScale);
     chart.scale.withArgs('y').returns(yScale);
 
@@ -472,9 +472,9 @@ describe('box component', () => {
       },
     ]);
 
-    const xScale = v => v;
+    const xScale = (v) => v;
     xScale.bandwidth = () => 0.5;
-    const yScale = v => v;
+    const yScale = (v) => v;
     chart.scale.withArgs('x').returns(xScale);
     chart.scale.withArgs('y').returns(yScale);
 
@@ -631,11 +631,11 @@ describe('box component', () => {
     chart.dataset().extract.returns(dataset);
 
     const xDomain = [1, 2, 3, 4, 5];
-    const xScale = v => xDomain.indexOf(v) * 0.2;
+    const xScale = (v) => xDomain.indexOf(v) * 0.2;
     xScale.domain = () => xDomain;
     xScale.bandwidth = () => 0.2;
 
-    const yScale = v => (v - 0.2) / 0.6;
+    const yScale = (v) => (v - 0.2) / 0.6;
     chart.scale.withArgs('x').returns(xScale);
     chart.scale.withArgs('y').returns(yScale);
 
@@ -770,8 +770,8 @@ describe('box component', () => {
       },
     ];
 
-    const children = rendererOutput.map(c => c.children);
-    const rects = [].concat(...children).filter(o => o.type === 'rect');
+    const children = rendererOutput.map((c) => c.children);
+    const rects = [].concat(...children).filter((o) => o.type === 'rect');
     expect(rects).to.deep.equal(items);
   });
 });

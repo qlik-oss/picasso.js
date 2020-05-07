@@ -1,4 +1,4 @@
-(function(global) {
+(function (global) {
   global.picData = global.picData || {};
   global.picData.products = {
     type: 'matrix',

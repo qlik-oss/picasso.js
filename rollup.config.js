@@ -19,7 +19,7 @@ const banner = `/*
 
 const watch = process.argv.indexOf('-w') > 2;
 
-const config = isEsm => {
+const config = (isEsm) => {
   const outputFile = isEsm ? pkg.module : pkg.main;
   const basename = path.basename(outputFile);
   const dir = path.dirname(outputFile);

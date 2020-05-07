@@ -1,8 +1,8 @@
 import registry from '../utils/registry';
 
-const rendererRegistry = reg => {
+const rendererRegistry = (reg) => {
   let f = registry(reg);
-  f.prio = p => (p ? f.default(p[0]) : [f.default()]);
+  f.prio = (p) => (p ? f.default(p[0]) : [f.default()]);
   f.types = () => f.getKeys();
   return f;
 };

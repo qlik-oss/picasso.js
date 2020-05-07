@@ -6,7 +6,7 @@ const useResize = (ref, callback) => {
     let resizeObserver;
     if (ref && ref.current) {
       const debouncer = debounce(callback, 200);
-      resizeObserver = new ResizeObserver(entries => {
+      resizeObserver = new ResizeObserver((entries) => {
         // should only be one
         debouncer(entries[0].contentRect);
       });
@@ -32,7 +32,7 @@ const useLocalStorage = (key, initialValue) => {
     }
   });
 
-  const setValue = value => {
+  const setValue = (value) => {
     try {
       const valueToStore = value instanceof Function ? value(storedValue) : value;
       setStoredValue(valueToStore);

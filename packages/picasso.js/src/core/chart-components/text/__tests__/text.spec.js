@@ -3,7 +3,7 @@ import textComponent from '../text';
 import band from '../../../scales/band';
 
 function assertNodeProperties(node, expected) {
-  Object.keys(expected).forEach(key => {
+  Object.keys(expected).forEach((key) => {
     expect(node).to.have.property(key, expected[key]);
   });
 }
@@ -702,7 +702,7 @@ describe('Text component', () => {
 
   describe('preferredSize', () => {
     it('should return same size for all dock areas', () => {
-      ['left', 'right', 'top', 'bottom'].forEach(dock => {
+      ['left', 'right', 'top', 'bottom'].forEach((dock) => {
         config.layout.dock = dock;
         const size = simulateLayout();
         expect(size).to.equal(15);

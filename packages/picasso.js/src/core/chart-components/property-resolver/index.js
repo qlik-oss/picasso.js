@@ -54,7 +54,7 @@ function isPrimitive(x) {
 export function normalizeSettings(settings, defaults, chart) {
   const composition = extend({}, settings);
   const defs = extend({}, defaults);
-  Object.keys(composition).forEach(key => {
+  Object.keys(composition).forEach((key) => {
     defs[key] = {};
     const v = composition[key];
     const vType = typeof v;
@@ -86,7 +86,7 @@ export function normalizeSettings(settings, defaults, chart) {
     }
   });
 
-  Object.keys(defaults).forEach(key => {
+  Object.keys(defaults).forEach((key) => {
     if (key in composition) {
       // don't process same props again
       return;

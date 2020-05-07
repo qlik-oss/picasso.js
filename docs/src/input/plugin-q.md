@@ -65,7 +65,7 @@ const ds = picasso.data('q')({
         key: 'surpriseMe',
         from: 'qMeasureInfo/0',
         override: {
-          value: v => v.qValue * Math.random(),
+          value: (v) => v.qValue * Math.random(),
         },
       },
     ],
@@ -123,7 +123,7 @@ We can extract the unique _Month_ values using:
 ```js
 ds.extract({
   field: 'Month',
-  trackBy: v => v.qElemNumber,
+  trackBy: (v) => v.qElemNumber,
 });
 
 // output

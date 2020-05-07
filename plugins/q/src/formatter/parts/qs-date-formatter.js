@@ -298,7 +298,7 @@ class DateFormatter {
     }
     const dateTimeRegex = new RegExp(masksArr.join('|'), 'g');
 
-    const result = pattern.replace(dateTimeRegex, m => {
+    const result = pattern.replace(dateTimeRegex, (m) => {
       let r;
       let mask;
       for (mask in masks) {

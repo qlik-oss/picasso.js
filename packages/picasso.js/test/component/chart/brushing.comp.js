@@ -334,7 +334,7 @@ describe('Brushing', () => {
         });
         const activeShapes = instance.getAffectedShapes('test');
         const inactiveShapes = instance.findShapes('rect[fill="red"]');
-        const activeRects = activeShapes.filter(s => s.type === 'rect');
+        const activeRects = activeShapes.filter((s) => s.type === 'rect');
 
         expect(activeRects).to.be.of.length(1);
         expect(inactiveShapes).to.be.of.length(2);

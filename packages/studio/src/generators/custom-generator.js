@@ -346,15 +346,15 @@ const alphabetUpperCase = [
   'Z',
 ];
 
-const alphabetLowerCase = alphabetUpperCase.map(a => a.toLowerCase());
+const alphabetLowerCase = alphabetUpperCase.map((a) => a.toLowerCase());
 
 function dataRangePointCallback(strings, dimensions, dataRange) {
   const dataRangeMultipler = dataRange[1] - dataRange[0];
-  return x => (x < dimensions ? strings.pop() : Math.random() * dataRangeMultipler + dataRange[0]);
+  return (x) => (x < dimensions ? strings.pop() : Math.random() * dataRangeMultipler + dataRange[0]);
 }
 
 function stringsRowCallback(dimensions, sorted) {
-  return r => {
+  return (r) => {
     let strings = [];
     if (sorted) {
       strings = r.splice(0, dimensions);
@@ -403,7 +403,7 @@ function generateRandomSubset(subsetRange, set) {
  */
 export function stringGenerator(joinChar, ...args) {
   return args
-    .map(a => {
+    .map((a) => {
       const aryIndex = Math.round(Math.random() * (a.length - 1));
       return a[aryIndex];
     })

@@ -18,12 +18,12 @@ const debugPathToPointsDef = {
     },
   },
   draw() {
-    const shapes = this.chart.findShapes('path').filter(s => s.key === this.props.target); // Find all shapes
+    const shapes = this.chart.findShapes('path').filter((s) => s.key === this.props.target); // Find all shapes
 
     const circles = [];
-    shapes.forEach(s => {
-      pathToSegments(s.attrs.d).forEach(segment => {
-        segment.forEach(p => {
+    shapes.forEach((s) => {
+      pathToSegments(s.attrs.d).forEach((segment) => {
+        segment.forEach((p) => {
           circles.push({
             type: 'circle',
             cx: p.x,

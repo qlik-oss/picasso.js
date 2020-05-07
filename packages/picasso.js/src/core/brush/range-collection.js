@@ -76,7 +76,7 @@ export default function rangeCollection(config = {}) {
     return before !== after;
   };
 
-  fn.set = range => {
+  fn.set = (range) => {
     const before = boundaries.join(',');
     boundaries = [];
     if (Array.isArray(range)) {
@@ -94,7 +94,7 @@ export default function rangeCollection(config = {}) {
     return before;
   };
 
-  fn.containsValue = value => contains(boundaries, value, minCondition, maxCondition);
+  fn.containsValue = (value) => contains(boundaries, value, minCondition, maxCondition);
 
   fn.containsRange = ({ min, max }) => {
     const i0 = index(boundaries, min, true);
@@ -103,7 +103,7 @@ export default function rangeCollection(config = {}) {
     return i0 === i1 && i1 % 2 === 1;
   };
 
-  fn.toggle = range => {
+  fn.toggle = (range) => {
     if (fn.containsRange(range)) {
       return fn.remove(range);
     }

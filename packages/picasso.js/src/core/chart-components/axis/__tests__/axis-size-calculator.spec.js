@@ -53,7 +53,7 @@ describe('Axis size calculator', () => {
     const data = null;
     const formatter = null;
     const measureText = ({ text = '' }) => ({ width: text.toString().length, height: 5 });
-    sizeFn = r =>
+    sizeFn = (r) =>
       calcRequiredSize({
         settings,
         rect: r,

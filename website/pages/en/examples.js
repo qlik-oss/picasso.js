@@ -284,9 +284,9 @@ const Sample = (props, idx) => (
   </div>
 );
 
-const Empty = v => <div className="cell" key={v}></div>;
+const Empty = (v) => <div className="cell" key={v}></div>;
 
-const Category = props => (
+const Category = (props) => (
   <div className="category">
     <h2>{props.title}</h2>
     <div className="gallery">{props.children}</div>

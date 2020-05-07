@@ -52,7 +52,7 @@ export default function registryFactory(parentRegistry, registerName = 'unspecif
   }
 
   function getValues() {
-    return Object.keys(reg).map(key => reg[key]);
+    return Object.keys(reg).map((key) => reg[key]);
   }
 
   function deflt(d) {

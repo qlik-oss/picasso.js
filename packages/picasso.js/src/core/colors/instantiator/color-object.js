@@ -2,7 +2,7 @@ import RgbaColor from '../rgba-color';
 import HslaColor from '../hsla-color';
 
 function hasPropertyCombination(obj, properties) {
-  return properties.every(p => Object.prototype.hasOwnProperty.call(obj, p));
+  return properties.every((p) => Object.prototype.hasOwnProperty.call(obj, p));
 }
 
 /**
@@ -41,7 +41,7 @@ export default function colorObject(colorObj) {
  * @example
  * colorObject.test( { r:255, g: 123, b: 123 } );
  */
-colorObject.test = obj => {
+colorObject.test = (obj) => {
   if (obj === null || obj === undefined || typeof obj !== 'object') {
     return false;
   }
@@ -59,7 +59,7 @@ colorObject.test = obj => {
  * @example
  * colorObject.getColorType( { r:255, g: 123, b: 123 } )
  */
-colorObject.getColorType = obj => {
+colorObject.getColorType = (obj) => {
   if (obj === null || typeof obj !== 'object') {
     return undefined;
   }

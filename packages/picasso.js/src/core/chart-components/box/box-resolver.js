@@ -75,7 +75,7 @@ export default function complexResolver({ keys, data, defaultSettings, style, se
 
   const minorSettings = settings.minor || {};
   const defaultMinorSettings = {};
-  ['start', 'end', 'min', 'max', 'med'].forEach(prop => {
+  ['start', 'end', 'min', 'max', 'med'].forEach((prop) => {
     if (minorSettings[prop] || (data.items && data.items.length && data.items[0][prop])) {
       defaultMinorSettings[prop] = { scale: minorSettings.scale, ref: prop };
     }

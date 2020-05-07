@@ -15,7 +15,7 @@ function applyAlignJustify(ctx, node) {
 export function generateStopNodes(ctx) {
   const fillScale = ctx.state.legend.fillScale;
   const majorScale = ctx.state.legend.majorScale;
-  const stops = fillScale.domain().map(d => ({
+  const stops = fillScale.domain().map((d) => ({
     type: 'stop',
     color: fillScale(d),
     offset: Math.min(1, Math.max(0, majorScale.norm(d))),
@@ -122,7 +122,7 @@ export function createTickNodes(ctx, legendNode) {
     fill: 'transparent',
   };
 
-  const nodes = state.ticks.values.map(tick => {
+  const nodes = state.ticks.values.map((tick) => {
     let x = 0;
     let y = 0;
     let dx = 0;

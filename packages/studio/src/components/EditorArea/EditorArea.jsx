@@ -34,18 +34,18 @@ const EditorArea = React.memo(({ code, onCodeChange }) => {
   }, [code, codeEditor]);
 
   const handleCodeChange = React.useCallback(
-    newCode => {
+    (newCode) => {
       codeDebouncer.current(newCode);
     },
     [codeDebouncer]
   );
 
-  const codeEditorMounted = editor => {
+  const codeEditorMounted = (editor) => {
     codeEditor.current = editor;
   };
 
   const layoutEditorCallback = React.useCallback(
-    dimension => {
+    (dimension) => {
       if (codeEditor && codeEditor.current) {
         codeEditor.current.layout(dimension);
       }

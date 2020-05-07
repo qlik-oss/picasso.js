@@ -20,6 +20,6 @@
     "prepublishOnly": "rm -rf dist && npm run build"
   },
   "devDependencies": {
-    "test-utils": "^0.30.0"
+    "test-utils": "0.30.0"
   }
 }

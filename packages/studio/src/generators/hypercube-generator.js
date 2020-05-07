@@ -34,7 +34,7 @@ class HypercubeGenerator {
 
   generateDimensionInfoFromData(data, label) {
     const numUnique = this.arrayGetUnique.call(data).length;
-    const glyphCount = Math.max(...data.map(text => (text ? text.length : 0)));
+    const glyphCount = Math.max(...data.map((text) => (text ? text.length : 0)));
     const info = {
       othersLabel: 'Otheeeeers',
       qApprMaxGlyphCount: glyphCount,
@@ -60,7 +60,7 @@ class HypercubeGenerator {
 
   generateMeasureInfoFromData(data, label) {
     const len = data ? data.length : 0;
-    const glyphCount = Math.max(...data.map(value => `${value}`.length));
+    const glyphCount = Math.max(...data.map((value) => `${value}`.length));
     const max = Math.max(...data);
     const min = Math.min(...data);
     const info = {
@@ -92,7 +92,7 @@ class HypercubeGenerator {
   extractColumnFrom2DArray(columnIndex, arr) {
     const column = [];
 
-    arr.forEach(row => {
+    arr.forEach((row) => {
       column.push(row[columnIndex]);
     });
 
@@ -237,7 +237,7 @@ class HypercubeGenerator {
    * @return {Array}     Modified array
    */
   randomNullInsert(arr, chance = 0.1) {
-    return arr.map(v => (Math.random() <= chance ? null : v));
+    return arr.map((v) => (Math.random() <= chance ? null : v));
   }
 
   /**
@@ -255,7 +255,7 @@ class HypercubeGenerator {
       ...this.random2dArr(
         dimensions + measures,
         rows + 1,
-        sorted ? row => row.sort() : null,
+        sorted ? (row) => row.sort() : null,
         (x, y, width, height) => (!sorted ? ((x / width) * y) / height : 1) * Math.random()
       ),
     ];

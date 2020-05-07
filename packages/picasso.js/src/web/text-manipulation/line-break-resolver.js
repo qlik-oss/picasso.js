@@ -41,7 +41,7 @@ function shouldLineBreak(item) {
 }
 
 function wrappedMeasureText(node, measureText) {
-  return text =>
+  return (text) =>
     measureText({
       text,
       fontSize: node.fontSize,
@@ -65,7 +65,7 @@ export function resolveLineBreakAlgorithm(node) {
  * @returns {function} Event function to convert a text node into multiple nodes
  */
 export function onLineBreak(measureText) {
-  return state => {
+  return (state) => {
     const item = state.node;
     if (shouldLineBreak(item)) {
       const wordBreakFn = resolveLineBreakAlgorithm(item);

@@ -38,7 +38,7 @@ Create and register a new formatter module. The module must be a function that t
 
 ```js
 function formatter(format = '$') {
-  return value => `${value}${format}`;
+  return (value) => `${value}${format}`;
 }
 
 picasso.formatter('appendToken', formatter);

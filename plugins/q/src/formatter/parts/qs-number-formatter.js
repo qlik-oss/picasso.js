@@ -135,7 +135,7 @@ function getAbbreviations(localeInfo, listSeparator) {
   const abbreviations = {};
   let abbrs = localeInfo.qNumericalAbbreviation.split(listSeparator);
 
-  abbrs.forEach(abbreviation => {
+  abbrs.forEach((abbreviation) => {
     let abbreviationTuple = abbreviation.split(':');
     if (abbreviationTuple.length === 2) {
       abbreviations[abbreviationTuple[0]] = abbreviationTuple[1];
@@ -415,16 +415,12 @@ class NumberFormatter {
 
       if (prep.abbreviate) {
         const abbrArray = Object.keys(this.abbreviations)
-          .map(key => parseInt(key, 10))
+          .map((key) => parseInt(key, 10))
           .sort((a, b) => a - b);
         let lowerAbbreviation;
         let upperAbbreviation = abbrArray[0];
         i = 0;
-        exponent = Number(
-          Number(value)
-            .toExponential()
-            .split('e')[1]
-        );
+        exponent = Number(Number(value).toExponential().split('e')[1]);
 
         while (upperAbbreviation <= exponent && i < abbrArray.length) {
           i++;
@@ -506,10 +502,7 @@ class NumberFormatter {
         if (decimalPartPattern) {
           const nDecimals = Math.max(0, Math.min(14, decimalPartPattern.length)); // the length of e.g. 0000#####
           const nZeroes = decimalPartPattern.replace(/#+$/, '').length;
-          let decimalPart = (this.type === 'I' ? 0 : absValue % 1)
-            .toFixed(nDecimals)
-            .slice(2)
-            .replace(/0+$/, ''); // remove trailing zeroes
+          let decimalPart = (this.type === 'I' ? 0 : absValue % 1).toFixed(nDecimals).slice(2).replace(/0+$/, ''); // remove trailing zeroes
 
           for (i = decimalPart.length; i < nZeroes; i++) {
             decimalPart += '0';
@@ -524,7 +517,7 @@ class NumberFormatter {
         }
       }
 
-      value = value.replace(prep.numericRegex, m => {
+      value = value.replace(prep.numericRegex, (m) => {
         if (m === t) {
           return prep.groupTemp;
         }

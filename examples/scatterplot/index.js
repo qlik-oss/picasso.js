@@ -1,4 +1,4 @@
-(function() {
+(function () {
   var settings = {
     scales: {
       x: { data: { field: 'Sales' }, expand: 0.1 },

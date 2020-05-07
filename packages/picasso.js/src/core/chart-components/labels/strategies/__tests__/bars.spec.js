@@ -246,8 +246,8 @@ describe('labeling - bars', () => {
           height: 20,
         },
       };
-      barRect = opts => rects[opts.position];
-      placements.forEach(p => delete p.overflow);
+      barRect = (opts) => rects[opts.position];
+      placements.forEach((p) => delete p.overflow);
     });
 
     it('should find first placement that fits in a vertical bar', () => {

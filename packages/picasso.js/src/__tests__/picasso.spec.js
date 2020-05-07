@@ -11,7 +11,7 @@ describe('picasso.js', () => {
       expect(typeof picasso.chart).to.equal('function');
 
       // registries
-      iface.forEach(key => {
+      iface.forEach((key) => {
         expect(typeof picasso[key]).to.equal('function');
         expect(typeof picasso[key].add).to.equal('function');
       });
@@ -24,7 +24,7 @@ describe('picasso.js', () => {
       picasso.use(plugin);
       const firstParam = plugin.args[0][0];
 
-      iface.forEach(key => {
+      iface.forEach((key) => {
         expect(typeof firstParam[key]).to.equal('function');
         expect(typeof firstParam[key].add).to.equal('function');
       });
@@ -134,7 +134,7 @@ describe('picasso.js', () => {
     it('should bind brush event listeners', () => {
       const element = createElement();
       const spy = sinon.spy(element, 'addEventListener');
-      const matchFn = fnName => fn => fn.name === fnName;
+      const matchFn = (fnName) => (fn) => fn.name === fnName;
 
       picasso.chart({
         element,

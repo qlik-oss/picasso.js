@@ -12,7 +12,7 @@ const localRepo = {
     return localExamples;
   },
 
-  new: item => {
+  new: (item) => {
     if (!item.title) {
       return 'No item title';
     }
@@ -33,7 +33,7 @@ const localRepo = {
     return newItem;
   },
 
-  idExists: id => {
+  idExists: (id) => {
     for (let i = 0; i < localExamples.length; i += 1) {
       const cur = localExamples[i];
       if (cur.id === id) {
@@ -61,7 +61,7 @@ const localRepo = {
     return 'Could not find suitable fork name';
   },
 
-  update: item => {
+  update: (item) => {
     for (let i = 0; i < localExamples.length; i += 1) {
       if (localExamples[i].id === item.id) {
         localExamples[i].code = item.code;
@@ -71,7 +71,7 @@ const localRepo = {
     localRepo.save();
   },
 
-  get: id => {
+  get: (id) => {
     for (let i = 0; i < localExamples.length; i += 1) {
       const cur = localExamples[i];
       if (cur.id === id) {
@@ -81,7 +81,7 @@ const localRepo = {
     return false;
   },
 
-  delete: id => {
+  delete: (id) => {
     for (let i = 0; i < localExamples.length; i += 1) {
       if (localExamples[i].id === id) {
         localExamples.splice(i, 1);

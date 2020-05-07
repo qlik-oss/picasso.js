@@ -98,7 +98,7 @@ In the script tag, initiate a picasso chart instance:
           settings: {
             x: { scale: 'x' },
             y: { scale: 'y' },
-            size: function() {
+            size: function () {
               return Math.random();
             },
           },

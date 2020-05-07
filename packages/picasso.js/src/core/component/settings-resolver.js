@@ -7,7 +7,7 @@ const externals = {
   updateScaleSize,
 };
 
-export default function(resources, deps = externals) {
+export default function (resources, deps = externals) {
   let cache = {};
 
   function resolve({ data, settings, defaults = {}, scaled }) {
@@ -19,7 +19,7 @@ export default function(resources, deps = externals) {
     };
 
     if (scaled) {
-      Object.keys(scaled).forEach(key => {
+      Object.keys(scaled).forEach((key) => {
         if (norm[key]) {
           deps.updateScaleSize(norm, key, scaled[key]);
         }

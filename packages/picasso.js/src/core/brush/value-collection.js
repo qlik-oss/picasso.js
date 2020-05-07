@@ -2,7 +2,7 @@ export default function valueCollection() {
   let values = [];
   function vc() {}
 
-  vc.add = value => {
+  vc.add = (value) => {
     if (values.indexOf(value) === -1) {
       values.push(value);
       return true;
@@ -10,7 +10,7 @@ export default function valueCollection() {
     return false;
   };
 
-  vc.remove = value => {
+  vc.remove = (value) => {
     const idx = values.indexOf(value);
     if (idx !== -1) {
       values.splice(idx, 1);
@@ -19,7 +19,7 @@ export default function valueCollection() {
     return false;
   };
 
-  vc.contains = value => values.indexOf(value) !== -1;
+  vc.contains = (value) => values.indexOf(value) !== -1;
 
   vc.values = () => values.slice();
 

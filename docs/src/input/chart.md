@@ -89,7 +89,7 @@ picasso.chart({
       options: {
         areaThreshold: 5,
       },
-      end: function(e, data) {
+      end: function (e, data) {
         console.log('tap');
       },
     });

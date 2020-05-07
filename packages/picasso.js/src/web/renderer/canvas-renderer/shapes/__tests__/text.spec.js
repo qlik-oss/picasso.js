@@ -68,7 +68,7 @@ describe('text', () => {
         { value: 'inherit', expected: 'inherit' },
       ];
 
-      cases.forEach(fixture => {
+      cases.forEach((fixture) => {
         it(`should be set correctly when text-anchor is ${fixture.value}`, () => {
           text['text-anchor'] = fixture.value;
 

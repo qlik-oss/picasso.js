@@ -174,8 +174,8 @@ data: {
     {
       source: 'Products',
       field: 'Product',
-      trackBy: v => v.group, // collect products based on the 'group' property
-      reduce: values => values[0].group, // use the group property as value for the group
+      trackBy: (v) => v.group, // collect products based on the 'group' property
+      reduce: (values) => values[0].group, // use the group property as value for the group
       props: {
         // each property config is attached as a property to the main item
         x: { field: 'Sales', reduce: 'sum' },
@@ -218,7 +218,7 @@ data: {
     {
       source: 'Products',
       field: 'Product',
-      filter: d => d.name !== 'Sandals', // exclude 'Sandals'
+      filter: (d) => d.name !== 'Sandals', // exclude 'Sandals'
     },
   ];
 }

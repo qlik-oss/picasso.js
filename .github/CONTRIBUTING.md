@@ -71,40 +71,40 @@ Generally, development should be done directly towards the `master` branch.
 ### Workflow
 
 1. Fork and clone the repository
-    ```sh
-    git clone git@github.com:YOUR-USERNAME/picasso.js.git
-    ```
+
+   ```sh
+   git clone git@github.com:YOUR-USERNAME/picasso.js.git
+   ```
 
 1. Create a branch in the fork
-    
-    The branch should be based on the `master` branch in the master repository.
 
-    ```sh
-    git checkout -b my-feature-or-bugfix master
-    ```
+   The branch should be based on the `master` branch in the master repository.
+
+   ```sh
+   git checkout -b my-feature-or-bugfix master
+   ```
 
 1. Commit changes on your branch
 
-    Commit changes to your branch, following the commit message format.
+   Commit changes to your branch, following the commit message format.
 
-    ```sh
-    git commit -m "fix: properly formatted SET statements."
-    ```
+   ```sh
+   git commit -m "fix: properly formatted SET statements."
+   ```
 
 1. Push the changes to your fork
 
-    ```sh
-    git push -u myfork my-feature-or-bugfix
-    ```
+   ```sh
+   git push -u myfork my-feature-or-bugfix
+   ```
 
 1. Create a Pull Request
 
-    > Before creating a Pull Request, make sure to sign the [CLA](#cla)
+   > Before creating a Pull Request, make sure to sign the [CLA](#cla)
 
-    In the Github UI of your fork, create a Pull Request to the `master` branch of the master repository.
+   In the Github UI of your fork, create a Pull Request to the `master` branch of the master repository.
 
-    If the branch has merge conflicts or has been outdated, please do a rebase against the `master` branch.
-
+   If the branch has merge conflicts or has been outdated, please do a rebase against the `master` branch.
 
 ### <a name="commit"></a> Commit message guidelines
 

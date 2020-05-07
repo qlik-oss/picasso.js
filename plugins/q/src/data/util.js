@@ -18,7 +18,7 @@ function flattenTree(children, steps, arrIndexAtTargetDepth) {
 
 export function treeAccessor(sourceDepth, targetDepth, arrIndexAtTargetDepth) {
   if (sourceDepth === targetDepth) {
-    return d => d;
+    return (d) => d;
   }
   if (sourceDepth > targetDepth) {
     // traverse upwards
@@ -29,7 +29,7 @@ export function treeAccessor(sourceDepth, targetDepth, arrIndexAtTargetDepth) {
   if (targetDepth > sourceDepth) {
     // flatten descendants
     const steps = Math.max(0, Math.min(100, targetDepth - sourceDepth));
-    return node => flattenTree(node.children, steps - 1, arrIndexAtTargetDepth);
+    return (node) => flattenTree(node.children, steps - 1, arrIndexAtTargetDepth);
   }
   return false;
 }

@@ -25,7 +25,7 @@ describe('colorObject', () => {
 
     const methods = ['test', 'getColorType'];
 
-    methods.forEach(method => {
+    methods.forEach((method) => {
       expect(Object.prototype.hasOwnProperty.call(colorObject, method)).to.equal(true);
       expect(typeof colorObject[method] === 'function').to.equal(true);
     });
@@ -34,13 +34,13 @@ describe('colorObject', () => {
   });
 
   it('should return undefined if argument is not an object', () => {
-    nonObjects.forEach(argument => {
+    nonObjects.forEach((argument) => {
       expect(typeof colorObject(argument)).to.equal('undefined');
     });
   });
 
   it('should return undefined if no color type can be determined for the object', () => {
-    undetermined.forEach(argument => {
+    undetermined.forEach((argument) => {
       expect(typeof colorObject(argument)).to.equal('undefined');
     });
   });
@@ -93,13 +93,13 @@ describe('colorObject', () => {
     });
 
     it('should return false if keyword is not an object', () => {
-      nonObjects.forEach(argument => {
+      nonObjects.forEach((argument) => {
         expect(colorObject.test(argument)).to.equal(false);
       });
     });
 
     it('should return false if color type for object cannot be determined', () => {
-      undetermined.forEach(obj => {
+      undetermined.forEach((obj) => {
         expect(colorObject.test(obj)).to.equal(false);
       });
     });
@@ -123,13 +123,13 @@ describe('colorObject', () => {
     });
 
     it('should return undefined if argument is not an object', () => {
-      nonObjects.forEach(argument => {
+      nonObjects.forEach((argument) => {
         expect(typeof colorObject.getColorType(argument)).to.equal('undefined');
       });
     });
 
     it('should return undefined if color type for object cannot be determined', () => {
-      undetermined.forEach(obj => {
+      undetermined.forEach((obj) => {
         expect(typeof colorObject.getColorType(obj)).to.equal('undefined');
       });
     });

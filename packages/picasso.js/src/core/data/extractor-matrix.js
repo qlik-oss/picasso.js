@@ -30,7 +30,7 @@ function datumExtract(propCfg, cell, { key }) {
 export default function extract(config, dataset) {
   const cfgs = Array.isArray(config) ? config : [config];
   let dataItems = [];
-  cfgs.forEach(cfg => {
+  cfgs.forEach((cfg) => {
     if (typeof cfg.field !== 'undefined') {
       const f = dataset.field(cfg.field);
       const sourceKey = dataset.key();
@@ -57,7 +57,7 @@ export default function extract(config, dataset) {
 
         // loop through all props that need to be mapped and
         // assign 'value' and 'source' to each property
-        propsArr.forEach(prop => {
+        propsArr.forEach((prop) => {
           const p = props[prop];
           let propCell = p.field ? p.field.items()[idx] : mainCell;
           ret[prop] = datumExtract(p, propCell, { key: sourceKey });

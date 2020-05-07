@@ -33,7 +33,7 @@ function res(style, references, path) {
     computed = extend(true, {}, res(refs[extendFrom], references, pext), style);
   }
 
-  Object.keys(computed).forEach(key => {
+  Object.keys(computed).forEach((key) => {
     let p = path.slice();
     if (key === EXTEND || VARIABLE_RX.test(key)) {
       return;

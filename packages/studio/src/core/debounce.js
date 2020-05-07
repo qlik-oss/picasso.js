@@ -1,6 +1,6 @@
 const debouncer = (callback, delay) => {
   let handler;
-  return value => {
+  return (value) => {
     if (handler) {
       clearTimeout(handler);
     }

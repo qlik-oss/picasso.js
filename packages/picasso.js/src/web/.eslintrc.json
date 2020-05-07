@@ -1,7 +1,7 @@
 {
   "overrides": [
     {
-      "files":["**/!(*.spec).js"],
+      "files": ["**/!(*.spec).js"],
       "env": {
         "browser": true,
         "node": false

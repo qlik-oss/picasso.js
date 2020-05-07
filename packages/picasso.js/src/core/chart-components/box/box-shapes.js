@@ -20,10 +20,10 @@ export default function buildShapes({ width, height, flipXY, resolved, keys, sym
   const maxMajorWidth = flipXY ? height : width;
   const majorSettings = resolved.major.settings;
   const minorProps = ['start', 'end', 'min', 'max', 'med'].filter(
-    prop => typeof resolved.minor.settings[prop] !== 'undefined'
+    (prop) => typeof resolved.minor.settings[prop] !== 'undefined'
   );
   const numMinorProps = minorProps.length;
-  const nonOobKeys = keys.filter(key => key !== 'oob');
+  const nonOobKeys = keys.filter((key) => key !== 'oob');
 
   let children;
   let major;
