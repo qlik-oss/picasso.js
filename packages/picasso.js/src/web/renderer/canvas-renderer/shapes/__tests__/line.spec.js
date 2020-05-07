@@ -2,11 +2,7 @@ import render from '../line';
 
 describe('line', () => {
   describe('render', () => {
-    let sandbox,
-      g,
-      falsys,
-      truthys,
-      line;
+    let sandbox, g, falsys, truthys, line;
 
     beforeEach(() => {
       sandbox = sinon.createSandbox();
@@ -15,7 +11,7 @@ describe('line', () => {
         beginPath: sandbox.spy(),
         moveTo: sandbox.spy(),
         lineTo: sandbox.spy(),
-        stroke: sandbox.spy()
+        stroke: sandbox.spy(),
       };
 
       falsys = [false, null, undefined, 0, NaN, ''];
@@ -23,7 +19,10 @@ describe('line', () => {
       truthys = [true, {}, [], 1, -1, 3.14, -3.14, 'foo'];
 
       line = {
-        x1: 1, x2: 10, y1: 2, y2: 20
+        x1: 1,
+        x2: 10,
+        y1: 2,
+        y2: 20,
       };
     });
 

@@ -204,7 +204,7 @@ describe('LinearScale', () => {
       expect(lin(0.6)).to.equal('rgb(198, 96, 96)');
       expect(lin(0.75)).to.equal('rgb(236, 134, 134)'); // Thrid interval
       expect(lin(0.85)).to.equal('rgb(236, 134, 134)');
-      expect(lin(0.90)).to.equal('rgb(236, 134, 134)'); // Fourth interval
+      expect(lin(0.9)).to.equal('rgb(236, 134, 134)'); // Fourth interval
       expect(lin(1)).to.equal('rgb(236, 134, 134)');
     });
   });

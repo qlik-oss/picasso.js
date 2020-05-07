@@ -7,10 +7,7 @@ const jsxPlugin = require('@babel/plugin-transform-react-jsx');
 
 const cwd = process.cwd();
 const pkg = require(path.join(cwd, 'package.json')); // eslint-disable-line
-const {
-  name,
-  version
-} = pkg;
+const { name, version } = pkg;
 
 const banner = `/*
 * ${name} v${version}
@@ -26,7 +23,10 @@ const config = (isEsm) => {
   const outputFile = isEsm ? pkg.module : pkg.main;
   const basename = path.basename(outputFile);
   const dir = path.dirname(outputFile);
-  const umdName = basename.replace(/-([a-z])/g, (m, p1) => p1.toUpperCase()).split('.js').join('');
+  const umdName = basename
+    .replace(/-([a-z])/g, (m, p1) => p1.toUpperCase())
+    .split('.js')
+    .join('');
 
   const cfg = {
     input: path.resolve(cwd, 'src', 'index'),
@@ -36,43 +36,40 @@ const config = (isEsm) => {
       exports: 'default',
       name: umdName,
       sourcemap: true,
-      banner
+      banner,
     },
     plugins: [
       nodeResolve(),
       babel({
-        include: [
-          'src/**',
-          /path2d-polyfill/
-        ],
+        include: ['src/**', /path2d-polyfill/],
         presets: [
-          ['@babel/preset-env', {
-            modules: false,
-            targets: {
-              browsers: ['ie 11']
-            }
-          }]
+          [
+            '@babel/preset-env',
+            {
+              modules: false,
+              targets: {
+                browsers: ['ie 11'],
+              },
+            },
+          ],
         ],
-        plugins: [
-          [jsxPlugin, { pragma: 'h' }]
-        ]
+        plugins: [[jsxPlugin, { pragma: 'h' }]],
       }),
-      commonjs()
-    ]
+      commonjs(),
+    ],
   };
 
   if (process.env.NODE_ENV === 'production' && !isEsm) {
-    cfg.plugins.push(uglify({
-      output: {
-        preamble: banner
-      }
-    }));
+    cfg.plugins.push(
+      uglify({
+        output: {
+          preamble: banner,
+        },
+      })
+    );
   }
 
   return cfg;
 };
 
-module.exports = [
-  watch ? false : config(),
-  config(true)
-].filter(Boolean);
+module.exports = [watch ? false : config(), config(true)].filter(Boolean);

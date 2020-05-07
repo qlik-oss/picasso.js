@@ -50,13 +50,7 @@ describe('TreeNode', () => {
     });
 
     describe('relatives -', () => {
-      let a,
-        a1,
-        a2,
-        a3,
-        b,
-        b1,
-        b2;
+      let a, a1, a2, a3, b, b1, b2;
 
       beforeEach(() => {
         n = new Node();
@@ -166,14 +160,7 @@ describe('TreeNode', () => {
   });
 
   describe('#removeChild', () => {
-    let n,
-      a,
-      a1,
-      a2,
-      a21,
-      b,
-      b1,
-      b2;
+    let n, a, a1, a2, a21, b, b1, b2;
 
     beforeEach(() => {
       n = new Node();
@@ -230,14 +217,7 @@ describe('TreeNode', () => {
   });
 
   describe('coupling/decoupling', () => {
-    let n,
-      a,
-      a1,
-      a2,
-      a21,
-      b,
-      b1,
-      b2;
+    let n, a, a1, a2, a21, b, b1, b2;
 
     beforeEach(() => {
       n = new Node();

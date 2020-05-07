@@ -9,10 +9,11 @@ const DEFAULT_SETTINGS = {
   maxWidth: null,
   measureText: () => ({ width: 0, height: 0 }),
   invert: false,
-  clamp: false
+  clamp: false,
 };
 
-function calcMinMax(values) { // TODO To remove, just here for easier usage while developing
+function calcMinMax(values) {
+  // TODO To remove, just here for easier usage while developing
   const min = values[values.length - 1].qTicks.map((t) => t.qStart);
   const max = values[values.length - 1].qTicks.map((t) => t.qEnd);
   return { min: Math.min(...min), max: Math.max(...max) };
@@ -33,7 +34,7 @@ function getMinMax(settings, data, values) {
 
   return {
     min: isNaN(min) ? fieldMin : min,
-    max: isNaN(max) ? fieldMax : max
+    max: isNaN(max) ? fieldMax : max,
   };
 }
 
@@ -44,9 +45,10 @@ export default function qTime(settings, data) {
 
   const { min, max } = getMinMax(stgns, data, values);
 
-  const levels = resolveLevels({ // Resolve levels in ticks fn once component show can be hasLevel is removed
+  const levels = resolveLevels({
+    // Resolve levels in ticks fn once component show can be hasLevel is removed
     data: values,
-    settings: stgns
+    settings: stgns,
   });
 
   const tickFn = tickGenerator(d3Scale, stgns);
@@ -60,7 +62,8 @@ export default function qTime(settings, data) {
 
   fn.data = () => data;
 
-  fn.ticks = ({ distance } = {}) => { // TODO get measureText and maxwidth here?
+  fn.ticks = ({ distance } = {}) => {
+    // TODO get measureText and maxwidth here?
     const lvl = levels[stgns.level];
     if (lvl.index !== null) {
       const ticks = tickFn.transformTicks(values[lvl.index].qTicks);
@@ -73,7 +76,8 @@ export default function qTime(settings, data) {
       }
       return ticks;
     }
-    if (stgns.level === 'inner' && lvl.index === null) { // Use prop as condition instead to allow on any level?
+    if (stgns.level === 'inner' && lvl.index === null) {
+      // Use prop as condition instead to allow on any level?
       return tickFn.createTicks(distance);
     }
     return [];

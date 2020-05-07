@@ -37,14 +37,7 @@ function getTextAnchor(dock, anchor) {
   return val;
 }
 
-function generateTitle({
-  title,
-  definitionSettings,
-  dock,
-  rect,
-  measureText,
-  style
-}) {
+function generateTitle({ title, definitionSettings, dock, rect, measureText, style }) {
   const struct = {
     type: 'text',
     text: title,
@@ -53,7 +46,7 @@ function generateTitle({
     dx: 0,
     dy: 0,
     anchor: getTextAnchor(dock, definitionSettings.anchor),
-    baseline: 'alphabetical'
+    baseline: 'alphabetical',
   };
 
   extend(struct, style.text);
@@ -68,7 +61,10 @@ function generateTitle({
     }
 
     struct.x = x;
-    struct.y = dock === 'top' ? rect.height - definitionSettings.paddingStart : definitionSettings.paddingStart + textRect.height;
+    struct.y =
+      dock === 'top'
+        ? rect.height - definitionSettings.paddingStart
+        : definitionSettings.paddingStart + textRect.height;
     struct.dy = dock === 'top' ? -(textRect.height / 6) : -(textRect.height / 3);
     struct.maxWidth = rect.width * 0.8;
   } else {
@@ -81,7 +77,7 @@ function generateTitle({
 
     struct.y = y;
     struct.x = dock === 'left' ? rect.width - definitionSettings.paddingStart : definitionSettings.paddingStart;
-    struct.dx = dock === 'left' ? -(textRect.height / 3) : (textRect.height / 3);
+    struct.dx = dock === 'left' ? -(textRect.height / 3) : textRect.height / 3;
     const rotation = dock === 'left' ? 270 : 90;
     struct.transform = `rotate(${rotation}, ${struct.x + struct.dx}, ${struct.y + struct.dy})`;
     struct.maxWidth = rect.height * 0.8;
@@ -129,7 +125,7 @@ const textComponent = {
     layout: {
       dock: 'bottom',
       displayOrder: 0,
-      prioOrder: 0
+      prioOrder: 0,
     },
     settings: {
       paddingStart: 5,
@@ -138,11 +134,11 @@ const textComponent = {
       paddingRight: 0,
       anchor: 'center',
       join: ', ',
-      maxLengthPx: NaN
+      maxLengthPx: NaN,
     },
     style: {
-      text: '$title'
-    }
+      text: '$title',
+    },
   },
 
   created() {
@@ -157,26 +153,24 @@ const textComponent = {
     const height = this.renderer.measureText({
       text: this.title,
       fontSize: this.style.text.fontSize,
-      fontFamily: this.style.text.fontFamily
+      fontFamily: this.style.text.fontFamily,
     }).height;
     return height + this.definitionSettings.paddingStart + this.definitionSettings.paddingEnd;
   },
 
   render() {
-    const {
-      title,
-      definitionSettings,
-      rect
-    } = this;
+    const { title, definitionSettings, rect } = this;
     const nodes = [];
-    nodes.push(generateTitle({
-      title,
-      dock: this.settings.layout.dock,
-      definitionSettings,
-      rect,
-      measureText: this.renderer.measureText,
-      style: this.style
-    }));
+    nodes.push(
+      generateTitle({
+        title,
+        dock: this.settings.layout.dock,
+        definitionSettings,
+        rect,
+        measureText: this.renderer.measureText,
+        style: this.style,
+      })
+    );
     return nodes;
   },
 
@@ -188,7 +182,7 @@ const textComponent = {
     const text = this.settings.text;
     const join = this.definitionSettings.join;
     this.title = parseTitle(text, join, this.scale);
-  }
+  },
 };
 
 export default textComponent;

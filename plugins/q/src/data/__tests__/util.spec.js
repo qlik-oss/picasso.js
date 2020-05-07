@@ -3,7 +3,7 @@ import { treeAccessor } from '../util';
 describe('treeAccessor', () => {
   it('should return itself when depths are same', () => {
     let node = {
-      text: 'A'
+      text: 'A',
     };
     const a = treeAccessor(4, 4);
     expect(a(node)).to.eql(node);
@@ -13,9 +13,9 @@ describe('treeAccessor', () => {
     let node = {
       parent: {
         parent: {
-          text: 'ancestor'
-        }
-      }
+          text: 'ancestor',
+        },
+      },
     };
     const a = treeAccessor(4, 2);
     expect(a(node)).to.eql(node.parent.parent);
@@ -30,8 +30,8 @@ describe('treeAccessor', () => {
         { children: [c1, c2] },
         {}, // empty node on purpose
         { children: [] }, // empty array on purpose
-        { children: [c3] }
-      ]
+        { children: [c3] },
+      ],
     };
     const a = treeAccessor(2, 4);
     expect(a(node)).to.eql([c1, c2, c3]);

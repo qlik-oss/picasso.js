@@ -1,18 +1,9 @@
 import { createFromMetaInfo } from '../formatter';
 
-export default function qField({
-  meta,
-  id,
-  key,
-  localeInfo,
-  fieldExtractor,
-  value,
-  type,
-  sourceField
-} = {}) {
+export default function qField({ meta, id, key, localeInfo, fieldExtractor, value, type, sourceField } = {}) {
   let values;
 
-  const valueFn = value || (type === 'dimension' ? ((d) => d.qElemNo) : ((d) => d.qValue));
+  const valueFn = value || (type === 'dimension' ? (d) => d.qElemNo : (d) => d.qValue);
   const labelFn = (d) => d.qText || '';
   const reduce = type === 'dimension' ? 'first' : 'avg';
   const formatter = createFromMetaInfo(meta, localeInfo);
@@ -38,7 +29,7 @@ export default function qField({
     reduce,
     reduceLabel,
     formatter: () => formatter,
-    tags: () => meta.qTags
+    tags: () => meta.qTags,
   };
 
   return f;

@@ -18,7 +18,7 @@ const mappedAttributes = {
   maxWidth: 'maxWidth',
   transform: 'transform',
   strokeDasharray: 'stroke-dasharray',
-  id: 'id'
+  id: 'id',
 };
 
 /**

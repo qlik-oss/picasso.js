@@ -11,11 +11,13 @@ npm i && npm run bootstrap && npm run build
 Then replace the script `src` to the built bundles, e.g.
 
 Replace:
+
 ```html
 <script src="https://unpkg.com/picasso.js"></script>
 ```
 
 with:
+
 ```html
 <script src="../../packages/picasso.js/dist/picasso.min.js"></script>
 ```

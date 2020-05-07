@@ -9,7 +9,7 @@ const DEFAULT_SETTINGS = {
   range: [],
   invert: false,
   min: NaN,
-  max: NaN
+  max: NaN,
 };
 
 function generateDomain(range, min, max) {
@@ -22,7 +22,7 @@ function generateDomain(range, min, max) {
 
   domain.push(min);
   for (let i = 1; i < len - 1; i++) {
-    domain.push(min + (part * i));
+    domain.push(min + part * i);
   }
   domain.push(max);
 

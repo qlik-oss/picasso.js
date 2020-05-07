@@ -5,7 +5,7 @@ describe('Baseline polyfill', () => {
 
   beforeEach(() => {
     text = {
-      'font-size': '10px'
+      'font-size': '10px',
     };
   });
 

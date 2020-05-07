@@ -18,7 +18,7 @@ function bar(options) {
     { x: p.x - r, y: p.y + halfWidth },
     { x: p.x - r, y: p.y - halfWidth },
     { x: p.x + r, y: p.y - halfWidth },
-    { x: p.x + r, y: p.y + halfWidth }
+    { x: p.x + r, y: p.y + halfWidth },
   ];
 
   if (isVertical) {

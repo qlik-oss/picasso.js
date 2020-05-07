@@ -1,6 +1,7 @@
 import { timeFormatLocale } from 'd3-time-format';
 
-export default function formatter(pattern) { // eslint-disable-line import/prefer-default-export
+export default function formatter(pattern) {
+  // eslint-disable-line import/prefer-default-export
   let locale = timeFormatLocale({
     dateTime: '%x, %X',
     date: '%-m/%-d/%Y',
@@ -8,8 +9,21 @@ export default function formatter(pattern) { // eslint-disable-line import/prefe
     periods: ['AM', 'PM'],
     days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
     shortDays: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-    months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-    shortMonths: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    months: [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ],
+    shortMonths: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
   });
 
   let d3format = locale.format(pattern);
@@ -26,13 +40,13 @@ export default function formatter(pattern) { // eslint-disable-line import/prefe
   }
 
   /**
-    * Format a value according to a specific pattern
-    * that is not the one specified in the constructor
-    *
-    * @param  {String} p   Pattern
-    * @param  {Date} v   Value
-    * @return {String}     Formatted value
-    */
+   * Format a value according to a specific pattern
+   * that is not the one specified in the constructor
+   *
+   * @param  {String} p   Pattern
+   * @param  {Date} v   Value
+   * @return {String}     Formatted value
+   */
   format.format = function formatFn(p, v) {
     return locale.format(p)(v);
   };

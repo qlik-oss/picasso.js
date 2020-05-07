@@ -10,7 +10,14 @@ function appendDpi(points, dpi) {
 
 function geometryToDef(geometry, dpi, mvm) {
   const type = geometry.type;
-  const points = mvm ? mvm.transformPoints(geometry.points()) : geometry.points();
+  let points = geometry.points();
+  if (mvm) {
+    if (points.every((item) => Array.isArray(item))) {
+      points = points.map((item) => mvm.transformPoints(item));
+    } else {
+      points = mvm.transformPoints(points);
+    }
+  }
   appendDpi(points, dpi);
   let def = null;
 
@@ -27,7 +34,16 @@ function geometryToDef(geometry, dpi, mvm) {
     const path = pointsToPath(points, type === 'polygon');
     def = {
       type: 'path',
-      d: path
+      d: path,
+    };
+  } else if (type === 'geopolygon') {
+    let path = '';
+    for (let i = 0; i < points.length; i++) {
+      path += pointsToPath(points[i], true);
+    }
+    def = {
+      type: 'path',
+      d: path,
     };
   }
 
@@ -48,7 +64,7 @@ function colliderToShape(node, dpi) {
 
       return {
         type: 'container',
-        children
+        children,
       };
     }
 
@@ -64,13 +80,19 @@ function colliderToShape(node, dpi) {
 class SceneNode {
   constructor(node) {
     this._bounds = (includeTransform = true) => {
-      const {
-        x, y, width, height
-      } = node.boundingRect ? node.boundingRect(includeTransform) : {
-        x: 0, y: 0, width: 0, height: 0
-      };
+      const { x, y, width, height } = node.boundingRect
+        ? node.boundingRect(includeTransform)
+        : {
+            x: 0,
+            y: 0,
+            width: 0,
+            height: 0,
+          };
       return {
-        x, y, width, height
+        x,
+        y,
+        width,
+        height,
       };
     };
     this._attrs = node.attrs;
@@ -84,7 +106,7 @@ class SceneNode {
     this._parent = () => (node.parent ? new SceneNode(node.parent) : null);
 
     this._cache = {
-      elementBoundingRect: null
+      elementBoundingRect: null,
     };
     this._getElementBoundingRect = () => {
       if (!this._cache.elementBoundingRect && this.element) {
@@ -153,18 +175,18 @@ class SceneNode {
   }
 
   /**
-  * Key of the component this shape belongs to
-  * @type {string}
-  * @private
-  */
+   * Key of the component this shape belongs to
+   * @type {string}
+   * @private
+   */
   set key(k) {
     this._key = k;
   }
 
   /**
-  * Key of the component this shape belongs to
-  * @type {string}
-  */
+   * Key of the component this shape belongs to
+   * @type {string}
+   */
   get key() {
     return this._key;
   }
@@ -258,7 +280,4 @@ function create(...a) {
   return new SceneNode(...a);
 }
 
-export {
-  create as default,
-  SceneNode
-};
+export { create as default, SceneNode };

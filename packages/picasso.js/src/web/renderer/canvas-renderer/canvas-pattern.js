@@ -35,6 +35,6 @@ export default function patternizer(document) {
     },
     clear() {
       cache = {};
-    }
+    },
   };
 }

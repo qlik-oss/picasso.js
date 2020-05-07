@@ -25,16 +25,22 @@ describe('Axis', () => {
     config = {
       scale: 'y',
       formatter: 'f',
-      settings: {}
+      settings: {},
     };
 
     opts = {
       inner: {
-        x: 0, y: 0, width: 100, height: 100
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 100,
       },
       outer: {
-        x: 0, y: 0, width: 100, height: 100
-      }
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 100,
+      },
     };
   });
 
@@ -53,7 +59,7 @@ describe('Axis', () => {
         config.settings.labels = {
           show: true,
           maxLengthPx: 10,
-          mode: 'horizontal'
+          mode: 'horizontal',
         };
       });
 
@@ -115,7 +121,7 @@ describe('Axis', () => {
         config.settings.labels = {
           show: true,
           minLengthPx: 100,
-          mode: 'horizontal'
+          mode: 'horizontal',
         };
       });
 
@@ -228,7 +234,6 @@ describe('Axis', () => {
         });
       });
     });
-
 
     describe('Defaults', () => {
       ['left', 'right', 'top', 'bottom'].forEach((d) => {

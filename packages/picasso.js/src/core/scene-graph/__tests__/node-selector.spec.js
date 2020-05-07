@@ -13,10 +13,16 @@ describe('Node Selector', () => {
       expect(token).to.deep.equal([
         [{ type: 'type', value: 'Circle' }],
         [{ type: 'type', value: 'foo' }],
-        [{
-          type: 'attr', value: '[color="red"]', attribute: 'color', operator: '=', attributeValue: 'red'
-        }],
-        [{ type: 'universal', value: '*' }]
+        [
+          {
+            type: 'attr',
+            value: '[color="red"]',
+            attribute: 'color',
+            operator: '=',
+            attributeValue: 'red',
+          },
+        ],
+        [{ type: 'universal', value: '*' }],
       ]);
     });
 
@@ -28,8 +34,8 @@ describe('Node Selector', () => {
           { type: ' ', value: ' ' },
           { type: 'type', value: 'rings' },
           { type: ' ', value: ' ' },
-          { type: 'type', value: 'ring' }
-        ]
+          { type: 'type', value: 'ring' },
+        ],
       ]);
     });
 
@@ -39,25 +45,25 @@ describe('Node Selector', () => {
         [
           { type: 'type', value: 'Circle' },
           {
-            type: 'attr', value: '[fill]', attribute: 'fill', operator: UNDEF, attributeValue: UNDEF
-          }
-        ]
+            type: 'attr',
+            value: '[fill]',
+            attribute: 'fill',
+            operator: UNDEF,
+            attributeValue: UNDEF,
+          },
+        ],
       ]);
     });
 
     describe('type', () => {
       it('should support exact class name', () => {
         const token = tokenize('Circle');
-        expect(token).to.deep.equal([
-          [{ type: 'type', value: 'Circle' }]
-        ]);
+        expect(token).to.deep.equal([[{ type: 'type', value: 'Circle' }]]);
       });
 
       it('should support hyphenated class name', () => {
         const token = tokenize('my-shape');
-        expect(token).to.deep.equal([
-          [{ type: 'type', value: 'my-shape' }]
-        ]);
+        expect(token).to.deep.equal([[{ type: 'type', value: 'my-shape' }]]);
       });
     });
 
@@ -65,27 +71,45 @@ describe('Node Selector', () => {
       it('should support attribute existance', () => {
         const token = tokenize('[wohoo]');
         expect(token).to.deep.equal([
-          [{
-            type: 'attr', value: '[wohoo]', attribute: 'wohoo', operator: UNDEF, attributeValue: UNDEF
-          }]
+          [
+            {
+              type: 'attr',
+              value: '[wohoo]',
+              attribute: 'wohoo',
+              operator: UNDEF,
+              attributeValue: UNDEF,
+            },
+          ],
         ]);
       });
 
       it('should support attribute value', () => {
         const token = tokenize('[color="red"]');
         expect(token).to.deep.equal([
-          [{
-            type: 'attr', value: '[color="red"]', attribute: 'color', operator: '=', attributeValue: 'red'
-          }]
+          [
+            {
+              type: 'attr',
+              value: '[color="red"]',
+              attribute: 'color',
+              operator: '=',
+              attributeValue: 'red',
+            },
+          ],
         ]);
       });
 
       it('should support empty attribute value', () => {
         const token = tokenize('[color=""]');
         expect(token).to.deep.equal([
-          [{
-            type: 'attr', value: '[color=""]', attribute: 'color', operator: '=', attributeValue: ''
-          }]
+          [
+            {
+              type: 'attr',
+              value: '[color=""]',
+              attribute: 'color',
+              operator: '=',
+              attributeValue: '',
+            },
+          ],
         ]);
       });
 
@@ -94,19 +118,35 @@ describe('Node Selector', () => {
         expect(token).to.deep.equal([
           [
             {
-              type: 'attr', value: '[fill]', attribute: 'fill', operator: UNDEF, attributeValue: UNDEF
+              type: 'attr',
+              value: '[fill]',
+              attribute: 'fill',
+              operator: UNDEF,
+              attributeValue: UNDEF,
             },
             {
-              type: 'attr', value: '[color="blue"]', attribute: 'color', operator: '=', attributeValue: 'blue'
+              type: 'attr',
+              value: '[color="blue"]',
+              attribute: 'color',
+              operator: '=',
+              attributeValue: 'blue',
             },
             {
-              type: 'attr', value: '[stroke!="red"]', attribute: 'stroke', operator: '!=', attributeValue: 'red'
+              type: 'attr',
+              value: '[stroke!="red"]',
+              attribute: 'stroke',
+              operator: '!=',
+              attributeValue: 'red',
             },
             { type: ' ', value: ' ' },
             {
-              type: 'attr', value: '[foo="woo"]', attribute: 'foo', operator: '=', attributeValue: 'woo'
-            }
-          ]
+              type: 'attr',
+              value: '[foo="woo"]',
+              attribute: 'foo',
+              operator: '=',
+              attributeValue: 'woo',
+            },
+          ],
         ]);
       });
     });
@@ -114,9 +154,7 @@ describe('Node Selector', () => {
     describe('universal', () => {
       it('should support universal selector', () => {
         const token = tokenize('*');
-        expect(token).to.deep.equal([
-          [{ type: 'universal', value: '*' }]
-        ]);
+        expect(token).to.deep.equal([[{ type: 'universal', value: '*' }]]);
       });
 
       it('should support universal selector within a group', () => {
@@ -125,8 +163,8 @@ describe('Node Selector', () => {
           [
             { type: 'type', value: 'Circle' },
             { type: ' ', value: ' ' },
-            { type: 'universal', value: '*' }
-          ]
+            { type: 'universal', value: '*' },
+          ],
         ]);
       });
     });
@@ -134,9 +172,7 @@ describe('Node Selector', () => {
     describe('tag', () => {
       it('should support tag selector', () => {
         const token = tokenize('.test');
-        expect(token).to.deep.equal([
-          [{ type: 'tag', value: '.test' }]
-        ]);
+        expect(token).to.deep.equal([[{ type: 'tag', value: '.test' }]]);
       });
 
       it('should support combinations of tag selector', () => {
@@ -144,8 +180,8 @@ describe('Node Selector', () => {
         expect(token).to.deep.equal([
           [
             { type: 'tag', value: '.test' },
-            { type: 'tag', value: '.myTag' }
-          ]
+            { type: 'tag', value: '.myTag' },
+          ],
         ]);
       });
     });
@@ -167,10 +203,7 @@ describe('Node Selector', () => {
 
     describe('type', () => {
       it('should select all objects of a given type', () => {
-        const result = filter(
-          { type: 'type', value: 'Circle' },
-          [c1, c2, c3, t1, r1]
-        );
+        const result = filter({ type: 'type', value: 'Circle' }, [c1, c2, c3, t1, r1]);
         expect(result).to.deep.equal([c1, c2, c3]);
       });
     });
@@ -181,7 +214,11 @@ describe('Node Selector', () => {
         r1.attrs.color = 'wooo';
         const result = filter(
           {
-            type: 'attr', value: '[color]', attribute: 'color', operator: UNDEF, attributeValue: UNDEF
+            type: 'attr',
+            value: '[color]',
+            attribute: 'color',
+            operator: UNDEF,
+            attributeValue: UNDEF,
           },
           [c1, c2, c3, t1, r1]
         );
@@ -195,7 +232,11 @@ describe('Node Selector', () => {
         r1.attrs.color = 'red';
         const result = filter(
           {
-            type: 'attr', value: '[color]', attribute: 'color', operator: '=', attributeValue: 'red'
+            type: 'attr',
+            value: '[color]',
+            attribute: 'color',
+            operator: '=',
+            attributeValue: 'red',
           },
           [c1, c2, c3, t1, r1]
         );
@@ -210,7 +251,11 @@ describe('Node Selector', () => {
         t1.attrs.color = 'yellow';
         const result = filter(
           {
-            type: 'attr', value: '[color]', attribute: 'color', operator: '!=', attributeValue: 'red'
+            type: 'attr',
+            value: '[color]',
+            attribute: 'color',
+            operator: '!=',
+            attributeValue: 'red',
           },
           [c1, c2, c3, t1, r1]
         );
@@ -220,10 +265,7 @@ describe('Node Selector', () => {
 
     describe('universal', () => {
       it('should select all objects', () => {
-        const result = filter(
-          { type: 'universal', value: '*' },
-          [c1, c2, c3, t1, r1]
-        );
+        const result = filter({ type: 'universal', value: '*' }, [c1, c2, c3, t1, r1]);
         expect(result).to.deep.equal([c1, c2, c3, t1, r1]);
       });
     });
@@ -233,45 +275,30 @@ describe('Node Selector', () => {
         c1.tag = 'title myTag label';
         c2.tag = 'myTag-plus myTagPlus';
         t1.tag = 'myTag';
-        const result = filter(
-          { type: 'tag', value: '.myTag' },
-          [c1, c2, c3, t1, r1]
-        );
+        const result = filter({ type: 'tag', value: '.myTag' }, [c1, c2, c3, t1, r1]);
         expect(result).to.deep.equal([c1, t1]);
       });
 
       it('should handle multiple whitespaces in tag', () => {
         c1.tag = 'hello    myTag';
-        const result = filter(
-          { type: 'tag', value: '.myTag' },
-          [c1, c2, c3, t1, r1]
-        );
+        const result = filter({ type: 'tag', value: '.myTag' }, [c1, c2, c3, t1, r1]);
         expect(result).to.deep.equal([c1]);
       });
 
       it('should be case-sensitive', () => {
         c1.tag = 'myTag';
-        let result = filter(
-          { type: 'tag', value: '.mytag' },
-          [c1, c2, c3, t1, r1]
-        );
+        let result = filter({ type: 'tag', value: '.mytag' }, [c1, c2, c3, t1, r1]);
         expect(result).to.deep.equal([]);
 
         c1.tag = 'mytag';
-        result = filter(
-          { type: 'tag', value: '.myTag' },
-          [c1, c2, c3, t1, r1]
-        );
+        result = filter({ type: 'tag', value: '.myTag' }, [c1, c2, c3, t1, r1]);
         expect(result).to.deep.equal([]);
       });
 
       it('should not match empty tag', () => {
         c1.tag = '';
         c2.tag = ' test-tag ';
-        const result = filter(
-          { type: 'tag', value: '.' },
-          [c1, c2, c3, t1, r1]
-        );
+        const result = filter({ type: 'tag', value: '.' }, [c1, c2, c3, t1, r1]);
 
         expect(result).to.be.empty;
       });

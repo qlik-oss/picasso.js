@@ -3,16 +3,17 @@
 ### Methods
 
 {{#each entries}}
-  {{~#ifCond kind '===' 'function'~}}
+{{~#ifCond kind '===' 'function'~}}
 {{>(lookup . 'kind') this name=@key parent=../parent}}
-  {{~/ifCond~}}
+{{~/ifCond~}}
 {{/each}}
 
 {{#if events}}
+
 ### Events
 
 {{#each events}}
-  {{~>(lookup . 'kind') this name=@key parent=../parent}}
+{{~>(lookup . 'kind') this name=@key parent=../parent}}
 {{/each}}
 
 {{/if}}

@@ -2,9 +2,7 @@ import element from 'test-utils/mocks/element-mock';
 import renderer from '..';
 
 describe('canvas renderer', () => {
-  let sandbox,
-    r,
-    scene;
+  let sandbox, r, scene;
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
@@ -46,7 +44,7 @@ describe('canvas renderer', () => {
     r.appendTo(element('div'));
     scene.returns({
       children: [],
-      equals: () => true
+      equals: () => true,
     });
     expect(r.render()).to.equal(true);
     expect(r.render()).to.equal(false);
@@ -56,7 +54,7 @@ describe('canvas renderer', () => {
     r.appendTo(element('div'));
     scene.returns({
       children: [],
-      equals: () => true
+      equals: () => true,
     });
     expect(r.render()).to.equal(true);
     r.clear();
@@ -72,11 +70,18 @@ describe('canvas renderer', () => {
       scaleRatio: { x: 1, y: 1 },
       margin: { left: 0, top: 0 },
       edgeBleed: {
-        left: 0, right: 0, top: 0, bottom: 0, bool: false
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        bool: false,
       },
       computedPhysical: {
-        x: 0, y: 0, width: 0, height: 0
-      }
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+      },
     });
   });
 
@@ -89,8 +94,11 @@ describe('canvas renderer', () => {
       scaleRatio: { x: 3, y: 4 },
       margin: { left: 5, top: 6 },
       edgeBleed: {
-        left: 7, right: 8, top: 9, bottom: 10
-      }
+        left: 7,
+        right: 8,
+        top: 9,
+        bottom: 10,
+      },
     });
     expect(r.size()).to.deep.equal({
       x: 50,
@@ -100,14 +108,18 @@ describe('canvas renderer', () => {
       scaleRatio: { x: 3, y: 4 },
       margin: { left: 5, top: 6 },
       edgeBleed: {
-        left: 7, right: 8, top: 9, bottom: 10, bool: true
+        left: 7,
+        right: 8,
+        top: 9,
+        bottom: 10,
+        bool: true,
       },
       computedPhysical: {
         x: 134,
         y: 370,
         width: 645,
-        height: 1676
-      }
+        height: 1676,
+      },
     });
   });
 
@@ -120,8 +132,11 @@ describe('canvas renderer', () => {
       scaleRatio: { x: undefined, y: undefined },
       margin: { left: undefined, top: undefined },
       edgeBleed: {
-        left: undefined, right: undefined, top: undefined, bottom: undefined
-      }
+        left: undefined,
+        right: undefined,
+        top: undefined,
+        bottom: undefined,
+      },
     });
     expect(r.size()).to.deep.equal({
       x: 0,
@@ -131,11 +146,18 @@ describe('canvas renderer', () => {
       scaleRatio: { x: 1, y: 1 },
       margin: { left: 0, top: 0 },
       edgeBleed: {
-        left: 0, right: 0, top: 0, bottom: 0, bool: false
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        bool: false,
       },
       computedPhysical: {
-        x: 0, y: 0, width: 0, height: 0
-      }
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+      },
     });
   });
 
@@ -143,7 +165,10 @@ describe('canvas renderer', () => {
     scene.returns({ children: [] });
     r.appendTo(element('div'));
     r.size({
-      x: 50, y: 100, width: 200, height: 400
+      x: 50,
+      y: 100,
+      width: 200,
+      height: 400,
     });
     r.render();
 
@@ -179,33 +204,39 @@ describe('canvas renderer', () => {
     let items;
 
     beforeEach(() => {
-      items = [{
-        type: 'circle',
-        cx: 138.2,
-        cy: 80.1,
-        r: 10.14121384712747,
-        opacity: 0.0850144505610413,
-        fill: '#440154',
-        stroke: '#ccc',
-        strokeWidth: 0
-      }, {
-        type: 'rect',
-        x: 109.87669609109648,
-        y: 131.87669609109648,
-        width: 56.64660781780709,
-        height: 56.64660781780709,
-        opacity: 0.30146790367742315,
-        fill: '#482979',
-        stroke: '#ccc',
-        strokeWidth: 0
-      }];
+      items = [
+        {
+          type: 'circle',
+          cx: 138.2,
+          cy: 80.1,
+          r: 10.14121384712747,
+          opacity: 0.0850144505610413,
+          fill: '#440154',
+          stroke: '#ccc',
+          strokeWidth: 0,
+        },
+        {
+          type: 'rect',
+          x: 109.87669609109648,
+          y: 131.87669609109648,
+          width: 56.64660781780709,
+          height: 56.64660781780709,
+          opacity: 0.30146790367742315,
+          fill: '#482979',
+          stroke: '#ccc',
+          strokeWidth: 0,
+        },
+      ];
       r = renderer(); // Don't mock the scene
     });
 
     it('should return shapes at a point', () => {
       r.appendTo(element('div'));
       r.size({
-        x: 100, y: 100, width: 400, height: 400
+        x: 100,
+        y: 100,
+        width: 400,
+        height: 400,
       });
       r.render(items);
 
@@ -227,12 +258,18 @@ describe('canvas renderer', () => {
     it('should return shapes at a line', () => {
       r.appendTo(element('div'));
       r.size({
-        x: 100, y: 100, width: 400, height: 400
+        x: 100,
+        y: 100,
+        width: 400,
+        height: 400,
       });
       r.render(items);
 
       const shapes = r.itemsAt({
-        x1: 130, x2: 130, y1: 0, y2: 320
+        x1: 130,
+        x2: 130,
+        y1: 0,
+        y2: 320,
       });
       expect(shapes.length).to.equal(2);
     });
@@ -240,12 +277,18 @@ describe('canvas renderer', () => {
     it('should return shapes at a rect', () => {
       r.appendTo(element('div'));
       r.size({
-        x: 100, y: 100, width: 400, height: 400
+        x: 100,
+        y: 100,
+        width: 400,
+        height: 400,
       });
       r.render(items);
 
       const shapes = r.itemsAt({
-        x: 100, y: 100, width: 50, height: 50
+        x: 100,
+        y: 100,
+        width: 50,
+        height: 50,
       });
       expect(shapes.length).to.equal(1);
     });
@@ -259,15 +302,18 @@ describe('canvas renderer', () => {
         {
           type: 'container',
           children: inputShapes,
-          transform: 'scale(0.5, 0.5)'
-        }
+          transform: 'scale(0.5, 0.5)',
+        },
       ],
-      dpi: 0.5
+      dpi: 0.5,
     };
     scene.returns({ children: [] });
     r.appendTo(div);
     r.size({
-      x: 50, y: 100, width: 200, height: 400
+      x: 50,
+      y: 100,
+      width: 200,
+      height: 400,
     });
 
     const ctxStub = sandbox.stub(div.children[0], 'getContext');
@@ -286,7 +332,11 @@ describe('canvas renderer', () => {
     const div = element('div');
     const scaleRatio = { x: 2, y: 3 };
     const size = {
-      x: 50, y: 100, width: 200, height: 400, scaleRatio
+      x: 50,
+      y: 100,
+      width: 200,
+      height: 400,
+      scaleRatio,
     };
     const inputShapes = [{ type: 'container' }];
     const expectedInputShapes = {
@@ -294,10 +344,10 @@ describe('canvas renderer', () => {
         {
           type: 'container',
           children: inputShapes,
-          transform: `scale(${scaleRatio.x}, ${scaleRatio.y})`
-        }
+          transform: `scale(${scaleRatio.x}, ${scaleRatio.y})`,
+        },
       ],
-      dpi: 1
+      dpi: 1,
     };
     scene.returns({ children: [] });
     r.appendTo(div);
@@ -320,7 +370,11 @@ describe('canvas renderer', () => {
     const scaleRatio = { x: 2, y: 3 };
     const dpiScale = 2;
     const size = {
-      x: 50, y: 100, width: 200, height: 400, scaleRatio
+      x: 50,
+      y: 100,
+      width: 200,
+      height: 400,
+      scaleRatio,
     };
     const inputShapes = [{ type: 'container' }];
     const expectedInputShapes = {
@@ -328,10 +382,10 @@ describe('canvas renderer', () => {
         {
           type: 'container',
           children: inputShapes,
-          transform: `scale(${scaleRatio.x * dpiScale}, ${scaleRatio.y * dpiScale})`
-        }
+          transform: `scale(${scaleRatio.x * dpiScale}, ${scaleRatio.y * dpiScale})`,
+        },
       ],
-      dpi: dpiScale
+      dpi: dpiScale,
     };
     scene.returns({ children: [] });
     r.appendTo(div);

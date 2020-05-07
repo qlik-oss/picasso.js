@@ -10,19 +10,19 @@ import { testRectPoint } from '../../../core/math/narrow-phase-collision';
  */
 
 /**
-  * @typedef {object}
-  * @alias component--brush-area-settings
-  */
+ * @typedef {object}
+ * @alias component--brush-area-settings
+ */
 const DEFAULT_SETTINGS = {
   /**
    * @type {object}
    */
   brush: {
     /**
-   * @type {Array<component--brush-area-brush>}
-   */
-    components: []
-  }
+     * @type {Array<component--brush-area-brush>}
+     */
+    components: [],
+  },
 };
 
 /**
@@ -50,7 +50,7 @@ function getLocalPoint(ctx, event, clamp = true) {
 
   return {
     x: clamp ? Math.max(0, Math.min(localX, ctx.rect.width)) : localX,
-    y: clamp ? Math.max(0, Math.min(localY, ctx.rect.height)) : localY
+    y: clamp ? Math.max(0, Math.min(localY, ctx.rect.height)) : localY,
   };
 }
 
@@ -64,7 +64,7 @@ function getLocalPoint(ctx, event, clamp = true) {
 function localToChartPoint(ctx, p) {
   return {
     x: p.x + ctx.rect.x,
-    y: p.y + ctx.rect.y
+    y: p.y + ctx.rect.y,
   };
 }
 
@@ -75,13 +75,12 @@ function localToChartPoint(ctx, p) {
  * @returns {object[]} An Array of brush configurations
  */
 function getBrushConfig(settings) {
-  return settings.settings.brush.components.map((b) => (
-    {
-      key: b.key,
-      contexts: b.contexts,
-      data: b.data,
-      action: b.action || 'set'
-    }));
+  return settings.settings.brush.components.map((b) => ({
+    key: b.key,
+    contexts: b.contexts,
+    data: b.data,
+    action: b.action || 'set',
+  }));
 }
 
 /**
@@ -117,7 +116,7 @@ function toRect(p0, p1) {
     x: xMin,
     y: yMin,
     width: xMax - xMin,
-    height: yMax - yMin
+    height: yMax - yMin,
   };
 }
 
@@ -137,16 +136,14 @@ function doAreaBrush(ctx) {
 }
 
 function render(ctx) {
-  ctx.renderer.render([
-    extend({ type: 'rect' }, toRect(ctx.state.start, ctx.state.end), ctx.style.area)
-  ]);
+  ctx.renderer.render([extend({ type: 'rect' }, toRect(ctx.state.start, ctx.state.end), ctx.style.area)]);
 }
 
 function resetState() {
   return {
     start: { x: 0, y: 0 },
     end: { x: 0, y: 0 },
-    active: false
+    active: false,
   };
 }
 
@@ -154,12 +151,12 @@ const definition = {
   require: ['chart', 'renderer'],
   defaultSettings: {
     layout: {
-      displayOrder: 99
+      displayOrder: 99,
     },
     settings: DEFAULT_SETTINGS,
     style: {
-      area: '$selection-area-target'
-    }
+      area: '$selection-area-target',
+    },
   },
   on: {
     areaStart(e) {
@@ -173,7 +170,7 @@ const definition = {
     },
     areaCancel() {
       this.cancel();
-    }
+    },
   },
   created() {
     this.state = resetState();
@@ -187,9 +184,17 @@ const definition = {
     const p = getLocalPoint(this, e, false);
 
     // Require event to be inside the component bounds
-    if (!testRectPoint({
-      x: 0, y: 0, width: this.rect.width, height: this.rect.height
-    }, p)) {
+    if (
+      !testRectPoint(
+        {
+          x: 0,
+          y: 0,
+          width: this.rect.width,
+          height: this.rect.height,
+        },
+        p
+      )
+    ) {
       return;
     }
 
@@ -222,8 +227,7 @@ const definition = {
     doEndBrush(this.state, this.chart);
     this.state = resetState();
     this.renderer.render([]);
-  }
-
+  },
 };
 
 export default definition;

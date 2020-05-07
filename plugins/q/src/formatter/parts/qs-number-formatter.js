@@ -20,7 +20,7 @@ const SIprefixes = {
     '-15': 'f',
     '-18': 'a',
     '-21': 'z',
-    '-24': 'y'
+    '-24': 'y',
   },
   percentage = /%$/,
   //    scientific = /e[\+\-][0-9]+/,
@@ -38,7 +38,8 @@ function formatRadix(value, fradix, pattern, decimal) {
   if (pattern[1] === pattern[1].toUpperCase()) {
     value = value.toUpperCase();
   }
-  if (value.length - value.indexOf('.') > 10) { // limit to 10 decimal places
+  if (value.length - value.indexOf('.') > 10) {
+    // limit to 10 decimal places
     value = value.slice(0, value.indexOf('.') + 11);
   }
 
@@ -96,7 +97,8 @@ function formatFunctional(value, pattern, d) {
     value = Math.floor(value);
     if (value === 0) {
       value = '0';
-    } else if (value <= 500000) { // limit in engine
+    } else if (value <= 500000) {
+      // limit in engine
       value = formatRoman(value, pattern);
       value = temp + value;
     } else {
@@ -155,7 +157,8 @@ function preparePattern(o, t, d) {
     temp,
     regex;
 
-  if (pattern.indexOf('A') >= 0) { // abbreviate SI
+  if (pattern.indexOf('A') >= 0) {
+    // abbreviate SI
     pattern = pattern.replace('A', '');
     o.abbreviate = true;
   }
@@ -171,7 +174,8 @@ function preparePattern(o, t, d) {
     numericPattern = pattern ? '#' : '##########';
   }
 
-  if (t && t === d) { // ignore grouping if grouping separator is same as decimal separator
+  if (t && t === d) {
+    // ignore grouping if grouping separator is same as decimal separator
     // extract decimal part
     parts = numericPattern.split(d);
     lastPart = parts.pop();
@@ -243,7 +247,13 @@ class NumberFormatter {
   }
 
   clone() {
-    const n = new NumberFormatter(this.localeInfo, this.pattern, this.thousandDelimiter, this.decimalDelimiter, this.type);
+    const n = new NumberFormatter(
+      this.localeInfo,
+      this.pattern,
+      this.thousandDelimiter,
+      this.decimalDelimiter,
+      this.type
+    );
     n.subtype = this.subtype;
     return n;
   }
@@ -286,10 +296,15 @@ class NumberFormatter {
   prepare(pattern, t, d) {
     let prep;
 
-    if (typeof pattern === 'undefined') { pattern = this.pattern; }
-    if (typeof t === 'undefined') { t = this.thousandDelimiter; }
-    if (typeof d === 'undefined') { d = this.decimalDelimiter; }
-
+    if (typeof pattern === 'undefined') {
+      pattern = this.pattern;
+    }
+    if (typeof t === 'undefined') {
+      t = this.thousandDelimiter;
+    }
+    if (typeof d === 'undefined') {
+      d = this.decimalDelimiter;
+    }
 
     if (!pattern) {
       this._prepared = { pattern: false };
@@ -303,7 +318,7 @@ class NumberFormatter {
         abbreviate: false,
         isFunctional: false,
         prefix: '',
-        postfix: ''
+        postfix: '',
       },
       negative: {
         d,
@@ -311,7 +326,7 @@ class NumberFormatter {
         abbreviate: false,
         isFunctional: false,
         prefix: '',
-        postfix: ''
+        postfix: '',
       },
       zero: {
         d,
@@ -319,8 +334,8 @@ class NumberFormatter {
         abbreviate: false,
         isFunctional: false,
         prefix: '',
-        postfix: ''
-      }
+        postfix: '',
+      },
     };
     prep = this._prepared;
 
@@ -399,7 +414,9 @@ class NumberFormatter {
       }
 
       if (prep.abbreviate) {
-        const abbrArray = Object.keys(this.abbreviations).map((key) => parseInt(key, 10)).sort((a, b) => a - b);
+        const abbrArray = Object.keys(this.abbreviations)
+          .map((key) => parseInt(key, 10))
+          .sort((a, b) => a - b);
         let lowerAbbreviation;
         let upperAbbreviation = abbrArray[0];
         i = 0;
@@ -417,15 +434,16 @@ class NumberFormatter {
         let suggestedAbbrExponent;
 
         // value and lower abbreviation is for values above 10, use the lower (move to the left <==)
-        if ((lowerAbbreviation && exponent > 0 && lowerAbbreviation > 0)) {
+        if (lowerAbbreviation && exponent > 0 && lowerAbbreviation > 0) {
           suggestedAbbrExponent = lowerAbbreviation;
-        // value and lower abbreviation is for values below 0.1 (move to the right ==>)
+          // value and lower abbreviation is for values below 0.1 (move to the right ==>)
         } else if ((exponent < 0 && lowerAbbreviation < 0) || !lowerAbbreviation) {
           // upper abbreviation is also for values below 0.1 and precision allows for using the upper abbreviation(move to the right ==>)
-          if (upperAbbreviation < 0 && (upperAbbreviation - exponent) <= prep.maxPrecision) {
+          if (upperAbbreviation < 0 && upperAbbreviation - exponent <= prep.maxPrecision) {
             suggestedAbbrExponent = upperAbbreviation;
-          // lower abbrevaition is smaller than exponent and we can't get away with not abbreviating
-          } else if (lowerAbbreviation <= exponent && !(upperAbbreviation > 0 && -exponent <= prep.maxPrecision)) { // (move to left <==)
+            // lower abbrevaition is smaller than exponent and we can't get away with not abbreviating
+          } else if (lowerAbbreviation <= exponent && !(upperAbbreviation > 0 && -exponent <= prep.maxPrecision)) {
+            // (move to left <==)
             suggestedAbbrExponent = lowerAbbreviation;
           }
         }
@@ -449,7 +467,8 @@ class NumberFormatter {
         if (absValue >= Math.pow(10, temp) || absValue < 1 || absValue < 1e-4) {
           if (value === 0) {
             value = '0';
-          } else if (absValue < 1e-4 || absValue >= 1e20) { // engine always formats values < 1e-4 in scientific form, values >= 1e20 can only be represented in scientific form
+          } else if (absValue < 1e-4 || absValue >= 1e20) {
+            // engine always formats values < 1e-4 in scientific form, values >= 1e20 can only be represented in scientific form
             value = num.toExponential(Math.max(1, Math.min(14, temp)) - 1);
             value = value.replace(/\.?0+(?=e)/, '');
             sciValue = '';
@@ -472,7 +491,9 @@ class NumberFormatter {
       } else if (absValue >= 1e15 || (absValue > 0 && absValue <= 1e-14)) {
         value = absValue ? absValue.toExponential(15).replace(/\.?0+(?=e)/, '') : '0';
       } else {
-        const wholePart = Number((value.toFixed(Math.min(20, decimalPartPattern ? decimalPartPattern.length : 0))).split('.')[0]);
+        const wholePart = Number(
+          value.toFixed(Math.min(20, decimalPartPattern ? decimalPartPattern.length : 0)).split('.')[0]
+        );
         let wholePartPattern = numericPattern.split(d)[0];
         wholePartPattern += d;
 
@@ -490,7 +511,8 @@ class NumberFormatter {
           if (decimalPart) {
             value += d + decimalPart;
           }
-        } else if (wholePart === 0) { // to avoid "-" being prefixed to value
+        } else if (wholePart === 0) {
+          // to avoid "-" being prefixed to value
           num = 0;
         }
       }
@@ -513,7 +535,12 @@ class NumberFormatter {
   }
 
   static getStaticFormatter() {
-    return { prepare() { }, formatValue(v) { return `${v}`; } };
+    return {
+      prepare() {},
+      formatValue(v) {
+        return `${v}`;
+      },
+    };
   }
 }
 

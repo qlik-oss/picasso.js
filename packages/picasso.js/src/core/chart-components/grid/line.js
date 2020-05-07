@@ -19,18 +19,18 @@ function lineGen(scale, distance) {
 }
 
 const gridLineComponent = {
-  created() {
-  },
+  created() {},
 
   require: ['chart', 'renderer', 'resolver'],
   defaultSettings: {
     layout: {
-      displayOrder: 0
+      displayOrder: 0,
     },
-    style: { // Theming style
+    style: {
+      // Theming style
       ticks: '$guide-line',
-      minorTicks: '$guide-line--minor'
-    }
+      minorTicks: '$guide-line--minor',
+    },
   },
 
   beforeRender() {
@@ -61,7 +61,7 @@ const gridLineComponent = {
     // Setup lines for X and Y
     this.lines = {
       x: [],
-      y: []
+      y: [],
     };
 
     // Use the lineGen function to generate appropriate ticks
@@ -79,8 +79,8 @@ const gridLineComponent = {
         settings,
         data: {
           items,
-          dir
-        }
+          dir,
+        },
       }).items;
 
       ticks.forEach((style) => {
@@ -98,7 +98,7 @@ const gridLineComponent = {
             stroke: style.stroke || 'black',
             strokeWidth: typeof style.strokeWidth !== 'undefined' ? style.strokeWidth : 1,
             strokeDasharray: typeof style.strokeDasharray !== 'undefined' ? style.strokeDasharray : undefined,
-            flipXY: p.flipXY || false // This flips individual points (Y-lines)
+            flipXY: p.flipXY || false, // This flips individual points (Y-lines)
           });
         }
       });
@@ -110,7 +110,7 @@ const gridLineComponent = {
     addTicks({ dir: 'y', isMinor: true });
 
     return this.blueprint.output();
-  }
+  },
 };
 
 export default gridLineComponent;

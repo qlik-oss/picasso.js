@@ -15,19 +15,19 @@ function nPolygon(options) {
   const startAngle = isNaN(options.startAngle) ? 0 : options.startAngle;
 
   for (let i = 1; i <= drawPoints; i++) {
-    const radians = toRadians((angle * i) + startAngle);
+    const radians = toRadians(angle * i + startAngle);
     const y = Math.sin(radians);
     const x = Math.cos(radians);
     points.push({
-      x: options.x + (x * radius),
-      y: options.y + (y * radius)
+      x: options.x + x * radius,
+      y: options.y + y * radius,
     });
   }
 
   return {
     type: 'path',
     fill: 'black',
-    d: pointsToPath(points)
+    d: pointsToPath(points),
   };
 }
 

@@ -1,13 +1,11 @@
-import {
-  pointsToLine,
-  pointsToRect
-} from './util';
+import { pointsToLine, pointsToRect } from './util';
 import {
   testCircleLine,
   testPolygonLine,
   testLinePoint,
   testLineLine,
-  testRectLine
+  testRectLine,
+  testGeoPolygonLine,
 } from '../math/narrow-phase-collision';
 
 function pointsAreNotEqual(p0, p1) {
@@ -35,7 +33,7 @@ class GeoPolyline {
             x1: this._points[i].x,
             y1: this._points[i].y,
             x2: this._points[i + 1].x,
-            y2: this._points[i + 1].y
+            y2: this._points[i + 1].y,
           });
         }
       }
@@ -86,6 +84,15 @@ class GeoPolyline {
   }
 
   /**
+   * @param {GeoPolygon} geopolygon
+   * @returns {boolean} True if there is an intersection, false otherwise
+   */
+  intersectsGeoPolygon(geopolygon) {
+    // This is a unoptimized solution and should be replaced by a more efficient algorithm.
+    return this.segments.some((line) => testGeoPolygonLine(geopolygon, line));
+  }
+
+  /**
    * Get the points
    * @returns {point[]}
    */
@@ -98,7 +105,4 @@ function create(...a) {
   return new GeoPolyline(...a);
 }
 
-export {
-  create,
-  GeoPolyline as default
-};
+export { create, GeoPolyline as default };

@@ -1,4 +1,3 @@
-
 /**
  * Manages event handlers for native events
  * @private
@@ -106,7 +105,7 @@ function native(chart, mediator, element) {
       removeAddedEvents();
       instance = null;
       settings = null;
-    }
+    },
   };
 }
 

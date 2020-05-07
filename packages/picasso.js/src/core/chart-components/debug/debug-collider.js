@@ -7,13 +7,13 @@ const debugColliderDef = {
       fill: 'rgba(0, 255, 0, 0.1)',
       stroke: 'lime',
       opacity: 1,
-      useOuterRect: false
-    }
+      useOuterRect: false,
+    },
   },
   on: {
     update() {
       this.draw();
-    }
+    },
   },
   draw() {
     const shapes = this.chart.findShapes(this.props.selector).filter((s) => s.key === this.props.target); // Find all shapes
@@ -37,14 +37,14 @@ const debugColliderDef = {
     }
     return inner;
   },
-  render() { },
+  render() {},
   mounted() {
     this.draw();
   },
   updated() {
     this.props = this.settings.settings;
     this.draw();
-  }
+  },
 };
 
 export default debugColliderDef;

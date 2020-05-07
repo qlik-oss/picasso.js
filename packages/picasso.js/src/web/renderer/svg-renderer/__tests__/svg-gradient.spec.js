@@ -23,26 +23,26 @@ describe('svg-gradient', () => {
       const state = {
         node: {
           fill: {
-            type: 'gradient'
-          }
-        }
+            type: 'gradient',
+          },
+        },
       };
       p.onCreate(state);
 
-      expect(state.node.fillReference).to.equal('url(\'#picasso-gradient-13-2\')');
+      expect(state.node.fillReference).to.equal("url('#picasso-gradient-13-2')");
     });
 
     it('should set strokeReference when stroke is a gradient', () => {
       const state = {
         node: {
           stroke: {
-            type: 'gradient'
-          }
-        }
+            type: 'gradient',
+          },
+        },
       };
       p.onCreate(state);
 
-      expect(state.node.strokeReference).to.equal('url(\'#picasso-gradient-13-2\')');
+      expect(state.node.strokeReference).to.equal("url('#picasso-gradient-13-2')");
     });
 
     it('should create a radial gradient node', () => {
@@ -54,10 +54,10 @@ describe('svg-gradient', () => {
             // degree: 0,
             stops: [
               { offset: 0, color: 'red', opacity: 0 },
-              { offset: 1, color: 'green' }
-            ]
-          }
-        }
+              { offset: 1, color: 'green' },
+            ],
+          },
+        },
       };
       p.onCreate(state);
 
@@ -66,8 +66,8 @@ describe('svg-gradient', () => {
         type: 'radialGradient',
         children: [
           { type: 'stop', offset: '0%', style: 'stop-color:red;stop-opacity:0' },
-          { type: 'stop', offset: '100%', style: 'stop-color:green;stop-opacity:1' }
-        ]
+          { type: 'stop', offset: '100%', style: 'stop-color:green;stop-opacity:1' },
+        ],
       });
     });
 
@@ -79,10 +79,10 @@ describe('svg-gradient', () => {
             degree: 0,
             stops: [
               { offset: 0, color: 'red', opacity: 0 },
-              { offset: 1, color: 'green' }
-            ]
-          }
-        }
+              { offset: 1, color: 'green' },
+            ],
+          },
+        },
       };
       p.onCreate(state);
 
@@ -94,8 +94,8 @@ describe('svg-gradient', () => {
         y2: 0,
         children: [
           { type: 'stop', offset: '0%', style: 'stop-color:red;stop-opacity:0' },
-          { type: 'stop', offset: '100%', style: 'stop-color:green;stop-opacity:1' }
-        ]
+          { type: 'stop', offset: '100%', style: 'stop-color:green;stop-opacity:1' },
+        ],
       });
       expect(bucket[0].x2).be.closeTo(0, 1e-12);
     });
@@ -112,10 +112,10 @@ describe('svg-gradient', () => {
             y2: 5,
             stops: [
               { offset: 0, color: 'red', opacity: 0 },
-              { offset: 1, color: 'green' }
-            ]
-          }
-        }
+              { offset: 1, color: 'green' },
+            ],
+          },
+        },
       };
       p.onCreate(state);
 
@@ -128,8 +128,8 @@ describe('svg-gradient', () => {
         y2: 5,
         children: [
           { type: 'stop', offset: '0%', style: 'stop-color:red;stop-opacity:0' },
-          { type: 'stop', offset: '100%', style: 'stop-color:green;stop-opacity:1' }
-        ]
+          { type: 'stop', offset: '100%', style: 'stop-color:green;stop-opacity:1' },
+        ],
       });
     });
 

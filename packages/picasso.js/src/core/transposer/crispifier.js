@@ -24,15 +24,15 @@ export function crispifierFactory(crispMap) {
     crispMap.line = {
       append: ['x1', 'x2', 'y1', 'y2'],
       round: [],
-      condition: (item) => (item.x1 === item.x2 || item.y1 === item.y2),
-      conditionAppend: (item) => item.strokeWidth % 2 !== 0
+      condition: (item) => item.x1 === item.x2 || item.y1 === item.y2,
+      conditionAppend: (item) => item.strokeWidth % 2 !== 0,
     };
 
     crispMap.rect = {
       append: ['x', 'y'],
       round: ['width', 'height'],
       condition: () => true,
-      conditionAppend: (item) => item.strokeWidth % 2 !== 0
+      conditionAppend: (item) => item.strokeWidth % 2 !== 0,
     };
   }
 
@@ -45,14 +45,14 @@ export function crispifierFactory(crispMap) {
     self.append.forEach((toAppend) => {
       self.items.push({
         key: toAppend,
-        type: 'append'
+        type: 'append',
       });
     });
 
     self.round.forEach((toAppend) => {
       self.items.push({
         key: toAppend,
-        type: 'round'
+        type: 'round',
       });
     });
   });

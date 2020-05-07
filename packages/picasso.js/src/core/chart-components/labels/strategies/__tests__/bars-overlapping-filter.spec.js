@@ -9,7 +9,7 @@ describe('binaryLeftSearch', () => {
       { rect: { x: 0, width: 10 } },
       { rect: { x: 20, width: 10 } },
       { rect: { x: 40, width: 10 } }, // 2
-      { rect: { x: 70, width: 10 } }
+      { rect: { x: 70, width: 10 } },
     ];
   });
 
@@ -28,7 +28,7 @@ describe('binaryLeftSearch', () => {
       { rect: { x: 40, width: 10 } },
       { rect: { x: 40, width: 10 } },
       { rect: { x: 70, width: 10 } },
-      { rect: { x: 80, width: 10 } }
+      { rect: { x: 80, width: 10 } },
     ];
     const left = binaryLeftSearch({ x: 50 }, ary, 'x', 'width', extractBounds);
     expect(left).to.equal(3); // x: 40, width: 10 may intersect x: 50
@@ -50,7 +50,7 @@ describe('filter overlapping labels', () => {
       x,
       y,
       width,
-      height
+      height,
     };
   }
 
@@ -61,8 +61,8 @@ describe('filter overlapping labels', () => {
         x: 0,
         y: 0,
         width: 100,
-        height: 100
-      }
+        height: 100,
+      },
     };
   });
 

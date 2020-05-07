@@ -8,14 +8,18 @@ The `picasso` namespace exposes various _registries_ to allow functionality to b
 A custom component for example can be registered on the `component` registry, and a scale to the `scale` registry:
 
 ```js
-picasso.component('my-comp', {/* */});
-picasso.scale('my-scale', {/* */});
+picasso.component('my-comp', {
+  /* */
+});
+picasso.scale('my-scale', {
+  /* */
+});
 ```
 
 To make this more modular and shareable picasso exposes a `use` method for convenience:
 
 ```js
-picasso.use(myPlugin)
+picasso.use(myPlugin);
 ```
 
 where `myPlugin` is a function in which the variuos registries are used:
@@ -23,9 +27,13 @@ where `myPlugin` is a function in which the variuos registries are used:
 ```js
 // my-plugin.js
 
-export default function(picasso) {
-  picasso.component('my-component-1', { /* ... */ });
-  picasso.component('my-component-2', { /* ... */ });
+export default function (picasso) {
+  picasso.component('my-component-1', {
+    /* ... */
+  });
+  picasso.component('my-component-2', {
+    /* ... */
+  });
 }
 ```
 
@@ -39,6 +47,7 @@ import myPlugin from './my-plugin';
 picasso.use(myPlugin);
 
 // Do regular picasso stuff
-picasso.chart({ /* ... */ });
+picasso.chart({
+  /* ... */
+});
 ```
-

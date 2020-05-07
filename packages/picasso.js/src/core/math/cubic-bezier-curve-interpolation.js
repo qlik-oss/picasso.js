@@ -3,7 +3,7 @@ import flatness from './curve-flattness';
 function mid(p0, p1) {
   return {
     x: (p0.x + p1.x) * 0.5,
-    y: (p0.y + p1.y) * 0.5
+    y: (p0.y + p1.y) * 0.5,
   };
 }
 
@@ -47,9 +47,10 @@ function toPoints(s, cp1, cp2, e, points = [], maxNbrOfSplits = 8) {
   const m1 = mid(cp1, cp2);
   const m2 = mid(cp2, e);
 
-  const b = { // Split curve at point
+  const b = {
+    // Split curve at point
     x: interpolate(t, s.x, cp1.x, cp2.x, e.x),
-    y: interpolate(t, s.y, cp1.y, cp2.y, e.y)
+    y: interpolate(t, s.y, cp1.y, cp2.y, e.y),
   };
 
   const q0 = mid(m0, m1); // New cp2 for left curve
@@ -61,7 +62,4 @@ function toPoints(s, cp1, cp2, e, points = [], maxNbrOfSplits = 8) {
   return points;
 }
 
-export {
-  toPoints as default,
-  interpolate
-};
+export { toPoints as default, interpolate };

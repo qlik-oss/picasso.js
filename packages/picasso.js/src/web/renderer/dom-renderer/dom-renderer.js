@@ -3,9 +3,7 @@ import createRendererBox from '../renderer-box';
 import create from '../index';
 
 export default function renderer(opts = {}) {
-  const {
-    createElement = document.createElement.bind(document)
-  } = opts;
+  const { createElement = document.createElement.bind(document) } = opts;
 
   let el;
   let rect = createRendererBox();

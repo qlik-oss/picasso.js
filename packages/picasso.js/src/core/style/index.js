@@ -1,4 +1,3 @@
-
 import extend from 'extend';
 
 // Should consist of attributes that does not allow for null values
@@ -9,7 +8,7 @@ const GLOBAL_DEFAULTS = {
   fill: '#333333',
   backgroundColor: '#ffffff',
   stroke: '#000000',
-  strokeWidth: 0
+  strokeWidth: 0,
 };
 
 function getObject(root, steps) {
@@ -91,37 +90,37 @@ function resolveAttribute(root, steps, attribute, defaultVal) {
   return attr(targets, attribute, defaultVal, 0);
 }
 /**
-* Resolves styles from multiple sources
-* @private
-* @param {object} defaults Default settings of the target property
-* @param {object} settings Externally defined style root
-* @param {string} propertyName Name of child property to access
-* @returns {object} combined styles
-* @example
-* // returns { stroke: "#00f", strokeWidth: 2, fill: "red",
-*     width: function(999, widthResolve, ...args) }
-* resolveSettings(
-*    {
-*    stroke: "#000",
-*    strokeWidth: 1,
-*       fill: "red",
-*       width: 999
-*  },
-*   {
-*        stroke: "#f00",
-*        strokeWidth: 2,
-*        parts: {
-*            rect: {
-*                stroke: "#00f",
-*                width: function widthResolve ( dataVal, index, dataValues ) {
-*                  return dataVal.value;
-*                }
-*            },
-*            label: { }
-*        }
-*    },
-*    "parts.rect" );
-*/
+ * Resolves styles from multiple sources
+ * @private
+ * @param {object} defaults Default settings of the target property
+ * @param {object} settings Externally defined style root
+ * @param {string} propertyName Name of child property to access
+ * @returns {object} combined styles
+ * @example
+ * // returns { stroke: "#00f", strokeWidth: 2, fill: "red",
+ *     width: function(999, widthResolve, ...args) }
+ * resolveSettings(
+ *    {
+ *    stroke: "#000",
+ *    strokeWidth: 1,
+ *       fill: "red",
+ *       width: 999
+ *  },
+ *   {
+ *        stroke: "#f00",
+ *        strokeWidth: 2,
+ *        parts: {
+ *            rect: {
+ *                stroke: "#00f",
+ *                width: function widthResolve ( dataVal, index, dataValues ) {
+ *                  return dataVal.value;
+ *                }
+ *            },
+ *            label: { }
+ *        }
+ *    },
+ *    "parts.rect" );
+ */
 export function resolveStyle(defaults, styleRoot, path) {
   const steps = path ? path.split('.') : [];
   const ret = {};
@@ -132,18 +131,21 @@ export function resolveStyle(defaults, styleRoot, path) {
   return ret;
 }
 /**
-* Resolves styles for individual data values
-* @private
-* @param {object} styles for the target
-* @param {array} dataValues Calculated values for the target
-* @param {int} index Current index in dataValues array to resolve
-* @returns {object} resolved styles for each attribute as appropriate type
-*/
+ * Resolves styles for individual data values
+ * @private
+ * @param {object} styles for the target
+ * @param {array} dataValues Calculated values for the target
+ * @param {int} index Current index in dataValues array to resolve
+ * @returns {object} resolved styles for each attribute as appropriate type
+ */
 export function resolveForDataValues(styles, dataValues, index) {
   const ret = {};
   if (dataValues) {
     Object.keys(styles).forEach((s) => {
-      ret[s] = styles[s] && typeof styles[s].fn === 'function' ? styles[s].fn(undefined, dataValues[s][index], index, dataValues[s]) : styles[s];
+      ret[s] =
+        styles[s] && typeof styles[s].fn === 'function'
+          ? styles[s].fn(undefined, dataValues[s][index], index, dataValues[s])
+          : styles[s];
     });
   } else {
     Object.keys(styles).forEach((s) => {
@@ -165,7 +167,8 @@ export function resolveForDataObject(props, dataObj, index, allData, contextProp
     const hasExplicitDataProp = exists && !!props[s].ref;
     // const hasImplicitDataProp = typeof props[s] === 'object' ? s in dataObj : false;
     const propData = exists && props[s].ref ? dataObj[props[s].ref] : dataObj;
-    if (typeof props[s] === 'function') { // custom accessor function, not scale!
+    if (typeof props[s] === 'function') {
+      // custom accessor function, not scale!
       const fnContext = extend({}, { data: dataObj }, contextProps);
       if (hasScale) {
         fnContext.scale = props[s].scale;
@@ -175,7 +178,8 @@ export function resolveForDataObject(props, dataObj, index, allData, contextProp
       } else {
         ret[s] = props[s].call(fnContext, hasExplicitDataProp ? dataObj[props[s].ref] : undefined, index, allData);
       }
-    } else if (hasScale) { // } && (hasImplicitDataProp || hasExplicitDataProp)) {
+    } else if (hasScale) {
+      // } && (hasImplicitDataProp || hasExplicitDataProp)) {
       ret[s] = props[s].scale(isPrimitive(propData) ? propData : propData.value);
       if (props[s].scale.bandwidth) {
         ret[s] += props[s].scale.bandwidth() / 2;

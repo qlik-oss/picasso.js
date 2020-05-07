@@ -1,7 +1,4 @@
-import {
-  measureText,
-  textBounds
-} from '../text-manipulation';
+import { measureText, textBounds } from '../text-manipulation';
 
 /**
  * Base renderer factory
@@ -9,14 +6,14 @@ import {
  */
 function create() {
   /**
- * @interface
- * @alias renderer
- */
+   * @interface
+   * @alias renderer
+   */
   const renderer = {
     /**
-   * Get the element this renderer is attached to
-   * @returns {HTMLElement}
-   */
+     * Get the element this renderer is attached to
+     * @returns {HTMLElement}
+     */
     element: () => {},
 
     /**
@@ -26,9 +23,9 @@ function create() {
     root: () => {},
 
     /**
-    * @param {HTMLElement} element - Element to attach renderer to
-    * @returns {HTMLElement} Root element of the renderer
-    */
+     * @param {HTMLElement} element - Element to attach renderer to
+     * @returns {HTMLElement} Root element of the renderer
+     */
     appendTo: () => {},
 
     /**
@@ -39,7 +36,7 @@ function create() {
 
     /**
      * Get nodes renderer at area
-     * @param {point|circle|rect|line|polygon} geometry - Get nodes that intersects with geometry
+     * @param {point|circle|rect|line|polygon|geopolygon} geometry - Get nodes that intersects with geometry
      * @returns {SceneNode[]}
      */
     itemsAt: () => [],
@@ -95,7 +92,7 @@ function create() {
 
     setKey: (key) => {
       renderer.element().setAttribute('data-key', key);
-    }
+    },
   };
 
   return renderer;

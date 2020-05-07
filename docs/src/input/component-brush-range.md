@@ -19,19 +19,19 @@ A `target` is configured in the `target` property:
 ```js
 settings: {
   target: {
-    components: ['my-target-component']
+    components: ['my-target-component'];
   }
 }
 ```
 
 ## Events
 
-* `rangeStart`: initialize the range selection
-* `rangeMove`: change the size of the range or move the current active range
-* `rangeEnd`: end the current active range
-* `rangeClear`: cancel the active range
-* `bubbleStart`: start editing a bubble in the active range
-* `bubbleEnd`: end bubble edit
+- `rangeStart`: initialize the range selection
+- `rangeMove`: change the size of the range or move the current active range
+- `rangeEnd`: end the current active range
+- `rangeClear`: cancel the active range
+- `bubbleStart`: start editing a bubble in the active range
+- `bubbleEnd`: end bubble edit
 
 The events are triggered from the component instance.
 
@@ -41,10 +41,10 @@ The events are triggered from the component instance.
 const param = {
   center: {
     x: 1,
-    y: 2
+    y: 2,
   },
   deltaX: 0,
-  deltaY: 0
+  deltaY: 0,
 };
 
 compInstance.emit('rangeStart', param);

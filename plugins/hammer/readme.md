@@ -78,45 +78,51 @@ interactions: [{
 ### Another example
 
 ```js
-interactions: [{
-  type: 'hammer',
-  key: 'akey',
-  gestures: [{
-    type: 'Tap',
-    options: {
-      event: 'tripleTap',
-      taps: 3
-    },
-    recognizeWith: 'doubleTap tap',
-    events: {
-      tripleTap: function(e) {
-        console.log('triple tapped');
-      }
-    }
-  },{
-    type: 'Tap',
-    options: {
-      event: 'doubleTap',
-      taps: 2
-    },
-    recognizeWith: 'tap',
-    requireFailure: 'tripleTap',
-    events: {
-      doubleTap: function(e) {
-        console.log('double tapped');
-      }
-    }
-  },{
-    type: 'Tap',
-    options: {
-      taps: 1
-    },
-    requireFailure: 'doubleTap tripleTap',
-    events: {
-      tap: function(e) {
-        console.log('tapped');
-      }
-    }
-  },]
-}]
+interactions: [
+  {
+    type: 'hammer',
+    key: 'akey',
+    gestures: [
+      {
+        type: 'Tap',
+        options: {
+          event: 'tripleTap',
+          taps: 3,
+        },
+        recognizeWith: 'doubleTap tap',
+        events: {
+          tripleTap: function (e) {
+            console.log('triple tapped');
+          },
+        },
+      },
+      {
+        type: 'Tap',
+        options: {
+          event: 'doubleTap',
+          taps: 2,
+        },
+        recognizeWith: 'tap',
+        requireFailure: 'tripleTap',
+        events: {
+          doubleTap: function (e) {
+            console.log('double tapped');
+          },
+        },
+      },
+      {
+        type: 'Tap',
+        options: {
+          taps: 1,
+        },
+        requireFailure: 'doubleTap tripleTap',
+        events: {
+          tap: function (e) {
+            console.log('tapped');
+          },
+        },
+      },
+    ],
+  },
+];
 ```

@@ -17,21 +17,21 @@ describe('polygon to polygon collider', () => {
 
     expect(out).to.eql({
       type: 'polygon',
-      vertices: []
+      vertices: [],
     });
   });
 
   it('should ignore array if it contains less than 3 points', () => {
     points = [
       { x: 0, y: 0 },
-      { x: 0, y: 0 }
+      { x: 0, y: 0 },
     ];
 
     const out = polylineToPolygonCollider(points, radius, opts);
 
     expect(out).to.eql({
       type: 'polygon',
-      vertices: []
+      vertices: [],
     });
   });
 
@@ -42,7 +42,7 @@ describe('polygon to polygon collider', () => {
     points = [
       { x: 10, y: 10 },
       { x: 20, y: 10 },
-      { x: 30, y: 10 }
+      { x: 30, y: 10 },
     ];
 
     const expected = [
@@ -51,7 +51,7 @@ describe('polygon to polygon collider', () => {
       { x: 30, y: 0 },
       { x: 30, y: 20 },
       { x: 20, y: 20 },
-      { x: 10, y: 20 }
+      { x: 10, y: 20 },
     ];
 
     const out = polylineToPolygonCollider(points, radius, opts);
@@ -70,11 +70,11 @@ describe('polygon to polygon collider', () => {
     points = [
       { x: 10, y: 10 },
       { x: 20, y: 10 },
-      { x: 30, y: 10 }
+      { x: 30, y: 10 },
     ];
 
     opts = {
-      forceOrientation: 'h'
+      forceOrientation: 'h',
     };
 
     const expected = [
@@ -87,7 +87,7 @@ describe('polygon to polygon collider', () => {
       { x: 30, y: 20 },
       { x: 20, y: 20 },
       { x: 10, y: 20 },
-      { x: 9, y: 20 }
+      { x: 9, y: 20 },
     ];
 
     const out = polylineToPolygonCollider(points, radius, opts);
@@ -106,7 +106,7 @@ describe('polygon to polygon collider', () => {
     points = [
       { x: 10, y: 10 },
       { x: 0, y: 10 },
-      { x: -10, y: 10 }
+      { x: -10, y: 10 },
     ];
 
     const expected = [
@@ -115,7 +115,7 @@ describe('polygon to polygon collider', () => {
       { x: -10, y: 20 },
       { x: -10, y: 0 },
       { x: -0, y: 0 },
-      { x: 10, y: 0 }
+      { x: 10, y: 0 },
     ];
 
     const out = polylineToPolygonCollider(points, radius, opts);
@@ -134,11 +134,11 @@ describe('polygon to polygon collider', () => {
     points = [
       { x: 10, y: 10 },
       { x: 0, y: 10 },
-      { x: -10, y: 10 }
+      { x: -10, y: 10 },
     ];
 
     opts = {
-      forceOrientation: 'h'
+      forceOrientation: 'h',
     };
 
     const expected = [
@@ -151,7 +151,7 @@ describe('polygon to polygon collider', () => {
       { x: -10, y: 0 },
       { x: -0, y: 0 },
       { x: 10, y: 0 },
-      { x: 11, y: 0 }
+      { x: 11, y: 0 },
     ];
 
     const out = polylineToPolygonCollider(points, radius, opts);
@@ -167,7 +167,7 @@ describe('polygon to polygon collider', () => {
     points = [
       { x: 10, y: 10 },
       { x: 10, y: 20 },
-      { x: 10, y: 30 }
+      { x: 10, y: 30 },
     ];
 
     const expected = [
@@ -176,7 +176,7 @@ describe('polygon to polygon collider', () => {
       { x: 20, y: 30 },
       { x: 0, y: 30 },
       { x: 0, y: 20 },
-      { x: 0, y: 10 }
+      { x: 0, y: 10 },
     ];
 
     const out = polylineToPolygonCollider(points, radius, opts);
@@ -192,11 +192,11 @@ describe('polygon to polygon collider', () => {
     points = [
       { x: 10, y: 10 },
       { x: 10, y: 20 },
-      { x: 10, y: 30 }
+      { x: 10, y: 30 },
     ];
 
     opts = {
-      forceOrientation: 'v'
+      forceOrientation: 'v',
     };
 
     const expected = [
@@ -209,7 +209,7 @@ describe('polygon to polygon collider', () => {
       { x: 0, y: 30 },
       { x: 0, y: 20 },
       { x: 0, y: 10 },
-      { x: 0, y: 9 }
+      { x: 0, y: 9 },
     ];
 
     const out = polylineToPolygonCollider(points, radius, opts);
@@ -225,7 +225,7 @@ describe('polygon to polygon collider', () => {
     points = [
       { x: 10, y: 10 },
       { x: 10, y: 0 },
-      { x: 10, y: -10 }
+      { x: 10, y: -10 },
     ];
 
     const expected = [
@@ -234,7 +234,7 @@ describe('polygon to polygon collider', () => {
       { x: 0, y: -10 },
       { x: 20, y: -10 },
       { x: 20, y: -0 },
-      { x: 20, y: 10 }
+      { x: 20, y: 10 },
     ];
 
     const out = polylineToPolygonCollider(points, radius, opts);
@@ -250,11 +250,11 @@ describe('polygon to polygon collider', () => {
     points = [
       { x: 10, y: 10 },
       { x: 10, y: 0 },
-      { x: 10, y: -10 }
+      { x: 10, y: -10 },
     ];
 
     opts = {
-      forceOrientation: 'v'
+      forceOrientation: 'v',
     };
 
     const expected = [
@@ -267,7 +267,7 @@ describe('polygon to polygon collider', () => {
       { x: 20, y: -10 },
       { x: 20, y: -0 },
       { x: 20, y: 10 },
-      { x: 20, y: 11 }
+      { x: 20, y: 11 },
     ];
 
     const out = polylineToPolygonCollider(points, radius, opts);
@@ -284,7 +284,7 @@ describe('polygon to polygon collider', () => {
       { x: 0, y: 0 },
       { x: 0, y: 10 },
       { x: 10, y: 10 },
-      { x: 10, y: 0 }
+      { x: 10, y: 0 },
     ];
 
     const expected = [
@@ -295,7 +295,7 @@ describe('polygon to polygon collider', () => {
       { x: 20, y: 0 },
       { x: 17.071, y: 17.071 },
       { x: -7.071, y: 17.071 },
-      { x: -10, y: 0 }
+      { x: -10, y: 0 },
     ];
 
     const out = polylineToPolygonCollider(points, radius, opts);
@@ -312,7 +312,7 @@ describe('polygon to polygon collider', () => {
       { x: 0, y: 0 },
       { x: 10, y: 0 },
       { x: 10, y: 10 },
-      { x: 0, y: 10 }
+      { x: 0, y: 10 },
     ];
 
     const expected = [
@@ -323,7 +323,7 @@ describe('polygon to polygon collider', () => {
       { x: 0, y: 0 },
       { x: 2.929, y: 2.929 },
       { x: 2.929, y: 7.071 },
-      { x: 0, y: 10 }
+      { x: 0, y: 10 },
     ];
 
     const out = polylineToPolygonCollider(points, radius, opts);

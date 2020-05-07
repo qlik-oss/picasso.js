@@ -8,15 +8,15 @@ Three types of events are emitted:
 
 ```js
 brush.on('start', () => {
-  console.log('started')
+  console.log('started');
 });
 
 brush.on('update', () => {
-  console.log('updated')
+  console.log('updated');
 });
 
 brush.on('end', () => {
-  console.log('ended')
+  console.log('ended');
 });
 ```
 
@@ -27,11 +27,11 @@ Some of the manipulation methods can be intercepted and have their data filtered
 ### Block certain values from getting added
 
 Values can be blocked from being added to the brush by intercepting the `add-values` event and filtering out the unwanted values.
-The following will remove the value 'Bike': 
+The following will remove the value 'Bike':
 
 ```js
-brush.intercept('add-values', items => {
-  return items.filter(item => item.value !== 'Bike');
+brush.intercept('add-values', (items) => {
+  return items.filter((item) => item.value !== 'Bike');
 });
 ```
 
@@ -45,6 +45,7 @@ brush.intercept('add-values', items => {
 ```
 
 When calling `addValues`, the interceptors above will be called, which will remove 'Bike' and add 'Always me':
+
 ```js
 brush.addValues([
   { key: 'products', 'Bike' },

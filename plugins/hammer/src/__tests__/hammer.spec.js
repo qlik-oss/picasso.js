@@ -8,28 +8,31 @@ describe('hammer interaction mixin', () => {
   let chart;
   let settings;
   let hammerInteraction;
+  let Hammer;
 
   beforeEach(() => {
-    hammerMock();
+    Hammer = hammerMock();
     element = createElement('div');
     mediator = {};
     chart = {};
     settings = {
       type: 'hammer',
       enable: true,
-      gestures: [{
-        type: 'Pan',
-        options: {
-          event: 'pan'
+      gestures: [
+        {
+          type: 'Pan',
+          options: {
+            event: 'pan',
+          },
+          events: {
+            panstart() {},
+            pan() {},
+            panend() {},
+          },
         },
-        events: {
-          panstart() {},
-          pan() {},
-          panend() {}
-        }
-      }]
+      ],
     };
-    hammerInteraction = hammer(chart, mediator, element);
+    hammerInteraction = hammer(Hammer)(chart, mediator, element);
   });
 
   it('should add ', () => {
@@ -74,12 +77,14 @@ describe('hammer interaction mixin', () => {
     const newSettings = {
       type: 'hammer',
       enable: true,
-      gestures: [{
-        type: 'Click',
-        events: {
-          click() {}
-        }
-      }]
+      gestures: [
+        {
+          type: 'Click',
+          events: {
+            click() {},
+          },
+        },
+      ],
     };
     hammerInteraction.set(newSettings);
     expect(element.listeners.length).to.equal(1);
@@ -96,27 +101,30 @@ describe('hammer interaction mixin', () => {
     settings = {
       type: 'hammer',
       enable: true,
-      gestures: [{
-        type: 'Tap',
-        options: {
-          event: 'tap'
+      gestures: [
+        {
+          type: 'Tap',
+          options: {
+            event: 'tap',
+          },
+          events: {
+            tap() {},
+          },
+          recognizeWith: 'double ',
+          requireFailure: 'double ',
         },
-        events: {
-          tap() {}
+        {
+          type: 'Tap',
+          options: {
+            event: 'double',
+            taps: 2,
+          },
+          events: {
+            double() {},
+          },
+          recognizeWith: 'tap ',
         },
-        recognizeWith: 'double ',
-        requireFailure: 'double '
-      }, {
-        type: 'Tap',
-        options: {
-          event: 'double',
-          taps: 2
-        },
-        events: {
-          double() {}
-        },
-        recognizeWith: 'tap '
-      }]
+      ],
     };
     expect(hammerInteraction.set.bind(this, settings)).to.not.throw(Error);
   });

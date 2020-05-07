@@ -4,23 +4,18 @@ import { updateScaleSize } from '../scales';
 const externals = {
   normalizeSettings,
   resolveForItem,
-  updateScaleSize
+  updateScaleSize,
 };
 
 export default function (resources, deps = externals) {
   let cache = {};
 
-  function resolve({
-    data,
-    settings,
-    defaults = {},
-    scaled
-  }) {
-    const norm = cache.norm = deps.normalizeSettings(settings, defaults, resources.chart);
+  function resolve({ data, settings, defaults = {}, scaled }) {
+    const norm = (cache.norm = deps.normalizeSettings(settings, defaults, resources.chart));
 
     const res = {
       scale: resources.chart.scale,
-      formatter: resources.chart.formatter
+      formatter: resources.chart.formatter,
     };
 
     if (scaled) {
@@ -38,7 +33,7 @@ export default function (resources, deps = externals) {
         context = {
           datum: data.items[i],
           data,
-          resources: res
+          resources: res,
         };
         let obj = deps.resolveForItem(context, cache.norm, i);
         obj.data = data.items[i];
@@ -47,21 +42,21 @@ export default function (resources, deps = externals) {
     } else {
       const context = {
         data,
-        resources: res
+        resources: res,
       };
       let obj = deps.resolveForItem(context, cache.norm, -1);
       return {
         settings: cache.norm,
-        item: obj
+        item: obj,
       };
     }
     return {
       settings: cache.norm,
-      items: resolved
+      items: resolved,
     };
   }
 
   return {
-    resolve
+    resolve,
   };
 }

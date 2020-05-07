@@ -2,11 +2,7 @@ import render from '../rect';
 
 describe('rect', () => {
   describe('render', () => {
-    let sandbox,
-      g,
-      falsys,
-      truthys,
-      rect;
+    let sandbox, g, falsys, truthys, rect;
 
     beforeEach(() => {
       sandbox = sinon.createSandbox();
@@ -18,7 +14,7 @@ describe('rect', () => {
         stroke: sandbox.spy(),
         moveTo: sandbox.spy(),
         lineTo: sandbox.spy(),
-        quadraticCurveTo: sandbox.spy()
+        quadraticCurveTo: sandbox.spy(),
       };
 
       falsys = [false, null, undefined, 0, NaN, ''];
@@ -26,7 +22,10 @@ describe('rect', () => {
       truthys = [true, {}, [], 1, -1, 3.14, -3.14, 'foo'];
 
       rect = {
-        x: 1, y: 2, width: 10, height: 20
+        x: 1,
+        y: 2,
+        width: 10,
+        height: 20,
       };
     });
 

@@ -6,7 +6,7 @@ describe('Registry', () => {
 
   beforeEach(() => {
     logger = {
-      warn: sinon.spy()
+      warn: sinon.spy(),
     };
     reg = registry('', 'myRegistry', logger);
   });

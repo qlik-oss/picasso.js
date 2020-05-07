@@ -14,8 +14,8 @@ describe('brush-lasso', () => {
       settings: {
         lasso: {},
         snapIndicator: {},
-        startPoint: {}
-      }
+        startPoint: {},
+      },
     };
 
     instance = componentFixture.simulateCreate(brushLasso, config);
@@ -40,8 +40,8 @@ describe('brush-lasso', () => {
       opacity: 0.7,
       strokeDasharray: '20, 10',
       collider: {
-        type: null
-      }
+        type: null,
+      },
     };
     expect(rendererOutput).to.deep.equal(expected);
   });
@@ -62,8 +62,8 @@ describe('brush-lasso', () => {
       stroke: 'black',
       strokeWidth: 1,
       collider: {
-        type: null
-      }
+        type: null,
+      },
     };
     expect(rendererOutput).to.deep.equal(expected);
   });
@@ -88,7 +88,7 @@ describe('brush-lasso', () => {
       stroke: 'black',
       strokeWidth: 2,
       opacity: 0.5,
-      collider: { type: null }
+      collider: { type: null },
     };
     expect(rendererOutput).to.deep.equal(expected);
   });
@@ -187,7 +187,7 @@ describe('brush-lasso', () => {
         fill: 'black',
         stroke: 'red',
         strokeWidth: 33,
-        opacity: 3.14
+        opacity: 3.14,
       };
 
       instance = componentFixture.simulateCreate(brushLasso, config);
@@ -205,8 +205,8 @@ describe('brush-lasso', () => {
         strokeDasharray: '20, 10',
         opacity: 3.14,
         collider: {
-          type: null
-        }
+          type: null,
+        },
       };
       expect(rendererOutput).to.deep.equal(expected);
     });
@@ -216,7 +216,7 @@ describe('brush-lasso', () => {
         strokeDasharray: '15, 5',
         stroke: 'red',
         strokeWidth: 1337,
-        opacity: 42
+        opacity: 42,
       };
 
       instance = componentFixture.simulateCreate(brushLasso, config);
@@ -235,7 +235,7 @@ describe('brush-lasso', () => {
         stroke: 'red',
         strokeWidth: 1337,
         opacity: 42,
-        collider: { type: null }
+        collider: { type: null },
       };
       expect(rendererOutput).to.deep.equal(expected);
     });
@@ -246,7 +246,7 @@ describe('brush-lasso', () => {
         fill: 'yellow',
         stroke: 'submarine',
         strokeWidth: 1337,
-        opacity: 42
+        opacity: 42,
       };
 
       instance = componentFixture.simulateCreate(brushLasso, config);
@@ -265,8 +265,8 @@ describe('brush-lasso', () => {
         opacity: 42,
         strokeWidth: 1337,
         collider: {
-          type: null
-        }
+          type: null,
+        },
       };
       expect(rendererOutput).to.deep.equal(expected);
     });

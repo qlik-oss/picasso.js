@@ -5,7 +5,7 @@ function getPoint(rendererBounds, event) {
   const eventOffsetY = event.center.y;
   return {
     x: eventOffsetX - rendererBounds.left,
-    y: eventOffsetY - rendererBounds.top
+    y: eventOffsetY - rendererBounds.top,
   };
   // return {
   //   x: Math.min(Math.max(eventOffsetX - rendererBounds.left, 0), rendererBounds.width),
@@ -29,11 +29,7 @@ function appendToPath(state, p) {
 }
 
 function render(state, renderer) {
-  const nodes = [
-    state.startPoint,
-    state.path,
-    state.snapIndicator
-  ].filter((node) => node.visible);
+  const nodes = [state.startPoint, state.path, state.snapIndicator].filter((node) => node.visible);
 
   renderer.render(nodes);
 }
@@ -62,7 +58,7 @@ function getComponentDelta(chart, rendererBounds) {
   const chartBounds = chart.element.getBoundingClientRect();
   return {
     x: rendererBounds.left - chartBounds.left,
-    y: rendererBounds.top - chartBounds.top
+    y: rendererBounds.top - chartBounds.top,
   };
 }
 
@@ -86,7 +82,7 @@ function doPolygonBrush(state, chart) {
     const dy = state.componentDelta.y;
     const vertices = state.points.map((p) => ({
       x: p.x + dx,
-      y: p.y + dy
+      y: p.y + dy,
     }));
 
     const shapes = chart.shapesAt({ vertices }, { components: state.brushConfig });
@@ -105,8 +101,8 @@ function initPath(stgns) {
     opacity: stgns.opacity,
     strokeDasharray: stgns.strokeDasharray,
     collider: {
-      type: null
-    }
+      type: null,
+    },
   };
 }
 
@@ -123,8 +119,8 @@ function initSnapIndicator(stgns) {
     strokeWidth: stgns.strokeWidth,
     opacity: stgns.opacity,
     collider: {
-      type: null
-    }
+      type: null,
+    },
   };
 }
 
@@ -140,19 +136,18 @@ function initStartPoint(stgns) {
     stroke: stgns.stroke,
     strokeWidth: stgns.strokeWidth,
     collider: {
-      type: null
-    }
+      type: null,
+    },
   };
 }
 
 function getBrushConfig(settings) {
-  return settings.settings.brush.components.map((b) => (
-    {
-      key: b.key,
-      contexts: b.contexts || ['lassoBrush'],
-      data: b.data || [''],
-      action: b.action || 'add'
-    }));
+  return settings.settings.brush.components.map((b) => ({
+    key: b.key,
+    contexts: b.contexts || ['lassoBrush'],
+    data: b.data || [''],
+    action: b.action || 'add',
+  }));
 }
 
 function endBrush(state, chart) {
@@ -174,8 +169,11 @@ function resetState() {
     componentDelta: null,
     brushConfig: null,
     lineBrushShape: {
-      x1: 0, y1: 0, x2: 0, y2: 0
-    } // Keep a single shape instance to avoid instantiating a new object on each lookup
+      x1: 0,
+      y1: 0,
+      x2: 0,
+      y2: 0,
+    }, // Keep a single shape instance to avoid instantiating a new object on each lookup
   };
 }
 
@@ -214,34 +212,34 @@ const brushLassoComponent = {
   require: ['chart', 'renderer', 'settings'],
   defaultSettings: {
     layout: {
-      displayOrder: 0
+      displayOrder: 0,
     },
     settings: {
       brush: {
-        components: []
+        components: [],
       },
       snapIndicator: {
         threshold: 75,
         strokeDasharray: '5, 5',
         stroke: 'black',
         strokeWidth: 2,
-        opacity: 0.5
+        opacity: 0.5,
       },
       lasso: {
         fill: 'transparent',
         stroke: 'black',
         strokeWidth: 2,
         opacity: 0.7,
-        strokeDasharray: '20, 10'
+        strokeDasharray: '20, 10',
       },
       startPoint: {
         r: 10,
         fill: 'green',
         stroke: 'black',
         strokeWidth: 1,
-        opacity: 1
-      }
-    }
+        opacity: 1,
+      },
+    },
   },
   on: {
     lassoStart(e) {
@@ -255,7 +253,7 @@ const brushLassoComponent = {
     },
     lassoCancel() {
       this.cancel();
-    }
+    },
   },
   created() {
     this.state = resetState();
@@ -292,10 +290,7 @@ const brushLassoComponent = {
     setSnapIndictor({ state: this.state, end: p });
     render(this.state, this.renderer);
 
-    doLineBrush(
-      this.state,
-      this.chart
-    );
+    doLineBrush(this.state, this.chart);
   },
   end(e) {
     if (!this.state.active) {
@@ -323,7 +318,7 @@ const brushLassoComponent = {
   },
   render() {
     // Do nothing
-  }
+  },
 };
 
 export default brushLassoComponent;

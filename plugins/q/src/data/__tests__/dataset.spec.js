@@ -11,67 +11,92 @@ const NxStackedPivotCellM = {
   qElemNo: 1,
   qText: '$32.3',
   qAttrDims: { qValues: [{}, NxSimpleDimValue] },
-  qAttrExps: { qValues: [{}, NxSimpleValue] }
+  qAttrExps: { qValues: [{}, NxSimpleValue] },
 };
 const NxTreeValue = {
   qValue: 31.3,
   qText: '$31.3',
   qAttrDims: { qValues: [{}, NxSimpleDimValue] },
-  qAttrExps: { qValues: [{}, NxSimpleValue] }
+  qAttrExps: { qValues: [{}, NxSimpleValue] },
 };
 const NxTreeNode = { qElemNo: 9, qText: 'nine', qValues: [{}, {}, NxTreeValue] };
 
 const ds = (qMode, config = {}) => {
-  const qDataPages = [{
-    qArea: {
-      qLeft: 0, qTop: 0, qWidth: 4, qHeight: 1
+  const qDataPages = [
+    {
+      qArea: {
+        qLeft: 0,
+        qTop: 0,
+        qWidth: 4,
+        qHeight: 1,
+      },
+      qMatrix: [
+        [
+          NxCell,
+          {},
+          {},
+          {
+            ...NxCell,
+            qNum: 3.6,
+            qText: '$$3.6',
+            qAttrDims: { qValues: [{}, NxSimpleDimValue] },
+            qAttrExps: { qValues: [{}, NxSimpleValue] },
+          },
+        ],
+      ],
     },
-    qMatrix: [
-      [NxCell, {}, {}, {
-        ...NxCell, qNum: 3.6, qText: '$$3.6', qAttrDims: { qValues: [{}, NxSimpleDimValue] }, qAttrExps: { qValues: [{}, NxSimpleValue] }
-      }]
-    ]
-  }];
-  const qStackedDataPages = [{
-    qArea: {
-      qLeft: 0,
-      qTop: 0,
-      qWidth: 6,
-      qHeight: 10
+  ];
+  const qStackedDataPages = [
+    {
+      qArea: {
+        qLeft: 0,
+        qTop: 0,
+        qWidth: 6,
+        qHeight: 10,
+      },
+      qData: [
+        {
+          qType: 'R',
+          qElemNo: -1,
+          qSubNodes: [{ qSubNodes: [{}, {}, NxStackedPivotCellM], ...NxStackedPivotCell }],
+        },
+      ],
     },
-    qData: [
-      {
-        qType: 'R',
-        qElemNo: -1,
-        qSubNodes: [{ qSubNodes: [{}, {}, NxStackedPivotCellM], ...NxStackedPivotCell }]
-      }
-    ]
-  }];
-  const qTreeDataPages = [{
-    qNodes: [NxTreeNode]
-  }];
+  ];
+  const qTreeDataPages = [
+    {
+      qNodes: [NxTreeNode],
+    },
+  ];
 
   const cube = {
     qMode,
     qDimensionInfo: [{ qFallbackTitle: 'A' }],
-    qMeasureInfo: [{}, {}, {
-      qFallbackTitle: 'C',
-      qNumFormat: {
-        qType: 'M',
-        qFmt: '$#_00'
-      },
-      qAttrExprInfo: [{}, {
-        qFallbackTitle: 'm attr expr title',
+    qMeasureInfo: [
+      {},
+      {},
+      {
+        qFallbackTitle: 'C',
         qNumFormat: {
           qType: 'M',
-          qFmt: '€#_00'
-        }
-      }],
-      qAttrDimInfo: [{}, {}]
-    }],
+          qFmt: '$#_00',
+        },
+        qAttrExprInfo: [
+          {},
+          {
+            qFallbackTitle: 'm attr expr title',
+            qNumFormat: {
+              qType: 'M',
+              qFmt: '€#_00',
+            },
+          },
+        ],
+        qAttrDimInfo: [{}, {}],
+      },
+    ],
     qDataPages,
     qStackedDataPages,
-    qTreeDataPages
+    qTreeDataPages,
   };
 
   if (qMode !== 'S') {
@@ -85,50 +110,61 @@ const ds = (qMode, config = {}) => {
     data: cube,
     config: {
       localeInfo: {
-        qDecimalSep: '_'
+        qDecimalSep: '_',
       },
-      ...config
-    }
+      ...config,
+    },
   });
 
   return d;
 };
 
 const tree = () => {
-  const qTreeDataPages = [{
-    qNodes: [NxTreeNode]
-  }];
+  const qTreeDataPages = [
+    {
+      qNodes: [NxTreeNode],
+    },
+  ];
   const cube = {
     qNodesOnDim: [],
     qEffectiveInterColumnSortOrder: [0],
-    qDimensionInfo: [{
-      qFallbackTitle: 'A',
-      qMeasureInfo: [{}, {}, {
-        qFallbackTitle: 'C',
-        qNumFormat: {
-          qType: 'M',
-          qFmt: '$#_00'
-        },
-        qAttrExprInfo: [{}, {
-          qFallbackTitle: 'm attr expr title',
-          qNumFormat: {
-            qType: 'M',
-            qFmt: '€#_00'
-          }
-        }],
-        qAttrDimInfo: [{}, {}]
-      }]
-    }],
-    qTreeDataPages
+    qDimensionInfo: [
+      {
+        qFallbackTitle: 'A',
+        qMeasureInfo: [
+          {},
+          {},
+          {
+            qFallbackTitle: 'C',
+            qNumFormat: {
+              qType: 'M',
+              qFmt: '$#_00',
+            },
+            qAttrExprInfo: [
+              {},
+              {
+                qFallbackTitle: 'm attr expr title',
+                qNumFormat: {
+                  qType: 'M',
+                  qFmt: '€#_00',
+                },
+              },
+            ],
+            qAttrDimInfo: [{}, {}],
+          },
+        ],
+      },
+    ],
+    qTreeDataPages,
   };
   const d = q({
     key: 'nyckel',
     data: cube,
     config: {
       localeInfo: {
-        qDecimalSep: '_'
-      }
-    }
+        qDecimalSep: '_',
+      },
+    },
   });
   return d;
 };
@@ -158,13 +194,15 @@ describe('q-data', () => {
     let d;
     beforeEach(() => {
       d = ds('S', {
-        virtualFields: [{
-          key: 'temporal',
-          from: 'qMeasureInfo/2',
-          override: {
-            value: '3'
-          }
-        }]
+        virtualFields: [
+          {
+            key: 'temporal',
+            from: 'qMeasureInfo/2',
+            override: {
+              value: '3',
+            },
+          },
+        ],
       });
     });
 
@@ -248,7 +286,7 @@ describe('q-data', () => {
     describe('extract', () => {
       it('dimension', () => {
         const extracted = d.extract({
-          field: 'qDimensionInfo/0'
+          field: 'qDimensionInfo/0',
         });
         expect(extracted).to.eql([{ value: 3, label: 'three', source: { field: 'qDimensionInfo/0', key: 'nyckel' } }]);
       });
@@ -260,7 +298,7 @@ describe('q-data', () => {
         expect(h.descendants()[1].data).to.eql({
           source: { key: 'nyckel', field: 'qDimensionInfo/0' },
           label: 'three',
-          value: 3
+          value: 3,
         });
       });
 
@@ -268,14 +306,14 @@ describe('q-data', () => {
         const h = d.hierarchy({
           props: {
             v: {
-              field: 'qMeasureInfo/2'
-            }
-          }
+              field: 'qMeasureInfo/2',
+            },
+          },
         });
         expect(h.descendants()[1].data.v).to.eql({
           source: { key: 'nyckel', field: 'qMeasureInfo/2' },
           label: '$$3.6',
-          value: 3.6
+          value: 3.6,
         });
       });
     });
@@ -474,32 +512,44 @@ describe('q-data', () => {
       qDimensionInfo: [
         {
           qFallbackTitle: 'A',
-          qAttrDimInfo: [{}, {
-            label: 'title from label',
-            qFallbackTitle: 'attr dim title',
-            qSize: {},
-            qDataPages: 'attr dim table pages'
-          }],
-          qAttrExprInfo: [{
-            qFallbackTitle: 'attr expr title'
-          }]
+          qAttrDimInfo: [
+            {},
+            {
+              label: 'title from label',
+              qFallbackTitle: 'attr dim title',
+              qSize: {},
+              qDataPages: 'attr dim table pages',
+            },
+          ],
+          qAttrExprInfo: [
+            {
+              qFallbackTitle: 'attr expr title',
+            },
+          ],
         },
-        { qFallbackTitle: 'B' }
+        { qFallbackTitle: 'B' },
       ],
       qMeasureInfo: [
         {},
         {},
         {
           qFallbackTitle: 'C',
-          qAttrDimInfo: [{}, {}, {
-            qFallbackTitle: 'm attr dim title'
-          }],
-          qAttrExprInfo: [{}, {
-            qFallbackTitle: 'm attr expr title'
-          }]
-        }
+          qAttrDimInfo: [
+            {},
+            {},
+            {
+              qFallbackTitle: 'm attr dim title',
+            },
+          ],
+          qAttrExprInfo: [
+            {},
+            {
+              qFallbackTitle: 'm attr expr title',
+            },
+          ],
+        },
       ],
-      qDataPages: [{ qMatrix: [] }]
+      qDataPages: [{ qMatrix: [] }],
     };
 
     const d = q({ key: 'nyckel', data: cube });

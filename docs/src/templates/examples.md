@@ -1,8 +1,16 @@
 {{#if this}}
 
 {{#each this}}
+
 ```js
-{{{ this }}}
+{
+  {
+    {
+      this;
+    }
+  }
+}
 ```
+
 {{/each}}
 {{/if}}

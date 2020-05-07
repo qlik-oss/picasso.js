@@ -30,22 +30,22 @@ picasso.chart({
 
 Some properties are general and can be used on all components:
 
-* `show` *boolean*. True if component should be rendered.
-* `layout` *object*. Layout settings
-* `layout.dock` *string*. Dock setting. Any of `top` | `right` | `bottom` | `left`
-* `layout.displayOrder` *number*. The order in which components are rendered (similar to css z-index).
-* `layout.prioOrder` *number*. The order in which components are docked from the center area,
-* `layout.minimumLayoutMode` *string* The threshold for which components should appear. (e.g. XSMALL, SMALL, MED)
-* `data` *object*. See [data section](./data.md).
-* `settings` *object*.
-* `created` *function*. Lifecycle hook.
-* `beforeMount` *function*. Lifecycle hook.
-* `mounted` *function*. Lifecycle hook.
-* `beforeRender` *function*. Lifecycle hook.
-* `beforeUpdate` *function*. Lifecycle hook.
-* `updated` *function*. Lifecycle hook.
-* `beforeDestroy` *function*. Lifecycle hook.
-* `destroyed` *function*. Lifecycle hook.
+- `show` _boolean_. True if component should be rendered.
+- `layout` _object_. Layout settings
+- `layout.dock` _string_. Dock setting. Any of `top` | `right` | `bottom` | `left`
+- `layout.displayOrder` _number_. The order in which components are rendered (similar to css z-index).
+- `layout.prioOrder` _number_. The order in which components are docked from the center area,
+- `layout.minimumLayoutMode` *string*. The threshold for which components should appear,
+- `data` _object_. See [data section](./data.md).
+- `settings` _object_.
+- `created` _function_. Lifecycle hook.
+- `beforeMount` _function_. Lifecycle hook.
+- `mounted` _function_. Lifecycle hook.
+- `beforeRender` _function_. Lifecycle hook.
+- `beforeUpdate` _function_. Lifecycle hook.
+- `updated` _function_. Lifecycle hook.
+- `beforeDestroy` _function_. Lifecycle hook.
+- `destroyed` _function_. Lifecycle hook.
 
 **`settings`**
 
@@ -57,17 +57,17 @@ A custom component can be registered using the `picasso.component` registry:
 
 **`picasso.component(name, definition)`**
 
-- `name` *string*. Name of the component to register.
-- `definition` *object*
-  * `created` *function* (optional). Lifecycle hook.
-  * `beforeMount` *function* (optional). Lifecycle hook.
-  * `mounted` *function* (optional). Lifecycle hook.
-  * `beforeRender` *function* (optional). Lifecycle hook.
-  * `render` *function* (optional). Lifecycle hook.
-  * `beforeUpdate` *function* (optional). Lifecycle hook.
-  * `updated` *function* (optional). Lifecycle hook.
-  * `beforeDestroy` *function* (optional). Lifecycle hook.
-  * `destroyed` *function* (optional). Lifecycle hook.
+- `name` _string_. Name of the component to register.
+- `definition` _object_
+  - `created` _function_ (optional). Lifecycle hook.
+  - `beforeMount` _function_ (optional). Lifecycle hook.
+  - `mounted` _function_ (optional). Lifecycle hook.
+  - `beforeRender` _function_ (optional). Lifecycle hook.
+  - `render` _function_ (optional). Lifecycle hook.
+  - `beforeUpdate` _function_ (optional). Lifecycle hook.
+  - `updated` _function_ (optional). Lifecycle hook.
+  - `beforeDestroy` _function_ (optional). Lifecycle hook.
+  - `destroyed` _function_ (optional). Lifecycle hook.
 
 ### A draw line component
 
@@ -76,16 +76,18 @@ Let's make a component that draws a red line across its entire display area:
 ```js
 picasso.component('drawLine', {
   render() {
-    return [{
-      type: 'line',
-      stroke: 'red',
-      strokeWidth: 4,
-      x1: this.rect.x,
-      y1: this.rect.y,
-      x2: this.rect.width,
-      y2: this.rect.height
-    }];
-  }
+    return [
+      {
+        type: 'line',
+        stroke: 'red',
+        strokeWidth: 4,
+        x1: this.rect.x,
+        y1: this.rect.y,
+        x2: this.rect.width,
+        y2: this.rect.height,
+      },
+    ];
+  },
 });
 ```
 
@@ -95,30 +97,32 @@ It can then be used like any other component:
 picasso.chart({
   element,
   settings: {
-    components: [{
-      type: 'drawLine'
-    }]
-  }
+    components: [
+      {
+        type: 'drawLine',
+      },
+    ],
+  },
 });
 ```
 
 ## Visibility of a component
+
 It is possible to get the visibility of a component when it is mounted/unmounted. This can be done in the following example.
 
-Assume a custom component of type foo: 
+Assume a custom component of type foo:
 
 ```js
-
 const foo = {
   type: 'foo',
-  key: 'myComponent'
+  key: 'myComponent',
 };
 
 const chart = picasso.chart({
   element,
   settings: {
-    components: [foo]
-  }
+    components: [foo],
+  },
 });
 
 chart.component('myComponent').isVisible(); // returns a boolean determining if the component is visible or not
@@ -126,7 +130,6 @@ chart.component('myComponent').isVisible(); // returns a boolean determining if 
 
 ## Component lifecycle hooks
 
-__TODO__
+**TODO**
 
-(Note that the lifecycle hooks in the component definition __do not__ share the same context as hooks used in the component settings of a chart).
-
+(Note that the lifecycle hooks in the component definition **do not** share the same context as hooks used in the component settings of a chart).

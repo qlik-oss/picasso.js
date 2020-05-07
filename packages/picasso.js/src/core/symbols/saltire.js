@@ -22,13 +22,14 @@ function saltire(options) {
   adjustedSize -= h * 2;
 
   const centroid = { x: options.x, y: options.y };
-  const points = generateCrossPoints(options.x, options.y, adjustedSize, barWidth)
-    .map((p) => rotate(p, radians, centroid));
+  const points = generateCrossPoints(options.x, options.y, adjustedSize, barWidth).map((p) =>
+    rotate(p, radians, centroid)
+  );
 
   return {
     type: 'path',
     fill: 'black',
-    d: pointsToPath(points)
+    d: pointsToPath(points),
   };
 }
 

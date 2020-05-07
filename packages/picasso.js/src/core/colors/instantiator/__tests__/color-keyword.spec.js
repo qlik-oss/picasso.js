@@ -56,7 +56,7 @@ describe('colorKeyWord', () => {
     });
 
     it('should return false if keyword is not a string', () => {
-      [true, 0, {}, () => { }].forEach((keyword) => {
+      [true, 0, {}, () => {}].forEach((keyword) => {
         expect(colorKeyWord.test(keyword)).to.equal(false);
       });
     });

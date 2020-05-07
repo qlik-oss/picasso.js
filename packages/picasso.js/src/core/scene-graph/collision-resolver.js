@@ -1,11 +1,8 @@
 import createCollision from './collision';
 import { scalarMultiply } from '../math/vector';
 import { create as createPolygon } from '../geometry/polygon';
-import {
-  lineToPoints,
-  rectToPoints,
-  getShapeType
-} from '../geometry/util';
+import { create as createGeoPolygon } from '../geometry/geopolygon';
+import { lineToPoints, rectToPoints, getShapeType } from '../geometry/util';
 
 function appendParentNode(node, collision) {
   const p = node.parent;
@@ -61,15 +58,19 @@ function resolveGeometryCollision(node, type, input) {
 function inverseTransform(node, input) {
   let transformedInput = {};
   if (node.modelViewMatrix) {
-    if (Array.isArray(input)) { // Rect or Line
+    if (Array.isArray(input)) {
+      // Rect or Line
       transformedInput = node.inverseModelViewMatrix.transformPoints(input);
-    } else if (!isNaN(input.r)) { // Circle
+    } else if (!isNaN(input.r)) {
+      // Circle
       const p = { x: input.cx, y: input.cy };
       ({ x: transformedInput.cx, y: transformedInput.cy } = node.inverseModelViewMatrix.transformPoint(p));
       transformedInput.r = input.r;
-    } else if (Array.isArray(input.vertices)) { // Polygon
+    } else if (Array.isArray(input.vertices)) {
+      // Polygon
       transformedInput.vertices = node.inverseModelViewMatrix.transformPoints(input.vertices);
-    } else { // Point
+    } else {
+      // Point
       transformedInput = node.inverseModelViewMatrix.transformPoint(input);
     }
   } else {
@@ -77,7 +78,11 @@ function inverseTransform(node, input) {
   }
 
   if (Array.isArray(transformedInput.vertices)) {
-    transformedInput = createPolygon(transformedInput); // TODO Shouldn't have to do this here, currently its beacause a collision algorithm optimization, i.e. caching of polygon bounds
+    if (transformedInput.vertices.every((item) => Array.isArray(item))) {
+      transformedInput = createGeoPolygon(transformedInput);
+    } else {
+      transformedInput = createPolygon(transformedInput); // TODO Shouldn't have to do this here, currently its beacause a collision algorithm optimization, i.e. caching of polygon bounds
+    }
   }
 
   return transformedInput;
@@ -104,7 +109,9 @@ function findAllCollisions(nodes, intersectionType, ary, input) {
 
     const collision = resolveCollision(node, intersectionType, input);
 
-    if (collision) { ary.push(collision); }
+    if (collision) {
+      ary.push(collision);
+    }
 
     // Only traverse children if no match is found on parent and it doesnt have any custom collider
     if (node.children && !collision && !node.collider) {
@@ -120,7 +127,9 @@ function hasCollision(nodes, intersectionType, input) {
 
     const collision = resolveCollision(node, intersectionType, input);
 
-    if (collision !== null) { return true; }
+    if (collision !== null) {
+      return true;
+    }
 
     if (node.children && !node.collider) {
       return hasCollision(node.children, intersectionType, input);
@@ -151,6 +160,9 @@ function resolveShape(shape, ratio = 1) {
     case 'polygon':
       _shape.vertices = shape.vertices.map((vertex) => scalarMultiply(vertex, ratio));
       return ['intersectsPolygon', _shape];
+    case 'geopolygon':
+      _shape.vertices = shape.vertices.map((vertices) => vertices.map((vertex) => scalarMultiply(vertex, ratio)));
+      return ['intersectsGeoPolygon', _shape];
     default:
       return [];
   }

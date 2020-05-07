@@ -1,8 +1,8 @@
 <html lang="en">
   <head>
     <title>Component Test</title>
-    <meta charset="utf-8">
-    <base href="/">
+    <meta charset="utf-8" />
+    <base href="/" />
     <script src="/packages/picasso.js/dist/picasso.js"></script>
     <script src="bundle.js"></script>
     <style>
@@ -11,7 +11,7 @@
         height: 100%;
         position: relative;
         top: 1000px;
-        overflow: auto
+        overflow: auto;
       }
     </style>
   </head>
@@ -24,70 +24,72 @@
         data: [
           ['Product', 'Cost'],
           ['Cars', 150000],
-          ['Trucks', 450000]
-        ]
+          ['Trucks', 450000],
+        ],
       };
 
       let brush = {
         trigger: [
           {
             on: 'tap',
-            contexts: ['test']
-          }
+            contexts: ['test'],
+          },
         ],
-        consume: [{
-          context: 'test',
+        consume: [
+          {
+            context: 'test',
             style: {
               inactive: {
-              fill: 'red'
-            }
-          }
-        }]
+                fill: 'red',
+              },
+            },
+          },
+        ],
       };
 
       let pointMarker = {
         type: 'point',
-          data: {
-            extract: {
-              field: 0,
-              props: {
-                x: { field: 0 },
-                y: { field: 1 }
-              }
-            }
-          },
-          settings: {
-            x: {
-              scale: 'd0',
-              ref: 'x'
+        data: {
+          extract: {
+            field: 0,
+            props: {
+              x: { field: 0 },
+              y: { field: 1 },
             },
-            y: {
-              scale: 'm0',
-              ref: 'y'
-            }
           },
-          brush
-        };
+        },
+        settings: {
+          x: {
+            scale: 'd0',
+            ref: 'x',
+          },
+          y: {
+            scale: 'm0',
+            ref: 'y',
+          },
+        },
+        brush,
+      };
 
       let settings = {
         scales: {
           d0: {
-            data: { field: 0 }
+            data: { field: 0 },
           },
           m0: {
             data: { field: 1 },
-            expand: 1 // Expand so that shapes dont end up at the boundaries
-          }
+            expand: 1, // Expand so that shapes dont end up at the boundaries
+          },
         },
-        components: [pointMarker]
+        components: [pointMarker],
       };
 
-      let element = document.getElementById("container");
+      let element = document.getElementById('container');
 
       window.fixture = picasso.chart({
         element,
         data,
-        settings
+        settings,
       });
     </script>
   </body>

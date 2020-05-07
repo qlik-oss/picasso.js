@@ -51,7 +51,10 @@ function registerTemplates(cb) {
   handlebars.registerPartial(undefined, '{{undefinedpartial}}');
 }
 
-handlebars.registerHelper('undefinedpartial', () => 'This partial does not exists. This may most certainly be caused by a missing file.');
+handlebars.registerHelper(
+  'undefinedpartial',
+  () => 'This partial does not exists. This may most certainly be caused by a missing file.'
+);
 
 /**
  * POSTPROCESS
@@ -60,7 +63,8 @@ function postProcessTemplate(item) {
   return `#%#%#%#%# DOCS-GEN-POSTPROCESS: ${item} #%#%#%#%#`;
 }
 
-handlebars.registerHelper('postprocess', function (item) { // eslint-disable-line
+handlebars.registerHelper('postprocess', function (item) {
+  // eslint-disable-line
   this._post.push(item);
 
   return postProcessTemplate(item);
@@ -107,25 +111,25 @@ handlebars.registerHelper('ifCond', function ifCond(v1, operator, v2, options) {
   // https://stackoverflow.com/revisions/16315366/1
   switch (operator) {
     case '==':
-      return (v1 == v2) ? options.fn(this) : options.inverse(this); // eslint-disable-line eqeqeq
+      return v1 == v2 ? options.fn(this) : options.inverse(this); // eslint-disable-line eqeqeq
     case '===':
-      return (v1 === v2) ? options.fn(this) : options.inverse(this);
+      return v1 === v2 ? options.fn(this) : options.inverse(this);
     case '!=':
-      return (v1 != v2) ? options.fn(this) : options.inverse(this);// eslint-disable-line eqeqeq
+      return v1 != v2 ? options.fn(this) : options.inverse(this); // eslint-disable-line eqeqeq
     case '!==':
-      return (v1 !== v2) ? options.fn(this) : options.inverse(this);
+      return v1 !== v2 ? options.fn(this) : options.inverse(this);
     case '<':
-      return (v1 < v2) ? options.fn(this) : options.inverse(this);
+      return v1 < v2 ? options.fn(this) : options.inverse(this);
     case '<=':
-      return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+      return v1 <= v2 ? options.fn(this) : options.inverse(this);
     case '>':
-      return (v1 > v2) ? options.fn(this) : options.inverse(this);
+      return v1 > v2 ? options.fn(this) : options.inverse(this);
     case '>=':
-      return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+      return v1 >= v2 ? options.fn(this) : options.inverse(this);
     case '&&':
-      return (v1 && v2) ? options.fn(this) : options.inverse(this);
+      return v1 && v2 ? options.fn(this) : options.inverse(this);
     case '||':
-      return (v1 || v2) ? options.fn(this) : options.inverse(this);
+      return v1 || v2 ? options.fn(this) : options.inverse(this);
     default:
       return options.inverse(this);
   }
@@ -144,8 +148,8 @@ handlebars.registerHelper('anchor', (...args) => {
   return new handlebars.SafeString(`<a name='${name}' href='#${name}'># </a>`);
 });
 
-handlebars.registerHelper('no', v => v || 'No');
-handlebars.registerHelper('nocust', (v, fb) => v || (fb || 'No'));
+handlebars.registerHelper('no', (v) => v || 'No');
+handlebars.registerHelper('nocust', (v, fb) => v || fb || 'No');
 
 handlebars.registerHelper('med', (node, options) => {
   const context = node;
@@ -161,7 +165,7 @@ handlebars.registerHelper('typedef', (node, options) => {
   }
   let t = '';
   if (node.kind === 'union' && node.items) {
-    t = node.items.map(tt => tt.type).join(' | ');
+    t = node.items.map((tt) => tt.type).join(' | ');
     t = options.fn(t).replace(' | ', ' &#124; ');
     // console.log(t, new handlebars.SafeString(t));
   } else if (node.kind === 'array' && node.items) {
@@ -184,11 +188,12 @@ handlebars.registerHelper('sample', (node) => {
   let s = '';
   if (defaultType === 'undefined') {
     if (node.kind === 'union' && node.items) {
-      s = `/* ${node.items.map(tt => tt.type).join(' | ')} */`;
+      s = `/* ${node.items.map((tt) => tt.type).join(' | ')} */`;
     } else {
       s = `/* ${node.kind || node.type} */`;
     }
-  } else if (defaultType === 'string' && node.defaultValue[0] !== "'") { // add quotes
+  } else if (defaultType === 'string' && node.defaultValue[0] !== "'") {
+    // add quotes
     s = `'${node.defaultValue}'`;
   } else {
     s = node.defaultValue;
@@ -203,4 +208,6 @@ handlebars.registerHelper('helperMissing', (context) => {
 
 rimraf.sync(`${MD_OUTPUT_FOLDER}*`);
 
-registerTemplates(() => { compileMarkdownFiles(spec); });
+registerTemplates(() => {
+  compileMarkdownFiles(spec);
+});

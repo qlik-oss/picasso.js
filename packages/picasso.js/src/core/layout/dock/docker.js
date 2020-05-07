@@ -32,10 +32,10 @@ function cacheSize(c, reducedRect, layoutRect) {
 
 function validateReduceRect(rect, reducedRect, settings) {
   // Absolute value for width/height should have predence over relative value
-  const minReduceWidth = Math.min(settings.center.minWidth, rect.width)
-    || Math.max(rect.width * settings.center.minWidthRatio, 1);
-  const minReduceHeight = Math.min(settings.center.minHeight, rect.height)
-    || Math.max(rect.height * settings.center.minHeightRatio, 1);
+  const minReduceWidth =
+    Math.min(settings.center.minWidth, rect.width) || Math.max(rect.width * settings.center.minWidthRatio, 1);
+  const minReduceHeight =
+    Math.min(settings.center.minHeight, rect.height) || Math.max(rect.height * settings.center.minHeightRatio, 1);
   return reducedRect.width >= minReduceWidth && reducedRect.height >= minReduceHeight;
 }
 
@@ -142,15 +142,13 @@ function filterReferencedDocks(visible, hidden) {
   }
 }
 
-function reduceLayoutRect({
-  layoutRect, visible, hidden, settings
-}) {
+function reduceLayoutRect({ layoutRect, visible, hidden, settings }) {
   const reducedRect = createRect(layoutRect.x, layoutRect.y, layoutRect.width, layoutRect.height);
   const edgeBleed = {
     left: 0,
     right: 0,
     top: 0,
-    bottom: 0
+    bottom: 0,
   };
 
   const sortedComponents = visible.slice();
@@ -180,18 +178,18 @@ function computeRect(rect) {
     x: rect.margin.left + rect.x * rect.scaleRatio.x,
     y: rect.margin.top + rect.y * rect.scaleRatio.y,
     width: rect.width * rect.scaleRatio.x,
-    height: rect.height * rect.scaleRatio.y
+    height: rect.height * rect.scaleRatio.y,
   };
 }
 
 function appendScaleRatio(rect, outerRect, layoutRect, containerRect) {
   const scaleRatio = {
     x: containerRect.width / layoutRect.width,
-    y: containerRect.height / layoutRect.height
+    y: containerRect.height / layoutRect.height,
   };
   const margin = {
     left: 0,
-    top: 0
+    top: 0,
   };
 
   if (layoutRect.preserveAspectRatio) {
@@ -219,9 +217,7 @@ function boundingBox(rects) {
   return pointsToRect(points);
 }
 
-function positionComponents({
-  visible, layoutRect, reducedRect, containerRect, translation
-}) {
+function positionComponents({ visible, layoutRect, reducedRect, containerRect, translation }) {
   const vRect = createRect(reducedRect.x, reducedRect.y, reducedRect.width, reducedRect.height);
   const hRect = createRect(reducedRect.x, reducedRect.y, reducedRect.width, reducedRect.height);
 
@@ -297,9 +293,7 @@ function positionComponents({
           break;
         default:
           if (c.referencedDocks.length > 0) {
-            const refs = c.referencedDocks
-              .map((ref) => referencedComponents[ref])
-              .filter((ref) => !!ref);
+            const refs = c.referencedDocks.map((ref) => referencedComponents[ref]).filter((ref) => !!ref);
             if (refs.length > 0) {
               outerRect = boundingBox(refs.map((ref) => ref.outerRect));
               rect = boundingBox(refs.map((ref) => ref.r));
@@ -311,7 +305,7 @@ function positionComponents({
         referencedComponents[c.key] = {
           // store the size of this component
           r: rect,
-          outerRect
+          outerRect,
         };
       }
       appendScaleRatio(rect, outerRect, layoutRect, containerRect);
@@ -335,14 +329,16 @@ function checkShowSettings(strategySettings, dockSettings, logicalContainerRect)
   const minimumLayoutMode = dockSettings.minimumLayoutMode();
   let show = dockSettings.show();
   if (show && typeof minimumLayoutMode === 'object') {
-    show = layoutModes[minimumLayoutMode.width]
-      && layoutModes[minimumLayoutMode.height]
-      && logicalContainerRect.width >= layoutModes[minimumLayoutMode.width].width
-      && logicalContainerRect.height >= layoutModes[minimumLayoutMode.height].height;
+    show =
+      layoutModes[minimumLayoutMode.width] &&
+      layoutModes[minimumLayoutMode.height] &&
+      logicalContainerRect.width >= layoutModes[minimumLayoutMode.width].width &&
+      logicalContainerRect.height >= layoutModes[minimumLayoutMode.height].height;
   } else if (show && minimumLayoutMode !== undefined) {
-    show = layoutModes[minimumLayoutMode]
-      && logicalContainerRect.width >= layoutModes[minimumLayoutMode].width
-      && logicalContainerRect.height >= layoutModes[minimumLayoutMode].height;
+    show =
+      layoutModes[minimumLayoutMode] &&
+      logicalContainerRect.width >= layoutModes[minimumLayoutMode].width &&
+      logicalContainerRect.height >= layoutModes[minimumLayoutMode].height;
   }
   return show;
 }
@@ -381,14 +377,14 @@ function filterComponents(components, settings, rect) {
         comp,
         key,
         config,
-        referencedDocks
+        referencedDocks,
       });
     } else {
       hidden.push({
         comp,
         key,
         config,
-        referencedDocks
+        referencedDocks,
       });
     }
   }
@@ -430,7 +426,7 @@ function dockLayout(initialSettings) {
       layoutRect: logicalContainerRect,
       visible,
       hidden,
-      settings
+      settings,
     });
 
     const translation = { x: rect.x, y: rect.y };
@@ -440,7 +436,7 @@ function dockLayout(initialSettings) {
       layoutRect: logicalContainerRect,
       reducedRect,
       containerRect,
-      translation
+      translation,
     });
     hidden.forEach((c) => {
       c.comp.visible = false;

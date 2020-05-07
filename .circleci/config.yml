@@ -14,9 +14,9 @@ aliases:
 
 defaults: &defaults
   working_directory: ~/picassojs
-    # Available images https://hub.docker.com/r/circleci/node/tags/
+  # Available images https://hub.docker.com/r/circleci/node/tags/
   docker:
-    - image: circleci/node:10.13.0-browsers
+    - image: circleci/node:10.14.0-browsers
 
 jobs:
   install:

@@ -5,7 +5,7 @@ describe('style-resolver', () => {
   it('should resolve a primitive reference', () => {
     const s = resolve({ font: '$font-family' }, { '$font-family': 'Arial' });
     expect(s).to.eql({
-      font: 'Arial'
+      font: 'Arial',
     });
   });
 
@@ -14,20 +14,23 @@ describe('style-resolver', () => {
     expect(s).to.eql({
       label: {
         fontFamily: 'Arial',
-        fontSize: '12px'
-      }
+        fontSize: '12px',
+      },
     });
   });
 
   it('should not include variables', () => {
-    const s = resolve({
-      '$fill': 'red',
-      font: 'foo',
-      color: '$fill'
-    }, {});
+    const s = resolve(
+      {
+        $fill: 'red',
+        font: 'foo',
+        color: '$fill',
+      },
+      {}
+    );
     expect(s).to.eql({
       font: 'foo',
-      color: 'red'
+      color: 'red',
     });
   });
 
@@ -36,16 +39,16 @@ describe('style-resolver', () => {
       '$size--m': '12px',
       '$label--big': {
         fontFamily: 'Arial',
-        fontSize: '$size--m'
-      }
+        fontSize: '$size--m',
+      },
     };
     const input = { label: '$label--big' };
     const s = resolve(input, references);
     expect(s).to.eql({
       label: {
         fontFamily: 'Arial',
-        fontSize: '12px'
-      }
+        fontSize: '12px',
+      },
     });
   });
 
@@ -55,12 +58,12 @@ describe('style-resolver', () => {
       '$label--m': {
         fontFamily: 'Arial',
         fontVariant: 'small-caps',
-        fontSize: '12px'
+        fontSize: '12px',
       },
       '$label--big': {
         '@extend': '$label--m',
-        fontSize: '$size--l'
-      }
+        fontSize: '$size--l',
+      },
     };
     const input = { label: '$label--big' };
     const s = resolve(input, references);
@@ -68,8 +71,8 @@ describe('style-resolver', () => {
       label: {
         fontFamily: 'Arial',
         fontSize: '24px',
-        fontVariant: 'small-caps'
-      }
+        fontVariant: 'small-caps',
+      },
     });
   });
 
@@ -79,34 +82,34 @@ describe('style-resolver', () => {
       '$label--m': {
         fontFamily: 'Arial',
         fontVariant: 'small-caps',
-        fontSize: '12px'
-      }
+        fontSize: '12px',
+      },
     };
     const input = { '@extend': '$label--m' };
     const s = resolve(input, references);
     expect(s).to.eql({
       fontFamily: 'Arial',
       fontSize: '12px',
-      fontVariant: 'small-caps'
+      fontVariant: 'small-caps',
     });
   });
 
   it('should extend something extended', () => {
     const references = {
-      '$base': {
-        strokeWidth: 3
+      $base: {
+        strokeWidth: 3,
       },
       '$size--l': '24px',
       '$label--m': {
         '@extend': '$base',
         fontFamily: 'Arial',
         fontVariant: 'small-caps',
-        fontSize: '12px'
+        fontSize: '12px',
       },
       '$label--big': {
         '@extend': '$label--m',
-        fontSize: '$size--l'
-      }
+        fontSize: '$size--l',
+      },
     };
     const input = { label: '$label--big' };
     const s = resolve(input, references);
@@ -115,8 +118,8 @@ describe('style-resolver', () => {
         fontFamily: 'Arial',
         fontSize: '24px',
         fontVariant: 'small-caps',
-        strokeWidth: 3
-      }
+        strokeWidth: 3,
+      },
     });
   });
 
@@ -124,8 +127,8 @@ describe('style-resolver', () => {
     const references = {
       '$label--big': {
         fontFamily: 'Arial',
-        fontSize: '$label--big'
-      }
+        fontSize: '$label--big',
+      },
     };
     const input = { label: '$label--big' };
     const fn = () => resolve(input, references);
@@ -134,13 +137,13 @@ describe('style-resolver', () => {
 
   it('should throw error when finding a cyclical reference to itself in something that it has extended', () => {
     const references = {
-      '$base': {
-        fontSize: '$label--big'
+      $base: {
+        fontSize: '$label--big',
       },
       '$label--big': {
         '@extend': '$base',
-        fontFamily: 'Arial'
-      }
+        fontFamily: 'Arial',
+      },
     };
     const input = { label: '$label--big' };
     const fn = () => resolve(input, references);
@@ -149,13 +152,13 @@ describe('style-resolver', () => {
 
   it('should throw error when finding a cyclical reference when extending itself', () => {
     const references = {
-      '$base': {
-        '@extend': '$label--big'
+      $base: {
+        '@extend': '$label--big',
       },
       '$label--big': {
         '@extend': '$base',
-        fontFamily: 'Arial'
-      }
+        fontFamily: 'Arial',
+      },
     };
     const input = { label: '$label--big' };
     const fn = () => resolve(input, references);
@@ -164,45 +167,45 @@ describe('style-resolver', () => {
 
   it('should resolve style recursively', () => {
     const references = {
-      '$primary': 'red'
+      $primary: 'red',
     };
     const input = {
       label: {
-        fill: '$primary'
-      }
+        fill: '$primary',
+      },
     };
     const s = resolve(input, references);
 
     expect(s).to.eql({
       label: {
-        fill: 'red'
-      }
+        fill: 'red',
+      },
     });
   });
 
   it('should resolve style recursively in root', () => {
     const references = {
-      '$primary': 'red',
-      '$secondary': '$primary',
-      '$alias': '$secondary'
+      $primary: 'red',
+      $secondary: '$primary',
+      $alias: '$secondary',
     };
     const input = {
-      color: '$alias'
+      color: '$alias',
     };
     const s = resolve(input, references);
 
     expect(s).to.eql({
-      color: 'red'
+      color: 'red',
     });
   });
 
   it('should throw error when finding primitive cyclical reference', () => {
     const references = {
-      '$secondary': '$alias',
-      '$alias': '$secondary'
+      $secondary: '$alias',
+      $alias: '$secondary',
     };
     const input = {
-      color: '$alias'
+      color: '$alias',
     };
     const fn = () => resolve(input, references);
     expect(fn).to.throw('Cyclical reference for "$alias"');
@@ -210,30 +213,30 @@ describe('style-resolver', () => {
 
   it('should resolve style extend recursively with multiple input values', () => {
     const references = {
-      '$grey': 'lightgrey',
-      '$primary': {
+      $grey: 'lightgrey',
+      $primary: {
         stroke: '$grey',
-        strokeWidth: 1
-      }
+        strokeWidth: 1,
+      },
     };
     const input = {
       item: '$primary',
       label: {
         '@extend': '$primary',
-        stroke: 'blue'
-      }
+        stroke: 'blue',
+      },
     };
     const s = resolve(input, references);
 
     expect(s).to.eql({
       item: {
         stroke: 'lightgrey',
-        strokeWidth: 1
+        strokeWidth: 1,
       },
       label: {
         stroke: 'blue',
-        strokeWidth: 1
-      }
+        strokeWidth: 1,
+      },
     });
   });
 });

@@ -12,5 +12,5 @@ export default {
     });
     EventEmitter.init(obj);
     return obj;
-  }
+  },
 };

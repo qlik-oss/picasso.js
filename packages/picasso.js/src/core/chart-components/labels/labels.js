@@ -13,13 +13,7 @@ import strategies from './strategies';
  * @property {component--labels~label-strategy} sources[].strategy
  */
 
-export function strategy({
-  chart,
-  source,
-  rect,
-  renderer,
-  style
-}, fn) {
+export function strategy({ chart, source, rect, renderer, style }, fn) {
   const component = chart.component(source.component);
   if (!component) {
     return [];
@@ -34,10 +28,10 @@ export function strategy({
       x: 0,
       y: 0,
       width: rect.width,
-      height: rect.height
+      height: rect.height,
     },
     renderer,
-    style
+    style,
   });
 }
 
@@ -46,8 +40,8 @@ const labelsComponent = {
   defaultSettings: {
     settings: {},
     style: {
-      label: '$label'
-    }
+      label: '$label',
+    },
   },
   render() {
     const stngs = this.settings.settings;
@@ -55,18 +49,23 @@ const labelsComponent = {
 
     (stngs.sources || []).forEach((source) => {
       if (source.strategy && strategies[source.strategy.type] && source.component) {
-        labels.push(...strategy({
-          chart: this.chart,
-          rect: this.rect,
-          renderer: this.renderer,
-          source,
-          style: this.style
-        }, strategies[source.strategy.type]));
+        labels.push(
+          ...strategy(
+            {
+              chart: this.chart,
+              rect: this.rect,
+              renderer: this.renderer,
+              source,
+              style: this.style,
+            },
+            strategies[source.strategy.type]
+          )
+        );
       }
     });
 
     return labels;
-  }
+  },
 };
 
 export default labelsComponent;

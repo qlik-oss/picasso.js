@@ -65,9 +65,4 @@ const maintainer = (element, item) => {
   }
 };
 
-export {
-  svgNs,
-  creator,
-  maintainer,
-  destroyer
-};
+export { svgNs, creator, maintainer, destroyer };

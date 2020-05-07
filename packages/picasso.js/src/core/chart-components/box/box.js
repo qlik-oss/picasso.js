@@ -10,7 +10,7 @@ const DEFAULT_DATA_SETTINGS = {
     strokeWidth: 0,
     size: 10,
     sides: 3,
-    startAngle: -90
+    startAngle: -90,
   },
   box: {
     show: true,
@@ -21,17 +21,17 @@ const DEFAULT_DATA_SETTINGS = {
     width: 1,
     maxWidthPx: undefined,
     minWidthPx: 1,
-    minHeightPx: 1
+    minHeightPx: 1,
   },
   line: {
     show: true,
     stroke: '#000',
-    strokeWidth: 1
+    strokeWidth: 1,
   },
   median: {
     show: true,
     stroke: '#000',
-    strokeWidth: 1
+    strokeWidth: 1,
   },
   whisker: {
     show: true,
@@ -39,8 +39,8 @@ const DEFAULT_DATA_SETTINGS = {
     strokeWidth: 1,
     fill: '',
     type: 'line',
-    width: 1
-  }
+    width: 1,
+  },
 };
 
 const dataKeys = Object.keys(DEFAULT_DATA_SETTINGS);
@@ -54,8 +54,8 @@ const component = {
       box: '$shape',
       line: '$shape-guide',
       whisker: '$shape-guide',
-      median: '$shape-guide--inverted'
-    }
+      median: '$shape-guide--inverted',
+    },
   },
   created() {
     this.state = {};
@@ -70,7 +70,7 @@ const component = {
     const keys = dataKeys.filter((key) => !this.settings.settings[key] || this.settings.settings[key].show !== false);
     const defaultSettings = {};
 
-    keys.forEach((key) => defaultSettings[key] = DEFAULT_DATA_SETTINGS[key]);
+    keys.forEach((key) => (defaultSettings[key] = DEFAULT_DATA_SETTINGS[key]));
 
     const resolved = complexResolver({
       keys,
@@ -80,7 +80,7 @@ const component = {
       settings: this.settings.settings,
       width,
       height,
-      resolver
+      resolver,
     });
 
     const { settings, items } = resolved;
@@ -93,11 +93,11 @@ const component = {
       flipXY,
       resolved,
       keys,
-      symbol
+      symbol,
     });
 
     return shapes;
-  }
+  },
 };
 
 export default component;

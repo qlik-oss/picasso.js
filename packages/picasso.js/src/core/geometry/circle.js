@@ -4,7 +4,8 @@ import {
   testCircleRect,
   testCircleLine,
   testCircleCircle,
-  testCirclePolygon
+  testCirclePolygon,
+  testCircleGeoPolygon,
 } from '../math/narrow-phase-collision';
 
 /**
@@ -12,17 +13,16 @@ import {
  * @private
  */
 class GeoCircle {
-  constructor({
-    cx = 0, cy = 0, r = 0, minRadius = 0
-  } = {}) {
+  constructor({ cx = 0, cy = 0, r = 0, minRadius = 0 } = {}) {
     this.set({
-      cx, cy, r, minRadius
+      cx,
+      cy,
+      r,
+      minRadius,
     });
   }
 
-  set({
-    cx = 0, cy = 0, r = 0, minRadius = 0
-  } = {}) {
+  set({ cx = 0, cy = 0, r = 0, minRadius = 0 } = {}) {
     this.type = 'circle';
     this.cx = cx;
     this.cy = cy;
@@ -75,6 +75,14 @@ class GeoCircle {
   }
 
   /**
+   * @param {GeoPolygon} geopolygon
+   * @returns {boolean} True if there is an intersection, false otherwise
+   */
+  intersectsGeoPolygon(geopolygon) {
+    return testCircleGeoPolygon(this, geopolygon);
+  }
+
+  /**
    * Get the points
    * @returns {point[]}
    */
@@ -82,8 +90,8 @@ class GeoCircle {
     return [
       {
         x: this.cx,
-        y: this.cy
-      }
+        y: this.cy,
+      },
     ];
   }
 }
@@ -92,7 +100,4 @@ function create(...args) {
   return new GeoCircle(...args);
 }
 
-export {
-  GeoCircle as default,
-  create
-};
+export { GeoCircle as default, create };

@@ -1,10 +1,7 @@
 import extend from 'extend';
 
 import createDockLayout from '../layout/dock/docker';
-import {
-  detectTouchSupport,
-  isValidTapEvent
-} from '../utils/event-type';
+import { detectTouchSupport, isValidTapEvent } from '../utils/event-type';
 import { getShapeType } from '../geometry/util';
 import datasources from '../data/data';
 import dataCollections from '../data/collections';
@@ -58,6 +55,16 @@ function addComponentDelta(shape, containerBounds, componentBounds) {
         v.y += dy;
       }
       break;
+    case 'geopolygon': // vertices is 2D array
+      for (let n = 0; n < deltaShape.vertices.length; n++) {
+        const vertices = deltaShape.vertices[n];
+        for (let i = 0, num = vertices.length; i < num; i++) {
+          const v = vertices[i];
+          v.x += dx;
+          v.y += dy;
+        }
+      }
+      break;
     case 'line':
       deltaShape.x1 += dx;
       deltaShape.y1 += dy;
@@ -78,11 +85,15 @@ function addComponentDelta(shape, containerBounds, componentBounds) {
 
 const moveToPosition = (element, comp, index) => {
   const el = comp.instance.renderer().element();
-  if (isNaN(index) || !el || !element || !element.children) { return; }
+  if (isNaN(index) || !el || !element || !element.children) {
+    return;
+  }
   const nodes = element.children;
   const i = Math.max(0, index);
   const node = nodes[i];
-  if (el === node) { return; }
+  if (el === node) {
+    return;
+  }
   const additionalEl = comp.instance.def.additionalElements && comp.instance.def.additionalElements().filter(Boolean);
   if (element.insertBefore && typeof node !== 'undefined') {
     element.insertBefore(el, node);
@@ -104,7 +115,11 @@ const moveToPosition = (element, comp, index) => {
 export function orderComponents(element, visibleComponents, order) {
   const elToIdx = [];
   let numElements = 0;
-  const ordered = order ? visibleComponents.slice().sort((a, b) => order[visibleComponents.indexOf(a)] - order[visibleComponents.indexOf(b)]) : visibleComponents;
+  const ordered = order
+    ? visibleComponents
+        .slice()
+        .sort((a, b) => order[visibleComponents.indexOf(a)] - order[visibleComponents.indexOf(b)])
+    : visibleComponents;
   ordered.forEach((comp) => {
     elToIdx.push(numElements);
 
@@ -141,7 +156,7 @@ function chartFn(definition, context) {
      * @memberof chart-definition
      */
     settings = {},
-    on = {}
+    on = {},
   } = definition;
 
   const registries = context.registries;
@@ -153,10 +168,7 @@ function chartFn(definition, context) {
    * @alias chart
    * @interface
    */
-  const instance = extend(
-    {},
-    definition
-  );
+  const instance = extend({}, definition);
   const mediator = mediatorFactory();
   let currentComponents = []; // Augmented components
   let visibleComponents = [];
@@ -183,13 +195,13 @@ function chartFn(definition, context) {
       mediator,
       registries,
       theme,
-      container
+      container,
     });
     return {
       instance: compInstance,
       settings: extend(true, {}, compSettings),
       key: compSettings.key,
-      hasKey: typeof compSettings.key !== 'undefined'
+      hasKey: typeof compSettings.key !== 'undefined',
     };
   };
 
@@ -231,11 +243,17 @@ function chartFn(definition, context) {
     if (typeof el.getBoundingClientRect === 'function') {
       const { width, height } = el.getBoundingClientRect();
       return {
-        x: 0, y: 0, width, height
+        x: 0,
+        y: 0,
+        width,
+        height,
       };
     }
     return {
-      x: 0, y: 0, width: 0, height: 0
+      x: 0,
+      y: 0,
+      width: 0,
+      height: 0,
     };
   }
 
@@ -247,7 +265,7 @@ function chartFn(definition, context) {
         resize: c.instance.resize,
         preferredSize: dockConfig.computePreferredSize.bind(dockConfig),
         settings: c.settings,
-        layoutComponents: () => {}
+        layoutComponents: () => {},
       };
     });
     let layoutSettings;
@@ -266,7 +284,7 @@ function chartFn(definition, context) {
     return {
       visible: visible.map((v) => findComponent(v.instance)),
       hidden: hidden.map((h) => findComponent(h.instance)),
-      order
+      order,
     };
   };
 
@@ -280,11 +298,7 @@ function chartFn(definition, context) {
   const destroyed = createCallback('destroyed');
 
   const set = (_data, _settings, { partialData } = {}) => {
-    const {
-      formatters = {},
-      scales = {},
-      scroll = {}
-    } = _settings;
+    const { formatters = {}, scales = {}, scroll = {} } = _settings;
 
     dataset = datasources(_data, { logger, types: registries.data });
     if (!partialData) {
@@ -300,25 +314,29 @@ function chartFn(definition, context) {
 
     const deps = {
       theme,
-      logger
+      logger,
     };
-    currentScales = scaleCollection(scales, { dataset, collection: dataCollection }, { ...deps, scale: registries.scale });
-    currentFormatters = formatterCollection(formatters, { dataset, collection: dataCollection }, { ...deps, formatter: registries.formatter });
+    currentScales = scaleCollection(
+      scales,
+      { dataset, collection: dataCollection },
+      { ...deps, scale: registries.scale }
+    );
+    currentFormatters = formatterCollection(
+      formatters,
+      { dataset, collection: dataCollection },
+      { ...deps, formatter: registries.formatter }
+    );
     currentScrollApis = buildScroll(scroll, currentScrollApis);
   };
 
   const render = () => {
-    const {
-      components = []
-    } = settings;
+    const { components = [] } = settings;
 
     beforeRender();
 
     set(data, settings);
 
-    currentComponents = components.map((compSettings) => (
-      createComponent(compSettings, element)
-    )).filter((c) => !!c);
+    currentComponents = components.map((compSettings) => createComponent(compSettings, element)).filter((c) => !!c);
 
     const { visible, hidden, order } = layout(currentComponents);
     visibleComponents = visible;
@@ -334,7 +352,9 @@ function chartFn(definition, context) {
 
     visible.forEach((comp) => comp.instance.render());
     visible.forEach((comp) => comp.instance.mounted());
-    visible.forEach((comp) => { comp.visible = true; });
+    visible.forEach((comp) => {
+      comp.visible = true;
+    });
     orderComponents(element, visibleComponents, order);
   };
 
@@ -342,14 +362,18 @@ function chartFn(definition, context) {
     const current = {};
     const newKeys = interactions.filter((it) => !!it.key).map((it) => it.key);
     currentInteractions.forEach((cit) => {
-      if (cit.key && newKeys.indexOf(cit.key) !== -1) { // keep old instance
+      if (cit.key && newKeys.indexOf(cit.key) !== -1) {
+        // keep old instance
         current[cit.key] = cit;
       } else {
         cit.destroy();
       }
     });
     currentInteractions = interactions.map((intSettings) => {
-      const intDefinition = intSettings.key && current[intSettings.key] ? current[intSettings.key] : registries.interaction(intSettings.type)(instance, mediator, element);
+      const intDefinition =
+        intSettings.key && current[intSettings.key]
+          ? current[intSettings.key]
+          : registries.interaction(intSettings.type)(instance, mediator, element);
       intDefinition.set(intSettings);
       return intDefinition;
     });
@@ -364,12 +388,19 @@ function chartFn(definition, context) {
     visibleComponents.forEach((c) => {
       const r = c.instance.getRect();
       // Do test on physical rect and use computed rect if available, otherwise fallback to computing a new rect for legacy support
-      if (testRectPoint(r.computedPhysical ? r.computedPhysical : {
-        x: r.margin.left + (r.x * r.scaleRatio.x),
-        y: r.margin.top + (r.y * r.scaleRatio.y),
-        width: r.width * r.scaleRatio.x,
-        height: r.height * r.scaleRatio.y
-      }, tp)) {
+      if (
+        testRectPoint(
+          r.computedPhysical
+            ? r.computedPhysical
+            : {
+                x: r.margin.left + r.x * r.scaleRatio.x,
+                y: r.margin.top + r.y * r.scaleRatio.y,
+                width: r.width * r.scaleRatio.x,
+                height: r.height * r.scaleRatio.y,
+              },
+          tp
+        )
+      ) {
         ret.push(c);
       }
     });
@@ -385,7 +416,7 @@ function chartFn(definition, context) {
       element.addEventListener(key, listener);
       listeners.push({
         key,
-        listener
+        listener,
       });
     });
 
@@ -496,11 +527,7 @@ function chartFn(definition, context) {
 
     set(data, settings, { partialData });
 
-    const {
-      formatters,
-      scales,
-      components = []
-    } = settings;
+    const { formatters, scales, components = [] } = settings;
 
     for (let i = currentComponents.length - 1; i >= 0; i--) {
       const currComp = currentComponents[i];
@@ -513,27 +540,29 @@ function chartFn(definition, context) {
     }
 
     // Let the "components" array determine order of components
-    currentComponents = components.map((comp) => {
-      const idx = findComponentIndexByKey(comp.key);
+    currentComponents = components
+      .map((comp) => {
+        const idx = findComponentIndexByKey(comp.key);
 
-      // Component should not be updated
-      if (excludeFromUpdate.indexOf(comp.key) > -1) {
+        // Component should not be updated
+        if (excludeFromUpdate.indexOf(comp.key) > -1) {
+          return currentComponents[idx];
+        }
+
+        if (idx === -1) {
+          // Component is added
+          return createComponent(comp, element);
+        }
+        // Component is (potentially) updated
+        currentComponents[idx].updateWith = {
+          formatters,
+          scales,
+          data,
+          settings: comp,
+        };
         return currentComponents[idx];
-      }
-
-      if (idx === -1) {
-        // Component is added
-        return createComponent(comp, element);
-      }
-      // Component is (potentially) updated
-      currentComponents[idx].updateWith = {
-        formatters,
-        scales,
-        data,
-        settings: comp
-      };
-      return currentComponents[idx];
-    }).filter((c) => !!c);
+      })
+      .filter((c) => !!c);
 
     currentComponents.forEach((comp) => {
       if (comp.updateWith) {
@@ -630,9 +659,11 @@ function chartFn(definition, context) {
    */
   instance.getAffectedShapes = (ctx, mode = 'and', props, key) => {
     const shapes = [];
-    currentComponents.filter((comp) => key === undefined || key === null || comp.key === key).forEach((comp) => {
-      shapes.push(...comp.instance.getBrushedShapes(ctx, mode, props));
-    });
+    currentComponents
+      .filter((comp) => key === undefined || key === null || comp.key === key)
+      .forEach((comp) => {
+        shapes.push(...comp.instance.getBrushedShapes(ctx, mode, props));
+      });
     return shapes;
   };
 
@@ -662,9 +693,9 @@ function chartFn(definition, context) {
   instance.componentsFromPoint = (p) => componentsFromPoint(p).map((comp) => comp.instance.ctx);
 
   /**
-   * Get all nodes colliding with a geometrical shape (circle, line, rectangle, point, polygon).
+   * Get all nodes colliding with a geometrical shape (circle, line, rectangle, point, polygon, geopolygon).
    *
-   * The input shape is identified based on the geometrical attributes in the following order: circle => line => rectangle => point => polygon.
+   * The input shape is identified based on the geometrical attributes in the following order: circle => line => rectangle => point => polygon => geopolygon.
    * Note that not all nodes on a scene have collision detection enabled.
    * @param {line|rect|point|circle} shape - A geometrical shape. Coordinates are relative to the top-left corner of the chart instance container.
    * @param {object} opts - Options
@@ -702,7 +733,7 @@ function chartFn(definition, context) {
         .filter((c) => compKeys.indexOf(c.key) !== -1)
         .map((c) => ({
           instance: c.instance,
-          opts: opts.components[compKeys.indexOf(c.key)]
+          opts: opts.components[compKeys.indexOf(c.key)],
         }));
     }
 
@@ -721,7 +752,6 @@ function chartFn(definition, context) {
     }
     return result;
   };
-
 
   /**
    * Brush data by providing a collection of data bound shapes.
@@ -750,10 +780,12 @@ function chartFn(definition, context) {
   instance.brushFromShapes = (shapes, config = { components: [] }) => {
     for (let i = 0; i < config.components.length; i++) {
       const iKey = config.components[i].key;
-      visibleComponents.filter((c) => iKey === c.key).forEach((c) => {
-        let compShapes = shapes.filter((shape) => shape.key === c.key);
-        c.instance.brushFromShapes(compShapes, config.components[i]);
-      });
+      visibleComponents
+        .filter((c) => iKey === c.key)
+        .forEach((c) => {
+          let compShapes = shapes.filter((shape) => shape.key === c.key);
+          c.instance.brushFromShapes(compShapes, config.components[i]);
+        });
     }
   };
 
@@ -884,9 +916,9 @@ function chartFn(definition, context) {
         off() {
           removeDefaultEventListeners();
           currentInteractions.forEach((i) => i.off());
-        }
+        },
       };
-    }
+    },
   });
 
   created();

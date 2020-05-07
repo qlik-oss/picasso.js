@@ -24,7 +24,7 @@ A component that renders lines and areas.
     coordinates: {
       minor: { scale: 'y' },
       major: { scale: 'x' },
-      layerId: { ref: 'year' } 
+      layerId: { ref: 'year' }
     },
     orientation: 'horizontal',
     layers: {
@@ -34,7 +34,7 @@ A component that renders lines and areas.
         strokeWidth: 2,
         stroke: {
           scale: 'color',
-          ref: 'id' 
+          ref: 'id'
         },
         opacity: 1,
         show: (a, i) => i >= 1

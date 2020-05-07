@@ -1,6 +1,6 @@
 {
   "name": "picasso.js",
-  "version": "0.29.1",
+  "version": "0.30.0",
   "description": "A charting library streamlined for building visualizations for the Qlik Sense Analytics platform.",
   "license": "MIT",
   "author": "QlikTech International AB",
@@ -35,18 +35,18 @@
     "prepublishOnly": "rm -rf dist && npm run build"
   },
   "devDependencies": {
-    "d3-ease": "^1.0.5",
-    "d3-format": "^1.4.1",
-    "d3-hierarchy": "^1.1.8",
-    "d3-interpolate": "^1.3.2",
-    "d3-scale": "^2.2.2",
-    "d3-shape": "^1.3.5",
-    "d3-time-format": "^2.1.3",
-    "extend": "^3.0.2",
-    "hammerjs": "^2.0.8",
+    "d3-ease": "1.0.6",
+    "d3-format": "1.4.4",
+    "d3-hierarchy": "1.1.9",
+    "d3-interpolate": "1.4.0",
+    "d3-scale": "2.2.2",
+    "d3-shape": "1.3.7",
+    "d3-time-format": "2.2.3",
+    "extend": "3.0.2",
+    "hammerjs": "2.0.8",
     "node-event-emitter": "0.0.1",
     "path2d-polyfill": "0.4.2",
-    "preact": "^8.5.2",
-    "test-utils": "^0.29.1"
+    "preact": "10.4.1",
+    "test-utils": "0.30.0"
   }
 }

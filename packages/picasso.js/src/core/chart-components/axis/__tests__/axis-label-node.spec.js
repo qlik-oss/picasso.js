@@ -2,21 +2,27 @@ import buildLabel from '../axis-label-node';
 import { textBounds } from '../../../../web/text-manipulation';
 
 function createTick(start, end) {
-  const position = start + ((end - start) / 2);
+  const position = start + (end - start) / 2;
   return {
     start,
     end,
     position,
-    label: '50%'
+    label: '50%',
   };
 }
 
 describe('Axis Label Node', () => {
   const innerRect = {
-    x: 0, y: 0, width: 0, height: 0
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
   };
   const outerRect = {
-    x: 0, y: 0, width: 0, height: 0
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
   };
   const textRect = { width: 10, height: 10 };
   const measureTextMock = ({ text }) => ({ width: text.length, height: 1 });
@@ -33,9 +39,7 @@ describe('Axis Label Node', () => {
   });
 
   describe('Label', () => {
-    let buildOpts,
-      tick,
-      expected;
+    let buildOpts, tick, expected;
 
     beforeEach(() => {
       buildOpts = {
@@ -48,7 +52,7 @@ describe('Axis Label Node', () => {
         maxHeight: textRect.height,
         textRect,
         textBounds: (node) => textBounds(node, measureTextMock),
-        stepSize: 0
+        stepSize: 0,
       };
       tick = createTick(0.5, 0.5);
       expected = {
@@ -61,7 +65,7 @@ describe('Axis Label Node', () => {
         fontSize: 10,
         anchor: 'end',
         maxWidth: textRect.width,
-        maxHeight: textRect.height
+        maxHeight: textRect.height,
       };
     });
 
@@ -333,8 +337,8 @@ describe('Axis Label Node', () => {
       beforeEach(() => {
         buildOpts.tilted = true;
         buildOpts.angle = 45;
-        expected.y = 10 + ((buildOpts.maxHeight * Math.cos(rad45)) / 2); // 10 is top of rect + padding
-        expected.x = 25 - ((buildOpts.maxHeight * Math.sin(rad45)) / 2); // 25 is in the middle: width * tick.position
+        expected.y = 10 + (buildOpts.maxHeight * Math.cos(rad45)) / 2; // 10 is top of rect + padding
+        expected.x = 25 - (buildOpts.maxHeight * Math.sin(rad45)) / 2; // 25 is in the middle: width * tick.position
         expected.transform = `rotate(-45, ${expected.x}, ${expected.y})`;
         tick = createTick(0.5, 0.5);
         tick.label = 'mmmmmm';
@@ -351,16 +355,16 @@ describe('Axis Label Node', () => {
         });
 
         it('60deg', () => {
-          expected.y = 10 + ((buildOpts.maxHeight * Math.cos(rad60)) / 2);
-          expected.x = 25 - ((buildOpts.maxHeight * Math.sin(rad60)) / 2);
+          expected.y = 10 + (buildOpts.maxHeight * Math.cos(rad60)) / 2;
+          expected.x = 25 - (buildOpts.maxHeight * Math.sin(rad60)) / 2;
           expected.transform = `rotate(-60, ${expected.x}, ${expected.y})`;
           buildOpts.angle = 60;
           expect(buildLabel(tick, buildOpts)).to.deep.include(expected);
         });
 
         it('-45deg', () => {
-          expected.y = 10 + ((buildOpts.maxHeight * Math.cos(-rad45)) / 2);
-          expected.x = 25 - ((buildOpts.maxHeight * Math.sin(-rad45)) / 2);
+          expected.y = 10 + (buildOpts.maxHeight * Math.cos(-rad45)) / 2;
+          expected.x = 25 - (buildOpts.maxHeight * Math.sin(-rad45)) / 2;
           expected.transform = `rotate(45, ${expected.x}, ${expected.y})`;
           expected.anchor = 'start';
           buildOpts.angle = -45;
@@ -376,7 +380,7 @@ describe('Axis Label Node', () => {
 
         it('45deg', () => {
           buildOpts.angle = 45;
-          expected.x = 25 - ((buildOpts.maxHeight * Math.sin(rad45)) / 3);
+          expected.x = 25 - (buildOpts.maxHeight * Math.sin(rad45)) / 3;
           expected.y = 90; // Bottom of the rect - padding
           expected.transform = `rotate(-45, ${expected.x}, 90)`;
           expect(buildLabel(tick, buildOpts)).to.deep.include(expected);
@@ -384,7 +388,7 @@ describe('Axis Label Node', () => {
 
         it('60deg', () => {
           buildOpts.angle = 60;
-          expected.x = 25 - ((buildOpts.maxHeight * Math.sin(rad60)) / 3);
+          expected.x = 25 - (buildOpts.maxHeight * Math.sin(rad60)) / 3;
           expected.y = 90;
           expected.transform = `rotate(-60, ${expected.x}, ${expected.y})`;
           expect(buildLabel(tick, buildOpts)).to.deep.include(expected);
@@ -393,7 +397,7 @@ describe('Axis Label Node', () => {
         it('-45deg', () => {
           buildOpts.angle = -45;
           expected.anchor = 'end';
-          expected.x = 25 - ((buildOpts.maxHeight * Math.sin(-rad45)) / 3);
+          expected.x = 25 - (buildOpts.maxHeight * Math.sin(-rad45)) / 3;
           expected.y = 90; // Bottom of the rect - padding
           expected.transform = `rotate(45, ${expected.x}, 90)`;
           expect(buildLabel(tick, buildOpts)).to.deep.include(expected);
@@ -424,7 +428,7 @@ describe('Axis Label Node', () => {
             x: 0,
             y: 40,
             width: buildOpts.innerRect.width,
-            height: buildOpts.stepSize
+            height: buildOpts.stepSize,
           };
 
           expect(label.collider).to.deep.equal(expected);
@@ -440,7 +444,7 @@ describe('Axis Label Node', () => {
             x: 0,
             y: 0,
             width: buildOpts.innerRect.width,
-            height: buildOpts.stepSize
+            height: buildOpts.stepSize,
           };
 
           expect(label.collider).to.deep.equal(expected);
@@ -456,7 +460,7 @@ describe('Axis Label Node', () => {
             x: 0,
             y: 80,
             width: buildOpts.innerRect.width,
-            height: 20
+            height: 20,
           };
 
           expect(label.collider).to.deep.equal(expected);
@@ -478,7 +482,7 @@ describe('Axis Label Node', () => {
             x: 0,
             y: 40,
             width: buildOpts.innerRect.width,
-            height: buildOpts.stepSize
+            height: buildOpts.stepSize,
           };
 
           expect(label.collider).to.deep.equal(expected);
@@ -494,7 +498,7 @@ describe('Axis Label Node', () => {
             x: 0,
             y: 0,
             width: buildOpts.innerRect.width,
-            height: buildOpts.stepSize
+            height: buildOpts.stepSize,
           };
 
           expect(label.collider).to.deep.equal(expected);
@@ -510,7 +514,7 @@ describe('Axis Label Node', () => {
             x: 0,
             y: 80,
             width: buildOpts.innerRect.width,
-            height: 20
+            height: 20,
           };
 
           expect(label.collider).to.deep.equal(expected);
@@ -532,7 +536,7 @@ describe('Axis Label Node', () => {
             x: 20,
             y: 0,
             width: buildOpts.stepSize,
-            height: buildOpts.innerRect.height
+            height: buildOpts.innerRect.height,
           };
 
           expect(label.collider).to.deep.equal(expected);
@@ -550,8 +554,8 @@ describe('Axis Label Node', () => {
               { x: 20, y: 89.25 },
               { x: 23, y: 89.25 },
               { x: 23, y: 90.25 },
-              { x: 20, y: 90.25 }
-            ]
+              { x: 20, y: 90.25 },
+            ],
           };
 
           expect(label.collider).to.deep.equal(expected);
@@ -570,8 +574,8 @@ describe('Axis Label Node', () => {
               { x: 23.644712002725782, y: 86.6412427893639 },
               { x: 30.715779814591258, y: 93.71231060122938 },
               { x: 40.35702260395516, y: 90.25 },
-              { x: 40.35702260395516, y: 89.25 }
-            ]
+              { x: 40.35702260395516, y: 89.25 },
+            ],
           };
 
           expect(label.collider).to.deep.equal(expected);
@@ -590,8 +594,8 @@ describe('Axis Label Node', () => {
               { x: 19.284220185408742, y: 93.71231060122938 },
               { x: 26.355287997274218, y: 86.6412427893639 },
               { x: 9.642977396044841, y: 89.25 },
-              { x: 9.642977396044841, y: 90.25 }
-            ]
+              { x: 9.642977396044841, y: 90.25 },
+            ],
           };
 
           expect(label.collider).to.deep.equal(expected);
@@ -607,7 +611,7 @@ describe('Axis Label Node', () => {
             x: 0,
             y: 0,
             width: buildOpts.stepSize,
-            height: buildOpts.innerRect.height
+            height: buildOpts.innerRect.height,
           };
 
           expect(label.collider).to.deep.equal(expected);
@@ -623,7 +627,7 @@ describe('Axis Label Node', () => {
             x: 40,
             y: 0,
             width: 10,
-            height: buildOpts.innerRect.height
+            height: buildOpts.innerRect.height,
           };
 
           expect(label.collider).to.deep.equal(expected);
@@ -645,7 +649,7 @@ describe('Axis Label Node', () => {
             x: 20,
             y: 0,
             width: buildOpts.stepSize,
-            height: buildOpts.innerRect.height
+            height: buildOpts.innerRect.height,
           };
 
           expect(label.collider).to.deep.equal(expected);
@@ -663,8 +667,8 @@ describe('Axis Label Node', () => {
               { x: 20, y: 19.25 },
               { x: 23, y: 19.25 },
               { x: 23, y: 20.25 },
-              { x: 20, y: 20.25 }
-            ]
+              { x: 20, y: 20.25 },
+            ],
           };
 
           expect(label.collider).to.deep.equal(expected);
@@ -683,8 +687,8 @@ describe('Axis Label Node', () => {
               { x: 25.53033008588991, y: 9.469669914110089 },
               { x: 32.60139789775538, y: 16.540737725975564 },
               { x: 15.535533905932738, y: 13.785533905932738 },
-              { x: 15.535533905932738, y: 12.785533905932738 }
-            ]
+              { x: 15.535533905932738, y: 12.785533905932738 },
+            ],
           };
 
           expect(label.collider).to.deep.equal(expected);
@@ -703,8 +707,8 @@ describe('Axis Label Node', () => {
               { x: 17.398602102244613, y: 16.540737725975564 },
               { x: 24.46966991411009, y: 9.469669914110089 },
               { x: 34.46446609406726, y: 12.785533905932738 },
-              { x: 34.46446609406726, y: 13.785533905932738 }
-            ]
+              { x: 34.46446609406726, y: 13.785533905932738 },
+            ],
           };
 
           expect(label.collider).to.deep.equal(expected);
@@ -720,7 +724,7 @@ describe('Axis Label Node', () => {
             x: 0,
             y: 0,
             width: buildOpts.stepSize,
-            height: buildOpts.innerRect.height
+            height: buildOpts.innerRect.height,
           };
 
           expect(label.collider).to.deep.equal(expected);
@@ -736,7 +740,7 @@ describe('Axis Label Node', () => {
             x: 40,
             y: 0,
             width: 10,
-            height: buildOpts.innerRect.height
+            height: buildOpts.innerRect.height,
           };
 
           expect(label.collider).to.deep.equal(expected);

@@ -10,7 +10,7 @@ export const DEFAULT_SETTINGS = {
   max: NaN,
   expand: NaN,
   include: [],
-  invert: false
+  invert: false,
 };
 
 export const DEFAULT_TICKS_SETTINGS = {
@@ -18,11 +18,11 @@ export const DEFAULT_TICKS_SETTINGS = {
   forceBounds: false,
   values: undefined,
   count: NaN,
-  distance: 100
+  distance: 100,
 };
 
 export const DEFAULT_MINORTICKS_SETTINGS = {
-  count: NaN
+  count: NaN,
 };
 
 /**
@@ -78,7 +78,7 @@ function getMinMax(settings, fields) {
 
   return {
     mini: !isNaN(min) ? min : fieldMin,
-    maxi: !isNaN(max) ? max : fieldMax
+    maxi: !isNaN(max) ? max : fieldMax,
   };
 }
 

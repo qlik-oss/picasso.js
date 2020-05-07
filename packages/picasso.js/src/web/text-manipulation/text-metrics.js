@@ -1,20 +1,15 @@
 import extend from 'extend';
 import { resolveLineBreakAlgorithm } from './line-break-resolver';
 import baselineHeuristic from './baseline-heuristic';
-import {
-  ELLIPSIS_CHAR
-} from './text-const';
-import {
-  fontSizeToHeight,
-  fontSizeToLineHeight
-} from './font-size-to-height';
+import { ELLIPSIS_CHAR } from './text-const';
+import { fontSizeToHeight, fontSizeToLineHeight } from './font-size-to-height';
 import { includesLineBreak } from './string-tokenizer';
 
 const heightCache = {};
 const widthCache = {};
 const contextCache = {
   fontSize: undefined,
-  fontFamily: undefined
+  fontFamily: undefined,
 };
 let context;
 
@@ -96,17 +91,17 @@ function calcTextBounds(attrs, measureFn = measureText) {
 
   const boundingRect = {
     x: 0,
-    y: (y + dy) - (textMeasure.height * 0.75), // Magic number for alphabetical baseline
+    y: y + dy - textMeasure.height * 0.75, // Magic number for alphabetical baseline
     width: calWidth,
-    height: textMeasure.height
+    height: textMeasure.height,
   };
 
   const anchor = attrs['text-anchor'] || attrs.anchor;
 
   if (anchor === 'middle') {
-    boundingRect.x = (x + dx) - (calWidth / 2);
+    boundingRect.x = x + dx - calWidth / 2;
   } else if (anchor === 'end') {
-    boundingRect.x = (x + dx) - calWidth;
+    boundingRect.x = x + dx - calWidth;
   } else {
     boundingRect.x = x + dx;
   }

@@ -8,7 +8,7 @@ describe('Word Break', () => {
       node = {
         type: 'text',
         text: '123456789',
-        fontSize: '1px'
+        fontSize: '1px',
       };
     });
 
@@ -19,7 +19,7 @@ describe('Word Break', () => {
         const chunks = breakAll(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: ['1', '2', '3'],
-          reduced: true
+          reduced: true,
         });
       });
 
@@ -29,7 +29,7 @@ describe('Word Break', () => {
         const chunks = breakAll(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: ['1'],
-          reduced: true
+          reduced: true,
         });
       });
 
@@ -38,7 +38,7 @@ describe('Word Break', () => {
         const chunks = breakAll(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: node.text.split(''),
-          reduced: false
+          reduced: false,
         });
       });
     });
@@ -51,7 +51,7 @@ describe('Word Break', () => {
         const chunks = breakAll(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: ['1', '2', '3'],
-          reduced: true
+          reduced: true,
         });
       });
 
@@ -61,7 +61,7 @@ describe('Word Break', () => {
         const chunks = breakAll(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: node.text.split(''),
-          reduced: false
+          reduced: false,
         });
       });
 
@@ -73,7 +73,7 @@ describe('Word Break', () => {
         const chunks = breakAll(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: ['1', '2'],
-          reduced: true
+          reduced: true,
         });
       });
     });
@@ -84,7 +84,7 @@ describe('Word Break', () => {
         const chunks = breakAll(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: ['123456789'],
-          reduced: false
+          reduced: false,
         });
       });
 
@@ -94,7 +94,7 @@ describe('Word Break', () => {
         const chunks = breakAll(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: ['A', 'S', 'D'],
-          reduced: false
+          reduced: false,
         });
       });
 
@@ -104,7 +104,7 @@ describe('Word Break', () => {
         let chunks = breakAll(node, (text) => ({ width: text === 'G' ? 4 : 1, height: 1 }));
         expect(chunks).to.deep.equal({
           lines: ['ASD', 'F', 'G', 'HJK', 'LÖÄ'],
-          reduced: false
+          reduced: false,
         });
       });
     });
@@ -116,7 +116,7 @@ describe('Word Break', () => {
         const chunks = breakAll(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: ['123', '', '', '45', '678', '9'],
-          reduced: false
+          reduced: false,
         });
       });
 
@@ -127,7 +127,7 @@ describe('Word Break', () => {
         const chunks = breakAll(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: ['123', '', ''],
-          reduced: true
+          reduced: true,
         });
       });
     });
@@ -140,7 +140,7 @@ describe('Word Break', () => {
         const chunks = breakAll(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: ['AS‐', 'DF‐', 'GH‐', 'JK‐', 'LÖÄ'],
-          reduced: false
+          reduced: false,
         });
       });
 
@@ -151,7 +151,7 @@ describe('Word Break', () => {
         const chunks = breakAll(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: ['AS ', 'DF次', 'GH1', 'JK‐', 'LÖÄ'],
-          reduced: false
+          reduced: false,
         });
       });
 
@@ -162,7 +162,7 @@ describe('Word Break', () => {
         const chunks = breakAll(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: ['A', 'S', 'D'],
-          reduced: false
+          reduced: false,
         });
       });
     });
@@ -176,7 +176,7 @@ describe('Word Break', () => {
         const chunks = breakAll(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: ['1 2', '3  ', '4 5', '6 7', '8 9'],
-          reduced: false
+          reduced: false,
         });
       });
     });
@@ -189,7 +189,7 @@ describe('Word Break', () => {
       node = {
         type: 'text',
         text: 'aaa sss fff ddd',
-        fontSize: '1px'
+        fontSize: '1px',
       };
     });
 
@@ -200,7 +200,7 @@ describe('Word Break', () => {
         const chunks = breakWord(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: ['aaa', 'sss', 'fff'],
-          reduced: true
+          reduced: true,
         });
       });
 
@@ -210,7 +210,7 @@ describe('Word Break', () => {
         const chunks = breakWord(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: ['aaa'],
-          reduced: true
+          reduced: true,
         });
       });
 
@@ -219,7 +219,7 @@ describe('Word Break', () => {
         const chunks = breakWord(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: ['aaa', 'sss', 'fff', 'ddd'],
-          reduced: false
+          reduced: false,
         });
       });
     });
@@ -232,7 +232,7 @@ describe('Word Break', () => {
         const chunks = breakWord(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: ['aaa', 'sss', 'fff'],
-          reduced: true
+          reduced: true,
         });
       });
 
@@ -242,7 +242,7 @@ describe('Word Break', () => {
         const chunks = breakWord(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: ['aaa', 'sss', 'fff', 'ddd'],
-          reduced: false
+          reduced: false,
         });
       });
 
@@ -254,7 +254,7 @@ describe('Word Break', () => {
         const chunks = breakWord(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: ['aaa', 'sss'],
-          reduced: true
+          reduced: true,
         });
       });
     });
@@ -265,7 +265,7 @@ describe('Word Break', () => {
         const chunks = breakWord(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: [node.text],
-          reduced: false
+          reduced: false,
         });
       });
 
@@ -275,7 +275,7 @@ describe('Word Break', () => {
         const chunks = breakWord(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: ['A', 'S', 'D'],
-          reduced: false
+          reduced: false,
         });
       });
 
@@ -285,7 +285,7 @@ describe('Word Break', () => {
         let chunks = breakWord(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: ['asd', 'f q', 'wer', 'tyu', 'iop'],
-          reduced: false
+          reduced: false,
         });
       });
     });
@@ -296,7 +296,7 @@ describe('Word Break', () => {
         const chunks = breakWord(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: ['123', '', '', '45', '6789'],
-          reduced: false
+          reduced: false,
         });
       });
 
@@ -306,7 +306,7 @@ describe('Word Break', () => {
         const chunks = breakWord(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: ['1234-', '56789'],
-          reduced: false
+          reduced: false,
         });
       });
 
@@ -316,7 +316,7 @@ describe('Word Break', () => {
         const chunks = breakWord(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: ['1234\u2010', '56789'],
-          reduced: false
+          reduced: false,
         });
       });
 
@@ -326,7 +326,7 @@ describe('Word Break', () => {
         const chunks = breakWord(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: ['1234   ', '56789'],
-          reduced: false
+          reduced: false,
         });
       });
 
@@ -336,7 +336,7 @@ describe('Word Break', () => {
         const chunks = breakWord(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: [' 123456', '789'],
-          reduced: false
+          reduced: false,
         });
       });
 
@@ -346,7 +346,7 @@ describe('Word Break', () => {
         const chunks = breakWord(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: ['  ', 'cd', 'xo'],
-          reduced: false
+          reduced: false,
         });
       });
     });
@@ -359,7 +359,7 @@ describe('Word Break', () => {
         const chunks = breakWord(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: ['AS‐', 'DF‐', 'GH‐', 'JK‐', 'LÖÄ'],
-          reduced: false
+          reduced: false,
         });
       });
 
@@ -370,7 +370,7 @@ describe('Word Break', () => {
         const chunks = breakWord(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: ['AS ', 'DF次', 'GH1', 'JK‐', 'LÖÄ'],
-          reduced: false
+          reduced: false,
         });
       });
 
@@ -381,14 +381,14 @@ describe('Word Break', () => {
         let chunks = breakWord(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: ['  ', 'ASD'],
-          reduced: false
+          reduced: false,
         });
 
         node.text = '   ASD'; // 3 whites-spaces prior to linebreak
         chunks = breakWord(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: ['   ', 'ASD'],
-          reduced: false
+          reduced: false,
         });
       });
 
@@ -399,7 +399,7 @@ describe('Word Break', () => {
         const chunks = breakWord(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: ['A', 'S', 'D'],
-          reduced: false
+          reduced: false,
         });
       });
     });

@@ -25,17 +25,13 @@ describe('Parse data path', () => {
     it('M', () => {
       path = 'M1 2';
       ary = pathToPoints(path);
-      expect(ary).to.deep.equal([
-        { x: 1, y: 2 }
-      ]);
+      expect(ary).to.deep.equal([{ x: 1, y: 2 }]);
     });
 
     it('m', () => {
       path = 'm1 2';
       ary = pathToPoints(path);
-      expect(ary).to.deep.equal([
-        { x: 1, y: 2 }
-      ]);
+      expect(ary).to.deep.equal([{ x: 1, y: 2 }]);
     });
 
     it('M - should split multiple commands into segments', () => {
@@ -44,12 +40,12 @@ describe('Parse data path', () => {
       expect(ary).to.deep.equal([
         [
           { x: 1, y: 2 },
-          { x: 3, y: 4 }
+          { x: 3, y: 4 },
         ],
         [
           { x: 5, y: 6 },
-          { x: 7, y: 8 }
-        ]
+          { x: 7, y: 8 },
+        ],
       ]);
     });
 
@@ -59,12 +55,12 @@ describe('Parse data path', () => {
       expect(ary).to.deep.equal([
         [
           { x: 1, y: 2 },
-          { x: 3, y: 4 }
+          { x: 3, y: 4 },
         ],
         [
           { x: 3 + 5, y: 4 + 6 },
-          { x: 7, y: 8 }
-        ]
+          { x: 7, y: 8 },
+        ],
       ]);
     });
   });
@@ -75,7 +71,7 @@ describe('Parse data path', () => {
       ary = pathToPoints(path);
       expect(ary).to.deep.equal([
         { x: 0, y: 0 },
-        { x: 1, y: 2 }
+        { x: 1, y: 2 },
       ]);
     });
 
@@ -84,7 +80,7 @@ describe('Parse data path', () => {
       ary = pathToPoints(path);
       expect(ary).to.deep.equal([
         { x: 1, y: 2 },
-        { x: 1 + 3, y: 2 + 4 }
+        { x: 1 + 3, y: 2 + 4 },
       ]);
     });
 
@@ -93,7 +89,7 @@ describe('Parse data path', () => {
       ary = pathToPoints(path);
       expect(ary).to.deep.equal([
         { x: 0, y: 0 },
-        { x: 1, y: 0 }
+        { x: 1, y: 0 },
       ]);
     });
 
@@ -102,7 +98,7 @@ describe('Parse data path', () => {
       ary = pathToPoints(path);
       expect(ary).to.deep.equal([
         { x: 1, y: 0 },
-        { x: 2, y: 0 }
+        { x: 2, y: 0 },
       ]);
     });
 
@@ -111,7 +107,7 @@ describe('Parse data path', () => {
       ary = pathToPoints(path);
       expect(ary).to.deep.equal([
         { x: 0, y: 0 },
-        { x: 0, y: 1 }
+        { x: 0, y: 1 },
       ]);
     });
 
@@ -120,7 +116,7 @@ describe('Parse data path', () => {
       ary = pathToPoints(path);
       expect(ary).to.deep.equal([
         { x: 0, y: 1 },
-        { x: 0, y: 2 }
+        { x: 0, y: 2 },
       ]);
     });
   });
@@ -132,7 +128,7 @@ describe('Parse data path', () => {
       expect(ary).to.deep.equal([
         { x: 1, y: 2 },
         { x: 3, y: 4 },
-        { x: 1, y: 2 }
+        { x: 1, y: 2 },
       ]);
     });
 
@@ -142,7 +138,7 @@ describe('Parse data path', () => {
       expect(ary).to.deep.equal([
         { x: 1, y: 2 },
         { x: 3, y: 4 },
-        { x: 1, y: 2 }
+        { x: 1, y: 2 },
       ]);
     });
   });
@@ -171,7 +167,7 @@ describe('Parse data path', () => {
       ary = pathToPoints(path);
       expect(ary).to.deep.equal([
         { x: 0, y: 0 },
-        { x: 10, y: 10 }
+        { x: 10, y: 10 },
       ]);
     });
 
@@ -179,7 +175,7 @@ describe('Parse data path', () => {
       path = 'M10 10 A0 10 0 0 0 10 10';
       ary = pathToPoints(path);
       expect(ary).to.deep.equal([
-        { x: 10, y: 10 } // moveTo command
+        { x: 10, y: 10 }, // moveTo command
       ]);
     });
   });
@@ -199,7 +195,7 @@ describe('Parse data path', () => {
         { x: 68.359375, y: 70.3125 },
         { x: 84.375, y: 56.25 },
         { x: 95.703125, y: 32.8125 },
-        { x: 100, y: 0 }
+        { x: 100, y: 0 },
       ];
 
       approxEqual(ary, exp);
@@ -219,7 +215,7 @@ describe('Parse data path', () => {
         { x: 168.359375, y: 170.3125 },
         { x: 184.375, y: 156.25 },
         { x: 195.703125, y: 132.8125 },
-        { x: 200, y: 100 }
+        { x: 200, y: 100 },
       ];
 
       approxEqual(ary, exp);
@@ -239,7 +235,7 @@ describe('Parse data path', () => {
         { x: 168.359375, y: -70.3125 },
         { x: 184.375, y: -56.25 },
         { x: 195.703125, y: -32.8125 },
-        { x: 200, y: 0 }
+        { x: 200, y: 0 },
       ];
 
       approxEqual(ary, exp); // Only validate the S points
@@ -259,7 +255,7 @@ describe('Parse data path', () => {
         { x: 92.7734375, y: 43.9453125 },
         { x: 126.5625, y: 42.1875 },
         { x: 162.6953125, y: 28.7109375 },
-        { x: 200, y: 0 }
+        { x: 200, y: 0 },
       ];
 
       approxEqual(ary, exp);
@@ -279,7 +275,7 @@ describe('Parse data path', () => {
         { x: 168.359375, y: -70.3125 },
         { x: 184.375, y: -56.25 },
         { x: 195.703125, y: -32.8125 },
-        { x: 200, y: 0 }
+        { x: 200, y: 0 },
       ];
 
       approxEqual(ary, exp); // Only validate the S points
@@ -298,7 +294,7 @@ describe('Parse data path', () => {
         { x: 92.7734375, y: 43.9453125 },
         { x: 126.5625, y: 42.1875 },
         { x: 162.6953125, y: 28.7109375 },
-        { x: 200, y: 0 }
+        { x: 200, y: 0 },
       ];
 
       approxEqual(ary, exp);
@@ -315,7 +311,7 @@ describe('Parse data path', () => {
         { x: 6.250000000000002, y: 43.75 },
         { x: 25.000000000000004, y: 75 },
         { x: 56.25, y: 93.75 },
-        { x: 100, y: 100 }
+        { x: 100, y: 100 },
       ];
 
       approxEqual(ary, exp);
@@ -330,7 +326,7 @@ describe('Parse data path', () => {
         { x: 6.250000000000002, y: 43.75 },
         { x: 25.000000000000004, y: 75 },
         { x: 56.25, y: 93.75 },
-        { x: 100, y: 100 }
+        { x: 100, y: 100 },
       ];
 
       approxEqual(ary, exp);
@@ -346,7 +342,7 @@ describe('Parse data path', () => {
         { x: 143.75, y: 106.25 },
         { x: 175, y: 125 },
         { x: 193.75, y: 156.25 },
-        { x: 200, y: 200 }
+        { x: 200, y: 200 },
       ];
 
       approxEqual(ary, exp);
@@ -361,7 +357,7 @@ describe('Parse data path', () => {
         { x: 6.250000000000002, y: 6.250000000000002 },
         { x: 25.000000000000004, y: 25.000000000000004 },
         { x: 56.25, y: 56.25 },
-        { x: 100, y: 100 }
+        { x: 100, y: 100 },
       ];
 
       approxEqual(ary, exp);
@@ -376,7 +372,7 @@ describe('Parse data path', () => {
         { x: 143.75, y: 106.25 },
         { x: 175, y: 125 },
         { x: 193.75, y: 156.25 },
-        { x: 200, y: 200 }
+        { x: 200, y: 200 },
       ];
 
       approxEqual(ary, exp);
@@ -391,7 +387,7 @@ describe('Parse data path', () => {
         { x: 6.250000000000002, y: 6.250000000000002 },
         { x: 25.000000000000004, y: 25.000000000000004 },
         { x: 56.25, y: 56.25 },
-        { x: 100, y: 100 }
+        { x: 100, y: 100 },
       ];
 
       approxEqual(ary, exp);

@@ -1,6 +1,4 @@
-import {
-  diff, createNodes, destroyNodes, updateNodes
-} from '../node-tree';
+import { diff, createNodes, destroyNodes, updateNodes } from '../node-tree';
 
 function getContent(arr) {
   return arr.map((a) => a.content);

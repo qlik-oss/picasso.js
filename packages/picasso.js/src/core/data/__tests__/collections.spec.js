@@ -30,10 +30,15 @@ describe('data collections', () => {
       let extractor = sinon.stub();
       extractor.withArgs('extracted', 'dd', 'opts').returns('a - extracted');
       extractor.withArgs('stacked', 'dd', 'opts').returns(false);
-      let fn = collections([
-        { key: 'a', data: 'extracted' },
-        { key: 'b', data: 'stacked' }
-      ], 'dd', 'opts', extractor);
+      let fn = collections(
+        [
+          { key: 'a', data: 'extracted' },
+          { key: 'b', data: 'stacked' },
+        ],
+        'dd',
+        'opts',
+        extractor
+      );
       expect(fn('a')).to.equal('a - extracted');
       expect(fn('b')).to.equal(false);
     });

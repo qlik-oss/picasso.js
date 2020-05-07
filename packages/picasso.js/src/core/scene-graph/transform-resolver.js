@@ -3,15 +3,17 @@ const transformRegEx = /(translate|scale|rotate|matrix)\(([0-9,.eE+-\s]+)(?:,|\s
 function parseTransform(transform) {
   let m,
     commands = [];
-  while ((m = transformRegEx.exec(transform)) !== null) { // eslint-disable-line no-cond-assign
+  /* eslint-disable no-cond-assign */
+  while ((m = transformRegEx.exec(transform)) !== null) {
     const argsStr = m[2].trim();
     const args = argsStr.indexOf(',') === -1 ? argsStr.split(' ') : argsStr.split(',');
 
     commands.push({
       cmd: m[1],
-      args: args.filter((a) => a.trim().length > 0).map((a) => Number(a))
+      args: args.filter((a) => a.trim().length > 0).map((a) => Number(a)),
     });
   }
+  /* eslint-enable no-cond-assign */
 
   return commands;
 }

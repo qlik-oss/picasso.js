@@ -21,7 +21,7 @@ const DEFAULT_SETTINGS = {
     direction: 'ltr',
     /** Initial scroll offset
      * @type {number=} */
-    scrollOffset: 0
+    scrollOffset: 0,
   },
   /**
    * Settings applied per item
@@ -48,7 +48,7 @@ const DEFAULT_SETTINGS = {
       /** Maximum width of label, in px
        * @type {number=} */
       maxWidth: 136,
-      lineHeight: 1.2
+      lineHeight: 1.2,
     },
     /**
      * @typedef {object=} */
@@ -58,8 +58,8 @@ const DEFAULT_SETTINGS = {
       type: 'square',
       /**
        * @type {number=} */
-      size: 12
-    }
+      size: 12,
+    },
   },
   /**
    * @typedef {object=} */
@@ -86,7 +86,7 @@ const DEFAULT_SETTINGS = {
     /** Maximum width of title, in px
      * @type {number=} */
     maxWidth: 156,
-    lineHeight: 1.25
+    lineHeight: 1.25,
   },
   /**
    * @typedef {object=} */
@@ -102,12 +102,12 @@ const DEFAULT_SETTINGS = {
       content: undefined,
       /**
        * @type {number=} */
-      tabIndex: undefined
+      tabIndex: undefined,
     },
     /** Whether the button should be disabled or not
      * @type {boolean=} */
-    disabled: false
-  }
+    disabled: false,
+  },
 };
 
 /**
@@ -134,11 +134,11 @@ export default function resolveSettings(comp) {
     for (let i = 0; i < domain.length - 1; i++) {
       const it = {
         value: domain[i],
-        label: `${formatter(domain[i])} - < ${formatter(domain[i + 1])}`
+        label: `${formatter(domain[i])} - < ${formatter(domain[i + 1])}`,
       };
       if (sourceField) {
         it.source = {
-          field: sourceField.id()
+          field: sourceField.id(),
         };
       }
       data.items.push(it);
@@ -166,48 +166,52 @@ export default function resolveSettings(comp) {
 
   const title = comp.resolver.resolve({
     data: {
-      fields: comp.scale.data().fields
+      fields: comp.scale.data().fields,
     },
     defaults: extend(true, {}, DEFAULT_SETTINGS.title, comp.style.title),
-    settings: comp.settings.settings.title
+    settings: comp.settings.settings.title,
   });
 
   const layout = comp.resolver.resolve({
     data: {
-      fields: comp.scale.data().fields
+      fields: comp.scale.data().fields,
     },
     defaults: DEFAULT_SETTINGS.layout,
-    settings: comp.settings.settings.layout
+    settings: comp.settings.settings.layout,
   });
 
   const labels = comp.resolver.resolve({
     data,
     defaults: extend(true, {}, DEFAULT_SETTINGS.item.label, comp.style.item.label),
-    settings: (comp.settings.settings.item || {}).label
+    settings: (comp.settings.settings.item || {}).label,
   });
 
   const shapeSettings = extend(true, {}, (comp.settings.settings.item || {}).shape);
 
   if (typeof shapeSettings.fill === 'undefined' && comp.settings.scale) {
     shapeSettings.fill = {
-      scale: comp.settings.scale
+      scale: comp.settings.scale,
     };
   }
 
   const symbols = comp.resolver.resolve({
     data,
     defaults: extend(true, {}, DEFAULT_SETTINGS.item.shape, comp.style.item.shape),
-    settings: shapeSettings
+    settings: shapeSettings,
   });
 
   const items = comp.resolver.resolve({
     data,
-    defaults: extend(true, {}, {
-      show: DEFAULT_SETTINGS.item.show
-    }),
+    defaults: extend(
+      true,
+      {},
+      {
+        show: DEFAULT_SETTINGS.item.show,
+      }
+    ),
     settings: {
-      show: (comp.settings.settings.item || {}).show
-    }
+      show: (comp.settings.settings.item || {}).show,
+    },
   });
 
   function range(item, i) {
@@ -232,6 +236,6 @@ export default function resolveSettings(comp) {
     labels,
     symbols,
     items,
-    layout
+    layout,
   };
 }

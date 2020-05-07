@@ -1,19 +1,14 @@
 import extend from 'extend';
 
-export default function extractor(nodes, {
-  chart,
-  scale,
-  props,
-  h
-}) {
+export default function extractor(nodes, { chart, scale, props, h }) {
   const dataCtx = {
     resources: {
       dataset: chart.dataset,
       scale: chart.scale,
-      formatter: chart.formatter
+      formatter: chart.formatter,
     },
     scale,
-    h
+    h,
   };
 
   const data = [];

@@ -18,7 +18,7 @@ describe('OrdinalScale', () => {
     const fields = [];
     const dataset = {
       fields: [{}],
-      items
+      items,
     };
     beforeEach(() => {
       items = [];
@@ -50,7 +50,8 @@ describe('OrdinalScale', () => {
       items = ['A', 'B', 'C'].map((v) => ({ value: v, id: v }));
       scale = band(settings, { fields: [], items });
       expect(scale.datum('B')).to.eql({
-        value: 'B', id: 'B'
+        value: 'B',
+        id: 'B',
       });
     });
 

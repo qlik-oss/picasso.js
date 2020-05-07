@@ -1,10 +1,7 @@
 // import { rows } from '../rows';
 
-const mock = ({
-  ellipsText = (n) => n.text
-} = {}) => aw.mock([
-  ['**/text-manipulation/index.js', () => ({ ellipsText })]
-], ['../rows']);
+const mock = ({ ellipsText = (n) => n.text } = {}) =>
+  aw.mock([['**/text-manipulation/index.js', () => ({ ellipsText })]], ['../rows']);
 
 describe('labeling - rows', () => {
   describe('rows strategy', () => {
@@ -14,7 +11,7 @@ describe('labeling - rows', () => {
     beforeEach(() => {
       chart = {};
       renderer = {
-        measureText: sinon.stub()
+        measureText: sinon.stub(),
       };
 
       const [m] = mock();
@@ -25,127 +22,155 @@ describe('labeling - rows', () => {
       const settings = {
         align: 0,
         justify: 0,
-        labels: [{
-          label: () => 'etikett'
-        }]
+        labels: [
+          {
+            label: () => 'etikett',
+          },
+        ],
       };
-      const nodes = [{
-        type: 'rect',
-        bounds: {
-          x: 0,
-          y: 0,
-          width: 100,
-          height: 100
-        }
-      }];
+      const nodes = [
+        {
+          type: 'rect',
+          bounds: {
+            x: 0,
+            y: 0,
+            width: 100,
+            height: 100,
+          },
+        },
+      ];
       renderer.measureText.returns({ width: 20, height: 10 });
-      let labels = rows({
-        settings,
-        chart,
-        nodes,
-        renderer,
-        style: {}
-      }, (bounds) => bounds);
+      let labels = rows(
+        {
+          settings,
+          chart,
+          nodes,
+          renderer,
+          style: {},
+        },
+        (bounds) => bounds
+      );
 
       expect(labels[0]).to.eql({
         x: 4,
         y: 4,
         width: 92,
-        height: 10
+        height: 10,
       });
     });
 
     it('should support circles', () => {
       const settings = {
         padding: 0,
-        labels: [{
-          label: () => 'etikett'
-        }]
+        labels: [
+          {
+            label: () => 'etikett',
+          },
+        ],
       };
-      const nodes = [{
-        type: 'circle',
-        attrs: { cx: 50, cy: 50, r: 41 }
-      }];
+      const nodes = [
+        {
+          type: 'circle',
+          attrs: { cx: 50, cy: 50, r: 41 },
+        },
+      ];
       renderer.measureText.returns({ width: 50, height: 18 });
-      let labels = rows({
-        settings,
-        chart,
-        nodes,
-        renderer,
-        style: {}
-      }, (bounds) => bounds);
+      let labels = rows(
+        {
+          settings,
+          chart,
+          nodes,
+          renderer,
+          style: {},
+        },
+        (bounds) => bounds
+      );
 
       expect(labels[0]).to.eql({
         x: 10,
         y: 41,
         width: 80,
-        height: 18
+        height: 18,
       });
     });
 
     it('should support "circle" pie slice ', () => {
       const settings = {
         padding: 0,
-        labels: [{
-          label: () => 'etikett'
-        }]
+        labels: [
+          {
+            label: () => 'etikett',
+          },
+        ],
       };
-      const nodes = [{
-        type: 'path',
-        desc: {
-          slice: {
-            start: 0,
-            end: 2 * Math.PI,
-            offset: { x: 30, y: 30 },
-            innerRadius: 0,
-            outerRadius: 25
-          }
-        }
-      }];
+      const nodes = [
+        {
+          type: 'path',
+          desc: {
+            slice: {
+              start: 0,
+              end: 2 * Math.PI,
+              offset: { x: 30, y: 30 },
+              innerRadius: 0,
+              outerRadius: 25,
+            },
+          },
+        },
+      ];
       renderer.measureText.returns({ width: 20, height: 14 });
-      let labels = rows({
-        settings,
-        chart,
-        nodes,
-        renderer,
-        style: {}
-      }, (bounds) => bounds);
+      let labels = rows(
+        {
+          settings,
+          chart,
+          nodes,
+          renderer,
+          style: {},
+        },
+        (bounds) => bounds
+      );
 
       expect(labels[0]).to.eql({
         x: 6,
         y: 23,
         width: 48,
-        height: 14
+        height: 14,
       });
     });
 
     it('should not support pie slice that are not a "circle"', () => {
       const settings = {
         padding: 0,
-        labels: [{
-          label: () => 'etikett'
-        }]
+        labels: [
+          {
+            label: () => 'etikett',
+          },
+        ],
       };
-      const nodes = [{
-        type: 'path',
-        desc: {
-          slice: {
-            start: 0,
-            end: Math.PI,
-            offset: { x: 30, y: 30 },
-            innerRadius: 0,
-            outerRadius: 25
-          }
-        }
-      }];
+      const nodes = [
+        {
+          type: 'path',
+          desc: {
+            slice: {
+              start: 0,
+              end: Math.PI,
+              offset: { x: 30, y: 30 },
+              innerRadius: 0,
+              outerRadius: 25,
+            },
+          },
+        },
+      ];
       renderer.measureText.returns({ width: 20, height: 14 });
-      let labels = rows({
-        settings,
-        chart,
-        nodes,
-        renderer,
-        style: {}
-      }, (bounds) => bounds);
+      let labels = rows(
+        {
+          settings,
+          chart,
+          nodes,
+          renderer,
+          style: {},
+        },
+        (bounds) => bounds
+      );
 
       expect(labels).to.have.length(0);
     });
@@ -154,29 +179,30 @@ describe('labeling - rows', () => {
       const settings = {
         align: 0,
         justify: 0,
-        labels: [
-          { label: () => 'label1' },
-          { label: () => 'label2' },
-          { label: () => 'label3' }
-        ]
+        labels: [{ label: () => 'label1' }, { label: () => 'label2' }, { label: () => 'label3' }],
       };
-      const nodes = [{
-        type: 'rect',
-        bounds: {
-          x: 0,
-          y: 0,
-          width: 100,
-          height: 100
-        }
-      }];
+      const nodes = [
+        {
+          type: 'rect',
+          bounds: {
+            x: 0,
+            y: 0,
+            width: 100,
+            height: 100,
+          },
+        },
+      ];
       renderer.measureText.returns({ width: 20, height: 10 });
-      let labels = rows({
-        settings,
-        chart,
-        nodes,
-        renderer,
-        style: {}
-      }, (bounds, text) => text);
+      let labels = rows(
+        {
+          settings,
+          chart,
+          nodes,
+          renderer,
+          style: {},
+        },
+        (bounds, text) => text
+      );
 
       expect(labels).to.eql(['label1', 'label2', 'label3']);
     });
@@ -185,29 +211,30 @@ describe('labeling - rows', () => {
       const settings = {
         align: 0,
         justify: 0,
-        labels: [
-          { label: () => 'label1' },
-          { label: () => 'label2' },
-          { label: () => 'label3' }
-        ]
+        labels: [{ label: () => 'label1' }, { label: () => 'label2' }, { label: () => 'label3' }],
       };
-      const nodes = [{
-        type: 'rect',
-        bounds: {
-          x: 0,
-          y: 0,
-          width: 20,
-          height: 20
-        }
-      }];
+      const nodes = [
+        {
+          type: 'rect',
+          bounds: {
+            x: 0,
+            y: 0,
+            width: 20,
+            height: 20,
+          },
+        },
+      ];
       renderer.measureText.returns({ width: 20, height: 10 });
-      let labels = rows({
-        settings,
-        chart,
-        nodes,
-        renderer,
-        style: {}
-      }, (bounds, text) => text);
+      let labels = rows(
+        {
+          settings,
+          chart,
+          nodes,
+          renderer,
+          style: {},
+        },
+        (bounds, text) => text
+      );
 
       expect(labels).to.eql(['label1']);
     });
@@ -216,34 +243,41 @@ describe('labeling - rows', () => {
       const settings = {
         align: 0,
         justify: 0,
-        labels: [{
-          label: () => 'etikett'
-        }]
+        labels: [
+          {
+            label: () => 'etikett',
+          },
+        ],
       };
-      const nodes = [{
-        type: 'rect',
-        bounds: {
-          x: 0,
-          y: 0,
-          width: 100,
-          height: 100
-        }
-      }];
+      const nodes = [
+        {
+          type: 'rect',
+          bounds: {
+            x: 0,
+            y: 0,
+            width: 100,
+            height: 100,
+          },
+        },
+      ];
       renderer.measureText.returns({ width: 20, height: 10 });
       const [{ rows: r }] = mock({
-        ellipsText: () => 'et…'
+        ellipsText: () => 'et…',
       });
-      let labels = r({
-        settings,
-        chart,
-        nodes,
-        renderer,
-        style: {}
-      }, (bounds, text) => ({ text }));
+      let labels = r(
+        {
+          settings,
+          chart,
+          nodes,
+          renderer,
+          style: {},
+        },
+        (bounds, text) => ({ text })
+      );
 
       expect(labels[0]).to.eql({
         ellipsed: 'et…',
-        text: 'etikett'
+        text: 'etikett',
       });
 
       // { text: 'label1', ellipsed: 'label1' }
@@ -253,30 +287,37 @@ describe('labeling - rows', () => {
       const settings = {
         align: 0,
         justify: 0,
-        labels: [{
-          label: () => 'etikett'
-        }]
+        labels: [
+          {
+            label: () => 'etikett',
+          },
+        ],
       };
-      const nodes = [{
-        type: 'rect',
-        bounds: {
-          x: 0,
-          y: 0,
-          width: 100,
-          height: 100
-        }
-      }];
+      const nodes = [
+        {
+          type: 'rect',
+          bounds: {
+            x: 0,
+            y: 0,
+            width: 100,
+            height: 100,
+          },
+        },
+      ];
       renderer.measureText.returns({ width: 20, height: 10 });
       const [{ rows: r }] = mock({
-        ellipsText: () => '…'
+        ellipsText: () => '…',
       });
-      let labels = r({
-        settings,
-        chart,
-        nodes,
-        renderer,
-        style: {}
-      }, (bounds, text) => ({ text }));
+      let labels = r(
+        {
+          settings,
+          chart,
+          nodes,
+          renderer,
+          style: {},
+        },
+        (bounds, text) => ({ text })
+      );
 
       expect(labels.length).to.eql(0);
 
@@ -287,32 +328,39 @@ describe('labeling - rows', () => {
       const settings = {
         align: 0,
         justify: 0,
-        labels: [{
-          label: () => 'etikett',
-          linkData: ({ data }) => data
-        }]
+        labels: [
+          {
+            label: () => 'etikett',
+            linkData: ({ data }) => data,
+          },
+        ],
       };
-      const nodes = [{
-        type: 'rect',
-        bounds: {
-          x: 0,
-          y: 0,
-          width: 100,
-          height: 100
+      const nodes = [
+        {
+          type: 'rect',
+          bounds: {
+            x: 0,
+            y: 0,
+            width: 100,
+            height: 100,
+          },
+          data: 1,
         },
-        data: 1
-      }];
+      ];
       renderer.measureText.returns({ width: 20, height: 10 });
-      let labels = rows({
-        settings,
-        chart,
-        nodes,
-        renderer,
-        style: {}
-      }, (bounds) => bounds);
+      let labels = rows(
+        {
+          settings,
+          chart,
+          nodes,
+          renderer,
+          style: {},
+        },
+        (bounds) => bounds
+      );
 
       expect(labels[0]).to.containSubset({
-        data: 1
+        data: 1,
       });
     });
 
@@ -320,29 +368,30 @@ describe('labeling - rows', () => {
       const settings = {
         align: 0,
         justify: 0,
-        labels: [
-          { label: () => 'label1' },
-          { label: () => '' },
-          { label: () => 'label3' }
-        ]
+        labels: [{ label: () => 'label1' }, { label: () => '' }, { label: () => 'label3' }],
       };
-      const nodes = [{
-        type: 'rect',
-        bounds: {
-          x: 0,
-          y: 0,
-          width: 100,
-          height: 100
-        }
-      }];
+      const nodes = [
+        {
+          type: 'rect',
+          bounds: {
+            x: 0,
+            y: 0,
+            width: 100,
+            height: 100,
+          },
+        },
+      ];
       renderer.measureText.returns({ width: 20, height: 10 });
-      let labels = rows({
-        settings,
-        chart,
-        nodes,
-        renderer,
-        style: {}
-      }, (bounds, text) => text || '<empty>');
+      let labels = rows(
+        {
+          settings,
+          chart,
+          nodes,
+          renderer,
+          style: {},
+        },
+        (bounds, text) => text || '<empty>'
+      );
 
       expect(labels).to.eql(['label1', '<empty>', 'label3']);
     });

@@ -8,15 +8,22 @@ Data in picasso.js generally flows from top to bottom: one or more data sources 
 
 ```js
 picasso.chart({
-  data: [{
-    key: 'table 1',
-    type: 'matrix',
-    data: [/* */]
-  }, {
-    key: 'table2',
-    type: 'matrix',
-    data: [/* */]
-  }]
+  data: [
+    {
+      key: 'table 1',
+      type: 'matrix',
+      data: [
+        /* */
+      ],
+    },
+    {
+      key: 'table2',
+      type: 'matrix',
+      data: [
+        /* */
+      ],
+    },
+  ],
 });
 ```
 
@@ -126,7 +133,11 @@ The data input is then normalized to ensure that the structure consumed by a com
 
 ```js
 data: {
-  items: [{ value: 1, label: 'one' }, { value: 2, label: 'two' }, { value: 3, label: 'three' }]
+  items: [
+    { value: 1, label: 'one' },
+    { value: 2, label: 'two' },
+    { value: 3, label: 'three' },
+  ];
 }
 ```
 
@@ -136,18 +147,20 @@ Assuming we have the following dataset input:
 
 ```js
 picasso.chart({
-  data: [{
-    key: 'Products',
-    type: 'matrix',
-    data: [
-      ['Product', 'Year', 'Sales', 'Margin'],
-      [{ name: 'Boots', group: 'Shoes' }, 2015, 45, 0.23],
-      [{ name: 'Sneakers', group: 'Shoes' }, 2016, 49, 0.21],
-      [{ name: 'Sandals', group: 'Shoes' }, 2017, 42, 0.25],
-      [{ name: 'White socks', group: 'Socks' }, 2016, 14, 0.42],
-      [{ name: 'Blue socks', group: 'Socks' }, 2017, 15, 0.41]
-    ]
-  }]
+  data: [
+    {
+      key: 'Products',
+      type: 'matrix',
+      data: [
+        ['Product', 'Year', 'Sales', 'Margin'],
+        [{ name: 'Boots', group: 'Shoes' }, 2015, 45, 0.23],
+        [{ name: 'Sneakers', group: 'Shoes' }, 2016, 49, 0.21],
+        [{ name: 'Sandals', group: 'Shoes' }, 2017, 42, 0.25],
+        [{ name: 'White socks', group: 'Socks' }, 2016, 14, 0.42],
+        [{ name: 'Blue socks', group: 'Socks' }, 2017, 15, 0.41],
+      ],
+    },
+  ],
 });
 ```
 
@@ -157,16 +170,19 @@ How to extract data points and what the resulting data output looks like is dete
 
 ```js
 data: {
-  extract: [{
-    source: 'Products',
-    field: 'Product',
-    trackBy: v => v.group, // collect products based on the 'group' property
-    reduce: values => values[0].group, // use the group property as value for the group
-    props: { // each property config is attached as a property to the main item
-      x: { field: 'Sales', reduce: 'sum' },
-      y: { field: 'Margin', reduce: 'avg' }
-    }
-  }]
+  extract: [
+    {
+      source: 'Products',
+      field: 'Product',
+      trackBy: (v) => v.group, // collect products based on the 'group' property
+      reduce: (values) => values[0].group, // use the group property as value for the group
+      props: {
+        // each property config is attached as a property to the main item
+        x: { field: 'Sales', reduce: 'sum' },
+        y: { field: 'Margin', reduce: 'avg' },
+      },
+    },
+  ];
 }
 ```
 
@@ -198,11 +214,13 @@ A `filter` function can be used to exclude certain values in the data source:
 
 ```js
 data: {
-  extract: [{
-    source: 'Products',
-    field: 'Product',
-    filter: d => d.name !== 'Sandals' // exclude 'Sandals'
-  }]
+  extract: [
+    {
+      source: 'Products',
+      field: 'Product',
+      filter: (d) => d.name !== 'Sandals', // exclude 'Sandals'
+    },
+  ];
 }
 ```
 
@@ -366,24 +384,26 @@ Since all mapped data is accessible in property callbacks, the values can be use
 ### Example
 
 ```js
-components: [{
-  type: "point",
-  data: {
-    extract: {
-      field: "Products",
-      props: {
-        size: { field: "margin" }
-      }
+components: [
+  {
+    type: 'point',
+    data: {
+      extract: {
+        field: 'Products',
+        props: {
+          size: { field: 'margin' },
+        },
+      },
+    },
+    settings: {
+      x: 0.2, // constant, places all points at the same position along the x-axis
+      y: () => Math.random(), // function is called for each product
+      fill: 'red', // constant
+      size: {
+        scale: 's', // reference to a scale 's', data property 'size' is used automatically
+      },
+      shape: (d, i) => ['rect', 'circle', 'star'][i % 3],
     },
   },
-  settings: {
-    x: 0.2, // constant, places all points at the same position along the x-axis
-    y: () => Math.random(), // function is called for each product
-    fill: 'red', // constant
-    size: {
-      scale: 's', // reference to a scale 's', data property 'size' is used automatically
-    },
-    shape: (d, i) => ["rect", "circle", "star"][i % 3]
-  }
-}]
+];
 ```

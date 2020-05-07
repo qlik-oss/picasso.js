@@ -34,13 +34,13 @@ describe('Display Object', () => {
         opacity: '9',
         transform: '10',
         data: {
-          value: 11
+          value: 11,
         },
         id: '12',
         desc: {
-          myProp: 1337
+          myProp: 1337,
         },
-        tag: 'Hello world'
+        tag: 'Hello world',
       };
 
       _displayObject.set(args);
@@ -57,13 +57,13 @@ describe('Display Object', () => {
         maxWidth: '8',
         opacity: '9',
         transform: '10',
-        id: '12'
+        id: '12',
       });
       expect(_displayObject.data).to.deep.equal({
-        value: 11
+        value: 11,
       });
       expect(_displayObject.desc).to.deep.equal({
-        myProp: 1337
+        myProp: 1337,
       });
       expect(_displayObject.tag).to.equal('Hello world');
       expect(_displayObject.node).to.deep.equal(args);
@@ -71,23 +71,23 @@ describe('Display Object', () => {
 
     it('desc attribute must be of type object', () => {
       _displayObject.set({
-        desc: 'Hello'
+        desc: 'Hello',
       });
       expect(_displayObject.desc).to.be.undefined;
 
       _displayObject.set({
         desc: {
-          myProp: 'Hello'
-        }
+          myProp: 'Hello',
+        },
       });
       expect(_displayObject.desc).to.deep.equal({
-        myProp: 'Hello'
+        myProp: 'Hello',
       });
     });
 
     it('tag attribute must be of type string', () => {
       _displayObject.set({
-        tag: 1231
+        tag: 1231,
       });
       expect(_displayObject.tag).to.be.undefined;
     });
@@ -97,7 +97,11 @@ describe('Display Object', () => {
     beforeEach(() => {
       _displayObject.set({ fill: 'me' });
       _displayObject.collider = {
-        type: 'rect', x: 0, y: 0, width: 100, height: 100
+        type: 'rect',
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 100,
       };
     });
 
@@ -113,7 +117,10 @@ describe('Display Object', () => {
 
     it('should return a collision with it self, if it intersects line', () => {
       const shape = {
-        x1: 50, y1: 50, x2: 100, y2: 100
+        x1: 50,
+        y1: 50,
+        x2: 100,
+        y2: 100,
       };
       const collisions = _displayObject.getItemsFrom(shape);
       expect(collisions).to.be.of.length(1);
@@ -125,7 +132,10 @@ describe('Display Object', () => {
 
     it('should return a collision with it self, if it intersects rect', () => {
       const shape = {
-        x: 50, y: 50, width: 100, height: 100
+        x: 50,
+        y: 50,
+        width: 100,
+        height: 100,
       };
       const collisions = _displayObject.getItemsFrom(shape);
       expect(collisions).to.be.of.length(1);
@@ -149,7 +159,11 @@ describe('Display Object', () => {
   describe('containsPoint', () => {
     beforeEach(() => {
       _displayObject.collider = {
-        type: 'rect', x: 0, y: 0, width: 100, height: 100
+        type: 'rect',
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 100,
       };
     });
 
@@ -167,20 +181,30 @@ describe('Display Object', () => {
   describe('intersectsLine', () => {
     beforeEach(() => {
       _displayObject.collider = {
-        type: 'rect', x: 0, y: 0, width: 100, height: 100
+        type: 'rect',
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 100,
       };
     });
 
     it('should return a true if it intersect line', () => {
       const r = _displayObject.intersectsLine({
-        x1: 50, y1: 50, x2: 100, y2: 100
+        x1: 50,
+        y1: 50,
+        x2: 100,
+        y2: 100,
       });
       expect(r).to.equal(true);
     });
 
     it('should return a false if it doesnt intersect line', () => {
       const r = _displayObject.intersectsLine({
-        x1: -50, y1: -50, x2: -100, y2: -100
+        x1: -50,
+        y1: -50,
+        x2: -100,
+        y2: -100,
       });
       expect(r).to.equal(false);
     });
@@ -189,20 +213,30 @@ describe('Display Object', () => {
   describe('intersectsRect', () => {
     beforeEach(() => {
       _displayObject.collider = {
-        type: 'rect', x: 0, y: 0, width: 100, height: 100
+        type: 'rect',
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 100,
       };
     });
 
     it('should return a true if it intersect rect', () => {
       const r = _displayObject.intersectsRect({
-        x: 50, y: 50, width: 100, height: 100
+        x: 50,
+        y: 50,
+        width: 100,
+        height: 100,
       });
       expect(r).to.equal(true);
     });
 
     it('should return a false if it doesnt intersect rect', () => {
       const r = _displayObject.intersectsRect({
-        x: -50, y: -50, width: 1, height: 1
+        x: -50,
+        y: -50,
+        width: 1,
+        height: 1,
       });
       expect(r).to.equal(false);
     });
@@ -211,7 +245,11 @@ describe('Display Object', () => {
   describe('intersectsCircle', () => {
     beforeEach(() => {
       _displayObject.collider = {
-        type: 'rect', x: 0, y: 0, width: 100, height: 100
+        type: 'rect',
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 100,
       };
     });
 

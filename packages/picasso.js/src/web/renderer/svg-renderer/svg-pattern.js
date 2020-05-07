@@ -7,10 +7,20 @@ export default function patternizer(bucket, hasher = hashObject) {
     onCreate(state) {
       let inputs = {};
 
-      if (state.node && typeof state.node.fill === 'object' && state.node.fill.type === 'pattern' && state.node.fill.shapes) {
+      if (
+        state.node &&
+        typeof state.node.fill === 'object' &&
+        state.node.fill.type === 'pattern' &&
+        state.node.fill.shapes
+      ) {
         inputs.fill = state.node.fill;
       }
-      if (state.node && typeof state.node.stroke === 'object' && state.node.stroke.type === 'pattern' && state.node.stroke.shapes) {
+      if (
+        state.node &&
+        typeof state.node.stroke === 'object' &&
+        state.node.stroke.type === 'pattern' &&
+        state.node.stroke.shapes
+      ) {
         inputs.stroke = state.node.stroke;
       }
 
@@ -34,7 +44,7 @@ export default function patternizer(bucket, hasher = hashObject) {
             type: 'pattern',
             id: pnid,
             children: [],
-            fill: input.fill
+            fill: input.fill,
           };
 
           input.shapes.forEach((s) => {
@@ -50,7 +60,7 @@ export default function patternizer(bucket, hasher = hashObject) {
     },
     clear() {
       cache = {};
-    }
+    },
   };
 
   return p;

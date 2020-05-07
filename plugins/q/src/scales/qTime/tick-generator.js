@@ -41,7 +41,7 @@ export default function tickGenerator(scale, settings) {
         start: scale(qt.qStart),
         end: scale(qt.qEnd),
         label: qt.qText,
-        isMinor: false
+        isMinor: false,
       };
     });
   };
@@ -65,7 +65,7 @@ export default function tickGenerator(scale, settings) {
         end: timeScale(date.getTime() + interval),
         value: qtTime,
         label: formatter(qtTime),
-        isMinor: false
+        isMinor: false,
       };
     });
   };

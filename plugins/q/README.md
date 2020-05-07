@@ -24,7 +24,7 @@ This dataset type understands the QIX hypercube format and its internals, making
 ```js
 const ds = picasso.data('q')({
   key: 'qHyperCube', // path to the hypercube from the layout
-  data: layout.qHyperCube
+  data: layout.qHyperCube,
 });
 ```
 
@@ -83,14 +83,14 @@ We can extract the unique _Month_ values using:
 ```js
 ds.extract({
   field: 'Month',
-  trackBy: v => v.qElemNumber
+  trackBy: (v) => v.qElemNumber,
 });
 
 // output
 [
   { value: 0, label: 'Jan', source: { key: 'qHyperCube', field: 'qDimensionInfo/1' } },
-  { value: 1, label: 'Feb', source: { key: 'qHyperCube', field: 'qDimensionInfo/1' } }
-]
+  { value: 1, label: 'Feb', source: { key: 'qHyperCube', field: 'qDimensionInfo/1' } },
+];
 ```
 
 and attach aggregated properties on each item using `props`:
@@ -124,6 +124,7 @@ ds.extract({
 ```
 
 The default `value` accessor for a field depends on the field type and the `qMode`property of the hypercube:
+
 - For measures and attribute expressions: `cell => cell.qNum` or `cell => cell.qValue`
 - For dimensions and attribute dimensions: `cell => cell.qElemNumber` or `cell => cell.qElemNo`
 
@@ -231,13 +232,13 @@ const selection = picassoQ.selections(b, { byCells: true })[0];
 // }
 ```
 
-Row indices are used from the first dimension that adds a value to a brush,  `qDimensionInfo/1`, in the case above.
+Row indices are used from the first dimension that adds a value to a brush, `qDimensionInfo/1`, in the case above.
 To use values from another dimension, `primarySource` should be set:
 
 ```js
 const selection = picassoQ.selections(b, {
   byCells: true,
-  primarySource: 'qHyperCube/qDimensionInfo/0'
+  primarySource: 'qHyperCube/qDimensionInfo/0',
 })[0];
 // {
 //   method: 'selectHyperCubeCells',
@@ -297,6 +298,7 @@ const selection = picassoQ.selections(b, {}, layout)[0];
 ```
 
 Assuming a `layout` of:
+
 ```js
 {
   qHyperCube: {

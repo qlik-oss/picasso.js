@@ -3,15 +3,7 @@ import Matrix from '../math/matrix';
 import resolveTransform from './transform-resolver';
 import contextFactory from './context';
 
-const styleContext = contextFactory([
-  'stroke',
-  'fill',
-  'strokeWidth',
-  'opacity',
-  'fontFamily',
-  'fontSize',
-  'baseline'
-]);
+const styleContext = contextFactory(['stroke', 'fill', 'strokeWidth', 'opacity', 'fontFamily', 'fontSize', 'baseline']);
 
 function doEvent(state, listeners) {
   if (!Array.isArray(listeners)) {
@@ -33,7 +25,7 @@ function traverse(items, parent, matrix, on) {
   const state = {
     siblings: items,
     node: null,
-    index: 0
+    index: 0,
   };
   for (let i = 0, len = items.length; i < len; i++) {
     updateState(state, i, items);
@@ -73,12 +65,7 @@ function traverse(items, parent, matrix, on) {
   }
 }
 
-export default function scene({
-  items,
-  stage,
-  dpi,
-  on = {}
-}) {
+export default function scene({ items, stage, dpi, on = {} }) {
   if (!stage) {
     stage = create('stage', dpi);
   }

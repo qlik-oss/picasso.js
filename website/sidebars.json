@@ -1,18 +1,7 @@
 {
   "docs": {
-    "Getting started": [
-      "installation",
-      "chart",
-      "data",
-      "components"
-    ],
-    "General": [
-      "scales",
-      "brushing",
-      "interaction",
-      "formatters",
-      "dock-layout"
-    ],
+    "Getting started": ["installation", "chart", "data", "components"],
+    "General": ["scales", "brushing", "interaction", "formatters", "dock-layout"],
     "Scales": [
       "scale-linear",
       "scale-band",
@@ -36,9 +25,6 @@
       "component-brush-range",
       "component-tooltip"
     ],
-    "Plugins": [
-      "plugin-q",
-      "plugin-hammer"
-    ]
+    "Plugins": ["plugin-q", "plugin-hammer"]
   }
 }

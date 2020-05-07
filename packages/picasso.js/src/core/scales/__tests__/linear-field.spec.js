@@ -11,10 +11,7 @@ describe('Linear data scale', () => {
 
   beforeEach(() => {
     fields = {
-      fields: [
-        field({ min: 0, max: 10 }),
-        field({ min: 50, max: 100 })
-      ]
+      fields: [field({ min: 0, max: 10 }), field({ min: 50, max: 100 })],
     };
     settings = {};
   });
@@ -29,7 +26,6 @@ describe('Linear data scale', () => {
     expect(dataScale(100)).to.equal(1);
   });
 
-
   it('should use a normalized range', () => {
     dataScale = linear(settings, fields);
     expect(dataScale.range()).to.deep.equal([0, 1]);
@@ -43,9 +39,7 @@ describe('Linear data scale', () => {
 
   it('should default to -1 and 1 as domain if data range and data value is equal to zero', () => {
     fields = {
-      fields: [
-        field({ min: 0, max: 0 })
-      ]
+      fields: [field({ min: 0, max: 0 })],
     };
     dataScale = linear(settings, fields);
     expect(dataScale.domain()).to.deep.equal([-1, 1]);
@@ -53,9 +47,7 @@ describe('Linear data scale', () => {
 
   it('should default to -1 and 1 as domain if data range is NaN', () => {
     fields = {
-      fields: [
-        field({ min: NaN, max: NaN })
-      ]
+      fields: [field({ min: NaN, max: NaN })],
     };
     dataScale = linear(settings, fields);
     expect(dataScale.domain()).to.deep.equal([-1, 1]);
@@ -63,17 +55,13 @@ describe('Linear data scale', () => {
 
   it('should default expand by 10% if data range is equal to zero', () => {
     fields = {
-      fields: [
-        field({ min: 10, max: 10 })
-      ]
+      fields: [field({ min: 10, max: 10 })],
     };
     dataScale = linear(settings, fields);
     expect(dataScale.domain()).to.deep.equal([9, 11]);
 
     fields = {
-      fields: [
-        field({ min: -10, max: -10 })
-      ]
+      fields: [field({ min: -10, max: -10 })],
     };
     dataScale = linear(settings, fields);
     expect(dataScale.domain()).to.deep.equal([-11, -9]);
@@ -95,7 +83,7 @@ describe('Linear data scale', () => {
 
     it('should expose data and resources as context in callback functions', () => {
       const resources = {
-        a: 1
+        a: 1,
       };
       const spy = sinon.spy();
       settings.min = spy;
@@ -168,9 +156,7 @@ describe('Linear data scale', () => {
 
       it('should not be applied if data range and data value is equal to zero', () => {
         fields = {
-          fields: [
-            field({ min: 0, max: 0 })
-          ]
+          fields: [field({ min: 0, max: 0 })],
         };
         settings.expand = 10;
         dataScale = linear(settings, fields);
@@ -179,9 +165,7 @@ describe('Linear data scale', () => {
 
       it('should not be applied if data range is equal to zero', () => {
         fields = {
-          fields: [
-            field({ min: 10, max: 10 })
-          ]
+          fields: [field({ min: 10, max: 10 })],
         };
         settings.expand = 10;
         dataScale = linear(settings, fields);
@@ -215,9 +199,7 @@ describe('Linear data scale', () => {
 
       it('should be applied if data range and data value is equal to zero', () => {
         fields = {
-          fields: [
-            field({ min: 0, max: 0 })
-          ]
+          fields: [field({ min: 0, max: 0 })],
         };
         settings.min = -250;
         settings.max = -100;
@@ -227,9 +209,7 @@ describe('Linear data scale', () => {
 
       it('should be applied if data range is equal to zero', () => {
         fields = {
-          fields: [
-            field({ min: 10, max: 10 })
-          ]
+          fields: [field({ min: 10, max: 10 })],
         };
         settings.min = -250;
         settings.max = -100;
@@ -259,9 +239,7 @@ describe('Linear data scale', () => {
 
       it('should be applied if data range and data value is equal to zero', () => {
         fields = {
-          fields: [
-            field({ min: 0, max: 0 })
-          ]
+          fields: [field({ min: 0, max: 0 })],
         };
         settings.include = [-250, 0, 10, 100];
         dataScale = linear(settings, fields);
@@ -270,9 +248,7 @@ describe('Linear data scale', () => {
 
       it('should be applied if data range is equal to zero', () => {
         fields = {
-          fields: [
-            field({ min: 10, max: 10 })
-          ]
+          fields: [field({ min: 10, max: 10 })],
         };
         settings.include = [-250, 0, 10, 100];
         dataScale = linear(settings, fields);

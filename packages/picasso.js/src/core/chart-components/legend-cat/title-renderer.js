@@ -1,13 +1,11 @@
 import extend from 'extend';
 
-function itemize({
-  resolved
-}, legend) {
+function itemize({ resolved }, legend) {
   if (resolved.title.item.show === false) {
     return null;
   }
   const t = extend({}, resolved.title.item, {
-    type: 'text'
+    type: 'text',
   });
 
   if (resolved.layout.item.direction === 'rtl') {
@@ -25,13 +23,11 @@ function itemize({
 
   return {
     displayObject: t,
-    bounds: legend.renderer.textBounds(t)
+    bounds: legend.renderer.textBounds(t),
   };
 }
 
-function render({
-  rect
-}, renderer, itemized) {
+function render({ rect }, renderer, itemized) {
   if (!renderer) {
     return;
   }
@@ -41,14 +37,16 @@ function render({
     const align = {
       start: 0,
       end: rect.width,
-      middle: rect.width / 2
+      middle: rect.width / 2,
     };
-    nodes.push(extend({}, itemized.displayObject, {
-      x: align[itemized.displayObject.anchor] || 0,
-      y: 0,
-      baseline: 'text-before-edge',
-      title: itemized.displayObject.text
-    }));
+    nodes.push(
+      extend({}, itemized.displayObject, {
+        x: align[itemized.displayObject.anchor] || 0,
+        y: 0,
+        baseline: 'text-before-edge',
+        title: itemized.displayObject.text,
+      })
+    );
   }
   renderer.render(nodes);
 }
@@ -64,7 +62,7 @@ export default function (legend) {
       render(obj, api.renderer, itemized);
     },
     spread: () => (itemized ? itemized.bounds.height : 0),
-    extent: () => (itemized ? itemized.bounds.width : 0)
+    extent: () => (itemized ? itemized.bounds.width : 0),
   };
 
   return api;

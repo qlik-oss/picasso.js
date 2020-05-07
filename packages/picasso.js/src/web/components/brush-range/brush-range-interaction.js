@@ -4,14 +4,14 @@ import { testRectPoint } from '../../../core/math/narrow-phase-collision';
 function rangelimits(state) {
   return {
     min: state.scale.min(),
-    max: state.scale.max()
+    max: state.scale.max(),
   };
 }
 
 function areaLimits(state) {
   return {
     min: 0,
-    max: state.direction ? state.rect.width : state.rect.height
+    max: state.direction ? state.rect.width : state.rect.height,
   };
 }
 
@@ -44,35 +44,33 @@ function findActive(state, value, limits) {
       end: rs[activeIdx].max,
       limitLow: limits.min,
       limitHigh: limits.max,
-      mode: 'foo'
+      mode: 'foo',
     };
   }
   state.active = activeRange;
 }
 
-export function startArea({
-  state, e, renderer, ranges, targetSize
-}) {
+export function startArea({ state, e, renderer, ranges, targetSize }) {
   if (state.started) {
     return;
   }
-  const x = (e.center.x - e.deltaX);
-  const y = (e.center.y - e.deltaY);
+  const x = e.center.x - e.deltaX;
+  const y = e.center.y - e.deltaY;
   let target = document.elementFromPoint(x, y);
   if (!renderer.element().contains(target)) {
     target = null;
   }
 
   const tempState = {
-    started: true
+    started: true,
   };
 
   state.offset = renderer.element().getBoundingClientRect();
   state.ranges = ranges(state);
   const relX = x - state.offset.left; // coordinate relative renderer
   const relY = y - state.offset.top;
-  const startPoint = (e.center[state.cssCoord.coord] - e[state.cssCoord.pos]) - state.offset[state.cssCoord.offset];
-  const relStart = (e.center[state.cssCoord.coord]) - state.offset[state.cssCoord.offset];
+  const startPoint = e.center[state.cssCoord.coord] - e[state.cssCoord.pos] - state.offset[state.cssCoord.offset];
+  const relStart = e.center[state.cssCoord.coord] - state.offset[state.cssCoord.offset];
   let v = relStart;
   let vStart = startPoint;
 
@@ -119,7 +117,7 @@ export function startArea({
       end: rs[activeIdx].max,
       limitLow: limits.min,
       limitHigh: limits.max,
-      mode: 'move'
+      mode: 'move',
     };
 
     if (target && target.hasAttribute('data-other-value')) {
@@ -143,7 +141,7 @@ export function startArea({
       end: v,
       limitLow: limits.min,
       limitHigh: limits.max,
-      mode: 'current'
+      mode: 'current',
     };
   }
 
@@ -156,22 +154,20 @@ export function startArea({
   }
 }
 
-export function start({
-  state, e, renderer, ranges, targetSize
-}) {
+export function start({ state, e, renderer, ranges, targetSize }) {
   if (state.started) {
     return;
   }
   state.edit = null;
-  const x = (e.center.x - e.deltaX);
-  const y = (e.center.y - e.deltaY);
+  const x = e.center.x - e.deltaX;
+  const y = e.center.y - e.deltaY;
   let target = document.elementFromPoint(x, y);
   if (!renderer.element().contains(target)) {
     target = null;
   }
 
   const tempState = {
-    started: true
+    started: true,
   };
 
   state.offset = extend({}, renderer.element().getBoundingClientRect());
@@ -180,8 +176,8 @@ export function start({
   state.offset.left += state.targetRect ? state.targetRect.x : 0; // make offset relative to targetRect
   state.offset.top += state.targetRect ? state.targetRect.y : 0;
   state.ranges = ranges(state, state.fauxBrushInstance || state.brushInstance);
-  const startPoint = (e.center[state.cssCoord.coord] - e[state.cssCoord.pos]) - state.offset[state.cssCoord.offset];
-  const relStart = (e.center[state.cssCoord.coord]) - state.offset[state.cssCoord.offset];
+  const startPoint = e.center[state.cssCoord.coord] - e[state.cssCoord.pos] - state.offset[state.cssCoord.offset];
+  const relStart = e.center[state.cssCoord.coord] - state.offset[state.cssCoord.offset];
   tempState.current = state.scale.normInvert(relStart / state.size);
   tempState.start = state.scale.normInvert(startPoint / state.size);
 
@@ -225,7 +221,7 @@ export function start({
       end: rs[activeIdx].max,
       limitLow: limits.min,
       limitHigh: limits.max,
-      mode: 'move'
+      mode: 'move',
     };
 
     if (target && target.hasAttribute('data-other-value')) {
@@ -249,7 +245,7 @@ export function start({
       end: tempState.current,
       limitLow: limits.min,
       limitHigh: limits.max,
-      mode: 'current'
+      mode: 'current',
     };
   }
 

@@ -4,7 +4,7 @@ import resolveSettings from './settings-resolver';
 
 const DEFAULT_SETTINGS = {
   domain: [],
-  range: []
+  range: [],
 };
 
 /**

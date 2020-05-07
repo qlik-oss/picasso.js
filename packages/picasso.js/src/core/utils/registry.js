@@ -4,7 +4,7 @@ export default function registryFactory(parentRegistry, registerName = 'unspecif
   const parent = parentRegistry || {
     get: () => undefined,
     has: () => false,
-    default: () => undefined
+    default: () => undefined,
   };
 
   defaultValue = parent.default();

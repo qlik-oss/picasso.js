@@ -42,7 +42,7 @@ function resolve(path, obj) {
       // return container.map(v => resolve(arr.slice(i + 1).join('/'), v));
     }
     if (arr[i] in container) {
-    // } else {
+      // } else {
       container = container[arr[i]];
     }
   }

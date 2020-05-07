@@ -51,8 +51,7 @@ class NodeContainer extends Node {
   }
 
   removeChildren(children) {
-    let i,
-      num;
+    let i, num;
     if (!this._children) {
       return this;
     }

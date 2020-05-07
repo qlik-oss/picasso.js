@@ -24,11 +24,13 @@ function toLineDash(p) {
 
 function dpiScale(g) {
   const dpr = typeof window === 'undefined' ? 1 : window.devicePixelRatio || 1;
-  const backingStorePixelRatio = g.webkitBackingStorePixelRatio
-    || g.mozBackingStorePixelRatio
-    || g.msBackingStorePixelRatio
-    || g.oBackingStorePixelRatio
-    || g.backingStorePixelRatio || 1;
+  const backingStorePixelRatio =
+    g.webkitBackingStorePixelRatio ||
+    g.mozBackingStorePixelRatio ||
+    g.msBackingStorePixelRatio ||
+    g.oBackingStorePixelRatio ||
+    g.backingStorePixelRatio ||
+    1;
   return dpr / backingStorePixelRatio;
 }
 
@@ -46,7 +48,7 @@ function applyContext(g, s, shapeToCanvasMap, computed = {}) {
     const canvasCmd = cmd[1];
     const convertCmd = cmd[2];
 
-    if ((shapeCmd in s.attrs && !(canvasCmd in computed)) && g[canvasCmd] !== s.attrs[shapeCmd]) {
+    if (shapeCmd in s.attrs && !(canvasCmd in computed) && g[canvasCmd] !== s.attrs[shapeCmd]) {
       const val = convertCmd ? convertCmd(s.attrs[shapeCmd]) : s.attrs[shapeCmd];
       if (typeof g[canvasCmd] === 'function') {
         g[canvasCmd](val);
@@ -68,7 +70,6 @@ function renderShapes(shapes, g, shapeToCanvasMap, deps) {
     let computed = {};
     g.save();
 
-
     if (shape.attrs && (shape.attrs.fill || shape.attrs.stroke)) {
       if (shape.attrs.fill && typeof shape.attrs.fill === 'object' && shape.attrs.fill.type === 'gradient') {
         computed.fillStyle = createCanvasGradient(g, shape, shape.attrs.fill);
@@ -78,7 +79,11 @@ function renderShapes(shapes, g, shapeToCanvasMap, deps) {
 
       if (shape.attrs.stroke && typeof shape.attrs.stroke === 'object' && shape.attrs.stroke.type === 'gradient') {
         computed.strokeStyle = createCanvasGradient(g, shape, shape.attrs.stroke);
-      } else if (shape.attrs.stroke && typeof shape.attrs.stroke === 'object' && shape.attrs.stroke.type === 'pattern') {
+      } else if (
+        shape.attrs.stroke &&
+        typeof shape.attrs.stroke === 'object' &&
+        shape.attrs.stroke.type === 'pattern'
+      ) {
         computed.strokeStyle = deps.patterns.create(shape.attrs.stroke);
       }
     }
@@ -94,7 +99,7 @@ function renderShapes(shapes, g, shapeToCanvasMap, deps) {
         g,
         doFill: 'fill' in shape.attrs && shape.attrs.fill !== 'none',
         doStroke: 'stroke' in shape.attrs && shape.attrs['stroke-width'] !== 0,
-        ellipsed: shape.ellipsed
+        ellipsed: shape.ellipsed,
       });
     }
     if (shape.children) {
@@ -122,7 +127,7 @@ export function renderer(sceneFn = sceneFactory) {
     ['globalAlpha', 'globalAlpha'],
     ['stroke-width', 'lineWidth'],
     ['stroke-linejoin', 'lineJoin'],
-    ['stroke-dasharray', 'setLineDash', toLineDash]
+    ['stroke-dasharray', 'setLineDash', toLineDash],
   ];
 
   let patterns;
@@ -172,7 +177,9 @@ export function renderer(sceneFn = sceneFactory) {
     const sceneContainer = {
       type: 'container',
       children: shapes,
-      transform: rect.edgeBleed.bool ? `translate(${rect.edgeBleed.left * dpiRatio * scaleX}, ${rect.edgeBleed.top * dpiRatio * scaleY})` : ''
+      transform: rect.edgeBleed.bool
+        ? `translate(${rect.edgeBleed.left * dpiRatio * scaleX}, ${rect.edgeBleed.top * dpiRatio * scaleY})`
+        : '',
     };
 
     if (dpiRatio !== 1 || scaleX !== 1 || scaleY !== 1) {
@@ -183,11 +190,8 @@ export function renderer(sceneFn = sceneFactory) {
       items: [sceneContainer],
       dpi: dpiRatio,
       on: {
-        create: [
-          onLineBreak(canvasRenderer.measureText),
-          injectTextBoundsFn(canvasRenderer)
-        ]
-      }
+        create: [onLineBreak(canvasRenderer.measureText), injectTextBoundsFn(canvasRenderer)],
+      },
     });
     const hasChangedScene = scene ? !newScene.equals(scene) : true;
 
@@ -197,7 +201,7 @@ export function renderer(sceneFn = sceneFactory) {
     if (doRender) {
       canvasRenderer.clear();
       renderShapes(newScene.children, g, shapeToCanvasMap, {
-        patterns
+        patterns,
       });
     }
 

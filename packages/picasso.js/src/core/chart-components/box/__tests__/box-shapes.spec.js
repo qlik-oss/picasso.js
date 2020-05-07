@@ -19,34 +19,44 @@ describe('buildShapes', () => {
     keys = ['box'];
     resolved = {
       major: {
-        items: [{
-          major: 'major value'
-        }],
+        items: [
+          {
+            major: 'major value',
+          },
+        ],
         settings: {
           major: {
-            scale: {
-            }
-          }
-        }
+            scale: {},
+          },
+        },
       },
       minor: {
-        items: [{
-          start: 0, end: 0.5, min: 0, max: 1, median: 0.5, med: 0.5, whisker: {}, oob: {}
-        }],
-        settings: { start: 100, end: 200 }
+        items: [
+          {
+            start: 0,
+            end: 0.5,
+            min: 0,
+            max: 1,
+            median: 0.5,
+            med: 0.5,
+            whisker: {},
+            oob: {},
+          },
+        ],
+        settings: { start: 100, end: 200 },
       },
       box: {
-        items: [1]
+        items: [1],
       },
       line: {
-        items: [2]
+        items: [2],
       },
       median: {
-        items: [3]
+        items: [3],
       },
       whisker: {
-        items: [4]
-      }
+        items: [4],
+      },
     };
   });
 
@@ -89,33 +99,53 @@ describe('buildShapes', () => {
     resolved = {
       major: {
         items: [{ major: 'first' }, { major: 'second' }],
-        settings: { major: { scale: {} } }
+        settings: { major: { scale: {} } },
       },
       minor: {
-        items: [{
-          start: 0, end: 0.5, min: 0, max: 1, median: 0.5, med: 0.5
-        }, {
-          start: 0, end: 0.5, min: 0, max: 1, median: 0.5, med: 0.5
-        }],
-        settings: { start: 100, end: 200 }
+        items: [
+          {
+            start: 0,
+            end: 0.5,
+            min: 0,
+            max: 1,
+            median: 0.5,
+            med: 0.5,
+          },
+          {
+            start: 0,
+            end: 0.5,
+            min: 0,
+            max: 1,
+            median: 0.5,
+            med: 0.5,
+          },
+        ],
+        settings: { start: 100, end: 200 },
       },
       box: {
-        items: [1, { show: false }]
+        items: [1, { show: false }],
       },
       line: {
-        items: [1, { show: false }]
+        items: [1, { show: false }],
       },
       median: {
-        items: [1, { show: false }]
+        items: [1, { show: false }],
       },
       whisker: {
-        items: [1, { show: false }]
-      }
+        items: [1, { show: false }],
+      },
     };
 
     keys = ['box', 'line', 'median', 'whisker'];
     const shapes = buildShapes({ resolved, keys });
-    expect(shapes[0].children).to.eql(['box', 'verticalLine', 'verticalLine', 'horizontalLine', 'horizontalLine', 'horizontalLine']);
+    expect(shapes[0].children).to.eql([
+      'box',
+      'verticalLine',
+      'verticalLine',
+      'horizontalLine',
+      'horizontalLine',
+      'horizontalLine',
+    ]);
     expect(shapes[1].children).to.eql([]);
   });
 });

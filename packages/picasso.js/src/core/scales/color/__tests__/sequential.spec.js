@@ -6,7 +6,7 @@ describe('Sequential', () => {
   beforeEach(() => {
     seq = sequential();
     theme = {
-      palette: sinon.stub()
+      palette: sinon.stub(),
     };
     theme.palette.withArgs('sequential').returns(['rgb(180,221,212)', 'rgb(34, 83, 90)']);
   });
@@ -96,7 +96,7 @@ describe('Sequential', () => {
       expect(seq(0.6)).to.equal('rgb(198, 96, 96)');
       expect(seq(0.75)).to.equal('rgb(236, 134, 134)'); // Thrid interval
       expect(seq(0.85)).to.equal('rgb(236, 134, 134)');
-      expect(seq(0.90)).to.equal('rgb(236, 134, 134)'); // Fourth interval
+      expect(seq(0.9)).to.equal('rgb(236, 134, 134)'); // Fourth interval
       expect(seq(1)).to.equal('rgb(236, 134, 134)');
     });
 
@@ -134,7 +134,19 @@ describe('Sequential', () => {
       expect(seq.domain()).to.deep.equal([0, 25, 100]);
     });
     it('should generate more limits', () => {
-      settings.range = ['red', 'green', 'blue', 'purple', 'yellow', 'magenta', 'pink', 'azure', 'black', 'white', 'brown'];
+      settings.range = [
+        'red',
+        'green',
+        'blue',
+        'purple',
+        'yellow',
+        'magenta',
+        'pink',
+        'azure',
+        'black',
+        'white',
+        'brown',
+      ];
       seq = sequential(settings, { fields });
       expect(seq.domain()).to.deep.equal([0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]);
     });

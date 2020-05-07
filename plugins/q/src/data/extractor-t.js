@@ -15,11 +15,12 @@ function getColumnOrder(dataset) {
   const qColumnOrder = dataset.raw().qColumnOrder;
   const fields = dataset.fields();
 
-  return qColumnOrder && (qColumnOrder.length === fields.length) ? qColumnOrder : fields.map((f, i) => i);
+  return qColumnOrder && qColumnOrder.length === fields.length ? qColumnOrder : fields.map((f, i) => i);
 }
 
 function getDimensionColumnOrder(cube) {
-  const order = cube.qColumnOrder && cube.qColumnOrder.length ? cube.qColumnOrder : cube.qDimensionInfo.map((d, ii) => ii);
+  const order =
+    cube.qColumnOrder && cube.qColumnOrder.length ? cube.qColumnOrder : cube.qDimensionInfo.map((d, ii) => ii);
 
   return order.filter((ii) => ii < cube.qDimensionInfo.length);
 }
@@ -74,9 +75,11 @@ export function getFieldDepth(field, { cube }) {
     } else {
       fieldDepth = treeOrder ? treeOrder.indexOf(fieldIdx) : fieldIdx;
     }
-  } else if (treeOrder && treeOrder.indexOf(-1) !== -1) { // if pseudo dimension exists in sort order
+  } else if (treeOrder && treeOrder.indexOf(-1) !== -1) {
+    // if pseudo dimension exists in sort order
     fieldDepth = treeOrder.indexOf(-1); // depth of pesudodimension
-  } else { // assume measure is at the bottom of the tree
+  } else {
+    // assume measure is at the bottom of the tree
     fieldDepth = cube.qDimensionInfo.length - (cube.qMode === 'K' ? 0 : 1);
   }
 
@@ -85,12 +88,16 @@ export function getFieldDepth(field, { cube }) {
     pseudoMeasureIndex,
     measureIdx,
     attrDimIdx,
-    attrIdx
+    attrIdx,
   };
 }
 
 function getFieldAccessor(sourceDepthObject, targetDepthObject) {
-  let nodeFn = treeAccessor(sourceDepthObject.fieldDepth, targetDepthObject.fieldDepth, targetDepthObject.pseudoMeasureIndex);
+  let nodeFn = treeAccessor(
+    sourceDepthObject.fieldDepth,
+    targetDepthObject.fieldDepth,
+    targetDepthObject.pseudoMeasureIndex
+  );
   let valueFn;
 
   if (targetDepthObject.measureIdx >= 0) {
@@ -109,37 +116,38 @@ function getFieldAccessor(sourceDepthObject, targetDepthObject) {
   return {
     nodeFn,
     attrFn,
-    valueFn
+    valueFn,
   };
 }
 
-function datumExtract(propCfg, cell, {
-  key
-}) {
+function datumExtract(propCfg, cell, { key }) {
   const datum = {
-    value: typeof propCfg.value === 'function' ? propCfg.value(cell) : typeof propCfg.value !== 'undefined' ? propCfg.value : cell // eslint-disable-line no-nested-ternary
+    value:
+      typeof propCfg.value === 'function'
+        ? propCfg.value(cell)
+        : typeof propCfg.value !== 'undefined'
+        ? propCfg.value
+        : cell, // eslint-disable-line no-nested-ternary
   };
 
-  datum.label = typeof propCfg.label === 'function' ? propCfg.label(cell) : typeof propCfg.label !== 'undefined' ? String(propCfg.label) : String(datum.value); // eslint-disable-line no-nested-ternary
+  datum.label =
+    typeof propCfg.label === 'function'
+      ? propCfg.label(cell)
+      : typeof propCfg.label !== 'undefined'
+      ? String(propCfg.label)
+      : String(datum.value); // eslint-disable-line no-nested-ternary
 
   if (propCfg.field) {
     datum.source = {
       key,
-      field: propCfg.field.key()
+      field: propCfg.field.key(),
     };
   }
 
   return datum;
 }
 
-function doIt({
-  propsArr,
-  props,
-  item,
-  itemData,
-  ret,
-  sourceKey
-}) {
+function doIt({ propsArr, props, item, itemData, ret, sourceKey }) {
   for (let i = 0; i < propsArr.length; i++) {
     const pCfg = props[propsArr[i]];
     const arr = pCfg.fields || [pCfg];
@@ -170,7 +178,8 @@ function doIt({
         }
         if (p.accessor) {
           nodes = p.accessor(item);
-          if (Array.isArray(nodes)) { // propably descendants
+          if (Array.isArray(nodes)) {
+            // propably descendants
             cells = nodes.map(p.valueAccessor);
             if (p.attrAccessor) {
               cells = cells.map(p.attrAccessor);
@@ -197,12 +206,12 @@ function doIt({
       if (pCfg.fields) {
         const v = fn ? fn(value) : value;
         coll.push(v);
-        collStr.push(str && label != null ? str(label) : (label != null ? label : String(v)));
+        collStr.push(str && label != null ? str(label) : label != null ? label : String(v));
       } else {
         const v = fn ? fn(value) : value;
         ret[propsArr[i]] = {
           value: v,
-          label: str ? str(label) : (label != null ? label : String(v))
+          label: str ? str(label) : label != null ? label : String(v),
         };
         if (p.field) {
           ret[propsArr[i]].source = { field: p.field.key(), key: sourceKey };
@@ -212,7 +221,7 @@ function doIt({
     if (coll) {
       ret[propsArr[i]] = {
         value: typeof pCfg.value === 'function' ? pCfg.value(coll, item) : coll,
-        label: typeof pCfg.label === 'function' ? pCfg.label(collStr, item) : collStr
+        label: typeof pCfg.label === 'function' ? pCfg.label(collStr, item) : collStr,
       };
     }
   }
@@ -233,18 +242,22 @@ function getHierarchyForSMode(dataset) {
   const matrix = dataset.raw().qDataPages.length ? dataset.raw().qDataPages[0].qMatrix : [];
   const order = getColumnOrder(dataset);
   const fields = dataset.fields();
-  const dimensions = dataset.fields().filter((f) => f.type() === 'dimension')
+  const dimensions = dataset
+    .fields()
+    .filter((f) => f.type() === 'dimension')
     .map((f) => order.indexOf(fields.indexOf(f)));
-  const measures = dataset.fields().filter((f) => f.type() === 'measure')
+  const measures = dataset
+    .fields()
+    .filter((f) => f.type() === 'measure')
     .map((f) => order.indexOf(fields.indexOf(f)));
 
   const root = {
     __id: '__root',
-    qValues: []
+    qValues: [],
   };
 
   const keys = {
-    __root: root
+    __root: root,
   };
 
   for (let r = 0; r < matrix.length; r++) {
@@ -257,7 +270,10 @@ function getHierarchyForSMode(dataset) {
       const key = `${id}__${cell.qText}`;
       if (!keys[key]) {
         keys[key] = {
-          __id: key, __parent: id, qValues: [], ...cell
+          __id: key,
+          __parent: id,
+          qValues: [],
+          ...cell,
         };
         isNew = true;
       }
@@ -280,14 +296,7 @@ function getHierarchyForSMode(dataset) {
   return h;
 }
 
-const attachPropsAccessors = ({
-  propsArr,
-  props,
-  cube,
-  cache,
-  itemDepthObject,
-  f
-}) => {
+const attachPropsAccessors = ({ propsArr, props, cube, cache, itemDepthObject, f }) => {
   for (let i = 0; i < propsArr.length; i++) {
     const pCfg = props[propsArr[i]];
     const arr = pCfg.fields ? pCfg.fields : [pCfg];
@@ -347,7 +356,7 @@ export function augment(config = {}, dataset, cache, util) {
       cube,
       cache,
       itemDepthObject,
-      f
+      f,
     });
   }
 
@@ -371,7 +380,7 @@ export function augment(config = {}, dataset, cache, util) {
       itemData,
       ret,
       sourceKey,
-      isTree: true
+      isTree: true,
     });
     descendants[i].data = ret;
   }
@@ -403,7 +412,7 @@ export function extract(config, dataset, cache, util) {
         cube,
         cache,
         itemDepthObject,
-        f
+        f,
       });
 
       const track = !!cfgs[g].trackBy;
@@ -427,7 +436,7 @@ export function extract(config, dataset, cache, util) {
           item,
           itemData,
           ret,
-          sourceKey
+          sourceKey,
         });
         // collect items based on the trackBy value
         // items with the same trackBy value are placed in an array and reduced later
@@ -438,18 +447,20 @@ export function extract(config, dataset, cache, util) {
             obj: ret,
             target: trackedItems,
             tracker,
-            trackType
+            trackType,
           });
         }
         mapped.push(ret);
       }
       // reduce if items have been grouped
       if (track) {
-        dataItems.push(...util.collect(trackedItems, {
-          main,
-          propsArr,
-          props
-        }));
+        dataItems.push(
+          ...util.collect(trackedItems, {
+            main,
+            propsArr,
+            props,
+          })
+        );
       } else {
         dataItems.push(...mapped);
       }

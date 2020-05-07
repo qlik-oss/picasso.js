@@ -12,20 +12,29 @@ describe('Axis Node Builder', () => {
       const upperNode = {
         name: 'upper',
         boundingRect: {
-          x: 0, y: 0, width: 10, height: 10
-        }
+          x: 0,
+          y: 0,
+          width: 10,
+          height: 10,
+        },
       };
       const middleNode = {
         name: 'middle',
         boundingRect: {
-          x: 0, y: 8, width: 10, height: 10
-        }
+          x: 0,
+          y: 8,
+          width: 10,
+          height: 10,
+        },
       };
       const lowerNode = {
         name: 'lower',
         boundingRect: {
-          x: 0, y: 20, width: 10, height: 10
-        }
+          x: 0,
+          y: 20,
+          width: 10,
+          height: 10,
+        },
       };
       nodes.push(...[lowerNode, middleNode, upperNode]);
 
@@ -38,20 +47,29 @@ describe('Axis Node Builder', () => {
       const upperNode = {
         name: 'upper',
         boundingRect: {
-          x: 0, y: 0, width: 10, height: 10
-        }
+          x: 0,
+          y: 0,
+          width: 10,
+          height: 10,
+        },
       };
       const middleNode = {
         name: 'middle',
         boundingRect: {
-          x: 0, y: 8, width: 10, height: 10
-        }
+          x: 0,
+          y: 8,
+          width: 10,
+          height: 10,
+        },
       };
       const lowerNode = {
         name: 'lower',
         boundingRect: {
-          x: 0, y: 9, width: 10, height: 10
-        }
+          x: 0,
+          y: 9,
+          width: 10,
+          height: 10,
+        },
       };
       nodes.push(...[lowerNode, middleNode, upperNode]);
 
@@ -64,14 +82,20 @@ describe('Axis Node Builder', () => {
       const upperNode = {
         name: 'upper',
         boundingRect: {
-          x: 0, y: 0, width: 10, height: 10
-        }
+          x: 0,
+          y: 0,
+          width: 10,
+          height: 10,
+        },
       };
       const lowerNode = {
         name: 'lower',
         boundingRect: {
-          x: 0, y: 9, width: 10, height: 10
-        }
+          x: 0,
+          y: 9,
+          width: 10,
+          height: 10,
+        },
       };
       nodes.push(...[lowerNode, upperNode]);
 
@@ -84,8 +108,11 @@ describe('Axis Node Builder', () => {
       const upperNode = {
         name: 'upper',
         boundingRect: {
-          x: 0, y: 0, width: 10, height: 10
-        }
+          x: 0,
+          y: 0,
+          width: 10,
+          height: 10,
+        },
       };
       nodes.push(...[upperNode]);
 
@@ -98,44 +125,65 @@ describe('Axis Node Builder', () => {
       const upperNode = {
         name: 'upper',
         boundingRect: {
-          x: 0, y: 0, width: 10, height: 10
-        }
+          x: 0,
+          y: 0,
+          width: 10,
+          height: 10,
+        },
       };
       const node5 = {
         name: 'node5',
         boundingRect: {
-          x: 0, y: 6, width: 10, height: 10
-        }
+          x: 0,
+          y: 6,
+          width: 10,
+          height: 10,
+        },
       }; // filter
       const node4 = {
         name: 'node4',
         boundingRect: {
-          x: 0, y: 12, width: 10, height: 10
-        }
+          x: 0,
+          y: 12,
+          width: 10,
+          height: 10,
+        },
       };
       const node3 = {
         name: 'node3',
         boundingRect: {
-          x: 0, y: 18, width: 10, height: 10
-        }
+          x: 0,
+          y: 18,
+          width: 10,
+          height: 10,
+        },
       }; // filter
       const node2 = {
         name: 'node2',
         boundingRect: {
-          x: 0, y: 24, width: 10, height: 10
-        }
+          x: 0,
+          y: 24,
+          width: 10,
+          height: 10,
+        },
       };
       const node1 = {
         name: 'node1',
         boundingRect: {
-          x: 0, y: 30, width: 10, height: 10
-        }
+          x: 0,
+          y: 30,
+          width: 10,
+          height: 10,
+        },
       }; // filter
       const lowerNode = {
         name: 'lower',
         boundingRect: {
-          x: 0, y: 36, width: 10, height: 10
-        }
+          x: 0,
+          y: 36,
+          width: 10,
+          height: 10,
+        },
       };
       nodes.push(...[lowerNode, node1, node2, node3, node4, node5, upperNode]);
 
@@ -148,44 +196,65 @@ describe('Axis Node Builder', () => {
       const upperNode = {
         name: 'upper',
         boundingRect: {
-          x: 0, y: 0, width: 10, height: 10
-        }
+          x: 0,
+          y: 0,
+          width: 10,
+          height: 10,
+        },
       };
       const node5 = {
         name: 'node5',
         boundingRect: {
-          x: 0, y: 15, width: 10, height: 10
-        }
+          x: 0,
+          y: 15,
+          width: 10,
+          height: 10,
+        },
       };
       const node4 = {
         name: 'node4',
         boundingRect: {
-          x: 0, y: 30, width: 10, height: 10
-        }
+          x: 0,
+          y: 30,
+          width: 10,
+          height: 10,
+        },
       };
       const node3 = {
         name: 'node3',
         boundingRect: {
-          x: 0, y: 45, width: 10, height: 10
-        }
+          x: 0,
+          y: 45,
+          width: 10,
+          height: 10,
+        },
       };
       const node2 = {
         name: 'node2',
         boundingRect: {
-          x: 0, y: 60, width: 10, height: 10
-        }
+          x: 0,
+          y: 60,
+          width: 10,
+          height: 10,
+        },
       };
       const node1 = {
         name: 'node1',
         boundingRect: {
-          x: 0, y: 75, width: 10, height: 10
-        }
+          x: 0,
+          y: 75,
+          width: 10,
+          height: 10,
+        },
       };
       const lowerNode = {
         name: 'lower',
         boundingRect: {
-          x: 0, y: 90, width: 10, height: 10
-        }
+          x: 0,
+          y: 90,
+          width: 10,
+          height: 10,
+        },
       };
       nodes.push(...[lowerNode, node1, node2, node3, node4, node5, upperNode]);
 

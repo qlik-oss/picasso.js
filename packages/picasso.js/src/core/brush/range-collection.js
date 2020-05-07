@@ -36,10 +36,7 @@ export default function rangeCollection(config = {}) {
   function fn() {}
 
   fn.configure = (c = {}) => {
-    const {
-      includeMax = true,
-      includeMin = true
-    } = c;
+    const { includeMax = true, includeMin = true } = c;
     maxCondition = includeMax ? lessThanOrEqual : lessThan;
     minCondition = includeMin ? lessThanOrEqual : lessThan;
   };
@@ -118,7 +115,7 @@ export default function rangeCollection(config = {}) {
     for (let i = 1; i < boundaries.length; i += 2) {
       collection.push({
         min: boundaries[i - 1],
-        max: boundaries[i]
+        max: boundaries[i],
       });
     }
     return collection;

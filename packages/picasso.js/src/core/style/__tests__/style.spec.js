@@ -17,8 +17,8 @@ describe('Style resolver', () => {
             source: '/qMeasureInfo/1',
             fn: function fn(index) {
               return index > 1 ? 0.5 : null;
-            }
-          }
+            },
+          },
         },
         whisker: {
           type: 'circle',
@@ -29,12 +29,12 @@ describe('Style resolver', () => {
             return null;
           },
           fill: 'red',
-          width: 1
+          width: 1,
         },
         med: {
           stroke: '#00f',
           strokeWidth: 6,
-          fill: 0
+          fill: 0,
         },
         line: {
           stroke: function stroke(item, index) {
@@ -44,16 +44,16 @@ describe('Style resolver', () => {
             fn: function fn() {
               return 5;
             },
-            source: '/qMeasureInfo/1'
+            source: '/qMeasureInfo/1',
           },
-          fill: { source: '/qMeasureInfo/0', type: 'color' }
+          fill: { source: '/qMeasureInfo/0', type: 'color' },
         },
         title: {
           main: {
-            nullValue: null
-          }
-        }
-      }
+            nullValue: null,
+          },
+        },
+      },
     };
   });
 

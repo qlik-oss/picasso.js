@@ -33,10 +33,10 @@ describe('Chart', () => {
         settings: {
           scales: {},
           components: [],
-          data: {}
+          data: {},
         },
         on: {
-          click: sinon.spy()
+          click: sinon.spy(),
         },
         created,
         beforeMount,
@@ -45,13 +45,13 @@ describe('Chart', () => {
         beforeUpdate,
         updated,
         beforeDestroy,
-        destroyed
+        destroyed,
       };
 
       context = {
         registries: {
-          data: () => () => ({})
-        }
+          data: () => () => ({}),
+        },
       };
     });
 
@@ -101,21 +101,26 @@ describe('Chart', () => {
       const comp = () => undefined;
       comp.has = () => false;
       const logger = {
-        warn: sinon.spy()
+        warn: sinon.spy(),
       };
       const create = () => {
-        chart(Object.assign(definition, {
-          settings: {
-            components: [{
-              type: 'noop'
-            }]
+        chart(
+          Object.assign(definition, {
+            settings: {
+              components: [
+                {
+                  type: 'noop',
+                },
+              ],
+            },
+          }),
+          {
+            logger,
+            registries: {
+              component: comp,
+            },
           }
-        }), {
-          logger,
-          registries: {
-            component: comp
-          }
-        });
+        );
       };
 
       expect(create).to.not.throw();
@@ -126,12 +131,12 @@ describe('Chart', () => {
       const components = {
         box: {
           has: () => true,
-          render: sinon.stub()
+          render: sinon.stub(),
         },
         point: {
           has: () => true,
-          render: sinon.stub()
-        }
+          render: sinon.stub(),
+        },
       };
       const comp = (key) => components[key];
       comp.has = () => true;
@@ -139,24 +144,30 @@ describe('Chart', () => {
 
       const comp1UpdatedCb = sinon.spy();
       const comp2UpdatedCb = sinon.spy();
-      const chartInstance = chart(Object.assign(definition, {
-        settings: {
-          components: [{
-            type: 'box',
-            key: 'comp1',
-            updated: comp1UpdatedCb
-          }, {
-            type: 'point',
-            key: 'comp2',
-            updated: comp2UpdatedCb
-          }]
+      const chartInstance = chart(
+        Object.assign(definition, {
+          settings: {
+            components: [
+              {
+                type: 'box',
+                key: 'comp1',
+                updated: comp1UpdatedCb,
+              },
+              {
+                type: 'point',
+                key: 'comp2',
+                updated: comp2UpdatedCb,
+              },
+            ],
+          },
+        }),
+        {
+          registries: {
+            component: comp,
+            renderer: () => () => componentFixture.mocks().renderer,
+          },
         }
-      }), {
-        registries: {
-          component: comp,
-          renderer: () => () => componentFixture.mocks().renderer
-        }
-      });
+      );
       chartInstance.update();
       expect(comp1UpdatedCb).to.have.been.calledOnce;
       expect(comp2UpdatedCb).to.have.been.calledOnce;
@@ -172,8 +183,8 @@ describe('Chart', () => {
       const components = {
         point: {
           has: () => true,
-          render: sinon.stub()
-        }
+          render: sinon.stub(),
+        },
       };
       const comp = (key) => components[key];
       comp.has = () => true;
@@ -183,31 +194,37 @@ describe('Chart', () => {
       rendererFactory.onFirstCall().returns(() => first);
       rendererFactory.onSecondCall().returns(() => second);
 
-      chart({
-        ...definition,
-        settings: {
-          components: [{
-            type: 'point',
-            key: 'comp1',
-            layout: {
-              dock: 'left',
-              displayOrder: 2
-            }
-          }, {
-            type: 'point',
-            key: 'comp2',
-            layout: {
-              dock: '@comp1',
-              displayOrder: 1
-            }
-          }]
+      chart(
+        {
+          ...definition,
+          settings: {
+            components: [
+              {
+                type: 'point',
+                key: 'comp1',
+                layout: {
+                  dock: 'left',
+                  displayOrder: 2,
+                },
+              },
+              {
+                type: 'point',
+                key: 'comp2',
+                layout: {
+                  dock: '@comp1',
+                  displayOrder: 1,
+                },
+              },
+            ],
+          },
+        },
+        {
+          registries: {
+            component: comp,
+            renderer: rendererFactory,
+          },
         }
-      }, {
-        registries: {
-          component: comp,
-          renderer: rendererFactory
-        }
-      });
+      );
       const order = element.children.map((c) => c.attributes['data-key']);
       expect(order).to.eql(['comp2', 'comp1']);
     });
@@ -216,8 +233,8 @@ describe('Chart', () => {
       const components = {
         point: {
           has: () => true,
-          render: sinon.stub()
-        }
+          render: sinon.stub(),
+        },
       };
       const comp = (key) => components[key];
       comp.has = () => true;
@@ -227,46 +244,55 @@ describe('Chart', () => {
       rendererFactory.onFirstCall().returns(() => first);
       rendererFactory.onSecondCall().returns(() => second);
 
-      const chartInstance = chart({
-        ...definition,
-        settings: {
-          components: [{
-            type: 'point',
-            key: 'comp1',
-            layout: {
-              dock: 'left',
-              displayOrder: 1
-            }
-          }, {
-            type: 'point',
-            key: 'comp2',
-            layout: {
-              dock: 'left',
-              displayOrder: 2
-            }
-          }]
+      const chartInstance = chart(
+        {
+          ...definition,
+          settings: {
+            components: [
+              {
+                type: 'point',
+                key: 'comp1',
+                layout: {
+                  dock: 'left',
+                  displayOrder: 1,
+                },
+              },
+              {
+                type: 'point',
+                key: 'comp2',
+                layout: {
+                  dock: 'left',
+                  displayOrder: 2,
+                },
+              },
+            ],
+          },
+        },
+        {
+          registries: {
+            component: comp,
+            renderer: rendererFactory,
+          },
         }
-      }, {
-        registries: {
-          component: comp,
-          renderer: rendererFactory
-        }
-      });
+      );
       expect(element.children.map((c) => c.attributes['data-key'])).to.eql(['comp1', 'comp2']);
       chartInstance.update({
         settings: {
-          components: [{
-            key: 'comp1',
-            layout: {
-              displayOrder: 2
-            }
-          }, {
-            key: 'comp2',
-            layout: {
-              displayOrder: 1
-            }
-          }]
-        }
+          components: [
+            {
+              key: 'comp1',
+              layout: {
+                displayOrder: 2,
+              },
+            },
+            {
+              key: 'comp2',
+              layout: {
+                displayOrder: 1,
+              },
+            },
+          ],
+        },
       });
       expect(element.children.map((c) => c.attributes['data-key'])).to.eql(['comp2', 'comp1']);
     });
@@ -277,36 +303,38 @@ describe('Chart', () => {
       let comp;
       let rendererFactory;
       beforeEach(() => {
-        shapes = [{
-          key: 'foo',
-          data: {
-            source: {
-              field: 'path/to/data'
+        shapes = [
+          {
+            key: 'foo',
+            data: {
+              source: {
+                field: 'path/to/data',
+              },
+              value: 0,
             },
-            value: 0
-          }
-        }];
+          },
+        ];
 
         config = {
           components: [
             {
               action: 'toggle',
               key: 'foo',
-              contexts: ['selection']
+              contexts: ['selection'],
             },
             {
               action: 'set',
               key: 'bar',
-              contexts: ['hover']
-            }
-          ]
+              contexts: ['hover'],
+            },
+          ],
         };
 
         const components = {
           point: {
             has: () => true,
-            render: sinon.stub()
-          }
+            render: sinon.stub(),
+          },
         };
         comp = (key) => components[key];
         comp.has = () => true;
@@ -317,23 +345,27 @@ describe('Chart', () => {
       });
 
       it('should brush on component, which key matches the key of the input shape', () => {
-        const defComp = [{
-          type: 'point',
-          key: 'foo'
-        }];
-
-        const chartInstance = chart({
-          ...definition,
-          settings: {
-            components: defComp
-          }
-        }, {
-          registries:
+        const defComp = [
           {
-            component: comp,
-            renderer: rendererFactory
+            type: 'point',
+            key: 'foo',
+          },
+        ];
+
+        const chartInstance = chart(
+          {
+            ...definition,
+            settings: {
+              components: defComp,
+            },
+          },
+          {
+            registries: {
+              component: comp,
+              renderer: rendererFactory,
+            },
           }
-        });
+        );
 
         chartInstance.brushFromShapes(shapes, config);
 
@@ -345,30 +377,34 @@ describe('Chart', () => {
       });
 
       it('should brush on all components', () => {
-        const defComp = [{
-          type: 'point',
-          key: 'foo'
-        },
-        {
-          type: 'point',
-          key: 'bar'
-        }];
+        const defComp = [
+          {
+            type: 'point',
+            key: 'foo',
+          },
+          {
+            type: 'point',
+            key: 'bar',
+          },
+        ];
 
         const second = componentFactoryFixture().mocks().renderer;
         rendererFactory.onSecondCall().returns(() => second);
 
-        const chartInstance = chart({
-          ...definition,
-          settings: {
-            components: defComp
-          }
-        }, {
-          registries:
+        const chartInstance = chart(
           {
-            component: comp,
-            renderer: rendererFactory
+            ...definition,
+            settings: {
+              components: defComp,
+            },
+          },
+          {
+            registries: {
+              component: comp,
+              renderer: rendererFactory,
+            },
           }
-        });
+        );
 
         chartInstance.brushFromShapes(shapes, config);
 
@@ -382,18 +418,20 @@ describe('Chart', () => {
       it('should not brush on any components', () => {
         const defComp = [];
 
-        const chartInstance = chart({
-          ...definition,
-          settings: {
-            components: defComp
-          }
-        }, {
-          registries:
+        const chartInstance = chart(
           {
-            component: comp,
-            renderer: rendererFactory
+            ...definition,
+            settings: {
+              components: defComp,
+            },
+          },
+          {
+            registries: {
+              component: comp,
+              renderer: rendererFactory,
+            },
           }
-        });
+        );
 
         chartInstance.brushFromShapes(shapes, config);
 
@@ -414,12 +452,12 @@ describe('Chart', () => {
       visible = ['a', 'b', 'c'].map(elementMock).map((e) => ({
         instance: {
           renderer: () => ({
-            element: () => e
+            element: () => e,
           }),
           def: {
-            additionalElements: e.name === 'b' ? () => sub : undefined
-          }
-        }
+            additionalElements: e.name === 'b' ? () => sub : undefined,
+          },
+        },
       }));
       el = elementMock('div');
     });

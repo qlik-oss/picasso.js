@@ -19,7 +19,8 @@ function start(_scrollbar, pos) {
   const scroll = _scrollbar.chart.scroll(_scrollbar.settings.scroll);
   let currentMove;
 
-  { // local scope to allow reuse of variable names later
+  {
+    // local scope to allow reuse of variable names later
     let offset = pos[horizontal ? 'x' : 'y'];
     if (invert) {
       offset = length - offset;
@@ -29,11 +30,11 @@ function start(_scrollbar, pos) {
     currentMove = {
       startOffset: offset,
       startScroll: scrollState.start,
-      swipe: false
+      swipe: false,
     };
 
     // Detect swipe start outsize the thumb & change startScroll to jump the scroll there.
-    const scrollPoint = ((offset / length) * (scrollState.max - scrollState.min)) + scrollState.min;
+    const scrollPoint = (offset / length) * (scrollState.max - scrollState.min) + scrollState.min;
     if (scrollPoint < scrollState.start) {
       currentMove.startScroll = scrollPoint;
     } else if (scrollPoint > scrollState.start + scrollState.viewSize) {
@@ -69,15 +70,15 @@ function start(_scrollbar, pos) {
       const scrollStart = currentMove.startScroll + scrollMove;
       scroll.moveTo(scrollStart);
     } else {
-      const scrollCenter = ((offset / length) * (scrollState.max - scrollState.min)) + scrollState.min;
-      const scrollStart = scrollCenter - (scrollState.viewSize / 2);
+      const scrollCenter = (offset / length) * (scrollState.max - scrollState.min) + scrollState.min;
+      const scrollStart = scrollCenter - scrollState.viewSize / 2;
       scroll.moveTo(scrollStart);
     }
   };
 
   return {
     update,
-    end
+    end,
   };
 }
 
@@ -85,7 +86,7 @@ function getLocalPos(event, renderer) {
   const containerRect = renderer.element().getBoundingClientRect();
   return {
     x: event.center.x - containerRect.left,
-    y: event.center.y - containerRect.top
+    y: event.center.y - containerRect.top,
   };
 }
 
@@ -96,18 +97,22 @@ const scrollbarComponent = {
       const pos = getLocalPos(event, this.renderer);
       const startPos = {
         x: pos.x - event.deltaX,
-        y: pos.y - event.deltaY
+        y: pos.y - event.deltaY,
       };
       this.currentMove = start(this, startPos);
       this.currentMove.update(pos);
     },
     panMove(event) {
-      if (!this.currentMove) { return; }
+      if (!this.currentMove) {
+        return;
+      }
       const pos = getLocalPos(event, this.renderer);
       this.currentMove.update(pos);
     },
     panEnd(event) {
-      if (!this.currentMove) { return; }
+      if (!this.currentMove) {
+        return;
+      }
       const pos = getLocalPos(event, this.renderer);
       this.currentMove.end(pos);
       this.currentMove = null;
@@ -119,14 +124,14 @@ const scrollbarComponent = {
       const pos = getLocalPos(event, this.renderer);
       const move = start(this, pos);
       move.end(pos);
-    }
+    },
   },
   defaultSettings: {
     settings: {
       backgroundColor: '#eee',
       thumbColor: '#ccc',
-      width: 16 // 32 for touch
-    }
+      width: 16, // 32 for touch
+    },
   },
 
   preferredSize: function preferredSize(rect) {
@@ -164,24 +169,26 @@ const scrollbarComponent = {
           width: '100%',
           height: '100%',
           background: this.settings.settings.backgroundColor,
-          pointerEvents: 'auto'
-        }
+          pointerEvents: 'auto',
+        },
       },
-      [].concat(h('div', {
-        class: 'scroller',
-        style: {
-          position: 'absolute',
-          [horizontal ? 'left' : 'top']: `${thumbStart}px`,
-          [horizontal ? 'top' : 'left']: '25%',
-          [horizontal ? 'height' : 'width']: '50%', // ${width}px
-          [lengthAttr]: `${Math.max(1, thumbRange)}px`,
-          background: this.settings.settings.thumbColor
-        }
-      }))
+      [].concat(
+        h('div', {
+          class: 'scroller',
+          style: {
+            position: 'absolute',
+            [horizontal ? 'left' : 'top']: `${thumbStart}px`,
+            [horizontal ? 'top' : 'left']: '25%',
+            [horizontal ? 'height' : 'width']: '50%', // ${width}px
+            [lengthAttr]: `${Math.max(1, thumbRange)}px`,
+            background: this.settings.settings.thumbColor,
+          },
+        })
+      )
     );
   },
 
-  renderer: 'dom'
+  renderer: 'dom',
 };
 
 export default function scrollbar(picasso) {

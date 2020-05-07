@@ -2,8 +2,8 @@ import pointsToPath from '../utils/points-to-path';
 
 export function generateCrossPoints(x, y, size, barWidth) {
   const r = size / 2;
-  const innerLeft = x - (barWidth / 2);
-  const innerTop = y - (barWidth / 2);
+  const innerLeft = x - barWidth / 2;
+  const innerTop = y - barWidth / 2;
   const left = x - r;
   const top = y - r;
 
@@ -19,7 +19,7 @@ export function generateCrossPoints(x, y, size, barWidth) {
     { x: innerLeft, y: top + size },
     { x: innerLeft, y: innerTop + barWidth }, // Left
     { x: left, y: innerTop + barWidth },
-    { x: left, y: innerTop }
+    { x: left, y: innerTop },
   ];
 }
 
@@ -40,7 +40,7 @@ function cross(options) {
   return {
     type: 'path',
     fill: 'black',
-    d: pointsToPath(points)
+    d: pointsToPath(points),
   };
 }
 

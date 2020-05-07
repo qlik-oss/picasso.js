@@ -3,10 +3,20 @@ import RgbaColor from '../../rgba-color';
 import HslaColor from '../../hsla-color';
 
 describe('colorObject', () => {
-  const nonObjects = [true, 0, '', () => { }],
-    undetermined = [{}, { r: 0, g: 0 }, { h: 0, s: 0 }, { r: 0, g: 0, h: 0 }, { h: 0, s: 0, r: 0 }, {
-      r: 0, g: 0, h: 0, s: 0
-    }],
+  const nonObjects = [true, 0, '', () => {}],
+    undetermined = [
+      {},
+      { r: 0, g: 0 },
+      { h: 0, s: 0 },
+      { r: 0, g: 0, h: 0 },
+      { h: 0, s: 0, r: 0 },
+      {
+        r: 0,
+        g: 0,
+        h: 0,
+        s: 0,
+      },
+    ],
     rgb = { r: 0, g: 0, b: 0 },
     hsl = { h: 0, s: 0, l: 0 };
 
@@ -45,7 +55,10 @@ describe('colorObject', () => {
 
   it('should return a correct RgbaColor instance', () => {
     const color = colorObject({
-      r: 1, g: 2, b: 3, a: 4
+      r: 1,
+      g: 2,
+      b: 3,
+      a: 4,
     });
 
     expect(color.r).to.equal(1);

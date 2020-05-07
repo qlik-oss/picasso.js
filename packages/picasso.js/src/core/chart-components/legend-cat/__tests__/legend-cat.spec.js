@@ -13,28 +13,34 @@ describe('legend-cat', () => {
   beforeEach(() => {
     opts = {
       inner: {
-        x: 10, y: 20, width: 100, height: 200
-      }
+        x: 10,
+        y: 20,
+        width: 100,
+        height: 200,
+      },
     };
     componentFixture = componentFactoryFixture();
     componentFixture.mocks().theme.style.returns({
       item: {
-        label: {}
+        label: {},
       },
-      title: {}
+      title: {},
     });
     const renderer = {
       size: () => {},
-      render: () => {}
+      render: () => {},
     };
     componentFixture.mocks().registries.renderer.returns(() => renderer);
     h = sandbox.stub();
     domRenderer = {
       size: () => {},
       render: sandbox.stub(),
-      renderArgs: [h]
+      renderArgs: [h],
     };
-    componentFixture.mocks().registries.renderer.withArgs('dom').returns(() => domRenderer);
+    componentFixture
+      .mocks()
+      .registries.renderer.withArgs('dom')
+      .returns(() => domRenderer);
     chart = componentFixture.mocks().chart;
     const scale = (d) => `-${d}-`;
     scale.domain = () => [1];
@@ -45,7 +51,7 @@ describe('legend-cat', () => {
 
   it('should render items with default settings', () => {
     const config = {
-      scale: 's'
+      scale: 's',
     };
 
     componentFixture.simulateCreate(component, config);
@@ -58,33 +64,50 @@ describe('legend-cat', () => {
       data: d,
       children: [
         {
-          type: 'rect', fill: '-1-', x: 0, y: 0, width: 12, height: 12, data: d
-        }
+          type: 'rect',
+          fill: '-1-',
+          x: 0,
+          y: 0,
+          width: 12,
+          height: 12,
+          data: d,
+        },
       ],
       collider: {
-        x: 0, y: 0, width: 25, height: 12, type: 'rect'
-      }
+        x: 0,
+        y: 0,
+        width: 25,
+        height: 12,
+        type: 'rect',
+      },
     });
 
-    expect(renderedItems[0].children[1]).to.containSubset({ // label
+    expect(renderedItems[0].children[1]).to.containSubset({
+      // label
       text: 'first',
-      data: d
+      data: d,
     });
   });
 
   it('should calculate preferredSize', () => {
     const config = {
-      scale: 's'
+      scale: 's',
     };
 
     componentFixture.simulateCreate(component, config);
     const size = componentFixture.simulateLayout({
       inner: {
-        width: 100, height: 200, x: 10, y: 20
+        width: 100,
+        height: 200,
+        x: 10,
+        y: 20,
       },
       outer: {
-        width: 101, height: 201, x: 11, y: 21
-      }
+        width: 101,
+        height: 201,
+        x: 11,
+        y: 21,
+      },
     });
 
     expect(size).to.equal(25 + 16);
@@ -94,13 +117,13 @@ describe('legend-cat', () => {
     const config = {
       scale: 'long',
       layout: {
-        dock: 'top'
+        dock: 'top',
       },
       settings: {
         layout: {
-          direction: 'rtl'
-        }
-      }
+          direction: 'rtl',
+        },
+      },
     };
 
     chart = componentFixture.mocks().chart;
@@ -113,8 +136,11 @@ describe('legend-cat', () => {
     componentFixture.simulateCreate(component, config);
     componentFixture.simulateRender({
       inner: {
-        x: 10, y: 20, width: 30, height: 200
-      }
+        x: 10,
+        y: 20,
+        width: 30,
+        height: 200,
+      },
     });
 
     expect(h.callCount).to.equal(10);

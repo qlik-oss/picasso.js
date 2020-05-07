@@ -25,46 +25,52 @@ picasso.chart({
   settings: {
     scales: {
       budget: { max: 5000, min: 0 },
-      sales: { max: 11000, min: 3000, invert: true }
+      sales: { max: 11000, min: 3000, invert: true },
     },
     components: [
       {
         type: 'axis',
         scale: 'budget',
         layout: {
-          dock: 'bottom'
-        }
+          dock: 'bottom',
+        },
       },
       {
         type: 'axis',
         scale: 'sales',
         layout: {
-          dock: 'left'
-        }
+          dock: 'left',
+        },
       },
       {
         type: 'point',
         data: [
-          {sales: 7456, margin: 0.3, budget: 4557},
-          {sales: 5603, margin: 0.7, budget: 2234},
-          {sales: 8603, margin: 0.6, budget: 4121},
-          {sales: 4562, margin: 0.4, budget: 1234},
-          {sales: 9873, margin: 0.9, budget: 3453},
+          { sales: 7456, margin: 0.3, budget: 4557 },
+          { sales: 5603, margin: 0.7, budget: 2234 },
+          { sales: 8603, margin: 0.6, budget: 4121 },
+          { sales: 4562, margin: 0.4, budget: 1234 },
+          { sales: 9873, margin: 0.9, budget: 3453 },
         ],
         settings: {
-          x: { scale: 'budget', fn: d => d.scale(d.datum.value.budget) },
-          y: { scale: 'sales', fn: d => d.scale(d.datum.value.sales) },
-          size: d => d.datum.value.margin,
-        }
-      }
-    ]
-  }
+          x: { scale: 'budget', fn: (d) => d.scale(d.datum.value.budget) },
+          y: { scale: 'sales', fn: (d) => d.scale(d.datum.value.sales) },
+          size: (d) => d.datum.value.margin,
+        },
+      },
+    ],
+  },
 });
 ```
 
 ![Bubbles](website/static/img/bubbles.png)
 
 ## [More examples](https://picassojs.com/examples.html)
+
+## Run examples locally
+
+See and try out picasso features by starting the development studio by running:
+
+`yarn start`
 
 ## Contributing
 

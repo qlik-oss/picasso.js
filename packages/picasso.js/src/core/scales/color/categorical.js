@@ -4,13 +4,13 @@ import resolveSettings from '../settings-resolver';
 const DEFAULT_SETTINGS = {
   domain: [],
   range: [],
-  unknown: undefined
+  unknown: undefined,
 };
 
 const DEFAULT_EXPLICIT_SETTINGS = {
   domain: [],
   range: [],
-  override: false
+  override: false,
 };
 
 /**

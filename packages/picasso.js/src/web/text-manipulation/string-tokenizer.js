@@ -53,7 +53,7 @@ export default function stringTokenizer({
   mandatoryBreakIdentifiers = [includesLineBreak],
   noBreakAllowedIdentifiers = [],
   suppressIdentifier = [includesWhiteSpace, includesLineBreak, (chunk) => chunk === ''],
-  hyphenationIdentifiers = [hyphenationAllowed]
+  hyphenationIdentifiers = [hyphenationAllowed],
 } = {}) {
   const chunks = String(string).split(separator);
   cleanEmptyChunks(chunks);
@@ -65,13 +65,7 @@ export default function stringTokenizer({
     const i = clamp(peekAt, 0, length - 1);
     const chunk = chunks[i];
     const textMeasure = measureText(chunk);
-    const opportunity = resolveBreakOpportunity(
-      chunk,
-      i,
-      chunks,
-      mandatoryBreakIdentifiers,
-      noBreakAllowedIdentifiers
-    );
+    const opportunity = resolveBreakOpportunity(chunk, i, chunks, mandatoryBreakIdentifiers, noBreakAllowedIdentifiers);
 
     return {
       index: i,
@@ -81,7 +75,7 @@ export default function stringTokenizer({
       hyphenation: hyphenationIdentifiers.some((fn) => fn(chunk, i, chunks)),
       width: textMeasure.width,
       height: textMeasure.height,
-      done: false
+      done: false,
     };
   }
 
@@ -105,6 +99,6 @@ export default function stringTokenizer({
   return {
     next,
     peek,
-    length
+    length,
   };
 }

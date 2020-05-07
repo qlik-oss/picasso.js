@@ -1,14 +1,11 @@
 {
-  "extends": [
-    "qlik-oss",
-    "docker:disable"
-  ],
+  "extends": ["qlik-oss", "docker:disable", "schedule:monthly"],
   "semanticCommits": true,
   "rangeStrategy": "bump",
-  "packageRules": [{
-    "depTypeList": [
-      "engines"
-    ],
-    "enabled": false
-  }]
+  "packageRules": [
+    {
+      "depTypeList": ["engines"],
+      "enabled": false
+    }
+  ]
 }

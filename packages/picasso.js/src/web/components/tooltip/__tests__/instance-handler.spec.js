@@ -1,10 +1,4 @@
-import {
-  setActive,
-  removeActive,
-  cancelActive,
-  getActive,
-  remove
-} from '../instance-handler';
+import { setActive, removeActive, cancelActive, getActive, remove } from '../instance-handler';
 
 describe('Instance handler', () => {
   beforeEach(() => {

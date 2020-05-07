@@ -4,7 +4,7 @@ function applyAlignJustify(ctx, node) {
     type: ctx.state.isVertical ? 'justify' : 'align',
     coord: ctx.state.isVertical ? 'y' : 'x',
     pos: ctx.state.isVertical ? 'height' : 'width',
-    fn: ctx.state.isVertical ? 'requiredHeight' : 'requiredWidth'
+    fn: ctx.state.isVertical ? 'requiredHeight' : 'requiredWidth',
   };
 
   wiggle = ctx.state.rect[cmd.pos] - ctx.state.legend.length() - ctx.state.title[cmd.fn]();
@@ -18,7 +18,7 @@ export function generateStopNodes(ctx) {
   const stops = fillScale.domain().map((d) => ({
     type: 'stop',
     color: fillScale(d),
-    offset: Math.min(1, Math.max(0, majorScale.norm(d)))
+    offset: Math.min(1, Math.max(0, majorScale.norm(d))),
   }));
 
   return stops.sort((a, b) => a.offset - b.offset);
@@ -64,7 +64,7 @@ export function createTitleNode(ctx) {
     hyphens: settings.title.hyphens,
     lineHeight: settings.title.lineHeight,
     anchor: textAnchor,
-    title: settings.title.text
+    title: settings.title.text,
   };
 
   applyAlignJustify(ctx, node);
@@ -101,8 +101,8 @@ export function createLegendRectNode(ctx, stops) {
     fill: {
       type: 'gradient',
       stops,
-      degree: state.isVertical ? 90 : 180
-    }
+      degree: state.isVertical ? 90 : 180,
+    },
   };
 
   applyAlignJustify(ctx, node);
@@ -119,7 +119,7 @@ export function createTickNodes(ctx, legendNode) {
     y: legendNode.y,
     width: state.isVertical ? 0 : legendNode.width,
     height: state.isVertical ? legendNode.height : 0,
-    fill: 'transparent'
+    fill: 'transparent',
   };
 
   const nodes = state.ticks.values.map((tick) => {
@@ -130,10 +130,10 @@ export function createTickNodes(ctx, legendNode) {
     let baseline = 'alphabetical';
 
     if (state.isVertical) {
-      y = legendNode.y + (legendNode.height * tick.pos);
+      y = legendNode.y + legendNode.height * tick.pos;
       baseline = tick.pos === 0 ? 'text-before-edge' : 'text-after-edge';
     } else {
-      x = legendNode.x + (legendNode.width * tick.pos);
+      x = legendNode.x + legendNode.width * tick.pos;
     }
 
     if (state.ticks.anchor === 'right') {
@@ -165,11 +165,13 @@ export function createTickNodes(ctx, legendNode) {
       fontSize: settings.tick.fontSize,
       fontFamily: settings.tick.fontFamily,
       fill: settings.tick.fill,
-      maxWidth: state.isVertical ? settings.tick.maxLengthPx : Math.min(settings.tick.maxLengthPx, state.legend.length() / 2),
+      maxWidth: state.isVertical
+        ? settings.tick.maxLengthPx
+        : Math.min(settings.tick.maxLengthPx, state.legend.length() / 2),
       anchor,
       textBoundsFn: ctx.renderer.textBounds,
       title: tick.label,
-      baseline
+      baseline,
     };
 
     return node;
@@ -178,6 +180,6 @@ export function createTickNodes(ctx, legendNode) {
   return {
     type: 'container',
     id: 'legend-seq-ticks',
-    children: [...nodes, rangeSelectorRect]
+    children: [...nodes, rangeSelectorRect],
   };
 }

@@ -12,19 +12,19 @@ const DEFAULT_SETTINGS = {
   invert: false,
   min: NaN,
   max: NaN,
-  nice: false
+  nice: false,
 };
 
 function generateDomain(range, min, max) {
   const len = range.length;
   if (len === 2) {
-    return [min + ((max - min) / 2)];
+    return [min + (max - min) / 2];
   }
   const domain = [];
   const part = (max - min) / len;
 
   for (let i = 1; i < len; i++) {
-    domain.push(min + (part * i));
+    domain.push(min + part * i);
   }
   return domain;
 }
@@ -136,7 +136,7 @@ export default function scaleThresholdColor(settings = {}, data = {}, resources 
   } else if (stgns.nice) {
     domain = generateNiceDomain(range, min, max);
   } else {
-    domain = [min + ((max - min) / 2)];
+    domain = [min + (max - min) / 2];
   }
 
   if (range.length > domain.length + 1) {

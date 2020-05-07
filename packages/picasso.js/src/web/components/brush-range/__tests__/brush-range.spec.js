@@ -23,16 +23,22 @@ describe('Brush Range', () => {
   beforeEach(() => {
     size = {
       inner: {
-        x: 0, y: 0, width: 100, height: 150
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 150,
       },
       outer: {
-        x: 0, y: 0, width: 100, height: 150
-      }
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 150,
+      },
     };
 
     global.document = {
       elementFromPoint: sinon.stub(),
-      createElement: sinon.stub().returns({ bind: elementMock })
+      createElement: sinon.stub().returns({ bind: elementMock }),
     };
 
     componentFixture = componentFactoryFixture();
@@ -40,8 +46,8 @@ describe('Brush Range', () => {
       settings: {
         scale: 'a',
         direction: 'horizontal',
-        target: null // Remove target to reduce complexity and dependencies on other components
-      }
+        target: null, // Remove target to reduce complexity and dependencies on other components
+      },
     };
 
     sandbox = componentFixture.sandbox();
@@ -54,11 +60,9 @@ describe('Brush Range', () => {
     theme = componentFixture.mocks().theme;
     theme.style.returns({
       line: {
-        stroke: 'rgba(50, 50, 50, 0.8)'
+        stroke: 'rgba(50, 50, 50, 0.8)',
       },
-      target: {
-
-      },
+      target: {},
       bubble: {
         fontFamily: 'Georgia',
         fontSize: '14px',
@@ -66,8 +70,8 @@ describe('Brush Range', () => {
         color: '#595959',
         borderRadius: 3,
         stroke: '#666',
-        strokeWidth: 1
-      }
+        strokeWidth: 1,
+      },
     });
 
     bubbleStyle = {
@@ -88,14 +92,14 @@ describe('Brush Range', () => {
       fontSize: '14px',
       fontFamily: 'Georgia',
       color: '#595959',
-      cursor: 'ew-resize'
+      cursor: 'ew-resize',
     };
 
     rootBubbleStyle = {
       position: 'absolute',
       top: '0',
       left: '0px',
-      transform: 'none'
+      transform: 'none',
     };
 
     edgeStyle = {
@@ -105,7 +109,7 @@ describe('Brush Range', () => {
       width: '1px',
       left: '0',
       top: '0',
-      pointerEvents: 'none'
+      pointerEvents: 'none',
     };
 
     rootEdgeStyle = {
@@ -115,7 +119,7 @@ describe('Brush Range', () => {
       top: '0px',
       height: '100%',
       width: '5px',
-      pointerEvents: 'auto'
+      pointerEvents: 'auto',
     };
   });
 
@@ -153,15 +157,17 @@ describe('Brush Range', () => {
           data: {
             'data-value': 0,
             'data-key': 'brush-range-edge--1',
-            style: rootEdgeStyle
+            style: rootEdgeStyle,
           },
-          children: [{
-            sel: 'div',
-            data: {
-              style: edgeStyle
+          children: [
+            {
+              sel: 'div',
+              data: {
+                style: edgeStyle,
+              },
+              children: [],
             },
-            children: []
-          }]
+          ],
         };
         expect(edgeLeft).to.deep.equal(expectedEdgeLeft);
       });
@@ -185,15 +191,17 @@ describe('Brush Range', () => {
           data: {
             'data-value': 1,
             'data-key': 'brush-range-edge--1',
-            style: rootEdgeStyle
+            style: rootEdgeStyle,
           },
-          children: [{
-            sel: 'div',
-            data: {
-              style: edgeStyle
+          children: [
+            {
+              sel: 'div',
+              data: {
+                style: edgeStyle,
+              },
+              children: [],
             },
-            children: []
-          }]
+          ],
         };
         expect(edgeRight).to.deep.equal(expectedEdgeRight);
       });
@@ -203,19 +211,21 @@ describe('Brush Range', () => {
         const expectedBubbleLeft = {
           sel: 'div',
           data: {
-            style: rootBubbleStyle
+            style: rootBubbleStyle,
           },
-          children: [{
-            sel: 'div',
-            data: {
-              'data-other-value': 1,
-              'data-idx': -1,
-              'data-bidx': 0,
-              'data-key': 'brush-range-bubble--1',
-              style: bubbleStyle
+          children: [
+            {
+              sel: 'div',
+              data: {
+                'data-other-value': 1,
+                'data-idx': -1,
+                'data-bidx': 0,
+                'data-key': 'brush-range-bubble--1',
+                style: bubbleStyle,
+              },
+              children: ['-'],
             },
-            children: ['-']
-          }]
+          ],
         };
 
         expect(bubbleLeft).to.deep.equal(expectedBubbleLeft);
@@ -227,19 +237,21 @@ describe('Brush Range', () => {
         const expectedBubbleRight = {
           sel: 'div',
           data: {
-            style: rootBubbleStyle
+            style: rootBubbleStyle,
           },
-          children: [{
-            sel: 'div',
-            data: {
-              'data-other-value': 0,
-              'data-idx': -1,
-              'data-bidx': 1,
-              'data-key': 'brush-range-bubble--1',
-              style: bubbleStyle
+          children: [
+            {
+              sel: 'div',
+              data: {
+                'data-other-value': 0,
+                'data-idx': -1,
+                'data-bidx': 1,
+                'data-key': 'brush-range-bubble--1',
+                style: bubbleStyle,
+              },
+              children: ['-'],
             },
-            children: ['-']
-          }]
+          ],
         };
 
         expect(bubbleRight).to.deep.equal(expectedBubbleRight);
@@ -252,10 +264,12 @@ describe('Brush Range', () => {
       const scale = linearScale();
       scale.type = 'linear';
       scale.data = () => ({
-        fields: [{
-          id: () => 'foo',
-          formatter: () => ((v) => v)
-        }]
+        fields: [
+          {
+            id: () => 'foo',
+            formatter: () => (v) => v,
+          },
+        ],
       });
       chartMock.scale = sandbox.stub().returns(scale);
     });
@@ -276,9 +290,9 @@ describe('Brush Range', () => {
             direction: 'horizontal',
             target: null,
             brush: {
-              observe: true
-            }
-          }
+              observe: true,
+            },
+          },
         });
         chartMock.brush().setRange('foo', { min: 0, max: 10 });
         componentFixture.simulateRender(size);
@@ -310,15 +324,17 @@ describe('Brush Range', () => {
           data: {
             'data-value': 0,
             'data-key': 'brush-range-edge--1',
-            style: rootEdgeStyle
+            style: rootEdgeStyle,
           },
-          children: [{
-            sel: 'div',
-            data: {
-              style: edgeStyle
+          children: [
+            {
+              sel: 'div',
+              data: {
+                style: edgeStyle,
+              },
+              children: [],
             },
-            children: []
-          }]
+          ],
         };
         expect(edgeLeft).to.deep.equal(expectedEdgeLeft);
       });
@@ -342,15 +358,17 @@ describe('Brush Range', () => {
           data: {
             'data-value': 1,
             'data-key': 'brush-range-edge--1',
-            style: rootEdgeStyle
+            style: rootEdgeStyle,
           },
-          children: [{
-            sel: 'div',
-            data: {
-              style: edgeStyle
+          children: [
+            {
+              sel: 'div',
+              data: {
+                style: edgeStyle,
+              },
+              children: [],
             },
-            children: []
-          }]
+          ],
         };
         expect(edgeRight).to.deep.equal(expectedEdgeRight);
       });
@@ -360,19 +378,21 @@ describe('Brush Range', () => {
         const expectedBubbleLeft = {
           sel: 'div',
           data: {
-            style: rootBubbleStyle
+            style: rootBubbleStyle,
           },
-          children: [{
-            sel: 'div',
-            data: {
-              'data-other-value': 1,
-              'data-idx': -1,
-              'data-bidx': 0,
-              'data-key': 'brush-range-bubble--1',
-              style: bubbleStyle
+          children: [
+            {
+              sel: 'div',
+              data: {
+                'data-other-value': 1,
+                'data-idx': -1,
+                'data-bidx': 0,
+                'data-key': 'brush-range-bubble--1',
+                style: bubbleStyle,
+              },
+              children: ['0'],
             },
-            children: ['0']
-          }]
+          ],
         };
 
         expect(bubbleLeft).to.deep.equal(expectedBubbleLeft);
@@ -384,19 +404,21 @@ describe('Brush Range', () => {
         const expectedBubbleRight = {
           sel: 'div',
           data: {
-            style: rootBubbleStyle
+            style: rootBubbleStyle,
           },
-          children: [{
-            sel: 'div',
-            data: {
-              'data-other-value': 0,
-              'data-idx': -1,
-              'data-bidx': 1,
-              'data-key': 'brush-range-bubble--1',
-              style: bubbleStyle
+          children: [
+            {
+              sel: 'div',
+              data: {
+                'data-other-value': 0,
+                'data-idx': -1,
+                'data-bidx': 1,
+                'data-key': 'brush-range-bubble--1',
+                style: bubbleStyle,
+              },
+              children: ['1'],
             },
-            children: ['1']
-          }]
+          ],
         };
 
         expect(bubbleRight).to.deep.equal(expectedBubbleRight);
@@ -433,15 +455,17 @@ describe('Brush Range', () => {
           data: {
             'data-value': 0,
             'data-key': 'brush-range-edge--1',
-            style: rootEdgeStyle
+            style: rootEdgeStyle,
           },
-          children: [{
-            sel: 'div',
-            data: {
-              style: edgeStyle
+          children: [
+            {
+              sel: 'div',
+              data: {
+                style: edgeStyle,
+              },
+              children: [],
             },
-            children: []
-          }]
+          ],
         };
         expect(edgeTop).to.deep.equal(expectedEdgeTop);
       });
@@ -468,15 +492,17 @@ describe('Brush Range', () => {
           data: {
             'data-value': 1,
             'data-key': 'brush-range-edge--1',
-            style: rootEdgeStyle
+            style: rootEdgeStyle,
           },
-          children: [{
-            sel: 'div',
-            data: {
-              style: edgeStyle
+          children: [
+            {
+              sel: 'div',
+              data: {
+                style: edgeStyle,
+              },
+              children: [],
             },
-            children: []
-          }]
+          ],
         };
         expect(edgeBottom).to.deep.equal(expectedEdgeBottom);
       });
@@ -490,19 +516,21 @@ describe('Brush Range', () => {
         const expectedBubbleTop = {
           sel: 'div',
           data: {
-            style: rootBubbleStyle
+            style: rootBubbleStyle,
           },
-          children: [{
-            sel: 'div',
-            data: {
-              'data-other-value': 1,
-              'data-idx': -1,
-              'data-bidx': 0,
-              'data-key': 'brush-range-bubble--1',
-              style: bubbleStyle
+          children: [
+            {
+              sel: 'div',
+              data: {
+                'data-other-value': 1,
+                'data-idx': -1,
+                'data-bidx': 0,
+                'data-key': 'brush-range-bubble--1',
+                style: bubbleStyle,
+              },
+              children: ['0'],
             },
-            children: ['0']
-          }]
+          ],
         };
 
         expect(bubbleTop).to.deep.equal(expectedBubbleTop);
@@ -517,19 +545,21 @@ describe('Brush Range', () => {
         const expectedBubbleBottom = {
           sel: 'div',
           data: {
-            style: rootBubbleStyle
+            style: rootBubbleStyle,
           },
-          children: [{
-            sel: 'div',
-            data: {
-              'data-other-value': 0,
-              'data-idx': -1,
-              'data-bidx': 1,
-              'data-key': 'brush-range-bubble--1',
-              style: bubbleStyle
+          children: [
+            {
+              sel: 'div',
+              data: {
+                'data-other-value': 0,
+                'data-idx': -1,
+                'data-bidx': 1,
+                'data-key': 'brush-range-bubble--1',
+                style: bubbleStyle,
+              },
+              children: ['1'],
             },
-            children: ['1']
-          }]
+          ],
         };
 
         expect(bubbleBottom).to.deep.equal(expectedBubbleBottom);

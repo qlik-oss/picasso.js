@@ -7,7 +7,7 @@ const GLOBAL_DEFAULTS = {
   backgroundColor: '#ffffff',
   stroke: '#000000',
   strokeWidth: 0,
-  $fill: '#333333'
+  $fill: '#333333',
 };
 
 const REF_RX = /^\$/;
@@ -66,9 +66,11 @@ export function normalizeSettings(settings, defaults, chart) {
         defaultValue = GLOBAL_DEFAULTS[defaultValue];
       }
       const defaultType = typeof defaultValue;
-      if (defaultType === 'undefined') { // if property has no default, assign provided value
+      if (defaultType === 'undefined') {
+        // if property has no default, assign provided value
         defs[key] = v;
-      } else { // assign provided value if it's of same type as default, otherwise use default
+      } else {
+        // assign provided value if it's of same type as default, otherwise use default
         defs[key] = defaultType === vType ? v : defaultValue;
       }
     } else if (v && typeof v === 'object') {
@@ -85,7 +87,8 @@ export function normalizeSettings(settings, defaults, chart) {
   });
 
   Object.keys(defaults).forEach((key) => {
-    if (key in composition) { // don't process same props again
+    if (key in composition) {
+      // don't process same props again
       return;
     }
     const v = defaults[key];
@@ -115,7 +118,8 @@ export function resolveForItem(context, normalized, idx) {
     const propData = hasExplicitDataProp ? datum[normalizedProp.ref] : hasImplicitDataProp ? datum[key] : fallbackData; // eslint-disable-line
     if (isPrimitive(normalizedProp)) {
       ret[key] = normalizedProp;
-    } else if (exists && normalizedProp.fn) { // callback function
+    } else if (exists && normalizedProp.fn) {
+      // callback function
       if (normalizedProp.scale) {
         context.scale = normalizedProp.scale;
       }

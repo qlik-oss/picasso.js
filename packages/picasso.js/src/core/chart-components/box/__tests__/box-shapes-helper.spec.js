@@ -1,11 +1,4 @@
-import {
-  oob,
-  box,
-  verticalLine,
-  horizontalLine,
-  getBoxWidth
-} from '../box-shapes-helper';
-
+import { oob, box, verticalLine, horizontalLine, getBoxWidth } from '../box-shapes-helper';
 
 describe('box shapes', () => {
   describe('out of bounds arrows', () => {
@@ -13,20 +6,26 @@ describe('box shapes', () => {
       const item = {
         major: 0.3,
         oob: {
-          size: 10
-        }
+          size: 10,
+        },
       };
 
       // We mock the symbol() function here
       let result = oob({
-        value: 1, item, boxCenter: item.major, rendWidth: 100, rendHeight: 100, flipXY: false, symbol: (v) => v
+        value: 1,
+        item,
+        boxCenter: item.major,
+        rendWidth: 100,
+        rendHeight: 100,
+        flipXY: false,
+        symbol: (v) => v,
       });
 
       expect(result).to.eql({
         size: 10,
         startAngle: -90,
         x: 30,
-        y: 95
+        y: 95,
       });
 
       item.major = 0.5;
@@ -36,20 +35,26 @@ describe('box shapes', () => {
       const item = {
         major: 0.75,
         oob: {
-          size: 10
-        }
+          size: 10,
+        },
       };
 
       // We mock the symbol() function here
       let result = oob({
-        value: 0, item, boxCenter: item.major, rendWidth: 100, rendHeight: 100, flipXY: false, symbol: (v) => v
+        value: 0,
+        item,
+        boxCenter: item.major,
+        rendWidth: 100,
+        rendHeight: 100,
+        flipXY: false,
+        symbol: (v) => v,
       });
 
       expect(result).to.eql({
         size: 10,
         startAngle: 90,
         x: 75,
-        y: 5
+        y: 5,
       });
     });
   });
@@ -58,20 +63,26 @@ describe('box shapes', () => {
     const item = {
       major: 0.3,
       oob: {
-        size: 10
-      }
+        size: 10,
+      },
     };
 
     // We mock the symbol() function here
     let result = oob({
-      value: 1, item, boxCenter: item.major, rendWidth: 200, rendHeight: 150, flipXY: true, symbol: (v) => v
+      value: 1,
+      item,
+      boxCenter: item.major,
+      rendWidth: 200,
+      rendHeight: 150,
+      flipXY: true,
+      symbol: (v) => v,
     });
 
     expect(result).to.eql({
       size: 10,
       startAngle: 0,
       x: 195,
-      y: 45
+      y: 45,
     });
 
     item.major = 0.5;
@@ -81,20 +92,26 @@ describe('box shapes', () => {
     const item = {
       major: 0.75,
       oob: {
-        size: 10
-      }
+        size: 10,
+      },
     };
 
     // We mock the symbol() function here
     let result = oob({
-      value: 0, item, boxCenter: item.major, rendWidth: 200, rendHeight: 150, flipXY: true, symbol: (v) => v
+      value: 0,
+      item,
+      boxCenter: item.major,
+      rendWidth: 200,
+      rendHeight: 150,
+      flipXY: true,
+      symbol: (v) => v,
     });
 
     expect(result).to.eql({
       size: 10,
       startAngle: 180,
       x: 5,
-      y: 112.5
+      y: 112.5,
     });
   });
 
@@ -105,15 +122,20 @@ describe('box shapes', () => {
         end: 0.9,
         major: 0.25,
         box: {
-          minHeightPx: 1
-        }
+          minHeightPx: 1,
+        },
       };
 
       const boxWidth = 0.5;
       const boxPadding = 0;
 
       let result = box({
-        item, boxWidth, boxPadding, rendWidth: 100, rendHeight: 100, flipXY: false
+        item,
+        boxWidth,
+        boxPadding,
+        rendWidth: 100,
+        rendHeight: 100,
+        flipXY: false,
       });
 
       expect(result).to.eql({
@@ -125,13 +147,17 @@ describe('box shapes', () => {
         height: 80,
         data: {},
         collider: {
-          type: null
-        }
+          type: null,
+        },
       });
 
-
       result = box({
-        item, boxWidth, boxPadding, rendWidth: 200, rendHeight: 100, flipXY: false
+        item,
+        boxWidth,
+        boxPadding,
+        rendWidth: 200,
+        rendHeight: 100,
+        flipXY: false,
       });
 
       expect(result).to.eql({
@@ -143,12 +169,17 @@ describe('box shapes', () => {
         height: 80,
         data: {},
         collider: {
-          type: null
-        }
+          type: null,
+        },
       });
 
       result = box({
-        item, boxWidth, boxPadding, rendWidth: 100, rendHeight: 100, flipXY: true
+        item,
+        boxWidth,
+        boxPadding,
+        rendWidth: 100,
+        rendHeight: 100,
+        flipXY: true,
       });
 
       expect(result).to.eql({
@@ -160,13 +191,18 @@ describe('box shapes', () => {
         height: 50,
         data: {},
         collider: {
-          type: null
-        }
+          type: null,
+        },
       });
 
       item.data = { test: true };
       result = box({
-        item, boxWidth, boxPadding, rendWidth: 200, rendHeight: 100, flipXY: true
+        item,
+        boxWidth,
+        boxPadding,
+        rendWidth: 200,
+        rendHeight: 100,
+        flipXY: true,
       });
 
       expect(result).to.eql({
@@ -177,11 +213,11 @@ describe('box shapes', () => {
         width: 160,
         height: 50,
         data: {
-          test: true
+          test: true,
         },
         collider: {
-          type: null
-        }
+          type: null,
+        },
       });
     });
   });
@@ -190,12 +226,18 @@ describe('box shapes', () => {
     it('should create a correct vertical line', () => {
       const item = {
         line: {
-          strokeWidth: 1
-        }
+          strokeWidth: 1,
+        },
       };
 
       let result = verticalLine({
-        item, from: 0.25, to: 0.75, boxCenter: 0.5, rendWidth: 100, rendHeight: 100, flipXY: false
+        item,
+        from: 0.25,
+        to: 0.75,
+        boxCenter: 0.5,
+        rendWidth: 100,
+        rendHeight: 100,
+        flipXY: false,
       });
 
       expect(result).to.eql({
@@ -207,12 +249,18 @@ describe('box shapes', () => {
         y2: 25,
         data: {},
         collider: {
-          type: null
-        }
+          type: null,
+        },
       });
 
       result = verticalLine({
-        item, from: 0.25, to: 0.75, boxCenter: 0.5, rendWidth: 200, rendHeight: 100, flipXY: false
+        item,
+        from: 0.25,
+        to: 0.75,
+        boxCenter: 0.5,
+        rendWidth: 200,
+        rendHeight: 100,
+        flipXY: false,
       });
 
       expect(result).to.eql({
@@ -224,13 +272,19 @@ describe('box shapes', () => {
         y2: 25,
         data: {},
         collider: {
-          type: null
-        }
+          type: null,
+        },
       });
 
       item.data = { id: 3 };
       result = verticalLine({
-        item, from: 0.25, to: 0.75, boxCenter: 0.5, rendWidth: 200, rendHeight: 100, flipXY: true
+        item,
+        from: 0.25,
+        to: 0.75,
+        boxCenter: 0.5,
+        rendWidth: 200,
+        rendHeight: 100,
+        flipXY: true,
       });
 
       expect(result).to.eql({
@@ -241,11 +295,11 @@ describe('box shapes', () => {
         y1: 50,
         y2: 50,
         data: {
-          id: 3
+          id: 3,
         },
         collider: {
-          type: null
-        }
+          type: null,
+        },
       });
     });
   });
@@ -254,15 +308,22 @@ describe('box shapes', () => {
     it('should create a correct horizontal line', () => {
       const item = {
         med: {
-          stroke: 'black'
+          stroke: 'black',
         },
         low: {
-          stroke: 'red'
-        }
+          stroke: 'red',
+        },
       };
 
       let result = horizontalLine({
-        item, key: 'med', position: 0.5, width: 0.5, boxCenter: 0.5, rendWidth: 100, rendHeight: 100, flipXY: false
+        item,
+        key: 'med',
+        position: 0.5,
+        width: 0.5,
+        boxCenter: 0.5,
+        rendWidth: 100,
+        rendHeight: 100,
+        flipXY: false,
       });
 
       expect(result).to.eql({
@@ -278,12 +339,19 @@ describe('box shapes', () => {
         cy: 50,
         data: {},
         collider: {
-          type: null
-        }
+          type: null,
+        },
       });
 
       result = horizontalLine({
-        item, key: 'low', position: 0.5, width: 0.5, boxCenter: 0.5, rendWidth: 200, rendHeight: 100, flipXY: false
+        item,
+        key: 'low',
+        position: 0.5,
+        width: 0.5,
+        boxCenter: 0.5,
+        rendWidth: 200,
+        rendHeight: 100,
+        flipXY: false,
       });
 
       expect(result).to.eql({
@@ -299,13 +367,20 @@ describe('box shapes', () => {
         cy: 50,
         data: {},
         collider: {
-          type: null
-        }
+          type: null,
+        },
       });
 
       item.data = { origin: 'test' };
       result = horizontalLine({
-        item, key: 'med', position: 0.5, width: 0.5, boxCenter: 0.5, rendWidth: 200, rendHeight: 100, flipXY: true
+        item,
+        key: 'med',
+        position: 0.5,
+        width: 0.5,
+        boxCenter: 0.5,
+        rendWidth: 200,
+        rendHeight: 100,
+        flipXY: true,
       });
 
       expect(result).to.eql({
@@ -320,11 +395,11 @@ describe('box shapes', () => {
         cx: 50,
         cy: 100,
         data: {
-          origin: 'test'
+          origin: 'test',
         },
         collider: {
-          type: null
-        }
+          type: null,
+        },
       });
     });
   });
@@ -341,8 +416,8 @@ describe('box shapes', () => {
         box: {
           width: 0.5,
           maxWidthPx: NaN,
-          minWidthPx: NaN
-        }
+          minWidthPx: NaN,
+        },
       };
     });
 

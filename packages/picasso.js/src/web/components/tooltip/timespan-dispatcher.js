@@ -3,14 +3,14 @@
 // Rejected flow: pending -> rejected
 // Debounced flow: pending -> debounced -> pending -> [rejected|fulfilled]
 function dispatcherState() {
-  const fn = function fn() { };
+  const fn = function fn() {};
   const on = {
     pending: [],
     debounced: [],
     active: [],
     cancelled: [],
     rejected: [],
-    fulfilled: []
+    fulfilled: [],
   };
   let state;
 
@@ -40,10 +40,7 @@ function dispatcherState() {
   return fn;
 }
 
-export default function timeSpanDispatcher({
-  defaultDuration,
-  defaultDelay
-}) {
+export default function timeSpanDispatcher({ defaultDuration, defaultDelay }) {
   let actionId = null;
   let fulfilledId = null;
   let isActive = false;

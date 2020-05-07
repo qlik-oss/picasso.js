@@ -9,13 +9,13 @@ const debugPathToPointsDef = {
       stroke: 'lime',
       opacity: 1,
       radius: 2,
-      useOuterRect: false
-    }
+      useOuterRect: false,
+    },
   },
   on: {
     update() {
       this.draw();
-    }
+    },
   },
   draw() {
     const shapes = this.chart.findShapes('path').filter((s) => s.key === this.props.target); // Find all shapes
@@ -32,7 +32,7 @@ const debugPathToPointsDef = {
             fill: this.props.fill,
             stroke: this.props.stroke,
             opacity: this.props.opacity,
-            collider: { type: null }
+            collider: { type: null },
           });
         });
       });
@@ -49,14 +49,14 @@ const debugPathToPointsDef = {
     }
     return inner;
   },
-  render() { },
+  render() {},
   mounted() {
     this.draw();
   },
   updated() {
     this.props = this.settings.settings;
     this.draw();
-  }
+  },
 };
 
 export default debugPathToPointsDef;

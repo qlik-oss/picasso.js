@@ -18,9 +18,7 @@
  * @param {renderer-container-def} [opts]
  * @returns {renderer-container-def} A svg renderer instance
  */
-export default function createRendererBox({
-  x, y, width, height, scaleRatio, margin, edgeBleed
-} = {}) {
+export default function createRendererBox({ x, y, width, height, scaleRatio, margin, edgeBleed } = {}) {
   const box = {
     x: 0,
     y: 0,
@@ -28,19 +26,19 @@ export default function createRendererBox({
     height: 0,
     scaleRatio: {
       x: 1,
-      y: 1
+      y: 1,
     },
     margin: {
       left: 0,
-      top: 0
+      top: 0,
     },
     edgeBleed: {
       left: 0,
       right: 0,
       top: 0,
       bottom: 0,
-      bool: false
-    }
+      bool: false,
+    },
   };
 
   box.x = isNaN(x) ? box.x : x;
@@ -67,10 +65,10 @@ export default function createRendererBox({
   }
 
   box.computedPhysical = {
-    x: Math.round(box.margin.left + ((box.x - box.edgeBleed.left) * box.scaleRatio.x)),
-    y: Math.round(box.margin.top + ((box.y - box.edgeBleed.top) * box.scaleRatio.y)),
+    x: Math.round(box.margin.left + (box.x - box.edgeBleed.left) * box.scaleRatio.x),
+    y: Math.round(box.margin.top + (box.y - box.edgeBleed.top) * box.scaleRatio.y),
     width: Math.round((box.width + box.edgeBleed.left + box.edgeBleed.right) * box.scaleRatio.x),
-    height: Math.round((box.height + box.edgeBleed.top + box.edgeBleed.bottom) * box.scaleRatio.y)
+    height: Math.round((box.height + box.edgeBleed.top + box.edgeBleed.bottom) * box.scaleRatio.y),
   };
 
   return box;

@@ -1,10 +1,4 @@
-import {
-  createTitleNode,
-  generateStopNodes,
-  createLegendRectNode,
-  createTickNodes
-} from './node-builder';
-
+import { createTitleNode, generateStopNodes, createLegendRectNode, createTickNodes } from './node-builder';
 
 function resolveAnchor(dock, anchor, map) {
   const mapped = map[dock];
@@ -27,7 +21,7 @@ function resolveTickAnchor(settings) {
     right: { valid: ['left', 'right'], default: 'right' },
     top: { valid: ['top', 'bottom'], default: 'top' },
     bottom: { valid: ['top', 'bottom'], default: 'bottom' },
-    default: 'right'
+    default: 'right',
   };
 
   return resolveAnchor(dock, anchor, dockAnchorMap);
@@ -39,7 +33,7 @@ function resolveTitleAnchor(settings) {
     right: { valid: ['top'], default: 'top' },
     top: { valid: ['left', 'right'], default: 'left' },
     bottom: { valid: ['left', 'right'], default: 'left' },
-    default: 'top'
+    default: 'top',
   };
 
   const dock = settings.layout.dock;
@@ -50,7 +44,10 @@ function resolveTitleAnchor(settings) {
 
 function initRect(ctx, size) {
   const rect = {
-    x: 0, y: 0, width: 0, height: 0
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
   };
   const padding = ctx.stgns.padding;
   rect.x = padding.left;
@@ -83,8 +80,8 @@ function getTicks(ctx, majorScale) {
       textMetrics: ctx.renderer.measureText({
         text: label,
         fontSize: ctx.stgns.tick.fontSize,
-        fontFamily: ctx.stgns.tick.fontFamily
-      })
+        fontFamily: ctx.stgns.tick.fontFamily,
+      }),
     };
   });
 
@@ -108,7 +105,7 @@ function initState(ctx) {
   const titleTextMetrics = ctx.renderer.measureText({
     text: titleStgns.text,
     fontSize: titleStgns.fontSize,
-    fontFamily: titleStgns.fontFamily
+    fontFamily: titleStgns.fontFamily,
   });
 
   const titleTextBounds = ctx.renderer.textBounds({
@@ -119,7 +116,7 @@ function initState(ctx) {
     maxWidth: titleStgns.maxLengthPx,
     wordBreak: titleStgns.wordBreak,
     hyphens: titleStgns.hyphens,
-    lineHeight: titleStgns.lineHeight
+    lineHeight: titleStgns.lineHeight,
   });
 
   const state = {
@@ -150,14 +147,17 @@ function initState(ctx) {
           h += titleStgns.padding;
         }
         return Math.min(h, state.rect.height);
-      }
+      },
     },
     ticks: {
       values: tickValues,
       anchor: tickAnchor,
       length: Math.min(Math.max(...tickValues.map((t) => t.textMetrics.width)), ctx.stgns.tick.maxLengthPx),
-      requiredHeight: () => (tickAnchor === 'top' ? Math.max(...state.ticks.values.map((t) => t.textMetrics.height)) + ctx.stgns.tick.padding : 0),
-      height: Math.max(...tickValues.map((t) => t.textMetrics.height))
+      requiredHeight: () =>
+        tickAnchor === 'top'
+          ? Math.max(...state.ticks.values.map((t) => t.textMetrics.height)) + ctx.stgns.tick.padding
+          : 0,
+      height: Math.max(...tickValues.map((t) => t.textMetrics.height)),
     },
     legend: {
       fillScale,
@@ -167,8 +167,8 @@ function initState(ctx) {
         const fnPos = isVertical ? 'requiredHeight' : 'requiredWidth';
         const len = Math.min(state.rect[pos], state.rect[pos] * ctx.stgns.length) - state.title[fnPos]();
         return Math.max(0, Math.min(len, ctx.stgns.maxLengthPx));
-      }
-    }
+      },
+    },
   };
 
   return state;
@@ -216,7 +216,7 @@ const legendDef = {
   defaultSettings: {
     layout: {
       displayOrder: 0,
-      dock: 'right'
+      dock: 'right',
     },
     settings: {
       size: 15,
@@ -228,7 +228,7 @@ const legendDef = {
         left: 5,
         right: 5,
         top: 5,
-        bottom: 5
+        bottom: 5,
       },
       tick: {
         label: null,
@@ -237,7 +237,7 @@ const legendDef = {
         fontFamily: 'Arial',
         maxLengthPx: 100,
         anchor: null, // Use default based on dock
-        padding: 5
+        padding: 5,
       },
       title: {
         show: true,
@@ -251,9 +251,9 @@ const legendDef = {
         wordBreak: 'none',
         lineHeight: 1.2,
         hyphens: 'auto',
-        anchor: null // Use default based on dock
-      }
-    }
+        anchor: null, // Use default based on dock
+      },
+    },
   },
   preferredSize(opts) {
     const state = this.state;
@@ -263,12 +263,14 @@ const legendDef = {
     let prefSize = this.stgns.size;
 
     // Append paddings
-    const paddings = state.isVertical ? this.stgns.padding.left + this.stgns.padding.right : this.stgns.padding.top + this.stgns.padding.bottom;
+    const paddings = state.isVertical
+      ? this.stgns.padding.left + this.stgns.padding.right
+      : this.stgns.padding.top + this.stgns.padding.bottom;
     prefSize += paddings;
 
     // Append tick size
     const maxSize = Math.max(opts.inner.width, opts.inner.height);
-    if ((state.ticks.anchor === 'left' || state.ticks.anchor === 'right')) {
+    if (state.ticks.anchor === 'left' || state.ticks.anchor === 'right') {
       const tHeight = state.ticks.values.reduce((sum, t) => sum + t.textMetrics.height, 0);
       if (tHeight > this.state.legend.length()) {
         return maxSize;
@@ -318,17 +320,18 @@ const legendDef = {
     const rectNode = createLegendRectNode(this, stopNodes);
     const tickNodes = createTickNodes(this, rectNode);
 
-    const targetNode = { // The target node enables range selection component to limit its range to a specific area
+    const targetNode = {
+      // The target node enables range selection component to limit its range to a specific area
       id: 'legend-seq-target',
       type: 'container',
-      children: [rectNode, tickNodes]
+      children: [rectNode, tickNodes],
     };
 
     this.state.nodes.push(targetNode);
   },
   render() {
     return this.state.nodes;
-  }
+  },
 };
 
 export default legendDef;

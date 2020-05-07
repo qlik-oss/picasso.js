@@ -3,7 +3,6 @@ function componentToHex(c) {
   return hex.length === 1 ? `0${hex}` : hex;
 }
 
-
 /**
  * Converts RGB to HSL
  * @ignore
@@ -30,13 +29,13 @@ function toHSL(r, g, b) {
     s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
     switch (max) {
       case r:
-        h = ((g - b) / d) + (g < b ? 6 : 0);
+        h = (g - b) / d + (g < b ? 6 : 0);
         break;
       case g:
-        h = ((b - r) / d) + 2;
+        h = (b - r) / d + 2;
         break;
       case b:
-        h = ((r - g) / d) + 4;
+        h = (r - g) / d + 4;
         break;
       default:
     }
@@ -83,7 +82,7 @@ class RgbaColor {
   /**
    * Returns an rgb string representation of this color.
    * @return { String } In format rgb(0, 0, 0)
-*/
+   */
   toRGB() {
     return `rgb(${this.r}, ${this.g}, ${this.b})`;
   }
@@ -109,11 +108,10 @@ class RgbaColor {
    * @return { Number } Unsigned integer in the range 0-16 777 216
    */
   toNumber() {
-    let r = this.r & 0xFF,
-      g = this.g & 0xFF,
-      b = this.b & 0xFF,
-
-      rgb = (r << 16) + (g << 8) + (b);
+    let r = this.r & 0xff,
+      g = this.g & 0xff,
+      b = this.b & 0xff,
+      rgb = (r << 16) + (g << 8) + b;
     return rgb;
   }
 
@@ -123,7 +121,7 @@ class RgbaColor {
    * @return { Boolean } True if the rgb channels are the same, false otherwise
    */
   isEqual(c) {
-    return ((this.r === c.r) && (this.g === c.g) && (this.b === c.b) && (this.a === c.a));
+    return this.r === c.r && this.g === c.g && this.b === c.b && this.a === c.a;
   }
 
   /**
@@ -147,7 +145,9 @@ class RgbaColor {
    * @return { Number } A value in the range 0-1 where a low value is considered dark and vice versa.
    */
   luminance() {
-    const luminance = Math.sqrt((0.299 * Math.pow(this.r, 2)) + (0.587 * Math.pow(this.g, 2)) + (0.114 * Math.pow(this.b, 2))); // Using Weighted Euclidean Distance in 3D RGB Space
+    const luminance = Math.sqrt(
+      0.299 * Math.pow(this.r, 2) + 0.587 * Math.pow(this.g, 2) + 0.114 * Math.pow(this.b, 2)
+    ); // Using Weighted Euclidean Distance in 3D RGB Space
     return luminance / 255;
   }
 }

@@ -24,13 +24,13 @@ describe('svg-pattern', () => {
         node: {
           fill: {
             type: 'pattern',
-            shapes: []
-          }
-        }
+            shapes: [],
+          },
+        },
       };
       p.onCreate(state);
 
-      expect(state.node.fillReference).to.equal('url(\'#picasso-pattern-13-2\')');
+      expect(state.node.fillReference).to.equal("url('#picasso-pattern-13-2')");
     });
 
     it('should set strokeReference when stroke is a pattern', () => {
@@ -38,13 +38,13 @@ describe('svg-pattern', () => {
         node: {
           stroke: {
             type: 'pattern',
-            shapes: []
-          }
-        }
+            shapes: [],
+          },
+        },
       };
       p.onCreate(state);
 
-      expect(state.node.strokeReference).to.equal('url(\'#picasso-pattern-13-2\')');
+      expect(state.node.strokeReference).to.equal("url('#picasso-pattern-13-2')");
     });
 
     it('should create a pattern node', () => {
@@ -55,11 +55,9 @@ describe('svg-pattern', () => {
             width: 5,
             height: 6,
             fill: 'red',
-            shapes: [
-              { type: 'rect' }
-            ]
-          }
-        }
+            shapes: [{ type: 'rect' }],
+          },
+        },
       };
       p.onCreate(state);
 
@@ -72,7 +70,7 @@ describe('svg-pattern', () => {
         fill: 'red',
         type: 'pattern',
         children: [{ type: 'rect' }],
-        id: 'picasso-pattern-13-2'
+        id: 'picasso-pattern-13-2',
       });
     });
 

@@ -4,27 +4,43 @@ import EventEmitter from '../utils/event-emitter';
 import extractData from '../data/extractor';
 import tween from './tween';
 import settingsResolver from './settings-resolver';
-import {
-  styler as brushStyler,
-  resolveTapEvent,
-  resolveOverEvent,
-  brushFromSceneNodes
-} from './brushing';
+import { styler as brushStyler, resolveTapEvent, resolveOverEvent, brushFromSceneNodes } from './brushing';
 import createSymbolFactory from '../symbols';
 import createDockConfig from '../layout/dock/config';
 
-const isReservedProperty = (prop) => [
-  'on', 'preferredSize', 'created', 'beforeMount', 'mounted', 'resize',
-  'beforeUpdate', 'updated', 'beforeRender', 'render', 'beforeUnmount', 'beforeDestroy',
-  'destroyed', 'defaultSettings', 'data', 'settings', 'formatter',
-  'scale', 'chart', 'dockConfig', 'mediator', 'style', 'resolver', 'registries',
-  '_DO_NOT_USE_getInfo', 'symbol', 'isVisible'
-].some((name) => name === prop);
+const isReservedProperty = (prop) =>
+  [
+    'on',
+    'preferredSize',
+    'created',
+    'beforeMount',
+    'mounted',
+    'resize',
+    'beforeUpdate',
+    'updated',
+    'beforeRender',
+    'render',
+    'beforeUnmount',
+    'beforeDestroy',
+    'destroyed',
+    'defaultSettings',
+    'data',
+    'settings',
+    'formatter',
+    'scale',
+    'chart',
+    'dockConfig',
+    'mediator',
+    'style',
+    'resolver',
+    'registries',
+    '_DO_NOT_USE_getInfo',
+    'symbol',
+    'isVisible',
+  ].some((name) => name === prop);
 
 function prepareContext(ctx, definition, opts) {
-  const {
-    require = []
-  } = definition;
+  const { require = [] } = definition;
   const mediatorSettings = definition.mediator || {};
   const {
     settings,
@@ -43,7 +59,7 @@ function prepareContext(ctx, definition, opts) {
     update,
     _DO_NOT_USE_getInfo,
     symbol,
-    isVisible
+    isVisible,
   } = opts;
 
   ctx.emit = () => {};
@@ -54,29 +70,29 @@ function prepareContext(ctx, definition, opts) {
 
   // TODO add setters and log warnings / errors to console
   Object.defineProperty(ctx, 'settings', {
-    get: settings
+    get: settings,
   });
   Object.defineProperty(ctx, 'data', {
-    get: data
+    get: data,
   });
   Object.defineProperty(ctx, 'formatter', {
-    get: formatter
+    get: formatter,
   });
   Object.defineProperty(ctx, 'scale', {
-    get: scale
+    get: scale,
   });
   Object.defineProperty(ctx, 'mediator', {
-    get: mediator
+    get: mediator,
   });
   Object.defineProperty(ctx, 'style', {
-    get: style
+    get: style,
   });
   Object.defineProperty(ctx, 'registries', {
-    get: registries
+    get: registries,
   });
   if (rect) {
     Object.defineProperty(ctx, 'rect', {
-      get: rect
+      get: rect,
     });
   }
 
@@ -102,31 +118,31 @@ function prepareContext(ctx, definition, opts) {
   require.forEach((req) => {
     if (req === 'renderer') {
       Object.defineProperty(ctx, 'renderer', {
-        get: renderer
+        get: renderer,
       });
     } else if (req === 'chart') {
       Object.defineProperty(ctx, 'chart', {
-        get: chart
+        get: chart,
       });
     } else if (req === 'dockConfig') {
       Object.defineProperty(ctx, 'dockConfig', {
-        get: dockConfig
+        get: dockConfig,
       });
     } else if (req === 'instance') {
       Object.defineProperty(ctx, 'instance', {
-        get: instance
+        get: instance,
       });
     } else if (req === 'update' && update) {
       Object.defineProperty(ctx, 'update', {
-        get: update
+        get: update,
       });
     } else if (req === 'resolver') {
       Object.defineProperty(ctx, 'resolver', {
-        get: resolver
+        get: resolver,
       });
     } else if (req === 'symbol') {
       Object.defineProperty(ctx, 'symbol', {
-        get: symbol
+        get: symbol,
       });
     }
   });
@@ -153,7 +169,8 @@ function createDockDefinition(settings, preferredSize, logger) {
 
   // move layout properties to layout object
   settings.layout = settings.layout || {};
-  settings.layout.displayOrder = typeof def.displayOrder !== 'undefined' ? def.displayOrder : settings.layout.displayOrder;
+  settings.layout.displayOrder =
+    typeof def.displayOrder !== 'undefined' ? def.displayOrder : settings.layout.displayOrder;
   settings.layout.prioOrder = typeof def.prioOrder !== 'undefined' ? def.prioOrder : settings.layout.prioOrder;
   settings.layout.dock = def.dock || settings.layout.dock;
   settings.layout.minimumLayoutMode = def.minimumLayoutMode || settings.layout.minimumLayoutMode;
@@ -196,17 +213,14 @@ function tearDownEmitter(ctx, emitter) {
 
 // TODO support es6 classes
 function componentFactory(definition, context = {}) {
-  const {
-    defaultSettings = {},
-    _DO_NOT_USE_getInfo = () => ({})
-  } = definition;
+  const { defaultSettings = {}, _DO_NOT_USE_getInfo = () => ({}) } = definition;
   const {
     chart,
     container,
     mediator,
     registries,
     theme,
-    renderer // Used by tests
+    renderer, // Used by tests
   } = context;
   const emitter = EventEmitter.mixin({});
   let config = context.settings || {};
@@ -218,7 +232,7 @@ function componentFactory(definition, context = {}) {
   let size;
   let style;
   let resolver = settingsResolver({
-    chart
+    chart,
   });
   let isVisible = false;
 
@@ -226,18 +240,18 @@ function componentFactory(definition, context = {}) {
     nodes: [],
     chart,
     config: settings.brush || {},
-    renderer: null
+    renderer: null,
   };
   const brushTriggers = {
     tap: [],
-    over: []
+    over: [],
   };
   const brushStylers = [];
   const definitionContext = {};
   const instanceContext = extend({}, config);
 
   // Create a callback that calls lifecycle functions in the definition and config (if they exist).
-  function createCallback(method, defaultMethod = () => { }, canBeValue = false) {
+  function createCallback(method, defaultMethod = () => {}, canBeValue = false) {
     return function cb(...args) {
       const inDefinition = typeof definition[method] !== 'undefined';
       const inConfig = typeof config[method] !== 'undefined';
@@ -303,7 +317,7 @@ function componentFactory(definition, context = {}) {
   };
 
   Object.defineProperty(brushArgs, 'data', {
-    get: () => data
+    get: () => data,
   });
 
   const rendString = settings.renderer || definition.renderer;
@@ -311,7 +325,10 @@ function componentFactory(definition, context = {}) {
   brushArgs.renderer = rend;
 
   const dockConfigCallbackContext = { resources: chart.logger ? { logger: chart.logger() } : {} };
-  let dockConfig = createDockConfig(createDockDefinition(settings, preferredSize, chart.logger()), dockConfigCallbackContext);
+  let dockConfig = createDockConfig(
+    createDockDefinition(settings, preferredSize, chart.logger()),
+    dockConfigCallbackContext
+  );
 
   const appendComponentMeta = (node) => {
     node.key = settings.key;
@@ -327,7 +344,10 @@ function componentFactory(definition, context = {}) {
     if (opts.settings) {
       config = opts.settings;
       settings = extend(true, {}, defaultSettings, opts.settings);
-      dockConfig = createDockConfig(createDockDefinition(settings, preferredSize, chart.logger()), dockConfigCallbackContext);
+      dockConfig = createDockConfig(
+        createDockDefinition(settings, preferredSize, chart.logger()),
+        dockConfigCallbackContext
+      );
     }
 
     if (settings.scale) {
@@ -335,7 +355,12 @@ function componentFactory(definition, context = {}) {
     }
 
     if (settings.data) {
-      data = extractData(settings.data, { dataset: chart.dataset, collection: chart.dataCollection }, { logger: chart.logger() }, chart.dataCollection);
+      data = extractData(
+        settings.data,
+        { dataset: chart.dataset, collection: chart.dataCollection },
+        { logger: chart.logger() },
+        chart.dataCollection
+      );
     } else if (scale) {
       data = scale.data();
     } else {
@@ -356,22 +381,30 @@ function componentFactory(definition, context = {}) {
   fn.resize = (inner = {}, outer = {}) => {
     const newSize = resize({
       inner,
-      outer
+      outer,
     });
     if (newSize) {
       size = rend.size(newSize);
     } else {
       size = rend.size(inner);
     }
-    instanceContext.rect = extend(true, {
-      computedPhysical: size.computedPhysical,
-      computedOuter: outer.computed || outer,
-      computedInner: inner.computed || inner
-    }, inner);
-    size = extend(true, {
-      computedOuter: outer.computed || outer,
-      computedInner: inner.computed || inner
-    }, size);
+    instanceContext.rect = extend(
+      true,
+      {
+        computedPhysical: size.computedPhysical,
+        computedOuter: outer.computed || outer,
+        computedInner: inner.computed || inner,
+      },
+      inner
+    );
+    size = extend(
+      true,
+      {
+        computedOuter: outer.computed || outer,
+        computedInner: inner.computed || inner,
+      },
+      size
+    );
   };
 
   fn.getRect = () => instanceContext.rect;
@@ -379,7 +412,7 @@ function componentFactory(definition, context = {}) {
   const getRenderArgs = () => {
     const renderArgs = rend.renderArgs ? rend.renderArgs.slice(0) : [];
     renderArgs.push({
-      data
+      data,
     });
     return renderArgs;
   };
@@ -388,14 +421,14 @@ function componentFactory(definition, context = {}) {
 
   fn.beforeRender = () => {
     beforeRender({
-      size
+      size,
     });
   };
 
   let currentNodes;
 
   fn.render = () => {
-    const nodes = brushArgs.nodes = render.call(definitionContext, ...getRenderArgs());
+    const nodes = (brushArgs.nodes = render.call(definitionContext, ...getRenderArgs()));
     rend.render(nodes);
     currentNodes = nodes;
   };
@@ -406,7 +439,7 @@ function componentFactory(definition, context = {}) {
       x: 0,
       y: 0,
       width: 0,
-      height: 0
+      height: 0,
     });
     rend.clear();
   };
@@ -414,7 +447,7 @@ function componentFactory(definition, context = {}) {
   fn.beforeUpdate = () => {
     beforeUpdate({
       settings,
-      data
+      data,
     });
   };
 
@@ -423,7 +456,7 @@ function componentFactory(definition, context = {}) {
     if (currentTween) {
       currentTween.stop();
     }
-    const nodes = brushArgs.nodes = render.call(definitionContext, ...getRenderArgs());
+    const nodes = (brushArgs.nodes = render.call(definitionContext, ...getRenderArgs()));
 
     // Reset brush stylers and triggers
     brushStylers.forEach((b) => b.cleanUp());
@@ -443,10 +476,14 @@ function componentFactory(definition, context = {}) {
     });
 
     if (currentNodes && settings.animations && settings.animations.enabled) {
-      currentTween = tween({
-        old: currentNodes,
-        current: nodes
-      }, { renderer: rend }, settings.animations);
+      currentTween = tween(
+        {
+          old: currentNodes,
+          current: nodes,
+        },
+        { renderer: rend },
+        settings.animations
+      );
       currentTween.start();
     } else {
       rend.render(nodes);
@@ -501,7 +538,7 @@ function componentFactory(definition, context = {}) {
     update: () => updateNodes,
     registries: () => registries,
     resolver: () => resolver,
-    symbol: () => createSymbolFactory(registries.symbol)
+    symbol: () => createSymbolFactory(registries.symbol),
   });
 
   prepareContext(instanceContext, config, {
@@ -515,7 +552,7 @@ function componentFactory(definition, context = {}) {
     mediator: () => mediator,
     style: () => style,
     _DO_NOT_USE_getInfo: _DO_NOT_USE_getInfo.bind(definitionContext),
-    isVisible: () => isVisible
+    isVisible: () => isVisible,
   });
 
   fn.getBrushedShapes = function getBrushedShapes(brushCtx, mode, props) {
@@ -575,7 +612,7 @@ function componentFactory(definition, context = {}) {
       action,
       trigger,
       chart,
-      data: brushArgs.data
+      data: brushArgs.data,
     });
   };
 

@@ -27,16 +27,18 @@ export default function buildLine(buildOpts) {
     y1: 0,
     y2: 0,
     collider: {
-      type: null
-    }
+      type: null,
+    },
   };
 
   if (buildOpts.align === 'top' || buildOpts.align === 'bottom') {
     struct.x1 = buildOpts.innerRect.x - buildOpts.outerRect.x;
     struct.x2 = buildOpts.innerRect.width + buildOpts.innerRect.x;
-    struct.y1 = struct.y2 = buildOpts.align === 'top' ? buildOpts.innerRect.height - buildOpts.padding : buildOpts.padding;
+    struct.y1 = struct.y2 =
+      buildOpts.align === 'top' ? buildOpts.innerRect.height - buildOpts.padding : buildOpts.padding;
   } else {
-    struct.x1 = struct.x2 = buildOpts.align === 'left' ? buildOpts.innerRect.width - buildOpts.padding : buildOpts.padding;
+    struct.x1 = struct.x2 =
+      buildOpts.align === 'left' ? buildOpts.innerRect.width - buildOpts.padding : buildOpts.padding;
     struct.y1 = buildOpts.innerRect.y - buildOpts.outerRect.y;
     struct.y2 = buildOpts.innerRect.height + buildOpts.innerRect.y;
   }

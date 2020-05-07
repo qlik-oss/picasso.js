@@ -9,15 +9,15 @@ picasso.renderer.default('canvas'); // use canvas renderer by default
 
 // configure a custom picasso that logs everything
 const pic = picasso({
-  logger: { // experimental
-    level: 4
-  }
+  logger: {
+    // experimental
+    level: 4,
+  },
 });
 pic.renderer.default('svg'); // use svg renderer by default for all charts created from this configuration
 pic.component('mine', myComponent); // register a custom component
 
-
 pic.chart(/* */); // svg renderer is used, 'mine' component is available for use
 
-picasso.chart( /* */ ); // canvas renderer is used, 'mine' component not available in this configuration
+picasso.chart(/* */); // canvas renderer is used, 'mine' component not available in this configuration
 ```

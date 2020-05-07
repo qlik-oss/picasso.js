@@ -5,11 +5,11 @@ export default {
   input: path.resolve(__dirname, 'index.js'),
   output: {
     file: 'dist/bundle.js',
-    format: 'umd'
+    format: 'umd',
   },
   plugins: [
     serve({
-      contentBase: [__dirname, path.resolve(__dirname, '../../'), 'dist']
-    })
-  ]
+      contentBase: [__dirname, path.resolve(__dirname, '../../'), 'dist'],
+    }),
+  ],
 };

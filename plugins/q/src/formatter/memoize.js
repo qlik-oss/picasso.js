@@ -1,9 +1,5 @@
 export default function memoize(func, opts = {}) {
-  const {
-    size = 5000,
-    multipleArguments = false,
-    toKey = (arg) => arg
-  } = opts;
+  const { size = 5000, multipleArguments = false, toKey = (arg) => arg } = opts;
   let cache = Object.create(null);
   let index = Object.create(null);
   let counter = 0;

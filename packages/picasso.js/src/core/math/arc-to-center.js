@@ -32,14 +32,14 @@ function arcToCenter(rx, ry, rotation, largeArcFlag, sweepFlag, endX, endY, star
   const hdx = (startX - endX) / 2;
   const hdy = (startY - endY) / 2;
 
-  const x1d = (cos * hdx) + (sin * hdy);
-  const y1d = (cos * hdy) - (sin * hdx);
+  const x1d = cos * hdx + sin * hdy;
+  const y1d = cos * hdy - sin * hdx;
 
   // F.6.6
   rx = Math.abs(rx);
   ry = Math.abs(ry);
 
-  radiusRatio = (Math.pow(x1d, 2) / Math.pow(rx, 2)) + (Math.pow(y1d, 2) / Math.pow(ry, 2));
+  radiusRatio = Math.pow(x1d, 2) / Math.pow(rx, 2) + Math.pow(y1d, 2) / Math.pow(ry, 2);
   if (radiusRatio > 1) {
     radiusRatio = Math.sqrt(radiusRatio);
     rx *= radiusRatio;
@@ -65,8 +65,8 @@ function arcToCenter(rx, ry, rotation, largeArcFlag, sweepFlag, endX, endY, star
   // F.6.5.3
   const mx = (startX + endX) / 2;
   const my = (startY + endY) / 2;
-  cx = ((cos * cxd) - (sin * cyd)) + mx;
-  cy = (sin * cxd) + (cos * cyd) + my;
+  cx = cos * cxd - sin * cyd + mx;
+  cy = sin * cxd + cos * cyd + my;
 
   // F.6.5.6 clockwise angle
   const ux = (x1d - cxd) / rx;
@@ -94,11 +94,8 @@ function arcToCenter(rx, ry, rotation, largeArcFlag, sweepFlag, endX, endY, star
     cx,
     cy,
     rx,
-    ry
+    ry,
   };
 }
 
-export {
-  arcToCenter as default,
-  PI_X2
-};
+export { arcToCenter as default, PI_X2 };

@@ -5,7 +5,7 @@ import { createLineWithLabel } from './lines-and-labels';
 
 function createOobData(line) {
   const data = {
-    value: line.value
+    value: line.value,
   };
 
   if (line.label) {
@@ -64,7 +64,7 @@ function filterUndefinedValue(line) {
 
 /**
  * @typedef {object} component--ref-line.line
- * @property {number} value - The value of the reference line. If a scale is specified, it is applied.
+ * @property {number|function} value - The value of the reference line. If a scale is specified, it is applied.
  * @property {Scale} [scale=undefined] - Scale to use (if undefined will use normalized value 0-1)
  * @property {refline-generic-object} [line=refline-generic-object] - The style of the line
  * @property {refline-line-label} [label=refline-line-label] - The label style of the line
@@ -111,7 +111,7 @@ const refLineComponent = {
   require: ['chart', 'renderer'],
   defaultSettings: {
     layout: {
-      displayOrder: 0
+      displayOrder: 0,
     },
     style: {
       oob: {
@@ -126,26 +126,26 @@ const refLineComponent = {
           stroke: 'transparent',
           fill: '#fff',
           strokeWidth: 0,
-          opacity: 1
+          opacity: 1,
         },
         triangle: {
           fill: '#4D4D4D',
           stroke: 'transparent',
           strokeWidth: 0,
-          opacity: 1
+          opacity: 1,
         },
         padding: {
           x: 28,
-          y: 5
-        }
+          y: 5,
+        },
       },
       line: {
-        stroke: '#000'
+        stroke: '#000',
       },
       label: {
-        strokeWidth: 0
-      }
-    }
+        strokeWidth: 0,
+      },
+    },
   },
 
   preferredSize() {
@@ -168,7 +168,7 @@ const refLineComponent = {
     // Setup lines for X and Y
     this.lines = {
       x: [],
-      y: []
+      y: [],
     };
 
     this.lines.x = (settings.lines && settings.lines.x) || [];
@@ -182,11 +182,15 @@ const refLineComponent = {
       x0: [],
       x1: [],
       y0: [],
-      y1: []
+      y1: [],
     };
 
     // Convert a value to an actual position using the scale
     this.lines.x = this.lines.x.filter(filterUndefinedValue).map((line) => {
+      if (typeof line.value === 'function') {
+        line.value = line.value();
+      }
+
       if (line.scale) {
         let scale = this.chart.scale(line.scale);
         return extend(line, { scale, position: scale(line.value) });
@@ -197,6 +201,10 @@ const refLineComponent = {
     // Set all Y lines to flipXY by default
     // This makes the transposer flip them individually
     this.lines.y = this.lines.y.filter(filterUndefinedValue).map((line) => {
+      if (typeof line.value === 'function') {
+        line.value = line.value();
+      }
+
       if (line.scale) {
         let scale = this.chart.scale(line.scale);
         return extend(line, { scale, position: scale(line.value), flipXY: true });
@@ -231,7 +239,12 @@ const refLineComponent = {
       if (show) {
         // Create line with labels
         createLineWithLabel({
-          chart: this.chart, blueprint: this.blueprint, renderer: this.renderer, p, settings, items
+          chart: this.chart,
+          blueprint: this.blueprint,
+          renderer: this.renderer,
+          p,
+          settings,
+          items,
         });
       }
     });
@@ -239,12 +252,15 @@ const refLineComponent = {
     // Handle out of bounds
     if (settings.style.oob.show) {
       oobManager({
-        blueprint: this.blueprint, oob, settings, items
+        blueprint: this.blueprint,
+        oob,
+        settings,
+        items,
       });
     }
 
     return items;
-  }
+  },
 };
 
 export default refLineComponent;

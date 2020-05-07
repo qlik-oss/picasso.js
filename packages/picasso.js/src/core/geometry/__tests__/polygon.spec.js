@@ -7,7 +7,7 @@ describe('Polygon', () => {
     { x: 0, y: 25 },
     { x: 25, y: 0 },
     { x: 50, y: 25 },
-    { x: 0, y: 25 }
+    { x: 0, y: 25 },
   ]; // Triangle
   const concavePolygon = [
     { x: 0, y: 0 },
@@ -15,15 +15,23 @@ describe('Polygon', () => {
     { x: 25, y: 25 },
     { x: 50, y: 50 },
     { x: 50, y: 0 },
-    { x: 0, y: 0 }
+    { x: 0, y: 0 },
   ];
   const selfIntersectingPolygon = [
     { x: 0, y: 0 },
     { x: 50, y: 50 },
     { x: 50, y: 0 },
     { x: 0, y: 50 },
-    { x: 0, y: 0 }
+    { x: 0, y: 0 },
   ]; // butterfly quadrilateral
+
+  const squarePolygon = [
+    { x: 0, y: 0 },
+    { x: 0, y: 50 },
+    { x: 50, y: 50 },
+    { x: 50, y: 0 },
+    { x: 0, y: 0 },
+  ];
 
   describe('constructor', () => {
     it('should set correct default values when no arguments passed', () => {
@@ -36,9 +44,18 @@ describe('Polygon', () => {
       polygon = create({ vertices: convexPolygon });
       expect(polygon.vertices).to.deep.equal(convexPolygon);
       expect(polygon.edges).to.deep.equal([
-        [{ x: 0, y: 25 }, { x: 25, y: 0 }],
-        [{ x: 25, y: 0 }, { x: 50, y: 25 }],
-        [{ x: 50, y: 25 }, { x: 0, y: 25 }]
+        [
+          { x: 0, y: 25 },
+          { x: 25, y: 0 },
+        ],
+        [
+          { x: 25, y: 0 },
+          { x: 50, y: 25 },
+        ],
+        [
+          { x: 50, y: 25 },
+          { x: 0, y: 25 },
+        ],
       ]);
     });
 
@@ -47,14 +64,14 @@ describe('Polygon', () => {
         vertices: [
           { x: 0, y: 25 },
           { x: 25, y: 0 },
-          { x: 50, y: 25 }
-        ]
+          { x: 50, y: 25 },
+        ],
       });
       expect(polygon.vertices).to.deep.equal([
         { x: 0, y: 25 },
         { x: 25, y: 0 },
         { x: 50, y: 25 },
-        { x: 0, y: 25 }
+        { x: 0, y: 25 },
       ]);
     });
   });
@@ -72,9 +89,18 @@ describe('Polygon', () => {
       polygon.set({ vertices: convexPolygon });
       expect(polygon.vertices).to.deep.equal(convexPolygon);
       expect(polygon.edges).to.deep.equal([
-        [{ x: 0, y: 25 }, { x: 25, y: 0 }],
-        [{ x: 25, y: 0 }, { x: 50, y: 25 }],
-        [{ x: 50, y: 25 }, { x: 0, y: 25 }]
+        [
+          { x: 0, y: 25 },
+          { x: 25, y: 0 },
+        ],
+        [
+          { x: 25, y: 0 },
+          { x: 50, y: 25 },
+        ],
+        [
+          { x: 50, y: 25 },
+          { x: 0, y: 25 },
+        ],
       ]);
     });
 
@@ -88,15 +114,15 @@ describe('Polygon', () => {
           { x: 0, y: 10 },
           { x: 10, y: 0 }, // Do not remove
           { x: 10, y: 0 }, // Remove
-          { x: 0, y: 0 }
-        ]
+          { x: 0, y: 0 },
+        ],
       });
       expect(polygon.vertices).to.deep.equal([
         { x: 0, y: 0 },
         { x: 10, y: 0 },
         { x: 0, y: 10 },
         { x: 10, y: 0 },
-        { x: 0, y: 0 }
+        { x: 0, y: 0 },
       ]);
     });
   });
@@ -108,7 +134,7 @@ describe('Polygon', () => {
         { x: 0, y: 0 },
         { x: 50, y: 0 },
         { x: 50, y: 50 },
-        { x: 0, y: 50 }
+        { x: 0, y: 50 },
       ]);
     });
 
@@ -117,14 +143,14 @@ describe('Polygon', () => {
         vertices: [
           { x: -20, y: -10 },
           { x: 0, y: -10 },
-          { x: 20, y: 10 }
-        ]
+          { x: 20, y: 10 },
+        ],
       });
       expect(polygon.bounds()).to.deep.equal([
         { x: -20, y: -10 },
         { x: 20, y: -10 },
         { x: 20, y: 10 },
-        { x: -20, y: 10 }
+        { x: -20, y: 10 },
       ]);
     });
   });
@@ -136,16 +162,16 @@ describe('Polygon', () => {
           { x: 1, y: 1 },
           { x: 5, y: 1 },
           { x: 1, y: 5 },
-          { x: 1, y: 1 }
-        ]
+          { x: 1, y: 1 },
+        ],
       });
       const poly2 = create({
         vertices: [
           { x: 1, y: 1 },
           { x: 3, y: 3 },
           { x: 1, y: 5 },
-          { x: 1, y: 1 }
-        ]
+          { x: 1, y: 1 },
+        ],
       });
       const poly3 = create({
         vertices: [
@@ -153,8 +179,8 @@ describe('Polygon', () => {
           { x: 3, y: 5 },
           { x: 5, y: 3 },
           { x: 3, y: 1 },
-          { x: 1, y: 3 }
-        ]
+          { x: 1, y: 3 },
+        ],
       });
       const poly4 = create({
         vertices: [
@@ -163,8 +189,8 @@ describe('Polygon', () => {
           { x: 3, y: 3 },
           { x: 5, y: 5 },
           { x: 5, y: 1 },
-          { x: 1, y: 1 }
-        ]
+          { x: 1, y: 1 },
+        ],
       });
       const poly5 = create({
         vertices: [
@@ -175,8 +201,8 @@ describe('Polygon', () => {
           { x: 7, y: 3 },
           { x: 9, y: 5 },
           { x: 9, y: 1 },
-          { x: 1, y: 1 }
-        ]
+          { x: 1, y: 1 },
+        ],
       });
       const poly6 = create({
         vertices: [
@@ -187,8 +213,8 @@ describe('Polygon', () => {
           { x: 7, y: 3 },
           { x: 5, y: 1 },
           { x: 3, y: 3 },
-          { x: 1, y: 1 }
-        ]
+          { x: 1, y: 1 },
+        ],
       });
 
       it('convex polygon', () => {
@@ -224,9 +250,7 @@ describe('Polygon', () => {
         const p = { x: 10, y: 10 };
 
         polygon = create({
-          vertices: [
-            { x: 10, y: 10 }
-          ]
+          vertices: [{ x: 10, y: 10 }],
         });
         expect(polygon.containsPoint(p)).to.equal(false);
       });
@@ -376,9 +400,7 @@ describe('Polygon', () => {
         const c = { cx: 0, cy: 0, r: 2 };
 
         polygon = create({
-          vertices: [
-            { x: 0, y: 0 }
-          ]
+          vertices: [{ x: 0, y: 0 }],
         });
         expect(polygon.intersectsCircle(c)).to.equal(false);
       });
@@ -387,7 +409,10 @@ describe('Polygon', () => {
     describe('intersectsLine', () => {
       it('should intersect line', () => {
         const line = {
-          x1: 25, y1: 20, x2: 25, y2: 10
+          x1: 25,
+          y1: 20,
+          x2: 25,
+          y2: 10,
         }; // Both points inside polygon
         polygon = create({ vertices: convexPolygon });
         expect(polygon.intersectsLine(lineToPoints(line))).to.equal(true);
@@ -397,7 +422,10 @@ describe('Polygon', () => {
     describe('intersectsRect', () => {
       it('should intersect rect', () => {
         const rect = {
-          x: 25, y: 10, width: 6, height: 6
+          x: 25,
+          y: 10,
+          width: 6,
+          height: 6,
         };
         polygon = create({ vertices: convexPolygon });
         expect(polygon.intersectsRect(rectToPoints(rect))).to.equal(true);
@@ -423,15 +451,39 @@ describe('Polygon', () => {
         expect(polygon.intersectsPolygon(pgon2)).to.be.true;
       });
 
-      it('fully contains another polygon', () => {
+      it('fully contains another polygon, case 1', () => {
         polygon = create({ vertices: selfIntersectingPolygon });
         const vertices = [
           { x: 3, y: 15 },
           { x: 3, y: 25 },
-          { x: 6, y: 15 }
+          { x: 6, y: 15 },
         ];
         const pgon2 = create({ vertices });
-        expect(polygon.intersectsPolygon(pgon2)).to.be.false;
+        expect(polygon.intersectsPolygon(pgon2)).to.be.true;
+      });
+
+      it('fully contains another polygon, case 2', () => {
+        polygon = create({ vertices: squarePolygon });
+        const vertices = [
+          { x: 3, y: 15 },
+          { x: 3, y: 25 },
+          { x: 6, y: 15 },
+        ];
+        const pgon2 = create({ vertices });
+        expect(polygon.intersectsPolygon(pgon2)).to.be.true;
+      });
+
+      it('fully being contained by another polygon', () => {
+        polygon = create({ vertices: selfIntersectingPolygon });
+        const vertices = [
+          { x: -10, y: -10 },
+          { x: -10, y: 60 },
+          { x: 60, y: 60 },
+          { x: 60, y: -10 },
+          { x: -10, y: -10 },
+        ];
+        const pgon2 = create({ vertices });
+        expect(polygon.intersectsPolygon(pgon2)).to.be.true;
       });
     });
   });

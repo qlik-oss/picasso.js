@@ -4,13 +4,13 @@ import brushAreaDir from '../brush-area';
 function nativeEvent(x, y) {
   return {
     clientX: x,
-    clientY: y
+    clientY: y,
   };
 }
 
 function hammerEvent(x, y) {
   return {
-    center: { x, y }
+    center: { x, y },
   };
 }
 
@@ -32,16 +32,19 @@ describe('Brush Area', () => {
       width: 100,
       height: 200,
       computed: {
-        x: 1, y: 2, width: 100, height: 200
-      }
+        x: 1,
+        y: 2,
+        width: 100,
+        height: 200,
+      },
     };
     container = {
       inner: rect,
-      outer: rect
+      outer: rect,
     };
 
     config = {
-      settings: {}
+      settings: {},
     };
 
     componentFixture = componentFactoryFixture();
@@ -57,8 +60,8 @@ describe('Brush Area', () => {
       area: {
         fill: 'green',
         strokeWidth: 0,
-        opacity: 0.2
-      }
+        opacity: 0.2,
+      },
     });
   });
 
@@ -78,8 +81,8 @@ describe('Brush Area', () => {
         height: 10,
         fill: 'green',
         strokeWidth: 0,
-        opacity: 0.2
-      }
+        opacity: 0.2,
+      },
     ]);
   });
 
@@ -99,13 +102,13 @@ describe('Brush Area', () => {
       components: [
         {
           key: 'test',
-          contexts: ['test']
+          contexts: ['test'],
         },
         {
           key: 'test2',
-          contexts: ['test2']
-        }
-      ]
+          contexts: ['test2'],
+        },
+      ],
     };
     const spy = sandbox.spy();
     const stub = sandbox.stub().returns({ end: spy });
@@ -131,7 +134,7 @@ describe('Brush Area', () => {
       x: 11, // To include renderer position
       y: 22,
       width: 30,
-      height: 10
+      height: 10,
     });
   });
 

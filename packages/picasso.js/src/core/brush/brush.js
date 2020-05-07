@@ -27,14 +27,10 @@ const DEFAULT_RANGE_CONFIG = {
   /**
    * Whether or not the maximum value of a range should be included when determening if a value is brushed.
    * @type {boolean=} */
-  includeMax: true
+  includeMax: true,
 };
 
-function add({
-  items,
-  collection,
-  vc
-}) {
+function add({ items, collection, vc }) {
   const changedMap = {};
   const changed = [];
   let key;
@@ -63,10 +59,7 @@ function add({
   return changed;
 }
 
-function remove({
-  items,
-  collection
-}) {
+function remove({ items, collection }) {
   const changedMap = {};
   const changed = [];
   let key;
@@ -117,13 +110,7 @@ function collectUnique(items) {
   return filteredSet;
 }
 
-function createValueCollection({
-  key,
-  collection,
-  obj,
-  fn,
-  value
-}) {
+function createValueCollection({ key, collection, obj, fn, value }) {
   if (!collection[key]) {
     collection[key] = fn();
   }
@@ -132,11 +119,7 @@ function createValueCollection({
   collection[key].add(value);
 }
 
-export function toggle({
-  items,
-  values,
-  vc
-}) {
+export function toggle({ items, values, vc }) {
   const addedMap = {};
   const removedMap = {};
   const added = [];
@@ -159,7 +142,7 @@ export function toggle({
           value,
           collection: values,
           obj: addedMap,
-          fn: vc
+          fn: vc,
         });
       } else if (values[key] && values[key].contains(value)) {
         removedMap[key] = removedMap[key] || [];
@@ -206,11 +189,7 @@ function diff(old, current) {
   return changed;
 }
 
-export function set({
-  items,
-  vCollection,
-  vc
-}) {
+export function set({ items, vCollection, vc }) {
   const addedMap = {};
   const filteredSet = collectUnique(items);
   let added = [];
@@ -232,7 +211,7 @@ export function set({
         value,
         collection: vCollection,
         obj: addedMap,
-        fn: vc
+        fn: vc,
       });
     }
   };
@@ -248,7 +227,6 @@ export function set({
 
   return [added, removed];
 }
-
 
 function applyAliases(items, aliases) {
   if (!Object.keys(aliases).length) {
@@ -275,13 +253,7 @@ function toSnakeCase(s) {
   return s.replace(/([A-Z])/g, ($1) => `-${$1.toLowerCase()}`);
 }
 
-function updateRange(items, action, {
-  ranges,
-  interceptors,
-  rc,
-  aliases,
-  rangeConfig
-}) {
+function updateRange(items, action, { ranges, interceptors, rc, aliases, rangeConfig }) {
   const inter = `${action}Ranges`;
   const its = intercept(interceptors[inter], items, aliases);
   let changed = false;
@@ -303,17 +275,14 @@ function updateRange(items, action, {
   return changed;
 }
 
-export default function brush({
-  vc = valueCollection,
-  rc = rangeCollection
-} = {}) {
+export default function brush({ vc = valueCollection, rc = rangeCollection } = {}) {
   let activated = false;
   let ranges = {};
   let values = {};
   let aliases = {};
   let rangeConfig = {
     sources: {},
-    default: extend({}, DEFAULT_RANGE_CONFIG)
+    default: extend({}, DEFAULT_RANGE_CONFIG),
   };
   const interceptors = {
     addValues: [],
@@ -323,16 +292,20 @@ export default function brush({
     addRanges: [],
     setRanges: [],
     removeRanges: [],
-    toggleRanges: []
+    toggleRanges: [],
   };
 
   const getState = () => {
     const state = {
       values: {},
-      ranges: {}
+      ranges: {},
     };
-    Object.keys(values).forEach((key) => { state.values[key] = values[key].values(); });
-    Object.keys(ranges).forEach((key) => { state.ranges[key] = ranges[key].ranges(); });
+    Object.keys(values).forEach((key) => {
+      state.values[key] = values[key].values();
+    });
+    Object.keys(ranges).forEach((key) => {
+      state.ranges[key] = ranges[key].ranges();
+    });
     return state;
   };
 
@@ -353,16 +326,20 @@ export default function brush({
     },
     updateValues() {
       const s = getState();
-      this.ls.forEach((b) => b._state({
-        values: s.values
-      }));
+      this.ls.forEach((b) =>
+        b._state({
+          values: s.values,
+        })
+      );
     },
     updateRanges() {
       const s = getState();
-      this.ls.forEach((b) => b._state({
-        ranges: s.ranges
-      }));
-    }
+      this.ls.forEach((b) =>
+        b._state({
+          ranges: s.ranges,
+        })
+      );
+    },
   };
 
   /**
@@ -392,24 +369,23 @@ export default function brush({
    * @type {string}
    */
 
-
   /**
-    * Configure the brush instance.
-    *
-    * @param {brush-config} config
-    * @example
-    * brushInstance.configure({
-    *   ranges: [
-    *     { key: 'some key', includeMax: false },
-    *     { includeMax: true, includeMin: true },
-    *   ]
-    * })
-    */
+   * Configure the brush instance.
+   *
+   * @param {brush-config} config
+   * @example
+   * brushInstance.configure({
+   *   ranges: [
+   *     { key: 'some key', includeMax: false },
+   *     { includeMax: true, includeMin: true },
+   *   ]
+   * })
+   */
   fn.configure = (config = {}) => {
     if (Array.isArray(config.ranges) && config.ranges.length) {
       rangeConfig = {
         sources: {},
-        default: extend({}, DEFAULT_RANGE_CONFIG)
+        default: extend({}, DEFAULT_RANGE_CONFIG),
       };
 
       config.ranges.forEach((cfg) => {
@@ -442,7 +418,7 @@ export default function brush({
    */
   fn.link = (target) => {
     if (fn === target) {
-      throw new Error('Can\'t link to self');
+      throw new Error("Can't link to self");
     }
     links.ls.push(target);
     target._state(getState());
@@ -458,7 +434,7 @@ export default function brush({
         if (!values[key] || s.values[key].join(';') !== values[key].toString()) {
           arr.push({
             key,
-            values: s.values[key]
+            values: s.values[key],
           });
         }
       });
@@ -466,7 +442,7 @@ export default function brush({
         if (!s.values[key]) {
           arr.push({
             key,
-            values: []
+            values: [],
           });
         }
       });
@@ -480,7 +456,7 @@ export default function brush({
         if (!ranges[key] || s.ranges[key].join(';') !== ranges[key].toString()) {
           arr.push({
             key,
-            ranges: s.ranges[key]
+            ranges: s.ranges[key],
           });
         }
       });
@@ -488,7 +464,7 @@ export default function brush({
         if (!s.ranges[key]) {
           arr.push({
             key,
-            ranges: []
+            ranges: [],
           });
         }
       });
@@ -503,12 +479,13 @@ export default function brush({
    * Starts this brush context
    *
    * Starts this brush context and emits a 'start' event if it is not already started.
+   * @param {...any} args - arguments to be passed to 'start' listeners
    * @emits brush#start
    */
-  fn.start = () => {
+  fn.start = (...args) => {
     if (!activated) {
       activated = true;
-      fn.emit('start');
+      fn.emit('start', ...args);
       links.start();
     }
   };
@@ -517,16 +494,17 @@ export default function brush({
    * Ends this brush context
    *
    * Ends this brush context and emits an 'end' event if it is not already ended.
+   * @param {...any} args - arguments to be passed to 'end' listeners
    * @emits brush#end
    */
-  fn.end = () => {
+  fn.end = (...args) => {
     if (!activated) {
       return;
     }
     activated = false;
     ranges = {};
     values = {};
-    fn.emit('end');
+    fn.emit('end', ...args);
     links.end();
   };
 
@@ -542,7 +520,10 @@ export default function brush({
    * Clears this brush context
    */
   fn.clear = () => {
-    const removed = fn.brushes().filter((b) => b.type === 'value' && b.brush.values().length).map((b) => ({ id: b.id, values: b.brush.values() }));
+    const removed = fn
+      .brushes()
+      .filter((b) => b.type === 'value' && b.brush.values().length)
+      .map((b) => ({ id: b.id, values: b.brush.values() }));
     const hasChanged = Object.keys(ranges).length > 0 || removed.length;
     ranges = {};
     values = {};
@@ -558,17 +539,21 @@ export default function brush({
    */
   fn.brushes = () => {
     let result = [];
-    result = result.concat(Object.keys(ranges).map((key) => ({
-      type: 'range',
-      id: key,
-      brush: ranges[key]
-    })));
+    result = result.concat(
+      Object.keys(ranges).map((key) => ({
+        type: 'range',
+        id: key,
+        brush: ranges[key],
+      }))
+    );
 
-    result = result.concat(Object.keys(values).map((key) => ({
-      type: 'value',
-      id: key,
-      brush: values[key]
-    })));
+    result = result.concat(
+      Object.keys(values).map((key) => ({
+        type: 'value',
+        id: key,
+        brush: values[key],
+      }))
+    );
 
     return result;
   };
@@ -599,7 +584,7 @@ export default function brush({
     const added = add({
       vc,
       collection: values,
-      items: its
+      items: its,
     });
 
     fn.emit('add-values', its);
@@ -622,7 +607,7 @@ export default function brush({
     const changed = set({
       items: its,
       vCollection: values,
-      vc
+      vc,
     });
 
     fn.emit('set-values', its);
@@ -658,7 +643,7 @@ export default function brush({
     const its = intercept(interceptors.removeValues, items, aliases);
     const removed = remove({
       collection: values,
-      items: its
+      items: its,
     });
 
     fn.emit('remove-values', its);
@@ -685,11 +670,11 @@ export default function brush({
     const added = add({
       vc,
       collection: values,
-      items: addIts
+      items: addIts,
     });
     const removed = remove({
       collection: values,
-      items: removeIts
+      items: removeIts,
     });
 
     fn.emit('add-values', addIts);
@@ -727,7 +712,7 @@ export default function brush({
     const toggled = toggle({
       items: its,
       values,
-      vc
+      vc,
     });
 
     fn.emit('toggle-values', its);
@@ -790,7 +775,7 @@ export default function brush({
       rc,
       interceptors,
       aliases,
-      rangeConfig
+      rangeConfig,
     });
 
     if (!changed) {
@@ -827,7 +812,7 @@ export default function brush({
       rc,
       interceptors,
       aliases,
-      rangeConfig
+      rangeConfig,
     });
 
     if (!changed) {
@@ -866,7 +851,7 @@ export default function brush({
       rc,
       interceptors,
       aliases,
-      rangeConfig
+      rangeConfig,
     });
 
     if (!changed) {
@@ -906,7 +891,7 @@ export default function brush({
       rc,
       interceptors,
       aliases,
-      rangeConfig
+      rangeConfig,
     });
 
     if (!changed) {
@@ -999,7 +984,9 @@ export default function brush({
 
       value = item.value;
       if (ranges[source]) {
-        status[i].bool = Array.isArray(value) ? ranges[source].containsRange({ min: value[0], max: value[1] }) : ranges[source].containsValue(value);
+        status[i].bool = Array.isArray(value)
+          ? ranges[source].containsRange({ min: value[0], max: value[1] })
+          : ranges[source].containsValue(value);
       } else if (values[source] && values[source].contains(value)) {
         status[i].bool = true;
       }

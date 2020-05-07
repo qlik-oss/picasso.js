@@ -44,17 +44,19 @@ The tooltip component is a reactive component that depend on events to render so
 The event takes two parameters, the first is the pointer event and the second is an optional object which may contain specific nodes to use when rendering the tooltip. If the second parameter is omitted, the pointer event will be used to perform a node lookup on the chart instance.
 
 With a single event parameter:
+
 ```js
 picassoInstance.component('<key value of tooltip>').emit('show', event);
 ```
 
 With optional parameters:
+
 ```js
-const nodes = picassoInstance.shapesAt({ x: 1, y: 2, width: 3, height: 4}); // An array of nodes
+const nodes = picassoInstance.shapesAt({ x: 1, y: 2, width: 3, height: 4 }); // An array of nodes
 picassoInstance.component('<key value of tooltip>').emit('show', event, {
   nodes,
   delay: 50, // Optional, the component setting value is used as default
-  duration: 2000 // Optional, the component setting value is used as default
+  duration: 2000, // Optional, the component setting value is used as default
 }); // The event is dispatched and if no new events are triggered until the delay has passed, a tooltip is displayed
 ```
 
@@ -89,7 +91,7 @@ The `content` setting is responsible for generating virtual nodes using the Hype
 ```js
 {
   settings: {
-    content: ({ h, data }) => data.map(datum => h('div', {}, datum))
+    content: ({ h, data }) => data.map((datum) => h('div', {}, datum));
   }
 }
 ```
@@ -97,15 +99,17 @@ The `content` setting is responsible for generating virtual nodes using the Hype
 ### Example - Formatting values
 
 Here we format the value using a formatter and return the output as extracted data.
+
 ```js
 {
   settings: {
-    extract: ({ node, resources }) => resources.formatter('<name-of-a-formatter>')(node.data.value)
+    extract: ({ node, resources }) => resources.formatter('<name-of-a-formatter>')(node.data.value);
   }
 }
 ```
 
-But sometimes we want to give the value some context, for example by labeling it. As such we change the data structure to an  object instead to make it more clear what the data represent. As we do, the default `content` generator function will complain because it doesn't understand our new data structure, so we must also update the `content` setting.
+But sometimes we want to give the value some context, for example by labeling it. As such we change the data structure to an object instead to make it more clear what the data represent. As we do, the default `content` generator function will complain because it doesn't understand our new data structure, so we must also update the `content` setting.
+
 ```js
 {
   settings: {
@@ -124,9 +128,10 @@ But sometimes we want to give the value some context, for example by labeling it
 The placement strategy defines how the tooltip is positioned in relation to a set of nodes or a node. The built-in strategies all have a auto docking feature, such that if the tooltip doesn't fit inside its designated area, the docking position may be adjusted to a position where it does fit. Note that there may still be scenarioes where the tooltip doesn't fit, for example when the designated area just cannot fit the tooltip at all.
 
 There are 3 available strategies:
-* `pointer` - is the default and use the current pointer position to place the tooltip.
-* `bounds` - use the bounding rectangle of the first node. Note the depending on the type of shape, the position of the tooltip may indicate that it's not over the visual area of the shape.
-* `slice` - is built to work together with the `pie` component, such that the tooltip is placed at the arc of a slice.
+
+- `pointer` - is the default and use the current pointer position to place the tooltip.
+- `bounds` - use the bounding rectangle of the first node. Note the depending on the type of shape, the position of the tooltip may indicate that it's not over the visual area of the shape.
+- `slice` - is built to work together with the `pie` component, such that the tooltip is placed at the arc of a slice.
 
 ### Example
 

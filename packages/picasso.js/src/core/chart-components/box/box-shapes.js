@@ -3,14 +3,7 @@ import * as boxShapesHelper from './box-shapes-helper';
 
 import { isNumber } from '../../utils/is-number';
 
-export default function buildShapes({
-  width,
-  height,
-  flipXY,
-  resolved,
-  keys,
-  symbol
-}) {
+export default function buildShapes({ width, height, flipXY, resolved, keys, symbol }) {
   // if (!settings || !settings.major || !settings.major.scale || !settings.minor || !settings.minor.scale) {
   //   return [];
   // }
@@ -26,7 +19,9 @@ export default function buildShapes({
   const rendHeight = height;
   const maxMajorWidth = flipXY ? height : width;
   const majorSettings = resolved.major.settings;
-  const minorProps = ['start', 'end', 'min', 'max', 'med'].filter((prop) => typeof resolved.minor.settings[prop] !== 'undefined');
+  const minorProps = ['start', 'end', 'min', 'max', 'med'].filter(
+    (prop) => typeof resolved.minor.settings[prop] !== 'undefined'
+  );
   const numMinorProps = minorProps.length;
   const nonOobKeys = keys.filter((key) => key !== 'oob');
 
@@ -45,33 +40,65 @@ export default function buildShapes({
   function addBox() {
     /* THE BOX */
     if (minorItem.box && isNumber(minorItem.start) && isNumber(minorItem.end)) {
-      children.push(boxShapesHelper.box({
-        item: minorItem, boxWidth, boxPadding, rendWidth, rendHeight, flipXY
-      }));
+      children.push(
+        boxShapesHelper.box({
+          item: minorItem,
+          boxWidth,
+          boxPadding,
+          rendWidth,
+          rendHeight,
+          flipXY,
+        })
+      );
     }
   }
 
   function addLine() {
     /* LINES MIN - START, END - MAX */
     if (isNumber(minorItem.min) && isNumber(minorItem.start)) {
-      children.push(boxShapesHelper.verticalLine({
-        item: minorItem, from: minorItem.min, to: minorItem.start, boxCenter, rendWidth, rendHeight, flipXY
-      }));
+      children.push(
+        boxShapesHelper.verticalLine({
+          item: minorItem,
+          from: minorItem.min,
+          to: minorItem.start,
+          boxCenter,
+          rendWidth,
+          rendHeight,
+          flipXY,
+        })
+      );
     }
 
     if (isNumber(minorItem.max) && isNumber(minorItem.end)) {
-      children.push(boxShapesHelper.verticalLine({
-        item: minorItem, from: minorItem.max, to: minorItem.end, boxCenter, rendWidth, rendHeight, flipXY
-      }));
+      children.push(
+        boxShapesHelper.verticalLine({
+          item: minorItem,
+          from: minorItem.max,
+          to: minorItem.end,
+          boxCenter,
+          rendWidth,
+          rendHeight,
+          flipXY,
+        })
+      );
     }
   }
 
   function addMedian() {
     /* MEDIAN */
     if (minorItem.median && isNumber(minorItem.med)) {
-      children.push(boxShapesHelper.horizontalLine({
-        item: minorItem, key: 'median', position: minorItem.med, width: boxWidth, boxCenter, rendWidth, rendHeight, flipXY
-      }));
+      children.push(
+        boxShapesHelper.horizontalLine({
+          item: minorItem,
+          key: 'median',
+          position: minorItem.med,
+          width: boxWidth,
+          boxCenter,
+          rendWidth,
+          rendHeight,
+          flipXY,
+        })
+      );
     }
   }
 
@@ -81,15 +108,33 @@ export default function buildShapes({
       const whiskerWidth = boxWidth * minorItem.whisker.width;
 
       if (isNumber(minorItem.min)) {
-        children.push(boxShapesHelper.horizontalLine({
-          item: minorItem, key: 'whisker', position: minorItem.min, width: whiskerWidth, boxCenter, rendWidth, rendHeight, flipXY
-        }));
+        children.push(
+          boxShapesHelper.horizontalLine({
+            item: minorItem,
+            key: 'whisker',
+            position: minorItem.min,
+            width: whiskerWidth,
+            boxCenter,
+            rendWidth,
+            rendHeight,
+            flipXY,
+          })
+        );
       }
 
       if (isNumber(minorItem.max)) {
-        children.push(boxShapesHelper.horizontalLine({
-          item: minorItem, key: 'whisker', position: minorItem.max, width: whiskerWidth, boxCenter, rendWidth, rendHeight, flipXY
-        }));
+        children.push(
+          boxShapesHelper.horizontalLine({
+            item: minorItem,
+            key: 'whisker',
+            position: minorItem.max,
+            width: whiskerWidth,
+            boxCenter,
+            rendWidth,
+            rendHeight,
+            flipXY,
+          })
+        );
       }
     }
   }
@@ -97,13 +142,29 @@ export default function buildShapes({
   function addOutOfBounds() {
     /* OUT OF BOUNDS */
     if (isLowerOutOfBounds) {
-      children.push(boxShapesHelper.oob({
-        item: minorItem, value: 0, boxCenter, rendWidth, rendHeight, flipXY, symbol
-      }));
+      children.push(
+        boxShapesHelper.oob({
+          item: minorItem,
+          value: 0,
+          boxCenter,
+          rendWidth,
+          rendHeight,
+          flipXY,
+          symbol,
+        })
+      );
     } else if (isHigherOutOfBounds) {
-      children.push(boxShapesHelper.oob({
-        item: minorItem, value: 1, boxCenter, rendWidth, rendHeight, flipXY, symbol
-      }));
+      children.push(
+        boxShapesHelper.oob({
+          item: minorItem,
+          value: 1,
+          boxCenter,
+          rendWidth,
+          rendHeight,
+          flipXY,
+          symbol,
+        })
+      );
     }
   }
 
@@ -111,7 +172,7 @@ export default function buildShapes({
     box: addBox,
     line: addLine,
     median: addMedian,
-    whisker: addWhisker
+    whisker: addWhisker,
   };
 
   function checkOutOfBounds() {
@@ -143,7 +204,8 @@ export default function buildShapes({
     let majorVal = null;
     let majorEndVal = null;
 
-    if (typeof majorSettings.binStart !== 'undefined') { // if start and end is defined
+    if (typeof majorSettings.binStart !== 'undefined') {
+      // if start and end is defined
       majorVal = majorItem.binStart;
       majorEndVal = majorItem.binEnd;
       major = majorSettings.binStart.scale;
@@ -157,15 +219,19 @@ export default function buildShapes({
       bandwidth = 1;
     } else if (major.bandwidth) {
       bandwidth = major.bandwidth();
-      majorVal -= (bandwidth / 2);
+      majorVal -= bandwidth / 2;
     } else {
       bandwidth = majorEndVal - majorVal;
     }
 
-    minorItem = extend({}, {
-      major: majorVal,
-      majorEnd: majorEndVal
-    }, resolved.minor.items[i]);
+    minorItem = extend(
+      {},
+      {
+        major: majorVal,
+        majorEnd: majorEndVal,
+      },
+      resolved.minor.items[i]
+    );
 
     for (let j = 0; j < numKeys; j++) {
       minorItem[keys[j]] = resolved[keys[j]].items[i];
@@ -173,7 +239,7 @@ export default function buildShapes({
 
     boxWidth = boxShapesHelper.getBoxWidth(bandwidth, minorItem, maxMajorWidth);
     boxPadding = (bandwidth - boxWidth) / 2;
-    boxCenter = boxPadding + minorItem.major + (boxWidth / 2);
+    boxCenter = boxPadding + minorItem.major + boxWidth / 2;
 
     checkOutOfBounds();
 
@@ -192,7 +258,7 @@ export default function buildShapes({
       type: 'container',
       data: d,
       collider: { type: 'bounds' },
-      children
+      children,
     };
 
     output.push(container);

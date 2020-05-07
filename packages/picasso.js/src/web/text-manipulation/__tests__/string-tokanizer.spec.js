@@ -18,7 +18,7 @@ describe('String Tokenizer', () => {
   it('should tokenize input string', () => {
     tokens = stringTokenizer({
       string: 'le',
-      separator: ''
+      separator: '',
     });
     const ary = toArray(tokens);
     expect(ary).to.deep.equal([
@@ -30,7 +30,7 @@ describe('String Tokenizer', () => {
         hyphenation: true,
         width: 1,
         height: 1,
-        done: false
+        done: false,
       },
       {
         index: 1,
@@ -40,8 +40,8 @@ describe('String Tokenizer', () => {
         hyphenation: true,
         width: 1,
         height: 1,
-        done: false
-      }
+        done: false,
+      },
     ]);
   });
 
@@ -81,7 +81,7 @@ describe('String Tokenizer', () => {
     it('should trigger mandatory break opportunity if mandatory break identifier resolves to true', () => {
       tokens = stringTokenizer({
         string: 'Hej',
-        mandatoryBreakIdentifiers: [(chunk) => chunk === 'e', () => false]
+        mandatoryBreakIdentifiers: [(chunk) => chunk === 'e', () => false],
       });
       const ary = toArray(tokens).map((t) => t.breakOpportunity);
       expect(ary).to.deep.equal([BREAK_ALLOWED, MANDATORY, BREAK_ALLOWED]);
@@ -90,7 +90,7 @@ describe('String Tokenizer', () => {
     it('should trigger noBreak opportunity if any noBreak identifier resolves to true', () => {
       tokens = stringTokenizer({
         string: 'Hej',
-        noBreakAllowedIdentifiers: [(chunk) => chunk === 'e', () => false]
+        noBreakAllowedIdentifiers: [(chunk) => chunk === 'e', () => false],
       });
       const ary = toArray(tokens).map((t) => t.breakOpportunity);
       expect(ary).to.deep.equal([BREAK_ALLOWED, NO_BREAK, BREAK_ALLOWED]);
@@ -100,7 +100,7 @@ describe('String Tokenizer', () => {
       tokens = stringTokenizer({
         string: 'Hej',
         mandatoryBreakIdentifiers: [() => true],
-        noBreakAllowedIdentifiers: [() => true]
+        noBreakAllowedIdentifiers: [() => true],
       });
       const ary = toArray(tokens).map((t) => t.breakOpportunity);
       expect(ary).to.deep.equal([MANDATORY, MANDATORY, MANDATORY]);
@@ -109,7 +109,7 @@ describe('String Tokenizer', () => {
     it('should trigger suppress flag if any suppress identifier resolves to true', () => {
       tokens = stringTokenizer({
         string: 'Hej',
-        suppressIdentifier: [(chunk) => chunk === 'e', () => false]
+        suppressIdentifier: [(chunk) => chunk === 'e', () => false],
       });
       const ary = toArray(tokens).map((t) => t.suppress);
       expect(ary).to.deep.equal([false, true, false]);
@@ -118,7 +118,7 @@ describe('String Tokenizer', () => {
     it('should accept a custom text metrics function', () => {
       tokens = stringTokenizer({
         string: 'Hej',
-        measureText: () => ({ width: 11, height: 22 })
+        measureText: () => ({ width: 11, height: 22 }),
       });
       const ary = toArray(tokens);
       const widths = ary.map((t) => t.width);

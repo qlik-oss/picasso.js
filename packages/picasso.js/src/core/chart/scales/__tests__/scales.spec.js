@@ -1,7 +1,4 @@
-import {
-  create,
-  collection
-} from '..';
+import { create, collection } from '..';
 
 describe('scales', () => {
   describe('collection', () => {
@@ -41,7 +38,7 @@ describe('scales', () => {
       const s = collection({ x: 'foo', y: 'measure' }, null, null, fn);
       expect(s.all()).to.eql({
         x: 'foo',
-        y: 'measure'
+        y: 'measure',
       });
     });
   });
@@ -53,12 +50,12 @@ describe('scales', () => {
       deps = {
         scale: {
           has: sinon.stub(),
-          get: sinon.stub()
-        }
+          get: sinon.stub(),
+        },
       };
       scaleFn = () => ({
         min: () => 0,
-        max: () => 1
+        max: () => 1,
       });
     });
 
@@ -70,9 +67,13 @@ describe('scales', () => {
     it('should create a scale of a specific type', () => {
       deps.scale.has.withArgs('custom').returns(true);
       deps.scale.get.returns(scaleFn);
-      const s = create({
-        type: 'custom'
-      }, null, deps);
+      const s = create(
+        {
+          type: 'custom',
+        },
+        null,
+        deps
+      );
       expect(s.type).to.equal('custom');
     });
 
@@ -89,25 +90,29 @@ describe('scales', () => {
       deps.scale.has.withArgs('linear').returns(true);
       deps.scale.get.returns(scaleFn);
       const dataset = {
-        field: sinon.stub()
+        field: sinon.stub(),
       };
       const datasetFn = () => dataset;
 
       dataset.field.withArgs('m1').returns({
         type: () => 'measure',
         min: () => 0,
-        max: () => 1
+        max: () => 1,
       });
       dataset.field.withArgs('m2').returns({
         type: () => 'measure',
         min: () => 0,
-        max: () => 1
+        max: () => 1,
       });
-      const s = create({
-        data: {
-          fields: ['m1', 'm2']
-        }
-      }, datasetFn, deps);
+      const s = create(
+        {
+          data: {
+            fields: ['m1', 'm2'],
+          },
+        },
+        datasetFn,
+        deps
+      );
       expect(s.type).to.equal('linear');
     });
 
@@ -115,21 +120,25 @@ describe('scales', () => {
       deps.scale.has.withArgs('sequential-color').returns(true);
       deps.scale.get.returns(scaleFn);
       const dataset = {
-        field: sinon.stub()
+        field: sinon.stub(),
       };
       const datasetFn = () => dataset;
 
       dataset.field.withArgs('m1').returns({
         type: () => 'measure',
         min: () => 0,
-        max: () => 1
+        max: () => 1,
       });
-      const s = create({
-        type: 'color',
-        data: {
-          fields: ['m1']
-        }
-      }, datasetFn, deps);
+      const s = create(
+        {
+          type: 'color',
+          data: {
+            fields: ['m1'],
+          },
+        },
+        datasetFn,
+        deps
+      );
       expect(s.type).to.equal('sequential-color');
     });
 
@@ -137,7 +146,7 @@ describe('scales', () => {
       deps.scale.has.withArgs('band').returns(true);
       deps.scale.get.returns(scaleFn);
       const dataset = {
-        field: sinon.stub()
+        field: sinon.stub(),
       };
       const datasetFn = () => dataset;
 
@@ -145,13 +154,17 @@ describe('scales', () => {
         type: () => 'dimension',
         values: () => [],
         min: () => 2015,
-        max: () => 2017
+        max: () => 2017,
       });
-      const s = create({
-        data: {
-          fields: ['d1']
-        }
-      }, { dataset: datasetFn }, deps);
+      const s = create(
+        {
+          data: {
+            fields: ['d1'],
+          },
+        },
+        { dataset: datasetFn },
+        deps
+      );
       expect(s.type).to.equal('band');
     });
 
@@ -159,7 +172,7 @@ describe('scales', () => {
       deps.scale.has.withArgs('categorical-color').returns(true);
       deps.scale.get.returns(scaleFn);
       const dataset = {
-        field: sinon.stub()
+        field: sinon.stub(),
       };
       const datasetFn = () => dataset;
 
@@ -167,14 +180,18 @@ describe('scales', () => {
         type: () => 'dimension',
         values: () => [],
         min: () => 2015,
-        max: () => 2017
+        max: () => 2017,
       });
-      const s = create({
-        type: 'color',
-        data: {
-          fields: ['d1']
-        }
-      }, { dataset: datasetFn }, deps);
+      const s = create(
+        {
+          type: 'color',
+          data: {
+            fields: ['d1'],
+          },
+        },
+        { dataset: datasetFn },
+        deps
+      );
       expect(s.type).to.equal('categorical-color');
     });
 
@@ -183,12 +200,16 @@ describe('scales', () => {
       deps.scale.get.returns(scaleFn);
       const dataset = {
         hierarchy: sinon.stub().returns({}),
-        fields: () => []
+        fields: () => [],
       };
       const datasetFn = () => dataset;
-      const s = create({
-        data: { hierarchy: {} }
-      }, { dataset: datasetFn }, deps);
+      const s = create(
+        {
+          data: { hierarchy: {} },
+        },
+        { dataset: datasetFn },
+        deps
+      );
 
       expect(s.type).to.equal('h-band');
     });

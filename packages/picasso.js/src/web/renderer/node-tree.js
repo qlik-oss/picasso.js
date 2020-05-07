@@ -20,7 +20,7 @@ function diff(from, to) {
     }
     return {
       content: node,
-      id: `${id}__${node.type || ''}`
+      id: `${id}__${node.type || ''}`,
     };
   };
 
@@ -84,7 +84,7 @@ function diff(from, to) {
     updatedNew,
     updatedOld,
     removed,
-    items
+    items,
   };
 }
 
@@ -128,10 +128,4 @@ function createTree(oldItems, newItems, root, creator, maintainer, destroyer) {
   return d.items;
 }
 
-export {
-  diff,
-  createTree,
-  destroyNodes,
-  createNodes,
-  updateNodes
-};
+export { diff, createTree, destroyNodes, createNodes, updateNodes };

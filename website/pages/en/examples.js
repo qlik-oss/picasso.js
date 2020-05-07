@@ -3,231 +3,276 @@ const CompLibrary = require('../../core/CompLibrary.js');
 
 const MarkdownBlock = CompLibrary.MarkdownBlock; /* Used to read markdown */
 
-const charts = [{
-  title: 'Scatter plot',
-  img: 'https://static.observableusercontent.com/thumbnail/9fd6dd828f1d41ed2a0f160b5cf41ff55d0e251f7fab5486b510e23ac0afad78.jpg',
-  links: {
-    observable: 'https://beta.observablehq.com/@miralemd/picasso-js-example'
+const charts = [
+  {
+    title: 'Scatter plot',
+    img:
+      'https://static.observableusercontent.com/thumbnail/9fd6dd828f1d41ed2a0f160b5cf41ff55d0e251f7fab5486b510e23ac0afad78.jpg',
+    links: {
+      observable: 'https://beta.observablehq.com/@miralemd/picasso-js-example',
+    },
+    tags: {
+      chart: ['scatter'],
+      component: ['point', 'axis', 'legend-cat'],
+    },
   },
-  tags: {
-    chart: ['scatter'],
-    component: ['point', 'axis', 'legend-cat']
-  }
-}, {
-  title: 'Point distribution',
-  img: 'https://static.observableusercontent.com/thumbnail/624def26ff3449eb307b944be1ccd7ed360ffd3803cab3d3843ffb1eb972c7dc.jpg',
-  links: {
-    observable: 'https://beta.observablehq.com/@miralemd/picasso-js-point-distribution'
+  {
+    title: 'Point distribution',
+    img:
+      'https://static.observableusercontent.com/thumbnail/624def26ff3449eb307b944be1ccd7ed360ffd3803cab3d3843ffb1eb972c7dc.jpg',
+    links: {
+      observable: 'https://beta.observablehq.com/@miralemd/picasso-js-point-distribution',
+    },
+    tags: {
+      chart: ['scatter'],
+      component: ['point', 'axis', 'grid-line'],
+    },
   },
-  tags: {
-    chart: ['scatter'],
-    component: ['point', 'axis', 'grid-line']
-  }
-}, {
-  title: 'Point matrix',
-  img: 'https://static.observableusercontent.com/thumbnail/61fc049bceb805a2d27d85f1db8b76d10e24de82e62b386abba182381c965c5e.jpg',
-  links: {
-    observable: 'https://beta.observablehq.com/@miralemd/picasso-js-point-matrix'
+  {
+    title: 'Point matrix',
+    img:
+      'https://static.observableusercontent.com/thumbnail/61fc049bceb805a2d27d85f1db8b76d10e24de82e62b386abba182381c965c5e.jpg',
+    links: {
+      observable: 'https://beta.observablehq.com/@miralemd/picasso-js-point-matrix',
+    },
+    tags: {
+      chart: ['scatter'],
+      component: ['point', 'axis'],
+    },
   },
-  tags: {
-    chart: ['scatter'],
-    component: ['point', 'axis']
-  }
-}, {
-  title: 'Bar chart',
-  img: 'https://static.observableusercontent.com/thumbnail/b1867eaba8ef33981b7476d2d556aa9f169eb9a2b25a9c3d3ccf69bd54627866.jpg',
-  links: {
-    observable: 'https://beta.observablehq.com/@miralemd/picasso-js-bar-chart'
+  {
+    title: 'Bar chart',
+    img:
+      'https://static.observableusercontent.com/thumbnail/b1867eaba8ef33981b7476d2d556aa9f169eb9a2b25a9c3d3ccf69bd54627866.jpg',
+    links: {
+      observable: 'https://beta.observablehq.com/@miralemd/picasso-js-bar-chart',
+    },
+    tags: {
+      chart: ['bar'],
+      component: ['box', 'axis'],
+    },
   },
-  tags: {
-    chart: ['bar'],
-    component: ['box', 'axis']
-  }
-}, {
-  title: 'Stacked bar chart',
-  img: 'https://static.observableusercontent.com/thumbnail/870b319c1c6cd62ecbcf98f0b7610b9b4cf5be51e9ee3a86805d1d85be967ca7.jpg',
-  links: {
-    observable: 'https://beta.observablehq.com/@miralemd/picasso-js-stacked-bar-chart'
+  {
+    title: 'Stacked bar chart',
+    img:
+      'https://static.observableusercontent.com/thumbnail/870b319c1c6cd62ecbcf98f0b7610b9b4cf5be51e9ee3a86805d1d85be967ca7.jpg',
+    links: {
+      observable: 'https://beta.observablehq.com/@miralemd/picasso-js-stacked-bar-chart',
+    },
+    tags: {
+      chart: ['bar'],
+      component: ['box', 'axis', 'legend-cat'],
+    },
   },
-  tags: {
-    chart: ['bar'],
-    component: ['box', 'axis', 'legend-cat']
-  }
-}, {
-  title: 'Box plot',
-  img: 'https://static.observableusercontent.com/thumbnail/50c50a467861f8cd4e5da50b1715ccad43ef2b5d3aad174aaf339c53d03ec439.jpg',
-  links: {
-    observable: 'https://beta.observablehq.com/@miralemd/picasso-js-box-plot'
+  {
+    title: 'Box plot',
+    img:
+      'https://static.observableusercontent.com/thumbnail/50c50a467861f8cd4e5da50b1715ccad43ef2b5d3aad174aaf339c53d03ec439.jpg',
+    links: {
+      observable: 'https://beta.observablehq.com/@miralemd/picasso-js-box-plot',
+    },
+    tags: {
+      chart: ['box'],
+      component: ['box', 'axis'],
+    },
   },
-  tags: {
-    chart: ['box'],
-    component: ['box', 'axis']
-  }
-}, {
-  title: 'Gantt chart',
-  img: 'https://static.observableusercontent.com/thumbnail/0d55ea2782981434f7811221aa572eab64ae545d24dc36ac779227d68e33c0a2.jpg',
-  links: {
-    observable: 'https://beta.observablehq.com/@miralemd/picassojs-gantt-chart'
+  {
+    title: 'Gantt chart',
+    img:
+      'https://static.observableusercontent.com/thumbnail/0d55ea2782981434f7811221aa572eab64ae545d24dc36ac779227d68e33c0a2.jpg',
+    links: {
+      observable: 'https://beta.observablehq.com/@miralemd/picassojs-gantt-chart',
+    },
+    tags: {
+      chart: ['gantt'],
+      component: ['box', 'axis', 'labels'],
+    },
   },
-  tags: {
-    chart: ['gantt'],
-    component: ['box', 'axis', 'labels']
-  }
-}, {
-  title: 'Bullet graph',
-  img: 'https://static.observableusercontent.com/thumbnail/a14be2c7c30e33e19bd0033808b6847d073da89e130286b0b8ba9f44239b429d.jpg',
-  links: {
-    observable: 'https://beta.observablehq.com/@miralemd/picasso-js-bullet-graph'
+  {
+    title: 'Bullet graph',
+    img:
+      'https://static.observableusercontent.com/thumbnail/a14be2c7c30e33e19bd0033808b6847d073da89e130286b0b8ba9f44239b429d.jpg',
+    links: {
+      observable: 'https://beta.observablehq.com/@miralemd/picasso-js-bullet-graph',
+    },
+    tags: {
+      chart: ['bullet'],
+      component: ['box', 'point', 'axis'],
+    },
   },
-  tags: {
-    chart: ['bullet'],
-    component: ['box', 'point', 'axis']
-  }
-}, {
-  title: 'Line chart',
-  img: 'https://static.observableusercontent.com/thumbnail/6b56ef19ff9959ce9dc6d1682d0efe376a2982c6e852889e5b1428d5a35f00c6.jpg',
-  links: {
-    observable: 'https://beta.observablehq.com/@miralemd/picasso-js-line-chart'
+  {
+    title: 'Line chart',
+    img:
+      'https://static.observableusercontent.com/thumbnail/6b56ef19ff9959ce9dc6d1682d0efe376a2982c6e852889e5b1428d5a35f00c6.jpg',
+    links: {
+      observable: 'https://beta.observablehq.com/@miralemd/picasso-js-line-chart',
+    },
+    tags: {
+      chart: ['line'],
+      component: ['line', 'axis'],
+    },
   },
-  tags: {
-    chart: ['line'],
-    component: ['line', 'axis']
-  }
-}, {
-  title: 'Area chart',
-  img: 'https://static.observableusercontent.com/thumbnail/0631aeab3ab2a2f6127036a5dd1e4c82c4b99838509c39a21cc6e8b82a45726f.jpg',
-  links: {
-    observable: 'https://beta.observablehq.com/@miralemd/picasso-js-area-chart'
+  {
+    title: 'Area chart',
+    img:
+      'https://static.observableusercontent.com/thumbnail/0631aeab3ab2a2f6127036a5dd1e4c82c4b99838509c39a21cc6e8b82a45726f.jpg',
+    links: {
+      observable: 'https://beta.observablehq.com/@miralemd/picasso-js-area-chart',
+    },
+    tags: {
+      chart: ['area'],
+      component: ['line', 'axis'],
+    },
   },
-  tags: {
-    chart: ['area'],
-    component: ['line', 'axis']
-  }
-}, {
-  title: 'Stacked area chart',
-  img: 'https://static.observableusercontent.com/thumbnail/387605b07da277224230045158384fd2dbb42e3693831b14e80c3d8d4ba0e358.jpg',
-  links: {
-    observable: 'https://beta.observablehq.com/@miralemd/picasso-js-stacked-area-chart'
+  {
+    title: 'Stacked area chart',
+    img:
+      'https://static.observableusercontent.com/thumbnail/387605b07da277224230045158384fd2dbb42e3693831b14e80c3d8d4ba0e358.jpg',
+    links: {
+      observable: 'https://beta.observablehq.com/@miralemd/picasso-js-stacked-area-chart',
+    },
+    tags: {
+      chart: ['area'],
+      component: ['line', 'axis'],
+    },
   },
-  tags: {
-    chart: ['area'],
-    component: ['line', 'axis']
-  }
-}, {
-  title: 'Multiple lines',
-  img: 'https://static.observableusercontent.com/thumbnail/6b16a7f8e3e259e26706db6ec7249bb253e7ac5a01ffe5a3718cc99788969f8a.jpg',
-  links: {
-    observable: 'https://beta.observablehq.com/@miralemd/picasso-js-multi-axis-line-chart'
+  {
+    title: 'Multiple lines',
+    img:
+      'https://static.observableusercontent.com/thumbnail/6b16a7f8e3e259e26706db6ec7249bb253e7ac5a01ffe5a3718cc99788969f8a.jpg',
+    links: {
+      observable: 'https://beta.observablehq.com/@miralemd/picasso-js-multi-axis-line-chart',
+    },
+    tags: {
+      chart: ['line'],
+      component: ['line', 'axis', 'legend-cat'],
+    },
   },
-  tags: {
-    chart: ['line'],
-    component: ['line', 'axis', 'legend-cat']
-  }
-}, {
-  title: 'Stream graph',
-  img: 'https://static.observableusercontent.com/thumbnail/2027a1ae29ca79e884ee67eb24621da1d4df74113d38828e3bc2dfabb615f30a.jpg',
-  links: {
-    observable: 'https://beta.observablehq.com/@miralemd/picasso-js-stream-graph'
+  {
+    title: 'Stream graph',
+    img:
+      'https://static.observableusercontent.com/thumbnail/2027a1ae29ca79e884ee67eb24621da1d4df74113d38828e3bc2dfabb615f30a.jpg',
+    links: {
+      observable: 'https://beta.observablehq.com/@miralemd/picasso-js-stream-graph',
+    },
+    tags: {
+      chart: ['stream'],
+      component: ['line', 'axis'],
+    },
   },
-  tags: {
-    chart: ['stream'],
-    component: ['line', 'axis']
-  }
-}, {
-  title: 'Area range',
-  img: 'https://static.observableusercontent.com/thumbnail/bc2eff6dbc7fbb36d7bffc465f22d441b66ed5d9313ede9cce67bd49624857ab.jpg',
-  links: {
-    observable: 'https://beta.observablehq.com/@miralemd/picasso-js-range-area-chart'
+  {
+    title: 'Area range',
+    img:
+      'https://static.observableusercontent.com/thumbnail/bc2eff6dbc7fbb36d7bffc465f22d441b66ed5d9313ede9cce67bd49624857ab.jpg',
+    links: {
+      observable: 'https://beta.observablehq.com/@miralemd/picasso-js-range-area-chart',
+    },
+    tags: {
+      chart: ['area'],
+      component: ['line', 'axis'],
+    },
   },
-  tags: {
-    chart: ['area'],
-    component: ['line', 'axis']
-  }
-}, {
-  title: 'Dumbbell plot',
-  img: 'https://static.observableusercontent.com/thumbnail/a52ac6c70b684e930d88ccd9cd70a1b615cecf56c70ca29d40a1ab220b0de281.jpg',
-  links: {
-    observable: 'https://beta.observablehq.com/@miralemd/picasso-js-dumbbell-plot'
+  {
+    title: 'Dumbbell plot',
+    img:
+      'https://static.observableusercontent.com/thumbnail/a52ac6c70b684e930d88ccd9cd70a1b615cecf56c70ca29d40a1ab220b0de281.jpg',
+    links: {
+      observable: 'https://beta.observablehq.com/@miralemd/picasso-js-dumbbell-plot',
+    },
+    tags: {
+      chart: ['dumbbell'],
+      component: ['point', 'axis', 'box'],
+    },
   },
-  tags: {
-    chart: ['dumbbell'],
-    component: ['point', 'axis', 'box']
-  }
-}, {
-  title: 'Pie chart',
-  img: 'https://static.observableusercontent.com/thumbnail/7426180005620b7ca5407c3f8c0991d68bdc121a26f9e7f2fe6beea58b53b8eb.jpg',
-  links: {
-    observable: 'https://beta.observablehq.com/@miralemd/picasso-js-pie-chart'
+  {
+    title: 'Pie chart',
+    img:
+      'https://static.observableusercontent.com/thumbnail/7426180005620b7ca5407c3f8c0991d68bdc121a26f9e7f2fe6beea58b53b8eb.jpg',
+    links: {
+      observable: 'https://beta.observablehq.com/@miralemd/picasso-js-pie-chart',
+    },
+    tags: {
+      chart: ['pie'],
+      component: ['pie'],
+    },
   },
-  tags: {
-    chart: ['pie'],
-    component: ['pie']
-  }
-}, {
-  title: 'Donut chart',
-  img: 'https://static.observableusercontent.com/thumbnail/eba4e49ad7af12d00c79e9a4d63e740a128e70a1b01ce983cf88538403bf435c.jpg',
-  links: {
-    observable: 'https://beta.observablehq.com/@miralemd/picasso-js-donut-chart'
+  {
+    title: 'Donut chart',
+    img:
+      'https://static.observableusercontent.com/thumbnail/eba4e49ad7af12d00c79e9a4d63e740a128e70a1b01ce983cf88538403bf435c.jpg',
+    links: {
+      observable: 'https://beta.observablehq.com/@miralemd/picasso-js-donut-chart',
+    },
+    tags: {
+      chart: ['pie'],
+      component: ['pie'],
+    },
   },
-  tags: {
-    chart: ['pie'],
-    component: ['pie']
-  }
-}];
+];
 
-const brushing = [{
-  title: 'Lasso',
-  img: 'https://static.observableusercontent.com/thumbnail/5e1a7c14d664914d5bc612e049c1abefde3e35196556638911568401ce9efd80.jpg',
-  links: {
-    observable: 'https://beta.observablehq.com/@cbt1/picasso-js-lasso-brushing'
+const brushing = [
+  {
+    title: 'Lasso',
+    img:
+      'https://static.observableusercontent.com/thumbnail/5e1a7c14d664914d5bc612e049c1abefde3e35196556638911568401ce9efd80.jpg',
+    links: {
+      observable: 'https://beta.observablehq.com/@cbt1/picasso-js-lasso-brushing',
+    },
+    tags: {
+      chart: ['scatter'],
+      component: ['point', 'axis', 'brushing', 'lasso'],
+    },
   },
-  tags: {
-    chart: ['scatter'],
-    component: ['point', 'axis', 'brushing', 'lasso']
-  }
-},
-{
-  title: 'Range',
-  img: 'https://static.observableusercontent.com/thumbnail/21a9e87652967dee0b20487fc9a2ce28e300db7875d27f9089a04ac7bed2941a.jpg',
-  links: {
-    observable: 'https://beta.observablehq.com/@cbt1/picasso-js-range-brushing'
+  {
+    title: 'Range',
+    img:
+      'https://static.observableusercontent.com/thumbnail/21a9e87652967dee0b20487fc9a2ce28e300db7875d27f9089a04ac7bed2941a.jpg',
+    links: {
+      observable: 'https://beta.observablehq.com/@cbt1/picasso-js-range-brushing',
+    },
+    tags: {
+      chart: ['bar'],
+      component: ['bar', 'axis', 'brushing', 'range'],
+    },
   },
-  tags: {
-    chart: ['bar'],
-    component: ['bar', 'axis', 'brushing', 'range']
-  }
-}];
+];
 
-const miscellaneous = [{
-  title: 'Create your own component',
-  img: 'https://static.observableusercontent.com/thumbnail/b0401bb5dd2ea51a500d0d591ff3af782f7ba469de610e77061d59e8b60ce253.jpg',
-  links: {
-    observable: 'https://beta.observablehq.com/@cbt1/picasso-js-creating-your-own-tooltip-component'
+const miscellaneous = [
+  {
+    title: 'Create your own component',
+    img:
+      'https://static.observableusercontent.com/thumbnail/b0401bb5dd2ea51a500d0d591ff3af782f7ba469de610e77061d59e8b60ce253.jpg',
+    links: {
+      observable: 'https://beta.observablehq.com/@cbt1/picasso-js-creating-your-own-tooltip-component',
+    },
+    tags: {
+      chart: ['bar'],
+      component: ['component'],
+    },
   },
-  tags: {
-    chart: ['bar'],
-    component: ['component']
-  }
-},
-{
-  title: 'Labeling bars',
-  img: 'https://static.observableusercontent.com/thumbnail/ccd8e0af792b69ed24bacdc507c9d24438c6e224ce69d227f3fa5e0e8ae1451f.jpg',
-  links: {
-    observable: 'https://beta.observablehq.com/@miralemd/picasso-js-labeling-bars'
+  {
+    title: 'Labeling bars',
+    img:
+      'https://static.observableusercontent.com/thumbnail/ccd8e0af792b69ed24bacdc507c9d24438c6e224ce69d227f3fa5e0e8ae1451f.jpg',
+    links: {
+      observable: 'https://beta.observablehq.com/@miralemd/picasso-js-labeling-bars',
+    },
+    tags: {
+      chart: ['bar'],
+      component: ['component', 'labeling', 'label'],
+    },
   },
-  tags: {
-    chart: ['bar'],
-    component: ['component', 'labeling', 'label']
-  }
-}];
+];
 
 const Sample = (props, idx) => (
   <div className="cell" key={idx}>
     <div className="card">
       <a href={props.links.observable} target="_blank">
-        <div style={{
-          backgroundImage: `url(${props.img})`
-        }}></div>
+        <div
+          style={{
+            backgroundImage: `url(${props.img})`,
+          }}
+        ></div>
       </a>
       <div className="info">
         <h3>{props.title}</h3>
@@ -239,16 +284,12 @@ const Sample = (props, idx) => (
   </div>
 );
 
-const Empty = (v) => (
-  <div className="cell" key={v}></div>
-);
+const Empty = (v) => <div className="cell" key={v}></div>;
 
-const Category = props => (
+const Category = (props) => (
   <div className="category">
     <h2>{props.title}</h2>
-    <div className="gallery">
-      {props.children}
-    </div>
+    <div className="gallery">{props.children}</div>
   </div>
 );
 
@@ -264,9 +305,13 @@ class Examples extends React.Component {
         <div className="container mainContainer">
           <div className="wrapper">
             <div className="post">
-              <header className="postHeader"><h1>Examples</h1></header>
+              <header className="postHeader">
+                <h1>Examples</h1>
+              </header>
               <MarkdownBlock>
-                The majority of the following examples are [reactive notebooks](https://beta.observablehq.com/@mbostock/introduction-to-notebooks) - a powerful new way of creating interactive documents.
+                The majority of the following examples are [reactive
+                notebooks](https://beta.observablehq.com/@mbostock/introduction-to-notebooks) - a powerful new way of
+                creating interactive documents.
               </MarkdownBlock>
               <Category title="Charts">{generateGrid(charts)}</Category>
               <Category title="Brushing">{generateGrid(brushing)}</Category>

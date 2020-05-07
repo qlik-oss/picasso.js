@@ -2,11 +2,7 @@ import render from '../circle';
 
 describe('circle', () => {
   describe('render', () => {
-    let sandbox,
-      g,
-      falsys,
-      truthys,
-      circle;
+    let sandbox, g, falsys, truthys, circle;
 
     beforeEach(() => {
       sandbox = sinon.createSandbox();
@@ -16,7 +12,7 @@ describe('circle', () => {
         moveTo: sandbox.spy(),
         arc: sandbox.spy(),
         fill: sandbox.spy(),
-        stroke: sandbox.spy()
+        stroke: sandbox.spy(),
       };
 
       falsys = [false, null, undefined, 0, NaN, ''];

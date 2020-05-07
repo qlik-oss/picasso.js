@@ -28,7 +28,7 @@ export default function datasets(dataSources, { types, logger }) {
       let dataset = datasetFactory({
         key,
         data: d.data,
-        config: d.config
+        config: d.config,
       });
       data[key] = dataset;
     }

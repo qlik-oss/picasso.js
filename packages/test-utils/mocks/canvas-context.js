@@ -31,14 +31,13 @@ function canvascontext(contextType = '2d') {
     scale: sinon.spy(),
     rect: sinon.spy(),
     createPattern: sinon.spy((...args) => new CanvasPattern(...args)),
-    measureText: text => ({ width: text.length })
+    measureText: (text) => ({ width: text.length }),
   };
 
   if (contextType === '2d') {
     item.createRadialGradient = gradientFactory('radial');
     item.createLinearGradient = gradientFactory('linear');
   }
-
 
   return item;
 }

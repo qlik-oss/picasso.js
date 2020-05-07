@@ -9,15 +9,15 @@ describe('BrushRange Interaction', () => {
       cssCoord: {
         offset: 'top',
         coord: 'y',
-        pos: 'deltaY'
+        pos: 'deltaY',
       },
       offset: {
         left: 0,
-        top: 0
+        top: 0,
       },
       multi: true,
       size: 1,
-      scale: (x) => x
+      scale: (x) => x,
     };
     state.scale.min = sinon.stub().returns(0);
     state.scale.max = sinon.stub().returns(1);
@@ -28,7 +28,7 @@ describe('BrushRange Interaction', () => {
     event = {
       center: { x: 0.5, y: 0.5 },
       deltaX: 0,
-      deltaY: 0.1
+      deltaY: 0.1,
     };
   });
 
@@ -44,18 +44,18 @@ describe('BrushRange Interaction', () => {
         height: 1,
         width: 1,
         right: 1,
-        bottom: 1
+        bottom: 1,
       };
       element = {
         contains: sinon.stub().returns(false),
-        getBoundingClientRect: sinon.stub().returns(boundingRect)
+        getBoundingClientRect: sinon.stub().returns(boundingRect),
       };
       renderer = {
-        element: sinon.stub().returns(element)
+        element: sinon.stub().returns(element),
       };
       targetSize = 0.01;
       global.document = {
-        elementFromPoint: sinon.stub()
+        elementFromPoint: sinon.stub(),
       };
     });
     afterEach(() => {
@@ -69,7 +69,7 @@ describe('BrushRange Interaction', () => {
         e: event,
         renderer,
         ranges: () => [],
-        targetSize
+        targetSize,
       });
       expect(state.started, 'started should be true').to.be.true;
     });
@@ -82,7 +82,7 @@ describe('BrushRange Interaction', () => {
           e: event,
           renderer,
           ranges: () => [],
-          targetSize
+          targetSize,
         });
         expect(state.active).to.deep.equals({
           start: 0.4,
@@ -90,7 +90,7 @@ describe('BrushRange Interaction', () => {
           idx: -1,
           limitLow: 0,
           limitHigh: 1,
-          mode: 'current'
+          mode: 'current',
         });
         expect(state.start).to.equals(0.4);
         expect(state.current).to.equals(0.5);
@@ -100,14 +100,14 @@ describe('BrushRange Interaction', () => {
         state.started = false;
         const ranges = [
           { min: 0, max: 0.2 },
-          { min: 0.6, max: 0.7 }
+          { min: 0.6, max: 0.7 },
         ];
         start({
           state,
           e: event,
           renderer,
           ranges: () => ranges,
-          targetSize
+          targetSize,
         });
         expect(state.active).to.deep.equals({
           start: 0.4,
@@ -115,7 +115,7 @@ describe('BrushRange Interaction', () => {
           idx: -1,
           limitLow: 0.2,
           limitHigh: 0.6,
-          mode: 'current'
+          mode: 'current',
         });
         expect(state.start).to.equals(0.4);
         expect(state.current).to.equals(0.5);
@@ -129,7 +129,7 @@ describe('BrushRange Interaction', () => {
           e: event,
           renderer,
           ranges: () => ranges,
-          targetSize
+          targetSize,
         });
         expect(state.active).to.deep.equals({
           start: 0,
@@ -137,7 +137,7 @@ describe('BrushRange Interaction', () => {
           idx: 0,
           limitLow: 0,
           limitHigh: 1,
-          mode: 'move'
+          mode: 'move',
         });
         expect(state.start).to.equals(0.4);
         expect(state.current).to.equals(0.5);
@@ -151,7 +151,7 @@ describe('BrushRange Interaction', () => {
           e: event,
           renderer,
           ranges: () => ranges,
-          targetSize
+          targetSize,
         });
         expect(state.active).to.deep.equals({
           start: 0,
@@ -159,7 +159,7 @@ describe('BrushRange Interaction', () => {
           idx: 0,
           limitLow: 0,
           limitHigh: 1,
-          mode: 'modify'
+          mode: 'modify',
         });
         expect(state.start, 'start').to.equals(0);
         expect(state.current, 'current').to.equals(0.5);
@@ -168,24 +168,18 @@ describe('BrushRange Interaction', () => {
       it('should detect drag in bubbles', () => {
         const bubbleElement = {
           hasAttribute: sinon.stub().returns(true),
-          getAttribute: sinon.stub()
-            .withArgs('data-idx')
-            .returns('0')
-            .withArgs('data-other-value')
-            .returns('0')
+          getAttribute: sinon.stub().withArgs('data-idx').returns('0').withArgs('data-other-value').returns('0'),
         };
         global.document.elementFromPoint.returns(bubbleElement);
         element.contains.returns(true);
         state.started = false;
-        const ranges = [
-          { min: 0, max: 0.3 }
-        ];
+        const ranges = [{ min: 0, max: 0.3 }];
         start({
           state,
           e: event,
           renderer,
           ranges: () => ranges,
-          targetSize
+          targetSize,
         });
         expect(state.active).to.deep.equals({
           start: 0,
@@ -193,7 +187,7 @@ describe('BrushRange Interaction', () => {
           idx: 0,
           limitLow: 0,
           limitHigh: 1,
-          mode: 'modify'
+          mode: 'modify',
         });
         expect(state.start, 'start').to.equals(0);
         expect(state.current, 'current').to.equals(0.5);
@@ -201,18 +195,19 @@ describe('BrushRange Interaction', () => {
 
       it('start if within targetRect', () => {
         state.started = false;
-        state.targetRect = { // Event is targeting x: 0.5, y: 0.4
+        state.targetRect = {
+          // Event is targeting x: 0.5, y: 0.4
           x: 0.3,
           y: 0.2,
           width: 1,
-          height: 1
+          height: 1,
         };
         start({
           state,
           e: event,
           renderer,
           ranges: () => [],
-          targetSize
+          targetSize,
         });
         expect(state.active).to.deep.equals({
           start: 0.2,
@@ -220,7 +215,7 @@ describe('BrushRange Interaction', () => {
           idx: -1,
           limitLow: 0,
           limitHigh: 1,
-          mode: 'current'
+          mode: 'current',
         });
         expect(state.start).to.equals(0.2);
         expect(state.current).to.equals(0.3);
@@ -228,18 +223,19 @@ describe('BrushRange Interaction', () => {
 
       it('not start if outside targetRect', () => {
         state.started = false;
-        state.targetRect = { // Event is targeting x: 0.5, y: 0.4
+        state.targetRect = {
+          // Event is targeting x: 0.5, y: 0.4
           x: 0.7,
           y: 0.7,
           width: 0.3,
-          height: 0.3
+          height: 0.3,
         };
         start({
           state,
           e: event,
           renderer,
           ranges: () => [],
-          targetSize
+          targetSize,
         });
         expect(state.active).to.equals(undefined);
         expect(state.start).to.equals(undefined);
@@ -254,7 +250,7 @@ describe('BrushRange Interaction', () => {
       state.current = 0.4;
       state.active = {
         limitLow: 0,
-        limitHigh: 1
+        limitHigh: 1,
       };
       move(state, event);
       expect(state.current).to.equals(0.5);
@@ -264,7 +260,7 @@ describe('BrushRange Interaction', () => {
       state.current = 0.2;
       state.active = {
         limitLow: 0,
-        limitHigh: 0.3
+        limitHigh: 0.3,
       };
       move(state, event);
       expect(state.current).to.equals(0.3);

@@ -1,6 +1,4 @@
-import {
-  svgNs, creator, maintainer, destroyer
-} from '../svg-nodes';
+import { svgNs, creator, maintainer, destroyer } from '../svg-nodes';
 
 describe('svg-nodes', () => {
   it('should have the correct svg namespace', () => {
@@ -15,9 +13,9 @@ describe('svg-nodes', () => {
     it('should create an element and append it to the parent', () => {
       const p = {
         ownerDocument: {
-          createElementNS: sinon.stub().returns('candy')
+          createElementNS: sinon.stub().returns('candy'),
         },
-        appendChild: sinon.spy()
+        appendChild: sinon.spy(),
       };
 
       creator('magic', p);
@@ -28,9 +26,9 @@ describe('svg-nodes', () => {
     it('should return the created element', () => {
       const p = {
         ownerDocument: {
-          createElementNS: sinon.stub().returns('candy')
+          createElementNS: sinon.stub().returns('candy'),
         },
-        appendChild: sinon.spy()
+        appendChild: sinon.spy(),
       };
 
       expect(creator('magic', p)).to.equal('candy');
@@ -39,9 +37,9 @@ describe('svg-nodes', () => {
     it('should create a group element for type container', () => {
       const p = {
         ownerDocument: {
-          createElementNS: sinon.stub().returns('candy')
+          createElementNS: sinon.stub().returns('candy'),
         },
-        appendChild: sinon.spy()
+        appendChild: sinon.spy(),
       };
 
       creator('container', p);
@@ -53,8 +51,8 @@ describe('svg-nodes', () => {
     it('should remove node from parent', () => {
       const el = {
         parentNode: {
-          removeChild: sinon.spy()
-        }
+          removeChild: sinon.spy(),
+        },
       };
       destroyer(el);
       expect(el.parentNode.removeChild).to.have.been.calledWithExactly(el);
@@ -71,13 +69,13 @@ describe('svg-nodes', () => {
   describe('maintainer', () => {
     it('should apply given attributes', () => {
       const el = {
-        setAttribute: sinon.spy()
+        setAttribute: sinon.spy(),
       };
       const item = {
         attrs: {
           cx: 13,
-          fill: 'red'
-        }
+          fill: 'red',
+        },
       };
       maintainer(el, item);
       expect(el.setAttribute.firstCall).to.have.been.calledWithExactly('cx', 13);
@@ -86,12 +84,12 @@ describe('svg-nodes', () => {
 
     it('should always append whites-space attribute to text nodes', () => {
       const el = {
-        setAttribute: sinon.spy()
+        setAttribute: sinon.spy(),
       };
       const item = {
         attrs: {
-          text: 'Hello'
-        }
+          text: 'Hello',
+        },
       };
       maintainer(el, item);
       expect(el.setAttribute.firstCall).to.have.been.calledWithExactly('style', 'white-space: pre');
@@ -99,13 +97,13 @@ describe('svg-nodes', () => {
 
     it('should ignore attributes id, type, children, and complex data objects', () => {
       const el = {
-        setAttribute: sinon.spy()
+        setAttribute: sinon.spy(),
       };
       const item = {
         id: 'a',
         data: {},
         type: 'a',
-        children: 'a'
+        children: 'a',
       };
       maintainer(el, item);
       expect(el.setAttribute.callCount).to.equal(0);
@@ -113,10 +111,10 @@ describe('svg-nodes', () => {
 
     it('should set data attribute if data value is a primitive', () => {
       const el = {
-        setAttribute: sinon.spy()
+        setAttribute: sinon.spy(),
       };
       const item = {
-        data: 'foo'
+        data: 'foo',
       };
       maintainer(el, item);
       expect(el.setAttribute).to.have.been.calledWith('data', 'foo');
@@ -124,15 +122,15 @@ describe('svg-nodes', () => {
 
     it('should set data attributes if data object contains primitives', () => {
       const el = {
-        setAttribute: sinon.spy()
+        setAttribute: sinon.spy(),
       };
       const item = {
         data: {
           x: 123,
           label: 'etikett',
           really: true,
-          complex: {}
-        }
+          complex: {},
+        },
       };
       maintainer(el, item);
       expect(el.setAttribute.callCount).to.equal(3);
@@ -144,13 +142,13 @@ describe('svg-nodes', () => {
     it('should always append dy attribute on text item', () => {
       const el = {
         setAttribute: sinon.spy(),
-        getAttribute: () => 5
+        getAttribute: () => 5,
       };
       const item = {
         type: 'text',
         attrs: {
-          dy: 10
-        }
+          dy: 10,
+        },
       };
       maintainer(el, item);
 
@@ -160,14 +158,14 @@ describe('svg-nodes', () => {
     it('should transform dominant-baseline into dy attribute on text item', () => {
       const el = {
         setAttribute: sinon.spy(),
-        getAttribute: () => 5
+        getAttribute: () => 5,
       };
       const item = {
         type: 'text',
         attrs: {
           'dominant-baseline': 'ideographic',
-          'font-size': '10px'
-        }
+          'font-size': '10px',
+        },
       };
       maintainer(el, item);
 
@@ -180,15 +178,15 @@ describe('svg-nodes', () => {
         setAttribute: sinon.spy(),
         getAttribute: () => 5,
         ownerDocument: {
-          createElementNS: () => titleElm
+          createElementNS: () => titleElm,
         },
-        appendChild: sinon.spy()
+        appendChild: sinon.spy(),
       };
       const item = {
         type: 'text',
         attrs: {
-          title: 'my title'
-        }
+          title: 'my title',
+        },
       };
       maintainer(el, item);
 

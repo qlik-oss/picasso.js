@@ -8,7 +8,7 @@ import {
   stackOffsetNone,
   stackOffsetSilhouette,
   stackOffsetExpand,
-  stackOffsetWiggle
+  stackOffsetWiggle,
 } from 'd3-shape';
 import fieldFn from './field';
 
@@ -17,14 +17,14 @@ const OFFSETS = {
   none: stackOffsetNone,
   silhouette: stackOffsetSilhouette,
   expand: stackOffsetExpand,
-  wiggle: stackOffsetWiggle
+  wiggle: stackOffsetWiggle,
 };
 
 const ORDERS = {
   ascending: stackOrderAscending,
   insideout: stackOrderInsideOut,
   none: stackOrderNone,
-  reverse: stackOrderReverse
+  reverse: stackOrderReverse,
 };
 
 function stacked(data, config, ds) {
@@ -83,17 +83,19 @@ function stacked(data, config, ds) {
     }
   }
 
-  let stackedFields = Object.keys(valueFields).map((f) => {
-    let dSource = ds(valueFields[f].key);
-    return dSource ? dSource.field(valueFields[f].field) : null;
-  }).filter((f) => !!f);
+  let stackedFields = Object.keys(valueFields)
+    .map((f) => {
+      let dSource = ds(valueFields[f].key);
+      return dSource ? dSource.field(valueFields[f].field) : null;
+    })
+    .filter((f) => !!f);
 
   const field = fieldFn({
     title: stackedFields.map((f) => f.title()).join(', '),
     min: Math.min(...values),
     max: Math.max(...values),
     type: 'measure',
-    formatter: stackedFields[0] ? stackedFields[0].formatter : undefined
+    formatter: stackedFields[0] ? stackedFields[0].formatter : undefined,
   });
   data.fields.push(field);
 }

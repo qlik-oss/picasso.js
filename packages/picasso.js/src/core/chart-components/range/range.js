@@ -37,7 +37,7 @@ function shapes(state) {
       x: isVertical ? 0 : low,
       width: isVertical ? otherSize : s,
       y: isVertical ? low : 0,
-      height: isVertical ? s : otherSize
+      height: isVertical ? s : otherSize,
     };
   });
 }
@@ -116,7 +116,7 @@ function teardown(state) {
 const rangeComponent = {
   require: ['chart', 'settings', 'renderer'],
   defaultSettings: {
-    settings: {}
+    settings: {},
   },
   preferredSize: () => 50,
   created() {
@@ -141,7 +141,7 @@ const rangeComponent = {
   },
   beforeDestroy() {
     teardown(this.state);
-  }
+  },
 };
 
 export default rangeComponent;

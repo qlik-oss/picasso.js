@@ -20,7 +20,7 @@ function exit(a) {
 function exec(cmd, stdio = 'inherit') {
   try {
     cp.execSync(cmd, {
-      stdio
+      stdio,
     });
     exit();
   } catch (e) {

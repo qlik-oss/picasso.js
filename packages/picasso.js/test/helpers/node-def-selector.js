@@ -4,11 +4,12 @@ const SELECTOR_MAPS = {
   type: /^\w[\w-]+/,
   attr: /^\[\w(?:[\w\._-]+)?(?:[!]?=['\"][\w\s*#_-]*['\"])?\]/,
   universal: /^(\*)/,
-  tag: /^\.(\w+)/
+  tag: /^\.(\w+)/,
 };
 
 const FILTERS = {
-  type: (c, objects) => { // eslint-disable-line arrow-body-style
+  type: (c, objects) => {
+    // eslint-disable-line arrow-body-style
     return objects.filter((o) => {
       const type = o.node.type;
 
@@ -19,7 +20,8 @@ const FILTERS = {
     });
   },
 
-  attr: (attr, operator, value, objects) => { // eslint-disable-line arrow-body-style
+  attr: (attr, operator, value, objects) => {
+    // eslint-disable-line arrow-body-style
     return objects.filter((o) => {
       const v = o.node[attr];
 
@@ -43,7 +45,8 @@ const FILTERS = {
 
   universal: (objects) => objects,
 
-  tag: (c, objects) => { // eslint-disable-line arrow-body-style
+  tag: (c, objects) => {
+    // eslint-disable-line arrow-body-style
     return objects.filter((o) => {
       const tag = o.node.tag;
       if (tag) {
@@ -51,24 +54,24 @@ const FILTERS = {
       }
       return false;
     });
-  }
+  },
 };
 
 /**
-* Filters out objects of given type and value
-* @ignore
-* @example
-* filter(
-*   {type:'type', value:'Circle'},
-*   [new Circle(), new Rectangle()]
-* )
-* // [Circle]
-* @param {Object} token
-* @param {Array} objects
-* @returns {Object[]} Objects that fulfill the type and value
-*/
+ * Filters out objects of given type and value
+ * @ignore
+ * @example
+ * filter(
+ *   {type:'type', value:'Circle'},
+ *   [new Circle(), new Rectangle()]
+ * )
+ * // [Circle]
+ * @param {Object} token
+ * @param {Array} objects
+ * @returns {Object[]} Objects that fulfill the type and value
+ */
 export function filter(token, objects) {
-  if (!objects || !objects.length || !token || (typeof FILTERS[token.type] !== 'function')) {
+  if (!objects || !objects.length || !token || typeof FILTERS[token.type] !== 'function') {
     return [];
   }
 
@@ -87,14 +90,14 @@ export function filter(token, objects) {
 }
 
 /**
-* Tokenizes a string into supported selectors
-* @ignore
-*
-* @example
-* tokenize("Circle[color='red']")
-*
-* @param {String} s
-*/
+ * Tokenizes a string into supported selectors
+ * @ignore
+ *
+ * @example
+ * tokenize("Circle[color='red']")
+ *
+ * @param {String} s
+ */
 export function tokenize(s) {
   const groups = [];
   let sub;
@@ -112,7 +115,7 @@ export function tokenize(s) {
         group = group.slice(match[0].length);
         info = {
           type: key,
-          value: match[0]
+          value: match[0],
         };
 
         if (key === 'attr') {
@@ -133,7 +136,7 @@ export function tokenize(s) {
         validSelector = true;
         sub.push({
           type: ' ',
-          value: match[0]
+          value: match[0],
         });
         group = group.slice(match[0].length);
       }

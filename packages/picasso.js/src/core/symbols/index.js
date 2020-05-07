@@ -55,10 +55,7 @@ const create = (reg = parentReg) => (options = {}) => {
   return fn;
 };
 
-export {
-  create as default,
-  parentReg as symbolRegistry
-};
+export { create as default, parentReg as symbolRegistry };
 
 /**
  * Mandatory symbol config

@@ -17,7 +17,7 @@ describe('Chart', () => {
     data = [
       ['Product', 'Cost'],
       ['Cars', 1],
-      ['Trucks', 2]
+      ['Trucks', 2],
     ];
 
     pointMarkerRed = {
@@ -25,12 +25,12 @@ describe('Chart', () => {
       type: 'point',
       data: {
         extract: {
-          field: 0
-        }
+          field: 0,
+        },
       },
       settings: {
-        fill: 'red'
-      }
+        fill: 'red',
+      },
     };
 
     pointMarkerGreen = {
@@ -38,12 +38,12 @@ describe('Chart', () => {
       type: 'point',
       data: {
         extract: {
-          field: 0
-        }
+          field: 0,
+        },
       },
       settings: {
-        fill: 'green'
-      }
+        fill: 'green',
+      },
     };
 
     pointMarkerBlue = {
@@ -51,16 +51,16 @@ describe('Chart', () => {
       type: 'point',
       data: {
         extract: {
-          field: 0
-        }
+          field: 0,
+        },
       },
       settings: {
-        fill: 'blue'
-      }
+        fill: 'blue',
+      },
     };
 
     settings = {
-      components: []
+      components: [],
     };
   });
 
@@ -72,14 +72,14 @@ describe('Chart', () => {
       const instance = chart({
         element,
         data: { data },
-        settings
+        settings,
       });
 
       const shapes = instance.shapesAt({
         x: 0,
         y: 0,
         width: 100,
-        height: 100
+        height: 100,
       }); // Select all shapes in the chart
       const expectedShapes = instance.findShapes('circle');
 
@@ -93,17 +93,20 @@ describe('Chart', () => {
       const instance = chart({
         element,
         data: { data },
-        settings
+        settings,
       });
 
-      const shapes = instance.shapesAt({
-        x: 0,
-        y: 0,
-        width: 100,
-        height: 100
-      }, {
-        components: [{ key: 'key2' }]
-      }); // Select all shapes in key2 component
+      const shapes = instance.shapesAt(
+        {
+          x: 0,
+          y: 0,
+          width: 100,
+          height: 100,
+        },
+        {
+          components: [{ key: 'key2' }],
+        }
+      ); // Select all shapes in key2 component
       const expectedShapes = instance.findShapes('circle[fill="green"]'); // All shapes in key2 component are circles with fill=green
 
       expect(shapes.map((s) => s.attrs)).to.deep.equal(expectedShapes.map((s) => s.attrs));
@@ -116,17 +119,20 @@ describe('Chart', () => {
       const instance = chart({
         element,
         data: { data },
-        settings
+        settings,
       });
 
-      const shapes = instance.shapesAt({
-        x: 0,
-        y: 0,
-        width: 100,
-        height: 100
-      }, {
-        propagation: 'stop'
-      }); // Should start on top (visible top) component and propagation down until a match is found
+      const shapes = instance.shapesAt(
+        {
+          x: 0,
+          y: 0,
+          width: 100,
+          height: 100,
+        },
+        {
+          propagation: 'stop',
+        }
+      ); // Should start on top (visible top) component and propagation down until a match is found
       const expectedShapes = instance.findShapes('circle[fill="blue"]');
 
       expect(shapes.map((s) => s.attrs)).to.deep.equal(expectedShapes.map((s) => s.attrs));
@@ -139,21 +145,20 @@ describe('Chart', () => {
       const instance = chart({
         element,
         data: { data },
-        settings
+        settings,
       });
 
-      const shapes = instance.shapesAt({
-        x: 0,
-        y: 0,
-        width: 100,
-        height: 100
-      }, {
-        components: [
-          { key: 'key1', propagation: 'stop' },
-          { key: 'key2', propagation: 'stop' },
-          { key: 'key3' }
-        ]
-      });
+      const shapes = instance.shapesAt(
+        {
+          x: 0,
+          y: 0,
+          width: 100,
+          height: 100,
+        },
+        {
+          components: [{ key: 'key1', propagation: 'stop' }, { key: 'key2', propagation: 'stop' }, { key: 'key3' }],
+        }
+      );
 
       expect(shapes.map((s) => s.attrs.fill)).to.deep.equal(['blue', 'blue', 'green', 'red']); // Only return 1 circle for each component except blue which doesnt have propagation set to stop
     });
@@ -167,28 +172,30 @@ describe('Chart', () => {
             context: 'test',
             style: {
               active: {
-                fill: 'black'
-              }
-            }
-          }
-        ]
+                fill: 'black',
+              },
+            },
+          },
+        ],
       };
 
       settings.components.push(pointMarkerRed);
       const instance = chart({
         element,
         data: { data },
-        settings
+        settings,
       });
 
       const shapes = instance.findShapes('circle');
       instance.brushFromShapes(shapes, {
-        components: [{
-          key: 'key1',
-          contexts: ['test'],
-          data: [''],
-          action: 'add'
-        }]
+        components: [
+          {
+            key: 'key1',
+            contexts: ['test'],
+            data: [''],
+            action: 'add',
+          },
+        ],
       });
 
       const brushedShapes = instance.findShapes('circle');
@@ -202,28 +209,30 @@ describe('Chart', () => {
             context: 'test',
             style: {
               active: {
-                fill: 'black'
-              }
-            }
-          }
-        ]
+                fill: 'black',
+              },
+            },
+          },
+        ],
       };
 
       settings.components.push(pointMarkerRed);
       const instance = chart({
         element,
         data: { data },
-        settings
+        settings,
       });
 
       const shapes = instance.findShapes('circle');
       instance.brushFromShapes(shapes, {
-        components: [{
-          key: 'unknown',
-          contexts: ['test'],
-          data: [''],
-          action: 'add'
-        }]
+        components: [
+          {
+            key: 'unknown',
+            contexts: ['test'],
+            data: [''],
+            action: 'add',
+          },
+        ],
       });
 
       const brushedShapes = instance.findShapes('circle');
@@ -237,15 +246,15 @@ describe('Chart', () => {
       render() {
         renderOrder.push(this.settings.key);
         return [];
-      }
+      },
     });
     function createComp(key, order = key) {
       return {
         key: `comp${key}`,
         layout: {
-          displayOrder: order
+          displayOrder: order,
         },
-        type: 'custom-log-render'
+        type: 'custom-log-render',
       };
     }
 
@@ -258,19 +267,19 @@ describe('Chart', () => {
     const instance = chart({
       element,
       data: { data },
-      settings
+      settings,
     });
     expect(renderOrder).to.eql(['comp0', 'comp2']);
     renderOrder = [];
     settings.components.push(comp1);
     instance.update({
-      settings
+      settings,
     });
     expect(renderOrder).to.eql(['comp0', 'comp1', 'comp2']);
     renderOrder = [];
     settings.components.push(comp3);
     instance.update({
-      settings
+      settings,
     });
     expect(renderOrder).to.eql(['comp0', 'comp1', 'comp3', 'comp2']);
   });

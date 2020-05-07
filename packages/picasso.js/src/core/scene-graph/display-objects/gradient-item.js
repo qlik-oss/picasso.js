@@ -25,15 +25,7 @@ import NodeContainer from '../node-container';
 
 const NC = NodeContainer.prototype;
 
-const allowedAttrs = [
-  'x1',
-  'x2',
-  'y1',
-  'y2',
-  'id',
-  'offset',
-  'style'
-];
+const allowedAttrs = ['x1', 'x2', 'y1', 'y2', 'id', 'offset', 'style'];
 
 export default class GradientItem extends DisplayObject {
   constructor(s = {}) {

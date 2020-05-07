@@ -10,7 +10,7 @@ describe('text-metrics', () => {
     const argument = {
       text: 'Test',
       fontSize: 0,
-      fontFamily: 'Arial'
+      fontFamily: 'Arial',
     };
 
     before(() => {
@@ -19,13 +19,15 @@ describe('text-metrics', () => {
       canvasContextMock = {
         font: '',
         measureText: sandbox.spy(() => {
-          if (!canvasContextMock.font) { fontWasUnset = true; }
+          if (!canvasContextMock.font) {
+            fontWasUnset = true;
+          }
           return { width: 150 };
-        })
+        }),
       };
 
       global.document = {
-        createElement: sandbox.spy(() => ({ getContext: () => canvasContextMock }))
+        createElement: sandbox.spy(() => ({ getContext: () => canvasContextMock })),
       };
     });
 
@@ -111,7 +113,7 @@ describe('text-metrics', () => {
   describe('textBounds', () => {
     const textMeasureMock = ({ text, fontSize, fontFamily }) => ({
       width: text.length * (parseFloat(fontSize) || 1),
-      height: fontFamily || 1
+      height: fontFamily || 1,
     });
     let node;
     let bounds;
@@ -121,7 +123,7 @@ describe('text-metrics', () => {
       node = {
         text: 'test',
         x: 1,
-        y: 2
+        y: 2,
       };
     });
 
@@ -130,7 +132,10 @@ describe('text-metrics', () => {
         it('should return correct bounds', () => {
           bounds = textBounds(node, textMeasureMock);
           expect(bounds).to.deep.equal({
-            x: 1, y: 1.25, width: 4, height: 1
+            x: 1,
+            y: 1.25,
+            width: 4,
+            height: 1,
           });
         });
 
@@ -138,7 +143,10 @@ describe('text-metrics', () => {
           node.anchor = 'middle';
           bounds = textBounds(node, textMeasureMock);
           expect(bounds).to.deep.equal({
-            x: -1, y: 1.25, width: 4, height: 1
+            x: -1,
+            y: 1.25,
+            width: 4,
+            height: 1,
           });
         });
 
@@ -146,7 +154,10 @@ describe('text-metrics', () => {
           node.anchor = 'end';
           bounds = textBounds(node, textMeasureMock);
           expect(bounds).to.deep.equal({
-            x: -3, y: 1.25, width: 4, height: 1
+            x: -3,
+            y: 1.25,
+            width: 4,
+            height: 1,
           });
         });
 
@@ -155,7 +166,10 @@ describe('text-metrics', () => {
           node.y = undefined;
           bounds = textBounds(node, textMeasureMock);
           expect(bounds).to.deep.equal({
-            x: 0, y: -0.75, width: 4, height: 1
+            x: 0,
+            y: -0.75,
+            width: 4,
+            height: 1,
           });
         });
 
@@ -164,7 +178,10 @@ describe('text-metrics', () => {
           node.dy = 4;
           bounds = textBounds(node, textMeasureMock);
           expect(bounds).to.deep.equal({
-            x: 4, y: 5.25, width: 4, height: 1
+            x: 4,
+            y: 5.25,
+            width: 4,
+            height: 1,
           });
         });
 
@@ -173,7 +190,10 @@ describe('text-metrics', () => {
           node.fontFamily = 3;
           bounds = textBounds(node, textMeasureMock);
           expect(bounds).to.deep.equal({
-            x: 1, y: -0.25, width: 8, height: 3
+            x: 1,
+            y: -0.25,
+            width: 8,
+            height: 3,
           });
         });
 
@@ -182,7 +202,10 @@ describe('text-metrics', () => {
           node['font-family'] = 3;
           bounds = textBounds(node, textMeasureMock);
           expect(bounds).to.deep.equal({
-            x: 1, y: -0.25, width: 8, height: 3
+            x: 1,
+            y: -0.25,
+            width: 8,
+            height: 3,
           });
         });
 
@@ -192,7 +215,10 @@ describe('text-metrics', () => {
           node['dominant-baseline'] = 'ideographic';
           bounds = textBounds(node, textMeasureMock);
           expect(bounds).to.deep.equal({
-            x: 1, y: -2.25, width: 40, height: 3
+            x: 1,
+            y: -2.25,
+            width: 40,
+            height: 3,
           });
         });
       });
@@ -209,7 +235,10 @@ describe('text-metrics', () => {
             node.lineHeight = 10;
             bounds = textBounds(node, textMeasureMock);
             expect(bounds).to.deep.equal({
-              x: 1, y: 1.25, width: 4, height: 1
+              x: 1,
+              y: 1.25,
+              width: 4,
+              height: 1,
             });
           });
 
@@ -220,7 +249,10 @@ describe('text-metrics', () => {
             node.maxLines = 2;
             bounds = textBounds(node, textMeasureMock);
             expect(bounds).to.deep.equal({
-              x: 1, y: 1.25, width: 1, height: 20
+              x: 1,
+              y: 1.25,
+              width: 1,
+              height: 20,
             });
           });
 
@@ -231,7 +263,10 @@ describe('text-metrics', () => {
             node.maxLines = 2;
             bounds = textBounds(node, textMeasureMock);
             expect(bounds).to.deep.equal({
-              x: 1, y: 1.25, width: 4, height: 1
+              x: 1,
+              y: 1.25,
+              width: 4,
+              height: 1,
             });
           });
 
@@ -243,7 +278,10 @@ describe('text-metrics', () => {
             node.maxLines = 2;
             bounds = textBounds(node, textMeasureMock);
             expect(bounds).to.deep.equal({
-              x: 1, y: 1.25, width: 2, height: 20
+              x: 1,
+              y: 1.25,
+              width: 2,
+              height: 20,
             });
           });
         });

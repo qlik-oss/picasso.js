@@ -12,16 +12,16 @@ const rHsl = /^\s*hsl\(\s*(-?\d+\.?\d*)\s*,\s*(-?\d+\.?\d*%{1})\s*,\s*(-?\d+\.?\
  * @example
  * hsl( "hsl(120, 50%, 50%)" );
  * hsl( "hsla(120, 50%, 50%, 0.5)" );
-*/
+ */
 export default function hsl(colStr) {
-  const match = (rHsl.exec(colStr) || rHsla.exec(colStr) || []);
+  const match = rHsl.exec(colStr) || rHsla.exec(colStr) || [];
 
   const [h, s, l, a] = match.slice(1).map((v) => {
     let returnVal = parseFloat(v);
 
     switch (match.indexOf(v)) {
       case 1:
-        returnVal = (((returnVal % 360) + 360) % 360);
+        returnVal = ((returnVal % 360) + 360) % 360;
         return Math.round(returnVal);
       case 2:
       case 3:

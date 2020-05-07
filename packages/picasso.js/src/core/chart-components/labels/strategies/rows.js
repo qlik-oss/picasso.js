@@ -12,7 +12,7 @@ function cbContext(node, chart) {
     data: node.data,
     scale: chart.scale,
     formatter: chart.formatter,
-    dataset: chart.dataset
+    dataset: chart.dataset,
   };
 }
 
@@ -29,7 +29,7 @@ export function placeTextInRect(rect, text, opts) {
     anchor: 'start',
     baseline: 'alphabetical',
     fontSize: `${opts.fontSize}px`,
-    fontFamily: opts.fontFamily
+    fontFamily: opts.fontFamily,
   };
 
   const textMetrics = opts.textMetrics;
@@ -39,8 +39,8 @@ export function placeTextInRect(rect, text, opts) {
   }
 
   const wiggleWidth = Math.max(0, rect.width - textMetrics.width);
-  label.x = rect.x + (opts.align * wiggleWidth);
-  label.y = rect.y + (textMetrics.height / LINE_HEIGHT);
+  label.x = rect.x + opts.align * wiggleWidth;
+  label.y = rect.y + textMetrics.height / LINE_HEIGHT;
 
   return label;
 }
@@ -48,19 +48,13 @@ export function placeTextInRect(rect, text, opts) {
 function getRectFromCircle({ cx, cy, r }) {
   return {
     type: 'circle',
-    bounds: { cx, cy, r }
+    bounds: { cx, cy, r },
   };
 }
 function getSliceBounds(slice) {
   const EPSILON = 1e-12;
-  let {
-    start,
-    end,
-    innerRadius,
-    outerRadius,
-    offset
-  } = slice;
-  if (Math.abs((start + (2 * Math.PI)) - end) > EPSILON) {
+  let { start, end, innerRadius, outerRadius, offset } = slice;
+  if (Math.abs(start + 2 * Math.PI - end) > EPSILON) {
     return { type: null, bounds: null };
   }
   let r = innerRadius !== 0 ? innerRadius : outerRadius;
@@ -99,21 +93,18 @@ function getBounds(node) {
  * @property {string|function} [labels[].fill='#333']
  */
 
-export function rows({
-  settings,
-  chart,
-  nodes,
-  renderer,
-  style
-}, placer = placeTextInRect) {
-  const defaults = extend({
-    fontSize: 12,
-    fontFamily: 'Arial',
-    fill: '#333',
-    padding: 4,
-    align: 0.5,
-    justify: 0.5
-  }, style.label);
+export function rows({ settings, chart, nodes, renderer, style }, placer = placeTextInRect) {
+  const defaults = extend(
+    {
+      fontSize: 12,
+      fontFamily: 'Arial',
+      fill: '#333',
+      padding: 4,
+      align: 0.5,
+      justify: 0.5,
+    },
+    style.label
+  );
 
   defaults.fontSize = parseInt(defaults.fontSize, 10);
 
@@ -149,7 +140,9 @@ export function rows({
       labelStruct.text = text;
       let measured = renderer.measureText(labelStruct);
       totalHeight += measured.height + lblStngs.padding;
-      if (totalHeight > maxHeight) { break; }
+      if (totalHeight > maxHeight) {
+        break;
+      }
       texts.push(text);
       measurements.push(measured);
     }
@@ -158,30 +151,33 @@ export function rows({
     const wiggleHeight = Math.max(0, maxHeight - totalHeight);
     let currentY;
     if (type === 'circle') {
-      currentY = bounds.cy - (bounds.r * CIRCLE_FACTOR);
+      currentY = bounds.cy - bounds.r * CIRCLE_FACTOR;
     } else {
       currentY = bounds.y;
     }
-    currentY += (rowSettings.justify * wiggleHeight) + rowSettings.padding;
+    currentY += rowSettings.justify * wiggleHeight + rowSettings.padding;
 
     for (j = 0; j < labelCount; j++) {
       let lblStngs = labelSettings[j];
       let rect;
       if (type === 'circle') {
-        let maxYDistToCenter = Math.max(Math.abs(currentY - bounds.cy), Math.abs((currentY + measurements[j].height) - bounds.cy));
-        let halfWidth = Math.sqrt((bounds.r * bounds.r) - (maxYDistToCenter * maxYDistToCenter));
+        let maxYDistToCenter = Math.max(
+          Math.abs(currentY - bounds.cy),
+          Math.abs(currentY + measurements[j].height - bounds.cy)
+        );
+        let halfWidth = Math.sqrt(bounds.r * bounds.r - maxYDistToCenter * maxYDistToCenter);
         rect = {
-          x: (bounds.cx - halfWidth) + rowSettings.padding,
+          x: bounds.cx - halfWidth + rowSettings.padding,
           y: currentY,
-          width: (2 * halfWidth) - (2 * rowSettings.padding),
-          height: measurements[j].height
+          width: 2 * halfWidth - 2 * rowSettings.padding,
+          height: measurements[j].height,
         };
       } else {
         rect = {
           x: bounds.x + rowSettings.padding,
           y: currentY,
-          width: bounds.width - (2 * rowSettings.padding),
-          height: measurements[j].height
+          width: bounds.width - 2 * rowSettings.padding,
+          height: measurements[j].height,
         };
       }
 
@@ -193,7 +189,7 @@ export function rows({
         align: lblStngs.align,
         fontSize: lblStngs.fontSize,
         fontFamily: lblStngs.fontFamily,
-        textMetrics: measurements[j]
+        textMetrics: measurements[j],
       });
       if (label) {
         if (label.text && label.text !== ELLIPSIS_CHAR) {

@@ -8,7 +8,7 @@ describe('Field', () => {
       max: 2,
       tags: ['a', 'b'],
       title: 'wohoo',
-      values: ['a', 'c', 'a']
+      values: ['a', 'c', 'a'],
     };
     let f;
     beforeEach(() => {
@@ -47,20 +47,23 @@ describe('Field', () => {
   describe('custom accessors', () => {
     let f;
     beforeEach(() => {
-      f = field({
-        mm: { qMin: -3, maximum: 2 },
-        meta: {
-          taggar: [{ v: 'numeric' }, { v: 'date' }]
+      f = field(
+        {
+          mm: { qMin: -3, maximum: 2 },
+          meta: {
+            taggar: [{ v: 'numeric' }, { v: 'date' }],
+          },
+          t: 'custom',
+          values: [{ v: 1 }, { v: 6 }, { v: 6 }],
         },
-        t: 'custom',
-        values: [{ v: 1 }, { v: 6 }, { v: 6 }]
-      }, {
-        min: (d) => d.mm.qMin,
-        max: (d) => d.mm.maximum,
-        tags: (d) => d.meta.taggar.map((x) => x.v),
-        title: (d) => d.t,
-        values: (d) => d.values.map((x) => x.v)
-      });
+        {
+          min: (d) => d.mm.qMin,
+          max: (d) => d.mm.maximum,
+          tags: (d) => d.meta.taggar.map((x) => x.v),
+          title: (d) => d.t,
+          values: (d) => d.values.map((x) => x.v),
+        }
+      );
     });
 
     it('should return min value', () => {

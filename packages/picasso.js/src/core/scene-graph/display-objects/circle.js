@@ -17,12 +17,16 @@ export default class Circle extends DisplayObject {
   }
 
   set(v = {}) {
-    const {
-      cx = 0, cy = 0, r = 0, collider
-    } = v;
-    const opts = extend({
-      type: 'circle', cx, cy, r
-    }, collider);
+    const { cx = 0, cy = 0, r = 0, collider } = v;
+    const opts = extend(
+      {
+        type: 'circle',
+        cx,
+        cy,
+        r,
+      },
+      collider
+    );
 
     super.set(v);
 
@@ -47,7 +51,7 @@ export default class Circle extends DisplayObject {
       x: p[0].x,
       y: p[0].y,
       width: p[2].x - p[0].x,
-      height: p[2].y - p[0].y
+      height: p[2].y - p[0].y,
     };
     return this.__boundingRect[includeTransform];
   }
@@ -57,9 +61,7 @@ export default class Circle extends DisplayObject {
       return this.__bounds[includeTransform];
     }
     // TODO Handle Circle bounds correctly for a circle transformed to an non axis aligned ellipse/circle
-    const {
-      cx, cy, r: rX, r: rY
-    } = this.attrs;
+    const { cx, cy, r: rX, r: rY } = this.attrs;
     const x = cx - rX;
     const y = cy - rY;
     let w = rX * 2;
@@ -68,7 +70,7 @@ export default class Circle extends DisplayObject {
       { x, y },
       { x: x + w, y },
       { x: x + w, y: y + h },
-      { x, y: y + h }
+      { x, y: y + h },
     ];
 
     if (includeTransform && this.modelViewMatrix) {
@@ -81,7 +83,7 @@ export default class Circle extends DisplayObject {
         { x: xMin, y: yMin },
         { x: xMin + w, y: yMin },
         { x: xMin + w, y: yMin + h },
-        { x: xMin, y: yMin + h }
+        { x: xMin, y: yMin + h },
       ];
     } else {
       this.__bounds[includeTransform] = p;

@@ -9,7 +9,7 @@ describe('dataset', () => {
       field: 'function',
       fields: 'function',
       extract: 'function',
-      hierarchy: 'function'
+      hierarchy: 'function',
     };
 
     Object.keys(api).forEach((key) => {
@@ -25,11 +25,11 @@ describe('dataset', () => {
       const data = [
         { product: 'Cars', sales: 56 },
         { product: 'Bikes', sales: 34 },
-        { product: 'Shoes', sales: 23 }
+        { product: 'Shoes', sales: 23 },
       ];
       d = dataset({
         key: 'test',
-        data
+        data,
       });
     });
 
@@ -54,7 +54,7 @@ describe('dataset', () => {
       const data = [
         { product: 'Cars', sales: 56 },
         { product: 'Bikes', sales: 34 },
-        { product: 'Shoes', sales: 23 }
+        { product: 'Shoes', sales: 23 },
       ];
       d = dataset({
         key: 'test',
@@ -68,24 +68,25 @@ describe('dataset', () => {
                   title: flds[0],
                   formatter: {},
                   value: (v) => v,
-                  label: (v) => `#${v}`
-                }, {
+                  label: (v) => `#${v}`,
+                },
+                {
                   key: 'sales',
                   title: 'Sell sell sell',
                   formatter: {},
                   value: (v) => v + 4,
-                  label: (v) => `-${v}-`
+                  label: (v) => `-${v}-`,
                 },
                 {
                   key: 'extra',
                   title: 'Added',
                   formatter: {
                     type: 'd3-number',
-                    format: '.3f'
+                    format: '.3f',
                   },
                   value: (v) => v,
-                  label: (v) => `${v * 100}%`
-                }
+                  label: (v) => `${v * 100}%`,
+                },
               ];
             },
             row(v) {
@@ -96,11 +97,11 @@ describe('dataset', () => {
                 product: v.product,
                 sales: v.sales * 2,
                 extra: v.sales * 100,
-                dummy: 'foo'
+                dummy: 'foo',
               };
-            }
-          }
-        }
+            },
+          },
+        },
       });
     });
 
@@ -132,11 +133,11 @@ describe('dataset', () => {
       const data = [
         ['Product', 'Sales'],
         ['Cars', 56],
-        ['Cars', 59]
+        ['Cars', 59],
       ];
       d = dataset({
         key: 'test',
-        data
+        data,
       });
     });
 
@@ -154,7 +155,7 @@ describe('dataset', () => {
       const data = [
         ['Product', 'Sales'],
         ['Cars', 56],
-        ['Bikes', 34]
+        ['Bikes', 34],
       ];
       d = dataset({
         key: 'test',
@@ -168,32 +169,33 @@ describe('dataset', () => {
                   title: flds[0],
                   formatter: {},
                   value: (v) => v,
-                  label: (v) => `#${v}`
-                }, {
+                  label: (v) => `#${v}`,
+                },
+                {
                   key: 'sales',
                   title: 'Sell sell sell',
                   formatter: {},
                   value: (v) => v + 4,
-                  label: (v) => `-${v}-`
+                  label: (v) => `-${v}-`,
                 },
                 {
                   key: 'extra',
                   title: 'Added',
                   formatter: {
                     type: 'd3-number',
-                    format: '.3f'
+                    format: '.3f',
                   },
                   value: (v) => v,
                   label: (v) => `${v * 100}%`,
-                  dummy: 20
-                }
+                  dummy: 20,
+                },
               ];
             },
             row(r, i, fields) {
               return [r[0], r[1] * 2, fields[2].dummy + i + 1];
-            }
-          }
-        }
+            },
+          },
+        },
       });
     });
 
@@ -220,16 +222,16 @@ describe('dataset', () => {
     before(() => {
       const data = [
         ['Cars', 56],
-        ['Cars', 59]
+        ['Cars', 59],
       ];
       d = dataset({
         key: 'test',
         data,
         config: {
           parse: {
-            headers: false
-          }
-        }
+            headers: false,
+          },
+        },
       });
     });
 
@@ -249,8 +251,8 @@ describe('dataset', () => {
         key: 'test',
         data,
         config: {
-          parse: { delimiter: '|' }
-        }
+          parse: { delimiter: '|' },
+        },
       });
     });
 
@@ -273,7 +275,7 @@ describe('dataset', () => {
     it('comma (,)', () => {
       const d = dataset({
         key: 'test',
-        data: 'Product,Sales\nCars,56\nBikes,34'
+        data: 'Product,Sales\nCars,56\nBikes,34',
       });
       const f = d.field(0);
       expect(f.id()).to.equal('test/Product');
@@ -284,7 +286,7 @@ describe('dataset', () => {
     it('semicolon (;)', () => {
       const d = dataset({
         key: 'test',
-        data: 'Pro,d\tuct;Sales\nCars;56\nBikes;34'
+        data: 'Pro,d\tuct;Sales\nCars;56\nBikes;34',
       });
       const f = d.field(0);
       expect(f.id()).to.equal('test/Pro,d\tuct');
@@ -295,7 +297,7 @@ describe('dataset', () => {
     it('tab (\\t)', () => {
       const d = dataset({
         key: 'test',
-        data: 'Pro,duct\tSales\nCars\t56\nBikes\t34'
+        data: 'Pro,duct\tSales\nCars\t56\nBikes\t34',
       });
       const f = d.field(0);
       expect(f.id()).to.equal('test/Pro,duct');
@@ -306,7 +308,7 @@ describe('dataset', () => {
     it('; with header only', () => {
       const d = dataset({
         key: 'test',
-        data: 'Product;Sales'
+        data: 'Product;Sales',
       });
       const f = d.field(0);
       expect(f.id()).to.equal('test/Product');

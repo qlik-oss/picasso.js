@@ -16,11 +16,14 @@ describe('Tick generators', () => {
       settings.paddingStart = 0;
       settings.paddingEnd = 10;
       settings.minorTicks = {
-        count: 0
+        count: 0,
       };
       scale = linear();
       input = {
-        settings, distance: 100, scale, formatter: d3formatter
+        settings,
+        distance: 100,
+        scale,
+        formatter: d3formatter,
       };
     });
 
@@ -29,11 +32,7 @@ describe('Tick generators', () => {
         settings.ticks.count = 2;
         input.formatter = formatter('d3-number')('-1.0%');
         const ticks = scale.ticks(input);
-        [
-          { label: '0%' },
-          { label: '50%' },
-          { label: '100%' }
-        ].forEach((e, i) => {
+        [{ label: '0%' }, { label: '50%' }, { label: '100%' }].forEach((e, i) => {
           expect(ticks[i].label).to.equal(e.label);
         });
       });
@@ -45,7 +44,7 @@ describe('Tick generators', () => {
         const ticks = scale.ticks(input);
         [
           { position: 0.1, start: 0.1, end: 0.1 },
-          { position: 0.3, start: 0.3, end: 0.3 }
+          { position: 0.3, start: 0.3, end: 0.3 },
         ].forEach((e, i) => {
           expect(ticks[i].position).to.equal(e.position);
           expect(ticks[i].start).to.equal(e.start);
@@ -54,14 +53,11 @@ describe('Tick generators', () => {
       });
 
       it('should generate ticks from objects', () => {
-        settings.ticks.values = [
-          { value: 0.1, start: 0, end: 0.2 },
-          0.3
-        ];
+        settings.ticks.values = [{ value: 0.1, start: 0, end: 0.2 }, 0.3];
         const ticks = scale.ticks(input);
         [
           { position: 0.1, start: 0, end: 0.2 },
-          { position: 0.3, start: 0.3, end: 0.3 }
+          { position: 0.3, start: 0.3, end: 0.3 },
         ].forEach((e, i) => {
           expect(ticks[i].position).to.equal(e.position);
           expect(ticks[i].start).to.equal(e.start);
@@ -72,16 +68,22 @@ describe('Tick generators', () => {
       it('should generate ticks from objects with isMinor property', () => {
         settings.ticks.values = [
           {
-            value: 0.1, start: 0, end: 0.2, isMinor: true
+            value: 0.1,
+            start: 0,
+            end: 0.2,
+            isMinor: true,
           },
-          0.3
+          0.3,
         ];
         const ticks = scale.ticks(input);
         [
           {
-            position: 0.1, start: 0, end: 0.2, isMinor: true
+            position: 0.1,
+            start: 0,
+            end: 0.2,
+            isMinor: true,
           },
-          { position: 0.3, start: 0.3, end: 0.3 }
+          { position: 0.3, start: 0.3, end: 0.3 },
         ].forEach((e, i) => {
           expect(ticks[i].position).to.equal(e.position);
           expect(ticks[i].start).to.equal(e.start);
@@ -93,12 +95,10 @@ describe('Tick generators', () => {
       it('should require value prop on object', () => {
         settings.ticks.values = [
           { value: 0.1, start: 0, end: 0.2 },
-          { start: 0.3, end: 0.5 }
+          { start: 0.3, end: 0.5 },
         ];
         const ticks = scale.ticks(input);
-        [
-          { position: 0.1, start: 0, end: 0.2 }
-        ].forEach((e, i) => {
+        [{ position: 0.1, start: 0, end: 0.2 }].forEach((e, i) => {
           expect(ticks[i].position).to.equal(e.position);
           expect(ticks[i].start).to.equal(e.start);
           expect(ticks[i].end).to.equal(e.end);
@@ -211,7 +211,7 @@ describe('Tick generators', () => {
           end: 0,
           label: '-99',
           isMinor: false,
-          value: -99
+          value: -99,
         });
         expect(majorTicks[majorTicks.length - 1]).to.deep.equal({
           position: 1,
@@ -219,7 +219,7 @@ describe('Tick generators', () => {
           end: 1,
           label: '99',
           isMinor: false,
-          value: 99
+          value: 99,
         });
       });
 
@@ -227,7 +227,7 @@ describe('Tick generators', () => {
         settings.ticks.tight = false;
         settings.ticks.forceBounds = true;
         settings.minorTicks = {
-          count: 3 // Should trigger minorTicks on -50 and 450, those should be replace by major ticks
+          count: 3, // Should trigger minorTicks on -50 and 450, those should be replace by major ticks
         };
         scale.domain([-50, 450]);
         const ticks = scale.ticks(input);
@@ -239,7 +239,7 @@ describe('Tick generators', () => {
           position: 0,
           label: '-50',
           isMinor: false,
-          value: -50
+          value: -50,
         });
         expect(majorTicks[majorTicks.length - 1]).to.deep.equal({
           position: 1,
@@ -247,7 +247,7 @@ describe('Tick generators', () => {
           end: 1,
           label: '450',
           isMinor: false,
-          value: 450
+          value: 450,
         });
       });
     });
@@ -329,7 +329,7 @@ describe('Tick generators', () => {
       scale = band(
         {
           value: (d) => d.datum,
-          label: (d) => d.datum
+          label: (d) => d.datum,
         },
         { items: data }
       );
@@ -337,14 +337,26 @@ describe('Tick generators', () => {
       const ticks = scale.ticks();
       const expected = [
         {
-          position: 0 + (scale.bandwidth() / 2), label: 'd1', data: 'd1', start: 0, end: 0 + scale.bandwidth()
+          position: 0 + scale.bandwidth() / 2,
+          label: 'd1',
+          data: 'd1',
+          start: 0,
+          end: 0 + scale.bandwidth(),
         },
         {
-          position: (1 / 3) + (scale.bandwidth() / 2), label: 'd2', data: 'd2', start: (1 / 3), end: (1 / 3) + scale.bandwidth()
+          position: 1 / 3 + scale.bandwidth() / 2,
+          label: 'd2',
+          data: 'd2',
+          start: 1 / 3,
+          end: 1 / 3 + scale.bandwidth(),
         },
         {
-          position: (2 / 3) + (scale.bandwidth() / 2), label: 'd3', data: 'd3', start: (2 / 3), end: (2 / 3) + scale.bandwidth()
-        }
+          position: 2 / 3 + scale.bandwidth() / 2,
+          label: 'd3',
+          data: 'd3',
+          start: 2 / 3,
+          end: 2 / 3 + scale.bandwidth(),
+        },
       ];
       expect(ticks).to.deep.equal(expected);
     });
@@ -353,14 +365,14 @@ describe('Tick generators', () => {
       scale = band(
         {
           value: (item) => item.datum.id.value,
-          label: (item) => item.datum.value
+          label: (item) => item.datum.value,
         },
         {
           items: [
             { value: 'alpha', id: { value: 'd1' } },
             { value: 'alpha', id: { value: 'd2' } },
-            { value: 'beta', id: { value: 'd3' } }
-          ]
+            { value: 'beta', id: { value: 'd3' } },
+          ],
         }
       );
       scale.range([0, 1]);

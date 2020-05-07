@@ -12,16 +12,16 @@ picasso.chart({
     scales: {
       myScale: {
         type: 'band',
-        data: ['item1', 'item2', 'item3']
-      }
+        data: ['item1', 'item2', 'item3'],
+      },
     },
     components: [
       {
         type: 'some-component',
-        scale: 'myScale'
-      }
-    ]
-  }
+        scale: 'myScale',
+      },
+    ],
+  },
 });
 ```
 

@@ -11,9 +11,9 @@ function placeTextInRect(rect, label, opts) {
 
   const wiggleWidth = Math.max(0, rect.width - textMetrics.width);
   label.baseline = 'text-before-edge';
-  const wiggleHeight = Math.max(0, rect.height - (textMetrics.height));
-  label.x = rect.x + (opts.align * wiggleWidth);
-  label.y = rect.y + (opts.justify * wiggleHeight) + parseInt(label.fontSize, 10) * 0.175; // 0.175 - basline offset
+  const wiggleHeight = Math.max(0, rect.height - textMetrics.height);
+  label.x = rect.x + opts.align * wiggleWidth;
+  label.y = rect.y + opts.justify * wiggleHeight + parseInt(label.fontSize, 10) * 0.175; // 0.175 - basline offset
 
   return label;
 }
@@ -23,19 +23,12 @@ function wiggleSymbol(container, size, opts) {
   const wiggleHeight = Math.max(0, container.height - size);
 
   return {
-    x: container.x + (size / 2) + (opts.align * wiggleWidth),
-    y: container.y + (size / 2) + (opts.justify * wiggleHeight)
+    x: container.x + size / 2 + opts.align * wiggleWidth,
+    y: container.y + size / 2 + opts.justify * wiggleHeight,
   };
 }
 
-export function createRenderItem({
-  x = 0,
-  y,
-  item,
-  globalMetrics,
-  createSymbol,
-  direction = 'ltr'
-}) {
+export function createRenderItem({ x = 0, y, item, globalMetrics, createSymbol, direction = 'ltr' }) {
   let label = item.label.displayObject;
   let labelBounds = item.label.bounds;
   let symbolItem = item.symbol.meta;
@@ -45,18 +38,22 @@ export function createRenderItem({
     x: rtl ? x + globalMetrics.maxLabelBounds.width : x + globalMetrics.maxSymbolSize + globalMetrics.spacing,
     y,
     width: globalMetrics.maxLabelBounds.width,
-    height: Math.max(globalMetrics.maxSymbolSize, globalMetrics.maxLabelBounds.height)
+    height: Math.max(globalMetrics.maxSymbolSize, globalMetrics.maxLabelBounds.height),
   };
 
-  let wiggled = wiggleSymbol({
-    x: rtl ? x + globalMetrics.maxLabelBounds.width + globalMetrics.spacing : x,
-    y,
-    width: globalMetrics.maxSymbolSize,
-    height: labelRect.height
-  }, symbolItem.size, {
-    align: typeof symbolItem.align === 'undefined' ? 0.5 : symbolItem.align,
-    justify: typeof symbolItem.justify === 'undefined' ? 0.5 : symbolItem.justify
-  });
+  let wiggled = wiggleSymbol(
+    {
+      x: rtl ? x + globalMetrics.maxLabelBounds.width + globalMetrics.spacing : x,
+      y,
+      width: globalMetrics.maxSymbolSize,
+      height: labelRect.height,
+    },
+    symbolItem.size,
+    {
+      align: typeof symbolItem.align === 'undefined' ? 0.5 : symbolItem.align,
+      justify: typeof symbolItem.justify === 'undefined' ? 0.5 : symbolItem.justify,
+    }
+  );
 
   const symbol = createSymbol(extend({}, symbolItem, wiggled));
 
@@ -68,7 +65,7 @@ export function createRenderItem({
     textMetrics: labelBounds,
     fontSize: parseInt(label.fontSize, 10),
     align: 0.0,
-    justify: 0.5
+    justify: 0.5,
   });
 
   let container = {
@@ -80,24 +77,17 @@ export function createRenderItem({
       x,
       y,
       width: globalMetrics.maxItemBounds.width,
-      height: globalMetrics.maxItemBounds.height
-    }
+      height: globalMetrics.maxItemBounds.height,
+    },
   };
 
   return {
     item: container,
-    metrics: labelRect
+    metrics: labelRect,
   };
 }
 
-export function getItemsToRender({
-  viewRect
-}, rect, {
-  itemized,
-  create = createRenderItem,
-  parallels,
-  createSymbol
-}) {
+export function getItemsToRender({ viewRect }, rect, { itemized, create = createRenderItem, parallels, createSymbol }) {
   const direction = itemized.layout.direction;
   const globalMetrics = itemized.globalMetrics;
   const legendItems = itemized.items;
@@ -121,7 +111,7 @@ export function getItemsToRender({
       item: legendItems[i],
       globalMetrics,
       direction,
-      createSymbol
+      createSymbol,
     });
 
     if ((isHorizontal && x >= viewRect.x - fixedWidth) || (!isHorizontal && y >= viewRect.y - fixedHeight)) {
@@ -144,7 +134,7 @@ export function getItemsToRender({
       x += columnWidth; // next column
     }
 
-    if (!isHorizontal && (y > viewRect.y + viewRect.height)) {
+    if (!isHorizontal && y > viewRect.y + viewRect.height) {
       break;
     } else if (isHorizontal && x > viewRect.x + viewRect.width) {
       break;
@@ -153,11 +143,7 @@ export function getItemsToRender({
   return renderItems;
 }
 
-
-export function itemize({
-  resolved,
-  dock
-}, renderer) {
+export function itemize({ resolved, dock }, renderer) {
   let label;
   let items = [];
   let item;
@@ -175,23 +161,24 @@ export function itemize({
     }
 
     const text = typeof sourceLabels[i].text !== 'undefined' ? sourceLabels[i].text : sourceLabels[i].data.label || '';
-    label = extend({}, sourceLabels[i], { // create the displayObject here in order to measure it
+    label = extend({}, sourceLabels[i], {
+      // create the displayObject here in order to measure it
       type: 'text',
       fontSize: `${parseInt(sourceLabels[i].fontSize, 10)}px`,
       text,
-      title: text
+      title: text,
     });
 
     item = {
       symbol: {
         // can't create a displayObject here due to need to wiggle the center position of the symbol later on,
         // just store the object needed later on
-        meta: sourceSymbols[i]
+        meta: sourceSymbols[i],
       },
       label: {
         displayObject: label,
-        bounds: renderer.textBounds(label)
-      }
+        bounds: renderer.textBounds(label),
+      },
     };
 
     items.push(item);
@@ -208,24 +195,24 @@ export function itemize({
       maxSymbolSize,
       maxItemBounds: {
         height: Math.max(maxSymbolSize, maxLabelHeight),
-        width: maxSymbolSize + 8 + maxLabelWidth
+        width: maxSymbolSize + 8 + maxLabelWidth,
       },
       maxLabelBounds: {
         width: maxLabelWidth,
-        height: maxLabelHeight
-      }
+        height: maxLabelHeight,
+      },
     },
     layout: {
       margin: {
         vertical: typeof resolved.layout.item.vertical !== 'undefined' ? resolved.layout.item.vertical : 4,
-        horizontal: typeof resolved.layout.item.horizontal !== 'undefined' ? resolved.layout.item.horizontal : 4
+        horizontal: typeof resolved.layout.item.horizontal !== 'undefined' ? resolved.layout.item.horizontal : 4,
       },
       mode: resolved.layout.item.mode,
       size: resolved.layout.item.size,
       orientation: dock === 'top' || dock === 'bottom' ? 'horizontal' : 'vertical',
       direction: resolved.layout.item.direction,
-      scrollOffset: resolved.layout.item.scrollOffset
-    }
+      scrollOffset: resolved.layout.item.scrollOffset,
+    },
   };
 }
 
@@ -234,31 +221,34 @@ export function extent(itemized, parallels) {
   const size = Math.ceil(count / parallels);
   const property = itemized.layout.orientation === 'horizontal' ? 'width' : 'height';
   const margin = property === 'width' ? 'horizontal' : 'vertical';
-  return (itemized.globalMetrics.maxItemBounds[property] * size)
-    + ((size - 1) * itemized.layout.margin[margin]);
+  return itemized.globalMetrics.maxItemBounds[property] * size + (size - 1) * itemized.layout.margin[margin];
 }
 
 export function spread(itemized, parallels) {
   const size = parallels;
   const property = itemized.layout.orientation === 'horizontal' ? 'height' : 'width';
   const margin = property === 'width' ? 'horizontal' : 'vertical';
-  return (itemized.globalMetrics.maxItemBounds[property] * size) // expected vertical size of items
-    + ((size - 1) * itemized.layout.margin[margin]); // expected spacing between items
+  return (
+    itemized.globalMetrics.maxItemBounds[property] * size + // expected vertical size of items
+    (size - 1) * itemized.layout.margin[margin]
+  ); // expected spacing between items
 }
 
 export function parallelize(availableExtent, availableSpread, itemized) {
   const count = itemized.items.length;
   const extentProperty = itemized.layout.orientation === 'horizontal' ? 'width' : 'height';
   const margin = extentProperty === 'width' ? 'horizontal' : 'vertical';
-  const extentInPx = (itemized.globalMetrics.maxItemBounds[extentProperty] * count)
-    + ((count - 1) * itemized.layout.margin[margin]);
+  const extentInPx =
+    itemized.globalMetrics.maxItemBounds[extentProperty] * count + (count - 1) * itemized.layout.margin[margin];
   let numNeeded = Math.ceil(extentInPx / availableExtent);
 
   if (availableSpread != null) {
     const spreadProperty = itemized.layout.orientation === 'horizontal' ? 'height' : 'width';
     const spreadMargin = spreadProperty === 'width' ? 'horizontal' : 'vertical';
     const spreadMarginSize = itemized.layout.margin[spreadMargin] || 4;
-    const numAllowed = Math.floor((availableSpread + spreadMarginSize) / (spreadMarginSize + itemized.globalMetrics.maxItemBounds[spreadProperty]));
+    const numAllowed = Math.floor(
+      (availableSpread + spreadMarginSize) / (spreadMarginSize + itemized.globalMetrics.maxItemBounds[spreadProperty])
+    );
     numNeeded = Math.min(numNeeded, numAllowed);
   }
 
@@ -266,9 +256,7 @@ export function parallelize(availableExtent, availableSpread, itemized) {
   return Math.max(1, Math.min(numNeeded, numInput));
 }
 
-export default function (legend, {
-  onScroll = () => {}
-}) {
+export default function (legend, { onScroll = () => {} }) {
   let itemized;
   let parallels;
   let viewRect;
@@ -338,7 +326,7 @@ export default function (legend, {
       api.scroll(api.getPrevSize());
     },
     scroll: (delta) => {
-      const current = Math.max(0, Math.min(overflow, (offset - delta)));
+      const current = Math.max(0, Math.min(overflow, offset - delta));
       if (current === offset) {
         return;
       }
@@ -349,7 +337,7 @@ export default function (legend, {
     orientation: () => itemized.layout.orientation,
     direction: () => itemized.layout.direction,
     extent: () => extent(itemized, parallels), // total amount of space along orientation
-    spread: () => spread(itemized, parallels) // total amount of space perpendicular to orientation
+    spread: () => spread(itemized, parallels), // total amount of space perpendicular to orientation
   };
 
   return api;

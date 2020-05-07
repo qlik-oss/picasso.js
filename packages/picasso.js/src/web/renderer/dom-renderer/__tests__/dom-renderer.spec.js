@@ -9,7 +9,7 @@ describe('dom renderer', () => {
     sandbox = sinon.createSandbox();
     rend = renderer({
       createElement: element,
-      createTextNode: (text) => text
+      createTextNode: (text) => text,
     });
   });
 
@@ -121,8 +121,11 @@ describe('dom renderer', () => {
         scaleRatio: { x: 3, y: 4 },
         margin: { left: 5, top: 6 },
         edgeBleed: {
-          left: 7, right: 8, top: 9, bottom: 10
-        }
+          left: 7,
+          right: 8,
+          top: 9,
+          bottom: 10,
+        },
       });
       expect(rend.size()).to.deep.equal({
         x: 50,
@@ -132,14 +135,18 @@ describe('dom renderer', () => {
         scaleRatio: { x: 3, y: 4 },
         margin: { left: 5, top: 6 },
         edgeBleed: {
-          left: 7, right: 8, top: 9, bottom: 10, bool: true
+          left: 7,
+          right: 8,
+          top: 9,
+          bottom: 10,
+          bool: true,
         },
         computedPhysical: {
           x: 134,
           y: 370,
           width: 645,
-          height: 1676
-        }
+          height: 1676,
+        },
       });
     });
 
@@ -152,8 +159,11 @@ describe('dom renderer', () => {
         scaleRatio: { x: undefined, y: undefined },
         margin: { left: undefined, top: undefined },
         edgeBleed: {
-          left: undefined, right: undefined, top: undefined, bottom: undefined
-        }
+          left: undefined,
+          right: undefined,
+          top: undefined,
+          bottom: undefined,
+        },
       });
       expect(rend.size()).to.deep.equal({
         x: 0,
@@ -163,11 +173,18 @@ describe('dom renderer', () => {
         scaleRatio: { x: 1, y: 1 },
         margin: { left: 0, top: 0 },
         edgeBleed: {
-          left: 0, right: 0, top: 0, bottom: 0, bool: false
+          left: 0,
+          right: 0,
+          top: 0,
+          bottom: 0,
+          bool: false,
         },
         computedPhysical: {
-          x: 0, y: 0, width: 0, height: 0
-        }
+          x: 0,
+          y: 0,
+          width: 0,
+          height: 0,
+        },
       });
     });
   });

@@ -12,8 +12,8 @@ describe('extractor', () => {
       scale: 2,
       h: 3,
       props: {
-        extract: extractStub
-      }
+        extract: extractStub,
+      },
     };
   });
 

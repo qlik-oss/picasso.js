@@ -35,7 +35,7 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
 
   const defs = {
     type: 'defs',
-    children: []
+    children: [],
   };
   const patterns = patternizer(defs.children);
   const gradients = gradienter(defs.children);
@@ -84,7 +84,9 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
     const sceneContainer = {
       type: 'container',
       children: Array.isArray(nodes) ? [...nodes, defs] : nodes,
-      transform: rect.edgeBleed.bool ? `translate(${rect.edgeBleed.left * scaleX}, ${rect.edgeBleed.top * scaleY})` : ''
+      transform: rect.edgeBleed.bool
+        ? `translate(${rect.edgeBleed.left * scaleX}, ${rect.edgeBleed.top * scaleY})`
+        : '',
     };
 
     if (scaleX !== 1 || scaleY !== 1) {
@@ -102,9 +104,9 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
           gradients.onCreate,
           patterns.onCreate,
           onLineBreak(svg.measureText),
-          injectTextBoundsFn(svg)
-        ]
-      }
+          injectTextBoundsFn(svg),
+        ],
+      },
     });
     const hasChangedScene = scene ? !newScene.equals(scene) : true;
 

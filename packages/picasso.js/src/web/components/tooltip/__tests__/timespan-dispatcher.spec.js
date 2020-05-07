@@ -12,7 +12,7 @@ describe('timeSpanDispatcher', () => {
     clock = sandbox.useFakeTimers();
     settings = {
       defaultDuration: 20,
-      defaultDelay: 10
+      defaultDelay: 10,
     };
   });
 

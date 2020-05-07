@@ -2,15 +2,7 @@ import createElement from 'test-utils/mocks/element-mock';
 import picasso from '..';
 
 describe('picasso.js', () => {
-  const iface = [
-    'component',
-    'data',
-    'formatter',
-    'interaction',
-    'renderer',
-    'scale',
-    'symbol'
-  ];
+  const iface = ['component', 'data', 'formatter', 'interaction', 'renderer', 'scale', 'symbol'];
 
   describe('api', () => {
     it('should expose the correct top-level API', () => {
@@ -51,8 +43,8 @@ describe('picasso.js', () => {
     it('should set default renderer', () => {
       const pic = picasso({
         renderer: {
-          prio: ['custom']
-        }
+          prio: ['custom'],
+        },
       });
       expect(pic.renderer.default()).to.equal('custom');
     });
@@ -60,8 +52,8 @@ describe('picasso.js', () => {
     it('should set default log level', () => {
       const pic = picasso({
         logger: {
-          level: 3
-        }
+          level: 3,
+        },
       });
       expect(pic.logger.level()).to.equal(3);
     });
@@ -70,12 +62,12 @@ describe('picasso.js', () => {
       const pic = picasso({
         style: {
           fill: 'red',
-          stroke: 'green'
-        }
+          stroke: 'green',
+        },
       })({
         style: {
-          fill: 'cyan'
-        }
+          fill: 'cyan',
+        },
       });
       expect(pic.config().style.fill).to.equal('cyan');
       expect(pic.config().style.stroke).to.equal('green');
@@ -83,7 +75,7 @@ describe('picasso.js', () => {
 
     it('should extend palettes', () => {
       const pic = picasso({
-        palettes: ['fancy']
+        palettes: ['fancy'],
       });
       expect(pic.config().palettes[3]).to.equal('fancy');
     });
@@ -96,7 +88,7 @@ describe('picasso.js', () => {
 
       picasso.chart({
         element,
-        mounted: mountedFn
+        mounted: mountedFn,
       });
 
       expect(mountedFn).to.have.been.calledWith(element);
@@ -114,10 +106,10 @@ describe('picasso.js', () => {
 
       const chart = picasso.chart({
         element,
-        updated: updatedFn
+        updated: updatedFn,
       });
       chart.update({
-        data: []
+        data: [],
       });
 
       expect(updatedFn).to.have.been.called;
@@ -130,8 +122,8 @@ describe('picasso.js', () => {
       picasso.chart({
         element,
         on: {
-          click: clickFn
-        }
+          click: clickFn,
+        },
       });
 
       const e = {};
@@ -145,7 +137,7 @@ describe('picasso.js', () => {
       const matchFn = (fnName) => (fn) => fn.name === fnName;
 
       picasso.chart({
-        element
+        element,
       });
 
       expect(spy).to.have.been.calledWith('mousedown', sinon.match(matchFn('onTapDown'), 'function onTapDown'));

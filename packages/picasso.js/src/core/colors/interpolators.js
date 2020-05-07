@@ -4,15 +4,15 @@ import color from './color';
 
 export default {
   /**
-  * Interpolate two colors
-  * @private
-  * @param  { Object } from The color to interpolate from
-  * @param  { Object } to   The color to interpolate to
-  * @param  { Number } t  A number between [0-1]
-  * @return { RgbaColor | HslaColor } Color instance, the type returned is the same as the type of the "to" color
-  * @example
-  * interpolate( "blue", "red", 0.5 );
-  */
+   * Interpolate two colors
+   * @private
+   * @param  { Object } from The color to interpolate from
+   * @param  { Object } to   The color to interpolate to
+   * @param  { Number } t  A number between [0-1]
+   * @return { RgbaColor | HslaColor } Color instance, the type returned is the same as the type of the "to" color
+   * @example
+   * interpolate( "blue", "red", 0.5 );
+   */
   interpolate: (from, to, t) => {
     let fromC = color(from),
       toC = color(to),
@@ -41,5 +41,5 @@ export default {
     }
 
     return color(colorObj);
-  }
+  },
 };
