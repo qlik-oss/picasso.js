@@ -35,7 +35,7 @@ Some properties are general and can be used on all components:
 - `layout.dock` _string_. Dock setting. Any of `top` | `right` | `bottom` | `left`
 - `layout.displayOrder` _number_. The order in which components are rendered (similar to css z-index).
 - `layout.prioOrder` _number_. The order in which components are docked from the center area,
-- `layout.minimumLayoutMode` _string_.
+- `layout.minimumLayoutMode` *string*. The threshold for which components should appear,
 - `data` _object_. See [data section](./data.md).
 - `settings` _object_.
 - `created` _function_. Lifecycle hook.
