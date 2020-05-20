@@ -78,6 +78,7 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
     y2: 1,
     stroke: style.stroke || 'black',
     strokeWidth: style.strokeWidth || 1,
+    strokeDasharray: style.strokeDasharray,
     flipXY: p.flipXY || false, // This flips individual points (Y-lines)
   });
 

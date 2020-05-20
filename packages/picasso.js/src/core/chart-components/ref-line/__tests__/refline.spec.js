@@ -119,6 +119,7 @@ describe('reference lines', () => {
             scale: { scale: 'x' },
             line: {
               stroke: 'green',
+              strokeDasharray: '8 4',
               strokeWidth: 2,
             },
             label: {
@@ -153,6 +154,7 @@ describe('reference lines', () => {
       {
         flipXY: false,
         stroke: 'green',
+        strokeDasharray: '8 4',
         strokeWidth: 2,
         type: 'line',
         x1: 261,
@@ -233,6 +235,7 @@ describe('reference lines', () => {
       {
         flipXY: false,
         stroke: 'green',
+        strokeDasharray: undefined,
         strokeWidth: 2,
         type: 'line',
         x1: 261,
@@ -286,6 +289,7 @@ describe('reference lines', () => {
       {
         flipXY: true,
         stroke: 'green',
+        strokeDasharray: undefined,
         strokeWidth: 2,
         type: 'line',
         x1: 0,
@@ -356,6 +360,7 @@ describe('reference lines', () => {
       {
         flipXY: true,
         stroke: '#000',
+        strokeDasharray: undefined,
         strokeWidth: 1,
         type: 'line',
         x1: -0.5,
