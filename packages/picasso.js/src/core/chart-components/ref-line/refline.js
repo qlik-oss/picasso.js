@@ -59,6 +59,7 @@ function filterUndefinedValue(line) {
  * @property {string} [fill='#fff'] - Fill color
  * @property {string} [stroke='transparent'] - Stroke
  * @property {number} [strokeWidth=0] - Stroke width
+ * @property {string} [strokeDasharray] - Stroke dash array
  * @property {number} [opacity=1] - Opacity
  */
 
