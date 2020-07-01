@@ -11028,10 +11028,10 @@ path-type@^4.0.0:
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-4.0.0.tgz#84ed01c0a7ba380afe09d90a8c180dcd9d03043b"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
-path2d-polyfill@0.4.2:
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/path2d-polyfill/-/path2d-polyfill-0.4.2.tgz#594d3103838ef6b9dd4a7fd498fe9a88f1f28531"
-  integrity sha512-JSeAnUfkFjl+Ml/EZL898ivMSbGHrOH63Mirx5EQ1ycJiryHDmj1Q7Are+uEPvenVGCUN9YbolfGfyUewJfJEg==
+path2d-polyfill@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/path2d-polyfill/-/path2d-polyfill-1.0.0.tgz#70434b511e2dde5a905c1c1f9dcf36616e45cd5d"
+  integrity sha512-DT3X1EcMTfXSbh619YsoKmXh/8+If3DIYALawcGnH+x9Gv+uUnnAoVR/TL3syAXtfLienQvw3sTcP+fI2bduOA==
 
 pathval@^1.1.0:
   version "1.1.0"
