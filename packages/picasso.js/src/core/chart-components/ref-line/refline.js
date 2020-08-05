@@ -49,6 +49,7 @@ function filterUndefinedValue(line) {
  * @property {object} [padding] - Padding on X
  * @property {number} [padding.x=28] - Padding on X
  * @property {number} [padding.y=5] - Padding on X
+ * @property {boolean} [showValueLabel=true] - Show value label
  */
 
 /**

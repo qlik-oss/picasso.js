@@ -101,7 +101,7 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
       formatter = scaleData && scaleData[0] ? scaleData[0].formatter() : null;
     }
 
-    if (p.showValue !== false) {
+    if (p.label.showValueLabel !== false) {
       if (formatter) {
         valueString = ` (${formatter(p.value)})`;
       } else if (p.scale) {

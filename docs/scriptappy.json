@@ -3331,6 +3331,12 @@
                       "type": "number"
                     }
                   }
+                },
+                "showValueLabel": {
+                  "description": "Show value label",
+                  "optional": true,
+                  "defaultValue": true,
+                  "type": "boolean"
                 }
               }
             },
