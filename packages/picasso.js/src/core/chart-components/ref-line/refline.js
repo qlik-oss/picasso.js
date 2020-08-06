@@ -85,6 +85,7 @@ function filterUndefinedValue(line) {
  * @property {number} [maxWidth=1] - The maximum relative width to the width of the rendering area (see maxWidthPx below aswell)
  * @property {number} [maxWidthPx=9999] - The maximum width in pixels.
  * @property {refline-line-label-background} [background=refline-line-label-background] - The background style (rect behind text)
+ * @property {boolean} [showValue=true] - Show value label
  */
 
 /**

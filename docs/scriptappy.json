@@ -3550,6 +3550,12 @@
               "optional": true,
               "defaultValue": "refline-line-label-background",
               "type": "refline-line-label-background"
+            },
+            "showValue": {
+              "description": "Show value label",
+              "optional": true,
+              "defaultValue": true,
+              "type": "boolean"
             }
           }
         },
