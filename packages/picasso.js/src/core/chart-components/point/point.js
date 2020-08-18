@@ -51,6 +51,9 @@ const DEFAULT_DATA_SETTINGS = {
   /** Whether or not to show the point
    * @type {datum-boolean=} */
   show: true,
+  /** Direction of shape
+   * @type {string=} */
+  direction: 'vertical',
 };
 
 /**
@@ -134,6 +137,7 @@ function createDisplayPoints(dataPoints, { width, height }, pointSize, shapeFn) 
         strokeWidth: s.strokeWidth,
         strokeDasharray: s.strokeDasharray,
         opacity: s.opacity,
+        direction: s.direction,
       };
       if (s === p.errorShape) {
         shapeSpec.width = s.width;
