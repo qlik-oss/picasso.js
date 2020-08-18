@@ -46,6 +46,7 @@ describe('point component', () => {
         strokeDasharray: '',
         opacity: 1,
         data: { value: 1, label: '1' },
+        direction: 'vertical',
       },
     ]);
   });
@@ -81,6 +82,7 @@ describe('point component', () => {
         strokeDasharray: '',
         opacity: 1,
         data: { value: 1, label: '1' },
+        direction: 'vertical',
       },
     ]);
   });
@@ -123,6 +125,7 @@ describe('point component', () => {
         strokeDasharray: '2 5',
         opacity: 0.7,
         data: { value: 1, label: '1' },
+        direction: 'vertical',
       },
     ]);
   });
@@ -169,6 +172,7 @@ describe('point component', () => {
           value: 'a',
           label: 'a',
         },
+        direction: 'vertical',
       },
     ]);
   });
@@ -244,6 +248,7 @@ describe('point component', () => {
           },
           label: '[object Object]',
         },
+        direction: 'vertical',
       },
       {
         type: 'square',
@@ -267,6 +272,7 @@ describe('point component', () => {
           },
           label: '[object Object]',
         },
+        direction: 'vertical',
       },
     ]);
   });
@@ -349,6 +355,7 @@ describe('point component', () => {
           minRelExtent: 0.2,
           maxRelExtent: 1,
         },
+        direction: 'vertical',
       },
     };
 
@@ -460,6 +467,7 @@ describe('point component', () => {
           },
           label: '[object Object]',
         },
+        direction: 'vertical',
       },
     ]);
   });
