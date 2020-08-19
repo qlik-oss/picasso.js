@@ -463,4 +463,133 @@ describe('point component', () => {
       },
     ]);
   });
+
+  it('should render points with custom shape', () => {
+    const config = {
+      shapeFn,
+      data: [1],
+      settings: {
+        shape: () => ({
+          type: 'custom',
+          custom: 'prop',
+        }),
+      },
+    };
+
+    componentFixture.simulateCreate(pointComponent, config);
+    renderedPoints = componentFixture.simulateRender(opts);
+
+    expect(renderedPoints).to.deep.equal([
+      {
+        custom: 'prop',
+        type: 'custom',
+        label: '',
+        x: 50,
+        y: 100,
+        fill: '#333',
+        size: 10,
+        stroke: '#ccc',
+        strokeWidth: 0,
+        strokeDasharray: '',
+        opacity: 1,
+        data: { value: 1, label: '1' },
+      },
+    ]);
+  });
+
+  it('should render points with custom shape when type prop is missing', () => {
+    const config = {
+      shapeFn,
+      data: [1],
+      settings: {
+        shape: () => ({
+          // type: 'custom',
+          custom: 'prop',
+        }),
+      },
+    };
+
+    componentFixture.simulateCreate(pointComponent, config);
+    renderedPoints = componentFixture.simulateRender(opts);
+
+    expect(renderedPoints).to.deep.equal([
+      {
+        type: 'circle',
+        label: '',
+        x: 50,
+        y: 100,
+        fill: '#333',
+        size: 10,
+        stroke: '#ccc',
+        strokeWidth: 0,
+        strokeDasharray: '',
+        opacity: 1,
+        data: { value: 1, label: '1' },
+      },
+    ]);
+  });
+
+  it('should render points with default type when shape is an object', () => {
+    const config = {
+      shapeFn,
+      data: [1],
+      settings: {
+        shape: {
+          type: 'custom',
+          custom: 'prop',
+        },
+      },
+    };
+
+    componentFixture.simulateCreate(pointComponent, config);
+    renderedPoints = componentFixture.simulateRender(opts);
+
+    expect(renderedPoints).to.deep.equal([
+      {
+        type: 'circle',
+        label: '',
+        x: 50,
+        y: 100,
+        fill: '#333',
+        size: 10,
+        stroke: '#ccc',
+        strokeWidth: 0,
+        strokeDasharray: '',
+        opacity: 1,
+        data: { value: 1, label: '1' },
+      },
+    ]);
+  });
+
+  it('should not be able to override base point properties with custom shape', () => {
+    const config = {
+      shapeFn,
+      data: [1],
+      settings: {
+        shape: () => ({
+          type: 'custom',
+          label: 'do not override',
+        }),
+      },
+    };
+
+    componentFixture.simulateCreate(pointComponent, config);
+    renderedPoints = componentFixture.simulateRender(opts);
+
+    expect(renderedPoints).to.deep.equal([
+      {
+        type: 'custom',
+        label: '',
+        x: 50,
+        y: 100,
+        fill: '#333',
+        size: 10,
+        stroke: '#ccc',
+        strokeWidth: 0,
+        strokeDasharray: '',
+        opacity: 1,
+        data: { value: 1, label: '1' },
+      },
+    ]);
+  });
 });

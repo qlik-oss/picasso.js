@@ -113,6 +113,20 @@ function getPointSizeLimits(x, y, width, height, limits) {
   };
 }
 
+function getType(s) {
+  let type = DEFAULT_DATA_SETTINGS.shape;
+  let props = {};
+  if (typeof s.shape === 'object' && typeof s.shape.type === 'string') {
+    type = s.shape.type;
+    props = s.shape;
+  } else if (typeof s.shape === 'string') {
+    type = s.shape;
+  }
+  type = type === 'rect' ? 'square' : type;
+
+  return [type, props];
+}
+
 function createDisplayPoints(dataPoints, { width, height }, pointSize, shapeFn) {
   return dataPoints
     .filter((p) => p.show !== false && !isNaN(p.x + p.y))
@@ -123,8 +137,11 @@ function createDisplayPoints(dataPoints, { width, height }, pointSize, shapeFn) 
         s = DEFAULT_ERROR_SETTINGS.errorShape;
         size = pointSize.min + s.size * (pointSize.max - pointSize.min);
       }
+
+      const [type, typeProps] = getType(s);
       const shapeSpec = {
-        type: s.shape === 'rect' ? 'square' : s.shape,
+        ...typeProps,
+        type,
         label: p.label,
         x: p.x * width,
         y: p.y * height,
