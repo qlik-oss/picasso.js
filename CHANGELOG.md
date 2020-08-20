@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.34.0](https://github.com/qlik-oss/picasso.js/compare/v0.33.0...v0.34.0) (2020-08-20)
+
+### Features
+
+- **point:** resolve shape with custom properties ([#517](https://github.com/qlik-oss/picasso.js/issues/517)) ([2d5039a](https://github.com/qlik-oss/picasso.js/commit/2d5039ac447e96bb0dbb6128951475426278545d))
+
 # [0.33.0](https://github.com/qlik-oss/picasso.js/compare/v0.32.1...v0.33.0) (2020-08-06)
 
 ### Features
