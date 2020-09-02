@@ -62,6 +62,8 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './public/index.html',
     }),
-    new CopyWebpackPlugin([{ from: 'public', ignore: ['index.html'] }]),
+    new CopyWebpackPlugin({
+      patterns: [{ from: 'public', globOptions: { ignore: ['index.html'] } }],
+    }),
   ],
 };
