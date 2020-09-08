@@ -11,7 +11,7 @@
     "glob": "7.1.6",
     "handlebars": "4.7.6",
     "handlebars-helpers": "0.10.0",
-    "jsdoc": "3.6.4",
+    "jsdoc": "3.6.5",
     "rimraf": "3.0.2",
     "scriptappy-from-jsdoc": "0.6.0"
   }
