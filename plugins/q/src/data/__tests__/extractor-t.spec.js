@@ -929,13 +929,13 @@ describe('q-data-extractor-t', () => {
         deps
       );
 
+      // Restore
+      treePages[0].qNodes[0].qAttrDims = tempQAttrDims;
+
       expect(m).to.eql([
         { value: NaN, label: '', source: { key: 'cube', field: 'qDimensionInfo/0/qAttrDimInfo/1' } },
         { value: 7, label: 'Bake', source: { key: 'cube', field: 'qDimensionInfo/0/qAttrDimInfo/1' } },
       ]);
-
-      // Restore
-      treePages[0].qNodes[0].qAttrDims = tempQAttrDims;
     });
 
     it('should be fine with nodes missing qAttrExps', () => {
@@ -953,6 +953,9 @@ describe('q-data-extractor-t', () => {
         deps
       );
 
+      // Restore
+      treePages[0].qNodes[0].qNodes[0].qAttrExps = tempQAttrExps;
+
       expect(m).to.eql([
         { value: NaN, label: '', source: { key: 'cube', field: 'qDimensionInfo/1/qAttrExprInfo/0' } },
         { value: 2, label: 'two', source: { key: 'cube', field: 'qDimensionInfo/1/qAttrExprInfo/0' } },
@@ -960,9 +963,6 @@ describe('q-data-extractor-t', () => {
         { value: 7, label: 'seven', source: { key: 'cube', field: 'qDimensionInfo/1/qAttrExprInfo/0' } },
         { value: 9, label: 'nine', source: { key: 'cube', field: 'qDimensionInfo/1/qAttrExprInfo/0' } },
       ]);
-
-      // Restore
-      treePages[0].qNodes[0].qNodes[0].qAttrExps = tempQAttrExps;
     });
   });
 
