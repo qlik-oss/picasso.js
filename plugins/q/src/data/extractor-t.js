@@ -108,9 +108,9 @@ function getFieldAccessor(sourceDepthObject, targetDepthObject) {
   let attrFn;
 
   if (targetDepthObject.attrDimIdx >= 0) {
-    attrFn = (data) => data.qAttrDims.qValues[targetDepthObject.attrDimIdx];
+    attrFn = (data) => data?.qAttrDims?.qValues[targetDepthObject.attrDimIdx];
   } else if (targetDepthObject.attrIdx >= 0) {
-    attrFn = (data) => data.qAttrExps.qValues[targetDepthObject.attrIdx];
+    attrFn = (data) => data?.qAttrExps?.qValues[targetDepthObject.attrIdx];
   }
 
   return {
