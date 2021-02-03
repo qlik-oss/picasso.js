@@ -16,7 +16,8 @@ function createOobData(line) {
 }
 
 function filterUndefinedValue(line) {
-  return typeof line.value !== 'undefined';
+  const value = typeof line.value === 'function' ? line.value() : line.value;
+  return typeof value !== 'undefined';
 }
 
 /**
