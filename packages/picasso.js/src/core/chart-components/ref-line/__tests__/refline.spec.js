@@ -109,6 +109,38 @@ describe('reference lines', () => {
     expect(rendererOutput).to.deep.equal([]);
   });
 
+  it('should not render lines if value function returns undefined', () => {
+    const config = {
+      shapeFn,
+      lines: {
+        x: [
+          {
+            line: { stroke: 'green', value: () => undefined },
+            label: { text: 'Oops' },
+          },
+        ],
+        y: [
+          {
+            line: { stroke: 'green', value: () => undefined },
+            label: { text: 'Oops' },
+          },
+        ],
+      },
+    };
+
+    createAndRenderComponent({
+      inner: {
+        x: 37,
+        y: 0,
+        width: 870,
+        height: 813,
+      },
+      config,
+    });
+
+    expect(rendererOutput).to.deep.equal([]);
+  });
+
   it('should render basic line with RTL label on X with scale', () => {
     const config = {
       shapeFn,
