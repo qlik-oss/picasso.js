@@ -148,6 +148,8 @@ describe('svg-nodes', () => {
         type: 'text',
         attrs: {
           dy: 10,
+          x: 0,
+          y: 0,
         },
       };
       maintainer(el, item);
@@ -165,6 +167,8 @@ describe('svg-nodes', () => {
         attrs: {
           'dominant-baseline': 'ideographic',
           'font-size': '10px',
+          x: 0,
+          y: 0,
         },
       };
       maintainer(el, item);
@@ -186,6 +190,8 @@ describe('svg-nodes', () => {
         type: 'text',
         attrs: {
           title: 'my title',
+          x: 0,
+          y: 0,
         },
       };
       maintainer(el, item);
