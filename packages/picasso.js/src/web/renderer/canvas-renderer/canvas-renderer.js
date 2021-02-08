@@ -6,6 +6,7 @@ import patternizer from './canvas-pattern';
 import createRendererBox from '../renderer-box';
 import create from '../index';
 import injectTextBoundsFn from '../../text-manipulation/inject-textbounds';
+import canvasBuffer from './canvas-buffer';
 
 const reg = registry();
 
@@ -112,14 +113,19 @@ function renderShapes(shapes, g, shapeToCanvasMap, deps) {
 /**
  * Create a new canvas renderer
  * @typedef {function} canvasRendererFactory
- * @param {function} sceneFn - Scene factory
+ * @param {object} [opts]
+ * @param {function} [opts.sceneFn] Scene factory
+ * @param {boolean} [opts.useBuffer] Enable buffer canvas
+ * @param {boolean} [opts.canvasBufferSize] Buffer size
  * @returns {renderer} A canvas renderer instance
  */
-export function renderer(sceneFn = sceneFactory) {
+export function renderer(opts = {}) {
   let el;
+  let buffer;
   let scene;
   let hasChangedRect = false;
   let rect = createRendererBox();
+  const { sceneFn = sceneFactory, useBuffer, canvasBufferSize } = opts;
   const shapeToCanvasMap = [
     ['fill', 'fillStyle'],
     ['stroke', 'strokeStyle'],
@@ -147,6 +153,10 @@ export function renderer(sceneFn = sceneFactory) {
       el.style.pointerEvents = 'none';
     }
 
+    if (useBuffer && !buffer) {
+      buffer = canvasBuffer({ el, canvasBufferSize });
+    }
+
     element.appendChild(el);
 
     return el;
@@ -160,10 +170,12 @@ export function renderer(sceneFn = sceneFactory) {
       patterns = patternizer(el.ownerDocument);
     }
 
-    const g = el.getContext('2d');
+    const g = (buffer && buffer.getContext()) || el.getContext('2d');
     const dpiRatio = dpiScale(g);
     const scaleX = rect.scaleRatio.x;
     const scaleY = rect.scaleRatio.y;
+    let translateLeft = 0;
+    let translateTop = 0;
 
     if (hasChangedRect) {
       el.style.left = `${rect.computedPhysical.x}px`;
@@ -172,14 +184,30 @@ export function renderer(sceneFn = sceneFactory) {
       el.style.height = `${rect.computedPhysical.height}px`;
       el.width = Math.round(rect.computedPhysical.width * dpiRatio);
       el.height = Math.round(rect.computedPhysical.height * dpiRatio);
+
+      if (buffer) {
+        buffer.updateSize({ rect, dpiRatio });
+      }
+    }
+
+    if (buffer) {
+      const bufferOffset = buffer.getOffset();
+      translateLeft = bufferOffset.left;
+      translateTop = bufferOffset.top;
+    }
+
+    if (rect.edgeBleed.bool) {
+      translateLeft += rect.edgeBleed.left;
+      translateTop += rect.edgeBleed.top;
     }
 
     const sceneContainer = {
       type: 'container',
       children: shapes,
-      transform: rect.edgeBleed.bool
-        ? `translate(${rect.edgeBleed.left * dpiRatio * scaleX}, ${rect.edgeBleed.top * dpiRatio * scaleY})`
-        : '',
+      transform:
+        translateLeft || translateTop
+          ? `translate(${translateLeft * dpiRatio * scaleX}, ${translateTop * dpiRatio * scaleY})`
+          : '',
     };
 
     if (dpiRatio !== 1 || scaleX !== 1 || scaleY !== 1) {
@@ -205,9 +233,19 @@ export function renderer(sceneFn = sceneFactory) {
       });
     }
 
+    if (buffer) {
+      buffer.apply();
+    }
+
     hasChangedRect = false;
     scene = newScene;
     return doRender;
+  };
+
+  canvasRenderer.transform = (transform) => {
+    if (buffer) {
+      buffer.apply(transform);
+    }
   };
 
   canvasRenderer.itemsAt = (input) => (scene ? scene.getItemsFrom(input) : []);
@@ -223,9 +261,9 @@ export function renderer(sceneFn = sceneFactory) {
     return canvasRenderer;
   };
 
-  canvasRenderer.size = (opts) => {
-    if (opts) {
-      const newRect = createRendererBox(opts);
+  canvasRenderer.size = (opt) => {
+    if (opt) {
+      const newRect = createRendererBox(opt);
 
       if (JSON.stringify(rect) !== JSON.stringify(newRect)) {
         hasChangedRect = true;
@@ -242,6 +280,9 @@ export function renderer(sceneFn = sceneFactory) {
         el.parentElement.removeChild(el);
       }
       el = null;
+    }
+    if (buffer) {
+      buffer = null;
     }
     scene = null;
   };

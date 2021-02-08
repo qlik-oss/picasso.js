@@ -321,7 +321,8 @@ function componentFactory(definition, context = {}) {
   });
 
   const rendString = settings.renderer || definition.renderer;
-  const rend = rendString ? renderer || registries.renderer(rendString)() : renderer || registries.renderer()();
+  const rendSettings = settings.rendererSettings;
+  const rend = renderer || registries.renderer(rendString)(rendSettings);
   brushArgs.renderer = rend;
 
   const dockConfigCallbackContext = { resources: chart.logger ? { logger: chart.logger() } : {} };
@@ -431,6 +432,12 @@ function componentFactory(definition, context = {}) {
     const nodes = (brushArgs.nodes = render.call(definitionContext, ...getRenderArgs()));
     rend.render(nodes);
     currentNodes = nodes;
+  };
+
+  fn.transform = (transformation) => {
+    if (typeof rend.transform === 'function') {
+      rend.transform(transformation);
+    }
   };
 
   fn.hide = () => {

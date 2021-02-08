@@ -51,6 +51,12 @@ export default function renderer(opts = {}) {
     return true;
   };
 
+  dom.transform = (transform) => {
+    const x = transform;
+    const y = transform;
+    el.style.transform = `translate(${x}px, ${y}px)`;
+  };
+
   dom.renderArgs = [h]; // Arguments to render functions using the DOM renderer
 
   dom.clear = () => {

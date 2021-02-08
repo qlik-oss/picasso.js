@@ -513,7 +513,7 @@ function chartFn(definition, context) {
    * @param {chart-definition} [chart] - Chart definition
    */
   instance.update = (newProps = {}) => {
-    const { partialData, excludeFromUpdate = [] } = newProps;
+    const { partialData, excludeFromUpdate = [], transforms = [] } = newProps;
     let visibleOrder;
     if (newProps.data) {
       data = newProps.data;
@@ -549,6 +549,11 @@ function chartFn(definition, context) {
           return currentComponents[idx];
         }
 
+        if (transforms.some((t) => t.key === comp.key)) {
+          currentComponents[idx].transform = transforms.filter((t) => t.key === comp.key)[0].transform;
+          return currentComponents[idx];
+        }
+
         if (idx === -1) {
           // Component is added
           return createComponent(comp, element);
@@ -577,11 +582,15 @@ function chartFn(definition, context) {
 
     const toUpdate = [];
     const toRender = [];
+    const toTransform = [];
     let toRenderOrUpdate;
     if (partialData) {
       currentComponents.forEach((comp) => {
         if (comp.updateWith && comp.visible) {
           toUpdate.push(comp);
+        }
+        if (comp.transform && comp.visible) {
+          toTransform.push(comp);
         }
       });
       toRenderOrUpdate = toUpdate;
@@ -610,6 +619,8 @@ function chartFn(definition, context) {
     toRender.forEach((comp) => comp.instance.mount());
 
     toRenderOrUpdate.forEach((comp) => comp.instance.beforeRender());
+
+    toTransform.forEach((comp) => comp.instance.transform(comp.transform));
 
     toRenderOrUpdate.forEach((comp) => {
       if (comp.updateWith && comp.visible) {

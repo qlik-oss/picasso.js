@@ -35,6 +35,18 @@ function create() {
     render: () => false,
 
     /**
+     * Applies transfomation to the rendered area.
+     * @param {object} transform
+     * @param {number} transform.a Horizontal scaling
+     * @param {number} transform.b Horizontal skewing
+     * @param {number} transform.c Vertical skewing
+     * @param {number} transform.d Vertical scaling
+     * @param {number} transform.e Horizontal moving
+     * @param {number} transform.f Vertical scaling
+     */
+    transform: () => {},
+
+    /**
      * Get nodes renderer at area
      * @param {point|circle|rect|line|polygon|geopolygon} geometry - Get nodes that intersects with geometry
      * @returns {SceneNode[]}

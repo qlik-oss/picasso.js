@@ -18,12 +18,14 @@ import injectTextBoundsFn from '../../text-manipulation/inject-textbounds';
 /**
  * Create a new svg renderer
  * @typedef {function} svgRendererFactory
- * @param {function} treeFactory - Node tree factory
- * @param {string} ns - Namespace definition
- * @param {function} sceneFn - Scene factory
+ * @param {object} [opts]
+ * @param {function} [opts.treeFactory] Node tree factory
+ * @param {string} [opts.ns] Namespace definition
+ * @param {function} [opts.sceneFn] Scene factory
  * @returns {renderer} A svg renderer instance
  */
-export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sceneFactory) {
+export default function renderer(opts = {}) {
+  const { treeFn = treeFactory, ns = svgNs, sceneFn = sceneFactory } = opts;
   const tree = treeFn();
   let el;
   let group;
@@ -121,6 +123,12 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
     return doRender;
   };
 
+  svg.transform = (transform) => {
+    const x = transform.e;
+    const y = transform.f;
+    group.style.transform = `translate(${x}px, ${y}px)`;
+  };
+
   svg.itemsAt = (input) => (scene ? scene.getItemsFrom(input) : []);
 
   svg.findShapes = (selector) => (scene ? scene.findShapes(selector) : []);
@@ -145,9 +153,9 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
     group = null;
   };
 
-  svg.size = (opts) => {
-    if (opts) {
-      const newRect = createRendererBox(opts);
+  svg.size = (opt) => {
+    if (opt) {
+      const newRect = createRendererBox(opt);
 
       if (JSON.stringify(rect) !== JSON.stringify(newRect)) {
         hasChangedRect = true;
