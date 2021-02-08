@@ -3,6 +3,7 @@ import baselineHeuristic from '../../text-manipulation/baseline-heuristic';
 import { detectTextDirection, flipTextAnchor } from '../../../core/utils/rtl-util';
 
 const svgNs = 'http://www.w3.org/2000/svg';
+// const badValues = ['', NaN, 'NaN', undefined, null, false, true];
 
 const creator = (type, parent) => {
   if (!type || typeof type !== 'string') {
@@ -21,45 +22,64 @@ const destroyer = (el) => {
   }
 };
 
-const maintainer = (element, item) => {
-  for (const attr in item.attrs) {
-    if (attr === 'stroke' && item.strokeReference) {
-      element.setAttribute('stroke', item.strokeReference);
-    } else if (attr === 'fill' && item.fillReference) {
-      element.setAttribute('fill', item.fillReference);
-    } else if (attr === 'text') {
-      element.setAttribute('style', 'white-space: pre');
-      element.textContent = item.ellipsed || ellipsText(item.attrs, measureText);
-      const dir = detectTextDirection(item.attrs.text);
-      if (dir === 'rtl') {
-        element.setAttribute('direction', 'rtl');
-        element.setAttribute('dir', 'rtl');
-        element.setAttribute('text-anchor', flipTextAnchor(element.getAttribute('text-anchor'), dir));
-      }
-    } else if (item.type === 'text' && (attr === 'dy' || attr === 'dominant-baseline')) {
-      const dy = +element.getAttribute(attr) || 0;
-      let val = 0;
-      if (attr === 'dominant-baseline') {
-        val = baselineHeuristic(item.attrs);
-      } else {
-        val = item.attrs[attr];
-      }
-      element.setAttribute('dy', val + dy);
-    } else if (item.type === 'text' && attr === 'title' && item.attrs.title) {
-      const t = element.ownerDocument.createElementNS(svgNs, 'title');
-      t.textContent = item.attrs.title;
-      element.appendChild(t);
-    } else {
-      element.setAttribute(attr, item.attrs[attr]);
-    }
+// isValid - is a way to bring a more consistent rendering behaviour between SVG and canvas.
+// Where SVG would treat NaN values as 0, canvas would simple not render anything.
+const isValid = (item) => {
+  switch (item.type) {
+    case 'circle':
+      return !isNaN(item.attrs.cx) && !isNaN(item.attrs.cy) && !isNaN(item.attrs.r);
+    case 'line':
+      return !isNaN(item.attrs.x1) && !isNaN(item.attrs.y1) && !isNaN(item.attrs.x2) && !isNaN(item.attrs.y2);
+    case 'rect':
+      return !isNaN(item.attrs.x) && !isNaN(item.attrs.y) && !isNaN(item.attrs.width) && !isNaN(item.attrs.height);
+    case 'text':
+      return !isNaN(item.attrs.x) && !isNaN(item.attrs.y);
+    default:
+      return true;
   }
+};
 
-  if (typeof item.data === 'string' || typeof item.data === 'number' || typeof item.data === 'boolean') {
-    element.setAttribute('data', item.data);
-  } else if (typeof item.data === 'object' && item.data !== null) {
-    for (const d in item.data) {
-      if (typeof item.data[d] === 'string' || typeof item.data[d] === 'number' || typeof item.data[d] === 'boolean') {
-        element.setAttribute(`data-${d}`, item.data[d]);
+const maintainer = (element, item) => {
+  if (isValid(item)) {
+    for (const attr in item.attrs) {
+      if (attr === 'stroke' && item.strokeReference) {
+        element.setAttribute('stroke', item.strokeReference);
+      } else if (attr === 'fill' && item.fillReference) {
+        element.setAttribute('fill', item.fillReference);
+      } else if (attr === 'text') {
+        element.setAttribute('style', 'white-space: pre');
+        element.textContent = item.ellipsed || ellipsText(item.attrs, measureText);
+        const dir = detectTextDirection(item.attrs.text);
+        if (dir === 'rtl') {
+          element.setAttribute('direction', 'rtl');
+          element.setAttribute('dir', 'rtl');
+          element.setAttribute('text-anchor', flipTextAnchor(element.getAttribute('text-anchor'), dir));
+        }
+      } else if (item.type === 'text' && (attr === 'dy' || attr === 'dominant-baseline')) {
+        const dy = +element.getAttribute(attr) || 0;
+        let val = 0;
+        if (attr === 'dominant-baseline') {
+          val = baselineHeuristic(item.attrs);
+        } else {
+          val = item.attrs[attr];
+        }
+        element.setAttribute('dy', val + dy);
+      } else if (item.type === 'text' && attr === 'title' && item.attrs.title) {
+        const t = element.ownerDocument.createElementNS(svgNs, 'title');
+        t.textContent = item.attrs.title;
+        element.appendChild(t);
+      } else {
+        element.setAttribute(attr, item.attrs[attr]);
+      }
+    }
+
+    if (typeof item.data === 'string' || typeof item.data === 'number' || typeof item.data === 'boolean') {
+      element.setAttribute('data', item.data);
+    } else if (typeof item.data === 'object' && item.data !== null) {
+      for (const d in item.data) {
+        if (typeof item.data[d] === 'string' || typeof item.data[d] === 'number' || typeof item.data[d] === 'boolean') {
+          element.setAttribute(`data-${d}`, item.data[d]);
+        }
       }
     }
   }
