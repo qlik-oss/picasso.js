@@ -22,10 +22,11 @@ import injectTextBoundsFn from '../../text-manipulation/inject-textbounds';
  * @param {function} [opts.treeFactory] Node tree factory
  * @param {string} [opts.ns] Namespace definition
  * @param {function} [opts.sceneFn] Scene factory
+ * @param {function} [opts.transform]
  * @returns {renderer} A svg renderer instance
  */
 export default function renderer(opts = {}) {
-  const { treeFn = treeFactory, ns = svgNs, sceneFn = sceneFactory } = opts;
+  const { treeFn = treeFactory, ns = svgNs, sceneFn = sceneFactory, transform } = opts;
   const tree = treeFn();
   let el;
   let group;
@@ -68,6 +69,14 @@ export default function renderer(opts = {}) {
     if (!el) {
       return false;
     }
+
+    const transformation = typeof transform === 'function' && transform();
+    if (transformation) {
+      const { e, f } = transformation;
+      group.style.transform = `translate(${e}px, ${f}px)`;
+      return true;
+    }
+    group.style.transform = '';
 
     const scaleX = rect.scaleRatio.x;
     const scaleY = rect.scaleRatio.y;
@@ -121,12 +130,6 @@ export default function renderer(opts = {}) {
     hasChangedRect = false;
     scene = newScene;
     return doRender;
-  };
-
-  svg.transform = (transform) => {
-    const x = transform.e;
-    const y = transform.f;
-    group.style.transform = `translate(${x}px, ${y}px)`;
   };
 
   svg.itemsAt = (input) => (scene ? scene.getItemsFrom(input) : []);

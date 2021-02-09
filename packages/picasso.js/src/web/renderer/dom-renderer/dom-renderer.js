@@ -3,7 +3,7 @@ import createRendererBox from '../renderer-box';
 import create from '../index';
 
 export default function renderer(opts = {}) {
-  const { createElement = document.createElement.bind(document) } = opts;
+  const { createElement = document.createElement.bind(document), transform } = opts;
 
   let el;
   let rect = createRendererBox();
@@ -34,6 +34,14 @@ export default function renderer(opts = {}) {
       return false;
     }
 
+    const transformation = typeof transform === 'function' && transform();
+    if (transformation) {
+      const { e, f } = transformation;
+      el.style.transform = `translate(${e}px, ${f}px)`;
+      return true;
+    }
+    el.style.transform = '';
+
     el.style.left = `${rect.computedPhysical.x}px`;
     el.style.top = `${rect.computedPhysical.y}px`;
     el.style.width = `${rect.computedPhysical.width}px`;
@@ -49,12 +57,6 @@ export default function renderer(opts = {}) {
     dNode = render(vNode, el, dNode);
 
     return true;
-  };
-
-  dom.transform = (transform) => {
-    const x = transform;
-    const y = transform;
-    el.style.transform = `translate(${x}px, ${y}px)`;
   };
 
   dom.renderArgs = [h]; // Arguments to render functions using the DOM renderer

@@ -513,7 +513,7 @@ function chartFn(definition, context) {
    * @param {chart-definition} [chart] - Chart definition
    */
   instance.update = (newProps = {}) => {
-    const { partialData, excludeFromUpdate = [], transforms = [] } = newProps;
+    const { partialData, excludeFromUpdate = [] } = newProps;
     let visibleOrder;
     if (newProps.data) {
       data = newProps.data;
@@ -549,8 +549,13 @@ function chartFn(definition, context) {
           return currentComponents[idx];
         }
 
-        if (transforms.some((t) => t.key === comp.key)) {
-          currentComponents[idx].transform = transforms.filter((t) => t.key === comp.key)[0].transform;
+        // Only apply transform, no need for an update
+        if (
+          comp.rendererSettings &&
+          typeof comp.rendererSettings.transform === 'function' &&
+          comp.rendererSettings.transform()
+        ) {
+          currentComponents[idx].applyTransform = true;
           return currentComponents[idx];
         }
 
@@ -582,15 +587,11 @@ function chartFn(definition, context) {
 
     const toUpdate = [];
     const toRender = [];
-    const toTransform = [];
     let toRenderOrUpdate;
     if (partialData) {
       currentComponents.forEach((comp) => {
-        if (comp.updateWith && comp.visible) {
+        if ((comp.updateWith || comp.applyTransform) && comp.visible) {
           toUpdate.push(comp);
-        }
-        if (comp.transform && comp.visible) {
-          toTransform.push(comp);
         }
       });
       toRenderOrUpdate = toUpdate;
@@ -620,10 +621,8 @@ function chartFn(definition, context) {
 
     toRenderOrUpdate.forEach((comp) => comp.instance.beforeRender());
 
-    toTransform.forEach((comp) => comp.instance.transform(comp.transform));
-
     toRenderOrUpdate.forEach((comp) => {
-      if (comp.updateWith && comp.visible) {
+      if ((comp.updateWith || comp.applyTransform) && comp.visible) {
         comp.instance.update();
       } else {
         comp.instance.render();
@@ -642,6 +641,7 @@ function chartFn(definition, context) {
     visibleComponents.forEach((comp) => {
       delete comp.updateWith;
       comp.visible = true;
+      comp.applyTransform = false;
     });
 
     updated();

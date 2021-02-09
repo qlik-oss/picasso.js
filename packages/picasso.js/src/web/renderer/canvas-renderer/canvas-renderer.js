@@ -115,7 +115,7 @@ function renderShapes(shapes, g, shapeToCanvasMap, deps) {
  * @typedef {function} canvasRendererFactory
  * @param {object} [opts]
  * @param {function} [opts.sceneFn] Scene factory
- * @param {boolean} [opts.useBuffer] Enable buffer canvas
+ * @param {function} [opts.transform]
  * @param {boolean} [opts.canvasBufferSize] Buffer size
  * @returns {renderer} A canvas renderer instance
  */
@@ -125,7 +125,7 @@ export function renderer(opts = {}) {
   let scene;
   let hasChangedRect = false;
   let rect = createRendererBox();
-  const { sceneFn = sceneFactory, useBuffer, canvasBufferSize } = opts;
+  const { sceneFn = sceneFactory, transform, canvasBufferSize } = opts;
   const shapeToCanvasMap = [
     ['fill', 'fillStyle'],
     ['stroke', 'strokeStyle'],
@@ -153,7 +153,7 @@ export function renderer(opts = {}) {
       el.style.pointerEvents = 'none';
     }
 
-    if (useBuffer && !buffer) {
+    if (typeof transform === 'function' && !buffer) {
       buffer = canvasBuffer({ el, canvasBufferSize });
     }
 
@@ -169,7 +169,11 @@ export function renderer(opts = {}) {
     if (!patterns) {
       patterns = patternizer(el.ownerDocument);
     }
-
+    const transformation = buffer && transform();
+    if (transformation) {
+      buffer.apply(transformation);
+      return true;
+    }
     const g = (buffer && buffer.getContext()) || el.getContext('2d');
     const dpiRatio = dpiScale(g);
     const scaleX = rect.scaleRatio.x;
@@ -240,12 +244,6 @@ export function renderer(opts = {}) {
     hasChangedRect = false;
     scene = newScene;
     return doRender;
-  };
-
-  canvasRenderer.transform = (transform) => {
-    if (buffer) {
-      buffer.apply(transform);
-    }
   };
 
   canvasRenderer.itemsAt = (input) => (scene ? scene.getItemsFrom(input) : []);

@@ -321,7 +321,7 @@ function componentFactory(definition, context = {}) {
   });
 
   const rendString = settings.renderer || definition.renderer;
-  const rendSettings = settings.rendererSettings;
+  const rendSettings = settings.rendererSettings || {};
   const rend = renderer || registries.renderer(rendString)(rendSettings);
   brushArgs.renderer = rend;
 
@@ -434,12 +434,6 @@ function componentFactory(definition, context = {}) {
     currentNodes = nodes;
   };
 
-  fn.transform = (transformation) => {
-    if (typeof rend.transform === 'function') {
-      rend.transform(transformation);
-    }
-  };
-
   fn.hide = () => {
     fn.unmount();
     rend.size({
@@ -463,6 +457,11 @@ function componentFactory(definition, context = {}) {
     if (currentTween) {
       currentTween.stop();
     }
+    if (typeof rendSettings.transform === 'function' && rendSettings.transform()) {
+      rend.render();
+      return;
+    }
+
     const nodes = (brushArgs.nodes = render.call(definitionContext, ...getRenderArgs()));
 
     // Reset brush stylers and triggers
