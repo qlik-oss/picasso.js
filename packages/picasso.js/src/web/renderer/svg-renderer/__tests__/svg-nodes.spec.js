@@ -148,6 +148,8 @@ describe('svg-nodes', () => {
         type: 'text',
         attrs: {
           dy: 10,
+          x: 0,
+          y: 0,
         },
       };
       maintainer(el, item);
@@ -165,6 +167,8 @@ describe('svg-nodes', () => {
         attrs: {
           'dominant-baseline': 'ideographic',
           'font-size': '10px',
+          x: 0,
+          y: 0,
         },
       };
       maintainer(el, item);
@@ -186,12 +190,84 @@ describe('svg-nodes', () => {
         type: 'text',
         attrs: {
           title: 'my title',
+          x: 0,
+          y: 0,
         },
       };
       maintainer(el, item);
 
       expect(el.appendChild).to.have.been.calledWith(titleElm);
       expect(titleElm.textContent).to.equal('my title');
+    });
+
+    describe('should ignore item with "NaN" attributes', () => {
+      let el;
+      let circle;
+      let rect;
+      let line;
+      let text;
+
+      beforeEach(() => {
+        el = {
+          setAttribute: sinon.spy(),
+        };
+
+        circle = {
+          type: 'circle',
+          attrs: { cx: 1, cy: 1, r: 1 },
+        };
+
+        rect = {
+          type: 'rect',
+          attrs: { x: 1, y: 1, width: 1, height: 1 },
+        };
+
+        line = {
+          type: 'line',
+          attrs: { x1: 1, y1: 1, x2: 1, y2: 1 },
+        };
+
+        text = {
+          type: 'text',
+          attrs: { x: 1, y: 1 },
+        };
+      });
+
+      ['cx', 'cy', 'r'].forEach((attr) => {
+        it(`circle - ${attr}`, () => {
+          circle.attrs[attr] = NaN;
+
+          maintainer(el, circle);
+          expect(el.setAttribute).to.not.have.been.called;
+        });
+      });
+
+      ['x', 'y', 'width', 'height'].forEach((attr) => {
+        it(`rect - ${attr}`, () => {
+          rect.attrs[attr] = NaN;
+
+          maintainer(el, rect);
+          expect(el.setAttribute).to.not.have.been.called;
+        });
+      });
+
+      ['x1', 'y1', 'x2', 'y2'].forEach((attr) => {
+        it(`line - ${attr}`, () => {
+          line.attrs[attr] = NaN;
+
+          maintainer(el, line);
+          expect(el.setAttribute).to.not.have.been.called;
+        });
+      });
+
+      ['x', 'y'].forEach((attr) => {
+        it(`text - ${attr}`, () => {
+          text.attrs[attr] = NaN;
+
+          maintainer(el, text);
+          expect(el.setAttribute).to.not.have.been.called;
+        });
+      });
     });
   });
 });
