@@ -275,7 +275,9 @@
               "type": "#/definitions/brush/events/update"
             }
           ],
-          "examples": ["brush.addValue('countries', 'Sweden');\nbrush.addValue('/qHyperCube/qDimensionInfo/0', 3);"]
+          "examples": [
+            "brush.addValue('countries', 'Sweden');\nbrush.addValue('/qHyperCube/qDimensionInfo/0', 3);"
+          ]
         },
         "addValues": {
           "kind": "function",
@@ -327,7 +329,9 @@
               "type": "any"
             }
           ],
-          "examples": ["brush.removeValue('countries', 'Sweden');"]
+          "examples": [
+            "brush.removeValue('countries', 'Sweden');"
+          ]
         },
         "removeValues": {
           "kind": "function",
@@ -388,7 +392,9 @@
               "type": "any"
             }
           ],
-          "examples": ["brush.toggleValue('countries', 'Sweden');"]
+          "examples": [
+            "brush.toggleValue('countries', 'Sweden');"
+          ]
         },
         "toggleValues": {
           "kind": "function",
@@ -459,7 +465,9 @@
               }
             }
           ],
-          "examples": ["brush.addRange('Sales', { min: 20, max: 50 });"]
+          "examples": [
+            "brush.addRange('Sales', { min: 20, max: 50 });"
+          ]
         },
         "addRanges": {
           "kind": "function",
@@ -729,7 +737,9 @@
               "type": "string"
             }
           ],
-          "examples": ["brush.removeKeyAlias('BadFieldName');"]
+          "examples": [
+            "brush.removeKeyAlias('BadFieldName');"
+          ]
         }
       },
       "events": {
@@ -4143,174 +4153,6 @@
         }
       }
     },
-    "computePreferredSize": {
-      "description": "Returns the preferred size of a component.\nThe return value of the function can either be a number representing the required size in the dock direction\nor an object with a `size` and `edgeBleed` property.",
-      "kind": "function",
-      "params": [
-        {
-          "name": "inner",
-          "optional": true,
-          "type": "object"
-        },
-        {
-          "name": "outer",
-          "optional": true,
-          "type": "object"
-        }
-      ],
-      "returns": {
-        "description": "Returns the computed preferred size",
-        "kind": "union",
-        "items": [
-          {
-            "type": "number"
-          },
-          {
-            "type": "object"
-          }
-        ],
-        "type": "any"
-      },
-      "examples": [
-        "dockConfig.computePreferredSize(() => 150); // Require a size of 150 in the dock direction\n\ndockConfig.computePreferredSize(() => ({\n size: 150,\n edgeBleed: {\n   left: 50,\n   right: 50\n }\n})); // Require a size of 150 in the dock direction and a bleed size of 50 to the left and right dock direction"
-      ]
-    },
-    "dock": {
-      "description": "Set the dock direction, supported values are left | right | top | bottom. Any other value will be interpreted as center dock.",
-      "kind": "function",
-      "params": [
-        {
-          "name": "val",
-          "description": "Dock direction",
-          "optional": true,
-          "defaultValue": "''",
-          "type": "string"
-        }
-      ],
-      "returns": {
-        "description": "The current context",
-        "type": "this"
-      },
-      "examples": ["dockConfig.dock('left');"]
-    },
-    "displayOrder": {
-      "description": "The `displayOrder` property is used by the layout engine to lay out components.\nComponents are interpreted in the ascending order of the `displayOrder` value. The layout engine apply the value in two ways,\nthe first is the order in which components are rendererd. The second is the area components are laid out in\nwhen they have a direction, i.e. docked to either top, bottom, left or right.\n\nIf docked at the same area, the component with a higher `displayOrder` will be rendered\non top of the component with a lower `displayOrder`. It can be seen as defining a z-index.\nA lower `displayOrder` also means that a component will be laid out first in a given direction,\ni.e. laid out closer to the central area (non-directional area) then a component with a higher `displayOrder`.\nIt can in this case be seen as the x-index or y-index.",
-      "kind": "function",
-      "params": [
-        {
-          "name": "val",
-          "description": "The display order",
-          "optional": true,
-          "defaultValue": 0,
-          "type": "number"
-        }
-      ],
-      "returns": {
-        "description": "The current context or display order",
-        "kind": "union",
-        "items": [
-          {
-            "type": "this"
-          },
-          {
-            "type": "number"
-          }
-        ],
-        "type": "any"
-      },
-      "examples": ["dockConfig.displayOrder(99);"]
-    },
-    "prioOrder": {
-      "description": "The `prioOrder` property is used to define the order in which components are added to the layout engine,\nthis is done before any components are laid out. When there is not enough space to add any more components\nto a given area, all components not all ready added, are then discarded. The `prioOrder` is interpreted\nin the ascending order. Such that a lower value is added to the layout engine first.",
-      "kind": "function",
-      "params": [
-        {
-          "name": "val",
-          "description": "The prio order",
-          "optional": true,
-          "defaultValue": 0,
-          "type": "number"
-        }
-      ],
-      "returns": {
-        "description": "The current context or prio order",
-        "kind": "union",
-        "items": [
-          {
-            "type": "this"
-          },
-          {
-            "type": "number"
-          }
-        ],
-        "type": "any"
-      },
-      "examples": ["dockConfig.prioOrder(-1);"]
-    },
-    "minimumLayoutMode": {
-      "description": "Ger or set the minimumLayoutMode",
-      "kind": "function",
-      "params": [
-        {
-          "name": "val",
-          "description": "The minimum layout mode",
-          "optional": true,
-          "kind": "union",
-          "items": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "object"
-            }
-          ],
-          "type": "any"
-        }
-      ],
-      "returns": {
-        "description": "If no parameter is passed the current context is returned, else the current layout mode.",
-        "kind": "union",
-        "items": [
-          {
-            "type": "string"
-          },
-          {
-            "type": "object"
-          },
-          {
-            "type": "this"
-          }
-        ],
-        "type": "any"
-      },
-      "examples": ["dockConfig.minimumLayoutMode('L');\ndockConfig.minimumLayoutMode({ width: 'S', height: 'L' });"]
-    },
-    "show": {
-      "description": "Set the component visibility. If false the component is not added to the layout engine.",
-      "kind": "function",
-      "params": [
-        {
-          "name": "val",
-          "description": "Toggle visibility",
-          "optional": true,
-          "defaultValue": true,
-          "type": "boolean"
-        }
-      ],
-      "returns": {
-        "description": "The current context or show",
-        "kind": "union",
-        "items": [
-          {
-            "type": "this"
-          },
-          {
-            "type": "boolean"
-          }
-        ],
-        "type": "any"
-      }
-    },
     "dock-layout-settings": {
       "kind": "object",
       "entries": {
@@ -4388,60 +4230,6 @@
             }
           ]
         }
-      }
-    },
-    "testPolygonPolygon": {
-      "description": "Test if a polygon intersects another polygon.\nSupports convex, concave and self-intersecting polygons (filled area).",
-      "kind": "function",
-      "params": [
-        {
-          "name": "polygon",
-          "type": "object"
-        },
-        {
-          "name": "polygon",
-          "type": "object"
-        }
-      ],
-      "returns": {
-        "description": "True if there is an intersection, false otherwise",
-        "type": "boolean"
-      }
-    },
-    "testGeoPolygonPolygon": {
-      "description": "Test if a geopolygon intersects a polygon.",
-      "kind": "function",
-      "params": [
-        {
-          "name": "geopolygon",
-          "type": "object"
-        },
-        {
-          "name": "polygon",
-          "type": "object"
-        }
-      ],
-      "returns": {
-        "description": "True if there is an intersection, false otherwise",
-        "type": "boolean"
-      }
-    },
-    "testGeoPolygonGeoPolygon": {
-      "description": "Test if a geopolygon intersects another geopolygon.",
-      "kind": "function",
-      "params": [
-        {
-          "name": "geopolygon",
-          "type": "object"
-        },
-        {
-          "name": "geopolygon",
-          "type": "object"
-        }
-      ],
-      "returns": {
-        "description": "True if there is an intersection, false otherwise",
-        "type": "boolean"
       }
     },
     "scale--band": {
@@ -4740,408 +4528,6 @@
         }
       }
     },
-    "node--circle-def": {
-      "extends": [
-        {
-          "type": "#/definitions/node-def"
-        }
-      ],
-      "kind": "object",
-      "entries": {
-        "cx": {
-          "description": "{@link https://www.w3.org/TR/SVG/shapes.html#CircleElementCXAttribute}",
-          "type": "number"
-        },
-        "cy": {
-          "description": "{@link https://www.w3.org/TR/SVG/shapes.html#CircleElementCYAttribute}",
-          "type": "number"
-        },
-        "r": {
-          "description": "{@link https://www.w3.org/TR/SVG/shapes.html#CircleElementRAttribute}",
-          "type": "number"
-        }
-      }
-    },
-    "node--container-def": {
-      "extends": [
-        {
-          "type": "#/definitions/node-def"
-        }
-      ],
-      "kind": "object",
-      "entries": {
-        "children": {
-          "description": "Array of child nodes",
-          "kind": "array",
-          "items": {
-            "type": "#/definitions/node-def"
-          }
-        }
-      }
-    },
-    "node-def": {
-      "kind": "object",
-      "entries": {
-        "type": {
-          "type": "string"
-        },
-        "fill": {
-          "description": "{@link https://www.w3.org/TR/fill-stroke-3/#fill-shorthand}",
-          "optional": true,
-          "kind": "union",
-          "items": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "#/definitions/gradient-def"
-            },
-            {
-              "type": "#/definitions/pattern-def"
-            }
-          ],
-          "type": "any"
-        },
-        "stroke": {
-          "description": "{@link https://www.w3.org/TR/fill-stroke-3/#propdef-stroke}",
-          "optional": true,
-          "kind": "union",
-          "items": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "#/definitions/gradient-def"
-            },
-            {
-              "type": "#/definitions/pattern-def"
-            }
-          ],
-          "type": "any"
-        },
-        "strokeWidth": {
-          "description": "{@link https://www.w3.org/TR/fill-stroke-3/#propdef-stroke-width}",
-          "optional": true,
-          "type": "number"
-        },
-        "strokeDasharray": {
-          "description": "{@link https://www.w3.org/TR/fill-stroke-3/#propdef-stroke-dasharray}",
-          "optional": true,
-          "kind": "union",
-          "items": [
-            {
-              "type": "string"
-            },
-            {
-              "kind": "array",
-              "items": {
-                "type": "number"
-              }
-            }
-          ],
-          "type": "any"
-        },
-        "opacity": {
-          "description": "{@link https://www.w3.org/TR/css-color-4/#propdef-opacity}",
-          "optional": true,
-          "type": "number"
-        },
-        "transform": {
-          "description": "{@link https://www.w3.org/TR/SVG/coords.html#TransformAttribute}",
-          "optional": true,
-          "type": "string"
-        },
-        "data": {
-          "description": "Data object, may contain any properties",
-          "optional": true,
-          "type": "object"
-        },
-        "desc": {
-          "description": "Meta-data object, may contain any properties",
-          "optional": true,
-          "type": "object"
-        },
-        "tag": {
-          "description": "White-space seperated list of tags",
-          "optional": true,
-          "type": "string"
-        },
-        "id": {
-          "description": "Unique identifier of the node",
-          "optional": true,
-          "type": "string"
-        },
-        "collider": {
-          "optional": true,
-          "type": "object"
-        }
-      }
-    },
-    "gradient-def": {
-      "kind": "object",
-      "entries": {
-        "type": {
-          "type": "string"
-        },
-        "stops": {
-          "kind": "array",
-          "items": {
-            "entries": {
-              "type": {
-                "description": "radialGradient|linearGradient",
-                "optional": true,
-                "defaultValue": "linearGradient",
-                "type": "string"
-              },
-              "color": {
-                "description": "{@link https://www.w3.org/TR/SVG/types.html#DataTypeColor}",
-                "type": "string"
-              },
-              "opacity": {
-                "description": "{@link https://www.w3.org/TR/css-color-4/#propdef-opacity}",
-                "optional": true,
-                "defaultValue": 1,
-                "type": "string"
-              },
-              "offset": {
-                "description": "{@link https://www.w3.org/TR/SVG/pservers.html#StopElementOffsetAttribute}",
-                "type": "number"
-              }
-            },
-            "kind": "object"
-          }
-        },
-        "degree": {
-          "description": "Gradient rotation angle",
-          "optional": true,
-          "type": "number"
-        }
-      }
-    },
-    "node--gradient-item-def": {
-      "kind": "object",
-      "entries": {
-        "id": {
-          "description": "Gradient identifier",
-          "type": "string"
-        },
-        "x1": {
-          "description": "{@link https://www.w3.org/TR/SVG/pservers.html#LinearGradientElementX1Attribute}",
-          "type": "number"
-        },
-        "y1": {
-          "description": "{@link https://www.w3.org/TR/SVG/pservers.html#LinearGradientElementY1Attribute}",
-          "type": "number"
-        },
-        "x2": {
-          "description": "{@link https://www.w3.org/TR/SVG/pservers.html#LinearGradientElementX2Attribute}",
-          "type": "number"
-        },
-        "y2": {
-          "description": "{@link https://www.w3.org/TR/SVG/pservers.html#LinearGradientElementY2Attribute}",
-          "type": "number"
-        },
-        "offset": {
-          "description": "{@link https://www.w3.org/TR/SVG/pservers.html#StopElementOffsetAttribute}",
-          "type": "number"
-        },
-        "style": {
-          "description": "{@link https://www.w3.org/TR/SVG/styling.html#StyleAttribute}",
-          "type": "object"
-        }
-      }
-    },
-    "node--line-def": {
-      "extends": [
-        {
-          "type": "#/definitions/node-def"
-        }
-      ],
-      "kind": "object",
-      "entries": {
-        "x1": {
-          "description": "{@link https://www.w3.org/TR/SVG/shapes.html#LineElementX1Attribute}",
-          "type": "number"
-        },
-        "y1": {
-          "description": "{@link https://www.w3.org/TR/SVG/shapes.html#LineElementY1Attribute}",
-          "type": "number"
-        },
-        "x2": {
-          "description": "{@link https://www.w3.org/TR/SVG/shapes.html#LineElementX2Attribute}",
-          "type": "number"
-        },
-        "y2": {
-          "description": "{@link https://www.w3.org/TR/SVG/shapes.html#LineElementY2Attribute}",
-          "type": "number"
-        }
-      }
-    },
-    "node--path-def": {
-      "extends": [
-        {
-          "type": "#/definitions/node-def"
-        }
-      ],
-      "kind": "object",
-      "entries": {
-        "d": {
-          "description": "{@link https://www.w3.org/TR/SVG/paths.html#DAttribute}",
-          "type": "string"
-        }
-      }
-    },
-    "pattern-def": {
-      "stability": "experimental",
-      "kind": "object",
-      "entries": {
-        "type": {
-          "kind": "literal",
-          "value": "'pattern'"
-        },
-        "fill": {
-          "type": "string"
-        },
-        "width": {
-          "type": "number"
-        },
-        "height": {
-          "type": "number"
-        },
-        "shapes": {
-          "kind": "array",
-          "items": {
-            "type": "object"
-          }
-        }
-      },
-      "examples": [
-        "Stripe pattern\n```js\n{\n  type: 'pattern',\n  fill: 'red',\n  width: 4,\n  height: 4,\n  shapes: [\n    { type: 'rect', x: 3, y: 0, width: 1, height: 1 },\n    { type: 'rect', x: 2, y: 1, width: 1, height: 1 },\n    { type: 'rect', x: 1, y: 2, width: 1, height: 1 },\n    { type: 'rect', x: 0, y: 3, width: 1, height: 1 },\n  ]\n}\n```"
-      ]
-    },
-    "node--rect-def": {
-      "extends": [
-        {
-          "type": "#/definitions/node-def"
-        }
-      ],
-      "kind": "object",
-      "entries": {
-        "x": {
-          "description": "{@link https://www.w3.org/TR/SVG/shapes.html#RectElementXAttribute}",
-          "type": "number"
-        },
-        "y": {
-          "description": "{@link https://www.w3.org/TR/SVG/shapes.html#RectElementYAttribute}",
-          "type": "number"
-        },
-        "width": {
-          "description": "{@link https://www.w3.org/TR/SVG/shapes.html#RectElementWidthAttribute}",
-          "type": "number"
-        },
-        "height-": {
-          "description": "{@link https://www.w3.org/TR/SVG/shapes.html#RectElementHeightAttribute}",
-          "type": "number"
-        }
-      }
-    },
-    "node--text-def": {
-      "extends": [
-        {
-          "type": "#/definitions/node-def"
-        }
-      ],
-      "kind": "object",
-      "entries": {
-        "text": {
-          "type": "string"
-        },
-        "x": {
-          "description": "{@link https://www.w3.org/TR/SVG/text.html#TextElementXAttribute}",
-          "type": "number"
-        },
-        "y": {
-          "description": "{@link https://www.w3.org/TR/SVG/text.html#TextElementYAttribute}",
-          "type": "number"
-        },
-        "dx": {
-          "description": "{@link https://www.w3.org/TR/SVG/text.html#TextElementDXAttribute}",
-          "optional": true,
-          "type": "number"
-        },
-        "dy": {
-          "description": "{@link https://www.w3.org/TR/SVG/text.html#TextElementDYAttribute}",
-          "optional": true,
-          "type": "number"
-        },
-        "fontSize": {
-          "description": "{@link https://www.w3.org/TR/SVG/text.html#FontPropertiesUsedBySVG}",
-          "optional": true,
-          "type": "string"
-        },
-        "fontFamily": {
-          "description": "{@link https://www.w3.org/TR/SVG/text.html#FontPropertiesUsedBySVG}",
-          "optional": true,
-          "type": "string"
-        },
-        "boundingRect": {
-          "description": "Explicitly set the bounding rectangle of the node. Has predence over textBoundsFn",
-          "optional": true,
-          "type": "#/definitions/rect"
-        },
-        "textBoundsFn": {
-          "description": "Implicitly set the bounding rectangle of the node, the function must return an object with x, y, width and height attributes",
-          "optional": true,
-          "type": "function"
-        },
-        "baseline": {
-          "description": "Alias for dominantBaseline",
-          "optional": true,
-          "type": "string"
-        },
-        "dominantBaseline": {
-          "description": "{@link https://www.w3.org/TR/SVG/text.html#BaselineAlignmentProperties}",
-          "optional": true,
-          "type": "string"
-        },
-        "anchor": {
-          "description": "Alias for textAnchor",
-          "optional": true,
-          "type": "string"
-        },
-        "textAnchor": {
-          "description": "{@link https://www.w3.org/TR/SVG/text.html#TextAnchorProperty}",
-          "optional": true,
-          "type": "string"
-        },
-        "wordBreak": {
-          "description": "Word-break option",
-          "optional": true,
-          "type": "string"
-        },
-        "maxWidth": {
-          "description": "Maximum allowed text width",
-          "optional": true,
-          "type": "number"
-        },
-        "maxHeight": {
-          "description": "Maximum allowed text height. If both maxLines and maxHeight are set, the property that results in the fewest number of lines is used",
-          "optional": true,
-          "type": "number"
-        },
-        "maxLines": {
-          "description": "Maximum number of lines allowed",
-          "optional": true,
-          "type": "number"
-        },
-        "lineHeight": {
-          "description": "Line height",
-          "optional": true,
-          "defaultValue": 1.2,
-          "type": "number"
-        }
-      }
-    },
     "SceneNode": {
       "description": "Read-only object representing a node on the scene.",
       "kind": "class",
@@ -5217,7 +4603,9 @@
           "returns": {
             "type": "#/definitions/rect"
           },
-          "examples": ["node.boundsRelativeTo($('div'));\nnode.boundsRelativeTo('viewport');"]
+          "examples": [
+            "node.boundsRelativeTo($('div'));\nnode.boundsRelativeTo('viewport');"
+          ]
         },
         "collider": {
           "description": "Collider of the node. Transform on the node has been applied to the collider shape, if any, but excluding scaling transform related to devicePixelRatio.\nOrigin is in the top-left corner of the scene element.\n\nIf node has no collider, null is returned.",
@@ -5978,21 +5366,6 @@
         }
       }
     },
-    "calcOffset": {
-      "kind": "function",
-      "params": [
-        {
-          "name": "vx",
-          "description": "X-coordinate realative to the area",
-          "type": "vx"
-        },
-        {
-          "name": "vy",
-          "description": "Y-coordinate realative to the area",
-          "type": "vy"
-        }
-      ]
-    },
     "canvasRendererFactory": {
       "description": "Create a new canvas renderer",
       "kind": "function",
@@ -6050,7 +5423,7 @@
               "description": "Nodes to render",
               "kind": "array",
               "items": {
-                "type": "#/definitions/node-def"
+                "type": "node-def"
               }
             }
           ],
@@ -6181,7 +5554,7 @@
           "params": [
             {
               "name": "node",
-              "type": "#/definitions/node--text-def"
+              "type": "node--text-def"
             }
           ],
           "returns": {

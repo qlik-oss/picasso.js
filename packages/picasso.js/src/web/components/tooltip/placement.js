@@ -61,6 +61,7 @@ function isInsideArea(area, vx, vy, width, height, offset) {
 }
 
 /**
+ * @private
  * @param {vx} vx X-coordinate realative to the area
  * @param {vy} vy Y-coordinate realative to the area
  */

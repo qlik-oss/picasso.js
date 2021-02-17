@@ -4,7 +4,7 @@
  * @param {object} [settings] - Settings object
  * @returns {object} A dock configuration instance
  * @example
- * let instance = dockConfig({
+ * let instance = create({
  *  dock: 'left',
  *  displayOrder: 2,
  *  prioOrder: 1,
@@ -13,7 +13,7 @@
  *  show: true
  * });
  */
-function dockConfig(settings = {}, callbackContext = {}) {
+function create(settings = {}, callbackContext = {}) {
   let {
     dock = 'center',
     displayOrder = 0,
@@ -28,8 +28,10 @@ function dockConfig(settings = {}, callbackContext = {}) {
 
   /**
    * @private
+   * @alias dockConfig
+   * @interface
    */
-  return {
+  const dockConfig = {
     /**
      * Returns the preferred size of a component.
      * The return value of the function can either be a number representing the required size in the dock direction
@@ -141,6 +143,8 @@ function dockConfig(settings = {}, callbackContext = {}) {
       return typeof show === 'function' ? show(callbackContext) : show;
     },
   };
+
+  return dockConfig;
 }
 
-export default dockConfig;
+export default create;

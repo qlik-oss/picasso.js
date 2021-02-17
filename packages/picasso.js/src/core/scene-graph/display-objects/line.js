@@ -3,6 +3,7 @@ import DisplayObject from './display-object';
 import { lineToPoints, getMinMax } from '../../geometry/util';
 
 /**
+ * @private
  * @extends node-def
  * @typedef {object} node--line-def
  * @property {number} x1 - {@link https://www.w3.org/TR/SVG/shapes.html#LineElementX1Attribute}

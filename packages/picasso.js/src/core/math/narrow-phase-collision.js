@@ -600,6 +600,7 @@ export function testLinePoint(line, point) {
 /**
  * Test if a polygon intersects another polygon.
  * Supports convex, concave and self-intersecting polygons (filled area).
+ * @private
  * @param {object} polygon
  * @param {object} polygon
  * @returns {boolean} True if there is an intersection, false otherwise
@@ -618,6 +619,7 @@ export function testPolygonPolygon(polygon1, polygon2) {
 
 /**
  * Test if a geopolygon intersects a polygon.
+ * @private
  * @param {object} geopolygon
  * @param {object} polygon
  * @returns {boolean} True if there is an intersection, false otherwise
@@ -636,6 +638,7 @@ export function testGeoPolygonPolygon(geopolygon, polygon) {
 
 /**
  * Test if a geopolygon intersects another geopolygon.
+ * @private
  * @param {object} geopolygon
  * @param {object} geopolygon
  * @returns {boolean} True if there is an intersection, false otherwise

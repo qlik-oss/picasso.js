@@ -3,6 +3,7 @@ import DisplayObject from './display-object';
 import NodeContainer from '../node-container';
 
 /**
+ * @private
  * @extends node-def
  * @typedef {object} node--container-def
  * @property {node-def[]} children - Array of child nodes

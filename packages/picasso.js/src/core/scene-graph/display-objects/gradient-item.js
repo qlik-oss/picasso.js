@@ -2,6 +2,7 @@ import DisplayObject from './display-object';
 import NodeContainer from '../node-container';
 
 /**
+ * @private
  * @typedef {object} gradient-def
  * @property {string} type
  * @property {object[]} stops
@@ -13,6 +14,7 @@ import NodeContainer from '../node-container';
  */
 
 /**
+ * @private
  * @typedef {object} node--gradient-item-def
  * @property {string} id - Gradient identifier
  * @property {number} x1 - {@link https://www.w3.org/TR/SVG/pservers.html#LinearGradientElementX1Attribute}
