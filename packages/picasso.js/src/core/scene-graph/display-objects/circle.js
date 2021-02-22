@@ -3,6 +3,7 @@ import DisplayObject from './display-object';
 import { getMinMax } from '../../geometry/util';
 
 /**
+ * @private
  * @extends node-def
  * @typedef {object} node--circle-def
  * @property {number} cx - {@link https://www.w3.org/TR/SVG/shapes.html#CircleElementCXAttribute}

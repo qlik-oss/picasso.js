@@ -10,6 +10,7 @@ import { resolveCollionsOnNode, hasCollisionOnNode } from '../collision-resolver
 import { assignMappedAttribute } from '../attributes';
 
 /**
+ * @private
  * @typedef {object} node-def
  * @property {string} type
  * @property {string|gradient-def|pattern-def} [fill] - {@link https://www.w3.org/TR/fill-stroke-3/#fill-shorthand}

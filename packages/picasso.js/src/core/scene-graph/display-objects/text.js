@@ -7,6 +7,7 @@ function hasData({ data, _boundingRect, _textBoundsFn }) {
 }
 
 /**
+ * @private
  * @extends node-def
  * @typedef {object} node--text-def
  * @property {string} text

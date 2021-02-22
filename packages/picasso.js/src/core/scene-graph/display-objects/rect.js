@@ -3,6 +3,7 @@ import DisplayObject from './display-object';
 import { rectToPoints, getMinMax } from '../../geometry/util';
 
 /**
+ * @private
  * @extends node-def
  * @typedef {object} node--rect-def
  * @property {number} x - {@link https://www.w3.org/TR/SVG/shapes.html#RectElementXAttribute}

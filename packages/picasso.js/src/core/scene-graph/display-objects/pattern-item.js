@@ -2,6 +2,7 @@ import DisplayObject from './display-object';
 import NodeContainer from '../node-container';
 
 /**
+ * @private
  * @experimental
  * @typedef {object} pattern-def
  * @property {'pattern'} type
