@@ -1,7 +1,7 @@
 import gridLineComponent from './line';
 
 /**
- * @typedef {object} component--grid-line-settings
+ * @typedef {object} ComponentGridLineSettings
  * @property {object} x
  * @property {string} x.scale - The scale to use along x
  * @property {object} y

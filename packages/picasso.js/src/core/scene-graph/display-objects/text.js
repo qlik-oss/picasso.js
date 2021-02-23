@@ -17,7 +17,7 @@ function hasData({ data, _boundingRect, _textBoundsFn }) {
  * @property {number} [dy] - {@link https://www.w3.org/TR/SVG/text.html#TextElementDYAttribute}
  * @property {string} [fontSize] - {@link https://www.w3.org/TR/SVG/text.html#FontPropertiesUsedBySVG}
  * @property {string} [fontFamily] - {@link https://www.w3.org/TR/SVG/text.html#FontPropertiesUsedBySVG}
- * @property {rect} [boundingRect] - Explicitly set the bounding rectangle of the node. Has predence over textBoundsFn
+ * @property {Rect} [boundingRect] - Explicitly set the bounding rectangle of the node. Has predence over textBoundsFn
  * @property {function} [textBoundsFn] - Implicitly set the bounding rectangle of the node, the function must return an object with x, y, width and height attributes
  * @property {string} [baseline] - Alias for dominantBaseline
  * @property {string} [dominantBaseline] - {@link https://www.w3.org/TR/SVG/text.html#BaselineAlignmentProperties}

@@ -14,7 +14,7 @@
 /**
  * Discrete axis settings
  * @typedef {object}
- * @alias component--axis-discrete
+ * @alias ComponentAxisDiscrete
  */
 const DEFAULT_DISCRETE_SETTINGS = {
   /**
@@ -98,7 +98,7 @@ const DEFAULT_DISCRETE_SETTINGS = {
 /**
  * Continuous axis settings
  * @typedef {object}
- * @alias component--axis-continuous
+ * @alias ComponentAxisContinuous
  */
 const DEFAULT_CONTINUOUS_SETTINGS = {
   /**

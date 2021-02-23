@@ -1,13 +1,13 @@
 import component from './legend-cat';
 
 /**
- * @typedef {object} component--legend-cat
+ * @typedef {object} ComponentLegendCat
  * @property {string} scale
  */
 
 /**
  * @type {string}
- * @memberof component--legend-cat
+ * @memberof ComponentLegendCat
  */
 const type = 'legend-cat';
 

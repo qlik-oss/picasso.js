@@ -68,7 +68,7 @@ function generateNiceDomain(range, min, max) {
 }
 
 /**
- * @typedef {object} scale--threshold-color
+ * @typedef {object} ScaleThresholdColor
  * @property {string} [type='threshold-color']
  * @property {number[]} [domain] Values defining the thresholds
  * @property {string[]} [range] - CSS color values of the output range

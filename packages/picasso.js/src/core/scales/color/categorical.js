@@ -14,7 +14,7 @@ const DEFAULT_EXPLICIT_SETTINGS = {
 };
 
 /**
- * @typedef {object} scale--categorical-color
+ * @typedef {object} ScaleCategoricalColor
  * @property {string} [type='categorical-color']
  * @property {string[]} [range=false] - CSS color values of the output range
  * @property {string} [unknown] - {@link https://github.com/d3/d3-scale#ordinal_unknown}

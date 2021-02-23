@@ -2,7 +2,7 @@ import extend from 'extend';
 
 /**
  * @typedef {object}
- * @alias component--legend-cat.settings
+ * @alias ComponentLegendCat.settings
  */
 const DEFAULT_SETTINGS = {
   /**

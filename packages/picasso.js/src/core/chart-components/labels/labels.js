@@ -1,16 +1,16 @@
 import strategies from './strategies';
 
 /**
- * @typedef {object} component--labels
+ * @typedef {object} ComponentLabels
  * @property {string} [type='labels']
  */
 
 /**
- * @typedef {object} component--labels.settings
+ * @typedef {object} ComponentLabels.settings
  * @property {Array<object>} sources
  * @property {string} sources[].component
  * @property {string} sources[].selector
- * @property {component--labels~label-strategy} sources[].strategy
+ * @property {ComponentLabels~labelStrategy} sources[].strategy
  */
 
 export function strategy({ chart, source, rect, renderer, style }, fn) {

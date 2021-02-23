@@ -175,7 +175,7 @@ function initState(ctx) {
 }
 
 /**
- * @typedef {object} component--legend-seq
+ * @typedef {object} ComponentLegendSeq
  * @property {string} fill - Reference to definition of sequential color scale
  * @property {string} major - Reference to definition of linear scale
  * @property {number} [size=15] - Size in pixels of the legend, if vertical is the width and height otherwise

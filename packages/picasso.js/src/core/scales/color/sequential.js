@@ -30,7 +30,7 @@ function generateDomain(range, min, max) {
 }
 
 /**
- * @typedef {object} scale--sequential-color
+ * @typedef {object} ScaleSequentialColor
  * @property {string} [type='sequential-color']
  * @property {string[]} [range] - CSS color values of the output range
  * @property {boolean} [invert=false] - Invert range

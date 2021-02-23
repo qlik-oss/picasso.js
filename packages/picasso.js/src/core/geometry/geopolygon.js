@@ -78,7 +78,7 @@ class GeoPolygon {
   /**
    * Check if a point is inside the area of the geopolygon.
    * Supports convex, concave and self-intersecting polygons (filled area).
-   * @param {point} point
+   * @param {Point} point
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   containsPoint(point) {
@@ -88,7 +88,7 @@ class GeoPolygon {
   /**
    * Check if circle is inside the area of the polygon.
    * Supports convex, concave and self-intersecting polygons (filled area).
-   * @param {circle} circle
+   * @param {Circle} circle
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsCircle(circle) {
@@ -96,7 +96,7 @@ class GeoPolygon {
   }
 
   /**
-   * @param {point[]} points - Line start and end point as an array of points
+   * @param {Point[]} points - Line start and end point as an array of points
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsLine(points) {
@@ -104,7 +104,7 @@ class GeoPolygon {
   }
 
   /**
-   * @param {point[]} points - Rect vertices as an array of points
+   * @param {Point[]} points - Rect vertices as an array of points
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsRect(points) {
@@ -124,7 +124,7 @@ class GeoPolygon {
   /**
    * Check if geopolygon intersects another geopolygon.
    * Supports convex, concave and self-intersecting polygons (filled area).
-   * @param {GeoPolygon} geopolygon
+   * @param {Geopolygon} geopolygon
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsGeoPolygon(geopolygon) {
@@ -133,7 +133,7 @@ class GeoPolygon {
 
   /**
    * Get the points
-   * @returns {point[]}
+   * @returns {Point[]}
    */
   points() {
     return this.vertices;
@@ -141,7 +141,7 @@ class GeoPolygon {
 
   /**
    * Get the bounds of the polygon, as an array of points
-   * @returns {point[]}
+   * @returns {Point[]}
    */
   bounds() {
     if (!this._bounds) {
@@ -158,7 +158,7 @@ class GeoPolygon {
 
   /**
    * Get the bounding rect of the polygon
-   * @returns {rect}
+   * @returns {Rect}
    */
   boundingRect() {
     if (!this._boundingRect) {
@@ -173,13 +173,6 @@ class GeoPolygon {
   }
 }
 
-/**
- * Construct a new GeoPolygon instance
- * @param {object} input An object with a vertices property
- * @param {point[]} [input.vertices=[]] Vertices are represented as an array of points.
- * @returns {Polygon} Polygon instance
- * @private
- */
 function create(...a) {
   return new GeoPolygon(...a);
 }

@@ -1,8 +1,8 @@
 import pointsToPath from '../utils/points-to-path';
 
 /**
- * @extends symbol-config
- * @typedef {object} symbol--diamond
+ * @extends Symbol
+ * @typedef {object} SymbolDiamond
  */
 function diamond(options) {
   const size = options.size;

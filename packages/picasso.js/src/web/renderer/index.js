@@ -7,7 +7,7 @@ import { measureText, textBounds } from '../text-manipulation';
 function create() {
   /**
    * @interface
-   * @alias renderer
+   * @alias Renderer
    */
   const renderer = {
     /**
@@ -36,7 +36,7 @@ function create() {
 
     /**
      * Get nodes renderer at area
-     * @param {point|circle|rect|line|polygon|geopolygon} geometry - Get nodes that intersects with geometry
+     * @param {Point|Circle|Rect|Line|Polygon|Geopolygon} geometry - Get nodes that intersects with geometry
      * @returns {SceneNode[]}
      */
     itemsAt: () => [],
@@ -50,7 +50,7 @@ function create() {
 
     /**
      * Clear all child elements from the renderer root element
-     * @returns {renderer} The renderer instance
+     * @returns {Renderer} The renderer instance
      */
     clear: () => {},
 
@@ -61,8 +61,8 @@ function create() {
 
     /**
      * Set or Get the size definition of the renderer container.
-     * @param {renderer-container-def} [opts] - Size definition
-     * @returns {renderer-container-def} The current size definition
+     * @param {RendererContainerDef} [opts] - Size definition
+     * @returns {RendererContainerDef} The current size definition
      */
     size: () => {},
 
@@ -86,7 +86,7 @@ function create() {
      * Calculates the bounding rectangle of a text node. Including any potential line breaks.
      * @function
      * @param {node--text-def} node
-     * @return {rect} The bounding rectangle
+     * @return {Rect} The bounding rectangle
      */
     textBounds,
 

@@ -30,6 +30,8 @@ function removeDuplicates(vertices) {
 
 /**
  * Construct a new Polygon instance
+ * Added ignore flag as the name collide with definition in index.js
+ * @ignore
  * @private
  */
 class Polygon {
@@ -40,8 +42,9 @@ class Polygon {
   /**
    * Set the vertices.
    * If vertices doesn't close the polygon, a closing vertice is appended.
+   * @ignore
    * @param {object} input An object with a vertices property
-   * @param {point[]} [input.vertices=[]] Vertices are represented as an array of points.
+   * @param {Point[]} [input.vertices=[]] Vertices are represented as an array of points.
    */
   set({ vertices = [] } = {}) {
     this.type = 'polygon';
@@ -79,7 +82,8 @@ class Polygon {
   /**
    * Check if a point is inside the area of the polygon.
    * Supports convex, concave and self-intersecting polygons (filled area).
-   * @param {point} point
+   * @ignore
+   * @param {Point} point
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   containsPoint(point) {
@@ -89,7 +93,8 @@ class Polygon {
   /**
    * Check if circle is inside the area of the polygon.
    * Supports convex, concave and self-intersecting polygons (filled area).
-   * @param {circle} circle
+   * @ignore
+   * @param {Circle} circle
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsCircle(circle) {
@@ -97,7 +102,8 @@ class Polygon {
   }
 
   /**
-   * @param {point[]} points - Line start and end point as an array of points
+   * @ignore
+   * @param {Point[]} points - Line start and end point as an array of points
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsLine(points) {
@@ -105,7 +111,8 @@ class Polygon {
   }
 
   /**
-   * @param {point[]} points - Rect vertices as an array of points
+   * @ignore
+   * @param {Point[]} points - Rect vertices as an array of points
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsRect(points) {
@@ -115,6 +122,7 @@ class Polygon {
   /**
    * Check if polygon intersects another polygon.
    * Supports convex, concave and self-intersecting polygons (filled area).
+   * @ignore
    * @param {Polygon} polygon
    * @returns {boolean} True if there is an intersection, false otherwise
    */
@@ -124,7 +132,8 @@ class Polygon {
 
   /**
    * Check if polygon intersects a geopolygon.
-   * @param {GeoPolygon} geopolygon
+   * @ignore
+   * @param {Geopolygon} geopolygon
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsGeoPolygon(geopolygon) {
@@ -133,7 +142,8 @@ class Polygon {
 
   /**
    * Get the points
-   * @returns {point[]}
+   * @ignore
+   * @returns {Point[]}
    */
   points() {
     return this.vertices;
@@ -141,7 +151,8 @@ class Polygon {
 
   /**
    * Get the bounds of the polygon, as an array of points
-   * @returns {point[]}
+   * @ignore
+   * @returns {Point[]}
    */
   bounds() {
     if (!this._bounds) {
@@ -158,7 +169,8 @@ class Polygon {
 
   /**
    * Get the bounding rect of the polygon
-   * @returns {rect}
+   * @ignore
+   * @returns {Rect}
    */
   boundingRect() {
     if (!this._boundingRect) {
@@ -173,13 +185,6 @@ class Polygon {
   }
 }
 
-/**
- * Construct a new Polygon instance
- * @param {object} input An object with a vertices property
- * @param {point[]} [input.vertices=[]] Vertices are represented as an array of points.
- * @returns {Polygon} Polygon instance
- * @private
- */
 function create(...a) {
   return new Polygon(...a);
 }

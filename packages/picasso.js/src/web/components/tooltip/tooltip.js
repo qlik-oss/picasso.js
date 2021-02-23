@@ -7,7 +7,7 @@ import { setActive, removeActive, cancelActive, remove } from './instance-handle
 
 /**
  * @typedef {object}
- * @alias component--tooltip.settings
+ * @alias ComponentTooltip.settings
  */
 const DEFAULT_SETTINGS = {
   /**

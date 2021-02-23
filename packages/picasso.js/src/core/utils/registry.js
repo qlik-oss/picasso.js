@@ -63,7 +63,7 @@ export default function registryFactory(parentRegistry, registerName = 'unspecif
   }
 
   /**
-   * @alias registry
+   * @alias Registry
    * @interface
    * @param {string} key
    * @param {any} value

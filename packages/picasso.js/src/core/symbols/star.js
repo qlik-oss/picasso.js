@@ -2,8 +2,8 @@ import pointsToPath from '../utils/points-to-path';
 import { toRadians } from '../math/angles';
 
 /**
- * @extends symbol-config
- * @typedef {object} symbol--star
+ * @extends Symbol
+ * @typedef {object} SymbolStar
  * @property {number} [points=5] - Number of points on the star
  * @property {number} [startAngle=90] - Start drawing angle
  * @property {number} [innerRadius=size/2] - Size of the star core. My not exceed size of symbol.

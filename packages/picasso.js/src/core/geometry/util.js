@@ -19,7 +19,7 @@ export function getMinMax(points) {
 /**
  * @ignore
  * @param {oject} line
- * @returns {point[]} Array of points
+ * @returns {Point[]} Array of points
  */
 export function lineToPoints(line) {
   const x1 = line.x1 || 0;
@@ -35,7 +35,7 @@ export function lineToPoints(line) {
 /**
  * @ignore
  * @param {oject} rect
- * @returns {point[]} Array of points
+ * @returns {Point[]} Array of points
  */
 export function rectToPoints(rect) {
   return [

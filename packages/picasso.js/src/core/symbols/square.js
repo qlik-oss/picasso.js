@@ -1,6 +1,6 @@
 /**
- * @extends symbol-config
- * @typedef {object} symbol--square
+ * @extends Symbol
+ * @typedef {object} SymbolSquare
  */
 function square(options) {
   const size = options.size;

@@ -392,7 +392,7 @@ function filterComponents(components, settings, rect) {
 }
 
 /**
- * @typedef {object} dock-layout-settings
+ * @typedef {object} DockLayoutSettings
  * @property {object} [logicalSize] - Logical size
  * @property {number} [logicalSize.width] - Width in pixels
  * @property {number} [logicalSize.height] - Height in pixels

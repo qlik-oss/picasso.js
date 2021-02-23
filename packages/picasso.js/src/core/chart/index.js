@@ -15,7 +15,7 @@ import { testRectPoint } from '../math/narrow-phase-collision';
 import themeFn from '../theme';
 
 /**
- * @typedef {object} component-settings
+ * @typedef {object} ComponentSettings
  * @property {string} type - Component type (ex: axis, point, ...)
  * @property {function} [preferredSize] - Function returning the preferred size
  * @property {function} [created]
@@ -138,22 +138,22 @@ export function orderComponents(element, visibleComponents, order) {
 
 function chartFn(definition, context) {
   /**
-   * @typedef {object} chart-definition
+   * @typedef {object} ChartDefinition
    */
   let {
     /**
      * @type {HTMLElement}
-     * @memberof chart-definition
+     * @memberof ChartDefinition
      */
     element,
     /**
-     * @type {Array<data-source>}
-     * @memberof chart-definition
+     * @type {Array<DataSource>}
+     * @memberof ChartDefinition
      */
     data = [],
     /**
      * @type {chart-settings}
-     * @memberof chart-definition
+     * @memberof ChartDefinition
      */
     settings = {},
     on = {},
@@ -165,7 +165,7 @@ function chartFn(definition, context) {
 
   const listeners = [];
   /**
-   * @alias chart
+   * @alias Chart
    * @interface
    */
   const instance = extend({}, definition);
@@ -510,7 +510,7 @@ function chartFn(definition, context) {
 
   /**
    * Update the chart with new settings and / or data
-   * @param {chart-definition} [chart] - Chart definition
+   * @param {ChartDefinition} [chart] - Chart definition
    */
   instance.update = (newProps = {}) => {
     const { partialData, excludeFromUpdate = [] } = newProps;
@@ -687,7 +687,7 @@ function chartFn(definition, context) {
 
   /**
    * Get components overlapping a point.
-   * @param {point} p - Point with x- and y-cooridnate. The coordinate is relative to the browser viewport.
+   * @param {Point} p - Point with x- and y-cooridnate. The coordinate is relative to the browser viewport.
    * @returns {Array<component-context>} Array of component contexts
    */
   instance.componentsFromPoint = (p) => componentsFromPoint(p).map((comp) => comp.instance.ctx);
@@ -697,7 +697,7 @@ function chartFn(definition, context) {
    *
    * The input shape is identified based on the geometrical attributes in the following order: circle => line => rectangle => point => polygon => geopolygon.
    * Note that not all nodes on a scene have collision detection enabled.
-   * @param {line|rect|point|circle} shape - A geometrical shape. Coordinates are relative to the top-left corner of the chart instance container.
+   * @param {Line|Rect|Point|Circle} shape - A geometrical shape. Coordinates are relative to the top-left corner of the chart instance container.
    * @param {object} opts - Options
    * @param {object[]} [opts.components] - Array of components to include in the lookup. If no components are specified, all components will be included.
    * @param {string} [opts.components[].component.key] - Component key
@@ -800,7 +800,7 @@ function chartFn(definition, context) {
   /**
    * Get
    * @param {string} key - Get the dataset identified by `key`
-   * @returns {dataset}
+   * @returns {Dataset}
    */
   instance.dataset = (key) => dataset(key);
 
@@ -825,7 +825,7 @@ function chartFn(definition, context) {
   /**
    * Get or create brush context for this chart
    * @param {string} name - Name of the brush context. If no match is found, a new brush context is created and returned.
-   * @returns {brush}
+   * @returns {Brush}
    */
   instance.brush = function brushFn(name = 'default') {
     if (!brushes[name]) {
@@ -895,7 +895,7 @@ function chartFn(definition, context) {
 
   /**
    * Get the all interactions instances
-   * @name chart.interactions
+   * @name Chart.interactions
    * @type {object}
    * @example
    * chart.interactions.instances; // Array of all interaction instances
@@ -904,7 +904,7 @@ function chartFn(definition, context) {
    */
   Object.defineProperty(instance, 'interactions', {
     get() {
-      return /** @lends chart.interactions */ {
+      return /** @lends Chart.interactions */ {
         /** @type Array<interaction> */
         instances: currentInteractions,
         /** Enable all interaction instances */

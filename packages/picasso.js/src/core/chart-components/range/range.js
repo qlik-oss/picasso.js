@@ -101,11 +101,11 @@ function teardown(state) {
 }
 
 /**
- * @typedef {object} component--range
+ * @typedef {object} ComponentRange
  */
 
 /**
- * @typedef {object} component--range.settings
+ * @typedef {object} ComponentRange.settings
  * @property {string} brush - Name of brush instance
  * @property {string} scale - Name of a scale
  * @property {string} [direction='horizontal'] - Direction of the brush

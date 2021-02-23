@@ -32,37 +32,37 @@ function pic(config = {}, registries = {}) {
     // -- registries --
     /**
      * Component registry
-     * @type {registry}
+     * @type {Registry}
      */
     component: registry(registries.component, 'component', logger),
     /**
      * Data registry
-     * @type {registry}
+     * @type {Registry}
      */
     data: registry(registries.data, 'data', logger),
     /**
      * Formatter registry
-     * @type {registry}
+     * @type {Registry}
      */
     formatter: registry(registries.formatter, 'formatter', logger),
     /**
      * Interaction registry
-     * @type {registry}
+     * @type {Registry}
      */
     interaction: registry(registries.interaction, 'interaction', logger),
     /**
      * Renderer registry
-     * @type {registry}
+     * @type {Registry}
      */
     renderer: renderer(registries.renderer, 'renderer', logger),
     /**
      * Scale registry
-     * @type {registry}
+     * @type {Registry}
      */
     scale: registry(registries.scale, 'scale', logger),
     /**
      * Symbol registry
-     * @type {registry}
+     * @type {Registry}
      * @private
      */
     symbol: registry(registries.symbol, 'symbol', logger),
@@ -116,8 +116,8 @@ function pic(config = {}, registries = {}) {
   picassojs.use = (plugin, options = {}) => usePlugin(plugin, options, regis);
 
   /**
-   * @param {chart-definition} definition
-   * @returns {chart}
+   * @param {ChartDefinition} definition
+   * @returns {Chart}
    */
   picassojs.chart = (definition) =>
     chart(definition, {

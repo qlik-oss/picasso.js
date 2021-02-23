@@ -6,13 +6,13 @@ import rangeCollection from './range-collection';
 import valueCollection from './value-collection';
 
 /**
- * @typedef {object} brush-config
- * @property {Array<brush-config--ranges>} [ranges] - Range configurations
+ * @typedef {object} BrushConfig
+ * @property {Array<BrushConfigRanges>} [ranges] - Range configurations
  */
 
 /**
  * @typedef {object}
- * @alias brush-config--ranges
+ * @alias BrushConfigRanges
  */
 const DEFAULT_RANGE_CONFIG = {
   /**
@@ -344,20 +344,20 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
 
   /**
    * A brush context
-   * @alias brush
+   * @alias Brush
    * @interface
    */
   const fn = {};
 
   /**
    * Triggered when this brush is activated
-   * @event brush#start
+   * @event Brush#start
    * @type {string}
    */
 
   /**
    * Triggered when this brush is updated
-   * @event brush#update
+   * @event Brush#update
    * @type {string}
    * @param {Array<object>} added - The added items
    * @param {Array<object>} removed - The removed items
@@ -365,14 +365,14 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
 
   /**
    * Triggered when this brush is deactivated
-   * @event brush#end
+   * @event Brush#end
    * @type {string}
    */
 
   /**
    * Configure the brush instance.
    *
-   * @param {brush-config} config
+   * @param {BrushConfig} config
    * @example
    * brushInstance.configure({
    *   ranges: [
@@ -414,7 +414,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    * Link this brush to another brush instance.
    *
    * When linked, the `target` will receive updates whenever this brush changes.
-   * @param {brush} target - The brush instance to link to
+   * @param {Brush} target - The brush instance to link to
    */
   fn.link = (target) => {
     if (fn === target) {
@@ -480,7 +480,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    *
    * Starts this brush context and emits a 'start' event if it is not already started.
    * @param {...any} args - arguments to be passed to 'start' listeners
-   * @emits brush#start
+   * @emits Brush#start
    */
   fn.start = (...args) => {
     if (!activated) {
@@ -495,7 +495,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    *
    * Ends this brush context and emits an 'end' event if it is not already ended.
    * @param {...any} args - arguments to be passed to 'end' listeners
-   * @emits brush#end
+   * @emits Brush#end
    */
   fn.end = (...args) => {
     if (!activated) {
@@ -566,8 +566,8 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    *
    * @param {string} key  An identifier that represents the data source of the value
    * @param {string|number} value The value to add
-   * @emits brush#start
-   * @emits brush#update
+   * @emits Brush#start
+   * @emits Brush#update
    * @example
    * brush.addValue('countries', 'Sweden');
    * brush.addValue('/qHyperCube/qDimensionInfo/0', 3);

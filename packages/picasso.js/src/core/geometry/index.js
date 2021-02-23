@@ -22,7 +22,7 @@ export function create(type, input) {
 /* eslint-enable import/prefer-default-export */
 
 /**
- * @typedef {object} rect
+ * @typedef {object} Rect
  * @property {number} x - X-coordinate
  * @property {number} y - Y-coordinate
  * @property {number} width - Width
@@ -30,7 +30,7 @@ export function create(type, input) {
  */
 
 /**
- * @typedef {object} line
+ * @typedef {object} Line
  * @property {number} x1 - Start x-coordinate
  * @property {number} y1 - Start y-coordinate
  * @property {number} x2 - End x-coordinate
@@ -38,34 +38,34 @@ export function create(type, input) {
  */
 
 /**
- * @typedef {object} point
+ * @typedef {object} Point
  * @property {number} x - X-coordinate
  * @property {number} y - Y-coordinate
  */
 
 /**
- * @typedef {object} circle
+ * @typedef {object} Circle
  * @property {number} cx - Center x-coordinate
  * @property {number} cy - Center y-coordinate
  * @property {number} r - Circle radius
  */
 
 /**
- * @typedef {object} polygon
- * @property {Array<point>} points - Array of connected points
+ * @typedef {object} Polygon
+ * @property {Array<Point>} points - Array of connected points
  */
 
 /**
- * @typedef {object} geopolygon
- * @property {Array<polygon>} polygons - Array of polygons
+ * @typedef {object} Geopolygon
+ * @property {Array<Polygon>} polygons - Array of polygons
  */
 
 /**
- * @typedef {object} polyline
- * @property {Array<point>} points - Array of connected points
+ * @typedef {object} Polyline
+ * @property {Array<Point>} points - Array of connected points
  */
 
 /**
- * @typedef {object} path
+ * @typedef {object} Path
  * @property {string} d - Path definition
  */

@@ -1,6 +1,6 @@
 /**
- * @extends symbol-config
- * @typedef {object} symbol--circle
+ * @extends Symbol
+ * @typedef {object} SymbolCircle
  */
 function circle(options) {
   return {

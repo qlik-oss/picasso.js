@@ -91,10 +91,10 @@ function generateTitle({ title, definitionSettings, dock, rect, measureText, sty
 }
 
 /**
- * @typedef {object} component--text
+ * @typedef {object} ComponentText
  * @property {string} [type='text']
  * @property {string|function} text
- * @property {component--text-settings} settings - Text settings
+ * @property {ComponentTextSettings} settings - Text settings
  * @example
  * {
  *  type: 'text',
@@ -110,7 +110,7 @@ function generateTitle({ title, definitionSettings, dock, rect, measureText, sty
  */
 
 /**
- * @typedef {object} component--text-settings
+ * @typedef {object} ComponentTextSettings
  * @property {number} [paddingStart=5]
  * @property {number} [paddingEnd=5]
  * @property {number} [paddingLeft=0]

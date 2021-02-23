@@ -406,12 +406,12 @@ export function precalculate({ nodes, rect, chart, labelSettings, placementSetti
 }
 
 /**
- * @typedef {object} component--labels~label-strategy
+ * @typedef {object} ComponentLabels~labelStrategy
  *
  */
 
 /**
- * @typedef {object} component--labels~label-strategy.settings
+ * @typedef {object} ComponentLabels~labelStrategy.settings
  * @property {string|function} [direction='up'] - The direction in which the bars are growing: 'up', 'down', 'right' or 'left'.
  * @property {string} [fontFamily='Arial']
  * @property {number} [fontSize=12]

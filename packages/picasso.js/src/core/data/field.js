@@ -28,7 +28,7 @@ const accessors = {
 /**
  * Create a new field with default settings
  * @ignore
- * @return {field} Data field
+ * @return {Field} Data field
  */
 export default function field(
   data,
@@ -47,7 +47,7 @@ export default function field(
   } = {}
 ) {
   /**
-   * @alias field
+   * @alias Field
    */
   const f = {
     /**
@@ -99,7 +99,7 @@ export default function field(
 
     /**
      * Returns the values of this field.
-     * @return {Array<datum-extract>}
+     * @return {Array<DatumExtract>}
      */
     items: () => values(data),
 
