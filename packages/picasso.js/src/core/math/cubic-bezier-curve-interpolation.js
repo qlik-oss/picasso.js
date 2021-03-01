@@ -23,10 +23,10 @@ function interpolate(t, s, cp1, cp2, e) {
  *
  * At most it will be able to generate 2**maxNbrOfSplits + 1 = 257 points
  * @ignore
- * @param {point} s - Start point
- * @param {point} cp1 - First control point
- * @param {point} cp2 - Second control point
- * @param {point} e - End point
+ * @param {Point} s - Start point
+ * @param {Point} cp1 - First control point
+ * @param {Point} cp2 - Second control point
+ * @param {Point} e - End point
  * @param {array} points - Initial set of points
  * @returns {point[]} Array of points
  */

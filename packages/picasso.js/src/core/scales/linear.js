@@ -26,7 +26,7 @@ export const DEFAULT_MINORTICKS_SETTINGS = {
 };
 
 /**
- * @typedef {object} scale--linear
+ * @typedef {object} ScaleLinear
  * @property {string} [type='linear']
  * @property {number} [expand] - Expand the output range
  * @property {boolean} [invert=false] - Invert the output range

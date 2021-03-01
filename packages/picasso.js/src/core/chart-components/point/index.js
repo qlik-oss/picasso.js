@@ -1,12 +1,12 @@
 import pointMarkerComponent from './point';
 
 /**
- * @typedef {object} component--point
+ * @typedef {object} ComponentPoint
  */
 
 /**
  * @type {string}
- * @memberof component--point
+ * @memberof ComponentPoint
  */
 const type = 'point';
 

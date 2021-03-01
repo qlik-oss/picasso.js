@@ -27,18 +27,18 @@ const CURVES = {
 };
 
 /**
- * @callback component--line~layerSort
+ * @callback ComponentLine~layerSort
  * @param {object} a
  * @param {string} a.id
- * @param {Array<datum-extract>} a.data
+ * @param {Array<DatumExtract>} a.data
  * @param {object} b
  * @param {string} b.id
- * @param {Array<datum-extract>} b.data
+ * @param {Array<DatumExtract>} b.data
  */
 
 /**
  * @typedef {object}
- * @alias component--line-settings
+ * @alias ComponentLineSettings
  */
 const SETTINGS = {
   /**
@@ -71,7 +71,7 @@ const SETTINGS = {
      * @type {boolean=} */
     show: true,
     /**
-     * @type {component--line~layerSort=} */
+     * @type {ComponentLine~layerSort=} */
     sort: undefined,
     /**
      * @typedef {object} */
@@ -115,8 +115,8 @@ const SETTINGS = {
 };
 
 /**
- * @type {datum-boolean=}
- * @memberof component--line-settings.coordinates
+ * @type {DatumBoolean=}
+ * @memberof ComponentLineSettings.coordinates
  * @name defined
  * @default true
  */

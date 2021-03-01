@@ -10,8 +10,8 @@ function createRectCollider({ x, y, size }) {
 }
 
 /**
- * @extends symbol-config
- * @typedef {object} symbol--line
+ * @extends Symbol
+ * @typedef {object} SymbolLine
  * @property {string} [direction='horizontal'] - Direction of line ('horizontal'|'vertical').
  */
 function line(options) {

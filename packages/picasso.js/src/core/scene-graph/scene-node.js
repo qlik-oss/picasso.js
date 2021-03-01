@@ -194,7 +194,7 @@ class SceneNode {
   /**
    * Bounding rectangle of the node. After any transform has been applied, if any, but excluding scaling transform related to devicePixelRatio.
    * Origin is in the top-left corner of the scene element.
-   * @type {rect}
+   * @type {Rect}
    */
   get bounds() {
     const bounds = this._bounds();
@@ -208,7 +208,7 @@ class SceneNode {
   /**
    * Bounding rectangle of the node withing it's local coordinate system.
    * Origin is in the top-left corner of the scene element.
-   * @type {rect}
+   * @type {Rect}
    */
   get localBounds() {
     const bounds = this._bounds(false);
@@ -223,7 +223,7 @@ class SceneNode {
    *
    * @param {HTMLElement|any} target
    * @param {boolean} includeTransform - Whether to include any applied transforms on the node
-   * @returns {rect}
+   * @returns {Rect}
    * @example
    *
    * node.boundsRelativeTo($('div'));
@@ -253,7 +253,7 @@ class SceneNode {
    * Origin is in the top-left corner of the scene element.
    *
    * If node has no collider, null is returned.
-   * @type {line|rect|circle|path}
+   * @type {Line|Rect|Circle|Path}
    */
   get collider() {
     return this._collider();

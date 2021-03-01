@@ -36,7 +36,7 @@ function applyOpts(obj, opts = {}) {
  * Factory function for symbols.
  * Options object is passed to symbols function.
  * @private
- * @param {symbol--bar|symbol--circle|symbol--cross|symbol--diamond|symbol--line|symbol--n-polygon|symbol--saltire|symbol--square|symbol--star|symbol--triangle} options - Options definition may contain any of the supported display-object attributes
+ * @param {SymbolBar|SymbolCircle|SymbolCross|SymbolDiamond|SymbolLine|SymbolPolygon|SymbolSaltire|SymbolSquare|SymbolStar|SymbolTriangle} options - Options definition may contain any of the supported display-object attributes
  * @returns {object} A node definition
  */
 const create = (reg = parentReg) => (options = {}) => {
@@ -59,7 +59,7 @@ export { create as default, parentReg as symbolRegistry };
 
 /**
  * Mandatory symbol config
- * @typedef {object} symbol-config
+ * @typedef {object} Symbol
  * @property {object} options - Options definition may contain any of the supported display-object attributes
  * @property {string} options.type - Type of symbol
  * @property {number} options.x - x-coordinate

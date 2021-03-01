@@ -20,7 +20,7 @@ class GeometryCollection {
   }
 
   /**
-   * @param {point} p
+   * @param {Point} p
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   containsPoint(p) {
@@ -28,7 +28,7 @@ class GeometryCollection {
   }
 
   /**
-   * @param {point[]} points - Line start and end point as an array of points
+   * @param {Point[]} points - Line start and end point as an array of points
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsLine(points) {
@@ -36,7 +36,7 @@ class GeometryCollection {
   }
 
   /**
-   * @param {point[]} points - Rect vertices as an array of points
+   * @param {Point[]} points - Rect vertices as an array of points
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsRect(points) {
@@ -44,7 +44,7 @@ class GeometryCollection {
   }
 
   /**
-   * @param {circle} c
+   * @param {Circle} c
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsCircle(c) {
@@ -60,7 +60,7 @@ class GeometryCollection {
   }
 
   /**
-   * @param {GeoPolygon} geopolygon
+   * @param {Geopolygon} geopolygon
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsGeoPolygon(geopolygon) {

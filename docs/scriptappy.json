@@ -53,27 +53,27 @@
       "entries": {
         "component": {
           "description": "Component registry",
-          "type": "#/definitions/registry"
+          "type": "#/definitions/Registry"
         },
         "data": {
           "description": "Data registry",
-          "type": "#/definitions/registry"
+          "type": "#/definitions/Registry"
         },
         "formatter": {
           "description": "Formatter registry",
-          "type": "#/definitions/registry"
+          "type": "#/definitions/Registry"
         },
         "interaction": {
           "description": "Interaction registry",
-          "type": "#/definitions/registry"
+          "type": "#/definitions/Registry"
         },
         "renderer": {
           "description": "Renderer registry",
-          "type": "#/definitions/registry"
+          "type": "#/definitions/Registry"
         },
         "scale": {
           "description": "Scale registry",
-          "type": "#/definitions/registry"
+          "type": "#/definitions/Registry"
         },
         "use": {
           "kind": "function",
@@ -94,11 +94,11 @@
           "params": [
             {
               "name": "definition",
-              "type": "#/definitions/chart-definition"
+              "type": "#/definitions/ChartDefinition"
             }
           ],
           "returns": {
-            "type": "#/definitions/chart"
+            "type": "#/definitions/Chart"
           }
         },
         "version": {
@@ -124,7 +124,7 @@
     }
   },
   "definitions": {
-    "brush-config": {
+    "BrushConfig": {
       "kind": "object",
       "entries": {
         "ranges": {
@@ -132,12 +132,12 @@
           "optional": true,
           "kind": "array",
           "items": {
-            "type": "#/definitions/brush-config--ranges"
+            "type": "#/definitions/BrushConfigRanges"
           }
         }
       }
     },
-    "brush-config--ranges": {
+    "BrushConfigRanges": {
       "kind": "object",
       "entries": {
         "key": {
@@ -159,7 +159,7 @@
         }
       }
     },
-    "brush": {
+    "Brush": {
       "description": "A brush context",
       "kind": "interface",
       "params": [],
@@ -170,7 +170,7 @@
           "params": [
             {
               "name": "config",
-              "type": "#/definitions/brush-config"
+              "type": "#/definitions/BrushConfig"
             }
           ],
           "examples": [
@@ -184,7 +184,7 @@
             {
               "name": "target",
               "description": "The brush instance to link to",
-              "type": "#/definitions/brush"
+              "type": "#/definitions/Brush"
             }
           ]
         },
@@ -201,7 +201,7 @@
           ],
           "emits": [
             {
-              "type": "#/definitions/brush/events/start"
+              "type": "#/definitions/Brush/events/start"
             }
           ]
         },
@@ -218,7 +218,7 @@
           ],
           "emits": [
             {
-              "type": "#/definitions/brush/events/end"
+              "type": "#/definitions/Brush/events/end"
             }
           ]
         },
@@ -269,10 +269,10 @@
           ],
           "emits": [
             {
-              "type": "#/definitions/brush/events/start"
+              "type": "#/definitions/Brush/events/start"
             },
             {
-              "type": "#/definitions/brush/events/update"
+              "type": "#/definitions/Brush/events/update"
             }
           ],
           "examples": [
@@ -777,7 +777,7 @@
         }
       }
     },
-    "component-settings": {
+    "ComponentSettings": {
       "kind": "object",
       "entries": {
         "type": {
@@ -880,7 +880,7 @@
         }
       }
     },
-    "chart-definition": {
+    "ChartDefinition": {
       "kind": "object",
       "entries": {
         "element": {
@@ -889,7 +889,7 @@
         "data": {
           "kind": "array",
           "items": {
-            "type": "#/definitions/data-source"
+            "type": "#/definitions/DataSource"
           }
         },
         "settings": {
@@ -897,7 +897,7 @@
         }
       }
     },
-    "chart": {
+    "Chart": {
       "kind": "interface",
       "params": [],
       "entries": {
@@ -909,7 +909,7 @@
               "name": "chart",
               "description": "Chart definition",
               "optional": true,
-              "type": "#/definitions/chart-definition"
+              "type": "#/definitions/ChartDefinition"
             }
           ]
         },
@@ -982,7 +982,7 @@
             {
               "name": "p",
               "description": "Point with x- and y-cooridnate. The coordinate is relative to the browser viewport.",
-              "type": "#/definitions/point"
+              "type": "#/definitions/Point"
             }
           ],
           "returns": {
@@ -1003,16 +1003,16 @@
               "kind": "union",
               "items": [
                 {
-                  "type": "#/definitions/line"
+                  "type": "#/definitions/Line"
                 },
                 {
-                  "type": "#/definitions/rect"
+                  "type": "#/definitions/Rect"
                 },
                 {
-                  "type": "#/definitions/point"
+                  "type": "#/definitions/Point"
                 },
                 {
-                  "type": "#/definitions/circle"
+                  "type": "#/definitions/Circle"
                 }
               ],
               "type": "any"
@@ -1112,7 +1112,7 @@
             }
           ],
           "returns": {
-            "type": "#/definitions/dataset"
+            "type": "#/definitions/Dataset"
           }
         },
         "scales": {
@@ -1158,7 +1158,7 @@
             }
           ],
           "returns": {
-            "type": "#/definitions/brush"
+            "type": "#/definitions/Brush"
           }
         },
         "scale": {
@@ -1266,7 +1266,7 @@
         }
       }
     },
-    "component--axis-discrete": {
+    "ComponentAxisDiscrete": {
       "description": "Discrete axis settings",
       "kind": "object",
       "entries": {
@@ -1400,7 +1400,7 @@
         }
       }
     },
-    "component--axis-continuous": {
+    "ComponentAxisContinuous": {
       "description": "Continuous axis settings",
       "kind": "object",
       "entries": {
@@ -1528,7 +1528,7 @@
         }
       }
     },
-    "component--axis": {
+    "ComponentAxis": {
       "kind": "object",
       "entries": {
         "type": {
@@ -1537,7 +1537,7 @@
         }
       }
     },
-    "component--box": {
+    "ComponentBox": {
       "kind": "object",
       "entries": {
         "type": {
@@ -1546,11 +1546,11 @@
         },
         "data": {
           "description": "Box data",
-          "type": "#/definitions/component--box/definitions/data"
+          "type": "#/definitions/ComponentBox/definitions/data"
         },
         "settings": {
           "description": "Box settings",
-          "type": "#/definitions/component--box/definitions/settings"
+          "type": "#/definitions/ComponentBox/definitions/settings"
         }
       },
       "examples": [
@@ -1577,7 +1577,7 @@
                       "type": "string"
                     },
                     {
-                      "type": "#/definitions/component--box/definitions/settings/definitions/majorReference"
+                      "type": "#/definitions/ComponentBox/definitions/settings/definitions/majorReference"
                     }
                   ],
                   "type": "any"
@@ -1823,11 +1823,11 @@
         }
       }
     },
-    "component--brush-lasso": {
+    "ComponentBrushLasso": {
       "kind": "object",
       "entries": {}
     },
-    "component--brush-lasso-settings": {
+    "ComponentBrushLassoSettings": {
       "kind": "object",
       "entries": {
         "lasso": {
@@ -1973,7 +1973,7 @@
         }
       }
     },
-    "component--grid-line-settings": {
+    "ComponentGridLineSettings": {
       "kind": "object",
       "entries": {
         "x": {
@@ -2046,7 +2046,7 @@
         }
       }
     },
-    "component--labels": {
+    "ComponentLabels": {
       "kind": "object",
       "entries": {
         "type": {
@@ -2068,7 +2068,7 @@
                     "type": "string"
                   },
                   "strategy": {
-                    "type": "#/definitions/component--labels/definitions/label-strategy"
+                    "type": "#/definitions/ComponentLabels/definitions/labelStrategy"
                   }
                 },
                 "kind": "object"
@@ -2078,7 +2078,7 @@
         }
       },
       "definitions": {
-        "label-strategy": {
+        "labelStrategy": {
           "kind": "object",
           "entries": {
             "settings": {
@@ -2253,7 +2253,7 @@
             }
           }
         },
-        "rows-label-strategy": {
+        "rowsLabelStrategy": {
           "kind": "object",
           "entries": {
             "settings": {
@@ -2327,7 +2327,7 @@
             }
           }
         },
-        "slices-label-strategy": {
+        "slicesLabelStrategy": {
           "kind": "object",
           "entries": {
             "settings": {
@@ -2409,7 +2409,7 @@
         }
       }
     },
-    "component--legend-cat": {
+    "ComponentLegendCat": {
       "kind": "object",
       "entries": {
         "scale": {
@@ -2580,7 +2580,7 @@
         }
       }
     },
-    "component--legend-seq": {
+    "ComponentLegendSeq": {
       "kind": "object",
       "entries": {
         "fill": {
@@ -2769,7 +2769,7 @@
         }
       }
     },
-    "component--line": {
+    "ComponentLine": {
       "kind": "object",
       "entries": {
         "type": {
@@ -2791,7 +2791,7 @@
                 "data": {
                   "kind": "array",
                   "items": {
-                    "type": "#/definitions/datum-extract"
+                    "type": "#/definitions/DatumExtract"
                   }
                 }
               }
@@ -2806,7 +2806,7 @@
                 "data": {
                   "kind": "array",
                   "items": {
-                    "type": "#/definitions/datum-extract"
+                    "type": "#/definitions/DatumExtract"
                   }
                 }
               }
@@ -2815,7 +2815,7 @@
         }
       }
     },
-    "component--line-settings": {
+    "ComponentLineSettings": {
       "kind": "object",
       "entries": {
         "coordinates": {
@@ -2837,7 +2837,7 @@
             "defined": {
               "optional": true,
               "defaultValue": "true",
-              "type": "#/definitions/datum-boolean"
+              "type": "#/definitions/DatumBoolean"
             }
           }
         },
@@ -2866,7 +2866,7 @@
             },
             "sort": {
               "optional": true,
-              "type": "#/definitions/component--line/definitions/layerSort"
+              "type": "#/definitions/ComponentLine/definitions/layerSort"
             },
             "line": {
               "kind": "object",
@@ -2931,7 +2931,7 @@
         }
       }
     },
-    "component--pie-settings": {
+    "ComponentPieSettings": {
       "kind": "object",
       "entries": {
         "startAngle": {
@@ -3018,7 +3018,7 @@
         }
       }
     },
-    "component--pie": {
+    "ComponentPie": {
       "kind": "object",
       "entries": {
         "type": {
@@ -3031,7 +3031,7 @@
         "{\n  type: 'pie',\n  data: {\n    extract: {\n      field: 'Region',\n      props: {\n        num: { field: 'Population' }\n      }\n    }\n  },\n  settings: {\n    startAngle: Math.PI / 2,\n    endAngle: -Math.PI / 2,\n    slice: {\n      arc: { ref: 'num' },\n      fill: 'green',\n      stroke: 'red',\n      strokeWidth: 2,\n      strokeLinejoin: 'round',\n      innerRadius: 0.6,\n      outerRadius 0.8,\n      opacity: 0.8,\n      offset: 0.2\n    }\n  }\n}"
       ]
     },
-    "component--point": {
+    "ComponentPoint": {
       "kind": "object",
       "entries": {
         "type": {
@@ -3045,25 +3045,25 @@
               "description": "Type of shape",
               "optional": true,
               "defaultValue": "circle",
-              "type": "#/definitions/datum-string"
+              "type": "#/definitions/DatumString"
             },
             "fill": {
               "description": "Fill color",
               "optional": true,
               "defaultValue": "#333",
-              "type": "#/definitions/datum-string"
+              "type": "#/definitions/DatumString"
             },
             "stroke": {
               "description": "Stroke color",
               "optional": true,
               "defaultValue": "#ccc",
-              "type": "#/definitions/datum-string"
+              "type": "#/definitions/DatumString"
             },
             "strokeWidth": {
               "description": "Stroke width",
               "optional": true,
               "defaultValue": 0,
-              "type": "#/definitions/datum-number"
+              "type": "#/definitions/DatumNumber"
             },
             "strokeLinejoin": {
               "description": "Stroke line join",
@@ -3075,31 +3075,31 @@
               "description": "Opacity of shape",
               "optional": true,
               "defaultValue": 1,
-              "type": "#/definitions/datum-number"
+              "type": "#/definitions/DatumNumber"
             },
             "x": {
               "description": "Normalized x coordinate",
               "optional": true,
               "defaultValue": 0.5,
-              "type": "#/definitions/datum-number"
+              "type": "#/definitions/DatumNumber"
             },
             "y": {
               "description": "Normalized y coordinate",
               "optional": true,
               "defaultValue": 0.5,
-              "type": "#/definitions/datum-number"
+              "type": "#/definitions/DatumNumber"
             },
             "size": {
               "description": "Normalized size of shape",
               "optional": true,
               "defaultValue": 1,
-              "type": "#/definitions/datum-number"
+              "type": "#/definitions/DatumNumber"
             },
             "show": {
               "description": "Whether or not to show the point",
               "optional": true,
               "defaultValue": true,
-              "type": "#/definitions/datum-boolean"
+              "type": "#/definitions/DatumBoolean"
             },
             "sizeLimits": {
               "kind": "object",
@@ -3146,16 +3146,16 @@
         }
       }
     },
-    "datum-accessor": {
+    "datumAccessor": {
       "kind": "function",
       "params": [
         {
           "name": "d",
-          "type": "#/definitions/datum-extract"
+          "type": "#/definitions/DatumExtract"
         }
       ]
     },
-    "datum-config": {
+    "DatumConfig": {
       "kind": "object",
       "entries": {
         "scale": {
@@ -3163,60 +3163,60 @@
           "type": "string"
         },
         "fn": {
-          "type": "#/definitions/datum-accessor"
+          "type": "#/definitions/datumAccessor"
         },
         "ref": {
-          "description": "A reference to a datum-extract property",
+          "description": "A reference to a DatumExtract property",
           "type": "string"
         }
       }
     },
-    "datum-string": {
+    "DatumString": {
       "kind": "union",
       "items": [
         {
           "type": "string"
         },
         {
-          "type": "#/definitions/datum-config"
+          "type": "#/definitions/DatumConfig"
         },
         {
-          "type": "#/definitions/datum-accessor"
+          "type": "#/definitions/datumAccessor"
         }
       ],
       "type": "any"
     },
-    "datum-number": {
+    "DatumNumber": {
       "kind": "union",
       "items": [
         {
           "type": "number"
         },
         {
-          "type": "#/definitions/datum-config"
+          "type": "#/definitions/DatumConfig"
         },
         {
-          "type": "#/definitions/datum-accessor"
+          "type": "#/definitions/datumAccessor"
         }
       ],
       "type": "any"
     },
-    "datum-boolean": {
+    "DatumBoolean": {
       "kind": "union",
       "items": [
         {
           "type": "boolean"
         },
         {
-          "type": "#/definitions/datum-config"
+          "type": "#/definitions/DatumConfig"
         },
         {
-          "type": "#/definitions/datum-accessor"
+          "type": "#/definitions/datumAccessor"
         }
       ],
       "type": "any"
     },
-    "component--range": {
+    "ComponentRange": {
       "kind": "object",
       "entries": {
         "settings": {
@@ -3252,7 +3252,7 @@
         }
       }
     },
-    "component--ref-line": {
+    "ComponentRefLine": {
       "stability": "experimental",
       "kind": "object",
       "entries": {
@@ -3266,7 +3266,7 @@
             "oob": {
               "description": "Style for out of bounds object (oob)",
               "optional": true,
-              "defaultValue": "component--ref-line.style.oob",
+              "defaultValue": "ComponentRefLine.style.oob",
               "type": "refline-oob-style",
               "kind": "object",
               "entries": {
@@ -3629,7 +3629,7 @@
         }
       }
     },
-    "component--text": {
+    "ComponentText": {
       "kind": "object",
       "entries": {
         "type": {
@@ -3651,14 +3651,14 @@
         },
         "settings": {
           "description": "Text settings",
-          "type": "#/definitions/component--text-settings"
+          "type": "#/definitions/ComponentTextSettings"
         }
       },
       "examples": [
         "{\n type: 'text',\n text: 'my title',\n dock: 'left',\n settings: {\n   anchor: 'left',\n   style: {\n     fill: 'red'\n   }\n }\n}"
       ]
     },
-    "component--text-settings": {
+    "ComponentTextSettings": {
       "kind": "object",
       "entries": {
         "paddingStart": {
@@ -3700,7 +3700,7 @@
         }
       }
     },
-    "data-source": {
+    "DataSource": {
       "kind": "object",
       "entries": {
         "key": {
@@ -3716,7 +3716,7 @@
         }
       }
     },
-    "data-extract-config": {
+    "DataExtractConfig": {
       "kind": "object",
       "entries": {
         "field": {
@@ -3726,32 +3726,32 @@
         "value": {
           "description": "The field value accessor",
           "optional": true,
-          "type": "#/definitions/data-extract-config/definitions/valueFn"
+          "type": "#/definitions/DataExtractConfig/definitions/valueFn"
         },
         "label": {
           "description": "The field label accessor",
           "optional": true,
-          "type": "#/definitions/data-extract-config/definitions/labelFn"
+          "type": "#/definitions/DataExtractConfig/definitions/labelFn"
         },
         "trackBy": {
           "description": "Track by value accessor",
           "optional": true,
-          "type": "#/definitions/data-extract-config/definitions/trackByFn"
+          "type": "#/definitions/DataExtractConfig/definitions/trackByFn"
         },
         "reduce": {
           "description": "Reducer function",
           "optional": true,
-          "type": "#/definitions/data-extract-config/definitions/reduceFn"
+          "type": "#/definitions/DataExtractConfig/definitions/reduceFn"
         },
         "reduceLabel": {
           "description": "Label reducer function",
           "optional": true,
-          "type": "#/definitions/data-extract-config/definitions/reduceLabelFn"
+          "type": "#/definitions/DataExtractConfig/definitions/reduceLabelFn"
         },
         "filter": {
           "description": "Filter function",
           "optional": true,
-          "type": "#/definitions/data-extract-config/definitions/filterFn"
+          "type": "#/definitions/DataExtractConfig/definitions/filterFn"
         },
         "props": {
           "description": "Additional properties to add to the extracted item",
@@ -3851,7 +3851,7 @@
         }
       }
     },
-    "datum-extract": {
+    "DatumExtract": {
       "kind": "object",
       "entries": {
         "value": {
@@ -3878,7 +3878,7 @@
         }
       }
     },
-    "dataset": {
+    "Dataset": {
       "kind": "interface",
       "params": [],
       "entries": {
@@ -3909,7 +3909,7 @@
             }
           ],
           "returns": {
-            "type": "#/definitions/field"
+            "type": "#/definitions/Field"
           }
         },
         "fields": {
@@ -3919,7 +3919,7 @@
           "returns": {
             "kind": "array",
             "items": {
-              "type": "#/definitions/field"
+              "type": "field"
             }
           }
         },
@@ -3929,13 +3929,13 @@
           "params": [
             {
               "name": "config",
-              "type": "#/definitions/data-extract-config"
+              "type": "#/definitions/DataExtractConfig"
             }
           ],
           "returns": {
             "kind": "array",
             "items": {
-              "type": "#/definitions/datum-extract"
+              "type": "#/definitions/DatumExtract"
             }
           }
         },
@@ -3948,7 +3948,7 @@
         }
       }
     },
-    "field": {
+    "Field": {
       "kind": "object",
       "entries": {
         "id": {
@@ -4025,7 +4025,7 @@
           "returns": {
             "kind": "array",
             "items": {
-              "type": "#/definitions/datum-extract"
+              "type": "#/definitions/DatumExtract"
             }
           }
         },
@@ -4036,7 +4036,7 @@
         }
       }
     },
-    "rect": {
+    "Rect": {
       "kind": "object",
       "entries": {
         "x": {
@@ -4057,7 +4057,7 @@
         }
       }
     },
-    "line": {
+    "Line": {
       "kind": "object",
       "entries": {
         "x1": {
@@ -4078,7 +4078,7 @@
         }
       }
     },
-    "point": {
+    "Point": {
       "kind": "object",
       "entries": {
         "x": {
@@ -4091,7 +4091,7 @@
         }
       }
     },
-    "circle": {
+    "Circle": {
       "kind": "object",
       "entries": {
         "cx": {
@@ -4108,43 +4108,43 @@
         }
       }
     },
-    "polygon": {
+    "Polygon": {
       "kind": "object",
       "entries": {
         "points": {
           "description": "Array of connected points",
           "kind": "array",
           "items": {
-            "type": "#/definitions/point"
+            "type": "#/definitions/Point"
           }
         }
       }
     },
-    "geopolygon": {
+    "Geopolygon": {
       "kind": "object",
       "entries": {
         "polygons": {
           "description": "Array of polygons",
           "kind": "array",
           "items": {
-            "type": "#/definitions/polygon"
+            "type": "#/definitions/Polygon"
           }
         }
       }
     },
-    "polyline": {
+    "Polyline": {
       "kind": "object",
       "entries": {
         "points": {
           "description": "Array of connected points",
           "kind": "array",
           "items": {
-            "type": "#/definitions/point"
+            "type": "#/definitions/Point"
           }
         }
       }
     },
-    "path": {
+    "Path": {
       "kind": "object",
       "entries": {
         "d": {
@@ -4153,7 +4153,7 @@
         }
       }
     },
-    "dock-layout-settings": {
+    "DockLayoutSettings": {
       "kind": "object",
       "entries": {
         "logicalSize": {
@@ -4232,7 +4232,7 @@
         }
       }
     },
-    "scale--band": {
+    "ScaleBand": {
       "kind": "object",
       "entries": {
         "type": {
@@ -4303,7 +4303,7 @@
         }
       }
     },
-    "scale--categorical-color": {
+    "ScaleCategoricalColor": {
       "kind": "object",
       "entries": {
         "type": {
@@ -4350,7 +4350,7 @@
         }
       }
     },
-    "scale--sequential-color": {
+    "ScaleSequentialColor": {
       "kind": "object",
       "entries": {
         "type": {
@@ -4384,7 +4384,7 @@
         }
       }
     },
-    "scale--threshold-color": {
+    "ScaleThresholdColor": {
       "kind": "object",
       "entries": {
         "type": {
@@ -4432,7 +4432,7 @@
         }
       }
     },
-    "scale--linear": {
+    "ScaleLinear": {
       "kind": "object",
       "entries": {
         "type": {
@@ -4570,11 +4570,11 @@
         },
         "bounds": {
           "description": "Bounding rectangle of the node. After any transform has been applied, if any, but excluding scaling transform related to devicePixelRatio.\nOrigin is in the top-left corner of the scene element.",
-          "type": "#/definitions/rect"
+          "type": "#/definitions/Rect"
         },
         "localBounds": {
           "description": "Bounding rectangle of the node withing it's local coordinate system.\nOrigin is in the top-left corner of the scene element.",
-          "type": "#/definitions/rect"
+          "type": "#/definitions/Rect"
         },
         "boundsRelativeTo": {
           "description": "Bounding rectangle of the node, relative a target.\n\nIf target is an HTMLElement, the bounds are relative to the HTMLElement.\nAny other target type will return the bounds relative to the viewport of the browser.",
@@ -4601,7 +4601,7 @@
             }
           ],
           "returns": {
-            "type": "#/definitions/rect"
+            "type": "#/definitions/Rect"
           },
           "examples": [
             "node.boundsRelativeTo($('div'));\nnode.boundsRelativeTo('viewport');"
@@ -4612,16 +4612,16 @@
           "kind": "union",
           "items": [
             {
-              "type": "#/definitions/line"
+              "type": "#/definitions/Line"
             },
             {
-              "type": "#/definitions/rect"
+              "type": "#/definitions/Rect"
             },
             {
-              "type": "#/definitions/circle"
+              "type": "#/definitions/Circle"
             },
             {
-              "type": "#/definitions/path"
+              "type": "#/definitions/Path"
             }
           ],
           "type": "any"
@@ -4637,10 +4637,10 @@
         }
       }
     },
-    "symbol--bar": {
+    "SymbolBar": {
       "extends": [
         {
-          "type": "#/definitions/symbol-config"
+          "type": "#/definitions/Symbol"
         }
       ],
       "kind": "object",
@@ -4653,19 +4653,19 @@
         }
       }
     },
-    "symbol--circle": {
+    "SymbolCircle": {
       "extends": [
         {
-          "type": "#/definitions/symbol-config"
+          "type": "#/definitions/Symbol"
         }
       ],
       "kind": "object",
       "entries": {}
     },
-    "symbol--cross": {
+    "SymbolCross": {
       "extends": [
         {
-          "type": "#/definitions/symbol-config"
+          "type": "#/definitions/Symbol"
         }
       ],
       "kind": "object",
@@ -4677,16 +4677,16 @@
         }
       }
     },
-    "symbol--diamond": {
+    "SymbolDiamond": {
       "extends": [
         {
-          "type": "#/definitions/symbol-config"
+          "type": "#/definitions/Symbol"
         }
       ],
       "kind": "object",
       "entries": {}
     },
-    "symbol-config": {
+    "Symbol": {
       "description": "Mandatory symbol config",
       "kind": "object",
       "entries": {
@@ -4717,10 +4717,10 @@
         }
       }
     },
-    "symbol--line": {
+    "SymbolLine": {
       "extends": [
         {
-          "type": "#/definitions/symbol-config"
+          "type": "#/definitions/Symbol"
         }
       ],
       "kind": "object",
@@ -4733,10 +4733,10 @@
         }
       }
     },
-    "symbol--n-polygon": {
+    "SymbolPolygon": {
       "extends": [
         {
-          "type": "#/definitions/symbol-config"
+          "type": "#/definitions/Symbol"
         }
       ],
       "kind": "object",
@@ -4755,10 +4755,10 @@
         }
       }
     },
-    "symbol--saltire": {
+    "SymbolSaltire": {
       "extends": [
         {
-          "type": "#/definitions/symbol-config"
+          "type": "#/definitions/Symbol"
         }
       ],
       "kind": "object",
@@ -4770,19 +4770,19 @@
         }
       }
     },
-    "symbol--square": {
+    "SymbolSquare": {
       "extends": [
         {
-          "type": "#/definitions/symbol-config"
+          "type": "#/definitions/Symbol"
         }
       ],
       "kind": "object",
       "entries": {}
     },
-    "symbol--star": {
+    "SymbolStar": {
       "extends": [
         {
-          "type": "#/definitions/symbol-config"
+          "type": "#/definitions/Symbol"
         }
       ],
       "kind": "object",
@@ -4807,10 +4807,10 @@
         }
       }
     },
-    "symbol--triangle": {
+    "SymbolTriangle": {
       "extends": [
         {
-          "type": "#/definitions/symbol-config"
+          "type": "#/definitions/Symbol"
         }
       ],
       "kind": "object",
@@ -4823,7 +4823,7 @@
         }
       }
     },
-    "registry": {
+    "Registry": {
       "kind": "interface",
       "params": [
         {
@@ -4837,7 +4837,7 @@
       ],
       "entries": {}
     },
-    "component--brush-area-brush": {
+    "ComponentBrushAreaBrush": {
       "kind": "object",
       "entries": {
         "key": {
@@ -4868,7 +4868,7 @@
         }
       }
     },
-    "component--brush-area-settings": {
+    "ComponentBrushAreaSettings": {
       "kind": "object",
       "entries": {
         "brush": {
@@ -4877,14 +4877,14 @@
             "components": {
               "kind": "array",
               "items": {
-                "type": "#/definitions/component--brush-area-brush"
+                "type": "#/definitions/ComponentBrushAreaBrush"
               }
             }
           }
         }
       }
     },
-    "component--brush-area-dir-settings": {
+    "ComponentBrushAreaDirSettings": {
       "kind": "object",
       "entries": {
         "brush": {
@@ -4968,7 +4968,7 @@
         }
       }
     },
-    "component--brush-area-dir-style": {
+    "ComponentBrushAreaDirStyle": {
       "kind": "object",
       "entries": {
         "bubble": {
@@ -5039,7 +5039,7 @@
         }
       }
     },
-    "component--brush-range-settings": {
+    "ComponentBrushRangeSettings": {
       "kind": "object",
       "entries": {
         "brush": {
@@ -5119,7 +5119,7 @@
         }
       }
     },
-    "component--brush-range-style": {
+    "ComponentBrushRangeStyle": {
       "kind": "object",
       "entries": {
         "bubble": {
@@ -5190,7 +5190,7 @@
         }
       }
     },
-    "component--tooltip": {
+    "ComponentTooltip": {
       "kind": "object",
       "entries": {
         "type": {
@@ -5378,10 +5378,10 @@
       ],
       "returns": {
         "description": "A canvas renderer instance",
-        "type": "#/definitions/renderer"
+        "type": "#/definitions/Renderer"
       }
     },
-    "renderer": {
+    "Renderer": {
       "kind": "interface",
       "params": [],
       "entries": {
@@ -5442,22 +5442,22 @@
               "kind": "union",
               "items": [
                 {
-                  "type": "#/definitions/point"
+                  "type": "#/definitions/Point"
                 },
                 {
-                  "type": "#/definitions/circle"
+                  "type": "#/definitions/Circle"
                 },
                 {
-                  "type": "#/definitions/rect"
+                  "type": "#/definitions/Rect"
                 },
                 {
-                  "type": "#/definitions/line"
+                  "type": "#/definitions/Line"
                 },
                 {
-                  "type": "#/definitions/polygon"
+                  "type": "#/definitions/Polygon"
                 },
                 {
-                  "type": "#/definitions/geopolygon"
+                  "type": "#/definitions/Geopolygon"
                 }
               ],
               "type": "any"
@@ -5494,7 +5494,7 @@
           "params": [],
           "returns": {
             "description": "The renderer instance",
-            "type": "#/definitions/renderer"
+            "type": "#/definitions/Renderer"
           }
         },
         "destory": {
@@ -5510,12 +5510,12 @@
               "name": "opts",
               "description": "Size definition",
               "optional": true,
-              "type": "#/definitions/renderer-container-def"
+              "type": "#/definitions/RendererContainerDef"
             }
           ],
           "returns": {
             "description": "The current size definition",
-            "type": "#/definitions/renderer-container-def"
+            "type": "#/definitions/RendererContainerDef"
           }
         },
         "measureText": {
@@ -5559,12 +5559,12 @@
           ],
           "returns": {
             "description": "The bounding rectangle",
-            "type": "#/definitions/rect"
+            "type": "#/definitions/Rect"
           }
         }
       }
     },
-    "renderer-container-def": {
+    "RendererContainerDef": {
       "kind": "object",
       "entries": {
         "x": {
@@ -5643,7 +5643,7 @@
       ],
       "returns": {
         "description": "A svg renderer instance",
-        "type": "#/definitions/renderer"
+        "type": "#/definitions/Renderer"
       }
     }
   }

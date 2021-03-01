@@ -14,7 +14,7 @@ export const DEFAULT_SETTINGS = {
 };
 
 /**
- * @typedef {object} scale--band
+ * @typedef {object} ScaleBand
  * @property {string} [type='band']
  * @property {number} [padding] - {@link https://github.com/d3/d3-scale#band_padding}
  * @property {number} [paddingInner] - {@link https://github.com/d3/d3-scale#band_paddingInner}

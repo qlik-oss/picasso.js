@@ -18,27 +18,27 @@ function isPrimitive(x) {
 }
 
 /**
- * @callback datum-accessor
- * @param {datum-extract} d
+ * @callback datumAccessor
+ * @param {DatumExtract} d
  */
 
 /**
- * @typedef {object} datum-config
+ * @typedef {object} DatumConfig
  * @property {string} [scale]
- * @property {datum-accessor} fn
- * @property {string} ref - A reference to a datum-extract property
+ * @property {datumAccessor} fn
+ * @property {string} ref - A reference to a DatumExtract property
  */
 
 /**
- * @typedef {string|datum-config|datum-accessor} datum-string
+ * @typedef {string|DatumConfig|datumAccessor} DatumString
  */
 
 /**
- * @typedef {number|datum-config|datum-accessor} datum-number
+ * @typedef {number|DatumConfig|datumAccessor} DatumNumber
  */
 
 /**
- * @typedef {boolean|datum-config|datum-accessor} datum-boolean
+ * @typedef {boolean|DatumConfig|datumAccessor} DatumBoolean
  */
 
 /**

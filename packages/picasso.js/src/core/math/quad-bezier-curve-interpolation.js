@@ -21,10 +21,10 @@ function toCubic(s, cp, e) {
  * Recursive subdivision of a curve using de Casteljau algorithm.
  * Splits the curve into multiple line segments where each segments is choosen based on a level of flatness.
  * @ignore
- * @param {point} s - Start point
- * @param {point} cp - Control point
- * @param {point} e - End point
- * @returns {point[]} Array of points
+ * @param {Point} s - Start point
+ * @param {Point} cp - Control point
+ * @param {Point} e - End point
+ * @returns {Point[]} Array of points
  */
 function toPoints(s, cp, e) {
   const { cp1, cp2 } = toCubic(s, cp, e);

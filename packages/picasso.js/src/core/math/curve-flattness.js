@@ -1,10 +1,10 @@
 /**
  * Measure the flatnass of a cubic bezier curve
  * @ignore
- * @param {point} s - Start point
- * @param {point} cp1 - First control point
- * @param {point} cp2 - Second control point
- * @param {point} e - End point
+ * @param {Point} s - Start point
+ * @param {Point} cp1 - First control point
+ * @param {Point} cp2 - Second control point
+ * @param {Point} e - End point
  */
 export default function flatness(s, cp1, cp2, e) {
   const ux = Math.abs(s.x + cp2.x - (cp1.x + cp1.x));

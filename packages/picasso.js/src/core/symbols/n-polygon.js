@@ -2,8 +2,8 @@ import pointsToPath from '../utils/points-to-path';
 import { toRadians } from '../math/angles';
 
 /**
- * @extends symbol-config
- * @typedef {object} symbol--n-polygon
+ * @extends Symbol
+ * @typedef {object} SymbolPolygon
  * @property {object} [sides=6] - Number of sides on the regular polygon
  * @property {object} [startAngle=0] - Start drawing angle
  */

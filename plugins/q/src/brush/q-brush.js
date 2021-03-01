@@ -111,7 +111,7 @@ export function extractFieldFromId(id, layout) {
  * Helper method to generate suitable QIX selection methods and parameters based on a brush instance.
  * @alias brush
  * @memberof picasso.q
- * @param {brush} brush A brush instance
+ * @param {Brush} brush A brush instance
  * @param {object} [opts]
  * @param {boolean} [opts.byCells=false] Whether to prefer selection by row index.
  * @param {string} [opts.primarySource] Field source to extract row indices from. If not specified, indices from first source are used.

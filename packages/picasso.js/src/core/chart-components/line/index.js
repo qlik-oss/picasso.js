@@ -1,12 +1,12 @@
 import component from './line';
 
 /**
- * @typedef {object} component--line
+ * @typedef {object} ComponentLine
  */
 
 /**
  * @type {string}
- * @memberof component--line
+ * @memberof ComponentLine
  */
 const type = 'line';
 

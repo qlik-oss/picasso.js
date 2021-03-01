@@ -16,46 +16,46 @@ const PX_RX = /px$/;
 
 /**
  * @typedef {object}
- * @alias component--point.settings
+ * @alias ComponentPoint.settings
  */
 const DEFAULT_DATA_SETTINGS = {
   /** Type of shape
-   * @type {datum-string=} */
+   * @type {DatumString=} */
   shape: 'circle',
   label: '',
   /** Fill color
-   * @type {datum-string=} */
+   * @type {DatumString=} */
   fill: '#333',
   /** Stroke color
-   * @type {datum-string=} */
+   * @type {DatumString=} */
   stroke: '#ccc',
   /** Stroke width
-   * @type {datum-number=} */
+   * @type {DatumNumber=} */
   strokeWidth: 0,
   /** Stroke line join
    * @type {string=} */
   strokeLinejoin: 'miter',
   /** Opacity of shape
-   * @type {datum-number=} */
+   * @type {DatumNumber=} */
   opacity: 1,
   /** Normalized x coordinate
-   * @type {datum-number=} */
+   * @type {DatumNumber=} */
   x: 0.5,
   /** Normalized y coordinate
-   * @type {datum-number=} */
+   * @type {DatumNumber=} */
   y: 0.5,
   /** Normalized size of shape
-   * @type {datum-number=} */
+   * @type {DatumNumber=} */
   size: 1,
   strokeDasharray: '',
   /** Whether or not to show the point
-   * @type {datum-boolean=} */
+   * @type {DatumBoolean=} */
   show: true,
 };
 
 /**
  * @typedef {object}
- * @alias component--point.settings.sizeLimits
+ * @alias ComponentPoint.settings.sizeLimits
  */
 const SIZE_LIMITS = {
   /** Maximum size of shape, in pixels

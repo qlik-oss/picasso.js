@@ -24,8 +24,8 @@ export function generateCrossPoints(x, y, size, barWidth) {
 }
 
 /**
- * @extends symbol-config
- * @typedef {object} symbol--cross
+ * @extends Symbol
+ * @typedef {object} SymbolCross
  * @property {number} [width] - Width of the diagonals
  */
 function cross(options) {

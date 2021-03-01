@@ -2,7 +2,7 @@
 
 /**
  * @ignore
- * @param {Array<data-source>} dataSources
+ * @param {Array<DataSource>} dataSources
  * @param {any} { logger }
  * @returns {function}
  */
@@ -38,7 +38,7 @@ export default function datasets(dataSources, { types, logger }) {
    * Returns the `dataset` which has `key` as identifier
    * @ignore
    * @param {string} key - The dataset identifier
-   * @returns {dataset}
+   * @returns {Dataset}
    */
   const fn = (key) => {
     if (key) {
@@ -50,7 +50,7 @@ export default function datasets(dataSources, { types, logger }) {
 }
 
 /**
- * @typedef {object} data-source
+ * @typedef {object} DataSource
  * @property {string} key - Unique identifier for this data source
  * @property {string} type - The dataset type
  * @property {any} data

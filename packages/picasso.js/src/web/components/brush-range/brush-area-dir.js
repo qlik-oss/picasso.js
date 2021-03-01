@@ -105,7 +105,7 @@ function getBubbleLabel(state, value, range) {
 }
 
 /**
- * @typedef {object} component--brush-area-dir-settings
+ * @typedef {object} ComponentBrushAreaDirSettings
  * @property {object} brush
  * @property {array} brush.components
  * @property {object} brush.components[].key - Component key
@@ -123,7 +123,7 @@ function getBubbleLabel(state, value, range) {
  */
 
 /**
- * @typedef {object} component--brush-area-dir-style
+ * @typedef {object} ComponentBrushAreaDirStyle
  * @property {object} [bubble]
  * @property {string} [bubble.fontSize]
  * @property {string} [bubble.fontFamily]

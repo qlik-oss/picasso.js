@@ -4,8 +4,8 @@ import { rotate } from '../math/vector';
 import pointsToPath from '../utils/points-to-path';
 
 /**
- * @extends symbol-config
- * @typedef {object} symbol--saltire
+ * @extends Symbol
+ * @typedef {object} SymbolSaltire
  * @property {number} [width] - Width of the diagonals
  */
 function saltire(options) {

@@ -41,7 +41,7 @@ class GeoPolyline {
   }
 
   /**
-   * @param {point} point
+   * @param {Point} point
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   containsPoint(point) {
@@ -49,7 +49,7 @@ class GeoPolyline {
   }
 
   /**
-   * @param {circle} circle
+   * @param {Circle} circle
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsCircle(circle) {
@@ -57,7 +57,7 @@ class GeoPolyline {
   }
 
   /**
-   * @param {point[]} points - Line start and end point as an array of points
+   * @param {Point[]} points - Line start and end point as an array of points
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsLine(points) {
@@ -66,7 +66,7 @@ class GeoPolyline {
   }
 
   /**
-   * @param {point[]} points - Rect vertices as an array of points
+   * @param {Point[]} points - Rect vertices as an array of points
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsRect(points) {
@@ -84,7 +84,7 @@ class GeoPolyline {
   }
 
   /**
-   * @param {GeoPolygon} geopolygon
+   * @param {Geopolygon} geopolygon
    * @returns {boolean} True if there is an intersection, false otherwise
    */
   intersectsGeoPolygon(geopolygon) {
@@ -94,7 +94,7 @@ class GeoPolyline {
 
   /**
    * Get the points
-   * @returns {point[]}
+   * @returns {Point[]}
    */
   points() {
     return this._points;

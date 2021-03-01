@@ -639,12 +639,12 @@ function measureText(text, stgns, renderer) {
 }
 
 /**
- * @typedef {object} component--labels~slices-label-strategy
+ * @typedef {object} ComponentLabels~slicesLabelStrategy
  *
  */
 
 /**
- * @typedef {object} component--labels~slices-label-strategy.settings
+ * @typedef {object} ComponentLabels~slicesLabelStrategy.settings
  * @property {string|function} [direction='horizontal'] - The direction of the text: 'horizontal' or 'rotate'.
  * @property {string} [fontFamily='Arial']
  * @property {number} [fontSize=12]

@@ -1,12 +1,12 @@
 import tooltip from './tooltip';
 
 /**
- * @typedef {object} component--tooltip
+ * @typedef {object} ComponentTooltip
  */
 
 /**
  * @type {string}
- * @memberof component--tooltip
+ * @memberof ComponentTooltip
  */
 const type = 'tooltip';
 

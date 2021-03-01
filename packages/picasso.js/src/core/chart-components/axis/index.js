@@ -1,12 +1,12 @@
 import axisComponent from './axis';
 
 /**
- * @typedef {object} component--axis
+ * @typedef {object} ComponentAxis
  */
 
 /**
  * @type {string}
- * @memberof component--axis
+ * @memberof ComponentAxis
  */
 
 const type = 'axis';

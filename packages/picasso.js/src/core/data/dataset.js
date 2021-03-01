@@ -144,7 +144,7 @@ const parseData = ({ key, data, cache, config }) => {
 /**
  * Create a new dataset with default settings
  * @private
- * @return {dataset}
+ * @return {Dataset}
  */
 function ds({ key, data, config } = {}) {
   const cache = {
@@ -152,7 +152,7 @@ function ds({ key, data, config } = {}) {
   };
 
   /**
-   * @alias dataset
+   * @alias Dataset
    * @interface
    */
   const dataset = {
@@ -171,7 +171,7 @@ function ds({ key, data, config } = {}) {
     /**
      * Find a field within this dataset
      * @param {string} query - The field to find
-     * @returns {field}
+     * @returns {Field}
      */
     field: (query) =>
       findField(query, {
@@ -187,8 +187,8 @@ function ds({ key, data, config } = {}) {
 
     /**
      * Extract data items from this dataset
-     * @param {data-extract-config} config
-     * @returns {Array<datum-extract>}
+     * @param {DataExtractConfig} config
+     * @returns {Array<DatumExtract>}
      */
     extract: (cfg) => extract(cfg, dataset, cache),
 
@@ -217,56 +217,56 @@ ds.util = {
 export { ds as default };
 
 /**
- * @typedef {object} data-extract-config
+ * @typedef {object} DataExtractConfig
  * @property {string} field - The field to extract data from
- * @property {data-extract-config~valueFn} [value] - The field value accessor
- * @property {data-extract-config~labelFn} [label] - The field label accessor
- * @property {data-extract-config~trackByFn} [trackBy] - Track by value accessor
- * @property {data-extract-config~reduceFn} [reduce] - Reducer function
- * @property {data-extract-config~reduceLabelFn} [reduceLabel] - Label reducer function
- * @property {data-extract-config~filterFn} [filter] - Filter function
+ * @property {DataExtractConfig~valueFn} [value] - The field value accessor
+ * @property {DataExtractConfig~labelFn} [label] - The field label accessor
+ * @property {DataExtractConfig~trackByFn} [trackBy] - Track by value accessor
+ * @property {DataExtractConfig~reduceFn} [reduce] - Reducer function
+ * @property {DataExtractConfig~reduceLabelFn} [reduceLabel] - Label reducer function
+ * @property {DataExtractConfig~filterFn} [filter] - Filter function
  * @property {object} [props] - Additional properties to add to the extracted item
  */
 
 /**
- * @callback data-extract-config~valueFn
+ * @callback DataExtractConfig~valueFn
  * @param {any} cell The field cell
  * @returns {any}
  */
 
 /**
- * @callback data-extract-config~labelFn
+ * @callback DataExtractConfig~labelFn
  * @param {any} cell The field cell
  * @returns {string}
  */
 
 /**
- * @callback data-extract-config~filterFn
+ * @callback DataExtractConfig~filterFn
  * @param {any} cell The field cell
  * @returns {boolean}
  */
 
 /**
- * @callback data-extract-config~trackByFn
+ * @callback DataExtractConfig~trackByFn
  * @param {any} cell The field cell
  * @returns {any}
  */
 
 /**
- * @callback data-extract-config~reduceFn
+ * @callback DataExtractConfig~reduceFn
  * @param {any[]} values The collected values to reduce
  * @returns {any}
  */
 
 /**
- * @callback data-extract-config~reduceLabelFn
+ * @callback DataExtractConfig~reduceLabelFn
  * @param {any[]} labels The collected labels to reduce
  * @param {any} value Reduced value
  * @returns {string}
  */
 
 /**
- * @typedef {object} datum-extract
+ * @typedef {object} DatumExtract
  * @property {any} value - The extracted value
  * @property {string} label - The extracted value as a string
  * @property {object} source - The data source of the extracted data
