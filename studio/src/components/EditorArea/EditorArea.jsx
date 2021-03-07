@@ -7,6 +7,7 @@ import { useResize } from '../../core/hooks';
 
 const editorOptions = {
   selectOnLineNumbers: true,
+  readOnly: false,
   tabSize: 2,
 };
 
@@ -58,7 +59,7 @@ const EditorArea = React.memo(({ code, onCodeChange }) => {
   return (
     <Box width="100%" height="100%" ref={container}>
       <MonacoEditor
-        language="javascript"
+        language="typescript"
         theme="vs-dark"
         value={code}
         options={editorOptions}

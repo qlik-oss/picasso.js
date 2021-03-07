@@ -7,7 +7,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
-import SvgIcon from '@material-ui/core/SvgIcon';
 import Popover from '@material-ui/core/Popover';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
@@ -19,7 +18,7 @@ import Paper from '@material-ui/core/Paper';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import SubDivider from '../SubDivider/SubDivider';
 import ListItemLink from '../ListItemLink/ListItemLink';
-import PicassoIcon from './picasso-logo.svg';
+import Logo from './picasso-logo.svg';
 
 const useClasses = makeStyles((theme) => ({
   root: {
@@ -104,7 +103,7 @@ const ExampleList = ({ entries, locals, selected, onItemAdded, onItemRemoved }) 
   return (
     <Paper square variant="outlined" elevation={2} className={classes.root}>
       <div className={classes.header}>
-        <SvgIcon className={classes.logo} component={PicassoIcon} viewBox="0 0 480 128" />
+        <img src={Logo} alt="picasso logo" />
       </div>
       <SubDivider text="Picasso Examples" />
       <List dense className={classes.list} component="nav">
