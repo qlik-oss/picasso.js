@@ -196,7 +196,8 @@ const refLineComponent = {
 
       if (line.scale) {
         let scale = this.chart.scale(line.scale);
-        return extend(line, { scale, position: scale(line.value) });
+        const position = scale.min() === scale.max() && line.value !== scale.min() ? NaN : scale(line.value);
+        return extend(line, { scale, position });
       }
 
       return extend(line, { position: line.value });
@@ -210,7 +211,8 @@ const refLineComponent = {
 
       if (line.scale) {
         let scale = this.chart.scale(line.scale);
-        return extend(line, { scale, position: scale(line.value), flipXY: true });
+        const position = scale.min() === scale.max() && line.value !== scale.min() ? NaN : scale(line.value);
+        return extend(line, { scale, position, flipXY: true });
       }
 
       return extend(line, { position: line.value, flipXY: true });
