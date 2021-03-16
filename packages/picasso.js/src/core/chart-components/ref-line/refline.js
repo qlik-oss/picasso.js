@@ -20,6 +20,27 @@ function filterUndefinedValue(line) {
   return typeof value !== 'undefined';
 }
 
+function isInvert(scale) {
+  const range = scale.range();
+  return range?.length === 2 && range[0] === 1 && range[1] === 0;
+}
+
+function getPosition(scale, value) {
+  const min = scale.min();
+  const max = scale.max();
+  if (min === max) {
+    const invert = isInvert(scale);
+    console.log(invert);
+    if (value < min) {
+      return invert ? 2 : -1;
+    }
+    if (value > min) {
+      return invert ? -1 : 2;
+    }
+  }
+  return scale(value);
+}
+
 /**
  * @typedef {object} ComponentRefLine
  * @experimental
@@ -196,7 +217,7 @@ const refLineComponent = {
 
       if (line.scale) {
         let scale = this.chart.scale(line.scale);
-        const position = scale.min() === scale.max() && line.value !== scale.min() ? NaN : scale(line.value);
+        const position = getPosition(scale, line.value);
         return extend(line, { scale, position });
       }
 
@@ -211,7 +232,7 @@ const refLineComponent = {
 
       if (line.scale) {
         let scale = this.chart.scale(line.scale);
-        const position = scale.min() === scale.max() && line.value !== scale.min() ? NaN : scale(line.value);
+        const position = getPosition(scale, line.value);
         return extend(line, { scale, position, flipXY: true });
       }
 
