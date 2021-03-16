@@ -167,9 +167,13 @@ describe('reference lines', () => {
     };
 
     const xScale = (v) => v;
+    xScale.min = () => 0;
+    xScale.max = () => 1;
     chart.scale.withArgs({ scale: 'x' }).returns(xScale);
 
     const yScale = (v) => v;
+    yScale.min = () => 0;
+    yScale.max = () => 1;
     chart.scale.withArgs({ scale: 'y' }).returns(yScale);
 
     createAndRenderComponent({
@@ -248,9 +252,13 @@ describe('reference lines', () => {
     };
 
     const xScale = (v) => v;
+    xScale.min = () => 0;
+    xScale.max = () => 1;
     chart.scale.withArgs({ scale: 'x' }).returns(xScale);
 
     const yScale = (v) => v;
+    yScale.min = () => 0;
+    yScale.max = () => 1;
     chart.scale.withArgs({ scale: 'y' }).returns(yScale);
 
     createAndRenderComponent({
@@ -302,9 +310,13 @@ describe('reference lines', () => {
     };
 
     const xScale = (v) => v;
+    xScale.min = () => 0;
+    xScale.max = () => 1;
     chart.scale.withArgs({ scale: 'x' }).returns(xScale);
 
     const yScale = (v) => v;
+    yScale.min = () => 0;
+    yScale.max = () => 1;
     chart.scale.withArgs({ scale: 'y' }).returns(yScale);
 
     createAndRenderComponent({
