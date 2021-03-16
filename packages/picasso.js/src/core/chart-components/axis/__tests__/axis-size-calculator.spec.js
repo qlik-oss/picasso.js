@@ -56,7 +56,7 @@ describe('Axis size calculator', () => {
     sizeFn = (r) =>
       calcRequiredSize({
         settings,
-        rect: r,
+        rect: { inner: r, outer: r },
         scale,
         data,
         formatter,
