@@ -167,9 +167,13 @@ describe('reference lines', () => {
     };
 
     const xScale = (v) => v;
+    xScale.min = () => 0;
+    xScale.max = () => 1;
     chart.scale.withArgs({ scale: 'x' }).returns(xScale);
 
     const yScale = (v) => v;
+    yScale.min = () => 0;
+    yScale.max = () => 1;
     chart.scale.withArgs({ scale: 'y' }).returns(yScale);
 
     createAndRenderComponent({
@@ -248,9 +252,13 @@ describe('reference lines', () => {
     };
 
     const xScale = (v) => v;
+    xScale.min = () => 0;
+    xScale.max = () => 1;
     chart.scale.withArgs({ scale: 'x' }).returns(xScale);
 
     const yScale = (v) => v;
+    yScale.min = () => 0;
+    yScale.max = () => 1;
     chart.scale.withArgs({ scale: 'y' }).returns(yScale);
 
     createAndRenderComponent({
@@ -302,9 +310,13 @@ describe('reference lines', () => {
     };
 
     const xScale = (v) => v;
+    xScale.min = () => 0;
+    xScale.max = () => 1;
     chart.scale.withArgs({ scale: 'x' }).returns(xScale);
 
     const yScale = (v) => v;
+    yScale.min = () => 0;
+    yScale.max = () => 1;
     chart.scale.withArgs({ scale: 'y' }).returns(yScale);
 
     createAndRenderComponent({
@@ -564,6 +576,184 @@ describe('reference lines', () => {
         d: '\n    M 7.5 173.25\n    L 22.5 173.25\n    L 15 180.75 Z\n  ',
         x: 15,
         y: 162,
+        stroke: 'transparent',
+        fill: '#4D4D4D',
+        strokeWidth: 0,
+        opacity: 1,
+      },
+    ]);
+  });
+
+  it('should bind data for oob values when scale.min = scale.max and scale is not invert', () => {
+    const config = {
+      shapeFn,
+      lines: {
+        x: [
+          {
+            value: 0.3,
+            scale: { scale: 'x' },
+            line: {
+              stroke: 'green',
+              strokeDasharray: '8 4',
+              strokeWidth: 2,
+            },
+            label: {
+              text: 'اسم عربي',
+              padding: 10,
+              fontSize: '20px',
+              vAlign: 1,
+              align: 0,
+            },
+          },
+        ],
+      },
+    };
+
+    const xScale = (v) => v;
+    xScale.min = () => 0;
+    xScale.max = () => 0;
+    xScale.range = () => [0, 1];
+    chart.scale.withArgs({ scale: 'x' }).returns(xScale);
+
+    const yScale = (v) => v;
+    yScale.min = () => 0;
+    yScale.max = () => 1;
+    yScale.range = () => [0, 1];
+    chart.scale.withArgs({ scale: 'y' }).returns(yScale);
+
+    createAndRenderComponent({
+      inner: {
+        x: 37,
+        y: 0,
+        width: 870,
+        height: 813,
+      },
+      config,
+    });
+
+    expect(rendererOutput).to.deep.equal([
+      {
+        type: 'circle',
+        cx: 832,
+        cy: 798,
+        r: 10,
+        stroke: 'transparent',
+        fill: '#1A1A1A',
+        strokeWidth: 0,
+        opacity: 1,
+        data: [
+          {
+            value: 0.3,
+            label: 'اسم عربي',
+          },
+        ],
+      },
+      {
+        type: 'text',
+        text: 1,
+        x: 828,
+        y: 802,
+        fontFamily: 'Arial',
+        fontSize: '13px',
+        stroke: 'transparent',
+        fill: '#fff',
+        strokeWidth: 0,
+        opacity: 1,
+      },
+      {
+        type: 'path',
+        d: '\n      M 843.25 790.5\n      L 843.25 805.5\n      L 850.75 798 Z\n    ',
+        x: 832,
+        y: 798,
+        stroke: 'transparent',
+        fill: '#4D4D4D',
+        strokeWidth: 0,
+        opacity: 1,
+      },
+    ]);
+  });
+
+  it('should bind data for oob values when scale.min = scale.max and scale is invert', () => {
+    const config = {
+      shapeFn,
+      lines: {
+        x: [
+          {
+            value: 0.3,
+            scale: { scale: 'x' },
+            line: {
+              stroke: 'green',
+              strokeDasharray: '8 4',
+              strokeWidth: 2,
+            },
+            label: {
+              text: 'اسم عربي',
+              padding: 10,
+              fontSize: '20px',
+              vAlign: 1,
+              align: 0,
+            },
+          },
+        ],
+      },
+    };
+
+    const xScale = (v) => v;
+    xScale.min = () => 0;
+    xScale.max = () => 0;
+    xScale.range = () => [1, 0];
+    chart.scale.withArgs({ scale: 'x' }).returns(xScale);
+
+    const yScale = (v) => v;
+    yScale.min = () => 0;
+    yScale.max = () => 1;
+    yScale.range = () => [1, 0];
+    chart.scale.withArgs({ scale: 'y' }).returns(yScale);
+
+    createAndRenderComponent({
+      inner: {
+        x: 37,
+        y: 0,
+        width: 870,
+        height: 813,
+      },
+      config,
+    });
+
+    expect(rendererOutput).to.deep.equal([
+      {
+        type: 'circle',
+        cx: 38,
+        cy: 798,
+        r: 10,
+        stroke: 'transparent',
+        fill: '#1A1A1A',
+        strokeWidth: 0,
+        opacity: 1,
+        data: [
+          {
+            value: 0.3,
+            label: 'اسم عربي',
+          },
+        ],
+      },
+      {
+        type: 'text',
+        text: 1,
+        x: 34,
+        y: 802,
+        fontFamily: 'Arial',
+        fontSize: '13px',
+        stroke: 'transparent',
+        fill: '#fff',
+        strokeWidth: 0,
+        opacity: 1,
+      },
+      {
+        type: 'path',
+        d: '\n      M 26.75 790.5\n      L 26.75 805.5\n      L 19.25 798 Z\n    ',
+        x: 38,
+        y: 798,
         stroke: 'transparent',
         fill: '#4D4D4D',
         strokeWidth: 0,
