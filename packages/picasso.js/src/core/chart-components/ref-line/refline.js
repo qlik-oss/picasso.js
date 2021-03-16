@@ -22,7 +22,7 @@ function filterUndefinedValue(line) {
 
 function isInvert(scale) {
   const range = scale.range();
-  return range?.length === 2 && range[0] === 1 && range[1] === 0;
+  return range?.length === 2 && range[0] > range[1];
 }
 
 function getPosition(scale, value) {
