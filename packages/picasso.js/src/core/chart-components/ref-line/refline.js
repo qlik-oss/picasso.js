@@ -30,7 +30,6 @@ function getPosition(scale, value) {
   const max = scale.max();
   if (min === max) {
     const invert = isInvert(scale);
-    console.log(invert);
     if (value < min) {
       return invert ? 2 : -1;
     }
