@@ -234,6 +234,99 @@ describe('reference lines', () => {
     ]);
   });
 
+  it('should render basic line with RTL label on X with scale when scale.min = scale.max', () => {
+    const config = {
+      shapeFn,
+      lines: {
+        x: [
+          {
+            value: 0.3,
+            scale: { scale: 'x' },
+            line: {
+              stroke: 'green',
+              strokeDasharray: '8 4',
+              strokeWidth: 2,
+            },
+            label: {
+              text: 'اسم عربي',
+              padding: 10,
+              fontSize: '20px',
+              vAlign: 1,
+              align: 0,
+            },
+          },
+        ],
+      },
+    };
+
+    const xScale = (v) => v;
+    xScale.min = () => 0;
+    xScale.max = () => 0;
+    chart.scale.withArgs({ scale: 'x' }).returns(xScale);
+
+    const yScale = (v) => v;
+    yScale.min = () => 0;
+    yScale.max = () => 1;
+    chart.scale.withArgs({ scale: 'y' }).returns(yScale);
+
+    createAndRenderComponent({
+      inner: {
+        x: 37,
+        y: 0,
+        width: 870,
+        height: 813,
+      },
+      config,
+    });
+
+    expect(rendererOutput).to.deep.equal([
+      {
+        flipXY: false,
+        stroke: 'green',
+        strokeDasharray: '8 4',
+        strokeWidth: 2,
+        type: 'line',
+        x1: NaN,
+        x2: NaN,
+        y1: 0,
+        y2: 813,
+      },
+      {
+        fill: '#fff',
+        height: 44,
+        opacity: 0.5,
+        stroke: 'transparent',
+        strokeWidth: 0,
+        type: 'rect',
+        width: NaN,
+        x: NaN,
+        y: 769,
+      },
+      {
+        anchor: 'start',
+        fill: 'green',
+        fontFamily: 'Arial',
+        fontSize: '20px',
+        maxWidth: NaN,
+        opacity: 1,
+        text: 'اسم عربي',
+        type: 'text',
+        x: NaN,
+        y: 799,
+      },
+      {
+        fill: 'green',
+        fontFamily: 'Arial',
+        fontSize: '20px',
+        opacity: 1,
+        text: ' (0.3)',
+        type: 'text',
+        x: NaN,
+        y: 799,
+      },
+    ]);
+  });
+
   it('should support value as a function', () => {
     const config = {
       shapeFn,
