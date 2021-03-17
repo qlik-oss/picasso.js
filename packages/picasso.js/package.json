@@ -27,6 +27,7 @@
   "module": "dist/picasso.esm.js",
   "scripts": {
     "build": "cross-env NODE_ENV=production rollup --config ../../rollup.config.js",
+    "build:dev": "cross-env rollup --config ../../rollup.config.js",
     "build:watch": "yarn run build -w",
     "lint": "eslint src test",
     "lint:fix": "npm run lint -- --fix",

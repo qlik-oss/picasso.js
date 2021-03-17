@@ -24,7 +24,8 @@
     "/src"
   ],
   "scripts": {
-    "build:dev": "webpack --mode=production",
+    "build": "webpack --mode=production",
+    "build:dev": "webpack --mode=development",
     "lint": "eslint src",
     "start": "webpack-dev-server --mode=development --hot"
   },
