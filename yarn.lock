@@ -6182,6 +6182,11 @@ enhanced-resolve@^4.1.1, enhanced-resolve@^4.3.0:
     memory-fs "^0.5.0"
     tapable "^1.0.0"
 
+enigma.js@2.7.2:
+  version "2.7.2"
+  resolved "https://registry.yarnpkg.com/enigma.js/-/enigma.js-2.7.2.tgz#94426f574fdec59eccba233d370a3176b9e45e05"
+  integrity sha512-MATvu3+DqV3NGkdKM5uYJT8VLBkQeWgvNqiHsOXO/ChcMezwrKpr4gcn+gx/sqnACX9yaoFi02ECbs8rCZ+aIQ==
+
 enquirer@^2.3.5:
   version "2.3.6"
   resolved "https://registry.yarnpkg.com/enquirer/-/enquirer-2.3.6.tgz#2a7fe5dd634a1e4125a975ec994ff5456dc3734d"

@@ -10,6 +10,7 @@ import EditorArea from '../EditorArea/EditorArea';
 import RenderingArea from '../RenderingArea/RenderingArea';
 import SettingsArea from '../SettingsArea/SettingsArea';
 import storage from '../../core/storage';
+import QDataArea from '../QDataArea/QDataArea';
 
 const defaultPicassoSettings = {
   api: {
@@ -20,9 +21,18 @@ const defaultPicassoSettings = {
     prio: ['svg'],
   },
   logger: 2,
+  dataSource: 0,
+};
+
+const defaultQDataSettings = {
+  qPort: 8080,
+  qApp: '',
+  qSheet: '',
+  qObject: '',
 };
 
 const initialPicassoSettings = storage.getLocalStorage('pic.studio.settings', defaultPicassoSettings);
+const initialQDataSettings = storage.getLocalStorage('pic.studio.qDataSettings', defaultQDataSettings);
 const storedTab = storage.getLocalStorage('pic.studio.tab', 0);
 
 const useClasses = makeStyles({
@@ -62,9 +72,12 @@ const CodeArea = ({ selected, codeUpdated }) => {
   const classes = useClasses();
   const [currentTab, setCurrentTab] = React.useState(storedTab);
   const [renderCode, setRenderCode] = React.useState('');
+  const [customData, setCustomData] = React.useState('');
+  const [qData, setQData] = React.useState('');
   const [renderData, setRenderData] = React.useState('');
   const [renderTitle, setRenderTitle] = React.useState('');
   const [settings, setSettings] = React.useState(initialPicassoSettings);
+  const [qDataSettings, setQDataSettings] = React.useState(initialQDataSettings);
   const [codeModified, setCodeModified] = React.useState(false);
 
   React.useEffect(() => {
@@ -74,7 +87,7 @@ const CodeArea = ({ selected, codeUpdated }) => {
         setRenderCode(selected.code);
       }
       if (typeof selected.data === 'string') {
-        setRenderData(selected.data);
+        setCustomData(selected.data);
       }
       if (typeof selected.title === 'string') {
         setRenderTitle(selected.title);
@@ -94,6 +107,7 @@ const CodeArea = ({ selected, codeUpdated }) => {
   const onDataChange = React.useCallback(
     (newData) => {
       setCodeModified(true);
+      setCustomData(newData);
       setRenderData(newData);
       codeUpdated({ data: newData });
     },
@@ -106,11 +120,26 @@ const CodeArea = ({ selected, codeUpdated }) => {
     setCurrentTab(v);
   };
 
-  const onSettingsChanged = (newSettings) => {
+  const onSettingsChanged = (newSettings, changedSetting) => {
     storage.setLocalStorage('pic.studio.settings', newSettings);
-    setCodeModified(false);
+    setCodeModified(changedSetting === 'dataSource');
     setSettings(newSettings);
+    if (changedSetting === 'dataSource') {
+      const data = newSettings.dataSource ? qData : customData;
+      setRenderData(data);
+      codeUpdated({ data });
+    }
   };
+
+  const onQDataChange = React.useCallback(
+    (newData) => {
+      setCodeModified(true);
+      setQData(newData);
+      setRenderData(newData);
+      codeUpdated({ data: newData });
+    },
+    [codeUpdated]
+  );
 
   return (
     <Box flexGrow={1} display="flex" className={classes.root}>
@@ -128,7 +157,11 @@ const CodeArea = ({ selected, codeUpdated }) => {
               <EditorArea code={renderCode} onCodeChange={onCodeChange} skipCodeUpdate={codeModified} />
             </TabPanel>
             <TabPanel value={currentTab} index={1}>
-              <EditorArea code={renderData} onCodeChange={onDataChange} skipCodeUpdate={codeModified} />
+              {!settings.dataSource ? (
+                <EditorArea code={customData} onCodeChange={onDataChange} skipCodeUpdate={codeModified} />
+              ) : (
+                <QDataArea onQDataChange={onQDataChange} />
+              )}
             </TabPanel>
             <TabPanel value={currentTab} index={2}>
               <SettingsArea settings={settings} onSettingsChanged={onSettingsChanged} />

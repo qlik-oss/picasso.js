@@ -30,6 +30,7 @@
     "start": "webpack-dev-server --mode=development --hot"
   },
   "dependencies": {
+    "enigma.js": "2.7.2",
     "@material-ui/core": "4.11.2",
     "@material-ui/icons": "4.11.2",
     "hammerjs": "2.0.8",

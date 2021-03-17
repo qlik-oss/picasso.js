@@ -70,7 +70,7 @@ const RenderingArea = ({ title, code, data, api, settings }) => {
   }, [settings, api, title]);
 
   React.useEffect(() => {
-    if (chart && chart.update && typeof code === 'string' && typeof data === 'string') {
+    if (chart && chart.update && typeof code === 'string' && (typeof data === 'string' || typeof data === 'object')) {
       let doRun = false;
       let composition = prevComposition.current;
       let theData = prevData.current;
@@ -88,10 +88,12 @@ const RenderingArea = ({ title, code, data, api, settings }) => {
       if (data !== prevDataScript.current) {
         doRun = true;
         theData =
-          runScript(data, {
-            customGenerator,
-            generator,
-          }) || {};
+          (typeof data === 'string'
+            ? runScript(data, {
+                customGenerator,
+                generator,
+              })
+            : data) || {};
         prevDataScript.current = data;
         prevData.current = theData;
       }
