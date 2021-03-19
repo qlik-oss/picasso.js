@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
 import PropTypes from 'prop-types';
 import Split from 'react-split-pane';
@@ -6,6 +7,12 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Paper from '@material-ui/core/Paper';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import Divider from '@material-ui/core/Divider';
+import FormLabel from '@material-ui/core/FormLabel';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+
 import EditorArea from '../EditorArea/EditorArea';
 import RenderingArea from '../RenderingArea/RenderingArea';
 import SettingsArea from '../SettingsArea/SettingsArea';
@@ -21,21 +28,18 @@ const defaultPicassoSettings = {
     prio: ['svg'],
   },
   logger: 2,
-  dataSource: 0,
 };
 
 const defaultQDataSettings = {
-  qPort: 8080,
-  qApp: '',
-  qSheet: '',
-  qObject: '',
+  appId: '',
+  sheetId: '',
+  objectId: '',
 };
 
 const initialPicassoSettings = storage.getLocalStorage('pic.studio.settings', defaultPicassoSettings);
-const initialQDataSettings = storage.getLocalStorage('pic.studio.qDataSettings', defaultQDataSettings);
 const storedTab = storage.getLocalStorage('pic.studio.tab', 0);
 
-const useClasses = makeStyles({
+const useClasses = makeStyles((theme) => ({
   root: {
     position: 'relative',
   },
@@ -52,7 +56,12 @@ const useClasses = makeStyles({
   tab: {
     minWidth: '130px',
   },
-});
+  dataSource: {
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+    marginLeft: theme.spacing(4),
+  },
+}));
 
 const TabPanel = (props) => {
   const { children, value, index } = props;
@@ -68,17 +77,28 @@ TabPanel.propTypes = {
   index: PropTypes.number.isRequired,
 };
 
-const CodeArea = ({ selected, codeUpdated }) => {
+const CodeArea = ({
+  selected,
+  codeUpdated,
+  loadedData,
+  setLoadedData,
+  loadedApp,
+  setLoadedApp,
+  loadedSheetId,
+  setLoadedSheetId,
+  loadedObject,
+  setLoadedObject,
+}) => {
   const classes = useClasses();
   const [currentTab, setCurrentTab] = React.useState(storedTab);
   const [renderCode, setRenderCode] = React.useState('');
   const [customData, setCustomData] = React.useState('');
-  const [qData, setQData] = React.useState('');
   const [renderData, setRenderData] = React.useState('');
   const [renderTitle, setRenderTitle] = React.useState('');
   const [settings, setSettings] = React.useState(initialPicassoSettings);
-  const [qDataSettings, setQDataSettings] = React.useState(initialQDataSettings);
+  const [qDataSettings, setQDataSettings] = React.useState(defaultQDataSettings);
   const [codeModified, setCodeModified] = React.useState(false);
+  const [dataSource, setDataSource] = React.useState(0);
 
   React.useEffect(() => {
     if (selected) {
@@ -88,10 +108,19 @@ const CodeArea = ({ selected, codeUpdated }) => {
       }
       if (typeof selected.data === 'string') {
         setCustomData(selected.data);
+        if (!selected.dataSource) {
+          setRenderData(selected.data);
+        }
       }
       if (typeof selected.title === 'string') {
         setRenderTitle(selected.title);
       }
+      setDataSource(selected.dataSource || 0);
+      setQDataSettings({
+        appId: selected.appId || '',
+        sheetId: selected.sheetId || '',
+        objectId: selected.objectId || '',
+      });
     }
   }, [selected]);
 
@@ -100,6 +129,15 @@ const CodeArea = ({ selected, codeUpdated }) => {
       setCodeModified(true);
       setRenderCode(newCode);
       codeUpdated({ code: newCode });
+    },
+    [codeUpdated]
+  );
+
+  const onDataSourceChange = React.useCallback(
+    (e) => {
+      setCodeModified(true);
+      setDataSource(e.target.value);
+      codeUpdated({ dataSource: e.target.value });
     },
     [codeUpdated]
   );
@@ -114,32 +152,30 @@ const CodeArea = ({ selected, codeUpdated }) => {
     [codeUpdated]
   );
 
+  const onQDataChange = React.useCallback((newData) => {
+    setCodeModified(true);
+    setRenderData(newData);
+  }, []);
+
+  const onQDataSettingsChange = React.useCallback(
+    (newDataSettings) => {
+      setCodeModified(true);
+      codeUpdated({ ...newDataSettings });
+    },
+    [codeUpdated]
+  );
+
   const onTabChange = (e, v) => {
     storage.setLocalStorage('pic.studio.tab', v);
     setCodeModified(false);
     setCurrentTab(v);
   };
 
-  const onSettingsChanged = (newSettings, changedSetting) => {
+  const onSettingsChanged = (newSettings) => {
     storage.setLocalStorage('pic.studio.settings', newSettings);
-    setCodeModified(changedSetting === 'dataSource');
+    setCodeModified(false);
     setSettings(newSettings);
-    if (changedSetting === 'dataSource') {
-      const data = newSettings.dataSource ? qData : customData;
-      setRenderData(data);
-      codeUpdated({ data });
-    }
   };
-
-  const onQDataChange = React.useCallback(
-    (newData) => {
-      setCodeModified(true);
-      setQData(newData);
-      setRenderData(newData);
-      codeUpdated({ data: newData });
-    },
-    [codeUpdated]
-  );
 
   return (
     <Box flexGrow={1} display="flex" className={classes.root}>
@@ -157,11 +193,40 @@ const CodeArea = ({ selected, codeUpdated }) => {
               <EditorArea code={renderCode} onCodeChange={onCodeChange} skipCodeUpdate={codeModified} />
             </TabPanel>
             <TabPanel value={currentTab} index={1}>
-              {!settings.dataSource ? (
-                <EditorArea code={customData} onCodeChange={onDataChange} skipCodeUpdate={codeModified} />
-              ) : (
-                <QDataArea onQDataChange={onQDataChange} />
-              )}
+              <Box display="flex" flexGrow={1} flexDirection="column">
+                <Box display="flex" className={classes.dataSource}>
+                  <FormControl className={classes.formControl}>
+                    <FormLabel>Data source</FormLabel>
+                    <Select
+                      labelId="data-source-select"
+                      value={dataSource}
+                      name="dataSource"
+                      onChange={onDataSourceChange}
+                    >
+                      <MenuItem value={0}>Custom Generated Data</MenuItem>
+                      <MenuItem value={1}>Data from Qlik Sense</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Box>
+                <Divider />
+                {!dataSource ? (
+                  <EditorArea code={customData} onCodeChange={onDataChange} skipCodeUpdate={codeModified} />
+                ) : (
+                  <QDataArea
+                    loadedData={loadedData}
+                    setLoadedData={setLoadedData}
+                    qDataSettings={qDataSettings}
+                    onQDataSettingsChange={onQDataSettingsChange}
+                    onQDataChange={onQDataChange}
+                    loadedApp={loadedApp}
+                    setLoadedApp={setLoadedApp}
+                    loadedSheetId={loadedSheetId}
+                    setLoadedSheetId={setLoadedSheetId}
+                    loadedObject={loadedObject}
+                    setLoadedObject={setLoadedObject}
+                  />
+                )}
+              </Box>
             </TabPanel>
             <TabPanel value={currentTab} index={2}>
               <SettingsArea settings={settings} onSettingsChanged={onSettingsChanged} />

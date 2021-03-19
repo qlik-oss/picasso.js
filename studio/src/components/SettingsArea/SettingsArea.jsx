@@ -31,16 +31,16 @@ const SettingsArea = ({ settings, onSettingsChanged }) => {
       const { name, value, checked } = event.target;
       const paths = name.split('.');
       const lastPath = paths.splice(paths.length - 1, 1);
-      const newSettings = JSON.parse(JSON.stringify(settings));
+      const newSettings = { ...settings };
       const prop = paths.reduce((p, c) => p[c], newSettings);
       prop[lastPath] = typeof checked !== 'undefined' ? checked : value;
-      onSettingsChanged(newSettings, lastPath[0]);
+      onSettingsChanged(newSettings);
     },
     [onSettingsChanged, settings]
   );
 
   // const { chart, compose } = settings.api;
-  const { renderer, logger, dataSource } = settings;
+  const { renderer, logger } = settings;
 
   return (
     <Box display="flex" flexGrow={1} flexDirection="column" className={classes.root}>
@@ -57,15 +57,6 @@ const SettingsArea = ({ settings, onSettingsChanged }) => {
           />
         </FormGroup>
       </FormControl> */}
-      <Box display="flex">
-        <FormControl className={classes.formControl}>
-          <FormLabel>Data source</FormLabel>
-          <Select labelId="data-source-select" value={dataSource} name="dataSource" onChange={handleChange}>
-            <MenuItem value={0}>Custom Generated Data</MenuItem>
-            <MenuItem value={1}>Data from Qlik Sense</MenuItem>
-          </Select>
-        </FormControl>
-      </Box>
       <Divider />
       <Box display="flex">
         <FormControl className={classes.formControl}>

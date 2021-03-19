@@ -1,18 +1,14 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable prefer-destructuring */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-param-reassign */
 import React from 'react';
-import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Typography from '@material-ui/core/Typography';
-import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button';
-// import FormGroup from '@material-ui/core/FormGroup';
-// import FormControlLabel from '@material-ui/core/FormControlLabel';
-// import Checkbox from '@material-ui/core/Checkbox';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import makeStyles from '@material-ui/core/styles/makeStyles';
@@ -29,44 +25,35 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(4),
   },
   button: {
+    marginTop: theme.spacing(2),
     marginLeft: theme.spacing(4),
   },
   title: {
     color: 'white',
+    marginTop: theme.spacing(2),
     marginLeft: theme.spacing(4),
   },
 }));
 
-const QDataArea = ({ onQDataChange }) => {
+const QDataArea = ({
+  loadedData = {},
+  setLoadedData,
+  qDataSettings = {},
+  onQDataSettingsChange,
+  onQDataChange,
+  loadedObject,
+}) => {
   const classes = useStyles();
-  const [qApps, setQApps] = React.useState([]);
-  const [appId, setAppId] = React.useState('');
-  const [connectedApp, setConnectedApp] = React.useState();
+  const [qApps, setQApps] = React.useState(loadedData.qApps || []);
+  const [appId, setAppId] = React.useState(qDataSettings.appId || '');
   const [sheets, setSheets] = React.useState([]);
-  const [sheetId, setSheetId] = React.useState('');
-  const [charts, setCharts] = React.useState([]);
-  const [chartId, setChartId] = React.useState('');
-  const [objectLayout, setObjectLayout] = React.useState();
+  const [sheetId, setSheetId] = React.useState(qDataSettings.sheetId || '');
+  const [objects, setObjects] = React.useState([]);
+  const [objectId, setObjectId] = React.useState(qDataSettings.objectId || '');
   const [disabledGetQApps, setDisabledGetQApps] = React.useState(false);
   const codeDebouncer = React.useRef();
+  let connectedApp;
   let liveObject;
-
-  React.useEffect(() => {
-    codeDebouncer.current = debouncer(onQDataChange, 200);
-  }, [onQDataChange]);
-
-  React.useEffect(() => {
-    if (objectLayout) {
-      const qData = [
-        {
-          type: 'q',
-          key: 'qHyperCube',
-          data: objectLayout.box ? objectLayout.generated.box.qHyperCube : objectLayout.qHyperCube,
-        },
-      ];
-      codeDebouncer.current(qData);
-    }
-  }, [objectLayout]);
 
   const getQApps = () => {
     setDisabledGetQApps(true);
@@ -74,32 +61,22 @@ const QDataArea = ({ onQDataChange }) => {
       .getDocs()
       .then((docs) => {
         setDisabledGetQApps(false);
-        setQApps(docs);
+        setLoadedData({ ...loadedData, qApps: docs });
       })
       .catch(() => {
         setDisabledGetQApps(false);
-        setQApps([]);
+        setLoadedData({ ...loadedData, qApps: [] });
       });
   };
 
-  const onAppSelect = (appPath) => {
-    if (+appPath < 0) {
-      return;
-    }
-    connect.openApp(appPath).then((app) => {
-      setConnectedApp(app);
-      app.getSheetList().then((sheetList) => {
-        if (sheetList.qAppObjectList) {
-          sheetList = sheetList.qAppObjectList.qItems;
-        }
-        setSheets(sheetList);
-      });
+  const connectApp = () => {
+    return connect.openApp(appId).then((app) => {
+      return app;
     });
   };
 
   const onAppIdSelect = (e) => {
     setAppId(e.target.value);
-    onAppSelect(e.target.value);
   };
 
   const getSheetFromId = (id) => {
@@ -113,27 +90,13 @@ const QDataArea = ({ onQDataChange }) => {
 
   const onSheetIdSelect = (e) => {
     setSheetId(e.target.value);
-    const sheet = getSheetFromId(e.target.value);
-    const promises = sheet.qData.cells.map((cell) => {
-      const obj = {
-        type: cell.type,
-        id: cell.name,
-        title: '',
-      };
-      return connectedApp.getObject(cell.name).then((object) => {
-        return object.getProperties().then((props) => {
-          obj.title = props.title || '[no title]';
-          return obj;
-        });
-      });
-    });
-    Promise.all(promises).then((results) => {
-      setCharts(results);
-      console.log('11111:', results);
-    });
   };
 
-  function resolve(path, obj) {
+  const onObjectIdSelect = (e) => {
+    setObjectId(e.target.value);
+  };
+
+  const resolve = (path, obj) => {
     const arr = path.replace(/^\//, '').split(/\//);
     let container = obj;
     for (let i = 0; i < arr.length; i++) {
@@ -146,7 +109,7 @@ const QDataArea = ({ onQDataChange }) => {
     }
 
     return container;
-  }
+  };
 
   const getData = (path, obj, layout, rect) => {
     const p = path.replace('qHyperCubeDef', 'qHyperCube');
@@ -163,48 +126,177 @@ const QDataArea = ({ onQDataChange }) => {
     ]);
   };
 
-  const loadChart = (objectId) => {
-    if (liveObject) {
-      liveObject.observed.dispose();
-      liveObject = null;
-    }
-    connectedApp
-      .getLiveObject(objectId, (layout) => {
-        if (liveObject && !layout.qSelectionInfo.qInSelections) {
-          if (layout.box) {
-            Promise.all([
-              getData('/generated/box/qHyperCubeDef', liveObject.obj, layout, {}),
-              getData('/generated/outliers/qHyperCubeDef', liveObject.obj, layout, { left: 1 }),
-            ]).then((values) => {
-              layout.generated.box.qHyperCube[
-                layout.generated.box.qHyperCube.qMode === 'K' ? 'qStackedDataPages' : 'qDataPages'
-              ] = values[0];
-              layout.generated.outliers.qHyperCube[
-                layout.generated.outliers.qHyperCube.qMode === 'K' ? 'qStackedDataPages' : 'qDataPages'
-              ] = values[1];
-              setObjectLayout(layout);
-            });
-          } else {
-            getData('/qHyperCubeDef', liveObject.obj, layout, {}).then((pages) => {
-              layout.qHyperCube[layout.qHyperCube.qMode === 'K' ? 'qStackedDataPages' : 'qDataPages'] = pages;
-              setObjectLayout(layout);
-            });
-          }
-        }
-      })
-      .then((o) => {
-        liveObject = o;
-      });
-  };
+  React.useEffect(() => {
+    setQApps(loadedData.qApps || []);
+    setSheets(loadedData.sheets || []);
+    setObjects(loadedData.objects || []);
+  }, [loadedData]);
 
-  const onChartIdSelect = (e) => {
-    setChartId(e.target.value);
-    loadChart(e.target.value);
-  };
+  React.useEffect(() => {
+    setAppId(qDataSettings.appId || '');
+    setSheetId(qDataSettings.sheetId || '');
+    setObjectId(qDataSettings.objectId || '');
+  }, [qDataSettings]);
+
+  React.useEffect(() => {
+    if (!appId || !qApps?.length) {
+      return;
+    }
+    if (qApps.every((item) => item.qDocId !== appId)) {
+      console.log(`App ${appId} is not in the app list`);
+    }
+    if (appId === loadedData?.selectedApp?.appId) {
+      return;
+    }
+    const getSheetList = async () => {
+      const loadApp = async () => {
+        if (!connectedApp) {
+          connectedApp = await connectApp();
+        }
+        return connectedApp.getSheetList().then((sheetList) => {
+          if (sheetList.qAppObjectList) {
+            sheetList = sheetList.qAppObjectList.qItems;
+          }
+          return sheetList;
+        });
+      };
+      const sheetList = await loadApp();
+      setSheets(sheetList);
+      setLoadedData({ ...loadedData, selectedApp: { id: appId, sheets: sheetList } });
+    };
+    getSheetList();
+  }, [appId, qApps, loadedData]);
+
+  React.useEffect(() => {
+    if (!sheetId || !sheets?.length) {
+      return;
+    }
+    if (sheets.every((item) => item.qInfo.qId !== sheetId)) {
+      console.log(`Sheet ${sheetId} is not in the sheet list`);
+    }
+    if (appId === loadedData?.selectedApp?.id && sheetId === loadedData?.selectedApp?.selectedSheet?.id) {
+      return;
+    }
+    const getObjectList = async () => {
+      const loadSheet = async () => {
+        if (!connectedApp) {
+          connectedApp = await connectApp();
+        }
+        const sheet = getSheetFromId(sheetId);
+        const promises = sheet.qData.cells.map((cell) => {
+          const obj = {
+            type: cell.type,
+            id: cell.name,
+            title: '',
+          };
+          return connectedApp.getObject(cell.name).then((object) => {
+            return object.getProperties().then((props) => {
+              obj.title = props.title || '[no title]';
+              return obj;
+            });
+          });
+        });
+        return Promise.all(promises).then((results) => {
+          return results;
+        });
+      };
+      const objectList = await loadSheet();
+      setLoadedData({
+        ...loadedData,
+        selectedApp: {
+          ...loadedData.selectedApp,
+          selectedSheet: { id: sheetId, objects: objectList },
+        },
+      });
+    };
+    getObjectList();
+  }, [sheetId, sheets, loadedData]);
+
+  React.useEffect(() => {
+    if (!objectId || !objects?.length) {
+      return;
+    }
+    if (objects.every((item) => item.id !== objectId)) {
+      console.log(`Object ${objectId} is not in the object list`);
+    }
+    if (
+      appId === loadedData?.selectedApp?.id &&
+      sheetId === loadedData?.selectedApp?.selectedSheet?.id &&
+      objectId === loadedData?.selectedApp?.selectedSheet?.selectedObject?.id
+    ) {
+      return;
+    }
+    const getObjectLayout = async () => {
+      const loadObject = async () => {
+        if (!connectedApp) {
+          connectedApp = await connectApp();
+        }
+        if (liveObject) {
+          liveObject.observed.dispose();
+          liveObject = null;
+        }
+        return connectedApp
+          .getLiveObject(objectId, (layout) => {
+            if (liveObject && !layout.qSelectionInfo.qInSelections) {
+              if (layout.box) {
+                return Promise.all([
+                  getData('/generated/box/qHyperCubeDef', liveObject.obj, layout, {}),
+                  getData('/generated/outliers/qHyperCubeDef', liveObject.obj, layout, { left: 1 }),
+                ]).then((values) => {
+                  layout.generated.box.qHyperCube[
+                    layout.generated.box.qHyperCube.qMode === 'K' ? 'qStackedDataPages' : 'qDataPages'
+                  ] = values[0];
+                  layout.generated.outliers.qHyperCube[
+                    layout.generated.outliers.qHyperCube.qMode === 'K' ? 'qStackedDataPages' : 'qDataPages'
+                  ] = values[1];
+                  return layout;
+                });
+              }
+              return getData('/qHyperCubeDef', liveObject.obj, layout, {}).then((pages) => {
+                layout.qHyperCube[layout.qHyperCube.qMode === 'K' ? 'qStackedDataPages' : 'qDataPages'] = pages;
+                return layout;
+              });
+            }
+            return Promise.resolve(undefined);
+          })
+          .then((o) => {
+            liveObject = o;
+          });
+      };
+      const layout = await loadObject();
+      console.log(layout);
+    };
+    getObjectLayout();
+  }, [objectId, objects]);
+
+  React.useEffect(() => {
+    if (loadedObject.id && loadedObject.layout) {
+      const { layout } = loadedObject;
+      const qData = [
+        {
+          type: 'q',
+          key: 'qHyperCube',
+          data: layout.box ? layout.generated.box.qHyperCube : layout.qHyperCube,
+        },
+      ];
+      if (!codeDebouncer.current) {
+        codeDebouncer.current = debouncer(onQDataChange, 200);
+      }
+      codeDebouncer.current(qData);
+      onQDataSettingsChange({ appId, sheetId, objectId });
+    }
+  }, [loadedObject, onQDataChange]);
+
+  React.useEffect(() => {
+    codeDebouncer.current = debouncer(onQDataChange, 200);
+  }, [onQDataChange]);
 
   return (
     <Grid container spacing={1} direction="column">
       <Grid item>
+        <Typography className={classes.title} variant="body1">
+          Default connection: ws://localhost:9076/app/engineData
+        </Typography>
         <Button className={classes.button} color="primary" onClick={getQApps} disabled={disabledGetQApps}>
           Click here to get apps
         </Button>
@@ -220,7 +312,7 @@ const QDataArea = ({ onQDataChange }) => {
               <Select labelId="app-select" value={appId} onChange={onAppIdSelect}>
                 {qApps.map((item) => (
                   <MenuItem value={item.qDocId} key={item.qDocId}>
-                    {item.qTitle}
+                    {item.qDocName}
                   </MenuItem>
                 ))}
               </Select>
@@ -247,7 +339,7 @@ const QDataArea = ({ onQDataChange }) => {
           </Grid>
         </>
       ) : undefined}
-      {qApps.length && sheets.length && charts.length ? (
+      {qApps.length && sheets.length && objects.length ? (
         <>
           <Grid item>
             <Divider />
@@ -255,8 +347,8 @@ const QDataArea = ({ onQDataChange }) => {
           <Grid item>
             <FormControl className={classes.formControl}>
               <FormLabel>Select a chart</FormLabel>
-              <Select labelId="chart-select" value={chartId} onChange={onChartIdSelect}>
-                {charts.map((item) => (
+              <Select labelId="chart-select" value={objectId} onChange={onObjectIdSelect}>
+                {objects.map((item) => (
                   <MenuItem value={item.id} key={item.id}>
                     {`${item.type} - ${item.title}`}
                   </MenuItem>
@@ -271,6 +363,7 @@ const QDataArea = ({ onQDataChange }) => {
 };
 
 QDataArea.propTypes = {
+  onQDataSettingsChange: SettingsType.isRequired,
   onQDataChange: SettingsType.isRequired,
 };
 
