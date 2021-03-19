@@ -136,6 +136,9 @@ const CodeArea = ({
   const onDataSourceChange = React.useCallback(
     (e) => {
       setCodeModified(true);
+      if (!e.target.value) {
+        setRenderData(selected.data);
+      }
       setDataSource(e.target.value);
       codeUpdated({ dataSource: e.target.value });
     },
@@ -242,6 +245,7 @@ const CodeArea = ({
             code={renderCode}
             data={renderData}
             settings={settings}
+            dataSource={dataSource}
           />
         </Box>
       </Split>

@@ -36,7 +36,7 @@ const useClasses = makeStyles((theme) => ({
   },
 }));
 
-const RenderingArea = ({ title, code, data, api, settings }) => {
+const RenderingArea = ({ title, code, data, api, settings, dataSource }) => {
   const element = React.useRef(null);
   const [chart, setChart] = React.useState();
 
@@ -74,15 +74,16 @@ const RenderingArea = ({ title, code, data, api, settings }) => {
       let doRun = false;
       let composition = prevComposition.current;
       let theData = prevData.current;
-
-      if (code !== prevCodeScript.current) {
+      const isQData = `const isQData = ${dataSource};${String.fromCharCode(10)}`;
+      const updatedCode = isQData + code;
+      if (updatedCode !== prevCodeScript.current) {
         doRun = true;
         composition =
-          runScript(code, {
+          runScript(updatedCode, {
             picasso,
             chart,
           }) || {};
-        prevCodeScript.current = code;
+        prevCodeScript.current = updatedCode;
         prevComposition.current = composition;
       }
       if (data !== prevDataScript.current) {
@@ -116,7 +117,7 @@ const RenderingArea = ({ title, code, data, api, settings }) => {
         }
       }
     }
-  }, [code, data, chart, api, title]);
+  }, [code, data, chart, api, title, dataSource]);
 
   const updateChart = React.useCallback(() => {
     if (chart && chart.update) {
@@ -149,6 +150,7 @@ RenderingArea.propTypes = {
   data: PropTypes.string.isRequired,
   api: PropTypes.string,
   settings: SettingsType.isRequired,
+  dataSource: PropTypes.string.isRequired,
 };
 
 export default RenderingArea;
