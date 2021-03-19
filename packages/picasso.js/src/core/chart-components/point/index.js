@@ -5,6 +5,7 @@ import pointMarkerComponent from './point';
  */
 
 /**
+ * Name of the component
  * @type {string}
  * @memberof ComponentPoint
  */

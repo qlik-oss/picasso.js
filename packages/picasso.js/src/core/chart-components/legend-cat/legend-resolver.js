@@ -1,6 +1,7 @@
 import extend from 'extend';
 
 /**
+ * Component settings
  * @typedef {object}
  * @alias ComponentLegendCat.settings
  */
@@ -31,12 +32,20 @@ const DEFAULT_SETTINGS = {
     /** Whether to show the current item
      * @type {boolean=} */
     show: true,
+    /** Justify item
+     * @type {number=} */
     justify: 0.5,
+    /** Align item
+     * @type {number=} */
     align: 0.5,
     /**
      * @typedef {object=} */
     label: {
+      /** Font size in pixels
+       * @type {string=} */
       fontSize: '12px',
+      /** Font family
+       * @type {string=} */
       fontFamily: 'Arial',
       fill: '#595959',
       /** Word break rule, how to apply line break if label text overflows its maxWidth property. Either `'break-word'` or `'break-all'`
@@ -48,15 +57,19 @@ const DEFAULT_SETTINGS = {
       /** Maximum width of label, in px
        * @type {number=} */
       maxWidth: 136,
+      /** Line height as a multiple of the font size
+       * @type {number=} */
       lineHeight: 1.2,
     },
     /**
      * @typedef {object=} */
     shape: {
       /**
+       * Type of shape
        * @type {string=} */
       type: 'square',
       /**
+       * Size of shape in pixels
        * @type {number=} */
       size: 12,
     },
@@ -74,8 +87,14 @@ const DEFAULT_SETTINGS = {
      * @type {string}
      */
     anchor: 'start',
+    /** Font size in pixels
+     * @type {string=} */
     fontSize: '16px',
+    /** Font family
+     * @type {string=} */
     fontFamily: 'Arial',
+    /** Title color
+     * @type {string=} */
     fill: '#595959',
     /** Word break rule, how to apply line break if label text overflows its maxWidth property. Either `'break-word'` or `'break-all'`
      * @type {string=} */
@@ -86,6 +105,8 @@ const DEFAULT_SETTINGS = {
     /** Maximum width of title, in px
      * @type {number=} */
     maxWidth: 156,
+    /** Line height as a multiple of the font size
+     * @type {number=} */
     lineHeight: 1.25,
   },
   /**

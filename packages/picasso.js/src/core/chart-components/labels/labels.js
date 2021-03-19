@@ -2,15 +2,20 @@ import strategies from './strategies';
 
 /**
  * @typedef {object} ComponentLabels
- * @property {string} [type='labels']
+ * @property {string} [type='labels'] Name of the component
  */
 
 /**
+ * Component settings
  * @typedef {object} ComponentLabels.settings
- * @property {Array<object>} sources
- * @property {string} sources[].component
- * @property {string} sources[].selector
- * @property {ComponentLabels~labelStrategy} sources[].strategy
+ * @property {Array<ComponentLabels~source>} sources Source settings
+ */
+
+/**
+ * @typedef {object} ComponentLabels~source
+ * @property {string} component Key of target component
+ * @property {string} selector Shape selector
+ * @property {ComponentLabels~barsLabelStrategy|ComponentLabels~rowsLabelStrategy|ComponentLabels~slicesLabelStrategy} strategy Strategy settings
  */
 
 export function strategy({ chart, source, rect, renderer, style }, fn) {

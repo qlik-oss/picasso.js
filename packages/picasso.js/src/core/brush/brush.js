@@ -7,12 +7,12 @@ import valueCollection from './value-collection';
 
 /**
  * @typedef {object} BrushConfig
- * @property {Array<BrushConfigRanges>} [ranges] - Range configurations
+ * @property {Array<BrushConfig.Ranges>} [ranges] - Range configurations
  */
 
 /**
  * @typedef {object}
- * @alias BrushConfigRanges
+ * @alias BrushConfig~Ranges
  */
 const DEFAULT_RANGE_CONFIG = {
   /**

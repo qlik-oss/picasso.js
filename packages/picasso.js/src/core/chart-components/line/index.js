@@ -5,6 +5,7 @@ import component from './line';
  */
 
 /**
+ * Name of the component
  * @type {string}
  * @memberof ComponentLine
  */

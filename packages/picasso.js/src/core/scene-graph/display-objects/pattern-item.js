@@ -11,8 +11,7 @@ import NodeContainer from '../node-container';
  * @property {number} height
  * @property {object[]} shapes
  * @example
- * Stripe pattern
- * ```js
+ * // Stripe pattern
  * {
  *   type: 'pattern',
  *   fill: 'red',
@@ -25,7 +24,6 @@ import NodeContainer from '../node-container';
  *     { type: 'rect', x: 0, y: 3, width: 1, height: 1 },
  *   ]
  * }
- * ```
  */
 
 const NC = NodeContainer.prototype;

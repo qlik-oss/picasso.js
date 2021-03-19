@@ -14,7 +14,18 @@
 /**
  * Discrete axis settings
  * @typedef {object}
- * @alias ComponentAxisDiscrete
+ * @alias ComponentAxis~DiscreteSettings
+ * @example
+ * {
+ *  type: 'axis',
+ *  scale: '<name-of-band-scale>',
+ *  settings: {
+ *    labels: {
+ *      mode: 'tilted',
+ *      tiltAngle: 40,
+ *    },
+ *  },
+ * }
  */
 const DEFAULT_DISCRETE_SETTINGS = {
   /**
@@ -98,7 +109,17 @@ const DEFAULT_DISCRETE_SETTINGS = {
 /**
  * Continuous axis settings
  * @typedef {object}
- * @alias ComponentAxisContinuous
+ * @alias ComponentAxis~ContinuousSettings
+ * @example
+ * {
+ *  type: 'axis',
+ *  scale: '<name-of-linear-scale>',
+ *  settings: {
+ *    minorTicks: {
+ *      show: false,
+ *    },
+ *  },
+ * }
  */
 const DEFAULT_CONTINUOUS_SETTINGS = {
   /**

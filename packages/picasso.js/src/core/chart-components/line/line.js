@@ -27,6 +27,7 @@ const CURVES = {
 };
 
 /**
+ * Callback function for layer sort
  * @callback ComponentLine~layerSort
  * @param {object} a
  * @param {string} a.id
@@ -37,8 +38,9 @@ const CURVES = {
  */
 
 /**
+ * Component settings
  * @typedef {object}
- * @alias ComponentLineSettings
+ * @alias ComponentLine.settings
  */
 const SETTINGS = {
   /**
@@ -54,6 +56,9 @@ const SETTINGS = {
     /**
      * @type {number=} */
     layerId: 0,
+    /**
+     * @type {DatumBoolean=} */
+    defined: true,
   },
   /**
    * @type {boolean=} */
@@ -113,13 +118,6 @@ const SETTINGS = {
     },
   },
 };
-
-/**
- * @type {DatumBoolean=}
- * @memberof ComponentLineSettings.coordinates
- * @name defined
- * @default true
- */
 
 function createDisplayLayer(points, { generator, item, data }, fill = '') {
   const path = generator(points);

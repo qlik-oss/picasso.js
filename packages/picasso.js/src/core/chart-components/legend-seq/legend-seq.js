@@ -175,7 +175,8 @@ function initState(ctx) {
 }
 
 /**
- * @typedef {object} ComponentLegendSeq
+ * Component settings
+ * @typedef {object} ComponentLegendSeq.settings
  * @property {string} fill - Reference to definition of sequential color scale
  * @property {string} major - Reference to definition of linear scale
  * @property {number} [size=15] - Size in pixels of the legend, if vertical is the width and height otherwise
@@ -184,27 +185,27 @@ function initState(ctx) {
  * @property {number} [align=0.5] - A value in the range 0-1 indicating horizontal alignment of the legend's content. 0 aligns to the left, 1 to the right.
  * @property {number} [justify=0] - A value in the range 0-1 indicating vertical alignment of the legend's content. 0 aligns to the top, 1 to the bottom.
  * @property {object} [padding]
- * @property {number} [padding.left=5]
- * @property {number} [padding.right=5]
- * @property {number} [padding.top=5]
- * @property {number} [padding.bottom=5]
+ * @property {number} [padding.left=5] - Size in pixels
+ * @property {number} [padding.right=5] - Size in pixels
+ * @property {number} [padding.top=5] - Size in pixels
+ * @property {number} [padding.bottom=5] - Size in pixels
  * @property {object} [tick]
- * @property {function} [tick.label] - Function applied to all tick values, returned values are used as labels
- * @property {string} [tick.fill='#595959']
- * @property {string} [tick.fontSize='12px']
- * @property {string} [tick.fontFamily='Arial']
+ * @property {function} [tick.label] - Function applied to all tick values. Return value should be a string and is used as label
+ * @property {string} [tick.fill='#595959'] - Tick color
+ * @property {string} [tick.fontSize='12px'] - Font size in pixels
+ * @property {string} [tick.fontFamily='Arial'] - Font family
  * @property {number} [tick.maxLengthPx=150] - Max length in pixels
- * @property {string} [tick.anchor='right'] - Where to anchor the tick in relation to the legend node, supported values are [top, bottom, left and right]
+ * @property {string} [tick.anchor=''] - Where to anchor the tick in relation to the legend node, supported values are [top, bottom, left and right] or empty string to auto anchor
  * @property {number} [tick.padding=5] - padding in pixels to the legend node
  * @property {object} [title] - Title settings
  * @property {boolean} [title.show=true] - Toggle title on/off
  * @property {string} [title.text=''] - Title text. Defaults to the title of the provided data field
- * @property {string} [title.fill='#595959']
- * @property {string} [title.fontSize='12px']
- * @property {string} [title.fontFamily='Arial']
+ * @property {string} [title.fill='#595959'] - Title color
+ * @property {string} [title.fontSize='12px'] - Font size in pixels
+ * @property {string} [title.fontFamily='Arial'] - Font family
  * @property {number} [title.maxLengthPx=100] - Max length in pixels
  * @property {number} [title.padding=5] - padding in pixels to the legend node
- * @property {string} [title.anchor='top'] - Where to anchor the title in relation to the legend node, supported values are [top, left and right]
+ * @property {string} [title.anchor=''] - Where to anchor the title in relation to the legend node, supported values are [top, left and right] or empty string to auto anchor
  * @property {string} [title.wordBreak='none'] - How overflowing title is handled, if it should insert line breaks at word boundries (break-word) or character boundries (break-all)
  * @property {string} [title.hyphens='auto'] - How words should be hyphenated when text wraps across multiple lines (only applicable with wordBreak)
  * @property {number} [title.maxLines=2] - Number of allowed lines if title contains line breaks (only applicable with wordBreak)

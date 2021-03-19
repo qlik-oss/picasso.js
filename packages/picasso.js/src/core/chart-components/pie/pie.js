@@ -2,8 +2,9 @@ import extend from 'extend';
 import { pie, arc } from 'd3-shape';
 
 /**
+ * Component settings
  * @typedef {object}
- * @alias ComponentPieSettings
+ * @alias ComponentPie.settings
  */
 const DEFAULT_DATA_SETTINGS = {
   /** Start angle of the pie, in radians
@@ -55,7 +56,7 @@ const DEFAULT_DATA_SETTINGS = {
 
 /**
  * @typedef {object} ComponentPie
- * @property {string} [type='pie']
+ * @property {string} [type='pie'] Name of the component
  * @example
  * {
  *   type: 'pie',

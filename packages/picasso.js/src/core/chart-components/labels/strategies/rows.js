@@ -77,10 +77,11 @@ function getBounds(node) {
 
 /**
  * @typedef {object} ComponentLabels~rowsLabelStrategy
- *
+ * @property {string} type='rows' Name of strategy
  */
 
 /**
+ * Rows strategy settings
  * @typedef {object} ComponentLabels~rowsLabelStrategy.settings
  * @property {string} [fontFamily='Arial']
  * @property {number} [fontSize=12]
