@@ -34,6 +34,22 @@ const App = ({ location, history }) => {
         [sel] = examples;
       }
       if (sel !== selected) {
+        if (sel.appId !== loadedData?.selectedApp?.id) {
+          setLoadedData({ ...(loadedData || {}), selectedApp: {} });
+        } else if (sel.sheetId !== loadedData?.selectedApp?.selectedSheet?.id) {
+          setLoadedData({
+            ...(loadedData || {}),
+            selectedApp: { ...(loadedData?.selectedApp || {}), selectedSheet: {} },
+          });
+        } else if (sel.objectId !== loadedData?.selectedApp?.selectedSheet?.selectedObject?.id) {
+          setLoadedData({
+            ...(loadedData || {}),
+            selectedApp: {
+              ...(loadedData?.selectedApp || {}),
+              selectedSheet: { ...(loadedData?.selectedApp?.selectedSheet || {}), selectedObject: {} },
+            },
+          });
+        }
         setSelected(sel);
       }
     }

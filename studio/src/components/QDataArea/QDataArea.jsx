@@ -218,7 +218,8 @@ const QDataArea = ({ loadedData = {}, setLoadedData, qDataSettings = {}, onQData
       setLoadedData({
         ...loadedData,
         selectedApp: {
-          ...loadedData.selectedApp,
+          id: appId,
+          sheets,
           selectedSheet: { id: sheetId, objects: objectList },
         },
       });
@@ -269,9 +270,11 @@ const QDataArea = ({ loadedData = {}, setLoadedData, qDataSettings = {}, onQData
                   setLoadedData({
                     ...loadedData,
                     selectedApp: {
-                      ...loadedData.selectedApp,
+                      id: appId,
+                      sheets,
                       selectedSheet: {
-                        ...(loadedData.selectedApp?.selectedSheet || {}),
+                        id: sheetId,
+                        objects,
                         selectedObject: { id: objectId, layout },
                       },
                     },
@@ -284,9 +287,11 @@ const QDataArea = ({ loadedData = {}, setLoadedData, qDataSettings = {}, onQData
                 setLoadedData({
                   ...loadedData,
                   selectedApp: {
-                    ...loadedData.selectedApp,
+                    id: appId,
+                    sheets,
                     selectedSheet: {
-                      ...(loadedData.selectedApp?.selectedSheet || {}),
+                      id: sheetId,
+                      objects,
                       selectedObject: { id: objectId, layout },
                     },
                   },
