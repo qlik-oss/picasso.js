@@ -160,6 +160,7 @@ const CodeArea = ({
   const onQDataSettingsChange = React.useCallback(
     (newDataSettings) => {
       setCodeModified(true);
+      setQDataSettings(newDataSettings);
       codeUpdated({ ...newDataSettings });
     },
     [codeUpdated]

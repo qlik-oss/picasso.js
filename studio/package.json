@@ -42,7 +42,8 @@
     "react-split-pane": "0.1.92",
     "resizable-panels-react": "2.0.8",
     "run-script": "0.1.1",
-    "slug": "4.0.3"
+    "slug": "4.0.3",
+    "regenerator-runtime": "0.13.7"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.12.13",

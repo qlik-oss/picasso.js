@@ -2,6 +2,7 @@
 /* eslint-disable prefer-destructuring */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-param-reassign */
+import 'regenerator-runtime/runtime'; // Polyfill for using async/await
 import React from 'react';
 import Grid from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
@@ -35,21 +36,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const QDataArea = ({
-  loadedData = {},
-  setLoadedData,
-  qDataSettings = {},
-  onQDataSettingsChange,
-  onQDataChange,
-  loadedObject,
-}) => {
+const QDataArea = ({ loadedData = {}, setLoadedData, qDataSettings = {}, onQDataSettingsChange, onQDataChange }) => {
   const classes = useStyles();
   const [qApps, setQApps] = React.useState(loadedData.qApps || []);
+  const [sheets, setSheets] = React.useState(loadedData.selectedApp?.sheets || []);
+  const [objects, setObjects] = React.useState(loadedData.selectedApp?.selectedSheet?.objects || []);
   const [appId, setAppId] = React.useState(qDataSettings.appId || '');
-  const [sheets, setSheets] = React.useState([]);
   const [sheetId, setSheetId] = React.useState(qDataSettings.sheetId || '');
-  const [objects, setObjects] = React.useState([]);
   const [objectId, setObjectId] = React.useState(qDataSettings.objectId || '');
+  const [objectLayout, setObjectLayout] = React.useState(loadedData.selectedApp?.selectedSheet?.selectedObject?.layout);
   const [disabledGetQApps, setDisabledGetQApps] = React.useState(false);
   const codeDebouncer = React.useRef();
   let connectedApp;
@@ -77,6 +72,13 @@ const QDataArea = ({
 
   const onAppIdSelect = (e) => {
     setAppId(e.target.value);
+    if (appId !== e.target.value) {
+      setSheetId('');
+      setObjectId('');
+      onQDataSettingsChange({ appId: e.target.value, sheetId: '', objectId: '' });
+    } else {
+      onQDataSettingsChange({ appId: e.target.value, sheetId, objectId });
+    }
   };
 
   const getSheetFromId = (id) => {
@@ -90,10 +92,17 @@ const QDataArea = ({
 
   const onSheetIdSelect = (e) => {
     setSheetId(e.target.value);
+    if (sheetId !== e.target.value) {
+      setObjectId('');
+      onQDataSettingsChange({ appId, sheetId: e.target.value, objectId: '' });
+    } else {
+      onQDataSettingsChange({ appId, sheetId: e.target.value, objectId });
+    }
   };
 
   const onObjectIdSelect = (e) => {
     setObjectId(e.target.value);
+    onQDataSettingsChange({ appId, sheetId, objectId: e.target.value });
   };
 
   const resolve = (path, obj) => {
@@ -128,8 +137,9 @@ const QDataArea = ({
 
   React.useEffect(() => {
     setQApps(loadedData.qApps || []);
-    setSheets(loadedData.sheets || []);
-    setObjects(loadedData.objects || []);
+    setSheets(loadedData.selectedApp?.sheets || []);
+    setObjects(loadedData.selectedApp?.selectedSheet?.objects || []);
+    setObjectLayout(loadedData.selectedApp?.selectedSheet?.selectedObject?.layout);
   }, [loadedData]);
 
   React.useEffect(() => {
@@ -143,9 +153,11 @@ const QDataArea = ({
       return;
     }
     if (qApps.every((item) => item.qDocId !== appId)) {
-      console.log(`App ${appId} is not in the app list`);
+      setAppId('');
+      onQDataSettingsChange({ appId: '', sheetId, objectId });
+      return;
     }
-    if (appId === loadedData?.selectedApp?.appId) {
+    if (appId === loadedData?.selectedApp?.id) {
       return;
     }
     const getSheetList = async () => {
@@ -165,14 +177,16 @@ const QDataArea = ({
       setLoadedData({ ...loadedData, selectedApp: { id: appId, sheets: sheetList } });
     };
     getSheetList();
-  }, [appId, qApps, loadedData]);
+  }, [appId, qApps]);
 
   React.useEffect(() => {
     if (!sheetId || !sheets?.length) {
       return;
     }
     if (sheets.every((item) => item.qInfo.qId !== sheetId)) {
-      console.log(`Sheet ${sheetId} is not in the sheet list`);
+      setSheetId('');
+      onQDataSettingsChange({ appId, sheetId: '', objectId });
+      return;
     }
     if (appId === loadedData?.selectedApp?.id && sheetId === loadedData?.selectedApp?.selectedSheet?.id) {
       return;
@@ -210,14 +224,16 @@ const QDataArea = ({
       });
     };
     getObjectList();
-  }, [sheetId, sheets, loadedData]);
+  }, [appId, sheetId, sheets]);
 
   React.useEffect(() => {
     if (!objectId || !objects?.length) {
       return;
     }
     if (objects.every((item) => item.id !== objectId)) {
-      console.log(`Object ${objectId} is not in the object list`);
+      setObjectId('');
+      onQDataSettingsChange({ appId, sheetId, objectId: '' });
+      return;
     }
     if (
       appId === loadedData?.selectedApp?.id &&
@@ -249,43 +265,61 @@ const QDataArea = ({
                   layout.generated.outliers.qHyperCube[
                     layout.generated.outliers.qHyperCube.qMode === 'K' ? 'qStackedDataPages' : 'qDataPages'
                   ] = values[1];
-                  return layout;
+                  setObjectLayout(layout);
+                  setLoadedData({
+                    ...loadedData,
+                    selectedApp: {
+                      ...loadedData.selectedApp,
+                      selectedSheet: {
+                        ...(loadedData.selectedApp?.selectedSheet || {}),
+                        selectedObject: { id: objectId, layout },
+                      },
+                    },
+                  });
                 });
               }
               return getData('/qHyperCubeDef', liveObject.obj, layout, {}).then((pages) => {
                 layout.qHyperCube[layout.qHyperCube.qMode === 'K' ? 'qStackedDataPages' : 'qDataPages'] = pages;
-                return layout;
+                setObjectLayout(layout);
+                setLoadedData({
+                  ...loadedData,
+                  selectedApp: {
+                    ...loadedData.selectedApp,
+                    selectedSheet: {
+                      ...(loadedData.selectedApp?.selectedSheet || {}),
+                      selectedObject: { id: objectId, layout },
+                    },
+                  },
+                });
               });
             }
             return Promise.resolve(undefined);
           })
           .then((o) => {
             liveObject = o;
+            return liveObject;
           });
       };
-      const layout = await loadObject();
-      console.log(layout);
+      await loadObject();
     };
     getObjectLayout();
-  }, [objectId, objects]);
+  }, [appId, sheetId, objectId, objects]);
 
   React.useEffect(() => {
-    if (loadedObject.id && loadedObject.layout) {
-      const { layout } = loadedObject;
+    if (objectLayout) {
       const qData = [
         {
           type: 'q',
           key: 'qHyperCube',
-          data: layout.box ? layout.generated.box.qHyperCube : layout.qHyperCube,
+          data: objectLayout.box ? objectLayout.generated.box.qHyperCube : objectLayout.qHyperCube,
         },
       ];
       if (!codeDebouncer.current) {
         codeDebouncer.current = debouncer(onQDataChange, 200);
       }
       codeDebouncer.current(qData);
-      onQDataSettingsChange({ appId, sheetId, objectId });
     }
-  }, [loadedObject, onQDataChange]);
+  }, [objectLayout, onQDataChange]);
 
   React.useEffect(() => {
     codeDebouncer.current = debouncer(onQDataChange, 200);
