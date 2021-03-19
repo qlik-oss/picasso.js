@@ -70,6 +70,10 @@ const RenderingArea = ({ title, code, data, api, settings, dataSource }) => {
   }, [settings, api, title]);
 
   React.useEffect(() => {
+    if ((dataSource === 0 && typeof data !== 'string') || (dataSource === 1 && typeof data !== 'object')) {
+      // Data not arrived yet
+      return;
+    }
     if (chart && chart.update && typeof code === 'string' && (typeof data === 'string' || typeof data === 'object')) {
       let doRun = false;
       let composition = prevComposition.current;
@@ -120,10 +124,14 @@ const RenderingArea = ({ title, code, data, api, settings, dataSource }) => {
   }, [code, data, chart, api, title, dataSource]);
 
   const updateChart = React.useCallback(() => {
+    if ((dataSource === 0 && typeof data !== 'string') || (dataSource === 1 && typeof data !== 'object')) {
+      // Data not arrived yet
+      return;
+    }
     if (chart && chart.update) {
       chart.update();
     }
-  }, [chart]);
+  }, [chart, data, dataSource]);
 
   useResize(element, updateChart);
 
