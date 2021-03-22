@@ -1,6 +1,5 @@
 import extend from 'extend';
 
-import createDockLayout from '../layout/dock/docker';
 import { detectTouchSupport, isValidTapEvent } from '../utils/event-type';
 import { getShapeType } from '../geometry/util';
 import datasources from '../data/data';
@@ -13,6 +12,7 @@ import componentFactory from '../component/component-factory';
 import mediatorFactory from '../mediator';
 import { testRectPoint } from '../math/narrow-phase-collision';
 import themeFn from '../theme';
+import componentCollectionFn from './component-collection';
 
 /**
  * @typedef {object} ComponentSettings
@@ -170,7 +170,6 @@ function chartFn(definition, context) {
    */
   const instance = extend({}, definition);
   const mediator = mediatorFactory();
-  let currentComponents = []; // Augmented components
   let visibleComponents = [];
 
   let currentScales = null; // Built scales
@@ -183,7 +182,7 @@ function chartFn(definition, context) {
   const brushes = {};
   let stopBrushing = false;
 
-  const createComponent = (compSettings, container) => {
+  const createComponent = (compSettings) => {
     if (!registries.component.has(compSettings.type)) {
       logger.warn(`Unknown component: ${compSettings.type}`);
       return false;
@@ -195,7 +194,7 @@ function chartFn(definition, context) {
       mediator,
       registries,
       theme,
-      container,
+      container: element,
     });
     return {
       instance: compInstance,
@@ -204,6 +203,8 @@ function chartFn(definition, context) {
       hasKey: typeof compSettings.key !== 'undefined',
     };
   };
+
+  const componentsC = componentCollectionFn({ createComponent });
 
   // Create a callback that calls lifecycle functions in the definition and config (if they exist).
   function createCallback(method, defaultMethod = () => {}) {
@@ -219,25 +220,6 @@ function chartFn(definition, context) {
       return returnValue;
     };
   }
-
-  const findComponent = (componentInstance) => {
-    for (let i = 0; i < currentComponents.length; i++) {
-      if (currentComponents[i].instance === componentInstance) {
-        return currentComponents[i];
-      }
-    }
-    return null;
-  };
-
-  const findComponentIndexByKey = (key) => {
-    for (let i = 0; i < currentComponents.length; i++) {
-      const currComp = currentComponents[i];
-      if (currComp.hasKey && currComp.key === key) {
-        return i;
-      }
-    }
-    return -1;
-  };
 
   function getElementRect(el) {
     if (typeof el.getBoundingClientRect === 'function') {
@@ -257,17 +239,7 @@ function chartFn(definition, context) {
     };
   }
 
-  const layout = (components) => {
-    const vcomponents = components.map((c) => {
-      const dockConfig = c.instance.dockConfig();
-      return {
-        instance: c.instance,
-        resize: c.instance.resize,
-        preferredSize: dockConfig.computePreferredSize.bind(dockConfig),
-        settings: c.settings,
-        layoutComponents: () => {},
-      };
-    });
+  const layout = () => {
     let layoutSettings;
     if (settings.dockLayout) {
       logger.warn('Deprecation Warning: "dockLayout" property should be renamed to "strategy"');
@@ -275,17 +247,9 @@ function chartFn(definition, context) {
     } else {
       layoutSettings = settings.strategy;
     }
-
-    const dockLayout = createDockLayout(layoutSettings);
-
     const rect = getElementRect(element);
 
-    const { visible, hidden, order } = dockLayout.layout(rect, vcomponents);
-    return {
-      visible: visible.map((v) => findComponent(v.instance)),
-      hidden: hidden.map((h) => findComponent(h.instance)),
-      order,
-    };
+    return componentsC.layout({ layoutSettings, rect });
   };
 
   const created = createCallback('created');
@@ -336,9 +300,9 @@ function chartFn(definition, context) {
 
     set(data, settings);
 
-    currentComponents = components.map((compSettings) => createComponent(compSettings, element)).filter((c) => !!c);
+    componentsC.set({ components });
 
-    const { visible, hidden, order } = layout(currentComponents);
+    const { visible, hidden, order } = layout();
     visibleComponents = visible;
 
     hidden.forEach((comp) => {
@@ -529,47 +493,14 @@ function chartFn(definition, context) {
 
     const { formatters, scales, components = [] } = settings;
 
-    for (let i = currentComponents.length - 1; i >= 0; i--) {
-      const currComp = currentComponents[i];
-      // TODO warn when there is no key
-      if (!components.some((c) => currComp.hasKey && currComp.key === c.key)) {
-        // Component is removed
-        currentComponents.splice(i, 1);
-        currComp.instance.destroy();
-      }
-    }
+    componentsC.update({ components, data, excludeFromUpdate, formatters, scales });
 
-    // Let the "components" array determine order of components
-    currentComponents = components
-      .map((comp) => {
-        const idx = findComponentIndexByKey(comp.key);
-
-        // Component should not be updated
-        if (excludeFromUpdate.indexOf(comp.key) > -1) {
-          return currentComponents[idx];
-        }
-
-        if (idx === -1) {
-          // Component is added
-          return createComponent(comp, element);
-        }
-        // Component is (potentially) updated
-        currentComponents[idx].updateWith = {
-          formatters,
-          scales,
-          data,
-          settings: comp,
-        };
-        return currentComponents[idx];
-      })
-      .filter((c) => !!c);
-
-    currentComponents.forEach((comp) => {
+    componentsC.forEach((comp) => {
       if (comp.updateWith) {
         comp.instance.set(comp.updateWith);
       }
     });
-    currentComponents.forEach((comp) => {
+    componentsC.forEach((comp) => {
       if (comp.updateWith) {
         comp.instance.beforeUpdate();
       }
@@ -579,14 +510,14 @@ function chartFn(definition, context) {
     const toRender = [];
     let toRenderOrUpdate;
     if (partialData) {
-      currentComponents.forEach((comp) => {
+      componentsC.forEach((comp) => {
         if (comp.updateWith && comp.visible) {
           toUpdate.push(comp);
         }
       });
       toRenderOrUpdate = toUpdate;
     } else {
-      const { visible, hidden, order } = layout(currentComponents); // Relayout
+      const { visible, hidden, order } = layout(); // Relayout
       visibleComponents = visible;
       toRenderOrUpdate = visible;
       visibleOrder = order;
@@ -641,8 +572,7 @@ function chartFn(definition, context) {
    */
   instance.destroy = () => {
     beforeDestroy();
-    currentComponents.forEach((comp) => comp.instance.destroy());
-    currentComponents = [];
+    componentsC.destroy();
     unmount();
     delete instance.update;
     delete instance.destroy;
@@ -659,7 +589,7 @@ function chartFn(definition, context) {
    */
   instance.getAffectedShapes = (ctx, mode = 'and', props, key) => {
     const shapes = [];
-    currentComponents
+    visibleComponents
       .filter((comp) => key === undefined || key === null || comp.key === key)
       .forEach((comp) => {
         shapes.push(...comp.instance.getBrushedShapes(ctx, mode, props));
@@ -882,11 +812,8 @@ function chartFn(definition, context) {
    * @returns {component-context} Component context
    */
   instance.component = (key) => {
-    const idx = findComponentIndexByKey(key);
-    if (idx !== -1) {
-      return currentComponents[idx].instance.ctx;
-    }
-    return undefined;
+    const component = componentsC.findComponentByKey(key);
+    return component?.instance.ctx;
   };
 
   instance.logger = () => logger;

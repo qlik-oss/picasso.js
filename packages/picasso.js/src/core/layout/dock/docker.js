@@ -415,7 +415,7 @@ function dockLayout(initialSettings) {
       throw new Error('Invalid rect');
     }
     if (!components.length) {
-      return { visible: [], hidden: [] };
+      return { visible: [], hidden: [], order: [] };
     }
 
     const { logicalContainerRect, containerRect } = resolveContainerRects(rect, settings);
