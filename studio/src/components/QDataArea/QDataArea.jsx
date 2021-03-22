@@ -2,9 +2,9 @@
 /* eslint-disable prefer-destructuring */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-param-reassign */
-import 'regenerator-runtime/runtime'; // Polyfill for using async/await
 import React from 'react';
-import Grid from '@material-ui/core/Box';
+import PropTypes from 'prop-types';
+import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
@@ -13,7 +13,6 @@ import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import SettingsType from '../../core/types';
 import connect from '../../core/sense/connect';
 import debouncer from '../../core/debounce';
 
@@ -402,8 +401,8 @@ const QDataArea = ({ loadedData = {}, setLoadedData, qDataSettings = {}, onQData
 };
 
 QDataArea.propTypes = {
-  onQDataSettingsChange: SettingsType.isRequired,
-  onQDataChange: SettingsType.isRequired,
+  onQDataSettingsChange: PropTypes.func.isRequired,
+  onQDataChange: PropTypes.func.isRequired,
 };
 
 export default QDataArea;

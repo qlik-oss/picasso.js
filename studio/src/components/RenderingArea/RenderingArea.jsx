@@ -155,10 +155,10 @@ RenderingArea.defaultProps = {
 RenderingArea.propTypes = {
   title: PropTypes.string.isRequired,
   code: PropTypes.string.isRequired,
-  data: PropTypes.string.isRequired,
+  data: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
   api: PropTypes.string,
   settings: SettingsType.isRequired,
-  dataSource: PropTypes.string.isRequired,
+  dataSource: PropTypes.number.isRequired,
 };
 
 export default RenderingArea;
