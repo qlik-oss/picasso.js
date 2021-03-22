@@ -1,91 +1,107 @@
 import createDockLayout from '../layout/dock/docker';
 
+const findComponentByKeyInList = (list, key) => {
+  for (let i = 0; i < list.length; i++) {
+    const currComp = list[i];
+    if (currComp.hasKey && currComp.key === key) {
+      return list[i];
+    }
+  }
+  return null;
+};
+const findComponentByInstanceInList = (list, componentInstance) => {
+  for (let i = 0; i < list.length; i++) {
+    if (list[i].instance === componentInstance) {
+      return list[i];
+    }
+  }
+  return null;
+};
+
+const hideAll = (rect, components) => ({ visible: [], hidden: components, order: components });
+const normalLayout = (layoutSettings) => (rect, components) => {
+  const vcomponents = components.map((c) => {
+    const dockConfig = c.instance.dockConfig();
+    return {
+      instance: c.instance,
+      resize: c.instance.resize,
+      preferredSize(opts) {
+        return dockConfig.computePreferredSize({ ...opts, children: c.children });
+      },
+      settings: c.settings,
+    };
+  });
+
+  const dockLayout = createDockLayout(layoutSettings);
+
+  const { visible, hidden, order } = dockLayout.layout(rect, vcomponents);
+  return {
+    visible: visible.map((v) => findComponentByInstanceInList(components, v.instance)),
+    hidden: hidden.map((h) => findComponentByInstanceInList(components, h.instance)),
+    order,
+  };
+};
+
+const getLayoutFn = (strategy) => {
+  return typeof strategy === 'function' ? strategy : normalLayout(strategy);
+};
+
 function collectionFn({ createComponent }) {
   const instance = {};
-  let currentComponents = [];
+  let allComponents = [];
+  let topComponents = [];
 
-  const findComponentByKey = (key) => {
-    for (let i = 0; i < currentComponents.length; i++) {
-      const currComp = currentComponents[i];
-      if (currComp.hasKey && currComp.key === key) {
-        return currentComponents[i];
+  const createComp = (compSettings) => {
+    const component = createComponent(compSettings);
+    if (component) {
+      allComponents.push(component);
+      if (compSettings.components) {
+        component.children = compSettings.components
+          .map((childSettings) => createComp(childSettings))
+          .filter((c) => !!c);
       }
     }
-    return null;
+    return component;
   };
-  const findComponentByInstance = (componentInstance) => {
-    for (let i = 0; i < currentComponents.length; i++) {
-      if (currentComponents[i].instance === componentInstance) {
-        return currentComponents[i];
-      }
+  const removeFromAllComponents = (component) => {
+    const index = allComponents.indexOf(component);
+    if (index !== -1) {
+      allComponents.splice(index, 1);
     }
-    return null;
   };
-
-  instance.destroy = () => {
-    currentComponents.forEach((comp) => comp.instance.destroy());
-    currentComponents = [];
-  };
-
-  instance.findComponentByInstance = findComponentByInstance;
-  instance.findComponentByKey = findComponentByKey;
-
-  instance.forEach = (fn) => {
-    currentComponents.forEach(fn);
-  };
-
-  instance.layout = ({ layoutSettings, rect }) => {
-    const vcomponents = currentComponents.map((c) => {
-      const dockConfig = c.instance.dockConfig();
-      return {
-        instance: c.instance,
-        resize: c.instance.resize,
-        preferredSize: dockConfig.computePreferredSize.bind(dockConfig),
-        settings: c.settings,
-        layoutComponents: () => {},
-      };
-    });
-
-    const dockLayout = createDockLayout(layoutSettings);
-
-    const { visible, hidden, order } = dockLayout.layout(rect, vcomponents);
-    return {
-      visible: visible.map((v) => findComponentByInstance(v.instance)),
-      hidden: hidden.map((h) => findComponentByInstance(h.instance)),
-      order,
-    };
-  };
-
-  instance.set = ({ components }) => {
-    currentComponents = components.map((compSettings) => createComponent(compSettings)).filter((c) => !!c);
-  };
-
-  instance.update = ({ components, data, excludeFromUpdate, formatters, scales }) => {
-    // remove deleted
-    for (let i = currentComponents.length - 1; i >= 0; i--) {
-      const currComp = currentComponents[i];
+  const removeDeleted = (compList, settingsList) => {
+    for (let i = compList.length - 1; i >= 0; i--) {
+      const currComp = compList[i];
       // TODO warn when there is no key
-      if (!components.some((c) => currComp.hasKey && currComp.key === c.key)) {
+      const currSettings = settingsList.find((c) => currComp.hasKey && currComp.key === c.key);
+      if (!currSettings) {
         // Component is removed
-        currentComponents.splice(i, 1);
+        compList.splice(i, 1);
+        removeFromAllComponents(currComp);
+        if (currComp.children) {
+          removeDeleted(currComp.children, []);
+        }
         currComp.instance.destroy();
+      } else if (currComp.children && currSettings.components) {
+        removeDeleted(currComp.children, currSettings.components);
       }
     }
-
-    // Update and add new
+  };
+  const addAndUpdate = ({ compList, data, excludeFromUpdate, formatters, scales, settingsList }) => {
     // Let the "components" array determine order of components
-    currentComponents = components
+    return settingsList
       .map((comp) => {
-        const component = findComponentByKey(comp.key);
+        const component = findComponentByKeyInList(compList, comp.key);
 
         // Component should not be updated
         if (excludeFromUpdate.indexOf(comp.key) > -1) {
+          // TODO: decide if to skip children
           return component;
         }
 
         if (!component) {
           // Component is added
-          return createComponent(comp);
+          return createComp(comp);
         }
         // Component is (potentially) updated
         component.updateWith = {
@@ -94,9 +110,78 @@ function collectionFn({ createComponent }) {
           data,
           settings: comp,
         };
+
+        if (comp.components) {
+          component.children = addAndUpdate({
+            compList: component.children || [],
+            data,
+            excludeFromUpdate,
+            formatters,
+            scales,
+            settingsList: comp.components,
+          });
+        }
+
         return component;
       })
       .filter((c) => !!c);
+  };
+  const recLayout = ({ components, hidden, layoutFn, order, rect, visible }) => {
+    const { visible: v, hidden: h, order: o } = layoutFn(rect, components);
+    visible.push(...v);
+    hidden.push(...h);
+    order.push(...o);
+    v.forEach((c) => {
+      if (c.children) {
+        const lFn = getLayoutFn(c.settings?.strategy ?? {});
+        recLayout({ components: c.children, hidden, layoutFn: lFn, order, rect: c.instance.getRect(), visible });
+      }
+    });
+    h.forEach((c) => {
+      if (c.children) {
+        recLayout({ components: c.children, hidden, layoutFn: hideAll, order, rect: null, visible });
+      }
+    });
+  };
+
+  instance.destroy = () => {
+    allComponents.forEach((comp) => comp.instance.destroy());
+    allComponents = [];
+    topComponents = [];
+  };
+
+  instance.findComponentByKey = (key) => findComponentByKeyInList(allComponents, key);
+
+  instance.forEach = (fn) => {
+    allComponents.forEach(fn);
+  };
+
+  instance.layout = ({ layoutSettings, rect }) => {
+    const visible = [];
+    const hidden = [];
+    const order = [];
+    const layoutFn = getLayoutFn(layoutSettings);
+    recLayout({ components: topComponents, hidden, layoutFn, order, rect, visible });
+    return { visible, hidden, order };
+  };
+
+  instance.set = ({ components }) => {
+    topComponents = components.map((compSettings) => createComp(compSettings)).filter((c) => !!c);
+  };
+
+  instance.update = ({ components, data, excludeFromUpdate, formatters, scales }) => {
+    // remove deleted
+    removeDeleted(topComponents, components);
+
+    // Update and add new
+    topComponents = addAndUpdate({
+      compList: topComponents,
+      data,
+      excludeFromUpdate,
+      formatters,
+      scales,
+      settingsList: components,
+    });
   };
 
   return instance;
