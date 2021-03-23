@@ -7,7 +7,7 @@ import valueCollection from './value-collection';
 
 /**
  * @typedef {object} BrushConfig
- * @property {Array<BrushConfig.Ranges>} [ranges] - Range configurations
+ * @property {Array<BrushConfig~Ranges>} [ranges] - Range configurations
  */
 
 /**

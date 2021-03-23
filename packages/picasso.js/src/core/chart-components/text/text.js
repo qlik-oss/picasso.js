@@ -93,8 +93,7 @@ function generateTitle({ title, definitionSettings, dock, rect, measureText, sty
 /**
  * @typedef {object} ComponentText
  * @property {string} [type='text']
- * @property {string|function} text
- * @property {ComponentTextSettings} settings - Text settings
+ * @property {string|function} text Text to display
  * @example
  * {
  *  type: 'text',
@@ -102,22 +101,19 @@ function generateTitle({ title, definitionSettings, dock, rect, measureText, sty
  *  dock: 'left',
  *  settings: {
  *    anchor: 'left',
- *    style: {
- *      fill: 'red'
- *    }
  *  }
  * }
  */
 
 /**
- * @typedef {object} ComponentTextSettings
- * @property {number} [paddingStart=5]
- * @property {number} [paddingEnd=5]
- * @property {number} [paddingLeft=0]
- * @property {number} [paddingRight=0]
+ * @typedef {object} ComponentText.settings
+ * @property {number} [paddingStart=5] - Start padding in pixels
+ * @property {number} [paddingEnd=5] - End padding in pixels
+ * @property {number} [paddingLeft=0] - Left padding in pixels
+ * @property {number} [paddingRight=0] - Right padding in pixels
  * @property {string} [anchor='center'] - Where to v- or h-align the text. Supports `left`, `right`, `top`, `bottom` and `center`
  * @property {string} [join=', '] - String to add when joining titles from multiple sources
- * @property {number} [maxLengthPx] - Limit the text length to this value in pixels
+ * @property {number} [maxLengthPx] - Limit the text length
  */
 const textComponent = {
   require: ['renderer', 'chart'],

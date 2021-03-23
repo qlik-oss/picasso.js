@@ -81,7 +81,6 @@ function pic(config = {}, registries = {}) {
 
   /**
    * picasso.js entry point
-   * @experimental
    * @entry
    * @alias picassojs
    * @param {object} cfg
@@ -92,6 +91,10 @@ function pic(config = {}, registries = {}) {
    * @param {object} cfg.style
    * @param {Array<object>} cfg.palettes
    * @returns {picassojs}
+   * @example
+   * import picasso from 'picasso.js';
+   *
+   * const configuredPicasso = picasso({ renderer: { prio: ['canvas'] } }) // All components will render using the canvas renderer
    */
   function picassojs(cfg = {}) {
     let cc = {
