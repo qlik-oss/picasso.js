@@ -43,18 +43,18 @@ const localRepo = {
     return false;
   },
 
-  fork: (item, code, data) => {
+  fork: (item, codeData) => {
     let tryName = `${item.title} (forked) `;
 
     if (!localRepo.idExists(slugify(tryName))) {
-      return localRepo.new({ title: tryName, code, data });
+      return localRepo.new({ ...codeData, title: tryName });
     }
 
     for (let tries = 0; tries < 99; tries += 1) {
       tryName = `${item.title} (fork ${tries + 2}) `;
 
       if (!localRepo.idExists(slugify(tryName))) {
-        return localRepo.new({ title: tryName, code, data });
+        return localRepo.new({ ...codeData, title: tryName });
       }
     }
 
@@ -64,8 +64,9 @@ const localRepo = {
   update: (item) => {
     for (let i = 0; i < localExamples.length; i += 1) {
       if (localExamples[i].id === item.id) {
-        localExamples[i].code = item.code;
-        localExamples[i].data = item.data;
+        Object.keys(item).forEach((key) => {
+          localExamples[i][key] = item[key];
+        });
       }
     }
     localRepo.save();

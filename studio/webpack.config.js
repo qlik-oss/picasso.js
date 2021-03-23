@@ -4,7 +4,15 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
 module.exports = {
+  mode: 'development',
   stats: 'minimal',
+  entry: {
+    app: path.resolve(__dirname, 'src/index.js'),
+  },
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: '[name].bundle.js',
+  },
   module: {
     rules: [
       {
@@ -35,35 +43,37 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             presets: ['@babel/preset-env', '@babel/preset-react'],
-            plugins: ['@babel/plugin-syntax-dynamic-import', '@babel/plugin-proposal-class-properties'],
+            plugins: ['@babel/plugin-proposal-class-properties'],
           },
         },
       },
       {
-        test: /\.svg$/,
-        use: ['@svgr/webpack'],
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
       },
       {
-        test: /\.ttf$/,
-        use: ['file-loader'],
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        type: 'asset/resource',
       },
     ],
   },
-  devtool: 'eval-source-map',
+  devtool: 'inline-source-map',
   devServer: {
     stats: 'errors-only',
     historyApiFallback: true,
+    contentBase: path.resolve(__dirname, './dist'),
+    port: 8090,
   },
   resolve: {
     extensions: ['.js', '.jsx'],
   },
   plugins: [
-    new MonacoWebpackPlugin(),
-    new HtmlWebpackPlugin({
-      template: './public/index.html',
+    new MonacoWebpackPlugin({
+      languages: ['json', 'javascript', 'typescript'],
     }),
+    new HtmlWebpackPlugin(),
     new CopyWebpackPlugin({
-      patterns: [{ from: 'public', globOptions: { ignore: ['index.html'] } }],
+      patterns: [{ from: 'public' }],
     }),
   ],
 };

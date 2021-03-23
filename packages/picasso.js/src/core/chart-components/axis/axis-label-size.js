@@ -80,7 +80,7 @@ function isTiltedLabelOverlapping({ majorTicks, measureText, rect, bleedSize, an
     return true; // TODO 0 angle should be considered non-tilted
   }
   const absAngle = Math.abs(angle);
-  const size = rect.width - bleedSize;
+  const size = Math.min(rect.outer.width - bleedSize, rect.inner.width);
   const stepSize = size * Math.abs(majorTicks[0].position - majorTicks[1].position);
   const textHeight = measureText('M').height;
   const reciprocal = 1 / stepSize; // 1 === Math.sin(90 * (Math.PI / 180))
@@ -136,7 +136,7 @@ export default function getSize({ isDiscrete, rect, formatter, measureText, scal
   if (settings.labels.show) {
     const align = settings.align;
     const horizontal = align === 'top' || align === 'bottom';
-    const distance = horizontal ? rect.width : rect.height;
+    const distance = horizontal ? rect.inner.width : rect.inner.height;
     const majorTicks = scale
       .ticks({
         settings,
@@ -160,7 +160,7 @@ export default function getSize({ isDiscrete, rect, formatter, measureText, scal
         shouldAutoTilt({
           majorTicks,
           measure,
-          rect,
+          rect: rect.inner,
           state,
           settings,
         })
@@ -175,14 +175,14 @@ export default function getSize({ isDiscrete, rect, formatter, measureText, scal
       !settings.labels.filterOverlapping &&
       state.labels.activeMode !== 'tilted' &&
       isToLarge({
-        rect,
+        rect: rect.inner,
         state,
         majorTicks,
         measure,
         horizontal,
       })
     ) {
-      const toLargeSize = Math.max(rect.width, rect.height); // used to hide the axis
+      const toLargeSize = Math.max(rect.outer.width, rect.outer.height); // used to hide the axis
       return { size: toLargeSize, isToLarge: true };
     }
 
@@ -228,9 +228,9 @@ export default function getSize({ isDiscrete, rect, formatter, measureText, scal
       const adjustByPosition = (s, i) => {
         const pos = majorTicks[i] ? majorTicks[i].position : 0;
         if (extendLeft) {
-          return s - pos * rect.width;
+          return s - pos * rect.inner.width;
         }
-        return s - (1 - pos) * rect.width;
+        return s - (1 - pos) * rect.inner.width;
       };
       const bleedSize =
         Math.min(settings.labels.maxEdgeBleed, Math.max(...tickMeasures.map(labelWidth).map(adjustByPosition), 0)) +
@@ -248,7 +248,8 @@ export default function getSize({ isDiscrete, rect, formatter, measureText, scal
           angle: settings.labels.tiltAngle,
         })
       ) {
-        return { size: Math.max(rect.width, rect.height), isToLarge: true };
+        const toLargeSize = Math.max(rect.outer.width, rect.outer.height); // used to hide the axis
+        return { size: toLargeSize, isToLarge: true };
       }
     }
   }

@@ -36,18 +36,18 @@
     "prepublishOnly": "rm -rf dist && npm run build"
   },
   "devDependencies": {
-    "d3-ease": "1.0.6",
-    "d3-format": "1.4.4",
+    "d3-ease": "1.0.7",
+    "d3-format": "1.4.5",
     "d3-hierarchy": "1.1.9",
     "d3-interpolate": "1.4.0",
     "d3-scale": "2.2.2",
-    "d3-shape": "1.3.6",
-    "d3-time-format": "2.2.3",
+    "d3-shape": "1.3.7",
+    "d3-time-format": "2.3.0",
     "extend": "3.0.2",
     "hammerjs": "2.0.8",
     "node-event-emitter": "0.0.1",
     "path2d-polyfill": "1.1.1",
-    "preact": "10.5.7",
+    "preact": "10.5.13",
     "test-utils": "^0.34.0"
   }
 }

@@ -138,7 +138,10 @@ const axisComponent = {
 
     const reqSize = calcRequiredSize({
       isDiscrete: this.state.isDiscrete,
-      rect: opts.inner,
+      rect: {
+        inner: opts.inner,
+        outer: opts.outer,
+      },
       formatter,
       measureText: this.renderer.measureText,
       scale: this.state.pxScale,
