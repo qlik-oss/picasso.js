@@ -7,7 +7,7 @@
   },
   "scripts": {
     "build": "cross-env NODE_ENV=production FORCE_COLOR=1 lerna run build --stream",
-    "build:dev": "cross-env FORCE_COLOR=1 lerna run build --stream",
+    "build:dev": "FORCE_COLOR=1 lerna run build --stream",
     "build:watch": "cross-env FORCE_COLOR=1 lerna run build:watch --stream --no-sort",
     "build:website": "cd website && yarn install && yarn run build",
     "bump": "lerna publish --no-push",
