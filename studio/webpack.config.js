@@ -62,6 +62,7 @@ module.exports = {
     stats: 'errors-only',
     historyApiFallback: true,
     contentBase: path.resolve(__dirname, './dist'),
+    port: 8090,
   },
   resolve: {
     extensions: ['.js', '.jsx'],

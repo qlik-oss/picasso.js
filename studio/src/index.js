@@ -1,3 +1,4 @@
+import 'regenerator-runtime/runtime'; // Polyfill for using async/await
 import React from 'react';
 import ReactDOM from 'react-dom';
 import CssBaseLine from '@material-ui/core/CssBaseline';

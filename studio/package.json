@@ -29,6 +29,7 @@
     "start": "webpack serve"
   },
   "dependencies": {
+    "enigma.js": "2.7.2",
     "@material-ui/core": "4.11.3",
     "@material-ui/icons": "4.11.2",
     "hammerjs": "2.0.8",
@@ -41,7 +42,8 @@
     "react-split-pane": "0.1.92",
     "resizable-panels-react": "2.0.8",
     "run-script": "0.1.1",
-    "slug": "4.0.3"
+    "slug": "4.0.3",
+    "regenerator-runtime": "0.13.7"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.12.13",

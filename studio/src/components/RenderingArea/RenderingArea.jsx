@@ -36,7 +36,7 @@ const useClasses = makeStyles((theme) => ({
   },
 }));
 
-const RenderingArea = ({ title, code, data, api, settings }) => {
+const RenderingArea = ({ title, code, data, api, settings, dataSource }) => {
   const element = React.useRef(null);
   const [chart, setChart] = React.useState();
 
@@ -70,28 +70,35 @@ const RenderingArea = ({ title, code, data, api, settings }) => {
   }, [settings, api, title]);
 
   React.useEffect(() => {
-    if (chart && chart.update && typeof code === 'string' && typeof data === 'string') {
+    if ((dataSource === 0 && typeof data !== 'string') || (dataSource === 1 && typeof data !== 'object')) {
+      // Data not arrived yet
+      return;
+    }
+    if (chart && chart.update && typeof code === 'string' && (typeof data === 'string' || typeof data === 'object')) {
       let doRun = false;
       let composition = prevComposition.current;
       let theData = prevData.current;
-
-      if (code !== prevCodeScript.current) {
+      const isQData = `const isQData = ${dataSource};${String.fromCharCode(10)}`;
+      const updatedCode = isQData + code;
+      if (updatedCode !== prevCodeScript.current) {
         doRun = true;
         composition =
-          runScript(code, {
+          runScript(updatedCode, {
             picasso,
             chart,
           }) || {};
-        prevCodeScript.current = code;
+        prevCodeScript.current = updatedCode;
         prevComposition.current = composition;
       }
       if (data !== prevDataScript.current) {
         doRun = true;
         theData =
-          runScript(data, {
-            customGenerator,
-            generator,
-          }) || {};
+          (typeof data === 'string'
+            ? runScript(data, {
+                customGenerator,
+                generator,
+              })
+            : data) || {};
         prevDataScript.current = data;
         prevData.current = theData;
       }
@@ -114,13 +121,17 @@ const RenderingArea = ({ title, code, data, api, settings }) => {
         }
       }
     }
-  }, [code, data, chart, api, title]);
+  }, [code, data, chart, api, title, dataSource]);
 
   const updateChart = React.useCallback(() => {
+    if ((dataSource === 0 && typeof data !== 'string') || (dataSource === 1 && typeof data !== 'object')) {
+      // Data not arrived yet
+      return;
+    }
     if (chart && chart.update) {
       chart.update();
     }
-  }, [chart]);
+  }, [chart, data, dataSource]);
 
   useResize(element, updateChart);
 
@@ -144,9 +155,10 @@ RenderingArea.defaultProps = {
 RenderingArea.propTypes = {
   title: PropTypes.string.isRequired,
   code: PropTypes.string.isRequired,
-  data: PropTypes.string.isRequired,
+  data: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
   api: PropTypes.string,
   settings: SettingsType.isRequired,
+  dataSource: PropTypes.number.isRequired,
 };
 
 export default RenderingArea;
