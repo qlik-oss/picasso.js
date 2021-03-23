@@ -9,14 +9,6 @@ const findComponentByKeyInList = (list, key) => {
   }
   return null;
 };
-const findComponentByInstanceInList = (list, componentInstance) => {
-  for (let i = 0; i < list.length; i++) {
-    if (list[i].instance === componentInstance) {
-      return list[i];
-    }
-  }
-  return null;
-};
 
 const wrapChildren = (children) =>
   children?.map((c) => {
@@ -27,29 +19,7 @@ const wrapChildren = (children) =>
       },
     };
   });
-const hideAll = (rect, components) => ({ visible: [], hidden: components, order: components });
-const normalLayout = (layoutSettings) => (rect, components) => {
-  const vcomponents = components.map((c) => {
-    const dockConfig = c.instance.dockConfig();
-    return {
-      instance: c.instance,
-      resize: c.instance.resize,
-      preferredSize(opts) {
-        return dockConfig.computePreferredSize({ ...opts, children: wrapChildren(c.children) });
-      },
-      settings: c.settings,
-    };
-  });
-
-  const dockLayout = createDockLayout(layoutSettings);
-
-  const { visible, hidden, order } = dockLayout.layout(rect, vcomponents);
-  return {
-    visible: visible.map((v) => findComponentByInstanceInList(components, v.instance)),
-    hidden: hidden.map((h) => findComponentByInstanceInList(components, h.instance)),
-    order,
-  };
-};
+const hideAll = (rect, components) => ({ visible: [], hidden: components });
 const customLayout = (fn) => (rect, components) => {
   const vcomponents = components.map((c, i) => {
     const dockConfig = c.instance.dockConfig();
@@ -64,12 +34,16 @@ const customLayout = (fn) => (rect, components) => {
     };
   });
   const mapBack = (c) => components[c.index];
-  const { visible, hidden, order } = fn(rect, vcomponents);
+  const { visible = vcomponents, hidden = [], ordered = visible } = fn(rect, vcomponents) ?? {};
   return {
     visible: visible.map(mapBack),
     hidden: hidden.map(mapBack),
-    order: order.map(mapBack),
+    ordered: ordered.map(mapBack),
   };
+};
+const normalLayout = (layoutSettings) => {
+  const dockLayout = createDockLayout(layoutSettings);
+  return customLayout((rect, vcomponents) => dockLayout.layout(rect, vcomponents));
 };
 
 const getLayoutFn = (strategy) => {
@@ -156,20 +130,20 @@ function collectionFn({ createComponent }) {
       })
       .filter((c) => !!c);
   };
-  const recLayout = ({ components, hidden, layoutFn, order, rect, visible }) => {
-    const { visible: v, hidden: h, order: o } = layoutFn(rect, components);
+  const recLayout = ({ components, hidden, layoutFn, ordered, rect, visible }) => {
+    const { visible: v, hidden: h, ordered: o } = layoutFn(rect, components);
     visible.push(...v);
     hidden.push(...h);
-    order.push(...o);
+    ordered.push(...o);
     v.forEach((c) => {
       if (c.children) {
         const lFn = getLayoutFn(c.settings?.strategy ?? {});
-        recLayout({ components: c.children, hidden, layoutFn: lFn, order, rect: c.instance.getRect(), visible });
+        recLayout({ components: c.children, hidden, layoutFn: lFn, ordered, rect: c.instance.getRect(), visible });
       }
     });
     h.forEach((c) => {
       if (c.children) {
-        recLayout({ components: c.children, hidden, layoutFn: hideAll, order, rect: null, visible });
+        recLayout({ components: c.children, hidden, layoutFn: hideAll, ordered, rect: null, visible });
       }
     });
   };
@@ -189,10 +163,10 @@ function collectionFn({ createComponent }) {
   instance.layout = ({ layoutSettings, rect }) => {
     const visible = [];
     const hidden = [];
-    const order = [];
+    const ordered = [];
     const layoutFn = getLayoutFn(layoutSettings);
-    recLayout({ components: topComponents, hidden, layoutFn, order, rect, visible });
-    return { visible, hidden, order };
+    recLayout({ components: topComponents, hidden, layoutFn, ordered, rect, visible });
+    return { visible, hidden, ordered };
   };
 
   instance.set = ({ components }) => {

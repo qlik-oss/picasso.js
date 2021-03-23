@@ -1,5 +1,6 @@
 import dockLayout from '../docker';
 import createRect from '../create-rect';
+import dockConfig from '../config';
 
 describe('Dock Layout', () => {
   const componentMock = function componentMock({
@@ -9,21 +10,16 @@ describe('Dock Layout', () => {
     edgeBleed = {},
     minimumLayoutMode,
     size = 0,
-    show = true,
     key,
   } = {}) {
     const dummy = {};
-
-    dummy.settings = {
-      key,
-      show,
-      layout: {
-        dock,
-        displayOrder,
-        prioOrder,
-        minimumLayoutMode,
-      },
-    };
+    dummy.key = key;
+    dummy.dockConfig = dockConfig({
+      dock,
+      displayOrder,
+      prioOrder,
+      minimumLayoutMode,
+    });
 
     dummy.preferredSize = () => ({ width: size, height: size, edgeBleed });
 
@@ -180,13 +176,9 @@ describe('Dock Layout', () => {
     });
 
     it('should throw an expection if needed properties are missing', () => {
-      const mainComp = {};
-      const leftComp = { settings: { layout: { dock: 'left' } } };
-      const rightComp = { settings: { layout: { dock: 'right' } }, resize: {} };
-      const asfdComp = { settings: { layout: { dock: 'right' } }, resize: () => {} };
-      const fn = () => {
-        dl.layout(rect, [mainComp]);
-      };
+      const leftComp = {};
+      const rightComp = { resize: {} };
+      const asfdComp = { resize: () => {} };
       const fn2 = () => {
         dl.layout(rect, [leftComp]);
       };
@@ -196,7 +188,6 @@ describe('Dock Layout', () => {
       const fn4 = () => {
         dl.layout(rect, [asfdComp]);
       };
-      expect(fn).to.throw('Invalid component settings');
       expect(fn2).to.throw('Component is missing resize function');
       expect(fn3).to.throw('Component is missing resize function');
       expect(fn4).to.throw('Component is missing preferredSize function');
@@ -883,10 +874,10 @@ describe('Dock Layout', () => {
       const rect = createRect(0, 0, 1000, 1000);
       const dl = dockLayout();
 
-      const { visible, order } = dl.layout(rect, [mainComp, leftComp, onLeft, onMain]);
+      const { visible, ordered } = dl.layout(rect, [mainComp, leftComp, onLeft, onMain]);
 
-      expect(visible.map((v) => v.settings.key)).to.eql(['main', 'y', 'dockAtY', 'dockAtMain']);
-      expect(order).to.eql([1, 3, 2, 0]);
+      expect(visible.map((v) => v.key)).to.eql(['main', 'y', 'dockAtY', 'dockAtMain']);
+      expect(ordered.map((v) => v.key)).to.eql(['dockAtMain', 'main', 'dockAtY', 'y']);
     });
   });
 });

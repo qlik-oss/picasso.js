@@ -476,10 +476,10 @@ describe('Chart', () => {
       expect(order).to.eql(['a', 'b-1', 'b-2', 'b', 'c']);
     });
 
-    it('should re-order existing elements with explicit order', () => {
+    it('should re-order existing elements with new order', () => {
       orderComponents(el, visible); // initial will inject children into el
-
-      orderComponents(el, visible, [2, 0, 1]); // re-order when el is already populated
+      visible = [visible[1], visible[2], visible[0]]; // change order
+      orderComponents(el, visible); // re-order when el is already populated
       const order = el.children.map((e) => e.name);
       expect(order).to.eql(['b-1', 'b-2', 'b', 'c', 'a']);
     });

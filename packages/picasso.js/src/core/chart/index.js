@@ -112,14 +112,9 @@ const moveToPosition = (element, comp, index) => {
   }
 };
 
-export function orderComponents(element, visibleComponents, order) {
+export function orderComponents(element, ordered) {
   const elToIdx = [];
   let numElements = 0;
-  const ordered = order
-    ? visibleComponents
-        .slice()
-        .sort((a, b) => order[visibleComponents.indexOf(a)] - order[visibleComponents.indexOf(b)])
-    : visibleComponents;
   ordered.forEach((comp) => {
     elToIdx.push(numElements);
 
@@ -302,7 +297,7 @@ function chartFn(definition, context) {
 
     componentsC.set({ components });
 
-    const { visible, hidden, order } = layout();
+    const { visible, hidden, ordered } = layout();
     visibleComponents = visible;
 
     hidden.forEach((comp) => {
@@ -319,7 +314,7 @@ function chartFn(definition, context) {
     visible.forEach((comp) => {
       comp.visible = true;
     });
-    orderComponents(element, visibleComponents, order);
+    orderComponents(element, ordered);
   };
 
   function setInteractions(interactions = []) {
@@ -478,7 +473,7 @@ function chartFn(definition, context) {
    */
   instance.update = (newProps = {}) => {
     const { partialData, excludeFromUpdate = [] } = newProps;
-    let visibleOrder;
+    let visibleOrdered;
     if (newProps.data) {
       data = newProps.data;
     }
@@ -517,10 +512,10 @@ function chartFn(definition, context) {
       });
       toRenderOrUpdate = toUpdate;
     } else {
-      const { visible, hidden, order } = layout(); // Relayout
+      const { visible, hidden, ordered } = layout(); // Relayout
       visibleComponents = visible;
       toRenderOrUpdate = visible;
-      visibleOrder = order;
+      visibleOrdered = ordered;
 
       visible.forEach((comp) => {
         if (comp.updateWith && comp.visible) {
@@ -553,7 +548,7 @@ function chartFn(definition, context) {
     // Ensure that displayOrder is keept, only do so on re-layout update.
     // Which is only the case if partialData is false.
     if (!partialData) {
-      orderComponents(element, visibleComponents, visibleOrder);
+      orderComponents(element, visibleOrdered);
     }
 
     toRender.forEach((comp) => comp.instance.mounted());

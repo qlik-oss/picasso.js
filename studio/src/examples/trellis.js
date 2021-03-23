@@ -30,7 +30,6 @@ const layoutFn = (rect, components) => {
     subRect.x = 0;
     subRect.y += dy;
   }
-  return { visible: components, hidden: [], order: components };
 };
 
 return {

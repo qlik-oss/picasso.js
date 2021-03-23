@@ -89,7 +89,6 @@ return {
         components.forEach((c, i) => {
           c.resize({ ...rect, height, y: i * height })
         });
-        return { visible: components, hidden: [], order: components };
       },
       components: [
         {
