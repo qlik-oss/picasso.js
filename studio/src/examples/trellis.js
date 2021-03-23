@@ -24,7 +24,7 @@ const layoutFn = (rect, components) => {
       if (handled >= components.length) {
         break;
       }
-      components[handled++].instance.resize(subRect, rect);
+      components[handled++].resize(subRect, rect);
       subRect.x += dx;
     }
     subRect.x = 0;

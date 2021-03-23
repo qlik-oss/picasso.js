@@ -18,6 +18,15 @@ const findComponentByInstanceInList = (list, componentInstance) => {
   return null;
 };
 
+const wrapChildren = (children) =>
+  children?.map((c) => {
+    const dockConfig = c.instance.dockConfig();
+    return {
+      preferredSize(opts) {
+        return dockConfig.computePreferredSize({ ...opts, children: wrapChildren(c.children) });
+      },
+    };
+  });
 const hideAll = (rect, components) => ({ visible: [], hidden: components, order: components });
 const normalLayout = (layoutSettings) => (rect, components) => {
   const vcomponents = components.map((c) => {
@@ -26,7 +35,7 @@ const normalLayout = (layoutSettings) => (rect, components) => {
       instance: c.instance,
       resize: c.instance.resize,
       preferredSize(opts) {
-        return dockConfig.computePreferredSize({ ...opts, children: c.children });
+        return dockConfig.computePreferredSize({ ...opts, children: wrapChildren(c.children) });
       },
       settings: c.settings,
     };
@@ -41,9 +50,30 @@ const normalLayout = (layoutSettings) => (rect, components) => {
     order,
   };
 };
+const customLayout = (fn) => (rect, components) => {
+  const vcomponents = components.map((c, i) => {
+    const dockConfig = c.instance.dockConfig();
+    return {
+      index: i,
+      key: c.settings.key,
+      dockConfig,
+      resize: c.instance.resize,
+      preferredSize(opts) {
+        return dockConfig.computePreferredSize({ ...opts, children: wrapChildren(c.children) });
+      },
+    };
+  });
+  const mapBack = (c) => components[c.index];
+  const { visible, hidden, order } = fn(rect, vcomponents);
+  return {
+    visible: visible.map(mapBack),
+    hidden: hidden.map(mapBack),
+    order: order.map(mapBack),
+  };
+};
 
 const getLayoutFn = (strategy) => {
-  return typeof strategy === 'function' ? strategy : normalLayout(strategy);
+  return typeof strategy === 'function' ? customLayout(strategy) : normalLayout(strategy);
 };
 
 function collectionFn({ createComponent }) {

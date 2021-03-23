@@ -80,15 +80,14 @@ return {
       layout: {
         dock: 'right',
       },
-      preferredSize: ({ inner, outer, dock, children }) => {
-        const sizes = children.map(c =>
-          c.instance.dockConfig().computePreferredSize({ inner, outer, dock }));
+      preferredSize: ({ inner, outer, children }) => {
+        const sizes = children.map(c => c.preferredSize({ inner, outer }));
         return Math.max(...sizes);
       },
       strategy: (rect, components) => {
         const height = rect.height / components.length;
         components.forEach((c, i) => {
-          c.instance.resize({ ...rect, height, y: i * height })
+          c.resize({ ...rect, height, y: i * height })
         });
         return { visible: components, hidden: [], order: components };
       },
