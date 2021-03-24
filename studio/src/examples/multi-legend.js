@@ -87,7 +87,7 @@ return {
       strategy: (rect, components) => {
         const height = rect.height / components.length;
         components.forEach((c, i) => {
-          c.resize({ ...rect, height, y: i * height })
+          c.resize({ ...rect, height, y: rect.y + i * height })
         });
       },
       components: [

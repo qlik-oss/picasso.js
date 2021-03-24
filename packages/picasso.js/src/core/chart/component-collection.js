@@ -25,7 +25,7 @@ const customLayout = (fn) => (rect, components) => {
     const dockConfig = c.instance.dockConfig();
     return {
       index: i,
-      key: c.settings.key,
+      key: c.key,
       dockConfig,
       resize: c.instance.resize,
       preferredSize(opts) {
