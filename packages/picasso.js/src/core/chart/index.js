@@ -35,6 +35,8 @@ import componentCollectionFn from './component-collection';
  * @property {boolean} [show = true] If the component should be rendered
  * @property {string} [scale] Named scale. Will be provided to the component if it ask for it.
  * @property {string} [formatter] Named formatter. Fallback to create formatter from scale. Will be provided to the component if it ask for it.
+ * @property {ComponentSettings[]} [components] Optional list of child components
+ * @property {DockLayoutSettings|function} [strategy] Layout strategy used for child components.
  */
 
 function addComponentDelta(shape, containerBounds, componentBounds) {

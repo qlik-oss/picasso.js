@@ -275,9 +275,7 @@
               "type": "#/definitions/Brush/events/update"
             }
           ],
-          "examples": [
-            "brush.addValue('countries', 'Sweden');\nbrush.addValue('/qHyperCube/qDimensionInfo/0', 3);"
-          ]
+          "examples": ["brush.addValue('countries', 'Sweden');\nbrush.addValue('/qHyperCube/qDimensionInfo/0', 3);"]
         },
         "addValues": {
           "kind": "function",
@@ -329,9 +327,7 @@
               "type": "any"
             }
           ],
-          "examples": [
-            "brush.removeValue('countries', 'Sweden');"
-          ]
+          "examples": ["brush.removeValue('countries', 'Sweden');"]
         },
         "removeValues": {
           "kind": "function",
@@ -392,9 +388,7 @@
               "type": "any"
             }
           ],
-          "examples": [
-            "brush.toggleValue('countries', 'Sweden');"
-          ]
+          "examples": ["brush.toggleValue('countries', 'Sweden');"]
         },
         "toggleValues": {
           "kind": "function",
@@ -465,9 +459,7 @@
               }
             }
           ],
-          "examples": [
-            "brush.addRange('Sales', { min: 20, max: 50 });"
-          ]
+          "examples": ["brush.addRange('Sales', { min: 20, max: 50 });"]
         },
         "addRanges": {
           "kind": "function",
@@ -737,9 +729,7 @@
               "type": "string"
             }
           ],
-          "examples": [
-            "brush.removeKeyAlias('BadFieldName');"
-          ]
+          "examples": ["brush.removeKeyAlias('BadFieldName');"]
         }
       },
       "events": {
@@ -877,6 +867,27 @@
           "description": "Named formatter. Fallback to create formatter from scale. Will be provided to the component if it ask for it.",
           "optional": true,
           "type": "string"
+        },
+        "@experimental": {
+          "description": "[components] Optional list of child components",
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/ComponentSettings"
+          }
+        },
+        "strategy": {
+          "description": "Layout strategy used for child components.",
+          "optional": true,
+          "kind": "union",
+          "items": [
+            {
+              "type": "#/definitions/DockLayoutSettings"
+            },
+            {
+              "type": "function"
+            }
+          ],
+          "type": "any"
         }
       }
     },
@@ -1972,6 +1983,25 @@
           }
         }
       }
+    },
+    "ContainerComponent": {
+      "stability": "experimental",
+      "extends": [
+        {
+          "type": "#/definitions/ComponentSettings"
+        }
+      ],
+      "kind": "object",
+      "entries": {
+        "type": {
+          "optional": true,
+          "defaultValue": "'container'",
+          "type": "string"
+        }
+      },
+      "examples": [
+        "{\n type: 'container',\n preferredSize: ({ inner, outer, dock, children }) => {\n   const sizes = children.map(c => c.preferredSize({ inner, outer }));\n   return Math.max(...sizes);\n },\n strategy: (rect, components) => {\n   const height = rect.height / components.length;\n   components.forEach((c, i) => {\n     c.resize({ ...rect, height, y: rect.y + i * height })\n   });\n   return { visible: components, hidden: [], order: components };\n },\n components: [\n    ...\n ],\n}"
+      ]
     },
     "ComponentGridLineSettings": {
       "kind": "object",
@@ -4603,9 +4633,7 @@
           "returns": {
             "type": "#/definitions/Rect"
           },
-          "examples": [
-            "node.boundsRelativeTo($('div'));\nnode.boundsRelativeTo('viewport');"
-          ]
+          "examples": ["node.boundsRelativeTo($('div'));\nnode.boundsRelativeTo('viewport');"]
         },
         "collider": {
           "description": "Collider of the node. Transform on the node has been applied to the collider shape, if any, but excluding scaling transform related to devicePixelRatio.\nOrigin is in the top-left corner of the scene element.\n\nIf node has no collider, null is returned.",

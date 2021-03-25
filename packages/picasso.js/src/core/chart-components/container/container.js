@@ -1,8 +1,8 @@
 /**
  * @typedef {object} ContainerComponent
+ * @experimental
+ * @extends ComponentSettings
  * @property {string} [type='container']
- * @property {object|function} [stategy='dock']
- * @property {object[]} components
  * @example
  * {
  *  type: 'container',
