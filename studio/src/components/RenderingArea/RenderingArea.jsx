@@ -47,6 +47,21 @@ const RenderingArea = ({ title, code, data, api, settings, dataSource }) => {
   const prevCodeScript = React.useRef();
   const prevDataScript = React.useRef();
 
+  const hashFromString = (str) => {
+    let hash = 0;
+    if (!str || !str.length) {
+      return hash;
+    }
+    for (let i = 0; i < str.length; i++) {
+      const chr = str.charCodeAt(i);
+      /* eslint-disable no-bitwise */
+      hash = (hash << 5) - hash + chr;
+      hash &= hash;
+      /* eslint-enable no-bitwise */
+    }
+    return hash;
+  };
+
   React.useEffect(() => {
     let ch;
     if (api === 'chart') {
@@ -78,19 +93,23 @@ const RenderingArea = ({ title, code, data, api, settings, dataSource }) => {
       let doRun = false;
       let composition = prevComposition.current;
       let theData = prevData.current;
-      const isQData = `const isQData = ${dataSource};${String.fromCharCode(10)}`;
-      const updatedCode = isQData + code;
+      const isQDataDeclare = `const isQData = ${dataSource};${String.fromCharCode(10)}`;
+      const dataHashId = typeof data === 'string' ? data : hashFromString(JSON.stringify(data));
+      const updatedCode = isQDataDeclare + (typeof data === 'string' ? '' : dataHashId) + code;
+
       if (updatedCode !== prevCodeScript.current) {
         doRun = true;
         composition =
-          runScript(updatedCode, {
+          runScript(code, {
             picasso,
             chart,
+            isQData: !!dataSource,
+            qLayout: !!dataSource ? data : undefined,
           }) || {};
         prevCodeScript.current = updatedCode;
         prevComposition.current = composition;
       }
-      if (data !== prevDataScript.current) {
+      if (dataHashId !== prevDataScript.current) {
         doRun = true;
         theData =
           (typeof data === 'string'
@@ -98,8 +117,14 @@ const RenderingArea = ({ title, code, data, api, settings, dataSource }) => {
                 customGenerator,
                 generator,
               })
-            : data) || {};
-        prevDataScript.current = data;
+            : [
+              {
+                type: 'q',
+                key: 'qHyperCube',
+                data: data.box ? data.generated.box.qHyperCube : data.qHyperCube,
+              },
+            ]) || {};
+        prevDataScript.current = dataHashId;
         prevData.current = theData;
       }
 
@@ -155,7 +180,7 @@ RenderingArea.defaultProps = {
 RenderingArea.propTypes = {
   title: PropTypes.string.isRequired,
   code: PropTypes.string.isRequired,
-  data: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
+  data: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   api: PropTypes.string,
   settings: SettingsType.isRequired,
   dataSource: PropTypes.number.isRequired,
