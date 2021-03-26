@@ -311,17 +311,10 @@ const QDataArea = ({ loadedData = {}, setLoadedData, qDataSettings = {}, onQData
 
   React.useEffect(() => {
     if (objectLayout) {
-      const qData = [
-        {
-          type: 'q',
-          key: 'qHyperCube',
-          data: objectLayout.box ? objectLayout.generated.box.qHyperCube : objectLayout.qHyperCube,
-        },
-      ];
       if (!codeDebouncer.current) {
         codeDebouncer.current = debouncer(onQDataChange, 200);
       }
-      codeDebouncer.current(qData);
+      codeDebouncer.current(objectLayout);
     }
   }, [objectLayout, onQDataChange]);
 
