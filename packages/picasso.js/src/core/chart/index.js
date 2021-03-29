@@ -49,6 +49,22 @@ import componentCollectionFn from './component-collection';
  * @property {DockLayoutSettings|CustomLayoutFunction} [strategy] Layout strategy used for child components.
  */
 
+// mark strategy as experimental
+/**
+ * @type {DockLayoutSettings|CustomLayoutFunction}
+ * @name strategy
+ * @memberof ComponentSettings
+ * @experimental
+ */
+
+// mark components as experimental
+/**
+ * @type {ComponentSettings[]}
+ * @name components
+ * @memberof ComponentSettings
+ * @experimental
+ */
+
 function addComponentDelta(shape, containerBounds, componentBounds) {
   const dx = containerBounds.left - componentBounds.left;
   const dy = containerBounds.top - componentBounds.top;

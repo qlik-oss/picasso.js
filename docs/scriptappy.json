@@ -904,7 +904,8 @@
           "kind": "array",
           "items": {
             "type": "#/definitions/ComponentSettings"
-          }
+          },
+          "stability": "experimental"
         },
         "strategy": {
           "description": "Layout strategy used for child components.",
@@ -918,7 +919,8 @@
               "type": "#/definitions/CustomLayoutFunction"
             }
           ],
-          "type": "any"
+          "type": "any",
+          "stability": "experimental"
         }
       }
     },
