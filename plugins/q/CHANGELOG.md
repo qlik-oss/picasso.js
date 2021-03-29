@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.35.0](https://github.com/qlik-oss/picasso.js/compare/v0.34.0...v0.35.0) (2021-03-29)
+
+### Bug Fixes
+
+- avoid problem during tree data extraction ([#542](https://github.com/qlik-oss/picasso.js/issues/542)) ([29bcdf4](https://github.com/qlik-oss/picasso.js/commit/29bcdf42f103503670f8ea06ae07de4a97ad1889))
+
 # [0.34.0](https://github.com/qlik-oss/picasso.js/compare/v0.33.0...v0.34.0) (2020-08-20)
 
 **Note:** Version bump only for package picasso-plugin-q
