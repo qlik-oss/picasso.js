@@ -19,7 +19,7 @@ const wrapChildren = (children) =>
       },
     };
   });
-const hideAll = (rect, components) => ({ visible: [], hidden: components });
+const hideAll = (rect, components) => ({ visible: [], hidden: components, ordered: [] });
 const customLayout = (fn) => (rect, components) => {
   const vcomponents = components.map((c, i) => {
     const dockConfig = c.instance.dockConfig();
