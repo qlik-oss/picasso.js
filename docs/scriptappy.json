@@ -767,6 +767,36 @@
         }
       }
     },
+    "CustomLayoutFunction": {
+      "kind": "function",
+      "params": [
+        {
+          "name": "rect",
+          "type": "#/definitions/Rect"
+        },
+        {
+          "name": "components",
+          "kind": "array",
+          "items": {
+            "entries": {
+              "key": {
+                "type": "string"
+              },
+              "dockConfig": {
+                "type": "object"
+              },
+              "resize": {
+                "type": "function"
+              },
+              "preferredSize": {
+                "type": "function"
+              }
+            },
+            "kind": "object"
+          }
+        }
+      ]
+    },
     "ComponentSettings": {
       "kind": "object",
       "entries": {
@@ -868,8 +898,9 @@
           "optional": true,
           "type": "string"
         },
-        "@experimental": {
-          "description": "[components] Optional list of child components",
+        "components": {
+          "description": "Optional list of child components",
+          "optional": true,
           "kind": "array",
           "items": {
             "type": "#/definitions/ComponentSettings"
@@ -884,7 +915,7 @@
               "type": "#/definitions/DockLayoutSettings"
             },
             {
-              "type": "function"
+              "type": "#/definitions/CustomLayoutFunction"
             }
           ],
           "type": "any"

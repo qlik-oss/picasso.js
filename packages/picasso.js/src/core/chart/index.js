@@ -15,6 +15,16 @@ import themeFn from '../theme';
 import componentCollectionFn from './component-collection';
 
 /**
+ * @callback CustomLayoutFunction
+ * @param {Rect} rect
+ * @param {object[]} components
+ * @param {string} components[].key
+ * @param {object} components[].dockConfig
+ * @param {function} components[].resize
+ * @param {function} components[].preferredSize
+ */
+
+/**
  * @typedef {object} ComponentSettings
  * @property {string} type - Component type (ex: axis, point, ...)
  * @property {function} [preferredSize] - Function returning the preferred size
@@ -36,7 +46,7 @@ import componentCollectionFn from './component-collection';
  * @property {string} [scale] Named scale. Will be provided to the component if it ask for it.
  * @property {string} [formatter] Named formatter. Fallback to create formatter from scale. Will be provided to the component if it ask for it.
  * @property {ComponentSettings[]} [components] Optional list of child components
- * @property {DockLayoutSettings|function} [strategy] Layout strategy used for child components.
+ * @property {DockLayoutSettings|CustomLayoutFunction} [strategy] Layout strategy used for child components.
  */
 
 function addComponentDelta(shape, containerBounds, componentBounds) {
