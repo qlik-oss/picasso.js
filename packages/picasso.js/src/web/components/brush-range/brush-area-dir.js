@@ -105,13 +105,9 @@ function getBubbleLabel(state, value, range) {
 }
 
 /**
- * @typedef {object} ComponentBrushAreaDirSettings
+ * @typedef {object} ComponentBrushAreaDir.settings
  * @property {object} brush
- * @property {array} brush.components
- * @property {object} brush.components[].key - Component key
- * @property {object} brush.components[].contexts[] - Brush context to apply changes to
- * @property {object} [brush.components[].data] - Data reference
- * @property {object} [brush.components[].action] - Type of brush action
+ * @property {BrushTargetConfig[]} brush.components
  * @property {string} [direction=vertical] - Rendering direction [horizontal|vertical]
  * @property {object} [bubbles]
  * @property {boolean} [bubbles.show=true] - True to show label bubble, false otherwise
@@ -123,6 +119,7 @@ function getBubbleLabel(state, value, range) {
  */
 
 /**
+ * @private
  * @typedef {object} ComponentBrushAreaDirStyle
  * @property {object} [bubble]
  * @property {string} [bubble.fontSize]

@@ -1634,10 +1634,10 @@
           "kind": "union",
           "items": [
             {
-              "type": "undefined/definitions/DiscreteSettings"
+              "type": "#/definitions/ComponentAxis/definitions/DiscreteSettings"
             },
             {
-              "type": "undefined/definitions/ContinuousSettings"
+              "type": "#/definitions/ComponentAxis/definitions/ContinuousSettings"
             }
           ],
           "type": "any"
@@ -4720,10 +4720,7 @@
               "type": "string"
             },
             {
-              "type": "{width:number"
-            },
-            {
-              "type": "height:number}"
+              "type": "#/definitions/DockLayoutSettings/definitions/layoutMode"
             }
           ]
         },
@@ -4740,6 +4737,19 @@
             "height": {
               "description": "Height in pixels",
               "optional": true,
+              "type": "number"
+            }
+          }
+        }
+      },
+      "definitions": {
+        "layoutMode": {
+          "kind": "object",
+          "entries": {
+            "width": {
+              "type": "number"
+            },
+            "height": {
               "type": "number"
             }
           }
@@ -5378,307 +5388,163 @@
         "{\n type: 'brush-area',\n brush: {\n   components: [{ key: '<target-component>', contexts: ['highlight'] }]\n }\n}"
       ]
     },
-    "ComponentBrushAreaDirSettings": {
+    "ComponentBrushAreaDir": {
       "kind": "object",
       "entries": {
-        "brush": {
+        "type": {
+          "description": "Name of the component",
+          "type": "string"
+        },
+        "settings": {
           "kind": "object",
           "entries": {
-            "components": {
-              "kind": "array",
-              "items": {
-                "entries": {
-                  "key": {
-                    "description": "Component key",
-                    "type": "object"
-                  },
-                  "contexts[": {
-                    "description": "Brush context to apply changes to",
-                    "type": "object"
-                  },
-                  "data": {
-                    "description": "Data reference",
-                    "optional": true,
-                    "type": "object"
-                  },
-                  "action": {
-                    "description": "Type of brush action",
-                    "optional": true,
-                    "type": "object"
+            "brush": {
+              "kind": "object",
+              "entries": {
+                "components": {
+                  "kind": "array",
+                  "items": {
+                    "type": "#/definitions/BrushTargetConfig"
+                  }
+                }
+              }
+            },
+            "direction": {
+              "description": "Rendering direction [horizontal|vertical]",
+              "optional": true,
+              "defaultValue": "vertical",
+              "type": "string"
+            },
+            "bubbles": {
+              "optional": true,
+              "kind": "object",
+              "entries": {
+                "show": {
+                  "description": "True to show label bubble, false otherwise",
+                  "optional": true,
+                  "defaultValue": true,
+                  "type": "boolean"
+                },
+                "align": {
+                  "description": "Where to anchor bubble [start|end]",
+                  "optional": true,
+                  "defaultValue": "start",
+                  "type": "string"
+                },
+                "label": {
+                  "description": "Callback function for the labels",
+                  "optional": true,
+                  "type": "function"
+                }
+              }
+            },
+            "target": {
+              "optional": true,
+              "kind": "object",
+              "entries": {
+                "component": {
+                  "description": "Render matching overlay on target component. @deprecated Use `components` instead",
+                  "optional": true,
+                  "type": "string"
+                },
+                "components": {
+                  "description": "Render matching overlay on target components",
+                  "optional": true,
+                  "kind": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "ComponentBrushRange": {
+      "kind": "object",
+      "entries": {
+        "type": {
+          "description": "Name of the component",
+          "type": "string"
+        },
+        "settings": {
+          "kind": "object",
+          "entries": {
+            "brush": {
+              "description": "Brush context to apply changes to",
+              "kind": "union",
+              "items": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object"
+                }
+              ],
+              "type": "any"
+            },
+            "scale": {
+              "description": "Scale to extract data from",
+              "type": "string"
+            },
+            "direction": {
+              "description": "Rendering direction [horizontal|vertical]",
+              "optional": true,
+              "defaultValue": "vertical",
+              "type": "string"
+            },
+            "bubbles": {
+              "optional": true,
+              "kind": "object",
+              "entries": {
+                "show": {
+                  "description": "True to show label bubble, false otherwise",
+                  "optional": true,
+                  "defaultValue": true,
+                  "type": "boolean"
+                },
+                "align": {
+                  "description": "Where to anchor bubble [start|end]",
+                  "optional": true,
+                  "defaultValue": "start",
+                  "type": "string"
+                },
+                "label": {
+                  "description": "Callback function for the labels",
+                  "optional": true,
+                  "type": "function"
+                }
+              }
+            },
+            "target": {
+              "optional": true,
+              "kind": "object",
+              "entries": {
+                "component": {
+                  "description": "Render matching overlay on target component. @deprecated Use `components` instead",
+                  "optional": true,
+                  "type": "string"
+                },
+                "components": {
+                  "description": "Render matching overlay on target components",
+                  "optional": true,
+                  "kind": "array",
+                  "items": {
+                    "type": "string"
                   }
                 },
-                "kind": "object"
+                "selector": {
+                  "description": "Instead of targeting a component, target one or more shapes",
+                  "optional": true,
+                  "type": "string"
+                },
+                "fillSelector": {
+                  "description": "Target a subset of the selector as fill area. Only applicable if `selector` property is set",
+                  "optional": true,
+                  "type": "string"
+                }
               }
-            }
-          }
-        },
-        "direction": {
-          "description": "Rendering direction [horizontal|vertical]",
-          "optional": true,
-          "defaultValue": "vertical",
-          "type": "string"
-        },
-        "bubbles": {
-          "optional": true,
-          "kind": "object",
-          "entries": {
-            "show": {
-              "description": "True to show label bubble, false otherwise",
-              "optional": true,
-              "defaultValue": true,
-              "type": "boolean"
-            },
-            "align": {
-              "description": "Where to anchor bubble [start|end]",
-              "optional": true,
-              "defaultValue": "start",
-              "type": "string"
-            },
-            "label": {
-              "description": "Callback function for the labels",
-              "optional": true,
-              "type": "function"
-            }
-          }
-        },
-        "target": {
-          "optional": true,
-          "kind": "object",
-          "entries": {
-            "component": {
-              "description": "Render matching overlay on target component. @deprecated Use `components` instead",
-              "optional": true,
-              "type": "string"
-            },
-            "components": {
-              "description": "Render matching overlay on target components",
-              "optional": true,
-              "kind": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
-        }
-      }
-    },
-    "ComponentBrushAreaDirStyle": {
-      "kind": "object",
-      "entries": {
-        "bubble": {
-          "optional": true,
-          "kind": "object",
-          "entries": {
-            "fontSize": {
-              "optional": true,
-              "type": "string"
-            },
-            "fontFamily": {
-              "optional": true,
-              "type": "string"
-            },
-            "fill": {
-              "optional": true,
-              "type": "string"
-            },
-            "color": {
-              "optional": true,
-              "type": "string"
-            },
-            "stroke": {
-              "optional": true,
-              "type": "string"
-            },
-            "strokeWidth": {
-              "optional": true,
-              "type": "number"
-            },
-            "borderRadius": {
-              "optional": true,
-              "type": "number"
-            }
-          }
-        },
-        "line": {
-          "optional": true,
-          "kind": "object",
-          "entries": {
-            "stroke": {
-              "optional": true,
-              "type": "string"
-            },
-            "strokeWidth": {
-              "optional": true,
-              "type": "number"
-            }
-          }
-        },
-        "target": {
-          "optional": true,
-          "kind": "object",
-          "entries": {
-            "fill": {
-              "optional": true,
-              "type": "string"
-            },
-            "strokeWidth": {
-              "optional": true,
-              "type": "number"
-            },
-            "opacity": {
-              "optional": true,
-              "type": "number"
-            }
-          }
-        }
-      }
-    },
-    "ComponentBrushRangeSettings": {
-      "kind": "object",
-      "entries": {
-        "brush": {
-          "description": "Brush context to apply changes to",
-          "kind": "union",
-          "items": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "object"
-            }
-          ],
-          "type": "any"
-        },
-        "scale": {
-          "description": "Scale to extract data from",
-          "type": "string"
-        },
-        "direction": {
-          "description": "Rendering direction [horizontal|vertical]",
-          "optional": true,
-          "defaultValue": "vertical",
-          "type": "string"
-        },
-        "bubbles": {
-          "optional": true,
-          "kind": "object",
-          "entries": {
-            "show": {
-              "description": "True to show label bubble, false otherwise",
-              "optional": true,
-              "defaultValue": true,
-              "type": "boolean"
-            },
-            "align": {
-              "description": "Where to anchor bubble [start|end]",
-              "optional": true,
-              "defaultValue": "start",
-              "type": "string"
-            },
-            "label": {
-              "description": "Callback function for the labels",
-              "optional": true,
-              "type": "function"
-            }
-          }
-        },
-        "target": {
-          "optional": true,
-          "kind": "object",
-          "entries": {
-            "component": {
-              "description": "Render matching overlay on target component. @deprecated Use `components` instead",
-              "optional": true,
-              "type": "string"
-            },
-            "components": {
-              "description": "Render matching overlay on target components",
-              "optional": true,
-              "kind": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "selector": {
-              "description": "Instead of targeting a component, target one or more shapes",
-              "optional": true,
-              "type": "string"
-            },
-            "fillSelector": {
-              "description": "Target a subset of the selector as fill area. Only applicable if `selector` property is set",
-              "optional": true,
-              "type": "string"
-            }
-          }
-        }
-      }
-    },
-    "ComponentBrushRangeStyle": {
-      "kind": "object",
-      "entries": {
-        "bubble": {
-          "optional": true,
-          "kind": "object",
-          "entries": {
-            "fontSize": {
-              "optional": true,
-              "type": "string"
-            },
-            "fontFamily": {
-              "optional": true,
-              "type": "string"
-            },
-            "fill": {
-              "optional": true,
-              "type": "string"
-            },
-            "color": {
-              "optional": true,
-              "type": "string"
-            },
-            "stroke": {
-              "optional": true,
-              "type": "string"
-            },
-            "strokeWidth": {
-              "optional": true,
-              "type": "number"
-            },
-            "borderRadius": {
-              "optional": true,
-              "type": "number"
-            }
-          }
-        },
-        "line": {
-          "optional": true,
-          "kind": "object",
-          "entries": {
-            "stroke": {
-              "optional": true,
-              "type": "string"
-            },
-            "strokeWidth": {
-              "optional": true,
-              "type": "number"
-            }
-          }
-        },
-        "target": {
-          "optional": true,
-          "kind": "object",
-          "entries": {
-            "fill": {
-              "optional": true,
-              "type": "string"
-            },
-            "strokeWidth": {
-              "optional": true,
-              "type": "number"
-            },
-            "opacity": {
-              "optional": true,
-              "type": "number"
             }
           }
         }

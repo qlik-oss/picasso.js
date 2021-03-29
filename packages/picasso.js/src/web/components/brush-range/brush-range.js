@@ -194,7 +194,7 @@ function resolveTarget(ctx) {
 }
 
 /**
- * @typedef {object} ComponentBrushRangeSettings
+ * @typedef {object} ComponentBrushRange.settings
  * @property {string|object} brush - Brush context to apply changes to
  * @property {string} scale - Scale to extract data from
  * @property {string} [direction=vertical] - Rendering direction [horizontal|vertical]
@@ -210,6 +210,7 @@ function resolveTarget(ctx) {
  */
 
 /**
+ * @private
  * @typedef {object} ComponentBrushRangeStyle
  * @property {object} [bubble]
  * @property {string} [bubble.fontSize]
