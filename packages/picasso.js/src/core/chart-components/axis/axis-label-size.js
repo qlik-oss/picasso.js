@@ -213,7 +213,7 @@ function getComponentSize({ measure, horizontal, majorTicks, rect, measureText, 
       return { size: toLargeSize, isToLarge: true };
     }
   }
-  
+
   return { size, edgeBleed };
 }
 
@@ -262,19 +262,21 @@ export default function getSize({ isDiscrete, rect, formatter, measureText, scal
         })
       ) {
         state.labels.activeMode = 'tilted';
-        if(typeof settings.labels.shouldAutoTilt === 'function'){
+        if (typeof settings.labels.shouldAutoTilt === 'function') {
           componentSize = getComponentSize({ measure, horizontal, majorTicks, rect, measureText, settings, state });
           shouldTilt = settings.labels.shouldAutoTilt(componentSize.size);
-          if(!shouldTilt){
+          if (!shouldTilt) {
             state.labels.activeMode = 'horizontal';
           }
         }
       } else {
         state.labels.activeMode = 'horizontal';
       }
-    }    
+    }
 
-    return shouldTilt ? componentSize : getComponentSize({ measure, horizontal, majorTicks, rect, measureText, settings, state });
+    return shouldTilt
+      ? componentSize
+      : getComponentSize({ measure, horizontal, majorTicks, rect, measureText, settings, state });
   }
 
   return { size, edgeBleed };
