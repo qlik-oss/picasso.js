@@ -123,8 +123,104 @@ export function getClampedValue({ value, maxValue, minValue, range, modifier }) 
   return value;
 }
 
+function getComponentSize({ measure, horizontal, majorTicks, rect, measureText, settings, state }) {
+  let size = 0;
+  const edgeBleed = {
+    left: 0,
+    top: 0,
+    right: 0,
+    bottom: 0,
+  };
+  const { maxLengthPx: maxValue, minLengthPx: minValue } = settings.labels;
+  if (
+    !settings.labels.filterOverlapping &&
+    state.labels.activeMode !== 'tilted' &&
+    isToLarge({
+      rect: rect.inner,
+      state,
+      majorTicks,
+      measure,
+      horizontal,
+    })
+  ) {
+    const toLargeSize = Math.max(rect.outer.width, rect.outer.height); // used to hide the axis
+    return { size: toLargeSize, isToLarge: true };
+  }
+
+  let sizeFromTextRect;
+  if (state.labels.activeMode === 'tilted') {
+    const radians = Math.abs(settings.labels.tiltAngle) * (Math.PI / 180); // angle in radians
+    sizeFromTextRect = (r) =>
+      getClampedValue({ value: r.width, maxValue, minValue }) * Math.sin(radians) + r.height * Math.cos(radians);
+  } else if (horizontal) {
+    sizeFromTextRect = (r) => r.height;
+  } else {
+    sizeFromTextRect = (r) => getClampedValue({ value: r.width, maxValue, minValue });
+  }
+
+  let labels;
+  if (horizontal && state.labels.activeMode !== 'tilted') {
+    labels = ['M'];
+  } else if (!isNaN(settings.labels.maxGlyphCount)) {
+    let label = '';
+    for (let i = 0; i < settings.labels.maxGlyphCount; i++) {
+      label += 'M';
+    }
+    labels = [label];
+  } else {
+    labels = majorTicks.map((tick) => tick.label);
+  }
+  const tickMeasures = labels.map(measure);
+  const labelSizes = tickMeasures.map(sizeFromTextRect);
+  const textSize = Math.max(...labelSizes, 0);
+  size += textSize;
+  size += settings.labels.margin;
+
+  if (state.labels.activeMode === 'layered') {
+    size *= 2;
+  }
+
+  if (state.labels.activeMode === 'tilted') {
+    const extendLeft = (settings.align === 'bottom') === settings.labels.tiltAngle >= 0;
+    const radians = Math.abs(settings.labels.tiltAngle) * (Math.PI / 180); // angle in radians
+    const h = measureText('M').height;
+    const maxWidth = (textSize - h * Math.cos(radians)) / Math.sin(radians);
+    const labelWidth = (r) => Math.min(maxWidth, r.width) * Math.cos(radians) + r.height;
+    const adjustByPosition = (s, i) => {
+      const pos = majorTicks[i] ? majorTicks[i].position : 0;
+      if (extendLeft) {
+        return s - pos * rect.inner.width;
+      }
+      return s - (1 - pos) * rect.inner.width;
+    };
+    const bleedSize =
+      Math.min(settings.labels.maxEdgeBleed, Math.max(...tickMeasures.map(labelWidth).map(adjustByPosition), 0)) +
+      settings.paddingEnd;
+    const bleedDir = extendLeft ? 'left' : 'right';
+    edgeBleed[bleedDir] = bleedSize;
+
+    if (
+      !settings.labels.filterOverlapping &&
+      isTiltedLabelOverlapping({
+        majorTicks,
+        measureText,
+        rect,
+        bleedSize,
+        angle: settings.labels.tiltAngle,
+      })
+    ) {
+      const toLargeSize = Math.max(rect.outer.width, rect.outer.height); // used to hide the axis
+      return { size: toLargeSize, isToLarge: true };
+    }
+  }
+  
+  return { size, edgeBleed };
+}
+
 export default function getSize({ isDiscrete, rect, formatter, measureText, scale, settings, state }) {
   let size = 0;
+  let shouldTilt;
+  let componentSize;
   const edgeBleed = {
     left: 0,
     top: 0,
@@ -166,92 +262,19 @@ export default function getSize({ isDiscrete, rect, formatter, measureText, scal
         })
       ) {
         state.labels.activeMode = 'tilted';
+        if(typeof settings.labels.shouldAutoTilt === 'function'){
+          componentSize = getComponentSize({ measure, horizontal, majorTicks, rect, measureText, settings, state });
+          shouldTilt = settings.labels.shouldAutoTilt(componentSize.size);
+          if(!shouldTilt){
+            state.labels.activeMode = 'horizontal';
+          }
+        }
       } else {
         state.labels.activeMode = 'horizontal';
       }
-    }
+    }    
 
-    if (
-      !settings.labels.filterOverlapping &&
-      state.labels.activeMode !== 'tilted' &&
-      isToLarge({
-        rect: rect.inner,
-        state,
-        majorTicks,
-        measure,
-        horizontal,
-      })
-    ) {
-      const toLargeSize = Math.max(rect.outer.width, rect.outer.height); // used to hide the axis
-      return { size: toLargeSize, isToLarge: true };
-    }
-
-    let sizeFromTextRect;
-    if (state.labels.activeMode === 'tilted') {
-      const radians = Math.abs(settings.labels.tiltAngle) * (Math.PI / 180); // angle in radians
-      sizeFromTextRect = (r) =>
-        getClampedValue({ value: r.width, maxValue, minValue }) * Math.sin(radians) + r.height * Math.cos(radians);
-    } else if (horizontal) {
-      sizeFromTextRect = (r) => r.height;
-    } else {
-      sizeFromTextRect = (r) => getClampedValue({ value: r.width, maxValue, minValue });
-    }
-
-    let labels;
-    if (horizontal && state.labels.activeMode !== 'tilted') {
-      labels = ['M'];
-    } else if (!isNaN(settings.labels.maxGlyphCount)) {
-      let label = '';
-      for (let i = 0; i < settings.labels.maxGlyphCount; i++) {
-        label += 'M';
-      }
-      labels = [label];
-    } else {
-      labels = majorTicks.map((tick) => tick.label);
-    }
-    const tickMeasures = labels.map(measure);
-    const labelSizes = tickMeasures.map(sizeFromTextRect);
-    const textSize = Math.max(...labelSizes, 0);
-    size += textSize;
-    size += settings.labels.margin;
-
-    if (state.labels.activeMode === 'layered') {
-      size *= 2;
-    }
-
-    if (state.labels.activeMode === 'tilted') {
-      const extendLeft = (settings.align === 'bottom') === settings.labels.tiltAngle >= 0;
-      const radians = Math.abs(settings.labels.tiltAngle) * (Math.PI / 180); // angle in radians
-      const h = measureText('M').height;
-      const maxWidth = (textSize - h * Math.cos(radians)) / Math.sin(radians);
-      const labelWidth = (r) => Math.min(maxWidth, r.width) * Math.cos(radians) + r.height;
-      const adjustByPosition = (s, i) => {
-        const pos = majorTicks[i] ? majorTicks[i].position : 0;
-        if (extendLeft) {
-          return s - pos * rect.inner.width;
-        }
-        return s - (1 - pos) * rect.inner.width;
-      };
-      const bleedSize =
-        Math.min(settings.labels.maxEdgeBleed, Math.max(...tickMeasures.map(labelWidth).map(adjustByPosition), 0)) +
-        settings.paddingEnd;
-      const bleedDir = extendLeft ? 'left' : 'right';
-      edgeBleed[bleedDir] = bleedSize;
-
-      if (
-        !settings.labels.filterOverlapping &&
-        isTiltedLabelOverlapping({
-          majorTicks,
-          measureText,
-          rect,
-          bleedSize,
-          angle: settings.labels.tiltAngle,
-        })
-      ) {
-        const toLargeSize = Math.max(rect.outer.width, rect.outer.height); // used to hide the axis
-        return { size: toLargeSize, isToLarge: true };
-      }
-    }
+    return shouldTilt ? componentSize : getComponentSize({ measure, horizontal, majorTicks, rect, measureText, settings, state });
   }
 
   return { size, edgeBleed };
