@@ -285,7 +285,7 @@ export default function qBrush(brush, opts = {}, layout) {
   if (methods.rangeSelectHyperCubeValues) {
     selections.push({
       method: 'rangeSelectHyperCubeValues',
-      params: [methods.rangeSelectHyperCubeValues.path, methods.rangeSelectHyperCubeValues.ranges, [], true],
+      params: [methods.rangeSelectHyperCubeValues.path, methods.rangeSelectHyperCubeValues.ranges, [], opts.orMode ?? true],
     });
   }
 
