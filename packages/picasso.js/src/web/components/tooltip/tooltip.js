@@ -21,21 +21,38 @@ const DEFAULT_SETTINGS = {
    */
   delay: 500,
   /**
-   * Reduce incoming nodes to only a set of applicable nodes. Is called as a part of the `show` event.
+   * Callback function to filter incoming nodes to only a set of applicable nodes. Is called as a part of the `show` event.
+   *
+   * Should return an array of SceneNodes.
    * @type {function=}
-   * @returns {array} An array of nodes
+   * @callback
+   * @param {SceneNode[]} nodes Array of SceneNodes
+   * @returns {SceneNode[]} An array of SceneNodes
+   * @example
+   * filter: (nodes) => nodes.filter((node) => node.data && typeof node.data.value !== 'undefined')
    */
   filter: (nodes) => nodes.filter((node) => node.data && typeof node.data.value !== 'undefined'),
   /**
-   * Extract data from a node.
+   * Callback function called for each node to extract data. Can return any type.
    * @type {function=}
-   * @returns {object} An array of data
+   * @callback
+   * @param {object} ctx Callback context
+   * @param {SceneNode} ctx.node Node
+   * @returns {any} Return data
+   * @example
+   * (ctx) => ctx.node.data.value
    */
   extract: (ctx) => ctx.node.data.value,
   /**
-   * Content generator. Extracted data is available in the `data` property, where each value in the area is the extracted datum from a node.
+   * Callback function to generate content. Should return an array of Virtual DOM Elements.
    * @type {function=}
-   * @returns {object[]} Array of h objects
+   * @callback
+   * @param {object} ctx Callback context
+   * @param {any[]} ctx.data An array of data generated from the `extract` function
+   * @param {object} ctx.h A function for creating Virtual DOM Elements. See API reference for preactjs `h` function
+   * @returns {object[]} An array of Virtual DOM Elements
+   * @example
+   * ({ h, data }) => data.map((datum) => h('div', {}, datum))
    */
   content: ({ h, data }) => data.map((datum) => h('div', {}, datum)),
   /**
@@ -43,6 +60,9 @@ const DEFAULT_SETTINGS = {
    *
    * The function gets two parameters, the first is the currently active set of nodes, if any, and the second is the incoming set of nodes. By default the two set of nodes are considered equal if their data attributes are the same.
    * @type {function=}
+   * @callback
+   * @param {SceneNode[]} prev Previous array of SceneNodes
+   * @param {SceneNode[]} curr Current array of SceneNodes
    * @returns {boolean}
    */
   isEqual: (prev, curr) =>
@@ -104,26 +124,35 @@ const DEFAULT_SETTINGS = {
   /**
    * Component lifecycle hook. Called before the tooltip is displayed.
    * @type {function=}
+   * @callback
    */
   beforeShow: undefined,
   /**
    * Component lifecycle hook. Called after the tooltip have been displayed.
    * @type {function=}
+   * @callback
    */
   afterShow: undefined,
   /**
    * Component lifecycle hook. Called before the tooltip is hidden.
    * @type {function=}
+   * @callback
+   * @param {object} ctx Callback paramater
+   * @param {HTMLElement} ctx.element The element the tooltip is appended to
    */
   beforeHide: undefined,
   /**
    * Component lifecycle hook. Called when the toolip is hidden. By default this deletes the tooltip element.
    * @type {function=}
+   * @callback
+   * @param {object} ctx Callback paramater
+   * @param {HTMLElement} ctx.element The element the tooltip is appended to
    */
   onHide: undefined,
   /**
    * Component lifecycle hook. Called after the tooltip is hidden.
    * @type {function=}
+   * @callback
    */
   afterHide: undefined,
 };
