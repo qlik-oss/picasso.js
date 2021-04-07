@@ -50,7 +50,7 @@ export function styler(obj, { context, data, style, filter, mode }) {
     const len = nodes.length;
     let nodeData;
     let globalChanged = false;
-    const evaluatedDataProps = typeof dataProps === 'function' ? dataProps(brusher) : dataProps;
+    const evaluatedDataProps = typeof dataProps === 'function' ? dataProps({ brush: brusher }) : dataProps;
 
     for (let i = 0; i < len; i++) {
       // TODO - update only added and removed nodes
