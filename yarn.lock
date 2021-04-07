@@ -5541,10 +5541,10 @@ d3-scale@2.2.2:
     d3-time "1"
     d3-time-format "2"
 
-d3-shape@1.3.7:
-  version "1.3.7"
-  resolved "https://registry.yarnpkg.com/d3-shape/-/d3-shape-1.3.7.tgz#df63801be07bc986bc54f63789b4fe502992b5d7"
-  integrity sha512-EUkvKjqPFUAZyOlhY5gzCxCeI0Aep04LwIRpsZ/mLFelJiUfnK56jo5JMDSE7yyP2kLSb6LtF+S5chMk7uqPqw==
+d3-shape@1.3.6:
+  version "1.3.6"
+  resolved "https://registry.yarnpkg.com/d3-shape/-/d3-shape-1.3.6.tgz#fa16af40e5c6cde8a2c8eaa977d4ed2cf273a02c"
+  integrity sha512-vv247nPmyncoCRnCT5VYvAVPrrqTGml+GT79detw5IEuBfv2cfTnOtbPBFIIkmL0eg1EYz+ltmJ6lK384ttHcg==
   dependencies:
     d3-path "1"
 
