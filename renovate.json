@@ -6,6 +6,10 @@
     {
       "depTypeList": ["engines"],
       "enabled": false
+    },
+    {
+      "matchPackageNames": ["d3-shape"],
+      "enabled": false
     }
   ]
 }
