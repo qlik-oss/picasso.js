@@ -84,7 +84,7 @@ describe('q-brush', () => {
       expect(selections[0].method).to.equal('rangeSelectHyperCubeValues');
     });
 
-    it('should have valid params', () => {
+    it('should have valid params if opts = {} ', () => {
       const selections = qBrush(brush);
       expect(selections[0].params).to.eql([
         '/qHyperCubeDef',
@@ -119,6 +119,82 @@ describe('q-brush', () => {
         ],
         [],
         true,
+      ]);
+    });
+
+    it('should have valid params if opts = { orMode: true }', () => {
+      const selections = qBrush(brush, { orMode: true });
+      expect(selections[0].params).to.eql([
+        '/qHyperCubeDef',
+        [
+          {
+            qMeasureIx: 3,
+            qRange: {
+              qMin: 13,
+              qMax: 17,
+              qMinInclEq: true,
+              qMaxInclEq: true,
+            },
+          },
+          {
+            qMeasureIx: 3,
+            qRange: {
+              qMin: 4,
+              qMax: 9,
+              qMinInclEq: true,
+              qMaxInclEq: true,
+            },
+          },
+          {
+            qMeasureIx: 1,
+            qRange: {
+              qMin: -13,
+              qMax: 6,
+              qMinInclEq: true,
+              qMaxInclEq: true,
+            },
+          },
+        ],
+        [],
+        true,
+      ]);
+    });
+
+    it('should have valid params if opts = { orMode: false }', () => {
+      const selections = qBrush(brush, { orMode: false });
+      expect(selections[0].params).to.eql([
+        '/qHyperCubeDef',
+        [
+          {
+            qMeasureIx: 3,
+            qRange: {
+              qMin: 13,
+              qMax: 17,
+              qMinInclEq: true,
+              qMaxInclEq: true,
+            },
+          },
+          {
+            qMeasureIx: 3,
+            qRange: {
+              qMin: 4,
+              qMax: 9,
+              qMinInclEq: true,
+              qMaxInclEq: true,
+            },
+          },
+          {
+            qMeasureIx: 1,
+            qRange: {
+              qMin: -13,
+              qMax: 6,
+              qMinInclEq: true,
+              qMaxInclEq: true,
+            },
+          },
+        ],
+        [],
+        false,
       ]);
     });
   });

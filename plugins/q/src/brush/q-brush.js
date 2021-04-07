@@ -115,6 +115,7 @@ export function extractFieldFromId(id, layout) {
  * @param {object} [opts]
  * @param {boolean} [opts.byCells=false] Whether to prefer selection by row index.
  * @param {string} [opts.primarySource] Field source to extract row indices from. If not specified, indices from first source are used.
+ * @param {boolean} [opts.orMode=true] If false, combine measure range selections.
  * @param {object} [layout] QIX data layout. Needed only when brushing on attribute expressions, to be able to calculate the measure index.
  * @return {object[]} An array of relevant selections
  */
@@ -285,7 +286,12 @@ export default function qBrush(brush, opts = {}, layout) {
   if (methods.rangeSelectHyperCubeValues) {
     selections.push({
       method: 'rangeSelectHyperCubeValues',
-      params: [methods.rangeSelectHyperCubeValues.path, methods.rangeSelectHyperCubeValues.ranges, [], true],
+      params: [
+        methods.rangeSelectHyperCubeValues.path,
+        methods.rangeSelectHyperCubeValues.ranges,
+        [],
+        opts.orMode ?? true,
+      ],
     });
   }
 

@@ -50,6 +50,7 @@ export function styler(obj, { context, data, style, filter, mode }) {
     const len = nodes.length;
     let nodeData;
     let globalChanged = false;
+    const evaluatedDataProps = typeof dataProps === 'function' ? dataProps({ brush: brusher }) : dataProps;
 
     for (let i = 0; i < len; i++) {
       // TODO - update only added and removed nodes
@@ -65,7 +66,7 @@ export function styler(obj, { context, data, style, filter, mode }) {
         });
       }
 
-      const isActive = brusher.containsMappedData(nodeData, dataProps, mode);
+      const isActive = brusher.containsMappedData(nodeData, evaluatedDataProps, mode);
       const activeIdx = activeNodes.indexOf(nodes[i]);
       let changed = false;
       if (isActive && activeIdx === -1) {

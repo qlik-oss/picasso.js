@@ -231,6 +231,7 @@ describe('Brushing', () => {
     let dummyComponent;
     let consume;
     let brusherStub;
+    let dataFn;
 
     beforeEach(() => {
       nodes[0].data = data[0];
@@ -275,6 +276,9 @@ describe('Brushing', () => {
           },
         },
       };
+
+      dataFn = sinon.stub();
+      dataFn.returns(['b']);
     });
 
     it('should call containsMappedData with provided arguments', () => {
@@ -282,6 +286,13 @@ describe('Brushing', () => {
       s.update();
 
       expect(brusherStub.containsMappedData.firstCall).to.have.been.calledWithExactly(data[0], ['a'], 'moood');
+    });
+
+    it('should call containsMappedData with provided arguments when data is a function', () => {
+      const s = styler(dummyComponent, { ...consume, mode: 'moood', data: dataFn });
+      s.update();
+      expect(dataFn).to.have.been.calledWithExactly({ brush: brusherStub });
+      expect(brusherStub.containsMappedData.firstCall).to.have.been.calledWithExactly(data[0], ['b'], 'moood');
     });
 
     it('start should store all original styling values', () => {
