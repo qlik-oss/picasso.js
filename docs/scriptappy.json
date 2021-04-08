@@ -5388,11 +5388,11 @@
                   "type": "string"
                 },
                 "fontSize": {
-                  "description": "{@link https://www.w3.org/TR/SVG/text.html#FontPropertiesUsedBySVG}",
+                  "description": "Font size",
                   "type": "string"
                 },
                 "fontFamily": {
-                  "description": "{@link https://www.w3.org/TR/SVG/text.html#FontPropertiesUsedBySVG}",
+                  "description": "Font family",
                   "type": "string"
                 }
               }
@@ -5515,23 +5515,27 @@
           "type": "string"
         },
         "padding": {
-          "description": "{@link https://github.com/d3/d3-scale#band_padding}",
+          "description": "Sets both inner and and outer padding to the same value",
           "optional": true,
+          "defaultValue": 0,
           "type": "number"
         },
         "paddingInner": {
-          "description": "{@link https://github.com/d3/d3-scale#band_paddingInner}",
+          "description": "Inner padding",
           "optional": true,
+          "defaultValue": 0,
           "type": "number"
         },
         "paddingOuter": {
-          "description": "{@link https://github.com/d3/d3-scale#band_paddingOuter}",
+          "description": "Outer padding",
           "optional": true,
+          "defaultValue": 0,
           "type": "number"
         },
         "align": {
-          "description": "{@link https://github.com/d3/d3-scale#band_align}",
+          "description": "Control how the outer padding should be distributed, where 0.5 would distribute the padding equally on both sides",
           "optional": true,
+          "defaultValue": 0.5,
           "type": "number"
         },
         "invert": {
@@ -5595,7 +5599,7 @@
           }
         },
         "unknown": {
-          "description": "{@link https://github.com/d3/d3-scale#ordinal_unknown}",
+          "description": "Value to return when input value is unknown",
           "optional": true,
           "type": "string"
         },

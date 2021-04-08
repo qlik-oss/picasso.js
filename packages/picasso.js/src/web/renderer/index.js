@@ -70,8 +70,8 @@ function create() {
      * @function
      * @param {object} opts
      * @param {string} opts.text - Text to measure
-     * @param {string} opts.fontSize - {@link https://www.w3.org/TR/SVG/text.html#FontPropertiesUsedBySVG}
-     * @param {string} opts.fontFamily - {@link https://www.w3.org/TR/SVG/text.html#FontPropertiesUsedBySVG}
+     * @param {string} opts.fontSize - Font size
+     * @param {string} opts.fontFamily - Font family
      * @returns {object} Width and height of text
      * @example
      * measureText({
