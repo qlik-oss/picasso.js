@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.35.1](https://github.com/qlik-oss/picasso.js/compare/v0.35.0...v0.35.1) (2021-04-07)
+
+**Note:** Version bump only for package picasso.js
+
+# [0.35.0](https://github.com/qlik-oss/picasso.js/compare/v0.34.0...v0.35.0) (2021-03-29)
+
+### Bug Fixes
+
+- improve size used to detect tilted label overlap ([#567](https://github.com/qlik-oss/picasso.js/issues/567)) ([9050222](https://github.com/qlik-oss/picasso.js/commit/90502225bf070c62b19751a4b2cf79e0800bb4b4))
+- **ref-line:** wrong line position when scale min/max are equal ([#566](https://github.com/qlik-oss/picasso.js/issues/566)) ([d4c5a79](https://github.com/qlik-oss/picasso.js/commit/d4c5a79f1dab16d9d836a8151369c159a0a711bd))
+- handle NaN in svg renderer ([#557](https://github.com/qlik-oss/picasso.js/issues/557)) ([07a3306](https://github.com/qlik-oss/picasso.js/commit/07a330620b19beb4239e297e4152dc52718d550d))
+- refline filtering ([#553](https://github.com/qlik-oss/picasso.js/issues/553)) ([8275519](https://github.com/qlik-oss/picasso.js/commit/8275519d2de402c07caf6828ee85eb9879c06460))
+
 # [0.34.0](https://github.com/qlik-oss/picasso.js/compare/v0.33.0...v0.34.0) (2020-08-20)
 
 ### Features

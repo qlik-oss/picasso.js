@@ -36,7 +36,7 @@ const useClasses = makeStyles((theme) => ({
   },
 }));
 
-const RenderingArea = ({ title, code, data, api, settings }) => {
+const RenderingArea = ({ title, code, data, api, settings, dataSource }) => {
   const element = React.useRef(null);
   const [chart, setChart] = React.useState();
 
@@ -46,6 +46,21 @@ const RenderingArea = ({ title, code, data, api, settings }) => {
   const prevData = React.useRef();
   const prevCodeScript = React.useRef();
   const prevDataScript = React.useRef();
+
+  const hashFromString = (str) => {
+    let hash = 0;
+    if (!str || !str.length) {
+      return hash;
+    }
+    for (let i = 0; i < str.length; i++) {
+      const chr = str.charCodeAt(i);
+      /* eslint-disable no-bitwise */
+      hash = (hash << 5) - hash + chr;
+      hash &= hash;
+      /* eslint-enable no-bitwise */
+    }
+    return hash;
+  };
 
   React.useEffect(() => {
     let ch;
@@ -70,29 +85,46 @@ const RenderingArea = ({ title, code, data, api, settings }) => {
   }, [settings, api, title]);
 
   React.useEffect(() => {
-    if (chart && chart.update && typeof code === 'string' && typeof data === 'string') {
+    if ((dataSource === 0 && typeof data !== 'string') || (dataSource === 1 && typeof data !== 'object')) {
+      // Data not arrived yet
+      return;
+    }
+    if (chart && chart.update && typeof code === 'string' && (typeof data === 'string' || typeof data === 'object')) {
       let doRun = false;
       let composition = prevComposition.current;
       let theData = prevData.current;
+      const isQDataDeclare = `const isQData = ${dataSource};${String.fromCharCode(10)}`;
+      const dataHashId = typeof data === 'string' ? data : hashFromString(JSON.stringify(data));
+      const updatedCode = isQDataDeclare + (typeof data === 'string' ? '' : dataHashId) + code;
 
-      if (code !== prevCodeScript.current) {
+      if (updatedCode !== prevCodeScript.current) {
         doRun = true;
         composition =
           runScript(code, {
             picasso,
             chart,
+            isQData: !!dataSource,
+            qLayout: !!dataSource ? data : undefined,
           }) || {};
-        prevCodeScript.current = code;
+        prevCodeScript.current = updatedCode;
         prevComposition.current = composition;
       }
-      if (data !== prevDataScript.current) {
+      if (dataHashId !== prevDataScript.current) {
         doRun = true;
         theData =
-          runScript(data, {
-            customGenerator,
-            generator,
-          }) || {};
-        prevDataScript.current = data;
+          (typeof data === 'string'
+            ? runScript(data, {
+                customGenerator,
+                generator,
+              })
+            : [
+              {
+                type: 'q',
+                key: 'qHyperCube',
+                data: data.box ? data.generated.box.qHyperCube : data.qHyperCube,
+              },
+            ]) || {};
+        prevDataScript.current = dataHashId;
         prevData.current = theData;
       }
 
@@ -114,13 +146,17 @@ const RenderingArea = ({ title, code, data, api, settings }) => {
         }
       }
     }
-  }, [code, data, chart, api, title]);
+  }, [code, data, chart, api, title, dataSource]);
 
   const updateChart = React.useCallback(() => {
+    if ((dataSource === 0 && typeof data !== 'string') || (dataSource === 1 && typeof data !== 'object')) {
+      // Data not arrived yet
+      return;
+    }
     if (chart && chart.update) {
       chart.update();
     }
-  }, [chart]);
+  }, [chart, data, dataSource]);
 
   useResize(element, updateChart);
 
@@ -144,9 +180,10 @@ RenderingArea.defaultProps = {
 RenderingArea.propTypes = {
   title: PropTypes.string.isRequired,
   code: PropTypes.string.isRequired,
-  data: PropTypes.string.isRequired,
+  data: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   api: PropTypes.string,
   settings: SettingsType.isRequired,
+  dataSource: PropTypes.number.isRequired,
 };
 
 export default RenderingArea;

@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.35.1](https://github.com/qlik-oss/picasso.js/compare/v0.35.0...v0.35.1) (2021-04-07)
+
+**Note:** Version bump only for package picasso.js
+
+# [0.35.0](https://github.com/qlik-oss/picasso.js/compare/v0.34.0...v0.35.0) (2021-03-29)
+
+### Bug Fixes
+
+- allow settings access data ([#571](https://github.com/qlik-oss/picasso.js/issues/571)) ([b26496c](https://github.com/qlik-oss/picasso.js/commit/b26496cfb5d8217c5a17be5df830fb24b77d9836))
+- improve size used to detect tilted label overlap ([#567](https://github.com/qlik-oss/picasso.js/issues/567)) ([9050222](https://github.com/qlik-oss/picasso.js/commit/90502225bf070c62b19751a4b2cf79e0800bb4b4))
+- **ref-line:** wrong line position when scale min/max are equal ([#566](https://github.com/qlik-oss/picasso.js/issues/566)) ([d4c5a79](https://github.com/qlik-oss/picasso.js/commit/d4c5a79f1dab16d9d836a8151369c159a0a711bd))
+- handle NaN in svg renderer ([#557](https://github.com/qlik-oss/picasso.js/issues/557)) ([07a3306](https://github.com/qlik-oss/picasso.js/commit/07a330620b19beb4239e297e4152dc52718d550d))
+- refline filtering ([#553](https://github.com/qlik-oss/picasso.js/issues/553)) ([8275519](https://github.com/qlik-oss/picasso.js/commit/8275519d2de402c07caf6828ee85eb9879c06460))
+- **deps:** update dependency slug to v4 ([#539](https://github.com/qlik-oss/picasso.js/issues/539)) ([122fec1](https://github.com/qlik-oss/picasso.js/commit/122fec1faf4032869a520772ead13817083066e9))
+- avoid problem during tree data extraction ([#542](https://github.com/qlik-oss/picasso.js/issues/542)) ([29bcdf4](https://github.com/qlik-oss/picasso.js/commit/29bcdf42f103503670f8ea06ae07de4a97ad1889))
+
+### Features
+
+- support connecting to Qlik engine to get Qlik apps ([#569](https://github.com/qlik-oss/picasso.js/issues/569)) ([f0340e7](https://github.com/qlik-oss/picasso.js/commit/f0340e773f9ab93a73f93c601b97001115473551))
+
 # [0.34.0](https://github.com/qlik-oss/picasso.js/compare/v0.33.0...v0.34.0) (2020-08-20)
 
 ### Features

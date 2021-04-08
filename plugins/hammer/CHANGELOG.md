@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.35.1](https://github.com/qlik-oss/picasso.js/compare/v0.35.0...v0.35.1) (2021-04-07)
+
+**Note:** Version bump only for package picasso-plugin-hammer
+
+# [0.35.0](https://github.com/qlik-oss/picasso.js/compare/v0.34.0...v0.35.0) (2021-03-29)
+
+**Note:** Version bump only for package picasso-plugin-hammer
+
 # [0.34.0](https://github.com/qlik-oss/picasso.js/compare/v0.33.0...v0.34.0) (2020-08-20)
 
 **Note:** Version bump only for package picasso-plugin-hammer

@@ -22,6 +22,10 @@ const App = ({ location, history }) => {
   const classes = useClasses();
   const [localList, setLocalList] = React.useState(localRepo.list());
   const [selected, setSelected] = React.useState({ code: '', data: '', title: '' });
+  const [loadedData, setLoadedData] = React.useState({});
+  const [loadedApp, setLoadedApp] = React.useState({});
+  const [loadedSheetId, setLoadedSheetId] = React.useState('');
+  const [loadedObject, setLoadedObject] = React.useState({});
 
   React.useEffect(() => {
     if (selected && selected.id !== pathname.substr(1) && localList) {
@@ -30,6 +34,22 @@ const App = ({ location, history }) => {
         [sel] = examples;
       }
       if (sel !== selected) {
+        if (sel.appId !== loadedData?.selectedApp?.id) {
+          setLoadedData({ ...(loadedData || {}), selectedApp: {} });
+        } else if (sel.sheetId !== loadedData?.selectedApp?.selectedSheet?.id) {
+          setLoadedData({
+            ...(loadedData || {}),
+            selectedApp: { ...(loadedData?.selectedApp || {}), selectedSheet: {} },
+          });
+        } else if (sel.objectId !== loadedData?.selectedApp?.selectedSheet?.selectedObject?.id) {
+          setLoadedData({
+            ...(loadedData || {}),
+            selectedApp: {
+              ...(loadedData?.selectedApp || {}),
+              selectedSheet: { ...(loadedData?.selectedApp?.selectedSheet || {}), selectedObject: {} },
+            },
+          });
+        }
         setSelected(sel);
       }
     }
@@ -53,18 +73,12 @@ const App = ({ location, history }) => {
   const onCodeUpdated = React.useCallback(
     (codeData) => {
       if (selected) {
-        let { code, data } = codeData;
-        if (typeof code === 'undefined') {
-          code = selected.code;
-        }
-        if (typeof data === 'undefined') {
-          data = selected.data;
-        }
         const isLocal = localList.filter((l) => selected.id === l.id).length === 1;
         if (isLocal) {
-          localRepo.update({ id: selected.id, code, data });
+          localRepo.update({ id: selected.id, ...codeData });
         } else {
-          const result = localRepo.fork(selected, code, data);
+          const updatedCodeData = { ...selected, ...codeData };
+          const result = localRepo.fork(selected, updatedCodeData);
           if (result && result.id) {
             setLocalList(localRepo.list());
             history.push(`/${result.id}`);
@@ -74,6 +88,7 @@ const App = ({ location, history }) => {
     },
     [selected, localList, history]
   );
+
   return (
     <Box flexGrow={1} display="flex">
       <Box display="flex" className={classes.list}>
@@ -86,7 +101,18 @@ const App = ({ location, history }) => {
         />
       </Box>
       <Box display="flex" flexGrow={1} className={classes.code}>
-        <CodeArea selected={selected} codeUpdated={onCodeUpdated} />
+        <CodeArea
+          selected={selected}
+          codeUpdated={onCodeUpdated}
+          loadedData={loadedData}
+          setLoadedData={setLoadedData}
+          loadedApp={loadedApp}
+          setLoadedApp={setLoadedApp}
+          loadedSheetId={loadedSheetId}
+          setLoadedSheetId={setLoadedSheetId}
+          loadedObject={loadedObject}
+          setLoadedObject={setLoadedObject}
+        />
       </Box>
     </Box>
   );

@@ -31,7 +31,7 @@ const SettingsArea = ({ settings, onSettingsChanged }) => {
       const { name, value, checked } = event.target;
       const paths = name.split('.');
       const lastPath = paths.splice(paths.length - 1, 1);
-      const newSettings = JSON.parse(JSON.stringify(settings));
+      const newSettings = { ...settings };
       const prop = paths.reduce((p, c) => p[c], newSettings);
       prop[lastPath] = typeof checked !== 'undefined' ? checked : value;
       onSettingsChanged(newSettings);
