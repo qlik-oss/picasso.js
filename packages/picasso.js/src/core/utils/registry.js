@@ -65,8 +65,8 @@ export default function registryFactory(parentRegistry, registerName = 'unspecif
   /**
    * @alias Registry
    * @interface
-   * @param {string} key
-   * @param {any} value
+   * @param {string} key Name of the type to register. If value is omitted key represent the name of the type to get.
+   * @param {any} [value] Value to store in the registry.
    */
   function registry(key, value) {
     if (typeof value !== 'undefined') {

@@ -53,6 +53,9 @@ function pic(config = {}, registries = {}) {
     /**
      * Renderer registry
      * @type {Registry}
+     * @example
+     * const svgFactory = picassojs.renderer('svg');
+     * const svgRenderer = svgFactory();
      */
     renderer: renderer(registries.renderer, 'renderer', logger),
     /**

@@ -3,7 +3,7 @@
   "info": {
     "name": "picasso.js",
     "description": "A charting library streamlined for building visualizations for the Qlik Sense Analytics platform.",
-    "version": "0.34.0",
+    "version": "0.35.1",
     "license": "MIT"
   },
   "entries": {
@@ -83,7 +83,8 @@
         },
         "renderer": {
           "description": "Renderer registry",
-          "type": "#/definitions/Registry"
+          "type": "#/definitions/Registry",
+          "examples": ["const svgFactory = picassojs.renderer('svg');\nconst svgRenderer = svgFactory();"]
         },
         "scale": {
           "description": "Scale registry",
@@ -919,21 +920,6 @@
       "examples": [
         "{\n   on: 'tap',\n   action: 'toggle',\n   contexts: ['selection', 'tooltip'],\n   data: ['x'],\n   propagation: 'stop', // 'stop' => prevent trigger from propagating further than the first shape\n   globalPropagation: 'stop', // 'stop' => prevent trigger of same type to be triggered on other components\n   touchRadius: 24,\n   mouseRadius: 10\n }"
       ]
-    },
-    "canvasRendererFactory": {
-      "description": "Create a new canvas renderer",
-      "kind": "function",
-      "params": [
-        {
-          "name": "sceneFn",
-          "description": "Scene factory",
-          "type": "function"
-        }
-      ],
-      "returns": {
-        "description": "A canvas renderer instance",
-        "type": "#/definitions/Renderer"
-      }
     },
     "Chart": {
       "description": "Chart instance",
@@ -5221,10 +5207,13 @@
       "params": [
         {
           "name": "key",
+          "description": "Name of the type to register. If value is omitted key represent the name of the type to get.",
           "type": "string"
         },
         {
           "name": "value",
+          "description": "Value to store in the registry.",
+          "optional": true,
           "type": "any"
         }
       ],
