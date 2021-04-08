@@ -4,12 +4,12 @@ import { rectToPoints, getMinMax } from '../../geometry/util';
 
 /**
  * @private
- * @extends node-def
- * @typedef {object} node--rect-def
- * @property {number} x - {@link https://www.w3.org/TR/SVG/shapes.html#RectElementXAttribute}
- * @property {number} y - {@link https://www.w3.org/TR/SVG/shapes.html#RectElementYAttribute}
- * @property {number} width - {@link https://www.w3.org/TR/SVG/shapes.html#RectElementWidthAttribute}
- * @property {number} height- {@link https://www.w3.org/TR/SVG/shapes.html#RectElementHeightAttribute}
+ * @extends DisplayObject
+ * @typedef {object} RectNode
+ * @property {number} x - X coordinate
+ * @property {number} y - Y coordinate
+ * @property {number} width - Width
+ * @property {number} height- Height
  */
 
 export default class Rect extends DisplayObject {

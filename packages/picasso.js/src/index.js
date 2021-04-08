@@ -110,12 +110,24 @@ function pic(config = {}, registries = {}) {
   }
 
   /**
+   * @typedef {object} Registries
+   * @property {Registry} component Component registry
+   * @property {Registry} data Data registry
+   * @property {Registry} formatter Formatter registry
+   * @property {Registry} interaction Interaction registry
+   * @property {Registry} renderer Renderer registry
+   * @property {Registry} scale Scale registry
+   */
+
+  /**
+   * Callback function to register a plugin
    * @callback picassojs~plugin
-   * @param {picassojs~registries} registries
+   * @param {Registries} registries
    * @param {object} options
    */
 
   /**
+   * Plugin registry
    * @param {picassojs~plugin} plugin
    * @param {object} [options]
    */

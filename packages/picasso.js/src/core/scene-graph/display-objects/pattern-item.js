@@ -4,8 +4,8 @@ import NodeContainer from '../node-container';
 /**
  * @private
  * @experimental
- * @typedef {object} pattern-def
- * @property {'pattern'} type
+ * @typedef {object} PatternNode
+ * @property {string} [type='pattern']
  * @property {string} fill
  * @property {number} width
  * @property {number} height

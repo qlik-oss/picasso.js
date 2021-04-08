@@ -4,9 +4,9 @@ import NodeContainer from '../node-container';
 
 /**
  * @private
- * @extends node-def
- * @typedef {object} node--container-def
- * @property {node-def[]} children - Array of child nodes
+ * @extends DisplayObject
+ * @typedef {object} ContainerNode
+ * @property {DisplayObject[]} children - Array of child nodes
  */
 
 const NC = NodeContainer.prototype;

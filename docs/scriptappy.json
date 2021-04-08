@@ -91,6 +91,7 @@
           "type": "#/definitions/Registry"
         },
         "use": {
+          "description": "Plugin registry",
           "kind": "function",
           "params": [
             {
@@ -111,11 +112,12 @@
       },
       "definitions": {
         "plugin": {
+          "description": "Callback function to register a plugin",
           "kind": "function",
           "params": [
             {
               "name": "registries",
-              "type": "picassojs~registries"
+              "type": "#/definitions/Registries"
             },
             {
               "name": "options",
@@ -921,6 +923,22 @@
         "{\n   on: 'tap',\n   action: 'toggle',\n   contexts: ['selection', 'tooltip'],\n   data: ['x'],\n   propagation: 'stop', // 'stop' => prevent trigger from propagating further than the first shape\n   globalPropagation: 'stop', // 'stop' => prevent trigger of same type to be triggered on other components\n   touchRadius: 24,\n   mouseRadius: 10\n }"
       ]
     },
+    "canvasRendererFactory": {
+      "description": "Create a new canvas renderer",
+      "kind": "function",
+      "params": [
+        {
+          "name": "sceneFn",
+          "description": "Scene factory",
+          "optional": true,
+          "type": "function"
+        }
+      ],
+      "returns": {
+        "description": "A canvas renderer instance",
+        "type": "#/definitions/Renderer"
+      }
+    },
     "Chart": {
       "description": "Chart instance",
       "kind": "interface",
@@ -983,7 +1001,7 @@
           ],
           "returns": {
             "description": "Component context",
-            "type": "component-context"
+            "type": "#/definitions/ComponentContext"
           }
         },
         "componentsFromPoint": {
@@ -1000,7 +1018,7 @@
             "description": "Array of component contexts",
             "kind": "array",
             "items": {
-              "type": "component-context"
+              "type": "#/definitions/ComponentContext"
             }
           }
         },
@@ -2439,6 +2457,19 @@
               }
             }
           }
+        }
+      }
+    },
+    "ComponentContext": {
+      "kind": "object",
+      "entries": {
+        "type": {
+          "description": "Type of component",
+          "type": "string"
+        },
+        "key": {
+          "description": "Key of the component",
+          "type": "string"
         }
       }
     },
@@ -5202,12 +5233,42 @@
         }
       }
     },
+    "Registries": {
+      "kind": "object",
+      "entries": {
+        "component": {
+          "description": "Component registry",
+          "type": "#/definitions/Registry"
+        },
+        "data": {
+          "description": "Data registry",
+          "type": "#/definitions/Registry"
+        },
+        "formatter": {
+          "description": "Formatter registry",
+          "type": "#/definitions/Registry"
+        },
+        "interaction": {
+          "description": "Interaction registry",
+          "type": "#/definitions/Registry"
+        },
+        "renderer": {
+          "description": "Renderer registry",
+          "type": "#/definitions/Registry"
+        },
+        "scale": {
+          "description": "Scale registry",
+          "type": "#/definitions/Registry"
+        }
+      }
+    },
     "Registry": {
+      "description": "Register a `value` with the given `key`. If `value` is omitted, returns the `value` of `key`.",
       "kind": "interface",
       "params": [
         {
           "name": "key",
-          "description": "Name of the type to register. If value is omitted key represent the name of the type to get.",
+          "description": "Name of the type to register",
           "type": "string"
         },
         {
@@ -5353,7 +5414,7 @@
               "description": "Nodes to render",
               "kind": "array",
               "items": {
-                "type": "node-def"
+                "type": "object"
               }
             }
           ],
@@ -5384,20 +5445,6 @@
           "returns": {
             "description": "The current size definition",
             "type": "#/definitions/RendererContainerDef"
-          }
-        },
-        "textBounds": {
-          "description": "Calculates the bounding rectangle of a text node. Including any potential line breaks.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "node",
-              "type": "node--text-def"
-            }
-          ],
-          "returns": {
-            "description": "The bounding rectangle",
-            "type": "#/definitions/Rect"
           }
         }
       }
@@ -5885,16 +5932,19 @@
         {
           "name": "treeFactory",
           "description": "Node tree factory",
+          "optional": true,
           "type": "function"
         },
         {
           "name": "ns",
           "description": "Namespace definition",
+          "optional": true,
           "type": "string"
         },
         {
           "name": "sceneFn",
           "description": "Scene factory",
+          "optional": true,
           "type": "function"
         }
       ],

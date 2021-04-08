@@ -29,7 +29,7 @@ function create() {
     appendTo: () => {},
 
     /**
-     * @param {node-def[]} nodes - Nodes to render
+     * @param {object[]} nodes - Nodes to render
      * @returns {boolean} True if the nodes where rendered, otherwise false
      */
     render: () => false,
@@ -85,7 +85,8 @@ function create() {
     /**
      * Calculates the bounding rectangle of a text node. Including any potential line breaks.
      * @function
-     * @param {node--text-def} node
+     * @private
+     * @param {TextNode} node
      * @return {Rect} The bounding rectangle
      */
     textBounds,

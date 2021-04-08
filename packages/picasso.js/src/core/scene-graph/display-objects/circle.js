@@ -4,8 +4,8 @@ import { getMinMax } from '../../geometry/util';
 
 /**
  * @private
- * @extends node-def
- * @typedef {object} node--circle-def
+ * @extends DisplayObject
+ * @typedef {object} CircleNode
  * @property {number} cx - {@link https://www.w3.org/TR/SVG/shapes.html#CircleElementCXAttribute}
  * @property {number} cy - {@link https://www.w3.org/TR/SVG/shapes.html#CircleElementCYAttribute}
  * @property {number} r - {@link https://www.w3.org/TR/SVG/shapes.html#CircleElementRAttribute}

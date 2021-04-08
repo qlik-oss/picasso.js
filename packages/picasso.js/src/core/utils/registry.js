@@ -63,9 +63,10 @@ export default function registryFactory(parentRegistry, registerName = 'unspecif
   }
 
   /**
+   * Register a `value` with the given `key`. If `value` is omitted, returns the `value` of `key`.
    * @alias Registry
    * @interface
-   * @param {string} key Name of the type to register. If value is omitted key represent the name of the type to get.
+   * @param {string} key Name of the type to register
    * @param {any} [value] Value to store in the registry.
    */
   function registry(key, value) {
