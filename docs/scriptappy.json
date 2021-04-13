@@ -1815,19 +1815,6 @@
       "kind": "object",
       "entries": {
         "data": {
-          "description": "Box data",
-          "type": "#/definitions/ComponentBox/definitions/data"
-        },
-        "settings": {
-          "description": "Box settings",
-          "type": "#/definitions/ComponentBox/definitions/settings"
-        }
-      },
-      "examples": [
-        "{\n  type: \"box\",\n  data: {\n   mapTo: {\n     min: { source: \"/qHyperCube/qMeasureInfo/0\" },\n     start: { source: \"/qHyperCube/qMeasureInfo/1\" },\n     med: { source: \"/qHyperCube/qMeasureInfo/2\" },\n     end: { source: \"/qHyperCube/qMeasureInfo/3\" },\n     max: { source: \"/qHyperCube/qMeasureInfo/4\" },\n   },\n   groupBy: {\n     source: \"/qHyperCube/qDimensionInfo/0\"\n   }\n },\n settings: {\n   major: {\n     scale: { source: \"/qHyperCube/qDimensionInfo/0\" }\n   },\n   minor: {\n     scale: { source: [\"/qHyperCube/qMeasureInfo/0\",\n              \"/qHyperCube/qMeasureInfo/1\",\n              \"/qHyperCube/qMeasureInfo/2\",\n              \"/qHyperCube/qMeasureInfo/3\",\n              \"/qHyperCube/qMeasureInfo/4\"] }\n   }\n }\n}"
-      ],
-      "definitions": {
-        "data": {
           "kind": "object",
           "entries": {
             "min": {
@@ -1877,7 +1864,7 @@
                       "type": "string"
                     },
                     {
-                      "type": "#/definitions/ComponentBox/definitions/settings/definitions/majorReference"
+                      "type": "#/definitions/ComponentBox/definitions/majorReference"
                     }
                   ],
                   "type": "any"
@@ -2074,20 +2061,23 @@
                 }
               }
             }
-          },
-          "definitions": {
-            "majorReference": {
-              "kind": "object",
-              "entries": {
-                "start": {
-                  "description": "Reference to the data property of the start value along the major axis",
-                  "type": "string"
-                },
-                "end": {
-                  "description": "Reference to the data property of the end value along the major axis",
-                  "type": "string"
-                }
-              }
+          }
+        }
+      },
+      "examples": [
+        "{\n  type: \"box\",\n  data: {\n   mapTo: {\n     min: { source: \"/qHyperCube/qMeasureInfo/0\" },\n     start: { source: \"/qHyperCube/qMeasureInfo/1\" },\n     med: { source: \"/qHyperCube/qMeasureInfo/2\" },\n     end: { source: \"/qHyperCube/qMeasureInfo/3\" },\n     max: { source: \"/qHyperCube/qMeasureInfo/4\" },\n   },\n   groupBy: {\n     source: \"/qHyperCube/qDimensionInfo/0\"\n   }\n },\n settings: {\n   major: {\n     scale: { source: \"/qHyperCube/qDimensionInfo/0\" }\n   },\n   minor: {\n     scale: { source: [\"/qHyperCube/qMeasureInfo/0\",\n              \"/qHyperCube/qMeasureInfo/1\",\n              \"/qHyperCube/qMeasureInfo/2\",\n              \"/qHyperCube/qMeasureInfo/3\",\n              \"/qHyperCube/qMeasureInfo/4\"] }\n   }\n }\n}"
+      ],
+      "definitions": {
+        "majorReference": {
+          "kind": "object",
+          "entries": {
+            "start": {
+              "description": "Reference to the data property of the start value along the major axis",
+              "type": "string"
+            },
+            "end": {
+              "description": "Reference to the data property of the end value along the major axis",
+              "type": "string"
             }
           }
         }
@@ -2201,15 +2191,7 @@
       "kind": "object",
       "entries": {
         "settings": {
-          "description": "component settings",
-          "type": "#/definitions/ComponentBrushLasso/definitions/Settings"
-        }
-      },
-      "examples": [
-        "{\n type: 'brush-lasso',\n settings: {\n   brush: {\n     components: [{ key: '<target-component>', contexts: ['<brush-context>'] }]\n   }\n },\n}"
-      ],
-      "definitions": {
-        "Settings": {
+          "description": "Component settings",
           "kind": "object",
           "entries": {
             "lasso": {
@@ -2355,7 +2337,10 @@
             }
           }
         }
-      }
+      },
+      "examples": [
+        "{\n type: 'brush-lasso',\n settings: {\n   brush: {\n     components: [{ key: '<target-component>', contexts: ['<brush-context>'] }]\n   }\n },\n}"
+      ]
     },
     "ComponentBrushRange": {
       "extends": [
@@ -2483,15 +2468,7 @@
       "kind": "object",
       "entries": {
         "settings": {
-          "description": "component settings",
-          "type": "#/definitions/ComponentGridLine/definitions/Settings"
-        }
-      },
-      "examples": [
-        "{\n type: 'grid-line',\n settings: {\n   x: {\n     scale: '<name-of-scale>',\n   },\n   y: {\n     scale: '<name-of-scale>',\n   },\n },\n}"
-      ],
-      "definitions": {
-        "Settings": {
+          "description": "Component settings",
           "kind": "object",
           "entries": {
             "x": {
@@ -2564,7 +2541,10 @@
             }
           }
         }
-      }
+      },
+      "examples": [
+        "{\n type: 'grid-line',\n settings: {\n   x: {\n     scale: '<name-of-scale>',\n   },\n   y: {\n     scale: '<name-of-scale>',\n   },\n },\n}"
+      ]
     },
     "ComponentLabels": {
       "extends": [
