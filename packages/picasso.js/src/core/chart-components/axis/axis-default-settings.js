@@ -51,8 +51,7 @@ const DEFAULT_DISCRETE_SETTINGS = {
      * @type {number=} */
     tiltAngle: 40,
     /** Threshold for toggle of tilted labels. Capped between 0 and 1. For example, if it is set to 0.7, then tilted labels will be toggled if less than 70% of the labels are visible.
-     * @type {number=}
-     * @experimental */
+     * @type {number=} */
     tiltThreshold: 0.7,
     /** Control the amount of space (in pixels) that labes can occupy outside their docking area. Only applicable when labels are in `tilted` mode.
      * @type {number=} */
