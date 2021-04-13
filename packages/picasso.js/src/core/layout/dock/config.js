@@ -50,9 +50,9 @@ function create(settings = {}, callbackContext = {}) {
      *  }
      * })); // Require a size of 150 in the dock direction and a bleed size of 50 to the left and right dock direction
      */
-    computePreferredSize({ inner, outer }) {
+    computePreferredSize({ inner, outer, children }) {
       if (typeof preferredSize === 'function') {
-        return preferredSize({ inner, outer, dock: this.dock() }, callbackContext);
+        return preferredSize({ inner, outer, children, dock: this.dock() }, callbackContext);
       }
       return preferredSize;
     },

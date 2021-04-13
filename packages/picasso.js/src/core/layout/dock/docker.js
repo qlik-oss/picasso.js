@@ -1,5 +1,4 @@
 import extend from 'extend';
-import dockConfig from './config';
 import { resolveContainerRects, resolveSettings } from './settings-resolver';
 import { rectToPoints, pointsToRect } from '../../geometry/util';
 import createRect from './create-rect';
@@ -321,7 +320,7 @@ function positionComponents({ visible, layoutRect, reducedRect, containerRect, t
       c.cachedSize = undefined;
       c.edgeBleed = undefined;
     });
-  return visible.map((c) => elementOrder.indexOf(c));
+  return elementOrder;
 }
 
 function checkShowSettings(strategySettings, dockSettings, logicalContainerRect) {
@@ -344,9 +343,6 @@ function checkShowSettings(strategySettings, dockSettings, logicalContainerRect)
 }
 
 function validateComponent(component) {
-  if (!component.settings && !component.settings) {
-    throw new Error('Invalid component settings');
-  }
   if (!component.resize || typeof component.resize !== 'function') {
     throw new Error('Component is missing resize function');
   }
@@ -363,13 +359,8 @@ function filterComponents(components, settings, rect) {
     const comp = components[i];
     validateComponent(comp);
     // backwards compatibility
-    let config;
-    if (comp.instance) {
-      config = comp.instance.dockConfig();
-    } else {
-      config = dockConfig(comp.settings.layout);
-    }
-    const key = comp.settings.key;
+    let config = comp.dockConfig;
+    const key = comp.key;
     const d = config.dock();
     const referencedDocks = /@/.test(d) ? d.split(',').map((s) => s.replace(/^\s*@/, '')) : [];
     if (checkShowSettings(settings, config, rect)) {
@@ -415,7 +406,7 @@ function dockLayout(initialSettings) {
       throw new Error('Invalid rect');
     }
     if (!components.length) {
-      return { visible: [], hidden: [] };
+      return { visible: [], hidden: [], ordered: [] };
     }
 
     const { logicalContainerRect, containerRect } = resolveContainerRects(rect, settings);
@@ -431,7 +422,7 @@ function dockLayout(initialSettings) {
 
     const translation = { x: rect.x, y: rect.y };
 
-    const order = positionComponents({
+    const ordered = positionComponents({
       visible,
       layoutRect: logicalContainerRect,
       reducedRect,
@@ -444,7 +435,11 @@ function dockLayout(initialSettings) {
       const r = createRect();
       c.comp.resize(r, r);
     });
-    return { visible: visible.map((v) => v.comp), hidden: hidden.map((h) => h.comp), order };
+    return {
+      visible: visible.map((v) => v.comp),
+      hidden: hidden.map((h) => h.comp),
+      ordered: ordered.map((h) => h.comp),
+    };
   };
 
   docker.settings = function settingsFn(s) {

@@ -3,7 +3,7 @@
   "info": {
     "name": "picasso.js",
     "description": "A charting library streamlined for building visualizations for the Qlik Sense Analytics platform.",
-    "version": "0.34.0",
+    "version": "0.36.0",
     "license": "MIT"
   },
   "entries": {
@@ -51,6 +51,18 @@
         "type": "#/entries/picassojs"
       },
       "entries": {
+        "chart": {
+          "kind": "function",
+          "params": [
+            {
+              "name": "definition",
+              "type": "#/definitions/ChartDefinition"
+            }
+          ],
+          "returns": {
+            "type": "#/definitions/Chart"
+          }
+        },
         "component": {
           "description": "Component registry",
           "type": "#/definitions/Registry"
@@ -89,18 +101,6 @@
             }
           ]
         },
-        "chart": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "definition",
-              "type": "#/definitions/ChartDefinition"
-            }
-          ],
-          "returns": {
-            "type": "#/definitions/Chart"
-          }
-        },
         "version": {
           "description": "picasso.js version",
           "type": "string"
@@ -124,228 +124,11 @@
     }
   },
   "definitions": {
-    "BrushConfig": {
-      "kind": "object",
-      "entries": {
-        "ranges": {
-          "description": "Range configurations",
-          "optional": true,
-          "kind": "array",
-          "items": {
-            "type": "#/definitions/BrushConfigRanges"
-          }
-        }
-      }
-    },
-    "BrushConfigRanges": {
-      "kind": "object",
-      "entries": {
-        "key": {
-          "description": "An identifier that represents the data source of the value",
-          "optional": true,
-          "type": "string"
-        },
-        "includeMin": {
-          "description": "Whether or not the minimum value of a range should be included when determening if a value is brushed.",
-          "optional": true,
-          "defaultValue": true,
-          "type": "boolean"
-        },
-        "includeMax": {
-          "description": "Whether or not the maximum value of a range should be included when determening if a value is brushed.",
-          "optional": true,
-          "defaultValue": true,
-          "type": "boolean"
-        }
-      }
-    },
     "Brush": {
       "description": "A brush context",
       "kind": "interface",
       "params": [],
       "entries": {
-        "configure": {
-          "description": "Configure the brush instance.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "config",
-              "type": "#/definitions/BrushConfig"
-            }
-          ],
-          "examples": [
-            "brushInstance.configure({\n  ranges: [\n    { key: 'some key', includeMax: false },\n    { includeMax: true, includeMin: true },\n  ]\n})"
-          ]
-        },
-        "link": {
-          "description": "Link this brush to another brush instance.\n\nWhen linked, the `target` will receive updates whenever this brush changes.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "target",
-              "description": "The brush instance to link to",
-              "type": "#/definitions/Brush"
-            }
-          ]
-        },
-        "start": {
-          "description": "Starts this brush context\n\nStarts this brush context and emits a 'start' event if it is not already started.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "args",
-              "description": "arguments to be passed to 'start' listeners",
-              "variable": true,
-              "type": "any"
-            }
-          ],
-          "emits": [
-            {
-              "type": "#/definitions/Brush/events/start"
-            }
-          ]
-        },
-        "end": {
-          "description": "Ends this brush context\n\nEnds this brush context and emits an 'end' event if it is not already ended.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "args",
-              "description": "arguments to be passed to 'end' listeners",
-              "variable": true,
-              "type": "any"
-            }
-          ],
-          "emits": [
-            {
-              "type": "#/definitions/Brush/events/end"
-            }
-          ]
-        },
-        "isActive": {
-          "description": "Checks if this brush is activated\n\nReturns true if started, false otherwise",
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "boolean"
-          }
-        },
-        "clear": {
-          "description": "Clears this brush context",
-          "kind": "function",
-          "params": []
-        },
-        "brushes": {
-          "description": "Returns all brushes within this context",
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "object"
-          }
-        },
-        "addValue": {
-          "description": "Adds a primitive value to this brush context\n\nIf this brush context is not started, a 'start' event is emitted.\nIf the state of the brush changes, ie. if the added value does not already exist, an 'update' event is emitted.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "key",
-              "description": "An identifier that represents the data source of the value",
-              "type": "string"
-            },
-            {
-              "name": "value",
-              "description": "The value to add",
-              "kind": "union",
-              "items": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "number"
-                }
-              ],
-              "type": "any"
-            }
-          ],
-          "emits": [
-            {
-              "type": "#/definitions/Brush/events/start"
-            },
-            {
-              "type": "#/definitions/Brush/events/update"
-            }
-          ],
-          "examples": [
-            "brush.addValue('countries', 'Sweden');\nbrush.addValue('/qHyperCube/qDimensionInfo/0', 3);"
-          ]
-        },
-        "addValues": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "items",
-              "description": "Items to add",
-              "kind": "array",
-              "items": {
-                "type": "object"
-              }
-            }
-          ]
-        },
-        "setValues": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "items",
-              "description": "Items to set",
-              "kind": "array",
-              "items": {
-                "type": "object"
-              }
-            }
-          ]
-        },
-        "removeValue": {
-          "description": "Removes a primitive values from this brush context\n\nIf the state of the brush changes, ie. if the removed value does exist, an 'update' event is emitted.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "key",
-              "description": "An identifier that represents the data source of the value",
-              "type": "string"
-            },
-            {
-              "name": "value",
-              "description": "The value to remove",
-              "kind": "union",
-              "items": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "number"
-                }
-              ],
-              "type": "any"
-            }
-          ],
-          "examples": [
-            "brush.removeValue('countries', 'Sweden');"
-          ]
-        },
-        "removeValues": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "items",
-              "description": "Items to remove",
-              "kind": "array",
-              "items": {
-                "type": "object"
-              }
-            }
-          ]
-        },
         "addAndRemoveValues": {
           "description": "Add and remove values in a single operation\nalmost the same as calling addValues and removeValues but only triggers one 'update' event\n\nIf the state of the brush changes, an 'update' event is emitted.",
           "kind": "function",
@@ -368,76 +151,23 @@
             }
           ]
         },
-        "toggleValue": {
-          "description": "Toggles a primitive value in this brush context\n\nIf the given value exist in this brush context, it will be removed. If it does not exist it will be added.",
+        "addKeyAlias": {
+          "description": "Adds an alias to the given key",
           "kind": "function",
           "params": [
             {
               "name": "key",
-              "description": "An identifier that represents the data source of the value",
+              "description": "Value to be replaced",
               "type": "string"
             },
             {
-              "name": "value",
-              "description": "The value to toggle",
-              "kind": "union",
-              "items": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "number"
-                }
-              ],
-              "type": "any"
-            }
-          ],
-          "examples": [
-            "brush.toggleValue('countries', 'Sweden');"
-          ]
-        },
-        "toggleValues": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "items",
-              "description": "Items to toggle",
-              "kind": "array",
-              "items": {
-                "type": "object"
-              }
-            }
-          ]
-        },
-        "containsValue": {
-          "description": "Checks if a certain value exists in this brush context\n\nReturns true if the values exists for the provided key, returns false otherwise.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "key",
-              "description": "An identifier that represents the data source of the value",
+              "name": "alias",
+              "description": "Value to replace key with",
               "type": "string"
-            },
-            {
-              "name": "value",
-              "description": "The value to check for",
-              "kind": "union",
-              "items": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "number"
-                }
-              ],
-              "type": "any"
             }
           ],
-          "returns": {
-            "type": "boolean"
-          },
           "examples": [
-            "brush.addValue('countries', 'Sweden');\nbrush.containsValue('countries', 'Sweden'); // true\nbrush.toggleValue('countries', 'Sweden'); // remove 'Sweden'\nbrush.containsValue('countries', 'Sweden'); // false"
+            "brush.addKeyAlias('BadFieldName', 'Region');\nbrush.addValue('BadFieldName', 'Sweden'); // 'BadFieldName' will be stored as 'Region'\nbrush.containsValue('Region', 'Sweden'); // true\nbrush.containsValue('BadFieldName', 'Sweden'); // true"
           ]
         },
         "addRange": {
@@ -490,6 +220,263 @@
             }
           ]
         },
+        "addValue": {
+          "description": "Adds a primitive value to this brush context\n\nIf this brush context is not started, a 'start' event is emitted.\nIf the state of the brush changes, ie. if the added value does not already exist, an 'update' event is emitted.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "key",
+              "description": "An identifier that represents the data source of the value",
+              "type": "string"
+            },
+            {
+              "name": "value",
+              "description": "The value to add",
+              "kind": "union",
+              "items": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                }
+              ],
+              "type": "any"
+            }
+          ],
+          "emits": [
+            {
+              "type": "#/definitions/Brush/events/start"
+            },
+            {
+              "type": "#/definitions/Brush/events/update"
+            }
+          ],
+          "examples": [
+            "brush.addValue('countries', 'Sweden');\nbrush.addValue('/qHyperCube/qDimensionInfo/0', 3);"
+          ]
+        },
+        "addValues": {
+          "kind": "function",
+          "params": [
+            {
+              "name": "items",
+              "description": "Items to add",
+              "kind": "array",
+              "items": {
+                "type": "object"
+              }
+            }
+          ]
+        },
+        "brushes": {
+          "description": "Returns all brushes within this context",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "object"
+          }
+        },
+        "clear": {
+          "description": "Clears this brush context",
+          "kind": "function",
+          "params": []
+        },
+        "configure": {
+          "description": "Configure the brush instance.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "config",
+              "type": "#/definitions/BrushConfig"
+            }
+          ],
+          "examples": [
+            "brushInstance.configure({\n  ranges: [\n    { key: 'some key', includeMax: false },\n    { includeMax: true, includeMin: true },\n  ]\n})"
+          ]
+        },
+        "containsRange": {
+          "description": "Checks if a range segment is contained within this brush context\n\nReturns true if the range segment exists for the provided key, returns false otherwise.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "key",
+              "description": "An identifier that represents the data source of the value",
+              "type": "string"
+            },
+            {
+              "name": "range",
+              "description": "The range to check for",
+              "kind": "object",
+              "entries": {
+                "min": {
+                  "description": "Min value of the range",
+                  "type": "number"
+                },
+                "max": {
+                  "description": "Max value of the range",
+                  "type": "number"
+                }
+              }
+            }
+          ],
+          "returns": {
+            "type": "boolean"
+          },
+          "examples": [
+            "brush.addRange('Sales', { min: 10, max: 50 });\nbrush.containsRange('Sales', { min: 15, max: 20 }); // true - the range segment is fully contained within [10, 50]\nbrush.containsRange('Sales', { min: 5, max: 20 }); // false - part of the range segment is outside [10, 50]\nbrush.containsRange('Sales', { min: 30, max: 80 }); // false - part of the range segment is outside [10, 50]"
+          ]
+        },
+        "containsRangeValue": {
+          "description": "Checks if a value is contained within a range in this brush context\n\nReturns true if the values exists for the provided key, returns false otherwise.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "key",
+              "description": "An identifier that represents the data source of the value",
+              "type": "string"
+            },
+            {
+              "name": "value",
+              "description": "The value to check for",
+              "type": "number"
+            }
+          ],
+          "returns": {
+            "type": "boolean"
+          },
+          "examples": [
+            "brush.addRange('Sales', { min: 10, max: 50 });\nbrush.containsRangeValue('Sales', 30); // true\nbrush.containsRangeValue('Sales', 5); // false"
+          ]
+        },
+        "containsValue": {
+          "description": "Checks if a certain value exists in this brush context\n\nReturns true if the values exists for the provided key, returns false otherwise.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "key",
+              "description": "An identifier that represents the data source of the value",
+              "type": "string"
+            },
+            {
+              "name": "value",
+              "description": "The value to check for",
+              "kind": "union",
+              "items": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                }
+              ],
+              "type": "any"
+            }
+          ],
+          "returns": {
+            "type": "boolean"
+          },
+          "examples": [
+            "brush.addValue('countries', 'Sweden');\nbrush.containsValue('countries', 'Sweden'); // true\nbrush.toggleValue('countries', 'Sweden'); // remove 'Sweden'\nbrush.containsValue('countries', 'Sweden'); // false"
+          ]
+        },
+        "end": {
+          "description": "Ends this brush context\n\nEnds this brush context and emits an 'end' event if it is not already ended.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "args",
+              "description": "arguments to be passed to 'end' listeners",
+              "variable": true,
+              "type": "any"
+            }
+          ],
+          "emits": [
+            {
+              "type": "#/definitions/Brush/events/end"
+            }
+          ]
+        },
+        "intercept": {
+          "description": "Adds an event interceptor",
+          "kind": "function",
+          "params": [
+            {
+              "name": "name",
+              "description": "Name of the event to intercept",
+              "type": "string"
+            },
+            {
+              "name": "ic",
+              "description": "Handler to call before event is triggered",
+              "type": "function"
+            }
+          ],
+          "examples": [
+            "brush.intercept('add-values', items => {\n console.log('about to add the following items', items);\n return items;\n});"
+          ]
+        },
+        "isActive": {
+          "description": "Checks if this brush is activated\n\nReturns true if started, false otherwise",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "boolean"
+          }
+        },
+        "link": {
+          "description": "Link this brush to another brush instance.\n\nWhen linked, the `target` will receive updates whenever this brush changes.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "target",
+              "description": "The brush instance to link to",
+              "type": "#/definitions/Brush"
+            }
+          ]
+        },
+        "removeAllInterceptors": {
+          "description": "Removes all interceptors",
+          "kind": "function",
+          "params": [
+            {
+              "name": "name",
+              "description": "Name of the event to remove interceptors for. If not provided, removes all interceptors.",
+              "optional": true,
+              "type": "string"
+            }
+          ]
+        },
+        "removeInterceptor": {
+          "description": "Removes an interceptor",
+          "kind": "function",
+          "params": [
+            {
+              "name": "name",
+              "description": "Name of the event to intercept",
+              "type": "string"
+            },
+            {
+              "name": "ic",
+              "description": "Handler to remove",
+              "type": "function"
+            }
+          ]
+        },
+        "removeKeyAlias": {
+          "description": "Removes an alias\n\nThis will only remove the key to alias mapping for new manipulations of the brush,\nno changes will be made to the current state of this brush.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "key",
+              "description": "Value to remove as alias",
+              "type": "string"
+            }
+          ],
+          "examples": [
+            "brush.removeKeyAlias('BadFieldName');"
+          ]
+        },
         "removeRange": {
           "description": "Removes a numeric range from this brush context",
           "kind": "function",
@@ -522,6 +509,47 @@
             {
               "name": "items",
               "description": "Items containing the ranges to remove",
+              "kind": "array",
+              "items": {
+                "type": "object"
+              }
+            }
+          ]
+        },
+        "removeValue": {
+          "description": "Removes a primitive values from this brush context\n\nIf the state of the brush changes, ie. if the removed value does exist, an 'update' event is emitted.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "key",
+              "description": "An identifier that represents the data source of the value",
+              "type": "string"
+            },
+            {
+              "name": "value",
+              "description": "The value to remove",
+              "kind": "union",
+              "items": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                }
+              ],
+              "type": "any"
+            }
+          ],
+          "examples": [
+            "brush.removeValue('countries', 'Sweden');"
+          ]
+        },
+        "removeValues": {
+          "kind": "function",
+          "params": [
+            {
+              "name": "items",
+              "description": "Items to remove",
               "kind": "array",
               "items": {
                 "type": "object"
@@ -568,6 +596,36 @@
             }
           ]
         },
+        "setValues": {
+          "kind": "function",
+          "params": [
+            {
+              "name": "items",
+              "description": "Items to set",
+              "kind": "array",
+              "items": {
+                "type": "object"
+              }
+            }
+          ]
+        },
+        "start": {
+          "description": "Starts this brush context\n\nStarts this brush context and emits a 'start' event if it is not already started.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "args",
+              "description": "arguments to be passed to 'start' listeners",
+              "variable": true,
+              "type": "any"
+            }
+          ],
+          "emits": [
+            {
+              "type": "#/definitions/Brush/events/start"
+            }
+          ]
+        },
         "toggleRange": {
           "description": "Toggles a numeric range in this brush context\n\nRemoves the range if it's already contained within the given identifier,\notherwise the given range is added to the brush.",
           "kind": "function",
@@ -607,8 +665,8 @@
             }
           ]
         },
-        "containsRangeValue": {
-          "description": "Checks if a value is contained within a range in this brush context\n\nReturns true if the values exists for the provided key, returns false otherwise.",
+        "toggleValue": {
+          "description": "Toggles a primitive value in this brush context\n\nIf the given value exist in this brush context, it will be removed. If it does not exist it will be added.",
           "kind": "function",
           "params": [
             {
@@ -618,131 +676,43 @@
             },
             {
               "name": "value",
-              "description": "The value to check for",
-              "type": "number"
-            }
-          ],
-          "returns": {
-            "type": "boolean"
-          },
-          "examples": [
-            "brush.addRange('Sales', { min: 10, max: 50 });\nbrush.containsRangeValue('Sales', 30); // true\nbrush.containsRangeValue('Sales', 5); // false"
-          ]
-        },
-        "containsRange": {
-          "description": "Checks if a range segment is contained within this brush context\n\nReturns true if the range segment exists for the provided key, returns false otherwise.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "key",
-              "description": "An identifier that represents the data source of the value",
-              "type": "string"
-            },
-            {
-              "name": "range",
-              "description": "The range to check for",
-              "kind": "object",
-              "entries": {
-                "min": {
-                  "description": "Min value of the range",
-                  "type": "number"
+              "description": "The value to toggle",
+              "kind": "union",
+              "items": [
+                {
+                  "type": "string"
                 },
-                "max": {
-                  "description": "Max value of the range",
+                {
                   "type": "number"
                 }
+              ],
+              "type": "any"
+            }
+          ],
+          "examples": [
+            "brush.toggleValue('countries', 'Sweden');"
+          ]
+        },
+        "toggleValues": {
+          "kind": "function",
+          "params": [
+            {
+              "name": "items",
+              "description": "Items to toggle",
+              "kind": "array",
+              "items": {
+                "type": "object"
               }
             }
-          ],
-          "returns": {
-            "type": "boolean"
-          },
-          "examples": [
-            "brush.addRange('Sales', { min: 10, max: 50 });\nbrush.containsRange('Sales', { min: 15, max: 20 }); // true - the range segment is fully contained within [10, 50]\nbrush.containsRange('Sales', { min: 5, max: 20 }); // false - part of the range segment is outside [10, 50]\nbrush.containsRange('Sales', { min: 30, max: 80 }); // false - part of the range segment is outside [10, 50]"
-          ]
-        },
-        "intercept": {
-          "description": "Adds an event interceptor",
-          "kind": "function",
-          "params": [
-            {
-              "name": "name",
-              "description": "Name of the event to intercept",
-              "type": "string"
-            },
-            {
-              "name": "ic",
-              "description": "Handler to call before event is triggered",
-              "type": "function"
-            }
-          ],
-          "examples": [
-            "brush.intercept('add-values', items => {\n console.log('about to add the following items', items);\n return items;\n});"
-          ]
-        },
-        "removeInterceptor": {
-          "description": "Removes an interceptor",
-          "kind": "function",
-          "params": [
-            {
-              "name": "name",
-              "description": "Name of the event to intercept",
-              "type": "string"
-            },
-            {
-              "name": "ic",
-              "description": "Handler to remove",
-              "type": "function"
-            }
-          ]
-        },
-        "removeAllInterceptors": {
-          "description": "Removes all interceptors",
-          "kind": "function",
-          "params": [
-            {
-              "name": "name",
-              "description": "Name of the event to remove interceptors for. If not provided, removes all interceptors.",
-              "optional": true,
-              "type": "string"
-            }
-          ]
-        },
-        "addKeyAlias": {
-          "description": "Adds an alias to the given key",
-          "kind": "function",
-          "params": [
-            {
-              "name": "key",
-              "description": "Value to be replaced",
-              "type": "string"
-            },
-            {
-              "name": "alias",
-              "description": "Value to replace key with",
-              "type": "string"
-            }
-          ],
-          "examples": [
-            "brush.addKeyAlias('BadFieldName', 'Region');\nbrush.addValue('BadFieldName', 'Sweden'); // 'BadFieldName' will be stored as 'Region'\nbrush.containsValue('Region', 'Sweden'); // true\nbrush.containsValue('BadFieldName', 'Sweden'); // true"
-          ]
-        },
-        "removeKeyAlias": {
-          "description": "Removes an alias\n\nThis will only remove the key to alias mapping for new manipulations of the brush,\nno changes will be made to the current state of this brush.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "key",
-              "description": "Value to remove as alias",
-              "type": "string"
-            }
-          ],
-          "examples": [
-            "brush.removeKeyAlias('BadFieldName');"
           ]
         }
       },
       "events": {
+        "end": {
+          "description": "Triggered when this brush is deactivated",
+          "kind": "event",
+          "params": []
+        },
         "start": {
           "description": "Triggered when this brush is activated",
           "kind": "event",
@@ -769,154 +739,213 @@
               }
             }
           ]
-        },
-        "end": {
-          "description": "Triggered when this brush is deactivated",
-          "kind": "event",
-          "params": []
         }
       }
     },
-    "ComponentSettings": {
+    "BrushConfig": {
       "kind": "object",
       "entries": {
-        "type": {
-          "description": "Component type (ex: axis, point, ...)",
-          "type": "string"
-        },
-        "preferredSize": {
-          "description": "Function returning the preferred size",
+        "ranges": {
+          "description": "Range configurations",
           "optional": true,
-          "type": "function"
-        },
-        "created": {
-          "optional": true,
-          "type": "function"
-        },
-        "beforeMount": {
-          "optional": true,
-          "type": "function"
-        },
-        "mounted": {
-          "optional": true,
-          "type": "function"
-        },
-        "beforeUpdate": {
-          "optional": true,
-          "type": "function"
-        },
-        "updated": {
-          "optional": true,
-          "type": "function"
-        },
-        "beforeRender": {
-          "optional": true,
-          "type": "function"
-        },
-        "beforeDestroy": {
-          "optional": true,
-          "type": "function"
-        },
-        "destroyed": {
-          "optional": true,
-          "type": "function"
-        },
-        "brush": {
-          "description": "see [brushing](./brushing.md)",
-          "optional": true,
-          "type": "brush-setting"
-        },
-        "layout": {
-          "description": "Layout settings",
-          "optional": true,
-          "kind": "object",
-          "entries": {
-            "displayOrder": {
-              "optional": true,
-              "defaultValue": 0,
-              "type": "number"
-            },
-            "prioOrder": {
-              "optional": true,
-              "defaultValue": 0,
-              "type": "number"
-            },
-            "minimumLayoutMode": {
-              "description": "Refer to layout sizes defined by layoutModes in `strategy`",
-              "optional": true,
-              "kind": "union",
-              "items": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "Object"
-                }
-              ],
-              "type": "any"
-            },
-            "dock": {
-              "description": "left, right, top or bottom",
-              "optional": true,
-              "type": "string"
-            }
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/BrushConfigRanges"
           }
-        },
-        "show": {
-          "description": "If the component should be rendered",
+        }
+      }
+    },
+    "BrushConfigRanges": {
+      "kind": "object",
+      "entries": {
+        "includeMax": {
+          "description": "Whether or not the maximum value of a range should be included when determening if a value is brushed.",
           "optional": true,
           "defaultValue": true,
           "type": "boolean"
         },
-        "scale": {
-          "description": "Named scale. Will be provided to the component if it ask for it.",
+        "includeMin": {
+          "description": "Whether or not the minimum value of a range should be included when determening if a value is brushed.",
           "optional": true,
-          "type": "string"
+          "defaultValue": true,
+          "type": "boolean"
         },
-        "formatter": {
-          "description": "Named formatter. Fallback to create formatter from scale. Will be provided to the component if it ask for it.",
+        "key": {
+          "description": "An identifier that represents the data source of the value",
           "optional": true,
           "type": "string"
         }
       }
     },
-    "ChartDefinition": {
-      "kind": "object",
-      "entries": {
-        "element": {
-          "type": "HTMLElement"
-        },
-        "data": {
-          "kind": "array",
-          "items": {
-            "type": "#/definitions/DataSource"
-          }
-        },
-        "settings": {
-          "type": "chart-settings"
+    "canvasRendererFactory": {
+      "description": "Create a new canvas renderer",
+      "kind": "function",
+      "params": [
+        {
+          "name": "sceneFn",
+          "description": "Scene factory",
+          "type": "function"
         }
+      ],
+      "returns": {
+        "description": "A canvas renderer instance",
+        "type": "#/definitions/Renderer"
       }
     },
     "Chart": {
       "kind": "interface",
       "params": [],
       "entries": {
-        "update": {
-          "description": "Update the chart with new settings and / or data",
+        "brush": {
+          "description": "Get or create brush context for this chart",
           "kind": "function",
           "params": [
             {
-              "name": "chart",
-              "description": "Chart definition",
-              "optional": true,
-              "type": "#/definitions/ChartDefinition"
+              "name": "name",
+              "description": "Name of the brush context. If no match is found, a new brush context is created and returned.",
+              "type": "string"
             }
+          ],
+          "returns": {
+            "type": "#/definitions/Brush"
+          }
+        },
+        "brushFromShapes": {
+          "description": "Brush data by providing a collection of data bound shapes.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "shapes",
+              "description": "An array of data bound shapes.",
+              "kind": "array",
+              "items": {
+                "type": "#/definitions/SceneNode"
+              }
+            },
+            {
+              "name": "config",
+              "description": "Options",
+              "type": "object"
+            }
+          ],
+          "examples": [
+            "const shapes = chartInstance.shapesAt(...);\nconst config = {\n components:[\n   {\n     key: 'key1',\n     contexts: ['myContext'],\n     data: [''],\n     action: 'add'\n   }\n ]\n};\nchartInstance.brushFromShapes(shapes, config);"
           ]
+        },
+        "component": {
+          "description": "Get a component context",
+          "kind": "function",
+          "params": [
+            {
+              "name": "key",
+              "description": "Component key",
+              "type": "string"
+            }
+          ],
+          "returns": {
+            "description": "Component context",
+            "type": "component-context"
+          }
+        },
+        "componentsFromPoint": {
+          "description": "Get components overlapping a point.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "p",
+              "description": "Point with x- and y-cooridnate. The coordinate is relative to the browser viewport.",
+              "type": "#/definitions/Point"
+            }
+          ],
+          "returns": {
+            "description": "Array of component contexts",
+            "kind": "array",
+            "items": {
+              "type": "component-context"
+            }
+          }
+        },
+        "dataset": {
+          "description": "Get",
+          "kind": "function",
+          "params": [
+            {
+              "name": "key",
+              "description": "Get the dataset identified by `key`",
+              "type": "string"
+            }
+          ],
+          "returns": {
+            "type": "#/definitions/Dataset"
+          }
         },
         "destroy": {
           "description": "Destroy the chart instance.",
           "kind": "function",
           "params": []
+        },
+        "findShapes": {
+          "description": "Get all nodes matching the provided selector",
+          "kind": "function",
+          "params": [
+            {
+              "name": "selector",
+              "description": "CSS selector [type, attribute, universal, class]",
+              "type": "string"
+            }
+          ],
+          "returns": {
+            "description": "Array of objects containing matching nodes",
+            "kind": "array",
+            "items": {
+              "type": "#/definitions/SceneNode"
+            }
+          },
+          "examples": [
+            "chart.findShapes('Circle') // [<CircleNode>, <CircleNode>]\nchart.findShapes('Circle[fill=\"red\"][stroke!=\"black\"]') // [CircleNode, CircleNode]\nchart.findShapes('Container Rect') // [Rect, Rect]"
+          ]
+        },
+        "formatter": {
+          "description": "Get or create a formatter for this chart",
+          "kind": "function",
+          "params": [
+            {
+              "name": "v",
+              "description": "Formatter reference or formatter options",
+              "kind": "union",
+              "items": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object"
+                }
+              ],
+              "type": "any"
+            }
+          ],
+          "returns": {
+            "type": "formatter"
+          },
+          "examples": [
+            "instance.formatter('nameOfMyFormatter'); // Fetch an existing formatter by name\ninstance.formatter({ formatter: 'nameOfMyFormatter' }); // Fetch an existing formatter by name\ninstance.formatter({ type: 'q' }); // Fetch an existing formatter by type\ninstance.formatter({\n formatter: 'd3',\n type: 'number',\n format: '1.0.%'\n}); // Create a new formatter"
+          ]
+        },
+        "formatters": {
+          "description": "Get all registered formatters",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "object",
+            "generics": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "formatter"
+              }
+            ]
+          }
         },
         "getAffectedShapes": {
           "description": "Get all shapes associated with the provided context",
@@ -954,43 +983,84 @@
             }
           }
         },
-        "findShapes": {
-          "description": "Get all nodes matching the provided selector",
+        "interactions": {
+          "description": "Get the all interactions instances",
+          "kind": "object",
+          "entries": {
+            "instances": {
+              "kind": "array",
+              "items": {
+                "type": "interaction"
+              }
+            },
+            "off": {
+              "description": "Disable all interaction instances",
+              "kind": "function",
+              "params": []
+            },
+            "on": {
+              "description": "Enable all interaction instances",
+              "kind": "function",
+              "params": []
+            }
+          },
+          "examples": [
+            "chart.interactions.instances; // Array of all interaction instances\nchart.interactions.on(); // Toggle on all interactions instances\nchart.interactions.off(); // Toggle off all interactions instances"
+          ]
+        },
+        "scale": {
+          "description": "Get or create a scale for this chart",
           "kind": "function",
           "params": [
             {
-              "name": "selector",
-              "description": "CSS selector [type, attribute, universal, class]",
+              "name": "v",
+              "description": "Scale reference or scale options",
+              "kind": "union",
+              "items": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "object"
+                }
+              ],
+              "type": "any"
+            }
+          ],
+          "returns": {
+            "type": "scale"
+          },
+          "examples": [
+            "instance.scale('nameOfMyScale'); // Fetch an existing scale by name\ninstance.scale({ scale: 'nameOfMyScale' }); // Fetch an existing scale by name\ninstance.scale({ source: '0/1', type: 'linear' }); // Create a new scale"
+          ]
+        },
+        "scales": {
+          "description": "Get all registered scales",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "object",
+            "generics": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "scale"
+              }
+            ]
+          }
+        },
+        "scroll": {
+          "kind": "function",
+          "params": [
+            {
+              "name": "name",
+              "description": "Name of scroll api",
               "type": "string"
             }
           ],
           "returns": {
-            "description": "Array of objects containing matching nodes",
-            "kind": "array",
-            "items": {
-              "type": "#/definitions/SceneNode"
-            }
-          },
-          "examples": [
-            "chart.findShapes('Circle') // [<CircleNode>, <CircleNode>]\nchart.findShapes('Circle[fill=\"red\"][stroke!=\"black\"]') // [CircleNode, CircleNode]\nchart.findShapes('Container Rect') // [Rect, Rect]"
-          ]
-        },
-        "componentsFromPoint": {
-          "description": "Get components overlapping a point.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "p",
-              "description": "Point with x- and y-cooridnate. The coordinate is relative to the browser viewport.",
-              "type": "#/definitions/Point"
-            }
-          ],
-          "returns": {
-            "description": "Array of component contexts",
-            "kind": "array",
-            "items": {
-              "type": "component-context"
-            }
+            "type": "scroll"
           }
         },
         "shapesAt": {
@@ -1066,153 +1136,6 @@
             "chart.shapesAt(\n {\n   x: 0,\n   y: 0,\n   width: 100,\n   height: 100\n },\n {\n   components: [\n     { key: 'key1', propagation: 'stop' },\n     { key: 'key2' }\n   ],\n   propagation: 'stop'\n }\n);"
           ]
         },
-        "brushFromShapes": {
-          "description": "Brush data by providing a collection of data bound shapes.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "shapes",
-              "description": "An array of data bound shapes.",
-              "kind": "array",
-              "items": {
-                "type": "#/definitions/SceneNode"
-              }
-            },
-            {
-              "name": "config",
-              "description": "Options",
-              "type": "object"
-            }
-          ],
-          "examples": [
-            "const shapes = chartInstance.shapesAt(...);\nconst config = {\n components:[\n   {\n     key: 'key1',\n     contexts: ['myContext'],\n     data: [''],\n     action: 'add'\n   }\n ]\n};\nchartInstance.brushFromShapes(shapes, config);"
-          ]
-        },
-        "scroll": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "name",
-              "description": "Name of scroll api",
-              "type": "string"
-            }
-          ],
-          "returns": {
-            "type": "scroll"
-          }
-        },
-        "dataset": {
-          "description": "Get",
-          "kind": "function",
-          "params": [
-            {
-              "name": "key",
-              "description": "Get the dataset identified by `key`",
-              "type": "string"
-            }
-          ],
-          "returns": {
-            "type": "#/definitions/Dataset"
-          }
-        },
-        "scales": {
-          "description": "Get all registered scales",
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "Object",
-            "generics": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "scale"
-              }
-            ]
-          }
-        },
-        "formatters": {
-          "description": "Get all registered formatters",
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "Object",
-            "generics": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "formatter"
-              }
-            ]
-          }
-        },
-        "brush": {
-          "description": "Get or create brush context for this chart",
-          "kind": "function",
-          "params": [
-            {
-              "name": "name",
-              "description": "Name of the brush context. If no match is found, a new brush context is created and returned.",
-              "type": "string"
-            }
-          ],
-          "returns": {
-            "type": "#/definitions/Brush"
-          }
-        },
-        "scale": {
-          "description": "Get or create a scale for this chart",
-          "kind": "function",
-          "params": [
-            {
-              "name": "v",
-              "description": "Scale reference or scale options",
-              "kind": "union",
-              "items": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "object"
-                }
-              ],
-              "type": "any"
-            }
-          ],
-          "returns": {
-            "type": "scale"
-          },
-          "examples": [
-            "instance.scale('nameOfMyScale'); // Fetch an existing scale by name\ninstance.scale({ scale: 'nameOfMyScale' }); // Fetch an existing scale by name\ninstance.scale({ source: '0/1', type: 'linear' }); // Create a new scale"
-          ]
-        },
-        "formatter": {
-          "description": "Get or create a formatter for this chart",
-          "kind": "function",
-          "params": [
-            {
-              "name": "v",
-              "description": "Formatter reference or formatter options",
-              "kind": "union",
-              "items": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "object"
-                }
-              ],
-              "type": "any"
-            }
-          ],
-          "returns": {
-            "type": "formatter"
-          },
-          "examples": [
-            "instance.formatter('nameOfMyFormatter'); // Fetch an existing formatter by name\ninstance.formatter({ formatter: 'nameOfMyFormatter' }); // Fetch an existing formatter by name\ninstance.formatter({ type: 'q' }); // Fetch an existing formatter by type\ninstance.formatter({\n formatter: 'd3',\n type: 'number',\n format: '1.0.%'\n}); // Create a new formatter"
-          ]
-        },
         "toggleBrushing": {
           "kind": "function",
           "params": [
@@ -1224,45 +1147,188 @@
             }
           ]
         },
-        "component": {
-          "description": "Get a component context",
+        "update": {
+          "description": "Update the chart with new settings and / or data",
           "kind": "function",
           "params": [
             {
-              "name": "key",
-              "description": "Component key",
-              "type": "string"
+              "name": "chart",
+              "description": "Chart definition",
+              "optional": true,
+              "type": "#/definitions/ChartDefinition"
             }
-          ],
-          "returns": {
-            "description": "Component context",
-            "type": "component-context"
+          ]
+        }
+      }
+    },
+    "ChartDefinition": {
+      "kind": "object",
+      "entries": {
+        "data": {
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/DataSource"
           }
         },
-        "interactions": {
-          "description": "Get the all interactions instances",
+        "element": {
+          "type": "HTMLElement"
+        },
+        "settings": {
+          "type": "chart-settings"
+        }
+      }
+    },
+    "Circle": {
+      "kind": "object",
+      "entries": {
+        "cx": {
+          "description": "Center x-coordinate",
+          "type": "number"
+        },
+        "cy": {
+          "description": "Center y-coordinate",
+          "type": "number"
+        },
+        "r": {
+          "description": "Circle radius",
+          "type": "number"
+        }
+      }
+    },
+    "ComponentAxis": {
+      "kind": "object",
+      "entries": {
+        "type": {
+          "defaultValue": "axis",
+          "type": "string"
+        }
+      }
+    },
+    "ComponentAxisContinuous": {
+      "description": "Continuous axis settings",
+      "kind": "object",
+      "entries": {
+        "align": {
+          "description": "Set the anchoring point of the axis. Avaialable options are `auto/left/right/bottom/top`. In `auto` the axis determines the best option. The options are restricted based on the axis orientation, a vertical axis may only anchor on `left` or `right`",
+          "optional": true,
+          "defaultValue": "auto",
+          "type": "string"
+        },
+        "labels": {
           "kind": "object",
           "entries": {
-            "instances": {
-              "kind": "array",
-              "items": {
-                "type": "interaction"
-              }
+            "align": {
+              "description": "Align act as a slider for the text bounding rect over the item bandwidth, given that the item have a bandwidth.",
+              "optional": true,
+              "defaultValue": 0.5,
+              "type": "number"
             },
-            "on": {
-              "description": "Enable all interaction instances",
-              "kind": "function",
-              "params": []
+            "filterOverlapping": {
+              "description": "Toggle whether labels should be filtered if they are overlapping. Filtering may be applied in a non-sequential order.\nIf labels are overlapping and this setting is toggled off, the axis will automatically hide.",
+              "optional": true,
+              "defaultValue": true,
+              "type": "boolean"
             },
-            "off": {
-              "description": "Disable all interaction instances",
-              "kind": "function",
-              "params": []
+            "margin": {
+              "description": "Space in pixels between the tick and label.",
+              "optional": true,
+              "defaultValue": 4,
+              "type": "number"
+            },
+            "maxLengthPx": {
+              "description": "Max length of labels in pixels",
+              "optional": true,
+              "defaultValue": 150,
+              "type": "number"
+            },
+            "minLengthPx": {
+              "description": "Min length of labels in pixels. Labels will always at least require this much space",
+              "optional": true,
+              "defaultValue": 0,
+              "type": "number"
+            },
+            "offset": {
+              "description": "Offset in pixels along the axis direction.",
+              "optional": true,
+              "defaultValue": 0,
+              "type": "number"
+            },
+            "show": {
+              "description": "Toggle labels on/off",
+              "optional": true,
+              "defaultValue": true,
+              "type": "boolean"
             }
-          },
-          "examples": [
-            "chart.interactions.instances; // Array of all interaction instances\nchart.interactions.on(); // Toggle on all interactions instances\nchart.interactions.off(); // Toggle off all interactions instances"
-          ]
+          }
+        },
+        "line": {
+          "kind": "object",
+          "entries": {
+            "show": {
+              "description": "Toggle line on/off",
+              "optional": true,
+              "defaultValue": true,
+              "type": "boolean"
+            }
+          }
+        },
+        "minorTicks": {
+          "kind": "object",
+          "entries": {
+            "margin": {
+              "description": "Space in pixels between the ticks and the line.",
+              "optional": true,
+              "defaultValue": 0,
+              "type": "number"
+            },
+            "show": {
+              "description": "Toggle minor-ticks on/off",
+              "optional": true,
+              "defaultValue": false,
+              "type": "boolean"
+            },
+            "tickSize": {
+              "description": "Size of the ticks in pixels.",
+              "optional": true,
+              "defaultValue": 3,
+              "type": "number"
+            }
+          }
+        },
+        "paddingEnd": {
+          "description": "Padding in direction perpendicular to the axis",
+          "optional": true,
+          "defaultValue": 10,
+          "type": "number"
+        },
+        "paddingStart": {
+          "description": "Padding in direction perpendicular to the axis",
+          "optional": true,
+          "defaultValue": 0,
+          "type": "number"
+        },
+        "ticks": {
+          "kind": "object",
+          "entries": {
+            "margin": {
+              "description": "Space in pixels between the ticks and the line.",
+              "optional": true,
+              "defaultValue": 0,
+              "type": "number"
+            },
+            "show": {
+              "description": "Toggle ticks on/off",
+              "optional": true,
+              "defaultValue": true,
+              "type": "boolean"
+            },
+            "tickSize": {
+              "description": "Size of the ticks in pixels.",
+              "optional": true,
+              "defaultValue": 8,
+              "type": "number"
+            }
+          }
         }
       }
     },
@@ -1270,26 +1336,31 @@
       "description": "Discrete axis settings",
       "kind": "object",
       "entries": {
+        "align": {
+          "description": "Set the anchoring point of the axis. Avaialable options are `auto/left/right/bottom/top`. In `auto` the axis determines the best option. The options are restricted based on the axis orientation, a vertical axis may only anchor on `left` or `right`",
+          "optional": true,
+          "defaultValue": "auto",
+          "type": "string"
+        },
         "labels": {
           "kind": "object",
           "entries": {
-            "show": {
-              "description": "Toggle labels on/off",
+            "align": {
+              "description": "Align act as a slider for the text bounding rect over the item bandwidth, given that the item have a bandwidth. Except when labels are tilted, then the align is a pure align that shifts the position of the label anchoring point.",
               "optional": true,
-              "defaultValue": true,
-              "type": "boolean"
-            },
-            "tiltAngle": {
-              "description": "Tilting angle in degrees. Capped between -90 and 90. Only applicable when labels are in `tilted` mode.",
-              "optional": true,
-              "defaultValue": 40,
+              "defaultValue": 0.5,
               "type": "number"
             },
-            "tiltThreshold": {
-              "description": "Threshold for toggle of tilted labels. Capped between 0 and 1. For example, if it is set to 0.7, then tilted labels will be toggled if less than 70% of the labels are visible.",
-              "stability": "experimental",
+            "filterOverlapping": {
+              "description": "Toggle whether labels should be filtered if they are overlapping. Filtering may be applied in a non-sequential order.\nIf labels are overlapping and this setting is toggled off, the axis will automatically hide.",
               "optional": true,
-              "defaultValue": 0.7,
+              "defaultValue": false,
+              "type": "boolean"
+            },
+            "margin": {
+              "description": "Space in pixels between the tick and label.",
+              "optional": true,
+              "defaultValue": 4,
               "type": "number"
             },
             "maxEdgeBleed": {
@@ -1297,10 +1368,9 @@
               "optional": true,
               "type": "number"
             },
-            "margin": {
-              "description": "Space in pixels between the tick and label.",
+            "maxGlyphCount": {
+              "description": "When only a sub-set of data is available, ex. when paging. This property can be used to let the axis estimate how much space the labels will consume, allowing it to give a consistent space estimate over the entire dataset when paging.",
               "optional": true,
-              "defaultValue": 4,
               "type": "number"
             },
             "maxLengthPx": {
@@ -1321,178 +1391,29 @@
               "defaultValue": "auto",
               "type": "string"
             },
-            "maxGlyphCount": {
-              "description": "When only a sub-set of data is available, ex. when paging. This property can be used to let the axis estimate how much space the labels will consume, allowing it to give a consistent space estimate over the entire dataset when paging.",
-              "optional": true,
-              "type": "number"
-            },
-            "align": {
-              "description": "Align act as a slider for the text bounding rect over the item bandwidth, given that the item have a bandwidth. Except when labels are tilted, then the align is a pure align that shifts the position of the label anchoring point.",
-              "optional": true,
-              "defaultValue": 0.5,
-              "type": "number"
-            },
             "offset": {
               "description": "Offset in pixels along the axis direction.",
               "optional": true,
               "defaultValue": 0,
               "type": "number"
             },
-            "filterOverlapping": {
-              "description": "Toggle whether labels should be filtered if they are overlapping. Filtering may be applied in a non-sequential order.\nIf labels are overlapping and this setting is toggled off, the axis will automatically hide.",
-              "optional": true,
-              "defaultValue": false,
-              "type": "boolean"
-            }
-          }
-        },
-        "ticks": {
-          "kind": "object",
-          "entries": {
-            "show": {
-              "description": "Toggle ticks on/off",
-              "optional": true,
-              "defaultValue": false,
-              "type": "boolean"
-            },
-            "margin": {
-              "description": "Space in pixels between the ticks and the line.",
-              "optional": true,
-              "defaultValue": 0,
-              "type": "number"
-            },
-            "tickSize": {
-              "description": "Size of the ticks in pixels.",
-              "optional": true,
-              "defaultValue": 4,
-              "type": "number"
-            }
-          }
-        },
-        "line": {
-          "kind": "object",
-          "entries": {
-            "show": {
-              "description": "Toggle line on/off",
-              "optional": true,
-              "defaultValue": false,
-              "type": "boolean"
-            }
-          }
-        },
-        "paddingStart": {
-          "description": "Padding in direction perpendicular to the axis",
-          "optional": true,
-          "defaultValue": 0,
-          "type": "number"
-        },
-        "paddingEnd": {
-          "description": "Padding in direction perpendicular to the axis",
-          "optional": true,
-          "defaultValue": 10,
-          "type": "number"
-        },
-        "align": {
-          "description": "Set the anchoring point of the axis. Avaialable options are `auto/left/right/bottom/top`. In `auto` the axis determines the best option. The options are restricted based on the axis orientation, a vertical axis may only anchor on `left` or `right`",
-          "optional": true,
-          "defaultValue": "auto",
-          "type": "string"
-        }
-      }
-    },
-    "ComponentAxisContinuous": {
-      "description": "Continuous axis settings",
-      "kind": "object",
-      "entries": {
-        "labels": {
-          "kind": "object",
-          "entries": {
             "show": {
               "description": "Toggle labels on/off",
               "optional": true,
               "defaultValue": true,
               "type": "boolean"
             },
-            "margin": {
-              "description": "Space in pixels between the tick and label.",
+            "tiltAngle": {
+              "description": "Tilting angle in degrees. Capped between -90 and 90. Only applicable when labels are in `tilted` mode.",
               "optional": true,
-              "defaultValue": 4,
+              "defaultValue": 40,
               "type": "number"
             },
-            "maxLengthPx": {
-              "description": "Max length of labels in pixels",
+            "tiltThreshold": {
+              "description": "Threshold for toggle of tilted labels. Capped between 0 and 1. For example, if it is set to 0.7, then tilted labels will be toggled if less than 70% of the labels are visible.",
+              "stability": "experimental",
               "optional": true,
-              "defaultValue": 150,
-              "type": "number"
-            },
-            "minLengthPx": {
-              "description": "Min length of labels in pixels. Labels will always at least require this much space",
-              "optional": true,
-              "defaultValue": 0,
-              "type": "number"
-            },
-            "align": {
-              "description": "Align act as a slider for the text bounding rect over the item bandwidth, given that the item have a bandwidth.",
-              "optional": true,
-              "defaultValue": 0.5,
-              "type": "number"
-            },
-            "offset": {
-              "description": "Offset in pixels along the axis direction.",
-              "optional": true,
-              "defaultValue": 0,
-              "type": "number"
-            },
-            "filterOverlapping": {
-              "description": "Toggle whether labels should be filtered if they are overlapping. Filtering may be applied in a non-sequential order.\nIf labels are overlapping and this setting is toggled off, the axis will automatically hide.",
-              "optional": true,
-              "defaultValue": true,
-              "type": "boolean"
-            }
-          }
-        },
-        "ticks": {
-          "kind": "object",
-          "entries": {
-            "show": {
-              "description": "Toggle ticks on/off",
-              "optional": true,
-              "defaultValue": true,
-              "type": "boolean"
-            },
-            "margin": {
-              "description": "Space in pixels between the ticks and the line.",
-              "optional": true,
-              "defaultValue": 0,
-              "type": "number"
-            },
-            "tickSize": {
-              "description": "Size of the ticks in pixels.",
-              "optional": true,
-              "defaultValue": 8,
-              "type": "number"
-            }
-          }
-        },
-        "minorTicks": {
-          "kind": "object",
-          "entries": {
-            "show": {
-              "description": "Toggle minor-ticks on/off",
-              "optional": true,
-              "defaultValue": false,
-              "type": "boolean"
-            },
-            "tickSize": {
-              "description": "Size of the ticks in pixels.",
-              "optional": true,
-              "defaultValue": 3,
-              "type": "number"
-            },
-            "margin": {
-              "description": "Space in pixels between the ticks and the line.",
-              "optional": true,
-              "defaultValue": 0,
+              "defaultValue": 0.7,
               "type": "number"
             }
           }
@@ -1503,16 +1424,10 @@
             "show": {
               "description": "Toggle line on/off",
               "optional": true,
-              "defaultValue": true,
+              "defaultValue": false,
               "type": "boolean"
             }
           }
-        },
-        "paddingStart": {
-          "description": "Padding in direction perpendicular to the axis",
-          "optional": true,
-          "defaultValue": 0,
-          "type": "number"
         },
         "paddingEnd": {
           "description": "Padding in direction perpendicular to the axis",
@@ -1520,20 +1435,34 @@
           "defaultValue": 10,
           "type": "number"
         },
-        "align": {
-          "description": "Set the anchoring point of the axis. Avaialable options are `auto/left/right/bottom/top`. In `auto` the axis determines the best option. The options are restricted based on the axis orientation, a vertical axis may only anchor on `left` or `right`",
+        "paddingStart": {
+          "description": "Padding in direction perpendicular to the axis",
           "optional": true,
-          "defaultValue": "auto",
-          "type": "string"
-        }
-      }
-    },
-    "ComponentAxis": {
-      "kind": "object",
-      "entries": {
-        "type": {
-          "defaultValue": "axis",
-          "type": "string"
+          "defaultValue": 0,
+          "type": "number"
+        },
+        "ticks": {
+          "kind": "object",
+          "entries": {
+            "margin": {
+              "description": "Space in pixels between the ticks and the line.",
+              "optional": true,
+              "defaultValue": 0,
+              "type": "number"
+            },
+            "show": {
+              "description": "Toggle ticks on/off",
+              "optional": true,
+              "defaultValue": false,
+              "type": "boolean"
+            },
+            "tickSize": {
+              "description": "Size of the ticks in pixels.",
+              "optional": true,
+              "defaultValue": 4,
+              "type": "number"
+            }
+          }
         }
       }
     },
@@ -1557,6 +1486,36 @@
         "{\n  type: \"box\",\n  data: {\n   mapTo: {\n     min: { source: \"/qHyperCube/qMeasureInfo/0\" },\n     start: { source: \"/qHyperCube/qMeasureInfo/1\" },\n     med: { source: \"/qHyperCube/qMeasureInfo/2\" },\n     end: { source: \"/qHyperCube/qMeasureInfo/3\" },\n     max: { source: \"/qHyperCube/qMeasureInfo/4\" },\n   },\n   groupBy: {\n     source: \"/qHyperCube/qDimensionInfo/0\"\n   }\n },\n settings: {\n   major: {\n     scale: { source: \"/qHyperCube/qDimensionInfo/0\" }\n   },\n   minor: {\n     scale: { source: [\"/qHyperCube/qMeasureInfo/0\",\n              \"/qHyperCube/qMeasureInfo/1\",\n              \"/qHyperCube/qMeasureInfo/2\",\n              \"/qHyperCube/qMeasureInfo/3\",\n              \"/qHyperCube/qMeasureInfo/4\"] }\n   }\n }\n}"
       ],
       "definitions": {
+        "data": {
+          "kind": "object",
+          "entries": {
+            "min": {
+              "description": "Min",
+              "optional": true,
+              "type": "number"
+            },
+            "max": {
+              "description": "Max",
+              "optional": true,
+              "type": "number"
+            },
+            "start": {
+              "description": "Start of box",
+              "optional": true,
+              "type": "number"
+            },
+            "end": {
+              "description": "End of box",
+              "optional": true,
+              "type": "number"
+            },
+            "med": {
+              "description": "Median",
+              "optional": true,
+              "type": "number"
+            }
+          }
+        },
         "settings": {
           "kind": "object",
           "entries": {
@@ -1790,34 +1749,206 @@
               }
             }
           }
+        }
+      }
+    },
+    "ComponentBrushAreaBrush": {
+      "kind": "object",
+      "entries": {
+        "key": {
+          "description": "Component key",
+          "type": "string"
+        },
+        "contexts": {
+          "description": "Name of the brushing contexts to affect",
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "string"
+          }
         },
         "data": {
+          "description": "The mapped data properties to add to the brush",
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "action": {
+          "description": "Type of action to respond with",
+          "optional": true,
+          "defaultValue": "'set'",
+          "type": "string"
+        }
+      }
+    },
+    "ComponentBrushAreaDirSettings": {
+      "kind": "object",
+      "entries": {
+        "brush": {
           "kind": "object",
           "entries": {
-            "min": {
-              "description": "Min",
+            "components": {
+              "kind": "array",
+              "items": {
+                "entries": {
+                  "key": {
+                    "description": "Component key",
+                    "type": "object"
+                  },
+                  "contexts[": {
+                    "description": "Brush context to apply changes to",
+                    "type": "object"
+                  },
+                  "data": {
+                    "description": "Data reference",
+                    "optional": true,
+                    "type": "object"
+                  },
+                  "action": {
+                    "description": "Type of brush action",
+                    "optional": true,
+                    "type": "object"
+                  }
+                },
+                "kind": "object"
+              }
+            }
+          }
+        },
+        "direction": {
+          "description": "Rendering direction [horizontal|vertical]",
+          "optional": true,
+          "defaultValue": "vertical",
+          "type": "string"
+        },
+        "bubbles": {
+          "optional": true,
+          "kind": "object",
+          "entries": {
+            "show": {
+              "description": "True to show label bubble, false otherwise",
+              "optional": true,
+              "defaultValue": true,
+              "type": "boolean"
+            },
+            "align": {
+              "description": "Where to anchor bubble [start|end]",
+              "optional": true,
+              "defaultValue": "start",
+              "type": "string"
+            },
+            "label": {
+              "description": "Callback function for the labels",
+              "optional": true,
+              "type": "function"
+            }
+          }
+        },
+        "target": {
+          "optional": true,
+          "kind": "object",
+          "entries": {
+            "component": {
+              "description": "Render matching overlay on target component. @deprecated Use `components` instead",
+              "optional": true,
+              "type": "string"
+            },
+            "components": {
+              "description": "Render matching overlay on target components",
+              "optional": true,
+              "kind": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "ComponentBrushAreaDirStyle": {
+      "kind": "object",
+      "entries": {
+        "bubble": {
+          "optional": true,
+          "kind": "object",
+          "entries": {
+            "fontSize": {
+              "optional": true,
+              "type": "string"
+            },
+            "fontFamily": {
+              "optional": true,
+              "type": "string"
+            },
+            "fill": {
+              "optional": true,
+              "type": "string"
+            },
+            "color": {
+              "optional": true,
+              "type": "string"
+            },
+            "stroke": {
+              "optional": true,
+              "type": "string"
+            },
+            "strokeWidth": {
               "optional": true,
               "type": "number"
             },
-            "max": {
-              "description": "Max",
+            "borderRadius": {
+              "optional": true,
+              "type": "number"
+            }
+          }
+        },
+        "line": {
+          "optional": true,
+          "kind": "object",
+          "entries": {
+            "stroke": {
+              "optional": true,
+              "type": "string"
+            },
+            "strokeWidth": {
+              "optional": true,
+              "type": "number"
+            }
+          }
+        },
+        "target": {
+          "optional": true,
+          "kind": "object",
+          "entries": {
+            "fill": {
+              "optional": true,
+              "type": "string"
+            },
+            "strokeWidth": {
               "optional": true,
               "type": "number"
             },
-            "start": {
-              "description": "Start of box",
+            "opacity": {
               "optional": true,
               "type": "number"
-            },
-            "end": {
-              "description": "End of box",
-              "optional": true,
-              "type": "number"
-            },
-            "med": {
-              "description": "Median",
-              "optional": true,
-              "type": "number"
+            }
+          }
+        }
+      }
+    },
+    "ComponentBrushAreaSettings": {
+      "kind": "object",
+      "entries": {
+        "brush": {
+          "kind": "object",
+          "entries": {
+            "components": {
+              "kind": "array",
+              "items": {
+                "type": "#/definitions/ComponentBrushAreaBrush"
+              }
             }
           }
         }
@@ -1972,6 +2103,176 @@
           }
         }
       }
+    },
+    "ComponentBrushRangeSettings": {
+      "kind": "object",
+      "entries": {
+        "brush": {
+          "description": "Brush context to apply changes to",
+          "kind": "union",
+          "items": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object"
+            }
+          ],
+          "type": "any"
+        },
+        "scale": {
+          "description": "Scale to extract data from",
+          "type": "string"
+        },
+        "direction": {
+          "description": "Rendering direction [horizontal|vertical]",
+          "optional": true,
+          "defaultValue": "vertical",
+          "type": "string"
+        },
+        "bubbles": {
+          "optional": true,
+          "kind": "object",
+          "entries": {
+            "show": {
+              "description": "True to show label bubble, false otherwise",
+              "optional": true,
+              "defaultValue": true,
+              "type": "boolean"
+            },
+            "align": {
+              "description": "Where to anchor bubble [start|end]",
+              "optional": true,
+              "defaultValue": "start",
+              "type": "string"
+            },
+            "label": {
+              "description": "Callback function for the labels",
+              "optional": true,
+              "type": "function"
+            }
+          }
+        },
+        "target": {
+          "optional": true,
+          "kind": "object",
+          "entries": {
+            "component": {
+              "description": "Render matching overlay on target component. @deprecated Use `components` instead",
+              "optional": true,
+              "type": "string"
+            },
+            "components": {
+              "description": "Render matching overlay on target components",
+              "optional": true,
+              "kind": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "selector": {
+              "description": "Instead of targeting a component, target one or more shapes",
+              "optional": true,
+              "type": "string"
+            },
+            "fillSelector": {
+              "description": "Target a subset of the selector as fill area. Only applicable if `selector` property is set",
+              "optional": true,
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "ComponentBrushRangeStyle": {
+      "kind": "object",
+      "entries": {
+        "bubble": {
+          "optional": true,
+          "kind": "object",
+          "entries": {
+            "fontSize": {
+              "optional": true,
+              "type": "string"
+            },
+            "fontFamily": {
+              "optional": true,
+              "type": "string"
+            },
+            "fill": {
+              "optional": true,
+              "type": "string"
+            },
+            "color": {
+              "optional": true,
+              "type": "string"
+            },
+            "stroke": {
+              "optional": true,
+              "type": "string"
+            },
+            "strokeWidth": {
+              "optional": true,
+              "type": "number"
+            },
+            "borderRadius": {
+              "optional": true,
+              "type": "number"
+            }
+          }
+        },
+        "line": {
+          "optional": true,
+          "kind": "object",
+          "entries": {
+            "stroke": {
+              "optional": true,
+              "type": "string"
+            },
+            "strokeWidth": {
+              "optional": true,
+              "type": "number"
+            }
+          }
+        },
+        "target": {
+          "optional": true,
+          "kind": "object",
+          "entries": {
+            "fill": {
+              "optional": true,
+              "type": "string"
+            },
+            "strokeWidth": {
+              "optional": true,
+              "type": "number"
+            },
+            "opacity": {
+              "optional": true,
+              "type": "number"
+            }
+          }
+        }
+      }
+    },
+    "ComponentContainer": {
+      "stability": "experimental",
+      "extends": [
+        {
+          "type": "#/definitions/ComponentSettings"
+        }
+      ],
+      "kind": "object",
+      "entries": {
+        "type": {
+          "optional": true,
+          "defaultValue": "'container'",
+          "type": "string"
+        }
+      },
+      "examples": [
+        "{\n type: 'container',\n preferredSize: ({ inner, outer, dock, children }) => {\n   const sizes = children.map(c => c.preferredSize({ inner, outer }));\n   return Math.max(...sizes);\n },\n strategy: (rect, components) => {\n   const height = rect.height / components.length;\n   components.forEach((c, i) => {\n     c.resize({ ...rect, height, y: rect.y + i * height })\n   });\n   return { visible: components, hidden: [], order: components };\n },\n components: [\n    ...\n ],\n}"
+      ]
     },
     "ComponentGridLineSettings": {
       "kind": "object",
@@ -2415,58 +2716,18 @@
         "scale": {
           "type": "string"
         },
-        "type": {
-          "defaultValue": "legend-cat",
-          "type": "string"
-        },
         "settings": {
           "kind": "object",
           "entries": {
-            "layout": {
-              "optional": true,
-              "kind": "object",
-              "entries": {
-                "size": {
-                  "description": "Maximum number of columns (vertical) or rows (horizontal)",
-                  "optional": true,
-                  "defaultValue": 1,
-                  "type": "number"
-                },
-                "direction": {
-                  "description": "Layout direction. Either `'ltr'` or `'rtl'`",
-                  "optional": true,
-                  "defaultValue": "ltr",
-                  "type": "string"
-                },
-                "scrollOffset": {
-                  "description": "Initial scroll offset",
-                  "optional": true,
-                  "defaultValue": 0,
-                  "type": "number"
-                }
-              }
-            },
             "item": {
               "description": "Settings applied per item",
               "optional": true,
               "kind": "object",
               "entries": {
-                "show": {
-                  "description": "Whether to show the current item",
-                  "optional": true,
-                  "defaultValue": true,
-                  "type": "boolean"
-                },
                 "label": {
                   "optional": true,
                   "kind": "object",
                   "entries": {
-                    "wordBreak": {
-                      "description": "Word break rule, how to apply line break if label text overflows its maxWidth property. Either `'break-word'` or `'break-all'`",
-                      "optional": true,
-                      "defaultValue": "none",
-                      "type": "string"
-                    },
                     "maxLines": {
                       "description": "Max number of lines allowed if label is broken into multiple lines (only applicable with wordBreak)",
                       "optional": true,
@@ -2478,6 +2739,12 @@
                       "optional": true,
                       "defaultValue": 136,
                       "type": "number"
+                    },
+                    "wordBreak": {
+                      "description": "Word break rule, how to apply line break if label text overflows its maxWidth property. Either `'break-word'` or `'break-all'`",
+                      "optional": true,
+                      "defaultValue": "none",
+                      "type": "string"
                     }
                   }
                 },
@@ -2485,56 +2752,46 @@
                   "optional": true,
                   "kind": "object",
                   "entries": {
-                    "type": {
-                      "optional": true,
-                      "defaultValue": "square",
-                      "type": "string"
-                    },
                     "size": {
                       "optional": true,
                       "defaultValue": 12,
                       "type": "number"
+                    },
+                    "type": {
+                      "optional": true,
+                      "defaultValue": "square",
+                      "type": "string"
                     }
                   }
-                }
-              }
-            },
-            "title": {
-              "optional": true,
-              "kind": "object",
-              "entries": {
+                },
                 "show": {
-                  "description": "Whether to show the title",
+                  "description": "Whether to show the current item",
                   "optional": true,
                   "defaultValue": true,
                   "type": "boolean"
-                },
-                "text": {
-                  "description": "Title text. Defaults to the title of the provided data field",
+                }
+              }
+            },
+            "layout": {
+              "optional": true,
+              "kind": "object",
+              "entries": {
+                "direction": {
+                  "description": "Layout direction. Either `'ltr'` or `'rtl'`",
                   "optional": true,
+                  "defaultValue": "ltr",
                   "type": "string"
                 },
-                "anchor": {
-                  "description": "Horizontal alignment of the text. Allowed values are `'start'`, `'middle'` and `'end'`",
-                  "defaultValue": "start",
-                  "type": "string"
-                },
-                "wordBreak": {
-                  "description": "Word break rule, how to apply line break if label text overflows its maxWidth property. Either `'break-word'` or `'break-all'`",
+                "scrollOffset": {
+                  "description": "Initial scroll offset",
                   "optional": true,
-                  "defaultValue": "none",
-                  "type": "string"
-                },
-                "maxLines": {
-                  "description": "Max number of lines allowed if label is broken into multiple lines, is only appled when `wordBreak` is not set to `'none'`",
-                  "optional": true,
-                  "defaultValue": 2,
+                  "defaultValue": 0,
                   "type": "number"
                 },
-                "maxWidth": {
-                  "description": "Maximum width of title, in px",
+                "size": {
+                  "description": "Maximum number of columns (vertical) or rows (horizontal)",
                   "optional": true,
-                  "defaultValue": 156,
+                  "defaultValue": 1,
                   "type": "number"
                 }
               }
@@ -2575,8 +2832,52 @@
                   "type": "boolean"
                 }
               }
+            },
+            "title": {
+              "optional": true,
+              "kind": "object",
+              "entries": {
+                "anchor": {
+                  "description": "Horizontal alignment of the text. Allowed values are `'start'`, `'middle'` and `'end'`",
+                  "defaultValue": "start",
+                  "type": "string"
+                },
+                "maxLines": {
+                  "description": "Max number of lines allowed if label is broken into multiple lines, is only appled when `wordBreak` is not set to `'none'`",
+                  "optional": true,
+                  "defaultValue": 2,
+                  "type": "number"
+                },
+                "maxWidth": {
+                  "description": "Maximum width of title, in px",
+                  "optional": true,
+                  "defaultValue": 156,
+                  "type": "number"
+                },
+                "show": {
+                  "description": "Whether to show the title",
+                  "optional": true,
+                  "defaultValue": true,
+                  "type": "boolean"
+                },
+                "text": {
+                  "description": "Title text. Defaults to the title of the provided data field",
+                  "optional": true,
+                  "type": "string"
+                },
+                "wordBreak": {
+                  "description": "Word break rule, how to apply line break if label text overflows its maxWidth property. Either `'break-word'` or `'break-all'`",
+                  "optional": true,
+                  "defaultValue": "none",
+                  "type": "string"
+                }
+              }
             }
           }
+        },
+        "type": {
+          "defaultValue": "legend-cat",
+          "type": "string"
         }
       }
     },
@@ -2818,95 +3119,37 @@
     "ComponentLineSettings": {
       "kind": "object",
       "entries": {
+        "connect": {
+          "optional": true,
+          "defaultValue": false,
+          "type": "boolean"
+        },
         "coordinates": {
           "kind": "object",
           "entries": {
-            "minor": {
-              "defaultValue": 0.5,
-              "type": "number"
-            },
-            "major": {
-              "defaultValue": 0.5,
-              "type": "number"
+            "defined": {
+              "optional": true,
+              "defaultValue": "true",
+              "type": "#/definitions/DatumBoolean"
             },
             "layerId": {
               "optional": true,
               "defaultValue": 0,
               "type": "number"
             },
-            "defined": {
-              "optional": true,
-              "defaultValue": "true",
-              "type": "#/definitions/DatumBoolean"
+            "major": {
+              "defaultValue": 0.5,
+              "type": "number"
+            },
+            "minor": {
+              "defaultValue": 0.5,
+              "type": "number"
             }
           }
-        },
-        "connect": {
-          "optional": true,
-          "defaultValue": false,
-          "type": "boolean"
-        },
-        "orientation": {
-          "optional": true,
-          "defaultValue": "horizontal",
-          "type": "string"
         },
         "layers": {
           "kind": "object",
           "entries": {
-            "curve": {
-              "optional": true,
-              "defaultValue": "linear",
-              "type": "string"
-            },
-            "show": {
-              "optional": true,
-              "defaultValue": true,
-              "type": "boolean"
-            },
-            "sort": {
-              "optional": true,
-              "type": "#/definitions/ComponentLine/definitions/layerSort"
-            },
-            "line": {
-              "kind": "object",
-              "entries": {
-                "stroke": {
-                  "optional": true,
-                  "defaultValue": "#ccc",
-                  "type": "string"
-                },
-                "strokeWidth": {
-                  "optional": true,
-                  "defaultValue": 1,
-                  "type": "number"
-                },
-                "strokeLinejoin": {
-                  "optional": true,
-                  "defaultValue": "miter",
-                  "type": "string"
-                },
-                "strokeDasharray": {
-                  "optional": true,
-                  "type": "string"
-                },
-                "opacity": {
-                  "optional": true,
-                  "defaultValue": 1,
-                  "type": "number"
-                },
-                "show": {
-                  "optional": true,
-                  "defaultValue": true,
-                  "type": "boolean"
-                },
-                "showMinor0": {
-                  "optional": true,
-                  "defaultValue": true,
-                  "type": "boolean"
-                }
-              }
-            },
             "area": {
               "kind": "object",
               "entries": {
@@ -2926,95 +3169,66 @@
                   "type": "boolean"
                 }
               }
-            }
-          }
-        }
-      }
-    },
-    "ComponentPieSettings": {
-      "kind": "object",
-      "entries": {
-        "startAngle": {
-          "description": "Start angle of the pie, in radians",
-          "optional": true,
-          "defaultValue": 0,
-          "type": "number"
-        },
-        "endAngle": {
-          "description": "End angle of the pie, in radians",
-          "optional": true,
-          "type": "number"
-        },
-        "slice": {
-          "kind": "object",
-          "entries": {
-            "arc": {
-              "description": "Absolute value of the slice's arc length",
+            },
+            "curve": {
               "optional": true,
-              "defaultValue": 1,
-              "type": "number"
+              "defaultValue": "linear",
+              "type": "string"
+            },
+            "line": {
+              "kind": "object",
+              "entries": {
+                "opacity": {
+                  "optional": true,
+                  "defaultValue": 1,
+                  "type": "number"
+                },
+                "show": {
+                  "optional": true,
+                  "defaultValue": true,
+                  "type": "boolean"
+                },
+                "showMinor0": {
+                  "optional": true,
+                  "defaultValue": true,
+                  "type": "boolean"
+                },
+                "stroke": {
+                  "optional": true,
+                  "defaultValue": "#ccc",
+                  "type": "string"
+                },
+                "strokeDasharray": {
+                  "optional": true,
+                  "type": "string"
+                },
+                "strokeLinejoin": {
+                  "optional": true,
+                  "defaultValue": "miter",
+                  "type": "string"
+                },
+                "strokeWidth": {
+                  "optional": true,
+                  "defaultValue": 1,
+                  "type": "number"
+                }
+              }
             },
             "show": {
-              "description": "Visibility of the slice",
               "optional": true,
               "defaultValue": true,
               "type": "boolean"
             },
-            "fill": {
-              "description": "Fill color of the slice",
+            "sort": {
               "optional": true,
-              "defaultValue": "#333",
-              "type": "string"
-            },
-            "stroke": {
-              "description": "Stroke color of the slice",
-              "optional": true,
-              "defaultValue": "#ccc",
-              "type": "string"
-            },
-            "strokeWidth": {
-              "description": "Stroke width of the slice",
-              "optional": true,
-              "defaultValue": 1,
-              "type": "number"
-            },
-            "strokeLinejoin": {
-              "description": "Stroke line join",
-              "optional": true,
-              "defaultValue": "round",
-              "type": "string"
-            },
-            "opacity": {
-              "description": "Opacity of the slice",
-              "optional": true,
-              "defaultValue": 1,
-              "type": "number"
-            },
-            "innerRadius": {
-              "description": "Inner radius of the slice",
-              "optional": true,
-              "defaultValue": 0,
-              "type": "number"
-            },
-            "outerRadius": {
-              "description": "Outer radius of the slice",
-              "optional": true,
-              "defaultValue": 0.8,
-              "type": "number"
-            },
-            "cornerRadius": {
-              "description": "Corner radius of the slice, in pixels",
-              "optional": true,
-              "defaultValue": 0,
-              "type": "number"
-            },
-            "offset": {
-              "description": "Radial offset of the slice",
-              "optional": true,
-              "defaultValue": 0,
-              "type": "number"
+              "type": "#/definitions/ComponentLine/definitions/layerSort"
             }
           }
+        },
+        "orientation": {
+          "optional": true,
+          "defaultValue": "horizontal",
+          "type": "string"
         }
       }
     },
@@ -3031,27 +3245,169 @@
         "{\n  type: 'pie',\n  data: {\n    extract: {\n      field: 'Region',\n      props: {\n        num: { field: 'Population' }\n      }\n    }\n  },\n  settings: {\n    startAngle: Math.PI / 2,\n    endAngle: -Math.PI / 2,\n    slice: {\n      arc: { ref: 'num' },\n      fill: 'green',\n      stroke: 'red',\n      strokeWidth: 2,\n      strokeLinejoin: 'round',\n      innerRadius: 0.6,\n      outerRadius 0.8,\n      opacity: 0.8,\n      offset: 0.2\n    }\n  }\n}"
       ]
     },
+    "ComponentPieSettings": {
+      "kind": "object",
+      "entries": {
+        "endAngle": {
+          "description": "End angle of the pie, in radians",
+          "optional": true,
+          "type": "number"
+        },
+        "slice": {
+          "kind": "object",
+          "entries": {
+            "arc": {
+              "description": "Absolute value of the slice's arc length",
+              "optional": true,
+              "defaultValue": 1,
+              "type": "number"
+            },
+            "cornerRadius": {
+              "description": "Corner radius of the slice, in pixels",
+              "optional": true,
+              "defaultValue": 0,
+              "type": "number"
+            },
+            "fill": {
+              "description": "Fill color of the slice",
+              "optional": true,
+              "defaultValue": "#333",
+              "type": "string"
+            },
+            "innerRadius": {
+              "description": "Inner radius of the slice",
+              "optional": true,
+              "defaultValue": 0,
+              "type": "number"
+            },
+            "offset": {
+              "description": "Radial offset of the slice",
+              "optional": true,
+              "defaultValue": 0,
+              "type": "number"
+            },
+            "opacity": {
+              "description": "Opacity of the slice",
+              "optional": true,
+              "defaultValue": 1,
+              "type": "number"
+            },
+            "outerRadius": {
+              "description": "Outer radius of the slice",
+              "optional": true,
+              "defaultValue": 0.8,
+              "type": "number"
+            },
+            "show": {
+              "description": "Visibility of the slice",
+              "optional": true,
+              "defaultValue": true,
+              "type": "boolean"
+            },
+            "stroke": {
+              "description": "Stroke color of the slice",
+              "optional": true,
+              "defaultValue": "#ccc",
+              "type": "string"
+            },
+            "strokeLinejoin": {
+              "description": "Stroke line join",
+              "optional": true,
+              "defaultValue": "round",
+              "type": "string"
+            },
+            "strokeWidth": {
+              "description": "Stroke width of the slice",
+              "optional": true,
+              "defaultValue": 1,
+              "type": "number"
+            }
+          }
+        },
+        "startAngle": {
+          "description": "Start angle of the pie, in radians",
+          "optional": true,
+          "defaultValue": 0,
+          "type": "number"
+        }
+      }
+    },
     "ComponentPoint": {
       "kind": "object",
       "entries": {
-        "type": {
-          "defaultValue": "point",
-          "type": "string"
-        },
         "settings": {
           "kind": "object",
           "entries": {
+            "fill": {
+              "description": "Fill color",
+              "optional": true,
+              "defaultValue": "#333",
+              "type": "#/definitions/DatumString"
+            },
+            "opacity": {
+              "description": "Opacity of shape",
+              "optional": true,
+              "defaultValue": 1,
+              "type": "#/definitions/DatumNumber"
+            },
             "shape": {
               "description": "Type of shape",
               "optional": true,
               "defaultValue": "circle",
               "type": "#/definitions/DatumString"
             },
-            "fill": {
-              "description": "Fill color",
+            "show": {
+              "description": "Whether or not to show the point",
               "optional": true,
-              "defaultValue": "#333",
-              "type": "#/definitions/DatumString"
+              "defaultValue": true,
+              "type": "#/definitions/DatumBoolean"
+            },
+            "size": {
+              "description": "Normalized size of shape",
+              "optional": true,
+              "defaultValue": 1,
+              "type": "#/definitions/DatumNumber"
+            },
+            "sizeLimits": {
+              "kind": "object",
+              "entries": {
+                "maxPx": {
+                  "description": "Maximum size of shape, in pixels",
+                  "optional": true,
+                  "defaultValue": 10000,
+                  "type": "number"
+                },
+                "maxRelDiscrete": {
+                  "description": "Maximum size relative discrete scale banwidth",
+                  "optional": true,
+                  "defaultValue": 1,
+                  "type": "number"
+                },
+                "maxRelExtent": {
+                  "description": "Maximum size relative linear scale extent",
+                  "optional": true,
+                  "defaultValue": 0.1,
+                  "type": "number"
+                },
+                "minPx": {
+                  "description": "Minimum size of shape, in pixels",
+                  "optional": true,
+                  "defaultValue": 1,
+                  "type": "number"
+                },
+                "minRelDiscrete": {
+                  "description": "Minimum size relative discrete scale banwidth",
+                  "optional": true,
+                  "defaultValue": 0.1,
+                  "type": "number"
+                },
+                "minRelExtent": {
+                  "description": "Minimum size relative linear scale extent",
+                  "optional": true,
+                  "defaultValue": 0.01,
+                  "type": "number"
+                }
+              }
             },
             "stroke": {
               "description": "Stroke color",
@@ -3059,22 +3415,16 @@
               "defaultValue": "#ccc",
               "type": "#/definitions/DatumString"
             },
-            "strokeWidth": {
-              "description": "Stroke width",
-              "optional": true,
-              "defaultValue": 0,
-              "type": "#/definitions/DatumNumber"
-            },
             "strokeLinejoin": {
               "description": "Stroke line join",
               "optional": true,
               "defaultValue": "miter",
               "type": "string"
             },
-            "opacity": {
-              "description": "Opacity of shape",
+            "strokeWidth": {
+              "description": "Stroke width",
               "optional": true,
-              "defaultValue": 1,
+              "defaultValue": 0,
               "type": "#/definitions/DatumNumber"
             },
             "x": {
@@ -3088,133 +3438,14 @@
               "optional": true,
               "defaultValue": 0.5,
               "type": "#/definitions/DatumNumber"
-            },
-            "size": {
-              "description": "Normalized size of shape",
-              "optional": true,
-              "defaultValue": 1,
-              "type": "#/definitions/DatumNumber"
-            },
-            "show": {
-              "description": "Whether or not to show the point",
-              "optional": true,
-              "defaultValue": true,
-              "type": "#/definitions/DatumBoolean"
-            },
-            "sizeLimits": {
-              "kind": "object",
-              "entries": {
-                "maxPx": {
-                  "description": "Maximum size of shape, in pixels",
-                  "optional": true,
-                  "defaultValue": 10000,
-                  "type": "number"
-                },
-                "minPx": {
-                  "description": "Minimum size of shape, in pixels",
-                  "optional": true,
-                  "defaultValue": 1,
-                  "type": "number"
-                },
-                "maxRelExtent": {
-                  "description": "Maximum size relative linear scale extent",
-                  "optional": true,
-                  "defaultValue": 0.1,
-                  "type": "number"
-                },
-                "minRelExtent": {
-                  "description": "Minimum size relative linear scale extent",
-                  "optional": true,
-                  "defaultValue": 0.01,
-                  "type": "number"
-                },
-                "maxRelDiscrete": {
-                  "description": "Maximum size relative discrete scale banwidth",
-                  "optional": true,
-                  "defaultValue": 1,
-                  "type": "number"
-                },
-                "minRelDiscrete": {
-                  "description": "Minimum size relative discrete scale banwidth",
-                  "optional": true,
-                  "defaultValue": 0.1,
-                  "type": "number"
-                }
-              }
             }
           }
-        }
-      }
-    },
-    "datumAccessor": {
-      "kind": "function",
-      "params": [
-        {
-          "name": "d",
-          "type": "#/definitions/DatumExtract"
-        }
-      ]
-    },
-    "DatumConfig": {
-      "kind": "object",
-      "entries": {
-        "scale": {
-          "optional": true,
-          "type": "string"
         },
-        "fn": {
-          "type": "#/definitions/datumAccessor"
-        },
-        "ref": {
-          "description": "A reference to a DatumExtract property",
+        "type": {
+          "defaultValue": "point",
           "type": "string"
         }
       }
-    },
-    "DatumString": {
-      "kind": "union",
-      "items": [
-        {
-          "type": "string"
-        },
-        {
-          "type": "#/definitions/DatumConfig"
-        },
-        {
-          "type": "#/definitions/datumAccessor"
-        }
-      ],
-      "type": "any"
-    },
-    "DatumNumber": {
-      "kind": "union",
-      "items": [
-        {
-          "type": "number"
-        },
-        {
-          "type": "#/definitions/DatumConfig"
-        },
-        {
-          "type": "#/definitions/datumAccessor"
-        }
-      ],
-      "type": "any"
-    },
-    "DatumBoolean": {
-      "kind": "union",
-      "items": [
-        {
-          "type": "boolean"
-        },
-        {
-          "type": "#/definitions/DatumConfig"
-        },
-        {
-          "type": "#/definitions/datumAccessor"
-        }
-      ],
-      "type": "any"
     },
     "ComponentRange": {
       "kind": "object",
@@ -3379,6 +3610,35 @@
               "items": {
                 "type": "reflines-y"
               }
+            }
+          }
+        },
+        "generic-object": {
+          "kind": "object",
+          "entries": {
+            "fill": {
+              "description": "Fill color",
+              "optional": true,
+              "defaultValue": "'#fff'",
+              "type": "string"
+            },
+            "stroke": {
+              "description": "Stroke",
+              "optional": true,
+              "defaultValue": "'transparent'",
+              "type": "string"
+            },
+            "strokeWidth": {
+              "description": "Stroke width",
+              "optional": true,
+              "defaultValue": 0,
+              "type": "number"
+            },
+            "opacity": {
+              "description": "Opacity",
+              "optional": true,
+              "defaultValue": 1,
+              "type": "number"
             }
           }
         },
@@ -3597,35 +3857,133 @@
               "type": "number"
             }
           }
+        }
+      }
+    },
+    "ComponentSettings": {
+      "kind": "object",
+      "entries": {
+        "type": {
+          "description": "Component type (ex: axis, point, ...)",
+          "type": "string"
         },
-        "generic-object": {
+        "preferredSize": {
+          "description": "Function returning the preferred size",
+          "optional": true,
+          "type": "function"
+        },
+        "created": {
+          "optional": true,
+          "type": "function"
+        },
+        "beforeMount": {
+          "optional": true,
+          "type": "function"
+        },
+        "mounted": {
+          "optional": true,
+          "type": "function"
+        },
+        "beforeUpdate": {
+          "optional": true,
+          "type": "function"
+        },
+        "updated": {
+          "optional": true,
+          "type": "function"
+        },
+        "beforeRender": {
+          "optional": true,
+          "type": "function"
+        },
+        "beforeDestroy": {
+          "optional": true,
+          "type": "function"
+        },
+        "destroyed": {
+          "optional": true,
+          "type": "function"
+        },
+        "brush": {
+          "description": "see [brushing](./brushing.md)",
+          "optional": true,
+          "type": "brush-setting"
+        },
+        "layout": {
+          "description": "Layout settings",
+          "optional": true,
           "kind": "object",
           "entries": {
-            "fill": {
-              "description": "Fill color",
-              "optional": true,
-              "defaultValue": "'#fff'",
-              "type": "string"
-            },
-            "stroke": {
-              "description": "Stroke",
-              "optional": true,
-              "defaultValue": "'transparent'",
-              "type": "string"
-            },
-            "strokeWidth": {
-              "description": "Stroke width",
+            "displayOrder": {
               "optional": true,
               "defaultValue": 0,
               "type": "number"
             },
-            "opacity": {
-              "description": "Opacity",
+            "prioOrder": {
               "optional": true,
-              "defaultValue": 1,
+              "defaultValue": 0,
               "type": "number"
+            },
+            "minimumLayoutMode": {
+              "description": "Refer to layout sizes defined by layoutModes in `strategy`",
+              "optional": true,
+              "kind": "union",
+              "items": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "Object"
+                }
+              ],
+              "type": "any"
+            },
+            "dock": {
+              "description": "left, right, top or bottom",
+              "optional": true,
+              "type": "string"
             }
           }
+        },
+        "show": {
+          "description": "If the component should be rendered",
+          "optional": true,
+          "defaultValue": true,
+          "type": "boolean"
+        },
+        "scale": {
+          "description": "Named scale. Will be provided to the component if it ask for it.",
+          "optional": true,
+          "type": "string"
+        },
+        "formatter": {
+          "description": "Named formatter. Fallback to create formatter from scale. Will be provided to the component if it ask for it.",
+          "optional": true,
+          "type": "string"
+        },
+        "components": {
+          "description": "Optional list of child components",
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/ComponentSettings"
+          },
+          "stability": "experimental"
+        },
+        "strategy": {
+          "description": "Layout strategy used for child components.",
+          "optional": true,
+          "kind": "union",
+          "items": [
+            {
+              "type": "#/definitions/DockLayoutSettings"
+            },
+            {
+              "type": "#/definitions/CustomLayoutFunction"
+            }
+          ],
+          "type": "any",
+          "stability": "experimental"
         }
       }
     },
@@ -3700,21 +4058,211 @@
         }
       }
     },
-    "DataSource": {
+    "ComponentTooltip": {
       "kind": "object",
       "entries": {
-        "key": {
-          "description": "Unique identifier for this data source",
-          "type": "string"
+        "settings": {
+          "kind": "object",
+          "entries": {
+            "afterHide": {
+              "description": "Component lifecycle hook. Called after the tooltip is hidden.",
+              "optional": true,
+              "type": "function"
+            },
+            "afterShow": {
+              "description": "Component lifecycle hook. Called after the tooltip have been displayed.",
+              "optional": true,
+              "type": "function"
+            },
+            "appendTo": {
+              "description": "Explicitly set a target element. This allows the tooltip to attach itself outside the picasso container.",
+              "optional": true,
+              "type": "HTMLElement"
+            },
+            "arrowClass": {
+              "description": "Set arrow class.",
+              "optional": true,
+              "type": "object",
+              "generics": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "boolean"
+                }
+              ]
+            },
+            "beforeHide": {
+              "description": "Component lifecycle hook. Called before the tooltip is hidden.",
+              "optional": true,
+              "type": "function"
+            },
+            "beforeShow": {
+              "description": "Component lifecycle hook. Called before the tooltip is displayed.",
+              "optional": true,
+              "type": "function"
+            },
+            "content": {
+              "description": "Content generator. Extracted data is available in the `data` property, where each value in the area is the extracted datum from a node.",
+              "optional": true,
+              "kind": "function",
+              "params": [],
+              "returns": {
+                "description": "Array of h objects",
+                "kind": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            },
+            "contentClass": {
+              "description": "Set content class.",
+              "optional": true,
+              "type": "object",
+              "generics": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "boolean"
+                }
+              ]
+            },
+            "delay": {
+              "description": "Delay before the tooltip is rendered, in milliseconds",
+              "optional": true,
+              "defaultValue": 500,
+              "type": "number"
+            },
+            "direction": {
+              "description": "Content direction [ltr | rtl]",
+              "optional": true,
+              "defaultValue": "ltr",
+              "type": "string"
+            },
+            "duration": {
+              "description": "How long the tooltip is visible, in milliseconds",
+              "optional": true,
+              "defaultValue": 8000,
+              "type": "number"
+            },
+            "extract": {
+              "description": "Extract data from a node.",
+              "optional": true,
+              "kind": "function",
+              "params": [],
+              "returns": {
+                "description": "An array of data",
+                "type": "object"
+              }
+            },
+            "filter": {
+              "description": "Reduce incoming nodes to only a set of applicable nodes. Is called as a part of the `show` event.",
+              "optional": true,
+              "kind": "function",
+              "params": [],
+              "returns": {
+                "description": "An array of nodes",
+                "kind": "array",
+                "items": {
+                  "type": "any"
+                }
+              }
+            },
+            "isEqual": {
+              "description": "Comparison function. If evaluted to true, the incoming nodes in the `show` event are ignored. If evaluated to false, any active tooltip is cleared and a new tooltip is queued.\n\nThe function gets two parameters, the first is the currently active set of nodes, if any, and the second is the incoming set of nodes. By default the two set of nodes are considered equal if their data attributes are the same.",
+              "optional": true,
+              "kind": "function",
+              "params": [],
+              "returns": {
+                "type": "boolean"
+              }
+            },
+            "onHide": {
+              "description": "Component lifecycle hook. Called when the toolip is hidden. By default this deletes the tooltip element.",
+              "optional": true,
+              "type": "function"
+            },
+            "placement": {
+              "optional": true,
+              "kind": "object",
+              "entries": {
+                "area": {
+                  "description": "Specify the limiting area, where target is the component area unless the appendTo property is set, in which case it referes to the appendTo element. Viewport is the browser viewport.\n\nAvailable options are: [viewport | target]",
+                  "optional": true,
+                  "defaultValue": "viewport",
+                  "type": "number"
+                },
+                "dock": {
+                  "description": "Docking position of the tooltip. Available positions: [left | right | top | bottom | auto]",
+                  "optional": true,
+                  "defaultValue": "auto",
+                  "type": "string"
+                },
+                "offset": {
+                  "description": "Distance from the content area to the tooltip position, in px.",
+                  "optional": true,
+                  "defaultValue": 8,
+                  "type": "number"
+                },
+                "type": {
+                  "description": "Available types: [pointer | bounds | slice]",
+                  "optional": true,
+                  "defaultValue": "pointer",
+                  "type": "string"
+                }
+              }
+            },
+            "tooltipClass": {
+              "description": "Set tooltip class.",
+              "optional": true,
+              "type": "object",
+              "generics": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "boolean"
+                }
+              ]
+            }
+          }
         },
         "type": {
-          "description": "The dataset type",
+          "defaultValue": "tooltip",
           "type": "string"
-        },
-        "data": {
-          "type": "any"
         }
       }
+    },
+    "CustomLayoutFunction": {
+      "kind": "function",
+      "params": [
+        {
+          "name": "rect",
+          "type": "#/definitions/Rect"
+        },
+        {
+          "name": "components",
+          "kind": "array",
+          "items": {
+            "entries": {
+              "key": {
+                "type": "string"
+              },
+              "dockConfig": {
+                "type": "object"
+              },
+              "resize": {
+                "type": "function"
+              },
+              "preferredSize": {
+                "type": "function"
+              }
+            },
+            "kind": "object"
+          }
+        }
+      ]
     },
     "DataExtractConfig": {
       "kind": "object",
@@ -3760,32 +4308,6 @@
         }
       },
       "definitions": {
-        "valueFn": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "cell",
-              "description": "The field cell",
-              "type": "any"
-            }
-          ],
-          "returns": {
-            "type": "any"
-          }
-        },
-        "labelFn": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "cell",
-              "description": "The field cell",
-              "type": "any"
-            }
-          ],
-          "returns": {
-            "type": "string"
-          }
-        },
         "filterFn": {
           "kind": "function",
           "params": [
@@ -3799,7 +4321,7 @@
             "type": "boolean"
           }
         },
-        "trackByFn": {
+        "labelFn": {
           "kind": "function",
           "params": [
             {
@@ -3809,7 +4331,7 @@
             }
           ],
           "returns": {
-            "type": "any"
+            "type": "string"
           }
         },
         "reduceFn": {
@@ -3848,6 +4370,158 @@
           "returns": {
             "type": "string"
           }
+        },
+        "trackByFn": {
+          "kind": "function",
+          "params": [
+            {
+              "name": "cell",
+              "description": "The field cell",
+              "type": "any"
+            }
+          ],
+          "returns": {
+            "type": "any"
+          }
+        },
+        "valueFn": {
+          "kind": "function",
+          "params": [
+            {
+              "name": "cell",
+              "description": "The field cell",
+              "type": "any"
+            }
+          ],
+          "returns": {
+            "type": "any"
+          }
+        }
+      }
+    },
+    "Dataset": {
+      "kind": "interface",
+      "params": [],
+      "entries": {
+        "extract": {
+          "description": "Extract data items from this dataset",
+          "kind": "function",
+          "params": [
+            {
+              "name": "config",
+              "type": "#/definitions/DataExtractConfig"
+            }
+          ],
+          "returns": {
+            "kind": "array",
+            "items": {
+              "type": "#/definitions/DatumExtract"
+            }
+          }
+        },
+        "field": {
+          "description": "Find a field within this dataset",
+          "kind": "function",
+          "params": [
+            {
+              "name": "query",
+              "description": "The field to find",
+              "type": "string"
+            }
+          ],
+          "returns": {
+            "type": "#/definitions/Field"
+          }
+        },
+        "fields": {
+          "description": "Get all fields within this dataset",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "kind": "array",
+            "items": {
+              "type": "field"
+            }
+          }
+        },
+        "hierarchy": {
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "null"
+          }
+        },
+        "key": {
+          "description": "Get the key identifying this dataset",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "string"
+          }
+        },
+        "raw": {
+          "description": "Get the raw data",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "any"
+          }
+        }
+      }
+    },
+    "DataSource": {
+      "kind": "object",
+      "entries": {
+        "key": {
+          "description": "Unique identifier for this data source",
+          "type": "string"
+        },
+        "type": {
+          "description": "The dataset type",
+          "type": "string"
+        },
+        "data": {
+          "type": "any"
+        }
+      }
+    },
+    "datumAccessor": {
+      "kind": "function",
+      "params": [
+        {
+          "name": "d",
+          "type": "#/definitions/DatumExtract"
+        }
+      ]
+    },
+    "DatumBoolean": {
+      "kind": "union",
+      "items": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "#/definitions/DatumConfig"
+        },
+        {
+          "type": "#/definitions/datumAccessor"
+        }
+      ],
+      "type": "any"
+    },
+    "DatumConfig": {
+      "kind": "object",
+      "entries": {
+        "scale": {
+          "optional": true,
+          "type": "string"
+        },
+        "fn": {
+          "type": "#/definitions/datumAccessor"
+        },
+        "ref": {
+          "description": "A reference to a DatumExtract property",
+          "type": "string"
         }
       }
     },
@@ -3878,280 +4552,35 @@
         }
       }
     },
-    "Dataset": {
-      "kind": "interface",
-      "params": [],
-      "entries": {
-        "key": {
-          "description": "Get the key identifying this dataset",
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "string"
-          }
+    "DatumNumber": {
+      "kind": "union",
+      "items": [
+        {
+          "type": "number"
         },
-        "raw": {
-          "description": "Get the raw data",
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "any"
-          }
+        {
+          "type": "#/definitions/DatumConfig"
         },
-        "field": {
-          "description": "Find a field within this dataset",
-          "kind": "function",
-          "params": [
-            {
-              "name": "query",
-              "description": "The field to find",
-              "type": "string"
-            }
-          ],
-          "returns": {
-            "type": "#/definitions/Field"
-          }
-        },
-        "fields": {
-          "description": "Get all fields within this dataset",
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "kind": "array",
-            "items": {
-              "type": "field"
-            }
-          }
-        },
-        "extract": {
-          "description": "Extract data items from this dataset",
-          "kind": "function",
-          "params": [
-            {
-              "name": "config",
-              "type": "#/definitions/DataExtractConfig"
-            }
-          ],
-          "returns": {
-            "kind": "array",
-            "items": {
-              "type": "#/definitions/DatumExtract"
-            }
-          }
-        },
-        "hierarchy": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "null"
-          }
+        {
+          "type": "#/definitions/datumAccessor"
         }
-      }
+      ],
+      "type": "any"
     },
-    "Field": {
-      "kind": "object",
-      "entries": {
-        "id": {
-          "description": "Returns this field's id",
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "string"
-          }
-        },
-        "key": {
-          "description": "Returns this field's key",
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "string"
-          }
-        },
-        "raw": {
-          "description": "Returns the input data",
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "any"
-          }
-        },
-        "tags": {
-          "description": "Returns the tags.",
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "kind": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        "type": {
-          "description": "Returns this field's type: 'dimension' or 'measure'.",
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "string"
-          }
-        },
-        "min": {
-          "description": "Returns the min value of this field.",
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "number"
-          }
-        },
-        "max": {
-          "description": "Returns the max value of this field.",
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "number"
-          }
-        },
-        "title": {
-          "description": "Returns this field's title.",
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "string"
-          }
-        },
-        "items": {
-          "description": "Returns the values of this field.",
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "kind": "array",
-            "items": {
-              "type": "#/definitions/DatumExtract"
-            }
-          }
-        },
-        "formatter": {
-          "description": "Returns a formatter adapted to the content of this field.",
-          "kind": "function",
-          "params": []
-        }
-      }
-    },
-    "Rect": {
-      "kind": "object",
-      "entries": {
-        "x": {
-          "description": "X-coordinate",
-          "type": "number"
-        },
-        "y": {
-          "description": "Y-coordinate",
-          "type": "number"
-        },
-        "width": {
-          "description": "Width",
-          "type": "number"
-        },
-        "height": {
-          "description": "Height",
-          "type": "number"
-        }
-      }
-    },
-    "Line": {
-      "kind": "object",
-      "entries": {
-        "x1": {
-          "description": "Start x-coordinate",
-          "type": "number"
-        },
-        "y1": {
-          "description": "Start y-coordinate",
-          "type": "number"
-        },
-        "x2": {
-          "description": "End x-coordinate",
-          "type": "number"
-        },
-        "y2": {
-          "description": "End y-coordinate",
-          "type": "number"
-        }
-      }
-    },
-    "Point": {
-      "kind": "object",
-      "entries": {
-        "x": {
-          "description": "X-coordinate",
-          "type": "number"
-        },
-        "y": {
-          "description": "Y-coordinate",
-          "type": "number"
-        }
-      }
-    },
-    "Circle": {
-      "kind": "object",
-      "entries": {
-        "cx": {
-          "description": "Center x-coordinate",
-          "type": "number"
-        },
-        "cy": {
-          "description": "Center y-coordinate",
-          "type": "number"
-        },
-        "r": {
-          "description": "Circle radius",
-          "type": "number"
-        }
-      }
-    },
-    "Polygon": {
-      "kind": "object",
-      "entries": {
-        "points": {
-          "description": "Array of connected points",
-          "kind": "array",
-          "items": {
-            "type": "#/definitions/Point"
-          }
-        }
-      }
-    },
-    "Geopolygon": {
-      "kind": "object",
-      "entries": {
-        "polygons": {
-          "description": "Array of polygons",
-          "kind": "array",
-          "items": {
-            "type": "#/definitions/Polygon"
-          }
-        }
-      }
-    },
-    "Polyline": {
-      "kind": "object",
-      "entries": {
-        "points": {
-          "description": "Array of connected points",
-          "kind": "array",
-          "items": {
-            "type": "#/definitions/Point"
-          }
-        }
-      }
-    },
-    "Path": {
-      "kind": "object",
-      "entries": {
-        "d": {
-          "description": "Path definition",
+    "DatumString": {
+      "kind": "union",
+      "items": [
+        {
           "type": "string"
+        },
+        {
+          "type": "#/definitions/DatumConfig"
+        },
+        {
+          "type": "#/definitions/datumAccessor"
         }
-      }
+      ],
+      "type": "any"
     },
     "DockLayoutSettings": {
       "kind": "object",
@@ -4229,6 +4658,448 @@
               "type": "height:number}"
             }
           ]
+        }
+      }
+    },
+    "Field": {
+      "kind": "object",
+      "entries": {
+        "formatter": {
+          "description": "Returns a formatter adapted to the content of this field.",
+          "kind": "function",
+          "params": []
+        },
+        "id": {
+          "description": "Returns this field's id",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "string"
+          }
+        },
+        "items": {
+          "description": "Returns the values of this field.",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "kind": "array",
+            "items": {
+              "type": "#/definitions/DatumExtract"
+            }
+          }
+        },
+        "key": {
+          "description": "Returns this field's key",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "string"
+          }
+        },
+        "max": {
+          "description": "Returns the max value of this field.",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "number"
+          }
+        },
+        "min": {
+          "description": "Returns the min value of this field.",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "number"
+          }
+        },
+        "raw": {
+          "description": "Returns the input data",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "any"
+          }
+        },
+        "tags": {
+          "description": "Returns the tags.",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "kind": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "title": {
+          "description": "Returns this field's title.",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "string"
+          }
+        },
+        "type": {
+          "description": "Returns this field's type: 'dimension' or 'measure'.",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Geopolygon": {
+      "kind": "object",
+      "entries": {
+        "polygons": {
+          "description": "Array of polygons",
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/Polygon"
+          }
+        }
+      }
+    },
+    "Line": {
+      "kind": "object",
+      "entries": {
+        "x1": {
+          "description": "Start x-coordinate",
+          "type": "number"
+        },
+        "y1": {
+          "description": "Start y-coordinate",
+          "type": "number"
+        },
+        "x2": {
+          "description": "End x-coordinate",
+          "type": "number"
+        },
+        "y2": {
+          "description": "End y-coordinate",
+          "type": "number"
+        }
+      }
+    },
+    "Path": {
+      "kind": "object",
+      "entries": {
+        "d": {
+          "description": "Path definition",
+          "type": "string"
+        }
+      }
+    },
+    "Point": {
+      "kind": "object",
+      "entries": {
+        "x": {
+          "description": "X-coordinate",
+          "type": "number"
+        },
+        "y": {
+          "description": "Y-coordinate",
+          "type": "number"
+        }
+      }
+    },
+    "Polygon": {
+      "kind": "object",
+      "entries": {
+        "points": {
+          "description": "Array of connected points",
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/Point"
+          }
+        }
+      }
+    },
+    "Polyline": {
+      "kind": "object",
+      "entries": {
+        "points": {
+          "description": "Array of connected points",
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/Point"
+          }
+        }
+      }
+    },
+    "Rect": {
+      "kind": "object",
+      "entries": {
+        "x": {
+          "description": "X-coordinate",
+          "type": "number"
+        },
+        "y": {
+          "description": "Y-coordinate",
+          "type": "number"
+        },
+        "width": {
+          "description": "Width",
+          "type": "number"
+        },
+        "height": {
+          "description": "Height",
+          "type": "number"
+        }
+      }
+    },
+    "Registry": {
+      "kind": "interface",
+      "params": [
+        {
+          "name": "key",
+          "type": "string"
+        },
+        {
+          "name": "value",
+          "type": "any"
+        }
+      ],
+      "entries": {}
+    },
+    "Renderer": {
+      "kind": "interface",
+      "params": [],
+      "entries": {
+        "appendTo": {
+          "kind": "function",
+          "params": [
+            {
+              "name": "element",
+              "description": "Element to attach renderer to",
+              "type": "HTMLElement"
+            }
+          ],
+          "returns": {
+            "description": "Root element of the renderer",
+            "type": "HTMLElement"
+          }
+        },
+        "clear": {
+          "description": "Clear all child elements from the renderer root element",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "description": "The renderer instance",
+            "type": "#/definitions/Renderer"
+          }
+        },
+        "destory": {
+          "description": "Remove the renderer root element from its parent element",
+          "kind": "function",
+          "params": []
+        },
+        "element": {
+          "description": "Get the element this renderer is attached to",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "HTMLElement"
+          }
+        },
+        "findShapes": {
+          "description": "Get all nodes matching the provided selector",
+          "kind": "function",
+          "params": [
+            {
+              "name": "selector",
+              "description": "CSS selector [type, attribute, universal, class]",
+              "type": "string"
+            }
+          ],
+          "returns": {
+            "description": "Array of objects containing matching nodes",
+            "kind": "array",
+            "items": {
+              "type": "#/definitions/SceneNode"
+            }
+          }
+        },
+        "itemsAt": {
+          "description": "Get nodes renderer at area",
+          "kind": "function",
+          "params": [
+            {
+              "name": "geometry",
+              "description": "Get nodes that intersects with geometry",
+              "kind": "union",
+              "items": [
+                {
+                  "type": "#/definitions/Point"
+                },
+                {
+                  "type": "#/definitions/Circle"
+                },
+                {
+                  "type": "#/definitions/Rect"
+                },
+                {
+                  "type": "#/definitions/Line"
+                },
+                {
+                  "type": "#/definitions/Polygon"
+                },
+                {
+                  "type": "#/definitions/Geopolygon"
+                }
+              ],
+              "type": "any"
+            }
+          ],
+          "returns": {
+            "kind": "array",
+            "items": {
+              "type": "#/definitions/SceneNode"
+            }
+          }
+        },
+        "measureText": {
+          "kind": "function",
+          "params": [
+            {
+              "name": "opts",
+              "kind": "object",
+              "entries": {
+                "text": {
+                  "description": "Text to measure",
+                  "type": "string"
+                },
+                "fontSize": {
+                  "description": "{@link https://www.w3.org/TR/SVG/text.html#FontPropertiesUsedBySVG}",
+                  "type": "string"
+                },
+                "fontFamily": {
+                  "description": "{@link https://www.w3.org/TR/SVG/text.html#FontPropertiesUsedBySVG}",
+                  "type": "string"
+                }
+              }
+            }
+          ],
+          "returns": {
+            "description": "Width and height of text",
+            "type": "object"
+          },
+          "examples": [
+            "measureText({\n text: 'my text',\n fontSize: '12px',\n fontFamily: 'Arial'\n}); // returns { width: 20, height: 12 }"
+          ]
+        },
+        "render": {
+          "kind": "function",
+          "params": [
+            {
+              "name": "nodes",
+              "description": "Nodes to render",
+              "kind": "array",
+              "items": {
+                "type": "node-def"
+              }
+            }
+          ],
+          "returns": {
+            "description": "True if the nodes where rendered, otherwise false",
+            "type": "boolean"
+          }
+        },
+        "root": {
+          "description": "Get the root element of the renderer",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "HTMLElement"
+          }
+        },
+        "size": {
+          "description": "Set or Get the size definition of the renderer container.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "opts",
+              "description": "Size definition",
+              "optional": true,
+              "type": "#/definitions/RendererContainerDef"
+            }
+          ],
+          "returns": {
+            "description": "The current size definition",
+            "type": "#/definitions/RendererContainerDef"
+          }
+        },
+        "textBounds": {
+          "description": "Calculates the bounding rectangle of a text node. Including any potential line breaks.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "node",
+              "type": "node--text-def"
+            }
+          ],
+          "returns": {
+            "description": "The bounding rectangle",
+            "type": "#/definitions/Rect"
+          }
+        }
+      }
+    },
+    "RendererContainerDef": {
+      "kind": "object",
+      "entries": {
+        "x": {
+          "description": "x-coordinate",
+          "optional": true,
+          "type": "number"
+        },
+        "y": {
+          "description": "y-coordinate",
+          "optional": true,
+          "type": "number"
+        },
+        "width": {
+          "description": "Width",
+          "optional": true,
+          "type": "number"
+        },
+        "height": {
+          "description": "Height",
+          "optional": true,
+          "type": "number"
+        },
+        "scaleRatio": {
+          "optional": true,
+          "kind": "object",
+          "entries": {
+            "x": {
+              "description": "Scale ratio on x-axis",
+              "optional": true,
+              "type": "number"
+            },
+            "y": {
+              "description": "Scale ratio on y-axis",
+              "optional": true,
+              "type": "number"
+            }
+          }
+        },
+        "margin": {
+          "optional": true,
+          "kind": "object",
+          "entries": {
+            "left": {
+              "description": "Left margin",
+              "optional": true,
+              "type": "number"
+            },
+            "top": {
+              "description": "Top margin",
+              "optional": true,
+              "type": "number"
+            }
+          }
         }
       }
     },
@@ -4350,88 +5221,6 @@
         }
       }
     },
-    "ScaleSequentialColor": {
-      "kind": "object",
-      "entries": {
-        "type": {
-          "optional": true,
-          "defaultValue": "'sequential-color'",
-          "type": "string"
-        },
-        "range": {
-          "description": "CSS color values of the output range",
-          "optional": true,
-          "kind": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "invert": {
-          "description": "Invert range",
-          "optional": true,
-          "defaultValue": false,
-          "type": "boolean"
-        },
-        "min": {
-          "description": "Set an explicit minimum value",
-          "optional": true,
-          "type": "number"
-        },
-        "max": {
-          "description": "Set an explicit maximum value",
-          "optional": true,
-          "type": "number"
-        }
-      }
-    },
-    "ScaleThresholdColor": {
-      "kind": "object",
-      "entries": {
-        "type": {
-          "optional": true,
-          "defaultValue": "'threshold-color'",
-          "type": "string"
-        },
-        "domain": {
-          "description": "Values defining the thresholds",
-          "optional": true,
-          "kind": "array",
-          "items": {
-            "type": "number"
-          }
-        },
-        "range": {
-          "description": "CSS color values of the output range",
-          "optional": true,
-          "kind": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "invert": {
-          "description": "Invert range",
-          "optional": true,
-          "defaultValue": false,
-          "type": "boolean"
-        },
-        "min": {
-          "description": "Set an explicit minimum value",
-          "optional": true,
-          "type": "number"
-        },
-        "max": {
-          "description": "Set an explicit maximum value",
-          "optional": true,
-          "type": "number"
-        },
-        "nice": {
-          "description": "If set to true, will generate 'nice' domain values. Ignored if domain is set.",
-          "optional": true,
-          "defaultValue": false,
-          "type": "boolean"
-        }
-      }
-    },
     "ScaleLinear": {
       "kind": "object",
       "entries": {
@@ -4528,6 +5317,88 @@
         }
       }
     },
+    "ScaleSequentialColor": {
+      "kind": "object",
+      "entries": {
+        "type": {
+          "optional": true,
+          "defaultValue": "'sequential-color'",
+          "type": "string"
+        },
+        "range": {
+          "description": "CSS color values of the output range",
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "invert": {
+          "description": "Invert range",
+          "optional": true,
+          "defaultValue": false,
+          "type": "boolean"
+        },
+        "min": {
+          "description": "Set an explicit minimum value",
+          "optional": true,
+          "type": "number"
+        },
+        "max": {
+          "description": "Set an explicit maximum value",
+          "optional": true,
+          "type": "number"
+        }
+      }
+    },
+    "ScaleThresholdColor": {
+      "kind": "object",
+      "entries": {
+        "type": {
+          "optional": true,
+          "defaultValue": "'threshold-color'",
+          "type": "string"
+        },
+        "domain": {
+          "description": "Values defining the thresholds",
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "range": {
+          "description": "CSS color values of the output range",
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "invert": {
+          "description": "Invert range",
+          "optional": true,
+          "defaultValue": false,
+          "type": "boolean"
+        },
+        "min": {
+          "description": "Set an explicit minimum value",
+          "optional": true,
+          "type": "number"
+        },
+        "max": {
+          "description": "Set an explicit maximum value",
+          "optional": true,
+          "type": "number"
+        },
+        "nice": {
+          "description": "If set to true, will generate 'nice' domain values. Ignored if domain is set.",
+          "optional": true,
+          "defaultValue": false,
+          "type": "boolean"
+        }
+      }
+    },
     "SceneNode": {
       "description": "Read-only object representing a node on the scene.",
       "kind": "class",
@@ -4536,44 +5407,13 @@
         "params": []
       },
       "entries": {
-        "children": {
-          "description": "Get child nodes",
-          "kind": "array",
-          "items": {
-            "type": "#/definitions/SceneNode"
-          }
-        },
-        "parent": {
-          "description": "Get parent node",
-          "type": "#/definitions/SceneNode"
-        },
-        "type": {
-          "description": "Node type",
-          "type": "string"
-        },
-        "data": {
-          "description": "Get the associated data",
-          "type": "any"
-        },
         "attrs": {
           "description": "Node attributes",
           "kind": "object",
           "entries": {}
         },
-        "element": {
-          "description": "Element the scene is attached to",
-          "type": "HTMLElement"
-        },
-        "key": {
-          "description": "Key of the component this shape belongs to",
-          "type": "string"
-        },
         "bounds": {
           "description": "Bounding rectangle of the node. After any transform has been applied, if any, but excluding scaling transform related to devicePixelRatio.\nOrigin is in the top-left corner of the scene element.",
-          "type": "#/definitions/Rect"
-        },
-        "localBounds": {
-          "description": "Bounding rectangle of the node withing it's local coordinate system.\nOrigin is in the top-left corner of the scene element.",
           "type": "#/definitions/Rect"
         },
         "boundsRelativeTo": {
@@ -4607,6 +5447,13 @@
             "node.boundsRelativeTo($('div'));\nnode.boundsRelativeTo('viewport');"
           ]
         },
+        "children": {
+          "description": "Get child nodes",
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/SceneNode"
+          }
+        },
         "collider": {
           "description": "Collider of the node. Transform on the node has been applied to the collider shape, if any, but excluding scaling transform related to devicePixelRatio.\nOrigin is in the top-left corner of the scene element.\n\nIf node has no collider, null is returned.",
           "kind": "union",
@@ -4626,14 +5473,94 @@
           ],
           "type": "any"
         },
+        "data": {
+          "description": "Get the associated data",
+          "type": "any"
+        },
         "desc": {
           "description": "Node description",
           "kind": "object",
           "entries": {}
         },
+        "element": {
+          "description": "Element the scene is attached to",
+          "type": "HTMLElement"
+        },
+        "key": {
+          "description": "Key of the component this shape belongs to",
+          "type": "string"
+        },
+        "localBounds": {
+          "description": "Bounding rectangle of the node withing it's local coordinate system.\nOrigin is in the top-left corner of the scene element.",
+          "type": "#/definitions/Rect"
+        },
+        "parent": {
+          "description": "Get parent node",
+          "type": "#/definitions/SceneNode"
+        },
         "tag": {
           "description": "Node tag",
           "type": "string"
+        },
+        "type": {
+          "description": "Node type",
+          "type": "string"
+        }
+      }
+    },
+    "svgRendererFactory": {
+      "description": "Create a new svg renderer",
+      "kind": "function",
+      "params": [
+        {
+          "name": "treeFactory",
+          "description": "Node tree factory",
+          "type": "function"
+        },
+        {
+          "name": "ns",
+          "description": "Namespace definition",
+          "type": "string"
+        },
+        {
+          "name": "sceneFn",
+          "description": "Scene factory",
+          "type": "function"
+        }
+      ],
+      "returns": {
+        "description": "A svg renderer instance",
+        "type": "#/definitions/Renderer"
+      }
+    },
+    "Symbol": {
+      "description": "Mandatory symbol config",
+      "kind": "object",
+      "entries": {
+        "options": {
+          "description": "Options definition may contain any of the supported display-object attributes",
+          "kind": "object",
+          "entries": {
+            "type": {
+              "description": "Type of symbol",
+              "type": "string"
+            },
+            "x": {
+              "description": "x-coordinate",
+              "type": "number"
+            },
+            "y": {
+              "description": "y-coordinate",
+              "type": "number"
+            },
+            "size": {
+              "type": "number"
+            },
+            "data": {
+              "optional": true,
+              "type": "object"
+            }
+          }
         }
       }
     },
@@ -4685,37 +5612,6 @@
       ],
       "kind": "object",
       "entries": {}
-    },
-    "Symbol": {
-      "description": "Mandatory symbol config",
-      "kind": "object",
-      "entries": {
-        "options": {
-          "description": "Options definition may contain any of the supported display-object attributes",
-          "kind": "object",
-          "entries": {
-            "type": {
-              "description": "Type of symbol",
-              "type": "string"
-            },
-            "x": {
-              "description": "x-coordinate",
-              "type": "number"
-            },
-            "y": {
-              "description": "y-coordinate",
-              "type": "number"
-            },
-            "size": {
-              "type": "number"
-            },
-            "data": {
-              "optional": true,
-              "type": "object"
-            }
-          }
-        }
-      }
     },
     "SymbolLine": {
       "extends": [
@@ -4821,829 +5717,6 @@
           "defaultValue": "'up'",
           "type": "string"
         }
-      }
-    },
-    "Registry": {
-      "kind": "interface",
-      "params": [
-        {
-          "name": "key",
-          "type": "string"
-        },
-        {
-          "name": "value",
-          "type": "any"
-        }
-      ],
-      "entries": {}
-    },
-    "ComponentBrushAreaBrush": {
-      "kind": "object",
-      "entries": {
-        "key": {
-          "description": "Component key",
-          "type": "string"
-        },
-        "contexts": {
-          "description": "Name of the brushing contexts to affect",
-          "optional": true,
-          "kind": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "data": {
-          "description": "The mapped data properties to add to the brush",
-          "optional": true,
-          "kind": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "action": {
-          "description": "Type of action to respond with",
-          "optional": true,
-          "defaultValue": "'set'",
-          "type": "string"
-        }
-      }
-    },
-    "ComponentBrushAreaSettings": {
-      "kind": "object",
-      "entries": {
-        "brush": {
-          "kind": "object",
-          "entries": {
-            "components": {
-              "kind": "array",
-              "items": {
-                "type": "#/definitions/ComponentBrushAreaBrush"
-              }
-            }
-          }
-        }
-      }
-    },
-    "ComponentBrushAreaDirSettings": {
-      "kind": "object",
-      "entries": {
-        "brush": {
-          "kind": "object",
-          "entries": {
-            "components": {
-              "kind": "array",
-              "items": {
-                "entries": {
-                  "key": {
-                    "description": "Component key",
-                    "type": "object"
-                  },
-                  "contexts[": {
-                    "description": "Brush context to apply changes to",
-                    "type": "object"
-                  },
-                  "data": {
-                    "description": "Data reference",
-                    "optional": true,
-                    "type": "object"
-                  },
-                  "action": {
-                    "description": "Type of brush action",
-                    "optional": true,
-                    "type": "object"
-                  }
-                },
-                "kind": "object"
-              }
-            }
-          }
-        },
-        "direction": {
-          "description": "Rendering direction [horizontal|vertical]",
-          "optional": true,
-          "defaultValue": "vertical",
-          "type": "string"
-        },
-        "bubbles": {
-          "optional": true,
-          "kind": "object",
-          "entries": {
-            "show": {
-              "description": "True to show label bubble, false otherwise",
-              "optional": true,
-              "defaultValue": true,
-              "type": "boolean"
-            },
-            "align": {
-              "description": "Where to anchor bubble [start|end]",
-              "optional": true,
-              "defaultValue": "start",
-              "type": "string"
-            },
-            "label": {
-              "description": "Callback function for the labels",
-              "optional": true,
-              "type": "function"
-            }
-          }
-        },
-        "target": {
-          "optional": true,
-          "kind": "object",
-          "entries": {
-            "component": {
-              "description": "Render matching overlay on target component. @deprecated Use `components` instead",
-              "optional": true,
-              "type": "string"
-            },
-            "components": {
-              "description": "Render matching overlay on target components",
-              "optional": true,
-              "kind": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
-        }
-      }
-    },
-    "ComponentBrushAreaDirStyle": {
-      "kind": "object",
-      "entries": {
-        "bubble": {
-          "optional": true,
-          "kind": "object",
-          "entries": {
-            "fontSize": {
-              "optional": true,
-              "type": "string"
-            },
-            "fontFamily": {
-              "optional": true,
-              "type": "string"
-            },
-            "fill": {
-              "optional": true,
-              "type": "string"
-            },
-            "color": {
-              "optional": true,
-              "type": "string"
-            },
-            "stroke": {
-              "optional": true,
-              "type": "string"
-            },
-            "strokeWidth": {
-              "optional": true,
-              "type": "number"
-            },
-            "borderRadius": {
-              "optional": true,
-              "type": "number"
-            }
-          }
-        },
-        "line": {
-          "optional": true,
-          "kind": "object",
-          "entries": {
-            "stroke": {
-              "optional": true,
-              "type": "string"
-            },
-            "strokeWidth": {
-              "optional": true,
-              "type": "number"
-            }
-          }
-        },
-        "target": {
-          "optional": true,
-          "kind": "object",
-          "entries": {
-            "fill": {
-              "optional": true,
-              "type": "string"
-            },
-            "strokeWidth": {
-              "optional": true,
-              "type": "number"
-            },
-            "opacity": {
-              "optional": true,
-              "type": "number"
-            }
-          }
-        }
-      }
-    },
-    "ComponentBrushRangeSettings": {
-      "kind": "object",
-      "entries": {
-        "brush": {
-          "description": "Brush context to apply changes to",
-          "kind": "union",
-          "items": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "object"
-            }
-          ],
-          "type": "any"
-        },
-        "scale": {
-          "description": "Scale to extract data from",
-          "type": "string"
-        },
-        "direction": {
-          "description": "Rendering direction [horizontal|vertical]",
-          "optional": true,
-          "defaultValue": "vertical",
-          "type": "string"
-        },
-        "bubbles": {
-          "optional": true,
-          "kind": "object",
-          "entries": {
-            "show": {
-              "description": "True to show label bubble, false otherwise",
-              "optional": true,
-              "defaultValue": true,
-              "type": "boolean"
-            },
-            "align": {
-              "description": "Where to anchor bubble [start|end]",
-              "optional": true,
-              "defaultValue": "start",
-              "type": "string"
-            },
-            "label": {
-              "description": "Callback function for the labels",
-              "optional": true,
-              "type": "function"
-            }
-          }
-        },
-        "target": {
-          "optional": true,
-          "kind": "object",
-          "entries": {
-            "component": {
-              "description": "Render matching overlay on target component. @deprecated Use `components` instead",
-              "optional": true,
-              "type": "string"
-            },
-            "components": {
-              "description": "Render matching overlay on target components",
-              "optional": true,
-              "kind": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            "selector": {
-              "description": "Instead of targeting a component, target one or more shapes",
-              "optional": true,
-              "type": "string"
-            },
-            "fillSelector": {
-              "description": "Target a subset of the selector as fill area. Only applicable if `selector` property is set",
-              "optional": true,
-              "type": "string"
-            }
-          }
-        }
-      }
-    },
-    "ComponentBrushRangeStyle": {
-      "kind": "object",
-      "entries": {
-        "bubble": {
-          "optional": true,
-          "kind": "object",
-          "entries": {
-            "fontSize": {
-              "optional": true,
-              "type": "string"
-            },
-            "fontFamily": {
-              "optional": true,
-              "type": "string"
-            },
-            "fill": {
-              "optional": true,
-              "type": "string"
-            },
-            "color": {
-              "optional": true,
-              "type": "string"
-            },
-            "stroke": {
-              "optional": true,
-              "type": "string"
-            },
-            "strokeWidth": {
-              "optional": true,
-              "type": "number"
-            },
-            "borderRadius": {
-              "optional": true,
-              "type": "number"
-            }
-          }
-        },
-        "line": {
-          "optional": true,
-          "kind": "object",
-          "entries": {
-            "stroke": {
-              "optional": true,
-              "type": "string"
-            },
-            "strokeWidth": {
-              "optional": true,
-              "type": "number"
-            }
-          }
-        },
-        "target": {
-          "optional": true,
-          "kind": "object",
-          "entries": {
-            "fill": {
-              "optional": true,
-              "type": "string"
-            },
-            "strokeWidth": {
-              "optional": true,
-              "type": "number"
-            },
-            "opacity": {
-              "optional": true,
-              "type": "number"
-            }
-          }
-        }
-      }
-    },
-    "ComponentTooltip": {
-      "kind": "object",
-      "entries": {
-        "type": {
-          "defaultValue": "tooltip",
-          "type": "string"
-        },
-        "settings": {
-          "kind": "object",
-          "entries": {
-            "duration": {
-              "description": "How long the tooltip is visible, in milliseconds",
-              "optional": true,
-              "defaultValue": 8000,
-              "type": "number"
-            },
-            "delay": {
-              "description": "Delay before the tooltip is rendered, in milliseconds",
-              "optional": true,
-              "defaultValue": 500,
-              "type": "number"
-            },
-            "filter": {
-              "description": "Reduce incoming nodes to only a set of applicable nodes. Is called as a part of the `show` event.",
-              "optional": true,
-              "kind": "function",
-              "params": [],
-              "returns": {
-                "description": "An array of nodes",
-                "kind": "array",
-                "items": {
-                  "type": "any"
-                }
-              }
-            },
-            "extract": {
-              "description": "Extract data from a node.",
-              "optional": true,
-              "kind": "function",
-              "params": [],
-              "returns": {
-                "description": "An array of data",
-                "type": "object"
-              }
-            },
-            "content": {
-              "description": "Content generator. Extracted data is available in the `data` property, where each value in the area is the extracted datum from a node.",
-              "optional": true,
-              "kind": "function",
-              "params": [],
-              "returns": {
-                "description": "Array of h objects",
-                "kind": "array",
-                "items": {
-                  "type": "object"
-                }
-              }
-            },
-            "isEqual": {
-              "description": "Comparison function. If evaluted to true, the incoming nodes in the `show` event are ignored. If evaluated to false, any active tooltip is cleared and a new tooltip is queued.\n\nThe function gets two parameters, the first is the currently active set of nodes, if any, and the second is the incoming set of nodes. By default the two set of nodes are considered equal if their data attributes are the same.",
-              "optional": true,
-              "kind": "function",
-              "params": [],
-              "returns": {
-                "type": "boolean"
-              }
-            },
-            "placement": {
-              "optional": true,
-              "kind": "object",
-              "entries": {
-                "type": {
-                  "description": "Available types: [pointer | bounds | slice]",
-                  "optional": true,
-                  "defaultValue": "pointer",
-                  "type": "string"
-                },
-                "dock": {
-                  "description": "Docking position of the tooltip. Available positions: [left | right | top | bottom | auto]",
-                  "optional": true,
-                  "defaultValue": "auto",
-                  "type": "string"
-                },
-                "offset": {
-                  "description": "Distance from the content area to the tooltip position, in px.",
-                  "optional": true,
-                  "defaultValue": 8,
-                  "type": "number"
-                },
-                "area": {
-                  "description": "Specify the limiting area, where target is the component area unless the appendTo property is set, in which case it referes to the appendTo element. Viewport is the browser viewport.\n\nAvailable options are: [viewport | target]",
-                  "optional": true,
-                  "defaultValue": "viewport",
-                  "type": "number"
-                }
-              }
-            },
-            "tooltipClass": {
-              "description": "Set tooltip class.",
-              "optional": true,
-              "type": "object",
-              "generics": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "boolean"
-                }
-              ]
-            },
-            "contentClass": {
-              "description": "Set content class.",
-              "optional": true,
-              "type": "object",
-              "generics": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "boolean"
-                }
-              ]
-            },
-            "arrowClass": {
-              "description": "Set arrow class.",
-              "optional": true,
-              "type": "object",
-              "generics": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "boolean"
-                }
-              ]
-            },
-            "direction": {
-              "description": "Content direction [ltr | rtl]",
-              "optional": true,
-              "defaultValue": "ltr",
-              "type": "string"
-            },
-            "appendTo": {
-              "description": "Explicitly set a target element. This allows the tooltip to attach itself outside the picasso container.",
-              "optional": true,
-              "type": "HTMLElement"
-            },
-            "beforeShow": {
-              "description": "Component lifecycle hook. Called before the tooltip is displayed.",
-              "optional": true,
-              "type": "function"
-            },
-            "afterShow": {
-              "description": "Component lifecycle hook. Called after the tooltip have been displayed.",
-              "optional": true,
-              "type": "function"
-            },
-            "beforeHide": {
-              "description": "Component lifecycle hook. Called before the tooltip is hidden.",
-              "optional": true,
-              "type": "function"
-            },
-            "onHide": {
-              "description": "Component lifecycle hook. Called when the toolip is hidden. By default this deletes the tooltip element.",
-              "optional": true,
-              "type": "function"
-            },
-            "afterHide": {
-              "description": "Component lifecycle hook. Called after the tooltip is hidden.",
-              "optional": true,
-              "type": "function"
-            }
-          }
-        }
-      }
-    },
-    "canvasRendererFactory": {
-      "description": "Create a new canvas renderer",
-      "kind": "function",
-      "params": [
-        {
-          "name": "sceneFn",
-          "description": "Scene factory",
-          "type": "function"
-        }
-      ],
-      "returns": {
-        "description": "A canvas renderer instance",
-        "type": "#/definitions/Renderer"
-      }
-    },
-    "Renderer": {
-      "kind": "interface",
-      "params": [],
-      "entries": {
-        "element": {
-          "description": "Get the element this renderer is attached to",
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "HTMLElement"
-          }
-        },
-        "root": {
-          "description": "Get the root element of the renderer",
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "HTMLElement"
-          }
-        },
-        "appendTo": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "element",
-              "description": "Element to attach renderer to",
-              "type": "HTMLElement"
-            }
-          ],
-          "returns": {
-            "description": "Root element of the renderer",
-            "type": "HTMLElement"
-          }
-        },
-        "render": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "nodes",
-              "description": "Nodes to render",
-              "kind": "array",
-              "items": {
-                "type": "node-def"
-              }
-            }
-          ],
-          "returns": {
-            "description": "True if the nodes where rendered, otherwise false",
-            "type": "boolean"
-          }
-        },
-        "itemsAt": {
-          "description": "Get nodes renderer at area",
-          "kind": "function",
-          "params": [
-            {
-              "name": "geometry",
-              "description": "Get nodes that intersects with geometry",
-              "kind": "union",
-              "items": [
-                {
-                  "type": "#/definitions/Point"
-                },
-                {
-                  "type": "#/definitions/Circle"
-                },
-                {
-                  "type": "#/definitions/Rect"
-                },
-                {
-                  "type": "#/definitions/Line"
-                },
-                {
-                  "type": "#/definitions/Polygon"
-                },
-                {
-                  "type": "#/definitions/Geopolygon"
-                }
-              ],
-              "type": "any"
-            }
-          ],
-          "returns": {
-            "kind": "array",
-            "items": {
-              "type": "#/definitions/SceneNode"
-            }
-          }
-        },
-        "findShapes": {
-          "description": "Get all nodes matching the provided selector",
-          "kind": "function",
-          "params": [
-            {
-              "name": "selector",
-              "description": "CSS selector [type, attribute, universal, class]",
-              "type": "string"
-            }
-          ],
-          "returns": {
-            "description": "Array of objects containing matching nodes",
-            "kind": "array",
-            "items": {
-              "type": "#/definitions/SceneNode"
-            }
-          }
-        },
-        "clear": {
-          "description": "Clear all child elements from the renderer root element",
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "description": "The renderer instance",
-            "type": "#/definitions/Renderer"
-          }
-        },
-        "destory": {
-          "description": "Remove the renderer root element from its parent element",
-          "kind": "function",
-          "params": []
-        },
-        "size": {
-          "description": "Set or Get the size definition of the renderer container.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "opts",
-              "description": "Size definition",
-              "optional": true,
-              "type": "#/definitions/RendererContainerDef"
-            }
-          ],
-          "returns": {
-            "description": "The current size definition",
-            "type": "#/definitions/RendererContainerDef"
-          }
-        },
-        "measureText": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "opts",
-              "kind": "object",
-              "entries": {
-                "text": {
-                  "description": "Text to measure",
-                  "type": "string"
-                },
-                "fontSize": {
-                  "description": "{@link https://www.w3.org/TR/SVG/text.html#FontPropertiesUsedBySVG}",
-                  "type": "string"
-                },
-                "fontFamily": {
-                  "description": "{@link https://www.w3.org/TR/SVG/text.html#FontPropertiesUsedBySVG}",
-                  "type": "string"
-                }
-              }
-            }
-          ],
-          "returns": {
-            "description": "Width and height of text",
-            "type": "object"
-          },
-          "examples": [
-            "measureText({\n text: 'my text',\n fontSize: '12px',\n fontFamily: 'Arial'\n}); // returns { width: 20, height: 12 }"
-          ]
-        },
-        "textBounds": {
-          "description": "Calculates the bounding rectangle of a text node. Including any potential line breaks.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "node",
-              "type": "node--text-def"
-            }
-          ],
-          "returns": {
-            "description": "The bounding rectangle",
-            "type": "#/definitions/Rect"
-          }
-        }
-      }
-    },
-    "RendererContainerDef": {
-      "kind": "object",
-      "entries": {
-        "x": {
-          "description": "x-coordinate",
-          "optional": true,
-          "type": "number"
-        },
-        "y": {
-          "description": "y-coordinate",
-          "optional": true,
-          "type": "number"
-        },
-        "width": {
-          "description": "Width",
-          "optional": true,
-          "type": "number"
-        },
-        "height": {
-          "description": "Height",
-          "optional": true,
-          "type": "number"
-        },
-        "scaleRatio": {
-          "optional": true,
-          "kind": "object",
-          "entries": {
-            "x": {
-              "description": "Scale ratio on x-axis",
-              "optional": true,
-              "type": "number"
-            },
-            "y": {
-              "description": "Scale ratio on y-axis",
-              "optional": true,
-              "type": "number"
-            }
-          }
-        },
-        "margin": {
-          "optional": true,
-          "kind": "object",
-          "entries": {
-            "left": {
-              "description": "Left margin",
-              "optional": true,
-              "type": "number"
-            },
-            "top": {
-              "description": "Top margin",
-              "optional": true,
-              "type": "number"
-            }
-          }
-        }
-      }
-    },
-    "svgRendererFactory": {
-      "description": "Create a new svg renderer",
-      "kind": "function",
-      "params": [
-        {
-          "name": "treeFactory",
-          "description": "Node tree factory",
-          "type": "function"
-        },
-        {
-          "name": "ns",
-          "description": "Namespace definition",
-          "type": "string"
-        },
-        {
-          "name": "sceneFn",
-          "description": "Scene factory",
-          "type": "function"
-        }
-      ],
-      "returns": {
-        "description": "A svg renderer instance",
-        "type": "#/definitions/Renderer"
       }
     }
   }
