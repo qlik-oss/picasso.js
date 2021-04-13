@@ -114,7 +114,6 @@ function getBubbleLabel(state, value, range) {
  * @property {string} [bubbles.align=start] - Where to anchor bubble [start|end]
  * @property {function} [bubbles.label] - Callback function for the labels
  * @property {object} [target]
- * @property {string} [target.component] - Render matching overlay on target component. @deprecated Use `components` instead
  * @property {string[]} [target.components] - Render matching overlay on target components
  */
 

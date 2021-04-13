@@ -2179,11 +2179,6 @@
               "optional": true,
               "kind": "object",
               "entries": {
-                "component": {
-                  "description": "Render matching overlay on target component. @deprecated Use `components` instead",
-                  "optional": true,
-                  "type": "string"
-                },
                 "components": {
                   "description": "Render matching overlay on target components",
                   "optional": true,
@@ -2424,11 +2419,6 @@
               "optional": true,
               "kind": "object",
               "entries": {
-                "component": {
-                  "description": "Render matching overlay on target component. @deprecated Use `components` instead",
-                  "optional": true,
-                  "type": "string"
-                },
                 "components": {
                   "description": "Render matching overlay on target components",
                   "optional": true,

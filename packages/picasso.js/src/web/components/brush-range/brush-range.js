@@ -203,7 +203,6 @@ function resolveTarget(ctx) {
  * @property {string} [bubbles.align=start] - Where to anchor bubble [start|end]
  * @property {function} [bubbles.label] - Callback function for the labels
  * @property {object} [target]
- * @property {string} [target.component] - Render matching overlay on target component. @deprecated Use `components` instead
  * @property {string[]} [target.components] - Render matching overlay on target components
  * @property {string} [target.selector] - Instead of targeting a component, target one or more shapes
  * @property {string} [target.fillSelector] - Target a subset of the selector as fill area. Only applicable if `selector` property is set
