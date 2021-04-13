@@ -2,6 +2,7 @@ import pointsToPath from '../utils/points-to-path';
 import { toRadians } from '../math/angles';
 
 /**
+ * @private
  * @extends Symbol
  * @typedef {object} SymbolPolygon
  * @property {object} [sides=6] - Number of sides on the regular polygon

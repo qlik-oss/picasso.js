@@ -1,4 +1,5 @@
 /**
+ * @private
  * @extends Symbol
  * @typedef {object} SymbolSquare
  */
