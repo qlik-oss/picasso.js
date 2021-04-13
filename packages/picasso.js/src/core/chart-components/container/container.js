@@ -1,5 +1,5 @@
 /**
- * @typedef {object} ContainerComponent
+ * @typedef {object} ComponentContainer
  * @experimental
  * @extends ComponentSettings
  * @property {string} [type='container']
