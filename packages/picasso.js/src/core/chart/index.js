@@ -15,7 +15,7 @@ import themeFn from '../theme';
 import componentCollectionFn from './component-collection';
 
 /**
- * @callback CustomLayoutFunction
+ * @callback customLayoutFunction
  * @param {Rect} rect
  * @param {object[]} components
  * @param {string} components[].key
@@ -107,12 +107,12 @@ import componentCollectionFn from './component-collection';
  * @property {string} [scale] Named scale. Will be provided to the component if it ask for it.
  * @property {string} [formatter] Named formatter. Fallback to create formatter from scale. Will be provided to the component if it ask for it.
  * @property {ComponentSettings[]} [components] Optional list of child components
- * @property {DockLayoutSettings|CustomLayoutFunction} [strategy] Layout strategy used for child components.
+ * @property {DockLayoutSettings|customLayoutFunction} [strategy] Layout strategy used for child components.
  */
 
 // mark strategy as experimental
 /**
- * @type {DockLayoutSettings|CustomLayoutFunction}
+ * @type {DockLayoutSettings|customLayoutFunction}
  * @name strategy
  * @memberof ComponentSettings
  * @experimental
@@ -891,7 +891,7 @@ function chartFn(definition, context) {
 
   /**
    * Get all registered formatters
-   * @returns {Object<string,Formatter>}
+   * @returns {Object<string,formatter>}
    */
   instance.formatters = function formatters() {
     return currentFormatters.all();
@@ -925,7 +925,7 @@ function chartFn(definition, context) {
   /**
    * Get or create a formatter for this chart
    * @param {string|object} v - Formatter reference or formatter options
-   * @returns {Formatter}
+   * @returns {formatter}
    * @example
    * instance.formatter('nameOfMyFormatter'); // Fetch an existing formatter by name
    * instance.formatter({ formatter: 'nameOfMyFormatter' }); // Fetch an existing formatter by name

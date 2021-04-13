@@ -1,5 +1,5 @@
 /**
- * @typedef {object} RendererContainerDef
+ * @typedef {object} Renderer~SizeDefinition
  * @property {number} [x] - x-coordinate
  * @property {number} [y] - y-coordinate
  * @property {number} [width] - Width
@@ -15,8 +15,8 @@
 /**
  * Create the renderer box
  * @private
- * @param {RendererContainerDef} [opts]
- * @returns {RendererContainerDef} A svg renderer instance
+ * @param {Renderer~SizeDefinition} [opts]
+ * @returns {Renderer~SizeDefinition} A svg renderer instance
  */
 export default function createRendererBox({ x, y, width, height, scaleRatio, margin, edgeBleed } = {}) {
   const box = {

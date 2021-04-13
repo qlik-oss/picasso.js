@@ -61,8 +61,8 @@ function create() {
 
     /**
      * Set or Get the size definition of the renderer container.
-     * @param {RendererContainerDef} [opts] - Size definition
-     * @returns {RendererContainerDef} The current size definition
+     * @param {Renderer~SizeDefinition} [opts] - Size definition
+     * @returns {Renderer~SizeDefinition} The current size definition
      */
     size: () => {},
 

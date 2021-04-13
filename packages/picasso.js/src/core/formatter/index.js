@@ -3,6 +3,11 @@ import registry from '../utils/registry';
 import { numberFormat as d3NumberFormatter, timeFormat as d3TimeFormatter } from './d3';
 
 /**
+ * @typedef {function} formatter
+ * @returns {any} Returns a formatted value
+ */
+
+/**
  * @typedef {object} FormatterDefinition
  * @property {string} [formatter] Name of the formatter
  * @property {string} [type] Type of formatter

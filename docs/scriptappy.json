@@ -96,7 +96,7 @@
           "params": [
             {
               "name": "plugin",
-              "type": "#/definitions/Plugin"
+              "type": "#/definitions/plugin"
             },
             {
               "name": "options",
@@ -1066,7 +1066,7 @@
             }
           ],
           "returns": {
-            "type": "#/definitions/Formatter"
+            "type": "#/definitions/formatter"
           },
           "examples": [
             "instance.formatter('nameOfMyFormatter'); // Fetch an existing formatter by name\ninstance.formatter({ formatter: 'nameOfMyFormatter' }); // Fetch an existing formatter by name\ninstance.formatter({ type: 'q' }); // Fetch an existing formatter by type\ninstance.formatter({\n formatter: 'd3',\n type: 'number',\n format: '1.0.%'\n}); // Create a new formatter"
@@ -1083,7 +1083,7 @@
                 "type": "string"
               },
               {
-                "type": "#/definitions/Formatter"
+                "type": "#/definitions/formatter"
               }
             ]
           }
@@ -4199,7 +4199,7 @@
               "type": "#/definitions/DockLayoutSettings"
             },
             {
-              "type": "#/definitions/CustomLayoutFunction"
+              "type": "#/definitions/customLayoutFunction"
             }
           ],
           "type": "any",
@@ -4552,7 +4552,7 @@
         "picasso.chart({\n  settings: {\n    interactions: [{\n      type: 'native',\n      events: {\n        mousemove(e) {\n          const tooltip = this.chart.component('<tooltip-key>');\n          tooltip.emit('show', e);\n        },\n        mouseleave(e) {\n          const tooltip = this.chart.component('<tooltip-key>');\n          tooltip.emit('hide');\n        }\n      }\n    }],\n    components: [\n      {\n        key: '<tooltip-key>',\n        type: 'tooltip'\n      }\n    ]\n  },\n  ...\n});"
       ]
     },
-    "CustomLayoutFunction": {
+    "customLayoutFunction": {
       "kind": "function",
       "params": [
         {
@@ -5108,7 +5108,7 @@
         }
       }
     },
-    "Formatter": {
+    "formatter": {
       "kind": "function",
       "params": [],
       "returns": {
@@ -5230,7 +5230,7 @@
         }
       }
     },
-    "Plugin": {
+    "plugin": {
       "description": "Callback function to register a plugin",
       "kind": "function",
       "params": [
@@ -5508,68 +5508,70 @@
               "name": "opts",
               "description": "Size definition",
               "optional": true,
-              "type": "#/definitions/RendererContainerDef"
+              "type": "#/definitions/Renderer/definitions/SizeDefinition"
             }
           ],
           "returns": {
             "description": "The current size definition",
-            "type": "#/definitions/RendererContainerDef"
+            "type": "#/definitions/Renderer/definitions/SizeDefinition"
           }
         }
-      }
-    },
-    "RendererContainerDef": {
-      "kind": "object",
-      "entries": {
-        "x": {
-          "description": "x-coordinate",
-          "optional": true,
-          "type": "number"
-        },
-        "y": {
-          "description": "y-coordinate",
-          "optional": true,
-          "type": "number"
-        },
-        "width": {
-          "description": "Width",
-          "optional": true,
-          "type": "number"
-        },
-        "height": {
-          "description": "Height",
-          "optional": true,
-          "type": "number"
-        },
-        "scaleRatio": {
-          "optional": true,
+      },
+      "definitions": {
+        "SizeDefinition": {
           "kind": "object",
           "entries": {
             "x": {
-              "description": "Scale ratio on x-axis",
+              "description": "x-coordinate",
               "optional": true,
               "type": "number"
             },
             "y": {
-              "description": "Scale ratio on y-axis",
-              "optional": true,
-              "type": "number"
-            }
-          }
-        },
-        "margin": {
-          "optional": true,
-          "kind": "object",
-          "entries": {
-            "left": {
-              "description": "Left margin",
+              "description": "y-coordinate",
               "optional": true,
               "type": "number"
             },
-            "top": {
-              "description": "Top margin",
+            "width": {
+              "description": "Width",
               "optional": true,
               "type": "number"
+            },
+            "height": {
+              "description": "Height",
+              "optional": true,
+              "type": "number"
+            },
+            "scaleRatio": {
+              "optional": true,
+              "kind": "object",
+              "entries": {
+                "x": {
+                  "description": "Scale ratio on x-axis",
+                  "optional": true,
+                  "type": "number"
+                },
+                "y": {
+                  "description": "Scale ratio on y-axis",
+                  "optional": true,
+                  "type": "number"
+                }
+              }
+            },
+            "margin": {
+              "optional": true,
+              "kind": "object",
+              "entries": {
+                "left": {
+                  "description": "Left margin",
+                  "optional": true,
+                  "type": "number"
+                },
+                "top": {
+                  "description": "Top margin",
+                  "optional": true,
+                  "type": "number"
+                }
+              }
             }
           }
         }
