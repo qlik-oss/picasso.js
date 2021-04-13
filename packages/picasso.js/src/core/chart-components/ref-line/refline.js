@@ -44,16 +44,16 @@ function getPosition(scale, value) {
  * Component settings
  * @typedef {object} ComponentRefLine.settings
  * @property {object} lines - X & Y Lines
- * @property {ComponentRefLine~line[]} [lines.x=[]] - Reference lines along X axis
- * @property {ComponentRefLine~line[]} [lines.y=[]] - Reference lines along Y axis
+ * @property {ComponentRefLine~Line[]} [lines.x=[]] - Reference lines along X axis
+ * @property {ComponentRefLine~Line[]} [lines.y=[]] - Reference lines along Y axis
  */
 
 /**
  * @private
  * @typedef {object} ComponentRefLine.style
  * @property {refline-oob-style} [oob=ComponentRefLine.style.oob] - Style for out of bounds object (oob)
- * @property {ComponentRefLine~line} [line=ComponentRefLine~line] - Generic style for lines
- * @property {ComponentRefLine~lineLabel} [label=ComponentRefLine~lineLabel] - Generic style for labels
+ * @property {ComponentRefLine~Line} [line=ComponentRefLine~Line] - Generic style for lines
+ * @property {ComponentRefLine~LineLabel} [label=ComponentRefLine~LineLabel] - Generic style for labels
  */
 
 /**
@@ -65,15 +65,15 @@ function getPosition(scale, value) {
  * @property {string} [stroke='transparent'] - Stroke of the OOB object
  * @property {number} [strokeWidth=0] - Stroke width of the OOB object
  * @property {number} [opacity=1] - Opacity of the OOB object
- * @property {ComponentRefLine~genericText} [text=ComponentRefLine~genericText] - Text configuration for out of bounds
- * @property {ComponentRefLine~genericObject} [triangle=ComponentRefLine~genericObject] - The triangle in OOB
+ * @property {ComponentRefLine~GenericText} [text=ComponentRefLine~GenericText] - Text configuration for out of bounds
+ * @property {ComponentRefLine~GenericObject} [triangle=ComponentRefLine~GenericObject] - The triangle in OOB
  * @property {object} [padding] - Padding on X
  * @property {number} [padding.x=28] - Padding on X
  * @property {number} [padding.y=5] - Padding on X
  */
 
 /**
- * @typedef {object} ComponentRefLine~genericText
+ * @typedef {object} ComponentRefLine~GenericText
  * @property {string} [text=''] - Text (if applicable)
  * @property {string} [fontSize='12px'] - Font size (if applicable)
  * @property {string} [fontFamily='Arial'] - Font family
@@ -85,15 +85,15 @@ function getPosition(scale, value) {
  */
 
 /**
- * @typedef {object} ComponentRefLine~line
+ * @typedef {object} ComponentRefLine~Line
  * @property {number|function} value - The value of the reference line. If a scale is specified, it is applied.
  * @property {string} [scale] - Scale to use (if undefined will use normalized value 0-1)
- * @property {ComponentRefLine~genericObject} [line=ComponentRefLine~genericObject] - The style of the line
- * @property {ComponentRefLine~lineLabel} [label=ComponentRefLine~lineLabel] - The label style of the line
+ * @property {ComponentRefLine~GenericObject} [line=ComponentRefLine~GenericObject] - The style of the line
+ * @property {ComponentRefLine~LineLabel} [label=ComponentRefLine~LineLabel] - The label style of the line
  */
 
 /**
- * @typedef {object} ComponentRefLine~lineLabel
+ * @typedef {object} ComponentRefLine~LineLabel
  * @property {number} padding=5 - Padding inside the label
  * @property {string} [text=''] - Text
  * @property {string} [fontSize='12px'] - Font size
@@ -105,12 +105,12 @@ function getPosition(scale, value) {
  * @property {number|string} [vAlign=0] - Alignment property top to bottom (0 = top, 1 = bottom). Also supports string ('top', 'center', 'middle', 'bottom')
  * @property {number} [maxWidth=1] - The maximum relative width to the width of the rendering area (see maxWidthPx aswell)
  * @property {number} [maxWidthPx=9999] - The maximum width in pixels. Labels will be rendered with the maximum size of the smallest value of maxWidth and maxWidthPx size, so you may specify maxWidth 0.8 but maxWidthPx 100 and will never be over 100px and never over 80% of the renderable area
- * @property {ComponentRefLine~lineLabelBackground} [background=ComponentRefLine~lineLabelBackground] - The background style (rect behind text)
+ * @property {ComponentRefLine~LineLabelBackground} [background=ComponentRefLine~LineLabelBackground] - The background style (rect behind text)
  * @property {boolean} [showValue=true] - Show value label
  */
 
 /**
- * @typedef {object} ComponentRefLine~lineLabelBackground
+ * @typedef {object} ComponentRefLine~LineLabelBackground
  * @property {string} [fill='#fff'] - Fill color
  * @property {string} [stroke='transparent'] - Stroke
  * @property {number} [strokeWidth=0] - Stroke width
@@ -118,7 +118,7 @@ function getPosition(scale, value) {
  */
 
 /**
- * @typedef {object} ComponentRefLine~genericObject
+ * @typedef {object} ComponentRefLine~GenericObject
  * @property {string} [fill='#fff'] - Fill color
  * @property {string} [stroke='transparent'] - Stroke
  * @property {number} [strokeWidth=0] - Stroke width

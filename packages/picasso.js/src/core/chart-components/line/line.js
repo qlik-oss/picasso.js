@@ -28,7 +28,7 @@ const CURVES = {
 
 /**
  * Callback function for layer sort
- * @callback ComponentLine~layerSort
+ * @callback ComponentLine~LayerSort
  * @param {object} a
  * @param {string} a.id
  * @param {Array<DatumExtract>} a.data
@@ -76,7 +76,7 @@ const SETTINGS = {
      * @type {boolean=} */
     show: true,
     /**
-     * @type {ComponentLine~layerSort=} */
+     * @type {ComponentLine~LayerSort=} */
     sort: undefined,
     /**
      * @typedef {object} */

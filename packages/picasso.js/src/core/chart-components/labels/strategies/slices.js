@@ -639,13 +639,13 @@ function measureText(text, stgns, renderer) {
 }
 
 /**
- * @typedef {object} ComponentLabels~slicesLabelStrategy
+ * @typedef {object} ComponentLabels~SlicesLabelStrategy
  * @property {string} type='slice' Name of strategy
  */
 
 /**
  * Slices strategy settings
- * @typedef {object} ComponentLabels~slicesLabelStrategy.settings
+ * @typedef {object} ComponentLabels~SlicesLabelStrategy.settings
  * @property {string|function} [direction='horizontal'] - The direction of the text: 'horizontal' or 'rotate'.
  * @property {string} [fontFamily='Arial']
  * @property {number} [fontSize=12]

@@ -76,13 +76,13 @@ function getBounds(node) {
 }
 
 /**
- * @typedef {object} ComponentLabels~rowsLabelStrategy
+ * @typedef {object} ComponentLabels~RowsLabelStrategy
  * @property {string} type='rows' Name of strategy
  */
 
 /**
  * Rows strategy settings
- * @typedef {object} ComponentLabels~rowsLabelStrategy.settings
+ * @typedef {object} ComponentLabels~RowsLabelStrategy.settings
  * @property {string} [fontFamily='Arial']
  * @property {number} [fontSize=12]
  * @property {number} [justify=0.5]

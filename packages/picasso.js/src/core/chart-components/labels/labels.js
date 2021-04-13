@@ -8,14 +8,14 @@ import strategies from './strategies';
 /**
  * Component settings
  * @typedef {object} ComponentLabels.settings
- * @property {Array<ComponentLabels~source>} sources Source settings
+ * @property {Array<ComponentLabels~Source>} sources Source settings
  */
 
 /**
- * @typedef {object} ComponentLabels~source
+ * @typedef {object} ComponentLabels~Source
  * @property {string} component Key of target component
  * @property {string} selector Shape selector
- * @property {ComponentLabels~barsLabelStrategy|ComponentLabels~rowsLabelStrategy|ComponentLabels~slicesLabelStrategy} strategy Strategy settings
+ * @property {ComponentLabels~BarsLabelStrategy|ComponentLabels~RowsLabelStrategy|ComponentLabels~SlicesLabelStrategy} strategy Strategy settings
  */
 
 export function strategy({ chart, source, rect, renderer, style }, fn) {

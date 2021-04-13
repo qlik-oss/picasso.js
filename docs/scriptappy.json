@@ -96,7 +96,7 @@
           "params": [
             {
               "name": "plugin",
-              "type": "#/entries/picassojs/definitions/plugin"
+              "type": "#/definitions/Plugin"
             },
             {
               "name": "options",
@@ -108,22 +108,6 @@
         "version": {
           "description": "picasso.js version",
           "type": "string"
-        }
-      },
-      "definitions": {
-        "plugin": {
-          "description": "Callback function to register a plugin",
-          "kind": "function",
-          "params": [
-            {
-              "name": "registries",
-              "type": "#/definitions/Registries"
-            },
-            {
-              "name": "options",
-              "type": "object"
-            }
-          ]
         }
       }
     }
@@ -1864,7 +1848,7 @@
                       "type": "string"
                     },
                     {
-                      "type": "#/definitions/ComponentBox/definitions/majorReference"
+                      "type": "#/definitions/ComponentBox/definitions/MajorReference"
                     }
                   ],
                   "type": "any"
@@ -2068,7 +2052,7 @@
         "{\n  type: \"box\",\n  data: {\n   mapTo: {\n     min: { source: \"/qHyperCube/qMeasureInfo/0\" },\n     start: { source: \"/qHyperCube/qMeasureInfo/1\" },\n     med: { source: \"/qHyperCube/qMeasureInfo/2\" },\n     end: { source: \"/qHyperCube/qMeasureInfo/3\" },\n     max: { source: \"/qHyperCube/qMeasureInfo/4\" },\n   },\n   groupBy: {\n     source: \"/qHyperCube/qDimensionInfo/0\"\n   }\n },\n settings: {\n   major: {\n     scale: { source: \"/qHyperCube/qDimensionInfo/0\" }\n   },\n   minor: {\n     scale: { source: [\"/qHyperCube/qMeasureInfo/0\",\n              \"/qHyperCube/qMeasureInfo/1\",\n              \"/qHyperCube/qMeasureInfo/2\",\n              \"/qHyperCube/qMeasureInfo/3\",\n              \"/qHyperCube/qMeasureInfo/4\"] }\n   }\n }\n}"
       ],
       "definitions": {
-        "majorReference": {
+        "MajorReference": {
           "kind": "object",
           "entries": {
             "start": {
@@ -2562,14 +2546,14 @@
               "description": "Source settings",
               "kind": "array",
               "items": {
-                "type": "#/definitions/ComponentLabels/definitions/source"
+                "type": "#/definitions/ComponentLabels/definitions/Source"
               }
             }
           }
         }
       },
       "definitions": {
-        "barsLabelStrategy": {
+        "BarsLabelStrategy": {
           "kind": "object",
           "entries": {
             "type": {
@@ -2750,7 +2734,7 @@
             }
           }
         },
-        "rowsLabelStrategy": {
+        "RowsLabelStrategy": {
           "kind": "object",
           "entries": {
             "type": {
@@ -2830,7 +2814,7 @@
             }
           }
         },
-        "slicesLabelStrategy": {
+        "SlicesLabelStrategy": {
           "kind": "object",
           "entries": {
             "type": {
@@ -2916,7 +2900,7 @@
             }
           }
         },
-        "source": {
+        "Source": {
           "kind": "object",
           "entries": {
             "component": {
@@ -2932,13 +2916,13 @@
               "kind": "union",
               "items": [
                 {
-                  "type": "#/definitions/ComponentLabels/definitions/barsLabelStrategy"
+                  "type": "#/definitions/ComponentLabels/definitions/BarsLabelStrategy"
                 },
                 {
-                  "type": "#/definitions/ComponentLabels/definitions/rowsLabelStrategy"
+                  "type": "#/definitions/ComponentLabels/definitions/RowsLabelStrategy"
                 },
                 {
-                  "type": "#/definitions/ComponentLabels/definitions/slicesLabelStrategy"
+                  "type": "#/definitions/ComponentLabels/definitions/SlicesLabelStrategy"
                 }
               ],
               "type": "any"
@@ -3505,7 +3489,7 @@
                 },
                 "sort": {
                   "optional": true,
-                  "type": "#/definitions/ComponentLine/definitions/layerSort"
+                  "type": "#/definitions/ComponentLine/definitions/LayerSort"
                 }
               }
             },
@@ -3518,7 +3502,7 @@
         }
       },
       "definitions": {
-        "layerSort": {
+        "LayerSort": {
           "description": "Callback function for layer sort",
           "kind": "function",
           "params": [
@@ -3802,7 +3786,7 @@
                   "defaultValue": "[]",
                   "kind": "array",
                   "items": {
-                    "type": "#/definitions/ComponentRefLine/definitions/line"
+                    "type": "#/definitions/ComponentRefLine/definitions/Line"
                   }
                 },
                 "y": {
@@ -3811,7 +3795,7 @@
                   "defaultValue": "[]",
                   "kind": "array",
                   "items": {
-                    "type": "#/definitions/ComponentRefLine/definitions/line"
+                    "type": "#/definitions/ComponentRefLine/definitions/Line"
                   }
                 }
               }
@@ -3823,7 +3807,7 @@
         "{\n type: 'ref-line',\n lines: {\n   y: [{\n     scale: 'y',\n     value: 5000,\n     label: {\n       text: 'value label'\n     }\n   }]\n }\n}"
       ],
       "definitions": {
-        "genericObject": {
+        "GenericObject": {
           "kind": "object",
           "entries": {
             "fill": {
@@ -3852,7 +3836,7 @@
             }
           }
         },
-        "genericText": {
+        "GenericText": {
           "kind": "object",
           "entries": {
             "text": {
@@ -3904,7 +3888,7 @@
             }
           }
         },
-        "line": {
+        "Line": {
           "kind": "object",
           "entries": {
             "value": {
@@ -3928,18 +3912,18 @@
             "line": {
               "description": "The style of the line",
               "optional": true,
-              "defaultValue": "ComponentRefLine~genericObject",
-              "type": "#/definitions/ComponentRefLine/definitions/genericObject"
+              "defaultValue": "ComponentRefLine~GenericObject",
+              "type": "#/definitions/ComponentRefLine/definitions/GenericObject"
             },
             "label": {
               "description": "The label style of the line",
               "optional": true,
-              "defaultValue": "ComponentRefLine~lineLabel",
-              "type": "#/definitions/ComponentRefLine/definitions/lineLabel"
+              "defaultValue": "ComponentRefLine~LineLabel",
+              "type": "#/definitions/ComponentRefLine/definitions/LineLabel"
             }
           }
         },
-        "lineLabel": {
+        "LineLabel": {
           "kind": "object",
           "entries": {
             "padding": {
@@ -4028,8 +4012,8 @@
             "background": {
               "description": "The background style (rect behind text)",
               "optional": true,
-              "defaultValue": "ComponentRefLine~lineLabelBackground",
-              "type": "#/definitions/ComponentRefLine/definitions/lineLabelBackground"
+              "defaultValue": "ComponentRefLine~LineLabelBackground",
+              "type": "#/definitions/ComponentRefLine/definitions/LineLabelBackground"
             },
             "showValue": {
               "description": "Show value label",
@@ -4039,7 +4023,7 @@
             }
           }
         },
-        "lineLabelBackground": {
+        "LineLabelBackground": {
           "kind": "object",
           "entries": {
             "fill": {
@@ -4608,32 +4592,32 @@
         "value": {
           "description": "The field value accessor",
           "optional": true,
-          "type": "#/definitions/DataExtractConfig/definitions/valueFn"
+          "type": "#/definitions/DataExtractConfig/definitions/ValueFn"
         },
         "label": {
           "description": "The field label accessor",
           "optional": true,
-          "type": "#/definitions/DataExtractConfig/definitions/labelFn"
+          "type": "#/definitions/DataExtractConfig/definitions/LabelFn"
         },
         "trackBy": {
           "description": "Track by value accessor",
           "optional": true,
-          "type": "#/definitions/DataExtractConfig/definitions/trackByFn"
+          "type": "#/definitions/DataExtractConfig/definitions/TrackByFn"
         },
         "reduce": {
           "description": "Reducer function",
           "optional": true,
-          "type": "#/definitions/DataExtractConfig/definitions/reduceFn"
+          "type": "#/definitions/DataExtractConfig/definitions/ReduceFn"
         },
         "reduceLabel": {
           "description": "Label reducer function",
           "optional": true,
-          "type": "#/definitions/DataExtractConfig/definitions/reduceLabelFn"
+          "type": "#/definitions/DataExtractConfig/definitions/ReduceLabelFn"
         },
         "filter": {
           "description": "Filter function",
           "optional": true,
-          "type": "#/definitions/DataExtractConfig/definitions/filterFn"
+          "type": "#/definitions/DataExtractConfig/definitions/FilterFn"
         },
         "props": {
           "description": "Additional properties to add to the extracted item",
@@ -4642,7 +4626,7 @@
         }
       },
       "definitions": {
-        "filterFn": {
+        "FilterFn": {
           "kind": "function",
           "params": [
             {
@@ -4655,7 +4639,7 @@
             "type": "boolean"
           }
         },
-        "labelFn": {
+        "LabelFn": {
           "kind": "function",
           "params": [
             {
@@ -4668,7 +4652,7 @@
             "type": "string"
           }
         },
-        "reduceFn": {
+        "ReduceFn": {
           "kind": "function",
           "params": [
             {
@@ -4684,7 +4668,7 @@
             "type": "any"
           }
         },
-        "reduceLabelFn": {
+        "ReduceLabelFn": {
           "kind": "function",
           "params": [
             {
@@ -4705,7 +4689,7 @@
             "type": "string"
           }
         },
-        "trackByFn": {
+        "TrackByFn": {
           "kind": "function",
           "params": [
             {
@@ -4718,7 +4702,7 @@
             "type": "any"
           }
         },
-        "valueFn": {
+        "ValueFn": {
           "kind": "function",
           "params": [
             {
@@ -5000,7 +4984,7 @@
               "type": "string"
             },
             {
-              "type": "#/definitions/DockLayoutSettings/definitions/layoutMode"
+              "type": "#/definitions/DockLayoutSettings/definitions/LayoutMode"
             }
           ]
         },
@@ -5023,7 +5007,7 @@
         }
       },
       "definitions": {
-        "layoutMode": {
+        "LayoutMode": {
           "kind": "object",
           "entries": {
             "width": {
@@ -5245,6 +5229,20 @@
           "type": "string"
         }
       }
+    },
+    "Plugin": {
+      "description": "Callback function to register a plugin",
+      "kind": "function",
+      "params": [
+        {
+          "name": "registries",
+          "type": "#/definitions/Registries"
+        },
+        {
+          "name": "options",
+          "type": "object"
+        }
+      ]
     },
     "Point": {
       "kind": "object",

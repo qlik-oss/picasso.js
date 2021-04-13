@@ -121,14 +121,14 @@ function pic(config = {}, registries = {}) {
 
   /**
    * Callback function to register a plugin
-   * @callback picassojs~plugin
+   * @callback Plugin
    * @param {Registries} registries
    * @param {object} options
    */
 
   /**
    * Plugin registry
-   * @param {picassojs~plugin} plugin
+   * @param {Plugin} plugin
    * @param {object} [options]
    */
   picassojs.use = (plugin, options = {}) => usePlugin(plugin, options, regis);
