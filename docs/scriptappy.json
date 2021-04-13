@@ -3,7 +3,7 @@
   "info": {
     "name": "picasso.js",
     "description": "A charting library streamlined for building visualizations for the Qlik Sense Analytics platform.",
-    "version": "0.35.1",
+    "version": "0.36.0",
     "license": "MIT"
   },
   "entries": {
@@ -2453,6 +2453,25 @@
         }
       }
     },
+    "ComponentContainer": {
+      "stability": "experimental",
+      "extends": [
+        {
+          "type": "#/definitions/ComponentSettings"
+        }
+      ],
+      "kind": "object",
+      "entries": {
+        "type": {
+          "optional": true,
+          "defaultValue": "'container'",
+          "type": "string"
+        }
+      },
+      "examples": [
+        "{\n type: 'container',\n preferredSize: ({ inner, outer, dock, children }) => {\n   const sizes = children.map(c => c.preferredSize({ inner, outer }));\n   return Math.max(...sizes);\n },\n strategy: (rect, components) => {\n   const height = rect.height / components.length;\n   components.forEach((c, i) => {\n     c.resize({ ...rect, height, y: rect.y + i * height })\n   });\n   return { visible: components, hidden: [], order: components };\n },\n components: [\n    ...\n ],\n}"
+      ]
+    },
     "ComponentContext": {
       "kind": "object",
       "entries": {
@@ -4208,6 +4227,30 @@
           "description": "Named formatter. Fallback to create formatter from scale. Will be provided to the component if it ask for it.",
           "optional": true,
           "type": "string"
+        },
+        "components": {
+          "description": "Optional list of child components",
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/ComponentSettings"
+          },
+          "stability": "experimental"
+        },
+        "strategy": {
+          "description": "Layout strategy used for child components.",
+          "optional": true,
+          "kind": "union",
+          "items": [
+            {
+              "type": "#/definitions/DockLayoutSettings"
+            },
+            {
+              "type": "#/definitions/CustomLayoutFunction"
+            }
+          ],
+          "type": "any",
+          "stability": "experimental"
         }
       }
     },
@@ -4554,6 +4597,36 @@
       },
       "examples": [
         "picasso.chart({\n  settings: {\n    interactions: [{\n      type: 'native',\n      events: {\n        mousemove(e) {\n          const tooltip = this.chart.component('<tooltip-key>');\n          tooltip.emit('show', e);\n        },\n        mouseleave(e) {\n          const tooltip = this.chart.component('<tooltip-key>');\n          tooltip.emit('hide');\n        }\n      }\n    }],\n    components: [\n      {\n        key: '<tooltip-key>',\n        type: 'tooltip'\n      }\n    ]\n  },\n  ...\n});"
+      ]
+    },
+    "CustomLayoutFunction": {
+      "kind": "function",
+      "params": [
+        {
+          "name": "rect",
+          "type": "#/definitions/Rect"
+        },
+        {
+          "name": "components",
+          "kind": "array",
+          "items": {
+            "entries": {
+              "key": {
+                "type": "string"
+              },
+              "dockConfig": {
+                "type": "object"
+              },
+              "resize": {
+                "type": "function"
+              },
+              "preferredSize": {
+                "type": "function"
+              }
+            },
+            "kind": "object"
+          }
+        }
       ]
     },
     "DataExtractConfig": {
