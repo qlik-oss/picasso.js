@@ -14,6 +14,13 @@ import extractData from '../../data/extractor';
  * @property {DataExtractConfig} [data] Data configuration
  */
 
+/**
+ * Scale instance
+ * @typedef {object} Scale
+ * @interface
+ * @property {string} type Type of scale
+ */
+
 const scaleRegistry = registry();
 
 scaleRegistry('linear', linear);

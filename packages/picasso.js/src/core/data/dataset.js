@@ -181,7 +181,7 @@ function ds({ key, data, config } = {}) {
 
     /**
      * Get all fields within this dataset
-     * @returns {Array<field>}
+     * @returns {Array<Field>}
      */
     fields: () => cache.fields.slice(),
 

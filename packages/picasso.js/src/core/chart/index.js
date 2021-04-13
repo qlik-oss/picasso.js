@@ -911,8 +911,9 @@ function chartFn(definition, context) {
   };
 
   /**
+   * @private
    * @param {string} name - Name of scroll api
-   * @returns {scroll}
+   * @returns {object}
    */
   instance.scroll = function scroll(name = 'default') {
     return getOrCreateScrollApi(name, currentScrollApis);
@@ -929,7 +930,7 @@ function chartFn(definition, context) {
 
   /**
    * Get all registered scales
-   * @returns {Object<string,scale>}
+   * @returns {Object<string,Scale>}
    */
   instance.scales = function scales() {
     return currentScales.all();
@@ -937,7 +938,7 @@ function chartFn(definition, context) {
 
   /**
    * Get all registered formatters
-   * @returns {Object<string,formatter>}
+   * @returns {Object<string,Formatter>}
    */
   instance.formatters = function formatters() {
     return currentFormatters.all();
@@ -958,7 +959,7 @@ function chartFn(definition, context) {
   /**
    * Get or create a scale for this chart
    * @param {string|object} v - Scale reference or scale options
-   * @returns {scale}
+   * @returns {Scale}
    * @example
    * instance.scale('nameOfMyScale'); // Fetch an existing scale by name
    * instance.scale({ scale: 'nameOfMyScale' }); // Fetch an existing scale by name
@@ -971,7 +972,7 @@ function chartFn(definition, context) {
   /**
    * Get or create a formatter for this chart
    * @param {string|object} v - Formatter reference or formatter options
-   * @returns {formatter}
+   * @returns {Formatter}
    * @example
    * instance.formatter('nameOfMyFormatter'); // Fetch an existing formatter by name
    * instance.formatter({ formatter: 'nameOfMyFormatter' }); // Fetch an existing formatter by name
@@ -1015,6 +1016,15 @@ function chartFn(definition, context) {
   instance.theme = () => theme;
 
   /**
+   * Interaction instance
+   * @typedef {object} Interaction
+   * @property {function} on Enable interaction
+   * @property {function} off Disable interaction
+   * @property {function} destroy Destroy interaction
+   * @property {string} key Interaction identifier
+   */
+
+  /**
    * Get the all interactions instances
    * @name Chart.interactions
    * @type {object}
@@ -1026,7 +1036,7 @@ function chartFn(definition, context) {
   Object.defineProperty(instance, 'interactions', {
     get() {
       return /** @lends Chart.interactions */ {
-        /** @type Array<interaction> */
+        /** @type Array<Interaction> */
         instances: currentInteractions,
         /** Enable all interaction instances */
         on() {

@@ -1082,7 +1082,7 @@
             }
           ],
           "returns": {
-            "type": "formatter"
+            "type": "#/definitions/Formatter"
           },
           "examples": [
             "instance.formatter('nameOfMyFormatter'); // Fetch an existing formatter by name\ninstance.formatter({ formatter: 'nameOfMyFormatter' }); // Fetch an existing formatter by name\ninstance.formatter({ type: 'q' }); // Fetch an existing formatter by type\ninstance.formatter({\n formatter: 'd3',\n type: 'number',\n format: '1.0.%'\n}); // Create a new formatter"
@@ -1099,7 +1099,7 @@
                 "type": "string"
               },
               {
-                "type": "formatter"
+                "type": "#/definitions/Formatter"
               }
             ]
           }
@@ -1147,7 +1147,7 @@
             "instances": {
               "kind": "array",
               "items": {
-                "type": "interaction"
+                "type": "#/definitions/Interaction"
               }
             },
             "off": {
@@ -1185,7 +1185,7 @@
             }
           ],
           "returns": {
-            "type": "scale"
+            "type": "#/definitions/Scale"
           },
           "examples": [
             "instance.scale('nameOfMyScale'); // Fetch an existing scale by name\ninstance.scale({ scale: 'nameOfMyScale' }); // Fetch an existing scale by name\ninstance.scale({ source: '0/1', type: 'linear' }); // Create a new scale"
@@ -1202,22 +1202,9 @@
                 "type": "string"
               },
               {
-                "type": "scale"
+                "type": "#/definitions/Scale"
               }
             ]
-          }
-        },
-        "scroll": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "name",
-              "description": "Name of scroll api",
-              "type": "string"
-            }
-          ],
-          "returns": {
-            "type": "scroll"
           }
         },
         "shapesAt": {
@@ -4745,7 +4732,7 @@
           "returns": {
             "kind": "array",
             "items": {
-              "type": "field"
+              "type": "#/definitions/Field"
             }
           }
         },
@@ -5095,6 +5082,14 @@
         }
       }
     },
+    "Formatter": {
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "description": "Returns a formatted value",
+        "type": "any"
+      }
+    },
     "FormatterDefinition": {
       "kind": "object",
       "entries": {
@@ -5124,6 +5119,28 @@
           "items": {
             "type": "#/definitions/Polygon"
           }
+        }
+      }
+    },
+    "Interaction": {
+      "description": "Interaction instance",
+      "kind": "object",
+      "entries": {
+        "on": {
+          "description": "Enable interaction",
+          "type": "function"
+        },
+        "off": {
+          "description": "Disable interaction",
+          "type": "function"
+        },
+        "destroy": {
+          "description": "Destroy interaction",
+          "type": "function"
+        },
+        "key": {
+          "description": "Interaction identifier",
+          "type": "string"
         }
       }
     },
@@ -5515,6 +5532,16 @@
               "type": "number"
             }
           }
+        }
+      }
+    },
+    "Scale": {
+      "description": "Scale instance",
+      "kind": "interface",
+      "entries": {
+        "type": {
+          "description": "Type of scale",
+          "type": "string"
         }
       }
     },

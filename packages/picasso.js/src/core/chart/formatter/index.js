@@ -1,5 +1,10 @@
 import extractData from '../../data/extractor';
 
+/**
+ * @typedef {function} Formatter
+ * @returns {any} Returns a formatted value
+ */
+
 export function create(options, data, deps, extractor = extractData) {
   if (options.data) {
     const d = extractor(options.data, data, deps);
