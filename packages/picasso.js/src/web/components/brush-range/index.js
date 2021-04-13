@@ -3,12 +3,12 @@ import brushAreaDirectionalComponent from './brush-area-dir';
 
 /**
  * @typedef {object} ComponentBrushAreaDir
- * @property {string} type Name of the component
+ * @extends ComponentSettings
  */
 
 /**
  * @typedef {object} ComponentBrushRange
- * @property {string} type Name of the component
+ * @extends ComponentSettings
  */
 
 export default function rangeBrush(picasso) {

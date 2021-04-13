@@ -2,13 +2,9 @@ import pointMarkerComponent from './point';
 
 /**
  * @typedef {object} ComponentPoint
+ * @extends ComponentSettings
  */
 
-/**
- * Name of the component
- * @type {string}
- * @memberof ComponentPoint
- */
 const type = 'point';
 
 export default function pointMarker(picasso) {

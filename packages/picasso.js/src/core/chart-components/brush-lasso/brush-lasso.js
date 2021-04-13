@@ -179,7 +179,7 @@ function resetState() {
 
 /**
  * @typedef {object} ComponentBrushLasso
- * @property {string} type name of the component
+ * @extends ComponentSettings
  * @property {ComponentBrushLasso~Settings} settings component settings
  * @example
  * {

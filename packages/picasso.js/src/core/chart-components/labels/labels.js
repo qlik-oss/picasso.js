@@ -2,7 +2,7 @@ import strategies from './strategies';
 
 /**
  * @typedef {object} ComponentLabels
- * @property {string} [type='labels'] Name of the component
+ * @extends ComponentSettings
  */
 
 /**

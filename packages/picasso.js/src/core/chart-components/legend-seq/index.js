@@ -2,7 +2,7 @@ import legendSeq from './legend-seq';
 
 /**
  * @typedef {object} ComponentLegendSeq
- * @property {string} type Name of the component
+ * @extends ComponentSettings
  * @property {string} scale Reference to sequential color scale
  */
 

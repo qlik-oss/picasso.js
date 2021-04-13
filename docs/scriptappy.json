@@ -1523,12 +1523,13 @@
       }
     },
     "ComponentAxis": {
+      "extends": [
+        {
+          "type": "#/definitions/ComponentSettings"
+        }
+      ],
       "kind": "object",
       "entries": {
-        "type": {
-          "description": "name of the component",
-          "type": "string"
-        },
         "scale": {
           "description": "reference to band or linear scale",
           "type": "string"
@@ -1820,12 +1821,13 @@
       }
     },
     "ComponentBox": {
+      "extends": [
+        {
+          "type": "#/definitions/ComponentSettings"
+        }
+      ],
       "kind": "object",
       "entries": {
-        "type": {
-          "description": "\"box\"",
-          "type": "string"
-        },
         "data": {
           "description": "Box data",
           "type": "#/definitions/ComponentBox/definitions/data"
@@ -2107,12 +2109,13 @@
     },
     "ComponentBrushArea": {
       "description": "A component that can brush a rectangular area",
+      "extends": [
+        {
+          "type": "#/definitions/ComponentSettings"
+        }
+      ],
       "kind": "object",
       "entries": {
-        "type": {
-          "description": "Name of the component",
-          "type": "string"
-        },
         "settings": {
           "kind": "object",
           "entries": {
@@ -2135,12 +2138,13 @@
       ]
     },
     "ComponentBrushAreaDir": {
+      "extends": [
+        {
+          "type": "#/definitions/ComponentSettings"
+        }
+      ],
       "kind": "object",
       "entries": {
-        "type": {
-          "description": "Name of the component",
-          "type": "string"
-        },
         "settings": {
           "kind": "object",
           "entries": {
@@ -2208,12 +2212,13 @@
       }
     },
     "ComponentBrushLasso": {
+      "extends": [
+        {
+          "type": "#/definitions/ComponentSettings"
+        }
+      ],
       "kind": "object",
       "entries": {
-        "type": {
-          "description": "name of the component",
-          "type": "string"
-        },
         "settings": {
           "description": "component settings",
           "type": "#/definitions/ComponentBrushLasso/definitions/Settings"
@@ -2372,12 +2377,13 @@
       }
     },
     "ComponentBrushRange": {
+      "extends": [
+        {
+          "type": "#/definitions/ComponentSettings"
+        }
+      ],
       "kind": "object",
       "entries": {
-        "type": {
-          "description": "Name of the component",
-          "type": "string"
-        },
         "settings": {
           "kind": "object",
           "entries": {
@@ -2474,12 +2480,13 @@
       }
     },
     "ComponentGridLine": {
+      "extends": [
+        {
+          "type": "#/definitions/ComponentSettings"
+        }
+      ],
       "kind": "object",
       "entries": {
-        "type": {
-          "description": "name of the component",
-          "type": "string"
-        },
         "settings": {
           "description": "component settings",
           "type": "#/definitions/ComponentGridLine/definitions/Settings"
@@ -2565,14 +2572,13 @@
       }
     },
     "ComponentLabels": {
+      "extends": [
+        {
+          "type": "#/definitions/ComponentSettings"
+        }
+      ],
       "kind": "object",
       "entries": {
-        "type": {
-          "description": "Name of the component",
-          "optional": true,
-          "defaultValue": "'labels'",
-          "type": "string"
-        },
         "settings": {
           "description": "Component settings",
           "kind": "object",
@@ -2967,6 +2973,11 @@
       }
     },
     "ComponentLegendCat": {
+      "extends": [
+        {
+          "type": "#/definitions/ComponentSettings"
+        }
+      ],
       "kind": "object",
       "entries": {
         "scale": {
@@ -3188,21 +3199,17 @@
               }
             }
           }
-        },
-        "type": {
-          "description": "Name of the component",
-          "defaultValue": "legend-cat",
-          "type": "string"
         }
       }
     },
     "ComponentLegendSeq": {
+      "extends": [
+        {
+          "type": "#/definitions/ComponentSettings"
+        }
+      ],
       "kind": "object",
       "entries": {
-        "type": {
-          "description": "Name of the component",
-          "type": "string"
-        },
         "scale": {
           "description": "Reference to sequential color scale",
           "type": "string"
@@ -3410,6 +3417,11 @@
       }
     },
     "ComponentLine": {
+      "extends": [
+        {
+          "type": "#/definitions/ComponentSettings"
+        }
+      ],
       "kind": "object",
       "entries": {
         "settings": {
@@ -3528,11 +3540,6 @@
               "type": "string"
             }
           }
-        },
-        "type": {
-          "description": "Name of the component",
-          "defaultValue": "line",
-          "type": "string"
         }
       },
       "definitions": {
@@ -3575,14 +3582,13 @@
       }
     },
     "ComponentPie": {
+      "extends": [
+        {
+          "type": "#/definitions/ComponentSettings"
+        }
+      ],
       "kind": "object",
       "entries": {
-        "type": {
-          "description": "Name of the component",
-          "optional": true,
-          "defaultValue": "'pie'",
-          "type": "string"
-        },
         "settings": {
           "description": "Component settings",
           "kind": "object",
@@ -3677,6 +3683,11 @@
       ]
     },
     "ComponentPoint": {
+      "extends": [
+        {
+          "type": "#/definitions/ComponentSettings"
+        }
+      ],
       "kind": "object",
       "entries": {
         "settings": {
@@ -3791,21 +3802,17 @@
               "type": "#/definitions/DatumNumber"
             }
           }
-        },
-        "type": {
-          "description": "Name of the component",
-          "defaultValue": "point",
-          "type": "string"
         }
       }
     },
     "ComponentRefLine": {
+      "extends": [
+        {
+          "type": "#/definitions/ComponentSettings"
+        }
+      ],
       "kind": "object",
       "entries": {
-        "type": {
-          "description": "Name of the component",
-          "type": "string"
-        },
         "settings": {
           "description": "Component settings",
           "kind": "object",
@@ -4218,13 +4225,13 @@
       }
     },
     "ComponentText": {
+      "extends": [
+        {
+          "type": "#/definitions/ComponentSettings"
+        }
+      ],
       "kind": "object",
       "entries": {
-        "type": {
-          "optional": true,
-          "defaultValue": "'text'",
-          "type": "string"
-        },
         "text": {
           "description": "Text to display",
           "kind": "union",
@@ -4288,6 +4295,11 @@
       "examples": ["{\n type: 'text',\n text: 'my title',\n dock: 'left',\n settings: {\n   anchor: 'left',\n }\n}"]
     },
     "ComponentTooltip": {
+      "extends": [
+        {
+          "type": "#/definitions/ComponentSettings"
+        }
+      ],
       "kind": "object",
       "entries": {
         "settings": {

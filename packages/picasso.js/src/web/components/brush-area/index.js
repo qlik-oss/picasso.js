@@ -3,7 +3,7 @@ import definition from './brush-area';
 /**
  * A component that can brush a rectangular area
  * @typedef {object} ComponentBrushArea
- * @property {string} type Name of the component
+ * @extends ComponentSettings
  * @example
  * {
  *  type: 'brush-area',

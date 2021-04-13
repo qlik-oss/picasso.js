@@ -2,6 +2,7 @@ import tooltip from './tooltip';
 
 /**
  * @typedef {object} ComponentTooltip
+ * @extends ComponentSettings
  * @example
  * picasso.chart({
   settings: {

@@ -7,7 +7,7 @@ export default function box(picasso) {
 
 /**
  * @typedef {object} ComponentBox
- * @property {string} type - "box"
+ * @extends ComponentSettings
  * @property {ComponentBox~data} data Box data
  * @property {ComponentBox~settings} settings Box settings
  * @example

@@ -13,7 +13,7 @@
 
 /**
  * @typedef {object} ComponentAxis
- * @property {string} type name of the component
+ * @extends ComponentSettings
  * @property {string} scale reference to band or linear scale
  * @property {ComponentAxis~DiscreteSettings|ComponentAxis~ContinuousSettings} settings discrete or continuous axis settings
  * @example

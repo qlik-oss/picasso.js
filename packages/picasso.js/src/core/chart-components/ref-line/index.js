@@ -2,7 +2,7 @@ import refLineComponent from './refline';
 
 /**
  * @typedef {object} ComponentRefLine
- * @property {string} type Name of the component
+ * @extends ComponentSettings
  * @example
  * {
  *  type: 'ref-line',

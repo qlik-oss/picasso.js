@@ -2,7 +2,7 @@ import gridLineComponent from './line';
 
 /**
  * @typedef {object} ComponentGridLine
- * @property {string} type name of the component
+ * @extends ComponentSettings
  * @property {ComponentGridLine~Settings} settings component settings
  * @example
  * {

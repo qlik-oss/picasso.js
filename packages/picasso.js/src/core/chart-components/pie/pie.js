@@ -56,7 +56,7 @@ const DEFAULT_DATA_SETTINGS = {
 
 /**
  * @typedef {object} ComponentPie
- * @property {string} [type='pie'] Name of the component
+ * @extends ComponentSettings
  * @example
  * {
  *   type: 'pie',
