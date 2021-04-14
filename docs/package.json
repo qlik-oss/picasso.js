@@ -6,7 +6,7 @@
   "scripts": {
     "build": "yarn run spec",
     "spec": "jsdoc -r ../packages/picasso.js/src -p ../packages/picasso.js/package.json -X | scriptappy-from-jsdoc -c ./scriptappy.config.js",
-    "version": "yarn run build"
+    "version": "yarn run spec"
   },
   "devDependencies": {
     "glob": "7.1.6",
