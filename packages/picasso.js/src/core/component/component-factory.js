@@ -542,7 +542,8 @@ function componentFactory(definition, context = {}) {
   });
 
   /**
-   * @typedef {object} ComponentContext
+   * Component instance
+   * @typedef {object} Component
    * @property {string} type Type of component
    * @property {string} key Key of the component
    */

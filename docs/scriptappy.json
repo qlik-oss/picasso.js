@@ -985,7 +985,7 @@
           ],
           "returns": {
             "description": "Component context",
-            "type": "#/definitions/ComponentContext"
+            "type": "#/definitions/Component"
           }
         },
         "componentsFromPoint": {
@@ -1002,7 +1002,7 @@
             "description": "Array of component contexts",
             "kind": "array",
             "items": {
-              "type": "#/definitions/ComponentContext"
+              "type": "#/definitions/Component"
             }
           }
         },
@@ -1490,6 +1490,20 @@
         "data": {
           "description": "Data configuration",
           "type": "#/definitions/DataExtractConfig"
+        }
+      }
+    },
+    "Component": {
+      "description": "Component instance",
+      "kind": "object",
+      "entries": {
+        "type": {
+          "description": "Type of component",
+          "type": "string"
+        },
+        "key": {
+          "description": "Key of the component",
+          "type": "string"
         }
       }
     },
@@ -2429,19 +2443,6 @@
       "examples": [
         "{\n type: 'container',\n preferredSize: ({ inner, outer, dock, children }) => {\n   const sizes = children.map(c => c.preferredSize({ inner, outer }));\n   return Math.max(...sizes);\n },\n strategy: (rect, components) => {\n   const height = rect.height / components.length;\n   components.forEach((c, i) => {\n     c.resize({ ...rect, height, y: rect.y + i * height })\n   });\n   return { visible: components, hidden: [], order: components };\n },\n components: [\n    ...\n ],\n}"
       ]
-    },
-    "ComponentContext": {
-      "kind": "object",
-      "entries": {
-        "type": {
-          "description": "Type of component",
-          "type": "string"
-        },
-        "key": {
-          "description": "Key of the component",
-          "type": "string"
-        }
-      }
     },
     "ComponentGridLine": {
       "extends": [
@@ -3659,6 +3660,12 @@
               "defaultValue": "#333",
               "type": "#/definitions/DatumString"
             },
+            "label": {
+              "description": "Label",
+              "optional": true,
+              "defaultValue": "",
+              "type": "#/definitions/DatumString"
+            },
             "opacity": {
               "description": "Opacity of shape",
               "optional": true,
@@ -4851,7 +4858,7 @@
         }
       },
       "examples": [
-        "// Implicitly resolve the datum by passing a referenced data through the scale\n{\n scale: '<name-of-scale>',\n ref: '<data-property>'\n}\n\n// or explictly resolve the datum using callback function\n{\n scale: '<name-of-scale>',\n fn: (d) => Math.min(0, d.value);\n}"
+        "// Implicitly resolve the datum by passing a referenced data through the scale\n{\n scale: '<name-of-scale>',\n ref: '<data-property>'\n}\n\n// or explictly resolve the datum using callback function\n{\n fn: (d) => Math.min(0, d.datum.x.value);\n}"
       ]
     },
     "DatumExtract": {

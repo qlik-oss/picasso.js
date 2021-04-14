@@ -23,6 +23,8 @@ const DEFAULT_DATA_SETTINGS = {
   /** Type of shape
    * @type {DatumString=} */
   shape: 'circle',
+  /** Label
+   * @type {DatumString=} */
   label: '',
   /** Fill color
    * @type {DatumString=} */

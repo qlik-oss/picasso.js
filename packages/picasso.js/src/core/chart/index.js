@@ -766,7 +766,7 @@ function chartFn(definition, context) {
   /**
    * Get components overlapping a point.
    * @param {Point} p - Point with x- and y-cooridnate. The coordinate is relative to the browser viewport.
-   * @returns {Array<ComponentContext>} Array of component contexts
+   * @returns {Array<Component>} Array of component contexts
    */
   instance.componentsFromPoint = (p) => componentsFromPoint(p).map((comp) => comp.instance.ctx);
 
@@ -954,7 +954,7 @@ function chartFn(definition, context) {
   /**
    * Get a component context
    * @param {string} key - Component key
-   * @returns {ComponentContext} Component context
+   * @returns {Component} Component context
    */
   instance.component = (key) => {
     const component = componentsC.findComponentByKey(key);

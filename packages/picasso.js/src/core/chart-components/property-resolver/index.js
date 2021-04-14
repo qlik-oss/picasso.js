@@ -39,8 +39,7 @@ function isPrimitive(x) {
  *
  * // or explictly resolve the datum using callback function
  * {
- *  scale: '<name-of-scale>',
- *  fn: (d) => Math.min(0, d.value);
+ *  fn: (d) => Math.min(0, d.datum.x.value);
  * }
  */
 
