@@ -2,12 +2,9 @@ import component from './line';
 
 /**
  * @typedef {object} ComponentLine
+ * @extends ComponentSettings
  */
 
-/**
- * @type {string}
- * @memberof ComponentLine
- */
 const type = 'line';
 
 export default function line(picasso) {

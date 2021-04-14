@@ -8,8 +8,8 @@ function hasData({ data, _boundingRect, _textBoundsFn }) {
 
 /**
  * @private
- * @extends node-def
- * @typedef {object} node--text-def
+ * @extends DisplayObject
+ * @typedef {object} TextNode
  * @property {string} text
  * @property {number} x - {@link https://www.w3.org/TR/SVG/text.html#TextElementXAttribute}
  * @property {number} y - {@link https://www.w3.org/TR/SVG/text.html#TextElementYAttribute}

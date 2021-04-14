@@ -1,6 +1,7 @@
 import pointsToPath from '../utils/points-to-path';
 
 /**
+ * @private
  * @extends Symbol
  * @typedef {object} SymbolDiamond
  */

@@ -2,13 +2,10 @@ import component from './legend-cat';
 
 /**
  * @typedef {object} ComponentLegendCat
- * @property {string} scale
+ * @extends ComponentSettings
+ * @property {string} scale Reference to categorical color scale
  */
 
-/**
- * @type {string}
- * @memberof ComponentLegendCat
- */
 const type = 'legend-cat';
 
 export default function categoricalLegend(picasso) {

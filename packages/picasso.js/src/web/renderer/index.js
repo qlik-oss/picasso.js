@@ -29,7 +29,7 @@ function create() {
     appendTo: () => {},
 
     /**
-     * @param {node-def[]} nodes - Nodes to render
+     * @param {object[]} nodes - Nodes to render
      * @returns {boolean} True if the nodes where rendered, otherwise false
      */
     render: () => false,
@@ -61,8 +61,8 @@ function create() {
 
     /**
      * Set or Get the size definition of the renderer container.
-     * @param {RendererContainerDef} [opts] - Size definition
-     * @returns {RendererContainerDef} The current size definition
+     * @param {Renderer~SizeDefinition} [opts] - Size definition
+     * @returns {Renderer~SizeDefinition} The current size definition
      */
     size: () => {},
 
@@ -70,8 +70,8 @@ function create() {
      * @function
      * @param {object} opts
      * @param {string} opts.text - Text to measure
-     * @param {string} opts.fontSize - {@link https://www.w3.org/TR/SVG/text.html#FontPropertiesUsedBySVG}
-     * @param {string} opts.fontFamily - {@link https://www.w3.org/TR/SVG/text.html#FontPropertiesUsedBySVG}
+     * @param {string} opts.fontSize - Font size
+     * @param {string} opts.fontFamily - Font family
      * @returns {object} Width and height of text
      * @example
      * measureText({
@@ -85,7 +85,8 @@ function create() {
     /**
      * Calculates the bounding rectangle of a text node. Including any potential line breaks.
      * @function
-     * @param {node--text-def} node
+     * @private
+     * @param {TextNode} node
      * @return {Rect} The bounding rectangle
      */
     textBounds,

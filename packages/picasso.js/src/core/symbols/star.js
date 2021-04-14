@@ -2,6 +2,7 @@ import pointsToPath from '../utils/points-to-path';
 import { toRadians } from '../math/angles';
 
 /**
+ * @private
  * @extends Symbol
  * @typedef {object} SymbolStar
  * @property {number} [points=5] - Number of points on the star

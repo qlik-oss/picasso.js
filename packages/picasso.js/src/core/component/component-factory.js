@@ -541,6 +541,12 @@ function componentFactory(definition, context = {}) {
     symbol: () => createSymbolFactory(registries.symbol),
   });
 
+  /**
+   * Component instance
+   * @typedef {object} Component
+   * @property {string} type Type of component
+   * @property {string} key Key of the component
+   */
   prepareContext(instanceContext, config, {
     settings: () => settings,
     data: () => data,

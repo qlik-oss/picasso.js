@@ -101,7 +101,9 @@ function teardown(state) {
 }
 
 /**
+ * @private
  * @typedef {object} ComponentRange
+ * @extends ComponentSettings
  */
 
 /**

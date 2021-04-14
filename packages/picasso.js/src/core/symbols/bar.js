@@ -3,6 +3,7 @@ import { pointsToRect } from '../geometry/util';
 import { toRadians } from '../math/angles';
 
 /**
+ * @private
  * @extends Symbol
  * @typedef {object} SymbolBar
  * @property {string} [direction='horizontal'] - Direction of bar ('horizontal'|'vertical').

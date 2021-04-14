@@ -2,16 +2,8 @@ import extend from 'extend';
 import { testRectPoint } from '../../../core/math/narrow-phase-collision';
 
 /**
- * @typedef {object} ComponentBrushAreaBrush
- * @property {string} key - Component key
- * @property {string[]} [contexts] - Name of the brushing contexts to affect
- * @property {string[]} [data] - The mapped data properties to add to the brush
- * @property {string} [action='set'] - Type of action to respond with
- */
-
-/**
  * @typedef {object}
- * @alias ComponentBrushAreaSettings
+ * @alias ComponentBrushArea.settings
  */
 const DEFAULT_SETTINGS = {
   /**
@@ -19,7 +11,7 @@ const DEFAULT_SETTINGS = {
    */
   brush: {
     /**
-     * @type {Array<ComponentBrushAreaBrush>}
+     * @type {Array<BrushTargetConfig>}
      */
     components: [],
   },
@@ -102,8 +94,8 @@ function doEndBrush(state, chart) {
 /**
  * Convert two points into a rectangle.
  * @private
- * @param {point} p0
- * @param {point} p1
+ * @param {Point} p0
+ * @param {Point} p1
  * @returns {Rect}
  */
 function toRect(p0, p1) {

@@ -18,26 +18,43 @@ function isPrimitive(x) {
 }
 
 /**
+ * Callback function
  * @callback datumAccessor
- * @param {DatumExtract} d
+ * @param {DatumExtract} d datum
+ * @example
+ * (d) => Math.min(0, d.value);
  */
 
 /**
  * @typedef {object} DatumConfig
- * @property {string} [scale]
- * @property {datumAccessor} fn
- * @property {string} ref - A reference to a DatumExtract property
+ * @property {string} [scale] - Name of a scale
+ * @property {datumAccessor} [fn]
+ * @property {string} [ref] - A reference to a DatumExtract property
+ * @example
+ * // Implicitly resolve the datum by passing a referenced data through the scale
+ * {
+ *  scale: '<name-of-scale>',
+ *  ref: '<data-property>'
+ * }
+ *
+ * // or explictly resolve the datum using callback function
+ * {
+ *  fn: (d) => Math.min(0, d.datum.x.value);
+ * }
  */
 
 /**
+ * Custom type that is either a string, DatumConfig or a datumAccessor
  * @typedef {string|DatumConfig|datumAccessor} DatumString
  */
 
 /**
+ * Custom type that is either a number, DatumConfig or a datumAccessor
  * @typedef {number|DatumConfig|datumAccessor} DatumNumber
  */
 
 /**
+ * Custom type that is either a boolean, DatumConfig or a datumAccessor
  * @typedef {boolean|DatumConfig|datumAccessor} DatumBoolean
  */
 

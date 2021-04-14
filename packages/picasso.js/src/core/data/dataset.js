@@ -181,7 +181,7 @@ function ds({ key, data, config } = {}) {
 
     /**
      * Get all fields within this dataset
-     * @returns {Array<field>}
+     * @returns {Array<Field>}
      */
     fields: () => cache.fields.slice(),
 
@@ -219,47 +219,47 @@ export { ds as default };
 /**
  * @typedef {object} DataExtractConfig
  * @property {string} field - The field to extract data from
- * @property {DataExtractConfig~valueFn} [value] - The field value accessor
- * @property {DataExtractConfig~labelFn} [label] - The field label accessor
- * @property {DataExtractConfig~trackByFn} [trackBy] - Track by value accessor
- * @property {DataExtractConfig~reduceFn} [reduce] - Reducer function
- * @property {DataExtractConfig~reduceLabelFn} [reduceLabel] - Label reducer function
- * @property {DataExtractConfig~filterFn} [filter] - Filter function
+ * @property {DataExtractConfig~ValueFn} [value] - The field value accessor
+ * @property {DataExtractConfig~LabelFn} [label] - The field label accessor
+ * @property {DataExtractConfig~TrackByFn} [trackBy] - Track by value accessor
+ * @property {DataExtractConfig~ReduceFn} [reduce] - Reducer function
+ * @property {DataExtractConfig~ReduceLabelFn} [reduceLabel] - Label reducer function
+ * @property {DataExtractConfig~FilterFn} [filter] - Filter function
  * @property {object} [props] - Additional properties to add to the extracted item
  */
 
 /**
- * @callback DataExtractConfig~valueFn
+ * @callback DataExtractConfig~ValueFn
  * @param {any} cell The field cell
  * @returns {any}
  */
 
 /**
- * @callback DataExtractConfig~labelFn
+ * @callback DataExtractConfig~LabelFn
  * @param {any} cell The field cell
  * @returns {string}
  */
 
 /**
- * @callback DataExtractConfig~filterFn
+ * @callback DataExtractConfig~FilterFn
  * @param {any} cell The field cell
  * @returns {boolean}
  */
 
 /**
- * @callback DataExtractConfig~trackByFn
+ * @callback DataExtractConfig~TrackByFn
  * @param {any} cell The field cell
  * @returns {any}
  */
 
 /**
- * @callback DataExtractConfig~reduceFn
+ * @callback DataExtractConfig~ReduceFn
  * @param {any[]} values The collected values to reduce
  * @returns {any}
  */
 
 /**
- * @callback DataExtractConfig~reduceLabelFn
+ * @callback DataExtractConfig~ReduceLabelFn
  * @param {any[]} labels The collected labels to reduce
  * @param {any} value Reduced value
  * @returns {string}

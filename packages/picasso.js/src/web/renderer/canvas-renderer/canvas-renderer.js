@@ -112,7 +112,7 @@ function renderShapes(shapes, g, shapeToCanvasMap, deps) {
 /**
  * Create a new canvas renderer
  * @typedef {function} canvasRendererFactory
- * @param {function} sceneFn - Scene factory
+ * @param {function} [sceneFn] - Scene factory
  * @returns {Renderer} A canvas renderer instance
  */
 export function renderer(sceneFn = sceneFactory) {

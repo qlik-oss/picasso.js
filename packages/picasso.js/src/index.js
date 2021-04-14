@@ -53,6 +53,9 @@ function pic(config = {}, registries = {}) {
     /**
      * Renderer registry
      * @type {Registry}
+     * @example
+     * const svgFactory = picassojs.renderer('svg');
+     * const svgRenderer = svgFactory();
      */
     renderer: renderer(registries.renderer, 'renderer', logger),
     /**
@@ -81,7 +84,6 @@ function pic(config = {}, registries = {}) {
 
   /**
    * picasso.js entry point
-   * @experimental
    * @entry
    * @alias picassojs
    * @param {object} cfg
@@ -92,6 +94,10 @@ function pic(config = {}, registries = {}) {
    * @param {object} cfg.style
    * @param {Array<object>} cfg.palettes
    * @returns {picassojs}
+   * @example
+   * import picasso from 'picasso.js';
+   *
+   * const configuredPicasso = picasso({ renderer: { prio: ['canvas'] } }) // All components will render using the canvas renderer
    */
   function picassojs(cfg = {}) {
     let cc = {
@@ -104,13 +110,25 @@ function pic(config = {}, registries = {}) {
   }
 
   /**
-   * @callback picassojs~plugin
-   * @param {picassojs~registries} registries
+   * @typedef {object} Registries
+   * @property {Registry} component Component registry
+   * @property {Registry} data Data registry
+   * @property {Registry} formatter Formatter registry
+   * @property {Registry} interaction Interaction registry
+   * @property {Registry} renderer Renderer registry
+   * @property {Registry} scale Scale registry
+   */
+
+  /**
+   * Callback function to register a plugin
+   * @callback plugin
+   * @param {Registries} registries
    * @param {object} options
    */
 
   /**
-   * @param {picassojs~plugin} plugin
+   * Plugin registry
+   * @param {plugin} plugin
    * @param {object} [options]
    */
   picassojs.use = (plugin, options = {}) => usePlugin(plugin, options, regis);

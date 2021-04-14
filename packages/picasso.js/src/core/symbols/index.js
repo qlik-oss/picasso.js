@@ -59,6 +59,7 @@ export { create as default, parentReg as symbolRegistry };
 
 /**
  * Mandatory symbol config
+ * @private
  * @typedef {object} Symbol
  * @property {object} options - Options definition may contain any of the supported display-object attributes
  * @property {string} options.type - Type of symbol

@@ -1,6 +1,12 @@
 import extend from 'extend';
 import extract from './extractor';
 
+/**
+ * @interface CollectionSettings
+ * @property {string} key Unique key for the collection
+ * @property {DataExtractConfig} data Data configuration
+ */
+
 function create(config, d, opts, extractor = extract) {
   const collections = {};
 
