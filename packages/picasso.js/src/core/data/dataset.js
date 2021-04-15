@@ -187,7 +187,7 @@ function ds({ key, data, config } = {}) {
 
     /**
      * Extract data items from this dataset
-     * @param {DataExtractConfig} config
+     * @param {DataExtraction~Extract|DataFieldExtraction} config
      * @returns {Array<DatumExtract>}
      */
     extract: (cfg) => extract(cfg, dataset, cache),
@@ -217,49 +217,155 @@ ds.util = {
 export { ds as default };
 
 /**
- * @typedef {object} DataExtractConfig
- * @property {string} field - The field to extract data from
- * @property {DataExtractConfig~ValueFn} [value] - The field value accessor
- * @property {DataExtractConfig~LabelFn} [label] - The field label accessor
- * @property {DataExtractConfig~TrackByFn} [trackBy] - Track by value accessor
- * @property {DataExtractConfig~ReduceFn} [reduce] - Reducer function
- * @property {DataExtractConfig~ReduceLabelFn} [reduceLabel] - Label reducer function
- * @property {DataExtractConfig~FilterFn} [filter] - Filter function
- * @property {object} [props] - Additional properties to add to the extracted item
+ * Callback function. Should return the key to stack by
+ * @callback
+ * @typedef {function} DataExtraction~StackKeyCallback
+ * @param {DatumExtract} datum The extracted datum
+ * @returns {any} The data value to stack by
  */
 
 /**
- * @callback DataExtractConfig~ValueFn
+ * Callback function. Should return the data value to stack with
+ * @callback
+ * @typedef {function} DataExtraction~StackValueCallback
+ * @param {DatumExtract} datum The extracted datum
+ * @returns {any} The data value to stack with
+ */
+
+/**
+ * Callback function to filter the extracted data items
+ * @callback
+ * @typedef {function} DataExtraction~FilterCallback
+ * @param {DatumExtract} datum The extracted datum
+ * @returns {boolean} Return true if the datum should be included in the final data set
+ */
+
+/**
+ * Callback function to sort the extracted data items
+ * @callback
+ * @typedef {function} DataExtraction~SortCallback
+ * @param {DatumExtract} a The extracted datum
+ * @param {DatumExtract} b The extracted datum
+ * @returns {number} If less than 0, sort a before b. If greater than 0, sort b before a
+ */
+
+/**
+ * Used to extract data from a `DataSource`
+ * @typedef {object} DataExtraction
+ * @property {DataExtraction~Extract} extract Extract definition
+ * @property {object} [stack] If provided, defines how the data should be stacked
+ * @property {DataExtraction~StackKeyCallback} stack.stackKey Callback function. Should return the key to stack by
+ * @property {DataExtraction~StackValueCallback} stack.value Callback function. Should return the data value to stack with
+ * @property {DataExtraction~FilterCallback} [filter] Callback function to filter the extracted data items
+ * @property {DataExtraction~SortCallback} [sort] Callback function to sort the extracted data items
+ * @example
+{
+  extract: [{
+    source: 'Products',
+    field: 'Product',
+    value: d => d.name,
+    label: d => `<${d.name}>`
+    props: {
+      year: { field: 'Year' }
+      num: { field: 'Sales' }
+    }
+  }],
+  filter: d => d.label !== 'Sneakers', // extract everything except Sneakers
+  sort: (a, b) => a.label > b.label ? -1 : 1, // sort descending
+}
+ */
+
+/**
+ * @typedef {object} DataFieldExtraction
+ * @property {string} source - Which data source to extract from
+ * @property {string} field - The field to extract data from
+ * @property {DataExtraction~Extract~ValueFn} [value] - The field value accessor
+ * @property {DataExtraction~Extract~LabelFn} [label] - The field label accessor
+ * @example
+ * {
+ *  source: 'Products',
+ *  field: 'Sales',
+ *  value: (val) => Math.round(val),
+ *  label: (val) => `<${val}>`
+ * }
+ */
+
+/**
+ * Data extraction definition. Define how and what kind of data should be extracted from a `DataSource`.
+ * @typedef {object} DataExtraction~Extract
+ * @property {string} source - Which data source to extract from
+ * @property {string} field - The field to extract data from
+ * @property {DataExtraction~Extract~ValueFn} [value] - The field value accessor
+ * @property {DataExtraction~Extract~LabelFn} [label] - The field label accessor
+ * @property {DataExtraction~Extract~TrackByFn} [trackBy] - Track by value accessor
+ * @property {DataExtraction~Extract~ReduceFn} [reduce] - Reducer function
+ * @property {DataExtraction~Extract~ReduceLabelFn} [reduceLabel] - Label reducer function
+ * @property {DataExtraction~Extract~FilterFn} [filter] - Filter function
+ * @property {object.<string, DataExtraction~Extract~Props>} [props] - Additional properties to add to the extracted item
+ * @example
+ * {
+    source: 'Products',
+    field: 'Product',
+    value: (val) => val,
+    label: (val) => `<${val}>`
+    props: {
+      year: { field: 'Year' }
+      num: { field: 'Sales' }
+    }
+  }
+ */
+
+/**
+ * @typedef {object} DataExtraction~Extract~Props
+ * @property {string} field - The field to extract data from
+ * @property {DataExtraction~Extract~ValueFn} [value] - The field value accessor
+ * @property {DataExtraction~Extract~LabelFn} [label] - The field label accessor
+ * @example
+ * {
+ *  field: 'Sales',
+ *  value: (val) => Math.round(val),
+ *  label: (val) => `<${val}>`
+ * }
+ */
+
+/**
+ * Value callback function
+ * @callback DataExtraction~Extract~ValueFn
  * @param {any} cell The field cell
  * @returns {any}
  */
 
 /**
- * @callback DataExtractConfig~LabelFn
+ * Label callback function
+ * @callback DataExtraction~Extract~LabelFn
  * @param {any} cell The field cell
  * @returns {string}
  */
 
 /**
- * @callback DataExtractConfig~FilterFn
+ * Filter callback function
+ * @callback DataExtraction~Extract~FilterFn
  * @param {any} cell The field cell
  * @returns {boolean}
  */
 
 /**
- * @callback DataExtractConfig~TrackByFn
+ * TrackBy callback function
+ * @callback DataExtraction~Extract~TrackByFn
  * @param {any} cell The field cell
  * @returns {any}
  */
 
 /**
- * @callback DataExtractConfig~ReduceFn
+ * Reduce callback function
+ * @callback DataExtraction~Extract~ReduceFn
  * @param {any[]} values The collected values to reduce
  * @returns {any}
  */
 
 /**
- * @callback DataExtractConfig~ReduceLabelFn
+ * ReduceLabel callback function
+ * @callback DataExtraction~Extract~ReduceLabelFn
  * @param {any[]} labels The collected labels to reduce
  * @param {any} value Reduced value
  * @returns {string}
