@@ -4606,170 +4606,13 @@
         }
       ]
     },
-    "DataExtractConfig": {
-      "description": "Data extraction definition. Define how and what kind of data should be extracted from a `DataSource`.",
-      "kind": "object",
-      "entries": {
-        "source": {
-          "description": "Which data source to extract from",
-          "type": "string"
-        },
-        "field": {
-          "description": "The field to extract data from",
-          "type": "string"
-        },
-        "value": {
-          "description": "The field value accessor",
-          "optional": true,
-          "type": "#/definitions/DataExtractConfig/definitions/ValueFn"
-        },
-        "label": {
-          "description": "The field label accessor",
-          "optional": true,
-          "type": "#/definitions/DataExtractConfig/definitions/LabelFn"
-        },
-        "trackBy": {
-          "description": "Track by value accessor",
-          "optional": true,
-          "type": "#/definitions/DataExtractConfig/definitions/TrackByFn"
-        },
-        "reduce": {
-          "description": "Reducer function",
-          "optional": true,
-          "type": "#/definitions/DataExtractConfig/definitions/ReduceFn"
-        },
-        "reduceLabel": {
-          "description": "Label reducer function",
-          "optional": true,
-          "type": "#/definitions/DataExtractConfig/definitions/ReduceLabelFn"
-        },
-        "filter": {
-          "description": "Filter function",
-          "optional": true,
-          "type": "#/definitions/DataExtractConfig/definitions/FilterFn"
-        },
-        "props": {
-          "description": "Additional properties to add to the extracted item",
-          "optional": true,
-          "type": "object",
-          "generics": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "#/definitions/DataPropsExtraction"
-            }
-          ]
-        }
-      },
-      "examples": [
-        "{\n    source: 'Products',\n    field: 'Product',\n    value: d => d.name,\n    label: d => `<${d.name}>`\n    props: {\n      year: { field: 'Year' }\n      num: { field: 'Sales' }\n    }\n  }"
-      ],
-      "definitions": {
-        "FilterFn": {
-          "description": "Filter callback function",
-          "kind": "function",
-          "params": [
-            {
-              "name": "cell",
-              "description": "The field cell",
-              "type": "any"
-            }
-          ],
-          "returns": {
-            "type": "boolean"
-          }
-        },
-        "LabelFn": {
-          "description": "Label callback function",
-          "kind": "function",
-          "params": [
-            {
-              "name": "cell",
-              "description": "The field cell",
-              "type": "any"
-            }
-          ],
-          "returns": {
-            "type": "string"
-          }
-        },
-        "ReduceFn": {
-          "description": "Reduce callback function",
-          "kind": "function",
-          "params": [
-            {
-              "name": "values",
-              "description": "The collected values to reduce",
-              "kind": "array",
-              "items": {
-                "type": "any"
-              }
-            }
-          ],
-          "returns": {
-            "type": "any"
-          }
-        },
-        "ReduceLabelFn": {
-          "description": "ReduceLabel callback function",
-          "kind": "function",
-          "params": [
-            {
-              "name": "labels",
-              "description": "The collected labels to reduce",
-              "kind": "array",
-              "items": {
-                "type": "any"
-              }
-            },
-            {
-              "name": "value",
-              "description": "Reduced value",
-              "type": "any"
-            }
-          ],
-          "returns": {
-            "type": "string"
-          }
-        },
-        "TrackByFn": {
-          "description": "TrackBy callback function",
-          "kind": "function",
-          "params": [
-            {
-              "name": "cell",
-              "description": "The field cell",
-              "type": "any"
-            }
-          ],
-          "returns": {
-            "type": "any"
-          }
-        },
-        "ValueFn": {
-          "description": "Value callback function",
-          "kind": "function",
-          "params": [
-            {
-              "name": "cell",
-              "description": "The field cell",
-              "type": "any"
-            }
-          ],
-          "returns": {
-            "type": "any"
-          }
-        }
-      }
-    },
     "DataExtraction": {
       "description": "Used to extract data from a `DataSource`",
       "kind": "object",
       "entries": {
         "extract": {
           "description": "Extract definition",
-          "type": "#/definitions/DataExtractConfig"
+          "type": "#/definitions/DataExtraction/definitions/Extract"
         },
         "stack": {
           "description": "If provided, defines how the data should be stacked",
@@ -4801,6 +4644,183 @@
         "{\n  extract: [{\n    source: 'Products',\n    field: 'Product',\n    value: d => d.name,\n    label: d => `<${d.name}>`\n    props: {\n      year: { field: 'Year' }\n      num: { field: 'Sales' }\n    }\n  }],\n  filter: d => d.label !== 'Sneakers', // extract everything except Sneakers\n  sort: (a, b) => a.label > b.label ? -1 : 1, // sort descending\n}"
       ],
       "definitions": {
+        "Extract": {
+          "description": "Data extraction definition. Define how and what kind of data should be extracted from a `DataSource`.",
+          "kind": "object",
+          "entries": {
+            "source": {
+              "description": "Which data source to extract from",
+              "type": "string"
+            },
+            "field": {
+              "description": "The field to extract data from",
+              "type": "string"
+            },
+            "value": {
+              "description": "The field value accessor",
+              "optional": true,
+              "type": "#/definitions/DataExtraction/definitions/Extract/definitions/ValueFn"
+            },
+            "label": {
+              "description": "The field label accessor",
+              "optional": true,
+              "type": "#/definitions/DataExtraction/definitions/Extract/definitions/LabelFn"
+            },
+            "trackBy": {
+              "description": "Track by value accessor",
+              "optional": true,
+              "type": "#/definitions/DataExtraction/definitions/Extract/definitions/TrackByFn"
+            },
+            "reduce": {
+              "description": "Reducer function",
+              "optional": true,
+              "type": "#/definitions/DataExtraction/definitions/Extract/definitions/ReduceFn"
+            },
+            "reduceLabel": {
+              "description": "Label reducer function",
+              "optional": true,
+              "type": "#/definitions/DataExtraction/definitions/Extract/definitions/ReduceLabelFn"
+            },
+            "filter": {
+              "description": "Filter function",
+              "optional": true,
+              "type": "#/definitions/DataExtraction/definitions/Extract/definitions/FilterFn"
+            },
+            "props": {
+              "description": "Additional properties to add to the extracted item",
+              "optional": true,
+              "type": "object",
+              "generics": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "#/definitions/DataExtraction/definitions/Extract/definitions/Props"
+                }
+              ]
+            }
+          },
+          "examples": [
+            "{\n    source: 'Products',\n    field: 'Product',\n    value: (val) => val,\n    label: (val) => `<${val}>`\n    props: {\n      year: { field: 'Year' }\n      num: { field: 'Sales' }\n    }\n  }"
+          ],
+          "definitions": {
+            "FilterFn": {
+              "description": "Filter callback function",
+              "kind": "function",
+              "params": [
+                {
+                  "name": "cell",
+                  "description": "The field cell",
+                  "type": "any"
+                }
+              ],
+              "returns": {
+                "type": "boolean"
+              }
+            },
+            "LabelFn": {
+              "description": "Label callback function",
+              "kind": "function",
+              "params": [
+                {
+                  "name": "cell",
+                  "description": "The field cell",
+                  "type": "any"
+                }
+              ],
+              "returns": {
+                "type": "string"
+              }
+            },
+            "Props": {
+              "kind": "object",
+              "entries": {
+                "field": {
+                  "description": "The field to extract data from",
+                  "type": "string"
+                },
+                "value": {
+                  "description": "The field value accessor",
+                  "optional": true,
+                  "type": "#/definitions/DataExtraction/definitions/Extract/definitions/ValueFn"
+                },
+                "label": {
+                  "description": "The field label accessor",
+                  "optional": true,
+                  "type": "#/definitions/DataExtraction/definitions/Extract/definitions/LabelFn"
+                }
+              },
+              "examples": ["{\n field: 'Sales',\n value: (val) => Math.round(val),\n label: (val) => `<${val}>`\n}"]
+            },
+            "ReduceFn": {
+              "description": "Reduce callback function",
+              "kind": "function",
+              "params": [
+                {
+                  "name": "values",
+                  "description": "The collected values to reduce",
+                  "kind": "array",
+                  "items": {
+                    "type": "any"
+                  }
+                }
+              ],
+              "returns": {
+                "type": "any"
+              }
+            },
+            "ReduceLabelFn": {
+              "description": "ReduceLabel callback function",
+              "kind": "function",
+              "params": [
+                {
+                  "name": "labels",
+                  "description": "The collected labels to reduce",
+                  "kind": "array",
+                  "items": {
+                    "type": "any"
+                  }
+                },
+                {
+                  "name": "value",
+                  "description": "Reduced value",
+                  "type": "any"
+                }
+              ],
+              "returns": {
+                "type": "string"
+              }
+            },
+            "TrackByFn": {
+              "description": "TrackBy callback function",
+              "kind": "function",
+              "params": [
+                {
+                  "name": "cell",
+                  "description": "The field cell",
+                  "type": "any"
+                }
+              ],
+              "returns": {
+                "type": "any"
+              }
+            },
+            "ValueFn": {
+              "description": "Value callback function",
+              "kind": "function",
+              "params": [
+                {
+                  "name": "cell",
+                  "description": "The field cell",
+                  "type": "any"
+                }
+              ],
+              "returns": {
+                "type": "any"
+              }
+            }
+          }
+        },
         "FilterCallback": {
           "description": "Callback function to filter the extracted data items",
           "kind": "function",
@@ -4882,37 +4902,17 @@
         "value": {
           "description": "The field value accessor",
           "optional": true,
-          "type": "#/definitions/DataExtractConfig/definitions/ValueFn"
+          "type": "#/definitions/DataExtraction/definitions/Extract/definitions/ValueFn"
         },
         "label": {
           "description": "The field label accessor",
           "optional": true,
-          "type": "#/definitions/DataExtractConfig/definitions/LabelFn"
+          "type": "#/definitions/DataExtraction/definitions/Extract/definitions/LabelFn"
         }
       },
       "examples": [
-        "{\n source: 'Products',\n field: 'Sales',\n value: (val) => Math.round(val),\n label: (val) => `${val} sek`,\n}"
+        "{\n source: 'Products',\n field: 'Sales',\n value: (val) => Math.round(val),\n label: (val) => `<${val}>`\n}"
       ]
-    },
-    "DataPropsExtraction": {
-      "kind": "object",
-      "entries": {
-        "field": {
-          "description": "The field to extract data from",
-          "type": "string"
-        },
-        "value": {
-          "description": "The field value accessor",
-          "optional": true,
-          "type": "#/definitions/DataExtractConfig/definitions/ValueFn"
-        },
-        "label": {
-          "description": "The field label accessor",
-          "optional": true,
-          "type": "#/definitions/DataExtractConfig/definitions/LabelFn"
-        }
-      },
-      "examples": ["{\n field: 'Sales',\n value: (val) => Math.round(val),\n label: (val) => `${val} sek`,\n}"]
     },
     "Dataset": {
       "kind": "interface",
@@ -4927,7 +4927,7 @@
               "kind": "union",
               "items": [
                 {
-                  "type": "#/definitions/DataExtractConfig"
+                  "type": "#/definitions/DataExtraction/definitions/Extract"
                 },
                 {
                   "type": "#/definitions/DataFieldExtraction"
@@ -5339,6 +5339,20 @@
           "description": "Format string",
           "optional": true,
           "type": "string"
+        },
+        "data": {
+          "description": "The data to create formatter from",
+          "optional": true,
+          "kind": "union",
+          "items": [
+            {
+              "type": "#/definitions/DataExtraction"
+            },
+            {
+              "type": "#/definitions/DataFieldExtraction"
+            }
+          ],
+          "type": "any"
         }
       }
     },

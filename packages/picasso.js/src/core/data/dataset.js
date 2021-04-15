@@ -187,7 +187,7 @@ function ds({ key, data, config } = {}) {
 
     /**
      * Extract data items from this dataset
-     * @param {DataExtractConfig|DataFieldExtraction} config
+     * @param {DataExtraction~Extract|DataFieldExtraction} config
      * @returns {Array<DatumExtract>}
      */
     extract: (cfg) => extract(cfg, dataset, cache),
@@ -252,7 +252,7 @@ export { ds as default };
 /**
  * Used to extract data from a `DataSource`
  * @typedef {object} DataExtraction
- * @property {DataExtractConfig} extract Extract definition
+ * @property {DataExtraction~Extract} extract Extract definition
  * @property {object} [stack] If provided, defines how the data should be stacked
  * @property {DataExtraction~StackKeyCallback} stack.stackKey Callback function. Should return the key to stack by
  * @property {DataExtraction~StackValueCallback} stack.value Callback function. Should return the data value to stack with
@@ -279,48 +279,35 @@ export { ds as default };
  * @typedef {object} DataFieldExtraction
  * @property {string} source - Which data source to extract from
  * @property {string} field - The field to extract data from
- * @property {DataExtractConfig~ValueFn} [value] - The field value accessor
- * @property {DataExtractConfig~LabelFn} [label] - The field label accessor
+ * @property {DataExtraction~Extract~ValueFn} [value] - The field value accessor
+ * @property {DataExtraction~Extract~LabelFn} [label] - The field label accessor
  * @example
  * {
  *  source: 'Products',
  *  field: 'Sales',
  *  value: (val) => Math.round(val),
- *  label: (val) => `${val} sek`,
- * }
- */
-
-/**
- * @typedef {object} DataPropsExtraction
- * @property {string} field - The field to extract data from
- * @property {DataExtractConfig~ValueFn} [value] - The field value accessor
- * @property {DataExtractConfig~LabelFn} [label] - The field label accessor
- * @example
- * {
- *  field: 'Sales',
- *  value: (val) => Math.round(val),
- *  label: (val) => `${val} sek`,
+ *  label: (val) => `<${val}>`
  * }
  */
 
 /**
  * Data extraction definition. Define how and what kind of data should be extracted from a `DataSource`.
- * @typedef {object} DataExtractConfig
+ * @typedef {object} DataExtraction~Extract
  * @property {string} source - Which data source to extract from
  * @property {string} field - The field to extract data from
- * @property {DataExtractConfig~ValueFn} [value] - The field value accessor
- * @property {DataExtractConfig~LabelFn} [label] - The field label accessor
- * @property {DataExtractConfig~TrackByFn} [trackBy] - Track by value accessor
- * @property {DataExtractConfig~ReduceFn} [reduce] - Reducer function
- * @property {DataExtractConfig~ReduceLabelFn} [reduceLabel] - Label reducer function
- * @property {DataExtractConfig~FilterFn} [filter] - Filter function
- * @property {object.<string, DataPropsExtraction>} [props] - Additional properties to add to the extracted item
+ * @property {DataExtraction~Extract~ValueFn} [value] - The field value accessor
+ * @property {DataExtraction~Extract~LabelFn} [label] - The field label accessor
+ * @property {DataExtraction~Extract~TrackByFn} [trackBy] - Track by value accessor
+ * @property {DataExtraction~Extract~ReduceFn} [reduce] - Reducer function
+ * @property {DataExtraction~Extract~ReduceLabelFn} [reduceLabel] - Label reducer function
+ * @property {DataExtraction~Extract~FilterFn} [filter] - Filter function
+ * @property {object.<string, DataExtraction~Extract~Props>} [props] - Additional properties to add to the extracted item
  * @example
  * {
     source: 'Products',
     field: 'Product',
-    value: d => d.name,
-    label: d => `<${d.name}>`
+    value: (val) => val,
+    label: (val) => `<${val}>`
     props: {
       year: { field: 'Year' }
       num: { field: 'Sales' }
@@ -329,43 +316,56 @@ export { ds as default };
  */
 
 /**
+ * @typedef {object} DataExtraction~Extract~Props
+ * @property {string} field - The field to extract data from
+ * @property {DataExtraction~Extract~ValueFn} [value] - The field value accessor
+ * @property {DataExtraction~Extract~LabelFn} [label] - The field label accessor
+ * @example
+ * {
+ *  field: 'Sales',
+ *  value: (val) => Math.round(val),
+ *  label: (val) => `<${val}>`
+ * }
+ */
+
+/**
  * Value callback function
- * @callback DataExtractConfig~ValueFn
+ * @callback DataExtraction~Extract~ValueFn
  * @param {any} cell The field cell
  * @returns {any}
  */
 
 /**
  * Label callback function
- * @callback DataExtractConfig~LabelFn
+ * @callback DataExtraction~Extract~LabelFn
  * @param {any} cell The field cell
  * @returns {string}
  */
 
 /**
  * Filter callback function
- * @callback DataExtractConfig~FilterFn
+ * @callback DataExtraction~Extract~FilterFn
  * @param {any} cell The field cell
  * @returns {boolean}
  */
 
 /**
  * TrackBy callback function
- * @callback DataExtractConfig~TrackByFn
+ * @callback DataExtraction~Extract~TrackByFn
  * @param {any} cell The field cell
  * @returns {any}
  */
 
 /**
  * Reduce callback function
- * @callback DataExtractConfig~ReduceFn
+ * @callback DataExtraction~Extract~ReduceFn
  * @param {any[]} values The collected values to reduce
  * @returns {any}
  */
 
 /**
  * ReduceLabel callback function
- * @callback DataExtractConfig~ReduceLabelFn
+ * @callback DataExtraction~Extract~ReduceLabelFn
  * @param {any[]} labels The collected labels to reduce
  * @param {any} value Reduced value
  * @returns {string}

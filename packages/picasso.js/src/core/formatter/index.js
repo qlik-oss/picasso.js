@@ -12,6 +12,7 @@ import { numberFormat as d3NumberFormatter, timeFormat as d3TimeFormatter } from
  * @property {string} [formatter] Name of the formatter
  * @property {string} [type] Type of formatter
  * @property {string} [format] Format string
+ * @property {DataExtraction|DataFieldExtraction} [data] The data to create formatter from
  */
 
 const formatterRegistry = registry();
