@@ -4,7 +4,7 @@
   "version": "0.37.0",
   "description": "Documentation source",
   "scripts": {
-    "build": "yarn run spec",
+    "build": "yarn run spec && node gen",
     "spec": "jsdoc -r ../packages/picasso.js/src -p ../packages/picasso.js/package.json -X | scriptappy-from-jsdoc -c ./scriptappy.config.js",
     "version": "yarn run spec"
   },
