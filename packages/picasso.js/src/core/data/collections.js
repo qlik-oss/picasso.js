@@ -4,7 +4,25 @@ import extract from './extractor';
 /**
  * @interface CollectionSettings
  * @property {string} key Unique key for the collection
- * @property {DataExtractConfig} data Data configuration
+ * @property {DataExtraction} data Data configuration
+ * @example
+ * {
+    key: 'my-collection',
+    data: {
+      extract: [{
+        source: 'Products',
+        field: 'Product',
+        value: d => d.name,
+        label: d => `<${d.name}>`
+        props: {
+          year: { field: 'Year' }
+          num: { field: 'Sales' }
+        }
+      }],
+      filter: d => d.label !== 'Sneakers', // extract everything except Sneakers
+      sort: (a, b) => a.label > b.label ? -1 : 1, // sort descending
+    }
+ * }
  */
 
 function create(config, d, opts, extractor = extract) {

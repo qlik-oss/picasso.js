@@ -108,6 +108,7 @@ import componentCollectionFn from './component-collection';
  * @property {string} [formatter] Named formatter. Fallback to create formatter from scale. Will be provided to the component if it ask for it.
  * @property {ComponentSettings[]} [components] Optional list of child components
  * @property {DockLayoutSettings|customLayoutFunction} [strategy] Layout strategy used for child components.
+ * @property {DataExtraction|DataFieldExtraction} [data] Extracted data that should be available to the component
  */
 
 // mark strategy as experimental

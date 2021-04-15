@@ -1489,9 +1489,12 @@
         },
         "data": {
           "description": "Data configuration",
-          "type": "#/definitions/DataExtractConfig"
+          "type": "#/definitions/DataExtraction"
         }
-      }
+      },
+      "examples": [
+        "{\n    key: 'my-collection',\n    data: {\n      extract: [{\n        source: 'Products',\n        field: 'Product',\n        value: d => d.name,\n        label: d => `<${d.name}>`\n        props: {\n          year: { field: 'Year' }\n          num: { field: 'Sales' }\n        }\n      }],\n      filter: d => d.label !== 'Sneakers', // extract everything except Sneakers\n      sort: (a, b) => a.label > b.label ? -1 : 1, // sort descending\n    }\n}"
+      ]
     },
     "Component": {
       "description": "Component instance",
@@ -4211,6 +4214,20 @@
           ],
           "type": "any",
           "stability": "experimental"
+        },
+        "data": {
+          "description": "Extracted data that should be available to the component",
+          "optional": true,
+          "kind": "union",
+          "items": [
+            {
+              "type": "#/definitions/DataExtraction"
+            },
+            {
+              "type": "#/definitions/DataFieldExtraction"
+            }
+          ],
+          "type": "any"
         }
       }
     },
@@ -4590,8 +4607,13 @@
       ]
     },
     "DataExtractConfig": {
+      "description": "Data extraction definition. Define how and what kind of data should be extracted from a `DataSource`.",
       "kind": "object",
       "entries": {
+        "source": {
+          "description": "Which data source to extract from",
+          "type": "string"
+        },
         "field": {
           "description": "The field to extract data from",
           "type": "string"
@@ -4629,11 +4651,23 @@
         "props": {
           "description": "Additional properties to add to the extracted item",
           "optional": true,
-          "type": "object"
+          "type": "object",
+          "generics": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "#/definitions/DataPropsExtraction"
+            }
+          ]
         }
       },
+      "examples": [
+        "{\n    source: 'Products',\n    field: 'Product',\n    value: d => d.name,\n    label: d => `<${d.name}>`\n    props: {\n      year: { field: 'Year' }\n      num: { field: 'Sales' }\n    }\n  }"
+      ],
       "definitions": {
         "FilterFn": {
+          "description": "Filter callback function",
           "kind": "function",
           "params": [
             {
@@ -4647,6 +4681,7 @@
           }
         },
         "LabelFn": {
+          "description": "Label callback function",
           "kind": "function",
           "params": [
             {
@@ -4660,6 +4695,7 @@
           }
         },
         "ReduceFn": {
+          "description": "Reduce callback function",
           "kind": "function",
           "params": [
             {
@@ -4676,6 +4712,7 @@
           }
         },
         "ReduceLabelFn": {
+          "description": "ReduceLabel callback function",
           "kind": "function",
           "params": [
             {
@@ -4697,6 +4734,7 @@
           }
         },
         "TrackByFn": {
+          "description": "TrackBy callback function",
           "kind": "function",
           "params": [
             {
@@ -4710,6 +4748,7 @@
           }
         },
         "ValueFn": {
+          "description": "Value callback function",
           "kind": "function",
           "params": [
             {
@@ -4724,6 +4763,157 @@
         }
       }
     },
+    "DataExtraction": {
+      "description": "Used to extract data from a `DataSource`",
+      "kind": "object",
+      "entries": {
+        "extract": {
+          "description": "Extract definition",
+          "type": "#/definitions/DataExtractConfig"
+        },
+        "stack": {
+          "description": "If provided, defines how the data should be stacked",
+          "optional": true,
+          "kind": "object",
+          "entries": {
+            "stackKey": {
+              "description": "Callback function. Should return the key to stack by",
+              "type": "#/definitions/DataExtraction/definitions/StackKeyCallback"
+            },
+            "value": {
+              "description": "Callback function. Should return the data value to stack with",
+              "type": "#/definitions/DataExtraction/definitions/StackValueCallback"
+            }
+          }
+        },
+        "filter": {
+          "description": "Callback function to filter the extracted data items",
+          "optional": true,
+          "type": "#/definitions/DataExtraction/definitions/FilterCallback"
+        },
+        "sort": {
+          "description": "Callback function to sort the extracted data items",
+          "optional": true,
+          "type": "#/definitions/DataExtraction/definitions/SortCallback"
+        }
+      },
+      "examples": [
+        "{\n  extract: [{\n    source: 'Products',\n    field: 'Product',\n    value: d => d.name,\n    label: d => `<${d.name}>`\n    props: {\n      year: { field: 'Year' }\n      num: { field: 'Sales' }\n    }\n  }],\n  filter: d => d.label !== 'Sneakers', // extract everything except Sneakers\n  sort: (a, b) => a.label > b.label ? -1 : 1, // sort descending\n}"
+      ],
+      "definitions": {
+        "FilterCallback": {
+          "description": "Callback function to filter the extracted data items",
+          "kind": "function",
+          "params": [
+            {
+              "name": "datum",
+              "description": "The extracted datum",
+              "type": "#/definitions/DatumExtract"
+            }
+          ],
+          "returns": {
+            "description": "Return true if the datum should be included in the final data set",
+            "type": "boolean"
+          }
+        },
+        "SortCallback": {
+          "description": "Callback function to sort the extracted data items",
+          "kind": "function",
+          "params": [
+            {
+              "name": "a",
+              "description": "The extracted datum",
+              "type": "#/definitions/DatumExtract"
+            },
+            {
+              "name": "b",
+              "description": "The extracted datum",
+              "type": "#/definitions/DatumExtract"
+            }
+          ],
+          "returns": {
+            "description": "If less than 0, sort a before b. If greater than 0, sort b before a",
+            "type": "number"
+          }
+        },
+        "StackKeyCallback": {
+          "description": "Callback function. Should return the key to stack by",
+          "kind": "function",
+          "params": [
+            {
+              "name": "datum",
+              "description": "The extracted datum",
+              "type": "#/definitions/DatumExtract"
+            }
+          ],
+          "returns": {
+            "description": "The data value to stack by",
+            "type": "any"
+          }
+        },
+        "StackValueCallback": {
+          "description": "Callback function. Should return the data value to stack with",
+          "kind": "function",
+          "params": [
+            {
+              "name": "datum",
+              "description": "The extracted datum",
+              "type": "#/definitions/DatumExtract"
+            }
+          ],
+          "returns": {
+            "description": "The data value to stack with",
+            "type": "any"
+          }
+        }
+      }
+    },
+    "DataFieldExtraction": {
+      "kind": "object",
+      "entries": {
+        "source": {
+          "description": "Which data source to extract from",
+          "type": "string"
+        },
+        "field": {
+          "description": "The field to extract data from",
+          "type": "string"
+        },
+        "value": {
+          "description": "The field value accessor",
+          "optional": true,
+          "type": "#/definitions/DataExtractConfig/definitions/ValueFn"
+        },
+        "label": {
+          "description": "The field label accessor",
+          "optional": true,
+          "type": "#/definitions/DataExtractConfig/definitions/LabelFn"
+        }
+      },
+      "examples": [
+        "{\n source: 'Products',\n field: 'Sales',\n value: (val) => Math.round(val),\n label: (val) => `${val} sek`,\n}"
+      ]
+    },
+    "DataPropsExtraction": {
+      "kind": "object",
+      "entries": {
+        "field": {
+          "description": "The field to extract data from",
+          "type": "string"
+        },
+        "value": {
+          "description": "The field value accessor",
+          "optional": true,
+          "type": "#/definitions/DataExtractConfig/definitions/ValueFn"
+        },
+        "label": {
+          "description": "The field label accessor",
+          "optional": true,
+          "type": "#/definitions/DataExtractConfig/definitions/LabelFn"
+        }
+      },
+      "examples": ["{\n field: 'Sales',\n value: (val) => Math.round(val),\n label: (val) => `${val} sek`,\n}"]
+    },
     "Dataset": {
       "kind": "interface",
       "params": [],
@@ -4734,7 +4924,16 @@
           "params": [
             {
               "name": "config",
-              "type": "#/definitions/DataExtractConfig"
+              "kind": "union",
+              "items": [
+                {
+                  "type": "#/definitions/DataExtractConfig"
+                },
+                {
+                  "type": "#/definitions/DataFieldExtraction"
+                }
+              ],
+              "type": "any"
             }
           ],
           "returns": {
@@ -5728,7 +5927,16 @@
         "data": {
           "description": "Data configuration",
           "optional": true,
-          "type": "#/definitions/DataExtractConfig"
+          "kind": "union",
+          "items": [
+            {
+              "type": "#/definitions/DataExtraction"
+            },
+            {
+              "type": "#/definitions/DataFieldExtraction"
+            }
+          ],
+          "type": "any"
         }
       }
     },
