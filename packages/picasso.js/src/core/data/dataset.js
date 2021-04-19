@@ -279,8 +279,8 @@ export { ds as default };
  * @typedef {object} DataFieldExtraction
  * @property {string} source - Which data source to extract from
  * @property {string} field - The field to extract data from
- * @property {DataExtraction~Extract~ValueFn} [value] - The field value accessor
- * @property {DataExtraction~Extract~LabelFn} [label] - The field label accessor
+ * @property {DataExtraction~Extract~ValueFn|string|number|boolean} [value] - The field value accessor
+ * @property {DataExtraction~Extract~LabelFn|string|number|boolean} [label] - The field label accessor
  * @example
  * {
  *  source: 'Products',
@@ -295,11 +295,11 @@ export { ds as default };
  * @typedef {object} DataExtraction~Extract
  * @property {string} source - Which data source to extract from
  * @property {string} field - The field to extract data from
- * @property {DataExtraction~Extract~ValueFn} [value] - The field value accessor
- * @property {DataExtraction~Extract~LabelFn} [label] - The field label accessor
+ * @property {DataExtraction~Extract~ValueFn|string|number|boolean} [value] - The field value accessor
+ * @property {DataExtraction~Extract~LabelFn|string|number|boolean} [label] - The field label accessor
  * @property {DataExtraction~Extract~TrackByFn} [trackBy] - Track by value accessor
- * @property {DataExtraction~Extract~ReduceFn} [reduce] - Reducer function
- * @property {DataExtraction~Extract~ReduceLabelFn} [reduceLabel] - Label reducer function
+ * @property {DataExtraction~Extract~ReduceFn|string} [reduce] - Reducer function
+ * @property {DataExtraction~Extract~ReduceLabelFn|string} [reduceLabel] - Label reducer function
  * @property {DataExtraction~Extract~FilterFn} [filter] - Filter function
  * @property {object.<string, DataExtraction~Extract~Props>} [props] - Additional properties to add to the extracted item
  * @example
@@ -318,8 +318,8 @@ export { ds as default };
 /**
  * @typedef {object} DataExtraction~Extract~Props
  * @property {string} field - The field to extract data from
- * @property {DataExtraction~Extract~ValueFn} [value] - The field value accessor
- * @property {DataExtraction~Extract~LabelFn} [label] - The field label accessor
+ * @property {DataExtraction~Extract~ValueFn|string|number|boolean} [value] - The field value accessor
+ * @property {DataExtraction~Extract~LabelFn|string|number|boolean} [label] - The field label accessor
  * @example
  * {
  *  field: 'Sales',
