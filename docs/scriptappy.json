@@ -4659,12 +4659,42 @@
             "value": {
               "description": "The field value accessor",
               "optional": true,
-              "type": "#/definitions/DataExtraction/definitions/Extract/definitions/ValueFn"
+              "kind": "union",
+              "items": [
+                {
+                  "type": "#/definitions/DataExtraction/definitions/Extract/definitions/ValueFn"
+                },
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean"
+                }
+              ],
+              "type": "any"
             },
             "label": {
               "description": "The field label accessor",
               "optional": true,
-              "type": "#/definitions/DataExtraction/definitions/Extract/definitions/LabelFn"
+              "kind": "union",
+              "items": [
+                {
+                  "type": "#/definitions/DataExtraction/definitions/Extract/definitions/LabelFn"
+                },
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean"
+                }
+              ],
+              "type": "any"
             },
             "trackBy": {
               "description": "Track by value accessor",
@@ -4674,12 +4704,30 @@
             "reduce": {
               "description": "Reducer function",
               "optional": true,
-              "type": "#/definitions/DataExtraction/definitions/Extract/definitions/ReduceFn"
+              "kind": "union",
+              "items": [
+                {
+                  "type": "#/definitions/DataExtraction/definitions/Extract/definitions/ReduceFn"
+                },
+                {
+                  "type": "string"
+                }
+              ],
+              "type": "any"
             },
             "reduceLabel": {
               "description": "Label reducer function",
               "optional": true,
-              "type": "#/definitions/DataExtraction/definitions/Extract/definitions/ReduceLabelFn"
+              "kind": "union",
+              "items": [
+                {
+                  "type": "#/definitions/DataExtraction/definitions/Extract/definitions/ReduceLabelFn"
+                },
+                {
+                  "type": "string"
+                }
+              ],
+              "type": "any"
             },
             "filter": {
               "description": "Filter function",
@@ -4742,12 +4790,42 @@
                 "value": {
                   "description": "The field value accessor",
                   "optional": true,
-                  "type": "#/definitions/DataExtraction/definitions/Extract/definitions/ValueFn"
+                  "kind": "union",
+                  "items": [
+                    {
+                      "type": "#/definitions/DataExtraction/definitions/Extract/definitions/ValueFn"
+                    },
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "boolean"
+                    }
+                  ],
+                  "type": "any"
                 },
                 "label": {
                   "description": "The field label accessor",
                   "optional": true,
-                  "type": "#/definitions/DataExtraction/definitions/Extract/definitions/LabelFn"
+                  "kind": "union",
+                  "items": [
+                    {
+                      "type": "#/definitions/DataExtraction/definitions/Extract/definitions/LabelFn"
+                    },
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "boolean"
+                    }
+                  ],
+                  "type": "any"
                 }
               },
               "examples": ["{\n field: 'Sales',\n value: (val) => Math.round(val),\n label: (val) => `<${val}>`\n}"]
@@ -4902,12 +4980,42 @@
         "value": {
           "description": "The field value accessor",
           "optional": true,
-          "type": "#/definitions/DataExtraction/definitions/Extract/definitions/ValueFn"
+          "kind": "union",
+          "items": [
+            {
+              "type": "#/definitions/DataExtraction/definitions/Extract/definitions/ValueFn"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "type": "any"
         },
         "label": {
           "description": "The field label accessor",
           "optional": true,
-          "type": "#/definitions/DataExtraction/definitions/Extract/definitions/LabelFn"
+          "kind": "union",
+          "items": [
+            {
+              "type": "#/definitions/DataExtraction/definitions/Extract/definitions/LabelFn"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "type": "any"
         }
       },
       "examples": [
