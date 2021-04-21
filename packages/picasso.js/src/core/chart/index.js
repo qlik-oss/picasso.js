@@ -977,7 +977,7 @@ function chartFn(definition, context) {
    */
 
   /**
-   * Get the all interaction instances
+   * Get all interaction instances
    * @name Chart.interactions
    * @type {object}
    * @example

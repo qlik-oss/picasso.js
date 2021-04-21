@@ -1139,7 +1139,7 @@
           }
         },
         "interactions": {
-          "description": "Get the all interaction instances",
+          "description": "Get all interaction instances",
           "kind": "object",
           "entries": {
             "instances": {
