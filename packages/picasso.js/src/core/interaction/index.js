@@ -4,7 +4,7 @@ import native from '../../web/interactions/native';
 /**
  * @typedef {object} InteractionSettings
  * @property {string} type Type of interaction handler
- * @property {string} [key] Unique key identifing the handler
+ * @property {string} [key] Unique key identifying the handler
  * @property {function|boolean} enable Enable or disable the interaction handler. If a callback function is provided, it must return either true or false
  * @example
  * {

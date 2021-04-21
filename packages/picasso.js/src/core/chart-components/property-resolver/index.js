@@ -37,7 +37,7 @@ function isPrimitive(x) {
  *  ref: '<data-property>'
  * }
  *
- * // or explictly resolve the datum using callback function
+ * // or explicitly resolve the datum using callback function
  * {
  *  fn: (d) => Math.min(0, d.datum.x.value);
  * }

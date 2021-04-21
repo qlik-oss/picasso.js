@@ -86,7 +86,9 @@
         "renderer": {
           "description": "Renderer registry",
           "type": "#/definitions/Registry",
-          "examples": ["const svgFactory = picassojs.renderer('svg');\nconst svgRenderer = svgFactory();"]
+          "examples": [
+            "const svgFactory = picassojs.renderer('svg');\nconst svgRenderer = svgFactory();"
+          ]
         },
         "scale": {
           "description": "Scale registry",
@@ -186,7 +188,9 @@
               }
             }
           ],
-          "examples": ["brush.addRange('Sales', { min: 20, max: 50 });"]
+          "examples": [
+            "brush.addRange('Sales', { min: 20, max: 50 });"
+          ]
         },
         "addRanges": {
           "kind": "function",
@@ -241,7 +245,9 @@
               "type": "#/definitions/Brush/events/update"
             }
           ],
-          "examples": ["brush.addValue('countries', 'Sweden');\nbrush.addValue('/qHyperCube/qDimensionInfo/0', 3);"]
+          "examples": [
+            "brush.addValue('countries', 'Sweden');\nbrush.addValue('/qHyperCube/qDimensionInfo/0', 3);"
+          ]
         },
         "addValues": {
           "kind": "function",
@@ -460,7 +466,9 @@
               "type": "string"
             }
           ],
-          "examples": ["brush.removeKeyAlias('BadFieldName');"]
+          "examples": [
+            "brush.removeKeyAlias('BadFieldName');"
+          ]
         },
         "removeRange": {
           "description": "Removes a numeric range from this brush context",
@@ -525,7 +533,9 @@
               "type": "any"
             }
           ],
-          "examples": ["brush.removeValue('countries', 'Sweden');"]
+          "examples": [
+            "brush.removeValue('countries', 'Sweden');"
+          ]
         },
         "removeValues": {
           "kind": "function",
@@ -649,7 +659,7 @@
           ]
         },
         "toggleValue": {
-          "description": "Toggles a primitive value in this brush context\n\nIf the given value exist in this brush context, it will be removed. If it does not exist it will be added.",
+          "description": "Toggles a primitive value in this brush context\n\nIf the given value exists in this brush context, it will be removed. If it does not exist it will be added.",
           "kind": "function",
           "params": [
             {
@@ -672,7 +682,9 @@
               "type": "any"
             }
           ],
-          "examples": ["brush.toggleValue('countries', 'Sweden');"]
+          "examples": [
+            "brush.toggleValue('countries', 'Sweden');"
+          ]
         },
         "toggleValues": {
           "kind": "function",
@@ -740,13 +752,13 @@
           "kind": "object",
           "entries": {
             "includeMax": {
-              "description": "Whether or not the maximum value of a range should be included when determening if a value is brushed.",
+              "description": "Whether or not the maximum value of a range should be included when determining if a value is brushed.",
               "optional": true,
               "defaultValue": true,
               "type": "boolean"
             },
             "includeMin": {
-              "description": "Whether or not the minimum value of a range should be included when determening if a value is brushed.",
+              "description": "Whether or not the minimum value of a range should be included when determining if a value is brushed.",
               "optional": true,
               "defaultValue": true,
               "type": "boolean"
@@ -996,7 +1008,7 @@
           "params": [
             {
               "name": "p",
-              "description": "Point with x- and y-cooridnate. The coordinate is relative to the browser viewport.",
+              "description": "Point with x- and y-coordinate. The coordinate is relative to the browser viewport.",
               "type": "#/definitions/Point"
             }
           ],
@@ -1101,7 +1113,7 @@
             },
             {
               "name": "mode",
-              "description": "Property comparasion mode.",
+              "description": "Property comparison mode.",
               "type": "string"
             },
             {
@@ -1127,7 +1139,7 @@
           }
         },
         "interactions": {
-          "description": "Get the all interactions instances",
+          "description": "Get the all interaction instances",
           "kind": "object",
           "entries": {
             "instances": {
@@ -1538,14 +1550,16 @@
           "type": "any"
         }
       },
-      "examples": ["{\n type: 'axis',\n scale: '<name-of-scale>'\n}"],
+      "examples": [
+        "{\n type: 'axis',\n scale: '<name-of-scale>'\n}"
+      ],
       "definitions": {
         "ContinuousSettings": {
           "description": "Continuous axis settings",
           "kind": "object",
           "entries": {
             "align": {
-              "description": "Set the anchoring point of the axis. Avaialable options are `auto/left/right/bottom/top`. In `auto` the axis determines the best option. The options are restricted based on the axis orientation, a vertical axis may only anchor on `left` or `right`",
+              "description": "Set the anchoring point of the axis. Available options are `auto/left/right/bottom/top`. In `auto` the axis determines the best option. The options are restricted based on the axis orientation, a vertical axis may only anchor on `left` or `right`",
               "optional": true,
               "defaultValue": "auto",
               "type": "string"
@@ -1676,7 +1690,7 @@
           "kind": "object",
           "entries": {
             "align": {
-              "description": "Set the anchoring point of the axis. Avaialable options are `auto/left/right/bottom/top`. In `auto` the axis determines the best option. The options are restricted based on the axis orientation, a vertical axis may only anchor on `left` or `right`",
+              "description": "Set the anchoring point of the axis. Available options are `auto/left/right/bottom/top`. In `auto` the axis determines the best option. The options are restricted based on the axis orientation, a vertical axis may only anchor on `left` or `right`",
               "optional": true,
               "defaultValue": "auto",
               "type": "string"
@@ -4010,7 +4024,7 @@
               "type": "any"
             },
             "maxWidth": {
-              "description": "The maximum relative width to the width of the rendering area (see maxWidthPx aswell)",
+              "description": "The maximum relative width to the width of the rendering area (see maxWidthPx as well)",
               "optional": true,
               "defaultValue": 1,
               "type": "number"
@@ -4067,6 +4081,7 @@
       }
     },
     "ComponentSettings": {
+      "description": "Generic settings available to all components",
       "kind": "object",
       "entries": {
         "type": {
@@ -4184,12 +4199,12 @@
           "type": "boolean"
         },
         "scale": {
-          "description": "Named scale. Will be provided to the component if it ask for it.",
+          "description": "Named scale. Will be provided to the component if it asks for it.",
           "optional": true,
           "type": "string"
         },
         "formatter": {
-          "description": "Named formatter. Fallback to create formatter from scale. Will be provided to the component if it ask for it.",
+          "description": "Named formatter. Fallback to create formatter from scale. Will be provided to the component if it asks for it.",
           "optional": true,
           "type": "string"
         },
@@ -4301,7 +4316,9 @@
           }
         }
       },
-      "examples": ["{\n type: 'text',\n text: 'my title',\n dock: 'left',\n settings: {\n   anchor: 'left',\n }\n}"]
+      "examples": [
+        "{\n type: 'text',\n text: 'my title',\n dock: 'left',\n settings: {\n   anchor: 'left',\n }\n}"
+      ]
     },
     "ComponentTooltip": {
       "extends": [
@@ -4399,7 +4416,9 @@
                   "type": "object"
                 }
               },
-              "examples": ["({ h, data }) => data.map((datum) => h('div', {}, datum))"]
+              "examples": [
+                "({ h, data }) => data.map((datum) => h('div', {}, datum))"
+              ]
             },
             "contentClass": {
               "description": "Set content class.",
@@ -4453,7 +4472,9 @@
                 "description": "Return data",
                 "type": "any"
               },
-              "examples": ["(ctx) => ctx.node.data.value"]
+              "examples": [
+                "(ctx) => ctx.node.data.value"
+              ]
             },
             "filter": {
               "description": "Callback function to filter incoming nodes to only a set of applicable nodes. Is called as a part of the `show` event.\n\nShould return an array of SceneNodes.",
@@ -4830,7 +4851,9 @@
                   "type": "any"
                 }
               },
-              "examples": ["{\n field: 'Sales',\n value: (val) => Math.round(val),\n label: (val) => `<${val}>`\n}"]
+              "examples": [
+                "{\n field: 'Sales',\n value: (val) => Math.round(val),\n label: (val) => `<${val}>`\n}"
+              ]
             },
             "ReduceFn": {
               "description": "Reduce callback function",
@@ -5130,7 +5153,9 @@
           "type": "#/definitions/DatumExtract"
         }
       ],
-      "examples": ["(d) => Math.min(0, d.value);"]
+      "examples": [
+        "(d) => Math.min(0, d.value);"
+      ]
     },
     "DatumBoolean": {
       "description": "Custom type that is either a boolean, DatumConfig or a datumAccessor",
@@ -5167,7 +5192,7 @@
         }
       },
       "examples": [
-        "// Implicitly resolve the datum by passing a referenced data through the scale\n{\n scale: '<name-of-scale>',\n ref: '<data-property>'\n}\n\n// or explictly resolve the datum using callback function\n{\n fn: (d) => Math.min(0, d.datum.x.value);\n}"
+        "// Implicitly resolve the datum by passing a referenced data through the scale\n{\n scale: '<name-of-scale>',\n ref: '<data-property>'\n}\n\n// or explicitly resolve the datum using callback function\n{\n fn: (d) => Math.min(0, d.datum.x.value);\n}"
       ]
     },
     "DatumExtract": {
@@ -5508,7 +5533,7 @@
           "type": "string"
         },
         "key": {
-          "description": "Unique key identifing the handler",
+          "description": "Unique key identifying the handler",
           "optional": true,
           "type": "string"
         },
@@ -5818,7 +5843,7 @@
             }
           ],
           "returns": {
-            "description": "True if the nodes where rendered, otherwise false",
+            "description": "True if the nodes were rendered, otherwise false",
             "type": "boolean"
           }
         },
@@ -5926,7 +5951,7 @@
           "type": "string"
         },
         "padding": {
-          "description": "Sets both inner and and outer padding to the same value",
+          "description": "Sets both inner and outer padding to the same value",
           "optional": true,
           "defaultValue": 0,
           "type": "number"
@@ -6040,7 +6065,7 @@
       }
     },
     "ScaleDefinition": {
-      "description": "Definition for creating a scale. Additional properties, specific for a type of scale, can be addded as key/value pairs",
+      "description": "Definition for creating a scale. Additional properties, specific for a type of scale, can be added as key/value pairs",
       "kind": "object",
       "entries": {
         "type": {
@@ -6286,7 +6311,9 @@
           "returns": {
             "type": "#/definitions/Rect"
           },
-          "examples": ["node.boundsRelativeTo($('div'));\nnode.boundsRelativeTo('viewport');"]
+          "examples": [
+            "node.boundsRelativeTo($('div'));\nnode.boundsRelativeTo('viewport');"
+          ]
         },
         "children": {
           "description": "Get child nodes",
@@ -6332,7 +6359,7 @@
           "type": "string"
         },
         "localBounds": {
-          "description": "Bounding rectangle of the node withing it's local coordinate system.\nOrigin is in the top-left corner of the scene element.",
+          "description": "Bounding rectangle of the node within its local coordinate system.\nOrigin is in the top-left corner of the scene element.",
           "type": "#/definitions/Rect"
         },
         "parent": {
