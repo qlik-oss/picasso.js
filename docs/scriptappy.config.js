@@ -3,9 +3,9 @@ module.exports = {
     validate: true,
   },
   api: {
-    stability: 'experimental',
+    stability: 'stable',
     properties: {
-      'x-qlik-visibility': 'private',
+      'x-qlik-visibility': 'public',
     },
   },
   parse: {
