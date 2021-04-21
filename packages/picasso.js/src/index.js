@@ -32,27 +32,27 @@ function pic(config = {}, registries = {}) {
     // -- registries --
     /**
      * Component registry
-     * @type {Registry}
+     * @type {registry}
      */
     component: registry(registries.component, 'component', logger),
     /**
      * Data registry
-     * @type {Registry}
+     * @type {registry}
      */
     data: registry(registries.data, 'data', logger),
     /**
      * Formatter registry
-     * @type {Registry}
+     * @type {registry}
      */
     formatter: registry(registries.formatter, 'formatter', logger),
     /**
      * Interaction registry
-     * @type {Registry}
+     * @type {registry}
      */
     interaction: registry(registries.interaction, 'interaction', logger),
     /**
      * Renderer registry
-     * @type {Registry}
+     * @type {registry}
      * @example
      * const svgFactory = picassojs.renderer('svg');
      * const svgRenderer = svgFactory();
@@ -60,12 +60,12 @@ function pic(config = {}, registries = {}) {
     renderer: renderer(registries.renderer, 'renderer', logger),
     /**
      * Scale registry
-     * @type {Registry}
+     * @type {registry}
      */
     scale: registry(registries.scale, 'scale', logger),
     /**
      * Symbol registry
-     * @type {Registry}
+     * @type {registry}
      * @private
      */
     symbol: registry(registries.symbol, 'symbol', logger),
@@ -111,12 +111,12 @@ function pic(config = {}, registries = {}) {
 
   /**
    * @typedef {object} Registries
-   * @property {Registry} component Component registry
-   * @property {Registry} data Data registry
-   * @property {Registry} formatter Formatter registry
-   * @property {Registry} interaction Interaction registry
-   * @property {Registry} renderer Renderer registry
-   * @property {Registry} scale Scale registry
+   * @property {registry} component Component registry
+   * @property {registry} data Data registry
+   * @property {registry} formatter Formatter registry
+   * @property {registry} interaction Interaction registry
+   * @property {registry} renderer Renderer registry
+   * @property {registry} scale Scale registry
    */
 
   /**
