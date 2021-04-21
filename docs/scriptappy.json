@@ -72,30 +72,30 @@
         },
         "component": {
           "description": "Component registry",
-          "type": "#/definitions/Registry"
+          "type": "#/definitions/registry"
         },
         "data": {
           "description": "Data registry",
-          "type": "#/definitions/Registry"
+          "type": "#/definitions/registry"
         },
         "formatter": {
           "description": "Formatter registry",
-          "type": "#/definitions/Registry"
+          "type": "#/definitions/registry"
         },
         "interaction": {
           "description": "Interaction registry",
-          "type": "#/definitions/Registry"
+          "type": "#/definitions/registry"
         },
         "renderer": {
           "description": "Renderer registry",
-          "type": "#/definitions/Registry",
+          "type": "#/definitions/registry",
           "examples": [
             "const svgFactory = picassojs.renderer('svg');\nconst svgRenderer = svgFactory();"
           ]
         },
         "scale": {
           "description": "Scale registry",
-          "type": "#/definitions/Registry"
+          "type": "#/definitions/registry"
         },
         "use": {
           "description": "Plugin registry",
@@ -5676,33 +5676,33 @@
       "entries": {
         "component": {
           "description": "Component registry",
-          "type": "#/definitions/Registry"
+          "type": "#/definitions/registry"
         },
         "data": {
           "description": "Data registry",
-          "type": "#/definitions/Registry"
+          "type": "#/definitions/registry"
         },
         "formatter": {
           "description": "Formatter registry",
-          "type": "#/definitions/Registry"
+          "type": "#/definitions/registry"
         },
         "interaction": {
           "description": "Interaction registry",
-          "type": "#/definitions/Registry"
+          "type": "#/definitions/registry"
         },
         "renderer": {
           "description": "Renderer registry",
-          "type": "#/definitions/Registry"
+          "type": "#/definitions/registry"
         },
         "scale": {
           "description": "Scale registry",
-          "type": "#/definitions/Registry"
+          "type": "#/definitions/registry"
         }
       }
     },
-    "Registry": {
+    "registry": {
       "description": "Register a `value` with the given `key`. If `value` is omitted, returns the `value` of `key`.",
-      "kind": "interface",
+      "kind": "function",
       "params": [
         {
           "name": "key",
@@ -5716,7 +5716,10 @@
           "type": "any"
         }
       ],
-      "entries": {}
+      "returns": {
+        "description": "Registered value",
+        "type": "any"
+      }
     },
     "Renderer": {
       "kind": "interface",
