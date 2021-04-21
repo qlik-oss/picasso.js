@@ -4096,7 +4096,7 @@
     },
     "ComponentSettings": {
       "description": "Generic settings available to all components",
-      "kind": "object",
+      "kind": "interface",
       "entries": {
         "type": {
           "description": "Component type (ex: axis, point, ...)",
@@ -5540,7 +5540,7 @@
       }
     },
     "InteractionSettings": {
-      "kind": "object",
+      "kind": "interface",
       "entries": {
         "type": {
           "description": "Type of interaction handler",
