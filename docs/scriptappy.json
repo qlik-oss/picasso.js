@@ -5,8 +5,8 @@
     "description": "A charting library streamlined for building visualizations for the Qlik Sense Analytics platform.",
     "version": "0.37.2",
     "license": "MIT",
-    "stability": "experimental",
-    "x-qlik-visibility": "private"
+    "stability": "stable",
+    "x-qlik-visibility": "public"
   },
   "entries": {
     "picassojs": {
