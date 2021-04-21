@@ -30,7 +30,7 @@ function create() {
 
     /**
      * @param {object[]} nodes - Nodes to render
-     * @returns {boolean} True if the nodes where rendered, otherwise false
+     * @returns {boolean} True if the nodes were rendered, otherwise false
      */
     render: () => false,
 

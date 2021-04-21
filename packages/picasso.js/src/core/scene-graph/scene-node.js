@@ -206,7 +206,7 @@ class SceneNode {
   }
 
   /**
-   * Bounding rectangle of the node withing it's local coordinate system.
+   * Bounding rectangle of the node within its local coordinate system.
    * Origin is in the top-left corner of the scene element.
    * @type {Rect}
    */

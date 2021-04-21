@@ -8,7 +8,7 @@ import categorical from '../../scales/color/categorical';
 import extractData from '../../data/extractor';
 
 /**
- * Definition for creating a scale. Additional properties, specific for a type of scale, can be addded as key/value pairs
+ * Definition for creating a scale. Additional properties, specific for a type of scale, can be added as key/value pairs
  * @typedef {object} ScaleDefinition
  * @property {string} [type] Type of scale
  * @property {DataExtraction|DataFieldExtraction} [data] Data configuration

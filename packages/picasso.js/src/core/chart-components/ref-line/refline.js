@@ -103,7 +103,7 @@ function getPosition(scale, value) {
  * @property {number} [opacity=1] - Opacity
  * @property {number|string} [align=0] - Alignment property left to right (0 = left, 1 = right). Also supports string ('left', 'center', 'middle', 'right')
  * @property {number|string} [vAlign=0] - Alignment property top to bottom (0 = top, 1 = bottom). Also supports string ('top', 'center', 'middle', 'bottom')
- * @property {number} [maxWidth=1] - The maximum relative width to the width of the rendering area (see maxWidthPx aswell)
+ * @property {number} [maxWidth=1] - The maximum relative width to the width of the rendering area (see maxWidthPx as well)
  * @property {number} [maxWidthPx=9999] - The maximum width in pixels. Labels will be rendered with the maximum size of the smallest value of maxWidth and maxWidthPx size, so you may specify maxWidth 0.8 but maxWidthPx 100 and will never be over 100px and never over 80% of the renderable area
  * @property {ComponentRefLine~LineLabelBackground} [background=ComponentRefLine~LineLabelBackground] - The background style (rect behind text)
  * @property {boolean} [showValue=true] - Show value label

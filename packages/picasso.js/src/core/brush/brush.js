@@ -21,11 +21,11 @@ const DEFAULT_RANGE_CONFIG = {
    */
   key: undefined,
   /**
-   * Whether or not the minimum value of a range should be included when determening if a value is brushed.
+   * Whether or not the minimum value of a range should be included when determining if a value is brushed.
    * @type {boolean=} */
   includeMin: true,
   /**
-   * Whether or not the maximum value of a range should be included when determening if a value is brushed.
+   * Whether or not the maximum value of a range should be included when determining if a value is brushed.
    * @type {boolean=} */
   includeMax: true,
 };
@@ -693,7 +693,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
   /**
    * Toggles a primitive value in this brush context
    *
-   * If the given value exist in this brush context, it will be removed. If it does not exist it will be added.
+   * If the given value exists in this brush context, it will be removed. If it does not exist it will be added.
    *
    * @param  {string} key  An identifier that represents the data source of the value
    * @param  {string|number} value The value to toggle
