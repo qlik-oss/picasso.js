@@ -3,7 +3,14 @@ import legendSeq from './legend-seq';
 /**
  * @typedef {object} ComponentLegendSeq
  * @extends ComponentSettings
- * @property {string} scale Reference to sequential color scale
+ * @example
+ *  {
+      type: 'legend-seq',
+      settings: {
+        fill: '<sequential-color-scale>',
+        major: '<linear-scale>',
+      }
+    }
  */
 
 export default function sequentialLegend(picasso) {
