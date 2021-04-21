@@ -3,6 +3,35 @@ import strategies from './strategies';
 /**
  * @typedef {object} ComponentLabels
  * @extends ComponentSettings
+ * @example
+{
+  type: 'labels',
+  settings: {
+    sources: [
+      {
+        component: 'bars',
+        selector: 'rect', // select all 'rect' shapes from the 'bars' component
+        strategy: {
+          type: 'bar', // the strategy type
+          settings: {
+            labels: [
+              {
+                label({ data }) {
+                  return data ? data.end.label : '';
+                },
+                placements: [
+                  // label placements in prio order. Label will be placed in the first place it fits into
+                  { position: 'inside', fill: '#fff' },
+                  { position: 'outside', fill: '#666' },
+                ],
+              },
+            ],
+          },
+        },
+      },
+    ],
+  },
+}
  */
 
 /**

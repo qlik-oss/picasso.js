@@ -3,6 +3,24 @@ import component from './line';
 /**
  * @typedef {object} ComponentLine
  * @extends ComponentSettings
+ * @example
+{
+  type: "line",
+  data: {
+    extract: {
+      field: "Year",
+      props: {
+        sales: { field: "Sales" },
+      },
+    },
+  },
+  settings: {
+    coordinates: {
+      major: { scale: "t" },
+      minor: { scale: "y", ref: "sales" },
+    },
+  },
+}
  */
 
 const type = 'line';

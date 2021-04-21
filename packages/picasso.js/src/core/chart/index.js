@@ -85,7 +85,7 @@ import componentCollectionFn from './component-collection';
 
 /**
  * Generic settings available to all components
- * @typedef {object} ComponentSettings
+ * @interface ComponentSettings
  * @property {string} type - Component type (ex: axis, point, ...)
  * @property {function} [preferredSize] - Function returning the preferred size
  * @property {function} [created] Called when the component has been created
