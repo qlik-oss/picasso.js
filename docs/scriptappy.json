@@ -65,7 +65,10 @@
           ],
           "returns": {
             "type": "#/definitions/Chart"
-          }
+          },
+          "examples": [
+            "picasso.chart({\n    element: document.querySelector('#container'), // This is the element to render the chart in\n    data: [\n      {\n        type: 'matrix',\n        data: [\n          ['Month', 'Sales', 'Margin'],\n          ['Jan', 1106, 7],\n          ['Feb', 5444, 53],\n          ['Mar', 147, 64],\n          ['Apr', 7499, 47],\n          ['May', 430, 62],\n          ['June', 9735, 13],\n          ['July', 5832, 13],\n          ['Aug', 7435, 15],\n          ['Sep', 3467, 35],\n          ['Oct', 3554, 78],\n          ['Nov', 5633, 23],\n          ['Dec', 6354, 63],\n        ],\n      },\n    ],\n    settings: {\n      scales: {\n        x: { data: { field: 'Margin' } },\n        y: { data: { field: 'Sales' } },\n      },\n      components: [\n        {\n          // specify how to render the chart\n          type: 'axis',\n          scale: 'y',\n          layout: {\n            dock: 'left',\n          },\n        },\n        {\n          type: 'axis',\n          scale: 'x',\n          layout: {\n            dock: 'bottom',\n          },\n        },\n        {\n          type: 'point',\n          data: {\n            extract: {\n              field: 'Month',\n              props: {\n                x: { field: 'Margin' },\n                y: { field: 'Sales' },\n              },\n            },\n          },\n          settings: {\n            x: { scale: 'x' },\n            y: { scale: 'y' },\n            size: function () {\n              return Math.random();\n            },\n          },\n        },\n      ],\n    },\n  });"
+          ]
         },
         "component": {
           "description": "Component registry",
@@ -2572,6 +2575,9 @@
           }
         }
       },
+      "examples": [
+        "{\n  type: 'labels',\n  settings: {\n    sources: [\n      {\n        component: 'bars',\n        selector: 'rect', // select all 'rect' shapes from the 'bars' component\n        strategy: {\n          type: 'bar', // the strategy type\n          settings: {\n            labels: [\n              {\n                label({ data }) {\n                  return data ? data.end.label : '';\n                },\n                placements: [\n                  // label placements in prio order. Label will be placed in the first place it fits into\n                  { position: 'inside', fill: '#fff' },\n                  { position: 'outside', fill: '#666' },\n                ],\n              },\n            ],\n          },\n        },\n      },\n    ],\n  },\n}"
+      ],
       "definitions": {
         "BarsLabelStrategy": {
           "kind": "object",
@@ -3179,7 +3185,10 @@
             }
           }
         }
-      }
+      },
+      "examples": [
+        "{\n  type: 'legend-cat',\n  scale: '<categorical-color-scale>',\n}"
+      ]
     },
     "ComponentLegendSeq": {
       "extends": [
@@ -3189,10 +3198,6 @@
       ],
       "kind": "object",
       "entries": {
-        "scale": {
-          "description": "Reference to sequential color scale",
-          "type": "string"
-        },
         "settings": {
           "description": "Component settings",
           "kind": "object",
@@ -3393,7 +3398,10 @@
             }
           }
         }
-      }
+      },
+      "examples": [
+        "{\n  type: 'legend-seq',\n  settings: {\n    fill: '<sequential-color-scale>',\n    major: '<linear-scale>',\n  }\n}"
+      ]
     },
     "ComponentLine": {
       "extends": [
@@ -3521,6 +3529,9 @@
           }
         }
       },
+      "examples": [
+        "{\n  type: \"line\",\n  data: {\n    extract: {\n      field: \"Year\",\n      props: {\n        sales: { field: \"Sales\" },\n      },\n    },\n  },\n  settings: {\n    coordinates: {\n      major: { scale: \"t\" },\n      minor: { scale: \"y\", ref: \"sales\" },\n    },\n  },\n}"
+      ],
       "definitions": {
         "LayerSort": {
           "description": "Callback function for layer sort",
@@ -3788,7 +3799,10 @@
             }
           }
         }
-      }
+      },
+      "examples": [
+        "{\n  type: 'point',\n  data: {\n    extract: {\n      field: 'Month',\n      props: {\n        x: { field: 'Margin' },\n        y: { field: 'Year' }\n      }\n    }\n  },\n  settings: {\n    x: { scale: 'm' },\n    y: { scale: 'y' },\n  }\n}"
+      ]
     },
     "ComponentRefLine": {
       "extends": [
