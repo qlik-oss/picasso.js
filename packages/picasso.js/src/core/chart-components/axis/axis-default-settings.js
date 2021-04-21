@@ -112,7 +112,7 @@ const DEFAULT_DISCRETE_SETTINGS = {
   /** Padding in direction perpendicular to the axis
    * @type {number=} */
   paddingEnd: 10,
-  /** Set the anchoring point of the axis. Avaialable options are `auto/left/right/bottom/top`. In `auto` the axis determines the best option. The options are restricted based on the axis orientation, a vertical axis may only anchor on `left` or `right`
+  /** Set the anchoring point of the axis. Available options are `auto/left/right/bottom/top`. In `auto` the axis determines the best option. The options are restricted based on the axis orientation, a vertical axis may only anchor on `left` or `right`
    * @type {string=} */
   align: 'auto',
 };
@@ -204,7 +204,7 @@ const DEFAULT_CONTINUOUS_SETTINGS = {
   /** Padding in direction perpendicular to the axis
    * @type {number=} */
   paddingEnd: 10,
-  /** Set the anchoring point of the axis. Avaialable options are `auto/left/right/bottom/top`. In `auto` the axis determines the best option. The options are restricted based on the axis orientation, a vertical axis may only anchor on `left` or `right`
+  /** Set the anchoring point of the axis. Available options are `auto/left/right/bottom/top`. In `auto` the axis determines the best option. The options are restricted based on the axis orientation, a vertical axis may only anchor on `left` or `right`
    * @type {string=} */
   align: 'auto',
 };

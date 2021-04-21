@@ -84,6 +84,7 @@ import componentCollectionFn from './component-collection';
  */
 
 /**
+ * Generic settings available to all components
  * @typedef {object} ComponentSettings
  * @property {string} type - Component type (ex: axis, point, ...)
  * @property {function} [preferredSize] - Function returning the preferred size
@@ -104,8 +105,8 @@ import componentCollectionFn from './component-collection';
  * @property {string | {width: string, height: string}} [layout.minimumLayoutMode] Refer to layout sizes defined by layoutModes in `strategy`
  * @property {string} [layout.dock] left, right, top or bottom
  * @property {boolean} [show = true] If the component should be rendered
- * @property {string} [scale] Named scale. Will be provided to the component if it ask for it.
- * @property {string} [formatter] Named formatter. Fallback to create formatter from scale. Will be provided to the component if it ask for it.
+ * @property {string} [scale] Named scale. Will be provided to the component if it asks for it.
+ * @property {string} [formatter] Named formatter. Fallback to create formatter from scale. Will be provided to the component if it asks for it.
  * @property {ComponentSettings[]} [components] Optional list of child components
  * @property {DockLayoutSettings|customLayoutFunction} [strategy] Layout strategy used for child components.
  * @property {DataExtraction|DataFieldExtraction} [data] Extracted data that should be available to the component
@@ -731,7 +732,7 @@ function chartFn(definition, context) {
   /**
    * Get all shapes associated with the provided context
    * @param {string} context The brush context
-   * @param {string} mode Property comparasion mode.
+   * @param {string} mode Property comparison mode.
    * @param {Array<string>} props Which specific data properties to compare
    * @param {string} key Which component to get shapes from. Default gives shapes from all components.
    * @return {Array<object>} Array of objects containing shape and parent element
@@ -766,7 +767,7 @@ function chartFn(definition, context) {
 
   /**
    * Get components overlapping a point.
-   * @param {Point} p - Point with x- and y-cooridnate. The coordinate is relative to the browser viewport.
+   * @param {Point} p - Point with x- and y-coordinate. The coordinate is relative to the browser viewport.
    * @returns {Array<Component>} Array of component contexts
    */
   instance.componentsFromPoint = (p) => componentsFromPoint(p).map((comp) => comp.instance.ctx);
@@ -976,7 +977,7 @@ function chartFn(definition, context) {
    */
 
   /**
-   * Get the all interactions instances
+   * Get all interaction instances
    * @name Chart.interactions
    * @type {object}
    * @example

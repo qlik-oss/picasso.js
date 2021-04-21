@@ -16,7 +16,7 @@ export const DEFAULT_SETTINGS = {
 /**
  * @typedef {object} ScaleBand
  * @property {string} [type='band']
- * @property {number} [padding=0] - Sets both inner and and outer padding to the same value
+ * @property {number} [padding=0] - Sets both inner and outer padding to the same value
  * @property {number} [paddingInner=0] - Inner padding
  * @property {number} [paddingOuter=0] - Outer padding
  * @property {number} [align=0.5] -  Control how the outer padding should be distributed, where 0.5 would distribute the padding equally on both sides
