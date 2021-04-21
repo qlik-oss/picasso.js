@@ -5,10 +5,10 @@ import component from './legend-cat';
  * @extends ComponentSettings
  * @property {string} scale Reference to categorical color scale
  * @example
- * {
-    type: 'legend-cat',
-    scale: '<categorical-color-scale>',
-   }
+{
+  type: 'legend-cat',
+  scale: '<categorical-color-scale>',
+}
  */
 
 const type = 'legend-cat';
