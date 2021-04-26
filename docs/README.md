@@ -1,48 +1,92 @@
-# Documentation
+# API specification file
 
-This script utilizes a `json` API specification output and Handlebars to compile documentation into Markdown files. Here's a short description of how to use it and how it works:
+The `spec.json` file is generated using [`jsdoc2spec`](https://github.com/miralemd/jsdoc2spec) as a template to `jsdoc`.
 
-> Note: The name "template" is used here for all registered partials in the "templates"-folder. This may be confusing for people that are used to Handlebars, as they call it "partials".
+## Guidelines
 
-## How to use it
+Following are some guidelines on how to document code to ensure proper output.
 
-- Modify files in docs/src/input
-- Modifiy templates (if you wish) in docs/src/templates
-- Run `npm run docs`
-- View the specification output in `docs/spec.json`
-- View the generated markdown files in `docs/dist`
+### Entry vs definition
 
-## Examples
+The spec file's two main fields are `entries` and `definitions`.
 
-To renderer parts of the API specification, use `{{>magic ctx='<path to json item in spec.json>'}}`, e.g. `{{>magic ctx='definitions.brush'}}`.
+`entries` is meant to hold entities that are _directly_ accessible for a consumer of the API, while `definitions` holds entities that are reached _indirectly_, e.g. as a returned value from a function.
 
-The `{{>magic }}` template automatically detects if it's a function, class, structs etc. If you want to manually specify a function, you can use the `{{>function }}` shorthand. All available templates can be found in the `docs/src/templates`-folder. They are also listed with a short description in this file, a bit down.
+By default, all entities will end up in `entries`, to move an entity to `definitions` add a `@definition` tag to the jsdoc:
 
-## How it works
+```js
+/**
+ * A person
+ */
+class Person {
+  /**
+   * Returns the name of this person
+   * @returns {Person~name}
+   */
+  name() {
+    return {
+      first: 'John',
+      last: 'Doe',
+    };
+  }
+}
 
-`npm run docs`
+/**
+ * @definition
+ * @typedef {object} Person~name
+ * @property {string} first - First name
+ * @property {string} last - Last name
+ */
+```
 
-- `jsdoc` runs with `jsdoc2spec` as a template and generates `docs/spec.json`
-  - [read more about the spec](./spec.md)
-- node gen.js is run which:
-  - Sets up some helpers with handlebars (check list below)
-  - Registers all templates in docs/src/templates as handlebars partials with their respective name
-  - Removes `docs/dist`
-  - Uses the `docs/src/input` -folder as source, compiles all files
-  - Outputs all compiled files to `docs/dist`
+The annotations above will result in `Person` being in `entries` while `Person~name` will be in `definitions`.
 
-## Templates (partials)
+### Exporting entities
 
-**All of these are listed under `docs/src/templates`**
+Annotations on exported entities is sometimes problematic and may cause the wrong name to be used for the entity, this can be solved by separating the annotation and the `export` statement.
 
-- Bool `{{>bool <path>}}`, will print 'Yes' for a truthy value and 'No' for a falsey value.
-- Class `{{>class <path>}}`, shorthand for `function` template, to work with magic template resolution.
-- Examples `{{>examples <path>}}`, prints all examples with JavaScript Code tag to enable highlighting on supported markdown compilers.
-- Factory `{{>factory <path>}}`, prints a function and all of it's child functions.
-- Function `{{>function <path>}}`, prints a function (no child functions).
-- Magic `{{>magic ctx='<path>'}}`, magic template resolving tries to figure out what you're trying to print and adapts to that. Prefer using this, but if it does not behave as expected, you can use templates manually.
-- Struct `{{>struct <path>}}`, prints an object struct.
+Instead of:
 
-## Helpers
+```js
+/**
+ * Do stuff
+ */
+export default function foo() {}
+```
 
-- All helpers from `assemble/handlebars-helpers`, list here: https://github.com/assemble/handlebars-helpers
+split the entity and `export`:
+
+```js
+/**
+ * Do stuff
+ */
+function foo() {}
+
+export { foo as default };
+```
+
+### Structs
+
+Properties of a struct can be annotated inline as part of the real object
+
+```js
+/**
+ * @definition
+ * @typedef {object}
+ */
+const DEFAULTS = {
+  /** Fill color
+   * @type {string=} */
+  fill: 'red',
+  /**
+   * @typedef {object} */
+  stroke: {
+    /** Stroke color
+     * @type {string=} */
+    color: 'green',
+    /** Stroke width
+     * @type {number=} */
+    width: 1,
+  },
+};
+```

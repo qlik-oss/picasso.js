@@ -5,7 +5,7 @@
 
 A charting library streamlined for building interactive visualizations for the Qlik product suites.
 
-[![Examples](website/static/img/examples.png)](https://picassojs.com/examples.html)
+[![Examples](docs/assets/examples.png)](https://picassojs.com/examples.html)
 
 ## Getting started
 
@@ -62,9 +62,7 @@ picasso.chart({
 });
 ```
 
-![Bubbles](website/static/img/bubbles.png)
-
-## [More examples](https://picassojs.com/examples.html)
+More examples and documentation can be found at [qlik.dev](https://qlik.dev)
 
 ## Run examples locally
 
