@@ -69,6 +69,6 @@ picasso.chart({
 });
 ```
 
-![Bubbles](../../website/static/img/bubbles.png)
+![Bubbles](../../docs/assets/bubbles.png)
 
 [See more examples](https://picassojs.com/examples)
