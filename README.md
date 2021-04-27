@@ -5,7 +5,7 @@
 
 A charting library streamlined for building interactive visualizations for the Qlik product suites.
 
-[![Examples](docs/assets/examples.png)](https://picassojs.com/examples.html)
+[![Examples](docs/assets/examples.png)](https://qlik.dev)
 
 ## Getting started
 
