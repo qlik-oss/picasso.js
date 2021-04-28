@@ -1,15 +1,17 @@
 import extend from 'extend';
 import { notNumber } from '../../utils/is-number';
 
-const DEFAULT_ERROR_SETTINGS = {
-  errorShape: {
-    shape: 'saltire',
-    width: 2,
-    size: 0.5,
-    fill: '#333',
-    stroke: '#333',
-    strokeWidth: 0,
-  },
+/**
+ * @typedef {object}
+ * @alias ComponentPoint.settings.errorShape
+ */
+const ERROR_SHAPE = {
+  /** Type of shape
+   * @type {DatumString=} */
+  shape: 'saltire',
+  /** Normalized size of shape
+   * @type {DatumNumber|DatumString==} */
+  size: 0.5,
 };
 
 const PX_RX = /px$/;
@@ -139,14 +141,7 @@ function createDisplayPoints(dataPoints, { width, height }, pointSize, shapeFn, 
       let s = p;
       let size = PX_RX.test(p.size) ? parseInt(p.size, 10) : pointSize.min + s.size * (pointSize.max - pointSize.min);
       if (notNumber(size)) {
-        s = {
-          fill: p.fill,
-          stroke: p.stroke,
-          strokeWidth: p.strokeWidth,
-          strokeDasharray: p.strokeDasharray,
-          opacity: p.opacity,
-          ...(errorShape || DEFAULT_ERROR_SETTINGS.errorShape),
-        };
+        s = { ...p, ...errorShape };
         size = PX_RX.test(s.size) ? parseInt(s.size, 10) : pointSize.min + s.size * (pointSize.max - pointSize.min);
       }
 
@@ -202,7 +197,7 @@ const component = {
     const points = resolved.items;
     const pointSize = getPointSizeLimits(resolved.settings.x, resolved.settings.y, width, height, limits);
     const shapeFn = this.settings.shapeFn || this.symbol;
-    const { errorShape } = this.settings;
+    const errorShape = extend({}, ERROR_SHAPE, this.settings.settings.errorShape);
     return createDisplayPoints(points, this.rect, pointSize, shapeFn, errorShape);
   },
 };
