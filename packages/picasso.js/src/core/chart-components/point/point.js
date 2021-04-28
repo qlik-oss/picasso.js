@@ -127,15 +127,22 @@ function getType(s) {
   return [type, props];
 }
 
-function createDisplayPoints(dataPoints, { width, height }, pointSize, shapeFn) {
+function createDisplayPoints(dataPoints, { width, height }, pointSize, shapeFn, errorShape) {
   return dataPoints
     .filter((p) => p.show !== false && !isNaN(p.x + p.y))
     .map((p) => {
       let s = p;
       let size = PX_RX.test(p.size) ? parseInt(p.size, 10) : pointSize.min + s.size * (pointSize.max - pointSize.min);
       if (notNumber(size)) {
-        s = DEFAULT_ERROR_SETTINGS.errorShape;
-        size = pointSize.min + s.size * (pointSize.max - pointSize.min);
+        s = {
+          fill: p.fill,
+          stroke: p.stroke,
+          strokeWidth: p.strokeWidth,
+          strokeDasharray: p.strokeDasharray,
+          opacity: p.opacity,
+          ...(errorShape || DEFAULT_ERROR_SETTINGS.errorShape),
+        };
+        size = PX_RX.test(s.size) ? parseInt(s.size, 10) : pointSize.min + s.size * (pointSize.max - pointSize.min);
       }
 
       const [type, typeProps] = getType(s);
@@ -189,7 +196,9 @@ const component = {
     const limits = extend({}, SIZE_LIMITS, this.settings.settings.sizeLimits);
     const points = resolved.items;
     const pointSize = getPointSizeLimits(resolved.settings.x, resolved.settings.y, width, height, limits);
-    return createDisplayPoints(points, this.rect, pointSize, this.settings.shapeFn || this.symbol);
+    const shapeFn = this.settings.shapeFn || this.symbol;
+    const { errorShape } = this.settings;
+    return createDisplayPoints(points, this.rect, pointSize, shapeFn, errorShape);
   },
 };
 
