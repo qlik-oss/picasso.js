@@ -50,7 +50,6 @@ jobs:
           paths:
             - packages/*/dist
             - plugins/*/dist
-            - docs/dist
             - docs/spec.json
 
   lint:
@@ -89,45 +88,6 @@ jobs:
           at: ~/picassojs
       - run: yarn run test:integration:ci
 
-  build-docs:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: ~/picassojs
-      - run:
-          name: Build docs
-          command: |
-            set -eo pipefail
-            NUM=$(git tag --points-at HEAD | wc -l)
-            if [ "$NUM" -gt 0 ]; then
-              yarn run build:website
-            else
-              mkdir website/build
-              echo "Skipping build..."
-            fi
-      - persist_to_workspace:
-          root: ~/picassojs
-          paths:
-            - website/build/
-
-  deploy-docs:
-    docker:
-      - image: cibuilds/aws:1.16.28
-    working_directory: ~/picassojs
-    steps:
-      - attach_workspace:
-          at: ~/picassojs
-      - run:
-          name: Build and deploy
-          command: |
-            set -eo pipefail
-            NUM=$(git tag --points-at HEAD | wc -l)
-            if [ "$NUM" -gt 0 ]; then
-              aws s3 sync website/build/picasso.js/ s3://picassojs.com/ --delete
-            else
-              echo "Skipping deploy..."
-            fi
-
 workflows:
   version: 2
   build-all:
@@ -148,11 +108,3 @@ workflows:
       - test-integration:
           requires:
             - build
-      - build-docs:
-          requires:
-            - build
-          filters: *filter_master
-      - deploy-docs:
-          requires:
-            - build-docs
-          filters: *filter_master

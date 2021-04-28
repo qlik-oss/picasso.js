@@ -2,7 +2,7 @@ A charting library streamlined for building visualizations for the Qlik Sense An
 
 ### Documentation
 
-Visit [picassojs.com](https://picassojs.com) for documentation and examples.
+Visit [qlik.dev](https://qlik.dev) for documentation and examples.
 
 ### Installing
 
@@ -69,6 +69,6 @@ picasso.chart({
 });
 ```
 
-![Bubbles](../../website/static/img/bubbles.png)
+![Bubbles](../../docs/assets/bubbles.png)
 
-[See more examples](https://picassojs.com/examples)
+[See more examples](https://qlik.dev)
