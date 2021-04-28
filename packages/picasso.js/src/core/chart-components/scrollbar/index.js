@@ -1,10 +1,11 @@
 /**
- * @typedef {object} component--scrollbar
+ * @typedef {object} ComponentScrollbar
+ * @extends ComponentSettings
  * @private
  */
 
 /**
- * @typedef {object} component--scrollbar.settings
+ * @typedef {object} ComponentScrollbar.settings
  * @property {boolean} [backgroundColor = '#eee']
  * @property {boolean} [thumbColor = '#ccc']
  * @property {boolean} [width = 16]

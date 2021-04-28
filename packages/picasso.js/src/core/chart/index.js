@@ -15,7 +15,7 @@ import themeFn from '../theme';
 import componentCollectionFn from './component-collection';
 
 /**
- * @callback CustomLayoutFunction
+ * @callback customLayoutFunction
  * @param {Rect} rect
  * @param {object[]} components
  * @param {string} components[].key
@@ -25,33 +25,96 @@ import componentCollectionFn from './component-collection';
  */
 
 /**
- * @typedef {object} ComponentSettings
+ * Called when the chart has been created
+ * @callback created
+ * @memberof ChartDefinition
+ */
+
+/**
+ * Called before the chart has been mounted
+ * @callback beforeMount
+ * @memberof ChartDefinition
+ */
+
+/**
+ * Called after the chart has been mounted
+ * @callback mounted
+ * @memberof ChartDefinition
+ * @param {HTMLElement} element The element the chart been mounted to
+ */
+
+/**
+ * Called before the chart has been rendered
+ * @callback beforeRender
+ * @memberof ChartDefinition
+ */
+
+/**
+ * Called before the chart has been updated
+ * @callback beforeUpdate
+ * @memberof ChartDefinition
+ */
+
+/**
+ * Called after the chart has been updated
+ * @callback updated
+ * @memberof ChartDefinition
+ */
+
+/**
+ * Called before the chart has been destroyed
+ * @callback beforeDestroy
+ * @memberof ChartDefinition
+ */
+
+/**
+ * Called after the chart has been destroyed
+ * @callback destroyed
+ * @memberof ChartDefinition
+ */
+
+/**
+ * @typedef {object} ChartSettings
+ * @property {ComponentSettings[]} [components] Components
+ * @property {object.<string, ScaleDefinition>} [scales] Dictionary with scale definitions
+ * @property {object.<string, FormatterDefinition>} [formatters] Dictionary with formatter definitions
+ * @property {DockLayoutSettings} [strategy] Dock layout strategy
+ * @property {InteractionSettings[]} [interactions] Interaction handlers
+ * @property {CollectionSettings[]} [collections] Collections
+ */
+
+/**
+ * Generic settings available to all components
+ * @interface ComponentSettings
  * @property {string} type - Component type (ex: axis, point, ...)
  * @property {function} [preferredSize] - Function returning the preferred size
- * @property {function} [created]
- * @property {function} [beforeMount]
- * @property {function} [mounted]
- * @property {function} [beforeUpdate]
- * @property {function} [updated]
- * @property {function} [beforeRender]
- * @property {function} [beforeDestroy]
- * @property {function} [destroyed]
- * @property {brush-setting} [brush] see [brushing](./brushing.md)
+ * @property {function} [created] Called when the component has been created
+ * @property {function} [beforeMount] Called before the component has been mounted
+ * @property {function} [mounted] Called after the component has been mounted
+ * @property {function} [beforeUpdate] Called before the component has been updated
+ * @property {function} [updated] Called after the component has been updated
+ * @property {function} [beforeRender] Called before the component has been rendered
+ * @property {function} [beforeDestroy] Called before the component has been destroyed
+ * @property {function} [destroyed] Called after the component has been destroyed
+ * @property {object} [brush] Brush settings
+ * @property {BrushTriggerSettings[]} [brush.trigger] Trigger settings
+ * @property {BrushConsumeSettings[]} [brush.consume] Consume settings
  * @property {object} [layout] Layout settings
  * @property {number} [layout.displayOrder = 0]
  * @property {number} [layout.prioOrder = 0]
  * @property {string | {width: string, height: string}} [layout.minimumLayoutMode] Refer to layout sizes defined by layoutModes in `strategy`
  * @property {string} [layout.dock] left, right, top or bottom
  * @property {boolean} [show = true] If the component should be rendered
- * @property {string} [scale] Named scale. Will be provided to the component if it ask for it.
- * @property {string} [formatter] Named formatter. Fallback to create formatter from scale. Will be provided to the component if it ask for it.
+ * @property {string} [scale] Named scale. Will be provided to the component if it asks for it.
+ * @property {string} [formatter] Named formatter. Fallback to create formatter from scale. Will be provided to the component if it asks for it.
  * @property {ComponentSettings[]} [components] Optional list of child components
- * @property {DockLayoutSettings|CustomLayoutFunction} [strategy] Layout strategy used for child components.
+ * @property {DockLayoutSettings|customLayoutFunction} [strategy] Layout strategy used for child components.
+ * @property {DataExtraction|DataFieldExtraction} [data] Extracted data that should be available to the component
  */
 
 // mark strategy as experimental
 /**
- * @type {DockLayoutSettings|CustomLayoutFunction}
+ * @type {DockLayoutSettings|customLayoutFunction}
  * @name strategy
  * @memberof ComponentSettings
  * @experimental
@@ -63,6 +126,62 @@ import componentCollectionFn from './component-collection';
  * @name components
  * @memberof ComponentSettings
  * @experimental
+ */
+
+/**
+ * @typedef {object} BrushTriggerSettings
+ * @property {string} [on] Type of interaction to trigger brush on
+ * @property {string} [action] Type of interaction to respond with
+ * @property {string[]} [contexts] Name of the brushing contexts to affect
+ * @property {string[]} [data] The mapped data properties to add to the brush
+ * @property {string} [propagation] Control the event propagation when multiple shapes are tapped. Disabled by default
+ * @property {string} [globalPropagation] Control the event propagation between components. Disabled by default
+ * @property {number} [touchRadius] Extend contact area for touch events. Disabled by default
+ * @property {number} [mouseRadius] Extend contact area for regular mouse events. Disabled by default
+ * @example
+ * {
+ *    on: 'tap',
+ *    action: 'toggle',
+ *    contexts: ['selection', 'tooltip'],
+ *    data: ['x'],
+ *    propagation: 'stop', // 'stop' => prevent trigger from propagating further than the first shape
+ *    globalPropagation: 'stop', // 'stop' => prevent trigger of same type to be triggered on other components
+ *    touchRadius: 24,
+ *    mouseRadius: 10
+ *  }
+ */
+
+/**
+ * @typedef {object} BrushConsumeSettings
+ * @property {string} [context] Name of the brush context to observe
+ * @property {string[]} [data] The mapped data properties to observe
+ * @property {string} [mode] Data properties operator: and, or, xor.
+ * @property {function} [filter] Filtering function
+ * @property {object} [style] The style to apply to the shapes of the component
+ * @property {object.<string, any>} [style.active] The style of active data points
+ * @property {object.<string, any>} [style.inactive] The style of inactive data points
+ * @example
+ * {
+ *    context: 'selection',
+ *    data: ['x'],
+ *    filter: (shape) => shape.type === 'circle',
+ *    style: {
+ *      active: {
+ *        fill: 'red',
+ *        stroke: '#333',
+ *        strokeWidth: (shape) => shape.strokeWidth * 2,
+ *      },
+ *      inactive: {},
+ *    },
+ * }
+ */
+
+/**
+ * @typedef {object} BrushTargetConfig
+ * @property {string} key - Component key
+ * @property {string[]} [contexts] - Name of the brushing contexts to affect
+ * @property {string[]} [data] - The mapped data properties to add to the brush
+ * @property {string} [action='set'] - Type of action to respond with
  */
 
 function addComponentDelta(shape, containerBounds, componentBounds) {
@@ -165,17 +284,20 @@ function chartFn(definition, context) {
    */
   let {
     /**
+     * Element to attach chart to
      * @type {HTMLElement}
      * @memberof ChartDefinition
      */
     element,
     /**
-     * @type {Array<DataSource>}
+     * Chart data
+     * @type {Array<DataSource>|DataSource}
      * @memberof ChartDefinition
      */
     data = [],
     /**
-     * @type {chart-settings}
+     * Chart settings
+     * @type {ChartSettings}
      * @memberof ChartDefinition
      */
     settings = {},
@@ -188,6 +310,7 @@ function chartFn(definition, context) {
 
   const listeners = [];
   /**
+   * Chart instance
    * @alias Chart
    * @interface
    */
@@ -497,7 +620,11 @@ function chartFn(definition, context) {
 
   /**
    * Update the chart with new settings and / or data
-   * @param {ChartDefinition} [chart] - Chart definition
+   * @param {object} [def] - New chart definition
+   * @param {Array<DataSource>|DataSource} [def.data] Chart data
+   * @param {ChartSettings} [def.settings] Chart settings
+   * @param {boolean} [def.partialData=false] If set to true, will trigger a data update only. Meaning the layout will not be updated
+   * @param {string[]} [def.excludeFromUpdate=[]] Keys of components to not include in the update
    */
   instance.update = (newProps = {}) => {
     const { partialData, excludeFromUpdate = [] } = newProps;
@@ -605,7 +732,7 @@ function chartFn(definition, context) {
   /**
    * Get all shapes associated with the provided context
    * @param {string} context The brush context
-   * @param {string} mode Property comparasion mode.
+   * @param {string} mode Property comparison mode.
    * @param {Array<string>} props Which specific data properties to compare
    * @param {string} key Which component to get shapes from. Default gives shapes from all components.
    * @return {Array<object>} Array of objects containing shape and parent element
@@ -640,8 +767,8 @@ function chartFn(definition, context) {
 
   /**
    * Get components overlapping a point.
-   * @param {Point} p - Point with x- and y-cooridnate. The coordinate is relative to the browser viewport.
-   * @returns {Array<component-context>} Array of component contexts
+   * @param {Point} p - Point with x- and y-coordinate. The coordinate is relative to the browser viewport.
+   * @returns {Array<Component>} Array of component contexts
    */
   instance.componentsFromPoint = (p) => componentsFromPoint(p).map((comp) => comp.instance.ctx);
 
@@ -710,11 +837,7 @@ function chartFn(definition, context) {
    * Brush data by providing a collection of data bound shapes.
    * @param {SceneNode[]} shapes - An array of data bound shapes.
    * @param {object} config - Options
-   * @param {Array<object>} opts.components - Array of components to include in the lookup.
-   * @param {string} [opts.components.component.key] - Component key
-   * @param {Array<string>} [opts.components.component.contexts] - Name of the brushing contexts to affect
-   * @param {Array<string>} [opts.components.component.data] - The mapped data properties to add to the brush
-   * @param {string} [opts.components.component.action] - Type of action to respond with
+   * @param {BrushTargetConfig[]} config.components - Array of components to include in the lookup
    *
    * @example
    * const shapes = chartInstance.shapesAt(...);
@@ -743,8 +866,9 @@ function chartFn(definition, context) {
   };
 
   /**
+   * @private
    * @param {string} name - Name of scroll api
-   * @returns {scroll}
+   * @returns {object}
    */
   instance.scroll = function scroll(name = 'default') {
     return getOrCreateScrollApi(name, currentScrollApis);
@@ -761,7 +885,7 @@ function chartFn(definition, context) {
 
   /**
    * Get all registered scales
-   * @returns {Object<string,scale>}
+   * @returns {Object<string,Scale>}
    */
   instance.scales = function scales() {
     return currentScales.all();
@@ -790,7 +914,7 @@ function chartFn(definition, context) {
   /**
    * Get or create a scale for this chart
    * @param {string|object} v - Scale reference or scale options
-   * @returns {scale}
+   * @returns {Scale}
    * @example
    * instance.scale('nameOfMyScale'); // Fetch an existing scale by name
    * instance.scale({ scale: 'nameOfMyScale' }); // Fetch an existing scale by name
@@ -832,7 +956,7 @@ function chartFn(definition, context) {
   /**
    * Get a component context
    * @param {string} key - Component key
-   * @returns {component-context} Component context
+   * @returns {Component} Component context
    */
   instance.component = (key) => {
     const component = componentsC.findComponentByKey(key);
@@ -844,7 +968,16 @@ function chartFn(definition, context) {
   instance.theme = () => theme;
 
   /**
-   * Get the all interactions instances
+   * Interaction instance
+   * @typedef {object} Interaction
+   * @property {function} on Enable interaction
+   * @property {function} off Disable interaction
+   * @property {function} destroy Destroy interaction
+   * @property {string} key Interaction identifier
+   */
+
+  /**
+   * Get all interaction instances
    * @name Chart.interactions
    * @type {object}
    * @example
@@ -855,7 +988,7 @@ function chartFn(definition, context) {
   Object.defineProperty(instance, 'interactions', {
     get() {
       return /** @lends Chart.interactions */ {
-        /** @type Array<interaction> */
+        /** @type Array<Interaction> */
         instances: currentInteractions,
         /** Enable all interaction instances */
         on() {

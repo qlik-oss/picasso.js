@@ -17,7 +17,7 @@ const DEFAULT_EXPLICIT_SETTINGS = {
  * @typedef {object} ScaleCategoricalColor
  * @property {string} [type='categorical-color']
  * @property {string[]} [range=false] - CSS color values of the output range
- * @property {string} [unknown] - {@link https://github.com/d3/d3-scale#ordinal_unknown}
+ * @property {string} [unknown] - Value to return when input value is unknown
  * @property {object} [explicit] - Explicitly bind values to an output
  * @property {object[]} [explicit.domain[]] - Values to bind
  * @property {string[]} [explicit.range[]] - Output range

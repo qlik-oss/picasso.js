@@ -179,10 +179,21 @@ function resetState() {
 
 /**
  * @typedef {object} ComponentBrushLasso
+ * @extends ComponentSettings
+ * @example
+ * {
+ *  type: 'brush-lasso',
+ *  settings: {
+ *    brush: {
+ *      components: [{ key: '<target-component>', contexts: ['<brush-context>'] }]
+ *    }
+ *  },
+ * }
  */
 
 /**
- * @typedef {object} ComponentBrushLassoSettings
+ * Component settings
+ * @typedef {object} ComponentBrushLasso.settings
  * @property {object} [lasso] - Lasso style settings
  * @property {string} [lasso.fill='transparent']
  * @property {string} [lasso.stroke='black']

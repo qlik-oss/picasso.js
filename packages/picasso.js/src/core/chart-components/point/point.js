@@ -15,6 +15,7 @@ const DEFAULT_ERROR_SETTINGS = {
 const PX_RX = /px$/;
 
 /**
+ * Component settings
  * @typedef {object}
  * @alias ComponentPoint.settings
  */
@@ -22,6 +23,8 @@ const DEFAULT_DATA_SETTINGS = {
   /** Type of shape
    * @type {DatumString=} */
   shape: 'circle',
+  /** Label
+   * @type {DatumString=} */
   label: '',
   /** Fill color
    * @type {DatumString=} */
@@ -29,11 +32,14 @@ const DEFAULT_DATA_SETTINGS = {
   /** Stroke color
    * @type {DatumString=} */
   stroke: '#ccc',
+  /** Stroke dash array
+   * @type {DatumString=} */
+  strokeDasharray: '',
   /** Stroke width
    * @type {DatumNumber=} */
   strokeWidth: 0,
   /** Stroke line join
-   * @type {string=} */
+   * @type {DatumString=} */
   strokeLinejoin: 'miter',
   /** Opacity of shape
    * @type {DatumNumber=} */
@@ -47,7 +53,6 @@ const DEFAULT_DATA_SETTINGS = {
   /** Normalized size of shape
    * @type {DatumNumber=} */
   size: 1,
-  strokeDasharray: '',
   /** Whether or not to show the point
    * @type {DatumBoolean=} */
   show: true,

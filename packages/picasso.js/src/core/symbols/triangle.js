@@ -10,6 +10,7 @@ const DIRECTION_TO_ANGLE = {
 };
 
 /**
+ * @private
  * @extends Symbol
  * @typedef {object} SymbolTriangle
  * @property {string} [direction='up'] - Direction of the triangle ('up'|'down'|'left'|'right')

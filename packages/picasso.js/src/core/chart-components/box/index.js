@@ -7,9 +7,7 @@ export default function box(picasso) {
 
 /**
  * @typedef {object} ComponentBox
- * @property {string} type - "box"
- * @property {ComponentBox~data} data Box data
- * @property {ComponentBox~settings} settings Box settings
+ * @extends ComponentSettings
  * @example
  * {
  *   type: "box",
@@ -41,10 +39,10 @@ export default function box(picasso) {
  */
 
 /**
- * @typedef {object} ComponentBox~settings
+ * @typedef {object} ComponentBox.settings
  * @property {object} major
  * @property {string} major.scale The scale to use along the major (dimension) axis
- * @property {string|ComponentBox~settings~majorReference} [major.ref='self'] Reference to the data property along the major axis
+ * @property {string|ComponentBox~MajorReference} [major.ref='self'] Reference to the data property along the major axis
  * @property {object} minor
  * @property {string} minor.scale The scale to use along the minor (measure) axis
  * @property {string} [orientation='vertical'] Which orientation to use (vertical or horizontal)
@@ -82,13 +80,13 @@ export default function box(picasso) {
  */
 
 /**
- * @typedef {object} ComponentBox~settings~majorReference
+ * @typedef {object} ComponentBox~MajorReference
  * @property {string} start Reference to the data property of the start value along the major axis
  * @property {string} end Reference to the data property of the end value along the major axis
  */
 
 /**
- * @typedef {object} ComponentBox~data
+ * @typedef {object} ComponentBox.data
  * @property {number} [min] Min
  * @property {number} [max] Max
  * @property {number} [start] Start of box

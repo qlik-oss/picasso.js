@@ -4,15 +4,14 @@ import NodeContainer from '../node-container';
 /**
  * @private
  * @experimental
- * @typedef {object} pattern-def
- * @property {'pattern'} type
+ * @typedef {object} PatternNode
+ * @property {string} [type='pattern']
  * @property {string} fill
  * @property {number} width
  * @property {number} height
  * @property {object[]} shapes
  * @example
- * Stripe pattern
- * ```js
+ * // Stripe pattern
  * {
  *   type: 'pattern',
  *   fill: 'red',
@@ -25,7 +24,6 @@ import NodeContainer from '../node-container';
  *     { type: 'rect', x: 0, y: 3, width: 1, height: 1 },
  *   ]
  * }
- * ```
  */
 
 const NC = NodeContainer.prototype;

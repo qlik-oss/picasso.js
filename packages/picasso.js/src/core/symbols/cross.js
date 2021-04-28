@@ -24,6 +24,7 @@ export function generateCrossPoints(x, y, size, barWidth) {
 }
 
 /**
+ * @private
  * @extends Symbol
  * @typedef {object} SymbolCross
  * @property {number} [width] - Width of the diagonals

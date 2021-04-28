@@ -7,6 +7,20 @@ import threshold from '../../scales/color/threshold';
 import categorical from '../../scales/color/categorical';
 import extractData from '../../data/extractor';
 
+/**
+ * Definition for creating a scale. Additional properties, specific for a type of scale, can be added as key/value pairs
+ * @typedef {object} ScaleDefinition
+ * @property {string} [type] Type of scale
+ * @property {DataExtraction|DataFieldExtraction} [data] Data configuration
+ */
+
+/**
+ * Scale instance
+ * @typedef {object} Scale
+ * @interface
+ * @property {string} type Type of scale
+ */
+
 const scaleRegistry = registry();
 
 scaleRegistry('linear', linear);

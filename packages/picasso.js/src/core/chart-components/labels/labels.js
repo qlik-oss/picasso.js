@@ -2,15 +2,49 @@ import strategies from './strategies';
 
 /**
  * @typedef {object} ComponentLabels
- * @property {string} [type='labels']
+ * @extends ComponentSettings
+ * @example
+{
+  type: 'labels',
+  settings: {
+    sources: [
+      {
+        component: 'bars',
+        selector: 'rect', // select all 'rect' shapes from the 'bars' component
+        strategy: {
+          type: 'bar', // the strategy type
+          settings: {
+            labels: [
+              {
+                label({ data }) {
+                  return data ? data.end.label : '';
+                },
+                placements: [
+                  // label placements in prio order. Label will be placed in the first place it fits into
+                  { position: 'inside', fill: '#fff' },
+                  { position: 'outside', fill: '#666' },
+                ],
+              },
+            ],
+          },
+        },
+      },
+    ],
+  },
+}
  */
 
 /**
+ * Component settings
  * @typedef {object} ComponentLabels.settings
- * @property {Array<object>} sources
- * @property {string} sources[].component
- * @property {string} sources[].selector
- * @property {ComponentLabels~labelStrategy} sources[].strategy
+ * @property {Array<ComponentLabels~Source>} sources Source settings
+ */
+
+/**
+ * @typedef {object} ComponentLabels~Source
+ * @property {string} component Key of target component
+ * @property {string} selector Shape selector
+ * @property {ComponentLabels~BarsLabelStrategy|ComponentLabels~RowsLabelStrategy|ComponentLabels~SlicesLabelStrategy} strategy Strategy settings
  */
 
 export function strategy({ chart, source, rect, renderer, style }, fn) {

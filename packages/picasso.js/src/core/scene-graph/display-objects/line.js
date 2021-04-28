@@ -4,8 +4,8 @@ import { lineToPoints, getMinMax } from '../../geometry/util';
 
 /**
  * @private
- * @extends node-def
- * @typedef {object} node--line-def
+ * @extends DisplayObject
+ * @typedef {object} LineNode
  * @property {number} x1 - {@link https://www.w3.org/TR/SVG/shapes.html#LineElementX1Attribute}
  * @property {number} y1 - {@link https://www.w3.org/TR/SVG/shapes.html#LineElementY1Attribute}
  * @property {number} x2 - {@link https://www.w3.org/TR/SVG/shapes.html#LineElementX2Attribute}

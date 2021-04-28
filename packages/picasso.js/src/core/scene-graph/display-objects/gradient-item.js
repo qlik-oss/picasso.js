@@ -3,7 +3,7 @@ import NodeContainer from '../node-container';
 
 /**
  * @private
- * @typedef {object} gradient-def
+ * @typedef {object} GradientNode
  * @property {string} type
  * @property {object[]} stops
  * @property {string} [stops[].type=linearGradient] - radialGradient|linearGradient
@@ -15,7 +15,7 @@ import NodeContainer from '../node-container';
 
 /**
  * @private
- * @typedef {object} node--gradient-item-def
+ * @typedef {object} GradientItemNode
  * @property {string} id - Gradient identifier
  * @property {number} x1 - {@link https://www.w3.org/TR/SVG/pservers.html#LinearGradientElementX1Attribute}
  * @property {number} y1 - {@link https://www.w3.org/TR/SVG/pservers.html#LinearGradientElementY1Attribute}

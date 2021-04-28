@@ -9,8 +9,8 @@ const EPSILON = 1e-12;
 
 /**
  * @private
- * @extends node-def
- * @typedef {object} node--path-def
+ * @extends DisplayObject
+ * @typedef {object} PathNode
  * @property {string} d - {@link https://www.w3.org/TR/SVG/paths.html#DAttribute}
  */
 

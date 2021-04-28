@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0](https://github.com/qlik-oss/picasso.js/compare/v0.37.2...v1.0.0) (2021-04-21)
+
+**Note:** Version bump only for package picasso.js
+
+## [0.37.2](https://github.com/qlik-oss/picasso.js/compare/v0.37.1...v0.37.2) (2021-04-20)
+
+**Note:** Version bump only for package picasso.js
+
+## [0.37.1](https://github.com/qlik-oss/picasso.js/compare/v0.37.0...v0.37.1) (2021-04-19)
+
+**Note:** Version bump only for package picasso.js
+
+# [0.37.0](https://github.com/qlik-oss/picasso.js/compare/v0.35.1...v0.37.0) (2021-04-15)
+
+### Features
+
+- support AND/OR mode for range selections ([#577](https://github.com/qlik-oss/picasso.js/issues/577)) ([e3bcf63](https://github.com/qlik-oss/picasso.js/commit/e3bcf638e41c52f61ef9275e3be3ccc953433e77))
+
 # [0.36.0](https://github.com/qlik-oss/picasso.js/compare/v0.35.1...v0.36.0) (2021-04-08)
 
 ### Features

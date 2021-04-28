@@ -11,10 +11,10 @@ import { assignMappedAttribute } from '../attributes';
 
 /**
  * @private
- * @typedef {object} node-def
+ * @typedef {object} DisplayObject
  * @property {string} type
- * @property {string|gradient-def|pattern-def} [fill] - {@link https://www.w3.org/TR/fill-stroke-3/#fill-shorthand}
- * @property {string|gradient-def|pattern-def} [stroke] - {@link https://www.w3.org/TR/fill-stroke-3/#propdef-stroke}
+ * @property {string|GradientNode|PatternNode} [fill] - {@link https://www.w3.org/TR/fill-stroke-3/#fill-shorthand}
+ * @property {string|GradientNode|PatternNode} [stroke] - {@link https://www.w3.org/TR/fill-stroke-3/#propdef-stroke}
  * @property {number} [strokeWidth] - {@link https://www.w3.org/TR/fill-stroke-3/#propdef-stroke-width}
  * @property {string|number[]} [strokeDasharray] - {@link https://www.w3.org/TR/fill-stroke-3/#propdef-stroke-dasharray}
  * @property {number} [opacity] - {@link https://www.w3.org/TR/css-color-4/#propdef-opacity}

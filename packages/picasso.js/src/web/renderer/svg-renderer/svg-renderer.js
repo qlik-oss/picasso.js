@@ -18,9 +18,9 @@ import injectTextBoundsFn from '../../text-manipulation/inject-textbounds';
 /**
  * Create a new svg renderer
  * @typedef {function} svgRendererFactory
- * @param {function} treeFactory - Node tree factory
- * @param {string} ns - Namespace definition
- * @param {function} sceneFn - Scene factory
+ * @param {function} [treeFactory] - Node tree factory
+ * @param {string} [ns] - Namespace definition
+ * @param {function} [sceneFn] - Scene factory
  * @returns {Renderer} A svg renderer instance
  */
 export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sceneFactory) {

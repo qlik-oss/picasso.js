@@ -2,6 +2,12 @@ module.exports = {
   spec: {
     validate: true,
   },
+  api: {
+    stability: 'stable',
+    properties: {
+      'x-qlik-visibility': 'public',
+    },
+  },
   parse: {
     rules: {
       'no-unknown-types': 1,

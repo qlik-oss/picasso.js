@@ -53,5 +53,5 @@ export default function datasets(dataSources, { types, logger }) {
  * @typedef {object} DataSource
  * @property {string} key - Unique identifier for this data source
  * @property {string} type - The dataset type
- * @property {any} data
+ * @property {any} data - Data
  */

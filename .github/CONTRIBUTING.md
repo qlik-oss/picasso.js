@@ -42,7 +42,6 @@ This is a multi-package repository which uses [lerna](https://github.com/lerna/l
 - `packages/picasso.js`: contains the main `picasso.js` package
 - `scripts/`: contains build scripts
 - `test/`: contains test configs
-- `website/`: contains source code for the picasso.js website
 
 ### Building
 

@@ -383,6 +383,7 @@ function filterComponents(components, settings, rect) {
 }
 
 /**
+ * Dock layout settings
  * @typedef {object} DockLayoutSettings
  * @property {object} [logicalSize] - Logical size
  * @property {number} [logicalSize.width] - Width in pixels
@@ -394,8 +395,18 @@ function filterComponents(components, settings, rect) {
  * @property {number} [center.minHeightRatio=0.5] - Value between 0 and 1
  * @property {number} [center.minWidth] - Width in pixels
  * @property {number} [center.minHeight] - Height in pixels
- * @property {object<string, {width: number, height: number}>} [layoutModes] Dictionary with named sizes
+ * @property {object<string, DockLayoutSettings~LayoutMode>} [layoutModes] Dictionary with named sizes
+ * @property {object} [size] - Size is equal to that of the container (element) of the chart by default. It's possible to overwrite it by explicitly setting width or height
+ * @property {number} [size.width] - Width in pixels
+ * @property {number} [size.height] - Height in pixels
  */
+
+/**
+ * @typedef {object} DockLayoutSettings~LayoutMode
+ * @property {number} width
+ * @property {number} height
+ */
+
 function dockLayout(initialSettings) {
   let settings = resolveSettings(initialSettings);
 
