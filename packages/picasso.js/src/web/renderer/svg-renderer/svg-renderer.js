@@ -30,6 +30,9 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
   let hasChangedRect = false;
   let rect = createRendererBox();
   let scene;
+  const settings = {
+    transform: undefined,
+  };
 
   const svg = create();
 
@@ -43,6 +46,18 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
   svg.element = () => el;
 
   svg.root = () => group;
+
+  svg.settings = (rendererSettings) => {
+    if (rendererSettings) {
+      Object.keys(settings).forEach((key) => {
+        if (rendererSettings[key] !== undefined) {
+          settings[key] = rendererSettings[key];
+        }
+      });
+    }
+
+    return settings;
+  };
 
   svg.appendTo = (element) => {
     if (!el) {
@@ -66,6 +81,14 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
     if (!el) {
       return false;
     }
+
+    const transformation = typeof settings.transform === 'function' && settings.transform();
+    if (transformation) {
+      const { a, b, c, d, e, f } = transformation;
+      group.style.transform = `matrix(${a}, ${b}, ${c}, ${d}, ${e}, ${f})`;
+      return true;
+    }
+    group.style.transform = '';
 
     const scaleX = rect.scaleRatio.x;
     const scaleY = rect.scaleRatio.y;

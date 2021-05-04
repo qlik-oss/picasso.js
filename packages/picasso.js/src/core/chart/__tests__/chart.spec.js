@@ -179,6 +179,54 @@ describe('Chart', () => {
       expect(comp2UpdatedCb).to.have.been.calledTwice;
     });
 
+    it('should update components where transform should be applied', () => {
+      const components = {
+        box: {
+          render: () => ['boxNode1'],
+        },
+        point: {
+          render: () => ['pointNode1'],
+        },
+      };
+      const comp = (key) => components[key];
+      comp.has = () => true;
+      const componentFixture = componentFactoryFixture();
+      const mockedRenderer = componentFixture.mocks().renderer;
+      mockedRenderer.render = sinon.spy();
+
+      const chartInstance = chart(
+        Object.assign(definition, {
+          settings: {
+            components: [
+              {
+                type: 'box',
+                key: 'comp1',
+              },
+              {
+                type: 'point',
+                key: 'comp2',
+                rendererSettings: {
+                  transform: () => ({ a: 0, b: 1, c: 0, d: 1, e: 100, f: 100 }),
+                },
+              },
+            ],
+          },
+        }),
+        {
+          registries: {
+            component: comp,
+            renderer: () => () => mockedRenderer,
+          },
+        }
+      );
+
+      expect(mockedRenderer.render).to.have.been.calledTwice;
+      chartInstance.update({ partialData: true });
+      const renderArgs = mockedRenderer.render.args;
+      // no nodes are passed into renderers render function when applying transform!
+      expect(renderArgs).to.eql([[['boxNode1']], [['pointNode1']], [['boxNode1']], []]);
+    });
+
     it('should maintain displayOrder of components after initial render', () => {
       const components = {
         point: {

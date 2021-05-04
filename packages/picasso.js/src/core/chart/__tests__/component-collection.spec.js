@@ -12,6 +12,8 @@ function createComponent(settings) {
       getRect: () => rect,
     },
     settings,
+    key: settings.key,
+    hasKey: typeof settings.key !== 'undefined',
   };
 }
 
@@ -68,6 +70,32 @@ describe('component-collection', () => {
       const { visible, hidden } = collection.layout({ layoutSettings: hideLayoutFn, rect });
       expect(visible).to.eql([]);
       expect(hidden).to.have.length(2);
+    });
+  });
+
+  describe('update', () => {
+    it('should apply transform when transform function is available', () => {
+      const collection = componentCollectionFn({ createComponent });
+      const components = [
+        {
+          type: 'box',
+          key: 'no-transform',
+        },
+        {
+          type: 'point',
+          key: 'with-transform',
+          rendererSettings: {
+            transform: () => ({ a: 0, b: 1, c: 0, d: 1, e: 100, f: 100 }),
+          },
+        },
+      ];
+      collection.set({ components });
+      collection.update({ components, excludeFromUpdate: [] });
+      const comp1 = collection.findComponentByKey('no-transform');
+      const comp2 = collection.findComponentByKey('with-transform');
+
+      expect(comp1.applyTransform).to.be.undefined;
+      expect(comp2.applyTransform).to.be.true;
     });
   });
 });

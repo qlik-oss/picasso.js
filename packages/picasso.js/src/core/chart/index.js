@@ -110,6 +110,7 @@ import componentCollectionFn from './component-collection';
  * @property {ComponentSettings[]} [components] Optional list of child components
  * @property {DockLayoutSettings|customLayoutFunction} [strategy] Layout strategy used for child components.
  * @property {DataExtraction|DataFieldExtraction} [data] Extracted data that should be available to the component
+ * @property {RendererSettings} [rendererSettings] Settings for the renderer used to render the component
  */
 
 // mark strategy as experimental
@@ -174,6 +175,54 @@ import componentCollectionFn from './component-collection';
  *      inactive: {},
  *    },
  * }
+ */
+
+/**
+ * @typedef {object} RendererSettings
+ * @property {RendererSettings~TransformFunction} [transform] Setting for applying transform without re-rendering the whole component completely.
+ * @property {RendererSettings~CanvasBufferSize} [canvasBufferSize] Specifies the size of buffer canvas (used together with transform setting).
+ * @experimental
+ */
+
+/**
+ * Should return a transform object if transformation should be applied, otherwise undefined or a falsy value.
+ * Transforms can be applied with the canvas, svg and dom renderer.
+ * !Transform is applied when running chart.update with partialData set to true, see example.
+ * @typedef {function} RendererSettings~TransformFunction
+ * @returns {TransformObject}
+ * @experimental
+ * @example
+ * const pointComponentDef = {
+ *   type: 'point',
+ *   rendererSettings: {
+ *     tranform() {
+ *       if(shouldApplyTransform) {
+ *         return { a: 1, b: 0, c: 0, d: 1, e: x, f: y };
+ *       }
+ *     }
+ *   }
+ *   data: {
+ * // ............
+ *
+ * chart.update({ partialData: true });
+ */
+
+/**
+ * An object containing width and height of the canvas buffer or a function returning an object on that format.
+ * Gets a rect object as input parameter.
+ * @typedef {function|object} RendererSettings~CanvasBufferSize
+ * @experimental
+ */
+
+/**
+ * A format to represent a transformation.
+ * @typedef {object} TransformObject
+ * @property {number} a Horizontal scaling
+ * @property {number} b Horizontal skewing
+ * @property {number} c Vertical skewing
+ * @property {number} d Vertical scaling
+ * @property {number} e Horizontal moving
+ * @property {number} f Vertical moving
  */
 
 /**
@@ -661,7 +710,7 @@ function chartFn(definition, context) {
     let toRenderOrUpdate;
     if (partialData) {
       componentsC.forEach((comp) => {
-        if (comp.updateWith && comp.visible) {
+        if ((comp.updateWith || comp.applyTransform) && comp.visible) {
           toUpdate.push(comp);
         }
       });
@@ -684,6 +733,7 @@ function chartFn(definition, context) {
         comp.instance.hide();
         comp.visible = false;
         delete comp.updateWith;
+        comp.applyTransform = false;
       });
     }
 
@@ -693,7 +743,7 @@ function chartFn(definition, context) {
     toRenderOrUpdate.forEach((comp) => comp.instance.beforeRender());
 
     toRenderOrUpdate.forEach((comp) => {
-      if (comp.updateWith && comp.visible) {
+      if ((comp.updateWith || comp.applyTransform) && comp.visible) {
         comp.instance.update();
       } else {
         comp.instance.render();
@@ -712,6 +762,7 @@ function chartFn(definition, context) {
     visibleComponents.forEach((comp) => {
       delete comp.updateWith;
       comp.visible = true;
+      comp.applyTransform = false;
     });
 
     updated();

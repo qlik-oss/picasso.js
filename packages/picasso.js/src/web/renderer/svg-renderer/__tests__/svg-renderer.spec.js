@@ -23,6 +23,17 @@ describe('svg renderer', () => {
     expect(renderer).to.be.a('function');
   });
 
+  it('should set rendererSettings correctly', () => {
+    const rendererSettings = {
+      transform: () => {},
+      irrelevantSetting: 'irrelevant!',
+    };
+    svg.settings(rendererSettings);
+    expect(svg.settings()).to.eql({
+      transform: rendererSettings.transform,
+    });
+  });
+
   describe('appendTo', () => {
     it('should append root node to element', () => {
       const el = element('div');
@@ -61,6 +72,18 @@ describe('svg renderer', () => {
 
     it('should not render before appending', () => {
       expect(svg.render()).to.equal(false);
+    });
+
+    it('should apply transform if provided', () => {
+      const rendererSettings = {
+        transform: () => ({ a: 1, b: 0, c: 1, d: 0, e: 100, f: 100 }),
+        irrelevantSetting: 'irrelevant!',
+      };
+      svg.settings(rendererSettings);
+      svg.appendTo(element('div'));
+      svg.render();
+      const group = svg.root();
+      expect(group.style.transform).to.equal('matrix(1, 0, 1, 0, 100, 100)');
     });
 
     it('should call tree creator with proper params', () => {

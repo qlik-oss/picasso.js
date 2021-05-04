@@ -30,6 +30,7 @@ function canvascontext(contextType = '2d') {
     restore: sinon.spy(),
     scale: sinon.spy(),
     rect: sinon.spy(),
+    setTransform: sinon.spy(),
     createPattern: sinon.spy((...args) => new CanvasPattern(...args)),
     measureText: (text) => ({ width: text.length }),
   };

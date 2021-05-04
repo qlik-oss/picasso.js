@@ -1,17 +1,39 @@
 import element from 'test-utils/mocks/element-mock';
-import renderer from '..';
 
 describe('canvas renderer', () => {
-  let sandbox, r, scene;
+  let sandbox, r, scene, mockedCanvasBuffer, renderer;
+  const mock = () =>
+    aw.mock([['**/canvas-buffer.js', () => sinon.stub().returns(mockedCanvasBuffer)]], ['../canvas-renderer']);
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
     scene = sandbox.stub();
+    mockedCanvasBuffer = {
+      updateSize: sinon.spy(),
+      apply: sinon.spy(),
+      clear: sinon.spy(),
+      getContext: sinon.spy(),
+    };
+
+    renderer = mock()[0].renderer;
     r = renderer(scene);
   });
 
   afterEach(() => {
     sandbox.restore();
+  });
+
+  it('should set rendererSettings correctly', () => {
+    const rendererSettings = {
+      transform: () => {},
+      canvasBufferSize: { width: 1000, height: 600 },
+      irrelevantSetting: 'irrelevant!',
+    };
+    r.settings(rendererSettings);
+    expect(r.settings()).to.eql({
+      transform: rendererSettings.transform,
+      canvasBufferSize: rendererSettings.canvasBufferSize,
+    });
   });
 
   it('should append canvas element', () => {
@@ -38,6 +60,35 @@ describe('canvas renderer', () => {
     r.appendTo(element('div'));
     scene.returns({ children: [] });
     expect(r.render()).to.equal(true);
+  });
+
+  it('should set transform and apply buffer if transform is provided', () => {
+    const rendererSettings = {
+      transform: () => ({ a: 1, b: 0, c: 1, d: 0, e: 100, f: 100 }),
+    };
+    r.settings(rendererSettings);
+    r.appendTo(element('div'));
+    const targetCtx = r.element().getContext('2d');
+    targetCtx.webkitBackingStorePixelRatio = 0.5;
+    r.render();
+    expect(targetCtx.setTransform).to.have.been.calledWith(1, 0, 1, 0, 200, 200);
+    expect(mockedCanvasBuffer.apply).to.have.been.calledOnce;
+  });
+
+  it('should apply buffer but not set transform when transform func returns falsy value', () => {
+    const rendererSettings = {
+      transform: () => false,
+    };
+    r.settings(rendererSettings);
+    r.appendTo(element('div'));
+    scene.returns({
+      children: [],
+      equals: () => true,
+    });
+    const targetCtx = r.element().getContext('2d');
+    r.render();
+    expect(targetCtx.setTransform).to.not.have.been.called;
+    expect(mockedCanvasBuffer.apply).to.have.been.calledOnce;
   });
 
   it('should not render if scene and size has not changed', () => {
@@ -158,6 +209,34 @@ describe('canvas renderer', () => {
         width: 0,
         height: 0,
       },
+    });
+  });
+
+  it('should update buffer size correctly', () => {
+    const rendererSettings = {
+      transform: () => false,
+      canvasBufferSize: () => ({ width: 1000, height: 600 }),
+    };
+    r.settings(rendererSettings);
+    r.appendTo(element('div'));
+    scene.returns({
+      children: [],
+      equals: () => true,
+    });
+    r.size({
+      x: 50,
+      y: 100,
+      width: 200,
+      height: 400,
+    });
+    const rect = r.size();
+    const targetCtx = r.element().getContext('2d');
+    targetCtx.webkitBackingStorePixelRatio = 0.5;
+    r.render();
+    expect(mockedCanvasBuffer.updateSize).to.have.been.calledWith({
+      rect,
+      dpiRatio: 2,
+      canvasBufferSize: rendererSettings.canvasBufferSize,
     });
   });
 

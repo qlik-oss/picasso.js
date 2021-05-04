@@ -21,6 +21,17 @@ describe('dom renderer', () => {
     expect(renderer).to.be.a('function');
   });
 
+  it('should set rendererSettings correctly', () => {
+    const rendererSettings = {
+      transform: () => {},
+      irrelevantSetting: 'irrelevant!',
+    };
+    rend.settings(rendererSettings);
+    expect(rend.settings()).to.eql({
+      transform: rendererSettings.transform,
+    });
+  });
+
   describe('appendTo', () => {
     it('should append root node to element', () => {
       const el = element('div');
@@ -60,6 +71,18 @@ describe('dom renderer', () => {
 
     it('should not render before appending', () => {
       expect(rend.render()).to.equal(false);
+    });
+
+    it('should apply transform if provided', () => {
+      const rendererSettings = {
+        transform: () => ({ a: 1, b: 0, c: 1, d: 0, e: 100, f: 100 }),
+        irrelevantSetting: 'irrelevant!',
+      };
+      rend.settings(rendererSettings);
+      rend.appendTo(element('div'));
+      rend.render();
+      const el = rend.element();
+      expect(el.style.transform).to.equal('matrix(1, 0, 1, 0, 100, 100)');
     });
 
     /*

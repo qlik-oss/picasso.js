@@ -116,6 +116,12 @@ describe('Component', () => {
     });
   });
 
+  it('should forward rendererSettings if renderer has settings func', () => {
+    renderer.settings = sinon.spy();
+    createInstance({ rendererSettings: { aa: 'AA', bb: {} } });
+    expect(renderer.settings).to.have.been.calledWith({ aa: 'AA', bb: {} });
+  });
+
   it('should call lifecycle methods with correct context when rendering', () => {
     createAndRenderComponent();
 
@@ -193,6 +199,23 @@ describe('Component', () => {
   it('should call lifecycle methods with correct context when updating with partial data', () => {
   });
   */
+
+  describe('update', () => {
+    it('should call renderers render func without args when applying transformation', () => {
+      renderer.render = sinon.spy();
+      definition.render = () => ['node1', 'node2'];
+      let transformation = false;
+      let transformFn = () => transformation;
+      let instance;
+
+      instance = createInstance({ rendererSettings: { transform: transformFn } });
+      instance.update();
+      expect(renderer.render).to.have.been.calledWith(['node1', 'node2']);
+      transformation = { a: 0, b: 1, c: 1 };
+      instance.update();
+      expect(renderer.render).to.have.been.calledWith();
+    });
+  });
 
   describe('findShapes', () => {
     let instance;

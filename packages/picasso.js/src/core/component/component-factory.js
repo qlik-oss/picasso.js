@@ -322,6 +322,9 @@ function componentFactory(definition, context = {}) {
 
   const rendString = settings.renderer || definition.renderer;
   const rend = rendString ? renderer || registries.renderer(rendString)() : renderer || registries.renderer()();
+  if (typeof rend.settings === 'function') {
+    rend.settings(settings.rendererSettings);
+  }
   brushArgs.renderer = rend;
 
   const dockConfigCallbackContext = { resources: chart.logger ? { logger: chart.logger() } : {} };
@@ -456,7 +459,6 @@ function componentFactory(definition, context = {}) {
     if (currentTween) {
       currentTween.stop();
     }
-    const nodes = (brushArgs.nodes = render.call(definitionContext, ...getRenderArgs()));
 
     // Reset brush stylers and triggers
     brushStylers.forEach((b) => b.cleanUp());
@@ -474,6 +476,17 @@ function componentFactory(definition, context = {}) {
         bs.update();
       }
     });
+
+    if (
+      settings.rendererSettings &&
+      typeof settings.rendererSettings.transform === 'function' &&
+      settings.rendererSettings.transform()
+    ) {
+      rend.render();
+      return;
+    }
+
+    const nodes = (brushArgs.nodes = render.call(definitionContext, ...getRenderArgs()));
 
     if (currentNodes && settings.animations && settings.animations.enabled) {
       currentTween = tween(
