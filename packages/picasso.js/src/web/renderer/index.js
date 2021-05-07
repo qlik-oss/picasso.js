@@ -23,6 +23,12 @@ function create() {
     root: () => {},
 
     /**
+     * Set or Get renderer settings
+     * @param {object} [settings] Settings for the renderer
+     */
+    settings: () => {},
+
+    /**
      * @param {HTMLElement} element - Element to attach renderer to
      * @returns {HTMLElement} Root element of the renderer
      */

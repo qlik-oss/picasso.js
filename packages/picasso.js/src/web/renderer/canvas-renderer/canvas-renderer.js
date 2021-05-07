@@ -6,6 +6,7 @@ import patternizer from './canvas-pattern';
 import createRendererBox from '../renderer-box';
 import create from '../index';
 import injectTextBoundsFn from '../../text-manipulation/inject-textbounds';
+import CanvasBuffer from './canvas-buffer';
 
 const reg = registry();
 
@@ -110,6 +111,28 @@ function renderShapes(shapes, g, shapeToCanvasMap, deps) {
 }
 
 /**
+ * Sets transform on target element.
+ * @param {Element} el Target canvas element
+ * @param {number} dpiRatio
+ * @param {TransformObject}
+ * @private
+ */
+function applyTransform({ el, dpiRatio, transform }) {
+  if (typeof transform === 'object') {
+    const adjustedTransform = [
+      transform.horizontalScaling,
+      transform.horizontalSkewing,
+      transform.verticalSkewing,
+      transform.verticalScaling,
+      transform.horizontalMoving * dpiRatio,
+      transform.verticalMoving * dpiRatio,
+    ];
+    const g = el.getContext('2d');
+    g.setTransform(...adjustedTransform);
+  }
+}
+
+/**
  * Create a new canvas renderer
  * @typedef {function} canvasRendererFactory
  * @param {function} [sceneFn] - Scene factory
@@ -117,6 +140,11 @@ function renderShapes(shapes, g, shapeToCanvasMap, deps) {
  */
 export function renderer(sceneFn = sceneFactory) {
   let el;
+  let buffer;
+  const settings = {
+    transform: undefined,
+    canvasBufferSize: undefined,
+  };
   let scene;
   let hasChangedRect = false;
   let rect = createRendererBox();
@@ -138,6 +166,18 @@ export function renderer(sceneFn = sceneFactory) {
 
   canvasRenderer.root = () => el;
 
+  canvasRenderer.settings = (rendererSettings) => {
+    if (rendererSettings) {
+      Object.keys(settings).forEach((key) => {
+        if (rendererSettings[key] !== undefined) {
+          settings[key] = rendererSettings[key];
+        }
+      });
+    }
+
+    return settings;
+  };
+
   canvasRenderer.appendTo = (element) => {
     if (!el) {
       el = element.ownerDocument.createElement('canvas');
@@ -145,6 +185,10 @@ export function renderer(sceneFn = sceneFactory) {
       el.style['-webkit-font-smoothing'] = 'antialiased';
       el.style['-moz-osx-font-smoothing'] = 'antialiased';
       el.style.pointerEvents = 'none';
+    }
+
+    if (typeof settings.transform === 'function' && !buffer) {
+      buffer = new CanvasBuffer(el);
     }
 
     element.appendChild(el);
@@ -160,8 +204,16 @@ export function renderer(sceneFn = sceneFactory) {
       patterns = patternizer(el.ownerDocument);
     }
 
-    const g = el.getContext('2d');
+    const g = (buffer && buffer.getContext()) || el.getContext('2d');
     const dpiRatio = dpiScale(g);
+    const transform = buffer && settings.transform();
+    if (transform) {
+      // clear canvas
+      el.width = el.width; // eslint-disable-line
+      applyTransform({ el, dpiRatio, transform });
+      buffer.apply();
+      return true;
+    }
     const scaleX = rect.scaleRatio.x;
     const scaleY = rect.scaleRatio.y;
 
@@ -172,6 +224,10 @@ export function renderer(sceneFn = sceneFactory) {
       el.style.height = `${rect.computedPhysical.height}px`;
       el.width = Math.round(rect.computedPhysical.width * dpiRatio);
       el.height = Math.round(rect.computedPhysical.height * dpiRatio);
+
+      if (buffer) {
+        buffer.updateSize({ rect, dpiRatio, canvasBufferSize: settings.canvasBufferSize });
+      }
     }
 
     const sceneContainer = {
@@ -205,6 +261,12 @@ export function renderer(sceneFn = sceneFactory) {
       });
     }
 
+    if (buffer) {
+      // clear canvas
+      el.width = el.width; // eslint-disable-line
+      buffer.apply();
+    }
+
     hasChangedRect = false;
     scene = newScene;
     return doRender;
@@ -217,6 +279,9 @@ export function renderer(sceneFn = sceneFactory) {
   canvasRenderer.clear = () => {
     if (el) {
       el.width = el.width; // eslint-disable-line
+    }
+    if (buffer) {
+      buffer.clear();
     }
     scene = null;
 
@@ -242,6 +307,9 @@ export function renderer(sceneFn = sceneFactory) {
         el.parentElement.removeChild(el);
       }
       el = null;
+    }
+    if (buffer) {
+      buffer = null;
     }
     scene = null;
   };

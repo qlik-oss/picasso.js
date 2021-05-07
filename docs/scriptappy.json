@@ -4243,6 +4243,11 @@
             }
           ],
           "type": "any"
+        },
+        "rendererSettings": {
+          "description": "Settings for the renderer used to render the component",
+          "optional": true,
+          "type": "#/definitions/RendererSettings"
         }
       }
     },
@@ -5846,6 +5851,18 @@
             "type": "HTMLElement"
           }
         },
+        "settings": {
+          "description": "Set or Get renderer settings",
+          "kind": "function",
+          "params": [
+            {
+              "name": "settings",
+              "description": "Settings for the renderer",
+              "optional": true,
+              "type": "object"
+            }
+          ]
+        },
         "size": {
           "description": "Set or Get the size definition of the renderer container.",
           "kind": "function",
@@ -5920,6 +5937,50 @@
               }
             }
           }
+        }
+      }
+    },
+    "RendererSettings": {
+      "stability": "experimental",
+      "kind": "object",
+      "entries": {
+        "transform": {
+          "description": "Setting for applying transform without re-rendering the whole component completely.",
+          "optional": true,
+          "type": "#/definitions/RendererSettings/definitions/TransformFunction"
+        },
+        "canvasBufferSize": {
+          "description": "Specifies the size of buffer canvas (used together with transform setting).",
+          "optional": true,
+          "type": "#/definitions/RendererSettings/definitions/CanvasBufferSize"
+        }
+      },
+      "definitions": {
+        "CanvasBufferSize": {
+          "description": "An object containing width and height of the canvas buffer or a function returning an object on that format.\nGets a rect object as input parameter.",
+          "stability": "experimental",
+          "kind": "union",
+          "items": [
+            {
+              "type": "function"
+            },
+            {
+              "type": "object"
+            }
+          ],
+          "type": "any"
+        },
+        "TransformFunction": {
+          "description": "Should return a transform object if transformation should be applied, otherwise undefined or a falsy value.\nTransforms can be applied with the canvas, svg and dom renderer.\nTransform is applied when running chart.update, see example.\n!Important: When a transform is applied to a component, the underlaying node representations are not updated with the new positions/sizes, which\ncan cause problems for operations that relies on the positioning of the shapes/nodes (such as tooltips, selections etc). An extra chart update\nwithout a transform is therefore needed to make sure the node position information is in sync with the visual representation again.",
+          "stability": "experimental",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "#/definitions/TransformObject"
+          },
+          "examples": [
+            "const pointComponentDef = {\n  type: 'point',\n  rendererSettings: {\n    tranform() {\n      if(shouldApplyTransform) {\n        return {\n          horizontalScaling: 1,\n          horizontalSkewing: 0,\n          verticalSkewing: 0,\n          verticalScaling: 1,\n          horizontalMoving: x,\n          verticalMoving: y\n        };\n      }\n    }\n  }\n  data: {\n// ............\n\nchart.update({ partialData: true });"
+          ]
         }
       }
     },
@@ -6391,6 +6452,30 @@
       "returns": {
         "description": "A svg renderer instance",
         "type": "#/definitions/Renderer"
+      }
+    },
+    "TransformObject": {
+      "description": "A format to represent a transformation.",
+      "kind": "object",
+      "entries": {
+        "horizontalScaling": {
+          "type": "number"
+        },
+        "horizontalSkewing": {
+          "type": "number"
+        },
+        "verticalSkewing": {
+          "type": "number"
+        },
+        "verticalScaling": {
+          "type": "number"
+        },
+        "horizontalMoving": {
+          "type": "number"
+        },
+        "verticalMoving": {
+          "type": "number"
+        }
       }
     }
   }

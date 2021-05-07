@@ -8,12 +8,27 @@ export default function renderer(opts = {}) {
   let el;
   let rect = createRendererBox();
   let dNode;
+  const settings = {
+    transform: undefined,
+  };
 
   const dom = create();
 
   dom.element = () => el;
 
   dom.root = () => el;
+
+  dom.settings = (rendererSettings) => {
+    if (rendererSettings) {
+      Object.keys(settings).forEach((key) => {
+        if (rendererSettings[key] !== undefined) {
+          settings[key] = rendererSettings[key];
+        }
+      });
+    }
+
+    return settings;
+  };
 
   dom.appendTo = (element) => {
     if (!el) {
@@ -33,6 +48,14 @@ export default function renderer(opts = {}) {
     if (!el) {
       return false;
     }
+
+    const transformation = typeof settings.transform === 'function' && settings.transform();
+    if (transformation) {
+      const { a, b, c, d, e, f } = transformation;
+      el.style.transform = `matrix(${a}, ${b}, ${c}, ${d}, ${e}, ${f})`;
+      return true;
+    }
+    el.style.transform = '';
 
     el.style.left = `${rect.computedPhysical.x}px`;
     el.style.top = `${rect.computedPhysical.y}px`;

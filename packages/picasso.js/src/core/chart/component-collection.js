@@ -107,6 +107,17 @@ function collectionFn({ createComponent }) {
           // Component is added
           return createComp(comp);
         }
+
+        // Only apply transform, no need for an update
+        if (
+          comp.rendererSettings &&
+          typeof comp.rendererSettings.transform === 'function' &&
+          comp.rendererSettings.transform()
+        ) {
+          component.applyTransform = true;
+          return component;
+        }
+
         // Component is (potentially) updated
         component.updateWith = {
           formatters,
