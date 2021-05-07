@@ -214,7 +214,7 @@ export default function nodeBuilder(isDiscrete) {
     const layered = state.labels.activeMode === 'layered';
     let majorTickNodes;
 
-    if (settings.line.show) {
+    if (typeof settings.line.show === 'function' ? settings.line.show() : settings.line.show) {
       buildOpts.style = settings.line;
       buildOpts.padding = settings.paddingStart;
 
