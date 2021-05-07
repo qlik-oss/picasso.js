@@ -207,6 +207,7 @@ export function renderer(sceneFn = sceneFactory) {
     const dpiRatio = dpiScale(g);
     const transform = buffer && settings.transform();
     if (transform) {
+      // clear canvas
       el.width = el.width; // eslint-disable-line
       applyTransform({ el, dpiRatio, transform });
       buffer.apply();
@@ -260,6 +261,7 @@ export function renderer(sceneFn = sceneFactory) {
     }
 
     if (buffer) {
+      // clear canvas
       el.width = el.width; // eslint-disable-line
       buffer.apply();
     }

@@ -44,6 +44,7 @@ class CanvasBuffer {
   }
 
   clear() {
+    // clear canvas
     this.bufferCanvas.width = this.bufferCanvas.width; // eslint-disable-line
   }
 

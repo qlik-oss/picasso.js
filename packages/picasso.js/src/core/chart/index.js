@@ -187,7 +187,7 @@ import componentCollectionFn from './component-collection';
 /**
  * Should return a transform object if transformation should be applied, otherwise undefined or a falsy value.
  * Transforms can be applied with the canvas, svg and dom renderer.
- * !Transform is applied when running chart.update with partialData set to true, see example.
+ * !Transform is applied when running chart.update, see example.
  * @typedef {function} RendererSettings~TransformFunction
  * @returns {TransformObject}
  * @experimental
