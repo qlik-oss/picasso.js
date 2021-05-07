@@ -187,7 +187,10 @@ import componentCollectionFn from './component-collection';
 /**
  * Should return a transform object if transformation should be applied, otherwise undefined or a falsy value.
  * Transforms can be applied with the canvas, svg and dom renderer.
- * !Transform is applied when running chart.update, see example.
+ * Transform is applied when running chart.update, see example.
+ * !Important: When a transform is applied to a component, the underlaying node representations are not updated with the new positions/sizes, which
+ * can cause problems for operations that relies on the positioning of the shapes/nodes (such as tooltips, selections etc). An extra chart update
+ * without a transform is therefore needed to make sure the node position information is in sync with the visual representation again.
  * @typedef {function} RendererSettings~TransformFunction
  * @returns {TransformObject}
  * @experimental
@@ -197,7 +200,14 @@ import componentCollectionFn from './component-collection';
  *   rendererSettings: {
  *     tranform() {
  *       if(shouldApplyTransform) {
- *         return { a: 1, b: 0, c: 0, d: 1, e: x, f: y };
+ *         return {
+ *           horizontalScaling: 1,
+ *           horizontalSkewing: 0,
+ *           verticalSkewing: 0,
+ *           verticalScaling: 1,
+ *           horizontalMoving: x,
+ *           verticalMoving: y
+ *         };
  *       }
  *     }
  *   }
@@ -217,12 +227,12 @@ import componentCollectionFn from './component-collection';
 /**
  * A format to represent a transformation.
  * @typedef {object} TransformObject
- * @property {number} a Horizontal scaling
- * @property {number} b Horizontal skewing
- * @property {number} c Vertical skewing
- * @property {number} d Vertical scaling
- * @property {number} e Horizontal moving
- * @property {number} f Vertical moving
+ * @property {number} horizontalScaling
+ * @property {number} horizontalSkewing
+ * @property {number} verticalSkewing
+ * @property {number} verticalScaling
+ * @property {number} horizontalMoving
+ * @property {number} verticalMoving
  */
 
 /**

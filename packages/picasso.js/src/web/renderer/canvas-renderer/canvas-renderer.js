@@ -114,17 +114,18 @@ function renderShapes(shapes, g, shapeToCanvasMap, deps) {
  * Sets transform on target element.
  * @param {Element} el Target canvas element
  * @param {number} dpiRatio
+ * @param {TransformObject}
  * @private
  */
 function applyTransform({ el, dpiRatio, transform }) {
   if (typeof transform === 'object') {
     const adjustedTransform = [
-      transform.a,
-      transform.b,
-      transform.c,
-      transform.d,
-      transform.e * dpiRatio,
-      transform.f * dpiRatio,
+      transform.horizontalScaling,
+      transform.horizontalSkewing,
+      transform.verticalSkewing,
+      transform.verticalScaling,
+      transform.horizontalMoving * dpiRatio,
+      transform.verticalMoving * dpiRatio,
     ];
     const g = el.getContext('2d');
     g.setTransform(...adjustedTransform);

@@ -64,7 +64,14 @@ describe('canvas renderer', () => {
 
   it('should set transform and apply buffer if transform is provided', () => {
     const rendererSettings = {
-      transform: () => ({ a: 1, b: 0, c: 1, d: 0, e: 100, f: 100 }),
+      transform: () => ({
+        horizontalScaling: 1,
+        horizontalSkewing: 0,
+        verticalSkewing: 1,
+        verticalScaling: 0,
+        horizontalMoving: 100,
+        verticalMoving: 100,
+      }),
     };
     r.settings(rendererSettings);
     r.appendTo(element('div'));

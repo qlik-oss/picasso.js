@@ -460,6 +460,17 @@ function componentFactory(definition, context = {}) {
       currentTween.stop();
     }
 
+    if (
+      settings.rendererSettings &&
+      typeof settings.rendererSettings.transform === 'function' &&
+      settings.rendererSettings.transform()
+    ) {
+      rend.render();
+      return;
+    }
+
+    const nodes = (brushArgs.nodes = render.call(definitionContext, ...getRenderArgs()));
+
     // Reset brush stylers and triggers
     brushStylers.forEach((b) => b.cleanUp());
     brushStylers.length = 0;
@@ -476,17 +487,6 @@ function componentFactory(definition, context = {}) {
         bs.update();
       }
     });
-
-    if (
-      settings.rendererSettings &&
-      typeof settings.rendererSettings.transform === 'function' &&
-      settings.rendererSettings.transform()
-    ) {
-      rend.render();
-      return;
-    }
-
-    const nodes = (brushArgs.nodes = render.call(definitionContext, ...getRenderArgs()));
 
     if (currentNodes && settings.animations && settings.animations.enabled) {
       currentTween = tween(

@@ -89,9 +89,7 @@
         "renderer": {
           "description": "Renderer registry",
           "type": "#/definitions/registry",
-          "examples": [
-            "const svgFactory = picassojs.renderer('svg');\nconst svgRenderer = svgFactory();"
-          ]
+          "examples": ["const svgFactory = picassojs.renderer('svg');\nconst svgRenderer = svgFactory();"]
         },
         "scale": {
           "description": "Scale registry",
@@ -191,9 +189,7 @@
               }
             }
           ],
-          "examples": [
-            "brush.addRange('Sales', { min: 20, max: 50 });"
-          ]
+          "examples": ["brush.addRange('Sales', { min: 20, max: 50 });"]
         },
         "addRanges": {
           "kind": "function",
@@ -248,9 +244,7 @@
               "type": "#/definitions/Brush/events/update"
             }
           ],
-          "examples": [
-            "brush.addValue('countries', 'Sweden');\nbrush.addValue('/qHyperCube/qDimensionInfo/0', 3);"
-          ]
+          "examples": ["brush.addValue('countries', 'Sweden');\nbrush.addValue('/qHyperCube/qDimensionInfo/0', 3);"]
         },
         "addValues": {
           "kind": "function",
@@ -469,9 +463,7 @@
               "type": "string"
             }
           ],
-          "examples": [
-            "brush.removeKeyAlias('BadFieldName');"
-          ]
+          "examples": ["brush.removeKeyAlias('BadFieldName');"]
         },
         "removeRange": {
           "description": "Removes a numeric range from this brush context",
@@ -536,9 +528,7 @@
               "type": "any"
             }
           ],
-          "examples": [
-            "brush.removeValue('countries', 'Sweden');"
-          ]
+          "examples": ["brush.removeValue('countries', 'Sweden');"]
         },
         "removeValues": {
           "kind": "function",
@@ -685,9 +675,7 @@
               "type": "any"
             }
           ],
-          "examples": [
-            "brush.toggleValue('countries', 'Sweden');"
-          ]
+          "examples": ["brush.toggleValue('countries', 'Sweden');"]
         },
         "toggleValues": {
           "kind": "function",
@@ -1553,9 +1541,7 @@
           "type": "any"
         }
       },
-      "examples": [
-        "{\n type: 'axis',\n scale: '<name-of-scale>'\n}"
-      ],
+      "examples": ["{\n type: 'axis',\n scale: '<name-of-scale>'\n}"],
       "definitions": {
         "ContinuousSettings": {
           "description": "Continuous axis settings",
@@ -3186,9 +3172,7 @@
           }
         }
       },
-      "examples": [
-        "{\n  type: 'legend-cat',\n  scale: '<categorical-color-scale>',\n}"
-      ]
+      "examples": ["{\n  type: 'legend-cat',\n  scale: '<categorical-color-scale>',\n}"]
     },
     "ComponentLegendSeq": {
       "extends": [
@@ -4335,9 +4319,7 @@
           }
         }
       },
-      "examples": [
-        "{\n type: 'text',\n text: 'my title',\n dock: 'left',\n settings: {\n   anchor: 'left',\n }\n}"
-      ]
+      "examples": ["{\n type: 'text',\n text: 'my title',\n dock: 'left',\n settings: {\n   anchor: 'left',\n }\n}"]
     },
     "ComponentTooltip": {
       "extends": [
@@ -4435,9 +4417,7 @@
                   "type": "object"
                 }
               },
-              "examples": [
-                "({ h, data }) => data.map((datum) => h('div', {}, datum))"
-              ]
+              "examples": ["({ h, data }) => data.map((datum) => h('div', {}, datum))"]
             },
             "contentClass": {
               "description": "Set content class.",
@@ -4491,9 +4471,7 @@
                 "description": "Return data",
                 "type": "any"
               },
-              "examples": [
-                "(ctx) => ctx.node.data.value"
-              ]
+              "examples": ["(ctx) => ctx.node.data.value"]
             },
             "filter": {
               "description": "Callback function to filter incoming nodes to only a set of applicable nodes. Is called as a part of the `show` event.\n\nShould return an array of SceneNodes.",
@@ -4870,9 +4848,7 @@
                   "type": "any"
                 }
               },
-              "examples": [
-                "{\n field: 'Sales',\n value: (val) => Math.round(val),\n label: (val) => `<${val}>`\n}"
-              ]
+              "examples": ["{\n field: 'Sales',\n value: (val) => Math.round(val),\n label: (val) => `<${val}>`\n}"]
             },
             "ReduceFn": {
               "description": "Reduce callback function",
@@ -5172,9 +5148,7 @@
           "type": "#/definitions/DatumExtract"
         }
       ],
-      "examples": [
-        "(d) => Math.min(0, d.value);"
-      ]
+      "examples": ["(d) => Math.min(0, d.value);"]
     },
     "DatumBoolean": {
       "description": "Custom type that is either a boolean, DatumConfig or a datumAccessor",
@@ -5997,7 +5971,7 @@
           "type": "any"
         },
         "TransformFunction": {
-          "description": "Should return a transform object if transformation should be applied, otherwise undefined or a falsy value.\nTransforms can be applied with the canvas, svg and dom renderer.\n!Transform is applied when running chart.update with partialData set to true, see example.",
+          "description": "Should return a transform object if transformation should be applied, otherwise undefined or a falsy value.\nTransforms can be applied with the canvas, svg and dom renderer.\nTransform is applied when running chart.update, see example.\n!Important: When a transform is applied to a component, the underlaying node representations are not updated with the new positions/sizes, which\ncan cause problems for operations that relies on the positioning of the shapes/nodes (such as tooltips, selections etc). An extra chart update\nwithout a transform is therefore needed to make sure the node position information is in sync with the visual representation again.",
           "stability": "experimental",
           "kind": "function",
           "params": [],
@@ -6005,7 +5979,7 @@
             "type": "#/definitions/TransformObject"
           },
           "examples": [
-            "const pointComponentDef = {\n  type: 'point',\n  rendererSettings: {\n    tranform() {\n      if(shouldApplyTransform) {\n        return { a: 1, b: 0, c: 0, d: 1, e: x, f: y };\n      }\n    }\n  }\n  data: {\n// ............\n\nchart.update({ partialData: true });"
+            "const pointComponentDef = {\n  type: 'point',\n  rendererSettings: {\n    tranform() {\n      if(shouldApplyTransform) {\n        return {\n          horizontalScaling: 1,\n          horizontalSkewing: 0,\n          verticalSkewing: 0,\n          verticalScaling: 1,\n          horizontalMoving: x,\n          verticalMoving: y\n        };\n      }\n    }\n  }\n  data: {\n// ............\n\nchart.update({ partialData: true });"
           ]
         }
       }
@@ -6389,9 +6363,7 @@
           "returns": {
             "type": "#/definitions/Rect"
           },
-          "examples": [
-            "node.boundsRelativeTo($('div'));\nnode.boundsRelativeTo('viewport');"
-          ]
+          "examples": ["node.boundsRelativeTo($('div'));\nnode.boundsRelativeTo('viewport');"]
         },
         "children": {
           "description": "Get child nodes",
@@ -6483,31 +6455,25 @@
       }
     },
     "TransformObject": {
-      "description": "A format for representing a transformation.",
+      "description": "A format to represent a transformation.",
       "kind": "object",
       "entries": {
-        "a": {
-          "description": "Horizontal scaling",
+        "horizontalScaling": {
           "type": "number"
         },
-        "b": {
-          "description": "Horizontal skewing",
+        "horizontalSkewing": {
           "type": "number"
         },
-        "c": {
-          "description": "Vertical skewing",
+        "verticalSkewing": {
           "type": "number"
         },
-        "d": {
-          "description": "Vertical scaling",
+        "verticalScaling": {
           "type": "number"
         },
-        "e": {
-          "description": "Horizontal moving",
+        "horizontalMoving": {
           "type": "number"
         },
-        "f": {
-          "description": "Vertical moving",
+        "verticalMoving": {
           "type": "number"
         }
       }
