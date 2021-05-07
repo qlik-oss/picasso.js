@@ -52,16 +52,16 @@ describe('Axis Line Node', () => {
 
     it('Left align', () => {
       buildOpts.align = 'left';
-      expected.x1 = innerRect.width - buildOpts.padding - 0.5;
-      expected.x2 = innerRect.width - buildOpts.padding - 0.5;
+      expected.x1 = innerRect.width - buildOpts.padding;
+      expected.x2 = innerRect.width - buildOpts.padding;
       expected.y2 = 100;
       expect(buildLine(buildOpts)).to.deep.equal(expected);
     });
 
     it('Right align', () => {
       buildOpts.align = 'right';
-      expected.x1 = buildOpts.padding + 0.5;
-      expected.x2 = buildOpts.padding + 0.5;
+      expected.x1 = buildOpts.padding;
+      expected.x2 = buildOpts.padding;
       expected.y2 = 100;
       expect(buildLine(buildOpts)).to.deep.equal(expected);
     });
@@ -69,16 +69,16 @@ describe('Axis Line Node', () => {
     it('Top align', () => {
       buildOpts.align = 'top';
       expected.x2 = 50;
-      expected.y1 = innerRect.height - buildOpts.padding - 0.5;
-      expected.y2 = innerRect.height - buildOpts.padding - 0.5;
+      expected.y1 = innerRect.height - buildOpts.padding;
+      expected.y2 = innerRect.height - buildOpts.padding;
       expect(buildLine(buildOpts)).to.deep.equal(expected);
     });
 
     it('Bottom align', () => {
       buildOpts.align = 'bottom';
       expected.x2 = 50;
-      expected.y1 = buildOpts.padding + 0.5;
-      expected.y2 = buildOpts.padding + 0.5;
+      expected.y1 = buildOpts.padding;
+      expected.y2 = buildOpts.padding;
       expect(buildLine(buildOpts)).to.deep.equal(expected);
     });
   });

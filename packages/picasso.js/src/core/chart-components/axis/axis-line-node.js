@@ -2,21 +2,6 @@ import extend from 'extend';
 
 function appendStyle(struct, buildOpts) {
   extend(struct, buildOpts.style);
-  const halfWidth = struct.strokeWidth / 2;
-
-  if (buildOpts.align === 'top') {
-    struct.y1 -= halfWidth;
-    struct.y2 -= halfWidth;
-  } else if (buildOpts.align === 'bottom') {
-    struct.y1 += halfWidth;
-    struct.y2 += halfWidth;
-  } else if (buildOpts.align === 'left') {
-    struct.x1 -= halfWidth;
-    struct.x2 -= halfWidth;
-  } else if (buildOpts.align === 'right') {
-    struct.x1 += halfWidth;
-    struct.x2 += halfWidth;
-  }
 }
 
 export default function buildLine(buildOpts) {

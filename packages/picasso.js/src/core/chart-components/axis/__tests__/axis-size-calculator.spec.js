@@ -313,7 +313,7 @@ describe('Axis size calculator', () => {
       settings.line.show = true;
       settings.line.strokeWidth = 5;
       const size = sizeFn(rect);
-      expect(size.size).to.equals(15);
+      expect(size.size).to.equals(12.5);
     });
 
     it('minor and major ticks', () => {
