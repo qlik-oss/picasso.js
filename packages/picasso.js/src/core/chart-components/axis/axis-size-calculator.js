@@ -1,5 +1,20 @@
 import getLabelSize from './axis-label-size';
 
+function oppositeAlign(align) {
+  switch (align) {
+    case 'top':
+      return 'bottom';
+    case 'bottom':
+      return 'top';
+    case 'left':
+      return 'right';
+    case 'right':
+      return 'left';
+    default:
+      return align;
+  }
+}
+
 export default function calcRequiredSize({ isDiscrete, rect, formatter, measureText, scale, settings, state }) {
   let size = 0;
 
@@ -30,7 +45,9 @@ export default function calcRequiredSize({ isDiscrete, rect, formatter, measureT
     }
   }
   if (settings.line.show) {
-    size += settings.line.strokeWidth;
+    const halfWidth = settings.line.strokeWidth / 2;
+    size += halfWidth;
+    edgeBleed[oppositeAlign(settings.align)] = Math.ceil(halfWidth);
   }
   size += settings.paddingStart;
   size += settings.paddingEnd;

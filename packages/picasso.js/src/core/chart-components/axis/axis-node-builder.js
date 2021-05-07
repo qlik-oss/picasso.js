@@ -9,7 +9,7 @@ import { expandRect } from '../../geometry/util';
 function tickSpacing(settings) {
   let spacing = 0;
   spacing += settings.paddingStart;
-  spacing += settings.line.show ? settings.line.strokeWidth : 0;
+  spacing += settings.line.show ? settings.line.strokeWidth / 2 : 0;
   spacing += settings.ticks.show ? settings.ticks.margin : 0;
   return spacing;
 }
