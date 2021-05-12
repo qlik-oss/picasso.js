@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/veinfors/picasso.js/compare/v1.0.0...v1.1.0) (2021-05-12)
+
+### Features
+
+- transformation setting for components ([#597](https://github.com/veinfors/picasso.js/issues/597)) ([eeabc09](https://github.com/veinfors/picasso.js/commit/eeabc09f9c71c7e54b1ddc36fe1417786004eb91))
+
 # [1.0.0](https://github.com/qlik-oss/picasso.js/compare/v0.37.2...v1.0.0) (2021-04-21)
 
 **Note:** Version bump only for package test-utils

@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/qlik-oss/picasso.js/compare/v1.0.0...v1.1.0) (2021-05-12)
+
+### Bug Fixes
+
+- place axis line to align with other axis and and grid lines ([#599](https://github.com/qlik-oss/picasso.js/issues/599)) ([c9dc788](https://github.com/qlik-oss/picasso.js/commit/c9dc7888604c3e7e23bcda99d805c96b8fd7b797))
+
+### Features
+
+- transformation setting for components ([#597](https://github.com/qlik-oss/picasso.js/issues/597)) ([eeabc09](https://github.com/qlik-oss/picasso.js/commit/eeabc09f9c71c7e54b1ddc36fe1417786004eb91))
+
 # [1.0.0](https://github.com/qlik-oss/picasso.js/compare/v0.37.2...v1.0.0) (2021-04-21)
 
 **Note:** Version bump only for package picasso.js
