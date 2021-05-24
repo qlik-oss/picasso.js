@@ -682,10 +682,10 @@ function chartFn(definition, context) {
    * @param {object} [def] - New chart definition
    * @param {Array<DataSource>|DataSource} [def.data] Chart data
    * @param {ChartSettings} [def.settings] Chart settings
-   * @param {string[]} [def.excludeFromUpdate=[]] Keys of components to not include in the update
+   * @param {string[]} [def.excludeFromUpdate=[]] Keys of components to not include in the layout
    * @experimental
    */
-  instance.layout = (newProps = {}) => {
+  instance.layoutComponents = (newProps = {}) => {
     const { excludeFromUpdate = [] } = newProps;
     if (newProps.data) {
       data = newProps.data;
