@@ -678,6 +678,46 @@ function chartFn(definition, context) {
   };
 
   /**
+   * Layout the chart with new settings and / or data
+   * @param {object} [def] - New chart definition
+   * @param {Array<DataSource>|DataSource} [def.data] Chart data
+   * @param {ChartSettings} [def.settings] Chart settings
+   * @param {string[]} [def.excludeFromUpdate=[]] Keys of components to not include in the update
+   * @experimental
+   */
+  instance.layout = (newProps = {}) => {
+    const { excludeFromUpdate = [] } = newProps;
+    if (newProps.data) {
+      data = newProps.data;
+    }
+    if (newProps.settings) {
+      settings = newProps.settings;
+      setInteractions(newProps.settings.interactions);
+    }
+
+    beforeUpdate();
+
+    set(data, settings);
+
+    const { formatters, scales, components = [] } = settings;
+
+    componentsC.update({ components, data, excludeFromUpdate, formatters, scales });
+
+    componentsC.forEach((comp) => {
+      if (comp.updateWith) {
+        comp.instance.set(comp.updateWith);
+      }
+    });
+    componentsC.forEach((comp) => {
+      if (comp.updateWith) {
+        comp.instance.beforeUpdate();
+      }
+    });
+
+    layout(); // Relayout
+  };
+
+  /**
    * Update the chart with new settings and / or data
    * @param {object} [def] - New chart definition
    * @param {Array<DataSource>|DataSource} [def.data] Chart data
