@@ -1154,6 +1154,52 @@
             "chart.interactions.instances; // Array of all interaction instances\nchart.interactions.on(); // Toggle on all interactions instances\nchart.interactions.off(); // Toggle off all interactions instances"
           ]
         },
+        "layoutComponents": {
+          "description": "Layout the chart with new settings and / or data",
+          "stability": "experimental",
+          "kind": "function",
+          "params": [
+            {
+              "name": "def",
+              "description": "New chart definition",
+              "optional": true,
+              "kind": "object",
+              "entries": {
+                "data": {
+                  "description": "Chart data",
+                  "optional": true,
+                  "kind": "union",
+                  "items": [
+                    {
+                      "kind": "array",
+                      "items": {
+                        "type": "#/definitions/DataSource"
+                      }
+                    },
+                    {
+                      "type": "#/definitions/DataSource"
+                    }
+                  ],
+                  "type": "any"
+                },
+                "settings": {
+                  "description": "Chart settings",
+                  "optional": true,
+                  "type": "#/definitions/ChartSettings"
+                },
+                "excludeFromUpdate": {
+                  "description": "Keys of components to not include in the layout",
+                  "optional": true,
+                  "defaultValue": "[]",
+                  "kind": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ]
+        },
         "scale": {
           "description": "Get or create a scale for this chart",
           "kind": "function",

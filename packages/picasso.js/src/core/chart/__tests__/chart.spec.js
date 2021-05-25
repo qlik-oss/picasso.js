@@ -179,6 +179,55 @@ describe('Chart', () => {
       expect(comp2UpdatedCb).to.have.been.calledTwice;
     });
 
+    it('should run proper functions on layouting components', () => {
+      const components = {
+        box: {
+          has: () => true,
+          render: sinon.stub(),
+        },
+        point: {
+          has: () => true,
+          render: sinon.stub(),
+        },
+      };
+      const comp = (key) => components[key];
+      comp.has = () => true;
+      const componentFixture = componentFactoryFixture();
+
+      const comp1BeforeUpdateCb = sinon.spy();
+      const comp2BeforeUpdateCb = sinon.spy();
+      const chartInstance = chart(
+        Object.assign(definition, {
+          settings: {
+            components: [
+              {
+                type: 'box',
+                key: 'comp1',
+                beforeUpdate: comp1BeforeUpdateCb,
+              },
+              {
+                type: 'point',
+                key: 'comp2',
+                beforeUpdate: comp2BeforeUpdateCb,
+              },
+            ],
+          },
+        }),
+        {
+          registries: {
+            component: comp,
+            renderer: () => () => componentFixture.mocks().renderer,
+          },
+        }
+      );
+      chartInstance.layoutComponents();
+      expect(comp1BeforeUpdateCb).to.have.been.calledOnce;
+      expect(comp2BeforeUpdateCb).to.have.been.calledOnce;
+      chartInstance.layoutComponents();
+      expect(comp1BeforeUpdateCb).to.have.been.calledTwice;
+      expect(comp2BeforeUpdateCb).to.have.been.calledTwice;
+    });
+
     it('should update components where transform should be applied', () => {
       const components = {
         box: {
