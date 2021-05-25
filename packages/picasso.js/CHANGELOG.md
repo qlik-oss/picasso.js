@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/qlik-oss/picasso.js/compare/v1.1.0...v1.2.0) (2021-05-25)
+
+### Features
+
+- allow to do layout before rendering ([#602](https://github.com/qlik-oss/picasso.js/issues/602)) ([01cdecd](https://github.com/qlik-oss/picasso.js/commit/01cdecdb853d9860fe4a80a005545702a0cf5ec7))
+
 # [1.1.0](https://github.com/qlik-oss/picasso.js/compare/v1.0.0...v1.1.0) (2021-05-12)
 
 ### Bug Fixes
