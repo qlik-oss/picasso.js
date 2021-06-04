@@ -17,6 +17,9 @@ const banner = `/*
 
 `;
 
+const topLevelNodeModulesPath = `..${path.sep}..${path.sep}..${path.sep}node_modules`;
+const localNodeModulesPath = `..${path.sep}node_modules`;
+
 const watch = process.argv.indexOf('-w') > 2;
 
 const config = (isEsm) => {
@@ -36,6 +39,9 @@ const config = (isEsm) => {
       exports: 'default',
       name: umdName,
       sourcemap: true,
+      sourcemapPathTransform: (relativeSourcePath) => {
+        return relativeSourcePath.replace(topLevelNodeModulesPath, localNodeModulesPath);
+      },
       banner,
     },
     plugins: [
