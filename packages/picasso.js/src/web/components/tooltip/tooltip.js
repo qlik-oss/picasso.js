@@ -258,7 +258,7 @@ const component = {
     this.state.pointer = {};
   },
   show(event, { nodes, duration, delay } = {}) {
-    if (this.state.prevent) {
+    if (this.state.prevent || !this.state.targetElement) {
       return;
     }
 
