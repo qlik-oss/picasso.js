@@ -23,8 +23,13 @@ export function treeAccessor(sourceDepth, targetDepth, arrIndexAtTargetDepth) {
   if (sourceDepth > targetDepth) {
     // traverse upwards
     const steps = Math.max(0, Math.min(100, sourceDepth - targetDepth));
-    const path = [...Array(steps)].map(String.prototype.valueOf, 'parent').join('.');
-    return Function('node', `return node.${path};`); // eslint-disable-line no-new-func
+    return (node) => {
+      let n = node;
+      for (let i = 0; i < steps; ++i) {
+        n = n.parent;
+      }
+      return n;
+    };
   }
   if (targetDepth > sourceDepth) {
     // flatten descendants
