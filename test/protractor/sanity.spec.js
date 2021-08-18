@@ -1,4 +1,5 @@
 const fs = require('fs');
+const util = require('util');
 
 async function store(data, file) {
   const stream = fs.createWriteStream(file);
@@ -6,24 +7,13 @@ async function store(data, file) {
   stream.end();
 }
 
-async function browserErrorLogger() {
-  const browserLogs = await browser.manage().logs().get('browser');
-  browserLogs.forEach((log) => {
-    if (log.level.value > 900) {
-      // it's an error log
-      console.log(`Browser console error: ${log.message}`);
-    }
-  });
-}
-
 describe('picasso-interactions', () => {
-  before(() => {
-    browserErrorLogger();
-  });
-
   const fixture = './brushing/tap.fix.html';
   const EC = protractor.ExpectedConditions;
   it('single select', async () => {
+    const browserLog = await browser.manage().logs().get('browser');
+    console.log(`log: ${util.inspect(browserLog)}`);
+
     await browser.get(fixture);
     try {
       await browser.wait(EC.presenceOf($('.container')), 10000, 'Chart did not appear');
