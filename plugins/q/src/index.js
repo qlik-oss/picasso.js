@@ -8,6 +8,7 @@ export default function initialize(picasso) {
   picasso.data('q', data);
   picasso.formatter('q-number', numberFormat);
   picasso.formatter('q-time', timeFormat);
+  // dummy change
 }
 
 initialize.qBrushHelper = qBrushHelper; // deprecated
