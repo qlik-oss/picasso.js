@@ -6,12 +6,31 @@ async function store(data, file) {
   stream.end();
 }
 
+async function browserErrorLogger() {
+  const browserLogs = await browser.manage().logs().get('browser');
+  browserLogs.forEach((log) => {
+    if (log.level.value > 900) {
+      // it's an error log
+      console.log(`Browser console error: ${log.message}`);
+    }
+  });
+}
+
 describe('picasso-interactions', () => {
+  before(() => {
+    browserErrorLogger();
+  });
+
   const fixture = './brushing/tap.fix.html';
   const EC = protractor.ExpectedConditions;
   it('single select', async () => {
     await browser.get(fixture);
-    await browser.wait(EC.presenceOf($('.container')), 10000, 'Chart did not appear');
+    try {
+      await browser.wait(EC.presenceOf($('.container')), 10000, 'Chart did not appear');
+    } catch (e) {
+      const err = await browser.takeScreenshot();
+      store(err, 'test/protractor/err.png');
+    }
 
     const snap = await browser.takeScreenshot();
     store(snap, 'test/protractor/snapshot1.png');
