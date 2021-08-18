@@ -73,5 +73,6 @@
     "packages/*",
     "plugins/*",
     "studio"
-  ]
+  ],
+  "dependencies": {}
 }
