@@ -1,5 +1,6 @@
+/* eslint-disable global-require */
 const fs = require('fs');
-const util = require('util');
+// const util = require('util');
 
 async function store(data, file) {
   const stream = fs.createWriteStream(file);
@@ -10,9 +11,23 @@ async function store(data, file) {
 describe('picasso-interactions', () => {
   const fixture = './brushing/tap.fix.html';
   const EC = protractor.ExpectedConditions;
+  afterEach(() => {
+    browser
+      .manage()
+      .logs()
+      .get('browser')
+      .then(function (browserLog) {
+        console.log(`afterEach log: ${require('util').inspect(browserLog)}`);
+      });
+  });
   it('single select', async () => {
-    const browserLog = await browser.manage().logs().get('browser');
-    console.log(`log: ${util.inspect(browserLog)}`);
+    browser
+      .manage()
+      .logs()
+      .get('browser')
+      .then(function (browserLog) {
+        console.log(`it log: ${require('util').inspect(browserLog)}`);
+      });
 
     await browser.get(fixture);
     try {
