@@ -20,7 +20,7 @@ steps:
   - bash: npx webdriver-manager update --versions.standalone 3.141.59
     displayName: 'Update webdriver manager'
 
-  - bash: echo "##vso[debug]CD - %cd%\node_modules\iedriver\lib\iedriver"
+  - bash: echo "##vso[debug]CD 1 %CD% CD 2 $(%CD%) 01 %0 01 2 $(%0) dp0 1 %~dp0 dp0 2 $(%~dp0)"
     displayName: 'LOG paths'
 
   - bash: echo "##vso[debug ls]"
