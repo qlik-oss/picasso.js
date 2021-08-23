@@ -15,7 +15,10 @@ steps:
   - bash: |
       yarn install --frozen-lockfile --ignore-optional
       yarn run build
-    displayName: 'yarn install and build'
+    displayName: 'yarn install'
+
+  - bash: ls
+    displayName: 'LS'
 
   - bash: npx webdriver-manager update --versions.standalone 3.141.59
     displayName: 'Update webdriver manager'
