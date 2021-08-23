@@ -20,7 +20,7 @@ steps:
   - bash: npx webdriver-manager update --versions.standalone 3.141.59
     displayName: 'Update webdriver manager'
 
-  - bash: echo "##vso[task.prependpath]$IEWebDriver;"
+  - bash: echo "##vso[task.prependpath]$(Build.SourcesDirectory)\node_modules\iedriver\lib\iedriver"
     displayName: 'Add IE driver executable to PATH'
 
   - script: yarn run test:ptor
