@@ -17,13 +17,13 @@ steps:
       yarn run build
     displayName: 'yarn install'
 
-  - bash: echo "##vso[debug]CD $CD"
+  - bash: echo "##vso[debug]Build SourcesDirectory - $Build.SourcesDirectory"
     displayName: 'LS'
 
   - bash: npx webdriver-manager update --versions.standalone 3.141.59
     displayName: 'Update webdriver manager'
 
-  - bash: echo "##vso[task.prependpath]$(CD)\node_modules\iedriver\lib\iedriver"
+  - bash: echo "##vso[task.prependpath]$(Build.SourcesDirectory)\node_modules\iedriver\lib\iedriver"
     displayName: 'Add IE driver executable to PATH'
 
   - script: yarn run test:ptor
