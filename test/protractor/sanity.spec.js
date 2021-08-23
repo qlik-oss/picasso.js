@@ -1,6 +1,4 @@
-/* eslint-disable global-require */
 const fs = require('fs');
-// const util = require('util');
 
 async function store(data, file) {
   const stream = fs.createWriteStream(file);
@@ -11,31 +9,9 @@ async function store(data, file) {
 describe('picasso-interactions', () => {
   const fixture = './brushing/tap.fix.html';
   const EC = protractor.ExpectedConditions;
-  afterEach(() => {
-    browser
-      .manage()
-      .logs()
-      .get('browser')
-      .then(function (browserLog) {
-        console.log(`afterEach log: ${require('util').inspect(browserLog)}`);
-      });
-  });
   it('single select', async () => {
-    browser
-      .manage()
-      .logs()
-      .get('browser')
-      .then(function (browserLog) {
-        console.log(`it log: ${require('util').inspect(browserLog)}`);
-      });
-
     await browser.get(fixture);
-    try {
-      await browser.wait(EC.presenceOf($('.container')), 10000, 'Chart did not appear');
-    } catch (e) {
-      const err = await browser.takeScreenshot();
-      store(err, 'test/protractor/err.png');
-    }
+    await browser.wait(EC.presenceOf($('.container')), 10000, 'Chart did not appear');
 
     const snap = await browser.takeScreenshot();
     store(snap, 'test/protractor/snapshot1.png');

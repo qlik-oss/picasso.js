@@ -1,5 +1,5 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
-# https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml
+# https://github.com/Microsoft/azure-pipelines-image-generation/tree/master/images
 
 trigger:
   - master
@@ -8,8 +8,8 @@ pr:
   - master
 
 pool:
-  # https://github.com/actions/virtual-environments/blob/main/images/win/Windows2019-Readme.md
-  vmImage: 'windows-2019'
+  # https://github.com/Microsoft/azure-pipelines-image-generation/blob/master/images/win/Vs2017-Server2016-Readme.md
+  vmImage: 'vs2017-win2016'
 
 steps:
   - bash: |
@@ -20,7 +20,7 @@ steps:
   - bash: npx webdriver-manager update --versions.standalone 3.141.59
     displayName: 'Update webdriver manager'
 
-  - bash: echo "##vso[task.prependpath]$IEWebDriver;"
+  - bash: echo "##vso[task.prependpath]/node_modules/iedriver/lib/iedriver"
     displayName: 'Add IE driver executable to PATH'
 
   - script: yarn run test:ptor
