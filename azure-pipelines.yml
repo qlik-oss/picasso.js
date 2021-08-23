@@ -26,7 +26,7 @@ steps:
   - bash: echo "##vso[debug ls]"
     displayName: 'ls'
 
-  - bash: echo "##vso[task.prependpath]$PWD\node_modules\iedriver\lib\iedriver"
+  - bash: echo "##vso[task.prependpath]$PWD/node_modules/iedriver/lib/iedriver"
     displayName: 'Add IE driver executable to PATH'
 
   - script: yarn run test:ptor
