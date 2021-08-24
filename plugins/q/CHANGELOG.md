@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.2](https://github.com/qlik-oss/picasso.js/compare/v1.2.1...v1.2.2) (2021-08-24)
+
+### Bug Fixes
+
+- remove usage of Function constructor ([#625](https://github.com/qlik-oss/picasso.js/issues/625)) ([e348eed](https://github.com/qlik-oss/picasso.js/commit/e348eedd58ccddbb80510f244eed9a00aed7e4ed))
+
 ## [1.2.1](https://github.com/qlik-oss/picasso.js/compare/v1.2.0...v1.2.1) (2021-06-07)
 
 **Note:** Version bump only for package picasso-plugin-q
