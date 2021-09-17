@@ -405,6 +405,17 @@ export function precalculate({ nodes, rect, chart, labelSettings, placementSetti
   };
 }
 
+export function getOrientation({ orientation = 'auto', defaultOrientation = 'h' }) {
+  switch (orientation.toLocaleLowerCase()) {
+    case 'vertical':
+      return 'v';
+    case 'horizontal':
+      return 'h';
+    default:
+      return defaultOrientation;
+  }
+}
+
 /**
  * @typedef {object} ComponentLabels~BarsLabelStrategy
  * @property {string} type='bar' Name of strategy
@@ -414,6 +425,7 @@ export function precalculate({ nodes, rect, chart, labelSettings, placementSetti
  * Bars strategy settings
  * @typedef {object} ComponentLabels~BarsLabelStrategy.settings
  * @property {string|function} [direction='up'] - The direction in which the bars are growing: 'up', 'down', 'right' or 'left'.
+ * @property {string} [orientation='auto'] - Orientation of text: 'auto', 'horizontal' or 'vertical'
  * @property {string} [fontFamily='Arial']
  * @property {number} [fontSize=12]
  * @property {Array<object>} labels
@@ -469,8 +481,13 @@ export function bars({ settings, chart, nodes, rect, renderer, style }, placer =
     placementSettings,
   });
 
-  const coord = hasHorizontalDirection ? 'y' : 'x';
-  const side = hasHorizontalDirection ? 'height' : 'width';
+  const orientation = getOrientation({
+    orientation: settings.orientation,
+    defaultOrientation: hasHorizontalDirection ? 'h' : 'v',
+  });
+
+  const coord = orientation === 'h' ? 'y' : 'x';
+  const side = orientation === 'h' ? 'height' : 'width';
   targetNodes.sort(
     (a, b) =>
       a.node.localBounds[coord] + a.node.localBounds[side] - (b.node.localBounds[coord] + b.node.localBounds[side])
@@ -482,6 +499,6 @@ export function bars({ settings, chart, nodes, rect, renderer, style }, placer =
     stngs: settings,
     rect,
     fitsHorizontally,
-    collectiveOrientation: hasHorizontalDirection ? 'h' : 'v',
+    collectiveOrientation: orientation,
   });
 }

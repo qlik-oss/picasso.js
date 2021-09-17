@@ -7,6 +7,7 @@ import {
   placeInBars,
   findBestPlacement,
   bars,
+  getOrientation,
 } from '../bars';
 
 function place(position, direction) {
@@ -898,6 +899,23 @@ describe('labeling - bars', () => {
       });
 
       expect(labels).to.be.empty;
+    });
+  });
+
+  describe('orientation', () => {
+    it('should support setting "horizontal"', () => {
+      const orientation = getOrientation({ orientation: 'horizontal', defaultOrientation: 'v' });
+      expect(orientation).to.equal('h');
+    });
+
+    it('should support setting "vertical"', () => {
+      const orientation = getOrientation({ orientation: 'vertical', defaultOrientation: 'h' });
+      expect(orientation).to.equal('v');
+    });
+
+    it('should fallback to default orientation for setting "auto"', () => {
+      expect(getOrientation({ orientation: 'auto', defaultOrientation: 'h' })).to.equal('h');
+      expect(getOrientation({ orientation: 'auto', defaultOrientation: 'v' })).to.equal('v');
     });
   });
 });
