@@ -2638,6 +2638,12 @@
                   ],
                   "type": "any"
                 },
+                "orientation": {
+                  "description": "Orientation of text: 'auto', 'horizontal' or 'vertical'",
+                  "optional": true,
+                  "defaultValue": "'auto'",
+                  "type": "string"
+                },
                 "fontFamily": {
                   "optional": true,
                   "defaultValue": "'Arial'",
