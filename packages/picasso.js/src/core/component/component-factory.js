@@ -596,6 +596,8 @@ function componentFactory(definition, context = {}) {
     return shapes;
   };
 
+  fn.getToBeRenderedNodes = () => brushArgs.nodes || [];
+
   fn.findShapes = (selector) => {
     const shapes = rend.findShapes(selector);
     for (let i = 0, num = shapes.length; i < num; i++) {
