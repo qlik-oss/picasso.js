@@ -406,7 +406,7 @@ export function precalculate({ nodes, rect, chart, labelSettings, placementSetti
 }
 
 export function getOrientation({ orientation = 'auto', defaultOrientation = 'h' }) {
-  switch (orientation?.toLocaleLowerCase()) {
+  switch (orientation.toLocaleLowerCase()) {
     case 'vertical':
       return 'v';
     case 'horizontal':
