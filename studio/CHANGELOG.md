@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/qlik-oss/picasso.js/compare/v1.2.2...v1.3.0) (2021-09-29)
+
+**Note:** Version bump only for package studio
+
 ## [1.2.2](https://github.com/qlik-oss/picasso.js/compare/v1.2.1...v1.2.2) (2021-08-24)
 
 **Note:** Version bump only for package studio

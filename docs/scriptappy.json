@@ -3,7 +3,7 @@
   "info": {
     "name": "picasso.js",
     "description": "A charting library streamlined for building visualizations for the Qlik Sense Analytics platform.",
-    "version": "1.2.2",
+    "version": "1.3.0",
     "license": "MIT",
     "stability": "stable",
     "x-qlik-visibility": "public"

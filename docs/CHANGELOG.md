@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/veinfors/picasso.js/compare/v1.2.2...v1.3.0) (2021-09-29)
+
+### Features
+
+- add orientation setting for bar strategy ([#633](https://github.com/veinfors/picasso.js/issues/633)) ([52db5b2](https://github.com/veinfors/picasso.js/commit/52db5b25e3adcc252eb39114ada4896fd213dc73))
+
 ## [1.2.2](https://github.com/veinfors/picasso.js/compare/v1.2.1...v1.2.2) (2021-08-24)
 
 **Note:** Version bump only for package docs

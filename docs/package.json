@@ -1,7 +1,7 @@
 {
   "name": "docs",
   "private": true,
-  "version": "1.2.2",
+  "version": "1.3.0",
   "description": "Documentation source",
   "scripts": {
     "build": "yarn run spec",
