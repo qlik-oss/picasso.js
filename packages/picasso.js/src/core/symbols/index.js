@@ -9,6 +9,7 @@ import star from './star';
 import nPolygon from './n-polygon';
 import cross from './cross';
 import bar from './bar';
+import rect from './rect';
 import registry from '../utils/registry';
 
 const parentReg = registry();
@@ -23,6 +24,7 @@ parentReg.add('star', star);
 parentReg.add('n-polygon', nPolygon);
 parentReg.add('cross', cross);
 parentReg.add('bar', bar);
+parentReg.add('rect', rect);
 
 function applyOpts(obj, opts = {}) {
   Object.keys(opts).forEach((key) => {
@@ -36,7 +38,7 @@ function applyOpts(obj, opts = {}) {
  * Factory function for symbols.
  * Options object is passed to symbols function.
  * @private
- * @param {SymbolBar|SymbolCircle|SymbolCross|SymbolDiamond|SymbolLine|SymbolPolygon|SymbolSaltire|SymbolSquare|SymbolStar|SymbolTriangle} options - Options definition may contain any of the supported display-object attributes
+ * @param {SymbolRect|SymbolBar|SymbolCircle|SymbolCross|SymbolDiamond|SymbolLine|SymbolPolygon|SymbolSaltire|SymbolSquare|SymbolStar|SymbolTriangle} options - Options definition may contain any of the supported display-object attributes
  * @returns {object} A node definition
  */
 const create = (reg = parentReg) => (options = {}) => {
