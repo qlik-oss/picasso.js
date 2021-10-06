@@ -127,7 +127,6 @@ function getType(s) {
   } else if (typeof s.shape === 'string') {
     type = s.shape;
   }
-  type = type === 'rect' ? 'square' : type;
 
   return [type, props];
 }

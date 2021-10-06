@@ -112,7 +112,7 @@ describe('point component', () => {
 
     expect(renderedPoints).to.deep.equal([
       {
-        type: 'square',
+        type: 'rect',
         label: 'etikett',
         x: 80,
         y: 60,
@@ -246,7 +246,7 @@ describe('point component', () => {
         },
       },
       {
-        type: 'square',
+        type: 'rect',
         label: 'tvåa',
         x: 0.7 * 100,
         y: 1.2 * 200,
