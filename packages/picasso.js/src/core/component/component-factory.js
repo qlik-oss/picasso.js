@@ -238,6 +238,7 @@ function componentFactory(definition, context = {}) {
 
   const brushArgs = {
     nodes: [],
+    preNodes: [],
     chart,
     config: settings.brush || {},
     renderer: null,
@@ -468,7 +469,7 @@ function componentFactory(definition, context = {}) {
       rend.render();
       return;
     }
-
+    brushArgs.preNodes = brushArgs.nodes;
     const nodes = (brushArgs.nodes = render.call(definitionContext, ...getRenderArgs()));
 
     // Reset brush stylers and triggers
@@ -596,7 +597,13 @@ function componentFactory(definition, context = {}) {
     return shapes;
   };
 
-  fn.getToBeRenderedNodes = () => brushArgs.nodes || [];
+  fn.getToBeRenderedNodes = (selector) => {
+    return (brushArgs.nodes || []).filter((node) => node.type === selector);
+  };
+
+  fn.getRenderedNodes = (selector) => {
+    return (brushArgs.preNodes || []).filter((node) => node.type === selector);
+  };
 
   fn.findShapes = (selector) => {
     const shapes = rend.findShapes(selector);

@@ -866,10 +866,22 @@ function chartFn(definition, context) {
     return shapes;
   };
 
-  instance.getToBeRenderedNodes = () => {
+  instance.getToBeRenderedNodes = (selector, component) => {
     const shapes = [];
     visibleComponents.forEach((c) => {
-      shapes.push(...c.instance.getToBeRenderedNodes());
+      if (c.key === component) {
+        shapes.push(...c.instance.getToBeRenderedNodes(selector));
+      }
+    });
+    return shapes;
+  };
+
+  instance.getRenderedNodes = (selector, component) => {
+    const shapes = [];
+    visibleComponents.forEach((c) => {
+      if (c.key === component) {
+        shapes.push(...c.instance.getRenderedNodes(selector));
+      }
     });
     return shapes;
   };
