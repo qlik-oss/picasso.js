@@ -77,32 +77,9 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
     return el;
   };
 
-  svg.render = (nodes) => {
-    if (!el) {
-      return false;
-    }
-
-    const transformation = typeof settings.transform === 'function' && settings.transform();
-    if (transformation) {
-      const { a, b, c, d, e, f } = transformation;
-      group.style.transform = `matrix(${a}, ${b}, ${c}, ${d}, ${e}, ${f})`;
-      return true;
-    }
-    group.style.transform = '';
-
+  svg.getScene = (nodes) => {
     const scaleX = rect.scaleRatio.x;
     const scaleY = rect.scaleRatio.y;
-
-    if (hasChangedRect) {
-      el.style.left = `${rect.computedPhysical.x}px`;
-      el.style.top = `${rect.computedPhysical.y}px`;
-      el.setAttribute('width', rect.computedPhysical.width);
-      el.setAttribute('height', rect.computedPhysical.height);
-    }
-
-    gradients.clear();
-    patterns.clear();
-    defs.children.length = 0;
 
     const sceneContainer = {
       type: 'container',
@@ -116,7 +93,7 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
       sceneContainer.transform += `scale(${scaleX}, ${scaleY})`;
     }
 
-    const newScene = sceneFn({
+    return sceneFn({
       items: [sceneContainer],
       on: {
         create: [
@@ -131,6 +108,34 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
         ],
       },
     });
+  };
+
+  svg.render = (nodes) => {
+    if (!el) {
+      return false;
+    }
+
+    const transformation = typeof settings.transform === 'function' && settings.transform();
+    if (transformation) {
+      const { a, b, c, d, e, f } = transformation;
+      group.style.transform = `matrix(${a}, ${b}, ${c}, ${d}, ${e}, ${f})`;
+      return true;
+    }
+    group.style.transform = '';
+
+    if (hasChangedRect) {
+      el.style.left = `${rect.computedPhysical.x}px`;
+      el.style.top = `${rect.computedPhysical.y}px`;
+      el.setAttribute('width', rect.computedPhysical.width);
+      el.setAttribute('height', rect.computedPhysical.height);
+    }
+
+    gradients.clear();
+    patterns.clear();
+    defs.children.length = 0;
+
+    const newScene = svg.getScene(nodes);
+
     const hasChangedScene = scene ? !newScene.equals(scene) : true;
 
     const doRender = hasChangedRect || hasChangedScene;
