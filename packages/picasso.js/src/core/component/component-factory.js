@@ -238,7 +238,6 @@ function componentFactory(definition, context = {}) {
 
   const brushArgs = {
     nodes: [],
-    preNodes: [],
     chart,
     config: settings.brush || {},
     renderer: null,
@@ -430,11 +429,14 @@ function componentFactory(definition, context = {}) {
   };
 
   let currentNodes;
-
+  let preLeft;
+  let preWidth;
   fn.render = () => {
     const nodes = (brushArgs.nodes = render.call(definitionContext, ...getRenderArgs()));
     rend.render(nodes);
     currentNodes = nodes;
+    preLeft = instanceContext.rect.computed.x;
+    preWidth = instanceContext.rect.computed.width;
   };
 
   fn.hide = () => {
@@ -469,8 +471,50 @@ function componentFactory(definition, context = {}) {
       rend.render();
       return;
     }
-    brushArgs.preNodes = brushArgs.nodes;
     const nodes = (brushArgs.nodes = render.call(definitionContext, ...getRenderArgs()));
+
+    // console.log(dockConfig.dock());
+    // console.log(element.style.left);
+    // console.log(preLeft);
+    // console.log(rend.element());
+    // console.log(instanceContext.rect.computed);
+
+    // Adjust y axis for animation
+    if (currentNodes && dockConfig.dock() === 'left' && instanceContext.rect.computed.width !== preWidth) {
+      // y axis and y axis marks
+      const deltaX = preWidth - instanceContext.rect.computed.width;
+      currentNodes.forEach((node) => {
+        if (node.type === 'line') {
+          node.x1 -= deltaX;
+          node.x2 -= deltaX;
+        } else if (node.type === 'text') {
+          node.x -= deltaX;
+        }
+      });
+    }
+
+    // Adjust x axis for animation
+    if (currentNodes && dockConfig.dock() === 'bottom') {
+      if (currentNodes[0].type === 'line') {
+        currentNodes[0].x1 = nodes[0].x1;
+      }
+    }
+
+    // Adjust center nodes for animation
+    if (currentNodes && dockConfig.dock() === 'center' && instanceContext.rect.computed.x !== preLeft) {
+      const deltaX = preLeft - instanceContext.rect.computed.x;
+      currentNodes.forEach((node) => {
+        if (node.type === 'circle') {
+          node.cx += deltaX;
+        } else if (node.type === 'line' && node.dir === 'x') {
+          node.x1 += deltaX;
+          node.x2 += deltaX;
+        }
+      });
+    }
+
+    preLeft = instanceContext.rect.computed.x;
+    preWidth = instanceContext.rect.computed.width;
 
     // Reset brush stylers and triggers
     brushStylers.forEach((b) => b.cleanUp());
@@ -599,10 +643,6 @@ function componentFactory(definition, context = {}) {
 
   fn.getToBeRenderedNodes = (selector) => {
     return (brushArgs.nodes || []).filter((node) => node.type === selector);
-  };
-
-  fn.getRenderedNodes = (selector) => {
-    return (brushArgs.preNodes || []).filter((node) => node.type === selector);
   };
 
   fn.findShapes = (selector) => {

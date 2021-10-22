@@ -876,16 +876,6 @@ function chartFn(definition, context) {
     return shapes;
   };
 
-  instance.getRenderedNodes = (selector, component) => {
-    const shapes = [];
-    visibleComponents.forEach((c) => {
-      if (c.key === component) {
-        shapes.push(...c.instance.getRenderedNodes(selector));
-      }
-    });
-    return shapes;
-  };
-
   /**
    * Get components overlapping a point.
    * @param {Point} p - Point with x- and y-coordinate. The coordinate is relative to the browser viewport.

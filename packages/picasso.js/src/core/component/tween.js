@@ -28,11 +28,11 @@ function tween({ old, current }, { renderer }, config) {
     start() {
       let ids = {};
       old.forEach((node, i) => {
-        let id = trackBy(node, i, 'old');
+        let id = trackBy(node, i);
         ids[id] = node;
       });
       current.forEach((node, i) => {
-        let id = trackBy(node, i, 'current');
+        let id = trackBy(node, i);
         if (ids[id]) {
           updated.ips.push(interpolateObject(ids[id], node));
           updated.nodes.push(node);

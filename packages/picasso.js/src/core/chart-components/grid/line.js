@@ -95,6 +95,8 @@ const gridLineComponent = {
             y1: 0,
             x2: p.position,
             y2: 1,
+            label: p.label,
+            dir,
             stroke: style.stroke || 'black',
             strokeWidth: typeof style.strokeWidth !== 'undefined' ? style.strokeWidth : 1,
             strokeDasharray: typeof style.strokeDasharray !== 'undefined' ? style.strokeDasharray : undefined,
