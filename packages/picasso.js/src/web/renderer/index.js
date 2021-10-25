@@ -35,6 +35,15 @@ function create() {
     appendTo: () => {},
 
     /**
+     * Get Scene based on provided nodes, constructed in the same way as in the render function.
+     * Only the canvas and svg renderer uses scene nodes.
+     * @private
+     * @param {object[]} nodes - Nodes on which the scene will be constructed
+     * @returns {Scene}
+     */
+    getScene: () => [],
+
+    /**
      * @param {object[]} nodes - Nodes to render
      * @returns {boolean} True if the nodes were rendered, otherwise false
      */

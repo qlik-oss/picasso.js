@@ -22,6 +22,7 @@ function tween({ old, current }, { renderer }, config) {
   let exited = { nodes: [], ips: [] };
   let updated = { nodes: [], ips: [] };
   let stages = [];
+  let targetScene = null;
   const trackBy = config.trackBy || nodeId;
 
   const tweener = {
@@ -83,6 +84,7 @@ function tween({ old, current }, { renderer }, config) {
       }
       // console.log(stages);
       if (stages.length) {
+        targetScene = renderer.getScene(current);
         stages[0].started = Date.now();
         if (typeof window !== 'undefined') {
           ticker = window.requestAnimationFrame(tweener.tick);
@@ -121,6 +123,12 @@ function tween({ old, current }, { renderer }, config) {
         window.cancelAnimationFrame(ticker);
         ticker = false;
       }
+    },
+    inProgress() {
+      return !!ticker;
+    },
+    get targetScene() {
+      return targetScene;
     },
   };
 
