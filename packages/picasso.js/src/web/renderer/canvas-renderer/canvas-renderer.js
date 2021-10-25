@@ -196,6 +196,34 @@ export function renderer(sceneFn = sceneFactory) {
     return el;
   };
 
+  canvasRenderer.getScene = (shapes) => {
+    const g = (buffer && buffer.getContext()) || el.getContext('2d');
+    const dpiRatio = dpiScale(g);
+
+    const scaleX = rect.scaleRatio.x;
+    const scaleY = rect.scaleRatio.y;
+
+    const sceneContainer = {
+      type: 'container',
+      children: shapes,
+      transform: rect.edgeBleed.bool
+        ? `translate(${rect.edgeBleed.left * dpiRatio * scaleX}, ${rect.edgeBleed.top * dpiRatio * scaleY})`
+        : '',
+    };
+
+    if (dpiRatio !== 1 || scaleX !== 1 || scaleY !== 1) {
+      sceneContainer.transform += `scale(${dpiRatio * scaleX}, ${dpiRatio * scaleY})`;
+    }
+
+    return sceneFn({
+      items: [sceneContainer],
+      dpi: dpiRatio,
+      on: {
+        create: [onLineBreak(canvasRenderer.measureText), injectTextBoundsFn(canvasRenderer)],
+      },
+    });
+  };
+
   canvasRenderer.render = (shapes) => {
     if (!el) {
       return false;
@@ -214,8 +242,6 @@ export function renderer(sceneFn = sceneFactory) {
       buffer.apply();
       return true;
     }
-    const scaleX = rect.scaleRatio.x;
-    const scaleY = rect.scaleRatio.y;
 
     if (hasChangedRect) {
       el.style.left = `${rect.computedPhysical.x}px`;
@@ -230,25 +256,8 @@ export function renderer(sceneFn = sceneFactory) {
       }
     }
 
-    const sceneContainer = {
-      type: 'container',
-      children: shapes,
-      transform: rect.edgeBleed.bool
-        ? `translate(${rect.edgeBleed.left * dpiRatio * scaleX}, ${rect.edgeBleed.top * dpiRatio * scaleY})`
-        : '',
-    };
+    const newScene = canvasRenderer.getScene(shapes);
 
-    if (dpiRatio !== 1 || scaleX !== 1 || scaleY !== 1) {
-      sceneContainer.transform += `scale(${dpiRatio * scaleX}, ${dpiRatio * scaleY})`;
-    }
-
-    const newScene = sceneFn({
-      items: [sceneContainer],
-      dpi: dpiRatio,
-      on: {
-        create: [onLineBreak(canvasRenderer.measureText), injectTextBoundsFn(canvasRenderer)],
-      },
-    });
     const hasChangedScene = scene ? !newScene.equals(scene) : true;
 
     patterns.clear();
