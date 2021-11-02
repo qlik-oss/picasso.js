@@ -77,9 +77,9 @@ jobs:
               echo "$version" > ./version.txt
               echo "Building $version"
       - run:
-        name: Log into Github Docker Registry
-        command: |
-            echo $QLIK_DOCKER_DEV_PASSWORD | docker login -u $QLIK_DOCKER_DEV_USERNAME --password-stdin $QLIK_DOCKER_DEV_REGISTRY
+          name: Log into Github Docker Registry
+          command: |
+              echo $QLIK_DOCKER_DEV_PASSWORD | docker login -u $QLIK_DOCKER_DEV_USERNAME --password-stdin $QLIK_DOCKER_DEV_REGISTRY
       - run:
           name: Prepare API Compliance
           command: |
