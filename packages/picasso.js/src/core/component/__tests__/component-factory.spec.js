@@ -208,7 +208,10 @@ describe('Component', () => {
       let transformFn = () => transformation;
       let instance;
 
-      instance = createInstance({ rendererSettings: { transform: transformFn } });
+      instance = createInstance({
+        rendererSettings: { transform: transformFn },
+        rect: { computed: { x: 0, y: 0, width: 1, height: 1 } },
+      });
       instance.update();
       expect(renderer.render).to.have.been.calledWith(['node1', 'node2']);
       transformation = { a: 0, b: 1, c: 1 };

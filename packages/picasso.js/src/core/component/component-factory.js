@@ -429,11 +429,13 @@ function componentFactory(definition, context = {}) {
   };
 
   let currentNodes;
+  let preComputedRect;
 
   fn.render = () => {
     const nodes = (brushArgs.nodes = render.call(definitionContext, ...getRenderArgs()));
     rend.render(nodes);
     currentNodes = nodes;
+    preComputedRect = instanceContext.rect.computed;
   };
 
   fn.hide = () => {
@@ -489,6 +491,7 @@ function componentFactory(definition, context = {}) {
     });
 
     if (currentNodes && settings.animations && settings.animations.enabled) {
+      settings.animations.compensateForLayoutChanges(currentNodes, instanceContext.rect.computed, preComputedRect);
       currentTween = tween(
         {
           old: currentNodes,
@@ -502,6 +505,7 @@ function componentFactory(definition, context = {}) {
       rend.render(nodes);
     }
     currentNodes = nodes;
+    preComputedRect = instanceContext.rect.computed;
 
     if (rend.setKey && typeof config.key === 'string') {
       rend.setKey(config.key);

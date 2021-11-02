@@ -58,26 +58,26 @@ function tween({ old, current }, { renderer }, config) {
           exited.ips.push(interpolateObject(ids[key], extend({}, ids[key], { r: 0.0001, opacity: 0 })));
         }
       });
-      if (exited.ips.length) {
+      if (exited.ips.length >= 0) {
         stages.push({
           easing: easeCubic,
-          duration: 200,
+          duration: 2000,
           tweens: exited.ips,
           nodes: [...toBeUpdated],
         });
       }
-      if (updated.ips.length) {
+      if (updated.ips.length >= 0) {
         stages.push({
           easing: easeCubic,
-          duration: 400,
+          duration: 4000,
           tweens: updated.ips,
           nodes: [],
         });
       }
-      if (entered.ips.length) {
+      if (entered.ips.length >= 0) {
         stages.push({
-          easing: easeElasticOut,
-          duration: 1200,
+          easing: easeCubic,
+          duration: 2000,
           tweens: entered.ips,
           nodes: [...updated.nodes],
         });

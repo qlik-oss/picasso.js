@@ -412,7 +412,11 @@ function dockLayout(initialSettings) {
 
   const docker = {};
 
+  console.log(settings);
+
   docker.layout = function layout(rect, components = []) {
+    console.log(rect);
+    console.log(components);
     if (!rect || isNaN(rect.x) || isNaN(rect.y) || isNaN(rect.width) || isNaN(rect.height)) {
       throw new Error('Invalid rect');
     }
@@ -423,6 +427,8 @@ function dockLayout(initialSettings) {
     const { logicalContainerRect, containerRect } = resolveContainerRects(rect, settings);
 
     const [visible, hidden] = filterComponents(components, settings, logicalContainerRect);
+
+    console.log(visible);
 
     const reducedRect = reduceLayoutRect({
       layoutRect: logicalContainerRect,

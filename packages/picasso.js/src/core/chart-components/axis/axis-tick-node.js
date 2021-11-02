@@ -50,6 +50,7 @@ export default function buildNode(tick, buildOpts) {
     collider: {
       type: null,
     },
+    tickLabel: tick.label,
   };
 
   if (buildOpts.align === 'top' || buildOpts.align === 'bottom') {
