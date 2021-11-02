@@ -63,7 +63,7 @@ jobs:
     <<: *defaults
     steps:
       - attach_workspace:
-        at: ~/picassojs
+          at: ~/picassojs
       - run:
           name: Create version.txt
           command: |
