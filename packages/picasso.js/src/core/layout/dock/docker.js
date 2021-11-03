@@ -225,6 +225,9 @@ function positionComponents({ visible, layoutRect, reducedRect, containerRect, t
   const elementOrder = referenceArray.slice().sort((a, b) => a.config.displayOrder() - b.config.displayOrder());
   visible
     .sort((a, b) => {
+      if (a.referencedDocks.length > 0 && b.referencedDocks.length > 0) {
+        return 0;
+      }
       if (b.referencedDocks.length > 0) {
         return -1;
       }
