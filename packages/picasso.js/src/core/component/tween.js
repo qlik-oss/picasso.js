@@ -1,6 +1,6 @@
 import extend from 'extend';
 import { interpolateObject } from 'd3-interpolate';
-import { easeCubic, easeElasticOut } from 'd3-ease';
+import { easeCubic } from 'd3-ease';
 
 /* globals window */
 
@@ -61,7 +61,7 @@ function tween({ old, current }, { renderer }, config) {
       if (exited.ips.length >= 0) {
         stages.push({
           easing: easeCubic,
-          duration: 2000,
+          duration: 200,
           tweens: exited.ips,
           nodes: [...toBeUpdated],
         });
@@ -69,7 +69,7 @@ function tween({ old, current }, { renderer }, config) {
       if (updated.ips.length >= 0) {
         stages.push({
           easing: easeCubic,
-          duration: 4000,
+          duration: 400,
           tweens: updated.ips,
           nodes: [],
         });
@@ -77,7 +77,7 @@ function tween({ old, current }, { renderer }, config) {
       if (entered.ips.length >= 0) {
         stages.push({
           easing: easeCubic,
-          duration: 2000,
+          duration: 200,
           tweens: entered.ips,
           nodes: [...updated.nodes],
         });
