@@ -491,7 +491,13 @@ function componentFactory(definition, context = {}) {
     });
 
     if (currentNodes && settings.animations && settings.animations.enabled) {
-      settings.animations.compensateForLayoutChanges(currentNodes, instanceContext.rect.computed, preComputedRect);
+      if (settings.animations.compensateForLayoutChanges) {
+        settings.animations.compensateForLayoutChanges({
+          currentNodes,
+          currentRect: instanceContext.rect.computed,
+          previousRect: preComputedRect,
+        });
+      }
       currentTween = tween(
         {
           old: currentNodes,
