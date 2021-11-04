@@ -141,7 +141,9 @@ workflows:
           requires:
             - install
       - api-governance:
-          context: deploy-secrets
+          context: 
+            - deploy-secrets
+            - api-compliance
           requires:
             - install
       - test-unit:
