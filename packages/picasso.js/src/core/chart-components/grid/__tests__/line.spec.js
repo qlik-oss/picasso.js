@@ -15,11 +15,11 @@ describe('line component', () => {
   beforeEach(() => {
     xTick = {
       position: 0.5,
-      label: 'x-label',
+      value: 1.23,
     };
     yTick = {
       position: 0.5,
-      label: 'y-label',
+      value: 4.56,
       isMinor: false,
     };
     xScale = {
@@ -89,7 +89,7 @@ describe('line component', () => {
         x2: 49.5,
         y1: -0.5,
         y2: 199.5,
-        label: 'x-label',
+        value: 1.23,
         dir: 'x',
       },
       {
@@ -102,7 +102,7 @@ describe('line component', () => {
         x2: 99.5,
         y1: 99.5,
         y2: 99.5,
-        label: 'y-label',
+        value: 4.56,
         dir: 'y',
       },
     ]);
@@ -128,7 +128,7 @@ describe('line component', () => {
         x2: 49.5,
         y1: -0.5,
         y2: 199.5,
-        label: 'x-label',
+        value: 1.23,
         dir: 'x',
       },
     ]);
@@ -154,7 +154,7 @@ describe('line component', () => {
         x2: 99.5,
         y1: 99.5,
         y2: 99.5,
-        label: 'y-label',
+        value: 4.56,
         dir: 'y',
       },
     ]);
@@ -187,7 +187,7 @@ describe('line component', () => {
         x2: 49.5,
         y1: -0.5,
         y2: 199.5,
-        label: 'x-label',
+        value: 1.23,
         dir: 'x',
       },
       {
@@ -200,7 +200,7 @@ describe('line component', () => {
         x2: 99.5,
         y1: 99.5,
         y2: 99.5,
-        label: 'y-label',
+        value: 4.56,
         dir: 'y',
       },
     ]);
@@ -251,7 +251,7 @@ describe('line component', () => {
         x2: 49.5,
         y1: -0.5,
         y2: 199.5,
-        label: 'x-label',
+        value: 1.23,
         dir: 'x',
       },
       {
@@ -264,7 +264,7 @@ describe('line component', () => {
         x2: 99.5,
         y1: 99.5,
         y2: 99.5,
-        label: 'y-label',
+        value: 4.56,
         dir: 'y',
       },
     ]);
