@@ -1,6 +1,6 @@
 import extend from 'extend';
 import { interpolateObject } from 'd3-interpolate';
-import { easeCubic, easeElasticOut } from 'd3-ease';
+import { easeCubic } from 'd3-ease';
 
 /* globals window */
 
@@ -58,30 +58,27 @@ function tween({ old, current }, { renderer }, config) {
           exited.ips.push(interpolateObject(ids[key], extend({}, ids[key], { r: 0.0001, opacity: 0 })));
         }
       });
-      if (exited.ips.length) {
-        stages.push({
-          easing: easeCubic,
-          duration: 200,
-          tweens: exited.ips,
-          nodes: [...toBeUpdated],
-        });
-      }
-      if (updated.ips.length) {
-        stages.push({
-          easing: easeCubic,
-          duration: 400,
-          tweens: updated.ips,
-          nodes: [],
-        });
-      }
-      if (entered.ips.length) {
-        stages.push({
-          easing: easeElasticOut,
-          duration: 1200,
-          tweens: entered.ips,
-          nodes: [...updated.nodes],
-        });
-      }
+      // Obsolete nodes exiting
+      stages.push({
+        easing: easeCubic,
+        duration: 200,
+        tweens: exited.ips,
+        nodes: [...toBeUpdated],
+      });
+      // Existing nodes updating
+      stages.push({
+        easing: easeCubic,
+        duration: 400,
+        tweens: updated.ips,
+        nodes: [],
+      });
+      // New nodes entering
+      stages.push({
+        easing: easeCubic,
+        duration: 200,
+        tweens: entered.ips,
+        nodes: [...updated.nodes],
+      });
       // console.log(stages);
       if (stages.length) {
         targetScene = renderer.getScene(current);

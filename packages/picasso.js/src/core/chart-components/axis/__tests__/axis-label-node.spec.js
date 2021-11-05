@@ -8,6 +8,7 @@ function createTick(start, end) {
     end,
     position,
     label: '50%',
+    value: 1.23, // just some dummy value to test node value for tracking animation
   };
 }
 
@@ -66,6 +67,7 @@ describe('Axis Label Node', () => {
         anchor: 'end',
         maxWidth: textRect.width,
         maxHeight: textRect.height,
+        tickValue: 1.23,
       };
     });
 

@@ -37,7 +37,7 @@ describe('Axis Tick Node', () => {
         innerRect,
         outerRect,
       };
-      tick = { position: 0.5 };
+      tick = { position: 0.5, value: 1.23 };
       expected = {
         type: 'line',
         strokeWidth: 1,
@@ -49,6 +49,7 @@ describe('Axis Tick Node', () => {
         collider: {
           type: null,
         },
+        tickValue: 1.23,
       };
     });
 

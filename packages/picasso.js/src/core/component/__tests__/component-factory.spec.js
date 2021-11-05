@@ -1,4 +1,5 @@
 import componentFactory from '../component-factory';
+import * as tween from '../tween';
 
 describe('Component', () => {
   let definition;
@@ -208,12 +209,31 @@ describe('Component', () => {
       let transformFn = () => transformation;
       let instance;
 
-      instance = createInstance({ rendererSettings: { transform: transformFn } });
+      instance = createInstance({
+        rendererSettings: { transform: transformFn },
+        rect: { computed: { x: 0, y: 0, width: 1, height: 1 } },
+      });
       instance.update();
       expect(renderer.render).to.have.been.calledWith(['node1', 'node2']);
       transformation = { a: 0, b: 1, c: 1 };
       instance.update();
       expect(renderer.render).to.have.been.calledWith();
+    });
+
+    it('should run tween when animations are enabled', () => {
+      let instance;
+      let sandbox;
+      sandbox = sinon.createSandbox();
+      sandbox.stub(tween, 'default').returns({ start: sinon.spy() });
+      definition.render = () => ['node1', 'node2'];
+      instance = createInstance({
+        rect: { computed: { x: 0, y: 0, width: 1, height: 1 } },
+        animations: { enabled: true, compensateForLayoutChanges: sinon.spy() },
+      });
+      instance.render();
+      instance.update();
+      expect(tween.default).to.have.been.calledOnce;
+      sandbox.restore();
     });
   });
 

@@ -429,11 +429,13 @@ function componentFactory(definition, context = {}) {
   };
 
   let currentNodes;
+  let preComputedRect;
 
   fn.render = () => {
     const nodes = (brushArgs.nodes = render.call(definitionContext, ...getRenderArgs()));
     rend.render(nodes);
     currentNodes = nodes;
+    preComputedRect = instanceContext.rect.computed;
   };
 
   fn.hide = () => {
@@ -489,6 +491,16 @@ function componentFactory(definition, context = {}) {
     });
 
     if (currentNodes && settings.animations && settings.animations.enabled) {
+      /* The issue: as soon as animation begins, the layout changes immediately to a new layout while the displaying nodes' positions are still calculated relative to the old layout.
+      This makes the nodes "jump" at the beginning of the animations. To fix this, we can compesate for the layout changes by adjusting the relative positions of the displaying nodes.
+      For example, if the new layout of the point component (the central area) jumps 10px to the left compared to the old layout, we shift the points 10px to the right, making the absolute positions of the points stay the same. */
+      if (settings.animations.compensateForLayoutChanges) {
+        settings.animations.compensateForLayoutChanges({
+          currentNodes,
+          currentRect: instanceContext.rect.computed,
+          previousRect: preComputedRect,
+        });
+      }
       currentTween = tween(
         {
           old: currentNodes,
@@ -502,6 +514,7 @@ function componentFactory(definition, context = {}) {
       rend.render(nodes);
     }
     currentNodes = nodes;
+    preComputedRect = instanceContext.rect.computed;
 
     if (rend.setKey && typeof config.key === 'string') {
       rend.setKey(config.key);
