@@ -51,7 +51,7 @@
     "@types/react": "^17.0.3",
     "babel-loader": "^8.2.2",
     "copy-webpack-plugin": "^8.1.1",
-    "css-loader": "^5.2.2",
+    "css-loader": "^6.5.1",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-react": "^7.23.2",
     "eslint-plugin-react-hooks": "^4.2.0",
