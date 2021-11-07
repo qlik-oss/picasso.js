@@ -59,9 +59,8 @@ module.exports = {
   },
   devtool: 'inline-source-map',
   devServer: {
-    stats: 'errors-only',
     historyApiFallback: true,
-    contentBase: path.resolve(__dirname, './dist'),
+    static: path.resolve(__dirname, './dist'),
     port: 8090,
   },
   resolve: {

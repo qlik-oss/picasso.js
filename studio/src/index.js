@@ -3,12 +3,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import CssBaseLine from '@material-ui/core/CssBaseline';
 import { BrowserRouter as Router, withRouter } from 'react-router-dom';
-import { ThemeProvider, createMuiTheme } from '@material-ui/core';
+import { ThemeProvider } from '@material-ui/core';
+import { createTheme } from '@material-ui/core/styles';
 import green from '@material-ui/core/colors/green';
 import App from './App';
 import './index.css';
 
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
     type: 'dark',
     primary: green,
