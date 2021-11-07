@@ -5,15 +5,11 @@ export default {
 
   override: {
     getContentLibraries(_getContentLibraries) {
-      return _getContentLibraries().then((list) => {
-        return list.qItems;
-      });
+      return _getContentLibraries().then((list) => list.qItems);
     },
 
     getLibraryContent(_getLibraryContent, name) {
-      return _getLibraryContent(name).then((list) => {
-        return list.qItems;
-      });
+      return _getLibraryContent(name).then((list) => list.qItems);
     },
   },
 
@@ -34,9 +30,7 @@ export default {
      * @returns {Promise.<Array>} A Promise that when resolved holds a list of data objects of the specified type
      */
     getListData(listDef) {
-      return this.getListObject(listDef).then((list) => {
-        return list.getLayout();
-      });
+      return this.getListObject(listDef).then((list) => list.getLayout());
     },
 
     /**
@@ -47,9 +41,7 @@ export default {
      */
     getListObject(listDef) {
       const app = this;
-      let outKey = Object.keys(listDef).filter((key) => {
-        return key.indexOf('ListDef') !== -1;
-      })[0];
+      let outKey = Object.keys(listDef).filter((key) => key.indexOf('ListDef') !== -1)[0];
       if (!outKey) {
         throw new Error('Invalid list definition');
       }
@@ -62,11 +54,7 @@ export default {
       if (!app._listCache[id]) {
         app.getOrCreateSessionObject(listDef).then((obj) => {
           const getLayout = obj.getLayout.bind(obj);
-          obj.getLayout = () => {
-            return getLayout().then((layout) => {
-              return layout[outKey].qItems;
-            });
-          };
+          obj.getLayout = () => getLayout().then((layout) => layout[outKey].qItems);
           return obj;
         });
       }

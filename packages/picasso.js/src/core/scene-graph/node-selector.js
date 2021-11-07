@@ -8,21 +8,19 @@ const SELECTOR_MAPS = {
 };
 
 const FILTERS = {
-  type: (c, objects) => {
+  type: (c, objects) =>
     // eslint-disable-line arrow-body-style
-    return objects.filter((o) => {
+    objects.filter((o) => {
       const type = o.type;
 
       if (type) {
         return type.toLowerCase() === c.toLowerCase();
       }
       return false;
-    });
-  },
-
-  attr: (attr, operator, value, objects) => {
+    }),
+  attr: (attr, operator, value, objects) =>
     // eslint-disable-line arrow-body-style
-    return objects.filter((o) => {
+    objects.filter((o) => {
       const v = o.attrs[attr];
 
       if (!operator) {
@@ -41,21 +39,18 @@ const FILTERS = {
         default:
           return false;
       }
-    });
-  },
-
+    }),
   universal: (objects) => objects,
 
-  tag: (selector, objects) => {
+  tag: (selector, objects) =>
     // eslint-disable-line arrow-body-style
-    return objects.filter((o) => {
+    objects.filter((o) => {
       const tag = o.tag;
       if (tag) {
         return tag.trim().split(/\s+/).indexOf(selector.replace('.', '')) !== -1;
       }
       return false;
-    });
-  },
+    }),
 };
 
 /**

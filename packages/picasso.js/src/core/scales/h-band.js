@@ -190,9 +190,9 @@ export default function scaleHierarchicalBand(settings = {}, data = {}, resource
    * Generate discrete ticks
    * @return { Object[] } Ticks for each leaf node
    */
-  hBand.ticks = () => {
+  hBand.ticks = () =>
     // eslint-disable-line arrow-body-style
-    return ticks.map((item) => {
+    ticks.map((item) => {
       const start = hBand(item.key);
       const bandwidth = hBand.bandwidth(item.key);
       return {
@@ -203,7 +203,6 @@ export default function scaleHierarchicalBand(settings = {}, data = {}, resource
         end: start + bandwidth,
       };
     });
-  };
 
   const orgPxScale = bandInstance.pxScale;
   hBand.pxScale = function pxScale(size) {

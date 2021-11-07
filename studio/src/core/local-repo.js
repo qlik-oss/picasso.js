@@ -8,9 +8,7 @@ function slugify(text) {
 }
 
 const localRepo = {
-  list: () => {
-    return localExamples;
-  },
+  list: () => localExamples,
 
   new: (item) => {
     if (!item.title) {
