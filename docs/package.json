@@ -9,7 +9,7 @@
     "version": "yarn run spec && git add scriptappy.json"
   },
   "devDependencies": {
-    "jsdoc": "3.6.6",
+    "jsdoc": "3.6.7",
     "scriptappy-from-jsdoc": "0.7.0"
   }
 }
