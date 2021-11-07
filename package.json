@@ -56,7 +56,7 @@
     "extend": "3.0.2",
     "globby": "12.0.2",
     "husky": "7.0.4",
-    "lerna": "3.22.1",
+    "lerna": "4.0.0",
     "iedriver": "3.150.1",
     "mocha-junit-reporter": "2.0.0",
     "prettier": "2.2.1",
