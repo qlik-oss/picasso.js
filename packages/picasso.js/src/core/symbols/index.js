@@ -41,21 +41,23 @@ function applyOpts(obj, opts = {}) {
  * @param {SymbolRect|SymbolBar|SymbolCircle|SymbolCross|SymbolDiamond|SymbolLine|SymbolPolygon|SymbolSaltire|SymbolSquare|SymbolStar|SymbolTriangle} options - Options definition may contain any of the supported display-object attributes
  * @returns {object} A node definition
  */
-const create = (reg = parentReg) => (options = {}) => {
-  // TODO handle reserverd properties x, y, size, data, etc..
-  const fn = reg.get(options.type);
-  if (fn) {
-    const s = fn(options);
-    applyOpts(s, options);
+const create =
+  (reg = parentReg) =>
+  (options = {}) => {
+    // TODO handle reserverd properties x, y, size, data, etc..
+    const fn = reg.get(options.type);
+    if (fn) {
+      const s = fn(options);
+      applyOpts(s, options);
 
-    if (typeof options.data !== 'undefined') {
-      s.data = options.data;
+      if (typeof options.data !== 'undefined') {
+        s.data = options.data;
+      }
+
+      return s;
     }
-
-    return s;
-  }
-  return fn;
-};
+    return fn;
+  };
 
 export { create as default, parentReg as symbolRegistry };
 

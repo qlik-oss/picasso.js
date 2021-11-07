@@ -18,7 +18,11 @@ function oppositeAlign(align) {
 export default function calcRequiredSize({ isDiscrete, rect, formatter, measureText, scale, settings, state }) {
   let size = 0;
 
-  const { size: labelSize, edgeBleed, isToLarge } = getLabelSize({
+  const {
+    size: labelSize,
+    edgeBleed,
+    isToLarge,
+  } = getLabelSize({
     isDiscrete,
     rect,
     formatter,

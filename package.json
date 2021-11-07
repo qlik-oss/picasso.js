@@ -12,7 +12,7 @@
     "bump": "lerna publish --no-push",
     "clean": "lerna clean",
     "format": "prettier --write '**/*.js'",
-    "lint": "cross-env FORCE_COLOR=1 lerna run lint",
+    "lint": "cross-env FORCE_COLOR=1 lerna run lint -- --fix",
     "link": "lerna link",
     "test": "npm run test:unit && npm run test:component",
     "test:component": "aw -c aw.config.js --testExt '*.comp.js'",
