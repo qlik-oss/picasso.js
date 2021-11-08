@@ -3,12 +3,16 @@
   "env": {
     "node": true
   },
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
   "parserOptions": {
     "sourceType": "module",
+    "requireConfigFile": false,
     "ecmaFeatures": {
       "jsx": true
-    }
+    },
+    "babelOptions": {
+      "presets": ["@babel/preset-react"]
+   }
   },
   "extends": ["airbnb-base", "prettier"],
   "plugins": ["prettier"],
