@@ -46,9 +46,7 @@ const normalLayout = (layoutSettings) => {
   return customLayout((rect, vcomponents) => dockLayout.layout(rect, vcomponents));
 };
 
-const getLayoutFn = (strategy) => {
-  return typeof strategy === 'function' ? customLayout(strategy) : normalLayout(strategy);
-};
+const getLayoutFn = (strategy) => (typeof strategy === 'function' ? customLayout(strategy) : normalLayout(strategy));
 
 function collectionFn({ createComponent }) {
   const instance = {};
@@ -91,9 +89,9 @@ function collectionFn({ createComponent }) {
       }
     }
   };
-  const addAndUpdate = ({ compList, data, excludeFromUpdate, formatters, scales, settingsList }) => {
+  const addAndUpdate = ({ compList, data, excludeFromUpdate, formatters, scales, settingsList }) =>
     // Let the "components" array determine order of components
-    return settingsList
+    settingsList
       .map((comp) => {
         const component = findComponentByKeyInList(compList, comp.key);
 
@@ -140,7 +138,6 @@ function collectionFn({ createComponent }) {
         return component;
       })
       .filter((c) => !!c);
-  };
   const recLayout = ({ components, hidden, layoutFn, ordered, rect, visible }) => {
     const { visible: v, hidden: h, ordered: o } = layoutFn(rect, components);
     visible.push(...v);
