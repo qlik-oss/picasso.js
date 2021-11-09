@@ -3,7 +3,7 @@
   "info": {
     "name": "picasso.js",
     "description": "A charting library streamlined for building visualizations for the Qlik Sense Analytics platform.",
-    "version": "1.3.0",
+    "version": "1.4.0",
     "license": "MIT",
     "stability": "stable",
     "x-qlik-visibility": "public"
@@ -89,7 +89,9 @@
         "renderer": {
           "description": "Renderer registry",
           "type": "#/definitions/registry",
-          "examples": ["const svgFactory = picassojs.renderer('svg');\nconst svgRenderer = svgFactory();"]
+          "examples": [
+            "const svgFactory = picassojs.renderer('svg');\nconst svgRenderer = svgFactory();"
+          ]
         },
         "scale": {
           "description": "Scale registry",
@@ -189,7 +191,9 @@
               }
             }
           ],
-          "examples": ["brush.addRange('Sales', { min: 20, max: 50 });"]
+          "examples": [
+            "brush.addRange('Sales', { min: 20, max: 50 });"
+          ]
         },
         "addRanges": {
           "kind": "function",
@@ -244,7 +248,9 @@
               "type": "#/definitions/Brush/events/update"
             }
           ],
-          "examples": ["brush.addValue('countries', 'Sweden');\nbrush.addValue('/qHyperCube/qDimensionInfo/0', 3);"]
+          "examples": [
+            "brush.addValue('countries', 'Sweden');\nbrush.addValue('/qHyperCube/qDimensionInfo/0', 3);"
+          ]
         },
         "addValues": {
           "kind": "function",
@@ -463,7 +469,9 @@
               "type": "string"
             }
           ],
-          "examples": ["brush.removeKeyAlias('BadFieldName');"]
+          "examples": [
+            "brush.removeKeyAlias('BadFieldName');"
+          ]
         },
         "removeRange": {
           "description": "Removes a numeric range from this brush context",
@@ -528,7 +536,9 @@
               "type": "any"
             }
           ],
-          "examples": ["brush.removeValue('countries', 'Sweden');"]
+          "examples": [
+            "brush.removeValue('countries', 'Sweden');"
+          ]
         },
         "removeValues": {
           "kind": "function",
@@ -675,7 +685,9 @@
               "type": "any"
             }
           ],
-          "examples": ["brush.toggleValue('countries', 'Sweden');"]
+          "examples": [
+            "brush.toggleValue('countries', 'Sweden');"
+          ]
         },
         "toggleValues": {
           "kind": "function",
@@ -1587,7 +1599,9 @@
           "type": "any"
         }
       },
-      "examples": ["{\n type: 'axis',\n scale: '<name-of-scale>'\n}"],
+      "examples": [
+        "{\n type: 'axis',\n scale: '<name-of-scale>'\n}"
+      ],
       "definitions": {
         "ContinuousSettings": {
           "description": "Continuous axis settings",
@@ -3224,7 +3238,9 @@
           }
         }
       },
-      "examples": ["{\n  type: 'legend-cat',\n  scale: '<categorical-color-scale>',\n}"]
+      "examples": [
+        "{\n  type: 'legend-cat',\n  scale: '<categorical-color-scale>',\n}"
+      ]
     },
     "ComponentLegendSeq": {
       "extends": [
@@ -4371,7 +4387,9 @@
           }
         }
       },
-      "examples": ["{\n type: 'text',\n text: 'my title',\n dock: 'left',\n settings: {\n   anchor: 'left',\n }\n}"]
+      "examples": [
+        "{\n type: 'text',\n text: 'my title',\n dock: 'left',\n settings: {\n   anchor: 'left',\n }\n}"
+      ]
     },
     "ComponentTooltip": {
       "extends": [
@@ -4469,7 +4487,9 @@
                   "type": "object"
                 }
               },
-              "examples": ["({ h, data }) => data.map((datum) => h('div', {}, datum))"]
+              "examples": [
+                "({ h, data }) => data.map((datum) => h('div', {}, datum))"
+              ]
             },
             "contentClass": {
               "description": "Set content class.",
@@ -4523,7 +4543,9 @@
                 "description": "Return data",
                 "type": "any"
               },
-              "examples": ["(ctx) => ctx.node.data.value"]
+              "examples": [
+                "(ctx) => ctx.node.data.value"
+              ]
             },
             "filter": {
               "description": "Callback function to filter incoming nodes to only a set of applicable nodes. Is called as a part of the `show` event.\n\nShould return an array of SceneNodes.",
@@ -4900,7 +4922,9 @@
                   "type": "any"
                 }
               },
-              "examples": ["{\n field: 'Sales',\n value: (val) => Math.round(val),\n label: (val) => `<${val}>`\n}"]
+              "examples": [
+                "{\n field: 'Sales',\n value: (val) => Math.round(val),\n label: (val) => `<${val}>`\n}"
+              ]
             },
             "ReduceFn": {
               "description": "Reduce callback function",
@@ -5200,7 +5224,9 @@
           "type": "#/definitions/DatumExtract"
         }
       ],
-      "examples": ["(d) => Math.min(0, d.value);"]
+      "examples": [
+        "(d) => Math.min(0, d.value);"
+      ]
     },
     "DatumBoolean": {
       "description": "Custom type that is either a boolean, DatumConfig or a datumAccessor",
@@ -6415,7 +6441,9 @@
           "returns": {
             "type": "#/definitions/Rect"
           },
-          "examples": ["node.boundsRelativeTo($('div'));\nnode.boundsRelativeTo('viewport');"]
+          "examples": [
+            "node.boundsRelativeTo($('div'));\nnode.boundsRelativeTo('viewport');"
+          ]
         },
         "children": {
           "description": "Get child nodes",

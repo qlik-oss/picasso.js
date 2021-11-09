@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/qlik-oss/picasso.js/compare/v1.3.0...v1.4.0) (2021-11-09)
+
+
+### Bug Fixes
+
+* **animations:** compensate for layout changes and synchronize tween phases ([#641](https://github.com/qlik-oss/picasso.js/issues/641)) ([4859b9e](https://github.com/qlik-oss/picasso.js/commit/4859b9ea0cdf1b574740cc53da15d62885f345e6))
+* consider offset when generating axis lines ([#636](https://github.com/qlik-oss/picasso.js/issues/636)) ([597ea4e](https://github.com/qlik-oss/picasso.js/commit/597ea4ecfc72c51de386b4e5ba9d3257d291d65a))
+* **deps:** update dependency slug to v5 ([#606](https://github.com/qlik-oss/picasso.js/issues/606)) ([d29bd26](https://github.com/qlik-oss/picasso.js/commit/d29bd26ca7adc2541d73bb5c2b990b369de5efa6))
+* node version dependent sorting ([#642](https://github.com/qlik-oss/picasso.js/issues/642)) ([81e0f69](https://github.com/qlik-oss/picasso.js/commit/81e0f69a9ed206b09f5d6333ff84518413e712ca))
+* use correct scene nodes during animation ([#638](https://github.com/qlik-oss/picasso.js/issues/638)) ([32c71ec](https://github.com/qlik-oss/picasso.js/commit/32c71eceb7882b4406f463f8dc79c42f5991d9d7))
+
+
+### Features
+
+* extend point component to support rect shape ([#635](https://github.com/qlik-oss/picasso.js/issues/635)) ([a8edd53](https://github.com/qlik-oss/picasso.js/commit/a8edd53c8316e986a08711b0ef140f3387723d2a))
+
+
+
+
+
 # [1.3.0](https://github.com/qlik-oss/picasso.js/compare/v1.2.2...v1.3.0) (2021-09-29)
 
 ### Features
