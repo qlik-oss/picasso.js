@@ -113,6 +113,7 @@ function collectionFn({ createComponent }) {
           comp.rendererSettings.transform()
         ) {
           component.applyTransform = true;
+          component.instance.renderer().settings(comp.rendererSettings);
           return component;
         }
 
