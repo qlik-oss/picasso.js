@@ -2,6 +2,12 @@ import componentCollectionFn from '../component-collection';
 
 function createComponent(settings) {
   let rect;
+  const rend = {
+    settings() {
+      this.myRendererSettings = 'new settings';
+    },
+    myRendererSettings: 'old settings',
+  };
   return {
     instance: {
       type: settings.type,
@@ -10,6 +16,7 @@ function createComponent(settings) {
         rect = r;
       },
       getRect: () => rect,
+      renderer: () => rend,
     },
     settings,
     key: settings.key,
@@ -96,6 +103,7 @@ describe('component-collection', () => {
 
       expect(comp1.applyTransform).to.be.undefined;
       expect(comp2.applyTransform).to.be.true;
+      expect(comp2.instance.renderer().myRendererSettings).to.equal('new settings');
     });
   });
 });

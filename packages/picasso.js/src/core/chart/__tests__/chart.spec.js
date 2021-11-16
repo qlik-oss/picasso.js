@@ -270,7 +270,9 @@ describe('Chart', () => {
       );
 
       expect(mockedRenderer.render).to.have.been.calledTwice;
+      mockedRenderer.settings = sinon.spy();
       chartInstance.update({ partialData: true });
+      expect(mockedRenderer.settings).to.have.been.calledOnce;
       const renderArgs = mockedRenderer.render.args;
       // no nodes are passed into renderers render function when applying transform!
       expect(renderArgs).to.eql([[['boxNode1']], [['pointNode1']], [['boxNode1']], []]);
