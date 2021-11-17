@@ -24,6 +24,12 @@
     "test:unit:watch": "aw -c aw.config.js --testExt '*.spec.js' -w",
     "start": "lerna run start --stream"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
   "engines": {
     "node": ">=8",
     "yarn": "~1.9.2 || > 1.9.10"
