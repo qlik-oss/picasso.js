@@ -22,13 +22,8 @@
     "test:ptor": "aw protractor -c aw.config.ptor.js",
     "test:unit": "aw -c aw.config.js --testExt '*.spec.js'",
     "test:unit:watch": "aw -c aw.config.js --testExt '*.spec.js' -w",
-    "start": "lerna run start --stream"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
+    "start": "lerna run start --stream",
+    "prepare": "husky install"
   },
   "engines": {
     "node": ">=8",
