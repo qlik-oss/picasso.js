@@ -5,14 +5,10 @@
       "conventionalCommits": true,
       "forcePublish": true,
       "message": "chore(release): %s 🚀",
-      "ignore": [
-        "test-utils",
-        "docs",
-        "studio"
-      ]
+      "ignore": ["test-utils", "docs", "studio"]
     }
   },
-  "version": "1.4.0",
+  "version": "1.4.1",
   "npmClient": "yarn",
   "useWorkspaces": true
 }
