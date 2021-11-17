@@ -92,9 +92,16 @@ export function extractFieldFromId(id, layout) {
   }
 
   if (BIN_RX.test(id)) {
-    measureIdx = -1;
-    dimensionIdx = -1;
-    measureCount = 2;
+    const props = path.substring(path.lastIndexOf('/') + 1);
+    if (props === 'binX') {
+      measureIdx = 0;
+    } else if (props === 'binY') {
+      measureIdx = 1;
+    } else {
+      measureIdx = -1;
+      dimensionIdx = -1;
+      measureCount = 2;
+    }
     path = '/qHyperCube';
     shortenPath = false;
   }

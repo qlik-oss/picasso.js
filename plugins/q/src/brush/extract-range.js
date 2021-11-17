@@ -3,7 +3,6 @@ const populateBins = (dataPages) => {
   const matrix = dataPages[0].qMatrix;
   let i;
 
-  // Hack for snapshot
   if (dataPages[0].reformatted) {
     for (i = 1; i < matrix.length; i++) {
       try {
@@ -21,7 +20,6 @@ const populateBins = (dataPages) => {
         // console.log( err );
       }
     }
-    // eslint-disable-next-line no-param-reassign
     dataPages[0].reformatted = true;
   }
 
