@@ -92,6 +92,7 @@ export default function componentFactoryFixture() {
       clear: () => {},
       destroy: () => {},
       setKey: (key) => rendererElement.setAttribute('data-key', key),
+      settings: () => {},
     };
 
     mediatorMock = {
