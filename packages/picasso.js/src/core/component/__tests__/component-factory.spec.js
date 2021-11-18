@@ -235,6 +235,38 @@ describe('Component', () => {
       expect(tween.default).to.have.been.calledOnce;
       sandbox.restore();
     });
+
+    it('should not run tween when animations are disabled, case 1: enabled is not a function', () => {
+      let instance;
+      let sandbox;
+      sandbox = sinon.createSandbox();
+      sandbox.stub(tween, 'default').returns({ start: sinon.spy() });
+      definition.render = () => ['node1', 'node2'];
+      instance = createInstance({
+        rect: { computed: { x: 0, y: 0, width: 1, height: 1 } },
+        animations: { enabled: false, compensateForLayoutChanges: sinon.spy() },
+      });
+      instance.render();
+      instance.update();
+      expect(tween.default).to.not.have.been.called;
+      sandbox.restore();
+    });
+
+    it('should not run tween when animations are disabled, case 2: enabled is a function', () => {
+      let instance;
+      let sandbox;
+      sandbox = sinon.createSandbox();
+      sandbox.stub(tween, 'default').returns({ start: sinon.spy() });
+      definition.render = () => ['node1', 'node2'];
+      instance = createInstance({
+        rect: { computed: { x: 0, y: 0, width: 1, height: 1 } },
+        animations: { enabled: () => false, compensateForLayoutChanges: sinon.spy() },
+      });
+      instance.render();
+      instance.update();
+      expect(tween.default).to.not.have.been.called;
+      sandbox.restore();
+    });
   });
 
   describe('findShapes', () => {

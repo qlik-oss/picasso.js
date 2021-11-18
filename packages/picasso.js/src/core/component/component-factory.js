@@ -468,6 +468,7 @@ function componentFactory(definition, context = {}) {
       settings.rendererSettings.transform()
     ) {
       rend.render();
+      currentNodes = null;
       return;
     }
 
@@ -489,8 +490,17 @@ function componentFactory(definition, context = {}) {
         bs.update();
       }
     });
+    const evaluate = (expression) => {
+      if (!expression) {
+        return false;
+      }
+      if (typeof expression === 'function') {
+        return expression();
+      }
+      return true;
+    };
 
-    if (currentNodes && settings.animations && settings.animations.enabled) {
+    if (currentNodes && settings.animations && evaluate(settings.animations.enabled)) {
       /* The issue: as soon as animation begins, the layout changes immediately to a new layout while the displaying nodes' positions are still calculated relative to the old layout.
       This makes the nodes "jump" at the beginning of the animations. To fix this, we can compesate for the layout changes by adjusting the relative positions of the displaying nodes.
       For example, if the new layout of the point component (the central area) jumps 10px to the left compared to the old layout, we shift the points 10px to the right, making the absolute positions of the points stay the same. */
