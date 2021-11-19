@@ -462,12 +462,11 @@ function componentFactory(definition, context = {}) {
       currentTween.stop();
     }
 
-    if (
-      settings.rendererSettings &&
-      typeof settings.rendererSettings.transform === 'function' &&
-      settings.rendererSettings.transform()
-    ) {
+    const { rendererSettings, brush, animations } = settings;
+
+    if (typeof rendererSettings?.transform === 'function' && rendererSettings.transform()) {
       rend.render();
+      currentNodes = null;
       return;
     }
 
@@ -479,7 +478,7 @@ function componentFactory(definition, context = {}) {
     brushTriggers.tap = [];
     brushTriggers.over = [];
 
-    if (settings.brush) {
+    if (brush) {
       addBrushStylers();
       addBrushTriggers();
     }
@@ -490,12 +489,16 @@ function componentFactory(definition, context = {}) {
       }
     });
 
-    if (currentNodes && settings.animations && settings.animations.enabled) {
+    if (
+      currentNodes &&
+      animations &&
+      (typeof animations.enabled === 'function' ? animations.enabled() : animations.enabled)
+    ) {
       /* The issue: as soon as animation begins, the layout changes immediately to a new layout while the displaying nodes' positions are still calculated relative to the old layout.
       This makes the nodes "jump" at the beginning of the animations. To fix this, we can compesate for the layout changes by adjusting the relative positions of the displaying nodes.
       For example, if the new layout of the point component (the central area) jumps 10px to the left compared to the old layout, we shift the points 10px to the right, making the absolute positions of the points stay the same. */
-      if (settings.animations.compensateForLayoutChanges) {
-        settings.animations.compensateForLayoutChanges({
+      if (animations.compensateForLayoutChanges) {
+        animations.compensateForLayoutChanges({
           currentNodes,
           currentRect: instanceContext.rect.computed,
           previousRect: preComputedRect,
@@ -507,7 +510,7 @@ function componentFactory(definition, context = {}) {
           current: nodes,
         },
         { renderer: rend },
-        settings.animations
+        animations
       );
       currentTween.start();
     } else {
