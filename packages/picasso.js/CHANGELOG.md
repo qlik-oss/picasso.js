@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.2](https://github.com/qlik-oss/picasso.js/compare/v1.4.1...v1.4.2) (2021-11-21)
+
+### Bug Fixes
+
+- disable animation during transformation ([#657](https://github.com/qlik-oss/picasso.js/issues/657)) ([e303c57](https://github.com/qlik-oss/picasso.js/commit/e303c57e3ab59f7513a6f64bf27001998ee94a94))
+
 ## [1.4.1](https://github.com/qlik-oss/picasso.js/compare/v1.4.0...v1.4.1) (2021-11-17)
 
 ### Bug Fixes
