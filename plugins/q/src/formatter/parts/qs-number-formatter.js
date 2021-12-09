@@ -145,6 +145,15 @@ function getAbbreviations(localeInfo, listSeparator) {
   return abbreviations;
 }
 
+function isSIAbbreviation(pattern) {
+  if (pattern.indexOf('A') === -1) {
+    return false;
+  }
+  const validFormatCodeCharacters = ['#', '0', ' ']; // The last character is a non-breaking space, not a normal space
+  const formatCode = pattern.substring(0, pattern.indexOf('A'));
+  return [...formatCode].every((c) => validFormatCodeCharacters.includes(c));
+}
+
 function preparePattern(o, t, d) {
   let parts,
     lastPart,
@@ -157,7 +166,7 @@ function preparePattern(o, t, d) {
     temp,
     regex;
 
-  if (pattern.indexOf('A') >= 0) {
+  if (isSIAbbreviation(pattern)) {
     // abbreviate SI
     pattern = pattern.replace('A', '');
     o.abbreviate = true;
