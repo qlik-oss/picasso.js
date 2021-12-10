@@ -145,11 +145,11 @@ function getAbbreviations(localeInfo, listSeparator) {
   return abbreviations;
 }
 
-function isSIAbbreviation(pattern) {
+function isSIAbbreviation(pattern, t, d) {
   if (pattern.indexOf('A') === -1) {
     return false;
   }
-  const validFormatCodeCharacters = ['#', '0', ' ']; // The last character is a non-breaking space, not a normal space
+  const validFormatCodeCharacters = [t, d, '#', '0', '$', ' ']; // The last character is a non-breaking space, not a normal space
   const formatCode = pattern.substring(0, pattern.indexOf('A'));
   return [...formatCode].every((c) => validFormatCodeCharacters.includes(c));
 }
@@ -166,7 +166,7 @@ function preparePattern(o, t, d) {
     temp,
     regex;
 
-  if (isSIAbbreviation(pattern)) {
+  if (isSIAbbreviation(pattern, t, d)) {
     // abbreviate SI
     pattern = pattern.replace('A', '');
     o.abbreviate = true;
