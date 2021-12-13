@@ -514,7 +514,6 @@ class NumberFormatter {
       }
 
       value = value.replace(prep.numericRegex, (m) => {
-        console.log(m);
         if (m === t) {
           return prep.groupTemp;
         }
