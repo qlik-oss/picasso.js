@@ -145,16 +145,7 @@ function getAbbreviations(localeInfo, listSeparator) {
   return abbreviations;
 }
 
-function isSIAbbreviation(pattern, t, d) {
-  if (pattern.indexOf('A') === -1) {
-    return false;
-  }
-  const validFormatCodeCharacters = [t, d, '#', '0', '$', ' ']; // The last character is a non-breaking space, not a normal space
-  const formatCode = pattern.substring(0, pattern.indexOf('A'));
-  return [...formatCode].every((c) => validFormatCodeCharacters.includes(c));
-}
-
-function preparePattern(o, t, d) {
+function preparePattern(o, t, d, abbreviate) {
   let parts,
     lastPart,
     pattern = o.pattern,
@@ -166,9 +157,7 @@ function preparePattern(o, t, d) {
     temp,
     regex;
 
-  if (isSIAbbreviation(pattern, t, d)) {
-    // abbreviate SI
-    pattern = pattern.replace('A', '');
+  if (abbreviate) {
     o.abbreviate = true;
   }
 
@@ -284,9 +273,6 @@ class NumberFormatter {
    * format(10.123, "0.00##") // 10.123; // at least 2 decimals, never more than 4
    * format(123456789, "#,###") // 123,456,789;
    * format(123456789, "####-####", "-") // 1-2345-6789;
-   * format(10000, "#A") // 10k,  A -> SI abbreviation
-   * format(1234567, "#.###A") // 1.235M;
-   * format(0.0001, "#.#A") // 0.1m;
    *
    * format(0.257, "0.0%") // 25.7%; // will multiply by 100
    * format(9876, "$#,###") // $9,876;
@@ -366,14 +352,15 @@ class NumberFormatter {
       prep.zero.isFunctional = true;
     }
 
+    const abbreviate = this.type === 'U';
     if (!prep.positive.isFunctional) {
-      preparePattern(prep.positive, t, d);
+      preparePattern(prep.positive, t, d, abbreviate);
     }
     if (prep.negative && !prep.negative.isFunctional) {
-      preparePattern(prep.negative, t, d);
+      preparePattern(prep.negative, t, d, abbreviate);
     }
     if (prep.zero && !prep.zero.isFunctional) {
-      preparePattern(prep.zero, t, d);
+      preparePattern(prep.zero, t, d, abbreviate);
     }
   }
 
@@ -527,6 +514,7 @@ class NumberFormatter {
       }
 
       value = value.replace(prep.numericRegex, (m) => {
+        console.log(m);
         if (m === t) {
           return prep.groupTemp;
         }
