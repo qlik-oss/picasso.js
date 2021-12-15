@@ -39,14 +39,14 @@ const qLocaleInfo = {
 describe('qs-formatter', () => {
   it('should create a numeric formatter by default', () => {
     const f = createFromMetaInfo();
-    expect(f.pattern()).to.equal('#.##A');
+    expect(f.pattern()).to.equal('#.##');
   });
   it('should create an abbreviation formatter when qIsAutoFormat=true', () => {
     const f = createFromMetaInfo({
       qIsAutoFormat: true,
       qNumFormat: {},
     });
-    expect(f.pattern()).to.equal('#.##A');
+    expect(f.pattern()).to.equal('#.##');
   });
   it('should create an abbreviation formatter when qNumFormat.qType=U', () => {
     const f = createFromMetaInfo({
@@ -55,7 +55,7 @@ describe('qs-formatter', () => {
         qType: 'U',
       },
     });
-    expect(f.pattern()).to.equal('#.##A');
+    expect(f.pattern()).to.equal('#.##');
   });
 
   it('should not create an abbreviation formatter when qType="M"', () => {
@@ -78,7 +78,7 @@ describe('qs-formatter', () => {
         qDecimalSep: 'dec',
       }
     );
-    expect(f.pattern()).to.equal('#dec##A');
+    expect(f.pattern()).to.equal('#dec##');
   });
 
   it('should create locale specific date pattern', () => {

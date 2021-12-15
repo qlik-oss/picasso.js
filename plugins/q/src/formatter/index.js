@@ -23,7 +23,7 @@ export function createFromMetaInfo(meta, localeInfo) {
   }
 
   if (isAuto || type === 'U') {
-    pattern = `#${decimal}##A`;
+    pattern = `#${decimal}##`;
     type = 'U';
   }
 

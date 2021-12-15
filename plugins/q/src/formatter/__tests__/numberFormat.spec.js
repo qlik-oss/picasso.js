@@ -264,47 +264,6 @@ describe('numberFormat', () => {
           expect(f(123456789)).to.equal('1-2345-6789');
         });
 
-        it('should support SI abbreviations', () => {
-          f = formatter('#,###.0A', ',');
-
-          expect(f(0)).to.equal('0.0');
-          expect(f(1)).to.equal('1.0');
-          expect(f(100)).to.equal('100.0');
-          expect(f(1000)).to.equal('1.0k');
-          expect(f(100000)).to.equal('100.0k');
-          expect(f(10000000)).to.equal('10.0M');
-
-          f = formatter('#.###A');
-
-          expect(f(1234567, '#.###A')).to.equal('1.235M');
-
-          f = formatter('#.#A');
-
-          expect(f(0.0001)).to.equal('0.1m');
-        });
-
-        it('should support custom abbreviations', () => {
-          let localeInfo = {
-            qNumericalAbbreviation: '-6:u;-3:x;2:h;6:test',
-          };
-          f = formatter('#,###.0A', ',', '', '', localeInfo);
-
-          expect(f(0)).to.equal('0.0');
-          expect(f(1)).to.equal('1.0');
-          expect(f(10000000)).to.equal('10.0test');
-          expect(f(100)).to.equal('1.0h');
-          expect(f(100000)).to.equal('1,000.0h');
-
-          f = formatter('#.###A', ',', '', '', localeInfo);
-          expect(f(1234567, '#.###A')).to.equal('1.235test');
-
-          f = formatter('#.#A', ',', '', '', localeInfo);
-          expect(f(0.0001, '#.#A')).to.equal('0.1x');
-          expect(f(0.00001, '#.#A')).to.equal('10u');
-          expect(f(0.0000001, '#.#A')).to.equal('0.1u');
-          expect(f(1005)).to.equal('10.1h');
-        });
-
         it('should support percentage', () => {
           f = formatter('0.0%');
 
@@ -491,7 +450,6 @@ describe('numberFormat', () => {
             expect(f.format('#.###,###', 123456789.987, '.', ',')).to.equal('123.456.789,987');
             expect(f.format('#.00', 0.1234)).to.equal('0.12');
             expect(f.format('#,###.00', 10000000, ',', '.')).to.equal('10,000,000.00');
-            expect(f.format('#,###.0A', 1000, ',')).to.equal('1.0k');
             expect(f.format('0.0%', 0.275)).to.equal('27.5%');
             expect(f.format('foo0.0bar', 1.234)).to.equal('foo1.2bar');
             expect(f.format('0.0;(0.0)', 1.234)).to.equal('1.2');
@@ -561,7 +519,6 @@ describe('numberFormat', () => {
             expect(f.format('#.###,###', 123456789.987, '.', ',')).to.equal('123.456.789,987');
             expect(f.format('#.00', 0.1234)).to.equal('0.12');
             expect(f.format('#,###.00', 10000000, ',', '.')).to.equal('10,000,000.00');
-            expect(f.format('#,###.0A', 1000, ',')).to.equal('1.0k');
             expect(f.format('0.0%', 0.275)).to.equal('27.5%');
             expect(f.format('foo0.0bar', 1.234)).to.equal('foo1.2bar');
             expect(f.format('0.0;(0.0)', 1.234)).to.equal('1.2');
