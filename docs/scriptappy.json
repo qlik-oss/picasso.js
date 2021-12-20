@@ -4821,55 +4821,10 @@
       "kind": "union",
       "items": [
         {
-          "type": "#/definitions/ComponentAxis"
-        },
-        {
-          "type": "#/definitions/ComponentBox"
-        },
-        {
-          "type": "#/definitions/ComponentBrushArea"
-        },
-        {
-          "type": "#/definitions/ComponentBrushAreaDir"
-        },
-        {
-          "type": "#/definitions/ComponentBrushLasso"
-        },
-        {
-          "type": "#/definitions/ComponentBrushRange"
-        },
-        {
-          "type": "#/definitions/ComponentContainer"
-        },
-        {
-          "type": "#/definitions/ComponentGridLine"
-        },
-        {
-          "type": "#/definitions/ComponentLabels"
-        },
-        {
-          "type": "#/definitions/ComponentLegendCat"
-        },
-        {
-          "type": "#/definitions/ComponentLegendSeq"
-        },
-        {
           "type": "#/definitions/ComponentLine"
         },
         {
           "type": "#/definitions/ComponentPie"
-        },
-        {
-          "type": "#/definitions/ComponentPoint"
-        },
-        {
-          "type": "#/definitions/ComponentRefLine"
-        },
-        {
-          "type": "#/definitions/ComponentText"
-        },
-        {
-          "type": "#/definitions/ComponentTooltip"
         }
       ],
       "type": "any"
