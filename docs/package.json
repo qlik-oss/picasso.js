@@ -6,9 +6,11 @@
   "scripts": {
     "build": "yarn run spec",
     "spec": "jsdoc -r ../packages/picasso.js/src -p ../packages/picasso.js/package.json -X | scriptappy-from-jsdoc -c ./scriptappy.config.js",
+    "ts": "yarn run spec && sy to-dts --export default -o ../packages/picasso.js/types/index.d.ts",
     "version": "yarn run spec && git add scriptappy.json"
   },
   "devDependencies": {
+    "@scriptappy/cli": "^0.0.1",
     "jsdoc": "3.6.7",
     "scriptappy-from-jsdoc": "0.7.0"
   }
