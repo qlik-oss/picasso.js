@@ -1,4 +1,6 @@
-export default picassojs;
+declare const pjs: picassojs;
+
+export default pjs;
 
 declare type picassojs = {
   (cfg?: {
@@ -445,43 +447,60 @@ declare namespace picassojs {
   }
 
   type ChartDefinition = {
+    beforeDestroy?: picassojs.ChartDefinition.beforeDestroy;
+    beforeMount?: picassojs.ChartDefinition.beforeMount;
+    beforeRender?: picassojs.ChartDefinition.beforeRender;
+    beforeUpdate?: picassojs.ChartDefinition.beforeUpdate;
+    created?: picassojs.ChartDefinition.created;
+    destroyed?: picassojs.ChartDefinition.destroyed;
+    mounted?: picassojs.ChartDefinition.mounted;
+    updated?: picassojs.ChartDefinition.updated;
+    data: picassojs.DataSource[] | picassojs.DataSource;
+    element: HTMLElement;
+    settings: picassojs.ChartSettings;
+  };
+
+  namespace ChartDefinition {
     /**
      * Called before the chart has been destroyed
      */
-    beforeDestroy(): void;
+    type beforeDestroy = () => void;
+
     /**
      * Called before the chart has been mounted
      */
-    beforeMount(): void;
+    type beforeMount = () => void;
+
     /**
      * Called before the chart has been rendered
      */
-    beforeRender(): void;
+    type beforeRender = () => void;
+
     /**
      * Called before the chart has been updated
      */
-    beforeUpdate(): void;
+    type beforeUpdate = () => void;
+
     /**
      * Called when the chart has been created
      */
-    created(): void;
-    data: picassojs.DataSource[] | picassojs.DataSource;
+    type created = () => void;
+
     /**
      * Called after the chart has been destroyed
      */
-    destroyed(): void;
-    element: HTMLElement;
+    type destroyed = () => void;
+
     /**
      * Called after the chart has been mounted
-     * @param element The element the chart been mounted to
      */
-    mounted(element: HTMLElement): void;
-    settings: picassojs.ChartSettings;
+    type mounted = (element: HTMLElement) => void;
+
     /**
      * Called after the chart has been updated
      */
-    updated(): void;
-  };
+    type updated = () => void;
+  }
 
   type ChartSettings = {
     components?: picassojs.ComponentTypes[];
@@ -508,9 +527,10 @@ declare namespace picassojs {
     key: string;
   };
 
-  type ComponentAxis = {
+  type ComponentAxis = picassojs.ComponentSettings & {
+    type: 'axis';
     scale: string;
-    settings: picassojs.ComponentAxis.DiscreteSettings | picassojs.ComponentAxis.ContinuousSettings;
+    settings?: picassojs.ComponentAxis.DiscreteSettings | picassojs.ComponentAxis.ContinuousSettings;
   };
 
   namespace ComponentAxis {
@@ -571,7 +591,8 @@ declare namespace picassojs {
     };
   }
 
-  type ComponentBox = {
+  type ComponentBox = picassojs.ComponentSettings & {
+    type: 'box';
     data: {
       min?: number;
       max?: number;
@@ -634,7 +655,8 @@ declare namespace picassojs {
     };
   }
 
-  type ComponentBrushArea = {
+  type ComponentBrushArea = picassojs.ComponentSettings & {
+    type: 'brush-area';
     settings: {
       brush: {
         components: picassojs.BrushTargetConfig[];
@@ -642,7 +664,8 @@ declare namespace picassojs {
     };
   };
 
-  type ComponentBrushAreaDir = {
+  type ComponentBrushAreaDir = picassojs.ComponentSettings & {
+    type: 'brush-area-dir';
     settings: {
       brush: {
         components: picassojs.BrushTargetConfig[];
@@ -659,7 +682,8 @@ declare namespace picassojs {
     };
   };
 
-  type ComponentBrushLasso = {
+  type ComponentBrushLasso = picassojs.ComponentSettings & {
+    type: 'brush-lasso';
     settings: {
       lasso?: {
         fill?: string;
@@ -687,7 +711,8 @@ declare namespace picassojs {
     };
   };
 
-  type ComponentBrushRange = {
+  type ComponentBrushRange = picassojs.ComponentSettings & {
+    type: 'brush-range';
     settings: {
       brush: string | object;
       scale: string;
@@ -705,11 +730,12 @@ declare namespace picassojs {
     };
   };
 
-  type ComponentContainer = {
-    type?: string;
+  type ComponentContainer = picassojs.ComponentSettings & {
+    type: 'container';
   };
 
-  type ComponentGridLine = {
+  type ComponentGridLine = picassojs.ComponentSettings & {
+    type: 'grid-line';
     settings: {
       x: {
         scale: string;
@@ -732,7 +758,8 @@ declare namespace picassojs {
     };
   };
 
-  type ComponentLabels = {
+  type ComponentLabels = picassojs.ComponentSettings & {
+    type: 'labels';
     settings: {
       sources: picassojs.ComponentLabels.Source[];
     };
@@ -740,7 +767,7 @@ declare namespace picassojs {
 
   namespace ComponentLabels {
     type BarsLabelStrategy = {
-      type: string;
+      type: 'bar';
       settings: {
         direction?: string | (() => void);
         orientation?: string;
@@ -751,7 +778,7 @@ declare namespace picassojs {
     };
 
     type RowsLabelStrategy = {
-      type: string;
+      type: 'rows';
       settings: {
         fontFamily?: string;
         fontSize?: number;
@@ -762,7 +789,7 @@ declare namespace picassojs {
     };
 
     type SlicesLabelStrategy = {
-      type: string;
+      type: 'slice';
       settings: {
         direction?: string | (() => void);
         fontFamily?: string;
@@ -781,9 +808,10 @@ declare namespace picassojs {
     };
   }
 
-  type ComponentLegendCat = {
+  type ComponentLegendCat = picassojs.ComponentSettings & {
+    type: 'legend-cat';
     scale: string;
-    settings: {
+    settings?: {
       item?: {
         align?: number;
         justify?: number;
@@ -829,7 +857,8 @@ declare namespace picassojs {
     };
   };
 
-  type ComponentLegendSeq = {
+  type ComponentLegendSeq = picassojs.ComponentSettings & {
+    type: 'legend-seq';
     settings: {
       fill: string;
       major: string;
@@ -870,7 +899,8 @@ declare namespace picassojs {
     };
   };
 
-  type ComponentLine = {
+  type ComponentLine = picassojs.ComponentSettings & {
+    type: 'line';
     settings: {
       connect?: boolean;
       coordinates: {
@@ -918,7 +948,8 @@ declare namespace picassojs {
     ) => void;
   }
 
-  type ComponentPie = {
+  type ComponentPie = picassojs.ComponentSettings & {
+    type: 'pie';
     settings: {
       endAngle?: number;
       slice: {
@@ -938,15 +969,16 @@ declare namespace picassojs {
     };
   };
 
-  type ComponentPoint = {
-    settings: {
+  type ComponentPoint = picassojs.ComponentSettings & {
+    type: 'point';
+    settings?: {
       fill?: picassojs.DatumString;
       label?: picassojs.DatumString;
       opacity?: picassojs.DatumNumber;
       shape?: picassojs.DatumString;
       show?: picassojs.DatumBoolean;
       size?: picassojs.DatumNumber;
-      sizeLimits: {
+      sizeLimits?: {
         maxPx?: number;
         maxRelDiscrete?: number;
         maxRelExtent?: number;
@@ -963,7 +995,8 @@ declare namespace picassojs {
     };
   };
 
-  type ComponentRefLine = {
+  type ComponentRefLine = picassojs.ComponentSettings & {
+    type: 'ref-line';
     settings: {
       lines: {
         x?: picassojs.ComponentRefLine.Line[];
@@ -1053,9 +1086,11 @@ declare namespace picassojs {
     strategy?: picassojs.DockLayoutSettings | picassojs.customLayoutFunction;
     data?: picassojs.DataExtraction | picassojs.DataFieldExtraction;
     rendererSettings?: picassojs.RendererSettings;
+    key?: string;
   }
 
-  type ComponentText = {
+  type ComponentText = picassojs.ComponentSettings & {
+    type: 'text';
     text: string | (() => void);
     settings: {
       paddingStart?: number;
@@ -1068,7 +1103,8 @@ declare namespace picassojs {
     };
   };
 
-  type ComponentTooltip = {
+  type ComponentTooltip = picassojs.ComponentSettings & {
+    type: 'tooltip';
     settings: {
       /**
        * Component lifecycle hook. Called after the tooltip is hidden.
@@ -1131,15 +1167,31 @@ declare namespace picassojs {
       };
       tooltipClass?: object;
     };
-    type: string;
   };
 
-  type ComponentTypes = picassojs.ComponentLine | picassojs.ComponentPie;
+  type ComponentTypes =
+    | picassojs.ComponentAxis
+    | picassojs.ComponentBox
+    | picassojs.ComponentBrushArea
+    | picassojs.ComponentBrushAreaDir
+    | picassojs.ComponentBrushLasso
+    | picassojs.ComponentBrushRange
+    | picassojs.ComponentContainer
+    | picassojs.ComponentGridLine
+    | picassojs.ComponentLabels
+    | picassojs.ComponentLegendCat
+    | picassojs.ComponentLegendSeq
+    | picassojs.ComponentLine
+    | picassojs.ComponentPie
+    | picassojs.ComponentPoint
+    | picassojs.ComponentRefLine
+    | picassojs.ComponentText
+    | picassojs.ComponentTooltip;
 
   type customLayoutFunction = (rect: picassojs.Rect, components: {}[]) => void;
 
   type DataExtraction = {
-    extract: picassojs.DataExtraction.Extract;
+    extract: picassojs.DataExtraction.Extract | picassojs.DataExtraction.Extract[];
     stack?: {
       stackKey: picassojs.DataExtraction.StackKeyCallback;
       value: picassojs.DataExtraction.StackValueCallback;
@@ -1255,7 +1307,7 @@ declare namespace picassojs {
   }
 
   type DataSource = {
-    key: string;
+    key?: string;
     type: string;
     data: any;
   };

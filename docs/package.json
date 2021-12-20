@@ -6,7 +6,9 @@
   "scripts": {
     "build": "yarn run spec",
     "spec": "jsdoc -r ../packages/picasso.js/src -p ../packages/picasso.js/package.json -X | scriptappy-from-jsdoc -c ./scriptappy.config.js",
-    "ts": "yarn run spec && sy to-dts --export default -o ../packages/picasso.js/types/index.d.ts",
+    "postspec": "prettier -w ./scriptappy.json",
+    "ts": "yarn run spec && sy to-dts --export default --exportConst pjs -o ../packages/picasso.js/types/index.d.ts",
+    "postts": "prettier -w ../packages/picasso.js/types/index.d.ts",
     "version": "yarn run spec && git add scriptappy.json"
   },
   "devDependencies": {

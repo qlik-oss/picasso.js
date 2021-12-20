@@ -107,7 +107,11 @@ import componentCollectionFn from './component-collection';
  * @property {DockLayoutSettings|customLayoutFunction} [strategy] Layout strategy used for child components.
  * @property {DataExtraction|DataFieldExtraction} [data] Extracted data that should be available to the component
  * @property {RendererSettings} [rendererSettings] Settings for the renderer used to render the component
+<<<<<<< HEAD
  * @property {string} [key] Component key
+=======
+ * @property {string} [key] TODO Add desription
+>>>>>>> ba6a7c6 (fix: update jsdosc)
  */
 
 // mark strategy as experimental
@@ -337,6 +341,7 @@ export function orderComponents(element, ordered) {
 function chartFn(definition, context) {
   /**
    * @typedef {object} ChartDefinition
+<<<<<<< HEAD
    * @property {ChartDefinition~beforeDestroy} [beforeDestroy]
    * @property {ChartDefinition~beforeMount} [beforeMount]
    * @property {ChartDefinition~beforeRender} [beforeRender]
@@ -345,6 +350,16 @@ function chartFn(definition, context) {
    * @property {ChartDefinition~destroyed} [destroyed]
    * @property {ChartDefinition~mounted} [mounted]
    * @property {ChartDefinition~updated} [updated]
+=======
+   * @property {ChartDefinition~beforeDestroy?} [beforeDestroy]
+   * @property {ChartDefinition~beforeMount?} [beforeMount]
+   * @property {ChartDefinition~beforeRender?} [beforeRender]
+   * @property {ChartDefinition~beforeUpdate?} [beforeUpdate]
+   * @property {ChartDefinition~created?} [created]
+   * @property {ChartDefinition~destroyed?} [destroyed]
+   * @property {ChartDefinition~mounted?} [mounted]
+   * @property {ChartDefinition~updated?} [updated]
+>>>>>>> ba6a7c6 (fix: update jsdosc)
    */
   let {
     /**
