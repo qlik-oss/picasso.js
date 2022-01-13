@@ -1,2 +1,3 @@
 dist/
 docs/scriptappy.json
+packages/picasso.js/types/index.d.ts

@@ -107,11 +107,7 @@ import componentCollectionFn from './component-collection';
  * @property {DockLayoutSettings|customLayoutFunction} [strategy] Layout strategy used for child components.
  * @property {DataExtraction|DataFieldExtraction} [data] Extracted data that should be available to the component
  * @property {RendererSettings} [rendererSettings] Settings for the renderer used to render the component
-<<<<<<< HEAD
  * @property {string} [key] Component key
-=======
- * @property {string} [key] TODO Add desription
->>>>>>> ba6a7c6 (fix: update jsdosc)
  */
 
 // mark strategy as experimental
@@ -342,6 +338,9 @@ function chartFn(definition, context) {
   /**
    * @typedef {object} ChartDefinition
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 828527d (docs: remove nullable)
    * @property {ChartDefinition~beforeDestroy} [beforeDestroy]
    * @property {ChartDefinition~beforeMount} [beforeMount]
    * @property {ChartDefinition~beforeRender} [beforeRender]
@@ -350,6 +349,7 @@ function chartFn(definition, context) {
    * @property {ChartDefinition~destroyed} [destroyed]
    * @property {ChartDefinition~mounted} [mounted]
    * @property {ChartDefinition~updated} [updated]
+<<<<<<< HEAD
 =======
    * @property {ChartDefinition~beforeDestroy?} [beforeDestroy]
    * @property {ChartDefinition~beforeMount?} [beforeMount]
@@ -360,6 +360,8 @@ function chartFn(definition, context) {
    * @property {ChartDefinition~mounted?} [mounted]
    * @property {ChartDefinition~updated?} [updated]
 >>>>>>> ba6a7c6 (fix: update jsdosc)
+=======
+>>>>>>> 828527d (docs: remove nullable)
    */
   let {
     /**
