@@ -4454,7 +4454,7 @@
           "type": "#/definitions/RendererSettings"
         },
         "key": {
-          "description": "TODO Add desription",
+          "description": "Component key",
           "optional": true,
           "type": "string"
         }

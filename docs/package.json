@@ -10,7 +10,7 @@
     "version": "yarn run spec && yarn run ts && git add scriptappy.json ../packages/picasso.js/types/index.d.ts"
   },
   "devDependencies": {
-    "@scriptappy/cli": "^0.0.1",
+    "@scriptappy/to-dts": "1.0.0-beta.2",
     "jsdoc": "3.6.7",
     "scriptappy-from-jsdoc": "0.7.0"
   }
