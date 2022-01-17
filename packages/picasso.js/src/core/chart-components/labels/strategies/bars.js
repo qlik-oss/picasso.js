@@ -418,7 +418,7 @@ export function getOrientation({ orientation = 'auto', defaultOrientation = 'h' 
 
 /**
  * @typedef {object} ComponentLabels~BarsLabelStrategy
- * @property {string} type='bar' Name of strategy
+ * @property {'bar'} type Name of strategy
  */
 
 /**

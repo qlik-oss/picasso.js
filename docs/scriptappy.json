@@ -15,9 +15,11 @@
       "params": [
         {
           "name": "cfg",
+          "optional": true,
           "kind": "object",
           "entries": {
             "renderer": {
+              "optional": true,
               "kind": "object",
               "entries": {
                 "prio": {
@@ -29,17 +31,43 @@
               }
             },
             "logger": {
+              "optional": true,
               "kind": "object",
               "entries": {
                 "level": {
+                  "kind": "union",
+                  "items": [
+                    {
+                      "kind": "literal",
+                      "value": 0
+                    },
+                    {
+                      "kind": "literal",
+                      "value": 1
+                    },
+                    {
+                      "kind": "literal",
+                      "value": 2
+                    },
+                    {
+                      "kind": "literal",
+                      "value": 3
+                    },
+                    {
+                      "kind": "literal",
+                      "value": 4
+                    }
+                  ],
                   "type": "number"
                 }
               }
             },
             "style": {
+              "optional": true,
               "type": "object"
             },
             "palettes": {
+              "optional": true,
               "kind": "array",
               "items": {
                 "type": "object"
@@ -1395,6 +1423,64 @@
       "kind": "object",
       "entries": {
         "beforeDestroy": {
+          "optional": true,
+          "type": "#/definitions/ChartDefinition/definitions/beforeDestroy"
+        },
+        "beforeMount": {
+          "optional": true,
+          "type": "#/definitions/ChartDefinition/definitions/beforeMount"
+        },
+        "beforeRender": {
+          "optional": true,
+          "type": "#/definitions/ChartDefinition/definitions/beforeRender"
+        },
+        "beforeUpdate": {
+          "optional": true,
+          "type": "#/definitions/ChartDefinition/definitions/beforeUpdate"
+        },
+        "created": {
+          "optional": true,
+          "type": "#/definitions/ChartDefinition/definitions/created"
+        },
+        "destroyed": {
+          "optional": true,
+          "type": "#/definitions/ChartDefinition/definitions/destroyed"
+        },
+        "mounted": {
+          "optional": true,
+          "type": "#/definitions/ChartDefinition/definitions/mounted"
+        },
+        "updated": {
+          "optional": true,
+          "type": "#/definitions/ChartDefinition/definitions/updated"
+        },
+        "data": {
+          "description": "Chart data",
+          "kind": "union",
+          "items": [
+            {
+              "kind": "array",
+              "items": {
+                "type": "#/definitions/DataSource"
+              }
+            },
+            {
+              "type": "#/definitions/DataSource"
+            }
+          ],
+          "type": "any"
+        },
+        "element": {
+          "description": "Element to attach chart to",
+          "type": "HTMLElement"
+        },
+        "settings": {
+          "description": "Chart settings",
+          "type": "#/definitions/ChartSettings"
+        }
+      },
+      "definitions": {
+        "beforeDestroy": {
           "description": "Called before the chart has been destroyed",
           "kind": "function",
           "params": []
@@ -1419,30 +1505,10 @@
           "kind": "function",
           "params": []
         },
-        "data": {
-          "description": "Chart data",
-          "kind": "union",
-          "items": [
-            {
-              "kind": "array",
-              "items": {
-                "type": "#/definitions/DataSource"
-              }
-            },
-            {
-              "type": "#/definitions/DataSource"
-            }
-          ],
-          "type": "any"
-        },
         "destroyed": {
           "description": "Called after the chart has been destroyed",
           "kind": "function",
           "params": []
-        },
-        "element": {
-          "description": "Element to attach chart to",
-          "type": "HTMLElement"
         },
         "mounted": {
           "description": "Called after the chart has been mounted",
@@ -1454,10 +1520,6 @@
               "type": "HTMLElement"
             }
           ]
-        },
-        "settings": {
-          "description": "Chart settings",
-          "type": "#/definitions/ChartSettings"
         },
         "updated": {
           "description": "Called after the chart has been updated",
@@ -1474,7 +1536,7 @@
           "optional": true,
           "kind": "array",
           "items": {
-            "type": "#/definitions/ComponentSettings"
+            "type": "#/definitions/ComponentTypes"
           }
         },
         "scales": {
@@ -1581,12 +1643,18 @@
       ],
       "kind": "object",
       "entries": {
+        "type": {
+          "description": "component type",
+          "kind": "literal",
+          "value": "'axis'"
+        },
         "scale": {
           "description": "reference to band or linear scale",
           "type": "string"
         },
         "settings": {
           "description": "discrete or continuous axis settings",
+          "optional": true,
           "kind": "union",
           "items": [
             {
@@ -1880,6 +1948,11 @@
       ],
       "kind": "object",
       "entries": {
+        "type": {
+          "description": "component type",
+          "kind": "literal",
+          "value": "'box'"
+        },
         "data": {
           "kind": "object",
           "entries": {
@@ -2158,6 +2231,11 @@
       ],
       "kind": "object",
       "entries": {
+        "type": {
+          "description": "component type",
+          "kind": "literal",
+          "value": "'brush-area'"
+        },
         "settings": {
           "kind": "object",
           "entries": {
@@ -2187,6 +2265,11 @@
       ],
       "kind": "object",
       "entries": {
+        "type": {
+          "description": "component type",
+          "kind": "literal",
+          "value": "'brush-area-dir'"
+        },
         "settings": {
           "kind": "object",
           "entries": {
@@ -2256,6 +2339,11 @@
       ],
       "kind": "object",
       "entries": {
+        "type": {
+          "description": "component type",
+          "kind": "literal",
+          "value": "'brush-lasso'"
+        },
         "settings": {
           "description": "Component settings",
           "kind": "object",
@@ -2416,6 +2504,11 @@
       ],
       "kind": "object",
       "entries": {
+        "type": {
+          "description": "component type",
+          "kind": "literal",
+          "value": "'brush-range'"
+        },
         "settings": {
           "kind": "object",
           "entries": {
@@ -2503,9 +2596,9 @@
       "kind": "object",
       "entries": {
         "type": {
-          "optional": true,
-          "defaultValue": "'container'",
-          "type": "string"
+          "description": "component type",
+          "kind": "literal",
+          "value": "'container'"
         }
       },
       "examples": [
@@ -2520,6 +2613,11 @@
       ],
       "kind": "object",
       "entries": {
+        "type": {
+          "description": "component type",
+          "kind": "literal",
+          "value": "'grid-line'"
+        },
         "settings": {
           "description": "Component settings",
           "kind": "object",
@@ -2607,6 +2705,11 @@
       ],
       "kind": "object",
       "entries": {
+        "type": {
+          "description": "component type",
+          "kind": "literal",
+          "value": "'labels'"
+        },
         "settings": {
           "description": "Component settings",
           "kind": "object",
@@ -2630,8 +2733,8 @@
           "entries": {
             "type": {
               "description": "Name of strategy",
-              "defaultValue": "'bar'",
-              "type": "string"
+              "kind": "literal",
+              "value": "'bar'"
             },
             "settings": {
               "description": "Bars strategy settings",
@@ -2817,8 +2920,8 @@
           "entries": {
             "type": {
               "description": "Name of strategy",
-              "defaultValue": "'rows'",
-              "type": "string"
+              "kind": "literal",
+              "value": "'rows'"
             },
             "settings": {
               "description": "Rows strategy settings",
@@ -2897,8 +3000,8 @@
           "entries": {
             "type": {
               "description": "Name of strategy",
-              "defaultValue": "'slice'",
-              "type": "string"
+              "kind": "literal",
+              "value": "'slice'"
             },
             "settings": {
               "description": "Slices strategy settings",
@@ -3017,12 +3120,18 @@
       ],
       "kind": "object",
       "entries": {
+        "type": {
+          "description": "component type",
+          "kind": "literal",
+          "value": "'legend-cat'"
+        },
         "scale": {
           "description": "Reference to categorical color scale",
           "type": "string"
         },
         "settings": {
           "description": "Component settings",
+          "optional": true,
           "kind": "object",
           "entries": {
             "item": {
@@ -3250,6 +3359,11 @@
       ],
       "kind": "object",
       "entries": {
+        "type": {
+          "description": "component type",
+          "kind": "literal",
+          "value": "'legend-seq'"
+        },
         "settings": {
           "description": "Component settings",
           "kind": "object",
@@ -3463,6 +3577,11 @@
       ],
       "kind": "object",
       "entries": {
+        "type": {
+          "description": "component type",
+          "kind": "literal",
+          "value": "'line'"
+        },
         "settings": {
           "description": "Component settings",
           "kind": "object",
@@ -3631,6 +3750,11 @@
       ],
       "kind": "object",
       "entries": {
+        "type": {
+          "description": "component type",
+          "kind": "literal",
+          "value": "'pie'"
+        },
         "settings": {
           "description": "Component settings",
           "kind": "object",
@@ -3732,8 +3856,14 @@
       ],
       "kind": "object",
       "entries": {
+        "type": {
+          "description": "component type",
+          "kind": "literal",
+          "value": "'point'"
+        },
         "settings": {
           "description": "Component settings",
+          "optional": true,
           "kind": "object",
           "entries": {
             "fill": {
@@ -3773,6 +3903,7 @@
               "type": "#/definitions/DatumNumber"
             },
             "sizeLimits": {
+              "optional": true,
               "kind": "object",
               "entries": {
                 "maxPx": {
@@ -3864,6 +3995,11 @@
       ],
       "kind": "object",
       "entries": {
+        "type": {
+          "description": "component type",
+          "kind": "literal",
+          "value": "'ref-line'"
+        },
         "settings": {
           "description": "Component settings",
           "kind": "object",
@@ -4316,6 +4452,11 @@
           "description": "Settings for the renderer used to render the component",
           "optional": true,
           "type": "#/definitions/RendererSettings"
+        },
+        "key": {
+          "description": "Component key",
+          "optional": true,
+          "type": "string"
         }
       }
     },
@@ -4327,6 +4468,11 @@
       ],
       "kind": "object",
       "entries": {
+        "type": {
+          "description": "component type",
+          "kind": "literal",
+          "value": "'text'"
+        },
         "text": {
           "description": "Text to display",
           "kind": "union",
@@ -4399,6 +4545,11 @@
       ],
       "kind": "object",
       "entries": {
+        "type": {
+          "description": "component type",
+          "kind": "literal",
+          "value": "'tooltip'"
+        },
         "settings": {
           "kind": "object",
           "entries": {
@@ -4660,15 +4811,68 @@
               ]
             }
           }
-        },
-        "type": {
-          "defaultValue": "tooltip",
-          "type": "string"
         }
       },
       "examples": [
         "picasso.chart({\n  settings: {\n    interactions: [{\n      type: 'native',\n      events: {\n        mousemove(e) {\n          const tooltip = this.chart.component('<tooltip-key>');\n          tooltip.emit('show', e);\n        },\n        mouseleave(e) {\n          const tooltip = this.chart.component('<tooltip-key>');\n          tooltip.emit('hide');\n        }\n      }\n    }],\n    components: [\n      {\n        key: '<tooltip-key>',\n        type: 'tooltip'\n      }\n    ]\n  },\n  ...\n});"
       ]
+    },
+    "ComponentTypes": {
+      "kind": "union",
+      "items": [
+        {
+          "type": "#/definitions/ComponentAxis"
+        },
+        {
+          "type": "#/definitions/ComponentBox"
+        },
+        {
+          "type": "#/definitions/ComponentBrushArea"
+        },
+        {
+          "type": "#/definitions/ComponentBrushAreaDir"
+        },
+        {
+          "type": "#/definitions/ComponentBrushLasso"
+        },
+        {
+          "type": "#/definitions/ComponentBrushRange"
+        },
+        {
+          "type": "#/definitions/ComponentContainer"
+        },
+        {
+          "type": "#/definitions/ComponentGridLine"
+        },
+        {
+          "type": "#/definitions/ComponentLabels"
+        },
+        {
+          "type": "#/definitions/ComponentLegendCat"
+        },
+        {
+          "type": "#/definitions/ComponentLegendSeq"
+        },
+        {
+          "type": "#/definitions/ComponentLine"
+        },
+        {
+          "type": "#/definitions/ComponentPie"
+        },
+        {
+          "type": "#/definitions/ComponentPoint"
+        },
+        {
+          "type": "#/definitions/ComponentRefLine"
+        },
+        {
+          "type": "#/definitions/ComponentText"
+        },
+        {
+          "type": "#/definitions/ComponentTooltip"
+        }
+      ],
+      "type": "any"
     },
     "customLayoutFunction": {
       "kind": "function",
@@ -4706,7 +4910,19 @@
       "entries": {
         "extract": {
           "description": "Extract definition",
-          "type": "#/definitions/DataExtraction/definitions/Extract"
+          "kind": "union",
+          "items": [
+            {
+              "type": "#/definitions/DataExtraction/definitions/Extract"
+            },
+            {
+              "kind": "array",
+              "items": {
+                "type": "#/definitions/DataExtraction/definitions/Extract"
+              }
+            }
+          ],
+          "type": "any"
         },
         "stack": {
           "description": "If provided, defines how the data should be stacked",
@@ -5202,6 +5418,7 @@
       "entries": {
         "key": {
           "description": "Unique identifier for this data source",
+          "optional": true,
           "type": "string"
         },
         "type": {
@@ -6132,12 +6349,10 @@
           "kind": "union",
           "items": [
             {
-              "type": "array",
-              "generics": [
-                {
-                  "type": "number"
-                }
-              ]
+              "kind": "array",
+              "items": {
+                "type": "number"
+              }
             },
             {
               "type": "function"

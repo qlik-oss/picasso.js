@@ -252,7 +252,7 @@ export { ds as default };
 /**
  * Used to extract data from a `DataSource`
  * @typedef {object} DataExtraction
- * @property {DataExtraction~Extract} extract Extract definition
+ * @property {DataExtraction~Extract|DataExtraction~Extract[]} extract Extract definition
  * @property {object} [stack] If provided, defines how the data should be stacked
  * @property {DataExtraction~StackKeyCallback} stack.stackKey Callback function. Should return the key to stack by
  * @property {DataExtraction~StackValueCallback} stack.value Callback function. Should return the data value to stack with

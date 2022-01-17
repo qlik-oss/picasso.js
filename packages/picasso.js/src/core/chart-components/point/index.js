@@ -2,6 +2,7 @@ import pointMarkerComponent from './point';
 
 /**
  * @typedef {object} ComponentPoint
+ * @property {'point'} type component type
  * @extends ComponentSettings
  * @example
 {

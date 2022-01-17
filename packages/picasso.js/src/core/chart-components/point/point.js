@@ -16,7 +16,7 @@ const PX_RX = /px$/;
 
 /**
  * Component settings
- * @typedef {object}
+ * @typedef {object=}
  * @alias ComponentPoint.settings
  */
 const DEFAULT_DATA_SETTINGS = {
@@ -59,7 +59,7 @@ const DEFAULT_DATA_SETTINGS = {
 };
 
 /**
- * @typedef {object}
+ * @typedef {object=}
  * @alias ComponentPoint.settings.sizeLimits
  */
 const SIZE_LIMITS = {

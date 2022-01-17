@@ -8,6 +8,7 @@ export default function box(picasso) {
 /**
  * @typedef {object} ComponentBox
  * @extends ComponentSettings
+ * @property {'box'} type component type
  * @example
  * {
  *   type: "box",

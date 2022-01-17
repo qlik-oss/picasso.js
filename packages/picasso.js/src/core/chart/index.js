@@ -26,56 +26,52 @@ import componentCollectionFn from './component-collection';
 
 /**
  * Called when the chart has been created
- * @callback created
- * @memberof ChartDefinition
+ * @callback ChartDefinition~created
  */
 
 /**
  * Called before the chart has been mounted
- * @callback beforeMount
- * @memberof ChartDefinition
+ * @callback ChartDefinition~beforeMount
  */
 
 /**
  * Called after the chart has been mounted
- * @callback mounted
- * @memberof ChartDefinition
+ * @callback ChartDefinition~mounted
  * @param {HTMLElement} element The element the chart been mounted to
  */
 
 /**
  * Called before the chart has been rendered
- * @callback beforeRender
- * @memberof ChartDefinition
+ * @callback ChartDefinition~beforeRender
  */
 
 /**
  * Called before the chart has been updated
- * @callback beforeUpdate
- * @memberof ChartDefinition
+ * @callback ChartDefinition~beforeUpdate
  */
 
 /**
  * Called after the chart has been updated
- * @callback updated
- * @memberof ChartDefinition
+ * @callback ChartDefinition~updated
  */
 
 /**
  * Called before the chart has been destroyed
- * @callback beforeDestroy
- * @memberof ChartDefinition
+ * @callback ChartDefinition~beforeDestroy
  */
 
 /**
  * Called after the chart has been destroyed
- * @callback destroyed
- * @memberof ChartDefinition
+ * @callback ChartDefinition~destroyed
+ */
+
+/**
+ * @typedef {ComponentAxis | ComponentBox | ComponentBrushArea | ComponentBrushAreaDir | ComponentBrushLasso | ComponentBrushRange | ComponentContainer | ComponentGridLine | ComponentLabels | ComponentLegendCat | ComponentLegendSeq | ComponentLine | ComponentPie | ComponentPoint | ComponentRefLine | ComponentText | ComponentTooltip} ComponentTypes
  */
 
 /**
  * @typedef {object} ChartSettings
- * @property {ComponentSettings[]} [components] Components
+ * @property {ComponentTypes[]} [components] Components
  * @property {object.<string, ScaleDefinition>} [scales] Dictionary with scale definitions
  * @property {object.<string, FormatterDefinition>} [formatters] Dictionary with formatter definitions
  * @property {DockLayoutSettings} [strategy] Dock layout strategy
@@ -111,6 +107,7 @@ import componentCollectionFn from './component-collection';
  * @property {DockLayoutSettings|customLayoutFunction} [strategy] Layout strategy used for child components.
  * @property {DataExtraction|DataFieldExtraction} [data] Extracted data that should be available to the component
  * @property {RendererSettings} [rendererSettings] Settings for the renderer used to render the component
+ * @property {string} [key] Component key
  */
 
 // mark strategy as experimental
@@ -340,6 +337,14 @@ export function orderComponents(element, ordered) {
 function chartFn(definition, context) {
   /**
    * @typedef {object} ChartDefinition
+   * @property {ChartDefinition~beforeDestroy} [beforeDestroy]
+   * @property {ChartDefinition~beforeMount} [beforeMount]
+   * @property {ChartDefinition~beforeRender} [beforeRender]
+   * @property {ChartDefinition~beforeUpdate} [beforeUpdate]
+   * @property {ChartDefinition~created} [created]
+   * @property {ChartDefinition~destroyed} [destroyed]
+   * @property {ChartDefinition~mounted} [mounted]
+   * @property {ChartDefinition~updated} [updated]
    */
   let {
     /**

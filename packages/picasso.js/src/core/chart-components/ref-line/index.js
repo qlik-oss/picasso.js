@@ -3,6 +3,7 @@ import refLineComponent from './refline';
 /**
  * @typedef {object} ComponentRefLine
  * @extends ComponentSettings
+ * @property {'ref-line'} type component type
  * @example
  * {
  *  type: 'ref-line',

@@ -3,6 +3,7 @@ import legendSeq from './legend-seq';
 /**
  * @typedef {object} ComponentLegendSeq
  * @extends ComponentSettings
+ * @property {'legend-seq'} type component type
  * @example
 {
   type: 'legend-seq',

@@ -2,7 +2,7 @@
  * @typedef {object} ComponentContainer
  * @experimental
  * @extends ComponentSettings
- * @property {string} [type='container']
+ * @property {'container'} type component type
  * @example
  * {
  *  type: 'container',

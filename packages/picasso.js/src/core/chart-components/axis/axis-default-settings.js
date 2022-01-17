@@ -14,8 +14,9 @@
 /**
  * @typedef {object} ComponentAxis
  * @extends ComponentSettings
+ * @property {'axis'} type component type
  * @property {string} scale reference to band or linear scale
- * @property {ComponentAxis~DiscreteSettings|ComponentAxis~ContinuousSettings} settings discrete or continuous axis settings
+ * @property {ComponentAxis~DiscreteSettings|ComponentAxis~ContinuousSettings} [settings] discrete or continuous axis settings
  * @example
  * {
  *  type: 'axis',

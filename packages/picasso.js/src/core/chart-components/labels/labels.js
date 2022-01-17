@@ -3,6 +3,7 @@ import strategies from './strategies';
 /**
  * @typedef {object} ComponentLabels
  * @extends ComponentSettings
+ * @property {'labels'} type component type
  * @example
 {
   type: 'labels',

@@ -77,7 +77,7 @@ function getBounds(node) {
 
 /**
  * @typedef {object} ComponentLabels~RowsLabelStrategy
- * @property {string} type='rows' Name of strategy
+ * @property {'rows'} type Name of strategy
  */
 
 /**

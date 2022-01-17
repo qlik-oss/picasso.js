@@ -93,6 +93,7 @@ function generateTitle({ title, definitionSettings, dock, rect, measureText, sty
 /**
  * @typedef {object} ComponentText
  * @extends ComponentSettings
+ * @property {'text'} type component type
  * @property {string|function} text Text to display
  * @example
  * {

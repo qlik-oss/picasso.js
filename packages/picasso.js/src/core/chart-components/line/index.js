@@ -3,6 +3,7 @@ import component from './line';
 /**
  * @typedef {object} ComponentLine
  * @extends ComponentSettings
+ * @property {'line'} type component type
  * @example
 {
   type: "line",
