@@ -640,7 +640,7 @@ function measureText(text, stgns, renderer) {
 
 /**
  * @typedef {object} ComponentLabels~SlicesLabelStrategy
- * @property {string} type='slice' Name of strategy
+ * @property {'slice'} type Name of strategy
  */
 
 /**

@@ -3,6 +3,7 @@ import tooltip from './tooltip';
 /**
  * @typedef {object} ComponentTooltip
  * @extends ComponentSettings
+ * @property {'tooltip'} type component type
  * @example
  * picasso.chart({
   settings: {
@@ -30,12 +31,6 @@ import tooltip from './tooltip';
 });
  */
 
-/**
- * @type {string}
- * @memberof ComponentTooltip
- */
-const type = 'tooltip';
-
 export default function addTooltip(picasso) {
-  picasso.component(type, tooltip);
+  picasso.component('tooltip', tooltip);
 }

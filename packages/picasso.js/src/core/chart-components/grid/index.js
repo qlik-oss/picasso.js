@@ -3,6 +3,7 @@ import gridLineComponent from './line';
 /**
  * @typedef {object} ComponentGridLine
  * @extends ComponentSettings
+ * @property {'grid-line'} type component type
  * @example
  * {
  *  type: 'grid-line',

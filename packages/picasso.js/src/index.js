@@ -86,13 +86,13 @@ function pic(config = {}, registries = {}) {
    * picasso.js entry point
    * @entry
    * @alias picassojs
-   * @param {object} cfg
-   * @param {object} cfg.renderer
+   * @param {object=} cfg
+   * @param {object=} cfg.renderer
    * @param {Array<string>} cfg.renderer.prio
-   * @param {object} cfg.logger
-   * @param {number} cfg.logger.level
-   * @param {object} cfg.style
-   * @param {Array<object>} cfg.palettes
+   * @param {object=} cfg.logger
+   * @param {0|1|2|3|4} cfg.logger.level
+   * @param {object=} cfg.style
+   * @param {Array<object>=} cfg.palettes
    * @returns {picassojs}
    * @example
    * import picasso from 'picasso.js';

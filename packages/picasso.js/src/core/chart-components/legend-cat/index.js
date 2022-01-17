@@ -3,6 +3,7 @@ import component from './legend-cat';
 /**
  * @typedef {object} ComponentLegendCat
  * @extends ComponentSettings
+ * @property {'legend-cat'} type component type
  * @property {string} scale Reference to categorical color scale
  * @example
 {
