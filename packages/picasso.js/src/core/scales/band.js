@@ -24,7 +24,7 @@ export const DEFAULT_SETTINGS = {
  * @property {number} [maxPxStep] - Explicitly limit the bandwidth to a pixel value
  * @property {function} [label] - Callback label function, applied on each datum
  * @property {function} [value] - Callback value function, applied on each datum
- * @property {array<number>|function} [range=[0, 1]] - Set range explicitly (ignored when maxPxStep takes effect)
+ * @property {number[]|function} [range=[0, 1]] - Set range explicitly (ignored when maxPxStep takes effect)
  */
 
 /**
