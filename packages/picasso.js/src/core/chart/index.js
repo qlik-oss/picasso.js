@@ -337,10 +337,6 @@ export function orderComponents(element, ordered) {
 function chartFn(definition, context) {
   /**
    * @typedef {object} ChartDefinition
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 828527d (docs: remove nullable)
    * @property {ChartDefinition~beforeDestroy} [beforeDestroy]
    * @property {ChartDefinition~beforeMount} [beforeMount]
    * @property {ChartDefinition~beforeRender} [beforeRender]
@@ -349,19 +345,6 @@ function chartFn(definition, context) {
    * @property {ChartDefinition~destroyed} [destroyed]
    * @property {ChartDefinition~mounted} [mounted]
    * @property {ChartDefinition~updated} [updated]
-<<<<<<< HEAD
-=======
-   * @property {ChartDefinition~beforeDestroy?} [beforeDestroy]
-   * @property {ChartDefinition~beforeMount?} [beforeMount]
-   * @property {ChartDefinition~beforeRender?} [beforeRender]
-   * @property {ChartDefinition~beforeUpdate?} [beforeUpdate]
-   * @property {ChartDefinition~created?} [created]
-   * @property {ChartDefinition~destroyed?} [destroyed]
-   * @property {ChartDefinition~mounted?} [mounted]
-   * @property {ChartDefinition~updated?} [updated]
->>>>>>> ba6a7c6 (fix: update jsdosc)
-=======
->>>>>>> 828527d (docs: remove nullable)
    */
   let {
     /**
