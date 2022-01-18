@@ -25,6 +25,7 @@
   ],
   "main": "dist/picasso.js",
   "module": "dist/picasso.esm.js",
+  "types": "types/index.d.ts",
   "scripts": {
     "build": "rollup --config ../../rollup.config.js",
     "build:watch": "yarn run build -w",
