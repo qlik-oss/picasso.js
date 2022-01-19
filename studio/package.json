@@ -50,7 +50,7 @@
     "@babel/preset-react": "^7.16.7",
     "@types/react": "^17.0.38",
     "babel-loader": "^8.2.3",
-    "copy-webpack-plugin": "^9.1.0",
+    "copy-webpack-plugin": "^10.2.0",
     "css-loader": "^6.5.1",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-react": "^7.28.0",
