@@ -3182,10 +3182,37 @@
   dependencies:
     "@octokit/openapi-types" "^11.2.0"
 
-"@scriptappy/to-dts@1.0.0-beta.2":
-  version "1.0.0-beta.2"
-  resolved "https://registry.yarnpkg.com/@scriptappy/to-dts/-/to-dts-1.0.0-beta.2.tgz#6fbe64ee6a8f546ebac3af98335858fc09111b78"
-  integrity sha512-wYqYC6Qm+wdq4pIcTRn3QHm4LSkPdkQbDdHFNuYIk6GwqJJgHB4XYPCnlqlNou30QGBqMUcahIyxNEHvgAHgjA==
+"@scriptappy/cli@0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@scriptappy/cli/-/cli-0.0.1.tgz#8eece0e89f3df8076b38e47c0664734e57024ea0"
+  integrity sha512-t0VWewR8+1WcOIlVKJ3zLOaKi/pU7YxvUBlxz11sPCKRFJJ2vHGcGaMHPOQ1Uch7wEbjF5DnnBy8FQQXwg03eA==
+  dependencies:
+    "@scriptappy/from-jsdoc" "0.7.0"
+    import-cwd "3.0.0"
+    yargs "11.0.0"
+
+"@scriptappy/from-jsdoc@0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@scriptappy/from-jsdoc/-/from-jsdoc-0.7.0.tgz#37d0fcd116ef6cbc7c5443e43d38bcd18a835e4a"
+  integrity sha512-4lFRL2CKT7l19vDW+/21eF1efXgRIr6deTaA7zdn6EyANxl8VQos2MHOQUq5Al190mo3bSMrFdV7jZUYqgimcA==
+  dependencies:
+    "@scriptappy/schema" "1.1.0"
+    chokidar "3.5.2"
+    extend "3.0.2"
+    globby "11.0.0"
+    jsdoc "3.6.7"
+    scriptappy-tools "0.5.0"
+    yargs "15.1.0"
+
+"@scriptappy/schema@1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@scriptappy/schema/-/schema-1.1.0.tgz#ad3ddffb81ed0e3ffdbfb9e86ef575f3feb0429e"
+  integrity sha512-HiiW0niupVqK3qbIyWyMLIQoyjCjAzl2DqwSdWap6Cm97xN3XqW2wDKMIzsGCeSYCjaMY+dGaRK2ENSMW2mdlA==
+
+"@scriptappy/to-dts@1.0.0-beta.3":
+  version "1.0.0-beta.3"
+  resolved "https://registry.yarnpkg.com/@scriptappy/to-dts/-/to-dts-1.0.0-beta.3.tgz#92c4b2ed77796a2715a57485df15361a7bb7edbe"
+  integrity sha512-tv4QZ+eEPqt7vwvn1BOFHyiTSKyHwqeD38/zrY53Ojj7U/wiLaUnzKBLqwdYV2w/kTxenlfzkvgyifA8Ezd0Dg==
   dependencies:
     dts-dom "^3.1.0"
 
@@ -4965,6 +4992,21 @@ chokidar@3.3.1:
   optionalDependencies:
     fsevents "~2.1.2"
 
+chokidar@3.5.2, chokidar@^3.5.2:
+  version "3.5.2"
+  resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.5.2.tgz#dba3976fcadb016f66fd365021d91600d01c1e75"
+  integrity sha512-ekGhOnNVPgT77r4K/U3GDhu+FQ2S8TnK/s2KbIGXi0SZWuwkZ2QNyfWdZW+TVfn84DpEP7rLeCt2UI6bJ8GwbQ==
+  dependencies:
+    anymatch "~3.1.2"
+    braces "~3.0.2"
+    glob-parent "~5.1.2"
+    is-binary-path "~2.1.0"
+    is-glob "~4.0.1"
+    normalize-path "~3.0.0"
+    readdirp "~3.6.0"
+  optionalDependencies:
+    fsevents "~2.3.2"
+
 chokidar@^2.1.8:
   version "2.1.8"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-2.1.8.tgz#804b3a7b6a99358c3c5c61e71d8728f041cff917"
@@ -5013,21 +5055,6 @@ chokidar@^3.4.0, chokidar@^3.4.1:
     readdirp "~3.5.0"
   optionalDependencies:
     fsevents "~2.1.2"
-
-chokidar@^3.5.2:
-  version "3.5.2"
-  resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.5.2.tgz#dba3976fcadb016f66fd365021d91600d01c1e75"
-  integrity sha512-ekGhOnNVPgT77r4K/U3GDhu+FQ2S8TnK/s2KbIGXi0SZWuwkZ2QNyfWdZW+TVfn84DpEP7rLeCt2UI6bJ8GwbQ==
-  dependencies:
-    anymatch "~3.1.2"
-    braces "~3.0.2"
-    glob-parent "~5.1.2"
-    is-binary-path "~2.1.0"
-    is-glob "~4.0.1"
-    normalize-path "~3.0.0"
-    readdirp "~3.6.0"
-  optionalDependencies:
-    fsevents "~2.3.2"
 
 chownr@^1.1.1, chownr@^1.1.4:
   version "1.1.4"
@@ -7762,6 +7789,18 @@ globby@10.0.2:
     glob "^7.1.3"
     ignore "^5.1.1"
     merge2 "^1.2.3"
+    slash "^3.0.0"
+
+globby@11.0.0:
+  version "11.0.0"
+  resolved "https://registry.yarnpkg.com/globby/-/globby-11.0.0.tgz#56fd0e9f0d4f8fb0c456f1ab0dee96e1380bc154"
+  integrity sha512-iuehFnR3xu5wBBtm4xi0dMe92Ob87ufyu/dHwpDYfbcpYpIbrO5OnS8M1vWvrBhSGEJ3/Ecj7gnX76P8YxpPEg==
+  dependencies:
+    array-union "^2.1.0"
+    dir-glob "^3.0.1"
+    fast-glob "^3.1.1"
+    ignore "^5.1.4"
+    merge2 "^1.3.0"
     slash "^3.0.0"
 
 globby@12.2.0:
@@ -12862,7 +12901,7 @@ scriptappy-schema@^1.0.0:
   resolved "https://registry.yarnpkg.com/scriptappy-schema/-/scriptappy-schema-1.0.0.tgz#3900fc28c64048fbb49135726da59631b26774f7"
   integrity sha512-RuKjLaP56rL04GcBNs3jU18h7Nk8Ltulz1FppHMq6yepXZBIWPiiuWwkhHoPTJCCJvOqCrCrYx6tlQ8acoSrwA==
 
-scriptappy-tools@^0.5.0:
+scriptappy-tools@0.5.0, scriptappy-tools@^0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/scriptappy-tools/-/scriptappy-tools-0.5.0.tgz#b06b4a15ac83b3ee399a01a1b07d7aae0b226eba"
   integrity sha512-hmxNBjuYNAdLCBcPCmcMund2FORT5agtqDcvudXqW+JSbCXPVhF8zSPdcRH+n/D908LWL5ZE+Pp6t8tZz+QhDQ==
@@ -14887,6 +14926,14 @@ yargs-parser@^15.0.0:
     camelcase "^5.0.0"
     decamelize "^1.2.0"
 
+yargs-parser@^16.1.0:
+  version "16.1.0"
+  resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-16.1.0.tgz#73747d53ae187e7b8dbe333f95714c76ea00ecf1"
+  integrity sha512-H/V41UNZQPkUMIT5h5hiwg4QKIY1RPvoBV4XcjUbRM8Bk2oKqqyZ0DIEbTFZB0XjbtSPG8SAa/0DxCQmiRgzKg==
+  dependencies:
+    camelcase "^5.0.0"
+    decamelize "^1.2.0"
+
 yargs-parser@^18.1.2:
   version "18.1.3"
   resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-18.1.3.tgz#be68c4975c6b2abf469236b0c870362fab09a7b0"
@@ -14907,6 +14954,13 @@ yargs-parser@^8.1.0:
   dependencies:
     camelcase "^4.1.0"
 
+yargs-parser@^9.0.2:
+  version "9.0.2"
+  resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-9.0.2.tgz#9ccf6a43460fe4ed40a9bb68f48d43b8a68cc077"
+  integrity sha1-nM9qQ0YP5O1Aqbto9I1DuKaMwHc=
+  dependencies:
+    camelcase "^4.1.0"
+
 yargs-unparser@1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/yargs-unparser/-/yargs-unparser-1.6.0.tgz#ef25c2c769ff6bd09e4b0f9d7c605fb27846ea9f"
@@ -14915,6 +14969,24 @@ yargs-unparser@1.6.0:
     flat "^4.1.0"
     lodash "^4.17.15"
     yargs "^13.3.0"
+
+yargs@11.0.0:
+  version "11.0.0"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-11.0.0.tgz#c052931006c5eee74610e5fc0354bedfd08a201b"
+  integrity sha512-Rjp+lMYQOWtgqojx1dEWorjCofi1YN7AoFvYV7b1gx/7dAAeuI4kN5SZiEvr0ZmsZTOpDRcCqrpI10L31tFkBw==
+  dependencies:
+    cliui "^4.0.0"
+    decamelize "^1.1.1"
+    find-up "^2.1.0"
+    get-caller-file "^1.0.1"
+    os-locale "^2.0.0"
+    require-directory "^2.1.1"
+    require-main-filename "^1.0.1"
+    set-blocking "^2.0.0"
+    string-width "^2.0.0"
+    which-module "^2.0.0"
+    y18n "^3.2.1"
+    yargs-parser "^9.0.2"
 
 yargs@13.3.0:
   version "13.3.0"
@@ -14948,6 +15020,23 @@ yargs@14.2.2:
     which-module "^2.0.0"
     y18n "^4.0.0"
     yargs-parser "^15.0.0"
+
+yargs@15.1.0:
+  version "15.1.0"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-15.1.0.tgz#e111381f5830e863a89550bd4b136bb6a5f37219"
+  integrity sha512-T39FNN1b6hCW4SOIk1XyTOWxtXdcen0t+XYrysQmChzSipvhBO8Bj0nK1ozAasdk24dNWuMZvr4k24nz+8HHLg==
+  dependencies:
+    cliui "^6.0.0"
+    decamelize "^1.2.0"
+    find-up "^4.1.0"
+    get-caller-file "^2.0.1"
+    require-directory "^2.1.1"
+    require-main-filename "^2.0.0"
+    set-blocking "^2.0.0"
+    string-width "^4.2.0"
+    which-module "^2.0.0"
+    y18n "^4.0.0"
+    yargs-parser "^16.1.0"
 
 yargs@^10.0.3:
   version "10.1.2"

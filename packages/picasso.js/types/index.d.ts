@@ -1,3 +1,4 @@
+// File generated automatically by "@scriptappy/to-dts"; DO NOT EDIT.
 declare const pjs: picassojs;
 
 export default pjs;
