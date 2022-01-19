@@ -58,7 +58,6 @@
     "html-webpack-plugin": "^5.5.0",
     "monaco-editor-webpack-plugin": "^7.0.1",
     "monaco-editor": "0.31.1",
-    "monaco-editor-webpack-plugin": "^6.0.0",
     "style-loader": "^3.3.1",
     "webpack": "^5.66.0",
     "webpack-cli": "^4.9.1",
