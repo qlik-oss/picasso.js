@@ -1,7 +1,7 @@
 {
   "name": "studio",
   "private": true,
-  "version": "1.4.2",
+  "version": "1.5.0",
   "description": "An interactive playground tool for picasso development",
   "license": "MIT",
   "author": "QlikTech International AB",
@@ -56,8 +56,8 @@
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "html-webpack-plugin": "^5.5.0",
-    "monaco-editor-webpack-plugin": "^7.0.1",
     "monaco-editor": "0.31.1",
+    "monaco-editor-webpack-plugin": "^7.0.1",
     "style-loader": "^3.3.1",
     "webpack": "^5.66.0",
     "webpack-cli": "^4.9.1",

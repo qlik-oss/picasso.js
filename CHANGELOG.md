@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/qlik-oss/picasso.js/compare/v1.4.2...v1.5.0) (2022-01-19)
+
+### Bug Fixes
+
+- ignore api spec and checkin with scriptappy format ([#668](https://github.com/qlik-oss/picasso.js/issues/668)) ([9dd6838](https://github.com/qlik-oss/picasso.js/commit/9dd68381c1870127dce124efc1b9fda24c3a825e))
+- support SI abbreviation only when format is auto or type is 'U' ([#663](https://github.com/qlik-oss/picasso.js/issues/663)) ([f1ea15e](https://github.com/qlik-oss/picasso.js/commit/f1ea15eea1fcf5ccbb2120aaf3a919022aafd669))
+
+### Features
+
+- **picasso.js:** add typescript definitions ([#670](https://github.com/qlik-oss/picasso.js/issues/670)) ([5a1458a](https://github.com/qlik-oss/picasso.js/commit/5a1458ac2aeef882d0f3812624a42a6a55533585))
+- **to-dts:** include disclaimer in ts defs ([#672](https://github.com/qlik-oss/picasso.js/issues/672)) ([a3aa94f](https://github.com/qlik-oss/picasso.js/commit/a3aa94fc79e547fc4c0bb63acb82b0f11b95ae5d))
+
 ## [1.4.2](https://github.com/qlik-oss/picasso.js/compare/v1.4.1...v1.4.2) (2021-11-21)
 
 ### Bug Fixes
