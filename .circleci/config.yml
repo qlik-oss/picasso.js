@@ -128,7 +128,7 @@ jobs:
 
 workflows:
   version: 2
-  build-all:
+  install-build:
     jobs:
       - install
       - build:
