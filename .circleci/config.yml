@@ -64,6 +64,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/picassojs
+      - setup_remote_docker
       - run:
           name: Create version.txt
           command: |
