@@ -67,18 +67,6 @@ jobs:
           at: ~/picassojs
       - setup_remote_docker
       - run:
-          name: Create version.txt
-          command: |
-              set -x
-              if [ -n "${CIRCLE_TAG}" ]; then
-                  version=${CIRCLE_TAG#v}
-              else
-                  version=$(git describe --tags --abbrev=7 --match "v*")
-                  version=${version#v}
-              fi
-              echo "$version" > ./version.txt
-              echo "Building $version"
-      - run:
           name: Prepare API Compliance
           command: |
             docker pull ghcr.io/qlik-download/api-compliance
@@ -87,7 +75,7 @@ jobs:
       - run:
           name: Run API Compliance
           command: >
-            VER=$(cat ./version.txt)
+            VER=$(cat package.json | jq .version)
             docker run --volumes-from specs
             -e SPEC_PATHS="67d3d238-36cc-4579-8fcd-7762267171e9@/specs/scriptappy.json"
             -e COMMIT_SHA="$CIRCLE_SHA1"
