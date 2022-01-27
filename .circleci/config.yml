@@ -67,15 +67,27 @@ jobs:
           at: ~/picassojs
       - setup_remote_docker
       - run:
-          name: Prepare API Compliance
+          name: Create version.txt
           command: |
-            docker pull ghcr.io/qlik-download/api-compliance
-            docker create -v /specs --name specs alpine:3.4 /bin/true
-            cd ~/picassojs && docker cp ./docs/scriptappy.json specs:/specs
+            set -x
+            if [ -n "${CIRCLE_TAG}" ]; then
+              version=${CIRCLE_TAG#v}
+            else
+              version=$(git describe --tags --abbrev=7 --match "v*")
+              version=${version#v}
+            fi
+            echo "$version" > ./version.txt
+            echo "Building $version"
+              - run:
+                  name: Prepare API Compliance
+                  command: |
+                    docker pull ghcr.io/qlik-download/api-compliance
+                    docker create -v /specs --name specs alpine:3.4 /bin/true
+                    cd ~/picassojs && docker cp ./docs/scriptappy.json specs:/specs
       - run:
           name: Run API Compliance
           command: >
-            cd ~/picassojs && VER=v$(cat  package.json | jq -r .version) && cd -
+            VER=v$(cat version.txt)
             
             docker run --volumes-from specs
             -e SPEC_PATHS="67d3d238-36cc-4579-8fcd-7762267171e9@/specs/scriptappy.json"
