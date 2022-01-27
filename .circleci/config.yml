@@ -78,12 +78,12 @@ jobs:
             fi
             echo "$version" > ./version.txt
             echo "Building $version"
-              - run:
-                  name: Prepare API Compliance
-                  command: |
-                    docker pull ghcr.io/qlik-download/api-compliance
-                    docker create -v /specs --name specs alpine:3.4 /bin/true
-                    cd ~/picassojs && docker cp ./docs/scriptappy.json specs:/specs
+      - run:
+          name: Prepare API Compliance
+          command: |
+            docker pull ghcr.io/qlik-download/api-compliance
+            docker create -v /specs --name specs alpine:3.4 /bin/true
+            cd ~/picassojs && docker cp ./docs/scriptappy.json specs:/specs
       - run:
           name: Run API Compliance
           command: >
