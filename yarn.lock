@@ -3209,12 +3209,13 @@
   resolved "https://registry.yarnpkg.com/@scriptappy/schema/-/schema-1.1.0.tgz#ad3ddffb81ed0e3ffdbfb9e86ef575f3feb0429e"
   integrity sha512-HiiW0niupVqK3qbIyWyMLIQoyjCjAzl2DqwSdWap6Cm97xN3XqW2wDKMIzsGCeSYCjaMY+dGaRK2ENSMW2mdlA==
 
-"@scriptappy/to-dts@1.0.0-beta.3":
-  version "1.0.0-beta.3"
-  resolved "https://registry.yarnpkg.com/@scriptappy/to-dts/-/to-dts-1.0.0-beta.3.tgz#92c4b2ed77796a2715a57485df15361a7bb7edbe"
-  integrity sha512-tv4QZ+eEPqt7vwvn1BOFHyiTSKyHwqeD38/zrY53Ojj7U/wiLaUnzKBLqwdYV2w/kTxenlfzkvgyifA8Ezd0Dg==
+"@scriptappy/to-dts@1.0.0-beta.4":
+  version "1.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/@scriptappy/to-dts/-/to-dts-1.0.0-beta.4.tgz#0b366a62022f87a17b1abde1964656df8a121a56"
+  integrity sha512-YbaoUzQrwxePOFCqVtlbrdsmrP4u5haBp5seHEw5WdrZx/jEALeEenw63xLkLQmUfTPLZ+R8rRSZFyvFb7z8SQ==
   dependencies:
     dts-dom "^3.1.0"
+    extend "3.0.2"
 
 "@sinonjs/commons@^1", "@sinonjs/commons@^1.0.2", "@sinonjs/commons@^1.3.0", "@sinonjs/commons@^1.4.0", "@sinonjs/commons@^1.7.0":
   version "1.8.1"

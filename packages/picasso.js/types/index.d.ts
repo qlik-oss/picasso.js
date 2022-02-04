@@ -1,37 +1,70 @@
 // File generated automatically by "@scriptappy/to-dts"; DO NOT EDIT.
-declare const pjs: picassojs;
+export default picassojs;
 
-export default pjs;
+/**
+ * picasso.js entry point
+ * @param cfg
+ */
+declare function picassojs(cfg?: {
+    renderer?: {
+        prio: string[];
+    };
+    logger?: {
+        level: 0 | 1 | 2 | 3 | 4;
+    };
+    style?: object;
+    palettes?: object[];
+}): typeof picassojs;
 
-declare type picassojs = {
-    (cfg?: {
-        renderer?: {
-            prio: string[];
-        };
-        logger?: {
-            level: 0 | 1 | 2 | 3 | 4;
-        };
-        style?: object;
-        palettes?: object[];
-    }): picassojs;
+declare namespace picassojs {
     /**
      * @param definition
      */
-    chart(definition: picassojs.ChartDefinition): picassojs.Chart;
-    component: picassojs.registry;
-    data: picassojs.registry;
-    formatter: picassojs.registry;
-    interaction: picassojs.registry;
-    renderer: picassojs.registry;
-    scale: picassojs.registry;
+    function chart(definition: picassojs.ChartDefinition): picassojs.Chart;
+
+    /**
+     * Component registry
+     */
+    const component: picassojs.registry;
+
+    /**
+     * Data registry
+     */
+    const data: picassojs.registry;
+
+    /**
+     * Formatter registry
+     */
+    const formatter: picassojs.registry;
+
+    /**
+     * Interaction registry
+     */
+    const interaction: picassojs.registry;
+
+    /**
+     * Renderer registry
+     */
+    const renderer: picassojs.registry;
+
+    /**
+     * Scale registry
+     */
+    const scale: picassojs.registry;
+
     /**
      * Plugin registry
      * @param plugin
      * @param options
      */
-    use(plugin: picassojs.plugin, options?: object): void;
-    version: string;
-};
+    function use(plugin: picassojs.plugin, options?: object): void;
+
+    /**
+     * picasso.js version
+     */
+    const version: string;
+
+}
 
 declare namespace picassojs {
     /**
