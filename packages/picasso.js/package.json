@@ -21,7 +21,8 @@
   },
   "files": [
     "/dist",
-    "/src"
+    "/src",
+    "/types/index.d.ts"
   ],
   "main": "dist/picasso.js",
   "module": "dist/picasso.esm.js",
