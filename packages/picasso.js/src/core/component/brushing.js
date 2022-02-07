@@ -141,7 +141,17 @@ export function styler(obj, { context, data, style, filter, mode }) {
   const onUpdate = () => {
     const changed = update();
     if (changed) {
-      obj.renderer.render(obj.nodes);
+      if (obj.config.sortNode) {
+        const activeOpactiy = active?.opacity || 1;
+        const activeArray = obj.nodes.filter((node) => node.opacity === activeOpactiy);
+        const inactiveArray = obj.nodes.filter((node) => node.opacity !== activeOpactiy);
+        activeNodes.sort((node1, node2) => node2.r - node1.r);
+        inactiveArray.sort((node1, node2) => node2.r - node1.r);
+        const sortedNodes = inactiveArray.concat(activeArray);
+        obj.renderer.render(sortedNodes);
+      } else {
+        obj.renderer.render(obj.nodes);
+      }
     }
   };
 

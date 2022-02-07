@@ -245,6 +245,7 @@ describe('Brushing', () => {
         renderer: {
           render: sinon.spy(),
         },
+        config: {},
       };
 
       brusherStub = {
