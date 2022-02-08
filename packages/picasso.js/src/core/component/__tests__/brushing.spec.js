@@ -374,6 +374,15 @@ describe('Brushing', () => {
       expect(output[1].fill).to.equal('yellow');
     });
 
+    it('update should apply sorting', () => {
+      dummyComponent.config.sortNodes = sinon.stub();
+      styler(dummyComponent, consume);
+      brusherStub.trigger('start');
+      brusherStub.trigger('update');
+
+      expect(dummyComponent.config.sortNodes).to.have.been.calledWith(dummyComponent);
+    });
+
     it('update should apply styling values only to shape nodes', () => {
       nodes.push({
         type: 'container',
