@@ -4219,6 +4219,11 @@
               "items": {
                 "type": "#/definitions/BrushConsumeSettings"
               }
+            },
+            "sortNodes": {
+              "description": "Optional sorting nodes function. Return sorted nodes.",
+              "optional": true,
+              "type": "function"
             }
           }
         },
