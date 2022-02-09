@@ -141,7 +141,11 @@ export function styler(obj, { context, data, style, filter, mode }) {
   const onUpdate = () => {
     const changed = update();
     if (changed) {
-      obj.renderer.render(obj.nodes);
+      if (typeof obj.config.sortNodes === 'function') {
+        obj.renderer.render(obj.config.sortNodes(obj));
+      } else {
+        obj.renderer.render(obj.nodes);
+      }
     }
   };
 

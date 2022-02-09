@@ -245,6 +245,7 @@ describe('Brushing', () => {
         renderer: {
           render: sinon.spy(),
         },
+        config: {},
       };
 
       brusherStub = {
@@ -367,6 +368,20 @@ describe('Brushing', () => {
       brusherStub.trigger('update');
 
       const output = dummyComponent.renderer.render.args[0][0];
+      expect(output[0].stroke).to.equal('pink'); // Inactive
+      expect(output[0].fill).to.equal('inactiveFill');
+      expect(output[1].stroke).to.equal('activeStroke'); // Active
+      expect(output[1].fill).to.equal('yellow');
+    });
+
+    it('update should apply sorting nodes', () => {
+      dummyComponent.config.sortNodes = sinon.stub().returns(nodes);
+      styler(dummyComponent, consume);
+      brusherStub.trigger('start');
+      brusherStub.trigger('update');
+
+      const output = dummyComponent.renderer.render.args[0][0];
+      expect(dummyComponent.config.sortNodes).to.have.been.calledWith(dummyComponent);
       expect(output[0].stroke).to.equal('pink'); // Inactive
       expect(output[0].fill).to.equal('inactiveFill');
       expect(output[1].stroke).to.equal('activeStroke'); // Active
