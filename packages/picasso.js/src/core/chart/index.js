@@ -99,7 +99,7 @@ import componentCollectionFn from './component-collection';
  * @property {object} [brush] Brush settings
  * @property {BrushTriggerSettings[]} [brush.trigger] Trigger settings
  * @property {BrushConsumeSettings[]} [brush.consume] Consume settings
- * @property {function} [brush.sortNodes] Optional sorting nodes function. Return sorted nodes.
+ * @property {function} [brush.sortNodes] Sorting function for nodes. Should return sorted nodes.
  * @property {object} [layout] Layout settings
  * @property {number} [layout.displayOrder = 0]
  * @property {number} [layout.prioOrder = 0]
