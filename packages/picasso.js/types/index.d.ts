@@ -1092,6 +1092,7 @@ declare namespace picassojs {
         brush?: {
             trigger?: picassojs.BrushTriggerSettings[];
             consume?: picassojs.BrushConsumeSettings[];
+            sortNodes?: ()=>void;
         };
         layout?: {
             displayOrder?: number;

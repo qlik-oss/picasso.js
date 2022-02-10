@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/qlik-oss/picasso.js/compare/v1.5.0...v1.6.0) (2022-02-10)
+
+### Features
+
+- add sortNodes function in brush config ([#678](https://github.com/qlik-oss/picasso.js/issues/678)) ([09a5df7](https://github.com/qlik-oss/picasso.js/commit/09a5df7515fbe9ef287c2862014e2f3af98ffecd))
+
 # [1.5.0](https://github.com/qlik-oss/picasso.js/compare/v1.4.2...v1.5.0) (2022-01-19)
 
 ### Features
