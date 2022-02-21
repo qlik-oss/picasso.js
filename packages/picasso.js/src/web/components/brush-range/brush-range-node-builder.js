@@ -139,7 +139,7 @@ function buildBubble({ h, isVertical, label, otherValue, rangeIdx, idx, pos, ali
     : h(
         'div',
         {
-          'data-key': [state.key, 'bubble', idx].join('-'),
+          'data-key': [state.key, 'bubble', rangeIdx, idx].join('-'),
           'data-other-value': otherValue,
           'data-idx': rangeIdx,
           'data-bidx': idx,
