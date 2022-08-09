@@ -8,8 +8,8 @@ pr:
   - master
 
 pool:
-  # https://github.com/Microsoft/azure-pipelines-image-generation/blob/master/images/win/Vs2017-Server2016-Readme.md
-  vmImage: 'vs2017-win2016'
+  # https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml#software
+  vmImage: 'windows-2022'
 
 steps:
   - bash: |
