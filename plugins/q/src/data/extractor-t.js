@@ -267,7 +267,7 @@ function getHierarchyForSMode(dataset) {
     let isNew = false;
     for (let c = 0; c < dimensions.length; c++) {
       const cell = row[dimensions[c]];
-      const key = `${id}__${cell.qText}__${cell.qNum}`;
+      const key = `${id}__${cell.qText}__${cell.qElemNumber}`;
       if (!keys[key]) {
         keys[key] = {
           __id: key,
