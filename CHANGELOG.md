@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.1](https://github.com/qlik-oss/picasso.js/compare/v1.6.0...v1.6.1) (2022-08-09)
+
+### Bug Fixes
+
+- range brush data key ([#682](https://github.com/qlik-oss/picasso.js/issues/682)) ([14293eb](https://github.com/qlik-oss/picasso.js/commit/14293eb0cd46de0ec33e8431453f59b1e1f8ae9c))
+- same key issue when extract data ([#688](https://github.com/qlik-oss/picasso.js/issues/688)) ([1b2f5d8](https://github.com/qlik-oss/picasso.js/commit/1b2f5d89ebbd60cab28e67cbc1dfdf7fcdef3cfd))
+
 # [1.6.0](https://github.com/qlik-oss/picasso.js/compare/v1.5.0...v1.6.0) (2022-02-10)
 
 ### Features
