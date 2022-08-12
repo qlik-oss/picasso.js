@@ -358,12 +358,19 @@ function componentFactory(definition, context = {}) {
     }
 
     if (settings.data) {
-      data = extractData(
+      const { rendererSettings } = settings;
+      const progressive = typeof rendererSettings?.progressive === 'function' && rendererSettings.progressive();
+      const extracted = extractData(
         settings.data,
         { dataset: chart.dataset, collection: chart.dataCollection },
         { logger: chart.logger() },
         chart.dataCollection
       );
+      if (progressive && data.items) {
+        data.items.push(...extracted.items);
+      } else {
+        data = extracted;
+      }
     } else if (scale) {
       data = scale.data();
     } else {
@@ -414,8 +421,17 @@ function componentFactory(definition, context = {}) {
 
   const getRenderArgs = () => {
     const renderArgs = rend.renderArgs ? rend.renderArgs.slice(0) : [];
+    const { rendererSettings } = settings;
+    let d = data;
+    const progressive = typeof rendererSettings?.progressive === 'function' && rendererSettings.progressive();
+    if (progressive) {
+      d = {
+        ...data,
+        items: data.items.slice(progressive.start, progressive.end),
+      };
+    }
     renderArgs.push({
-      data,
+      data: d,
     });
     return renderArgs;
   };
