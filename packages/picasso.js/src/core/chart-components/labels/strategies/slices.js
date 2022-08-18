@@ -421,7 +421,7 @@ function getHorizontalOusideSliceRect({ slice, measured, padding, view, context 
   let x = Math.sin(middle) * r;
   let y = -Math.cos(middle) * r;
 
-  let maxWidth = measured.width;
+  let maxWidth = measured.width + 1;
   if (middle < Math.PI) {
     let w = Math.abs(view.x + view.width - (x + offset.x));
     if (w < maxWidth) {
