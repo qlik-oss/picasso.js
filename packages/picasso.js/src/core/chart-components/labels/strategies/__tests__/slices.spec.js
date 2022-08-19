@@ -14,7 +14,7 @@ describe('labeling - slices', () => {
           },
           position: 'into',
           padding: 1,
-          measured: { width: 6, height: 4 },
+          measured: { width: 5, height: 4 },
           store: { insideLabelBounds: [] },
         })
       ).to.eql({
@@ -38,7 +38,7 @@ describe('labeling - slices', () => {
           },
           position: 'into',
           padding: 1,
-          measured: { width: 6, height: 4 },
+          measured: { width: 5, height: 4 },
           store: { insideLabelBounds: [] },
         })
       ).to.eql({
@@ -62,7 +62,7 @@ describe('labeling - slices', () => {
           },
           position: 'inside',
           padding: 1,
-          measured: { width: 6, height: 4 },
+          measured: { width: 5, height: 4 },
           store: { insideLabelBounds: [] },
         })
       ).to.eql({
@@ -86,7 +86,7 @@ describe('labeling - slices', () => {
           },
           position: 'inside',
           padding: 1,
-          measured: { width: 6, height: 4 },
+          measured: { width: 5, height: 4 },
           store: {
             insideLabelBounds: [
               {
@@ -132,7 +132,7 @@ describe('labeling - slices', () => {
         direction: 'rotate',
         position: 'outside',
         padding: 1,
-        measured: { width: 6, height: 4 },
+        measured: { width: 5, height: 4 },
         view: {
           x: -50,
           y: -50,
@@ -311,7 +311,7 @@ describe('labeling - slices', () => {
           },
         },
       ];
-      renderer.measureText.returns({ width: 20, height: 10 });
+      renderer.measureText.returns({ width: 19, height: 10 });
       let labels = slices({
         settings,
         chart,
