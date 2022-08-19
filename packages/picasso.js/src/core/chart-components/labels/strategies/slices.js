@@ -4,6 +4,10 @@ import { rectContainsRect } from '../../../math/intersection';
 
 const LABEL_OVERLAP_THRESHOLD_X = 4;
 
+// When a label is animated, the label rect width should be bit larger than the measured text width,
+// otherwise the animated label will be ellipsed.
+const LABEL_RECT_WIDTH_PADDING = 1;
+
 function normalize(angle) {
   const PI2 = Math.PI * 2;
   return ((angle % PI2) + PI2) % PI2; // normalize
@@ -108,7 +112,7 @@ function getHorizontalInsideSliceRect({ slice, padding, measured, store }) {
   const middle = normalize((start + end) / 2);
 
   const size = {
-    width: measured.width + padding * 2,
+    width: measured.width + padding * 2 + LABEL_RECT_WIDTH_PADDING,
     height: measured.height + padding * 2,
   };
 
@@ -145,7 +149,7 @@ function getHorizontalIntoSliceRect({ slice, padding, measured }) {
   const middle = normalize((start + end) / 2);
 
   let size = {
-    width: measured.width + padding * 2,
+    width: measured.width + padding * 2 + LABEL_RECT_WIDTH_PADDING,
     height: measured.height + padding * 2,
   };
 
@@ -237,7 +241,7 @@ function getRotatedOusideSliceRect({ slice, measured, padding, view }) {
   let x = Math.sin(middle) * r;
   let y = -Math.cos(middle) * r;
 
-  let maxWidth = measured.width;
+  let maxWidth = measured.width + LABEL_RECT_WIDTH_PADDING;
   let v = middle % Math.PI;
   if (v > Math.PI / 2) {
     v = Math.PI - v;
@@ -421,7 +425,7 @@ function getHorizontalOusideSliceRect({ slice, measured, padding, view, context 
   let x = Math.sin(middle) * r;
   let y = -Math.cos(middle) * r;
 
-  let maxWidth = measured.width + 1;
+  let maxWidth = measured.width + LABEL_RECT_WIDTH_PADDING;
   if (middle < Math.PI) {
     let w = Math.abs(view.x + view.width - (x + offset.x));
     if (w < maxWidth) {
