@@ -8,7 +8,7 @@
       "ignore": ["test-utils", "docs", "studio"]
     }
   },
-  "version": "1.6.3",
+  "version": "1.6.4",
   "npmClient": "yarn",
   "useWorkspaces": true
 }
