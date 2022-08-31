@@ -58,12 +58,14 @@ function tween({ old, current }, { renderer }, config) {
         nodes: [...toBeUpdated],
       });
       // Existing nodes updating
-      stages.push({
-        easing: easeCubic,
-        duration: config.transitionPhaseDisabled ? 0 : 400,
-        tweens: updated.ips,
-        nodes: [],
-      });
+      if (!config.transitionPhaseDisabled) {
+        stages.push({
+          easing: easeCubic,
+          duration: 400,
+          tweens: updated.ips,
+          nodes: [],
+        });
+      }
       // New nodes entering
       stages.push({
         easing: easeCubicOut,
