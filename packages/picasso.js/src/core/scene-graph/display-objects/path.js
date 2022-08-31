@@ -1,4 +1,5 @@
 import extend from 'extend';
+import { arc } from 'd3-shape';
 import DisplayObject from './display-object';
 import { getMinMax } from '../../geometry/util';
 import pathToSegments from '../parse-path-d';
@@ -34,14 +35,24 @@ export default class Path extends DisplayObject {
     super.set(v);
     this.segments = [];
     this.points = [];
-    this.attrs.d = v.d;
+    if (v.arcDatum) {
+      const arcGen = arc();
+      arcGen.innerRadius(v.desc.slice.innerRadius);
+      arcGen.outerRadius(v.desc.slice.outerRadius);
+      arcGen.cornerRadius(v.desc.slice.cornerRadius);
+      const d = arcGen(v.arcDatum);
+      this.attrs.d = d;
+    } else if (v.d) {
+      this.attrs.d = v.d;
+    }
+
     this.__boundingRect = { true: null, false: null };
     this.__bounds = { true: null, false: null };
 
     if (Array.isArray(v.collider) || (typeof v.collider === 'object' && typeof v.collider.type !== 'undefined')) {
       this.collider = v.collider;
-    } else if (v.d) {
-      this.segments = pathToSegments(v.d);
+    } else if (v.arcDatum || v.d) {
+      this.segments = pathToSegments(this.attrs.d);
       if (this.segments.length > 1 && this.segments.every((segment) => isClosed(segment))) {
         this.collider = extend(
           {
