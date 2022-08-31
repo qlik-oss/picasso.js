@@ -12,10 +12,23 @@ describe('Path', () => {
       expect(path.collider).to.be.equal(null);
     });
 
-    it('should accept arguments', () => {
+    it('should accept arguments - case 1: svg path', () => {
       path = create({ d: 'M10 15' });
       expect(path).to.be.an.instanceof(Path);
       expect(path.attrs.d).to.be.equal('M10 15');
+    });
+
+    it('should accept arguments - case 2: pie arc datum', () => {
+      path = create({
+        arcDatum: { startAngle: (Math.PI * 4) / 3, endAngle: Math.PI * 2 },
+        padAngle: 0,
+        desc: { slice: { innerRadius: 0, cornerRadius: 0, outerRadius: 40 } },
+      });
+      expect(path).to.be.an.instanceof(Path);
+      const strokes = path.attrs.d.split(/[MALZ]/).map((arr) => (arr ? arr.split(',').map(Math.round) : []));
+      expect(strokes[1]).to.eql([-35, 20]); // move to
+      expect(strokes[2]).to.eql([40, 40, 0, 0, 1, -0, -40]); // arc
+      expect(strokes[3]).to.eql([0, 0]); // line to
     });
   });
 
