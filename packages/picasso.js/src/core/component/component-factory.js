@@ -424,7 +424,7 @@ function componentFactory(definition, context = {}) {
     const { rendererSettings } = settings;
     let d = data;
     const progressive = typeof rendererSettings?.progressive === 'function' && rendererSettings.progressive();
-    if (progressive) {
+    if (progressive && data.items) {
       d = {
         ...data,
         items: data.items.slice(progressive.start, progressive.end),
