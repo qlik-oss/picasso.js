@@ -358,12 +358,19 @@ function componentFactory(definition, context = {}) {
     }
 
     if (settings.data) {
-      data = extractData(
+      const { rendererSettings } = settings;
+      const progressive = typeof rendererSettings?.progressive === 'function' && rendererSettings.progressive();
+      const extracted = extractData(
         settings.data,
         { dataset: chart.dataset, collection: chart.dataCollection },
         { logger: chart.logger() },
         chart.dataCollection
       );
+      if (progressive && data.items) {
+        data.items.push(...extracted.items);
+      } else {
+        data = extracted;
+      }
     } else if (scale) {
       data = scale.data();
     } else {
@@ -414,8 +421,17 @@ function componentFactory(definition, context = {}) {
 
   const getRenderArgs = () => {
     const renderArgs = rend.renderArgs ? rend.renderArgs.slice(0) : [];
+    const { rendererSettings } = settings;
+    let d = data;
+    const progressive = typeof rendererSettings?.progressive === 'function' && rendererSettings.progressive();
+    if (progressive) {
+      d = {
+        ...data,
+        items: data.items.slice(progressive.start, progressive.end),
+      };
+    }
     renderArgs.push({
-      data,
+      data: d,
     });
     return renderArgs;
   };
@@ -431,8 +447,23 @@ function componentFactory(definition, context = {}) {
   let currentNodes;
   let preComputedRect;
 
+  function updateBrushNodes(nodes) {
+    const { rendererSettings } = settings;
+    const progressive = typeof rendererSettings?.progressive === 'function' && rendererSettings.progressive();
+    if (progressive) {
+      if (progressive.start === 0) {
+        brushArgs.nodes = nodes;
+      } else {
+        brushArgs.nodes = [...(brushArgs.nodes || []), ...nodes];
+      }
+    } else {
+      brushArgs.nodes = nodes;
+    }
+  }
+
   fn.render = () => {
-    const nodes = (brushArgs.nodes = render.call(definitionContext, ...getRenderArgs()));
+    const nodes = render.call(definitionContext, ...getRenderArgs());
+    updateBrushNodes(nodes);
     rend.render(nodes);
     currentNodes = nodes;
     preComputedRect = instanceContext.rect.computed;
@@ -470,7 +501,8 @@ function componentFactory(definition, context = {}) {
       return;
     }
 
-    const nodes = (brushArgs.nodes = render.call(definitionContext, ...getRenderArgs()));
+    const nodes = render.call(definitionContext, ...getRenderArgs());
+    updateBrushNodes(nodes);
 
     // Reset brush stylers and triggers
     brushStylers.forEach((b) => b.cleanUp());

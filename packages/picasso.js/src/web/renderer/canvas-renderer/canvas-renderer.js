@@ -144,6 +144,7 @@ export function renderer(sceneFn = sceneFactory) {
   const settings = {
     transform: undefined,
     canvasBufferSize: undefined,
+    progressive: undefined,
   };
   let scene;
   let hasChangedRect = false;
@@ -264,7 +265,9 @@ export function renderer(sceneFn = sceneFactory) {
 
     const doRender = hasChangedRect || hasChangedScene;
     if (doRender) {
-      canvasRenderer.clear();
+      if (typeof settings.progressive !== 'function' || !settings.progressive()) {
+        canvasRenderer.clear();
+      }
       renderShapes(newScene.children, g, shapeToCanvasMap, {
         patterns,
       });
@@ -277,7 +280,14 @@ export function renderer(sceneFn = sceneFactory) {
     }
 
     hasChangedRect = false;
-    scene = newScene;
+    if (typeof settings.progressive !== 'function' || !settings.progressive()) {
+      scene = newScene;
+      scene.shapes = shapes;
+    } else {
+      const combinedShapes = [...scene.shapes, ...shapes];
+      scene = canvasRenderer.getScene(combinedShapes);
+      scene.shapes = combinedShapes;
+    }
     return doRender;
   };
 
