@@ -33,6 +33,7 @@ describe('canvas renderer', () => {
     expect(r.settings()).to.eql({
       transform: rendererSettings.transform,
       canvasBufferSize: rendererSettings.canvasBufferSize,
+      progressive: undefined,
     });
   });
 
