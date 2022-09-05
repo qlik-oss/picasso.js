@@ -107,10 +107,11 @@ function createDisplayPies(arcData, { x, y, width, height }, slices, sum) {
     slice.type = 'path';
     const or = outerRadius * slice.outerRadius;
     const ir = innerRadius * slice.innerRadius;
+    const cr = cornerRadius * slice.cornerRadius;
     arcGen.innerRadius(ir);
     arcGen.outerRadius(or);
-    arcGen.cornerRadius(cornerRadius * slice.cornerRadius);
-    slice.d = arcGen(a);
+    arcGen.cornerRadius(cr);
+    slice.arcDatum = a;
     const centroid = arcGen.centroid(a);
     const offset = slice.offset ? offsetSlice(centroid, slice.offset, or, ir) : { x: 0, y: 0 };
     slice.transform = `translate(${offset.x}, ${offset.y}) translate(${center.x}, ${center.y})`;
@@ -121,6 +122,7 @@ function createDisplayPies(arcData, { x, y, width, height }, slices, sum) {
         end: a.endAngle,
         innerRadius: ir,
         outerRadius: or,
+        cornerRadius: cr,
         offset: { x: center.x + offset.x, y: center.y + offset.y },
       },
     };

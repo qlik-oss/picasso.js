@@ -1,6 +1,6 @@
 import extend from 'extend';
 import { interpolateObject } from 'd3-interpolate';
-import { easeCubic } from 'd3-ease';
+import { easeCubic, easeCubicIn, easeCubicOut } from 'd3-ease';
 
 /* globals window */
 
@@ -41,15 +41,7 @@ function tween({ old, current }, { renderer }, config) {
           ids[id] = false;
         } else {
           entered.nodes.push(node);
-          entered.ips.push(
-            interpolateObject(
-              {
-                r: 0.001,
-                opacity: 0,
-              },
-              node
-            )
-          );
+          entered.ips.push(interpolateObject(extend({}, node, { r: 0.001, opacity: 0 }), node));
         }
       });
       Object.keys(ids).forEach((key) => {
@@ -60,21 +52,23 @@ function tween({ old, current }, { renderer }, config) {
       });
       // Obsolete nodes exiting
       stages.push({
-        easing: easeCubic,
+        easing: easeCubicIn,
         duration: 200,
         tweens: exited.ips,
         nodes: [...toBeUpdated],
       });
       // Existing nodes updating
-      stages.push({
-        easing: easeCubic,
-        duration: 400,
-        tweens: updated.ips,
-        nodes: [],
-      });
+      if (!config.transitionPhaseDisabled) {
+        stages.push({
+          easing: easeCubic,
+          duration: 400,
+          tweens: updated.ips,
+          nodes: [],
+        });
+      }
       // New nodes entering
       stages.push({
-        easing: easeCubic,
+        easing: easeCubicOut,
         duration: 200,
         tweens: entered.ips,
         nodes: [...updated.nodes],
