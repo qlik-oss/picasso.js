@@ -280,9 +280,11 @@ export function renderer(sceneFn = sceneFactory) {
     }
 
     hasChangedRect = false;
-    if (typeof settings.progressive !== 'function' || !settings.progressive()) {
+    if (typeof settings.progressive !== 'function') {
       scene = newScene;
-      scene.shapes = shapes;
+    } else if (!settings.progressive()) {
+      scene = newScene;
+      scene.shapes = [...(shapes || [])];
     } else {
       const combinedShapes = [...scene.shapes, ...shapes];
       scene = canvasRenderer.getScene(combinedShapes);

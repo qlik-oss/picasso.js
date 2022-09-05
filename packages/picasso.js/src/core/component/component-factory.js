@@ -449,11 +449,12 @@ function componentFactory(definition, context = {}) {
 
   function updateBrushNodes(nodes) {
     const { rendererSettings } = settings;
-    const progressive = typeof rendererSettings?.progressive === 'function' && rendererSettings.progressive();
-    if (progressive && brushArgs.nodes) {
-      brushArgs.nodes.push(...nodes);
-    } else {
+    if (typeof rendererSettings?.progressive !== 'function') {
       brushArgs.nodes = nodes;
+    } else if (rendererSettings.progressive() && brushArgs.nodes) {
+      brushArgs.nodes.push(...(nodes || []));
+    } else {
+      brushArgs.nodes = [...(nodes || [])];
     }
   }
 
