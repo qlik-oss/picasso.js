@@ -280,19 +280,10 @@ export function renderer(sceneFn = sceneFactory) {
     }
 
     hasChangedRect = false;
-    if (typeof settings.progressive !== 'function') {
-      scene = newScene;
-    } else if (!settings.progressive()) {
-      scene = newScene;
-      scene.shapes = [...(shapes || [])];
-    } else if (settings.progressive().isLastStep) {
-      scene = canvasRenderer.getScene([...scene.shapes, ...shapes]);
-    } else {
-      const sceneNodes = scene.children?.[0]?.children;
-      const newSceneNodes = newScene.children?.[0]?.children || [];
-      sceneNodes.push(...newSceneNodes); // Combine nodes during progressive
-      scene.shapes = [...scene.shapes, ...shapes];
+    if (typeof settings.progressive === 'function' && settings.progressive()) {
+      newScene.children.unshift(...scene.children);
     }
+    scene = newScene;
     return doRender;
   };
 
