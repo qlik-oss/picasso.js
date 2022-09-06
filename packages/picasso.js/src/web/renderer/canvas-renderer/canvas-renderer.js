@@ -285,10 +285,13 @@ export function renderer(sceneFn = sceneFactory) {
     } else if (!settings.progressive()) {
       scene = newScene;
       scene.shapes = [...(shapes || [])];
+    } else if (settings.progressive().isLastStep) {
+      scene = canvasRenderer.getScene([...scene.shapes, ...shapes]);
     } else {
-      const combinedShapes = [...scene.shapes, ...shapes];
-      scene = canvasRenderer.getScene(combinedShapes);
-      scene.shapes = combinedShapes;
+      const sceneNodes = scene.children?.[0]?.children;
+      const newSceneNodes = newScene.children?.[0]?.children || [];
+      sceneNodes.push(...newSceneNodes); // Combine nodes during progressive
+      scene.shapes = [...scene.shapes, ...shapes];
     }
     return doRender;
   };
