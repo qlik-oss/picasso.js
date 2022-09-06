@@ -351,6 +351,7 @@ function componentFactory(definition, context = {}) {
         createDockDefinition(settings, preferredSize, chart.logger()),
         dockConfigCallbackContext
       );
+      brushArgs.config = settings.brush || {};
     }
 
     if (settings.scale) {

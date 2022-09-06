@@ -141,10 +141,11 @@ export function styler(obj, { context, data, style, filter, mode }) {
   const onUpdate = () => {
     const changed = update();
     if (changed) {
-      if (typeof obj.config.sortNodes === 'function') {
-        obj.renderer.render(obj.config.sortNodes(obj));
+      const renderedNodes = typeof obj.config.sortNodes === 'function' ? obj.config.sortNodes(obj) : obj.nodes;
+      if (typeof obj.config.customRender === 'function') {
+        obj.config.customRender({ render: obj.renderer.render, nodes: renderedNodes });
       } else {
-        obj.renderer.render(obj.nodes);
+        obj.renderer.render(renderedNodes);
       }
     }
   };
