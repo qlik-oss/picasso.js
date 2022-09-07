@@ -375,7 +375,7 @@ function componentFactory(definition, context = {}) {
           data.items = [...(extracted.items || [])];
         }
       } else if (data.items) {
-        data.items.push(...extracted.items);
+        data.items.push(...(extracted.items || []));
       }
     } else if (scale) {
       data = scale.data();
