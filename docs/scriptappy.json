@@ -5930,7 +5930,7 @@
       }
     },
     "ProgressiveObject": {
-      "description": "A format to represent a progressive.",
+      "description": "A format to represent a data chunk to be rendered.",
       "kind": "object",
       "entries": {
         "start": {
@@ -5942,11 +5942,11 @@
           "type": "number"
         },
         "isFirst": {
-          "description": "If it is the first rendering step of the whole rendering process. This helps to clear a canvas before rendering.",
+          "description": "If it is the first data chunk rendered. This helps to clear a canvas before rendering.",
           "type": "boolean"
         },
         "isLast": {
-          "description": "If it is the last rendering step of the whole rendering process. This helps to update other components depending on a component with progressive rendering.",
+          "description": "If it is the last data chunk rendered. This helps to update other components depending on a component with progressive rendering.",
           "type": "boolean"
         }
       }

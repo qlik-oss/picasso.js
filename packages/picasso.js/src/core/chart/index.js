@@ -242,12 +242,12 @@ import componentCollectionFn from './component-collection';
  */
 
 /**
- * A format to represent a progressive.
+ * A format to represent a data chunk to be rendered.
  * @typedef {object} ProgressiveObject
  * @property {number} start - Start index of a data chunk.
  * @property {number} end - End index of a data chunk.
- * @property {boolean} isFirst - If it is the first rendering step of the whole rendering process. This helps to clear a canvas before rendering.
- * @property {boolean} isLast - If it is the last rendering step of the whole rendering process. This helps to update other components depending on a component with progressive rendering.
+ * @property {boolean} isFirst - If it is the first data chunk rendered. This helps to clear a canvas before rendering.
+ * @property {boolean} isLast - If it is the last data chunk rendered. This helps to update other components depending on a component with progressive rendering.
  */
 
 /**
