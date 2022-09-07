@@ -1591,7 +1591,10 @@ declare namespace picassojs {
     namespace RendererSettings {
         type CanvasBufferSize = (()=>void) | object;
 
-        type Progressive = (()=>void) | undefined;
+        /**
+         * A function which returns either (1) false (to specify no progressive rendering used) or an object specifing the data chunk rendered.
+         */
+        type Progressive = ()=>picassojs.ProgressiveObject | "false";
 
         /**
          * Should return a transform object if transformation should be applied, otherwise undefined or a falsy value.

@@ -6300,16 +6300,20 @@
         "Progressive": {
           "description": "A function which returns either (1) false (to specify no progressive rendering used) or an object specifing the data chunk rendered.",
           "stability": "experimental",
-          "kind": "union",
-          "items": [
-            {
-              "type": "function"
-            },
-            {
-              "type": "undefined"
-            }
-          ],
-          "type": "any"
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "kind": "union",
+            "items": [
+              {
+                "type": "#/definitions/ProgressiveObject"
+              },
+              {
+                "kind": "literal",
+                "value": "false"
+              }
+            ]
+          }
         },
         "TransformFunction": {
           "description": "Should return a transform object if transformation should be applied, otherwise undefined or a falsy value.\nTransforms can be applied with the canvas, svg and dom renderer.\nTransform is applied when running chart.update, see example.\n!Important: When a transform is applied to a component, the underlaying node representations are not updated with the new positions/sizes, which\ncan cause problems for operations that relies on the positioning of the shapes/nodes (such as tooltips, selections etc). An extra chart update\nwithout a transform is therefore needed to make sure the node position information is in sync with the visual representation again.",

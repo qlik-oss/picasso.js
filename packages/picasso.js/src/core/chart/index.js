@@ -236,7 +236,7 @@ import componentCollectionFn from './component-collection';
 
 /**
  * A function which returns either (1) false (to specify no progressive rendering used) or an object specifing the data chunk rendered.
- * @typedef {function|undefined} RendererSettings~Progressive
+ * @callback {function|undefined} RendererSettings~Progressive
  * @returns {ProgressiveObject|false}
  * @experimental
  */
