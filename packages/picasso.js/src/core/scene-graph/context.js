@@ -7,7 +7,7 @@ import extend from 'extend';
  * @param  {Array}  [whitelist=[]]  An array of whitelisted string keys to inherit
  * @return {Function}               A context function
  */
-function contextFactory(whitelist = []) {
+export default function contextFactory(whitelist = []) {
   const states = [{}];
 
   /**
@@ -63,5 +63,3 @@ function contextFactory(whitelist = []) {
 
   return context;
 }
-
-export { contextFactory as default };

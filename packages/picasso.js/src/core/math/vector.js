@@ -20,7 +20,7 @@ export function scalarMultiply(v, s) {
 }
 
 export function sqrMagnitude(v) {
-  return Math.pow(v.x, 2) + Math.pow(v.y, 2);
+  return v.x ** 2 + v.y ** 2;
 }
 
 export function magnitude(v) {
@@ -36,7 +36,7 @@ export function distanceY(v1, v2) {
 }
 
 export function sqrDistance(v1, v2) {
-  return Math.pow(distanceX(v1, v2), 2) + Math.pow(distanceY(v1, v2), 2);
+  return distanceX(v1, v2) ** 2 + distanceY(v1, v2) ** 2;
 }
 
 export function distance(v1, v2) {

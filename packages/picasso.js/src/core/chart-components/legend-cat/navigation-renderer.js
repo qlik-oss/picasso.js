@@ -145,7 +145,7 @@ function render(renderer, { rect, itemRenderer }, itemized, legend) {
   renderer.render(nodes);
 }
 
-export default function (legend) {
+export default function navRenderer(legend) {
   let itemized;
 
   const nav = {

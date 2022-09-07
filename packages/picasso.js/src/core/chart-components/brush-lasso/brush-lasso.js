@@ -16,7 +16,7 @@ function getPoint(rendererBounds, event) {
 function withinThreshold(p, state, settings) {
   const startPoint = state.points[0];
   const sqrDist = sqrDistance(p, startPoint);
-  return sqrDist < Math.pow(settings.settings.snapIndicator.threshold, 2);
+  return sqrDist < settings.settings.snapIndicator.threshold ** 2;
 }
 
 function appendToPath(state, p) {

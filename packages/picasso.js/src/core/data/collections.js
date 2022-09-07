@@ -25,7 +25,7 @@ import extract from './extractor';
  * }
  */
 
-function create(config, d, opts, extractor = extract) {
+export default function create(config, d, opts, extractor = extract) {
   const collections = {};
 
   (config || []).forEach((cfg) => {
@@ -68,5 +68,3 @@ function create(config, d, opts, extractor = extract) {
 
   return fn;
 }
-
-export { create as default };

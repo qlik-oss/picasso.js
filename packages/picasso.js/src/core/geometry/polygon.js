@@ -34,7 +34,7 @@ function removeDuplicates(vertices) {
  * @ignore
  * @private
  */
-class Polygon {
+export default class Polygon {
   constructor({ vertices = [] } = {}) {
     this.set({ vertices });
   }
@@ -185,8 +185,6 @@ class Polygon {
   }
 }
 
-function create(...a) {
+export function create(...a) {
   return new Polygon(...a);
 }
-
-export { create, Polygon as default };

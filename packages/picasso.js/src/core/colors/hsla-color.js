@@ -164,7 +164,7 @@ class HslaColor {
    */
   luminance() {
     let rgb = toRgb(this.h, this.s, this.l),
-      luminance = Math.sqrt(0.299 * Math.pow(rgb.r, 2) + 0.587 * Math.pow(rgb.g, 2) + 0.114 * Math.pow(rgb.b, 2));
+      luminance = Math.sqrt(0.299 * rgb.r ** 2 + 0.587 * rgb.g ** 2 + 0.114 * rgb.b ** 2);
 
     return luminance / 255;
   }

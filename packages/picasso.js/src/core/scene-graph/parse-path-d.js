@@ -67,7 +67,7 @@ function arcToPoints(s, startX, startY) {
   ));
 
   // Approximation of perimeter
-  const p = Math.abs(sweepAngle * Math.sqrt((Math.pow(rx, 2) + Math.pow(ry, 2)) / 2));
+  const p = Math.abs(sweepAngle * Math.sqrt((rx ** 2 + ry ** 2) / 2));
 
   // Generate a point every 10th pixel. Scaling of the node should probably be included in this calculation
   const res = Math.ceil(p / 10);

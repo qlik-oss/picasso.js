@@ -445,7 +445,7 @@ class NumberFormatter {
         }
         if (suggestedAbbrExponent) {
           abbr = this.abbreviations[suggestedAbbrExponent];
-          value /= Math.pow(10, suggestedAbbrExponent);
+          value /= 10 ** suggestedAbbrExponent;
         }
       }
 
@@ -460,7 +460,7 @@ class NumberFormatter {
       num = value;
 
       if (!decimalPartPattern && numericPattern.slice(-1)[0] === '#') {
-        if (absValue >= Math.pow(10, temp) || absValue < 1 || absValue < 1e-4) {
+        if (absValue >= 10 ** temp || absValue < 1 || absValue < 1e-4) {
           if (value === 0) {
             value = '0';
           } else if (absValue < 1e-4 || absValue >= 1e20) {

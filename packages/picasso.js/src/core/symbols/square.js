@@ -3,7 +3,7 @@
  * @extends Symbol
  * @typedef {object} SymbolSquare
  */
-function square(options) {
+export default function square(options) {
   const size = options.size;
 
   return {
@@ -15,5 +15,3 @@ function square(options) {
     height: size,
   };
 }
-
-export { square as default };

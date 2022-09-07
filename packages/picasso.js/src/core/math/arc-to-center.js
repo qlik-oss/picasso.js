@@ -1,6 +1,6 @@
 import { toRadians } from './angles';
 
-const PI_X2 = Math.PI * 2;
+export const PI_X2 = Math.PI * 2;
 
 /**
  * Implementation of F.6.5 https://www.w3.org/TR/SVG/implnote.html#ArcImplementationNotes
@@ -16,7 +16,7 @@ const PI_X2 = Math.PI * 2;
  * @param {number} startY - Y-coordinate for start of arc
  * @returns {object}
  */
-function arcToCenter(rx, ry, rotation, largeArcFlag, sweepFlag, endX, endY, startX, startY) {
+export default function arcToCenter(rx, ry, rotation, largeArcFlag, sweepFlag, endX, endY, startX, startY) {
   let startAngle;
   let endAngle;
   let sweepAngle;
@@ -39,7 +39,7 @@ function arcToCenter(rx, ry, rotation, largeArcFlag, sweepFlag, endX, endY, star
   rx = Math.abs(rx);
   ry = Math.abs(ry);
 
-  radiusRatio = Math.pow(x1d, 2) / Math.pow(rx, 2) + Math.pow(y1d, 2) / Math.pow(ry, 2);
+  radiusRatio = x1d ** 2 / rx ** 2 + y1d ** 2 / ry ** 2;
   if (radiusRatio > 1) {
     radiusRatio = Math.sqrt(radiusRatio);
     rx *= radiusRatio;
@@ -50,8 +50,8 @@ function arcToCenter(rx, ry, rotation, largeArcFlag, sweepFlag, endX, endY, star
   const rxry = rx * ry;
   const rxy1d = rx * y1d;
   const ryx1d = ry * x1d;
-  const den = Math.pow(rxy1d, 2) + Math.pow(ryx1d, 2);
-  const num = Math.pow(rxry, 2) - den;
+  const den = rxy1d ** 2 + ryx1d ** 2;
+  const num = rxry ** 2 - den;
 
   let frac = Math.sqrt(Math.max(num / den, 0));
 
@@ -97,5 +97,3 @@ function arcToCenter(rx, ry, rotation, largeArcFlag, sweepFlag, endX, endY, star
     ry,
   };
 }
-
-export { arcToCenter as default, PI_X2 };

@@ -3,7 +3,7 @@
  * @extends Symbol
  * @typedef {object} SymbolRect
  */
-function rect(options) {
+export default function rect(options) {
   const { x, y, size } = options;
   const width = typeof options.width === 'undefined' ? size : options.width;
   const height = typeof options.height === 'undefined' ? size : options.height;
@@ -17,5 +17,3 @@ function rect(options) {
     height,
   };
 }
-
-export { rect as default };

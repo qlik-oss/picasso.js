@@ -59,7 +59,8 @@ const create =
     return fn;
   };
 
-export { create as default, parentReg as symbolRegistry };
+export { parentReg as symbolRegistry };
+export default create;
 
 /**
  * Mandatory symbol config

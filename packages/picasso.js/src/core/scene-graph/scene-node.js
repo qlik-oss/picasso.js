@@ -77,7 +77,7 @@ function colliderToShape(node, dpi) {
 /**
  * Read-only object representing a node on the scene.
  */
-class SceneNode {
+export class SceneNode {
   constructor(node) {
     this._bounds = (includeTransform = true) => {
       const { x, y, width, height } = node.boundingRect
@@ -276,8 +276,6 @@ class SceneNode {
   }
 }
 
-function create(...a) {
+export default function create(...a) {
   return new SceneNode(...a);
 }
-
-export { create as default, SceneNode };
