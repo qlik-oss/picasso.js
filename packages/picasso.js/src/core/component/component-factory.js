@@ -367,10 +367,15 @@ function componentFactory(definition, context = {}) {
         { logger: chart.logger() },
         chart.dataCollection
       );
-      if (progressive && data.items) {
-        data.items.push(...extracted.items);
-      } else {
+      if (!progressive) {
         data = extracted;
+      } else if (progressive.isFirst) {
+        data = extracted;
+        if (data.items) {
+          data.items = [...(extracted.items || [])];
+        }
+      } else if (data.items) {
+        data.items.push(...extracted.items);
       }
     } else if (scale) {
       data = scale.data();
@@ -425,7 +430,7 @@ function componentFactory(definition, context = {}) {
     const { rendererSettings } = settings;
     let d = data;
     const progressive = typeof rendererSettings?.progressive === 'function' && rendererSettings.progressive();
-    if (progressive && data.items) {
+    if (data.items && progressive) {
       d = {
         ...data,
         items: data.items.slice(progressive.start, progressive.end),
@@ -450,12 +455,13 @@ function componentFactory(definition, context = {}) {
 
   function updateBrushNodes(nodes) {
     const { rendererSettings } = settings;
-    if (typeof rendererSettings?.progressive !== 'function') {
+    const progressive = typeof rendererSettings?.progressive === 'function' && rendererSettings.progressive();
+    if (!progressive) {
       brushArgs.nodes = nodes;
-    } else if (rendererSettings.progressive() && brushArgs.nodes) {
-      brushArgs.nodes.push(...(nodes || []));
-    } else {
+    } else if (progressive.isFirst) {
       brushArgs.nodes = [...(nodes || [])];
+    } else if (brushArgs.nodes) {
+      brushArgs.nodes.push(...(nodes || []));
     }
   }
 

@@ -264,8 +264,9 @@ export function renderer(sceneFn = sceneFactory) {
     patterns.clear();
 
     const doRender = hasChangedRect || hasChangedScene;
+    const progressive = typeof settings.progressive === 'function' && settings.progressive();
     if (doRender) {
-      if (typeof settings.progressive !== 'function' || !settings.progressive()) {
+      if (!progressive || progressive.isFirst) {
         canvasRenderer.clear();
       }
       renderShapes(newScene.children, g, shapeToCanvasMap, {
@@ -280,7 +281,7 @@ export function renderer(sceneFn = sceneFactory) {
     }
 
     hasChangedRect = false;
-    if (typeof settings.progressive === 'function' && settings.progressive()) {
+    if (progressive && !progressive.isFirst) {
       newScene.children.unshift(...scene.children);
     }
     scene = newScene;
