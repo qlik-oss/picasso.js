@@ -5929,6 +5929,28 @@
         }
       }
     },
+    "ProgressiveObject": {
+      "description": "A format to represent a progressive.",
+      "kind": "object",
+      "entries": {
+        "start": {
+          "description": "Start index of a data chunk.",
+          "type": "number"
+        },
+        "end": {
+          "description": "End index of a data chunk.",
+          "type": "number"
+        },
+        "isFirst": {
+          "description": "If it is the first rendering step of the whole rendering process. This helps to clear a canvas before rendering.",
+          "type": "boolean"
+        },
+        "isLast": {
+          "description": "If it is the last rendering step of the whole rendering process. This helps to update other components depending on a component with progressive rendering.",
+          "type": "boolean"
+        }
+      }
+    },
     "Rect": {
       "kind": "object",
       "entries": {
@@ -6253,6 +6275,11 @@
           "description": "Specifies the size of buffer canvas (used together with transform setting).",
           "optional": true,
           "type": "#/definitions/RendererSettings/definitions/CanvasBufferSize"
+        },
+        "progressive": {
+          "description": "Setting for applying progressive rendering to a canvas renderer",
+          "optional": true,
+          "type": "#/definitions/RendererSettings/definitions/Progressive"
         }
       },
       "definitions": {
@@ -6266,6 +6293,20 @@
             },
             {
               "type": "object"
+            }
+          ],
+          "type": "any"
+        },
+        "Progressive": {
+          "description": "A function which returns either (1) false (to specify no progressive rendering used) or an object specifing the data chunk rendered.",
+          "stability": "experimental",
+          "kind": "union",
+          "items": [
+            {
+              "type": "function"
+            },
+            {
+              "type": "undefined"
             }
           ],
           "type": "any"

@@ -1480,6 +1480,13 @@ declare namespace picassojs {
         points: picassojs.Point[];
     };
 
+    type ProgressiveObject = {
+        start: number;
+        end: number;
+        isFirst: boolean;
+        isLast: boolean;
+    };
+
     type Rect = {
         x: number;
         y: number;
@@ -1578,10 +1585,13 @@ declare namespace picassojs {
     type RendererSettings = {
         transform?: picassojs.RendererSettings.TransformFunction;
         canvasBufferSize?: picassojs.RendererSettings.CanvasBufferSize;
+        progressive?: picassojs.RendererSettings.Progressive;
     };
 
     namespace RendererSettings {
         type CanvasBufferSize = (()=>void) | object;
+
+        type Progressive = (()=>void) | undefined;
 
         /**
          * Should return a transform object if transformation should be applied, otherwise undefined or a falsy value.
