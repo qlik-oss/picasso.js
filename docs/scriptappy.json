@@ -6309,10 +6309,10 @@
                 "type": "#/definitions/ProgressiveObject"
               },
               {
-                "kind": "literal",
-                "value": "false"
+                "type": "boolean"
               }
-            ]
+            ],
+            "type": "any"
           }
         },
         "TransformFunction": {

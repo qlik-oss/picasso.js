@@ -1594,7 +1594,7 @@ declare namespace picassojs {
         /**
          * A function which returns either (1) false (to specify no progressive rendering used) or an object specifing the data chunk rendered.
          */
-        type Progressive = ()=>picassojs.ProgressiveObject | "false";
+        type Progressive = ()=>picassojs.ProgressiveObject | boolean;
 
         /**
          * Should return a transform object if transformation should be applied, otherwise undefined or a falsy value.
