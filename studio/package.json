@@ -38,7 +38,7 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-monaco-editor": "0.50.1",
-    "react-router-dom": "5.3.3",
+    "react-router-dom": "6.3.0",
     "react-split-pane": "0.1.92",
     "regenerator-runtime": "0.13.9",
     "resizable-panels-react": "2.0.8",
