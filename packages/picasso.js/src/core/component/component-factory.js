@@ -372,7 +372,7 @@ function componentFactory(definition, context = {}) {
       } else if (progressive.isFirst) {
         data = extracted;
         if (data.items) {
-          data.items = [...(extracted.items || [])];
+          data.items = [...extracted.items];
         }
       } else if (data.items) {
         data.items.push(...(extracted.items || []));

@@ -1,13 +1,13 @@
 import element from 'test-utils/mocks/element-mock';
 
 describe('canvas renderer', () => {
-  let sandbox, r, scene, mockedCanvasBuffer, renderer;
+  let sandbox, r, sceneFn, mockedCanvasBuffer, renderer;
   const mock = () =>
     aw.mock([['**/canvas-buffer.js', () => sinon.stub().returns(mockedCanvasBuffer)]], ['../canvas-renderer']);
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
-    scene = sandbox.stub();
+    sceneFn = sandbox.stub();
     mockedCanvasBuffer = {
       updateSize: sinon.spy(),
       apply: sinon.spy(),
@@ -16,7 +16,7 @@ describe('canvas renderer', () => {
     };
 
     renderer = mock()[0].renderer;
-    r = renderer(scene);
+    r = renderer(sceneFn);
   });
 
   afterEach(() => {
@@ -37,6 +37,130 @@ describe('canvas renderer', () => {
     });
   });
 
+  it('should set rendererSettings with progressive correctly', () => {
+    const rendererSettings = {
+      transform: () => {},
+      canvasBufferSize: { width: 1000, height: 600 },
+      irrelevantSetting: 'irrelevant!',
+      progressive: sandbox.stub().returns('abc'),
+    };
+    r.settings(rendererSettings);
+    expect(r.settings().progressive()).to.eql('abc');
+  });
+
+  it('should clear canvas if there is no progressive', () => {
+    const rendererSettings = {
+      transform: () => {},
+      canvasBufferSize: { width: 1000, height: 600 },
+      irrelevantSetting: 'irrelevant!',
+    };
+    const div = element('div');
+    r.clear = sandbox.stub();
+    r.appendTo(div);
+    sceneFn.returns({
+      children: [],
+      equals: () => false,
+    });
+    r.settings(rendererSettings);
+    r.render();
+    expect(r.clear.callCount).to.equal(1);
+  });
+
+  it('should clear canvas if progressive = false', () => {
+    const rendererSettings = {
+      transform: () => {},
+      canvasBufferSize: { width: 1000, height: 600 },
+      progressive: sandbox.stub().returns(false),
+    };
+    const div = element('div');
+    r.clear = sandbox.stub();
+    r.appendTo(div);
+    sceneFn.returns({
+      children: [],
+      equals: () => false,
+    });
+    r.settings(rendererSettings);
+    r.render();
+    expect(r.clear.callCount).to.equal(1);
+  });
+
+  it('should clear canvas if progressive.isFirst = true', () => {
+    const rendererSettings = {
+      transform: () => {},
+      canvasBufferSize: { width: 1000, height: 600 },
+      progressive: sandbox.stub().returns({ isFirst: true }),
+    };
+    const div = element('div');
+    r.clear = sandbox.stub();
+    r.appendTo(div);
+    sceneFn.returns({
+      children: [],
+      equals: () => false,
+    });
+    r.settings(rendererSettings);
+    r.render();
+    expect(r.clear.callCount).to.equal(1);
+  });
+
+  it('should not clear canvas if progressive.isFirst = false', () => {
+    const rendererSettings = {
+      transform: () => {},
+      canvasBufferSize: { width: 1000, height: 600 },
+      progressive: sandbox.stub(),
+    };
+    rendererSettings.progressive.onCall(0).returns({ isFirst: true });
+    rendererSettings.progressive.onCall(1).returns({ isFirst: false });
+    const div = element('div');
+    r.clear = sandbox.stub();
+    r.appendTo(div);
+    sceneFn.returns({
+      children: [],
+      equals: () => false,
+    });
+    r.settings(rendererSettings);
+    r.render();
+    r.render();
+    expect(r.clear.callCount).to.equal(1);
+  });
+
+  it('should aggregate children during progressive', () => {
+    const rendererSettings = {
+      transform: () => {},
+      canvasBufferSize: { width: 1000, height: 600 },
+      progressive: sandbox.stub(),
+    };
+    rendererSettings.progressive.onCall(0).returns({ isFirst: true });
+    rendererSettings.progressive.onCall(1).returns({ isFirst: false });
+    const div = element('div');
+    r.clear = sandbox.stub();
+    r.appendTo(div);
+    const scene1 = {
+      children: [
+        { attrs: {}, a: 1 },
+        { attrs: {}, a: 2 },
+      ],
+      equals: () => false,
+    };
+    const scene2 = {
+      children: [
+        { attrs: {}, a: 3 },
+        { attrs: {}, a: 4 },
+      ],
+      equals: () => false,
+    };
+    sceneFn.onCall(0).returns(scene1);
+    sceneFn.onCall(1).returns(scene2);
+    r.settings(rendererSettings);
+    r.render();
+    r.render();
+    expect(scene2.children).to.deep.equal([
+      { attrs: {}, a: 1 },
+      { attrs: {}, a: 2 },
+      { attrs: {}, a: 3 },
+      { attrs: {}, a: 4 },
+    ]);
+  });
+
   it('should append canvas element', () => {
     const div = element('div');
     const spy = sandbox.spy(div, 'appendChild');
@@ -45,7 +169,7 @@ describe('canvas renderer', () => {
   });
 
   it('should on appendTo apply font smoothing', () => {
-    scene.returns({ children: [] });
+    sceneFn.returns({ children: [] });
     r.appendTo(element('div'));
 
     const el = r.element();
@@ -59,7 +183,7 @@ describe('canvas renderer', () => {
 
   it('should render when canvas exists', () => {
     r.appendTo(element('div'));
-    scene.returns({ children: [] });
+    sceneFn.returns({ children: [] });
     expect(r.render()).to.equal(true);
   });
 
@@ -89,7 +213,7 @@ describe('canvas renderer', () => {
     };
     r.settings(rendererSettings);
     r.appendTo(element('div'));
-    scene.returns({
+    sceneFn.returns({
       children: [],
       equals: () => true,
     });
@@ -101,7 +225,7 @@ describe('canvas renderer', () => {
 
   it('should not render if scene and size has not changed', () => {
     r.appendTo(element('div'));
-    scene.returns({
+    sceneFn.returns({
       children: [],
       equals: () => true,
     });
@@ -111,7 +235,7 @@ describe('canvas renderer', () => {
 
   it('should render if scene has been cleared', () => {
     r.appendTo(element('div'));
-    scene.returns({
+    sceneFn.returns({
       children: [],
       equals: () => true,
     });
@@ -227,7 +351,7 @@ describe('canvas renderer', () => {
     };
     r.settings(rendererSettings);
     r.appendTo(element('div'));
-    scene.returns({
+    sceneFn.returns({
       children: [],
       equals: () => true,
     });
@@ -249,7 +373,7 @@ describe('canvas renderer', () => {
   });
 
   it('should attach to given position in the container', () => {
-    scene.returns({ children: [] });
+    sceneFn.returns({ children: [] });
     r.appendTo(element('div'));
     r.size({
       x: 50,
@@ -394,7 +518,7 @@ describe('canvas renderer', () => {
       ],
       dpi: 0.5,
     };
-    scene.returns({ children: [] });
+    sceneFn.returns({ children: [] });
     r.appendTo(div);
     r.size({
       x: 50,
@@ -412,7 +536,7 @@ describe('canvas renderer', () => {
     expect(r.element().style.height).to.equal('400px');
     expect(r.element().width).to.equal(200 * (1 / 2));
     expect(r.element().height).to.equal(400 * (1 / 2));
-    expect(scene.args[0][0].items).to.deep.equal(expectedInput.items);
+    expect(sceneFn.args[0][0].items).to.deep.equal(expectedInput.items);
   });
 
   it('should apply a scale ratio', () => {
@@ -436,7 +560,7 @@ describe('canvas renderer', () => {
       ],
       dpi: 1,
     };
-    scene.returns({ children: [] });
+    sceneFn.returns({ children: [] });
     r.appendTo(div);
     r.size(size);
 
@@ -449,7 +573,7 @@ describe('canvas renderer', () => {
     expect(el.style.top).to.equal(`${size.y * scaleRatio.y}px`);
     expect(el.width).to.equal(size.width * scaleRatio.x);
     expect(el.height).to.equal(size.height * scaleRatio.y);
-    expect(scene.args[0][0].items).to.deep.equal(expectedInputShapes.items);
+    expect(sceneFn.args[0][0].items).to.deep.equal(expectedInputShapes.items);
   });
 
   it('should account for screen dpi when applying scale ratio', () => {
@@ -474,7 +598,7 @@ describe('canvas renderer', () => {
       ],
       dpi: dpiScale,
     };
-    scene.returns({ children: [] });
+    sceneFn.returns({ children: [] });
     r.appendTo(div);
     r.size(size);
 
@@ -490,6 +614,6 @@ describe('canvas renderer', () => {
     expect(el.style.top).to.equal(`${size.y * scaleRatio.y}px`);
     expect(el.width).to.equal(size.width * scaleRatio.x * dpiScale);
     expect(el.height).to.equal(size.height * scaleRatio.y * dpiScale);
-    expect(scene.args[0][0].items).to.deep.equal(expectedInputShapes.items);
+    expect(sceneFn.args[0][0].items).to.deep.equal(expectedInputShapes.items);
   });
 });

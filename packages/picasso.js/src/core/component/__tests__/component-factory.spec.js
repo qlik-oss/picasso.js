@@ -1,7 +1,10 @@
 import componentFactory from '../component-factory';
 import * as tween from '../tween';
+import * as brushing from '../brushing';
+import * as extractData from '../../data/extractor';
 
 describe('Component', () => {
+  let sandbox;
   let definition;
   let created;
   let beforeMount;
@@ -15,6 +18,7 @@ describe('Component', () => {
   let renderer;
 
   beforeEach(() => {
+    sandbox = sinon.createSandbox();
     chart = {
       brush: () => ({
         on: () => {},
@@ -29,7 +33,7 @@ describe('Component', () => {
     beforeMount = sinon.spy();
     mounted = sinon.spy();
     beforeRender = sinon.spy();
-    render = sinon.spy();
+    render = sandbox.stub();
     beforeUpdate = sinon.spy();
     updated = sinon.spy();
     resize = sinon.spy();
@@ -59,6 +63,10 @@ describe('Component', () => {
       size: (s) => s,
       element: () => 'elm',
     };
+  });
+
+  afterEach(() => {
+    sandbox.restore();
   });
 
   function createInstance(config) {
@@ -150,6 +158,199 @@ describe('Component', () => {
     expect(render).to.have.been.calledTwice;
   });
 
+  it('should update brushArgs.config on set', () => {
+    sandbox.stub(brushing, 'resolveTapEvent').returns(false);
+    const brush = { trigger: [{ on: 'tap' }] };
+    const instance = createAndRenderComponent();
+    instance.set({ settings: { brush } });
+    instance.update();
+    instance.onBrushTap({});
+    const { args } = brushing.resolveTapEvent.getCall(0);
+    expect(args[0].config.config).to.eql(brush);
+  });
+
+  it('should update data correctly if there is no progressive', () => {
+    const data = { a: 'a' };
+    sandbox.stub(brushing, 'resolveTapEvent').returns(false);
+    sandbox.stub(extractData, 'default').returns(data);
+    const brush = { trigger: [{ on: 'tap' }] };
+    const instance = createAndRenderComponent();
+    instance.set({ settings: { brush, data: {} } });
+    instance.update();
+    instance.onBrushTap({});
+    const { args } = brushing.resolveTapEvent.getCall(0);
+    expect(args[0].config.data).to.eql({ a: 'a' });
+  });
+
+  it('should update data correctly if progressive = false', () => {
+    const data = { b: 'b' };
+    sandbox.stub(brushing, 'resolveTapEvent').returns(false);
+    sandbox.stub(extractData, 'default').returns(data);
+    const brush = { trigger: [{ on: 'tap' }] };
+    const rendererSettings = { progressive: () => false };
+    const instance = createAndRenderComponent();
+    instance.set({ settings: { brush, data: {}, rendererSettings } });
+    instance.update();
+    instance.onBrushTap({});
+    const { args } = brushing.resolveTapEvent.getCall(0);
+    expect(args[0].config.data).to.eql({ b: 'b' });
+  });
+
+  it('should update data correctly if progressive.isFirst = true and no data.items', () => {
+    const data = { c: 'c' };
+    sandbox.stub(brushing, 'resolveTapEvent').returns(false);
+    sandbox.stub(extractData, 'default').returns(data);
+    const brush = { trigger: [{ on: 'tap' }] };
+    const rendererSettings = { progressive: () => ({ isFirst: true }) };
+    const instance = createAndRenderComponent();
+    instance.set({ settings: { brush, data: {}, rendererSettings } });
+    instance.update();
+    instance.onBrushTap({});
+    const { args } = brushing.resolveTapEvent.getCall(0);
+    expect(args[0].config.data).to.eql({ c: 'c' });
+  });
+
+  it('should update data correctly if progressive.isFirst = true and has data.items', () => {
+    const data = { items: [1, 2] };
+    sandbox.stub(brushing, 'resolveTapEvent').returns(false);
+    sandbox.stub(extractData, 'default').returns(data);
+    const brush = { trigger: [{ on: 'tap' }] };
+    const rendererSettings = { progressive: () => ({ isFirst: true }) };
+    const instance = createAndRenderComponent();
+    instance.set({ settings: { brush, data: {}, rendererSettings } });
+    instance.update();
+    instance.onBrushTap({});
+    const { args } = brushing.resolveTapEvent.getCall(0);
+    expect(args[0].config.data).to.eql({ items: [1, 2] });
+  });
+
+  it('should update data correctly during progressive', () => {
+    const data1 = { items: [1, 2] };
+    const data2 = { items: [3, 4] };
+    sandbox.stub(brushing, 'resolveTapEvent').returns(false);
+    sandbox.stub(extractData, 'default');
+    extractData.default.onCall(0).returns(data1);
+    extractData.default.onCall(1).returns(data2);
+    const brush = { trigger: [{ on: 'tap' }] };
+    const rendererSettings = { progressive: sandbox.stub() };
+    rendererSettings.progressive.onCall(0).returns({ isFirst: true, start: 0, end: 2 });
+    rendererSettings.progressive.onCall(1).returns({ isFirst: true, start: 0, end: 2 });
+    rendererSettings.progressive.onCall(2).returns({ isFirst: true, start: 0, end: 2 });
+    rendererSettings.progressive.onCall(3).returns({ isFirst: false, start: 2, end: 4 });
+    rendererSettings.progressive.onCall(4).returns({ isFirst: false, start: 2, end: 4 });
+    rendererSettings.progressive.onCall(5).returns({ isFirst: false, start: 2, end: 4 });
+    const instance = createAndRenderComponent();
+    instance.set({ settings: { brush, data: {}, rendererSettings } });
+    instance.update();
+    instance.set({ settings: { brush, data: {}, rendererSettings } });
+    instance.update();
+    instance.onBrushTap({});
+    const { args } = brushing.resolveTapEvent.getCall(0);
+    expect(args[0].config.data).to.eql({ items: [1, 2, 3, 4] });
+  });
+
+  it('should update renderArgs correctly on the first progressive', () => {
+    const data = { items: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] };
+    sandbox.stub(brushing, 'resolveTapEvent').returns(false);
+    sandbox.stub(extractData, 'default').returns(data);
+    const brush = { trigger: [{ on: 'tap' }] };
+    const rendererSettings = { progressive: () => ({ isFirst: true, start: 0, end: 5 }) };
+    const instance = createAndRenderComponent();
+    instance.set({ settings: { brush, data: {}, rendererSettings } });
+    instance.update();
+    instance.onBrushTap({});
+    const { args } = render.getCall(1);
+    // console.log(args[0].data.items);
+    expect(args[0].data.items).to.eql([1, 2, 3, 4, 5]);
+  });
+
+  it('should update renderArgs correctly during progressive', () => {
+    const data1 = { items: [1, 2, 3, 4, 5] };
+    const data2 = { items: [6, 7, 8, 9, 10] };
+    sandbox.stub(brushing, 'resolveTapEvent').returns(false);
+    sandbox.stub(extractData, 'default');
+    extractData.default.onFirstCall().returns(data1);
+    extractData.default.onSecondCall().returns(data2);
+    const brush = { trigger: [{ on: 'tap' }] };
+    const rendererSettings = { progressive: sandbox.stub() };
+    rendererSettings.progressive.onCall(0).returns({ isFirst: true, start: 0, end: 5 });
+    rendererSettings.progressive.onCall(1).returns({ isFirst: true, start: 0, end: 5 });
+    rendererSettings.progressive.onCall(2).returns({ isFirst: true, start: 0, end: 5 });
+    rendererSettings.progressive.onCall(3).returns({ isFirst: false, start: 5, end: 10 });
+    rendererSettings.progressive.onCall(4).returns({ isFirst: false, start: 5, end: 10 });
+    rendererSettings.progressive.onCall(5).returns({ isFirst: false, start: 5, end: 10 });
+    const instance = createAndRenderComponent();
+    instance.set({ settings: { brush, data: {}, rendererSettings } });
+    instance.update();
+    instance.set({ settings: { brush, data: {}, rendererSettings } });
+    instance.update();
+    instance.onBrushTap({});
+    const args1 = render.getCall(1).args;
+    const args2 = render.getCall(2).args;
+    expect(args1[0]).to.eql({ data: { items: [1, 2, 3, 4, 5] } });
+    expect(args2[0]).to.eql({ data: { items: [6, 7, 8, 9, 10] } });
+  });
+
+  it('should update brushArgs.nodes correctly if progressive is falsy', () => {
+    const data = { items: [1, 2, 3, 4, 5] };
+    sandbox.stub(brushing, 'resolveTapEvent').returns(false);
+    sandbox.stub(extractData, 'default');
+    extractData.default.onFirstCall().returns(data);
+    render.returns(['a', 'b']);
+    const brush = { trigger: [{ on: 'tap' }] };
+    const rendererSettings = { progressive: false };
+    const instance = createAndRenderComponent();
+    instance.set({ settings: { brush, data: {}, rendererSettings } });
+    instance.update();
+    instance.onBrushTap({});
+    const { args } = brushing.resolveTapEvent.getCall(0);
+    expect(args[0].config.nodes).to.eql(['a', 'b']);
+  });
+
+  it('should update brushArgs.nodes correctly if progressive.isFirst = true', () => {
+    const data = { items: [1, 2, 3, 4, 5] };
+    sandbox.stub(brushing, 'resolveTapEvent').returns(false);
+    sandbox.stub(extractData, 'default');
+    extractData.default.onFirstCall().returns(data);
+    render.returns(['a', 'b']);
+    const brush = { trigger: [{ on: 'tap' }] };
+    const rendererSettings = { progressive: sandbox.stub().returns({ isFirst: true }) };
+    const instance = createAndRenderComponent();
+    instance.set({ settings: { brush, data: {}, rendererSettings } });
+    instance.update();
+    instance.onBrushTap({});
+    const { args } = brushing.resolveTapEvent.getCall(0);
+    expect(args[0].config.nodes).to.eql(['a', 'b']);
+  });
+
+  it('should update brushArgs.nodes correctly if progressive.isFirst = true', () => {
+    const data1 = { items: [1, 2, 3, 4, 5] };
+    const data2 = { items: [6, 7, 8, 9, 10] };
+    sandbox.stub(brushing, 'resolveTapEvent').returns(false);
+    sandbox.stub(extractData, 'default');
+    extractData.default.onFirstCall().returns(data1);
+    extractData.default.onSecondCall().returns(data2);
+    const brush = { trigger: [{ on: 'tap' }] };
+    const rendererSettings = { progressive: sandbox.stub() };
+    rendererSettings.progressive.onCall(0).returns({ isFirst: true, start: 0, end: 5 });
+    rendererSettings.progressive.onCall(1).returns({ isFirst: true, start: 0, end: 5 });
+    rendererSettings.progressive.onCall(2).returns({ isFirst: true, start: 0, end: 5 });
+    rendererSettings.progressive.onCall(3).returns({ isFirst: false, start: 5, end: 10 });
+    rendererSettings.progressive.onCall(4).returns({ isFirst: false, start: 5, end: 10 });
+    rendererSettings.progressive.onCall(5).returns({ isFirst: false, start: 5, end: 10 });
+    render.onCall(0).returns(['a', 'b']);
+    render.onCall(1).returns(['a', 'b']);
+    render.onCall(2).returns(['c', 'd']);
+    const instance = createAndRenderComponent();
+    instance.set({ settings: { brush, data: {}, rendererSettings } });
+    instance.update();
+    instance.set({ settings: { brush, data: {}, rendererSettings } });
+    instance.update();
+    instance.onBrushTap({});
+    const { args } = brushing.resolveTapEvent.getCall(0);
+    expect(args[0].config.nodes).to.eql(['a', 'b', 'c', 'd']);
+  });
+
   describe('emits', () => {
     it('should have an empty emit function when rendering', () => {
       const instance = createAndRenderComponent();
@@ -222,8 +423,6 @@ describe('Component', () => {
 
     it('should run tween when animations are enabled', () => {
       let instance;
-      let sandbox;
-      sandbox = sinon.createSandbox();
       sandbox.stub(tween, 'default').returns({ start: sinon.spy() });
       definition.render = () => ['node1', 'node2'];
       instance = createInstance({
@@ -238,8 +437,6 @@ describe('Component', () => {
 
     it('should not run tween when animations are disabled, case 1: enabled is not a function', () => {
       let instance;
-      let sandbox;
-      sandbox = sinon.createSandbox();
       sandbox.stub(tween, 'default').returns({ start: sinon.spy() });
       definition.render = () => ['node1', 'node2'];
       instance = createInstance({
@@ -254,8 +451,6 @@ describe('Component', () => {
 
     it('should not run tween when animations are disabled, case 2: enabled is a function', () => {
       let instance;
-      let sandbox;
-      sandbox = sinon.createSandbox();
       sandbox.stub(tween, 'default').returns({ start: sinon.spy() });
       definition.render = () => ['node1', 'node2'];
       instance = createInstance({
