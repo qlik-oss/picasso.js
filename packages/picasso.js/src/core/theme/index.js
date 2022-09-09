@@ -1,7 +1,7 @@
 import extend from 'extend';
 import styleResolver from '../style/resolver';
 
-function themeFn(style = {}, palettes = []) {
+export default function themeFn(style = {}, palettes = []) {
   let pals = {};
   let internalStyle = style;
   const setPalettes = (p) => {
@@ -63,5 +63,3 @@ function themeFn(style = {}, palettes = []) {
 
   return theme;
 }
-
-export { themeFn as default };

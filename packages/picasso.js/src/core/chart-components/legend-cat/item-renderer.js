@@ -256,7 +256,7 @@ export function parallelize(availableExtent, availableSpread, itemized) {
   return Math.max(1, Math.min(numNeeded, numInput));
 }
 
-export default function (legend, { onScroll = () => {} }) {
+export default function itemRenderer(legend, { onScroll = () => {} }) {
   let itemized;
   let parallels;
   let viewRect;

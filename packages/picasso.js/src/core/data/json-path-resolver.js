@@ -15,7 +15,7 @@
  * };
  * resolve( path, obj ); // "heaven"
  */
-function resolve(path, obj) {
+export default function resolve(path, obj) {
   if (path.charAt(0) === '/') {
     path = path.substring(1);
   }
@@ -49,5 +49,3 @@ function resolve(path, obj) {
 
   return container;
 }
-
-export { resolve as default };

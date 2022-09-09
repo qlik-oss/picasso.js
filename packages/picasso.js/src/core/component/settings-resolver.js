@@ -7,7 +7,7 @@ const externals = {
   updateScaleSize,
 };
 
-export default function (resources, deps = externals) {
+export default function settingsResolver(resources, deps = externals) {
   let cache = {};
 
   function resolve({ data, settings, defaults = {}, scaled }) {

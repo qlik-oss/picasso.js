@@ -7,12 +7,12 @@ function mid(p0, p1) {
   };
 }
 
-function interpolate(t, s, cp1, cp2, e) {
+export function interpolate(t, s, cp1, cp2, e) {
   const td = 1 - t;
-  const t0 = Math.pow(td, 3) * s;
-  const t1 = 3 * Math.pow(td, 2) * t * cp1;
-  const t2 = 3 * td * Math.pow(t, 2) * cp2;
-  const t3 = Math.pow(t, 3) * e;
+  const t0 = td ** 3 * s;
+  const t1 = 3 * td ** 2 * t * cp1;
+  const t2 = 3 * td * t ** 2 * cp2;
+  const t3 = t ** 3 * e;
 
   return t0 + t1 + t2 + t3;
 }
@@ -30,7 +30,7 @@ function interpolate(t, s, cp1, cp2, e) {
  * @param {array} points - Initial set of points
  * @returns {point[]} Array of points
  */
-function toPoints(s, cp1, cp2, e, points = [], maxNbrOfSplits = 8) {
+export default function toPoints(s, cp1, cp2, e, points = [], maxNbrOfSplits = 8) {
   if (maxNbrOfSplits < 1 || flatness(s, cp1, cp2, e) <= 10) {
     if (points[points.length - 1] !== s) {
       points.push(s);
@@ -61,5 +61,3 @@ function toPoints(s, cp1, cp2, e, points = [], maxNbrOfSplits = 8) {
 
   return points;
 }
-
-export { toPoints as default, interpolate };

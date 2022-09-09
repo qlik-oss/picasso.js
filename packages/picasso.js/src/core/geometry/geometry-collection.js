@@ -4,7 +4,7 @@ import { create as factory } from './index';
  * Construct a new GeometryCollection instance
  * @private
  */
-class GeometryCollection {
+export default class GeometryCollection {
   constructor(collection = []) {
     this.set(collection);
   }
@@ -68,8 +68,6 @@ class GeometryCollection {
   }
 }
 
-function create(...args) {
+export function create(...args) {
   return new GeometryCollection(...args);
 }
-
-export { GeometryCollection as default, create };

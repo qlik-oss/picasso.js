@@ -27,7 +27,7 @@ const ORDERS = {
   reverse: stackOrderReverse,
 };
 
-function stacked(data, config, ds) {
+export default function stacked(data, config, ds) {
   const stackIds = {};
   const stackFn = config.stackKey;
   const valueFn = config.value;
@@ -99,5 +99,3 @@ function stacked(data, config, ds) {
   });
   data.fields.push(field);
 }
-
-export { stacked as default };

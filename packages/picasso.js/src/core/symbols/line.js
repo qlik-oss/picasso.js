@@ -15,7 +15,7 @@ function createRectCollider({ x, y, size }) {
  * @typedef {object} SymbolLine
  * @property {string} [direction='horizontal'] - Direction of line ('horizontal'|'vertical').
  */
-function line(options) {
+export default function line(options) {
   const isVertical = options.direction === 'vertical';
   const r = options.size / 2;
   const x = options.x;
@@ -32,5 +32,3 @@ function line(options) {
     collider: createRectCollider(options), // TODO Use visual collider?
   };
 }
-
-export { line as default };

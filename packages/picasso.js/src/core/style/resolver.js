@@ -77,8 +77,6 @@ function res(style, references, path) {
  *   }
  * }); // { label: { fontFamily: 'Arial', fontSize: '12px' } }
  */
-function resolve(style, references) {
+export default function resolve(style, references) {
   return res(style, references, []);
 }
-
-export { resolve as default };

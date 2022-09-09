@@ -2,7 +2,7 @@
  * Manages event handlers for native events
  * @private
  */
-function native(chart, mediator, element) {
+export default function native(chart, mediator, element) {
   let instance = { chart, mediator, element };
   let nativeEvents = [];
   let settings;
@@ -108,5 +108,3 @@ function native(chart, mediator, element) {
     },
   };
 }
-
-export { native as default };

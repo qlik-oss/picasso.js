@@ -12,7 +12,7 @@ import {
  * Construct a new GeoRect instance
  * @private
  */
-class GeoRect {
+export default class GeoRect {
   constructor({ x = 0, y = 0, width = 0, height = 0, minWidth = 0, minHeight = 0 } = {}) {
     this.set({
       x,
@@ -108,8 +108,6 @@ class GeoRect {
   }
 }
 
-function create(...args) {
+export function create(...args) {
   return new GeoRect(...args);
 }
-
-export { GeoRect as default, create };

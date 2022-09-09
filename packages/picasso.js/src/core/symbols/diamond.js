@@ -5,7 +5,7 @@ import pointsToPath from '../utils/points-to-path';
  * @extends Symbol
  * @typedef {object} SymbolDiamond
  */
-function diamond(options) {
+export default function diamond(options) {
   const size = options.size;
   const left = options.x - size / 2;
   const top = options.y - size / 2;
@@ -23,5 +23,3 @@ function diamond(options) {
     d: pointsToPath(points),
   };
 }
-
-export { diamond as default };

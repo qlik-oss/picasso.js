@@ -8,7 +8,7 @@ import { toRadians } from '../math/angles';
  * @typedef {object} SymbolBar
  * @property {string} [direction='horizontal'] - Direction of bar ('horizontal'|'vertical').
  */
-function bar(options) {
+export default function bar(options) {
   const p = { x: options.x, y: options.y };
   const isVertical = options.direction === 'vertical';
   const r = options.size / 2;
@@ -33,5 +33,3 @@ function bar(options) {
 
   return rect;
 }
-
-export { bar as default };
