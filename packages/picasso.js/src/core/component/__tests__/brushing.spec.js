@@ -388,6 +388,16 @@ describe('Brushing', () => {
       expect(output[1].fill).to.equal('yellow');
     });
 
+    it('update should use customRender if any', () => {
+      dummyComponent.config.customRender = sinon.stub();
+      styler(dummyComponent, consume);
+      brusherStub.trigger('update');
+      expect(dummyComponent.config.customRender).to.have.been.calledWith({
+        render: dummyComponent.renderer.render,
+        nodes: dummyComponent.nodes,
+      });
+    });
+
     it('update should apply styling values only to shape nodes', () => {
       nodes.push({
         type: 'container',

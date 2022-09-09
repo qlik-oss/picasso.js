@@ -5929,6 +5929,29 @@
         }
       }
     },
+    "ProgressiveObject": {
+      "description": "A format to represent a data chunk to be rendered.",
+      "stability": "experimental",
+      "kind": "object",
+      "entries": {
+        "start": {
+          "description": "Start index of a data chunk.",
+          "type": "number"
+        },
+        "end": {
+          "description": "End index of a data chunk.",
+          "type": "number"
+        },
+        "isFirst": {
+          "description": "If it is the first data chunk rendered. This helps to clear a canvas before rendering.",
+          "type": "boolean"
+        },
+        "isLast": {
+          "description": "If it is the last data chunk rendered. This helps to update other components depending on a component with progressive rendering.",
+          "type": "boolean"
+        }
+      }
+    },
     "Rect": {
       "kind": "object",
       "entries": {
@@ -6253,6 +6276,11 @@
           "description": "Specifies the size of buffer canvas (used together with transform setting).",
           "optional": true,
           "type": "#/definitions/RendererSettings/definitions/CanvasBufferSize"
+        },
+        "progressive": {
+          "description": "Setting for applying progressive rendering to a canvas renderer",
+          "optional": true,
+          "type": "#/definitions/RendererSettings/definitions/Progressive"
         }
       },
       "definitions": {
@@ -6269,6 +6297,24 @@
             }
           ],
           "type": "any"
+        },
+        "Progressive": {
+          "description": "A function which returns either (1) false (to specify no progressive rendering used) or an object specifing the data chunk rendered.\n This is only applied to a canvas renderer.",
+          "stability": "experimental",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "kind": "union",
+            "items": [
+              {
+                "type": "#/definitions/ProgressiveObject"
+              },
+              {
+                "type": "boolean"
+              }
+            ],
+            "type": "any"
+          }
         },
         "TransformFunction": {
           "description": "Should return a transform object if transformation should be applied, otherwise undefined or a falsy value.\nTransforms can be applied with the canvas, svg and dom renderer.\nTransform is applied when running chart.update, see example.\n!Important: When a transform is applied to a component, the underlaying node representations are not updated with the new positions/sizes, which\ncan cause problems for operations that relies on the positioning of the shapes/nodes (such as tooltips, selections etc). An extra chart update\nwithout a transform is therefore needed to make sure the node position information is in sync with the visual representation again.",

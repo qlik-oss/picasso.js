@@ -105,7 +105,9 @@ function collectionFn({ createComponent }) {
           // Component is added
           return createComp(comp);
         }
-
+        if (comp.rendererSettings && typeof component.instance.renderer().settings === 'function') {
+          component.instance.renderer().settings(comp.rendererSettings);
+        }
         // Only apply transform, no need for an update
         if (
           comp.rendererSettings &&
@@ -113,7 +115,6 @@ function collectionFn({ createComponent }) {
           comp.rendererSettings.transform()
         ) {
           component.applyTransform = true;
-          component.instance.renderer().settings(comp.rendererSettings);
           return component;
         }
 

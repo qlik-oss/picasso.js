@@ -179,6 +179,7 @@ import componentCollectionFn from './component-collection';
  * @typedef {object} RendererSettings
  * @property {RendererSettings~TransformFunction} [transform] Setting for applying transform without re-rendering the whole component completely.
  * @property {RendererSettings~CanvasBufferSize} [canvasBufferSize] Specifies the size of buffer canvas (used together with transform setting).
+ * @property {RendererSettings~Progressive} [progressive] Setting for applying progressive rendering to a canvas renderer
  * @experimental
  */
 
@@ -231,6 +232,24 @@ import componentCollectionFn from './component-collection';
  * @property {number} verticalScaling
  * @property {number} horizontalMoving
  * @property {number} verticalMoving
+ */
+
+/**
+ * A function which returns either (1) false (to specify no progressive rendering used) or an object specifing the data chunk rendered.
+ *  This is only applied to a canvas renderer.
+ * @callback {function|undefined} RendererSettings~Progressive
+ * @returns {ProgressiveObject|boolean}
+ * @experimental
+ */
+
+/**
+ * A format to represent a data chunk to be rendered.
+ * @typedef {object} ProgressiveObject
+ * @property {number} start - Start index of a data chunk.
+ * @property {number} end - End index of a data chunk.
+ * @property {boolean} isFirst - If it is the first data chunk rendered. This helps to clear a canvas before rendering.
+ * @property {boolean} isLast - If it is the last data chunk rendered. This helps to update other components depending on a component with progressive rendering.
+ * @experimental
  */
 
 /**
