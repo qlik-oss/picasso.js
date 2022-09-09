@@ -8745,10 +8745,10 @@ icss-utils@^5.0.0, icss-utils@^5.1.0:
   resolved "https://registry.yarnpkg.com/icss-utils/-/icss-utils-5.1.0.tgz#c6be6858abd013d768e98366ae47e25d5887b1ae"
   integrity sha512-soFhflCVWLfRNOPU3iv5Z9VUdT44xFRbzjLsEzSr5AQmgqPMTHdU3PMT1Cf1ssx8fLNJDA1juftYl+PUcv3MqA==
 
-iedriver@3.150.1:
-  version "3.150.1"
-  resolved "https://registry.yarnpkg.com/iedriver/-/iedriver-3.150.1.tgz#57eb63a91c371c911f89a687db8364554c7a08bb"
-  integrity sha512-Iu2rwGRl90ZQo8yY/BPIXKtPRe/mpmjD2xjqTl2Zi+yU4/LODCZSHqK6EcgLlgrnH8FHRJiZj7fkEsLyz7mEZA==
+iedriver@4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/iedriver/-/iedriver-4.0.0.tgz#2f3842714683eb6b4ce1b66cc5a12b932079cc7b"
+  integrity sha512-OjvnMTcAxjm0lnCcl2ZgJocVqwzUCR8IJUljb+pVRuxsS/EqFRJtdDKb00XXFSGFUxvDLM9Yaz0s4+/u684PhA==
   dependencies:
     extract-zip "1.7.0"
     kew "~0.1.7"
