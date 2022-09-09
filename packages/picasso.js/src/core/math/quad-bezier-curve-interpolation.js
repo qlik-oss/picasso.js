@@ -1,9 +1,9 @@
 import cubicToPoints from './cubic-bezier-curve-interpolation';
 
-function interpolate(t, s, cp, e) {
+export function interpolate(t, s, cp, e) {
   const td = 1 - t;
 
-  return Math.pow(td, 2) * s + 2 * td * t * cp + Math.pow(t, 2) * e;
+  return td ** 2 * s + 2 * td * t * cp + t ** 2 * e;
 }
 
 function toCubic(s, cp, e) {
@@ -26,10 +26,8 @@ function toCubic(s, cp, e) {
  * @param {Point} e - End point
  * @returns {Point[]} Array of points
  */
-function toPoints(s, cp, e) {
+export default function toPoints(s, cp, e) {
   const { cp1, cp2 } = toCubic(s, cp, e);
 
   return cubicToPoints(s, cp1, cp2, e);
 }
-
-export { interpolate, toPoints as default };

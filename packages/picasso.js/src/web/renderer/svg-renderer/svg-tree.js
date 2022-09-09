@@ -1,7 +1,7 @@
 import { createTree } from '../node-tree';
 import { creator, maintainer, destroyer } from './svg-nodes';
 
-class TreeItemRenderer {
+export default class TreeItemRenderer {
   /**
    * Constructor
    * @private
@@ -22,11 +22,9 @@ class TreeItemRenderer {
   }
 }
 
-function tree() {
+export function tree() {
   return new TreeItemRenderer(createTree, creator, maintainer, destroyer);
 }
-
-export { TreeItemRenderer as default, tree };
 
 /**
  * Create an SVGElement and attach to parent.

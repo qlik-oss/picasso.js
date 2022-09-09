@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.5](https://github.com/qlik-oss/picasso.js/compare/v1.6.4...v1.6.5) (2022-09-05)
+
+### Bug Fixes
+
+- **animations:** improvements ([#692](https://github.com/qlik-oss/picasso.js/issues/692)) ([93c4b19](https://github.com/qlik-oss/picasso.js/commit/93c4b19d1f956a053bdfced40b0bad26012b1b2d))
+
 ## [1.6.4](https://github.com/qlik-oss/picasso.js/compare/v1.6.3...v1.6.4) (2022-08-22)
 
 **Note:** Version bump only for package picasso.js

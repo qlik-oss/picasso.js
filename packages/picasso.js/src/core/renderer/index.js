@@ -7,4 +7,4 @@ const rendererRegistry = (reg) => {
   return f;
 };
 
-export { rendererRegistry as default };
+export default rendererRegistry;

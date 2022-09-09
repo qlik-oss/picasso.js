@@ -26,8 +26,8 @@ steps:
   - script: yarn run test:ptor
     displayName: 'Protractor tests'
 
-  - task: PublishPipelineArtifact@0
+  - task: PublishPipelineArtifact@1
     condition: always()
     inputs:
       targetPath: test/protractor
-      artifactName: snapshots
+      artifact: snapshots

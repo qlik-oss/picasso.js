@@ -9,7 +9,7 @@ import pointsToPath from '../utils/points-to-path';
  * @typedef {object} SymbolSaltire
  * @property {number} [width] - Width of the diagonals
  */
-function saltire(options) {
+export default function saltire(options) {
   const radians = toRadians(45);
   const r = options.size / 2;
   const width = isNaN(options.width) ? r / 2 : options.width;
@@ -33,5 +33,3 @@ function saltire(options) {
     d: pointsToPath(points),
   };
 }
-
-export { saltire as default };

@@ -12,7 +12,7 @@ import {
  * Construct a new GeoLine instance
  * @private
  */
-class GeoLine {
+export default class GeoLine {
   constructor({ x1 = 0, y1 = 0, x2 = 0, y2 = 0, tolerance = 0 } = {}) {
     this.set({
       x1,
@@ -101,8 +101,6 @@ class GeoLine {
   }
 }
 
-function create(...args) {
+export function create(...args) {
   return new GeoLine(...args);
 }
-
-export { GeoLine as default, create };

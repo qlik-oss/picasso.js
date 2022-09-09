@@ -410,4 +410,4 @@ const component = {
   },
 };
 
-export { component as default };
+export default component;

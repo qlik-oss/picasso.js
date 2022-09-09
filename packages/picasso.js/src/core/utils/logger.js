@@ -78,4 +78,4 @@ const loggerFn = ({ level = LOG_LEVEL.OFF, pipe = console } = {}) => {
   };
 };
 
-export { loggerFn as default };
+export default loggerFn;

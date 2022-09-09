@@ -38,7 +38,7 @@ function removeDuplicates(vertices) {
  * Construct a new GeoPolygon instance
  * @private
  */
-class GeoPolygon {
+export default class GeoPolygon {
   constructor({ vertices = [[]] } = {}) {
     this.set({ vertices });
   }
@@ -173,8 +173,6 @@ class GeoPolygon {
   }
 }
 
-function create(...a) {
+export function create(...a) {
   return new GeoPolygon(...a);
 }
-
-export { create, GeoPolygon as default };
