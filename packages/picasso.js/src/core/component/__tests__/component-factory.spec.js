@@ -260,7 +260,6 @@ describe('Component', () => {
     instance.update();
     instance.onBrushTap({});
     const { args } = render.getCall(1);
-    // console.log(args[0].data.items);
     expect(args[0].data.items).to.eql([1, 2, 3, 4, 5]);
   });
 
