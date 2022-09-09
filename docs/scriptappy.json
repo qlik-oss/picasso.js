@@ -5931,6 +5931,7 @@
     },
     "ProgressiveObject": {
       "description": "A format to represent a data chunk to be rendered.",
+      "stability": "experimental",
       "kind": "object",
       "entries": {
         "start": {
@@ -6298,7 +6299,7 @@
           "type": "any"
         },
         "Progressive": {
-          "description": "A function which returns either (1) false (to specify no progressive rendering used) or an object specifing the data chunk rendered.",
+          "description": "A function which returns either (1) false (to specify no progressive rendering used) or an object specifing the data chunk rendered.\n This is only applied to a canvas renderer.",
           "stability": "experimental",
           "kind": "function",
           "params": [],

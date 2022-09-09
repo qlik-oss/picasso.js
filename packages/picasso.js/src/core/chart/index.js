@@ -236,6 +236,7 @@ import componentCollectionFn from './component-collection';
 
 /**
  * A function which returns either (1) false (to specify no progressive rendering used) or an object specifing the data chunk rendered.
+ *  This is only applied to a canvas renderer.
  * @callback {function|undefined} RendererSettings~Progressive
  * @returns {ProgressiveObject|boolean}
  * @experimental
@@ -248,6 +249,7 @@ import componentCollectionFn from './component-collection';
  * @property {number} end - End index of a data chunk.
  * @property {boolean} isFirst - If it is the first data chunk rendered. This helps to clear a canvas before rendering.
  * @property {boolean} isLast - If it is the last data chunk rendered. This helps to update other components depending on a component with progressive rendering.
+ * @experimental
  */
 
 /**
