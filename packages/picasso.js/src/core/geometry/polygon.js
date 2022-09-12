@@ -31,10 +31,9 @@ function removeDuplicates(vertices) {
 /**
  * Construct a new Polygon instance
  * Added ignore flag as the name collide with definition in index.js
- * @ignore
  * @private
  */
-export default class Polygon {
+class Polygon {
   constructor({ vertices = [] } = {}) {
     this.set({ vertices });
   }
@@ -188,3 +187,5 @@ export default class Polygon {
 export function create(...a) {
   return new Polygon(...a);
 }
+
+export default Polygon;

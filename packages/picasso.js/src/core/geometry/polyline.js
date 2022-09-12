@@ -16,7 +16,7 @@ function pointsAreNotEqual(p0, p1) {
  * Construct a new GeoPolyline instance
  * @private
  */
-export default class GeoPolyline {
+class GeoPolyline {
   constructor({ points = [] } = {}) {
     this.set({ points });
   }
@@ -104,3 +104,5 @@ export default class GeoPolyline {
 export function create(...a) {
   return new GeoPolyline(...a);
 }
+
+export default GeoPolyline;
