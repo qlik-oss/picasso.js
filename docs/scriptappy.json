@@ -3,7 +3,7 @@
   "info": {
     "name": "picasso.js",
     "description": "A charting library streamlined for building visualizations for the Qlik Sense Analytics platform.",
-    "version": "1.6.5",
+    "version": "1.7.0",
     "license": "MIT",
     "stability": "stable",
     "x-qlik-visibility": "public"
@@ -148,6 +148,25 @@
     }
   },
   "definitions": {
+    "boundingRect": {
+      "description": "Get the bounding rect of the polygon",
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "type": "#/definitions/Rect"
+      }
+    },
+    "bounds": {
+      "description": "Get the bounds of the polygon, as an array of points",
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "kind": "array",
+        "items": {
+          "type": "#/definitions/Point"
+        }
+      }
+    },
     "Brush": {
       "description": "A brush context",
       "kind": "interface",
@@ -996,7 +1015,7 @@
               "description": "An array of data bound shapes.",
               "kind": "array",
               "items": {
-                "type": "#/definitions/SceneNode"
+                "type": "undefined/entries/SceneNode"
               }
             },
             {
@@ -1084,7 +1103,7 @@
             "description": "Array of objects containing matching nodes",
             "kind": "array",
             "items": {
-              "type": "#/definitions/SceneNode"
+              "type": "undefined/entries/SceneNode"
             }
           },
           "examples": [
@@ -1348,7 +1367,7 @@
             "description": "Array of objects containing colliding nodes",
             "kind": "array",
             "items": {
-              "type": "#/definitions/SceneNode"
+              "type": "undefined/entries/SceneNode"
             }
           },
           "examples": [
@@ -4690,7 +4709,7 @@
                   "entries": {
                     "node": {
                       "description": "Node",
-                      "type": "#/definitions/SceneNode"
+                      "type": "undefined/entries/SceneNode"
                     }
                   }
                 }
@@ -4713,7 +4732,7 @@
                   "description": "Array of SceneNodes",
                   "kind": "array",
                   "items": {
-                    "type": "#/definitions/SceneNode"
+                    "type": "undefined/entries/SceneNode"
                   }
                 }
               ],
@@ -4721,7 +4740,7 @@
                 "description": "An array of SceneNodes",
                 "kind": "array",
                 "items": {
-                  "type": "#/definitions/SceneNode"
+                  "type": "undefined/entries/SceneNode"
                 }
               },
               "examples": [
@@ -4738,7 +4757,7 @@
                   "description": "Previous array of SceneNodes",
                   "kind": "array",
                   "items": {
-                    "type": "#/definitions/SceneNode"
+                    "type": "undefined/entries/SceneNode"
                   }
                 },
                 {
@@ -4746,7 +4765,7 @@
                   "description": "Current array of SceneNodes",
                   "kind": "array",
                   "items": {
-                    "type": "#/definitions/SceneNode"
+                    "type": "undefined/entries/SceneNode"
                   }
                 }
               ],
@@ -4878,6 +4897,19 @@
         }
       ],
       "type": "any"
+    },
+    "containsPoint": {
+      "kind": "function",
+      "params": [
+        {
+          "name": "p",
+          "type": "#/definitions/Point"
+        }
+      ],
+      "returns": {
+        "description": "True if there is an intersection, false otherwise",
+        "type": "boolean"
+      }
     },
     "customLayoutFunction": {
       "kind": "function",
@@ -5848,6 +5880,79 @@
         "{\n type: 'native',\n key: 'nativeHandler',\n enable: () => true,\n events: { // \"events\" is a property specific to the native handler\n   mousemove: (e) => console.log('mousemove', e),\n }\n}"
       ]
     },
+    "intersectsCircle": {
+      "kind": "function",
+      "params": [
+        {
+          "name": "c",
+          "type": "#/definitions/Circle"
+        }
+      ],
+      "returns": {
+        "description": "True if there is an intersection, false otherwise",
+        "type": "boolean"
+      }
+    },
+    "intersectsGeoPolygon": {
+      "kind": "function",
+      "params": [
+        {
+          "name": "geopolygon",
+          "type": "#/definitions/Geopolygon"
+        }
+      ],
+      "returns": {
+        "description": "True if there is an intersection, false otherwise",
+        "type": "boolean"
+      }
+    },
+    "intersectsLine": {
+      "kind": "function",
+      "params": [
+        {
+          "name": "points",
+          "description": "Line start and end point as an array of points",
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/Point"
+          }
+        }
+      ],
+      "returns": {
+        "description": "True if there is an intersection, false otherwise",
+        "type": "boolean"
+      }
+    },
+    "intersectsPolygon": {
+      "kind": "function",
+      "params": [
+        {
+          "name": "polygon",
+          "type": "#/definitions/Polygon"
+        }
+      ],
+      "returns": {
+        "description": "True if there is an intersection, false otherwise",
+        "type": "boolean"
+      }
+    },
+    "intersectsRect": {
+      "kind": "function",
+      "params": [
+        {
+          "name": "points",
+          "description": "Rect vertices as an array of points",
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/Point"
+          }
+        }
+      ],
+      "returns": {
+        "description": "True if there is an intersection, false otherwise",
+        "type": "boolean"
+      }
+    },
     "Line": {
       "kind": "object",
       "entries": {
@@ -5902,6 +6007,17 @@
         "y": {
           "description": "Y-coordinate",
           "type": "number"
+        }
+      }
+    },
+    "points": {
+      "description": "Get the points",
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "kind": "array",
+        "items": {
+          "type": "#/definitions/Point"
         }
       }
     },
@@ -6077,7 +6193,7 @@
             "description": "Array of objects containing matching nodes",
             "kind": "array",
             "items": {
-              "type": "#/definitions/SceneNode"
+              "type": "undefined/entries/SceneNode"
             }
           }
         },
@@ -6115,7 +6231,7 @@
           "returns": {
             "kind": "array",
             "items": {
-              "type": "#/definitions/SceneNode"
+              "type": "undefined/entries/SceneNode"
             }
           }
         },
@@ -6663,114 +6779,24 @@
         }
       }
     },
-    "SceneNode": {
-      "description": "Read-only object representing a node on the scene.",
-      "kind": "class",
-      "constructor": {
-        "kind": "function",
-        "params": []
-      },
-      "entries": {
-        "attrs": {
-          "description": "Node attributes",
+    "set": {
+      "description": "Set the vertices.\nIf vertices doesn't close the polygon, a closing vertice is appended.",
+      "kind": "function",
+      "params": [
+        {
+          "name": "input",
+          "description": "An object with a vertices property",
           "kind": "object",
-          "entries": {}
-        },
-        "bounds": {
-          "description": "Bounding rectangle of the node. After any transform has been applied, if any, but excluding scaling transform related to devicePixelRatio.\nOrigin is in the top-left corner of the scene element.",
-          "type": "#/definitions/Rect"
-        },
-        "boundsRelativeTo": {
-          "description": "Bounding rectangle of the node, relative a target.\n\nIf target is an HTMLElement, the bounds are relative to the HTMLElement.\nAny other target type will return the bounds relative to the viewport of the browser.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "target",
-              "kind": "union",
-              "items": [
-                {
-                  "type": "HTMLElement"
-                },
-                {
-                  "type": "any"
-                }
-              ],
-              "type": "any"
-            },
-            {
-              "name": "includeTransform",
-              "description": "Whether to include any applied transforms on the node",
-              "defaultValue": true,
-              "type": "boolean"
+          "entries": {
+            "vertices": {
+              "description": "Vertices are represented as an array of arrays of points.",
+              "optional": true,
+              "defaultValue": "[]",
+              "type": "Array"
             }
-          ],
-          "returns": {
-            "type": "#/definitions/Rect"
-          },
-          "examples": [
-            "node.boundsRelativeTo($('div'));\nnode.boundsRelativeTo('viewport');"
-          ]
-        },
-        "children": {
-          "description": "Get child nodes",
-          "kind": "array",
-          "items": {
-            "type": "#/definitions/SceneNode"
           }
-        },
-        "collider": {
-          "description": "Collider of the node. Transform on the node has been applied to the collider shape, if any, but excluding scaling transform related to devicePixelRatio.\nOrigin is in the top-left corner of the scene element.\n\nIf node has no collider, null is returned.",
-          "kind": "union",
-          "items": [
-            {
-              "type": "#/definitions/Line"
-            },
-            {
-              "type": "#/definitions/Rect"
-            },
-            {
-              "type": "#/definitions/Circle"
-            },
-            {
-              "type": "#/definitions/Path"
-            }
-          ],
-          "type": "any"
-        },
-        "data": {
-          "description": "Get the associated data",
-          "type": "any"
-        },
-        "desc": {
-          "description": "Node description",
-          "kind": "object",
-          "entries": {}
-        },
-        "element": {
-          "description": "Element the scene is attached to",
-          "type": "HTMLElement"
-        },
-        "key": {
-          "description": "Key of the component this shape belongs to",
-          "type": "string"
-        },
-        "localBounds": {
-          "description": "Bounding rectangle of the node within its local coordinate system.\nOrigin is in the top-left corner of the scene element.",
-          "type": "#/definitions/Rect"
-        },
-        "parent": {
-          "description": "Get parent node",
-          "type": "#/definitions/SceneNode"
-        },
-        "tag": {
-          "description": "Node tag",
-          "type": "string"
-        },
-        "type": {
-          "description": "Node type",
-          "type": "string"
         }
-      }
+      ]
     },
     "svgRendererFactory": {
       "description": "Create a new svg renderer",

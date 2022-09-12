@@ -68,6 +68,16 @@ declare namespace picassojs {
 
 declare namespace picassojs {
     /**
+     * Get the bounding rect of the polygon
+     */
+    type boundingRect = ()=>picassojs.Rect;
+
+    /**
+     * Get the bounds of the polygon, as an array of points
+     */
+    type bounds = ()=>picassojs.Point[];
+
+    /**
      * A brush context
      */
     interface Brush {
@@ -360,7 +370,7 @@ declare namespace picassojs {
          * @param shapes An array of data bound shapes.
          * @param config Options
          */
-        brushFromShapes(shapes: picassojs.SceneNode[], config: {
+        brushFromShapes(shapes: undefined/entries/SceneNode[], config: {
             components: picassojs.BrushTargetConfig[];
         }): void;
         /**
@@ -386,7 +396,7 @@ declare namespace picassojs {
          * Get all nodes matching the provided selector
          * @param selector CSS selector [type, attribute, universal, class]
          */
-        findShapes(selector: string): picassojs.SceneNode[];
+        findShapes(selector: string): undefined/entries/SceneNode[];
         /**
          * Get or create a formatter for this chart
          * @param v Formatter reference or formatter options
@@ -445,7 +455,7 @@ declare namespace picassojs {
             components?: {
             }[];
             propagation?: string;
-        }): picassojs.SceneNode[];
+        }): undefined/entries/SceneNode[];
         /**
          * @param val Toggle brushing on or off. If value is omitted, a toggle action is applied to the current state.
          */
@@ -1165,7 +1175,7 @@ declare namespace picassojs {
              * @param ctx Callback context
              */
             extract?(ctx: {
-                node: picassojs.SceneNode;
+                node: undefined/entries/SceneNode;
             }): any;
             /**
              * Callback function to filter incoming nodes to only a set of applicable nodes. Is called as a part of the `show` event.
@@ -1173,7 +1183,7 @@ declare namespace picassojs {
              * Should return an array of SceneNodes.
              * @param nodes Array of SceneNodes
              */
-            filter?(nodes: picassojs.SceneNode[]): picassojs.SceneNode[];
+            filter?(nodes: undefined/entries/SceneNode[]): undefined/entries/SceneNode[];
             /**
              * Comparison function. If evaluted to true, the incoming nodes in the `show` event are ignored. If evaluated to false, any active tooltip is cleared and a new tooltip is queued.
              * 
@@ -1181,7 +1191,7 @@ declare namespace picassojs {
              * @param prev Previous array of SceneNodes
              * @param curr Current array of SceneNodes
              */
-            isEqual?(prev: picassojs.SceneNode[], curr: picassojs.SceneNode[]): boolean;
+            isEqual?(prev: undefined/entries/SceneNode[], curr: undefined/entries/SceneNode[]): boolean;
             /**
              * Component lifecycle hook. Called when the toolip is hidden. By default this deletes the tooltip element.
              * @param ctx Callback paramater
@@ -1200,6 +1210,8 @@ declare namespace picassojs {
     };
 
     type ComponentTypes = picassojs.ComponentAxis | picassojs.ComponentBox | picassojs.ComponentBrushArea | picassojs.ComponentBrushAreaDir | picassojs.ComponentBrushLasso | picassojs.ComponentBrushRange | picassojs.ComponentContainer | picassojs.ComponentGridLine | picassojs.ComponentLabels | picassojs.ComponentLegendCat | picassojs.ComponentLegendSeq | picassojs.ComponentLine | picassojs.ComponentPie | picassojs.ComponentPoint | picassojs.ComponentRefLine | picassojs.ComponentText | picassojs.ComponentTooltip;
+
+    type containsPoint = (p: picassojs.Point)=>boolean;
 
     type customLayoutFunction = (rect: picassojs.Rect, components: {
     }[])=>void;
@@ -1451,6 +1463,16 @@ declare namespace picassojs {
         enable: (()=>void) | boolean;
     }
 
+    type intersectsCircle = (c: picassojs.Circle)=>boolean;
+
+    type intersectsGeoPolygon = (geopolygon: picassojs.Geopolygon)=>boolean;
+
+    type intersectsLine = (points: picassojs.Point[])=>boolean;
+
+    type intersectsPolygon = (polygon: picassojs.Polygon)=>boolean;
+
+    type intersectsRect = (points: picassojs.Point[])=>boolean;
+
     type Line = {
         x1: number;
         y1: number;
@@ -1471,6 +1493,11 @@ declare namespace picassojs {
         x: number;
         y: number;
     };
+
+    /**
+     * Get the points
+     */
+    type points = ()=>picassojs.Point[];
 
     type Polygon = {
         points: picassojs.Point[];
@@ -1530,12 +1557,12 @@ declare namespace picassojs {
          * Get all nodes matching the provided selector
          * @param selector CSS selector [type, attribute, universal, class]
          */
-        findShapes(selector: string): picassojs.SceneNode[];
+        findShapes(selector: string): undefined/entries/SceneNode[];
         /**
          * Get nodes renderer at area
          * @param geometry Get nodes that intersects with geometry
          */
-        itemsAt(geometry: picassojs.Point | picassojs.Circle | picassojs.Rect | picassojs.Line | picassojs.Polygon | picassojs.Geopolygon): picassojs.SceneNode[];
+        itemsAt(geometry: picassojs.Point | picassojs.Circle | picassojs.Rect | picassojs.Line | picassojs.Polygon | picassojs.Geopolygon): undefined/entries/SceneNode[];
         /**
          * @param opts
          */
@@ -1682,48 +1709,12 @@ declare namespace picassojs {
     };
 
     /**
-     * Read-only object representing a node on the scene.
+     * Set the vertices.
+     * If vertices doesn't close the polygon, a closing vertice is appended.
      */
-    class SceneNode {
-        constructor();
-
-        attrs: {
-        };
-
-        bounds: picassojs.Rect;
-
-        /**
-         * Bounding rectangle of the node, relative a target.
-         * 
-         * If target is an HTMLElement, the bounds are relative to the HTMLElement.
-         * Any other target type will return the bounds relative to the viewport of the browser.
-         * @param target
-         * @param includeTransform Whether to include any applied transforms on the node
-         */
-        boundsRelativeTo(target: HTMLElement | any, includeTransform: boolean): picassojs.Rect;
-
-        children: picassojs.SceneNode[];
-
-        collider: picassojs.Line | picassojs.Rect | picassojs.Circle | picassojs.Path;
-
-        data: any;
-
-        desc: {
-        };
-
-        element: HTMLElement;
-
-        key: string;
-
-        localBounds: picassojs.Rect;
-
-        parent: picassojs.SceneNode;
-
-        tag: string;
-
-        type: string;
-
-    }
+    type set = (input: {
+        vertices?: Array;
+    })=>void;
 
     /**
      * Create a new svg renderer
