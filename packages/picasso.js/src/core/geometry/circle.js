@@ -12,7 +12,7 @@ import {
  * Construct a new GeoCircle instance
  * @private
  */
-export default class GeoCircle {
+class GeoCircle {
   constructor({ cx = 0, cy = 0, r = 0, minRadius = 0 } = {}) {
     this.set({
       cx,
@@ -99,3 +99,5 @@ export default class GeoCircle {
 export function create(...args) {
   return new GeoCircle(...args);
 }
+
+export default GeoCircle;
