@@ -52,7 +52,7 @@ jobs:
           paths:
             - packages/*/dist
             - plugins/*/dist
-            - docs/spec.json
+            - docs/scriptappy.json
 
   lint:
     <<: *defaults
@@ -88,7 +88,7 @@ jobs:
           name: Run API Compliance
           command: >
             VER=v$(cat version.txt)
-            
+
             docker run --volumes-from specs
             -e SPEC_PATHS="67d3d238-36cc-4579-8fcd-7762267171e9@/specs/scriptappy.json"
             -e COMMIT_SHA="$CIRCLE_SHA1"
@@ -97,7 +97,7 @@ jobs:
             -e CREDENTIALS_GITHUB="$APICULTURIST_GITHUB"
             -e CREDENTIALS_COLONY="$APICULTURIST_TOKEN"
             ghcr.io/qlik-download/api-compliance
-      
+
   test-unit:
     <<: *defaults
     steps:
@@ -143,7 +143,14 @@ workflows:
       - api-governance:
           context: api-compliance
           requires:
-            - install
+            - build
+          filters:
+            branches:
+              # Forked pull requests have CIRCLE_BRANCH set to pull/XXX
+              ignore: /pull\/[0-9]+/
+            tags:
+              only:
+                - /v.*/
       - test-unit:
           requires:
             - install
