@@ -47,6 +47,8 @@ jobs:
           path: plugins/q/dist
       - store_artifacts:
           path: plugins/hammer/dist
+      - store_artifacts:
+          path: docs/scriptappy.json
       - persist_to_workspace:
           root: ~/picassojs
           paths:
