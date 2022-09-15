@@ -148,7 +148,6 @@ export function styler(obj, { context, data, style, filter, mode }) {
           });
           globalChanged = true;
         }
-        delete nodes[i].needToUpdate;
         delete nodes[i].isActive;
       }
     }
