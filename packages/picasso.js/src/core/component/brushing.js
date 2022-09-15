@@ -52,6 +52,7 @@ export function styler(obj, { context, data, style, filter, mode }) {
     let globalChanged = false;
     const evaluatedDataProps = typeof dataProps === 'function' ? dataProps({ brush: brusher }) : dataProps;
 
+    // To calculate active nodes
     for (let i = 0; i < len; i++) {
       // TODO - update only added and removed nodes
       nodeData = nodes[i].data;
@@ -78,20 +79,36 @@ export function styler(obj, { context, data, style, filter, mode }) {
         activeNodes.splice(activeIdx, 1);
         changed = true;
       }
-      if (changed || globalActivation) {
+      nodes[i].needToUpdate = changed || globalActivation;
+      nodes[i].isActive = isActive;
+    }
+
+    // To calculate style
+    for (let i = 0; i < len; i++) {
+      // TODO - update only added and removed nodes
+      nodeData = nodes[i].data;
+      if (!nodeData) {
+        continue;
+      }
+
+      if (nodes[i].needToUpdate) {
         const original = extend({}, nodes[i], nodes[i].__style);
+        const isActive = nodes[i].isActive;
         styleProps.forEach((s) => {
           if (isActive && s in active) {
-            nodes[i][s] = typeof active[s] === 'function' ? active[s].call(null, original) : active[s];
+            nodes[i][s] = typeof active[s] === 'function' ? active[s].call(null, original, activeNodes) : active[s];
           } else if (!isActive && s in inactive) {
-            nodes[i][s] = typeof inactive[s] === 'function' ? inactive[s].call(null, original) : inactive[s];
+            nodes[i][s] =
+              typeof inactive[s] === 'function' ? inactive[s].call(null, original, activeNodes) : inactive[s];
           } else {
             nodes[i][s] = nodes[i].__style[s];
           }
         });
         globalChanged = true;
       }
+      delete nodes[i].needToUpdate;
     }
+
     globalActivation = false;
     return globalChanged;
   };
