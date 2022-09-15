@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/qlik-oss/picasso.js/compare/v1.7.0...v1.8.0) (2022-09-15)
+
+### Features
+
+- support styling brushed nodes based on active nodes ([#707](https://github.com/qlik-oss/picasso.js/issues/707)) ([919c6e6](https://github.com/qlik-oss/picasso.js/commit/919c6e65218628e9041ea10992c85b47be1ef660))
+
 # [1.7.0](https://github.com/qlik-oss/picasso.js/compare/v1.6.5...v1.7.0) (2022-09-13)
 
 ### Features
