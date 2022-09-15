@@ -148,7 +148,7 @@ export function styler(obj, { context, data, style, filter, mode }) {
           });
           globalChanged = true;
         }
-        delete nodes[i].isActive;
+        delete nodes[i].needToUpdate;
       }
     }
 
