@@ -51,47 +51,106 @@ export function styler(obj, { context, data, style, filter, mode }) {
     let nodeData;
     let globalChanged = false;
     const evaluatedDataProps = typeof dataProps === 'function' ? dataProps({ brush: brusher }) : dataProps;
+    const lazyStyleUpdate =
+      typeof obj.config.lazyStyleUpdate === 'function' ? obj.config.lazyStyleUpdate(obj) : obj.config.lazyStyleUpdate;
 
-    for (let i = 0; i < len; i++) {
-      // TODO - update only added and removed nodes
-      nodeData = nodes[i].data;
-      if (!nodeData) {
-        continue;
+    if (!lazyStyleUpdate) {
+      for (let i = 0; i < len; i++) {
+        // TODO - update only added and removed nodes
+        nodeData = nodes[i].data;
+        if (!nodeData) {
+          continue;
+        }
+
+        if (!nodes[i].__style) {
+          nodes[i].__style = {};
+          styleProps.forEach((s) => {
+            nodes[i].__style[s] = nodes[i][s]; // store original value
+          });
+        }
+
+        const isActive = brusher.containsMappedData(nodeData, evaluatedDataProps, mode);
+        const activeIdx = activeNodes.indexOf(nodes[i]);
+        let changed = false;
+        if (isActive && activeIdx === -1) {
+          // activated
+          activeNodes.push(nodes[i]);
+          changed = true;
+        } else if (!isActive && activeIdx !== -1) {
+          // was active
+          activeNodes.splice(activeIdx, 1);
+          changed = true;
+        }
+        if (changed || globalActivation) {
+          const original = extend({}, nodes[i], nodes[i].__style);
+          styleProps.forEach((s) => {
+            if (isActive && s in active) {
+              nodes[i][s] = typeof active[s] === 'function' ? active[s].call(null, original) : active[s];
+            } else if (!isActive && s in inactive) {
+              nodes[i][s] = typeof inactive[s] === 'function' ? inactive[s].call(null, original) : inactive[s];
+            } else {
+              nodes[i][s] = nodes[i].__style[s];
+            }
+          });
+          globalChanged = true;
+        }
+      }
+    } else {
+      for (let i = 0; i < len; i++) {
+        // TODO - update only added and removed nodes
+        nodeData = nodes[i].data;
+        if (!nodeData) {
+          continue;
+        }
+
+        if (!nodes[i].__style) {
+          nodes[i].__style = {};
+          styleProps.forEach((s) => {
+            nodes[i].__style[s] = nodes[i][s]; // store original value
+          });
+        }
+
+        const isActive = brusher.containsMappedData(nodeData, evaluatedDataProps, mode);
+        const activeIdx = activeNodes.indexOf(nodes[i]);
+        let changed = false;
+        if (isActive && activeIdx === -1) {
+          // activated
+          activeNodes.push(nodes[i]);
+          changed = true;
+        } else if (!isActive && activeIdx !== -1) {
+          // was active
+          activeNodes.splice(activeIdx, 1);
+          changed = true;
+        }
+        nodes[i].needToUpdate = changed || globalActivation;
+        nodes[i].isActive = isActive;
       }
 
-      if (!nodes[i].__style) {
-        nodes[i].__style = {};
-        styleProps.forEach((s) => {
-          nodes[i].__style[s] = nodes[i][s]; // store original value
-        });
-      }
+      for (let i = 0; i < len; i++) {
+        // TODO - update only added and removed nodes
+        nodeData = nodes[i].data;
+        if (!nodeData) {
+          continue;
+        }
 
-      const isActive = brusher.containsMappedData(nodeData, evaluatedDataProps, mode);
-      const activeIdx = activeNodes.indexOf(nodes[i]);
-      let changed = false;
-      if (isActive && activeIdx === -1) {
-        // activated
-        activeNodes.push(nodes[i]);
-        changed = true;
-      } else if (!isActive && activeIdx !== -1) {
-        // was active
-        activeNodes.splice(activeIdx, 1);
-        changed = true;
-      }
-      if (changed || globalActivation) {
-        const original = extend({}, nodes[i], nodes[i].__style);
-        styleProps.forEach((s) => {
-          if (isActive && s in active) {
-            nodes[i][s] = typeof active[s] === 'function' ? active[s].call(null, original) : active[s];
-          } else if (!isActive && s in inactive) {
-            nodes[i][s] = typeof inactive[s] === 'function' ? inactive[s].call(null, original) : inactive[s];
-          } else {
-            nodes[i][s] = nodes[i].__style[s];
-          }
-        });
-        globalChanged = true;
+        if (nodes[i].needToUpdate) {
+          const original = extend({}, nodes[i], nodes[i].__style);
+          const isActive = nodes[i].isActive;
+          styleProps.forEach((s) => {
+            if (isActive && s in active) {
+              nodes[i][s] = typeof active[s] === 'function' ? active[s].call(null, original, activeNodes) : active[s];
+            } else if (!isActive && s in inactive) {
+              nodes[i][s] =
+                typeof inactive[s] === 'function' ? inactive[s].call(null, original, activeNodes) : inactive[s];
+            } else {
+              nodes[i][s] = nodes[i].__style[s];
+            }
+          });
+          globalChanged = true;
+        }
       }
     }
+
     globalActivation = false;
     return globalChanged;
   };
