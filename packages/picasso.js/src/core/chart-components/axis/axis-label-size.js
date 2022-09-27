@@ -222,7 +222,7 @@ export default function getSize({ isDiscrete, rect, formatter, measureText, scal
     if (state.labels.activeMode === 'tilted') {
       const extendLeft = (settings.align === 'bottom') === settings.labels.tiltAngle >= 0;
       const radians = Math.abs(settings.labels.tiltAngle) * (Math.PI / 180); // angle in radians
-      const h = measureText('M').height;
+      const h = measure('M').height;
       const maxWidth = (textSize - h * Math.cos(radians)) / Math.sin(radians);
       const labelWidth = (r) => Math.min(maxWidth, r.width) * Math.cos(radians) + r.height;
       const adjustByPosition = (s, i) => {
