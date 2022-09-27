@@ -242,7 +242,7 @@ export default function getSize({ isDiscrete, rect, formatter, measureText, scal
         !settings.labels.filterOverlapping &&
         isTiltedLabelOverlapping({
           majorTicks,
-          measureText,
+          measureText: measure,
           rect,
           bleedSize,
           angle: settings.labels.tiltAngle,
