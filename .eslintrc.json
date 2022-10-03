@@ -42,7 +42,7 @@
       "env": {
         "browser": false,
         "node": true,
-        "mocha": true
+        "jest": true
       },
       "globals": {
         "chai": false,
@@ -55,7 +55,6 @@
         "sourceType": "module",
         "ecmaVersion": 2018
       },
-      "plugins": ["mocha"],
       "rules": {
         "import/no-extraneous-dependencies": [
           "error",
@@ -63,7 +62,6 @@
             "devDependencies": true
           }
         ],
-        "mocha/no-exclusive-tests": "error",
         "no-unused-expressions": 0,
         "import/no-relative-packages": 0,
         "no-loss-of-precision": 0

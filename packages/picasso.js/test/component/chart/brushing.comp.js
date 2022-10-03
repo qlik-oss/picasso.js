@@ -273,15 +273,13 @@ describe('Brushing', () => {
     });
 
     describe('components', () => {
-      before(() => {
+      beforeAll(() => {
         // Axis require access to document to measure text
-        global.document = {
-          createElement,
-        };
+        global.document.createElement = createElement;
       });
 
-      after(() => {
-        delete global.document;
+      afterAll(() => {
+        delete global.document.createElement;
       });
 
       it('point-component', () => {

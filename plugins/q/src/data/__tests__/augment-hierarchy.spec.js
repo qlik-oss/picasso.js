@@ -2,14 +2,13 @@ import q from '../dataset';
 import { getPropsInfo } from '../../../../../packages/picasso.js/src/core/data/util';
 
 describe('augment-hierarchy', () => {
-  before(() => {
+  beforeAll(() => {
     q.util = {
       normalizeConfig: getPropsInfo,
     };
-    // q.normalizeProperties = getPropsInfo;
   });
 
-  after(() => {
+  afterAll(() => {
     q.util = undefined;
   });
 

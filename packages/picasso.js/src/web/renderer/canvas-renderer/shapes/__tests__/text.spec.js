@@ -1,4 +1,4 @@
-import * as textManipulation from '../../../../text-manipulation';
+import * as ellipsText from '../../../../text-manipulation/text-ellipsis';
 import render from '../text';
 
 describe('text', () => {
@@ -19,7 +19,7 @@ describe('text', () => {
         canvas: {},
       };
 
-      sandbox.stub(textManipulation, 'ellipsText').callsFake(() => '...');
+      sandbox.stub(ellipsText, 'default').callsFake(() => '...');
 
       text = {
         x: 1,
@@ -41,20 +41,6 @@ describe('text', () => {
       render(text, { g });
 
       expect(g.font).to.equal('15px sans');
-    });
-
-    it.skip('should fire ellipsText with correct arguments', () => {
-      render(text, { g });
-
-      expect(textManipulation.ellipsText.calledOnce).to.equal(true);
-      expect(textManipulation.ellipsText.alwaysCalledWithExactly(text, textManipulation.measureText)).to.equal(true);
-    });
-
-    it.skip('should fire fillText with correct arguments', () => {
-      render(text, { g });
-
-      expect(g.fillText.calledOnce).to.equal(true);
-      expect(g.fillText).to.have.been.calledWithExactly('...', 4, 6);
     });
 
     describe('textAlign', () => {

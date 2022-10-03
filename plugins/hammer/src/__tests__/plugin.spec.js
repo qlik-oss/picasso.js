@@ -1,15 +1,20 @@
+import * as hammer from '../hammer';
+import plugin from '..';
+
 describe('plugin', () => {
-  let plugin;
-  let hammer;
   let sandbox;
-  before(() => {
+
+  beforeEach(() => {
     sandbox = sinon.createSandbox();
-    hammer = sandbox.stub();
-    [{ default: plugin }] = aw.mock([['**/hammer.js', () => hammer]], ['../index.js']);
+    sandbox.stub(hammer, 'default');
+  });
+
+  afterEach(() => {
+    sandbox.restore();
   });
 
   it('should register hammer interaction when parameter is recognized as picasso', () => {
-    hammer.withArgs('H').returns('plugin');
+    hammer.default.withArgs('H').returns('plugin');
     const picasso = {
       interaction: sandbox.spy(),
     };
@@ -21,7 +26,7 @@ describe('plugin', () => {
   });
 
   it('should return plugin when parameter is not picasso', () => {
-    hammer.withArgs('HH').returns('plugin');
+    hammer.default.withArgs('HH').returns('plugin');
     const Hammer = 'HH';
     const p = plugin(Hammer);
 

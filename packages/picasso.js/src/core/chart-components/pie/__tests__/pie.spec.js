@@ -128,7 +128,7 @@ describe('pie', () => {
   });
 
   describe('configured slices', () => {
-    before(() => {
+    beforeAll(() => {
       componentFixture.mocks().theme.style.returns({
         slice: {
           fill: 'red',
