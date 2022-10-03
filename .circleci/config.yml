@@ -18,7 +18,7 @@ defaults: &defaults
   working_directory: ~/picassojs
   # Available images https://hub.docker.com/r/circleci/node/tags/
   docker:
-    - image: cimg/node:16.17.0-browsers
+    - image: cimg/node:14.18-browsers
 
 jobs:
   install:
@@ -107,7 +107,13 @@ jobs:
           at: ~/picassojs
       - run:
           command: |
-            yarn run test:unit --maxWorkers=2
+            yarn run test:unit --maxWorkers=2 --coverage 
+            if [ ! -z "$COVERALLS_REPO_TOKEN" ]; then
+              echo "Uploading coverage results to coveralls.io..."
+              cat ./coverage/lcov.info | npx coveralls
+            fi
+      - store_test_results:
+          path: coverage/lcov-report
 
   test-component:
     <<: *defaults
