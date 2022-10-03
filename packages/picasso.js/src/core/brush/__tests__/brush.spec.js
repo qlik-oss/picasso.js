@@ -43,7 +43,7 @@ describe('brush', () => {
       const cb = sandbox.spy();
       b.on('start', cb);
       b.start(1, '2', false);
-      expect(cb.withArgs(1, '2', false).calledOnce).to.be.true;
+      expect(cb.withArgs(1, '2', true).calledOnce).to.be.true;
     });
 
     it('should not emit a start event when alredy started', () => {
