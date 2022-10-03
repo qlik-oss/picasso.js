@@ -107,13 +107,7 @@ jobs:
           at: ~/picassojs
       - run:
           command: |
-            yarn run test:unit --coverage
-            if [ ! -z "$COVERALLS_REPO_TOKEN" ]; then
-              echo "Uploading coverage results to coveralls.io..."
-              cat ./coverage/lcov.info | npx coveralls
-            fi
-      - store_test_results:
-          path: coverage/lcov-report
+            yarn run test:unit
 
   test-component:
     <<: *defaults
