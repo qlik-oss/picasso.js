@@ -107,7 +107,7 @@ jobs:
           at: ~/picassojs
       - run:
           command: |
-            yarn run test:unit
+            yarn run test:unit --maxWorkers=2
 
   test-component:
     <<: *defaults
