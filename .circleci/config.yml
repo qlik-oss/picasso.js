@@ -116,7 +116,7 @@ jobs:
           environment:
             JEST_JUNIT_OUTPUT_DIR: ./reports/
       - store_test_results:
-          path: ./reports/junit
+          path: /reports/junit
 
   test-component:
     <<: *defaults
