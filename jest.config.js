@@ -6,6 +6,7 @@ module.exports = {
     '\\.[jt]sx?$': 'babel-jest',
   },
   transformIgnorePatterns: ['node_modules/(?!preact/.*)'],
+  reporters: ['default', 'jest-junit'],
   coverageReporters: ['text-summary', 'lcov'],
-  coverageDirectory: './coverage',
+  coverageDirectory: './reports',
 };
