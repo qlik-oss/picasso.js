@@ -126,7 +126,7 @@ describe('TreeNode', () => {
       });
     });
 
-    context('for related nodes', () => {
+    describe('for related nodes', () => {
       beforeEach(() => {
         n = new Node();
       });
@@ -193,7 +193,7 @@ describe('TreeNode', () => {
       beforeEach(() => {
         a.removeChild(a1);
       });
-      context('child node', () => {
+      describe('child node', () => {
         it('should not have a parent', () => {
           expect(a1.parent).to.be.null;
         });
@@ -203,7 +203,7 @@ describe('TreeNode', () => {
         });
       });
 
-      context('parent node', () => {
+      describe('parent node', () => {
         it('should have removed node as child', () => {
           expect(a.children.indexOf(a1)).to.equal(-1);
         });

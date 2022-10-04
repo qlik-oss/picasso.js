@@ -1,9 +1,9 @@
 import element from 'test-utils/mocks/element-mock';
+import * as canvasBuffer from '../canvas-buffer';
+import { renderer } from '../canvas-renderer';
 
 describe('canvas renderer', () => {
-  let sandbox, r, sceneFn, mockedCanvasBuffer, renderer;
-  const mock = () =>
-    aw.mock([['**/canvas-buffer.js', () => sinon.stub().returns(mockedCanvasBuffer)]], ['../canvas-renderer']);
+  let sandbox, r, sceneFn, mockedCanvasBuffer;
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
@@ -14,8 +14,8 @@ describe('canvas renderer', () => {
       clear: sinon.spy(),
       getContext: sinon.spy(),
     };
-
-    renderer = mock()[0].renderer;
+    sandbox.stub(canvasBuffer, 'default');
+    canvasBuffer.default.returns(mockedCanvasBuffer);
     r = renderer(sceneFn);
   });
 

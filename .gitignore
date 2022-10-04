@@ -7,9 +7,7 @@ stats.json
 .vscode/
 node_modules/
 dist/
-coverage/
-test/unit/coverage/
-test/component/coverage/
+reports/
 **/test/integration/artifacts/diff/
 **/test/integration/artifacts/regression/
 **/test/integration/artifacts/screenshots/

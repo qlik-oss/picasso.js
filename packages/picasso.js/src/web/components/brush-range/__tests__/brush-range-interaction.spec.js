@@ -1,10 +1,12 @@
 import { start, move, end } from '../brush-range-interaction';
 
 describe('BrushRange Interaction', () => {
+  let sandbox;
   let state;
   let event;
 
   beforeEach(() => {
+    sandbox = sinon.createSandbox();
     state = {
       cssCoord: {
         offset: 'top',
@@ -30,6 +32,13 @@ describe('BrushRange Interaction', () => {
       deltaX: 0,
       deltaY: 0.1,
     };
+
+    global.document.elementFromPoint = sandbox.stub();
+  });
+
+  afterEach(() => {
+    sandbox.restore();
+    delete global.document.elementFromPoint;
   });
 
   describe('Start', () => {
@@ -54,12 +63,6 @@ describe('BrushRange Interaction', () => {
         element: sinon.stub().returns(element),
       };
       targetSize = 0.01;
-      global.document = {
-        elementFromPoint: sinon.stub(),
-      };
-    });
-    afterEach(() => {
-      delete global.document;
     });
 
     it('should set started to true', () => {

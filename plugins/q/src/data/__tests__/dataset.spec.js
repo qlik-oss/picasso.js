@@ -170,11 +170,11 @@ const tree = () => {
 };
 
 describe('q-data', () => {
-  before(() => {
+  beforeAll(() => {
     q.util = picData.util;
   });
 
-  after(() => {
+  afterAll(() => {
     q.util = undefined;
   });
 
@@ -219,7 +219,7 @@ describe('q-data', () => {
 
   describe('qMode="S"', () => {
     let d;
-    before(() => {
+    beforeAll(() => {
       d = ds('S');
     });
 
@@ -237,7 +237,7 @@ describe('q-data', () => {
 
     describe('dimension', () => {
       let f;
-      before(() => {
+      beforeAll(() => {
         f = d.field('qDimensionInfo/0');
       });
 
@@ -249,7 +249,7 @@ describe('q-data', () => {
 
     describe('measure', () => {
       let f;
-      before(() => {
+      beforeAll(() => {
         f = d.field('qMeasureInfo/2');
       });
 
@@ -261,7 +261,7 @@ describe('q-data', () => {
 
     describe('attribute expression', () => {
       let f;
-      before(() => {
+      beforeAll(() => {
         f = d.field('qMeasureInfo/2/qAttrExprInfo/1');
       });
 
@@ -273,7 +273,7 @@ describe('q-data', () => {
 
     describe('attribute dimension', () => {
       let f;
-      before(() => {
+      beforeAll(() => {
         f = d.field('qMeasureInfo/2/qAttrDimInfo/1');
       });
 
@@ -321,13 +321,13 @@ describe('q-data', () => {
 
   describe('qMode="K"', () => {
     let d;
-    before(() => {
+    beforeAll(() => {
       d = ds('K');
     });
 
     describe('dimension', () => {
       let f;
-      before(() => {
+      beforeAll(() => {
         f = d.field('qDimensionInfo/0');
       });
 
@@ -339,7 +339,7 @@ describe('q-data', () => {
 
     describe('measure', () => {
       let f;
-      before(() => {
+      beforeAll(() => {
         f = d.field('qMeasureInfo/2');
       });
 
@@ -351,7 +351,7 @@ describe('q-data', () => {
 
     describe('attribute expression', () => {
       let f;
-      before(() => {
+      beforeAll(() => {
         f = d.field('qMeasureInfo/2/qAttrExprInfo/1');
       });
 
@@ -363,7 +363,7 @@ describe('q-data', () => {
 
     describe('attribute dimension', () => {
       let f;
-      before(() => {
+      beforeAll(() => {
         f = d.field('qMeasureInfo/2/qAttrDimInfo/1');
       });
 
@@ -384,13 +384,13 @@ describe('q-data', () => {
 
   describe('qMode="T"', () => {
     let d;
-    before(() => {
+    beforeAll(() => {
       d = ds('T');
     });
 
     describe('dimension', () => {
       let f;
-      before(() => {
+      beforeAll(() => {
         f = d.field('qDimensionInfo/0');
       });
 
@@ -402,7 +402,7 @@ describe('q-data', () => {
 
     describe('measure', () => {
       let f;
-      before(() => {
+      beforeAll(() => {
         f = d.field('qMeasureInfo/2');
       });
 
@@ -414,7 +414,7 @@ describe('q-data', () => {
 
     describe('attribute expression', () => {
       let f;
-      before(() => {
+      beforeAll(() => {
         f = d.field('qMeasureInfo/2/qAttrExprInfo/1');
       });
 
@@ -426,7 +426,7 @@ describe('q-data', () => {
 
     describe('attribute dimension', () => {
       let f;
-      before(() => {
+      beforeAll(() => {
         f = d.field('qMeasureInfo/2/qAttrDimInfo/1');
       });
 
@@ -446,13 +446,13 @@ describe('q-data', () => {
 
   describe('TreeData', () => {
     let d;
-    before(() => {
+    beforeAll(() => {
       d = tree();
     });
 
     describe('dimension', () => {
       let f;
-      before(() => {
+      beforeAll(() => {
         f = d.field('qDimensionInfo/0');
       });
 
@@ -464,7 +464,7 @@ describe('q-data', () => {
 
     describe('measure', () => {
       let f;
-      before(() => {
+      beforeAll(() => {
         f = d.field('qDimensionInfo/0/qMeasureInfo/2');
       });
 
@@ -476,7 +476,7 @@ describe('q-data', () => {
 
     describe('attribute expression', () => {
       let f;
-      before(() => {
+      beforeAll(() => {
         f = d.field('qDimensionInfo/0/qMeasureInfo/2/qAttrExprInfo/1');
       });
 
@@ -488,7 +488,7 @@ describe('q-data', () => {
 
     describe('attribute dimension', () => {
       let f;
-      before(() => {
+      beforeAll(() => {
         f = d.field('qDimensionInfo/0/qMeasureInfo/2/qAttrDimInfo/1');
       });
 
