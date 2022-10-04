@@ -114,7 +114,7 @@ jobs:
               cat ./reports/lcov.info | npx coveralls
             fi
           environment:
-            JEST_JUNIT_OUTPUT_DIR: ./reports/
+            JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
       - store_test_results:
           path: ./reports/junit/
 
