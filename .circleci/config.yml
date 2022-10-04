@@ -106,6 +106,7 @@ jobs:
       - attach_workspace:
           at: ~/picassojs
       - run:
+          name: Run unit tests
           command: |
             yarn run test:unit --maxWorkers=2 --coverage 
             if [ ! -z "$COVERALLS_REPO_TOKEN" ]; then
