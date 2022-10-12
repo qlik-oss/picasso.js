@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.1](https://github.com/qlik-oss/picasso.js/compare/v1.8.0...v1.8.1) (2022-10-12)
+
+### Bug Fixes
+
+- **axis:** measure text correctly when checking overlapping labels ([#708](https://github.com/qlik-oss/picasso.js/issues/708)) ([d678cf5](https://github.com/qlik-oss/picasso.js/commit/d678cf58eb4800edd37ddeb5f36ac69ec0ebdc61))
+
 # [1.8.0](https://github.com/qlik-oss/picasso.js/compare/v1.7.0...v1.8.0) (2022-09-15)
 
 ### Features
