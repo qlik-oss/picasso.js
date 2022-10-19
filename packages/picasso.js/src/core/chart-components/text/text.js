@@ -49,7 +49,7 @@ function generateTitle({ title, definitionSettings, dock, rect, measureText, sty
     baseline: 'alphabetical',
     stroke: style.overlay.stroke || 'transparent',
     strokeWidth: style.overlay.strokeWidth || 0,
-    fontWeight: style.overlay.fontWeight || 400 ,
+    fontWeight: style.overlay.fontWeight || 'normal',
   };
 
   extend(struct, style.text, style.overlay);
@@ -118,7 +118,6 @@ function generateTitle({ title, definitionSettings, dock, rect, measureText, sty
  * @property {string} [anchor='center'] - Where to v- or h-align the text. Supports `left`, `right`, `top`, `bottom` and `center`
  * @property {string} [join=', '] - String to add when joining titles from multiple sources
  * @property {number} [maxLengthPx] - Limit the text length
- * 
  */
 
 /**
