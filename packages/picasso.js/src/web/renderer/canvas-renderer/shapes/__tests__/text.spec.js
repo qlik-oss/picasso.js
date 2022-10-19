@@ -16,6 +16,7 @@ describe('text', () => {
         textAlign: '',
         textBaseline: '',
         fillText: sandbox.spy(),
+        strokeText: sandbox.spy(),
         canvas: {},
       };
 
@@ -28,6 +29,9 @@ describe('text', () => {
         dy: 4,
         'font-size': '15px',
         'font-family': 'sans',
+        'font-weight': 'normal',
+        stroke: 'transparent',
+        strokeWidth: 0,
         'text-anchor': '',
         'dominant-baseline': '',
       };
@@ -40,7 +44,7 @@ describe('text', () => {
     it('should set font correctly', () => {
       render(text, { g });
 
-      expect(g.font).to.equal('15px sans');
+      expect(g.font).to.equal('normal 15px sans');
     });
 
     describe('textAlign', () => {

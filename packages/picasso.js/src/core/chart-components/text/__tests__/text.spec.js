@@ -44,6 +44,11 @@ describe('Text component', () => {
         fontFamily: 'Arial',
         fontSize: '15px',
       },
+      overlay: {
+        stroke: 'transparent',
+        strokeWidth: 0,
+        fontWeight: 'normal',
+      },
     });
 
     scale.data = () => ({
@@ -664,11 +669,19 @@ describe('Text component', () => {
               fontFamily: 'nice family',
               fill: 'good color',
             },
+            overlay: {
+              fontWeight: 'normal',
+              stroke: 'transparent',
+              strokeWidth: 0,
+            },
           });
           // config.settings.style = {
           //   fontSize: 'thick and slim',
           //   fontFamily: 'nice family',
           //   fill: 'good color'
+          //   fontWeight: 'normal',
+          //    stroke: 'transparent',
+          //    strokeWidth: 0,
           // };
           const node = simulateUpdate();
 
