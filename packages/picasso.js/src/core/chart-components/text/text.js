@@ -47,9 +47,12 @@ function generateTitle({ title, definitionSettings, dock, rect, measureText, sty
     dy: 0,
     anchor: getTextAnchor(dock, definitionSettings.anchor),
     baseline: 'alphabetical',
+    stroke: style.overlay.stroke || 'transparent',
+    strokeWidth: style.overlay.strokeWidth || 0,
+    fontWeight: style.overlay.fontWeight || 400 ,
   };
 
-  extend(struct, style.text);
+  extend(struct, style.text, style.overlay);
   const textRect = measureText(struct);
 
   if (dock === 'top' || dock === 'bottom') {
@@ -115,6 +118,27 @@ function generateTitle({ title, definitionSettings, dock, rect, measureText, sty
  * @property {string} [anchor='center'] - Where to v- or h-align the text. Supports `left`, `right`, `top`, `bottom` and `center`
  * @property {string} [join=', '] - String to add when joining titles from multiple sources
  * @property {number} [maxLengthPx] - Limit the text length
+ * 
+ */
+
+/**
+ * @typedef {object} ComponentText.style
+ * @property {text-style} [text=ComponentText.style.text] - Style for text
+ * @property {overlay-style} [overlay=ComponentText.style.overlay] - Style for overlay text
+ */
+
+/**
+ * @typedef {object} ComponentText.style.text
+ * @property {string} [fontSize='12px'] - Font size of text
+ * @property {string} [fontFamily='Source Sans Pro'] - Font family of text
+ */
+/**
+ * @typedef {object} ComponentText.style.overlay
+ * @property {string} [fontWeight='bold'] - Font weight of the overlay text
+ * @property {string} [fill='#ffffff'] - Fill color of the overlay text
+ * @property {string} [stroke='#595959'] - Stroke of the overlay text
+ * @property {number} [strokeWidth=2] - Stroke width of the overlay text
+ * @property {number} [opacity=0.5] - Opacity of the overlay text
  */
 const textComponent = {
   require: ['renderer', 'chart'],
@@ -135,6 +159,7 @@ const textComponent = {
     },
     style: {
       text: '$title',
+      overlay: '$label-overlay',
     },
   },
 

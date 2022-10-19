@@ -38,6 +38,7 @@ const style = {
   '$font-size': '12px',
   '$line-height': '16px',
   '$font-size--l': '16px',
+  '$font-weight': 'normal',
 
   // base grays
   '$gray-100': '#ffffff',
@@ -120,6 +121,7 @@ const style = {
     // e.g. selection range bubble
     fontSize: '$font-size--l',
     fontFamily: '$font-family',
+    fontWeight: '$font-weight',
     fill: '$gray-100', // background fill
     color: '$font-color',
     stroke: '$guide-color--inverted',
