@@ -12,6 +12,7 @@ const mappedAttributes = {
   strokeLinejoin: 'stroke-linejoin',
   fontFamily: 'font-family',
   fontSize: 'font-size',
+  fontWeight: 'font-weight',
   baseline: 'dominant-baseline', // Special case where we have defined our own attribute name
   dominantBaseline: 'dominant-baseline',
   anchor: 'text-anchor', // Special case where we have defined our own attribute name

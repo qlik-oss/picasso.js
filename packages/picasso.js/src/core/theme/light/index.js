@@ -38,6 +38,7 @@ const style = {
   '$font-size': '12px',
   '$line-height': '16px',
   '$font-size--l': '16px',
+  '$font-weight': 'normal',
 
   // base grays
   '$gray-100': '#ffffff',
@@ -130,6 +131,9 @@ const style = {
   $title: {
     '@extend': '$label',
     fontSize: '$font-size--l',
+    fontWeight: '$font-weight',
+    stroke: '$guide-color--inverted',
+    strokeWidth: 1,
   },
 
   '$guide-line': {
