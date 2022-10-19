@@ -124,11 +124,11 @@ function generateTitle({ title, definitionSettings, dock, rect, measureText, sty
  * @typedef {object} ComponentText.style.text
  * @property {string} [fontSize='12px'] - Font size of text
  * @property {string} [fontFamily='Source Sans Pro'] - Font family of text
- * @property {string} [fontWeight='bold'] - Font weight of the overlay text
- * @property {string} [fill='#ffffff'] - Fill color of the overlay text
- * @property {string} [stroke='#595959'] - Stroke of the overlay text
- * @property {number} [strokeWidth=2] - Stroke width of the overlay text
- * @property {number} [opacity=0.5] - Opacity of the overlay text
+ * @property {string} [fontWeight='bold'] - Font weight of text
+ * @property {string} [fill='#ffffff'] - Fill color of text
+ * @property {string} [stroke='#595959'] - Stroke of text
+ * @property {number} [strokeWidth=2] - Stroke width of text
+ * @property {number} [opacity=0.5] - Opacity of text
  */
 const textComponent = {
   require: ['renderer', 'chart'],
