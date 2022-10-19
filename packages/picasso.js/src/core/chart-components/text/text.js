@@ -47,9 +47,9 @@ function generateTitle({ title, definitionSettings, dock, rect, measureText, sty
     dy: 0,
     anchor: getTextAnchor(dock, definitionSettings.anchor),
     baseline: 'alphabetical',
-    stroke: style.stroke || 'transparent',
-    strokeWidth: style.strokeWidth || 0,
-    fontWeight: style.fontWeight || 'normal',
+    stroke: 'transparent',
+    strokeWidth: 0,
+    fontWeight: 'normal',
   };
 
   extend(struct, style.text);

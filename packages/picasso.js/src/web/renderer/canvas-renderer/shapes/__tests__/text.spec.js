@@ -3,9 +3,7 @@ import render from '../text';
 
 describe('text', () => {
   describe('render', () => {
-    let sandbox;
-    let g;
-    let text;
+    let sandbox, g, falsys, truthys, text;
 
     beforeEach(() => {
       sandbox = sinon.createSandbox();
@@ -21,6 +19,10 @@ describe('text', () => {
       };
 
       sandbox.stub(ellipsText, 'default').callsFake(() => '...');
+
+      falsys = [false, null, undefined, 0, NaN, ''];
+
+      truthys = [true, {}, [], 1, -1, 3.14, -3.14, 'foo'];
 
       text = {
         x: 1,
@@ -45,6 +47,31 @@ describe('text', () => {
       render(text, { g });
 
       expect(g.font).to.equal('normal 15px sans');
+    });
+
+    it('should set defined fontWeight', () => {
+      text['font-weight'] = 'bold';
+      render(text, { g });
+
+      expect(g.font).to.equal('bold 15px sans');
+    });
+
+    it('should not fire stroke if stroke condition is falsy', () => {
+      falsys.forEach((value) => {
+        render(text, { g, doStroke: value });
+
+        expect(g.strokeText.called).to.equal(false);
+      });
+    });
+
+    it('should fire stroke if stroke condition is truthy', () => {
+      truthys.forEach((value) => {
+        g.strokeText.resetHistory();
+
+        render(text, { g, doStroke: value });
+
+        expect(g.strokeText.calledOnce).to.equal(true);
+      });
     });
 
     describe('textAlign', () => {
