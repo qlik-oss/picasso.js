@@ -121,7 +121,6 @@ const style = {
     // e.g. selection range bubble
     fontSize: '$font-size--l',
     fontFamily: '$font-family',
-    fontWeight: '$font-weight',
     fill: '$gray-100', // background fill
     color: '$font-color',
     stroke: '$guide-color--inverted',
@@ -132,6 +131,9 @@ const style = {
   $title: {
     '@extend': '$label',
     fontSize: '$font-size--l',
+    fontWeight: '$font-weight',
+    stroke: '$guide-color--inverted',
+    strokeWidth: 1,
   },
 
   '$guide-line': {

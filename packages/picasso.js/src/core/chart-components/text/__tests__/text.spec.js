@@ -43,8 +43,6 @@ describe('Text component', () => {
       text: {
         fontFamily: 'Arial',
         fontSize: '15px',
-      },
-      overlay: {
         stroke: 'transparent',
         strokeWidth: 0,
         fontWeight: 'normal',
@@ -668,8 +666,6 @@ describe('Text component', () => {
               fontSize: 'thick and slim',
               fontFamily: 'nice family',
               fill: 'good color',
-            },
-            overlay: {
               fontWeight: 'normal',
               stroke: 'transparent',
               strokeWidth: 0,

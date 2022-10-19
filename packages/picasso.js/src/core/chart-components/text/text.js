@@ -47,12 +47,12 @@ function generateTitle({ title, definitionSettings, dock, rect, measureText, sty
     dy: 0,
     anchor: getTextAnchor(dock, definitionSettings.anchor),
     baseline: 'alphabetical',
-    stroke: style.overlay.stroke || 'transparent',
-    strokeWidth: style.overlay.strokeWidth || 0,
-    fontWeight: style.overlay.fontWeight || 'normal',
+    stroke: style.stroke || 'transparent',
+    strokeWidth: style.strokeWidth || 0,
+    fontWeight: style.fontWeight || 'normal',
   };
 
-  extend(struct, style.text, style.overlay);
+  extend(struct, style.text);
   const textRect = measureText(struct);
 
   if (dock === 'top' || dock === 'bottom') {
@@ -121,18 +121,9 @@ function generateTitle({ title, definitionSettings, dock, rect, measureText, sty
  */
 
 /**
- * @typedef {object} ComponentText.style
- * @property {text-style} [text=ComponentText.style.text] - Style for text
- * @property {overlay-style} [overlay=ComponentText.style.overlay] - Style for overlay text
- */
-
-/**
  * @typedef {object} ComponentText.style.text
  * @property {string} [fontSize='12px'] - Font size of text
  * @property {string} [fontFamily='Source Sans Pro'] - Font family of text
- */
-/**
- * @typedef {object} ComponentText.style.overlay
  * @property {string} [fontWeight='bold'] - Font weight of the overlay text
  * @property {string} [fill='#ffffff'] - Fill color of the overlay text
  * @property {string} [stroke='#595959'] - Stroke of the overlay text
@@ -158,7 +149,6 @@ const textComponent = {
     },
     style: {
       text: '$title',
-      overlay: '$label-overlay',
     },
   },
 
