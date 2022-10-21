@@ -80,6 +80,7 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
     strokeWidth: style.strokeWidth || 1,
     strokeDasharray: style.strokeDasharray,
     flipXY: p.flipXY || false, // This flips individual points (Y-lines)
+    value: p.valueInfo ? p.valueInfo.id : p.value,
   });
 
   if (p.label) {
