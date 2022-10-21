@@ -276,8 +276,8 @@ class SceneNode {
   }
 }
 
-function create(...a) {
+export default function create(...a) {
   return new SceneNode(...a);
 }
 
-export { create as default, SceneNode };
+export { SceneNode };

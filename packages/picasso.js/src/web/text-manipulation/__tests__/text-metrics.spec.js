@@ -13,7 +13,7 @@ describe('text-metrics', () => {
       fontFamily: 'Arial',
     };
 
-    before(() => {
+    beforeAll(() => {
       sandbox = sinon.createSandbox();
 
       canvasContextMock = {
@@ -26,9 +26,7 @@ describe('text-metrics', () => {
         }),
       };
 
-      global.document = {
-        createElement: sandbox.spy(() => ({ getContext: () => canvasContextMock })),
-      };
+      global.document.createElement = sandbox.spy(() => ({ getContext: () => canvasContextMock }));
     });
 
     afterEach(() => {
@@ -37,8 +35,8 @@ describe('text-metrics', () => {
       sandbox.resetHistory();
     });
 
-    after(() => {
-      delete global.document;
+    afterAll(() => {
+      delete global.document.createElement;
     });
 
     it('should return correct result', () => {

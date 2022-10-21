@@ -15,7 +15,7 @@ const DIRECTION_TO_ANGLE = {
  * @typedef {object} SymbolTriangle
  * @property {string} [direction='up'] - Direction of the triangle ('up'|'down'|'left'|'right')
  */
-function triangle(options) {
+export default function triangle(options) {
   const size = options.size;
   const p = { x: options.x, y: options.y };
   const directionAngle = DIRECTION_TO_ANGLE[options.direction] || 0;
@@ -38,5 +38,3 @@ function triangle(options) {
     d: pointsToPath(points),
   };
 }
-
-export { triangle as default };

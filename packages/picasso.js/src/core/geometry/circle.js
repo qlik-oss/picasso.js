@@ -96,8 +96,8 @@ class GeoCircle {
   }
 }
 
-function create(...args) {
+export function create(...args) {
   return new GeoCircle(...args);
 }
 
-export { GeoCircle as default, create };
+export default GeoCircle;

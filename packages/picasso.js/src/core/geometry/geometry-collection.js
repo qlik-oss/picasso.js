@@ -68,8 +68,8 @@ class GeometryCollection {
   }
 }
 
-function create(...args) {
+export function create(...args) {
   return new GeometryCollection(...args);
 }
 
-export { GeometryCollection as default, create };
+export default GeometryCollection;

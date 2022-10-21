@@ -9,4 +9,4 @@ dataRegistry('matrix', dataset);
 
 dataRegistry('default', dataset); // deprecated
 
-export { dataRegistry as default };
+export default dataRegistry;

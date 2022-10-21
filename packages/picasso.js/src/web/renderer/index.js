@@ -4,7 +4,7 @@ import { measureText, textBounds } from '../text-manipulation';
  * Base renderer factory
  * @private
  */
-function create() {
+export default function create() {
   /**
    * @interface
    * @alias Renderer
@@ -113,5 +113,3 @@ function create() {
 
   return renderer;
 }
-
-export { create as default };

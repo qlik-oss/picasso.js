@@ -1,21 +1,28 @@
-// import { rows } from '../rows';
-
-const mock = ({ ellipsText = (n) => n.text } = {}) =>
-  aw.mock([['**/text-manipulation/index.js', () => ({ ellipsText })]], ['../rows']);
+import * as ellipsText from '../../../../../web/text-manipulation/text-ellipsis';
+import { rows } from '../rows';
 
 describe('labeling - rows', () => {
+  let sandbox;
+
+  beforeAll(() => {
+    sandbox = sinon.createSandbox();
+    sandbox.stub(ellipsText, 'default');
+    ellipsText.default.callsFake((n) => n.text);
+  });
+
+  afterAll(() => {
+    sandbox.restore();
+  });
+
   describe('rows strategy', () => {
     let chart;
     let renderer;
-    let rows;
+
     beforeEach(() => {
       chart = {};
       renderer = {
-        measureText: sinon.stub(),
+        measureText: sandbox.stub(),
       };
-
-      const [m] = mock();
-      rows = m.rows;
     });
 
     it('should support rects', () => {
@@ -261,10 +268,10 @@ describe('labeling - rows', () => {
         },
       ];
       renderer.measureText.returns({ width: 20, height: 10 });
-      const [{ rows: r }] = mock({
-        ellipsText: () => 'et…',
-      });
-      let labels = r(
+
+      ellipsText.default.returns('et…');
+
+      let labels = rows(
         {
           settings,
           chart,
@@ -305,10 +312,10 @@ describe('labeling - rows', () => {
         },
       ];
       renderer.measureText.returns({ width: 20, height: 10 });
-      const [{ rows: r }] = mock({
-        ellipsText: () => '…',
-      });
-      let labels = r(
+
+      ellipsText.default.returns('…');
+
+      let labels = rows(
         {
           settings,
           chart,

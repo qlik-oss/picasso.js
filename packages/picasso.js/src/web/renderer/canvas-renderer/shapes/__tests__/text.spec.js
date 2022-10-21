@@ -1,11 +1,9 @@
-import * as textManipulation from '../../../../text-manipulation';
+import * as ellipsText from '../../../../text-manipulation/text-ellipsis';
 import render from '../text';
 
 describe('text', () => {
   describe('render', () => {
-    let sandbox;
-    let g;
-    let text;
+    let sandbox, g, falsys, truthys, text;
 
     beforeEach(() => {
       sandbox = sinon.createSandbox();
@@ -16,10 +14,15 @@ describe('text', () => {
         textAlign: '',
         textBaseline: '',
         fillText: sandbox.spy(),
+        strokeText: sandbox.spy(),
         canvas: {},
       };
 
-      sandbox.stub(textManipulation, 'ellipsText').callsFake(() => '...');
+      sandbox.stub(ellipsText, 'default').callsFake(() => '...');
+
+      falsys = [false, null, undefined, 0, NaN, ''];
+
+      truthys = [true, {}, [], 1, -1, 3.14, -3.14, 'foo'];
 
       text = {
         x: 1,
@@ -28,6 +31,9 @@ describe('text', () => {
         dy: 4,
         'font-size': '15px',
         'font-family': 'sans',
+        'font-weight': 'normal',
+        stroke: 'transparent',
+        strokeWidth: 0,
         'text-anchor': '',
         'dominant-baseline': '',
       };
@@ -40,21 +46,32 @@ describe('text', () => {
     it('should set font correctly', () => {
       render(text, { g });
 
-      expect(g.font).to.equal('15px sans');
+      expect(g.font).to.equal('normal 15px sans');
     });
 
-    it.skip('should fire ellipsText with correct arguments', () => {
+    it('should set defined fontWeight', () => {
+      text['font-weight'] = 'bold';
       render(text, { g });
 
-      expect(textManipulation.ellipsText.calledOnce).to.equal(true);
-      expect(textManipulation.ellipsText.alwaysCalledWithExactly(text, textManipulation.measureText)).to.equal(true);
+      expect(g.font).to.equal('bold 15px sans');
     });
 
-    it.skip('should fire fillText with correct arguments', () => {
-      render(text, { g });
+    it('should not fire stroke if stroke condition is falsy', () => {
+      falsys.forEach((value) => {
+        render(text, { g, doStroke: value });
 
-      expect(g.fillText.calledOnce).to.equal(true);
-      expect(g.fillText).to.have.been.calledWithExactly('...', 4, 6);
+        expect(g.strokeText.called).to.equal(false);
+      });
+    });
+
+    it('should fire stroke if stroke condition is truthy', () => {
+      truthys.forEach((value) => {
+        g.strokeText.resetHistory();
+
+        render(text, { g, doStroke: value });
+
+        expect(g.strokeText.calledOnce).to.equal(true);
+      });
     });
 
     describe('textAlign', () => {

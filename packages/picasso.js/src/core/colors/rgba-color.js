@@ -145,9 +145,7 @@ class RgbaColor {
    * @return { Number } A value in the range 0-1 where a low value is considered dark and vice versa.
    */
   luminance() {
-    const luminance = Math.sqrt(
-      0.299 * Math.pow(this.r, 2) + 0.587 * Math.pow(this.g, 2) + 0.114 * Math.pow(this.b, 2)
-    ); // Using Weighted Euclidean Distance in 3D RGB Space
+    const luminance = Math.sqrt(0.299 * this.r ** 2 + 0.587 * this.g ** 2 + 0.114 * this.b ** 2); // Using Weighted Euclidean Distance in 3D RGB Space
     return luminance / 255;
   }
 }

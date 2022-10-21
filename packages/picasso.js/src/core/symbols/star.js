@@ -9,7 +9,7 @@ import { toRadians } from '../math/angles';
  * @property {number} [startAngle=90] - Start drawing angle
  * @property {number} [innerRadius=size/2] - Size of the star core. My not exceed size of symbol.
  */
-function star(options) {
+export default function star(options) {
   const size = options.size;
   const points = [];
   const outerRadius = size / 2;
@@ -44,5 +44,3 @@ function star(options) {
     d: pointsToPath(points),
   };
 }
-
-export { star as default };

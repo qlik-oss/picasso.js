@@ -105,5 +105,36 @@ describe('component-collection', () => {
       expect(comp2.applyTransform).to.be.true;
       expect(comp2.instance.renderer().myRendererSettings).to.equal('new settings');
     });
+
+    it('should not update settings if there is no component with rendererSettings', () => {
+      const collection = componentCollectionFn({ createComponent });
+      const components = [
+        {
+          type: 'box',
+          key: 'no-renderSettings',
+        },
+      ];
+      collection.set({ components });
+      collection.update({ components, excludeFromUpdate: [] });
+      const comp1 = collection.findComponentByKey('no-renderSettings');
+
+      expect(comp1.instance.renderer().myRendererSettings).to.equal('old settings');
+    });
+
+    it('should not update settings if there is no component with rendererSettings', () => {
+      const collection = componentCollectionFn({ createComponent });
+      const components = [
+        {
+          type: 'box',
+          key: 'with-renderSettings',
+          rendererSettings: {},
+        },
+      ];
+      collection.set({ components });
+      collection.update({ components, excludeFromUpdate: [] });
+      const comp1 = collection.findComponentByKey('with-renderSettings');
+
+      expect(comp1.instance.renderer().myRendererSettings).to.equal('new settings');
+    });
   });
 });

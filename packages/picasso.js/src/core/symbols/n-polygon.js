@@ -8,7 +8,7 @@ import { toRadians } from '../math/angles';
  * @property {object} [sides=6] - Number of sides on the regular polygon
  * @property {object} [startAngle=0] - Start drawing angle
  */
-function nPolygon(options) {
+export default function nPolygon(options) {
   const points = [];
   const radius = options.size / 2;
   const drawPoints = Math.max(isNaN(options.sides) ? 6 : options.sides, 3);
@@ -31,5 +31,3 @@ function nPolygon(options) {
     d: pointsToPath(points),
   };
 }
-
-export { nPolygon as default };

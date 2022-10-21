@@ -16,7 +16,7 @@ function nodeId(node, i) {
 
 let shouldRemoveUpdatingStage = false;
 
-function tween({ old, current }, { renderer }, config) {
+export default function tween({ old, current }, { renderer }, config) {
   let ticker;
   // let staticNodes = [];
   let toBeUpdated = [];
@@ -140,5 +140,3 @@ function tween({ old, current }, { renderer }, config) {
 
   return tweener;
 }
-
-export { tween as default };

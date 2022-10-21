@@ -33,11 +33,6 @@ function removeDuplicates(vertices) {
  * A geo-polygon is a polygon which is similar to a polygon in GeoJson. A typical geopolygon is an array of polygons where the first polygon is an outer polygon and the rest are inner polygons
  * @private
  */
-
-/**
- * Construct a new GeoPolygon instance
- * @private
- */
 class GeoPolygon {
   constructor({ vertices = [[]] } = {}) {
     this.set({ vertices });
@@ -141,6 +136,7 @@ class GeoPolygon {
 
   /**
    * Get the bounds of the polygon, as an array of points
+   * @ignore
    * @returns {Point[]}
    */
   bounds() {
@@ -158,6 +154,7 @@ class GeoPolygon {
 
   /**
    * Get the bounding rect of the polygon
+   * @ignore
    * @returns {Rect}
    */
   boundingRect() {
@@ -173,8 +170,8 @@ class GeoPolygon {
   }
 }
 
-function create(...a) {
+export function create(...a) {
   return new GeoPolygon(...a);
 }
 
-export { create, GeoPolygon as default };
+export default GeoPolygon;

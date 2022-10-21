@@ -214,7 +214,7 @@ ds.util = {
   track,
 };
 
-export { ds as default };
+export default ds;
 
 /**
  * Callback function. Should return the key to stack by

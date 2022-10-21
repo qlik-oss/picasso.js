@@ -523,7 +523,7 @@ describe('line component', () => {
   describe('range', () => {
     let forward;
     let backward;
-    before(() => {
+    beforeAll(() => {
       componentFixture.mocks().theme.style.returns({
         line: {},
         area: {
@@ -600,7 +600,7 @@ describe('line component', () => {
   });
 
   describe('multiple layers', () => {
-    before(() => {
+    beforeAll(() => {
       const config = {
         data: [1, 2, 1, 3, 4, 3],
         settings: {

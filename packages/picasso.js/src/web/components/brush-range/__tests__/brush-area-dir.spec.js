@@ -29,10 +29,8 @@ describe('Brush Area Directional', () => {
       },
     };
 
-    global.document = {
-      elementFromPoint: sinon.stub(),
-      createElement: sinon.stub().returns({ bind: elementMock }),
-    };
+    global.document.elementFromPoint = sinon.stub();
+    global.document.createElement = sinon.stub().returns({ bind: elementMock });
 
     componentFixture = componentFactoryFixture();
     config = {
@@ -67,7 +65,8 @@ describe('Brush Area Directional', () => {
   });
 
   afterEach(() => {
-    delete global.document;
+    delete global.document.elementFromPoint;
+    delete global.document.createElement;
   });
 
   describe('should renderer', () => {

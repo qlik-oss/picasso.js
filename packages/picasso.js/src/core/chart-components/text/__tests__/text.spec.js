@@ -43,6 +43,9 @@ describe('Text component', () => {
       text: {
         fontFamily: 'Arial',
         fontSize: '15px',
+        stroke: 'transparent',
+        strokeWidth: 0,
+        fontWeight: 'normal',
       },
     });
 
@@ -663,12 +666,18 @@ describe('Text component', () => {
               fontSize: 'thick and slim',
               fontFamily: 'nice family',
               fill: 'good color',
+              fontWeight: 'normal',
+              stroke: 'transparent',
+              strokeWidth: 0,
             },
           });
           // config.settings.style = {
           //   fontSize: 'thick and slim',
           //   fontFamily: 'nice family',
           //   fill: 'good color'
+          //   fontWeight: 'normal',
+          //    stroke: 'transparent',
+          //    strokeWidth: 0,
           // };
           const node = simulateUpdate();
 

@@ -101,8 +101,8 @@ class GeoPolyline {
   }
 }
 
-function create(...a) {
+export function create(...a) {
   return new GeoPolyline(...a);
 }
 
-export { create, GeoPolyline as default };
+export default GeoPolyline;

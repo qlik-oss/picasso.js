@@ -15,7 +15,7 @@
  * };
  * resolve( path, obj ); // "heaven"
  */
-function resolve(path, obj) {
+export default function resolve(path, obj) {
   let arr = path.replace(/^\//, '').split(/\//),
     container = obj;
 
@@ -36,5 +36,3 @@ function resolve(path, obj) {
 
   return container;
 }
-
-export { resolve as default };

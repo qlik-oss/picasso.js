@@ -108,8 +108,8 @@ class GeoRect {
   }
 }
 
-function create(...args) {
+export function create(...args) {
   return new GeoRect(...args);
 }
 
-export { GeoRect as default, create };
+export default GeoRect;

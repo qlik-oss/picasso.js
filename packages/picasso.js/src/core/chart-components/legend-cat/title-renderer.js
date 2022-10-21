@@ -51,7 +51,7 @@ function render({ rect }, renderer, itemized) {
   renderer.render(nodes);
 }
 
-export default function (legend) {
+export default function titleRenderer(legend) {
   let itemized;
 
   const api = {

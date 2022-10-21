@@ -12,7 +12,7 @@
     },
     "babelOptions": {
       "presets": ["@babel/preset-react"]
-   }
+    }
   },
   "extends": ["airbnb-base", "prettier"],
   "plugins": ["prettier"],
@@ -33,7 +33,8 @@
     "prefer-destructuring": 0,
     "no-multi-assign": 0,
     "no-return-assign": 0,
-    "prettier/prettier": 2
+    "prettier/prettier": 2,
+    "default-param-last": 1
   },
   "overrides": [
     {
@@ -41,7 +42,7 @@
       "env": {
         "browser": false,
         "node": true,
-        "mocha": true
+        "jest": true
       },
       "globals": {
         "chai": false,
@@ -54,7 +55,6 @@
         "sourceType": "module",
         "ecmaVersion": 2018
       },
-      "plugins": ["mocha"],
       "rules": {
         "import/no-extraneous-dependencies": [
           "error",
@@ -62,8 +62,9 @@
             "devDependencies": true
           }
         ],
-        "mocha/no-exclusive-tests": "error",
-        "no-unused-expressions": 0
+        "no-unused-expressions": 0,
+        "import/no-relative-packages": 0,
+        "no-loss-of-precision": 0
       }
     },
     {

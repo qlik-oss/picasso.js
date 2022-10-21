@@ -101,8 +101,8 @@ class GeoLine {
   }
 }
 
-function create(...args) {
+export function create(...args) {
   return new GeoLine(...args);
 }
 
-export { GeoLine as default, create };
+export default GeoLine;

@@ -29,7 +29,7 @@ export function generateCrossPoints(x, y, size, barWidth) {
  * @typedef {object} SymbolCross
  * @property {number} [width] - Width of the diagonals
  */
-function cross(options) {
+export default function cross(options) {
   const x = options.x;
   const y = options.y;
   const r = options.size / 2;
@@ -44,5 +44,3 @@ function cross(options) {
     d: pointsToPath(points),
   };
 }
-
-export { cross as default };

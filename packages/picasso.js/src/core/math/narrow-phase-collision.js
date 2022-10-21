@@ -92,7 +92,7 @@ export function testCirclePoint(circle, point) {
   const center = { x: circle.cx, y: circle.cy };
   const sqrDist = sqrDistance(center, point);
 
-  if (sqrDist <= Math.pow(circle.r, 2)) {
+  if (sqrDist <= circle.r ** 2) {
     return true;
   }
   return false;
@@ -136,9 +136,9 @@ export function testCircleRect(circle, rect) {
     return true;
   }
 
-  const sqrDist = Math.pow(dX - rX, 2) + Math.pow(dY - rY, 2);
+  const sqrDist = (dX - rX) ** 2 + (dY - rY) ** 2;
 
-  return sqrDist <= Math.pow(r, 2);
+  return sqrDist <= r ** 2;
 }
 
 /**
@@ -171,7 +171,7 @@ export function testCircleLine(circle, line) {
   const pointOnLine = closestPointToLine(p1, p2, center);
   const dist = sqrDistance(pointOnLine, center);
 
-  return dist <= Math.pow(circle.r, 2) && isPointOnLine(p1, p2, pointOnLine);
+  return dist <= circle.r ** 2 && isPointOnLine(p1, p2, pointOnLine);
 }
 
 /**
@@ -195,9 +195,9 @@ export function testCircleCircle(circle1, circle2) {
 
   const dx = circle1.cx - circle2.cx;
   const dy = circle1.cy - circle2.cy;
-  const sqrDist = Math.pow(dx, 2) + Math.pow(dy, 2);
+  const sqrDist = dx ** 2 + dy ** 2;
 
-  if (sqrDist <= Math.pow(circle1.r + circle2.r, 2)) {
+  if (sqrDist <= (circle1.r + circle2.r) ** 2) {
     return true;
   }
   return false;

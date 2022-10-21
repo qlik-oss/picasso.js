@@ -47,6 +47,9 @@ function generateTitle({ title, definitionSettings, dock, rect, measureText, sty
     dy: 0,
     anchor: getTextAnchor(dock, definitionSettings.anchor),
     baseline: 'alphabetical',
+    stroke: 'transparent',
+    strokeWidth: 0,
+    fontWeight: 'normal',
   };
 
   extend(struct, style.text);
@@ -115,6 +118,17 @@ function generateTitle({ title, definitionSettings, dock, rect, measureText, sty
  * @property {string} [anchor='center'] - Where to v- or h-align the text. Supports `left`, `right`, `top`, `bottom` and `center`
  * @property {string} [join=', '] - String to add when joining titles from multiple sources
  * @property {number} [maxLengthPx] - Limit the text length
+ */
+
+/**
+ * @typedef {object} ComponentText.style.text
+ * @property {string} [fontSize='12px'] - Font size of text
+ * @property {string} [fontFamily='Source Sans Pro'] - Font family of text
+ * @property {string} [fontWeight='bold'] - Font weight of text
+ * @property {string} [fill='#ffffff'] - Fill color of text
+ * @property {string} [stroke='#595959'] - Stroke of text
+ * @property {number} [strokeWidth=2] - Stroke width of text
+ * @property {number} [opacity=0.5] - Opacity of text
  */
 const textComponent = {
   require: ['renderer', 'chart'],

@@ -2,7 +2,7 @@ export default {
   niceNum(v, round) {
     let sign = v >= 0 ? 1 : -1,
       exp = Math.floor(Math.log(Math.abs(v)) / Math.log(10)),
-      f = Math.abs(v) / Math.pow(10, exp),
+      f = Math.abs(v) / 10 ** exp,
       nf = 1;
 
     if (round) {
@@ -24,7 +24,7 @@ export default {
     } else {
       nf = 10;
     }
-    return sign * nf * Math.pow(10, exp);
+    return sign * nf * 10 ** exp;
   },
   generateTicks(start, end, nTicks = 2, round = false) {
     let nfrac,

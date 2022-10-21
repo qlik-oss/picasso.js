@@ -3,7 +3,7 @@
  * @extends Symbol
  * @typedef {object} SymbolCircle
  */
-function circle(options) {
+export default function circle(options) {
   return {
     type: 'circle',
     fill: 'black',
@@ -12,5 +12,3 @@ function circle(options) {
     r: options.size / 2,
   };
 }
-
-export { circle as default };
