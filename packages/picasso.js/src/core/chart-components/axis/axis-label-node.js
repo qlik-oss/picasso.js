@@ -206,7 +206,7 @@ export default function buildNode(tick, buildOpts) {
     y: 0,
     maxWidth: buildOpts.maxWidth,
     maxHeight: buildOpts.maxHeight,
-    tickValue: tick.value ?? tick.data.value,
+    tickValue: tick.value ?? tick.data?.value,
   };
 
   if (buildOpts.align === 'top' || buildOpts.align === 'bottom') {
