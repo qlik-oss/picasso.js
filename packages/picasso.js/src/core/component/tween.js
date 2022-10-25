@@ -14,6 +14,8 @@ function nodeId(node, i) {
   return i;
 }
 
+let shouldRemoveUpdatingStage = false;
+
 export default function tween({ old, current }, { renderer }, config) {
   let ticker;
   // let staticNodes = [];
@@ -41,38 +43,46 @@ export default function tween({ old, current }, { renderer }, config) {
           ids[id] = false;
         } else {
           entered.nodes.push(node);
-          entered.ips.push(interpolateObject(extend({}, node, { r: 0.001, opacity: 0 }), node));
+          const sourceNode = extend({}, node, { r: 0.001, opacity: 0 });
+          const targetNode = extend({}, node, { opacity: node.opacity ? node.opacity : 1 });
+          entered.ips.push(interpolateObject(sourceNode, targetNode));
         }
       });
       Object.keys(ids).forEach((key) => {
         if (ids[key]) {
           exited.nodes.push(ids[key]);
-          exited.ips.push(interpolateObject(ids[key], extend({}, ids[key], { r: 0.0001, opacity: 0 })));
+          const sourceNode = extend({}, ids[key], { opacity: ids[key].opacity ? ids[key].opacity : 1 });
+          const targetNode = extend({}, ids[key], { r: 0.001, opacity: 0 });
+          exited.ips.push(interpolateObject(sourceNode, targetNode));
         }
       });
       // Obsolete nodes exiting
       stages.push({
+        name: 'exiting',
         easing: easeCubicIn,
         duration: 200,
         tweens: exited.ips,
         nodes: [...toBeUpdated],
       });
       // Existing nodes updating
-      if (!config.transitionPhaseDisabled) {
-        stages.push({
-          easing: easeCubic,
-          duration: 400,
-          tweens: updated.ips,
-          nodes: [],
-        });
-      }
+      stages.push({
+        name: 'updating',
+        easing: easeCubic,
+        duration: 400,
+        tweens: updated.ips,
+        nodes: [],
+      });
       // New nodes entering
       stages.push({
+        name: 'entering',
         easing: easeCubicOut,
         duration: 200,
         tweens: entered.ips,
         nodes: [...updated.nodes],
       });
+      if (config.isControllingComponent && toBeUpdated.length === 0) {
+        shouldRemoveUpdatingStage = true;
+      }
       // console.log(stages);
       if (stages.length) {
         targetScene = renderer.getScene(current);
@@ -102,7 +112,12 @@ export default function tween({ old, current }, { renderer }, config) {
         // staticNodes.push(...currentStage.nodes);
         stages.shift();
         if (!stages.length) {
+          if (config.isControllingComponent) {
+            shouldRemoveUpdatingStage = false;
+          }
           tweener.stop();
+        } else if (stages[0].name === 'updating' && shouldRemoveUpdatingStage) {
+          stages.shift();
         }
       }
       if (ticker) {
