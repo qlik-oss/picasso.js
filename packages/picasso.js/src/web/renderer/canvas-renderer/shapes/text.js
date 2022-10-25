@@ -4,8 +4,11 @@ import { detectTextDirection, flipTextAnchor } from '../../../../core/utils/rtl-
 
 export default function render(t, { g, ellipsed, doStroke }) {
   const text = ellipsed || ellipsText(t, measureText);
-  g.font = `${t['font-weight']} ${t['font-size']} ${t['font-family']}`;
-
+  if (t['font-weight']) {
+    g.font = `${t['font-weight']} ${t['font-size']} ${t['font-family']}`;
+  } else {
+    g.font = `${t['font-size']} ${t['font-family']}`;
+  }
   const dir = detectTextDirection(t.text);
   if (g.canvas.dir !== dir) {
     g.canvas.dir = dir;
