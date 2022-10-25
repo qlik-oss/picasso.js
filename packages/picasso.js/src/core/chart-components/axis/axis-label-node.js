@@ -234,6 +234,7 @@ export default function buildNode(tick, buildOpts) {
   clampEnds(struct, buildOpts);
   appendPadding(struct, buildOpts);
   appendTilting(struct, buildOpts);
+
   appendBounds(struct, buildOpts);
   appendCollider(tick, struct, buildOpts);
 
