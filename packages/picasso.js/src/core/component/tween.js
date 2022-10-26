@@ -43,17 +43,13 @@ export default function tween({ old, current }, { renderer }, config) {
           ids[id] = false;
         } else {
           entered.nodes.push(node);
-          const sourceNode = extend({}, node, { r: 0.001, opacity: 0 });
-          const targetNode = extend({}, node, { opacity: node.opacity ? node.opacity : 1 });
-          entered.ips.push(interpolateObject(sourceNode, targetNode));
+          entered.ips.push(interpolateObject(extend({}, node, { r: 0.001, opacity: 0 }), node));
         }
       });
       Object.keys(ids).forEach((key) => {
         if (ids[key]) {
           exited.nodes.push(ids[key]);
-          const sourceNode = extend({}, ids[key], { opacity: ids[key].opacity ? ids[key].opacity : 1 });
-          const targetNode = extend({}, ids[key], { r: 0.001, opacity: 0 });
-          exited.ips.push(interpolateObject(sourceNode, targetNode));
+          exited.ips.push(interpolateObject(ids[key], extend({}, ids[key], { r: 0.0001, opacity: 0 })));
         }
       });
       // Obsolete nodes exiting
