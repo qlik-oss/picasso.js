@@ -76,7 +76,7 @@ export default function tween({ old, current }, { renderer }, config) {
         tweens: entered.ips,
         nodes: [...updated.nodes],
       });
-      if (config.isControllingComponent && toBeUpdated.length === 0) {
+      if (config.isMainComponent && toBeUpdated.length === 0) {
         shouldRemoveUpdatingStage = true;
       }
       // console.log(stages);
@@ -108,7 +108,7 @@ export default function tween({ old, current }, { renderer }, config) {
         // staticNodes.push(...currentStage.nodes);
         stages.shift();
         if (!stages.length) {
-          if (config.isControllingComponent) {
+          if (config.isMainComponent) {
             shouldRemoveUpdatingStage = false;
           }
           tweener.stop();
