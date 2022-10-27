@@ -1124,6 +1124,16 @@ declare namespace picassojs {
         };
     };
 
+    type ComponentText.style.text = {
+        fontSize?: string;
+        fontFamily?: string;
+        fontWeight?: string;
+        fill?: string;
+        stroke?: string;
+        strokeWidth?: number;
+        opacity?: number;
+    };
+
     type ComponentTooltip = picassojs.ComponentSettings & {
         type: "tooltip";
         settings: {

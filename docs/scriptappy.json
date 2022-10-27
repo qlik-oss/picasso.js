@@ -3,7 +3,7 @@
   "info": {
     "name": "picasso.js",
     "description": "A charting library streamlined for building visualizations for the Qlik Sense Analytics platform.",
-    "version": "1.8.1",
+    "version": "1.9.0",
     "license": "MIT",
     "stability": "stable",
     "x-qlik-visibility": "public"
@@ -4541,6 +4541,53 @@
       "examples": [
         "{\n type: 'text',\n text: 'my title',\n dock: 'left',\n settings: {\n   anchor: 'left',\n }\n}"
       ]
+    },
+    "ComponentText.style.text": {
+      "kind": "object",
+      "entries": {
+        "fontSize": {
+          "description": "Font size of text",
+          "optional": true,
+          "defaultValue": "'12px'",
+          "type": "string"
+        },
+        "fontFamily": {
+          "description": "Font family of text",
+          "optional": true,
+          "defaultValue": "'Source Sans Pro'",
+          "type": "string"
+        },
+        "fontWeight": {
+          "description": "Font weight of text",
+          "optional": true,
+          "defaultValue": "'normal'",
+          "type": "string"
+        },
+        "fill": {
+          "description": "Fill color of text",
+          "optional": true,
+          "defaultValue": "'#ffffff'",
+          "type": "string"
+        },
+        "stroke": {
+          "description": "Stroke of text",
+          "optional": true,
+          "defaultValue": "'transparent'",
+          "type": "string"
+        },
+        "strokeWidth": {
+          "description": "Stroke width of text",
+          "optional": true,
+          "defaultValue": 0,
+          "type": "number"
+        },
+        "opacity": {
+          "description": "Opacity of text",
+          "optional": true,
+          "defaultValue": 1,
+          "type": "number"
+        }
+      }
     },
     "ComponentTooltip": {
       "extends": [

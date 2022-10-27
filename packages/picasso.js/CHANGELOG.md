@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/qlik-oss/picasso.js/compare/v1.8.1...v1.9.0) (2022-10-27)
+
+### Bug Fixes
+
+- handle text component font-weight ([#717](https://github.com/qlik-oss/picasso.js/issues/717)) ([0b8a19e](https://github.com/qlik-oss/picasso.js/commit/0b8a19eb4a3a88cad078253c41eac4bf4d21174a))
+
+### Features
+
+- add stroke and font settings to text component ([#714](https://github.com/qlik-oss/picasso.js/issues/714)) ([9a13fe8](https://github.com/qlik-oss/picasso.js/commit/9a13fe8b75f14cae7f3489dc2f9f499beed7e3c7))
+
 ## [1.8.1](https://github.com/qlik-oss/picasso.js/compare/v1.8.0...v1.8.1) (2022-10-12)
 
 ### Bug Fixes
