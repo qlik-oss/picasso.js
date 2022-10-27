@@ -1,6 +1,6 @@
 {
   "name": "picasso-plugin-q",
-  "version": "1.9.1",
+  "version": "1.9.2",
   "description": "QIX plugin for picasso.js",
   "license": "MIT",
   "author": "QlikTech International AB",
@@ -24,5 +24,6 @@
     "d3-scale": "2.2.2",
     "extend": "3.0.2",
     "number-format.js": "1.1.11"
-  }
+  },
+  "gitHead": "cdf0ad2967de6e9b1d716c870f3609d15e60f650"
 }
