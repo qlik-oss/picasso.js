@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.6](https://github.com/qlik-oss/picasso.js/compare/v1.9.5...v1.9.6) (2022-10-28)
+
+### Bug Fixes
+
+- animations remove updating stage if main component has empty updating stage ([#722](https://github.com/qlik-oss/picasso.js/issues/722)) ([20b132f](https://github.com/qlik-oss/picasso.js/commit/20b132fcb472e4d2ec73eb628fe8489de1619f85))
+
 ## [1.9.5](https://github.com/qlik-oss/picasso.js/compare/v1.9.4...v1.9.5) (2022-10-27)
 
 **Note:** Version bump only for package picasso.js
