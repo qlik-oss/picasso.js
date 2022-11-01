@@ -194,8 +194,10 @@ export default function extract(config, dataset, cache, util) {
             props,
           })
         );
-      } else {
+      } else if (items.length < 100000) {
         dataItems.push(...items);
+      } else {
+        dataItems = [...dataItems, ...items];
       }
     }
   }

@@ -42,7 +42,12 @@ export default function extract(dataConfig, data = {}, opts = {}) {
           if (!s) {
             return;
           }
-          extracted.items.push(...s.extract(cfg));
+          const tmp = s.extract(cfg);
+          if (tmp.length < 100000) {
+            extracted.items.push(...tmp);
+          } else {
+            extracted.items = [...extracted.items, ...tmp];
+          }
           if (typeof cfg.field !== 'undefined') {
             sourceFields.push(s.field(cfg.field));
           }
@@ -51,7 +56,11 @@ export default function extract(dataConfig, data = {}, opts = {}) {
           extracted.fields = sourceFields;
         }
         if (dataConfig.amend && Array.isArray(dataConfig.amend)) {
-          extracted.items.push(...dataConfig.amend);
+          if (dataConfig.amend.length < 100000) {
+            extracted.items.push(...dataConfig.amend);
+          } else {
+            extracted.items = [...extracted.items, ...dataConfig.amend];
+          }
         }
       } else if (typeof dataConfig.field !== 'undefined' && source) {
         const f = source.field(dataConfig.field);

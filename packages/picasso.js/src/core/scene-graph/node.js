@@ -72,7 +72,7 @@ class Node {
    * @type {Node[]}
    */
   get descendants() {
-    const r = [];
+    let r = [];
     const len = this.children.length;
     let i;
     let c;
@@ -82,7 +82,11 @@ class Node {
       r.push(c);
 
       if (c.children.length) {
-        r.push(...c.descendants);
+        if (c.descendants.length < 100000) {
+          r.push(...c.descendants);
+        } else {
+          r = [...r, ...c.descendants];
+        }
       }
     }
     return r;
