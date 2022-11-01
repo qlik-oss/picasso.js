@@ -453,17 +453,14 @@ export function extract(config, dataset, cache, util) {
         mapped.push(ret);
       }
       // reduce if items have been grouped
-      if (track) {
-        dataItems.push(
-          ...util.collect(trackedItems, {
+      const tmp = track
+        ? util.collect(trackedItems, {
             main,
             propsArr,
             props,
           })
-        );
-      } else {
-        dataItems.push(...mapped);
-      }
+        : mapped;
+      dataItems = [...dataItems, ...tmp];
     }
   }
   return dataItems;
