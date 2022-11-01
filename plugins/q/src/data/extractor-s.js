@@ -186,19 +186,14 @@ export default function extract(config, dataset, cache, util) {
       }
 
       // reduce if items have been grouped
-      if (track) {
-        dataItems.push(
-          ...util.collect(trackedItems, {
+      const tmp = track
+        ? util.collect(trackedItems, {
             main,
             propsArr,
             props,
           })
-        );
-      } else if (items.length < 100000) {
-        dataItems.push(...items);
-      } else {
-        dataItems = [...dataItems, ...items];
-      }
+        : items;
+      dataItems = [...dataItems, ...tmp];
     }
   }
   return dataItems;

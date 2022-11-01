@@ -82,11 +82,7 @@ class Node {
       r.push(c);
 
       if (c.children.length) {
-        if (c.descendants.length < 100000) {
-          r.push(...c.descendants);
-        } else {
-          r = [...r, ...c.descendants];
-        }
+        r = [...r, ...c.descendants];
       }
     }
     return r;

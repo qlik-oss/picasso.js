@@ -460,11 +460,7 @@ export function extract(config, dataset, cache, util) {
             props,
           })
         : mapped;
-      if (tmp.length < 100000) {
-        dataItems.push(...tmp);
-      } else {
-        dataItems = [...dataItems, ...tmp];
-      }
+      dataItems = [...dataItems, ...tmp];
     }
   }
   return dataItems;
