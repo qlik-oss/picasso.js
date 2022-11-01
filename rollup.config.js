@@ -39,9 +39,8 @@ const config = (isEsm) => {
       exports: 'default',
       name: umdName,
       sourcemap: true,
-      sourcemapPathTransform: (relativeSourcePath) => {
-        return relativeSourcePath.replace(topLevelNodeModulesPath, localNodeModulesPath);
-      },
+      sourcemapPathTransform: (relativeSourcePath) =>
+        relativeSourcePath.replace(topLevelNodeModulesPath, localNodeModulesPath),
       banner,
     },
     plugins: [
