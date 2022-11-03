@@ -98,6 +98,7 @@ function collectionFn({ createComponent }) {
         // Component should not be updated
         if (excludeFromUpdate.indexOf(comp.key) > -1) {
           // TODO: decide if to skip children
+          delete component.updateWith;
           return component;
         }
 
