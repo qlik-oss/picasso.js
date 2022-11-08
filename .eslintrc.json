@@ -40,7 +40,6 @@
     {
       "files": ["**/*.spec.js", "**/test/**/*.js"],
       "env": {
-        "browser": false,
         "node": true,
         "jest": true
       },
@@ -48,8 +47,10 @@
         "chai": false,
         "expect": false,
         "sinon": false,
-        "page": false,
-        "aw": false
+        "page": true,
+        "browser": true,
+        "context": true,
+        "window": true
       },
       "parserOptions": {
         "sourceType": "module",
@@ -65,12 +66,6 @@
         "no-unused-expressions": 0,
         "import/no-relative-packages": 0,
         "no-loss-of-precision": 0
-      }
-    },
-    {
-      "files": ["**/test/protractor/**/*.js"],
-      "env": {
-        "protractor": true
       }
     }
   ]
