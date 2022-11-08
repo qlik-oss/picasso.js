@@ -133,7 +133,7 @@ const style = {
     fontSize: '$font-size--l',
     fontWeight: '$font-weight',
     stroke: '$guide-color--inverted',
-    strokeWidth: 1,
+    strokeWidth: 0,
   },
 
   '$guide-line': {
