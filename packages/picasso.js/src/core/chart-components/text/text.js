@@ -121,6 +121,11 @@ function generateTitle({ title, definitionSettings, dock, rect, measureText, sty
  */
 
 /**
+ * @typedef {object} ComponentText.style
+ * @property {object} [text]
+ */
+
+/**
  * @typedef {object} ComponentText.style.text
  * @property {string} [fontSize='12px'] - Font size of text
  * @property {string} [fontFamily='Source Sans Pro'] - Font family of text
