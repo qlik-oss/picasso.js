@@ -22,7 +22,8 @@
     "test:unit": "jest",
     "test:unit:watch": "jest --watch",
     "start": "lerna run start --stream",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "types:check": "tsc --noEmit"
   },
   "engines": {
     "node": ">=8",
