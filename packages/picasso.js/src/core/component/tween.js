@@ -76,8 +76,10 @@ export default function tween({ old, current }, { renderer }, config) {
         tweens: entered.ips,
         nodes: [...updated.nodes],
       });
-      if (config.isMainComponent && toBeUpdated.length === 0) {
-        shouldRemoveUpdatingStage = true;
+      if (config.isMainComponent) {
+        const filterFn = config.isMainComponent?.filterFn;
+        const nUpdatingNodes = filterFn ? toBeUpdated.filter(filterFn).length : toBeUpdated.length;
+        shouldRemoveUpdatingStage = nUpdatingNodes === 0;
       }
       // console.log(stages);
       if (stages.length) {
