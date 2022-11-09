@@ -14,7 +14,7 @@ function nodeId(node, i) {
   return i;
 }
 
-let shouldRemoveUpdatingStage = false;
+let shouldRemoveUpdatingStage;
 
 export default function tween({ old, current }, { renderer }, config) {
   let ticker;
@@ -79,7 +79,11 @@ export default function tween({ old, current }, { renderer }, config) {
       if (config.isMainComponent) {
         const filterFn = config.isMainComponent?.filterFn;
         const nUpdatingNodes = filterFn ? toBeUpdated.filter(filterFn).length : toBeUpdated.length;
-        shouldRemoveUpdatingStage = nUpdatingNodes === 0;
+        if (shouldRemoveUpdatingStage === undefined) {
+          shouldRemoveUpdatingStage = nUpdatingNodes === 0;
+        } else {
+          shouldRemoveUpdatingStage = shouldRemoveUpdatingStage && nUpdatingNodes === 0;
+        }
       }
       // console.log(stages);
       if (stages.length) {
@@ -111,7 +115,7 @@ export default function tween({ old, current }, { renderer }, config) {
         stages.shift();
         if (!stages.length) {
           if (config.isMainComponent) {
-            shouldRemoveUpdatingStage = false;
+            shouldRemoveUpdatingStage = undefined;
           }
           tweener.stop();
         } else if (stages[0].name === 'updating' && shouldRemoveUpdatingStage) {
