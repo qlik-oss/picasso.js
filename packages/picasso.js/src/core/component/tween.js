@@ -14,7 +14,7 @@ function nodeId(node, i) {
   return i;
 }
 
-let shouldRemoveUpdatingStage = false;
+const updatingStageMeta = { shouldBeRemoved: false, isInit: false };
 
 export default function tween({ old, current }, { renderer }, config) {
   let ticker;
@@ -76,8 +76,15 @@ export default function tween({ old, current }, { renderer }, config) {
         tweens: entered.ips,
         nodes: [...updated.nodes],
       });
-      if (config.isMainComponent && toBeUpdated.length === 0) {
-        shouldRemoveUpdatingStage = true;
+      if (config.isMainComponent) {
+        const filterFn = config.isMainComponent?.filterFn;
+        const nUpdatingNodes = filterFn ? toBeUpdated.filter(filterFn).length : toBeUpdated.length;
+        if (updatingStageMeta.isInit === false) {
+          updatingStageMeta.shouldBeRemoved = nUpdatingNodes === 0;
+          updatingStageMeta.isInit = true;
+        } else {
+          updatingStageMeta.shouldBeRemoved = updatingStageMeta.shouldBeRemoved && nUpdatingNodes === 0;
+        }
       }
       // console.log(stages);
       if (stages.length) {
@@ -108,11 +115,11 @@ export default function tween({ old, current }, { renderer }, config) {
         // staticNodes.push(...currentStage.nodes);
         stages.shift();
         if (!stages.length) {
-          if (config.isMainComponent) {
-            shouldRemoveUpdatingStage = false;
+          if (updatingStageMeta.isInit === true) {
+            updatingStageMeta.isInit = false;
           }
           tweener.stop();
-        } else if (stages[0].name === 'updating' && shouldRemoveUpdatingStage) {
+        } else if (stages[0].name === 'updating' && updatingStageMeta.shouldBeRemoved) {
           stages.shift();
         }
       }
