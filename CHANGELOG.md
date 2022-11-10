@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.7](https://github.com/qlik-oss/picasso.js/compare/v1.9.6...v1.9.7) (2022-11-10)
+
+### Bug Fixes
+
+- **deps:** update dependency slug to v8 ([#710](https://github.com/qlik-oss/picasso.js/issues/710)) ([ae17400](https://github.com/qlik-oss/picasso.js/commit/ae17400af4467447b48786fc9b15d4768891db38))
+- grid line value ([#738](https://github.com/qlik-oss/picasso.js/issues/738)) ([763e122](https://github.com/qlik-oss/picasso.js/commit/763e122d788ad21965a90cc50355aea2c732cbf1))
+- improve tweening when removing updating stage ([#739](https://github.com/qlik-oss/picasso.js/issues/739)) ([10267c1](https://github.com/qlik-oss/picasso.js/commit/10267c14dadfc5ec01326ba025607793bc0d6ce2))
+- set default strokeWidth for title to zero ([#734](https://github.com/qlik-oss/picasso.js/issues/734)) ([b1b03e3](https://github.com/qlik-oss/picasso.js/commit/b1b03e344df862543d32a9c5a18059e8c70721a9))
+- should take excludeFromUpdate into account for update ([#730](https://github.com/qlik-oss/picasso.js/issues/730)) ([40cadd3](https://github.com/qlik-oss/picasso.js/commit/40cadd37ede39b840a7ffec2fb1ac6a6d250a369))
+- support adding a large number of items to an array ([#729](https://github.com/qlik-oss/picasso.js/issues/729)) ([d95e235](https://github.com/qlik-oss/picasso.js/commit/d95e23514be11e5690ca1daa9b728d6eeb7197a2))
+
 ## [1.9.6](https://github.com/qlik-oss/picasso.js/compare/v1.9.5...v1.9.6) (2022-10-28)
 
 ### Bug Fixes

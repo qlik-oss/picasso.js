@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.7](https://github.com/qlik-oss/picasso.js/compare/v1.9.6...v1.9.7) (2022-11-10)
+
+### Bug Fixes
+
+- **deps:** update dependency slug to v8 ([#710](https://github.com/qlik-oss/picasso.js/issues/710)) ([ae17400](https://github.com/qlik-oss/picasso.js/commit/ae17400af4467447b48786fc9b15d4768891db38))
+
 ## [1.9.6](https://github.com/qlik-oss/picasso.js/compare/v1.9.5...v1.9.6) (2022-10-28)
 
 **Note:** Version bump only for package studio

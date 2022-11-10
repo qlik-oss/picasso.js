@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.7](https://github.com/qlik-oss/picasso.js/compare/v1.9.6...v1.9.7) (2022-11-10)
+
+### Bug Fixes
+
+- support adding a large number of items to an array ([#729](https://github.com/qlik-oss/picasso.js/issues/729)) ([d95e235](https://github.com/qlik-oss/picasso.js/commit/d95e23514be11e5690ca1daa9b728d6eeb7197a2))
+
 ## [1.9.6](https://github.com/qlik-oss/picasso.js/compare/v1.9.5...v1.9.6) (2022-10-28)
 
 **Note:** Version bump only for package picasso-plugin-q
