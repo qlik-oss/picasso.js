@@ -99,7 +99,7 @@ const gridLineComponent = {
             strokeWidth: typeof style.strokeWidth !== 'undefined' ? style.strokeWidth : 1,
             strokeDasharray: typeof style.strokeDasharray !== 'undefined' ? style.strokeDasharray : undefined,
             flipXY: p.flipXY || false, // This flips individual points (Y-lines)
-            value: p.value,
+            value: p.value ?? p.data?.value,
             dir,
           });
         }
