@@ -375,7 +375,7 @@ function componentFactory(definition, context = {}) {
           data.items = [...extracted.items];
         }
       } else if (data.items) {
-        data.items.push(...(extracted.items || []));
+        data.items = [...data.items, ...(extracted.items || [])];
       }
     } else if (scale) {
       data = scale.data();
@@ -461,7 +461,7 @@ function componentFactory(definition, context = {}) {
     } else if (progressive.isFirst) {
       brushArgs.nodes = [...(nodes || [])];
     } else if (brushArgs.nodes) {
-      brushArgs.nodes.push(...(nodes || []));
+      brushArgs.nodes = [...brushArgs.nodes, ...(nodes || [])];
     }
   }
 
