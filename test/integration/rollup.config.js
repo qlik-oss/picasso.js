@@ -1,7 +1,7 @@
 const serve = require('rollup-plugin-serve');
 const path = require('path');
 
-export default {
+module.exports = {
   input: path.resolve(__dirname, 'index.js'),
   output: {
     file: 'dist/bundle.js',

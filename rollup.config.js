@@ -1,9 +1,8 @@
 const path = require('path');
-const nodeResolve = require('rollup-plugin-node-resolve');
-const commonjs = require('rollup-plugin-commonjs');
-const babel = require('rollup-plugin-babel');
+const { nodeResolve } = require('@rollup/plugin-node-resolve');
+const commonjs = require('@rollup/plugin-commonjs');
+const { babel } = require('@rollup/plugin-babel');
 const { uglify } = require('rollup-plugin-uglify');
-const jsxPlugin = require('@babel/plugin-transform-react-jsx');
 
 const cwd = process.cwd();
 const pkg = require(path.join(cwd, 'package.json')); // eslint-disable-line
@@ -46,6 +45,7 @@ const config = (isEsm) => {
     plugins: [
       nodeResolve(),
       babel({
+        babelHelpers: 'bundled',
         include: ['src/**', /path2d-polyfill/],
         presets: [
           [
@@ -58,7 +58,7 @@ const config = (isEsm) => {
             },
           ],
         ],
-        plugins: [[jsxPlugin, { pragma: 'h' }]],
+        plugins: [['@babel/plugin-transform-react-jsx', { pragma: 'h' }]],
       }),
       commonjs(),
     ],
