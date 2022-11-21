@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.8](https://github.com/qlik-oss/picasso.js/compare/v1.9.7...v1.9.8) (2022-11-21)
+
+### Bug Fixes
+
+- fix push(...) issue ([#743](https://github.com/qlik-oss/picasso.js/issues/743)) ([7c3a087](https://github.com/qlik-oss/picasso.js/commit/7c3a087ee16c79192852a0e43781cc8e3b2e6e21))
+- replace push to support adding many items into an array ([#740](https://github.com/qlik-oss/picasso.js/issues/740)) ([4441fe4](https://github.com/qlik-oss/picasso.js/commit/4441fe4eb852392318dfcab6d54a31e8013eff58))
+
 ## [1.9.7](https://github.com/qlik-oss/picasso.js/compare/v1.9.6...v1.9.7) (2022-11-10)
 
 ### Bug Fixes
