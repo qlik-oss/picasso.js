@@ -81,15 +81,16 @@ export default function extract(config, dataset) {
 
       // reduce if items have been grouped
       if (track) {
-        dataItems.push(
+        dataItems = [
+          ...dataItems,
           ...collect(trackedItems, {
             main,
             propsArr,
             props,
-          })
-        );
+          }),
+        ];
       } else {
-        dataItems.push(...mapped);
+        dataItems = [...dataItems, ...mapped];
       }
     }
   });
