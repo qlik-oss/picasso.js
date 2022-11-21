@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.9](https://github.com/qlik-oss/picasso.js/compare/v1.9.8...v1.9.9) (2022-11-21)
+
+### Bug Fixes
+
+- fix push(...) ([#744](https://github.com/qlik-oss/picasso.js/issues/744)) ([af9083f](https://github.com/qlik-oss/picasso.js/commit/af9083f2e99fd1c34c334f2d6686fda7b76a7f25))
+
 ## [1.9.8](https://github.com/qlik-oss/picasso.js/compare/v1.9.7...v1.9.8) (2022-11-21)
 
 ### Bug Fixes
