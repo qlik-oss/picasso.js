@@ -1,15 +1,15 @@
 function flattenTree(children, steps, arrIndexAtTargetDepth) {
-  const arr = [];
+  let arr = [];
   if (!children || !children.length) {
     return arr;
   }
   if (steps <= 0) {
     const nodes = arrIndexAtTargetDepth >= 0 ? [children[arrIndexAtTargetDepth]] : children;
-    arr.push(...nodes);
+    arr = [...arr, ...nodes];
   } else {
     for (let i = 0; i < children.length; i++) {
       if (children[i].children && children[i].children.length) {
-        arr.push(...flattenTree(children[i].children, steps - 1, arrIndexAtTargetDepth));
+        arr = [...arr, ...flattenTree(children[i].children, steps - 1, arrIndexAtTargetDepth)];
       }
     }
   }

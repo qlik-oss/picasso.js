@@ -46,9 +46,9 @@ function setRanges(state) {
 
   state.rc.set(rs);
 
-  const shapes = [];
+  let shapes = [];
   rs.forEach((range) => {
-    shapes.push(...shapesFromRange(state, range));
+    shapes = [...shapes, ...shapesFromRange(state, range)];
   });
 
   brushFromShape(state, shapes);
