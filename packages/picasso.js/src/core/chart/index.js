@@ -864,11 +864,12 @@ function chartFn(definition, context) {
    * @return {Array<object>} Array of objects containing shape and parent element
    */
   instance.getAffectedShapes = (ctx, mode = 'and', props, key) => {
-    const shapes = [];
+    let shapes = [];
     visibleComponents
       .filter((comp) => key === undefined || key === null || comp.key === key)
       .forEach((comp) => {
-        shapes.push(...comp.instance.getBrushedShapes(ctx, mode, props));
+        const brushedShapes = comp.instance.getBrushedShapes(ctx, mode, props);
+        shapes = [...shapes, ...brushedShapes];
       });
     return shapes;
   };
@@ -884,9 +885,10 @@ function chartFn(definition, context) {
    * chart.findShapes('Container Rect') // [Rect, Rect]
    */
   instance.findShapes = (selector) => {
-    const shapes = [];
+    let shapes = [];
     visibleComponents.forEach((c) => {
-      shapes.push(...c.instance.findShapes(selector));
+      const matchedShapes = c.instance.findShapes(selector);
+      shapes = [...shapes, ...matchedShapes];
     });
     return shapes;
   };
@@ -929,7 +931,7 @@ function chartFn(definition, context) {
    * );
    */
   instance.shapesAt = (shape, opts = {}) => {
-    const result = [];
+    let result = [];
     const containerBounds = element.getBoundingClientRect();
     let comps = visibleComponents; // Assume that visibleComponents is ordererd according to displayOrder
 
@@ -950,7 +952,7 @@ function chartFn(definition, context) {
       const shapes = c.instance.shapesAt(deltaShape, c.opts);
       const stopPropagation = shapes.length > 0 && opts.propagation === 'stop';
 
-      result.push(...shapes);
+      result = [...result, ...shapes];
 
       if (result.length > 0 && stopPropagation) {
         return result;
