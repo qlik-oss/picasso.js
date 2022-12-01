@@ -48,7 +48,7 @@
     "hammerjs": "2.0.8",
     "node-event-emitter": "0.0.1",
     "path2d-polyfill": "1.2.3",
-    "preact": "10.11.2",
+    "preact": "10.11.3",
     "test-utils": "^1.9.9"
   },
   "gitHead": "b6ca9d1ed11709ec18f227b7b7077ce34d61857b"
