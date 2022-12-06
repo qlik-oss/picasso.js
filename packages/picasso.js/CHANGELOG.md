@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.10](https://github.com/qlik-oss/picasso.js/compare/v1.9.9...v1.9.10) (2022-12-06)
+
+### Bug Fixes
+
+- fix max, min for big array ([#752](https://github.com/qlik-oss/picasso.js/issues/752)) ([451f33d](https://github.com/qlik-oss/picasso.js/commit/451f33d5ca23329431aed9d56c172705dd7e75b9))
+
 ## [1.9.9](https://github.com/qlik-oss/picasso.js/compare/v1.9.8...v1.9.9) (2022-11-21)
 
 ### Bug Fixes
