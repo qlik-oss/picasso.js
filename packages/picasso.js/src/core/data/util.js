@@ -232,3 +232,33 @@ export function track({ cfg, itemData, obj, target, tracker, trackType }) {
   }
   trackedItem.items.push(obj);
 }
+
+const ARRAY_MAX_SIZE = 10000;
+
+export function getMax(values) {
+  if (values.length < ARRAY_MAX_SIZE) {
+    return Math.max(...values);
+  }
+  let max = -Infinity;
+  const len = values.length;
+  for (let i = 0; i < len; i++) {
+    if (max < values[i]) {
+      max = values[i];
+    }
+  }
+  return max;
+}
+
+export function getMin(values) {
+  if (values.length < ARRAY_MAX_SIZE) {
+    return Math.min(...values);
+  }
+  let min = Infinity;
+  const len = values.length;
+  for (let i = 0; i < len; i++) {
+    if (min > values[i]) {
+      min = values[i];
+    }
+  }
+  return min;
+}

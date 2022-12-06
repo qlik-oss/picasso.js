@@ -11,6 +11,7 @@ import {
   stackOffsetWiggle,
 } from 'd3-shape';
 import fieldFn from './field';
+import { getMax, getMin } from './util';
 
 const OFFSETS = {
   diverging: stackOffsetDiverging,
@@ -92,8 +93,8 @@ export default function stacked(data, config, ds) {
 
   const field = fieldFn({
     title: stackedFields.map((f) => f.title()).join(', '),
-    min: Math.min(...values),
-    max: Math.max(...values),
+    min: getMin(values),
+    max: getMax(values),
     type: 'measure',
     formatter: stackedFields[0] ? stackedFields[0].formatter : undefined,
   });
