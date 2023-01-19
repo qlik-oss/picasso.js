@@ -301,6 +301,13 @@ describe('numberFormat', () => {
           expect(f(-1.234)).to.equal('(1.2)');
         });
 
+        it('should support positive and negative formatting with percentage', () => {
+          f = formatter('0.0%;(0.0%)');
+
+          expect(f(0.1234)).to.equal('12.3%');
+          expect(f(-0.1234)).to.equal('(12.3%)');
+        });
+
         it('should support zero formatting', () => {
           f = formatter('0.0;(0.0);zero');
           expect(f(0)).to.equal('zero');

@@ -22,7 +22,7 @@ const SIprefixes = {
     '-21': 'z',
     '-24': 'y',
   },
-  percentage = /%$/,
+  percentage = /%\)?$/,
   //    scientific = /e[\+\-][0-9]+/,
   radix = /^\(r(0[2-9]|[12]\d|3[0-6])\)/i,
   oct = /^\(oct\)/i,
