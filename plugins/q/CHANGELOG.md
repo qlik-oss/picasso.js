@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/qlik-oss/picasso.js/compare/v1.9.10...v1.10.0) (2023-01-19)
+
+### Features
+
+- add support formatting negative value with percentage ([#757](https://github.com/qlik-oss/picasso.js/issues/757)) ([ed86832](https://github.com/qlik-oss/picasso.js/commit/ed86832a1c24d5b9ffd97b44736aa9726237f158))
+
 ## [1.9.10](https://github.com/qlik-oss/picasso.js/compare/v1.9.9...v1.9.10) (2022-12-06)
 
 **Note:** Version bump only for package picasso-plugin-q
