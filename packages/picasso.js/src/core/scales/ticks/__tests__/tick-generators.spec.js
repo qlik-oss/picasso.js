@@ -205,11 +205,12 @@ describe('Tick generators', () => {
         scale.domain([-99, 99]);
         const ticks = scale.ticks(input);
         const majorTicks = ticks.filter((t) => !t.isMinor);
+
         expect(majorTicks[0]).to.deep.equal({
           position: 0,
           start: 0,
           end: 0,
-          label: '-99',
+          label: '−99',
           isMinor: false,
           value: -99,
         });
@@ -237,7 +238,7 @@ describe('Tick generators', () => {
           start: 0,
           end: 0,
           position: 0,
-          label: '-50',
+          label: '−50',
           isMinor: false,
           value: -50,
         });
