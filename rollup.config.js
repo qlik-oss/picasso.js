@@ -53,7 +53,13 @@ const config = (isEsm) => {
             {
               modules: false,
               targets: {
-                browsers: ['ie 11'],
+                browsers: [
+                  'last 2 Chrome versions',
+                  'last 2 Firefox versions',
+                  'last 2 Edge versions',
+                  'Safari >= 11.0',
+                  'iOS >= 12.2',
+                ],
               },
             },
           ],
