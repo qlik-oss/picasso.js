@@ -1,3 +1,5 @@
+const esModules = ['preact', 'd3.*'].join('|');
+
 module.exports = {
   testEnvironment: 'jsdom',
   testMatch: ['**/src/**/__tests__/*.spec.js'],
@@ -5,7 +7,7 @@ module.exports = {
   transform: {
     '\\.[jt]sx?$': 'babel-jest',
   },
-  transformIgnorePatterns: ['node_modules/(?!preact/.*)'],
+  transformIgnorePatterns: [`<rootDir>//node_modules/(?!(${esModules})/)`],
   reporters: ['default', 'jest-junit'],
   coverageReporters: ['text-summary', 'lcov'],
   coverageDirectory: './reports',
