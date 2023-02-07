@@ -70,6 +70,32 @@ See and try out picasso features by starting the development studio by running:
 
 `yarn start`
 
+## API
+
+The API can be found at [the Qlik developer portal](https://qlik.dev/apis/javascript/picassojs)
+
+## Packages
+
+| name                    | status                                                       | description                                                                                                                                                                                                             |
+| ----------------------- | ------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [picasso.js]            | [![picasso.js-status]][picasso.js-npm]                       | A charting library streamlined for building visualizations for the Qlik Sense Analytics platform.                                                                                                                       |
+| [picasso-plugin-hammer] | [![picasso-plugin-hammer-status]][picasso-plugin-hammer-npm] | A plugin that binds events using HammerJS. This plugin provides an API for binding HammerJS recognizers to the chart element in a declarative way.                                                                      |
+| [picasso-plugin-q]      | [![picasso-plugin-q-status]][picasso-plugin-q-npm]           | The q plugin registers a q dataset type that makes it a bit easier to extract data from a QIX hypercube. It also contains a brush helper that can be used to find appropriate selections in the underlying data engine. |
+
+## License
+
+`picasso.js` is [MIT licensed](./LICENSE).
+
+[picasso.js]: https://github.com/qlik-oss/picasso.js
+[picasso.js-status]: https://img.shields.io/npm/v/picasso.js.svg
+[picasso.js-npm]: https://www.npmjs.com/package/picasso.js
+[picasso-plugin-hammer]: https://github.com/qlik-oss/picasso.js
+[picasso-plugin-hammer-status]: https://img.shields.io/npm/v/picasso-plugin-hammer.svg
+[picasso-plugin-hammer-npm]: https://www.npmjs.com/package/picasso-plugin-hammer
+[picasso-plugin-q]: https://github.com/qlik-oss/picasso.js
+[picasso-plugin-q-status]: https://img.shields.io/npm/v/picasso-plugin-q.svg
+[picasso-plugin-q-npm]: https://www.npmjs.com/package/picasso-plugin-q
+
 ## Contributing
 
 Please follow the instructions in our [contributing guide](./.github/CONTRIBUTING.md).
