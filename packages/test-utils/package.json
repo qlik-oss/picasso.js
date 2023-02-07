@@ -1,6 +1,6 @@
 {
   "name": "test-utils",
-  "version": "1.10.0",
+  "version": "2.0.0",
   "description": "Common test utilities",
   "private": true
 }

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/qlik-oss/picasso.js/compare/v1.10.0...v2.0.0) (2023-02-07)
+
+- build!: end support for IE11 (#760) ([17f850b](https://github.com/qlik-oss/picasso.js/commit/17f850b5eb034bd48dba555317349424ef5e9d54)), closes [#760](https://github.com/qlik-oss/picasso.js/issues/760)
+
+### BREAKING CHANGES
+
+- end support for IE11
+
 # [1.10.0](https://github.com/qlik-oss/picasso.js/compare/v1.9.10...v1.10.0) (2023-01-19)
 
 ### Bug Fixes
