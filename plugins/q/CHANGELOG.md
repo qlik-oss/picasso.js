@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/qlik-oss/picasso.js/compare/v2.0.0...v2.1.0) (2023-02-16)
+
+### Features
+
+- improve support for uneven hierarchy ([#762](https://github.com/qlik-oss/picasso.js/issues/762)) ([c3462fa](https://github.com/qlik-oss/picasso.js/commit/c3462facf30330a4564eef117cc82d6bb5cb74b1))
+
 # [2.0.0](https://github.com/qlik-oss/picasso.js/compare/v1.10.0...v2.0.0) (2023-02-07)
 
 **Note:** Version bump only for package picasso-plugin-q
