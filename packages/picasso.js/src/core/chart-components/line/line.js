@@ -1,30 +1,4 @@
 import extend from 'extend';
-import {
-  area,
-  curveLinear,
-  curveStep,
-  curveStepAfter,
-  curveStepBefore,
-  curveBasis,
-  curveCardinal,
-  curveCatmullRom,
-  curveMonotoneX,
-  curveMonotoneY,
-  curveNatural,
-} from 'd3-shape';
-
-const CURVES = {
-  step: curveStep,
-  stepAfter: curveStepAfter,
-  stepBefore: curveStepBefore,
-  linear: curveLinear,
-  basis: curveBasis,
-  cardinal: curveCardinal.tension(0),
-  catmullRom: curveCatmullRom,
-  monotonex: curveMonotoneX,
-  monotoney: curveMonotoneY,
-  natural: curveNatural,
-};
 
 /**
  * Callback function for layer sort
@@ -119,11 +93,15 @@ const SETTINGS = {
   },
 };
 
-function createDisplayLayer(points, { generator, item, data }, fill = '') {
-  const path = generator(points);
+function createDisplayLayer(points, { generatorType, item, data, major, minor, layerObj, stngs }, fill = '') {
   const d = {
     type: 'path',
-    d: path,
+    points,
+    generatorType,
+    major,
+    minor,
+    layerObj,
+    stngs,
     opacity: item.opacity,
     stroke: item.stroke,
     strokeWidth: item.strokeWidth,
@@ -145,10 +123,6 @@ function createDisplayLayers(layers, { width, height, missingMinor0, stngs }) {
   layers.forEach((layer) => {
     const { lineObj, layerObj, areaObj, points } = layer;
 
-    const areaGenerator = area();
-    const defined = stngs.coordinates ? stngs.coordinates.defined : null;
-    let lineGenerator;
-    let secondaryLineGenerator;
     let minor = { size: height, p: 'y' };
     let major = { size: width, p: 'x' };
     if (stngs.orientation === 'vertical') {
@@ -157,27 +131,17 @@ function createDisplayLayers(layers, { width, height, missingMinor0, stngs }) {
       minor = extend(true, {}, temp);
     }
 
-    areaGenerator[major.p]((d) => d.major * major.size) // eslint-disable-line no-unexpected-multiline
-      [`${minor.p}1`]((d) => d.minor * minor.size) // eslint-disable-line no-unexpected-multiline
-      [`${minor.p}0`]((d) => d.minor0 * minor.size) // eslint-disable-line no-unexpected-multiline
-      .curve(CURVES[layerObj.curve === 'monotone' ? `monotone${major.p}` : layerObj.curve]);
-    if (defined) {
-      areaGenerator.defined((d) => !d.dummy && typeof d.minor === 'number' && !isNaN(d.minor) && d.defined);
-    } else {
-      areaGenerator.defined((d) => !d.dummy && typeof d.minor === 'number' && !isNaN(d.minor));
-    }
-
-    const filteredPoints = stngs.connect ? points.filter(areaGenerator.defined()) : points;
-    lineGenerator = areaGenerator[`line${minor.p.toUpperCase()}1`]();
-    secondaryLineGenerator = areaGenerator[`line${minor.p.toUpperCase()}0`]();
-
     // area layer
     if (layerStngs.area && areaObj.show !== false) {
       nodes.push(
-        createDisplayLayer(filteredPoints, {
+        createDisplayLayer(points, {
           data: layer.consumableData,
           item: areaObj,
-          generator: areaGenerator,
+          generatorType: 'area',
+          major,
+          minor,
+          layerObj,
+          stngs,
         })
       );
     }
@@ -186,11 +150,15 @@ function createDisplayLayers(layers, { width, height, missingMinor0, stngs }) {
     if (lineObj && lineObj.show !== false) {
       nodes.push(
         createDisplayLayer(
-          filteredPoints,
+          points,
           {
             data: layer.consumableData,
             item: lineObj,
-            generator: lineGenerator,
+            generatorType: `line${minor.p.toUpperCase()}1`,
+            major,
+            minor,
+            layerObj,
+            stngs,
           },
           'none'
         )
@@ -200,11 +168,15 @@ function createDisplayLayers(layers, { width, height, missingMinor0, stngs }) {
       if (!missingMinor0 && layerStngs.area && areaObj.show !== false && lineObj.showMinor0 !== false) {
         nodes.push(
           createDisplayLayer(
-            filteredPoints,
+            points,
             {
               data: layer.consumableData,
               item: lineObj,
-              generator: secondaryLineGenerator,
+              generatorType: `line${minor.p.toUpperCase()}0`,
+              major,
+              minor,
+              layerObj,
+              stngs,
             },
             'none'
           )

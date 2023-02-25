@@ -10,6 +10,7 @@ import buildScroll, { getOrCreateScrollApi } from './scroll-api';
 import brush from '../brush';
 import componentFactory from '../component/component-factory';
 import mediatorFactory from '../mediator';
+import createStorage from '../storage';
 import { testRectPoint } from '../math/narrow-phase-collision';
 import themeFn from '../theme';
 import componentCollectionFn from './component-collection';
@@ -1094,6 +1095,8 @@ function chartFn(definition, context) {
   instance.logger = () => logger;
 
   instance.theme = () => theme;
+
+  instance.storage = createStorage({ animations: { updatingStageMeta: { isInit: false, shouldBeRemoved: false } } });
 
   /**
    * Interaction instance

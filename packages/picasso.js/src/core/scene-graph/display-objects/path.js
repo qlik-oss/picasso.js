@@ -1,5 +1,18 @@
 import extend from 'extend';
-import { arc } from 'd3-shape';
+import {
+  arc,
+  area,
+  curveLinear,
+  curveStep,
+  curveStepAfter,
+  curveStepBefore,
+  curveBasis,
+  curveCardinal,
+  curveCatmullRom,
+  curveMonotoneX,
+  curveMonotoneY,
+  curveNatural,
+} from 'd3-shape';
 import DisplayObject from './display-object';
 import { getMinMax } from '../../geometry/util';
 import pathToSegments from '../parse-path-d';
@@ -7,6 +20,19 @@ import polylineToPolygonCollider from '../polyline-to-polygon-collider';
 import flatten from '../../utils/flatten-array';
 
 const EPSILON = 1e-12;
+
+const CURVES = {
+  step: curveStep,
+  stepAfter: curveStepAfter,
+  stepBefore: curveStepBefore,
+  linear: curveLinear,
+  basis: curveBasis,
+  cardinal: curveCardinal.tension(0),
+  catmullRom: curveCatmullRom,
+  monotonex: curveMonotoneX,
+  monotoney: curveMonotoneY,
+  natural: curveNatural,
+};
 
 /**
  * @private
@@ -42,6 +68,25 @@ export default class Path extends DisplayObject {
       arcGen.cornerRadius(v.desc.slice.cornerRadius);
       const d = arcGen(v.arcDatum);
       this.attrs.d = d;
+    } else if (v.points) {
+      const { major, minor, layerObj, points, stngs, generatorType } = v;
+      const areaGenerator = area();
+      const defined = stngs.coordinates ? stngs.coordinates.defined : null;
+
+      areaGenerator[major.p]((d) => d.major * major.size) // eslint-disable-line no-unexpected-multiline
+        [`${minor.p}1`]((d) => d.minor * minor.size) // eslint-disable-line no-unexpected-multiline
+        [`${minor.p}0`]((d) => d.minor0 * minor.size) // eslint-disable-line no-unexpected-multiline
+        .curve(CURVES[layerObj.curve === 'monotone' ? `monotone${major.p}` : layerObj.curve]);
+      if (defined) {
+        areaGenerator.defined((d) => !d.dummy && typeof d.minor === 'number' && !isNaN(d.minor) && d.defined);
+      } else {
+        areaGenerator.defined((d) => !d.dummy && typeof d.minor === 'number' && !isNaN(d.minor));
+      }
+
+      const filteredPoints = stngs.connect ? points.filter(areaGenerator.defined()) : points;
+      const generator = generatorType === 'area' ? areaGenerator : areaGenerator[generatorType]();
+      const d = generator(filteredPoints);
+      this.attrs.d = d;
     } else if (v.d) {
       this.attrs.d = v.d;
     }
@@ -51,7 +96,7 @@ export default class Path extends DisplayObject {
 
     if (Array.isArray(v.collider) || (typeof v.collider === 'object' && typeof v.collider.type !== 'undefined')) {
       this.collider = v.collider;
-    } else if (v.arcDatum || v.d) {
+    } else if (this.attrs.d) {
       this.segments = pathToSegments(this.attrs.d);
       if (this.segments.length > 1 && this.segments.every((segment) => isClosed(segment))) {
         this.collider = extend(
