@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.1](https://github.com/qlik-oss/picasso.js/compare/v2.1.0...v2.1.1) (2023-02-16)
+
+**Note:** Version bump only for package picasso.js
+
+# [2.1.0](https://github.com/qlik-oss/picasso.js/compare/v2.0.0...v2.1.0) (2023-02-16)
+
+**Note:** Version bump only for package picasso.js
+
+# [2.0.0](https://github.com/qlik-oss/picasso.js/compare/v1.10.0...v2.0.0) (2023-02-07)
+
+**Note:** Version bump only for package picasso.js
+
+# [1.10.0](https://github.com/qlik-oss/picasso.js/compare/v1.9.10...v1.10.0) (2023-01-19)
+
+### Bug Fixes
+
+- provide more info for labels' background rect, to support chart animations ([#754](https://github.com/qlik-oss/picasso.js/issues/754)) ([e175339](https://github.com/qlik-oss/picasso.js/commit/e17533945e7ad57c7e1584d0ff133a35a8ec8b9e))
+
 ## [1.9.10](https://github.com/qlik-oss/picasso.js/compare/v1.9.9...v1.9.10) (2022-12-06)
 
 ### Bug Fixes

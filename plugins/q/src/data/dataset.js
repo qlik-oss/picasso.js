@@ -25,21 +25,21 @@ function createFields(path, obj, prefix, parentKey, opts) {
       meta,
       prefix,
       fieldKey,
-      extend({}, opts, { value: (v) => v.qElemNo, type: 'dimension' })
+      extend({}, opts, { value: (v) => v?.qElemNo, type: 'dimension' })
     );
     f.attrExps = createFields(
       'qAttrExprInfo',
       meta,
       prefix,
       fieldKey,
-      extend({}, opts, { value: (v) => v.qNum, type: 'measure' })
+      extend({}, opts, { value: (v) => v?.qNum, type: 'measure' })
     );
     f.measures = createFields(
       'qMeasureInfo',
       meta,
       prefix,
       fieldKey,
-      extend({}, opts, { value: (v) => v.qValue, type: 'measure' })
+      extend({}, opts, { value: (v) => v?.qValue, type: 'measure' })
     );
     return f;
   });

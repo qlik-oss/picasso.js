@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.1](https://github.com/qlik-oss/picasso.js/compare/v2.1.0...v2.1.1) (2023-02-16)
+
+**Note:** Version bump only for package picasso.js
+
+# [2.1.0](https://github.com/qlik-oss/picasso.js/compare/v2.0.0...v2.1.0) (2023-02-16)
+
+### Features
+
+- improve support for uneven hierarchy ([#762](https://github.com/qlik-oss/picasso.js/issues/762)) ([c3462fa](https://github.com/qlik-oss/picasso.js/commit/c3462facf30330a4564eef117cc82d6bb5cb74b1))
+
+# [2.0.0](https://github.com/qlik-oss/picasso.js/compare/v1.10.0...v2.0.0) (2023-02-07)
+
+- build!: end support for IE11 (#760) ([17f850b](https://github.com/qlik-oss/picasso.js/commit/17f850b5eb034bd48dba555317349424ef5e9d54)), closes [#760](https://github.com/qlik-oss/picasso.js/issues/760)
+
+### BREAKING CHANGES
+
+- end support for IE11
+
+# [1.10.0](https://github.com/qlik-oss/picasso.js/compare/v1.9.10...v1.10.0) (2023-01-19)
+
+### Bug Fixes
+
+- provide more info for labels' background rect, to support chart animations ([#754](https://github.com/qlik-oss/picasso.js/issues/754)) ([e175339](https://github.com/qlik-oss/picasso.js/commit/e17533945e7ad57c7e1584d0ff133a35a8ec8b9e))
+
+### Features
+
+- add support formatting negative value with percentage ([#757](https://github.com/qlik-oss/picasso.js/issues/757)) ([ed86832](https://github.com/qlik-oss/picasso.js/commit/ed86832a1c24d5b9ffd97b44736aa9726237f158))
+
 ## [1.9.10](https://github.com/qlik-oss/picasso.js/compare/v1.9.9...v1.9.10) (2022-12-06)
 
 ### Bug Fixes

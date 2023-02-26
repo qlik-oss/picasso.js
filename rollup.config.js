@@ -2,7 +2,7 @@ const path = require('path');
 const nodeResolve = require('rollup-plugin-node-resolve');
 const commonjs = require('rollup-plugin-commonjs');
 const babel = require('rollup-plugin-babel');
-const { uglify } = require('rollup-plugin-uglify');
+const terser = require('@rollup/plugin-terser');
 const jsxPlugin = require('@babel/plugin-transform-react-jsx');
 
 const cwd = process.cwd();
@@ -53,7 +53,13 @@ const config = (isEsm) => {
             {
               modules: false,
               targets: {
-                browsers: ['ie 11'],
+                browsers: [
+                  'last 2 Chrome versions',
+                  'last 2 Firefox versions',
+                  'last 2 Edge versions',
+                  'Safari >= 11.0',
+                  'iOS >= 12.2',
+                ],
               },
             },
           ],
@@ -66,7 +72,7 @@ const config = (isEsm) => {
 
   if (process.env.NODE_ENV === 'production' && !isEsm) {
     cfg.plugins.push(
-      uglify({
+      terser({
         output: {
           preamble: banner,
         },

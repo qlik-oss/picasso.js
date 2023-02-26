@@ -1,7 +1,7 @@
 {
   "name": "docs",
   "private": true,
-  "version": "1.9.10",
+  "version": "2.1.1",
   "description": "Documentation source",
   "scripts": {
     "build": "yarn run spec && yarn run ts",
@@ -10,7 +10,7 @@
     "version": "yarn run spec && yarn run ts && git add scriptappy.json ../packages/picasso.js/types/index.d.ts"
   },
   "devDependencies": {
-    "@scriptappy/cli": "0.1.0",
+    "@scriptappy/cli": "0.5.0",
     "@scriptappy/to-dts": "1.0.0-beta.4",
     "jsdoc": "4.0.0",
     "scriptappy-from-jsdoc": "0.7.0"
