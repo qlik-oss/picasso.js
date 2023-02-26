@@ -1,18 +1,9 @@
-/**
- * Sets the value at 'path' of 'object'.
- *
- * @param {object} object Object to mutate.
- * @param {string} path Dot notation path of the property to set.
- * @param {*} value Value to set, if value is undefined the property will be removed.
- *
- * @example
- *
- * const object = { person: { name: undefined };
- * setValue(object, 'person.name', 'John Doe');
- * console.log(object.person.name);
- * // => 'John Doe'
- */
-export default function setValue(object, path, value) {
+// const object = { person: { name: undefined };
+// setValue(object, 'person.name', 'John Doe');
+// console.log(object.person.name);
+// => 'John Doe'
+
+function setValue(object, path, value) {
   if (object === undefined || path === undefined) {
     return;
   }
@@ -38,3 +29,5 @@ export default function setValue(object, path, value) {
 
   scoped[propertyName] = value;
 }
+
+export default setValue;
