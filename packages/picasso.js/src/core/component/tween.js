@@ -77,7 +77,7 @@ export default function tween({ old, current }, { renderer }, config, chartStora
       stages.push({
         name: 'exiting',
         easing: easeCubicIn,
-        duration: 1000,
+        duration: 200,
         tweens: exited.ips,
         nodes: [...toBeUpdated],
       });
@@ -85,7 +85,7 @@ export default function tween({ old, current }, { renderer }, config, chartStora
       stages.push({
         name: 'updating',
         easing: easeCubic,
-        duration: 2000,
+        duration: 400,
         tweens: updated.ips,
         nodes: [],
       });
@@ -93,7 +93,7 @@ export default function tween({ old, current }, { renderer }, config, chartStora
       stages.push({
         name: 'entering',
         easing: easeCubicOut,
-        duration: 1000,
+        duration: 200,
         tweens: entered.ips,
         nodes: [...updated.nodes],
       });
