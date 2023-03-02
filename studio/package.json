@@ -1,7 +1,7 @@
 {
   "name": "studio",
   "private": true,
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "An interactive playground tool for picasso development",
   "license": "MIT",
   "author": "QlikTech International AB",
