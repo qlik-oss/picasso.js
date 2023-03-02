@@ -47,7 +47,7 @@ export default function tween({ old, current }, { renderer }, config, chartStora
       current.forEach((node, i) => {
         let id = trackBy(node, i);
         if (ids[id]) {
-          if (node.type === 'path' && node.points && node.points.length > 0) {
+          if (node.type === 'path' && node.points && node.points.length > 0 && node.data.source.key !== 'trend') {
             const common = findCommonPointsFromTwoLines(ids[id], node);
             updated.ips.push(
               interpolateObject(
