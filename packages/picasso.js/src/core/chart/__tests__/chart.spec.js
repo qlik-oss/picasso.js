@@ -1,5 +1,6 @@
 import elementMock from 'test-utils/mocks/element-mock';
 import componentFactoryFixture from '../../../../test/helpers/component-factory-fixture';
+import * as createStorage from '../../storage';
 import chart, { orderComponents } from '..';
 
 describe('Chart', () => {
@@ -15,8 +16,10 @@ describe('Chart', () => {
     let element;
     let definition;
     let context;
+    let sandbox;
 
     beforeEach(() => {
+      sandbox = sinon.createSandbox();
       created = sinon.spy();
       beforeMount = sinon.spy();
       mounted = sinon.spy();
@@ -53,6 +56,10 @@ describe('Chart', () => {
           data: () => () => ({}),
         },
       };
+    });
+
+    afterEach(() => {
+      sandbox.restore();
     });
 
     it('should call lifecycle methods when rendering', () => {
@@ -539,6 +546,19 @@ describe('Chart', () => {
 
         expect(b1).to.be.undefined;
         expect(b2).to.be.undefined;
+      });
+    });
+
+    describe('storage', () => {
+      it('should call createStorage with correct parameters', () => {
+        sandbox.stub(createStorage, 'default').returns({ key: 'cs' });
+        const chartInstance = chart(definition, context);
+        expect(
+          createStorage.default.withArgs({
+            animations: { updatingStageMeta: { isInit: false, shouldBeRemoved: false } },
+          })
+        ).to.have.been.calledOnce;
+        expect(chartInstance.storage).to.deep.equal({ key: 'cs' });
       });
     });
   });

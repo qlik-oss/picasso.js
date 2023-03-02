@@ -28,6 +28,7 @@ describe('Component', () => {
       dataset: () => ({}),
       scale: sinon.stub(),
       logger: () => 'logger',
+      storage: { animations: 'animations-related info' },
     };
     created = sinon.spy();
     beforeMount = sinon.spy();
@@ -431,6 +432,7 @@ describe('Component', () => {
       instance.render();
       instance.update();
       expect(tween.default).to.have.been.calledOnce;
+      expect(tween.default.getCall(0).args[3]).to.deep.equal({ animations: 'animations-related info' });
       sandbox.restore();
     });
 

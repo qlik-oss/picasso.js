@@ -546,7 +546,8 @@ function componentFactory(definition, context = {}) {
           current: nodes,
         },
         { renderer: rend },
-        animations
+        animations,
+        chart.storage
       );
       currentTween.start();
     } else {

@@ -1,8 +1,9 @@
+import componentFactoryFixture from '../../../../../test/helpers/component-factory-fixture';
+import lineMarkerComponent from '../../../chart-components/line/line';
 import Path, { create } from '../path';
 
 describe('Path', () => {
   let path;
-  let d;
 
   describe('Constructor', () => {
     it('should instantiate a new Path', () => {
@@ -29,6 +30,328 @@ describe('Path', () => {
       expect(strokes[1]).to.eql([-35, 20]); // move to
       expect(strokes[2]).to.eql([40, 40, 0, 0, 1, -0, -40]); // arc
       expect(strokes[3]).to.eql([0, 0]); // line to
+    });
+
+    describe('path for line', () => {
+      let sandbox;
+      let componentFixture;
+      let opts;
+      let lineNodes;
+
+      beforeEach(() => {
+        sandbox = sinon.createSandbox();
+        opts = {
+          inner: {
+            x: 10,
+            y: 20,
+            width: 200,
+            height: 100,
+          },
+        };
+        componentFixture = componentFactoryFixture();
+        componentFixture.mocks().theme.style.returns({});
+      });
+
+      afterEach(() => {
+        sandbox.restore();
+      });
+
+      it('should render path for horizontal (default) line', () => {
+        const config = {
+          data: [1, 1, 1, 1],
+        };
+
+        componentFixture.simulateCreate(lineMarkerComponent, config);
+        lineNodes = componentFixture.simulateRender(opts);
+        path = create(lineNodes[0]);
+        expect(path).to.be.an.instanceof(Path);
+        expect(path.attrs.d).to.equal('M100,50L100,50L100,50L100,50');
+      });
+
+      it('should render path for vertical line', () => {
+        const config = {
+          data: [2, 3, 1],
+          settings: {
+            coordinates: {
+              major(a, i) {
+                return i;
+              },
+              minor(b) {
+                return b.datum.value;
+              },
+            },
+            layers: {},
+            orientation: 'vertical',
+          },
+        };
+
+        componentFixture.simulateCreate(lineMarkerComponent, config);
+        lineNodes = componentFixture.simulateRender(opts);
+        path = create(lineNodes[0]);
+        expect(path).to.be.an.instanceof(Path);
+        expect(path.attrs.d).to.equal('M400,0L600,100L200,200');
+      });
+
+      it('should render disconnected path for line with minor null value', () => {
+        const config = {
+          data: [2, 3, 'oops', 1, 2],
+          settings: {
+            coordinates: {
+              major(a, i) {
+                return i;
+              },
+              minor(b) {
+                return b.datum.value;
+              },
+            },
+            layers: {},
+          },
+        };
+
+        componentFixture.simulateCreate(lineMarkerComponent, config);
+        lineNodes = componentFixture.simulateRender(opts);
+        path = create(lineNodes[0]);
+        expect(path).to.be.an.instanceof(Path);
+        expect(path.attrs.d).to.equal('M0,200L200,300M600,100L800,200');
+      });
+
+      it('should render disconnected path for line with custom defined null values', () => {
+        const config = {
+          data: [2, 3, 4, 1, 2],
+          settings: {
+            coordinates: {
+              major(a, i) {
+                return i;
+              },
+              minor(b) {
+                return b.datum.value;
+              },
+              defined(b) {
+                return b.datum.value !== 4;
+              },
+            },
+            layers: {},
+          },
+        };
+
+        componentFixture.simulateCreate(lineMarkerComponent, config);
+        lineNodes = componentFixture.simulateRender(opts);
+        path = create(lineNodes[0]);
+        expect(path).to.be.an.instanceof(Path);
+        expect(path.attrs.d).to.equal('M0,200L200,300M600,100L800,200');
+      });
+
+      it('should render connected path for line with custom defined null values, when connect is true', () => {
+        const config = {
+          data: [2, 3, 4, 1, 2],
+          settings: {
+            coordinates: {
+              major(a, i) {
+                return i;
+              },
+              minor(b) {
+                return b.datum.value;
+              },
+              defined(b) {
+                return b.datum.value !== 4;
+              },
+            },
+            connect: true,
+            layers: {},
+          },
+        };
+
+        componentFixture.simulateCreate(lineMarkerComponent, config);
+        lineNodes = componentFixture.simulateRender(opts);
+        path = create(lineNodes[0]);
+        expect(path).to.be.an.instanceof(Path);
+        expect(path.attrs.d).to.equal('M0,200L200,300L600,100L800,200');
+      });
+
+      it('should render disconnected path for disconnected lines with unordered domain', () => {
+        const domain = ['A', 'B', 'C', 'D', 'E'];
+        const domainScale = (v) => domain.indexOf(v) / 4;
+        domainScale.domain = () => domain;
+        domainScale.range = () => [0, 1];
+        componentFixture.mocks().chart.scale.returns(domainScale);
+        const config = {
+          data: ['A', 'B', /* skip C */ 'D', 'E'],
+          settings: {
+            coordinates: {
+              major: { scale: 'x' },
+              minor(b, i) {
+                return 3 - i;
+              },
+              layerId: () => 0,
+            },
+            layers: {},
+          },
+        };
+
+        componentFixture.simulateCreate(lineMarkerComponent, config);
+        lineNodes = componentFixture.simulateRender(opts);
+        path = create(lineNodes[0]);
+        expect(path).to.be.an.instanceof(Path);
+        expect(path.attrs.d).to.equal('M0,300L50,200M150,100L200,0');
+      });
+
+      it('should render disconnected path for disconnected lines with unordered domain based on major data', () => {
+        const domain = ['A', 'B', 'C', 'D', 'E'];
+        const domainScale = (v) => domain.indexOf(v) / 4;
+        domainScale.domain = () => domain;
+        domainScale.range = () => [0, 1];
+        componentFixture.mocks().chart.scale.returns(domainScale);
+        const config = {
+          data: {
+            items: ['A', 'B', /* skip C */ 'D', 'E'],
+            map: (d) => ({ value: `-${d.value}-`, major: { value: d.value } }),
+          },
+          settings: {
+            coordinates: {
+              major: { scale: 'x' },
+              minor(b, i) {
+                return 3 - i;
+              },
+              layerId: () => 0,
+            },
+            layers: {},
+          },
+        };
+
+        componentFixture.simulateCreate(lineMarkerComponent, config);
+        lineNodes = componentFixture.simulateRender(opts);
+        path = create(lineNodes[0]);
+        expect(path).to.be.an.instanceof(Path);
+        expect(path.attrs.d).to.equal('M0,300L50,200M150,100L200,0');
+      });
+
+      it('should render close path for area with default minor 0', () => {
+        componentFixture.mocks().theme.style.returns({
+          line: {},
+          area: {
+            fill: 'red',
+            opacity: 0.3,
+          },
+        });
+
+        const config = {
+          data: [1, 2, 3],
+          settings: {
+            coordinates: {
+              major(a, i) {
+                return i % 3;
+              },
+              minor(b) {
+                return b.datum.value;
+              },
+            },
+            layers: {
+              line: { show: false },
+              area: {
+                fill: 'blue',
+              },
+            },
+          },
+        };
+
+        componentFixture.simulateCreate(lineMarkerComponent, config);
+        lineNodes = componentFixture.simulateRender(opts);
+        path = create(lineNodes[0]);
+        expect(path).to.be.an.instanceof(Path);
+        expect(path.attrs.d).to.equal('M0,100L200,200L400,300L400,0L200,0L0,0Z');
+      });
+
+      it('should render close path for area with explicit minor0', () => {
+        componentFixture.mocks().theme.style.returns({
+          line: {},
+          area: {
+            fill: 'red',
+            opacity: 0.3,
+          },
+        });
+
+        const config = {
+          data: [1, 2, 3],
+          settings: {
+            coordinates: {
+              major(a, i) {
+                return i % 3;
+              },
+              minor(b) {
+                return b.datum.value;
+              },
+              minor0(c) {
+                return c.datum.value / 2;
+              },
+            },
+            layers: {
+              line: {
+                show: true,
+              },
+              area: {
+                fill: 'blue',
+              },
+            },
+          },
+        };
+
+        componentFixture.simulateCreate(lineMarkerComponent, config);
+        lineNodes = componentFixture.simulateRender(opts);
+        path = create(lineNodes[0]);
+        expect(path).to.be.an.instanceof(Path);
+        expect(path.attrs.d).to.equal('M0,100L200,200L400,300L400,150L200,100L0,50Z');
+        path = create(lineNodes[1]);
+        expect(path).to.be.an.instanceof(Path);
+        expect(path.attrs.d).to.equal('M0,100L200,200L400,300');
+        path = create(lineNodes[2]);
+        expect(path).to.be.an.instanceof(Path);
+        expect(path.attrs.d).to.equal('M0,50L200,100L400,150');
+      });
+
+      it('should not render minor0 line when having minor0 but showMinor0 is false', () => {
+        componentFixture.mocks().theme.style.returns({
+          line: {},
+          area: {
+            fill: 'red',
+            opacity: 0.3,
+          },
+        });
+
+        const config = {
+          data: [1, 2, 3],
+          settings: {
+            coordinates: {
+              major(a, i) {
+                return i % 3;
+              },
+              minor(b) {
+                return b.datum.value;
+              },
+              minor0(c) {
+                return c.datum.value / 2;
+              },
+            },
+            layers: {
+              line: {
+                show: true,
+                showMinor0: false,
+              },
+              area: {
+                fill: 'blue',
+              },
+            },
+          },
+        };
+
+        componentFixture.simulateCreate(lineMarkerComponent, config);
+        lineNodes = componentFixture.simulateRender(opts);
+        path = create(lineNodes[0]);
+        expect(path).to.be.an.instanceof(Path);
+        expect(path.attrs.d).to.equal('M0,100L200,200L400,300L400,150L200,100L0,50Z');
+        path = create(lineNodes[1]);
+        expect(path).to.be.an.instanceof(Path);
+        expect(path.attrs.d).to.equal('M0,100L200,200L400,300');
+      });
     });
   });
 
@@ -88,6 +411,8 @@ describe('Path', () => {
   });
 
   describe('BoundingRect', () => {
+    let d;
+
     it('should handle default values', () => {
       path = create();
       expect(path.boundingRect()).to.deep.equal({
@@ -215,6 +540,8 @@ describe('Path', () => {
   });
 
   describe('Bounds', () => {
+    let d;
+
     it('should handle default values', () => {
       path = create();
       expect(path.bounds()).to.deep.equal([

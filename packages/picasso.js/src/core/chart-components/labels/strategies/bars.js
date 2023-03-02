@@ -27,7 +27,7 @@ function toBackground(label) {
     ry: 2,
     fill: label.backgroundColor,
     ...label.backgroundBounds,
-    data: label.data,
+    data: `${label.data} ${label.text}`,
     rotation: label.transform && label.transform.match(/rotate/gi) ? 'rotated' : 'horizontal',
   };
 }

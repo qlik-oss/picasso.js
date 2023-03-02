@@ -14,9 +14,19 @@ function nodeId(node, i) {
   return i;
 }
 
-const updatingStageMeta = { shouldBeRemoved: false, isInit: false };
+export function findCommonPointsFromTwoLines(oldLine, currentLine) {
+  const oldPoints = oldLine.points.filter((point) => !point.dummy);
+  const currentPoints = currentLine.points.filter((point) => !point.dummy);
+  const currentPointsValues = currentPoints.map((point) => point.data.major.value);
+  const commonPointsValues = oldPoints
+    .filter((point) => currentPointsValues.includes(point.data.major.value))
+    .map((point) => point.data.major.value);
+  const oldCommonPoints = oldPoints.filter((point) => commonPointsValues.includes(point.data.major.value));
+  const currentCommonPoints = currentPoints.filter((point) => commonPointsValues.includes(point.data.major.value));
+  return { old: oldCommonPoints, current: currentCommonPoints };
+}
 
-export default function tween({ old, current }, { renderer }, config) {
+export default function tween({ old, current }, { renderer }, config, chartStorage) {
   let ticker;
   // let staticNodes = [];
   let toBeUpdated = [];
@@ -37,9 +47,20 @@ export default function tween({ old, current }, { renderer }, config) {
       current.forEach((node, i) => {
         let id = trackBy(node, i);
         if (ids[id]) {
-          updated.ips.push(interpolateObject(ids[id], node));
+          if (node.type === 'path' && node.points && node.points.length > 0 && node.data.source.key !== 'trend') {
+            const common = findCommonPointsFromTwoLines(ids[id], node);
+            updated.ips.push(
+              interpolateObject(
+                extend({}, ids[id], { points: common.old }),
+                extend({}, node, { points: common.current })
+              )
+            );
+            toBeUpdated.push(extend({}, ids[id], { commonPoints: common.old }));
+          } else {
+            updated.ips.push(interpolateObject(ids[id], node));
+            toBeUpdated.push(ids[id]);
+          }
           updated.nodes.push(node);
-          toBeUpdated.push(ids[id]);
           ids[id] = false;
         } else {
           entered.nodes.push(node);
@@ -79,11 +100,15 @@ export default function tween({ old, current }, { renderer }, config) {
       if (config.isMainComponent) {
         const filterFn = config.isMainComponent?.filterFn;
         const nUpdatingNodes = filterFn ? toBeUpdated.filter(filterFn).length : toBeUpdated.length;
-        if (updatingStageMeta.isInit === false) {
-          updatingStageMeta.shouldBeRemoved = nUpdatingNodes === 0;
-          updatingStageMeta.isInit = true;
+        const { isInit, shouldBeRemoved } = chartStorage.getValue('animations.updatingStageMeta');
+        if (isInit === false) {
+          chartStorage.setValue('animations.updatingStageMeta.shouldBeRemoved', nUpdatingNodes === 0);
+          chartStorage.setValue('animations.updatingStageMeta.isInit', true);
         } else {
-          updatingStageMeta.shouldBeRemoved = updatingStageMeta.shouldBeRemoved && nUpdatingNodes === 0;
+          chartStorage.setValue(
+            'animations.updatingStageMeta.shouldBeRemoved',
+            shouldBeRemoved && nUpdatingNodes === 0
+          );
         }
       }
       // console.log(stages);
@@ -114,12 +139,13 @@ export default function tween({ old, current }, { renderer }, config) {
       if (t >= 1) {
         // staticNodes.push(...currentStage.nodes);
         stages.shift();
+        const { isInit, shouldBeRemoved } = chartStorage.getValue('animations.updatingStageMeta');
         if (!stages.length) {
-          if (updatingStageMeta.isInit === true) {
-            updatingStageMeta.isInit = false;
+          if (isInit === true) {
+            chartStorage.setValue('animations.updatingStageMeta.isInit', false);
           }
           tweener.stop();
-        } else if (stages[0].name === 'updating' && updatingStageMeta.shouldBeRemoved) {
+        } else if (stages[0].name === 'updating' && shouldBeRemoved) {
           stages.shift();
         }
       }
