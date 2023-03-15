@@ -1,6 +1,6 @@
 import extend from 'extend';
-import { interpolateObject } from 'd3-interpolate';
 import { easeCubic, easeCubicIn, easeCubicOut } from 'd3-ease';
+import interpolateObject from './interpolate-object';
 
 /* globals window */
 
