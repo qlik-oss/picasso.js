@@ -1,3 +1,4 @@
+/* eslint-disable no-cond-assign */
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-nested-ternary */
 import { color } from 'd3-color';
@@ -8,6 +9,8 @@ import {
   interpolateString as string,
   interpolateNumberArray as numberArray,
 } from 'd3-interpolate';
+
+const colorKeys = ['stroke', 'fill', 'color', 'backgroundColor', 'thumbColor'];
 
 export function constant(x) {
   return () => x;
@@ -40,14 +43,17 @@ export function genericArray(a, b) {
   };
 }
 
-export function value(a, b) {
+export function value(a, b, k) {
   const t = typeof b;
+  let c;
   return b == null || t === 'boolean'
     ? constant(b)
     : (t === 'number'
         ? number
         : t === 'string'
-        ? string
+        ? (c = color(b)) && colorKeys.includes(k)
+          ? ((b = c), rgb)
+          : string
         : b instanceof color
         ? rgb
         : b instanceof Date
@@ -76,7 +82,7 @@ export default function object(a, b) {
 
   for (k in b) {
     if (k in a) {
-      i[k] = value(a[k], b[k]);
+      i[k] = value(a[k], b[k], k);
     } else {
       c[k] = b[k];
     }

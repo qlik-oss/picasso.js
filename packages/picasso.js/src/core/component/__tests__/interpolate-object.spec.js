@@ -25,9 +25,25 @@ describe('interpolateObject', () => {
     expect(interpolateObject(source, target)(0.5)).to.deep.equal({ x: 15, y: 400 });
   });
 
-  it('should interpolate string correctly when there is number and color embedded: interpolate number but NOT color', () => {
-    source = { style: '300rem 12px Red', border: 'Green' };
-    target = { style: '600rem 20px Blue', border: 'Blue' };
-    expect(interpolateObject(source, target)(0.5)).to.deep.equal({ style: '450rem 16px Blue', border: 'Blue' });
+  it('should interpolate string as color if the key is one of the color keys', () => {
+    source = { stroke: 'Red', fill: 'Green', backgroundColor: 'Blue' };
+    target = { stroke: 'Green', fill: 'Blue', backgroundColor: 'Red' };
+    expect(interpolateObject(source, target)(0.5)).to.deep.equal({
+      stroke: 'rgb(128, 64, 0)',
+      fill: 'rgb(0, 64, 128)',
+      backgroundColor: 'rgb(128, 0, 128)',
+    });
+  });
+
+  it('should NOT interpolate string as color if the key is NOT one of the color keys', () => {
+    source = { label: 'Red', text: 'Green' };
+    target = { label: 'Blue', text: 'Blue' };
+    expect(interpolateObject(source, target)(0.5)).to.deep.equal({ label: 'Blue', text: 'Blue' });
+  });
+
+  it('should NOT interpolate string as color if the color is just a part of the string', () => {
+    source = { fill: '300rem 12px Red' };
+    target = { fill: '600rem 20px Blue' };
+    expect(interpolateObject(source, target)(0.5)).to.deep.equal({ fill: '450rem 16px Blue' });
   });
 });
