@@ -37,7 +37,7 @@
     "prepublishOnly": "rm -rf dist && npm run build"
   },
   "devDependencies": {
-    "d3-color": "3.0.1",
+    "d3-color": "3.1.0",
     "d3-ease": "3.0.1",
     "d3-format": "3.1.0",
     "d3-hierarchy": "3.1.2",
