@@ -1,4 +1,5 @@
-import q from '../dataset';
+import extend from 'extend';
+import q, { handleColumnOrderForSMode } from '../dataset';
 import picData from '../../../../../packages/picasso.js/src/core/data/dataset';
 
 const NxSimpleValue = { qNum: 37.6, qText: '$37.6' };
@@ -605,5 +606,111 @@ describe('q-data', () => {
       const ff = d.field(f);
       expect(f).to.equal(ff);
     });
+  });
+});
+
+describe('handleColumnOrderForSMode', () => {
+  let cube;
+  let rearrangedCube;
+
+  beforeEach(() => {
+    cube = {
+      qColumnOrder: [0, 2, 3, 1, 4, 5],
+      columnOrder: [0, 2, 3, 1],
+      qEffectiveInterColumnSortOrder: [0, 2, 3, 1, 4, 5],
+      qDataPages: [
+        {
+          qMatrix: [
+            [
+              { qText: 'A', qNum: 'NaN' },
+              { qText: '2.3%', qNum: 0.023 },
+              { qText: '0.0%', qNum: 0.0002 },
+              { qText: '0.5%', qNum: 0.005 },
+              { qText: '0.0%', qNum: 0 },
+              { qText: '0.0%', qNum: 0 },
+            ],
+            [
+              { qText: 'B', qNum: 'NaN' },
+              { qText: '2.4%', qNum: 0.024 },
+              { qText: '0.7%', qNum: 0.007 },
+              { qText: '0.4%', qNum: 0.004 },
+              { qText: '0.2%', qNum: 0.002 },
+              { qText: '0.0%', qNum: 0 },
+            ],
+            [
+              { qText: 'C', qNum: 'NaN' },
+              { qText: '2.6%', qNum: 0.026 },
+              { qText: '1.0%', qNum: 0.01 },
+              { qText: '1.0%', qNum: 0.01 },
+              { qText: '0.3%', qNum: 0.003 },
+              { qText: '0.1%', qNum: 0.001 },
+            ],
+          ],
+        },
+      ],
+    };
+
+    rearrangedCube = {
+      qColumnOrder: [],
+      columnOrder: [],
+      qEffectiveInterColumnSortOrder: [0, 1, 2, 3, 4, 5],
+      qDataPages: [
+        {
+          qMatrix: [
+            [
+              { qText: 'A', qNum: 'NaN' },
+              { qText: '0.5%', qNum: 0.005 },
+              { qText: '2.3%', qNum: 0.023 },
+              { qText: '0.0%', qNum: 0.0002 },
+              { qText: '0.0%', qNum: 0 },
+              { qText: '0.0%', qNum: 0 },
+            ],
+            [
+              { qText: 'B', qNum: 'NaN' },
+              { qText: '0.4%', qNum: 0.004 },
+              { qText: '2.4%', qNum: 0.024 },
+              { qText: '0.7%', qNum: 0.007 },
+              { qText: '0.2%', qNum: 0.002 },
+              { qText: '0.0%', qNum: 0 },
+            ],
+            [
+              { qText: 'C', qNum: 'NaN' },
+              { qText: '1.0%', qNum: 0.01 },
+              { qText: '2.6%', qNum: 0.026 },
+              { qText: '1.0%', qNum: 0.01 },
+              { qText: '0.3%', qNum: 0.003 },
+              { qText: '0.1%', qNum: 0.001 },
+            ],
+          ],
+        },
+      ],
+    };
+  });
+
+  it('should not do anything if qColumnOrder is not defined', () => {
+    delete cube.qColumnOrder;
+    delete cube.columnOrder;
+    const cubeBefore = extend(true, {}, cube);
+    handleColumnOrderForSMode(cube);
+    expect(cube).to.deep.equal(cubeBefore);
+  });
+
+  it('should not do anything if qColumnOrder is an empty array', () => {
+    cube.qColumnOrder = [];
+    const cubeBefore = extend(true, {}, cube);
+    handleColumnOrderForSMode(cube);
+    expect(cube).to.deep.equal(cubeBefore);
+  });
+
+  it('should not do anything if qColumnOrder is array with indeces as values', () => {
+    cube.qColumnOrder = [0, 1, 2, 3, 4, 5];
+    const cubeBefore = extend(true, {}, cube);
+    handleColumnOrderForSMode(cube);
+    expect(cube).to.deep.equal(cubeBefore);
+  });
+
+  it('should rearrange elements in rows of qDataPages, and modify column order and effective sort order, if qColumnOrder is an array with some value not the same as its index', () => {
+    handleColumnOrderForSMode(cube);
+    expect(cube).to.deep.equal(rearrangedCube);
   });
 });

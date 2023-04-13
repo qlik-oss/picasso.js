@@ -45,6 +45,30 @@ function createFields(path, obj, prefix, parentKey, opts) {
   });
 }
 
+export function handleColumnOrderForSMode(cube) {
+  const columnOrder = cube.qColumnOrder || cube.columnOrder;
+  const rearrangeToDefaultOrder = (arr, order) => {
+    const temp = arr.slice();
+    for (let i = 0; i < order.length; i++) {
+      arr[order[i]] = temp[i];
+    }
+  };
+
+  if (Array.isArray(columnOrder) && columnOrder.some((el, i) => el !== i)) {
+    const { qDataPages } = cube;
+    qDataPages.forEach((dataPage) => {
+      const { qMatrix } = dataPage;
+      qMatrix.forEach((row) => {
+        rearrangeToDefaultOrder(row, columnOrder);
+      });
+    });
+
+    rearrangeToDefaultOrder(cube.qEffectiveInterColumnSortOrder, columnOrder);
+    cube.qColumnOrder = [];
+    cube.columnOrder = [];
+  }
+}
+
 export default function q({ key, data, config = {} } = {}) {
   const cache = {
     fields: [],
@@ -90,6 +114,7 @@ export default function q({ key, data, config = {} } = {}) {
     opts.pages = cube.qMode === 'K' ? cube.qStackedDataPages : cube.qTreeDataPages;
   } else if (cube.qMode === 'S') {
     opts.extractor = SExtractor;
+    handleColumnOrderForSMode(cube);
     opts.pages = cube.qDataPages;
     opts.hierarchy = augmentTree;
   } else {
