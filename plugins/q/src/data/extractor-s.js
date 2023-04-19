@@ -25,14 +25,14 @@ export function getFieldAccessor(field, page, deps, columnOrder) {
     }
   }
 
-  fieldIdx -= page.qArea.qLeft;
-
   if (Array.isArray(columnOrder) && columnOrder.some((el, i) => el !== i)) {
     const correctIndex = columnOrder.indexOf(fieldIdx);
     if (correctIndex !== -1) {
       fieldIdx = correctIndex;
     }
   }
+
+  fieldIdx -= page.qArea.qLeft;
 
   if (fieldIdx < 0 || fieldIdx >= page.qArea.qWidth) {
     // throw new Error('Field out of range');
