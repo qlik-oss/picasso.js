@@ -959,7 +959,7 @@ describe('extractor-s', () => {
       }
     });
 
-    // This happens for mini chart of an axis chart that has two dims, one measure, qLeft is 1, and column order is undefined
+    // This happens for mini chart of an axis chart that has two dims, one measure, qLeft is 1, and column order is empty
     it('should return correct index when object has two dimensions and one measure, qLeft is 1, and column order is empty', () => {
       const row = ['b', 200, 100];
       localCache.fields = [{}, {}, {}, {}];
