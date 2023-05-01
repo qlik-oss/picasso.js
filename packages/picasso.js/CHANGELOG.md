@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.3](https://github.com/qlik-oss/picasso.js/compare/v2.2.2...v2.2.3) (2023-05-01)
+
+### Bug Fixes
+
+- animations avoid interpolating color ([#774](https://github.com/qlik-oss/picasso.js/issues/774)) ([559ef62](https://github.com/qlik-oss/picasso.js/commit/559ef62cb1f34947a804b316970ec64e29d3e38e))
+- enable color interpolation for fill and stroke ([#776](https://github.com/qlik-oss/picasso.js/issues/776)) ([82e00f2](https://github.com/qlik-oss/picasso.js/commit/82e00f2a158ee03aca2978d56279da25a632d1dc))
+
 ## [2.2.2](https://github.com/qlik-oss/picasso.js/compare/v2.2.1...v2.2.2) (2023-03-02)
 
 **Note:** Version bump only for package picasso.js

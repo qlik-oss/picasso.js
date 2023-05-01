@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.3](https://github.com/qlik-oss/picasso.js/compare/v2.2.2...v2.2.3) (2023-05-01)
+
+### Bug Fixes
+
+- get correct index when columnOrder is irregular ([#781](https://github.com/qlik-oss/picasso.js/issues/781)) ([167e527](https://github.com/qlik-oss/picasso.js/commit/167e5270e211258f3abacc1f8cf1c655c6d06b42))
+
 ## [2.2.2](https://github.com/qlik-oss/picasso.js/compare/v2.2.1...v2.2.2) (2023-03-02)
 
 **Note:** Version bump only for package picasso-plugin-q
