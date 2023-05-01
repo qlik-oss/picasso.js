@@ -2,7 +2,7 @@
 
 import extend from 'extend';
 
-export function getFieldAccessor(field, page, deps) {
+export function getFieldAccessor(field, page, deps, columnOrder) {
   if (!field) {
     return -1;
   }
@@ -25,7 +25,15 @@ export function getFieldAccessor(field, page, deps) {
     }
   }
 
+  if (Array.isArray(columnOrder) && columnOrder.some((el, i) => el !== i)) {
+    const correctIndex = columnOrder.indexOf(fieldIdx);
+    if (correctIndex !== -1) {
+      fieldIdx = correctIndex;
+    }
+  }
+
   fieldIdx -= page.qArea.qLeft;
+
   if (fieldIdx < 0 || fieldIdx >= page.qArea.qWidth) {
     // throw new Error('Field out of range');
     return -1;
@@ -78,10 +86,10 @@ function datumExtract(propCfg, cell, { key }) {
   return datum;
 }
 
-function cellToValue({ cache, f, mainCell, p, prop, page, rowIdx, row, sourceKey, target, targetProp }) {
+function cellToValue({ cache, f, mainCell, p, prop, page, rowIdx, row, sourceKey, target, targetProp, columnOrder }) {
   let propCell = mainCell;
   if (p.field && p.field !== f) {
-    const propCellFn = getFieldAccessor(p.field, page, { cache });
+    const propCellFn = getFieldAccessor(p.field, page, { cache }, columnOrder);
     if (propCellFn === -1) {
       return;
     }
@@ -108,7 +116,7 @@ export default function extract(config, dataset, cache, util) {
       const items = [];
 
       for (let j = 0; j < cube.qDataPages.length; j++) {
-        const fn = getFieldAccessor(f, cube.qDataPages[j], { cache });
+        const fn = getFieldAccessor(f, cube.qDataPages[j], { cache }, cube.qColumnOrder);
         if (fn === -1) {
           continue;
         }
@@ -145,6 +153,7 @@ export default function extract(config, dataset, cache, util) {
                 sourceKey,
                 target: p.fields ? ret[propsArr[l]] : ret,
                 targetProp: p.fields ? m : propsArr[l],
+                columnOrder: cube.qColumnOrder,
               });
             }
 

@@ -841,14 +841,18 @@ describe('extractor-s', () => {
   });
 
   describe('getFieldAccessor', () => {
-    const localCache = {
-      fields: [{}, {}, {}],
-      wrappedFields: [
-        { attrDims: [], attrExps: [] },
-        { attrDims: [{}, { instance: {} }], attrExps: [] },
-        { attrDims: [], attrExps: [{}, { instance: {} }] },
-      ],
-    };
+    let localCache;
+
+    beforeEach(() => {
+      localCache = {
+        fields: [{}, {}, {}],
+        wrappedFields: [
+          { attrDims: [], attrExps: [] },
+          { attrDims: [{}, { instance: {} }], attrExps: [] },
+          { attrDims: [], attrExps: [{}, { instance: {} }] },
+        ],
+      };
+    });
 
     it('should return -1 when field is falsy', () => {
       const acc = getFieldAccessor(0);
@@ -933,6 +937,46 @@ describe('extractor-s', () => {
         { cache: localCache }
       );
       expect(acc(row)).to.equal('b');
+    });
+
+    // This happens when an axis chart has one dim, many measures, and irregular column order
+    it('should return correct index when object has one dimension and five measures, and column order is irregular', () => {
+      const row = ['a', 'b', 'c', 'd', 'e', 'f'];
+      const columnOrder = [0, 2, 3, 1, 4, 5];
+      const expectedReturnedValues = ['a', 'd', 'b', 'c', 'e', 'f'];
+      localCache.fields = [{}, {}, {}, {}, {}, {}];
+      for (let i = 0; i < 6; i++) {
+        const f = localCache.fields[i];
+        const acc = getFieldAccessor(
+          f,
+          {
+            qArea: { qLeft: 0 },
+          },
+          { cache: localCache },
+          columnOrder
+        );
+        expect(acc(row)).to.equal(expectedReturnedValues[i]);
+      }
+    });
+
+    // This happens for mini chart of an axis chart that has two dims, one measure, qLeft is 1, and column order is empty
+    it('should return correct index when object has two dimensions and one measure, qLeft is 1, and column order is empty', () => {
+      const row = ['b', 200, 100];
+      localCache.fields = [{}, {}, {}, {}];
+      const columnOrder = [];
+      const expectedReturnedValues = ['b', 200, 100];
+      for (let i = 0; i <= 2; i++) {
+        const f = localCache.fields[i + 1];
+        const acc = getFieldAccessor(
+          f,
+          {
+            qArea: { qLeft: 1 },
+          },
+          { cache: localCache },
+          columnOrder
+        );
+        expect(acc(row)).to.equal(expectedReturnedValues[i]);
+      }
     });
   });
 });
