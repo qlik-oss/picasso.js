@@ -23,8 +23,13 @@ function toLineDash(p) {
   return [];
 }
 
+const isIPhone = typeof navigator === `undefined` ? false : /iPhone/.test(navigator.userAgent) && !window.MSStream;
+
 function dpiScale(g) {
-  const dpr = typeof window === 'undefined' ? 1 : window.devicePixelRatio || 1;
+  const dpr =
+    typeof window === 'undefined'
+      ? 1
+      : (isIPhone ? Math.min(2, window.devicePixelRatio) : window.devicePixelRatio) || 1;
   const backingStorePixelRatio =
     g.webkitBackingStorePixelRatio ||
     g.mozBackingStorePixelRatio ||
