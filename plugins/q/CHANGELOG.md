@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.4](https://github.com/qlik-oss/picasso.js/compare/v2.2.3...v2.2.4) (2023-06-13)
+
+### Bug Fixes
+
+- fix formatting issue caused by floating error ([#788](https://github.com/qlik-oss/picasso.js/issues/788)) ([5b76baa](https://github.com/qlik-oss/picasso.js/commit/5b76baac6c700d86fe3423450e70c14be7fdd73a))
+
 ## [2.2.3](https://github.com/qlik-oss/picasso.js/compare/v2.2.2...v2.2.3) (2023-05-01)
 
 ### Bug Fixes
