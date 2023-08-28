@@ -6,7 +6,7 @@ function getDockTransform(offset = 0) {
     right: `translate(${offset}px, -50%)`,
     top: `translate(-50%, -100%) translateY(${-offset}px)`,
     bottom: `translate(-50%, ${offset}px)`,
-    inside: `translate(-50%, -50%) translateX(${-offset}px) translateY(${-offset}px)`,
+    inside: `translate(-50%, -50%)`,
   };
 }
 
