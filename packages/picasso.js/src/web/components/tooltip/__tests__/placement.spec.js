@@ -427,6 +427,67 @@ describe('placement', () => {
       });
     });
 
+    it('dock - inside dock', () => {
+      // Unable to fit in the existing dock positions, as the current target is too big
+      // should choose inside to dock
+      global.window.innerWidth = 1451;
+      global.window.innerHeight = 1160;
+      componentMock.rect.width = 1410;
+      componentMock.rect.height = 978;
+      context.state = {
+        activeNodes: [
+          {
+            bounds: {
+              x: 2,
+              y: 1,
+              width: 1406,
+              height: 975,
+            },
+            key: 'aKey',
+          },
+        ],
+        pointer: {
+          x: 271,
+          y: 167,
+          dx: 271,
+          dy: 167,
+          targetBounds: { x: 0, y: 0, width: 1451, height: 1160 },
+        },
+        targetElement: {
+          getBoundingClientRect: () => ({
+            x: 0,
+            y: 0,
+            width: 1451,
+            height: 1160,
+          }),
+        },
+      };
+      context.props.placement = {
+        type: 'bounds',
+        offset: 8,
+        dock: 'inside',
+      };
+      size = {
+        width: 368.03,
+        height: 408,
+      };
+      const r = placement(size, context);
+
+      expect(r).to.deep.equal({
+        computedArrowStyle: {
+          borderWidth: '0px',
+          left: '0px',
+          top: '0px',
+        },
+        computedTooltipStyle: {
+          left: '976px',
+          top: '655.5px',
+          transform: 'translate(-50%, -50%)',
+        },
+        dock: 'inside',
+      });
+    });
+
     describe('slice', () => {
       it('dock - auto, bottom', () => {
         size.width = 10;
