@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.5](https://github.com/qlik-oss/picasso.js/compare/v2.2.4...v2.2.5) (2023-08-30)
+
+### Bug Fixes
+
+- show the tooltip inside the object when its takes up the whole screen ([#792](https://github.com/qlik-oss/picasso.js/issues/792)) ([6fcd8f5](https://github.com/qlik-oss/picasso.js/commit/6fcd8f5f48886fc9c53f35e72b19ddfcf36f0a92))
+
 ## [2.2.4](https://github.com/qlik-oss/picasso.js/compare/v2.2.3...v2.2.4) (2023-06-13)
 
 **Note:** Version bump only for package picasso.js
