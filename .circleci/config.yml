@@ -116,7 +116,7 @@ jobs:
       - run:
           name: Run unit tests
           command: |
-            yarn run test:unit --maxWorkers=2 --coverage 
+            yarn run test:unit --coverage 
             if [ ! -z "$COVERALLS_REPO_TOKEN" ]; then
               echo "Uploading coverage results to coveralls.io..."
               cat ./reports/lcov.info | npx coveralls
