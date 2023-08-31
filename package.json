@@ -54,7 +54,7 @@
     "husky": "8.0.3",
     "jest": "29.6.4",
     "jest-environment-jsdom": "29.6.4",
-    "jest-junit": "15.0.0",
+    "jest-junit": "16.0.0",
     "jest-puppeteer": "6.2.0",
     "jsdom": "22.1.0",
     "lerna": "6.6.2",
