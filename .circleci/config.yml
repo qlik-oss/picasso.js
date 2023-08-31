@@ -18,7 +18,7 @@ defaults: &defaults
   working_directory: ~/picassojs
   # Available images https://hub.docker.com/r/circleci/node/tags/
   docker:
-    - image: cimg/node:14.18-browsers
+    - image: cimg/node:lts-browsers
 
 jobs:
   install:
