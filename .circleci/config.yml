@@ -18,7 +18,7 @@ defaults: &defaults
   working_directory: ~/picassojs
   # Available images https://hub.docker.com/r/circleci/node/tags/
   docker:
-    - image: cimg/node:14.18-browsers
+    - image: cimg/node:lts-browsers
 
 jobs:
   install:
@@ -116,7 +116,7 @@ jobs:
       - run:
           name: Run unit tests
           command: |
-            yarn run test:unit --maxWorkers=2 --coverage 
+            yarn run test:unit --runInBand --coverage 
             if [ ! -z "$COVERALLS_REPO_TOKEN" ]; then
               echo "Uploading coverage results to coveralls.io..."
               cat ./reports/lcov.info | npx coveralls
