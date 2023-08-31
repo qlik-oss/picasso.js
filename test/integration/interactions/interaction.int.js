@@ -262,6 +262,7 @@ describe('picasso-interactions', () => {
     // drag existing range
     await page.mouse.down();
     await page.mouse.move(dest.x, dest.y + dest.height / 2);
+    await page.mouse.up();
 
     let febisSelected = await page.evaluate(() => picassochart.brush('highlight').containsValue('0/Month', 'Feb'));
     expect(febisSelected).to.equal(true, 'Feb should have been selected but it was not');

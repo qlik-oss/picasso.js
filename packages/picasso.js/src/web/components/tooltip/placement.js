@@ -6,6 +6,7 @@ function getDockTransform(offset = 0) {
     right: `translate(${offset}px, -50%)`,
     top: `translate(-50%, -100%) translateY(${-offset}px)`,
     bottom: `translate(-50%, ${offset}px)`,
+    inside: `translate(-50%, -50%)`,
   };
 }
 
@@ -15,6 +16,7 @@ function getDockOffset(width, height, offset = 0) {
     right: { x: offset, y: -height / 2 },
     top: { x: -width / 2, y: -height - offset },
     bottom: { x: -width / 2, y: offset },
+    inside: { x: -width / 2, y: -height / 2 },
   };
 }
 
@@ -39,6 +41,11 @@ function getComputedArrowStyle(offset) {
       left: `calc(50% - ${offset}px)`,
       top: `${-offset * 2}px`,
       borderWidth: `${offset}px`,
+    },
+    inside: {
+      left: '0px',
+      top: '0px',
+      borderWidth: '0px',
     },
   };
 }
@@ -94,6 +101,7 @@ function alignToBounds({ resources, nodes, pointer, width: elmWidth, height: elm
     right: { x: x + width, y: y + height / 2 },
     top: { x: x + width / 2, y },
     bottom: { x: x + width / 2, y: y + height },
+    inside: { x: x + width / 2, y: y + height / 2 },
   };
 
   // Check if explicit dock
@@ -116,7 +124,7 @@ function alignToBounds({ resources, nodes, pointer, width: elmWidth, height: elm
     height: options.area === 'target' ? targetBounds.height : window.innerHeight,
   };
   const dockOffsets = getDockOffset(elmWidth, elmHeight, options.offset);
-  const dockOrder = ['top', 'left', 'right', 'bottom'];
+  const dockOrder = ['top', 'left', 'right', 'bottom', 'inside'];
 
   for (let i = 0; i < dockOrder.length; i += 1) {
     const dock = dockOrder[i];
