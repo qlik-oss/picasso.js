@@ -108,6 +108,24 @@ jobs:
             -e CREDENTIALS_COLONY="$APICULTURIST_TOKEN"
             ghcr.io/qlik-download/api-compliance
 
+  test-unit:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/picassojs
+      - run:
+          name: Run unit tests
+          command: |
+            yarn run test:unit --runInBand --coverage 
+            if [ ! -z "$COVERALLS_REPO_TOKEN" ]; then
+              echo "Uploading coverage results to coveralls.io..."
+              cat ./reports/lcov.info | npx coveralls
+            fi
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: ./reports/junit/
+      - store_test_results:
+          path: ./reports/junit/
+
   test-component:
     <<: *defaults
     steps:
@@ -152,6 +170,9 @@ workflows:
             tags:
               only:
                 - /v.*/
+      - test-unit:
+          requires:
+            - install
       - test-component:
           requires:
             - install
