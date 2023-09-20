@@ -17,5 +17,5 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
-          coverageLocations: ${{github.workspace}}/coverage/lcov.info:lcov
+          coverageLocations: ${{github.workspace}}/reports/lcov.info:lcov
           coverageCommand: yarn test:unit --ci --coverage --reporters="github-actions" --reporters="summary"
