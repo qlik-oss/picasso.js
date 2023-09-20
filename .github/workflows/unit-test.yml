@@ -1,0 +1,21 @@
+name: Unit tests
+
+on:
+    push:
+      branches:
+        - 'main'
+
+jobs:
+    setup:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Install dependencies
+              shell: bash
+              run: yarn install --immutable --frozen-lockfile
+            - name: Run unit tests
+              uses: paambaati/codeclimate-action@v5.0.0
+              env:
+                CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+              with:
+                coverageLocations: ${{github.workspace}}/coverage/lcov.info:lcov
+                coverageCommand: yarn test:unit --ci --coverage --reporters="github-actions" --reporters="summary"
