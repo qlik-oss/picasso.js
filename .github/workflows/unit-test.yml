@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  setup:
+  unit-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
