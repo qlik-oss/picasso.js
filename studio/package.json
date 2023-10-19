@@ -31,7 +31,7 @@
   "dependencies": {
     "@material-ui/core": "4.12.4",
     "@material-ui/icons": "4.11.3",
-    "enigma.js": "2.11.0",
+    "enigma.js": "2.12.0",
     "hammerjs": "2.0.8",
     "prop-types": "15.8.1",
     "qix-faker": "0.3.0",
@@ -47,8 +47,8 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "7.18.6",
-    "@babel/preset-react": "7.22.5",
-    "@types/react": "17.0.65",
+    "@babel/preset-react": "7.22.15",
+    "@types/react": "17.0.69",
     "babel-loader": "9.1.3",
     "copy-webpack-plugin": "11.0.0",
     "css-loader": "6.8.1",
@@ -56,10 +56,10 @@
     "eslint-plugin-react": "7.33.2",
     "eslint-plugin-react-hooks": "4.6.0",
     "html-webpack-plugin": "5.5.3",
-    "monaco-editor": "0.41.0",
+    "monaco-editor": "0.44.0",
     "monaco-editor-webpack-plugin": "7.1.0",
     "style-loader": "3.3.3",
-    "webpack": "5.88.2",
+    "webpack": "5.89.0",
     "webpack-cli": "5.1.4",
     "webpack-dev-server": "4.15.1"
   },
