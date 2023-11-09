@@ -47,8 +47,8 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-class-properties": "7.18.6",
-    "@babel/preset-react": "7.22.15",
-    "@types/react": "17.0.69",
+    "@babel/preset-react": "7.23.3",
+    "@types/react": "17.0.70",
     "babel-loader": "9.1.3",
     "copy-webpack-plugin": "11.0.0",
     "css-loader": "6.8.1",
