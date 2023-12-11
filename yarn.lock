@@ -12835,10 +12835,10 @@ path-type@^4.0.0:
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-4.0.0.tgz#84ed01c0a7ba380afe09d90a8c180dcd9d03043b"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
-path2d-polyfill@1.2.3:
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/path2d-polyfill/-/path2d-polyfill-1.2.3.tgz#d8f3e64122df6725d2bc6deed1545c2c0ceb69a5"
-  integrity sha512-ZfUll0QEl41nbTjgZ/NHx91daupW3KWO+/iou8uxD7x7r26YtL1PmEaoWTtXHFP+6Y0NqXpwqphW7igHsgsnnQ==
+path2d-polyfill@2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/path2d-polyfill/-/path2d-polyfill-2.0.1.tgz#24c554a738f42700d6961992bf5f1049672f2391"
+  integrity sha512-ad/3bsalbbWhmBo0D6FZ4RNMwsLsPpL6gnvhuSaU5Vm7b06Kr5ubSltQQ0T7YKsiJQO+g22zJ4dJKNTXIyOXtA==
 
 pathval@^1.1.1:
   version "1.1.1"
