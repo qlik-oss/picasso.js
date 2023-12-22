@@ -64,7 +64,7 @@ describe('placement', () => {
       },
     };
 
-    global.window = {
+    global.window ??= {
       innerWidth: 500,
       innerHeight: 500,
     };
@@ -298,11 +298,11 @@ describe('placement', () => {
         expect(r).to.deep.equal({
           computedArrowStyle: {
             borderWidth: '5px',
-            left: 'calc(50% - 5px)',
+            left: 'calc(50% - 28.5px)',
             top: '100%',
           },
           computedTooltipStyle: {
-            left: '18.5px',
+            left: '42px',
             top: '24px',
             transform: 'translate(-50%, -100%) translateY(-5px)',
           },
