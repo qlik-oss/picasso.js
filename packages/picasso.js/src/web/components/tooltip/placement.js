@@ -172,16 +172,13 @@ function alignToBounds({ resources, nodes, pointer, width: elmWidth, height: elm
     }
   }
   const left = getTooltipLeft({ options, docks, dockOffsets, targetBounds, area, width: elmWidth, height: elmHeight });
-  const computedTooltipStyle = {
-    left: `${left}px`,
-    top: `${docks.top.y}px`,
-    transform: dockTransforms.top,
-  };
-  const computedArrowStyle = getComputedArrowStyle(options.offset + left - docks.top.x, options.offset).top;
-
   return {
-    computedTooltipStyle,
-    computedArrowStyle,
+    computedTooltipStyle: {
+      left: `${left}px`,
+      top: `${docks.top.y}px`,
+      transform: dockTransforms.top,
+    },
+    computedArrowStyle: getComputedArrowStyle(options.offset + left - docks.top.x, options.offset).top,
     dock: 'top',
   };
 }
@@ -380,7 +377,6 @@ export default function placement({ width, height }, { chart, state, props }) {
   };
   const type = typeof props.placement;
 
-  console.log('placement', width, height, chart, state, props);
   if (type === 'object' && typeof props.placement.fn === 'function') {
     // Custom placement strategy function
     return props.placement.fn(propCtx);
