@@ -8,7 +8,7 @@
       "enabled": false
     },
     {
-      "matchPackageNames": ["d3-shape"],
+      "matchPackageNames": ["d3-shape", "preact"],
       "enabled": false
     }
   ]
