@@ -20,27 +20,56 @@ function getDockOffset(width, height, offset = 0) {
   };
 }
 
-function getComputedArrowStyle(offset) {
+function getTooltipLeft({ options, docks, dockOffsets, targetBounds, area, width, height }) {
+  const dock = 'top';
+  const vx = options.area === 'target' ? docks[dock].x : targetBounds.left + docks[dock].x;
+  const vy = options.area === 'target' ? docks[dock].y : targetBounds.top + docks[dock].y;
+  const offset = dockOffsets[dock];
+  const rect = {
+    x: vx + offset.x,
+    y: vy + offset.y,
+    width,
+    height,
+  };
+
+  let left = docks.top.x;
+  if (rect.x < 0 && rect.x + rect.width > area.width) {
+    return left;
+  }
+  if (rect.x < 0) {
+    left -= rect.x;
+  } else if (rect.x + rect.width > area.width) {
+    left -= rect.x + rect.width - area.width;
+  }
+  return left;
+}
+
+function getComputedArrowStyle(offset, borderWidth) {
+  const sign = offset > 0 ? '-' : '+';
+  offset = Math.abs(offset);
+  if (borderWidth === undefined) {
+    borderWidth = offset;
+  }
   return {
     left: {
       left: '100%',
-      top: `calc(50% - ${offset}px)`,
-      borderWidth: `${offset}px`,
+      top: `calc(50% ${sign} ${offset}px)`,
+      borderWidth: `${borderWidth}px`,
     },
     right: {
       left: `${-offset * 2}px`,
-      top: `calc(50% - ${offset}px)`,
-      borderWidth: `${offset}px`,
+      top: `calc(50% ${sign} ${offset}px)`,
+      borderWidth: `${borderWidth}px`,
     },
     top: {
-      left: `calc(50% - ${offset}px)`,
+      left: `calc(50% ${sign} ${offset}px)`,
       top: '100%',
-      borderWidth: `${offset}px`,
+      borderWidth: `${borderWidth}px`,
     },
     bottom: {
-      left: `calc(50% - ${offset}px)`,
+      left: `calc(50% ${sign} ${offset}px)`,
       top: `${-offset * 2}px`,
-      borderWidth: `${offset}px`,
+      borderWidth: `${borderWidth}px`,
     },
     inside: {
       left: '0px',
@@ -142,14 +171,14 @@ function alignToBounds({ resources, nodes, pointer, width: elmWidth, height: elm
       };
     }
   }
-
+  const left = getTooltipLeft({ options, docks, dockOffsets, targetBounds, area, width: elmWidth, height: elmHeight });
   return {
     computedTooltipStyle: {
-      left: `${docks.top.x}px`,
+      left: `${left}px`,
       top: `${docks.top.y}px`,
       transform: dockTransforms.top,
     },
-    computedArrowStyle: getComputedArrowStyle(options.offset).top,
+    computedArrowStyle: getComputedArrowStyle(options.offset + left - docks.top.x, options.offset).top,
     dock: 'top',
   };
 }
