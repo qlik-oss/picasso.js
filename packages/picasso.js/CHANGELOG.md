@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.6](https://github.com/qlik-oss/picasso.js/compare/v2.2.5...v2.2.6) (2024-01-10)
+
+### Bug Fixes
+
+- adjust tooltip when it is outside ([#818](https://github.com/qlik-oss/picasso.js/issues/818)) ([f2fbb86](https://github.com/qlik-oss/picasso.js/commit/f2fbb8683795557edfa6c4ad550c015f462452c7))
+- downgrade preact ([#817](https://github.com/qlik-oss/picasso.js/issues/817)) ([2de3b5a](https://github.com/qlik-oss/picasso.js/commit/2de3b5a7a135f94c49844bc67b86b85073773a47))
+
 ## [2.2.5](https://github.com/qlik-oss/picasso.js/compare/v2.2.4...v2.2.5) (2023-08-30)
 
 ### Bug Fixes
