@@ -75,7 +75,14 @@ describe('dom renderer', () => {
 
     it('should apply transform if provided', () => {
       const rendererSettings = {
-        transform: () => ({ a: 1, b: 0, c: 1, d: 0, e: 100, f: 100 }),
+        transform: () => ({
+          horizontalScaling: 1,
+          horizontalSkewing: 0,
+          verticalSkewing: 1,
+          verticalScaling: 0,
+          horizontalMoving: 100,
+          verticalMoving: 100,
+        }),
         irrelevantSetting: 'irrelevant!',
       };
       rend.settings(rendererSettings);

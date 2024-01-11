@@ -117,8 +117,15 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
 
     const transformation = typeof settings.transform === 'function' && settings.transform();
     if (transformation) {
-      const { a, b, c, d, e, f } = transformation;
-      group.style.transform = `matrix(${a}, ${b}, ${c}, ${d}, ${e}, ${f})`;
+      const {
+        horizontalScaling,
+        horizontalSkewing,
+        verticalSkewing,
+        verticalScaling,
+        horizontalMoving,
+        verticalMoving,
+      } = transformation;
+      group.style.transform = `matrix(${horizontalScaling}, ${horizontalSkewing}, ${verticalSkewing}, ${verticalScaling}, ${horizontalMoving}, ${verticalMoving})`;
       return true;
     }
     group.style.transform = '';
