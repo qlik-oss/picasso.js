@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.7](https://github.com/qlik-oss/picasso.js/compare/v2.2.6...v2.2.7) (2024-01-12)
+
+### Bug Fixes
+
+- use correct transformation properties in dom- and svg-renderer ([#824](https://github.com/qlik-oss/picasso.js/issues/824)) ([a91fd0b](https://github.com/qlik-oss/picasso.js/commit/a91fd0b08392e3a043f9ffe8905d05b90f85adff))
+
 ## [2.2.6](https://github.com/qlik-oss/picasso.js/compare/v2.2.5...v2.2.6) (2024-01-10)
 
 ### Bug Fixes
