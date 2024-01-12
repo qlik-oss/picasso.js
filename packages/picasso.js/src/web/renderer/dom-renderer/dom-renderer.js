@@ -51,8 +51,15 @@ export default function renderer(opts = {}) {
 
     const transformation = typeof settings.transform === 'function' && settings.transform();
     if (transformation) {
-      const { a, b, c, d, e, f } = transformation;
-      el.style.transform = `matrix(${a}, ${b}, ${c}, ${d}, ${e}, ${f})`;
+      const {
+        horizontalScaling,
+        horizontalSkewing,
+        verticalSkewing,
+        verticalScaling,
+        horizontalMoving,
+        verticalMoving,
+      } = transformation;
+      el.style.transform = `matrix(${horizontalScaling}, ${horizontalSkewing}, ${verticalSkewing}, ${verticalScaling}, ${horizontalMoving}, ${verticalMoving})`;
       return true;
     }
     el.style.transform = '';
