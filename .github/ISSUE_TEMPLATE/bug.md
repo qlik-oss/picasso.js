@@ -23,8 +23,8 @@ about: Something isn't working as expected. 😕
 
 ### Versions
 
-* picasso.js: (x.y.z)
-* Browser: ?
+- picasso.js: (x.y.z)
+- Browser: ?
 
 ### Additional context
 

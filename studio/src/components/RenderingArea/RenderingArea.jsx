@@ -118,12 +118,12 @@ const RenderingArea = ({ title, code, data, api, settings, dataSource }) => {
                 generator,
               })
             : [
-              {
-                type: 'q',
-                key: 'qHyperCube',
-                data: data.box ? data.generated.box.qHyperCube : data.qHyperCube,
-              },
-            ]) || {};
+                {
+                  type: 'q',
+                  key: 'qHyperCube',
+                  data: data.box ? data.generated.box.qHyperCube : data.qHyperCube,
+                },
+              ]) || {};
         prevDataScript.current = dataHashId;
         prevData.current = theData;
       }
