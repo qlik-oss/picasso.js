@@ -11,7 +11,7 @@
   },
   "devDependencies": {
     "@scriptappy/cli": "0.10.0",
-    "@scriptappy/to-dts": "1.0.0-beta.4",
+    "@scriptappy/to-dts": "1.0.0",
     "jsdoc": "4.0.2",
     "scriptappy-from-jsdoc": "0.7.0"
   }
