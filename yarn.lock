@@ -7387,10 +7387,10 @@ expand-tilde@^1.2.2:
   dependencies:
     os-homedir "^1.0.1"
 
-expect-puppeteer@^9.0.2:
-  version "9.0.2"
-  resolved "https://registry.yarnpkg.com/expect-puppeteer/-/expect-puppeteer-9.0.2.tgz#ffbfe163962a607afae942bd70f7f192100000cf"
-  integrity sha512-nv3RD8MOStXOf4bLpr1wiqxPMLL7MwXvtMeZBtGvg5bubAHiHcYBcvDTJwkUjdOWz3scjOnOOl5z6KZakMobCw==
+expect-puppeteer@^10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/expect-puppeteer/-/expect-puppeteer-10.0.0.tgz#4b00c7a0636ecb776365d90396949ebf4710d804"
+  integrity sha512-E7sE6nVdEbrnpDOBMmcLgyqLJKt876AlBg1A+gsu5R8cWx+SLafreOgJAgzXg5Qko7Tk0cW5oZdRbHQLU738dg==
 
 expect@^29.7.0:
   version "29.7.0"
@@ -9849,16 +9849,16 @@ jest-config@^29.7.0:
     slash "^3.0.0"
     strip-json-comments "^3.1.1"
 
-jest-dev-server@^9.0.2:
-  version "9.0.2"
-  resolved "https://registry.yarnpkg.com/jest-dev-server/-/jest-dev-server-9.0.2.tgz#9a1ab8a8eefe76e5115c9266944b7390cd1495b3"
-  integrity sha512-Zc/JB0IlNNrpXkhBw+h86cGrde/Mey52KvF+FER2eyrtYJTHObOwW7Iarxm3rPyTKby5+3Y2QZtl8pRz/5GCxg==
+jest-dev-server@^10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/jest-dev-server/-/jest-dev-server-10.0.0.tgz#a2f3ccd0b9c9e8a493ab73908bc082bedc6b86eb"
+  integrity sha512-FtyBBDxrAIfTX3hyKSOwj5KU6Z7fFLew5pQYOFpwyf+qpPpULL8aYxtsFkbkAwcs+Mb7qhcNbVLeiWsLOd7CKw==
   dependencies:
     chalk "^4.1.2"
     cwd "^0.10.0"
     find-process "^1.4.7"
     prompts "^2.4.2"
-    spawnd "^9.0.2"
+    spawnd "^10.0.0"
     tree-kill "^1.2.2"
     wait-on "^7.2.0"
 
@@ -9916,15 +9916,15 @@ jest-environment-node@^29.7.0:
     jest-mock "^29.7.0"
     jest-util "^29.7.0"
 
-jest-environment-puppeteer@^9.0.2:
-  version "9.0.2"
-  resolved "https://registry.yarnpkg.com/jest-environment-puppeteer/-/jest-environment-puppeteer-9.0.2.tgz#c0a0382c8147e2e7f6fff085c3d8916ae210cbf5"
-  integrity sha512-t7+W4LUiPoOz+xpKREgnu6IElMuRthOWTkrThDZqVKPmLhwbK3yx7OCiX8xT1Pw/Cv5WnSoNhwtN7czdCC3fQg==
+jest-environment-puppeteer@^10.0.1:
+  version "10.0.1"
+  resolved "https://registry.yarnpkg.com/jest-environment-puppeteer/-/jest-environment-puppeteer-10.0.1.tgz#f69a62606b51beee2d6f21494218bea2ad6643a5"
+  integrity sha512-FxMzVRyqieQqSy5CPWiwdK5t9dkRHid5eoRTVa8RtYeXLlpW6lU0dAmxEfPkdnDVCiPUhC2APeKOXq0J72bgag==
   dependencies:
     chalk "^4.1.2"
     cosmiconfig "^8.3.6"
     deepmerge "^4.3.1"
-    jest-dev-server "^9.0.2"
+    jest-dev-server "^10.0.0"
     jest-environment-node "^29.7.0"
 
 jest-get-type@^29.6.3:
@@ -10008,13 +10008,13 @@ jest-pnp-resolver@^1.2.2:
   resolved "https://registry.yarnpkg.com/jest-pnp-resolver/-/jest-pnp-resolver-1.2.2.tgz#b704ac0ae028a89108a4d040b3f919dfddc8e33c"
   integrity sha512-olV41bKSMm8BdnuMsewT4jqlZ8+3TCARAXjZGT9jcoSnrfUnRCqnMoF9XEeoWjbzObpqF9dRhHQj0Xb9QdF6/w==
 
-jest-puppeteer@9.0.2:
-  version "9.0.2"
-  resolved "https://registry.yarnpkg.com/jest-puppeteer/-/jest-puppeteer-9.0.2.tgz#c5e7d29ad4b2094a27bc20c6dffa201376111664"
-  integrity sha512-ZB0K/tH+0e7foRRn+VpKIufvkW1by8l7ifh62VOdOh5ijEf7yt8W2/PcBNNwP0RLm46AytiBkrIEenvWhxcBRQ==
+jest-puppeteer@10.0.1:
+  version "10.0.1"
+  resolved "https://registry.yarnpkg.com/jest-puppeteer/-/jest-puppeteer-10.0.1.tgz#c9537ed42b98f6764dc91fa33819e0b20aaaf83b"
+  integrity sha512-FzC35XbqeuQEt1smXh1EOqhJaRkWqJkyWDMfGkcZ8C59QHXeJ7F/iOmiNqYi6l/OsycUuOPCk+IkjfGfS9YbrQ==
   dependencies:
-    expect-puppeteer "^9.0.2"
-    jest-environment-puppeteer "^9.0.2"
+    expect-puppeteer "^10.0.0"
+    jest-environment-puppeteer "^10.0.1"
 
 jest-regex-util@^29.6.3:
   version "29.6.3"
@@ -14657,10 +14657,10 @@ sourcemap-codec@^1.4.4:
   resolved "https://registry.yarnpkg.com/sourcemap-codec/-/sourcemap-codec-1.4.8.tgz#ea804bd94857402e6992d05a38ef1ae35a9ab4c4"
   integrity sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==
 
-spawnd@^9.0.2:
-  version "9.0.2"
-  resolved "https://registry.yarnpkg.com/spawnd/-/spawnd-9.0.2.tgz#7799635d183b27552e90ca639876dac10d45f7f7"
-  integrity sha512-nl8DVHEDQ57IcKakzpjanspVChkMpGLuVwMR/eOn9cXE55Qr6luD2Kn06sA0ootRMdgrU4tInN6lA6ohTNvysw==
+spawnd@^10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/spawnd/-/spawnd-10.0.0.tgz#cf1b222831272f4bef7e2abc9f98cd31c380a4dc"
+  integrity sha512-6GKcakMTryb5b1SWCvdubCDHEsR2k+5VZUD5G19umZRarkvj1RyCGyizcqhjewI7cqZo8fTVD8HpnDZbVOLMtg==
   dependencies:
     signal-exit "^4.1.0"
     tree-kill "^1.2.2"
