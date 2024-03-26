@@ -75,6 +75,110 @@ function getBounds(node) {
   return { type: null, bounds: null };
 }
 
+const calculateRect = (type, currentY, bounds, measurement, rowSettings) => {
+  if (type !== 'circle') {
+    return {
+      x: bounds.x + rowSettings.padding,
+      y: currentY,
+      width: bounds.width - 2 * rowSettings.padding,
+      height: measurement.height,
+    };
+  }
+
+  let maxYDistToCenter = Math.max(Math.abs(currentY - bounds.cy), Math.abs(currentY + measurement.height - bounds.cy));
+  let halfWidth = Math.sqrt(bounds.r * bounds.r - maxYDistToCenter * maxYDistToCenter);
+  return {
+    x: bounds.cx - halfWidth + rowSettings.padding,
+    y: currentY,
+    width: 2 * halfWidth - 2 * rowSettings.padding,
+    height: measurement.height,
+  };
+};
+
+const getLabelProp = (label, renderer, linkData) => {
+  if (label && label?.text !== ELLIPSIS_CHAR) {
+    const ellipsed = ellipsText(label, renderer.measureText);
+    // don't include label if it's only an ellipsis
+    if (ELLIPSIS_CHAR !== ellipsed) {
+      label.ellipsed = ellipsed;
+    }
+  }
+  if (label && typeof linkData !== 'undefined') {
+    label.data = linkData;
+  }
+  return label;
+};
+
+const setHeight = (type, bounds) => ({
+  maxHeight: type === 'circle' ? 2 * bounds.r * CIRCLE_FACTOR : bounds.height,
+  totalHeight: 0,
+});
+
+const getMeasurements = (labelConfig, labelSetting, text, renderer) => {
+  labelConfig.fontFamily = labelSetting.fontFamily;
+  labelConfig.fontSize = `${labelSetting.fontSize}px`;
+  labelConfig.text = text;
+  return renderer.measureText(labelConfig);
+};
+
+const getLabelStructure = (labelConfig, settingIndex, labelSettings, renderer, height, arg, nodeIndex) => {
+  const texts = [];
+  const measurements = [];
+  for (settingIndex = 0; settingIndex < labelSettings.length; settingIndex++) {
+    const text =
+      typeof labelSettings[settingIndex].label === 'function' ? labelSettings[settingIndex].label(arg, nodeIndex) : '';
+    const measurement = getMeasurements(labelConfig, labelSettings[settingIndex], text, renderer);
+    height.totalHeight += measurement.height + labelSettings[settingIndex].padding;
+
+    if (height.totalHeight > height.maxHeight) {
+      break;
+    }
+    texts.push(text);
+    measurements.push(measurement);
+  }
+  return { texts, measurements, settingIndex };
+};
+
+const getCurrentY = (height, bounds, type, rowSettings) => {
+  const wiggleHeight = Math.max(0, height.maxHeight - height.totalHeight);
+  let currentY = type === 'circle' ? bounds.cy - bounds.r * CIRCLE_FACTOR : bounds.y;
+  currentY += rowSettings.justify * wiggleHeight + rowSettings.padding;
+  return currentY;
+};
+
+const setLabels = (
+  labels,
+  height,
+  bounds,
+  type,
+  rowSettings,
+  labelSettings,
+  labelStructure,
+  placer,
+  renderer,
+  arg,
+  index
+) => {
+  let currentY = getCurrentY(height, bounds, type, rowSettings);
+  for (let j = 0; j < labelStructure.settingIndex; j++) {
+    let rect = calculateRect(type, currentY, bounds, labelStructure.measurements[j], rowSettings);
+    currentY += labelStructure.measurements[j].height + rowSettings.padding;
+    let fill = typeof labelSettings[j].fill === 'function' ? labelSettings[j].fill(arg, index) : labelSettings[j].fill;
+    const linkData =
+      typeof labelSettings[j].linkData === 'function' ? labelSettings[j].linkData(arg, index) : undefined;
+    let label = placer(rect, labelStructure.texts[j], {
+      fill,
+      align: labelSettings[j].align,
+      fontSize: labelSettings[j].fontSize,
+      fontFamily: labelSettings[j].fontFamily,
+      textMetrics: labelStructure.measurements[j],
+    });
+    const lbl = getLabelProp(label, renderer, linkData);
+    labels.push(lbl);
+  }
+  return labels;
+};
+
 /**
  * @typedef {object} ComponentLabels~RowsLabelStrategy
  * @property {'rows'} type Name of strategy
@@ -112,12 +216,12 @@ export function rows({ settings, chart, nodes, renderer, style }, placer = place
   const rowSettings = extend({}, defaults, settings);
 
   const labelSettings = settings.labels.map((labelSetting) => extend({}, rowSettings, labelSetting));
+  const labelConfig = {};
 
-  const labelStruct = {};
-  const labels = [];
-
-  for (let i = 0, len = nodes.length; i < len; i++) {
-    let node = nodes[i];
+  let labels = [];
+  let allLabels = [];
+  for (let nodeIndex = 0, len = nodes.length; nodeIndex < len; nodeIndex++) {
+    let node = nodes[nodeIndex];
     let arg = cbContext(node, chart);
 
     let { type, bounds } = getBounds(node);
@@ -125,88 +229,30 @@ export function rows({ settings, chart, nodes, renderer, style }, placer = place
       continue;
     }
 
-    let measurements = [];
-    let texts = [];
-
-    let maxHeight = type === 'circle' ? 2 * bounds.r * CIRCLE_FACTOR : bounds.height;
-    let totalHeight = rowSettings.padding;
-    let j;
-    for (j = 0; j < labelSettings.length; j++) {
-      let lblStngs = labelSettings[j];
-      let text = typeof lblStngs.label === 'function' ? lblStngs.label(arg, i) : '';
-
-      labelStruct.fontFamily = lblStngs.fontFamily;
-      labelStruct.fontSize = `${lblStngs.fontSize}px`;
-      labelStruct.text = text;
-      let measured = renderer.measureText(labelStruct);
-      totalHeight += measured.height;
-      if (totalHeight > maxHeight) {
-        break;
-      }
-      texts.push(text);
-      measurements.push(measured);
-    }
-
-    const labelCount = j;
-    const wiggleHeight = Math.max(0, maxHeight - totalHeight);
-    let currentY;
-    if (type === 'circle') {
-      currentY = bounds.cy - bounds.r * CIRCLE_FACTOR;
-    } else {
-      currentY = bounds.y;
-    }
-    currentY += rowSettings.justify * wiggleHeight + rowSettings.padding;
-
-    for (j = 0; j < labelCount; j++) {
-      let lblStngs = labelSettings[j];
-      let rect;
-      if (type === 'circle') {
-        let maxYDistToCenter = Math.max(
-          Math.abs(currentY - bounds.cy),
-          Math.abs(currentY + measurements[j].height - bounds.cy)
-        );
-        let halfWidth = Math.sqrt(bounds.r * bounds.r - maxYDistToCenter * maxYDistToCenter);
-        rect = {
-          x: bounds.cx - halfWidth + rowSettings.padding,
-          y: currentY,
-          width: 2 * halfWidth - 2 * rowSettings.padding,
-          height: measurements[j].height,
-        };
-      } else {
-        rect = {
-          x: bounds.x + rowSettings.padding,
-          y: currentY,
-          width: bounds.width - 2 * rowSettings.padding,
-          height: measurements[j].height,
-        };
-      }
-
-      currentY += measurements[j].height + rowSettings.padding;
-      let fill = typeof lblStngs.fill === 'function' ? lblStngs.fill(arg, i) : lblStngs.fill;
-      const linkData = typeof lblStngs.linkData === 'function' ? lblStngs.linkData(arg, i) : undefined;
-      let label = placer(rect, texts[j], {
-        fill,
-        align: lblStngs.align,
-        fontSize: lblStngs.fontSize,
-        fontFamily: lblStngs.fontFamily,
-        textMetrics: measurements[j],
-      });
-      if (label) {
-        if (label.text && label.text !== ELLIPSIS_CHAR) {
-          const ellipsed = ellipsText(label, renderer.measureText);
-          if (ELLIPSIS_CHAR === ellipsed) {
-            // don't include label if it's only an ellipsis
-            continue;
-          }
-          label.ellipsed = ellipsed;
-        }
-        if (typeof linkData !== 'undefined') {
-          label.data = linkData;
-        }
-        labels.push(label);
-      }
-    }
+    let settingIndex;
+    const height = setHeight(type, bounds);
+    const labelStructure = getLabelStructure(
+      labelConfig,
+      settingIndex,
+      labelSettings,
+      renderer,
+      height,
+      arg,
+      nodeIndex
+    );
+    allLabels = setLabels(
+      labels,
+      height,
+      bounds,
+      type,
+      rowSettings,
+      labelSettings,
+      labelStructure,
+      placer,
+      renderer,
+      arg,
+      nodeIndex
+    );
   }
-
-  return labels;
+  return allLabels;
 }

@@ -75,7 +75,6 @@ export default class Rect extends DisplayObject {
       width: xMax - xMin,
       height: yMax - yMin,
     };
-
     return this.__boundingRect[includeTransform];
   }
 
