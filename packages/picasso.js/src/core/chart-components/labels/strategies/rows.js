@@ -125,12 +125,11 @@ export function rows({ settings, chart, nodes, renderer, style }, placer = place
       continue;
     }
 
-    let totalHeight = 0;
+    let measuredHeight = 0;
     let measurements = [];
     let texts = [];
 
-    let maxHeight = type === 'circle' ? 2 * bounds.r * CIRCLE_FACTOR : bounds.height;
-    totalHeight += rowSettings.padding;
+    let boundHeight = type === 'circle' ? 2 * bounds.r * CIRCLE_FACTOR : bounds.height;
     let j;
     for (j = 0; j < labelSettings.length; j++) {
       let lblStngs = labelSettings[j];
@@ -140,8 +139,8 @@ export function rows({ settings, chart, nodes, renderer, style }, placer = place
       labelStruct.fontSize = `${lblStngs.fontSize}px`;
       labelStruct.text = text;
       let measured = renderer.measureText(labelStruct);
-      totalHeight += measured.height + lblStngs.padding;
-      if (totalHeight > maxHeight) {
+      measuredHeight += measured.height + lblStngs.padding;
+      if (measuredHeight > boundHeight) {
         break;
       }
       texts.push(text);
@@ -149,7 +148,7 @@ export function rows({ settings, chart, nodes, renderer, style }, placer = place
     }
 
     const labelCount = j;
-    const wiggleHeight = Math.max(0, maxHeight - totalHeight);
+    const wiggleHeight = Math.max(0, boundHeight - measuredHeight);
     let currentY;
     if (type === 'circle') {
       currentY = bounds.cy - bounds.r * CIRCLE_FACTOR;
