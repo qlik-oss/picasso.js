@@ -21,7 +21,6 @@
     "test:integration:server": "rollup -c ./test/integration/rollup.config.js",
     "test:unit": "jest",
     "test:unit:watch": "jest --watch",
-    "start": "lerna run start --stream",
     "prepare": "husky install",
     "types:check": "tsc --noEmit"
   },
@@ -35,6 +34,7 @@
     "@babel/eslint-parser": "7.23.10",
     "@babel/plugin-transform-react-jsx": "7.23.4",
     "@babel/preset-env": "7.24.0",
+    "@babel/preset-react": "7.24.1",
     "@commitlint/cli": "19.0.3",
     "@commitlint/config-conventional": "19.0.3",
     "@rollup/plugin-terser": "0.4.4",
@@ -72,7 +72,6 @@
   "workspaces": [
     "docs",
     "packages/*",
-    "plugins/*",
-    "studio"
+    "plugins/*"
   ]
 }
