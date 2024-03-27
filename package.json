@@ -21,7 +21,6 @@
     "test:integration:server": "rollup -c ./test/integration/rollup.config.js",
     "test:unit": "jest",
     "test:unit:watch": "jest --watch",
-    "start": "lerna run start --stream",
     "prepare": "husky install",
     "types:check": "tsc --noEmit"
   },
@@ -72,7 +71,6 @@
   "workspaces": [
     "docs",
     "packages/*",
-    "plugins/*",
-    "studio"
+    "plugins/*"
   ]
 }

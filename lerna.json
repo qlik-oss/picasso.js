@@ -5,7 +5,7 @@
       "conventionalCommits": true,
       "forcePublish": true,
       "message": "chore(release): %s 🚀",
-      "ignore": ["test-utils", "docs", "studio"]
+      "ignore": ["test-utils", "docs"]
     }
   },
   "version": "2.2.7",
