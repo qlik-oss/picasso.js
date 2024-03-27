@@ -65,12 +65,6 @@ picasso.chart({
 
 More examples and documentation can be found at [qlik.dev](https://qlik.dev)
 
-## Run examples locally
-
-See and try out picasso features by starting the development studio by running:
-
-`yarn start`
-
 ## API
 
 The API can be found at [the Qlik developer portal](https://qlik.dev/apis/javascript/picassojs)
