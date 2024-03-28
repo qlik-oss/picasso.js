@@ -1,4 +1,3 @@
-import 'path2d-polyfill';
 import extend from 'extend';
 import about from './about';
 
