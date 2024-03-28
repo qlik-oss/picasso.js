@@ -1,5 +1,5 @@
 {
-  "extends": ["qlik-oss", "docker:disable", "schedule:monthly"],
+  "extends": ["qlik-oss", "docker:disable", "schedule:monthly", ":dependencyDashboard"],
   "semanticCommits": true,
   "rangeStrategy": "bump",
   "packageRules": [
