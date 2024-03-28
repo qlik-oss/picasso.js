@@ -1,4 +1,4 @@
-import p2dp from 'path2d-polyfill';
+import { parsePath } from 'path2d';
 import arcToCenter, { PI_X2 } from '../math/arc-to-center';
 import cubicCurveToPoints from '../math/cubic-bezier-curve-interpolation';
 import quadCurveToPoints from '../math/quad-bezier-curve-interpolation';
@@ -97,7 +97,7 @@ function arcToPoints(s, startX, startY) {
  * @returns {Array<point[]>} Array of points
  */
 export default function pathToPoints(path) {
-  const commands = p2dp.parsePath(path);
+  const commands = parsePath(path);
   const segments = [];
   const points = [];
   let x = 0; // Current point

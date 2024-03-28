@@ -10181,13 +10181,6 @@ path-type@^5.0.0:
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-5.0.0.tgz#14b01ed7aea7ddf9c7c3f46181d4d04f9c785bb8"
   integrity sha512-5HviZNaZcfqP95rwpv+1HDgUamezbqdSYTyzjTvwtJSnIH+3vnbmWsItli8OFEndS984VT55M3jduxZbX351gg==
 
-path2d-polyfill@3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/path2d-polyfill/-/path2d-polyfill-3.0.1.tgz#24f0d9ca8f6e1b9bdfb28d1b1e47e59033177112"
-  integrity sha512-mjkng+wI/BaMe+rcOqGntChdNRed4VbJYIZa1arqsCATuU1pr7sle3gns2Nkj0G79NIBEzqRpTQI/9px0sGBgw==
-  dependencies:
-    path2d "0.1.2"
-
 path2d@0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/path2d/-/path2d-0.1.2.tgz#b6ae1dcce306cd75137cf6705961d128bbe8009a"

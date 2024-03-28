@@ -46,7 +46,7 @@ const config = (isEsm) => {
     plugins: [
       nodeResolve(),
       babel({
-        include: ['src/**', /path2d-polyfill/],
+        include: ['src/**'],
         presets: [
           [
             '@babel/preset-env',
