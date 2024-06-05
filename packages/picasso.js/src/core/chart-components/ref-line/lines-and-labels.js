@@ -61,7 +61,7 @@ export function alignmentToNumber(align) {
  * @param {object[]} items - Array of all items (for collision detection)
  * @ignore
  */
-export function createLineWithLabel({ chart, blueprint, renderer, p, settings, items }) {
+export function createLineWithLabel({ chart, blueprint, renderer, p, settings, items, slopeLine }) {
   let doesNotCollide = true;
   let line = false;
   let rect = false;
@@ -72,14 +72,14 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
   // Use the transposer to handle actual positioning
   line = blueprint.processItem({
     type: 'line',
-    x1: p.position,
-    y1: 0,
-    x2: p.position,
-    y2: 1,
+    x1: slopeLine ? slopeLine.x1 : p.position,
+    y1: slopeLine ? slopeLine.y2 : 0,
+    x2: slopeLine ? slopeLine.x2 : p.position,
+    y2: slopeLine ? slopeLine.y1 : 1,
     stroke: style.stroke || 'black',
     strokeWidth: style.strokeWidth || 1,
     strokeDasharray: style.strokeDasharray,
-    flipXY: p.flipXY || false, // This flips individual points (Y-lines)
+    flipXY: slopeLine ? false : p.flipXY || false, // This flips individual points (Y-lines)
     value: p.valueInfo ? p.valueInfo.id : p.value,
   });
 
