@@ -219,8 +219,8 @@ function pic(config = {}, registries = {}) {
    * picasso.js version
    * @type {string}
    */
-  picassojs.version = about.version;
-
+  picassojs.version = 'linked version';
+  console.log('%c picassojs from master', 'color: orangered', picassojs);
   return picassojs;
 }
 
@@ -249,5 +249,7 @@ const p = pic(
 components.forEach(p.use);
 renderers.forEach(p.use);
 scales.forEach(p.use);
+
+console.log('%c USING LINKED PICASSO', 'color: lime');
 
 export default p;
