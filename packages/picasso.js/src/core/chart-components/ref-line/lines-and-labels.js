@@ -67,14 +67,16 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
   let rect = false;
   let label = false;
   let value = false;
+  let slopeValue = false;
+  let item;
   let style = extend(true, {}, settings.style.line, p.line || {});
 
   // Use the transposer to handle actual positioning
   line = blueprint.processItem({
     type: 'line',
-    x1: slopeLine ? slopeLine.x1 : p.position,
+    x1: slopeLine ? (slopeLine.slope.value > 0 ? slopeLine.x1 : slopeLine.x2) : p.position,
     y1: slopeLine ? slopeLine.y2 : 0,
-    x2: slopeLine ? slopeLine.x2 : p.position,
+    x2: slopeLine ? (slopeLine.slope.value > 0 ? slopeLine.x2 : slopeLine.x1) : p.position,
     y2: slopeLine ? slopeLine.y1 : 1,
     stroke: style.stroke || 'black',
     strokeWidth: style.strokeWidth || 1,
@@ -84,7 +86,7 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
   });
 
   if (p.label) {
-    const item = extend(true, refLabelDefaultSettings(), settings.style.label || {}, { fill: style.stroke }, p.label);
+    item = extend(true, refLabelDefaultSettings(), settings.style.label || {}, { fill: style.stroke }, p.label);
     let formatter;
     let measuredValue = {
       width: 0,
@@ -226,7 +228,28 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
   // but this is done after collision detection,
   // because otherwise it would collide with it's own line
   items.push(line);
-
+  if (slopeLine) {
+    let measuredValue = renderer.measureText({
+      text: `${slopeLine.slope.value}x + ${slopeLine.value}`,
+      fontFamily: item.fontFamily,
+      fontSize: item.fontSize,
+    });
+    let xPadding = slopeLine.slope.value < 0 ? item.padding * 3 : item.padding * 2;
+    let yPadding = slopeLine.slope.value < 0 ? item.padding * 3 : item.padding;
+    let x =
+      (slopeLine.slope.value > 0 ? slopeLine.x2 : slopeLine.x1) * blueprint.width - (measuredValue.width + xPadding);
+    slopeValue = {
+      type: 'text',
+      text: `${slopeLine.slope.value}x + ${slopeLine.value}` || '',
+      fill: item.fill,
+      opacity: item.opacity,
+      fontFamily: item.fontFamily,
+      fontSize: item.fontSize,
+      x: Math.max(x, xPadding),
+      y: slopeLine.y1 * blueprint.height + measuredValue.height - yPadding,
+    };
+    items.push(slopeValue);
+  }
   // Only push rect & label if we haven't collided and both are defined
   if (doesNotCollide && rect && label) {
     items.push(rect, label);

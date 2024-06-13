@@ -275,7 +275,7 @@ const refLineComponent = {
           items,
         });
       }
-      if (p.slope) {
+      if (p.slope && p.slope.value !== 0) {
         let scaleX = this.chart.scale('x');
         let scaleY = this.chart.scale(p.scale);
         let minX = scaleX.min();
@@ -285,6 +285,8 @@ const refLineComponent = {
         slopeLine.x2 = getPosition(scaleX, maxX);
         slopeLine.y1 = getPosition(scaleY, minX * Math.abs(p.slope.value) + p.value);
         slopeLine.y2 = getPosition(scaleY, maxX * Math.abs(p.slope.value) + p.value);
+        p.label = slopeLine.slope.label;
+        p.value = slopeLine.slope.value;
         createLineWithLabel({
           chart: this.chart,
           blueprint: this.blueprint,
