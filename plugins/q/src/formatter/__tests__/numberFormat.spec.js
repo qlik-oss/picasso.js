@@ -218,7 +218,7 @@ describe('numberFormat', () => {
           expect(f(100)).to.equal('0100');
         });
 
-        it.only('should format decimals', () => {
+        it('should format decimals', () => {
           f = formatter('#.00');
 
           expect(f(0.1234)).to.equal('0.12');
