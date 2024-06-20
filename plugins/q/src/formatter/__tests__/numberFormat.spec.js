@@ -229,6 +229,10 @@ describe('numberFormat', () => {
           expect(f(100000)).to.equal('100000.00');
 
           f = formatter('#.0');
+          expect(f(1.95)).to.equal('2.0');
+          expect(f(-1.95)).to.equal('-2.0');
+          expect(f(2.95)).to.equal('3.0');
+          expect(f(-2.95)).to.equal('-3.0');
 
           expect(f(0.1234)).to.equal('0.1');
           expect(f(1.5678)).to.equal('1.6');
