@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.2.8](https://github.com/qlik-oss/picasso.js/compare/v2.2.7...v2.2.8) (2024-06-27)
+
+### Bug Fixes
+
+- fix floating error of toFixed ([#855](https://github.com/qlik-oss/picasso.js/issues/855)) ([8667aaf](https://github.com/qlik-oss/picasso.js/commit/8667aaf48eb70d3bff903a6c7c2fe51ecfa7bd1e))
+
 ## [2.2.7](https://github.com/qlik-oss/picasso.js/compare/v2.2.6...v2.2.7) (2024-01-12)
 
 **Note:** Version bump only for package picasso-plugin-q
