@@ -51,20 +51,20 @@ export function value(a, b, k) {
     : (t === 'number'
         ? number
         : t === 'string'
-          ? (c = color(b)) && colorKeys.includes(k)
-            ? ((b = c), rgb)
-            : string
-          : b instanceof color
-            ? rgb
-            : b instanceof Date
-              ? date
-              : isNumberArray(b)
-                ? numberArray
-                : Array.isArray(b)
-                  ? genericArray
-                  : (typeof b.valueOf !== 'function' && typeof b.toString !== 'function') || isNaN(b)
-                    ? object
-                    : number)(a, b);
+        ? (c = color(b)) && colorKeys.includes(k)
+          ? ((b = c), rgb)
+          : string
+        : b instanceof color
+        ? rgb
+        : b instanceof Date
+        ? date
+        : isNumberArray(b)
+        ? numberArray
+        : Array.isArray(b)
+        ? genericArray
+        : (typeof b.valueOf !== 'function' && typeof b.toString !== 'function') || isNaN(b)
+        ? object
+        : number)(a, b);
 }
 
 export default function object(a, b) {
