@@ -19,6 +19,21 @@ export function refLabelDefaultSettings() {
   };
 }
 
+function isMaxY(chart, slope, value) {
+  const scaleX = chart.scale('x');
+  const scaleY = chart.scale('y');
+  const maxY = scaleX.max() * slope + value;
+  if (maxY > scaleY.max()) {
+    return true;
+  }
+  return false;
+}
+function getMaxXPosition(chart, slope, value) {
+  const scaleX = chart.scale('x');
+  const scaleY = chart.scale('y');
+  return scaleX((scaleY.max() - value) / slope);
+}
+
 /**
  * Converts a numerical OR string value to a normalized value
  *
@@ -64,29 +79,43 @@ export function alignmentToNumber(align) {
 export function createLineWithLabel({ chart, blueprint, renderer, p, settings, items, slopeLine }) {
   let doesNotCollide = true;
   let line = false;
+  let slope = false;
   let rect = false;
   let label = false;
   let value = false;
-  let slopeValue = false;
-  let item;
   let style = extend(true, {}, settings.style.line, p.line || {});
+  let slopeLabelStyle = extend(true, refLabelDefaultSettings(), settings.style.label || {}, { fill: style.stroke });
 
   // Use the transposer to handle actual positioning
   line = blueprint.processItem({
     type: 'line',
-    x1: slopeLine ? (slopeLine.slope.value > 0 ? slopeLine.x1 : slopeLine.x2) : p.position,
-    y1: slopeLine ? slopeLine.y2 : 0,
-    x2: slopeLine ? (slopeLine.slope.value > 0 ? slopeLine.x2 : slopeLine.x1) : p.position,
-    y2: slopeLine ? slopeLine.y1 : 1,
+    x1: p.position,
+    y1: 0,
+    x2: p.position,
+    y2: 1,
     stroke: style.stroke || 'black',
     strokeWidth: style.strokeWidth || 1,
     strokeDasharray: style.strokeDasharray,
-    flipXY: slopeLine ? false : p.flipXY || false, // This flips individual points (Y-lines)
+    flipXY: p.flipXY || false, // This flips individual points (Y-lines)
     value: p.valueInfo ? p.valueInfo.id : p.value,
   });
+  if (slopeLine) {
+    slope = blueprint.processItem({
+      type: 'line',
+      x1: slopeLine.x1,
+      y1: slopeLine.y1,
+      x2: slopeLine.x2,
+      y2: slopeLine.y2,
+      stroke: style.stroke || 'black',
+      strokeWidth: style.strokeWidth || 1,
+      strokeDasharray: style.strokeDasharray,
+      flipXY: false,
+      value: p.valueInfo ? p.valueInfo.id : p.value,
+    });
+  }
 
   if (p.label) {
-    item = extend(true, refLabelDefaultSettings(), settings.style.label || {}, { fill: style.stroke }, p.label);
+    let item = extend(true, refLabelDefaultSettings(), settings.style.label || {}, { fill: style.stroke }, p.label);
     let formatter;
     let measuredValue = {
       width: 0,
@@ -229,25 +258,31 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
   // because otherwise it would collide with it's own line
   items.push(line);
   if (slopeLine) {
+    items.push(slope);
     let measuredValue = renderer.measureText({
       text: `${slopeLine.slope.value}x + ${slopeLine.value}`,
-      fontFamily: item.fontFamily,
-      fontSize: item.fontSize,
+      fontFamily: slopeLabelStyle.fontFamily,
+      fontSize: slopeLabelStyle.fontSize,
     });
-    let xPadding = slopeLine.slope.value < 0 ? item.padding * 3 : item.padding * 2;
-    let yPadding = slopeLine.slope.value < 0 ? item.padding * 3 : item.padding;
-    let x =
-      (slopeLine.slope.value > 0 ? slopeLine.x2 : slopeLine.x1) * blueprint.width - (measuredValue.width + xPadding);
-    slopeValue = {
-      type: 'text',
-      text: `${slopeLine.slope.value}x + ${slopeLine.value}` || '',
-      fill: item.fill,
-      opacity: item.opacity,
-      fontFamily: item.fontFamily,
-      fontSize: item.fontSize,
-      x: Math.max(x, xPadding),
-      y: slopeLine.y1 * blueprint.height + measuredValue.height - yPadding,
-    };
+    const maxX =
+      slopeLine.slope.value > 0 && isMaxY(chart, slopeLine.slope.value, slopeLine.value)
+        ? getMaxXPosition(chart, slopeLine.slope.value, slopeLine.value) * blueprint.width
+        : undefined;
+    const maxY = maxX === undefined ? Math.abs(slope.y2) : 1;
+    const xPadding = slopeLine.slope.value > 0 ? slopeLabelStyle.padding * 3 : slopeLabelStyle.padding;
+    const yPadding = slopeLabelStyle.padding * 3;
+    const x = (slopeLine.slope.value > 0 ? maxX ?? slope.x2 : slope.x1) - (measuredValue.width + xPadding);
+    const y = (slopeLine.slope.value > 0 ? maxY : slope.y1) - (measuredValue.height - yPadding),
+      slopeValue = {
+        type: 'text',
+        text: `${slopeLine.slope.value}x + ${slopeLine.value}` || '',
+        fill: slopeLabelStyle.fill,
+        opacity: slopeLabelStyle.opacity,
+        fontFamily: slopeLabelStyle.fontFamily,
+        fontSize: slopeLabelStyle.fontSize,
+        x: Math.max(x, xPadding),
+        y: Math.max(y, yPadding),
+      };
     items.push(slopeValue);
   }
   // Only push rect & label if we haven't collided and both are defined
