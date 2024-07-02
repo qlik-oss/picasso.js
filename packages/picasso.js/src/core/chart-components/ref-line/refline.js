@@ -90,6 +90,7 @@ function getPosition(scale, value) {
  * @property {string} [scale] - Scale to use (if undefined will use normalized value 0-1)
  * @property {ComponentRefLine~GenericObject} [line=ComponentRefLine~GenericObject] - The style of the line
  * @property {ComponentRefLine~LineLabel} [label=ComponentRefLine~LineLabel] - The label style of the line
+ * @property {ComponentRefLine~SlopeObject} [slope=ComponentRefLine~SlopeObject] - The slope for the reference line
  */
 
 /**
@@ -123,6 +124,12 @@ function getPosition(scale, value) {
  * @property {string} [stroke='transparent'] - Stroke
  * @property {number} [strokeWidth=0] - Stroke width
  * @property {number} [opacity=1] - Opacity
+ */
+
+/**
+ * @typedef {object} ComponentRefLine~SlopeObject
+ * @property {number} [value=1] - Slope value
+ * @property {string} [label='1'] - Slope label
  */
 
 const refLineComponent = {
@@ -182,6 +189,7 @@ const refLineComponent = {
 
   render() {
     let settings = this.settings;
+    let slopeLine;
 
     // Setup lines for X and Y
     this.lines = {
@@ -257,6 +265,21 @@ const refLineComponent = {
       let show = p.show === true || typeof p.show === 'undefined';
 
       if (show) {
+        let dummyLine = { ...p };
+        // Create slope line with labels
+        if (p.slope && p.slope.value !== 0) {
+          let scaleX = this.chart.scale('x');
+          let scaleY = this.chart.scale('y');
+          let minX = scaleX.min();
+          let maxX = scaleX.max();
+          slopeLine = { ...dummyLine };
+          slopeLine.x1 = getPosition(scaleX, minX);
+          slopeLine.x2 = getPosition(scaleX, maxX);
+          let y1 = minX * p.slope.value + p.value;
+          let y2 = maxX * p.slope.value + p.value;
+          slopeLine.y1 = getPosition(scaleY, y1);
+          slopeLine.y2 = getPosition(scaleY, y2);
+        }
         // Create line with labels
         createLineWithLabel({
           chart: this.chart,
@@ -265,6 +288,7 @@ const refLineComponent = {
           p,
           settings,
           items,
+          slopeLine,
         });
       }
     });
