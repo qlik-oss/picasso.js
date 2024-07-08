@@ -279,6 +279,8 @@ const refLineComponent = {
           let y2 = maxX * p.slope.value + p.value;
           slopeLine.y1 = getPosition(scaleY, y1);
           slopeLine.y2 = getPosition(scaleY, y2);
+        } else {
+          slopeLine = undefined;
         }
         // Create line with labels
         createLineWithLabel({

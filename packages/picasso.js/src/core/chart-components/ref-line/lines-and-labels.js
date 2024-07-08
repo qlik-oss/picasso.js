@@ -87,18 +87,6 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
   let slopeLabelStyle = extend(true, refLabelDefaultSettings(), settings.style.label || {}, { fill: style.stroke });
 
   // Use the transposer to handle actual positioning
-  line = blueprint.processItem({
-    type: 'line',
-    x1: p.position,
-    y1: 0,
-    x2: p.position,
-    y2: 1,
-    stroke: style.stroke || 'black',
-    strokeWidth: style.strokeWidth || 1,
-    strokeDasharray: style.strokeDasharray,
-    flipXY: p.flipXY || false, // This flips individual points (Y-lines)
-    value: p.valueInfo ? p.valueInfo.id : p.value,
-  });
   if (slopeLine) {
     slope = blueprint.processItem({
       type: 'line',
@@ -110,6 +98,19 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
       strokeWidth: style.strokeWidth || 1,
       strokeDasharray: style.strokeDasharray,
       flipXY: false,
+      value: p.valueInfo ? p.valueInfo.id : p.value,
+    });
+  } else {
+    line = blueprint.processItem({
+      type: 'line',
+      x1: p.position,
+      y1: 0,
+      x2: p.position,
+      y2: 1,
+      stroke: style.stroke || 'black',
+      strokeWidth: style.strokeWidth || 1,
+      strokeDasharray: style.strokeDasharray,
+      flipXY: p.flipXY || false, // This flips individual points (Y-lines)
       value: p.valueInfo ? p.valueInfo.id : p.value,
     });
   }
@@ -256,8 +257,9 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
   // Always push the line,
   // but this is done after collision detection,
   // because otherwise it would collide with it's own line
-  items.push(line);
-  if (slopeLine) {
+  if (line) {
+    items.push(line);
+  } else if (slopeLine) {
     items.push(slope);
     let measuredValue = renderer.measureText({
       text: `${slopeLine.slope.value}x + ${slopeLine.value}`,
