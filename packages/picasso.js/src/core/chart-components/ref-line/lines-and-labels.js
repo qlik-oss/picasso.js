@@ -19,6 +19,16 @@ export function refLabelDefaultSettings() {
   };
 }
 
+function isMinY(chart, slopeLine) {
+  const scaleX = chart.scale('x');
+  const scaleY = chart.scale('y');
+  const minY = scaleX.max() * slopeLine?.slope?.value + slopeLine?.value;
+  if (minY < scaleY.min()) {
+    return true;
+  }
+  return false;
+}
+
 /**
  * Converts a numerical OR string value to a normalized value
  *
@@ -61,30 +71,47 @@ export function alignmentToNumber(align) {
  * @param {object[]} items - Array of all items (for collision detection)
  * @ignore
  */
-export function createLineWithLabel({ chart, blueprint, renderer, p, settings, items }) {
+export function createLineWithLabel({ chart, blueprint, renderer, p, settings, items, slopeLine }) {
   let doesNotCollide = true;
   let line = false;
+  let slope = false;
   let rect = false;
   let label = false;
   let value = false;
   let style = extend(true, {}, settings.style.line, p.line || {});
+  let slopeLabelStyle = extend(true, refLabelDefaultSettings(), settings.style.label || {}, { fill: style.stroke });
 
   // Use the transposer to handle actual positioning
-  line = blueprint.processItem({
-    type: 'line',
-    x1: p.position,
-    y1: 0,
-    x2: p.position,
-    y2: 1,
-    stroke: style.stroke || 'black',
-    strokeWidth: style.strokeWidth || 1,
-    strokeDasharray: style.strokeDasharray,
-    flipXY: p.flipXY || false, // This flips individual points (Y-lines)
-    value: p.valueInfo ? p.valueInfo.id : p.value,
-  });
+  if (slopeLine) {
+    slope = blueprint.processItem({
+      type: 'line',
+      x1: slopeLine.x1,
+      y1: slopeLine.y1,
+      x2: slopeLine.x2,
+      y2: slopeLine.y2,
+      stroke: style.stroke || 'black',
+      strokeWidth: style.strokeWidth || 1,
+      strokeDasharray: style.strokeDasharray,
+      flipXY: false,
+      value: p.valueInfo ? p.valueInfo.id : p.value,
+    });
+  } else {
+    line = blueprint.processItem({
+      type: 'line',
+      x1: p.position,
+      y1: 0,
+      x2: p.position,
+      y2: 1,
+      stroke: style.stroke || 'black',
+      strokeWidth: style.strokeWidth || 1,
+      strokeDasharray: style.strokeDasharray,
+      flipXY: p.flipXY || false, // This flips individual points (Y-lines)
+      value: p.valueInfo ? p.valueInfo.id : p.value,
+    });
+  }
 
   if (p.label) {
-    const item = extend(true, refLabelDefaultSettings(), settings.style.label || {}, { fill: style.stroke }, p.label);
+    let item = extend(true, refLabelDefaultSettings(), settings.style.label || {}, { fill: style.stroke }, p.label);
     let formatter;
     let measuredValue = {
       width: 0,
@@ -225,8 +252,33 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
   // Always push the line,
   // but this is done after collision detection,
   // because otherwise it would collide with it's own line
-  items.push(line);
-
+  if (line) {
+    items.push(line);
+  } else if (slopeLine) {
+    items.push(slope);
+    if (isMinY(chart, slopeLine)) {
+      let measuredValue = renderer.measureText({
+        text: `${slopeLine.slope.value}x + ${slopeLine.value}`,
+        fontFamily: slopeLabelStyle.fontFamily,
+        fontSize: slopeLabelStyle.fontSize,
+      });
+      const xPadding = slopeLabelStyle.padding;
+      const yPadding = slopeLabelStyle.padding * 3;
+      const x = slope.x1 - (measuredValue.width + xPadding);
+      const y = slope.y1 - (measuredValue.height - yPadding),
+        slopeValue = {
+          type: 'text',
+          text: `${slopeLine.slope.value}x + ${slopeLine.value}` || '',
+          fill: slopeLabelStyle.fill,
+          opacity: slopeLabelStyle.opacity,
+          fontFamily: slopeLabelStyle.fontFamily,
+          fontSize: slopeLabelStyle.fontSize,
+          x: Math.max(x, xPadding),
+          y: Math.max(y, yPadding),
+        };
+      items.push(slopeValue);
+    }
+  }
   // Only push rect & label if we haven't collided and both are defined
   if (doesNotCollide && rect && label) {
     items.push(rect, label);
