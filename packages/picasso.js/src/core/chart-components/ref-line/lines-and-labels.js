@@ -19,19 +19,14 @@ export function refLabelDefaultSettings() {
   };
 }
 
-function isMaxY(chart, slope, value) {
+function isMinY(chart, slopeLine) {
   const scaleX = chart.scale('x');
   const scaleY = chart.scale('y');
-  const maxY = scaleX.max() * slope + value;
-  if (maxY > scaleY.max()) {
+  const minY = scaleX.max() * slopeLine?.slope?.value + slopeLine?.value;
+  if (minY < scaleY.min()) {
     return true;
   }
   return false;
-}
-function getMaxXPosition(chart, slope, value) {
-  const scaleX = chart.scale('x');
-  const scaleY = chart.scale('y');
-  return scaleX((scaleY.max() - value) / slope);
 }
 
 /**
@@ -261,31 +256,28 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
     items.push(line);
   } else if (slopeLine) {
     items.push(slope);
-    let measuredValue = renderer.measureText({
-      text: `${slopeLine.slope.value}x + ${slopeLine.value}`,
-      fontFamily: slopeLabelStyle.fontFamily,
-      fontSize: slopeLabelStyle.fontSize,
-    });
-    const maxX =
-      slopeLine.slope.value > 0 && isMaxY(chart, slopeLine.slope.value, slopeLine.value)
-        ? getMaxXPosition(chart, slopeLine.slope.value, slopeLine.value) * blueprint.width
-        : undefined;
-    const maxY = maxX === undefined ? Math.abs(slope.y2) : 1;
-    const xPadding = slopeLine.slope.value > 0 ? slopeLabelStyle.padding * 3 : slopeLabelStyle.padding;
-    const yPadding = slopeLabelStyle.padding * 3;
-    const x = (slopeLine.slope.value > 0 ? maxX ?? slope.x2 : slope.x1) - (measuredValue.width + xPadding);
-    const y = (slopeLine.slope.value > 0 ? maxY : slope.y1) - (measuredValue.height - yPadding),
-      slopeValue = {
-        type: 'text',
-        text: `${slopeLine.slope.value}x + ${slopeLine.value}` || '',
-        fill: slopeLabelStyle.fill,
-        opacity: slopeLabelStyle.opacity,
+    if (isMinY(chart, slopeLine)) {
+      let measuredValue = renderer.measureText({
+        text: `${slopeLine.slope.value}x + ${slopeLine.value}`,
         fontFamily: slopeLabelStyle.fontFamily,
         fontSize: slopeLabelStyle.fontSize,
-        x: Math.max(x, xPadding),
-        y: Math.max(y, yPadding),
-      };
-    items.push(slopeValue);
+      });
+      const xPadding = slopeLabelStyle.padding;
+      const yPadding = slopeLabelStyle.padding * 3;
+      const x = slope.x1 - (measuredValue.width + xPadding);
+      const y = slope.y1 - (measuredValue.height - yPadding),
+        slopeValue = {
+          type: 'text',
+          text: `${slopeLine.slope.value}x + ${slopeLine.value}` || '',
+          fill: slopeLabelStyle.fill,
+          opacity: slopeLabelStyle.opacity,
+          fontFamily: slopeLabelStyle.fontFamily,
+          fontSize: slopeLabelStyle.fontSize,
+          x: Math.max(x, xPadding),
+          y: Math.max(y, yPadding),
+        };
+      items.push(slopeValue);
+    }
   }
   // Only push rect & label if we haven't collided and both are defined
   if (doesNotCollide && rect && label) {
