@@ -4032,7 +4032,7 @@
         }
       },
       "examples": [
-        "{\n type: 'ref-line',\n lines: {\n   y: [{\n     scale: 'y',\n     value: 5000,\n     label: {\n       text: 'value label'\n     }\n     slope: {\n       value: 0.5,\n       label: '0.5'\n     }\n   }]\n }\n}"
+        "{\n type: 'ref-line',\n lines: {\n   y: [{\n     scale: 'y',\n     value: 5000,\n     label: {\n       text: 'value label'\n     }\n     slope: {\n       value: 0.5,\n    }\n   }]\n }\n}"
       ],
       "definitions": {
         "GenericObject": {
@@ -4292,14 +4292,8 @@
             "value": {
               "description": "Slope value",
               "optional": true,
-              "defaultValue": 1,
+              "defaultValue": 0,
               "type": "number"
-            },
-            "label": {
-              "description": "Slope label",
-              "optional": true,
-              "defaultValue": "'1'",
-              "type": "string"
             }
           }
         }

@@ -251,7 +251,9 @@ const refLineComponent = {
     });
 
     this.lines.y = this.lines.y.filter((line) => {
-      if (line.position < 0 || line.position > 1) {
+      if (line.slope && line.slope.value !== 0) {
+        return true;
+      } else if (line.position < 0 || line.position > 1) {
         oob[`y${line.position > 1 ? 1 : 0}`].push(createOobData(line));
         return false;
       }
@@ -279,6 +281,17 @@ const refLineComponent = {
           let y2 = maxX * p.slope.value + p.value;
           slopeLine.y1 = getPosition(scaleY, y1);
           slopeLine.y2 = getPosition(scaleY, y2);
+          if (slopeLine.y1 > 1 && slopeLine.y2 > 1) {
+            if (p.slope.value > 0) {
+              oob[`y${slopeLine.y1 > 1 ? 1 : 0}`].push(createOobData(p));
+            } else {
+              oob[`y${slopeLine.y1 > 1 ? 1 : 0}`].push(createOobData(p));
+            }
+            return;
+          } else if (slopeLine.y1 < 0) {
+            oob[`y${slopeLine.y1 > 1 ? 1 : 0}`].push(createOobData(p));
+            return;
+          }
         } else {
           slopeLine = undefined;
         }
