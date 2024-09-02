@@ -253,7 +253,8 @@ const refLineComponent = {
     this.lines.y = this.lines.y.filter((line) => {
       if (line.slope && line.slope.value !== 0) {
         return true;
-      } else if (line.position < 0 || line.position > 1) {
+      }
+      if (line.position < 0 || line.position > 1) {
         oob[`y${line.position > 1 ? 1 : 0}`].push(createOobData(line));
         return false;
       }
@@ -288,7 +289,8 @@ const refLineComponent = {
               oob[`y${slopeLine.y1 > 1 ? 1 : 0}`].push(createOobData(p));
             }
             return;
-          } else if (slopeLine.y1 < 0) {
+          }
+          if (slopeLine.y1 < 0) {
             oob[`y${slopeLine.y1 > 1 ? 1 : 0}`].push(createOobData(p));
             return;
           }

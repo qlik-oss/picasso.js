@@ -20,6 +20,7 @@ export function refLabelDefaultSettings() {
 }
 
 function isMaxY(chart, slope, value) {
+  // when maxY exceeds the shown scale
   const scaleX = chart.scale('x');
   const scaleY = chart.scale('y');
   if (slope > 0) {
@@ -36,16 +37,18 @@ function isMaxY(chart, slope, value) {
   return false;
 }
 function getMaxXPosition(chart, slope, value) {
+  // if maxY then get maxX position available on the scale
   const scaleX = chart.scale('x');
   const scaleY = chart.scale('y');
-  if (slope > 0) {
-    return scaleX((scaleY.max() - value) / slope);
-  } else if (slope < 0) {
+  // For negative slopes
+  if (slope < 0) {
     return scaleX((scaleY.min() - value) / slope);
   }
+  // For positive slopes
+  return scaleX((scaleY.max() - value) / slope);
 }
 
-function getFormatter(p) {
+function getFormatter(p, chart) {
   let formatter;
   if (typeof p.formatter === 'string') {
     formatter = chart.formatter(p.formatter);
@@ -59,27 +62,52 @@ function getFormatter(p) {
   return formatter;
 }
 
-function isColliding(items, slopeValue, slope, measured, maxX) {
+function isColliding(items, slopeValue, slope, measured, maxX, xPadding, yPadding) {
   for (let i = 0, len = items.length; i < len; i++) {
     let curItem = items[i];
     if (curItem?.type === 'text') {
       if (slope > 0 && maxX !== undefined) {
         if (
-          Math.abs(curItem.x - slopeValue.x) < measured.width &&
-          Math.abs(curItem.y - slopeValue.y) < measured.height
+          Math.abs(curItem.x - slopeValue.x) < curItem.width + xPadding &&
+          Math.abs(curItem.y - slopeValue.y) < measured.height + yPadding
         ) {
           return true;
         }
-      } else {
-        if (Math.abs(curItem.y - slopeValue.y) < measured.height) {
-          return true;
-        }
+      } else if (Math.abs(curItem.y - slopeValue.y) < measured.height + yPadding) {
+        return true;
       }
     }
   }
   return false;
 }
 
+function calculateX(slopeLine, slope, maxX, measured, blueprint, slopeStyle) {
+  // calculate x for the various scenarios possible
+  let x;
+  if (slopeLine.slope.value > 0) {
+    // docking at top
+    if (maxX < 0.8) {
+      x = slopeLine.isRtl ? maxX * blueprint.width - (measured.width + slopeStyle.padding) : maxX * blueprint.width;
+    } else if (maxX > 0.8) {
+      // very close to the corner when width doesn't fit
+      x = slopeLine.isRtl
+        ? maxX * blueprint.width + (measured.width + slopeStyle.padding * 2)
+        : maxX * blueprint.width - (measured.width + slopeStyle.padding * 6);
+    } else if (maxX === 1) {
+      // dock at the corner of the data area top and right
+      x = slopeLine.isRtl
+        ? maxX * blueprint.width + (measured.width + slopeStyle.padding * 3)
+        : maxX * blueprint.width - (measured.width + slopeStyle.padding * 6);
+    } else {
+      // dock at right
+      x = slope.x2 - (measured.width + slopeStyle.padding * 2);
+    }
+  } else {
+    //  Negative slope dock on left
+    x = slopeLine.isRtl ? slope.x1 - (measured.width + slopeStyle.padding * 2) : slope.x1;
+  }
+  return x;
+}
 /**
  * Converts a numerical OR string value to a normalized value
  *
@@ -170,7 +198,7 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
     };
     let valueString = '';
 
-    formatter = getFormatter(p);
+    formatter = getFormatter(p, chart);
 
     if (p.label.showValue !== false) {
       if (formatter) {
@@ -298,7 +326,9 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
   if (line) {
     items.push(line);
   } else if (slopeLine) {
+    // push slope line
     items.push(slope);
+    // create data area labels for slope line
     let valueString;
     let rectLabel;
     const maxLabelWidth = 120;
@@ -306,9 +336,9 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
       let slopeLabelText = slopeLine.showLabel ? slopeLine.refLineLabel : '';
       if (slopeLine.showValue) {
         const formatter = getFormatter(p);
-        const value = formatter ? formatter(slopeLine.value) : slopeLine.value;
-        valueString = `(${slopeLine.slope.value}x + ${value})`;
-        slopeLabelText += slopeLine.refLineLabel ? ' ' + valueString : valueString;
+        const formattedValue = formatter ? formatter(slopeLine.value) : slopeLine.value;
+        valueString = `(${slopeLine.slope.value}x + ${formattedValue})`;
+        slopeLabelText += slopeLine.refLineLabel ? ` ${valueString}` : valueString;
       }
       if (slopeLabelText.length > 1) {
         // Measure the label text
@@ -324,35 +354,25 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
         const maxX = isMaxY(chart, slopeLine.slope.value, slopeLine.value)
           ? getMaxXPosition(chart, slopeLine.slope.value, slopeLine.value)
           : undefined;
-        const maxY =
-          maxX === undefined ? Math.abs(slope.y2) : slopeLine.slope.value > 0 ? 1 : blueprint.height - yPadding;
+        const maxY = maxX === undefined ? Math.abs(slope.y2) : 1;
 
-        const x =
-          slopeLine.slope.value > 0
-            ? maxX < 1
-              ? slopeLine.direction
-                ? maxX * blueprint.width - measured.width
-                : maxX * blueprint.width
-              : maxX === 1
-                ? slope.x2 - (measured.width + xPadding + slopeStyle.padding * 2)
-                : slope.x2 - (measured.width + slopeStyle.padding * 2)
-            : slopeLine.isRtl
-              ? slope.x1 - (measured.width + slopeStyle.padding * 2)
-              : slope.x1;
+        const x = calculateX(slopeLine, slope, maxX, measured, blueprint, slopeStyle);
         const y = slopeLine.slope.value > 0 ? maxY : slope.y1;
-        rectLabel = {
-          type: 'rect',
-          x: Math.max(x, xPadding) + 2,
-          y: Math.abs(Math.max(y, yPadding) - measured.height),
-          rx: 3,
-          ry: 3,
-          width: measured.width + slopeStyle.padding,
-          height: measured.height - 2,
-          stroke: slopeStyle.background.stroke,
-          strokeWidth: slopeStyle.background.strokeWidth,
-          fill: slopeLine.labelStroke ? style.stroke : slopeStyle.background.fill,
-          opacity: slopeStyle.background.opacity,
-        };
+        if (slopeLine.labelStroke) {
+          rectLabel = {
+            type: 'rect',
+            x: slopeLine.isRtl ? Math.max(x, xPadding) - 2 : Math.max(x, xPadding) + 2,
+            y: Math.abs(Math.max(y, yPadding) - measured.height),
+            rx: 3,
+            ry: 3,
+            width: measured.width + slopeStyle.padding,
+            height: measured.height - 2,
+            stroke: slopeStyle.background.stroke,
+            strokeWidth: slopeStyle.background.strokeWidth,
+            fill: slopeLine.labelStroke ? style.stroke : slopeStyle.background.fill,
+            opacity: slopeStyle.background.opacity,
+          };
+        }
         const slopeLabel = {
           type: 'text',
           text: slopeLabelText,
@@ -360,16 +380,16 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
           opacity: slopeStyle.opacity,
           fontFamily: slopeStyle.fontFamily,
           fontSize: slopeStyle.fontSize,
-          x: Math.max(x, xPadding) + 4,
-          y:
-            slopeLine.slope.value > 0 && maxX !== undefined
-              ? Math.max(y, yPadding) - 3
-              : Math.max(y, yPadding) - slopeStyle.padding,
+          x: rectLabel ? rectLabel.x + 2 : Math.max(x, xPadding) + 2,
+          y: rectLabel
+            ? rectLabel.y + measured.height - slopeStyle.padding
+            : Math.abs(Math.max(y, yPadding) - slopeStyle.padding / 2),
           anchor: 'start',
           title: slopeLabelText,
-          maxWidth: 120,
+          maxWidth: maxLabelWidth,
+          width: measured.width,
         };
-        if (!isColliding(items, slopeLabel, slopeLine.slope.value, measured, maxX)) {
+        if (!isColliding(items, slopeLabel, slopeLine.slope.value, measured, maxX, xPadding, yPadding)) {
           if (rectLabel) {
             items.push(rectLabel);
           }
