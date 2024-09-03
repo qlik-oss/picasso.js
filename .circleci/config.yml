@@ -3,13 +3,6 @@ orbs:
   browser-tools: circleci/browser-tools@1.4.3
 
 aliases:
-  - &restore_yarn_cache
-    keys:
-      - v1-yarn-deps-{{ checksum "yarn.lock" }}
-  - &save_yarn_cache
-    paths:
-      - ~/.cache/yarn
-    key: v1-yarn-deps-{{ checksum "yarn.lock" }}
   - &filter_master
     branches:
       only: master
@@ -25,9 +18,7 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - restore_cache: *restore_yarn_cache
-      - run: yarn install --frozen-lockfile
-      - save_cache: *save_yarn_cache
+      - run: yarn install
       - store_artifacts:
           path: package.json
       - persist_to_workspace:
