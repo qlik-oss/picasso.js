@@ -19,6 +19,8 @@ defaults: &defaults
   # Available images https://hub.docker.com/r/circleci/node/tags/
   docker:
     - image: cimg/node:lts-browsers
+  environment:
+    DEBUG: true
 
 jobs:
   install:
