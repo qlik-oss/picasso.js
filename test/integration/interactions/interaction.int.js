@@ -45,6 +45,7 @@ describe('picasso-interactions', () => {
       await emulatedPage.tap('.container');
       const ev = await emulatedPage.evaluate(() => triggeredEvents);
       expect(ev.defaultPrevented).to.equal(true);
+      await emulatedPage.close();
     });
 
     it('should not prevent default when interactions are off', async () => {
@@ -56,6 +57,7 @@ describe('picasso-interactions', () => {
       await emulatedPage.tap('.container');
       const ev = await emulatedPage.evaluate(() => triggeredEvents);
       expect(ev.defaultPrevented).to.equal(false);
+      await emulatedPage.close();
     });
   });
 
