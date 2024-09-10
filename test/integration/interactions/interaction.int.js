@@ -93,8 +93,8 @@ describe('picasso-interactions', () => {
   it('Range select y-axis', async () => {
     await page.goto(fixtureRange);
     await page.waitForSelector('.container');
-    const e = (await page.$x('//*[. = "4000"]'))[0];
-    const d = (await page.$x('//*[. = "8000"]'))[0];
+    const e = (await page.$$('xpath/.//*[. = "4000"]'))[0];
+    const d = (await page.$$('xpath/.//*[. = "8000"]'))[0];
     const label = await e.boundingBox();
     const label2 = await d.boundingBox();
     await page.mouse.move(label.x + label.width / 2, label.y + label.height / 2);
@@ -110,9 +110,9 @@ describe('picasso-interactions', () => {
   it('Resize range-select on y-axis', async () => {
     await page.goto(fixtureRange);
     await page.waitForSelector('.container');
-    const e = (await page.$x('//*[. = "4000"]'))[0];
-    const r = (await page.$x('//*[. = "2000"]'))[0];
-    const d = (await page.$x('//*[. = "8000"]'))[0];
+    const e = (await page.$$('xpath/.//*[. = "4000"]'))[0];
+    const r = (await page.$$('xpath/.//*[. = "2000"]'))[0];
+    const d = (await page.$$('xpath/.//*[. = "8000"]'))[0];
     const label = await e.boundingBox();
     const label2 = await d.boundingBox();
     const label3 = await r.boundingBox();
@@ -134,9 +134,9 @@ describe('picasso-interactions', () => {
   it.skip('Resize range-select on y-axis with bubble', async () => {
     await page.goto(fixtureRange);
     await page.waitForSelector('.container');
-    const e = (await page.$x('//*[. = "4000"]'))[0];
-    const r = (await page.$x('//*[. = "2000"]'))[0];
-    const d = (await page.$x('//*[. = "8000"]'))[0];
+    const e = (await page.$$('xpath/.//*[. = "4000"]'))[0];
+    const r = (await page.$$('xpath/.//*[. = "2000"]'))[0];
+    const d = (await page.$$('xpath/.//*[. = "8000"]'))[0];
     const a = await page.$('[data-value="July"]');
     const label = await e.boundingBox();
     const label2 = await d.boundingBox();
@@ -159,7 +159,7 @@ describe('picasso-interactions', () => {
   it('Edit range bubbles', async () => {
     await page.goto(fixtureRange);
     await page.waitForSelector('.container');
-    const axis = await (await page.$x('//*[. = "8000"]/..'))[0].boundingBox();
+    const axis = await (await page.$$('xpath/.//*[. = "8000"]/..'))[0].boundingBox();
     const lower = axis.y + axis.height * 0.95;
     const upper = axis.y + axis.height * 0.05;
     // Do range select
@@ -271,9 +271,9 @@ describe('picasso-interactions', () => {
   it('Move range-select on y-axis', async () => {
     await page.goto(fixtureRange);
     await page.waitForSelector('.container');
-    const d = (await page.$x('//*[. = "8000"]'))[0];
-    const e = (await page.$x('//*[. = "6000"]'))[0];
-    const f = (await page.$x('//*[. = "0"]'))[0];
+    const d = (await page.$$('xpath/.//*[. = "8000"]'))[0];
+    const e = (await page.$$('xpath/.//*[. = "6000"]'))[0];
+    const f = (await page.$$('xpath/.//*[. = "0"]'))[0];
     const label = await e.boundingBox();
     const label2 = await d.boundingBox();
     const dest = await f.boundingBox();
