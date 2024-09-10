@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  browser-tools: circleci/browser-tools@1.4.3
+  browser-tools: circleci/browser-tools@1.4.8
 
 aliases:
   - &restore_yarn_cache
@@ -121,9 +121,7 @@ jobs:
       - attach_workspace:
           at: ~/picassojs
       - run: sudo apt-get update
-      - browser-tools/install-chrome:
-          # TODO Remove when following issue is fixed: https://github.com/CircleCI-Public/browser-tools-orb/issues/90
-          chrome-version: 116.0.5845.96
+      - browser-tools/install-chrome
       - browser-tools/install-chromedriver
       - run: yarn run test:integration:ci
 
