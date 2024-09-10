@@ -330,12 +330,12 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
     items.push(slope);
     // create data area labels for slope line
     let valueString;
-    let rectLabel;
+    let labelBackground;
     const maxLabelWidth = 120;
     if (slopeLine.slope.value !== 0 && (slopeLine.showLabel || slopeLine.showValue)) {
       let slopeLabelText = slopeLine.showLabel ? slopeLine.refLineLabel : '';
       if (slopeLine.showValue) {
-        const formatter = getFormatter(p);
+        const formatter = getFormatter(p, chart);
         const formattedValue = formatter ? formatter(slopeLine.value) : slopeLine.value;
         valueString = `(${slopeLine.slope.value}x + ${formattedValue})`;
         slopeLabelText += slopeLine.refLineLabel ? ` ${valueString}` : valueString;
@@ -358,8 +358,9 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
 
         const x = calculateX(slopeLine, slope, maxX, measured, blueprint, slopeStyle);
         const y = slopeLine.slope.value > 0 ? maxY : slope.y1;
+        // if coloredBackground is true make a rect
         if (slopeLine.labelStroke) {
-          rectLabel = {
+          labelBackground = {
             type: 'rect',
             x: slopeLine.isRtl ? Math.max(x, xPadding) - 2 : Math.max(x, xPadding) + 2,
             y: Math.abs(Math.max(y, yPadding) - measured.height),
@@ -367,10 +368,8 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
             ry: 3,
             width: measured.width + slopeStyle.padding,
             height: measured.height - 2,
-            stroke: slopeStyle.background.stroke,
-            strokeWidth: slopeStyle.background.strokeWidth,
-            fill: slopeLine.labelStroke ? style.stroke : slopeStyle.background.fill,
-            opacity: slopeStyle.background.opacity,
+            stroke: style.stroke,
+            fill: style.stroke,
           };
         }
         const slopeLabel = {
@@ -380,9 +379,9 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
           opacity: slopeStyle.opacity,
           fontFamily: slopeStyle.fontFamily,
           fontSize: slopeStyle.fontSize,
-          x: rectLabel ? rectLabel.x + 2 : Math.max(x, xPadding) + 2,
-          y: rectLabel
-            ? rectLabel.y + measured.height - slopeStyle.padding
+          x: labelBackground ? labelBackground.x + 2 : Math.max(x, xPadding) + 2,
+          y: labelBackground
+            ? labelBackground.y + measured.height - slopeStyle.padding
             : Math.abs(Math.max(y, yPadding) - slopeStyle.padding / 2),
           anchor: 'start',
           title: slopeLabelText,
@@ -390,8 +389,8 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
           width: measured.width,
         };
         if (!isColliding(items, slopeLabel, slopeLine.slope.value, measured, maxX, xPadding, yPadding)) {
-          if (rectLabel) {
-            items.push(rectLabel);
+          if (labelBackground) {
+            items.push(labelBackground);
           }
           items.push(slopeLabel);
         }

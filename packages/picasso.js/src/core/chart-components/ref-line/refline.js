@@ -268,18 +268,17 @@ const refLineComponent = {
       let show = p.show === true || typeof p.show === 'undefined';
 
       if (show) {
-        let dummyLine = { ...p };
         // Create slope line with labels
         if (p.slope && p.slope.value !== 0) {
-          let scaleX = this.chart.scale('x');
-          let scaleY = this.chart.scale('y');
-          let minX = scaleX.min();
-          let maxX = scaleX.max();
-          slopeLine = { ...dummyLine };
+          const scaleX = this.chart.scale('x');
+          const scaleY = this.chart.scale('y');
+          const minX = scaleX.min();
+          const maxX = scaleX.max();
+          slopeLine = { ...p };
           slopeLine.x1 = getPosition(scaleX, minX);
           slopeLine.x2 = getPosition(scaleX, maxX);
-          let y1 = minX * p.slope.value + p.value;
-          let y2 = maxX * p.slope.value + p.value;
+          const y1 = minX * p.slope.value + p.value;
+          const y2 = maxX * p.slope.value + p.value;
           slopeLine.y1 = getPosition(scaleY, y1);
           slopeLine.y2 = getPosition(scaleY, y2);
           if (slopeLine.y1 > 1 && slopeLine.y2 > 1) {
