@@ -6,16 +6,16 @@ function datumExtract(propCfg, cell, { key }) {
       typeof propCfg.value === 'function' // eslint-disable-line no-nested-ternary
         ? propCfg.value(cell)
         : typeof propCfg.value !== 'undefined'
-          ? propCfg.value
-          : cell,
+        ? propCfg.value
+        : cell,
   };
 
   datum.label =
     typeof propCfg.label === 'function' // eslint-disable-line no-nested-ternary
       ? propCfg.label(cell)
       : typeof propCfg.label !== 'undefined'
-        ? String(propCfg.label)
-        : String(datum.value);
+      ? String(propCfg.label)
+      : String(datum.value);
 
   if (propCfg.field) {
     datum.source = {

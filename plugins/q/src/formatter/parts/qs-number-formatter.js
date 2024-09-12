@@ -1,6 +1,8 @@
 import formatter from 'number-format.js';
 
-const EPSILON = 1e-15; // To compensate floating error
+// 1.95.toFixed(1) = 1.9
+// 2.95.toFixed(1) = 3.0
+const EPSILON = 1e-15; // To make sure toFixed always round up.
 
 function escapeRegExp(str) {
   return str.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&');
@@ -489,8 +491,11 @@ class NumberFormatter {
       } else if (absValue >= 1e15 || (absValue > 0 && absValue <= 1e-14)) {
         value = absValue ? absValue.toExponential(15).replace(/\.?0+(?=e)/, '') : '0';
       } else {
+        const sign = value < 0 ? -1 : 1;
         const wholePart = Number(
-          value.toFixed(Math.min(20, decimalPartPattern ? decimalPartPattern.length : 0)).split('.')[0]
+          (value + EPSILON * sign)
+            .toFixed(Math.min(20, decimalPartPattern ? decimalPartPattern.length : 0))
+            .split('.')[0]
         );
         let wholePartPattern = numericPattern.split(d)[0];
         wholePartPattern += d;
