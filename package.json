@@ -17,7 +17,7 @@
     "test": "npm run test:unit && npm run test:component",
     "test:component": "jest --testMatch **/test/component/**/*.comp.js",
     "test:integration:ci": "node ./test/scripts/run-integration-tests.js",
-    "test:integration:local": "jest --config jest.integration.config.js --maxWorkers=2",
+    "test:integration:local": "jest --config jest.integration.config.js --maxWorkers=3",
     "test:integration:server": "rollup -c ./test/integration/rollup.config.js",
     "test:unit": "jest",
     "test:unit:watch": "jest --watch",
