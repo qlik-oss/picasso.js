@@ -16,7 +16,6 @@ import refLineComponent from './refline';
  *      }
  *      slope: {
  *        value: 0.5,
- *        label: '0.5'
  *      }
  *    }]
  *  }

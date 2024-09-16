@@ -4152,8 +4152,8 @@
             "slope": {
               "description": "The slope for the reference line",
               "optional": true,
-              "defaultValue": "ComponentRefLine~SlopeObject",
-              "type": "#/definitions/ComponentRefLine/definitions/SlopeObject"
+              "defaultValue": "ComponentRefLine~Slope",
+              "type": "#/definitions/ComponentRefLine/definitions/Slope"
             }
           }
         },
@@ -4286,9 +4286,7 @@
             }
           }
         },
-        "SlopeObject": {
-          "kind": "object",
-          "entries": {
+        "Slope": {
             "value": {
               "description": "Slope value",
               "optional": true,
@@ -6896,4 +6894,3 @@
       }
     }
   }
-}

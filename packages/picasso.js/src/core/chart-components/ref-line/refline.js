@@ -90,7 +90,7 @@ function getPosition(scale, value) {
  * @property {string} [scale] - Scale to use (if undefined will use normalized value 0-1)
  * @property {ComponentRefLine~GenericObject} [line=ComponentRefLine~GenericObject] - The style of the line
  * @property {ComponentRefLine~LineLabel} [label=ComponentRefLine~LineLabel] - The label style of the line
- * @property {ComponentRefLine~SlopeObject} [slope=ComponentRefLine~SlopeObject] - The slope for the reference line
+ * @property {ComponentRefLine~Slope} [slope=ComponentRefLine~Slope] - The slope for the reference line
  */
 
 /**
@@ -127,9 +127,8 @@ function getPosition(scale, value) {
  */
 
 /**
- * @typedef {object} ComponentRefLine~SlopeObject
+ * @typedef {object} ComponentRefLine~Slope
  * @property {number} [value=1] - Slope value
- * @property {string} [label='1'] - Slope label
  */
 
 const refLineComponent = {
