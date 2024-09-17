@@ -1,6 +1,8 @@
 import extend from 'extend';
 import { testRectRect, testRectLine } from '../../math/narrow-phase-collision';
 
+const DOCK_CORNER = 0.8;
+
 export function refLabelDefaultSettings() {
   return {
     fill: '#000',
@@ -49,22 +51,23 @@ function getMaxXPosition(chart, slope, value) {
 }
 
 function getFormatter(p, chart) {
-  let formatter;
   if (typeof p.formatter === 'string') {
-    formatter = chart.formatter(p.formatter);
-  } else if (typeof p.formatter === 'object') {
-    formatter = chart.formatter(p.formatter);
-  } else if (typeof p.scale !== 'undefined' && p.scale.data) {
+    return chart.formatter(p.formatter);
+  }
+  if (typeof p.formatter === 'object') {
+    return chart.formatter(p.formatter);
+  }
+  if (typeof p.scale !== 'undefined' && p.scale.data) {
     // TODO - Add support for array as source into formatter
     const scaleData = p.scale.data() && p.scale.data().fields;
-    formatter = scaleData && scaleData[0] ? scaleData[0].formatter() : null;
+    return scaleData && scaleData[0] ? scaleData[0].formatter() : null;
   }
-  return formatter;
+  return null;
 }
 
 function isColliding(items, slopeValue, slope, measured, maxX, xPadding, yPadding) {
   for (let i = 0, len = items.length; i < len; i++) {
-    let curItem = items[i];
+    const curItem = items[i];
     if (curItem?.type === 'text') {
       if (slope > 0 && maxX !== undefined) {
         if (
@@ -83,30 +86,28 @@ function isColliding(items, slopeValue, slope, measured, maxX, xPadding, yPaddin
 
 function calculateX(slopeLine, slope, maxX, measured, blueprint, slopeStyle) {
   // calculate x for the various scenarios possible
-  let x;
   if (slopeLine.slope.value > 0) {
     // docking at top
-    if (maxX < 0.8) {
-      x = slopeLine.isRtl ? maxX * blueprint.width - (measured.width + slopeStyle.padding) : maxX * blueprint.width;
-    } else if (maxX > 0.8) {
+    if (maxX < DOCK_CORNER) {
+      return slopeLine.isRtl ? maxX * blueprint.width - (measured.width + slopeStyle.padding) : maxX * blueprint.width;
+    }
+    if (maxX > DOCK_CORNER) {
       // very close to the corner when width doesn't fit
-      x = slopeLine.isRtl
+      return slopeLine.isRtl
         ? maxX * blueprint.width + (measured.width + slopeStyle.padding * 2)
         : maxX * blueprint.width - (measured.width + slopeStyle.padding * 6);
-    } else if (maxX === 1) {
+    }
+    if (maxX === 1) {
       // dock at the corner of the data area top and right
-      x = slopeLine.isRtl
+      return slopeLine.isRtl
         ? maxX * blueprint.width + (measured.width + slopeStyle.padding * 3)
         : maxX * blueprint.width - (measured.width + slopeStyle.padding * 6);
-    } else {
-      // dock at right
-      x = slope.x2 - (measured.width + slopeStyle.padding * 2);
     }
-  } else {
-    //  Negative slope dock on left
-    x = slopeLine.isRtl ? slope.x1 - (measured.width + slopeStyle.padding * 2) : slope.x1;
+    // dock at right
+    return slope.x2 - (measured.width + slopeStyle.padding * 2);
   }
-  return x;
+  //  Negative slope dock on left
+  return slopeLine.isRtl ? slope.x1 - (measured.width + slopeStyle.padding * 2) : slope.x1;
 }
 /**
  * Converts a numerical OR string value to a normalized value
@@ -190,7 +191,7 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
   }
 
   if (p.label) {
-    let item = extend(true, refLabelDefaultSettings(), settings.style.label || {}, { fill: style.stroke }, p.label);
+    const item = extend(true, refLabelDefaultSettings(), settings.style.label || {}, { fill: style.stroke }, p.label);
     let formatter;
     let measuredValue = {
       width: 0,

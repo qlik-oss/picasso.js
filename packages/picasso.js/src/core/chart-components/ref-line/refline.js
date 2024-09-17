@@ -188,7 +188,6 @@ const refLineComponent = {
 
   render() {
     let settings = this.settings;
-    let slopeLine;
 
     // Setup lines for X and Y
     this.lines = {
@@ -268,6 +267,7 @@ const refLineComponent = {
 
       if (show) {
         // Create slope line with labels
+        let slopeLine;
         if (p.slope && p.slope.value !== 0) {
           const scaleX = this.chart.scale('x');
           const scaleY = this.chart.scale('y');
