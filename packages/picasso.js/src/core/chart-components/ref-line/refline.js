@@ -90,7 +90,7 @@ function getPosition(scale, value) {
  * @property {string} [scale] - Scale to use (if undefined will use normalized value 0-1)
  * @property {ComponentRefLine~GenericObject} [line=ComponentRefLine~GenericObject] - The style of the line
  * @property {ComponentRefLine~LineLabel} [label=ComponentRefLine~LineLabel] - The label style of the line
- * @property {ComponentRefLine~Slope} [slope=ComponentRefLine~Slope] - The slope for the reference line
+ * @property {number} slope - The slope for the reference line
  */
 
 /**
@@ -124,11 +124,6 @@ function getPosition(scale, value) {
  * @property {string} [stroke='transparent'] - Stroke
  * @property {number} [strokeWidth=0] - Stroke width
  * @property {number} [opacity=1] - Opacity
- */
-
-/**
- * @typedef {object} ComponentRefLine~Slope
- * @property {number} [value=1] - Slope value
  */
 
 const refLineComponent = {
@@ -249,7 +244,7 @@ const refLineComponent = {
     });
 
     this.lines.y = this.lines.y.filter((line) => {
-      if (line.slope && line.slope.value !== 0) {
+      if (line.slope && line.slope !== 0) {
         return true;
       }
       if (line.position < 0 || line.position > 1) {
@@ -268,7 +263,7 @@ const refLineComponent = {
       if (show) {
         // Create slope line with labels
         let slopeLine;
-        if (p.slope && p.slope.value !== 0) {
+        if (p.slope && p.slope !== 0) {
           const scaleX = this.chart.scale('x');
           const scaleY = this.chart.scale('y');
           const minX = scaleX.min();
@@ -276,12 +271,12 @@ const refLineComponent = {
           slopeLine = { ...p };
           slopeLine.x1 = getPosition(scaleX, minX);
           slopeLine.x2 = getPosition(scaleX, maxX);
-          const y1 = minX * p.slope.value + p.value;
-          const y2 = maxX * p.slope.value + p.value;
+          const y1 = minX * p.slope + p.value;
+          const y2 = maxX * p.slope + p.value;
           slopeLine.y1 = getPosition(scaleY, y1);
           slopeLine.y2 = getPosition(scaleY, y2);
           if (slopeLine.y1 > 1 && slopeLine.y2 > 1) {
-            if (p.slope.value > 0) {
+            if (p.slope > 0) {
               oob[`y${slopeLine.y1 > 1 ? 1 : 0}`].push(createOobData(p));
             } else {
               oob[`y${slopeLine.y1 > 1 ? 1 : 0}`].push(createOobData(p));

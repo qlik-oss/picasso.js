@@ -1048,7 +1048,7 @@ declare namespace picassojs {
             scale?: string;
             line?: picassojs.ComponentRefLine.GenericObject;
             label?: picassojs.ComponentRefLine.LineLabel;
-            slope?: picassojs.ComponentRefLine.Slope;
+            slope?: number;
         };
 
         type LineLabel = {
@@ -1072,10 +1072,6 @@ declare namespace picassojs {
             stroke?: string;
             strokeWidth?: number;
             opacity?: number;
-        };
-
-        type Slope = {
-            value?: number;
         };
 
     }

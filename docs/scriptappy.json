@@ -4032,7 +4032,7 @@
         }
       },
       "examples": [
-        "{\n type: 'ref-line',\n lines: {\n   y: [{\n     scale: 'y',\n     value: 5000,\n     label: {\n       text: 'value label'\n     }\n     slope: {\n       value: 0.5,\n    }\n   }]\n }\n}"
+        "{\n type: 'ref-line',\n lines: {\n   y: [{\n     scale: 'y',\n     value: 5000,\n     label: {\n       text: 'value label'\n     }\n     slope: 0.5,\n   }]\n }\n}"
       ],
       "definitions": {
         "GenericObject": {
@@ -4151,9 +4151,7 @@
             },
             "slope": {
               "description": "The slope for the reference line",
-              "optional": true,
-              "defaultValue": "ComponentRefLine~Slope",
-              "type": "#/definitions/ComponentRefLine/definitions/Slope"
+              "type": "number"
             }
           }
         },
@@ -4282,15 +4280,6 @@
               "description": "Opacity",
               "optional": true,
               "defaultValue": 0.5,
-              "type": "number"
-            }
-          }
-        },
-        "Slope": {
-            "value": {
-              "description": "Slope value",
-              "optional": true,
-              "defaultValue": 0,
               "type": "number"
             }
           }
@@ -6894,3 +6883,4 @@
       }
     }
   }
+}

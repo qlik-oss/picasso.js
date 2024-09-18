@@ -86,7 +86,7 @@ function isColliding(items, slopeValue, slope, measured, maxX, xPadding, yPaddin
 
 function calculateX(slopeLine, slope, maxX, measured, blueprint, slopeStyle) {
   // calculate x for the various scenarios possible
-  if (slopeLine.slope.value > 0) {
+  if (slopeLine.slope > 0) {
     // docking at top
     if (maxX < DOCK_CORNER) {
       return slopeLine.isRtl ? maxX * blueprint.width - (measured.width + slopeStyle.padding) : maxX * blueprint.width;
@@ -333,32 +333,31 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
     let valueString;
     let labelBackground;
     const maxLabelWidth = 120;
-    if (slopeLine.slope.value !== 0 && (slopeLine.showLabel || slopeLine.showValue)) {
+    if (slopeLine.slope !== 0 && (slopeLine.showLabel || slopeLine.showValue)) {
       let slopeLabelText = slopeLine.showLabel ? slopeLine.refLineLabel : '';
       if (slopeLine.showValue) {
         const formatter = getFormatter(p, chart);
         const formattedValue = formatter ? formatter(slopeLine.value) : slopeLine.value;
-        valueString = `(${slopeLine.slope.value}x + ${formattedValue})`;
+        valueString = `(${slopeLine.slope}x + ${formattedValue})`;
         slopeLabelText += slopeLine.refLineLabel ? ` ${valueString}` : valueString;
       }
       if (slopeLabelText.length > 1) {
         // Measure the label text
-        let measured = renderer.measureText({
+        const measured = renderer.measureText({
           text: slopeLabelText,
           fontFamily: slopeStyle.fontFamily,
           fontSize: slopeStyle.fontSize,
         });
         measured.width = measured.width > maxLabelWidth ? maxLabelWidth : measured.width;
-        const xPadding =
-          slopeLine.slope.value > 0 && !slopeLine.isRtl ? slopeStyle.padding * 4 : slopeStyle.padding / 2;
-        const yPadding = slopeLine.slope.value > 0 ? slopeStyle.padding * 3 : slopeStyle.padding;
-        const maxX = isMaxY(chart, slopeLine.slope.value, slopeLine.value)
-          ? getMaxXPosition(chart, slopeLine.slope.value, slopeLine.value)
+        const xPadding = slopeLine.slope > 0 && !slopeLine.isRtl ? slopeStyle.padding * 4 : slopeStyle.padding / 2;
+        const yPadding = slopeLine.slope > 0 ? slopeStyle.padding * 3 : slopeStyle.padding;
+        const maxX = isMaxY(chart, slopeLine.slope, slopeLine.value)
+          ? getMaxXPosition(chart, slopeLine.slope, slopeLine.value)
           : undefined;
         const maxY = maxX === undefined ? Math.abs(slope.y2) : 1;
 
         const x = calculateX(slopeLine, slope, maxX, measured, blueprint, slopeStyle);
-        const y = slopeLine.slope.value > 0 ? maxY : slope.y1;
+        const y = slopeLine.slope > 0 ? maxY : slope.y1;
         // if coloredBackground is true make a rect
         if (slopeLine.labelStroke) {
           labelBackground = {
@@ -389,7 +388,7 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
           maxWidth: maxLabelWidth,
           width: measured.width,
         };
-        if (!isColliding(items, slopeLabel, slopeLine.slope.value, measured, maxX, xPadding, yPadding)) {
+        if (!isColliding(items, slopeLabel, slopeLine.slope, measured, maxX, xPadding, yPadding)) {
           if (labelBackground) {
             items.push(labelBackground);
           }
