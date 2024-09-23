@@ -90,7 +90,7 @@ function getPosition(scale, value) {
  * @property {string} [scale] - Scale to use (if undefined will use normalized value 0-1)
  * @property {ComponentRefLine~GenericObject} [line=ComponentRefLine~GenericObject] - The style of the line
  * @property {ComponentRefLine~LineLabel} [label=ComponentRefLine~LineLabel] - The label style of the line
- * @property {number} slope - The slope for the reference line
+ * @property {number} [slope=0] - The slope for the reference line
  */
 
 /**
