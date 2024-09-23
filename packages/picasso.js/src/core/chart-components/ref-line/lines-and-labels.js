@@ -84,7 +84,7 @@ function isColliding(items, slopeValue, slope, measured, maxX, xPadding, yPaddin
   return false;
 }
 
-function calculateX(slopeLine, slope, maxX, measured, blueprint, slopeStyle) {
+function calculateX(slopeLine, line, maxX, measured, blueprint, slopeStyle) {
   // calculate x for the various scenarios possible
   if (slopeLine.slope > 0) {
     // docking at top
@@ -104,10 +104,10 @@ function calculateX(slopeLine, slope, maxX, measured, blueprint, slopeStyle) {
         : maxX * blueprint.width - (measured.width + slopeStyle.padding * 6);
     }
     // dock at right
-    return slope.x2 - (measured.width + slopeStyle.padding * 2);
+    return line.x2 - (measured.width + slopeStyle.padding * 2);
   }
   //  Negative slope dock on left
-  return slopeLine.isRtl ? slope.x1 - (measured.width + slopeStyle.padding * 2) : slope.x1;
+  return slopeLine.isRtl ? line.x1 - (measured.width + slopeStyle.padding * 2) : line.x1;
 }
 /**
  * Converts a numerical OR string value to a normalized value
@@ -154,7 +154,6 @@ export function alignmentToNumber(align) {
 export function createLineWithLabel({ chart, blueprint, renderer, p, settings, items, slopeLine }) {
   let doesNotCollide = true;
   let line = false;
-  let slope = false;
   let rect = false;
   let label = false;
   let value = false;
@@ -163,7 +162,7 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
 
   // Use the transposer to handle actual positioning
   if (slopeLine) {
-    slope = blueprint.processItem({
+    line = blueprint.processItem({
       type: 'line',
       x1: slopeLine.x1,
       y1: slopeLine.y1,
@@ -326,14 +325,12 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
   // because otherwise it would collide with it's own line
   if (line) {
     items.push(line);
-  } else if (slopeLine) {
-    // push slope line
-    items.push(slope);
-    // create data area labels for slope line
-    let valueString;
-    let labelBackground;
-    const maxLabelWidth = 120;
-    if (slopeLine.slope !== 0 && (slopeLine.showLabel || slopeLine.showValue)) {
+    if (slopeLine?.slope !== 0 && (slopeLine?.showLabel || slopeLine?.showValue)) {
+      // create data area labels for slope line
+      let valueString;
+      let labelBackground;
+      const maxLabelWidth = 120;
+
       let slopeLabelText = slopeLine.showLabel ? slopeLine.refLineLabel : '';
       if (slopeLine.showValue) {
         const formatter = getFormatter(p, chart);
@@ -354,10 +351,10 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
         const maxX = isMaxY(chart, slopeLine.slope, slopeLine.value)
           ? getMaxXPosition(chart, slopeLine.slope, slopeLine.value)
           : undefined;
-        const maxY = maxX === undefined ? Math.abs(slope.y2) : 1;
+        const maxY = maxX === undefined ? Math.abs(line.y2) : 1;
 
-        const x = calculateX(slopeLine, slope, maxX, measured, blueprint, slopeStyle);
-        const y = slopeLine.slope > 0 ? maxY : slope.y1;
+        const x = calculateX(slopeLine, line, maxX, measured, blueprint, slopeStyle);
+        const y = slopeLine.slope > 0 ? maxY : line.y1;
         // if coloredBackground is true make a rect
         if (slopeLine.labelStroke) {
           labelBackground = {
