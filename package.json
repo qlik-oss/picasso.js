@@ -60,7 +60,7 @@
     "prettier": "3.3.3",
     "pretty-quick": "4.0.0",
     "puppeteer": "23.3.0",
-    "rollup": "2.79.1",
+    "rollup": "3.29.5",
     "rollup-plugin-babel": "4.4.0",
     "rollup-plugin-commonjs": "10.1.0",
     "rollup-plugin-node-resolve": "5.2.0",
