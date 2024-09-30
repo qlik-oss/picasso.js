@@ -264,8 +264,8 @@ const refLineComponent = {
         // Create slope line with labels
         let slopeLine;
         if (p.slope && p.slope !== 0) {
-          const scaleX = this.chart.scale('x');
-          const scaleY = this.chart.scale('y');
+          const scaleX = this.chart.scale({ scale: 'x' });
+          const scaleY = this.chart.scale({ scale: 'y' });
           const minX = scaleX.min();
           const maxX = scaleX.max();
           slopeLine = { ...p };

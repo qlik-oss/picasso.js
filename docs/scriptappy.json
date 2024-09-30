@@ -4151,6 +4151,8 @@
             },
             "slope": {
               "description": "The slope for the reference line",
+              "optional": true,
+              "defaultValue": 0,
               "type": "number"
             }
           }

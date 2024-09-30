@@ -23,8 +23,8 @@ export function refLabelDefaultSettings() {
 
 function isMaxY(chart, slope, value) {
   // when maxY exceeds the shown scale
-  const scaleX = chart.scale('x');
-  const scaleY = chart.scale('y');
+  const scaleX = chart.scale({ scale: 'x' });
+  const scaleY = chart.scale({ scale: 'y' });
   if (slope > 0) {
     const maxY = scaleX.max() * slope + value;
     if (maxY >= scaleY.max()) {
@@ -41,8 +41,8 @@ function isMaxY(chart, slope, value) {
 
 function getMaxXPosition(chart, slope, value) {
   // if maxY then get maxX position available on the scale
-  const scaleX = chart.scale('x');
-  const scaleY = chart.scale('y');
+  const scaleX = chart.scale({ scale: 'x' });
+  const scaleY = chart.scale({ scale: 'y' });
   // For negative slopes
   if (slope < 0) {
     return scaleX((scaleY.min() - value) / slope);
