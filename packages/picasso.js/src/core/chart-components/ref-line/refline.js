@@ -90,6 +90,7 @@ function getPosition(scale, value) {
  * @property {string} [scale] - Scale to use (if undefined will use normalized value 0-1)
  * @property {ComponentRefLine~GenericObject} [line=ComponentRefLine~GenericObject] - The style of the line
  * @property {ComponentRefLine~LineLabel} [label=ComponentRefLine~LineLabel] - The label style of the line
+ * @property {number} [slope=0] - The slope for the reference line
  */
 
 /**
@@ -243,6 +244,9 @@ const refLineComponent = {
     });
 
     this.lines.y = this.lines.y.filter((line) => {
+      if (line.slope && line.slope !== 0) {
+        return true;
+      }
       if (line.position < 0 || line.position > 1) {
         oob[`y${line.position > 1 ? 1 : 0}`].push(createOobData(line));
         return false;
@@ -257,6 +261,35 @@ const refLineComponent = {
       let show = p.show === true || typeof p.show === 'undefined';
 
       if (show) {
+        // Create slope line with labels
+        let slopeLine;
+        if (p.slope && p.slope !== 0) {
+          const scaleX = this.chart.scale({ scale: 'x' });
+          const scaleY = this.chart.scale({ scale: 'y' });
+          const minX = scaleX.min();
+          const maxX = scaleX.max();
+          slopeLine = { ...p };
+          slopeLine.x1 = getPosition(scaleX, minX);
+          slopeLine.x2 = getPosition(scaleX, maxX);
+          const y1 = minX * p.slope + p.value;
+          const y2 = maxX * p.slope + p.value;
+          slopeLine.y1 = getPosition(scaleY, y1);
+          slopeLine.y2 = getPosition(scaleY, y2);
+          if (slopeLine.y1 > 1 && slopeLine.y2 > 1) {
+            if (p.slope > 0) {
+              oob[`y${slopeLine.y1 > 1 ? 1 : 0}`].push(createOobData(p));
+            } else {
+              oob[`y${slopeLine.y1 > 1 ? 1 : 0}`].push(createOobData(p));
+            }
+            return;
+          }
+          if (slopeLine.y1 < 0) {
+            oob[`y${slopeLine.y1 > 1 ? 1 : 0}`].push(createOobData(p));
+            return;
+          }
+        } else {
+          slopeLine = undefined;
+        }
         // Create line with labels
         createLineWithLabel({
           chart: this.chart,
@@ -265,6 +298,7 @@ const refLineComponent = {
           p,
           settings,
           items,
+          slopeLine,
         });
       }
     });
