@@ -8,6 +8,6 @@
       "ignore": ["test-utils", "docs"]
     }
   },
-  "version": "2.2.8",
+  "version": "2.3.0",
   "npmClient": "yarn"
 }

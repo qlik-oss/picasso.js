@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/qlik-oss/picasso.js/compare/v2.2.8...v2.3.0) (2024-10-01)
+
+### Features
+
+- **slope-ref-line:** add slope to the reference line on y axis ([#854](https://github.com/qlik-oss/picasso.js/issues/854)) ([08bb0f4](https://github.com/qlik-oss/picasso.js/commit/08bb0f40d087b1f3aae5e809033344713a4641b2))
+
 ## [2.2.8](https://github.com/qlik-oss/picasso.js/compare/v2.2.7...v2.2.8) (2024-06-27)
 
 **Note:** Version bump only for package picasso.js
