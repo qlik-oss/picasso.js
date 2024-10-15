@@ -20,7 +20,7 @@
     "prepublishOnly": "rm -rf dist && npm run build"
   },
   "devDependencies": {
-    "test-utils": "^2.3.0"
+    "test-utils": "workspace:*"
   },
   "gitHead": "b6ca9d1ed11709ec18f227b7b7077ce34d61857b"
 }
