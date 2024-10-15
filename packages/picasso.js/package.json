@@ -29,7 +29,7 @@
   "types": "types/index.d.ts",
   "scripts": {
     "build": "rollup --config ../../rollup.config.js",
-    "build:watch": "yarn run build -w",
+    "build:watch": "pnpm run build -w",
     "lint": "eslint src test",
     "lint:fix": "npm run lint -- --fix",
     "fixture:server": "aw serve -c aw.webserver.config.js",

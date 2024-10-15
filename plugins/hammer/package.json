@@ -15,7 +15,7 @@
   "module": "dist/picasso-hammer.esm.js",
   "scripts": {
     "build": "rollup --config ../../rollup.config.js",
-    "build:watch": "yarn run build -w",
+    "build:watch": "pnpm run build -w",
     "lint": "eslint src",
     "prepublishOnly": "rm -rf dist && npm run build"
   },
