@@ -29,7 +29,7 @@
   "types": "types/index.d.ts",
   "scripts": {
     "build": "rollup --config ../../rollup.config.js",
-    "build:watch": "yarn run build -w",
+    "build:watch": "pnpm run build -w",
     "lint": "eslint src test",
     "lint:fix": "npm run lint -- --fix",
     "fixture:server": "aw serve -c aw.webserver.config.js",
@@ -50,7 +50,7 @@
     "node-event-emitter": "0.0.1",
     "path2d": "0.2.1",
     "preact": "10.13.2",
-    "test-utils": "^2.3.0"
+    "test-utils": "workspace:*"
   },
   "gitHead": "b6ca9d1ed11709ec18f227b7b7077ce34d61857b"
 }
