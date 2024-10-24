@@ -5,6 +5,9 @@ import { testRectRect } from '../../math/narrow-phase-collision';
 import { getClampedValue } from './axis-label-size';
 import getHorizontalContinuousWidth from './get-continuous-label-rect';
 import { expandRect } from '../../geometry/util';
+import buildArcLine from './axis-arc-node';
+import buildArcTicks from './axis-arc-tick-node';
+import buildArcLabels from './axis-arc-label-node';
 
 function tickSpacing(settings) {
   let spacing = 0;
@@ -53,6 +56,15 @@ function labelBuilder(ticks, buildOpts, resolveTickOpts) {
   return ticks.map((tick, idx) => {
     resolveTickOpts(tick, idx);
     const label = buildLabel(tick, buildOpts);
+    label.data = tick.data;
+    return label;
+  });
+}
+
+function arcLabelBuilder(ticks, buildOpts, resolveTickOpts) {
+  return ticks.map((tick, idx) => {
+    resolveTickOpts(tick, idx);
+    const label = buildArcLabels(ticks, tick, idx, buildOpts);
     label.data = tick.data;
     return label;
   });
@@ -213,12 +225,17 @@ export default function nodeBuilder(isDiscrete) {
     const tilted = state.labels.activeMode === 'tilted';
     const layered = state.labels.activeMode === 'layered';
     let majorTickNodes;
-
     if (settings.line.show) {
       buildOpts.style = settings.line;
       buildOpts.padding = settings.paddingStart;
-
-      nodes.push(buildLine(buildOpts));
+      if (!settings.isRadial) {
+        nodes.push(buildLine(buildOpts));
+      } else {
+        buildOpts.startAngle = settings.startAngle;
+        buildOpts.endAngle = settings.endAngle;
+        buildOpts.outerRadius = settings.outerRadius;
+        nodes.push(buildArcLine(buildOpts));
+      }
     }
     if (settings.ticks.show) {
       buildOpts.style = settings.ticks;
@@ -226,6 +243,12 @@ export default function nodeBuilder(isDiscrete) {
       buildOpts.padding = tickSpacing(settings);
 
       majorTickNodes = tickBuilder(major, buildOpts);
+      if (settings.isRadial) {
+        const arcTicks = buildArcTicks(ticks, buildOpts);
+        arcTicks.forEach((arcTick) => {
+          nodes.push(arcTick);
+        });
+      }
     }
     if (settings.labels.show) {
       const padding = labelsSpacing(settings);
@@ -262,7 +285,9 @@ export default function nodeBuilder(isDiscrete) {
       };
 
       let labelNodes = [];
-      if (layered && (settings.align === 'top' || settings.align === 'bottom')) {
+      if (settings.isRadial) {
+        labelNodes = arcLabelBuilder(ticks, buildOpts, resolveTickOpts);
+      } else if (layered && (settings.align === 'top' || settings.align === 'bottom')) {
         labelNodes = layeredLabelBuilder(major, buildOpts, settings, resolveTickOpts);
       } else {
         labelNodes = labelBuilder(major, buildOpts, resolveTickOpts);
@@ -280,7 +305,6 @@ export default function nodeBuilder(isDiscrete) {
       buildOpts.style = settings.minorTicks;
       buildOpts.tickSize = settings.minorTicks.tickSize;
       buildOpts.padding = tickMinorSpacing(settings);
-
       nodes.push(...tickBuilder(minor, buildOpts));
     }
 
