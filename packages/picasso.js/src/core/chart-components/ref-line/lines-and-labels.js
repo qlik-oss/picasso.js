@@ -31,8 +31,8 @@ function isMaxY(chart, slope, value) {
       return true;
     }
   } else if (slope < 0) {
-    const minY = scaleX.max() * slope + value;
-    if (minY <= scaleY.min()) {
+    const minY = scaleX.min() * slope + value;
+    if (minY >= scaleY.max()) {
       return true;
     }
   }
@@ -45,7 +45,7 @@ function getMaxXPosition(chart, slope, value) {
   const scaleY = chart.scale({ scale: 'y' });
   // For negative slopes
   if (slope < 0) {
-    return scaleX((scaleY.min() - value) / slope);
+    return scaleX((scaleY.max() - value) / slope);
   }
   // For positive slopes
   return scaleX((scaleY.max() - value) / slope);
@@ -87,7 +87,7 @@ function isColliding(items, slopeValue, slope, measured, maxX, xPadding, yPaddin
 
 function calculateX(slopeLine, line, maxX, measured, blueprint, slopeStyle) {
   // calculate x for the various scenarios possible
-  if (slopeLine.slope > 0) {
+  if (maxX !== undefined) {
     // docking at top
     if (maxX < DOCK_CORNER) {
       return slopeLine.isRtl ? maxX * blueprint.width - (measured.width + slopeStyle.padding) : maxX * blueprint.width;
@@ -95,7 +95,7 @@ function calculateX(slopeLine, line, maxX, measured, blueprint, slopeStyle) {
     if (maxX > DOCK_CORNER) {
       // very close to the corner when width doesn't fit
       return slopeLine.isRtl
-        ? maxX * blueprint.width + (measured.width + slopeStyle.padding * 2)
+        ? maxX * blueprint.width - (measured.width + slopeStyle.padding * 2)
         : maxX * blueprint.width - (measured.width + slopeStyle.padding * 6);
     }
     if (maxX === 1) {
@@ -104,6 +104,7 @@ function calculateX(slopeLine, line, maxX, measured, blueprint, slopeStyle) {
         ? maxX * blueprint.width + (measured.width + slopeStyle.padding * 3)
         : maxX * blueprint.width - (measured.width + slopeStyle.padding * 6);
     }
+  } else if (slopeLine.slope > 0) {
     // dock at right
     return line.x2 - (measured.width + slopeStyle.padding * 2);
   }
@@ -347,13 +348,12 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
         fontSize: slopeStyle.fontSize,
       });
       measured.width = measured.width > maxLabelWidth ? maxLabelWidth : measured.width;
-      const xPadding = slopeLine.slope > 0 && !slopeLine.isRtl ? slopeStyle.padding * 4 : slopeStyle.padding / 2;
-      const yPadding = slopeLine.slope > 0 ? slopeStyle.padding * 3 : slopeStyle.padding;
       const maxX = isMaxY(chart, slopeLine.slope, slopeLine.value)
         ? getMaxXPosition(chart, slopeLine.slope, slopeLine.value)
         : undefined;
       const maxY = maxX === undefined ? Math.abs(line.y2) : 1;
-
+      const xPadding = maxX !== undefined && !slopeLine.isRtl ? slopeStyle.padding * 3 : slopeStyle.padding;
+      const yPadding = maxX !== undefined || slopeLine.slope > 0 ? slopeStyle.padding * 3 : slopeStyle.padding;
       const x = calculateX(slopeLine, line, maxX, measured, blueprint, slopeStyle);
       const y = slopeLine.slope > 0 ? maxY : line.y1;
       // if coloredBackground is true make a rect

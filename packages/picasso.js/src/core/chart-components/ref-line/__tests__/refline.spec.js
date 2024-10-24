@@ -578,7 +578,7 @@ describe('reference lines', () => {
         title: 'Threshold value (-0.5x + 0.5)',
         type: 'text',
         width: 120,
-        x: 4.5,
+        x: 7,
         y: 404,
       },
     ]);

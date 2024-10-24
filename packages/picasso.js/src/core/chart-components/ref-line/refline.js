@@ -276,15 +276,11 @@ const refLineComponent = {
           slopeLine.y1 = getPosition(scaleY, y1);
           slopeLine.y2 = getPosition(scaleY, y2);
           if (slopeLine.y1 > 1 && slopeLine.y2 > 1) {
-            if (p.slope > 0) {
-              oob[`y${slopeLine.y1 > 1 ? 1 : 0}`].push(createOobData(p));
-            } else {
-              oob[`y${slopeLine.y1 > 1 ? 1 : 0}`].push(createOobData(p));
-            }
+            oob[`y${slopeLine.y1 > 1 ? 1 : 0}`].push(createOobData(p));
             return;
           }
-          if (slopeLine.y1 < 0) {
-            oob[`y${slopeLine.y1 > 1 ? 1 : 0}`].push(createOobData(p));
+          if (slopeLine.y1 < 0 && slopeLine.y2 < 0) {
+            oob[`y${slopeLine.y1 < 1 ? 0 : 1}`].push(createOobData(p));
             return;
           }
         } else {
