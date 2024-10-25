@@ -1,6 +1,6 @@
 import extend from 'extend';
 import { transposer } from '../../transposer/transposer';
-import { oobManager } from './oob';
+import { isOob, oobManager } from './oob';
 import { createLineWithLabel } from './lines-and-labels';
 
 function createOobData(line) {
@@ -268,19 +268,32 @@ const refLineComponent = {
           const scaleY = this.chart.scale({ scale: 'y' });
           const minX = scaleX.min();
           const maxX = scaleX.max();
+          const minY = scaleY.min();
+          const maxY = scaleY.max();
           slopeLine = { ...p };
-          slopeLine.x1 = getPosition(scaleX, minX);
-          slopeLine.x2 = getPosition(scaleX, maxX);
           const y1 = minX * p.slope + p.value;
           const y2 = maxX * p.slope + p.value;
-          slopeLine.y1 = getPosition(scaleY, y1);
-          slopeLine.y2 = getPosition(scaleY, y2);
-          if (slopeLine.y1 > 1 && slopeLine.y2 > 1) {
-            oob[`y${slopeLine.y1 > 1 ? 1 : 0}`].push(createOobData(p));
-            return;
+          const x1 = minY / p.slope - p.value / p.slope;
+          const x2 = maxY / p.slope - p.value / p.slope;
+          if (!isOob(y1, minY, maxY)) {
+            slopeLine.x1 = 0;
+            slopeLine.y1 = getPosition(scaleY, y1);
           }
-          if (slopeLine.y1 < 0 && slopeLine.y2 < 0) {
-            oob[`y${slopeLine.y1 < 1 ? 0 : 1}`].push(createOobData(p));
+          if (!isOob(y2, minY, maxY)) {
+            slopeLine.x2 = 1;
+            slopeLine.y2 = getPosition(scaleY, y2);
+          }
+          if (!isOob(x1, minX, maxX)) {
+            slopeLine.x1 = getPosition(scaleX, x1);
+            slopeLine.y1 = 1;
+          }
+          if (!isOob(x2, minX, maxX)) {
+            slopeLine.x2 = getPosition(scaleX, x2);
+            slopeLine.y2 = 0;
+          }
+          if (slopeLine.x1 === undefined) {
+            oob[`x${x1 > maxX ? 1 : 0}`].push(createOobData(p));
+            oob[`y${y1 > maxY ? 0 : 1}`].push(createOobData(p));
             return;
           }
         } else {
