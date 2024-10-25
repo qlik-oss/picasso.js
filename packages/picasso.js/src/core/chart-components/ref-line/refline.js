@@ -275,21 +275,26 @@ const refLineComponent = {
           const y2 = maxX * p.slope + p.value;
           const x1 = minY / p.slope - p.value / p.slope;
           const x2 = maxY / p.slope - p.value / p.slope;
+          let startPointSet = false;
           if (!isOob(y1, minY, maxY)) {
             slopeLine.x1 = 0;
             slopeLine.y1 = getPosition(scaleY, y1);
+            startPointSet = true;
           }
           if (!isOob(y2, minY, maxY)) {
-            slopeLine.x2 = 1;
-            slopeLine.y2 = getPosition(scaleY, y2);
+            slopeLine[startPointSet ? 'x2' : 'x1'] = 1;
+            slopeLine[startPointSet ? 'y2' : 'y1'] = getPosition(scaleY, y2);
+            startPointSet = true;
           }
           if (!isOob(x1, minX, maxX)) {
-            slopeLine.x1 = getPosition(scaleX, x1);
-            slopeLine.y1 = 1;
+            slopeLine[startPointSet ? 'x2' : 'x1'] = getPosition(scaleX, x1);
+            slopeLine[startPointSet ? 'y2' : 'y1'] = 1;
+            startPointSet = true;
           }
           if (!isOob(x2, minX, maxX)) {
-            slopeLine.x2 = getPosition(scaleX, x2);
-            slopeLine.y2 = 0;
+            slopeLine[startPointSet ? 'x2' : 'x1'] = getPosition(scaleX, x2);
+            slopeLine[startPointSet ? 'y2' : 'y1'] = 0;
+            startPointSet = true;
           }
           if (slopeLine.x1 === undefined) {
             oob[`x${x1 > maxX ? 1 : 0}`].push(createOobData(p));
