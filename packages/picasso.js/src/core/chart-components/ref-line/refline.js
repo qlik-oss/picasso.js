@@ -39,6 +39,25 @@ function getPosition(scale, value) {
   }
   return scale(value);
 }
+const EPSILON = 1e-15;
+function isIdentical(p1, p2) {
+  return p1 && p2 && Math.abs(p1.x - p2.x) < EPSILON && Math.abs(p1.y - p2.y) < EPSILON;
+}
+
+function removeDuplication(intersections) {
+  if (isIdentical(intersections[0], intersections[1])) {
+    intersections[1] = undefined;
+  }
+  if (isIdentical(intersections[1], intersections[2])) {
+    intersections[2] = undefined;
+  }
+  if (isIdentical(intersections[2], intersections[3])) {
+    intersections[3] = undefined;
+  }
+  if (isIdentical(intersections[3], intersections[0])) {
+    intersections[3] = undefined;
+  }
+}
 
 /**
  * Component settings
@@ -275,31 +294,30 @@ const refLineComponent = {
           const y2 = maxX * p.slope + p.value;
           const x1 = minY / p.slope - p.value / p.slope;
           const x2 = maxY / p.slope - p.value / p.slope;
-          let startPointSet = false;
+          let intersections = [];
           if (!isOob(y1, minY, maxY)) {
-            slopeLine.x1 = 0;
-            slopeLine.y1 = getPosition(scaleY, y1);
-            startPointSet = true;
-          }
-          if (!isOob(y2, minY, maxY)) {
-            slopeLine[startPointSet ? 'x2' : 'x1'] = 1;
-            slopeLine[startPointSet ? 'y2' : 'y1'] = getPosition(scaleY, y2);
-            startPointSet = true;
+            intersections[0] = { x: 0, y: getPosition(scaleY, y1) };
           }
           if (!isOob(x1, minX, maxX)) {
-            slopeLine[startPointSet ? 'x2' : 'x1'] = getPosition(scaleX, x1);
-            slopeLine[startPointSet ? 'y2' : 'y1'] = 1;
-            startPointSet = true;
+            intersections[1] = { x: getPosition(scaleX, x1), y: 1 };
+          }
+          if (!isOob(y2, minY, maxY)) {
+            intersections[2] = { x: 1, y: getPosition(scaleY, y2) };
           }
           if (!isOob(x2, minX, maxX)) {
-            slopeLine[startPointSet ? 'x2' : 'x1'] = getPosition(scaleX, x2);
-            slopeLine[startPointSet ? 'y2' : 'y1'] = 0;
-            startPointSet = true;
+            intersections[3] = { x: getPosition(scaleX, x2), y: 0 };
           }
-          if (slopeLine.x1 === undefined) {
+          removeDuplication(intersections);
+          intersections = intersections.filter((p) => !!p);
+          if (intersections.length < 2) {
             oob[`x${x1 > maxX ? 1 : 0}`].push(createOobData(p));
             oob[`y${y1 > maxY ? 0 : 1}`].push(createOobData(p));
             return;
+          } else {
+            slopeLine.x1 = intersections[0].x;
+            slopeLine.y1 = intersections[0].y;
+            slopeLine.x2 = intersections[1].x;
+            slopeLine.y2 = intersections[1].y;
           }
         } else {
           slopeLine = undefined;
