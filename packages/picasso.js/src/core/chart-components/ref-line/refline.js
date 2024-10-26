@@ -307,7 +307,10 @@ const refLineComponent = {
           if (!isOob(x2, minX, maxX)) {
             intersections[3] = { x: getPosition(scaleX, x2), y: 0 };
           }
-          removeDuplication(intersections);
+          const numIntersections = intersections.filter((p) => !!p).length;
+          if (numIntersections > 2) {
+            removeDuplication(intersections);
+          }
           intersections = intersections.filter((p) => !!p);
           if (intersections.length < 2) {
             oob[`x${x1 > maxX ? 1 : 0}`].push(createOobData(p));
