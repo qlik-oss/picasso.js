@@ -292,8 +292,8 @@ const refLineComponent = {
           slopeLine = { ...p, x1: undefined, y1: undefined, x2: undefined, y2: undefined };
           const y1 = minX * p.slope + p.value;
           const y2 = maxX * p.slope + p.value;
-          const x1 = minY / p.slope - p.value / p.slope;
-          const x2 = maxY / p.slope - p.value / p.slope;
+          const x1 = (minY - p.value) / p.slope;
+          const x2 = (maxY - p.value) / p.slope;
           let intersections = [];
           if (!isOob(y1, minY, maxY)) {
             intersections[0] = { x: 0, y: getPosition(scaleY, y1) };
