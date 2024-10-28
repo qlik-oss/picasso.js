@@ -296,13 +296,13 @@ const refLineComponent = {
           const x2 = (maxY - p.value) / p.slope;
           let intersections = [];
           if (!isOob(y1, minY, maxY)) {
-            intersections[0] = { x: 0, y: getPosition(scaleY, y1) };
+            intersections[0] = { x: getPosition(scaleX, minX), y: getPosition(scaleY, y1) };
           }
           if (!isOob(x1, minX, maxX)) {
             intersections[1] = { x: getPosition(scaleX, x1), y: 1 };
           }
           if (!isOob(y2, minY, maxY)) {
-            intersections[2] = { x: 1, y: getPosition(scaleY, y2) };
+            intersections[2] = { x: getPosition(scaleX, maxX), y: getPosition(scaleY, y2) };
           }
           if (!isOob(x2, minX, maxX)) {
             intersections[3] = { x: getPosition(scaleX, x2), y: 0 };

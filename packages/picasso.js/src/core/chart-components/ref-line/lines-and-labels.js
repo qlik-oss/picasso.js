@@ -356,7 +356,7 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
       const yPadding = maxX !== undefined || slopeLine.slope > 0 ? slopeStyle.padding * 3 : slopeStyle.padding;
       const x = calculateX(slopeLine, line, maxX, measured, blueprint, slopeStyle);
       const y = Math.min(line.y1, line.y2);
-      console.log({ x, y, line, slopeLine });
+      // console.log({ x, y, line, slopeLine });
       // if coloredBackground is true make a rect
       if (slopeLine.labelStroke) {
         labelBackground = {
