@@ -289,7 +289,7 @@ const refLineComponent = {
           const maxX = scaleX.max();
           const minY = scaleY.min();
           const maxY = scaleY.max();
-          slopeLine = { ...p };
+          slopeLine = { ...p, x1: undefined, y1: undefined, x2: undefined, y2: undefined };
           const y1 = minX * p.slope + p.value;
           const y2 = maxX * p.slope + p.value;
           const x1 = minY / p.slope - p.value / p.slope;
@@ -313,7 +313,6 @@ const refLineComponent = {
           }
           intersections = intersections.filter((p) => !!p);
           if (intersections.length < 2) {
-            oob[`x${x1 > maxX ? 1 : 0}`].push(createOobData(p));
             oob[`y${y1 > maxY ? 0 : 1}`].push(createOobData(p));
             return;
           } else {
