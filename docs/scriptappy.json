@@ -2829,28 +2829,64 @@
                               "kind": "object",
                               "entries": {
                                 "top": {
-                                  "description": "Padding-top between the label and the bar",
+                                  "description": "Padding-top between the label and the bar. Can be a function, text dimensions object {width, height} is exposed as argument.",
                                   "optional": true,
                                   "defaultValue": 4,
-                                  "type": "number"
+                                  "kind": "union",
+                                  "items": [
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "function"
+                                    }
+                                  ],
+                                  "type": "any"
                                 },
                                 "bottom": {
-                                  "description": "Padding-bottom between the label and the bar",
+                                  "description": "Padding-bottom between the label and the bar. Can be a function, text dimensions object {width, height} is exposed as argument.",
                                   "optional": true,
                                   "defaultValue": 4,
-                                  "type": "number"
+                                  "kind": "union",
+                                  "items": [
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "function"
+                                    }
+                                  ],
+                                  "type": "any"
                                 },
                                 "left": {
-                                  "description": "Padding-left between the label and the bar",
+                                  "description": "Padding-left between the label and the bar. Can be a function, text dimensions object {width, height} is exposed as argument.",
                                   "optional": true,
                                   "defaultValue": 4,
-                                  "type": "number"
+                                  "kind": "union",
+                                  "items": [
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "function"
+                                    }
+                                  ],
+                                  "type": "any"
                                 },
                                 "right": {
-                                  "description": "Padding-right between the label and the bar",
+                                  "description": "Padding-right between the label and the bar. Can be a function, text dimensions object {width, height} is exposed as argument.",
                                   "optional": true,
                                   "defaultValue": 4,
-                                  "type": "number"
+                                  "kind": "union",
+                                  "items": [
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "type": "function"
+                                    }
+                                  ],
+                                  "type": "any"
                                 }
                               }
                             },

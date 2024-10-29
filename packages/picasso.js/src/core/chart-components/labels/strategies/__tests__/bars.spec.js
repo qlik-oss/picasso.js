@@ -900,6 +900,78 @@ describe('labeling - bars', () => {
 
       expect(labels).to.be.empty;
     });
+
+    it('should accept padding top/bottom/left/right as functions', () => {
+      const settings = {
+        direction: () => 'right',
+        align: 0.4,
+        justify: 0.8,
+        labels: [
+          {
+            placements: [
+              {
+                position: 'inside',
+                justify: 0.2,
+                align: 0.5,
+                fill: () => 'red',
+                padding: {
+                  left: ({ width }) => width / 5,
+                  right: ({ width, height }) => (width + height) / 7.5,
+                  top: ({ height }) => height / 2.5,
+                  bottom: ({ height }) => height - 6,
+                },
+              },
+            ],
+            label: () => 'etikett',
+          },
+        ],
+      };
+      const nodes = [
+        {
+          localBounds: {
+            x: 10,
+            y: 20,
+            width: 40,
+            height: 50,
+          },
+        },
+      ];
+      renderer.measureText.returns({ width: 20, height: 10 });
+      let labels = bars({
+        settings,
+        chart,
+        nodes,
+        rect: {
+          x: 0,
+          y: 0,
+          width: 100,
+          height: 200,
+        },
+        renderer,
+        style: {
+          label: {
+            fontSize: '16px',
+            fontFamily: 'simpsons',
+            fill: 'green',
+          },
+        },
+      });
+
+      expect(labels[0]).to.eql({
+        type: 'text',
+        text: 'etikett',
+        maxWidth: 32,
+        x: 16.4,
+        y: 45,
+        dx: 0,
+        dy: 0,
+        fill: 'red',
+        anchor: 'start',
+        baseline: 'central',
+        fontSize: '16px',
+        fontFamily: 'simpsons',
+      });
+    });
   });
 
   describe('orientation', () => {
