@@ -445,10 +445,10 @@ export function getOrientation({ orientation = 'auto', defaultOrientation = 'h' 
  * @property {string} [labels[].placements[].fill='#333'] - Color of the label
  * @property {boolean} [labels[].placements[].overflow=false] - True if the label is allowed to overflow the bar
  * @property {object} labels[].placements[].padding - Padding between the label and the bar
- * @property {number} [labels[].placements[].padding.top=4] - Padding-top between the label and the bar
- * @property {number} [labels[].placements[].padding.bottom=4] - Padding-bottom between the label and the bar
- * @property {number} [labels[].placements[].padding.left=4] - Padding-left between the label and the bar
- * @property {number} [labels[].placements[].padding.right=4] - Padding-right between the label and the bar
+ * @property {number|function} [labels[].placements[].padding.top=4] - Padding-top between the label and the bar. Can be a function, text dimensions object {width, height} is exposed as argument.
+ * @property {number|function} [labels[].placements[].padding.bottom=4] - Padding-bottom between the label and the bar. Can be a function, text dimensions object {width, height} is exposed as argument.
+ * @property {number|function} [labels[].placements[].padding.left=4] - Padding-left between the label and the bar. Can be a function, text dimensions object {width, height} is exposed as argument.
+ * @property {number|function} [labels[].placements[].padding.right=4] - Padding-right between the label and the bar. Can be a function, text dimensions object {width, height} is exposed as argument.
  * @property {object} labels[].placements[].background - Background of the label
  * @property {string|function} labels[].placements[].background.fill - Background color of the label
  * @property {object} labels[].placements[].background.padding - Padding between the label and the background
