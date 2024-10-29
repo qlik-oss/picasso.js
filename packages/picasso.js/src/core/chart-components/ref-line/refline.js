@@ -307,20 +307,19 @@ const refLineComponent = {
           if (!isOob(x2, minX, maxX)) {
             intersections[3] = { x: getPosition(scaleX, x2), y: 0 };
           }
-          const numIntersections = intersections.filter((p) => !!p).length;
+          const numIntersections = intersections.filter((i) => !!i).length;
           if (numIntersections > 2) {
             removeDuplication(intersections);
           }
-          intersections = intersections.filter((p) => !!p);
+          intersections = intersections.filter((i) => !!i);
           if (intersections.length < 2) {
             oob[`y${y1 > maxY ? 0 : 1}`].push(createOobData(p));
             return;
-          } else {
-            slopeLine.x1 = intersections[0].x;
-            slopeLine.y1 = intersections[0].y;
-            slopeLine.x2 = intersections[1].x;
-            slopeLine.y2 = intersections[1].y;
           }
+          slopeLine.x1 = intersections[0].x;
+          slopeLine.y1 = intersections[0].y;
+          slopeLine.x2 = intersections[1].x;
+          slopeLine.y2 = intersections[1].y;
         } else {
           slopeLine = undefined;
         }

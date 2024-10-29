@@ -66,18 +66,14 @@ function getFormatter(p, chart) {
   return null;
 }
 
-function isColliding(items, slopeValue, slope, measured, maxX, xPadding, yPadding) {
+function isColliding(items, slopeValue, measured, xPadding, yPadding) {
   for (let i = 0, len = items.length; i < len; i++) {
     const curItem = items[i];
     if (curItem?.type === 'text') {
-      if (slope > 0 && maxX !== undefined) {
-        if (
-          Math.abs(curItem.x - slopeValue.x) < curItem.width + xPadding &&
-          Math.abs(curItem.y - slopeValue.y) < measured.height + yPadding
-        ) {
-          return true;
-        }
-      } else if (Math.abs(curItem.y - slopeValue.y) < measured.height + yPadding) {
+      if (
+        Math.abs(curItem.x - slopeValue.x) < Math.max(curItem.width + xPadding, slopeValue.width + xPadding) &&
+        Math.abs(curItem.y - slopeValue.y) < measured.height + yPadding
+      ) {
         return true;
       }
     }
@@ -86,22 +82,24 @@ function isColliding(items, slopeValue, slope, measured, maxX, xPadding, yPaddin
 }
 
 function calculateX(slopeLine, line, maxX, measured, blueprint, slopeStyle) {
+  let neededPadding = 0;
   // calculate x for the various scenarios possible
   if (maxX !== undefined) {
     // docking at top
     if (maxX < DOCK_CORNER) {
-      return slopeLine.isRtl ? maxX * blueprint.width - (measured.width + slopeStyle.padding) : maxX * blueprint.width;
-    }
-    if (maxX > DOCK_CORNER) {
-      // very close to the corner when width doesn't fit
-      return slopeLine.isRtl
-        ? maxX * blueprint.width - (measured.width + slopeStyle.padding * 2)
-        : maxX * blueprint.width - (measured.width + slopeStyle.padding * 6);
+      neededPadding = slopeLine.slope < 0 || slopeLine.isRtl ? slopeStyle.padding * 3 : slopeStyle.padding * 2;
+      return slopeLine.isRtl ? maxX * blueprint.width + neededPadding : maxX * blueprint.width + neededPadding;
     }
     if (maxX === 1) {
       // dock at the corner of the data area top and right
       return slopeLine.isRtl
-        ? maxX * blueprint.width + (measured.width + slopeStyle.padding * 3)
+        ? maxX * blueprint.width - (measured.width + slopeStyle.padding * 3)
+        : maxX * blueprint.width - (measured.width + slopeStyle.padding * 6);
+    }
+    if (maxX > DOCK_CORNER) {
+      // very close to the corner when width doesn't fit
+      return slopeLine.isRtl
+        ? maxX * blueprint.width - (measured.width + slopeStyle.padding * 3)
         : maxX * blueprint.width - (measured.width + slopeStyle.padding * 6);
     }
   } else if (slopeLine.slope > 0) {
@@ -326,7 +324,11 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
   // Always push the line,
   // but this is done after collision detection,
   // because otherwise it would collide with it's own line
-  items.push(line);
+  // check for slopeline if the points are almost on the blueprints edge
+  if (line) {
+    items.push(line);
+  }
+
   if (slopeLine?.slope !== 0 && (slopeLine?.showLabel || slopeLine?.showValue)) {
     // create data area labels for slope line
     let valueString;
@@ -351,12 +353,10 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
       const maxX = isMaxY(chart, slopeLine.slope, slopeLine.value)
         ? getMaxXPosition(chart, slopeLine.slope, slopeLine.value)
         : undefined;
-      const maxY = maxX === undefined ? Math.abs(line.y2) : 1;
       const xPadding = maxX !== undefined && !slopeLine.isRtl ? slopeStyle.padding * 3 : slopeStyle.padding;
       const yPadding = maxX !== undefined || slopeLine.slope > 0 ? slopeStyle.padding * 3 : slopeStyle.padding;
       const x = calculateX(slopeLine, line, maxX, measured, blueprint, slopeStyle);
       const y = Math.min(line.y1, line.y2);
-      // console.log({ x, y, line, slopeLine });
       // if coloredBackground is true make a rect
       if (slopeLine.labelStroke) {
         labelBackground = {
@@ -387,7 +387,7 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
         maxWidth: maxLabelWidth,
         width: measured.width,
       };
-      if (!isColliding(items, slopeLabel, slopeLine.slope, measured, maxX, xPadding, yPadding)) {
+      if (!isColliding(items, slopeLabel, measured, xPadding, yPadding)) {
         if (labelBackground) {
           items.push(labelBackground);
         }
