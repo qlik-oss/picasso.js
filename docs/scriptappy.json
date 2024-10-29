@@ -3,7 +3,7 @@
   "info": {
     "name": "picasso.js",
     "description": "A charting library streamlined for building visualizations for the Qlik Sense Analytics platform.",
-    "version": "2.2.8",
+    "version": "2.3.0",
     "license": "MIT",
     "stability": "stable",
     "x-qlik-visibility": "public"
@@ -4032,7 +4032,7 @@
         }
       },
       "examples": [
-        "{\n type: 'ref-line',\n lines: {\n   y: [{\n     scale: 'y',\n     value: 5000,\n     label: {\n       text: 'value label'\n     }\n   }]\n }\n}"
+        "{\n type: 'ref-line',\n lines: {\n   y: [{\n     scale: 'y',\n     value: 5000,\n     label: {\n       text: 'value label'\n     }\n     slope: 0.5,\n   }]\n }\n}"
       ],
       "definitions": {
         "GenericObject": {
@@ -4148,6 +4148,12 @@
               "optional": true,
               "defaultValue": "ComponentRefLine~LineLabel",
               "type": "#/definitions/ComponentRefLine/definitions/LineLabel"
+            },
+            "slope": {
+              "description": "The slope for the reference line",
+              "optional": true,
+              "defaultValue": 0,
+              "type": "number"
             }
           }
         },

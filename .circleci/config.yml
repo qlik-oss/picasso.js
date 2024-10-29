@@ -2,18 +2,6 @@ version: 2.1
 orbs:
   browser-tools: circleci/browser-tools@1.4.3
 
-aliases:
-  - &restore_yarn_cache
-    keys:
-      - v1-yarn-deps-{{ checksum "yarn.lock" }}
-  - &save_yarn_cache
-    paths:
-      - ~/.cache/yarn
-    key: v1-yarn-deps-{{ checksum "yarn.lock" }}
-  - &filter_master
-    branches:
-      only: master
-
 defaults: &defaults
   working_directory: ~/picassojs
   # Available images https://hub.docker.com/r/circleci/node/tags/
@@ -25,9 +13,24 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - restore_cache: *restore_yarn_cache
-      - run: yarn install --frozen-lockfile
-      - save_cache: *save_yarn_cache
+      - restore_cache:
+          name: Restore pnpm cache
+          keys:
+            - pnpm-packages-{{ checksum "pnpm-lock.yaml" }}
+      - run:
+          name: Enable pnpm
+          command: |
+            corepack enable pnpm --install-directory ~/bin
+            pnpm config set store-dir .pnpm-store
+      - run:
+          name: Install dependencies
+          command: |
+            pnpm install --frozen-lockfile
+      - save_cache:
+          name: Save pnpm cache
+          key: pnpm-packages-{{ checksum "pnpm-lock.yaml" }}
+          paths:
+            - .pnpm-store
       - store_artifacts:
           path: package.json
       - persist_to_workspace:
@@ -40,7 +43,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/picassojs
-      - run: yarn run build
+      - run: pnpm run build
       - store_artifacts:
           path: packages/picasso.js/dist
       - store_artifacts:
@@ -61,14 +64,14 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/picassojs
-      - run: yarn run lint
+      - run: pnpm run lint
 
   types:
     <<: *defaults
     steps:
       - attach_workspace:
           at: ~/picassojs
-      - run: yarn run types:check
+      - run: pnpm run types:check
 
   api-governance:
     <<: *defaults
@@ -113,19 +116,16 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/picassojs
-      - run: yarn run test:component
+      - run: pnpm run test:component
 
   test-integration:
     <<: *defaults
     steps:
       - attach_workspace:
           at: ~/picassojs
-      - run: sudo apt-get update
-      - browser-tools/install-chrome:
-          # TODO Remove when following issue is fixed: https://github.com/CircleCI-Public/browser-tools-orb/issues/90
-          chrome-version: 116.0.5845.96
+      - browser-tools/install-chrome
       - browser-tools/install-chromedriver
-      - run: yarn run test:integration:ci
+      - run: pnpm run test:integration:ci
 
 workflows:
   version: 2

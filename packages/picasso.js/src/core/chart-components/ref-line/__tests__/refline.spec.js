@@ -370,6 +370,395 @@ describe('reference lines', () => {
     ]);
   });
 
+  it('should render slope line with positive slope and no label on Y scale', () => {
+    const config = {
+      shapeFn,
+      lines: {
+        y: [
+          {
+            value: 0.5,
+            line: {
+              stroke: 'green',
+              strokeWidth: 2,
+            },
+            slope: 0.25,
+            showValue: false,
+            showLabel: false,
+            refLineLabel: 'Threshold value',
+          },
+        ],
+        style: {
+          label: {
+            fontSize: '20px',
+            fontFamily: "'Arial'",
+          },
+        },
+      },
+    };
+
+    const xScale = (v) => v;
+    xScale.min = () => 0;
+    xScale.max = () => 1;
+    chart.scale.withArgs({ scale: 'x' }).returns(xScale);
+
+    const yScale = (v) => v;
+    yScale.min = () => 0;
+    yScale.max = () => 1;
+    chart.scale.withArgs({ scale: 'y' }).returns(yScale);
+
+    createAndRenderComponent({
+      inner: {
+        x: 37,
+        y: 0,
+        width: 870,
+        height: 813,
+      },
+      config,
+    });
+
+    expect(rendererOutput).to.deep.equal([
+      {
+        flipXY: false,
+        stroke: 'green',
+        strokeDasharray: undefined,
+        strokeWidth: 2,
+        type: 'line',
+        value: 0.5,
+        x1: 0,
+        x2: 870,
+        y1: 406.5,
+        y2: 609.75,
+      },
+    ]);
+  });
+
+  it('should render slope line with positive slope and label on Y scale', () => {
+    const config = {
+      shapeFn,
+      lines: {
+        y: [
+          {
+            value: 0.5,
+            line: {
+              stroke: 'green',
+              strokeWidth: 2,
+            },
+            slope: 0.25,
+            showValue: true,
+            showLabel: true,
+            refLineLabel: 'Threshold value',
+          },
+        ],
+        style: {
+          label: {
+            fontSize: '20px',
+            fontFamily: "'Arial'",
+          },
+        },
+      },
+    };
+
+    const xScale = (v) => v;
+    xScale.min = () => 0;
+    xScale.max = () => 1;
+    chart.scale.withArgs({ scale: 'x' }).returns(xScale);
+
+    const yScale = (v) => v;
+    yScale.min = () => 0;
+    yScale.max = () => 1;
+    chart.scale.withArgs({ scale: 'y' }).returns(yScale);
+
+    createAndRenderComponent({
+      inner: {
+        x: 37,
+        y: 0,
+        width: 870,
+        height: 813,
+      },
+      config,
+    });
+
+    expect(rendererOutput).to.deep.equal([
+      {
+        flipXY: false,
+        stroke: 'green',
+        strokeDasharray: undefined,
+        strokeWidth: 2,
+        type: 'line',
+        value: 0.5,
+        x1: 0,
+        x2: 870,
+        y1: 406.5,
+        y2: 609.75,
+      },
+      {
+        anchor: 'start',
+        fill: 'green',
+        fontFamily: 'Arial',
+        fontSize: '12px',
+        maxWidth: 120,
+        opacity: 1,
+        text: 'Threshold value (0.25x + 0.5)',
+        title: 'Threshold value (0.25x + 0.5)',
+        type: 'text',
+        width: 120,
+        x: 742,
+        y: 607.25,
+      },
+    ]);
+  });
+
+  it('should render slope line with negative slope label on Y', () => {
+    const config = {
+      shapeFn,
+      lines: {
+        y: [
+          {
+            value: 0.5,
+            line: {
+              stroke: 'green',
+              strokeWidth: 2,
+            },
+            slope: -0.5,
+            showValue: true,
+            showLabel: true,
+            refLineLabel: 'Threshold value',
+          },
+        ],
+        style: {
+          label: {
+            fontSize: '20px',
+            fontFamily: "'Arial'",
+          },
+        },
+      },
+    };
+
+    const xScale = (v) => v;
+    xScale.min = () => 0;
+    xScale.max = () => 1;
+    chart.scale.withArgs({ scale: 'x' }).returns(xScale);
+
+    const yScale = (v) => v;
+    yScale.min = () => 0;
+    yScale.max = () => 1;
+    chart.scale.withArgs({ scale: 'y' }).returns(yScale);
+
+    createAndRenderComponent({
+      inner: {
+        x: 37,
+        y: 0,
+        width: 870,
+        height: 813,
+      },
+      config,
+    });
+
+    expect(rendererOutput).to.deep.equal([
+      {
+        flipXY: false,
+        stroke: 'green',
+        strokeDasharray: undefined,
+        strokeWidth: 2,
+        type: 'line',
+        value: 0.5,
+        x1: 0,
+        x2: 870,
+        y1: 406.5,
+        y2: 0,
+      },
+      {
+        anchor: 'start',
+        fill: 'green',
+        fontFamily: 'Arial',
+        fontSize: '12px',
+        maxWidth: 120,
+        opacity: 1,
+        text: 'Threshold value (-0.5x + 0.5)',
+        title: 'Threshold value (-0.5x + 0.5)',
+        type: 'text',
+        width: 120,
+        x: 7,
+        y: 404,
+      },
+    ]);
+  });
+
+  it('should render slope line with rect for colored background on Y scale', () => {
+    const config = {
+      shapeFn,
+      lines: {
+        y: [
+          {
+            value: 0.5,
+            line: {
+              stroke: 'green',
+              strokeWidth: 2,
+            },
+            slope: 0.5,
+            showValue: false,
+            showLabel: true,
+            refLineLabel: 'Colored',
+            labelStroke: '#ffffff',
+          },
+        ],
+        style: {
+          label: {
+            fontSize: '20px',
+            fontFamily: "'Arial'",
+          },
+        },
+      },
+    };
+
+    const xScale = (v) => v;
+    xScale.min = () => 0;
+    xScale.max = () => 1;
+    chart.scale.withArgs({ scale: 'x' }).returns(xScale);
+
+    const yScale = (v) => v;
+    yScale.min = () => 0;
+    yScale.max = () => 1;
+    chart.scale.withArgs({ scale: 'y' }).returns(yScale);
+
+    createAndRenderComponent({
+      inner: {
+        x: 37,
+        y: 0,
+        width: 870,
+        height: 813,
+      },
+      config,
+    });
+
+    expect(rendererOutput).to.deep.equal([
+      {
+        flipXY: false,
+        stroke: 'green',
+        strokeDasharray: undefined,
+        strokeWidth: 2,
+        type: 'line',
+        value: 0.5,
+        x1: 0,
+        x2: 870,
+        y1: 406.5,
+        y2: 813,
+      },
+      {
+        fill: 'green',
+        height: 12.399999999999999,
+        rx: 3,
+        ry: 3,
+        stroke: 'green',
+        type: 'rect',
+        width: 55.4,
+        x: 791.6,
+        y: 0.6000000000000014,
+      },
+      {
+        anchor: 'start',
+        fill: '#ffffff',
+        fontFamily: 'Arial',
+        fontSize: '12px',
+        maxWidth: 120,
+        opacity: 1,
+        text: 'Colored',
+        title: 'Colored',
+        type: 'text',
+        width: 50.4,
+        x: 793.6,
+        y: 10,
+      },
+    ]);
+  });
+
+  it('should not render slope line if oob, instead render oob circle', () => {
+    const config = {
+      shapeFn,
+      lines: {
+        y: [
+          {
+            value: 3,
+            line: {
+              stroke: 'green',
+              strokeWidth: 2,
+            },
+            slope: 1,
+            showValue: true,
+            showLabel: true,
+            refLineLabel: 'Threshold value',
+          },
+        ],
+        style: {
+          label: {
+            fontSize: '20px',
+            fontFamily: "'Arial'",
+          },
+        },
+      },
+    };
+
+    const xScale = (v) => v;
+    xScale.min = () => 0;
+    xScale.max = () => 1;
+    chart.scale.withArgs({ scale: 'x' }).returns(xScale);
+
+    const yScale = (v) => v;
+    yScale.min = () => 0;
+    yScale.max = () => 1;
+    chart.scale.withArgs({ scale: 'y' }).returns(yScale);
+
+    createAndRenderComponent({
+      inner: {
+        x: 37,
+        y: 0,
+        width: 870,
+        height: 813,
+      },
+      config,
+    });
+
+    expect(rendererOutput).to.deep.equal([
+      {
+        type: 'circle',
+        cy: 775,
+        cx: 15,
+        r: 10,
+        stroke: 'transparent',
+        fill: '#1A1A1A',
+        strokeWidth: 0,
+        opacity: 1,
+        data: [
+          {
+            value: 3,
+          },
+        ],
+      },
+      {
+        type: 'text',
+        text: 1,
+        x: 11,
+        y: 779,
+        fontFamily: 'Arial',
+        fontSize: '13px',
+        stroke: 'transparent',
+        fill: '#fff',
+        strokeWidth: 0,
+        opacity: 1,
+      },
+      {
+        type: 'path',
+        d: '\n    M 7.5 786.25\n    L 22.5 786.25\n    L 15 793.75 Z\n  ',
+        x: 15,
+        y: 775,
+        stroke: 'transparent',
+        fill: '#4D4D4D',
+        strokeWidth: 0,
+        opacity: 1,
+      },
+    ]);
+  });
+
   it('vAlign 0, align 1, default values and different text test', () => {
     const config = {
       shapeFn,

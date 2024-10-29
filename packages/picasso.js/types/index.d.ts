@@ -1048,6 +1048,7 @@ declare namespace picassojs {
             scale?: string;
             line?: picassojs.ComponentRefLine.GenericObject;
             label?: picassojs.ComponentRefLine.LineLabel;
+            slope?: number;
         };
 
         type LineLabel = {

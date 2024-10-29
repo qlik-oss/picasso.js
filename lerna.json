@@ -8,7 +8,6 @@
       "ignore": ["test-utils", "docs"]
     }
   },
-  "version": "2.2.8",
-  "npmClient": "yarn",
-  "useWorkspaces": true
+  "version": "2.3.0",
+  "npmClient": "pnpm"
 }

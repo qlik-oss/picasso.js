@@ -1,6 +1,6 @@
 {
   "name": "picasso-plugin-q",
-  "version": "2.2.8",
+  "version": "2.3.0",
   "description": "QIX plugin for picasso.js",
   "license": "MIT",
   "author": "QlikTech International AB",
@@ -15,7 +15,7 @@
   "module": "dist/picasso-q.esm.js",
   "scripts": {
     "build": "rollup --config ../../rollup.config.js",
-    "build:watch": "yarn run build -w",
+    "build:watch": "pnpm run build -w",
     "lint": "eslint src",
     "prepublishOnly": "rm -rf dist && npm run build"
   },
