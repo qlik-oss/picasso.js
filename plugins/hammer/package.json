@@ -1,6 +1,6 @@
 {
   "name": "picasso-plugin-hammer",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Hammer JS interaction plugin for picasso.js",
   "license": "MIT",
   "author": "QlikTech International AB",
