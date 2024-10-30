@@ -141,3 +141,7 @@ export function oobManager({ blueprint, oob, settings, items }) {
     }
   }
 }
+
+export function isOob(value, min, max) {
+  return value < min || value > max;
+}
