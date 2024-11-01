@@ -48,6 +48,10 @@ function tickBuilder(ticks, buildOpts) {
   return ticks.map((tick) => buildTick(tick, buildOpts));
 }
 
+function arcTickBuilder(ticks, buildOpts) {
+  return ticks.map((tick) => buildArcTicks(tick, buildOpts));
+}
+
 function tickBandwidth(scale, tick) {
   return tick ? Math.abs(tick.end - tick.start) : scale.bandwidth();
 }
@@ -64,7 +68,7 @@ function labelBuilder(ticks, buildOpts, resolveTickOpts) {
 function arcLabelBuilder(ticks, buildOpts, resolveTickOpts) {
   return ticks.map((tick, idx) => {
     resolveTickOpts(tick, idx);
-    const label = buildArcLabels(ticks, tick, idx, buildOpts);
+    const label = buildArcLabels(tick, buildOpts);
     label.data = tick.data;
     return label;
   });
@@ -234,20 +238,17 @@ export default function nodeBuilder(isDiscrete) {
         buildOpts.startAngle = settings.startAngle;
         buildOpts.endAngle = settings.endAngle;
         buildOpts.outerRadius = settings.outerRadius;
-        nodes.push(buildArcLine(buildOpts));
+        nodes.push(buildArcLine(buildOpts, ticks));
       }
     }
     if (settings.ticks.show) {
       buildOpts.style = settings.ticks;
       buildOpts.tickSize = settings.ticks.tickSize;
       buildOpts.padding = tickSpacing(settings);
-
-      majorTickNodes = tickBuilder(major, buildOpts);
       if (settings.isRadial) {
-        const arcTicks = buildArcTicks(ticks, buildOpts);
-        arcTicks.forEach((arcTick) => {
-          nodes.push(arcTick);
-        });
+        majorTickNodes = arcTickBuilder(ticks, buildOpts);
+      } else {
+        majorTickNodes = tickBuilder(major, buildOpts);
       }
     }
     if (settings.labels.show) {
@@ -286,7 +287,7 @@ export default function nodeBuilder(isDiscrete) {
 
       let labelNodes = [];
       if (settings.isRadial) {
-        labelNodes = arcLabelBuilder(ticks, buildOpts, resolveTickOpts);
+        labelNodes = arcLabelBuilder(major, buildOpts, resolveTickOpts);
       } else if (layered && (settings.align === 'top' || settings.align === 'bottom')) {
         labelNodes = layeredLabelBuilder(major, buildOpts, settings, resolveTickOpts);
       } else {
