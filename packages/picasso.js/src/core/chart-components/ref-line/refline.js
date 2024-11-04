@@ -1,6 +1,6 @@
 import extend from 'extend';
 import { transposer } from '../../transposer/transposer';
-import { oobManager } from './oob';
+import { isOob, oobManager } from './oob';
 import { createLineWithLabel } from './lines-and-labels';
 
 function createOobData(line) {
@@ -38,6 +38,25 @@ function getPosition(scale, value) {
     }
   }
   return scale(value);
+}
+const EPSILON = 1e-15;
+function isIdentical(p1, p2) {
+  return p1 && p2 && Math.abs(p1.x - p2.x) < EPSILON && Math.abs(p1.y - p2.y) < EPSILON;
+}
+
+function removeDuplication(intersections) {
+  if (isIdentical(intersections[0], intersections[1])) {
+    intersections[1] = undefined;
+  }
+  if (isIdentical(intersections[1], intersections[2])) {
+    intersections[2] = undefined;
+  }
+  if (isIdentical(intersections[2], intersections[3])) {
+    intersections[3] = undefined;
+  }
+  if (isIdentical(intersections[3], intersections[0])) {
+    intersections[3] = undefined;
+  }
 }
 
 /**
@@ -268,25 +287,39 @@ const refLineComponent = {
           const scaleY = this.chart.scale({ scale: 'y' });
           const minX = scaleX.min();
           const maxX = scaleX.max();
-          slopeLine = { ...p };
-          slopeLine.x1 = getPosition(scaleX, minX);
-          slopeLine.x2 = getPosition(scaleX, maxX);
+          const minY = scaleY.min();
+          const maxY = scaleY.max();
+          slopeLine = { ...p, x1: undefined, y1: undefined, x2: undefined, y2: undefined };
           const y1 = minX * p.slope + p.value;
           const y2 = maxX * p.slope + p.value;
-          slopeLine.y1 = getPosition(scaleY, y1);
-          slopeLine.y2 = getPosition(scaleY, y2);
-          if (slopeLine.y1 > 1 && slopeLine.y2 > 1) {
-            if (p.slope > 0) {
-              oob[`y${slopeLine.y1 > 1 ? 1 : 0}`].push(createOobData(p));
-            } else {
-              oob[`y${slopeLine.y1 > 1 ? 1 : 0}`].push(createOobData(p));
-            }
+          const x1 = (minY - p.value) / p.slope;
+          const x2 = (maxY - p.value) / p.slope;
+          let intersections = [];
+          if (!isOob(y1, minY, maxY)) {
+            intersections[0] = { x: getPosition(scaleX, minX), y: getPosition(scaleY, y1) };
+          }
+          if (!isOob(x1, minX, maxX)) {
+            intersections[1] = { x: getPosition(scaleX, x1), y: 1 };
+          }
+          if (!isOob(y2, minY, maxY)) {
+            intersections[2] = { x: getPosition(scaleX, maxX), y: getPosition(scaleY, y2) };
+          }
+          if (!isOob(x2, minX, maxX)) {
+            intersections[3] = { x: getPosition(scaleX, x2), y: 0 };
+          }
+          const numIntersections = intersections.filter((i) => !!i).length;
+          if (numIntersections > 2) {
+            removeDuplication(intersections);
+          }
+          intersections = intersections.filter((i) => !!i);
+          if (intersections.length < 2) {
+            oob[`y${y1 > maxY ? 0 : 1}`].push(createOobData(p));
             return;
           }
-          if (slopeLine.y1 < 0) {
-            oob[`y${slopeLine.y1 > 1 ? 1 : 0}`].push(createOobData(p));
-            return;
-          }
+          slopeLine.x1 = intersections[0].x;
+          slopeLine.y1 = intersections[0].y;
+          slopeLine.x2 = intersections[1].x;
+          slopeLine.y2 = intersections[1].y;
         } else {
           slopeLine = undefined;
         }

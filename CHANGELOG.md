@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.1](https://github.com/qlik-oss/picasso.js/compare/v2.3.0...v2.3.1) (2024-10-30)
+
+### Bug Fixes
+
+- allow padding functions ([#880](https://github.com/qlik-oss/picasso.js/issues/880)) ([9560658](https://github.com/qlik-oss/picasso.js/commit/956065888f8ba77ed6668a5a1567f0e9848cb6ed))
+- fix slope line ([#879](https://github.com/qlik-oss/picasso.js/issues/879)) ([b8f62a4](https://github.com/qlik-oss/picasso.js/commit/b8f62a40d32083b06aa1f6371a9ccde4b5b733c0))
+- navigating the negative slope for oob ([#878](https://github.com/qlik-oss/picasso.js/issues/878)) ([e41c4e7](https://github.com/qlik-oss/picasso.js/commit/e41c4e7caa5f12bbf9aa9f133e845cfa356c2065))
+
 # [2.3.0](https://github.com/qlik-oss/picasso.js/compare/v2.2.8...v2.3.0) (2024-10-01)
 
 ### Features

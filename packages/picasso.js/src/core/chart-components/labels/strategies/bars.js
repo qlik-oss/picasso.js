@@ -109,15 +109,19 @@ function limitBounds(bounds, view) {
   bounds.height = maxY - minY;
 }
 
-function pad(bounds, padding = {}) {
+function pad(bounds, measured, padding = {}) {
   const { top = PADDING, bottom = PADDING, left = PADDING, right = PADDING } = padding;
-  bounds.x += left;
-  bounds.width -= left + right;
-  bounds.y += top;
-  bounds.height -= top + bottom;
+  const leftPadding = typeof left === 'function' ? left(measured) : left;
+  const rightPadding = typeof right === 'function' ? right(measured) : right;
+  const topPadding = typeof top === 'function' ? top(measured) : top;
+  const bottomPadding = typeof bottom === 'function' ? bottom(measured) : bottom;
+  bounds.x += leftPadding;
+  bounds.width -= leftPadding + rightPadding;
+  bounds.y += topPadding;
+  bounds.height -= topPadding + bottomPadding;
 }
 
-export function getBarRect({ bar, view, direction, position, padding = PADDING }) {
+export function getBarRect({ bar, view, direction, position, padding = PADDING, measured }) {
   const bounds = {};
   extend(bounds, bar);
 
@@ -148,7 +152,7 @@ export function getBarRect({ bar, view, direction, position, padding = PADDING }
   }
 
   limitBounds(bounds, view);
-  pad(bounds, padding);
+  pad(bounds, measured, padding);
 
   return bounds;
 }
@@ -182,6 +186,7 @@ export function findBestPlacement(
       direction,
       position: placement.position,
       padding: placement.padding,
+      measured,
     });
     boundaries.push(testBounds);
     largest = !p || testBounds[dimension] > largest[dimension] ? testBounds : largest;
@@ -440,10 +445,10 @@ export function getOrientation({ orientation = 'auto', defaultOrientation = 'h' 
  * @property {string} [labels[].placements[].fill='#333'] - Color of the label
  * @property {boolean} [labels[].placements[].overflow=false] - True if the label is allowed to overflow the bar
  * @property {object} labels[].placements[].padding - Padding between the label and the bar
- * @property {number} [labels[].placements[].padding.top=4] - Padding-top between the label and the bar
- * @property {number} [labels[].placements[].padding.bottom=4] - Padding-bottom between the label and the bar
- * @property {number} [labels[].placements[].padding.left=4] - Padding-left between the label and the bar
- * @property {number} [labels[].placements[].padding.right=4] - Padding-right between the label and the bar
+ * @property {number|function} [labels[].placements[].padding.top=4] - Padding-top between the label and the bar. Can be a function, text dimensions object {width, height} is exposed as argument.
+ * @property {number|function} [labels[].placements[].padding.bottom=4] - Padding-bottom between the label and the bar. Can be a function, text dimensions object {width, height} is exposed as argument.
+ * @property {number|function} [labels[].placements[].padding.left=4] - Padding-left between the label and the bar. Can be a function, text dimensions object {width, height} is exposed as argument.
+ * @property {number|function} [labels[].placements[].padding.right=4] - Padding-right between the label and the bar. Can be a function, text dimensions object {width, height} is exposed as argument.
  * @property {object} labels[].placements[].background - Background of the label
  * @property {string|function} labels[].placements[].background.fill - Background color of the label
  * @property {object} labels[].placements[].background.padding - Padding between the label and the background

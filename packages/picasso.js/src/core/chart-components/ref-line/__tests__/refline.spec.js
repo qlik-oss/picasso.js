@@ -503,7 +503,7 @@ describe('reference lines', () => {
         type: 'text',
         width: 120,
         x: 742,
-        y: 607.25,
+        y: 404,
       },
     ]);
   });
@@ -565,7 +565,7 @@ describe('reference lines', () => {
         x1: 0,
         x2: 870,
         y1: 406.5,
-        y2: 0,
+        y2: 813,
       },
       {
         anchor: 'start',
@@ -578,7 +578,7 @@ describe('reference lines', () => {
         title: 'Threshold value (-0.5x + 0.5)',
         type: 'text',
         width: 120,
-        x: 4.5,
+        x: 7,
         y: 404,
       },
     ]);
@@ -653,7 +653,7 @@ describe('reference lines', () => {
         type: 'rect',
         width: 55.4,
         x: 791.6,
-        y: 0.6000000000000014,
+        y: 392.1,
       },
       {
         anchor: 'start',
@@ -667,7 +667,7 @@ describe('reference lines', () => {
         type: 'text',
         width: 50.4,
         x: 793.6,
-        y: 10,
+        y: 401.5,
       },
     ]);
   });
@@ -721,7 +721,7 @@ describe('reference lines', () => {
     expect(rendererOutput).to.deep.equal([
       {
         type: 'circle',
-        cy: 775,
+        cy: 38,
         cx: 15,
         r: 10,
         stroke: 'transparent',
@@ -738,7 +738,7 @@ describe('reference lines', () => {
         type: 'text',
         text: 1,
         x: 11,
-        y: 779,
+        y: 42,
         fontFamily: 'Arial',
         fontSize: '13px',
         stroke: 'transparent',
@@ -748,9 +748,9 @@ describe('reference lines', () => {
       },
       {
         type: 'path',
-        d: '\n    M 7.5 786.25\n    L 22.5 786.25\n    L 15 793.75 Z\n  ',
+        d: '\n    M 7.5 26.75\n    L 22.5 26.75\n    L 15 19.25 Z\n  ',
         x: 15,
-        y: 775,
+        y: 38,
         stroke: 'transparent',
         fill: '#4D4D4D',
         strokeWidth: 0,

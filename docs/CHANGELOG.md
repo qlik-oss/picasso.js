@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.1](https://github.com/qlik-oss/picasso.js/compare/v2.3.0...v2.3.1) (2024-10-30)
+
+### Bug Fixes
+
+- allow padding functions ([#880](https://github.com/qlik-oss/picasso.js/issues/880)) ([9560658](https://github.com/qlik-oss/picasso.js/commit/956065888f8ba77ed6668a5a1567f0e9848cb6ed))
+
 # [2.3.0](https://github.com/qlik-oss/picasso.js/compare/v2.2.8...v2.3.0) (2024-10-01)
 
 ### Features

@@ -30,7 +30,7 @@ Submit your feature by creating a Pull Request, following the [GIT guidelines](#
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) 10+ and [yarn](https://yarnpkg.com) 1.9.4 installed
+- [Node.js](https://nodejs.org/) 18+ and [pnpm](https://pnpm.io)
 
 ### Project structure
 
@@ -48,8 +48,8 @@ This is a multi-package repository which uses [lerna](https://github.com/lerna/l
 To install and build all packages run:
 
 ```sh
-$ yarn
-$ yarn run build
+$ pnpm
+$ pnpm build
 ```
 
 This will generate UMD packages for:
@@ -59,9 +59,9 @@ This will generate UMD packages for:
 
 ### Development workflow
 
-- `yarn run build` generates UMD bundles for all packages
-- `yarn run lint` checks code style
-- `yarn run test` runs all tests
+- `pnpm build` generates UMD bundles for all packages
+- `pnpm lint` checks code style
+- `pnpm test` runs all tests
 
 ## <a name="git"></a> Git Guidelines
 

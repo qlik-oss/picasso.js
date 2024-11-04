@@ -14,13 +14,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
       - name: Install dependencies
         shell: bash
-        run: yarn install --immutable --frozen-lockfile
+        run: pnpm install --frozen-lockfile
       - name: Run unit tests
-        uses: paambaati/codeclimate-action@v8.0.0
+        uses: paambaati/codeclimate-action@v9.0.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
           coverageLocations: ${{github.workspace}}/reports/lcov.info:lcov
-          coverageCommand: yarn test:unit --ci --coverage --reporters="github-actions" --reporters="summary"
+          coverageCommand: pnpm test:unit --ci --coverage --reporters="github-actions" --reporters="summary"

@@ -1,18 +1,18 @@
 {
   "name": "docs",
   "private": true,
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Documentation source",
   "scripts": {
-    "build": "yarn run spec && yarn run ts",
+    "build": "pnpm run spec && pnpm run ts",
     "spec": "jsdoc -r ../packages/picasso.js/src -p ../packages/picasso.js/package.json -X | scriptappy-from-jsdoc -c ./scriptappy.config.js",
     "ts": "sy to-dts --export default -o ../packages/picasso.js/types/index.d.ts",
-    "version": "yarn run spec && yarn run ts && git add scriptappy.json ../packages/picasso.js/types/index.d.ts"
+    "version": "pnpm run spec && pnpm run ts && git add scriptappy.json ../packages/picasso.js/types/index.d.ts"
   },
   "devDependencies": {
     "@scriptappy/cli": "0.10.0",
     "@scriptappy/to-dts": "1.0.0",
-    "jsdoc": "4.0.3",
+    "jsdoc": "4.0.4",
     "scriptappy-from-jsdoc": "0.7.0"
   }
 }
