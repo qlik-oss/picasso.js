@@ -19,8 +19,7 @@ export default function buildArcTicks(tick, buildOpts) {
   const outerRadius = innerRadius + 1;
   const startAngle = buildOpts.startAngle || 0;
   const endAngle = buildOpts.endAngle || Math.PI / 2;
-  const tickWidth = 1;
-  const tickLength = 6;
+  const tickLength = buildOpts.tickSize;
   const angleRange = endAngle - startAngle;
 
   let angle = endAngle - tick.position * angleRange;
@@ -31,13 +30,12 @@ export default function buildArcTicks(tick, buildOpts) {
 
   const struct = {
     type: 'line',
-    stroke: buildOpts.tickColor || '#000',
-    strokeWidth: tickWidth,
-    padding: 5,
+    stroke: buildOpts.tickColor,
     x1: innerPos.x,
     y1: innerPos.y,
     x2: outerPos.x,
     y2: outerPos.y,
+    value: tick.value,
   };
   appendStyle(struct, buildOpts);
   return struct;

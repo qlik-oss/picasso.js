@@ -248,6 +248,7 @@ export default function nodeBuilder(isDiscrete) {
       buildOpts.style = settings.ticks;
       buildOpts.tickSize = settings.ticks.tickSize;
       buildOpts.padding = tickSpacing(settings);
+      buildOpts.tickColor = settings.ticks.tickColor || '#000';
       if (settings.isRadial) {
         majorTickNodes = arcTickBuilder(ticks, buildOpts);
       } else {

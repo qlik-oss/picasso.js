@@ -74,8 +74,6 @@ export default function buildArcLabels(tick, buildOpts) {
     type: 'text',
     text: checkText(tick.label),
     align: side,
-    fontSize: 12,
-    padding: 50,
     x: innerPos.x,
     y: innerPos.y,
     maxHeight: buildOpts.maxHeight,
