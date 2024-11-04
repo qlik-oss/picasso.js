@@ -39,7 +39,6 @@ export default function buildArcTicks(tick, buildOpts) {
     x2: outerPos.x,
     y2: outerPos.y,
   };
-
   appendStyle(struct, buildOpts);
   return struct;
 }

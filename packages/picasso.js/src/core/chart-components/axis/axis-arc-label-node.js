@@ -37,24 +37,23 @@ export default function buildArcLabels(tick, buildOpts) {
   const plotSize = Math.min(rect.height, rect.width) / 2;
   const innerRadius = plotSize * buildOpts.outerRadius;
   const outerRadius = innerRadius + 1;
-
-  const startAngle = buildOpts.startAngle || 0;
+  const startAngle = buildOpts.startAngle || -Math.PI / 2;
   const endAngle = buildOpts.endAngle || Math.PI / 2;
-
   const tickLength = 6;
-
   const angleRange = endAngle - startAngle;
+  const centerOffset = 0.2;
 
   let angle;
+  let side;
+
   if (buildOpts.align === 'top' || buildOpts.align === 'bottom') {
     angle = endAngle - tick.position * angleRange;
   } else {
     angle = startAngle + tick.position * angleRange;
   }
-  let side;
-  if (angle < 0 && angle > -Math.PI) {
+  if (angle < 0 - centerOffset && angle > -Math.PI + centerOffset) {
     side = 'left';
-  } else if (angle > 0 && angle < Math.PI) {
+  } else if (angle > 0 + centerOffset && angle < Math.PI - centerOffset) {
     side = 'right';
   } else {
     side = 'center';

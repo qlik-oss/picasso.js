@@ -14,7 +14,7 @@ export default function buildArcLine(buildOpts, ticks) {
 
   const startAngle = buildOpts.startAngle || 0;
   const endAngle = buildOpts.endAngle || Math.PI / 2;
-  const arcValue = ticks[ticks.length - 1].value;
+  const arcValue = ticks && ticks.length > 0 ? ticks[ticks.length - 1].value : 0;
   const struct = {
     visible: true,
     type: 'path',
@@ -33,8 +33,6 @@ export default function buildArcLine(buildOpts, ticks) {
     outerRadius,
     ticks: [],
   };
-
   appendStyle(struct, buildOpts);
-
   return struct;
 }

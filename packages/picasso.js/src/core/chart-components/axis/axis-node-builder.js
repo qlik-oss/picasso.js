@@ -229,16 +229,19 @@ export default function nodeBuilder(isDiscrete) {
     const tilted = state.labels.activeMode === 'tilted';
     const layered = state.labels.activeMode === 'layered';
     let majorTickNodes;
+
+    if (settings.isRadial) {
+      buildOpts.startAngle = settings.startAngle;
+      buildOpts.endAngle = settings.endAngle;
+      buildOpts.outerRadius = settings.outerRadius;
+    }
     if (settings.line.show) {
       buildOpts.style = settings.line;
       buildOpts.padding = settings.paddingStart;
-      if (!settings.isRadial) {
-        nodes.push(buildLine(buildOpts));
-      } else {
-        buildOpts.startAngle = settings.startAngle;
-        buildOpts.endAngle = settings.endAngle;
-        buildOpts.outerRadius = settings.outerRadius;
+      if (settings.isRadial) {
         nodes.push(buildArcLine(buildOpts, ticks));
+      } else {
+        nodes.push(buildLine(buildOpts));
       }
     }
     if (settings.ticks.show) {
