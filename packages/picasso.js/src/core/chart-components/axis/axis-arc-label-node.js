@@ -39,7 +39,7 @@ export default function buildArcLabels(tick, buildOpts) {
   const outerRadius = innerRadius + 1;
   const startAngle = buildOpts.startAngle !== undefined ? buildOpts.startAngle : -Math.PI / 2;
   const endAngle = buildOpts.endAngle !== undefined ? buildOpts.endAngle : Math.PI / 2;
-  const tickLength = 6;
+  const tickLength = buildOpts.tickSize;
   const angleRange = endAngle - startAngle;
   const centerOffset = 0.2;
 
