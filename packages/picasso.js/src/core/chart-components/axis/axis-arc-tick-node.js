@@ -15,10 +15,10 @@ export default function buildArcTicks(tick, buildOpts) {
   const rect = buildOpts.innerRect;
   const centerPoint = { cx: rect.width / 2, cy: rect.height / 2 };
   const plotSize = Math.min(rect.height, rect.width) / 2;
-  const innerRadius = plotSize * buildOpts.radius;
+  const innerRadius = buildOpts.radius !== undefined ? plotSize * buildOpts.radius : plotSize * 0.5;
   const outerRadius = innerRadius + 1;
-  const startAngle = buildOpts.startAngle || 0;
-  const endAngle = buildOpts.endAngle || Math.PI / 2;
+  const startAngle = buildOpts.startAngle !== undefined ? buildOpts.startAngle : -Math.PI / 2;
+  const endAngle = buildOpts.endAngle !== undefined ? buildOpts.endAngle : Math.PI / 2;
   const tickLength = buildOpts.tickSize;
   const angleRange = endAngle - startAngle;
 
