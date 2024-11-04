@@ -233,7 +233,7 @@ export default function nodeBuilder(isDiscrete) {
     if (settings.isRadial) {
       buildOpts.startAngle = settings.startAngle;
       buildOpts.endAngle = settings.endAngle;
-      buildOpts.outerRadius = settings.outerRadius;
+      buildOpts.radius = settings.radius;
     }
     if (settings.line.show) {
       buildOpts.style = settings.line;
