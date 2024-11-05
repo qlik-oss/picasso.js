@@ -23,6 +23,18 @@ function collider(struct, tickPos) {
   }
 }
 
+function calculateMaxWidth(buildOpts, side, innerPos) {
+  let maxWidth;
+  if (side === 'left') {
+    maxWidth = innerPos.x;
+  } else if (side === 'right') {
+    maxWidth = buildOpts.outerRect.width - innerPos.x;
+  } else {
+    maxWidth = Math.max(innerPos.x, buildOpts.outerRect.width - innerPos.x);
+  }
+  return maxWidth;
+}
+
 function appendCollider(tick, struct, buildOpts, tickPos) {
   collider(tick, struct, buildOpts, tickPos);
 }
@@ -77,7 +89,6 @@ export default function buildArcLabels(tick, buildOpts) {
     x: innerPos.x,
     y: innerPos.y,
     maxHeight: buildOpts.maxHeight,
-    maxWidth: buildOpts.maxWidth,
     anchor: textAnchor,
     baseline: 'middle',
   };
@@ -86,5 +97,6 @@ export default function buildArcLabels(tick, buildOpts) {
   appendStyle(struct, buildOpts);
   appendBounds(struct, buildOpts);
   appendCollider(struct, tickPos);
+  struct.maxWidth = calculateMaxWidth(buildOpts, side, innerPos);
   return struct;
 }
