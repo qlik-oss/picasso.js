@@ -239,7 +239,7 @@ export default function nodeBuilder(isDiscrete) {
       buildOpts.style = settings.line;
       buildOpts.padding = settings.paddingStart;
       if (settings.isRadial) {
-        nodes.push(buildArcLine(buildOpts, ticks));
+        nodes.push(buildArcLine(buildOpts));
       } else {
         nodes.push(buildLine(buildOpts));
       }
