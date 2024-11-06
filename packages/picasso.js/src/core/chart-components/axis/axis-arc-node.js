@@ -27,8 +27,6 @@ export default function buildArcLine(buildOpts) {
         outerRadius,
       },
     },
-    innerRadius,
-    outerRadius,
     ticks: [],
   };
   appendStyle(struct, buildOpts);
