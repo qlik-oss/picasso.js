@@ -16,7 +16,7 @@ export default function buildArcTicks(tick, buildOpts) {
   const centerPoint = { cx: rect.width / 2, cy: rect.height / 2 };
   const plotSize = Math.min(rect.height, rect.width) / 2;
   const innerRadius = buildOpts.radius !== undefined ? plotSize * buildOpts.radius : plotSize * 0.5;
-  const outerRadius = innerRadius + 1;
+  const outerRadius = innerRadius + buildOpts.padding;
   const startAngle = buildOpts.startAngle !== undefined ? buildOpts.startAngle : -Math.PI / 2;
   const endAngle = buildOpts.endAngle !== undefined ? buildOpts.endAngle : Math.PI / 2;
   const tickLength = buildOpts.tickSize;
@@ -30,7 +30,6 @@ export default function buildArcTicks(tick, buildOpts) {
 
   const struct = {
     type: 'line',
-    stroke: buildOpts.tickColor,
     x1: innerPos.x,
     y1: innerPos.y,
     x2: outerPos.x,

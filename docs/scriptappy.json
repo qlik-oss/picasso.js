@@ -1681,6 +1681,33 @@
               "defaultValue": "auto",
               "type": "string"
             },
+            "arc": {
+              "kind": "object",
+              "entries": {
+                "endAngle": {
+                  "description": "End of arc line",
+                  "optional": true,
+                  "type": "number"
+                },
+                "isRadial": {
+                  "description": "Flag that determines if axis is radial",
+                  "optional": true,
+                  "defaultValue": false,
+                  "type": "boolean"
+                },
+                "radius": {
+                  "description": "Radius of arc line",
+                  "optional": true,
+                  "defaultValue": 0.5,
+                  "type": "number"
+                },
+                "startAngle": {
+                  "description": "Start of arc line",
+                  "optional": true,
+                  "type": "number"
+                }
+              }
+            },
             "labels": {
               "kind": "object",
               "entries": {

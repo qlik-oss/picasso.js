@@ -553,6 +553,12 @@ declare namespace picassojs {
     namespace ComponentAxis {
         type ContinuousSettings = {
             align?: string;
+            arc: {
+                endAngle?: number;
+                isRadial?: boolean;
+                radius?: number;
+                startAngle?: number;
+            };
             labels: {
                 align?: number;
                 filterOverlapping?: boolean;

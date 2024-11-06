@@ -9,8 +9,8 @@ export default function buildArcLine(buildOpts) {
   const centerPoint = { cx: rect.width / 2, cy: rect.height / 2 };
   const plotSize = Math.min(rect.height, rect.width) / 2;
 
-  const innerRadius = buildOpts.radius !== undefined ? plotSize * buildOpts.radius : plotSize * 0.5;
-  const outerRadius = innerRadius + 1;
+  const innerRadius = plotSize * buildOpts.radius;
+  const outerRadius = innerRadius + buildOpts.style.strokeWidth;
 
   const startAngle = buildOpts.startAngle !== undefined ? buildOpts.startAngle : -Math.PI / 2;
   const endAngle = buildOpts.endAngle !== undefined ? buildOpts.endAngle : Math.PI / 2;
