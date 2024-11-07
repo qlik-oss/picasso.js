@@ -119,9 +119,17 @@ const DEFAULT_DISCRETE_SETTINGS = {
 };
 
 /**
+ * @typedef {object} ArcSettings
+ * @property {number} startAngle - Start of arc line, in radians
+ * @property {number} endAngle - End of arc line, in radians
+ * @property {number} radius - Radius of arc line
+ */
+
+/**
  * Continuous axis settings
  * @typedef {object}
  * @alias ComponentAxis~ContinuousSettings
+ * @property {ArcSettings=} arc - Optional arc settings
  * @example
  * {
  *  type: 'axis',
@@ -198,23 +206,6 @@ const DEFAULT_CONTINUOUS_SETTINGS = {
     /** Toggle line on/off
      * @type {boolean=} */
     show: true,
-  },
-  /**
-   * @typedef {object}
-   */
-  arc: {
-    /** Flag that determines if axis is radial
-     * @type {boolean=} */
-    isRadial: false,
-    /** Start of arc line
-     * @type {number=} */
-    startAngle: -Math.PI / 2,
-    /** End of arc line
-     * @type {number=} */
-    endAngle: Math.PI / 2,
-    /** Radius of arc line
-     * @type {number=} */
-    radius: 0.5,
   },
   /** Padding in direction perpendicular to the axis
    * @type {number=} */

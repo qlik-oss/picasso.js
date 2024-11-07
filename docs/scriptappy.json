@@ -148,6 +148,23 @@
     }
   },
   "definitions": {
+    "ArcSettings": {
+      "kind": "object",
+      "entries": {
+        "startAngle": {
+          "description": "Start of arc line, in radians",
+          "type": "number"
+        },
+        "endAngle": {
+          "description": "End of arc line, in radians",
+          "type": "number"
+        },
+        "radius": {
+          "description": "Radius of arc line",
+          "type": "number"
+        }
+      }
+    },
     "Brush": {
       "description": "A brush context",
       "kind": "interface",
@@ -1675,38 +1692,16 @@
           "description": "Continuous axis settings",
           "kind": "object",
           "entries": {
+            "arc": {
+              "description": "Optional arc settings",
+              "optional": true,
+              "type": "#/definitions/ArcSettings"
+            },
             "align": {
               "description": "Set the anchoring point of the axis. Available options are `auto/left/right/bottom/top`. In `auto` the axis determines the best option. The options are restricted based on the axis orientation, a vertical axis may only anchor on `left` or `right`",
               "optional": true,
               "defaultValue": "auto",
               "type": "string"
-            },
-            "arc": {
-              "kind": "object",
-              "entries": {
-                "endAngle": {
-                  "description": "End of arc line",
-                  "optional": true,
-                  "type": "number"
-                },
-                "isRadial": {
-                  "description": "Flag that determines if axis is radial",
-                  "optional": true,
-                  "defaultValue": false,
-                  "type": "boolean"
-                },
-                "radius": {
-                  "description": "Radius of arc line",
-                  "optional": true,
-                  "defaultValue": 0.5,
-                  "type": "number"
-                },
-                "startAngle": {
-                  "description": "Start of arc line",
-                  "optional": true,
-                  "type": "number"
-                }
-              }
             },
             "labels": {
               "kind": "object",

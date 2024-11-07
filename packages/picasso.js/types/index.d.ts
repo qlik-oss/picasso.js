@@ -67,6 +67,12 @@ declare namespace picassojs {
 }
 
 declare namespace picassojs {
+    type ArcSettings = {
+        startAngle: number;
+        endAngle: number;
+        radius: number;
+    };
+
     /**
      * A brush context
      */
@@ -552,13 +558,8 @@ declare namespace picassojs {
 
     namespace ComponentAxis {
         type ContinuousSettings = {
+            arc?: picassojs.ArcSettings;
             align?: string;
-            arc: {
-                endAngle?: number;
-                isRadial?: boolean;
-                radius?: number;
-                startAngle?: number;
-            };
             labels: {
                 align?: number;
                 filterOverlapping?: boolean;

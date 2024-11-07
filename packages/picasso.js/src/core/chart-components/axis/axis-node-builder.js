@@ -241,8 +241,7 @@ export default function nodeBuilder(isDiscrete) {
     const tilted = state.labels.activeMode === 'tilted';
     const layered = state.labels.activeMode === 'layered';
     let majorTickNodes;
-
-    if (settings.arc.isRadial) {
+    if (settings.arc) {
       buildOpts.startAngle = settings.arc.startAngle;
       buildOpts.endAngle = settings.arc.endAngle;
       buildOpts.radius = settings.arc.radius;
@@ -250,7 +249,7 @@ export default function nodeBuilder(isDiscrete) {
     if (settings.line.show) {
       buildOpts.style = settings.line;
       buildOpts.padding = settings.paddingStart;
-      if (settings.arc.isRadial) {
+      if (settings.arc) {
         nodes.push(buildArcLine(buildOpts));
       } else {
         nodes.push(buildLine(buildOpts));
@@ -260,7 +259,7 @@ export default function nodeBuilder(isDiscrete) {
       buildOpts.style = settings.ticks;
       buildOpts.tickSize = settings.ticks.tickSize;
       buildOpts.padding = tickSpacing(settings);
-      if (settings.arc.isRadial) {
+      if (settings.arc) {
         buildOpts.padding = arcTickSpacing(settings);
         majorTickNodes = arcTickBuilder(major, buildOpts);
       } else {
@@ -301,7 +300,7 @@ export default function nodeBuilder(isDiscrete) {
         });
       };
       let labelNodes = [];
-      if (settings.arc.isRadial) {
+      if (settings.arc) {
         buildOpts.padding = arcLabelSpacing(settings);
         labelNodes = arcLabelBuilder(major, buildOpts, resolveTickOpts);
       } else if (layered && (settings.align === 'top' || settings.align === 'bottom')) {
