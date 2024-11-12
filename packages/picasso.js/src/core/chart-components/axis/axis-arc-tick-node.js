@@ -1,7 +1,8 @@
 import extend from 'extend';
 
 function appendStyle(struct, buildOpts) {
-  extend(struct, buildOpts.style);
+  const styleClone = { ...buildOpts.style }; // Shallow clone
+  extend(struct, styleClone);
 }
 
 function polarToCartesian(centerX, centerY, radius, angle) {
