@@ -17,21 +17,29 @@ function setContext() {
   context = context || document.createElement('canvas').getContext('2d');
 }
 
-function setFont(fontSize, fontFamily) {
-  if (contextCache.fontSize === fontSize && contextCache.fontFamily === fontFamily) {
+function isEqual(s1, s2) {
+  return (!s1 && !s2) || s1 === s2;
+}
+
+function setFont({ fontWeight, fontSize, fontFamily }) {
+  if (
+    isEqual(contextCache.fontWeight, fontWeight) &&
+    isEqual(contextCache.fontSize, fontSize) &&
+    isEqual(contextCache.fontFamily, fontFamily)
+  ) {
     return;
   }
-
-  context.font = fontSize + ' ' + fontFamily; // eslint-disable-line
+  context.font = [fontWeight, fontSize, fontFamily].filter((value) => !!value).join(' '); // eslint-disable-line
+  contextCache.fontWeight = fontWeight;
   contextCache.fontSize = fontSize;
   contextCache.fontFamily = fontFamily;
 }
 
-function measureTextWidth(text, fontSize, fontFamily) {
-  const key = text + fontSize + fontFamily;
+function measureTextWidth({ text, fontWeight, fontSize, fontFamily }) {
+  const key = `${text} ${fontWeight} ${fontSize} ${fontFamily}`;
   if (typeof widthCache[key] !== 'number') {
     setContext();
-    setFont(fontSize, fontFamily);
+    setFont({ fontWeight, fontSize, fontFamily });
     widthCache[key] = context.measureText(text).width;
   }
 
@@ -50,6 +58,7 @@ function measureTextHeight(fontSize) {
  * @private
  * @param {object} opts
  * @param {string} opts.text - Text to measure
+ * @param {string} opts.fontWeight - Font weight, e.g. 'bold'
  * @param {string} opts.fontSize - Font size with a unit definition, ex. 'px' or 'em'
  * @param {string} opts.fontFamily - Font family
  * @return {object} Width and height of text in pixels
@@ -60,8 +69,8 @@ function measureTextHeight(fontSize) {
  *  fontFamily: 'Arial'
  * }); // returns { width: 20, height: 12 }
  */
-export function measureText({ text, fontSize, fontFamily }) {
-  const w = measureTextWidth(text, fontSize, fontFamily);
+export function measureText({ text, fontWeight, fontSize, fontFamily }) {
+  const w = measureTextWidth({ text, fontWeight, fontSize, fontFamily });
   const h = measureTextHeight(fontSize);
   return { width: w, height: h };
 }
