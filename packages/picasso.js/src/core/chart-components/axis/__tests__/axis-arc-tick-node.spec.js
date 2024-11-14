@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import buildArcTicks from '../axis-arc-tick-node';
 
 function createTick(position, value) {
