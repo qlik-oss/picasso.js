@@ -58,9 +58,9 @@ function measureTextHeight(fontSize) {
  * @private
  * @param {object} opts
  * @param {string} opts.text - Text to measure
+ * @param {string} opts.fontWeight - Font weight, e.g. 'bold'
  * @param {string} opts.fontSize - Font size with a unit definition, ex. 'px' or 'em'
  * @param {string} opts.fontFamily - Font family
- * @param {string} opts.fontWeight - Font weight, e.g. 'bold'
  * @return {object} Width and height of text in pixels
  * @example
  * measureText({
@@ -69,8 +69,8 @@ function measureTextHeight(fontSize) {
  *  fontFamily: 'Arial'
  * }); // returns { width: 20, height: 12 }
  */
-export function measureText({ text, fontSize, fontFamily, fontWeight }) {
-  const w = measureTextWidth({ text, fontSize, fontFamily, fontWeight });
+export function measureText({ text, fontWeight, fontSize, fontFamily }) {
+  const w = measureTextWidth({ text, fontWeight, fontSize, fontFamily });
   const h = measureTextHeight(fontSize);
   return { width: w, height: h };
 }
