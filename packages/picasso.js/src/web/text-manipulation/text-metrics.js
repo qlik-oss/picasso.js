@@ -38,7 +38,7 @@ function setFont({ fontStyle, fontWeight, fontSize, fontFamily }) {
 }
 
 function measureTextWidth({ text, fontStyle, fontWeight, fontSize, fontFamily }) {
-  const key = text + [fontStyle, fontWeight, fontSize, fontFamily].filter((value) => !!value).join('');
+  const key = `${text} ${fontStyle} ${fontWeight} ${fontSize} ${fontFamily}`;
   if (typeof widthCache[key] !== 'number') {
     setContext();
     setFont({ fontStyle, fontWeight, fontSize, fontFamily });
