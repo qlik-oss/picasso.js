@@ -57,7 +57,6 @@ describe('Axis Arc Tick Node', () => {
       tickValue = 0;
       tick = createTick(1, tickValue);
       const result = buildArcTicks(tick, buildOpts);
-      console.log(result);
       expect(result.x1).to.be.closeTo(45, 1);
       expect(result.x2).to.be.closeTo(51, 1);
       expect(result.y1).to.be.closeTo(298, 1);

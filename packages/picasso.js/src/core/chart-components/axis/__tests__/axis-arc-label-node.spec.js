@@ -95,7 +95,6 @@ describe('Axis Label Node', () => {
         buildOpts.innerRect = { width: 213, height: 595 };
         tick = createTick(0.5, '300');
         const result = buildArcLabels(tick, buildOpts);
-        console.log(result);
         expect(result.x).to.be.closeTo(106.5, 2);
         expect(result.y).to.be.closeTo(191, 2);
         expect(result.anchor).to.equal('middle');
