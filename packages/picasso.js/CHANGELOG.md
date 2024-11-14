@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/qlik-oss/picasso.js/compare/v2.3.1...v2.4.0) (2024-11-14)
+
+### Features
+
+- support measuring text with font weight ([#884](https://github.com/qlik-oss/picasso.js/issues/884)) ([3ac2af7](https://github.com/qlik-oss/picasso.js/commit/3ac2af75f3fb078f4e430a14390333efc8662cc5))
+
 ## [2.3.1](https://github.com/qlik-oss/picasso.js/compare/v2.3.0...v2.3.1) (2024-10-30)
 
 ### Bug Fixes
