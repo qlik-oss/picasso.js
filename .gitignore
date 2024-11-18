@@ -2,6 +2,7 @@
 *.tmp
 *.log
 .DS_Store
+junit.xml
 stats.json
 .idea/
 .vscode/

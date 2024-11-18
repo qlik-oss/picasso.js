@@ -3,7 +3,7 @@ import buildArcTicks from '../axis-arc-tick-node';
 function createTick(position, value) {
   return {
     position,
-    value, // just some dummy value to test node value for tracking animation
+    value,
   };
 }
 

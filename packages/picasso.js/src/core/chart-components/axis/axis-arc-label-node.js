@@ -35,6 +35,18 @@ function calculateMaxWidth(buildOpts, side, innerPos) {
   return maxWidth;
 }
 
+function checkRadialOutOfBounds(buildOpts, innerPos, struct) {
+  let maxHeightTop;
+  let maxHeightBottom;
+  const textHeight = parseFloat(struct.fontSize) || 0;
+  maxHeightTop = innerPos.y - textHeight / 2;
+  maxHeightBottom = buildOpts.innerRect.height - (innerPos.y + textHeight / 2);
+  if (maxHeightTop < 0 || maxHeightBottom < 0) {
+    struct.text = '';
+  }
+  return maxHeightBottom;
+}
+
 function appendCollider(tick, struct, buildOpts, tickPos) {
   collider(tick, struct, buildOpts, tickPos);
 }
@@ -46,8 +58,8 @@ function appendBounds(struct, buildOpts) {
 export default function buildArcLabels(tick, buildOpts) {
   const rect = buildOpts.innerRect;
   const centerPoint = { cx: rect.width / 2, cy: rect.height / 2 };
-  const plotSize = Math.min(rect.height, rect.width) / 2;
-  const innerRadius = plotSize * buildOpts.radius;
+  const halfPlotSize = Math.min(rect.height, rect.width) / 2;
+  const innerRadius = halfPlotSize * buildOpts.radius;
   const outerRadius = innerRadius + buildOpts.padding;
   const startAngle = buildOpts.startAngle;
   const endAngle = buildOpts.endAngle;
@@ -98,5 +110,6 @@ export default function buildArcLabels(tick, buildOpts) {
   appendStyle(struct, buildOpts);
   appendBounds(struct, buildOpts);
   appendCollider(struct, tickPos);
+  checkRadialOutOfBounds(buildOpts, innerPos, struct);
   return struct;
 }

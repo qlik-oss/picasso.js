@@ -7,8 +7,8 @@ function appendStyle(struct, buildOpts) {
 export default function buildArcLine(buildOpts) {
   const rect = buildOpts.innerRect;
   const centerPoint = { cx: rect.width / 2, cy: rect.height / 2 };
-  const plotSize = Math.min(rect.height, rect.width) / 2;
-  const innerRadius = plotSize * buildOpts.radius;
+  const halfPlotSize = Math.min(rect.height, rect.width) / 2;
+  const innerRadius = halfPlotSize * buildOpts.radius;
   const outerRadius = innerRadius + buildOpts.style.strokeWidth;
   const startAngle = buildOpts.startAngle;
   const endAngle = buildOpts.endAngle;

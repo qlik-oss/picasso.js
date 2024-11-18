@@ -59,12 +59,12 @@ describe('Axis Arc Line Node', () => {
     it('Structure Properties', () => {
       const rect = buildOpts.innerRect;
       const centerPoint = { cx: rect.width / 2, cy: rect.height / 2 };
-      const plotSize = Math.min(rect.height, rect.width) / 2;
+      const halfPlotSize = Math.min(rect.height, rect.width) / 2;
       expected.transform = `translate(0, 0) translate(${centerPoint.cx}, ${centerPoint.cy})`;
       expected.arcDatum.startAngle = buildOpts.startAngle;
       expected.arcDatum.endAngle = buildOpts.endAngle;
-      expected.desc.slice.innerRadius = buildOpts.radius * plotSize;
-      expected.desc.slice.outerRadius = buildOpts.radius * plotSize + buildOpts.style.strokeWidth;
+      expected.desc.slice.innerRadius = buildOpts.radius * halfPlotSize;
+      expected.desc.slice.outerRadius = buildOpts.radius * halfPlotSize + buildOpts.style.strokeWidth;
       expect(buildArcLine(buildOpts)).to.deep.equal(expected);
     });
   });

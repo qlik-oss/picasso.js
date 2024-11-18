@@ -5,11 +5,11 @@ function createTick(position, label) {
   return {
     position,
     label,
-    value: 1.23, // just some dummy value to test node value for tracking animation
+    value: 1.23,
   };
 }
 
-describe('Axis Label Node', () => {
+describe('Axis Arc Label Node', () => {
   const innerRect = {
     x: 0,
     y: 0,
@@ -64,7 +64,7 @@ describe('Axis Label Node', () => {
     });
 
     describe('Style align', () => {
-      it('start on left side of tick', () => {
+      it('the label should be placed on the left side of the tick', () => {
         buildOpts.align = 'top';
         tick = createTick(1, '0');
         const result = buildArcLabels(tick, buildOpts);
@@ -73,7 +73,7 @@ describe('Axis Label Node', () => {
         expect(result.anchor).to.equal('end');
       });
 
-      it('start on left side of tick', () => {
+      it('label with different position, but should still be placed in the left side of the tick', () => {
         buildOpts.align = 'top';
         tick = createTick(0.7, '100');
         const result = buildArcLabels(tick, buildOpts);
@@ -82,7 +82,7 @@ describe('Axis Label Node', () => {
         expect(result.anchor).to.equal('end');
       });
 
-      it('start on right side of tick', () => {
+      it('the label should be placed on the right side of the tick', () => {
         buildOpts.align = 'top';
         tick = createTick(0.4, '250');
         const result = buildArcLabels(tick, buildOpts);
@@ -101,7 +101,7 @@ describe('Axis Label Node', () => {
       });
     });
 
-    describe('Not text in tick label', () => {
+    describe('Not text in tick label-property', () => {
       it('tick.label is undefined', () => {
         buildOpts.align = 'top';
         tick = createTick(0, undefined);
