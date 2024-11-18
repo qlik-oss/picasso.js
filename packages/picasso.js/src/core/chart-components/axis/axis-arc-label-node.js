@@ -15,14 +15,6 @@ function checkText(text) {
   return typeof text === 'string' || typeof text === 'number' ? text : '-';
 }
 
-function collider(struct, tickPos) {
-  if (struct.align === 'right') {
-    if (tickPos.x >= struct.x) {
-      struct.text = '';
-    }
-  }
-}
-
 function calculateMaxWidth(buildOpts, side, innerPos) {
   let maxWidth;
   if (side === 'left') {
@@ -45,10 +37,6 @@ function checkRadialOutOfBounds(buildOpts, innerPos, struct) {
     struct.text = '';
   }
   return maxHeightBottom;
-}
-
-function appendCollider(tick, struct, buildOpts, tickPos) {
-  collider(tick, struct, buildOpts, tickPos);
 }
 
 function appendBounds(struct, buildOpts) {
@@ -106,10 +94,8 @@ export default function buildArcLabels(tick, buildOpts) {
     baseline: 'middle',
   };
 
-  const tickPos = polarToCartesian(centerPoint.cx, centerPoint.cy, outerRadius + 6, angle);
   appendStyle(struct, buildOpts);
   appendBounds(struct, buildOpts);
-  appendCollider(struct, tickPos);
   checkRadialOutOfBounds(buildOpts, innerPos, struct);
   return struct;
 }
