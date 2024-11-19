@@ -119,9 +119,17 @@ const DEFAULT_DISCRETE_SETTINGS = {
 };
 
 /**
+ * @typedef {object} ArcSettings
+ * @property {number} startAngle - Start of arc line, in radians
+ * @property {number} endAngle - End of arc line, in radians
+ * @property {number} radius - Radius of arc line
+ */
+
+/**
  * Continuous axis settings
  * @typedef {object}
  * @alias ComponentAxis~ContinuousSettings
+ * @property {ArcSettings=} arc - Optional arc settings
  * @example
  * {
  *  type: 'axis',

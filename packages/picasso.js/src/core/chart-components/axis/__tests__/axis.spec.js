@@ -283,7 +283,68 @@ describe('Axis', () => {
       });
     });
   });
+  describe('continuous arc axis', () => {
+    beforeEach(() => {
+      scale = linear();
+      chart.scale.returns(scale);
+      opts = {
+        inner: {
+          x: 0,
+          y: 425,
+          width: 400,
+          height: 425,
+        },
+        outer: {
+          x: 0,
+          y: 0,
+          width: 400,
+          height: 425,
+        },
+      };
+      config.settings.arc = {
+        radius: 0.5,
+        startAngle: (-2 * Math.PI) / 3,
+        endAngle: (2 * Math.PI) / 3,
+      };
+    });
+    it('should render arc axis', () => {
+      config.settings.labels = { show: true };
+      config.settings.line = { show: true };
+      componentFixture.simulateCreate(axisComponent, config);
+      componentFixture.simulateRender(opts);
+      verifyNumberOfNodes('text', 1);
+      verifyNumberOfNodes('line', 1);
+    });
 
+    it('should not render arc axis labels when disabled', () => {
+      config.settings.labels = { show: false };
+      config.settings.arc = {
+        radius: 0.5,
+        startAngle: (-2 * Math.PI) / 3,
+        endAngle: (2 * Math.PI) / 3,
+      };
+      componentFixture.simulateCreate(axisComponent, config);
+      componentFixture.simulateRender(opts);
+
+      verifyNumberOfNodes('text', 0);
+      verifyNumberOfNodes('line', 6);
+    });
+
+    it('should not render arc axis line when disabled', () => {
+      config.settings.labels = { show: true };
+      config.settings.line = { show: false };
+      config.settings.arc = {
+        radius: 0.5,
+        startAngle: (-2 * Math.PI) / 3,
+        endAngle: (2 * Math.PI) / 3,
+      };
+      componentFixture.simulateCreate(axisComponent, config);
+      componentFixture.simulateRender(opts);
+
+      verifyNumberOfNodes('text', 6);
+      verifyNumberOfNodes('line', 6);
+    });
+  });
   describe('continuous', () => {
     beforeEach(() => {
       scale = linear();
