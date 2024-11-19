@@ -5,10 +5,19 @@ import { testRectRect } from '../../math/narrow-phase-collision';
 import { getClampedValue } from './axis-label-size';
 import getHorizontalContinuousWidth from './get-continuous-label-rect';
 import { expandRect } from '../../geometry/util';
+import buildArcLine from './axis-arc-node';
+import buildArcTicks from './axis-arc-tick-node';
+import buildArcLabels from './axis-arc-label-node';
 
 function tickSpacing(settings) {
   let spacing = 0;
   spacing += settings.paddingStart;
+  spacing += settings.line.show ? settings.line.strokeWidth / 2 : 0;
+  spacing += settings.ticks.show ? settings.ticks.margin : 0;
+  return spacing;
+}
+function arcTickSpacing(settings) {
+  let spacing = 0;
   spacing += settings.line.show ? settings.line.strokeWidth / 2 : 0;
   spacing += settings.ticks.show ? settings.ticks.margin : 0;
   return spacing;
@@ -22,6 +31,12 @@ function labelsSpacing(settings) {
   let spacing = 0;
   spacing += settings.ticks.show ? settings.ticks.tickSize : 0;
   spacing += tickSpacing(settings) + settings.labels.margin;
+  return spacing;
+}
+function arcLabelSpacing(settings) {
+  let spacing = 0;
+  spacing += settings.ticks.show ? settings.ticks.tickSize : 0;
+  spacing += arcTickSpacing(settings) + settings.labels.margin;
   return spacing;
 }
 
@@ -45,6 +60,10 @@ function tickBuilder(ticks, buildOpts) {
   return ticks.map((tick) => buildTick(tick, buildOpts));
 }
 
+function arcTickBuilder(ticks, buildOpts) {
+  return ticks.map((tick) => buildArcTicks(tick, buildOpts));
+}
+
 function tickBandwidth(scale, tick) {
   return tick ? Math.abs(tick.end - tick.start) : scale.bandwidth();
 }
@@ -53,6 +72,15 @@ function labelBuilder(ticks, buildOpts, resolveTickOpts) {
   return ticks.map((tick, idx) => {
     resolveTickOpts(tick, idx);
     const label = buildLabel(tick, buildOpts);
+    label.data = tick.data;
+    return label;
+  });
+}
+
+function arcLabelBuilder(ticks, buildOpts, resolveTickOpts) {
+  return ticks.map((tick, idx) => {
+    resolveTickOpts(tick, idx);
+    const label = buildArcLabels(tick, buildOpts);
     label.data = tick.data;
     return label;
   });
@@ -213,19 +241,30 @@ export default function nodeBuilder(isDiscrete) {
     const tilted = state.labels.activeMode === 'tilted';
     const layered = state.labels.activeMode === 'layered';
     let majorTickNodes;
-
+    if (settings.arc) {
+      buildOpts.startAngle = settings.arc.startAngle;
+      buildOpts.endAngle = settings.arc.endAngle;
+      buildOpts.radius = settings.arc.radius;
+    }
     if (settings.line.show) {
       buildOpts.style = settings.line;
       buildOpts.padding = settings.paddingStart;
-
-      nodes.push(buildLine(buildOpts));
+      if (settings.arc) {
+        nodes.push(buildArcLine(buildOpts));
+      } else {
+        nodes.push(buildLine(buildOpts));
+      }
     }
     if (settings.ticks.show) {
       buildOpts.style = settings.ticks;
       buildOpts.tickSize = settings.ticks.tickSize;
       buildOpts.padding = tickSpacing(settings);
-
-      majorTickNodes = tickBuilder(major, buildOpts);
+      if (settings.arc) {
+        buildOpts.padding = arcTickSpacing(settings);
+        majorTickNodes = arcTickBuilder(major, buildOpts);
+      } else {
+        majorTickNodes = tickBuilder(major, buildOpts);
+      }
     }
     if (settings.labels.show) {
       const padding = labelsSpacing(settings);
@@ -260,9 +299,11 @@ export default function nodeBuilder(isDiscrete) {
           tick,
         });
       };
-
       let labelNodes = [];
-      if (layered && (settings.align === 'top' || settings.align === 'bottom')) {
+      if (settings.arc) {
+        buildOpts.padding = arcLabelSpacing(settings);
+        labelNodes = arcLabelBuilder(major, buildOpts, resolveTickOpts);
+      } else if (layered && (settings.align === 'top' || settings.align === 'bottom')) {
         labelNodes = layeredLabelBuilder(major, buildOpts, settings, resolveTickOpts);
       } else {
         labelNodes = labelBuilder(major, buildOpts, resolveTickOpts);
@@ -280,7 +321,6 @@ export default function nodeBuilder(isDiscrete) {
       buildOpts.style = settings.minorTicks;
       buildOpts.tickSize = settings.minorTicks.tickSize;
       buildOpts.padding = tickMinorSpacing(settings);
-
       nodes.push(...tickBuilder(minor, buildOpts));
     }
 
