@@ -209,6 +209,10 @@ export function findBestPlacement(
 
 function approxTextBounds(label, textMetrics, rotated, rect, padding = {}) {
   const { top = PADDING, bottom = PADDING, left = PADDING, right = PADDING } = padding;
+  const leftPadding = typeof left === 'function' ? left(textMetrics) : left;
+  const rightPadding = typeof right === 'function' ? right(textMetrics) : right;
+  const topPadding = typeof top === 'function' ? top(textMetrics) : top;
+  const bottomPadding = typeof bottom === 'function' ? bottom(textMetrics) : bottom;
   const x0 = label.x + label.dx;
   const y0 = label.y + label.dy;
   const height = rotated ? Math.min(textMetrics.width, rect.height) : Math.min(textMetrics.height, rect.width);
@@ -218,10 +222,10 @@ function approxTextBounds(label, textMetrics, rotated, rect, padding = {}) {
   const x = rotated ? x0 - offset : x0;
   const y = rotated ? y0 : y0 - offset;
   const bounds = {
-    x: x - left - PADDING_OFFSET,
-    y: y - top - PADDING_OFFSET,
-    width: width + (left + right) - PADDING_OFFSET,
-    height: height + (top + bottom) - PADDING_OFFSET,
+    x: x - leftPadding - PADDING_OFFSET,
+    y: y - topPadding - PADDING_OFFSET,
+    width: width + (leftPadding + rightPadding) - PADDING_OFFSET,
+    height: height + (topPadding + bottomPadding) - PADDING_OFFSET,
   };
   return bounds;
 }
