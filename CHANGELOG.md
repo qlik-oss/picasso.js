@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.5.0](https://github.com/qlik-oss/picasso.js/compare/v2.4.0...v2.5.0) (2024-11-20)
+
+### Features
+
+- added curved feature to axis component ([#883](https://github.com/qlik-oss/picasso.js/issues/883)) ([790a69e](https://github.com/qlik-oss/picasso.js/commit/790a69efff50e45f85e13231470f70d88a79c24f))
+
 # [2.4.0](https://github.com/qlik-oss/picasso.js/compare/v2.3.1...v2.4.0) (2024-11-14)
 
 ### Features
