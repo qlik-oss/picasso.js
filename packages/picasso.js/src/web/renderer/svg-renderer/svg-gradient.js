@@ -21,6 +21,8 @@ export default function gradienter(bucket, hasher = hashObject) {
         // Default to linear
         if (orientation === 'radial') {
           gradient.type = 'radialGradient';
+        } else if (orientation === 'conic') {
+          gradient.type = 'conicGradient';
         } else {
           gradient = degreesToPoints(degree);
           ['x1', 'x2', 'y1', 'y2'].forEach((c) => {
