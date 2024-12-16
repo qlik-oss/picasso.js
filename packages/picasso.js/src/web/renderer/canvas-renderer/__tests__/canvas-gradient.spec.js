@@ -78,6 +78,7 @@ describe('canvas-gradient', () => {
       expect(fill()).to.be.equal('dummyGradient-conic');
     });
   });
+
   describe('linear', () => {
     it('should create linear gradients properly', () => {
       shape = dummyRectObject('linear');
