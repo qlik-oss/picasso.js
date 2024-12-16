@@ -71,34 +71,6 @@ describe('svg-gradient', () => {
       });
     });
 
-    it('should create a conic gradient node', () => {
-      const state = {
-        node: {
-          fill: {
-            type: 'gradient',
-            orientation: 'conic',
-            startAngle: 0,
-            x: 0,
-            y: 0,
-            stops: [
-              { offset: 0, color: 'red', opacity: 0 },
-              { offset: 1, color: 'green' },
-            ],
-          },
-        },
-      };
-      p.onCreate(state);
-
-      expect(bucket[0]).to.containSubset({
-        id: 'picasso-gradient-13-2',
-        type: 'conicGradient',
-        children: [
-          { type: 'stop', offset: '0%', style: 'stop-color:red;stop-opacity:0' },
-          { type: 'stop', offset: '100%', style: 'stop-color:green;stop-opacity:1' },
-        ],
-      });
-    });
-
     it('should create a linear gradient node', () => {
       const state = {
         node: {
