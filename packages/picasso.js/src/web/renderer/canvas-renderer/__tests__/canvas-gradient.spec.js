@@ -58,6 +58,27 @@ describe('canvas-gradient', () => {
     });
   });
 
+  describe('conic', () => {
+    it('should create a conic gradient node', () => {
+      shape = {
+        fill: {
+          type: 'gradient',
+          orientation: 'conic',
+          startAngle: Math.PI / 2,
+          x: 0,
+          y: 0,
+          stops: [
+            { offset: 0, color: 'red', opacity: 0 },
+            { offset: 1, color: 'green' },
+          ],
+        },
+      };
+      const fill = createCanvasGradient(canvascontext(), shape, shape.fill);
+      expect(fill).to.be.a('function');
+      expect(fill()).to.be.equal('dummyGradient-conic');
+    });
+  });
+
   describe('linear', () => {
     it('should create linear gradients properly', () => {
       shape = dummyRectObject('linear');

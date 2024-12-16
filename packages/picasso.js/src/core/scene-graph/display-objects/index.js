@@ -21,6 +21,7 @@ reg.add('container', container);
 reg.add('defs', container);
 reg.add('linearGradient', gradientItem);
 reg.add('radialGradient', gradientItem);
+reg.add('conicGradient', gradientItem);
 reg.add('stop', gradientItem);
 reg.add('pattern', patternItem);
 

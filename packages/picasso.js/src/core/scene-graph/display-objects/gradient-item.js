@@ -6,7 +6,7 @@ import NodeContainer from '../node-container';
  * @typedef {object} GradientNode
  * @property {string} type
  * @property {object[]} stops
- * @property {string} [stops[].type=linearGradient] - radialGradient|linearGradient
+ * @property {string} [stops[].type=linearGradient] - radialGradient|linearGradient|conicGradient
  * @property {string} stops[].color - {@link https://www.w3.org/TR/SVG/types.html#DataTypeColor}
  * @property {string} [stops[].opacity=1] - {@link https://www.w3.org/TR/css-color-4/#propdef-opacity}
  * @property {number} stops[].offset - {@link https://www.w3.org/TR/SVG/pservers.html#StopElementOffsetAttribute}
