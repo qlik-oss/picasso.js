@@ -28,13 +28,13 @@
     "node": ">=18"
   },
   "devDependencies": {
-    "@babel/cli": "7.25.9",
+    "@babel/cli": "7.26.4",
     "@babel/core": "7.26.0",
     "@babel/eslint-parser": "7.25.9",
     "@babel/plugin-transform-react-jsx": "7.25.9",
     "@babel/preset-env": "7.26.0",
-    "@babel/preset-react": "7.25.9",
-    "@commitlint/cli": "19.6.0",
+    "@babel/preset-react": "7.26.3",
+    "@commitlint/cli": "19.6.1",
     "@commitlint/config-conventional": "19.6.0",
     "@rollup/plugin-terser": "0.4.4",
     "babel-plugin-istanbul": "7.0.0",
@@ -56,9 +56,9 @@
     "jest-puppeteer": "11.0.0",
     "jsdom": "25.0.1",
     "lerna": "8.1.9",
-    "prettier": "3.4.1",
+    "prettier": "3.4.2",
     "pretty-quick": "4.0.0",
-    "puppeteer": "23.9.0",
+    "puppeteer": "23.11.1",
     "rollup": "2.79.2",
     "rollup-plugin-babel": "4.4.0",
     "rollup-plugin-commonjs": "10.1.0",
@@ -68,5 +68,5 @@
     "sinon-chai": "4.0.0",
     "typescript": "5.7.2"
   },
-  "packageManager": "pnpm@9.14.4+sha512.c8180b3fbe4e4bca02c94234717896b5529740a6cbadf19fa78254270403ea2f27d4e1d46a08a0f56c89b63dc8ebfd3ee53326da720273794e6200fcf0d184ab"
+  "packageManager": "pnpm@9.15.3+sha512.1f79bc245a66eb0b07c5d4d83131240774642caaa86ef7d0434ab47c0d16f66b04e21e0c086eb61e62c77efc4d7f7ec071afad3796af64892fae66509173893a"
 }
