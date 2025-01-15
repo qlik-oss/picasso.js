@@ -38,6 +38,7 @@ function canvascontext(contextType = '2d') {
   if (contextType === '2d') {
     item.createRadialGradient = gradientFactory('radial');
     item.createLinearGradient = gradientFactory('linear');
+    item.createConicGradient = gradientFactory('conic');
   }
 
   return item;
