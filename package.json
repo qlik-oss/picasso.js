@@ -29,13 +29,13 @@
   },
   "devDependencies": {
     "@babel/cli": "7.26.4",
-    "@babel/core": "7.26.0",
-    "@babel/eslint-parser": "7.25.9",
+    "@babel/core": "7.26.7",
+    "@babel/eslint-parser": "7.26.5",
     "@babel/plugin-transform-react-jsx": "7.25.9",
-    "@babel/preset-env": "7.26.0",
+    "@babel/preset-env": "7.26.7",
     "@babel/preset-react": "7.26.3",
-    "@commitlint/cli": "19.6.1",
-    "@commitlint/config-conventional": "19.6.0",
+    "@commitlint/cli": "19.7.1",
+    "@commitlint/config-conventional": "19.7.1",
     "@rollup/plugin-terser": "0.4.4",
     "babel-plugin-istanbul": "7.0.0",
     "chai": "4.5.0",
@@ -46,7 +46,7 @@
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-import": "2.31.0",
     "eslint-plugin-jsx-a11y": "6.10.2",
-    "eslint-plugin-prettier": "5.2.1",
+    "eslint-plugin-prettier": "5.2.3",
     "extend": "3.0.2",
     "globby": "14.0.2",
     "husky": "9.1.7",
@@ -66,7 +66,7 @@
     "rollup-plugin-serve": "1.1.1",
     "sinon": "19.0.2",
     "sinon-chai": "4.0.0",
-    "typescript": "5.7.2"
+    "typescript": "5.7.3"
   },
-  "packageManager": "pnpm@9.15.3+sha512.1f79bc245a66eb0b07c5d4d83131240774642caaa86ef7d0434ab47c0d16f66b04e21e0c086eb61e62c77efc4d7f7ec071afad3796af64892fae66509173893a"
+  "packageManager": "pnpm@9.15.5+sha512.845196026aab1cc3f098a0474b64dfbab2afe7a1b4e91dd86895d8e4aa32a7a6d03049e2d0ad770bbe4de023a7122fb68c1a1d6e0d033c7076085f9d5d4800d4"
 }
