@@ -6,7 +6,7 @@ defaults: &defaults
   working_directory: ~/picassojs
   # Available images https://hub.docker.com/r/circleci/node/tags/
   docker:
-    - image: cimg/node:lts-browsers
+    - image: cimg/node:current-browsers
 
 jobs:
   install:
@@ -20,7 +20,6 @@ jobs:
       - run:
           name: Enable pnpm
           command: |
-            npm install -g corepack
             corepack enable pnpm --install-directory ~/bin
             pnpm config set store-dir .pnpm-store
       - run:
