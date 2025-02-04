@@ -20,6 +20,7 @@ jobs:
       - run:
           name: Enable pnpm
           command: |
+            npm install -g corepack
             corepack enable pnpm --install-directory ~/bin
             pnpm config set store-dir .pnpm-store
       - run:
