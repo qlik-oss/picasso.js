@@ -10,7 +10,6 @@ import { degreesToPoints } from '../../../core/math/angles';
  */
 export default function createCanvasGradient(g, node, gradient) {
   const { orientation, degree, stops = [] } = gradient;
-
   let newGradient = null;
 
   if (orientation === 'radial') {
@@ -24,6 +23,11 @@ export default function createCanvasGradient(g, node, gradient) {
       bounds.y + bounds.height / 2,
       Math.max(bounds.width, bounds.height) / 2
     );
+  } else if (orientation === 'conic') {
+    const startAngle = gradient.startAngle || 0;
+    const centerOffsetX = gradient.x || 0;
+    const centerOffsetY = gradient.y || 0;
+    newGradient = g.createConicGradient(startAngle, centerOffsetX, centerOffsetY);
   } else {
     const points = degreesToPoints(degree);
     ['x1', 'x2', 'y1', 'y2'].forEach((c) => {
