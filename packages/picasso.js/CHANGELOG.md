@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.6.0](https://github.com/qlik-oss/picasso.js/compare/v2.5.0...v2.6.0) (2025-02-11)
+
+### Bug Fixes
+
+- allow padding function 2 ([#887](https://github.com/qlik-oss/picasso.js/issues/887)) ([f4ba42e](https://github.com/qlik-oss/picasso.js/commit/f4ba42e483ade7c11c08ea2ad30ac022739c0796))
+
+### Features
+
+- conic gradient ([#888](https://github.com/qlik-oss/picasso.js/issues/888)) ([3078e41](https://github.com/qlik-oss/picasso.js/commit/3078e41296534b03b308996f5da2efbe64389321))
+
 # [2.5.0](https://github.com/qlik-oss/picasso.js/compare/v2.4.0...v2.5.0) (2024-11-20)
 
 ### Features
