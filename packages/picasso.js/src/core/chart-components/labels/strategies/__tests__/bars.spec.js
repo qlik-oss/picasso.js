@@ -972,6 +972,65 @@ describe('labeling - bars', () => {
         fontFamily: 'simpsons',
       });
     });
+
+    it('should accept padding top/bottom/left/right as functions, and filter out label that is not inside container', () => {
+      const settings = {
+        direction: () => 'right',
+        align: 0.4,
+        justify: 0.8,
+        labels: [
+          {
+            placements: [
+              {
+                position: 'inside',
+                justify: 0.2,
+                align: 0.5,
+                fill: () => 'red',
+                padding: {
+                  left: ({ width }) => width / 5,
+                  right: ({ width, height }) => (width + height) / 7.5,
+                  top: ({ height }) => height / 2.5,
+                  bottom: ({ height }) => height - 6,
+                },
+              },
+            ],
+            label: () => 'etikett',
+          },
+        ],
+      };
+      const nodes = [
+        {
+          localBounds: {
+            x: 10,
+            y: 20,
+            width: 40,
+            height: 50,
+          },
+        },
+      ];
+      renderer.measureText.returns({ width: 20, height: 10 });
+      let labels = bars({
+        settings,
+        chart,
+        nodes,
+        rect: {
+          x: 0,
+          y: 37,
+          width: 100,
+          height: 200,
+        },
+        renderer,
+        style: {
+          label: {
+            fontSize: '16px',
+            fontFamily: 'simpsons',
+            fill: 'green',
+          },
+        },
+      });
+
+      expect(labels.length).to.eql(0);
+    });
   });
 
   describe('orientation', () => {
