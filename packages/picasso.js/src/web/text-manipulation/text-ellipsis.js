@@ -1,8 +1,11 @@
 import { ELLIPSIS_CHAR } from './text-const';
 
-export default function ellipsText({ text, 'font-size': fontSize, 'font-family': fontFamily, maxWidth }, measureText) {
+export default function ellipsText(label, measureText) {
   // eslint-disable-line import/prefer-default-export
-  text = typeof text === 'string' ? text : `${text}`;
+  const fontFamily = label['font-family'] || label.fontFamily;
+  const fontSize = label['font-size'] || label.fontSize;
+  const text = typeof label.text === 'string' ? label.text : `${label.text}`;
+  const { maxWidth } = label;
   if (maxWidth === undefined) {
     return text;
   }
