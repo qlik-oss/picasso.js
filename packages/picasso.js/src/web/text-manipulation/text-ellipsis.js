@@ -1,12 +1,17 @@
 import { ELLIPSIS_CHAR } from './text-const';
 
-export default function ellipsText({ text, 'font-size': fontSize, 'font-family': fontFamily, maxWidth }, measureText) {
+export default function ellipsText(
+  { text, 'font-size': fontSizeKebab, 'font-family': fontFamilyKebab, fontSize, fontFamily, maxWidth },
+  measureText
+) {
   // eslint-disable-line import/prefer-default-export
+  const finalFontSize = fontSizeKebab || fontSize;
+  const finalFontFamily = fontFamilyKebab || fontFamily;
   text = typeof text === 'string' ? text : `${text}`;
   if (maxWidth === undefined) {
     return text;
   }
-  let textWidth = measureText({ text, fontSize, fontFamily }).width;
+  let textWidth = measureText({ text, finalFontSize, finalFontFamily }).width;
   if (textWidth <= maxWidth) {
     return text;
   }
@@ -16,7 +21,7 @@ export default function ellipsText({ text, 'font-size': fontSize, 'font-family':
   while (min <= max) {
     let reduceIndex = Math.floor((min + max) / 2);
     let reduceText = text.substr(0, reduceIndex) + ELLIPSIS_CHAR;
-    textWidth = measureText({ text: reduceText, fontSize, fontFamily }).width;
+    textWidth = measureText({ text: reduceText, finalFontSize, finalFontFamily }).width;
     if (textWidth <= maxWidth) {
       min = reduceIndex + 1;
     } else {
