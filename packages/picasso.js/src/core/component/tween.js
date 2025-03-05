@@ -1,6 +1,7 @@
 import extend from 'extend';
 import { easeCubic, easeCubicIn, easeCubicOut } from 'd3-ease';
 import interpolateObject from './interpolate-object';
+import adjustTweenedNodes from './animations/adjust-tweened-nodes';
 
 /* globals window */
 
@@ -26,9 +27,8 @@ export function findCommonPointsFromTwoLines(oldLine, currentLine) {
   return { old: oldCommonPoints, current: currentCommonPoints };
 }
 
-export default function tween({ old, current }, { renderer }, config, chartStorage) {
+export default function tween({ old, current }, { renderer, formatter }, config, chartStorage) {
   let ticker;
-  // let staticNodes = [];
   let toBeUpdated = [];
   let entered = { nodes: [], ips: [] };
   let exited = { nodes: [], ips: [] };
@@ -131,13 +131,11 @@ export default function tween({ old, current }, { renderer }, config, chartStora
       let t = (Date.now() - currentStage.started) / currentStage.duration;
       let currentNodes = [];
       let tweenedNodes = currentStage.tweens.map((ip) => ip(currentStage.easing(Math.min(1, t))));
+      adjustTweenedNodes({ tweenedNodes, formatter });
       currentNodes.push(...tweenedNodes);
       currentNodes.push(...currentStage.nodes);
-      // currentNodes.push(...staticNodes);
-      // stages.slice(1).forEach(stage => currentNodes.push(...stage.nodes));
       renderer.render(currentNodes);
       if (t >= 1) {
-        // staticNodes.push(...currentStage.nodes);
         stages.shift();
         const { isInit, shouldBeRemoved } = chartStorage.getValue('animations.updatingStageMeta');
         if (!stages.length) {
