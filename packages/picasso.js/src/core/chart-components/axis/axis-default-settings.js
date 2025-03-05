@@ -116,6 +116,10 @@ const DEFAULT_DISCRETE_SETTINGS = {
   /** Set the anchoring point of the axis. Available options are `auto/left/right/bottom/top`. In `auto` the axis determines the best option. The options are restricted based on the axis orientation, a vertical axis may only anchor on `left` or `right`
    * @type {string=} */
   align: 'auto',
+  /**
+   * If set to `true`, the axis will be hidden from screen readers.
+   * @type {boolean=} */
+  disableScreenReader: false,
 };
 
 /**
@@ -216,6 +220,10 @@ const DEFAULT_CONTINUOUS_SETTINGS = {
   /** Set the anchoring point of the axis. Available options are `auto/left/right/bottom/top`. In `auto` the axis determines the best option. The options are restricted based on the axis orientation, a vertical axis may only anchor on `left` or `right`
    * @type {string=} */
   align: 'auto',
+  /**
+   * If set to `true`, the axis will be hidden from screen readers.
+   * @type {boolean=} */
+  disableScreenReader: false,
 };
 
 export { DEFAULT_DISCRETE_SETTINGS, DEFAULT_CONTINUOUS_SETTINGS };

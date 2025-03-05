@@ -560,6 +560,7 @@ declare namespace picassojs {
         type ContinuousSettings = {
             arc?: picassojs.ArcSettings;
             align?: string;
+            disableScreenReader?: boolean;
             labels: {
                 align?: number;
                 filterOverlapping?: boolean;
@@ -588,6 +589,7 @@ declare namespace picassojs {
 
         type DiscreteSettings = {
             align?: string;
+            disableScreenReader?: boolean;
             labels: {
                 align?: number;
                 filterOverlapping?: boolean;

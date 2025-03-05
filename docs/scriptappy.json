@@ -1703,6 +1703,12 @@
               "defaultValue": "auto",
               "type": "string"
             },
+            "disableScreenReader": {
+              "description": "If set to `true`, the axis will be hidden from screen readers.",
+              "optional": true,
+              "defaultValue": false,
+              "type": "boolean"
+            },
             "labels": {
               "kind": "object",
               "entries": {
@@ -1833,6 +1839,12 @@
               "optional": true,
               "defaultValue": "auto",
               "type": "string"
+            },
+            "disableScreenReader": {
+              "description": "If set to `true`, the axis will be hidden from screen readers.",
+              "optional": true,
+              "defaultValue": false,
+              "type": "boolean"
             },
             "labels": {
               "kind": "object",

@@ -175,9 +175,11 @@ const axisComponent = {
   },
   beforeRender() {
     const { scale, formatter } = this;
-
+    if (this.state.settings.disableScreenReader) {
+      const element = this.renderer.element();
+      element.setAttribute('aria-hidden', 'true');
+    }
     const distance = this.state.isHorizontal ? this.state.innerRect.width : this.state.innerRect.height;
-
     this.state.pxScale = scaleWithSize(scale, distance);
     this.state.ticks = this.state.pxScale
       .ticks({
@@ -188,7 +190,6 @@ const axisComponent = {
   },
   render() {
     const { state } = this;
-
     const nodes = [];
     nodes.push(
       ...this.state.concreteNodeBuilder.build({
