@@ -6,8 +6,8 @@ describe('adjustTweenedNodes', () => {
 
   it('should format text nodes correctly', () => {
     const tweenedNodes = [
-      { type: 'text', data: { value: '1234000', formatterKey: 'si' } },
-      { type: 'circle', data: { value: '56780', formatterKey: 'si' } },
+      { type: 'text', data: { value: '1234000', formatter: 'si' } },
+      { type: 'circle', data: { value: '56780', formatter: 'si' } },
     ];
 
     adjustTweenedNodes({ tweenedNodes, formatter });
@@ -16,11 +16,11 @@ describe('adjustTweenedNodes', () => {
     expect(tweenedNodes[1].text).to.equal(undefined);
   });
 
-  it('should not modify nodes without data or value or formatterKey', () => {
+  it('should not modify nodes without data or value or formatter', () => {
     const tweenedNodes = [
       { type: 'text', data: null },
       { type: 'text', data: { value: '1234000' } },
-      { type: 'text', data: { formatterKey: 'si' } },
+      { type: 'text', data: { formatter: 'si' } },
     ];
 
     adjustTweenedNodes({ tweenedNodes, formatter });
