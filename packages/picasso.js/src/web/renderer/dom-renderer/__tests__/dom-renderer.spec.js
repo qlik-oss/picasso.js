@@ -27,9 +27,17 @@ describe('dom renderer', () => {
       irrelevantSetting: 'irrelevant!',
     };
     rend.settings(rendererSettings);
-    expect(rend.settings()).to.eql({
-      transform: rendererSettings.transform,
-    });
+    expect(rend.settings()).to.eql({ disableScreenReader: false, transform: rendererSettings.transform });
+  });
+
+  it('should set rendererSettings correctly', () => {
+    const rendererSettings = {
+      disableScreenReader: true,
+      transform: () => {},
+      irrelevantSetting: 'irrelevant!',
+    };
+    rend.settings(rendererSettings);
+    expect(rend.settings()).to.eql({ disableScreenReader: true, transform: rendererSettings.transform });
   });
 
   describe('appendTo', () => {
