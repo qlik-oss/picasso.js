@@ -32,6 +32,7 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
   let scene;
   const settings = {
     transform: undefined,
+    disableScreenReader: false,
   };
 
   const svg = create();
@@ -129,6 +130,11 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
       return true;
     }
     group.style.transform = '';
+
+    const disableScreenReader = settings.disableScreenReader;
+    if (disableScreenReader) {
+      el.setAttribute('aria-hidden', true);
+    }
 
     if (hasChangedRect) {
       el.style.left = `${rect.computedPhysical.x}px`;

@@ -6399,6 +6399,12 @@
           "description": "Setting for applying progressive rendering to a canvas renderer",
           "optional": true,
           "type": "#/definitions/RendererSettings/definitions/Progressive"
+        },
+        "disableScreenReader": {
+          "description": "Setting to disable the screen reader for the component. If set to true, screen reader support will be disabled. This setting is not relevant when using the canvas renderer.",
+          "optional": true,
+          "defaultValue": false,
+          "type": "boolean"
         }
       },
       "definitions": {

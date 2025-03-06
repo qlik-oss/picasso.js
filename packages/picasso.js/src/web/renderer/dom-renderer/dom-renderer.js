@@ -10,6 +10,7 @@ export default function renderer(opts = {}) {
   let dNode;
   const settings = {
     transform: undefined,
+    disableScreenReader: false,
   };
 
   const dom = create();
@@ -63,6 +64,11 @@ export default function renderer(opts = {}) {
       return true;
     }
     el.style.transform = '';
+
+    const disableScreenReader = settings.disableScreenReader;
+    if (disableScreenReader) {
+      el.setAttribute('aria-hidden', true);
+    }
 
     el.style.left = `${rect.computedPhysical.x}px`;
     el.style.top = `${rect.computedPhysical.y}px`;

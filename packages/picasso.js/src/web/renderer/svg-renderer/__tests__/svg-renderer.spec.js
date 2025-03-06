@@ -29,11 +29,17 @@ describe('svg renderer', () => {
       irrelevantSetting: 'irrelevant!',
     };
     svg.settings(rendererSettings);
-    expect(svg.settings()).to.eql({
-      transform: rendererSettings.transform,
-    });
+    expect(svg.settings()).to.eql({ disableScreenReader: false, transform: rendererSettings.transform });
   });
-
+  it('should set rendererSettings correctly', () => {
+    const rendererSettings = {
+      disableScreenReader: true,
+      transform: () => {},
+      irrelevantSetting: 'irrelevant!',
+    };
+    svg.settings(rendererSettings);
+    expect(svg.settings()).to.eql({ disableScreenReader: true, transform: rendererSettings.transform });
+  });
   describe('appendTo', () => {
     it('should append root node to element', () => {
       const el = element('div');
