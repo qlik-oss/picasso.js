@@ -6401,7 +6401,7 @@
           "type": "#/definitions/RendererSettings/definitions/Progressive"
         },
         "disableScreenReader": {
-          "description": "Setting for hiding the component from screen readers. If set to `true`, the component will be hidden from screen readers.",
+          "description": "Setting to disable the screen reader for the component. If set to true, screen reader support will be disabled. This setting is not relevant when using the canvas renderer.",
           "optional": true,
           "defaultValue": false,
           "type": "boolean"

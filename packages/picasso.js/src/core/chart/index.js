@@ -181,7 +181,7 @@ import componentCollectionFn from './component-collection';
  * @property {RendererSettings~TransformFunction} [transform] Setting for applying transform without re-rendering the whole component completely.
  * @property {RendererSettings~CanvasBufferSize} [canvasBufferSize] Specifies the size of buffer canvas (used together with transform setting).
  * @property {RendererSettings~Progressive} [progressive] Setting for applying progressive rendering to a canvas renderer
- * @property {boolean} [disableScreenReader = false] Setting for hiding the component from screen readers. If set to `true`, the component will be hidden from screen readers.
+ * @property {boolean} [disableScreenReader = false] Setting to disable the screen reader for the component. If set to true, screen reader support will be disabled. This setting is not relevant when using the canvas renderer.
  * @experimental
  */
 
