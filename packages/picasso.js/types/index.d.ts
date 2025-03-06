@@ -1605,6 +1605,7 @@ declare namespace picassojs {
         transform?: picassojs.RendererSettings.TransformFunction;
         canvasBufferSize?: picassojs.RendererSettings.CanvasBufferSize;
         progressive?: picassojs.RendererSettings.Progressive;
+        disableScreenReader?: boolean;
     };
 
     namespace RendererSettings {
