@@ -26,7 +26,7 @@ export function findCommonPointsFromTwoLines(oldLine, currentLine) {
   return { old: oldCommonPoints, current: currentCommonPoints };
 }
 
-export default function tween({ old, current }, { renderer, formatter }, config, chartStorage) {
+export default function tween({ old, current }, { renderer }, config, chartStorage) {
   let ticker;
   let toBeUpdated = [];
   let entered = { nodes: [], ips: [] };
