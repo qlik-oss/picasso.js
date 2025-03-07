@@ -1,7 +1,6 @@
 import extend from 'extend';
 import { easeCubic, easeCubicIn, easeCubicOut } from 'd3-ease';
 import interpolateObject from './interpolate-object';
-import adjustTweenedNodes from './animations/adjust-tweened-nodes';
 
 /* globals window */
 
@@ -131,7 +130,10 @@ export default function tween({ old, current }, { renderer, formatter }, config,
       let t = (Date.now() - currentStage.started) / currentStage.duration;
       let currentNodes = [];
       let tweenedNodes = currentStage.tweens.map((ip) => ip(currentStage.easing(Math.min(1, t))));
-      adjustTweenedNodes({ tweenedNodes, formatter });
+      const { adjustTweenedNodes } = config;
+      if (adjustTweenedNodes) {
+        adjustTweenedNodes(tweenedNodes);
+      }
       currentNodes.push(...tweenedNodes);
       currentNodes.push(...currentStage.nodes);
       renderer.render(currentNodes);
