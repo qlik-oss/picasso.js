@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.7.0](https://github.com/qlik-oss/picasso.js/compare/v2.6.0...v2.7.0) (2025-03-10)
+
+### Bug Fixes
+
+- animations improve tweening formatted label ([#896](https://github.com/qlik-oss/picasso.js/issues/896)) ([b818439](https://github.com/qlik-oss/picasso.js/commit/b81843968a991ea5fc7aab4ec55ad1f03805d407))
+- animations move adjust tweened node to animations config ([#900](https://github.com/qlik-oss/picasso.js/issues/900)) ([63a8c8a](https://github.com/qlik-oss/picasso.js/commit/63a8c8aa5c2d66a17008bbe4a309711d3203e1e0))
+- correct ellipsis property extraction logic ([#895](https://github.com/qlik-oss/picasso.js/issues/895)) ([81a8371](https://github.com/qlik-oss/picasso.js/commit/81a83712b58208a406edbd6898e4d0a9f9b61595))
+
+### Features
+
+- option to hide element from screen readers ([#898](https://github.com/qlik-oss/picasso.js/issues/898)) ([f0f2f55](https://github.com/qlik-oss/picasso.js/commit/f0f2f5575d9986aa12d86ba3ad0e3eb7a6071a28))
+
 # [2.6.0](https://github.com/qlik-oss/picasso.js/compare/v2.5.0...v2.6.0) (2025-02-11)
 
 ### Bug Fixes

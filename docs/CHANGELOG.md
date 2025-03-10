@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.7.0](https://github.com/qlik-oss/picasso.js/compare/v2.6.0...v2.7.0) (2025-03-10)
+
+### Features
+
+- option to hide element from screen readers ([#898](https://github.com/qlik-oss/picasso.js/issues/898)) ([f0f2f55](https://github.com/qlik-oss/picasso.js/commit/f0f2f5575d9986aa12d86ba3ad0e3eb7a6071a28))
+
 # [2.6.0](https://github.com/qlik-oss/picasso.js/compare/v2.5.0...v2.6.0) (2025-02-11)
 
 **Note:** Version bump only for package docs
