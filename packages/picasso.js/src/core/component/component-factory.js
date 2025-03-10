@@ -545,7 +545,7 @@ function componentFactory(definition, context = {}) {
           old: currentNodes,
           current: nodes,
         },
-        { renderer: rend, formatter: chart.formatter },
+        { renderer: rend },
         animations,
         chart.storage
       );
