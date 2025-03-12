@@ -32,7 +32,9 @@ export default function extract(dataConfig, data = {}, opts = {}) {
         extracted.root = source.hierarchy ? source.hierarchy(dataConfig.hierarchy) : null;
         extracted.fields = source.fields();
       } else if (dataConfig.items) {
-        extracted.items = dataConfig.items.map((v) => ({ value: valueFn(v), label: String(labelFn(v)) }));
+        extracted.items = dataConfig.skipNormalize
+          ? dataConfig.items
+          : dataConfig.items.map((v) => ({ value: valueFn(v), label: String(labelFn(v)) }));
       } else if (dataConfig.extract) {
         const extractionsConfigs = Array.isArray(dataConfig.extract) ? dataConfig.extract : [dataConfig.extract];
         extracted.items = [];
