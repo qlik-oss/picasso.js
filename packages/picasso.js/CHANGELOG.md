@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.8.0](https://github.com/qlik-oss/picasso.js/compare/v2.7.0...v2.8.0) (2025-03-12)
+
+### Features
+
+- support raw input ([#901](https://github.com/qlik-oss/picasso.js/issues/901)) ([6db8436](https://github.com/qlik-oss/picasso.js/commit/6db8436aa15251548f2be577ea82db20d0b5c113))
+
 # [2.7.0](https://github.com/qlik-oss/picasso.js/compare/v2.6.0...v2.7.0) (2025-03-10)
 
 ### Bug Fixes
