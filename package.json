@@ -58,7 +58,7 @@
     "lerna": "8.2.1",
     "prettier": "3.5.3",
     "pretty-quick": "4.1.1",
-    "puppeteer": "23.11.1",
+    "puppeteer": "24.4.0",
     "rollup": "2.79.2",
     "rollup-plugin-babel": "4.4.0",
     "rollup-plugin-commonjs": "10.1.0",
