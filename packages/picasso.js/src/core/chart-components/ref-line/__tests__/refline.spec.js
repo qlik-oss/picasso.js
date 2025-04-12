@@ -370,6 +370,66 @@ describe('reference lines', () => {
     ]);
   });
 
+  it('should render basic line without label on Y without scale', () => {
+    const config = {
+      shapeFn,
+      lines: {
+        y: [
+          {
+            value: 0.3,
+            line: {
+              stroke: 'green',
+              strokeWidth: 2,
+            },
+            label: {
+              text: 'asdftest',
+              show: false,
+              padding: 10,
+              fontSize: '20px',
+              vAlign: 1,
+              align: 0,
+            },
+          },
+        ],
+      },
+    };
+
+    const xScale = (v) => v;
+    xScale.min = () => 0;
+    xScale.max = () => 1;
+    chart.scale.withArgs({ scale: 'x' }).returns(xScale);
+
+    const yScale = (v) => v;
+    yScale.min = () => 0;
+    yScale.max = () => 1;
+    chart.scale.withArgs({ scale: 'y' }).returns(yScale);
+
+    createAndRenderComponent({
+      inner: {
+        x: 37,
+        y: 0,
+        width: 870,
+        height: 813,
+      },
+      config,
+    });
+
+    expect(rendererOutput).to.deep.equal([
+      {
+        flipXY: true,
+        stroke: 'green',
+        strokeDasharray: undefined,
+        strokeWidth: 2,
+        type: 'line',
+        value: 0.3,
+        x1: 0,
+        x2: 870,
+        y1: 244,
+        y2: 244,
+      },
+    ]);
+  });
+
   it('should render slope line with positive slope and no label on Y scale', () => {
     const config = {
       shapeFn,
@@ -381,10 +441,12 @@ describe('reference lines', () => {
               stroke: 'green',
               strokeWidth: 2,
             },
+            label: {
+              text: 'Threshold value',
+              show: false,
+              showValue: false,
+            },
             slope: 0.25,
-            showValue: false,
-            showLabel: false,
-            refLineLabel: 'Threshold value',
           },
         ],
         style: {
@@ -443,10 +505,12 @@ describe('reference lines', () => {
               stroke: 'green',
               strokeWidth: 2,
             },
+            label: {
+              text: 'Threshold value',
+              show: true,
+              showValue: true,
+            },
             slope: 0.25,
-            showValue: true,
-            showLabel: true,
-            refLineLabel: 'Threshold value',
           },
         ],
         style: {
@@ -519,10 +583,12 @@ describe('reference lines', () => {
               stroke: 'green',
               strokeWidth: 2,
             },
+            label: {
+              text: 'Threshold value',
+              show: true,
+              showValue: true,
+            },
             slope: -0.5,
-            showValue: true,
-            showLabel: true,
-            refLineLabel: 'Threshold value',
           },
         ],
         style: {
@@ -595,11 +661,13 @@ describe('reference lines', () => {
               stroke: 'green',
               strokeWidth: 2,
             },
+            label: {
+              text: 'Colored',
+              stroke: '#ffffff',
+              show: true,
+              showValue: false,
+            },
             slope: 0.5,
-            showValue: false,
-            showLabel: true,
-            refLineLabel: 'Colored',
-            labelStroke: '#ffffff',
           },
         ],
         style: {
@@ -683,10 +751,12 @@ describe('reference lines', () => {
               stroke: 'green',
               strokeWidth: 2,
             },
+            label: {
+              text: 'Threshold value',
+              show: true,
+              showValue: true,
+            },
             slope: 1,
-            showValue: true,
-            showLabel: true,
-            refLineLabel: 'Threshold value',
           },
         ],
         style: {
@@ -730,6 +800,7 @@ describe('reference lines', () => {
         opacity: 1,
         data: [
           {
+            label: 'Threshold value',
             value: 3,
           },
         ],
