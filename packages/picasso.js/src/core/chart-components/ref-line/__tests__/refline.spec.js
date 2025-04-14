@@ -808,7 +808,7 @@ describe('reference lines', () => {
       {
         type: 'text',
         text: 1,
-        title: '(3)',
+        title: 'Threshold value (3)',
         x: 11,
         y: 42,
         fontFamily: 'Arial',
