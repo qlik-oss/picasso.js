@@ -113,9 +113,13 @@ export function oobManager({ blueprint, oob, settings, items }) {
       let x = indicator.cx || indicator.x;
       let y = indicator.cy || indicator.y;
 
+      const tooltips = value.map((v) => (v.label ? `${v.label} (${v.value})` : `(${v.value})`));
+      const title = tooltips.reduce((text, current, index) => (index === 0 ? current : `${text}\n\n${current}`), '');
+
       let text = {
         type: 'text',
         text: value.length || '',
+        title,
         x: x - style.width * 0.4,
         y: y + style.width * 0.4,
         fontFamily: style.text.fontFamily,

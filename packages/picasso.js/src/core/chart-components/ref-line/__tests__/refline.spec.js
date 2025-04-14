@@ -737,6 +737,7 @@ describe('reference lines', () => {
       {
         type: 'text',
         text: 1,
+        title: '(3)',
         x: 11,
         y: 42,
         fontFamily: 'Arial',
@@ -888,6 +889,7 @@ describe('reference lines', () => {
       },
       {
         type: 'text',
+        title: 'QwErTy (10)\n\nOops.. I did it again (20)',
         text: 2,
         x: 11,
         y: 166,
@@ -955,6 +957,7 @@ describe('reference lines', () => {
       {
         type: 'text',
         text: 1,
+        title: '(10)',
         x: 11,
         y: 166,
         fontFamily: 'Arial',
@@ -1044,6 +1047,7 @@ describe('reference lines', () => {
       {
         type: 'text',
         text: 1,
+        title: 'اسم عربي (0.3)',
         x: 828,
         y: 802,
         fontFamily: 'Arial',
@@ -1133,6 +1137,7 @@ describe('reference lines', () => {
       {
         type: 'text',
         text: 1,
+        title: 'اسم عربي (0.3)',
         x: 34,
         y: 802,
         fontFamily: 'Arial',
