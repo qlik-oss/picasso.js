@@ -4307,6 +4307,12 @@
               "defaultValue": "ComponentRefLine~LineLabelBackground",
               "type": "#/definitions/ComponentRefLine/definitions/LineLabelBackground"
             },
+            "show": {
+              "description": "Show label",
+              "optional": true,
+              "defaultValue": true,
+              "type": "boolean"
+            },
             "showValue": {
               "description": "Show value label",
               "optional": true,

@@ -190,7 +190,7 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
     });
   }
 
-  if (p.label) {
+  if (p.label && p.label.show !== false && !(slopeLine?.slope && slopeLine.slope !== 0)) {
     const item = extend(true, refLabelDefaultSettings(), settings.style.label || {}, { fill: style.stroke }, p.label);
     let formatter;
     let measuredValue = {
@@ -329,18 +329,18 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
     items.push(line);
   }
 
-  if (slopeLine?.slope !== 0 && (slopeLine?.showLabel || slopeLine?.showValue)) {
+  if (slopeLine && slopeLine.slope !== 0 && (slopeLine.label?.show !== false || slopeLine.label?.showValue !== false)) {
     // create data area labels for slope line
     let valueString;
     let labelBackground;
     const maxLabelWidth = 120;
 
-    let slopeLabelText = slopeLine.showLabel ? slopeLine.refLineLabel : '';
-    if (slopeLine.showValue) {
+    let slopeLabelText = slopeLine.label?.show !== false ? slopeLine.label?.text : '';
+    if (slopeLine.label?.showValue !== false) {
       const formatter = getFormatter(p, chart);
       const formattedValue = formatter ? formatter(slopeLine.value) : slopeLine.value;
       valueString = `(${slopeLine.slope}x + ${formattedValue})`;
-      slopeLabelText += slopeLine.refLineLabel ? ` ${valueString}` : valueString;
+      slopeLabelText += slopeLine.label?.text ? ` ${valueString}` : valueString;
     }
     if (slopeLabelText.length > 1) {
       // Measure the label text
@@ -358,7 +358,7 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
       const x = calculateX(slopeLine, line, maxX, measured, blueprint, slopeStyle);
       const y = Math.min(line.y1, line.y2);
       // if coloredBackground is true make a rect
-      if (slopeLine.labelStroke) {
+      if (slopeLine.label?.stroke) {
         labelBackground = {
           type: 'rect',
           x: slopeLine.isRtl ? Math.max(x, xPadding) - 2 : Math.max(x, xPadding) + 2,
@@ -374,7 +374,7 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
       const slopeLabel = {
         type: 'text',
         text: slopeLabelText,
-        fill: slopeLine.labelStroke ?? style.stroke,
+        fill: slopeLine.label?.stroke ?? style.stroke,
         opacity: slopeStyle.opacity,
         fontFamily: slopeStyle.fontFamily,
         fontSize: slopeStyle.fontSize,

@@ -1071,6 +1071,7 @@ declare namespace picassojs {
             maxWidth?: number;
             maxWidthPx?: number;
             background?: picassojs.ComponentRefLine.LineLabelBackground;
+            show?: boolean;
             showValue?: boolean;
         };
 
