@@ -1,6 +1,11 @@
+import nebula from './nebula';
+
 function clampRadius(max, value) {
   return Math.max(0, Math.min(max, value));
 }
+
+const dataUrl =
+  'data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiCiAgICAgd2lkdGg9IjI1IiBoZWlnaHQ9IjI1IgogICAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CgogIDxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InJlZCIgLz4KCiAgPGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMTIiIGZpbGw9ImdyZWVuIiAvPgoKPC9zdmc+Cg==';
 
 /**
  * Implementation details follow rx/ry restrictions from https://svgwg.org/svg2-draft/geometry.html#RX
@@ -37,5 +42,22 @@ export default function render(rect, { g, doFill, doStroke }) {
   }
   if (doStroke) {
     g.stroke();
+  }
+
+  if (rect.src) {
+    console.log('%c rect with src', 'color: orangered');
+    const image = new Image(rect.width, rect.height);
+    image.src = rect.src;
+    image.onload = () => {
+      console.log('%c loaded image', 'color: lime', image.src);
+      // g.drawImage(image, 0, 0, rect.width, rect.height, rect.x, rect.y, rect.width, rect.height);
+    };
+
+    try {
+      g.drawImage(image, rect.x, rect.y, rect.width, rect.height, rect.x, rect.y, rect.width, rect.height);
+      // g.drawImage(image, 0, 0, rect.width, rect.height, rect.x, rect.y, rect.width, rect.height);
+    } catch (error) {
+      console.log('%c draw image error', 'color: orangered', error);
+    }
   }
 }
