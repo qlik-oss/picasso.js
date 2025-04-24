@@ -318,7 +318,7 @@ export function placeInBars(
           textMetrics: measured,
           rotate: isRotated,
           overflow: !!overflow,
-          dock: lblStngs.dock,
+          dock: lblStngs.dock ?? 'left',
         });
 
         if (label) {
