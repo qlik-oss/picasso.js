@@ -2814,6 +2814,12 @@
                         "description": "Link data to the label",
                         "type": "function"
                       },
+                      "dock": {
+                        "description": "When orientation is vertical, the label can be docked to the left or right of the bar. 'left' | 'right'.",
+                        "optional": true,
+                        "defaultValue": "'left'",
+                        "type": "string"
+                      },
                       "placements": {
                         "kind": "array",
                         "items": {
