@@ -89,7 +89,11 @@ export function placeTextInRect(rect, text, opts) {
   if (opts.rotate) {
     label.x = placeSegmentInSegment(rect.x, rect.width, textMetrics.height, opts.align) + baseLineOffset;
     label.y = placeSegmentInSegment(rect.y, rect.height, textMetrics.width, opts.justify);
-    label.transform = `rotate(-90, ${label.x + label.dx}, ${label.y + label.dy})`;
+    if (opts.dock === 'right') {
+      label.transform = `rotate(90, ${label.x + label.dx}, ${label.y + label.dy}) translate(${textMetrics.width}, 0)`;
+    } else {
+      label.transform = `rotate(-90, ${label.x + label.dx}, ${label.y + label.dy})`;
+    }
   } else {
     label.x = placeSegmentInSegment(rect.x, rect.width, textMetrics.width, opts.align);
     label.y = placeSegmentInSegment(rect.y, rect.height, textMetrics.height, opts.justify) + baseLineOffset;
@@ -314,6 +318,7 @@ export function placeInBars(
           textMetrics: measured,
           rotate: isRotated,
           overflow: !!overflow,
+          dock: lblStngs.dock ?? 'left',
         });
 
         if (label) {
@@ -442,6 +447,7 @@ export function getOrientation({ orientation = 'auto', defaultOrientation = 'h' 
  * @property {Array<object>} labels
  * @property {string|function} labels[].label - The text value
  * @property {function} labels[].linkData - Link data to the label
+ * @property {string} [labels[].dock='left'] - When orientation is vertical, the label can be docked to the left or right of the bar. 'left' | 'right'.
  * @property {Array<object>} labels[].placements
  * @property {string} labels[].placements[].position - 'inside' | 'outside' | 'opposite'
  * @property {number} [labels[].placements[].justify=0] - Placement of the label along the direction of the bar

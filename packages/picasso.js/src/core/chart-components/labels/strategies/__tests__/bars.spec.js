@@ -214,6 +214,27 @@ describe('labeling - bars', () => {
       );
       expect(label.transform).to.equal('rotate(-90, 17, 30)');
     });
+
+    it('should dock the label to the right if specified', () => {
+      const label = placeTextInRect(
+        {
+          x: 5,
+          y: 30,
+          width: 100,
+          height: 200,
+        },
+        'a',
+        {
+          rotate: true,
+          align: 0,
+          justify: 0.0,
+          fontSize: 12,
+          textMetrics: { height: 24, width: 40 },
+          dock: 'right',
+        }
+      );
+      expect(label.transform).to.equal('rotate(90, 17, 30) translate(40, 0)');
+    });
   });
 
   describe('findBestPlacement', () => {
@@ -550,6 +571,7 @@ describe('labeling - bars', () => {
             textMetrics: 2,
             rotate: false,
             overflow: false,
+            dock: 'left',
           },
         ],
       ]);
@@ -664,6 +686,7 @@ describe('labeling - bars', () => {
         textMetrics: 2,
         rotate: false,
         overflow: false,
+        dock: 'left',
       });
     });
   });
