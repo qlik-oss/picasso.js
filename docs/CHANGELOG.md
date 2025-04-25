@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.8.2](https://github.com/qlik-oss/picasso.js/compare/v2.8.1...v2.8.2) (2025-04-25)
+
+### Bug Fixes
+
+- bar label strategy dock right ([#907](https://github.com/qlik-oss/picasso.js/issues/907)) ([8a30656](https://github.com/qlik-oss/picasso.js/commit/8a3065698a4971de9c3eda0e27c6013ef8a5501e))
+
 ## [2.8.1](https://github.com/qlik-oss/picasso.js/compare/v2.8.0...v2.8.1) (2025-04-14)
 
 **Note:** Version bump only for package docs
