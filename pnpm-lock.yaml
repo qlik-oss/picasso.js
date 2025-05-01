@@ -114,8 +114,8 @@ importers:
         specifier: 5.2.0
         version: 5.2.0(rollup@2.79.2)
       rollup-plugin-serve:
-        specifier: 1.1.1
-        version: 1.1.1
+        specifier: 3.0.0
+        version: 3.0.0
       sinon:
         specifier: 19.0.5
         version: 19.0.5
@@ -4284,9 +4284,9 @@ packages:
     resolution: {integrity: sha512-JIhqnCasI9yD+SsmkquHBxTSEuZdQX5BuQnS2Vc7puQQQ+8yiP5AY5uWhpdv4YL4VM5c6iliiYWPgJ/nJQLp7w==}
     engines: {node: '>= 0.6'}
 
-  mime@2.6.0:
-    resolution: {integrity: sha512-USPkMeET31rOMiarsBNIHZKLGgvKc/LrjofAnBlOttf5ajRvqiRA8QsenbcooctK6d6Ts6aqZXBA+XbkKthiQg==}
-    engines: {node: '>=4.0.0'}
+  mime@4.0.7:
+    resolution: {integrity: sha512-2OfDPL+e03E0LrXaGYOtTFIYhiuzep94NSsuhrNULq+stylcJedcHdzHtz0atMUuGwJfFYs0YL5xeC/Ca2x0eQ==}
+    engines: {node: '>=16'}
     hasBin: true
 
   mimic-fn@1.2.0:
@@ -5162,8 +5162,8 @@ packages:
     peerDependencies:
       rollup: '>=1.11.0'
 
-  rollup-plugin-serve@1.1.1:
-    resolution: {integrity: sha512-H0VarZRtFR0lfiiC9/P8jzCDvtFf1liOX4oSdIeeYqUCKrmFA7vNiQ0rg2D+TuoP7leaa/LBR8XBts5viF6lnw==}
+  rollup-plugin-serve@3.0.0:
+    resolution: {integrity: sha512-DjVRhbwC0OgP1Q1sj8Lvx12ee60UTZM767kkjT61sYKHw/wLpANAw3VZN5ZMa5NlvO8bYpfTaqiUrW+icAjXFg==}
 
   rollup-pluginutils@2.8.2:
     resolution: {integrity: sha512-EEp9NhnUkwY8aif6bxgovPHMoMoNr2FulJziTndpt5H9RdwC47GSGuII9XxpSdzVGM0GWrNPHV6ie1LTNJPaLQ==}
@@ -11313,7 +11313,7 @@ snapshots:
     dependencies:
       mime-db: 1.44.0
 
-  mime@2.6.0: {}
+  mime@4.0.7: {}
 
   mimic-fn@1.2.0: {}
 
@@ -12269,9 +12269,9 @@ snapshots:
       rollup: 2.79.2
       rollup-pluginutils: 2.8.2
 
-  rollup-plugin-serve@1.1.1:
+  rollup-plugin-serve@3.0.0:
     dependencies:
-      mime: 2.6.0
+      mime: 4.0.7
       opener: 1.5.2
 
   rollup-pluginutils@2.8.2:
