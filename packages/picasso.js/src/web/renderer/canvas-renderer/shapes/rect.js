@@ -24,18 +24,33 @@ function quadraticRoundedRect(g, x, y, width, height, rx, ry) {
 }
 
 export default function render(rect, { g, doFill, doStroke }) {
-  g.beginPath();
+  if (rect.src) {
+    const image = new Image(rect.width, rect.height);
+    image.src = rect.src;
+    image.onload = () => {
+      // g.drawImage(image, 0, 0, rect.width, rect.height, rect.x, rect.y, rect.width, rect.height);
+    };
 
-  if (rect.rx > 0 || rect.ry > 0) {
-    quadraticRoundedRect(g, rect.x, rect.y, rect.width, rect.height, rect.rx, rect.ry);
+    try {
+      g.drawImage(image, rect.x, rect.y, rect.width, rect.height, rect.x, rect.y, rect.width, rect.height);
+      // g.drawImage(image, 0, 0, rect.width, rect.height, rect.x, rect.y, rect.width, rect.height);
+    } catch (error) {
+      console.log('%c draw image error', 'color: orangered', error);
+    }
   } else {
-    g.rect(rect.x, rect.y, rect.width, rect.height);
-  }
+    g.beginPath();
 
-  if (doFill) {
-    g.fill();
-  }
-  if (doStroke) {
-    g.stroke();
+    if (rect.rx > 0 || rect.ry > 0) {
+      quadraticRoundedRect(g, rect.x, rect.y, rect.width, rect.height, rect.rx, rect.ry);
+    } else {
+      g.rect(rect.x, rect.y, rect.width, rect.height);
+    }
+
+    if (doFill) {
+      g.fill();
+    }
+    if (doStroke) {
+      g.stroke();
+    }
   }
 }

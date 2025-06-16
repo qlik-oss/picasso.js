@@ -56,6 +56,7 @@ const DEFAULT_DATA_SETTINGS = {
   /** Whether or not to show the point
    * @type {DatumBoolean=} */
   show: true,
+  imageSrc: undefined,
 };
 
 /**
@@ -155,7 +156,9 @@ function createDisplayPoints(dataPoints, { width, height }, pointSize, shapeFn) 
         strokeWidth: s.strokeWidth,
         strokeDasharray: s.strokeDasharray,
         opacity: s.opacity,
+        src: p.imageSrc,
       };
+      console.log('%c shapeSpec', 'color: orangered', shapeSpec);
       if (s === p.errorShape) {
         shapeSpec.width = s.width;
       }

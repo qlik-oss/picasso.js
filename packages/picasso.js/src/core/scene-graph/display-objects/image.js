@@ -5,24 +5,26 @@ import { rectToPoints, getMinMax } from '../../geometry/util';
 /**
  * @private
  * @extends DisplayObject
- * @typedef {object} RectNode
+ * @typedef {object} ImageNode
  * @property {number} x - X coordinate
  * @property {number} y - Y coordinate
  * @property {number} width - Width
  * @property {number} height- Height
+ * @property {string} src- Image source
  */
 
-export default class Rect extends DisplayObject {
+export default class Image extends DisplayObject {
   constructor(...s) {
-    super('rect');
+    super('image');
     this.set(...s);
+    console.log('%c Image', 'color: orangered', s);
   }
 
   set(v = {}) {
-    const { x = 0, y = 0, width = 0, height = 0, rx = 0, ry = 0, collider, src } = v;
+    const { x = 0, y = 0, width = 0, height = 0, rx = 0, ry = 0, src, collider } = v;
     const opts = extend(
       {
-        type: 'rect',
+        type: 'bounds',
         x,
         y,
         width,
@@ -32,7 +34,6 @@ export default class Rect extends DisplayObject {
     );
 
     super.set(v);
-    this.attrs.src = src;
 
     if (width >= 0) {
       this.attrs.x = x;
@@ -55,6 +56,10 @@ export default class Rect extends DisplayObject {
     }
     if (ry > 0) {
       this.attrs.ry = ry;
+    }
+
+    if (src) {
+      this.attrs.src = src;
     }
 
     this.collider = opts;
@@ -98,5 +103,5 @@ export default class Rect extends DisplayObject {
 }
 
 export function create(...s) {
-  return new Rect(...s);
+  return new Image(...s);
 }
