@@ -27,15 +27,10 @@ export default function render(rect, { g, doFill, doStroke }) {
   if (rect.src) {
     const image = new Image(rect.width, rect.height);
     image.src = rect.src;
-    image.onload = () => {
-      // g.drawImage(image, 0, 0, rect.width, rect.height, rect.x, rect.y, rect.width, rect.height);
-    };
-
     try {
       g.drawImage(image, rect.x, rect.y, rect.width, rect.height, rect.x, rect.y, rect.width, rect.height);
-      // g.drawImage(image, 0, 0, rect.width, rect.height, rect.x, rect.y, rect.width, rect.height);
     } catch (error) {
-      console.log('%c draw image error', 'color: orangered', error);
+      console.error('%c draw image error', 'color: orangered', error);
     }
   } else {
     g.beginPath();

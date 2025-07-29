@@ -17,7 +17,6 @@ export default class Image extends DisplayObject {
   constructor(...s) {
     super('image');
     this.set(...s);
-    console.log('%c Image', 'color: orangered', s);
   }
 
   set(v = {}) {

@@ -4,16 +4,19 @@
  * @typedef {object} SymbolImage
  */
 export default function image(options) {
-  const { x, y, size, src } = options;
+  let { x, y, size, src, position, symbol, imgScalingFactor } = options;
   const width = typeof options.width === 'undefined' ? size : options.width;
   const height = typeof options.height === 'undefined' ? size : options.height;
-
   return {
     type: 'image',
-    x: x - width / 2,
-    y: y - height / 2,
+    x,
+    y,
     width,
     height,
     src,
+    symbol,
+    radius: 10,
+    imgScalingFactor,
+    imgPosition: position,
   };
 }

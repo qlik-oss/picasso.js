@@ -142,7 +142,6 @@ function createDisplayPoints(dataPoints, { width, height }, pointSize, shapeFn) 
         s = DEFAULT_ERROR_SETTINGS.errorShape;
         size = pointSize.min + s.size * (pointSize.max - pointSize.min);
       }
-
       const [type, typeProps] = getType(s);
       const shapeSpec = {
         ...typeProps,
@@ -156,9 +155,15 @@ function createDisplayPoints(dataPoints, { width, height }, pointSize, shapeFn) 
         strokeWidth: s.strokeWidth,
         strokeDasharray: s.strokeDasharray,
         opacity: s.opacity,
-        src: p.imageSrc,
+        src: s.imageSrc,
+        position: s.position,
+        symbol: s.symbol,
+        radius: 10,
+        width: s.width,
+        height: s.height,
+        imgScalingFactor: s.imgScalingFactor,
+        imgPosition: s.position,
       };
-      console.log('%c shapeSpec', 'color: orangered', shapeSpec);
       if (s === p.errorShape) {
         shapeSpec.width = s.width;
       }
@@ -199,5 +204,4 @@ const component = {
     return createDisplayPoints(points, this.rect, pointSize, this.settings.shapeFn || this.symbol);
   },
 };
-
 export default component;
