@@ -11,7 +11,7 @@ function loadImage(src, onLoad) {
     console.error('Image load error', e);
   };
 }
-function positionImage(img) {
+export function positionImage(img) {
   const position = img.imgPosition || 'center-center';
   if (img.symbol === 'circle') {
     const radius = Math.min(img.width, img.height) / 2;
