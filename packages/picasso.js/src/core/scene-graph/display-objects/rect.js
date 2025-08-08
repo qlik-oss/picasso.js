@@ -19,7 +19,7 @@ export default class Rect extends DisplayObject {
   }
 
   set(v = {}) {
-    const { x = 0, y = 0, width = 0, height = 0, rx = 0, ry = 0, collider, src } = v;
+    const { x = 0, y = 0, width = 0, height = 0, rx = 0, ry = 0, collider } = v;
     const opts = extend(
       {
         type: 'rect',
@@ -32,7 +32,6 @@ export default class Rect extends DisplayObject {
     );
 
     super.set(v);
-    this.attrs.src = src;
 
     if (width >= 0) {
       this.attrs.x = x;

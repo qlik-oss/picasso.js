@@ -56,7 +56,27 @@ const DEFAULT_DATA_SETTINGS = {
   /** Whether or not to show the point
    * @type {DatumBoolean=} */
   show: true,
+};
+/**
+ * @typedef {object=}
+ * @alias ComponentPoint.settings.imageSettings
+ */
+const DEFAULT_IMAGE_SETTINGS = {
+  /** Image source
+   * @type {string=} */
   imageSrc: undefined,
+  /** Image scaling factor
+   * @type {number=} */
+  imgScalingFactor: 1,
+  /** Position of image
+   * @type {string=} */
+  position: 'center-center',
+  /** Size of image
+   * @type {number=} */
+  size: 0.1,
+  /** Shape of image
+   * @type {string=} */
+  symbol: 'rectangle',
 };
 
 /**
@@ -155,20 +175,12 @@ function createDisplayPoints(dataPoints, { width, height }, pointSize, shapeFn) 
         strokeWidth: s.strokeWidth,
         strokeDasharray: s.strokeDasharray,
         opacity: s.opacity,
-        src: s.imageSrc,
-        position: s.position,
-        symbol: s.symbol,
-        radius: 10,
-        width: s.width,
-        height: s.height,
-        imgScalingFactor: s.imgScalingFactor,
-        imgPosition: s.position,
+        imageSettings: s.imageSettings,
       };
       if (s === p.errorShape) {
         shapeSpec.width = s.width;
       }
       const shape = shapeFn(shapeSpec);
-
       shape.data = p.data;
       return shape;
     });
@@ -200,6 +212,12 @@ const component = {
     const { width, height } = this.rect;
     const limits = extend({}, SIZE_LIMITS, this.settings.settings.sizeLimits);
     const points = resolved.items;
+    if (points.length > 0 && points[0].shape === 'image') {
+      data.items.forEach((d, i) => {
+        points[i].imageSettings = extend({}, DEFAULT_IMAGE_SETTINGS, this.settings.settings.imageSettings);
+      });
+    }
+
     const pointSize = getPointSizeLimits(resolved.settings.x, resolved.settings.y, width, height, limits);
     return createDisplayPoints(points, this.rect, pointSize, this.settings.shapeFn || this.symbol);
   },

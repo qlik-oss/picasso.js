@@ -3936,6 +3936,41 @@
               "defaultValue": "#333",
               "type": "#/definitions/DatumString"
             },
+            "imageSettings": {
+              "optional": true,
+              "kind": "object",
+              "entries": {
+                "imageSrc": {
+                  "description": "Image source",
+                  "optional": true,
+                  "type": "string"
+                },
+                "imgScalingFactor": {
+                  "description": "Image scaling factor",
+                  "optional": true,
+                  "defaultValue": 1,
+                  "type": "number"
+                },
+                "position": {
+                  "description": "Position of image",
+                  "optional": true,
+                  "defaultValue": "center-center",
+                  "type": "string"
+                },
+                "size": {
+                  "description": "Size of image",
+                  "optional": true,
+                  "defaultValue": 0.1,
+                  "type": "number"
+                },
+                "symbol": {
+                  "description": "Shape of image",
+                  "optional": true,
+                  "defaultValue": "rectangle",
+                  "type": "string"
+                }
+              }
+            },
             "label": {
               "description": "Label",
               "optional": true,
