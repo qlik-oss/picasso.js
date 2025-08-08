@@ -46,14 +46,7 @@ describe('point component', () => {
         strokeDasharray: '',
         opacity: 1,
         data: { value: 1, label: '1' },
-        height: undefined,
-        imgPosition: undefined,
-        imgScalingFactor: undefined,
-        position: undefined,
-        radius: 10,
-        src: undefined,
-        symbol: undefined,
-        width: undefined,
+        imageSettings: undefined,
       },
     ]);
   });
@@ -89,14 +82,7 @@ describe('point component', () => {
         strokeDasharray: '',
         opacity: 1,
         data: { value: 1, label: '1' },
-        height: undefined,
-        imgPosition: undefined,
-        imgScalingFactor: undefined,
-        position: undefined,
-        radius: 10,
-        src: undefined,
-        symbol: undefined,
-        width: undefined,
+        imageSettings: undefined,
       },
     ]);
   });
@@ -139,14 +125,7 @@ describe('point component', () => {
         strokeDasharray: '2 5',
         opacity: 0.7,
         data: { value: 1, label: '1' },
-        height: undefined,
-        imgPosition: undefined,
-        imgScalingFactor: undefined,
-        position: undefined,
-        radius: 10,
-        src: undefined,
-        symbol: undefined,
-        width: undefined,
+        imageSettings: undefined,
       },
     ]);
   });
@@ -193,14 +172,7 @@ describe('point component', () => {
           value: 'a',
           label: 'a',
         },
-        height: undefined,
-        imgPosition: undefined,
-        imgScalingFactor: undefined,
-        position: undefined,
-        radius: 10,
-        src: undefined,
-        symbol: undefined,
-        width: undefined,
+        imageSettings: undefined,
       },
     ]);
   });
@@ -276,14 +248,7 @@ describe('point component', () => {
           },
           label: '[object Object]',
         },
-        height: undefined,
-        imgPosition: undefined,
-        imgScalingFactor: undefined,
-        position: undefined,
-        radius: 10,
-        src: undefined,
-        symbol: undefined,
-        width: undefined,
+        imageSettings: undefined,
       },
       {
         type: 'rect',
@@ -307,14 +272,7 @@ describe('point component', () => {
           },
           label: '[object Object]',
         },
-        height: undefined,
-        imgPosition: undefined,
-        imgScalingFactor: undefined,
-        position: undefined,
-        radius: 10,
-        src: undefined,
-        symbol: undefined,
-        width: undefined,
+        imageSettings: undefined,
       },
     ]);
   });
@@ -508,14 +466,7 @@ describe('point component', () => {
           },
           label: '[object Object]',
         },
-        height: undefined,
-        imgPosition: undefined,
-        imgScalingFactor: undefined,
-        position: undefined,
-        radius: 10,
-        src: undefined,
-        symbol: undefined,
-        width: undefined,
+        imageSettings: undefined,
       },
     ]);
   });
@@ -549,14 +500,7 @@ describe('point component', () => {
         strokeDasharray: '',
         opacity: 1,
         data: { value: 1, label: '1' },
-        height: undefined,
-        imgPosition: undefined,
-        imgScalingFactor: undefined,
-        position: undefined,
-        radius: 10,
-        src: undefined,
-        symbol: undefined,
-        width: undefined,
+        imageSettings: undefined,
       },
     ]);
   });
@@ -589,14 +533,7 @@ describe('point component', () => {
         strokeDasharray: '',
         opacity: 1,
         data: { value: 1, label: '1' },
-        height: undefined,
-        imgPosition: undefined,
-        imgScalingFactor: undefined,
-        position: undefined,
-        radius: 10,
-        src: undefined,
-        symbol: undefined,
-        width: undefined,
+        imageSettings: undefined,
       },
     ]);
   });
@@ -629,14 +566,7 @@ describe('point component', () => {
         strokeDasharray: '',
         opacity: 1,
         data: { value: 1, label: '1' },
-        height: undefined,
-        imgPosition: undefined,
-        imgScalingFactor: undefined,
-        position: undefined,
-        radius: 10,
-        src: undefined,
-        symbol: undefined,
-        width: undefined,
+        imageSettings: undefined,
       },
     ]);
   });
@@ -669,15 +599,128 @@ describe('point component', () => {
         strokeDasharray: '',
         opacity: 1,
         data: { value: 1, label: '1' },
-        height: undefined,
-        imgPosition: undefined,
-        imgScalingFactor: undefined,
-        position: undefined,
-        radius: 10,
-        src: undefined,
-        symbol: undefined,
-        width: undefined,
+        imageSettings: undefined,
       },
     ]);
+  });
+  it('should apply default imageSettings when shape is image', () => {
+    const config = {
+      shapeFn,
+      data: ['img'],
+      settings: {
+        shape: 'image',
+        imageSettings: {
+          imageSrc: 'http://some.url/image.png',
+          symbol: 'circle',
+          position: 'top-left',
+        },
+      },
+    };
+
+    componentFixture.simulateCreate(pointComponent, config);
+    renderedPoints = componentFixture.simulateRender(opts);
+
+    expect(renderedPoints).to.deep.equal([
+      {
+        type: 'image',
+        label: '',
+        x: 50,
+        y: 100,
+        fill: '#333',
+        size: 10,
+        stroke: '#ccc',
+        strokeWidth: 0,
+        strokeDasharray: '',
+        opacity: 1,
+        data: { value: 'img', label: 'img' },
+        imageSettings: {
+          imageSrc: 'http://some.url/image.png',
+          imgScalingFactor: 1,
+          position: 'top-left',
+          size: 0.1,
+          symbol: 'circle',
+        },
+      },
+    ]);
+  });
+  it('Should not apply imageSettings for non-image shapes', () => {
+    const config = {
+      shapeFn,
+      data: [1],
+      settings: {
+        shape: () => ({
+          // type: 'custom',
+          custom: 'prop',
+        }),
+        imageSettings: {
+          imageSrc: 'http://some.url/image.png',
+          symbol: 'circle',
+          position: 'top-left',
+        },
+      },
+    };
+
+    componentFixture.simulateCreate(pointComponent, config);
+    renderedPoints = componentFixture.simulateRender(opts);
+
+    expect(renderedPoints).to.deep.equal([
+      {
+        type: 'circle',
+        label: '',
+        x: 50,
+        y: 100,
+        fill: '#333',
+        size: 10,
+        stroke: '#ccc',
+        strokeWidth: 0,
+        strokeDasharray: '',
+        opacity: 1,
+        data: { value: 1, label: '1' },
+        imageSettings: {},
+      },
+    ]);
+  });
+  it('should merge partial imageSettings with default imageSettings', () => {
+    const config = {
+      shapeFn,
+      data: ['img'],
+      settings: {
+        shape: 'image',
+        imageSettings: {
+          imageSrc: 'http://some.url/image.png',
+        },
+      },
+    };
+
+    componentFixture.simulateCreate(pointComponent, config);
+    renderedPoints = componentFixture.simulateRender(opts);
+
+    expect(renderedPoints[0].imageSettings).to.deep.equal({
+      imageSrc: 'http://some.url/image.png',
+      imgScalingFactor: 1,
+      position: 'center-center',
+      size: 0.1,
+      symbol: 'rectangle',
+    });
+  });
+  it('should apply default imageSettings when imageSettings is not defined but shape is image', () => {
+    const config = {
+      shapeFn,
+      data: ['img'],
+      settings: {
+        shape: 'image',
+        // No imageSettings
+      },
+    };
+
+    componentFixture.simulateCreate(pointComponent, config);
+    renderedPoints = componentFixture.simulateRender(opts);
+
+    expect(renderedPoints[0].imageSettings).to.deep.equal({
+      imgScalingFactor: 1,
+      position: 'center-center',
+      size: 0.1,
+      symbol: 'rectangle',
+    });
   });
 });
