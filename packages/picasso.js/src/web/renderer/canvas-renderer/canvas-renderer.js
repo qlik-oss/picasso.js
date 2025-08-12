@@ -334,5 +334,6 @@ export function renderer(sceneFn = sceneFactory) {
 }
 
 export function register(type, renderFn) {
+  console.log('%c ADDING TYPE', 'color: orangered', type);
   reg.add(type, renderFn);
 }
