@@ -44,7 +44,6 @@ function applyContext(g, s, shapeToCanvasMap, computed = {}) {
 
   for (let i = 0, len = shapeToCanvasMap.length; i < len; i++) {
     let cmd = shapeToCanvasMap[i];
-
     const shapeCmd = cmd[0];
     const canvasCmd = cmd[1];
     const convertCmd = cmd[2];
@@ -243,15 +242,17 @@ export function renderer(sceneFn = sceneFactory) {
       buffer.apply();
       return true;
     }
+    const containsImage = Array.isArray(shapes) && shapes.some((shape) => shape.type === 'image');
 
     if (hasChangedRect) {
       el.style.left = `${rect.computedPhysical.x}px`;
       el.style.top = `${rect.computedPhysical.y}px`;
       el.style.width = `${rect.computedPhysical.width}px`;
       el.style.height = `${rect.computedPhysical.height}px`;
-      el.width = Math.round(rect.computedPhysical.width * dpiRatio);
-      el.height = Math.round(rect.computedPhysical.height * dpiRatio);
-
+      if (!containsImage) {
+        el.width = Math.round(rect.computedPhysical.width * dpiRatio);
+        el.height = Math.round(rect.computedPhysical.height * dpiRatio);
+      }
       if (buffer) {
         buffer.updateSize({ rect, dpiRatio, canvasBufferSize: settings.canvasBufferSize });
       }
@@ -266,7 +267,7 @@ export function renderer(sceneFn = sceneFactory) {
     const doRender = hasChangedRect || hasChangedScene;
     const progressive = typeof settings.progressive === 'function' && settings.progressive();
     if (doRender) {
-      if (!progressive || progressive.isFirst) {
+      if ((!progressive || progressive.isFirst) && !containsImage) {
         canvasRenderer.clear();
       }
       renderShapes(newScene.children, g, shapeToCanvasMap, {
