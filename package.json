@@ -43,10 +43,10 @@
     "cross-env": "7.0.3",
     "eslint": "8.57.1",
     "eslint-config-airbnb-base": "15.0.0",
-    "eslint-config-prettier": "10.1.5",
+    "eslint-config-prettier": "10.1.8",
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-jsx-a11y": "6.10.2",
-    "eslint-plugin-prettier": "5.5.1",
+    "eslint-plugin-prettier": "5.5.4",
     "extend": "3.0.2",
     "globby": "14.1.0",
     "husky": "9.1.7",
@@ -58,7 +58,7 @@
     "lerna": "8.2.3",
     "prettier": "3.6.2",
     "pretty-quick": "4.2.2",
-    "puppeteer": "24.12.1",
+    "puppeteer": "24.16.1",
     "rollup": "2.79.2",
     "rollup-plugin-babel": "4.4.0",
     "rollup-plugin-commonjs": "10.1.0",
@@ -66,7 +66,7 @@
     "rollup-plugin-serve": "1.1.1",
     "sinon": "21.0.0",
     "sinon-chai": "4.0.0",
-    "typescript": "5.8.3"
+    "typescript": "5.9.2"
   },
   "packageManager": "pnpm@9.15.9+sha512.68046141893c66fad01c079231128e9afb89ef87e2691d69e4d40eee228988295fd4682181bae55b58418c3a253bde65a505ec7c5f9403ece5cc3cd37dcf2531"
 }
