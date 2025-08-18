@@ -67,7 +67,7 @@ const DEFAULT_IMAGE_SETTINGS = {
   imageSrc: undefined,
   /** Image scaling factor
    * @type {number=} */
-  imgScalingFactor: 1,
+  imgScalingFactor: undefined,
   /** Position of image
    * @type {string=} */
   position: 'center-center',

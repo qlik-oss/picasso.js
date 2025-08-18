@@ -3948,7 +3948,6 @@
                 "imgScalingFactor": {
                   "description": "Image scaling factor",
                   "optional": true,
-                  "defaultValue": 1,
                   "type": "number"
                 },
                 "position": {

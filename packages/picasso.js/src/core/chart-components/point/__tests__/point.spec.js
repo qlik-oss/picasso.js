@@ -635,7 +635,6 @@ describe('point component', () => {
         data: { value: 'img', label: 'img' },
         imageSettings: {
           imageSrc: 'http://some.url/image.png',
-          imgScalingFactor: 1,
           position: 'top-left',
           size: 0.1,
           symbol: 'circle',
@@ -697,7 +696,6 @@ describe('point component', () => {
 
     expect(renderedPoints[0].imageSettings).to.deep.equal({
       imageSrc: 'http://some.url/image.png',
-      imgScalingFactor: 1,
       position: 'center-center',
       size: 0.1,
       symbol: 'rectangle',
@@ -717,7 +715,6 @@ describe('point component', () => {
     renderedPoints = componentFixture.simulateRender(opts);
 
     expect(renderedPoints[0].imageSettings).to.deep.equal({
-      imgScalingFactor: 1,
       position: 'center-center',
       size: 0.1,
       symbol: 'rectangle',
