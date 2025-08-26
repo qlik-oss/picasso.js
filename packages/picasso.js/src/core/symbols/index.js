@@ -11,6 +11,7 @@ import cross from './cross';
 import bar from './bar';
 import rect from './rect';
 import registry from '../utils/registry';
+import image from './image';
 
 const parentReg = registry();
 
@@ -25,6 +26,7 @@ parentReg.add('n-polygon', nPolygon);
 parentReg.add('cross', cross);
 parentReg.add('bar', bar);
 parentReg.add('rect', rect);
+parentReg.add('image', image);
 
 function applyOpts(obj, opts = {}) {
   Object.keys(opts).forEach((key) => {

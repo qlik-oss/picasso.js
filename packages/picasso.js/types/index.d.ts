@@ -999,6 +999,14 @@ declare namespace picassojs {
         type: "point";
         settings?: {
             fill?: picassojs.DatumString;
+            imageSettings?: {
+                height?: number;
+                imageSrc?: string;
+                imgScalingFactor?: number;
+                position?: string;
+                symbol?: string;
+                width?: number;
+            };
             label?: picassojs.DatumString;
             opacity?: picassojs.DatumNumber;
             shape?: picassojs.DatumString;
