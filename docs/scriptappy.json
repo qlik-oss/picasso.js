@@ -3940,6 +3940,11 @@
               "optional": true,
               "kind": "object",
               "entries": {
+                "height": {
+                  "description": "Optional: Image height",
+                  "optional": true,
+                  "type": "number"
+                },
                 "imageSrc": {
                   "description": "Image source",
                   "optional": true,
@@ -3956,17 +3961,16 @@
                   "defaultValue": "center-center",
                   "type": "string"
                 },
-                "size": {
-                  "description": "Size of image",
-                  "optional": true,
-                  "defaultValue": 0.1,
-                  "type": "number"
-                },
                 "symbol": {
                   "description": "Shape of image",
                   "optional": true,
                   "defaultValue": "rectangle",
                   "type": "string"
+                },
+                "width": {
+                  "description": "Optional: Image width",
+                  "optional": true,
+                  "type": "number"
                 }
               }
             },

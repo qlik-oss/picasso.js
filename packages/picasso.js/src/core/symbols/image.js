@@ -5,9 +5,7 @@
  */
 export default function image(options) {
   const { x, y } = options;
-  const { size, imageSrc, position, symbol, imgScalingFactor } = options.imageSettings || {};
-  const width = typeof options.imageSettings.width === 'undefined' ? size : options.imageSettings.width;
-  const height = typeof options.imageSettings.height === 'undefined' ? size : options.imageSettings.height;
+  const { width, height, imageSrc, position, symbol, imgScalingFactor } = options.imageSettings || {};
   return {
     type: 'image',
     x,
@@ -16,7 +14,9 @@ export default function image(options) {
     height,
     src: imageSrc,
     symbol,
-    radius: 10,
+    r: 10,
+    cx: 0,
+    cy: 0,
     imgScalingFactor,
     imgPosition: position,
   };

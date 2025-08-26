@@ -242,9 +242,9 @@ export function renderer(sceneFn = sceneFactory) {
       buffer.apply();
       return true;
     }
-    const containsImage = Array.isArray(shapes) && shapes.some((shape) => shape.type === 'image');
-
+    let containsImage = false;
     if (hasChangedRect) {
+      containsImage = Array.isArray(shapes) && shapes.length > 0 && shapes[0].type === 'image';
       el.style.left = `${rect.computedPhysical.x}px`;
       el.style.top = `${rect.computedPhysical.y}px`;
       el.style.width = `${rect.computedPhysical.width}px`;

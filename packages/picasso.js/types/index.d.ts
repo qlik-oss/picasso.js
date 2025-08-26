@@ -1000,11 +1000,12 @@ declare namespace picassojs {
         settings?: {
             fill?: picassojs.DatumString;
             imageSettings?: {
+                height?: number;
                 imageSrc?: string;
                 imgScalingFactor?: number;
                 position?: string;
-                size?: number;
                 symbol?: string;
+                width?: number;
             };
             label?: picassojs.DatumString;
             opacity?: picassojs.DatumNumber;

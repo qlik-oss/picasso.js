@@ -71,12 +71,15 @@ const DEFAULT_IMAGE_SETTINGS = {
   /** Position of image
    * @type {string=} */
   position: 'center-center',
-  /** Size of image
-   * @type {number=} */
-  size: 0.1,
   /** Shape of image
    * @type {string=} */
   symbol: 'rectangle',
+  /** Optional: Image width
+   * @type {number=} */
+  width: undefined,
+  /** Optional: Image height
+   * @type {number=} */
+  height: undefined,
 };
 
 /**

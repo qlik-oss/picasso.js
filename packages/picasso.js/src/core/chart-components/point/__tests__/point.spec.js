@@ -636,7 +636,6 @@ describe('point component', () => {
         imageSettings: {
           imageSrc: 'http://some.url/image.png',
           position: 'top-left',
-          size: 0.1,
           symbol: 'circle',
         },
       },
@@ -697,7 +696,6 @@ describe('point component', () => {
     expect(renderedPoints[0].imageSettings).to.deep.equal({
       imageSrc: 'http://some.url/image.png',
       position: 'center-center',
-      size: 0.1,
       symbol: 'rectangle',
     });
   });
@@ -716,7 +714,6 @@ describe('point component', () => {
 
     expect(renderedPoints[0].imageSettings).to.deep.equal({
       position: 'center-center',
-      size: 0.1,
       symbol: 'rectangle',
     });
   });
