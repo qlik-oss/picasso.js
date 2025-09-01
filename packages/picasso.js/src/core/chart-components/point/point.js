@@ -58,6 +58,7 @@ const DEFAULT_DATA_SETTINGS = {
   show: true,
 };
 /**
+ * Image settings. Applies only when point shape is set to 'image'.
  * @typedef {object=}
  * @alias ComponentPoint.settings.imageSettings
  */
@@ -74,10 +75,10 @@ const DEFAULT_IMAGE_SETTINGS = {
   /** Shape of image
    * @type {string=} */
   symbol: 'rectangle',
-  /** Optional: Image width
+  /** Image width. If not set, the image's natural width is used
    * @type {number=} */
   width: undefined,
-  /** Optional: Image height
+  /** Image height. If not set, the image's natural height is used
    * @type {number=} */
   height: undefined,
 };

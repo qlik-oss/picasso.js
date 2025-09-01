@@ -69,6 +69,7 @@ export default function render(img, { g }) {
     const ctx = offscreenBuffer.getContext('2d');
     ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
     ctx.clearRect(0, 0, offscreenBuffer.width, offscreenBuffer.height);
+    ctx.globalAlpha = img.opacity;
     if (!img.width && !img.height) {
       img.width = image.naturalWidth * img.imgScalingFactor;
       img.height = image.naturalHeight * img.imgScalingFactor;
