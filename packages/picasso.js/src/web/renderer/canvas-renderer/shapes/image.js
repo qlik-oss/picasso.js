@@ -1,8 +1,14 @@
 let offscreenBuffer = null;
+
 function loadImage(src, onLoad) {
+  if (loadImage.cache[src]) {
+    onLoad(loadImage.cache[src]);
+    return;
+  }
   const image = new Image();
   image.src = src;
   image.onload = () => {
+    loadImage.cache[src] = image;
     onLoad(image);
   };
 
@@ -10,6 +16,9 @@ function loadImage(src, onLoad) {
     console.error('Image load error', e);
   };
 }
+
+loadImage.cache = {};
+
 export function positionImage(img) {
   const position = img.imgPosition || 'center-center';
   if (img.symbol === 'circle') {
