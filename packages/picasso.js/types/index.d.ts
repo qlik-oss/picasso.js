@@ -1001,8 +1001,8 @@ declare namespace picassojs {
             fill?: picassojs.DatumString;
             imageSettings?: {
                 height?: number;
+                imageScalingFactor?: number;
                 imageSrc?: string;
-                imgScalingFactor?: number;
                 position?: string;
                 symbol?: string;
                 width?: number;

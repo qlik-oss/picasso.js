@@ -68,11 +68,11 @@ const DEFAULT_IMAGE_SETTINGS = {
   imageSrc: undefined,
   /** Image scaling factor
    * @type {number=} */
-  imgScalingFactor: undefined,
+  imageScalingFactor: undefined,
   /** Position of image
    * @type {string=} */
   position: 'center-center',
-  /** Shape of image
+  /** Shape of image: 'rectangle' or 'circle'
    * @type {string=} */
   symbol: 'rectangle',
   /** Image width. If not set, the image's natural width is used

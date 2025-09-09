@@ -25,8 +25,6 @@ const mappedAttributes = {
   id: 'id',
   src: 'src',
   symbol: 'symbol',
-  imgScalingFactor: 'imgScalingFactor',
-  imgPosition: 'imgPosition',
 };
 
 /**

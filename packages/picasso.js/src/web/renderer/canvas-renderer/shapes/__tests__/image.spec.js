@@ -84,7 +84,7 @@ describe('render()', () => {
       symbol: 'circle',
       x: 50,
       y: 50,
-      imgScalingFactor: 1,
+      imageScalingFactor: 1,
     };
 
     render(img, { g });
@@ -102,7 +102,7 @@ describe('render()', () => {
       symbol: 'square',
       x: 100,
       y: 100,
-      imgScalingFactor: 0.5,
+      imageScalingFactor: 0.5,
     };
 
     render(img, { g });
@@ -119,7 +119,7 @@ describe('render()', () => {
       symbol: 'circle',
       x: 0,
       y: 0,
-      imgScalingFactor: 1,
+      imageScalingFactor: 1,
     };
 
     render(img, { g });
@@ -132,7 +132,7 @@ describe('render()', () => {
   });
   describe('positionImage()', () => {
     it('positions top-left correctly', () => {
-      const img = { x: 100, y: 100, width: 40, height: 20, imgPosition: 'top-left' };
+      const img = { x: 100, y: 100, width: 40, height: 20, imagePosition: 'top-left' };
       positionImage(img);
       expect(img.x).to.equal(80); // x - width/2
       expect(img.y).to.equal(90); // y - height/2

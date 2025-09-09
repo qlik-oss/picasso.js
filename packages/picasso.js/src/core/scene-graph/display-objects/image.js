@@ -24,7 +24,22 @@ export default class Image extends DisplayObject {
   }
 
   set(v = {}) {
-    const { x = 0, y = 0, width = 0, height = 0, rx = 0, ry = 0, src, collider, cx = 0, cy = 0, r = 0, opacity } = v;
+    const {
+      x = 0,
+      y = 0,
+      width = 0,
+      height = 0,
+      rx = 0,
+      ry = 0,
+      src,
+      collider,
+      cx = 0,
+      cy = 0,
+      r = 0,
+      opacity,
+      imageScalingFactor,
+      imagePosition,
+    } = v;
     let opts;
     if (v.symbol === 'circle') {
       opts = extend(
@@ -80,6 +95,8 @@ export default class Image extends DisplayObject {
     this.attrs.cx = cx;
     this.attrs.cy = cy;
     this.attrs.opacity = opacity !== undefined ? opacity : 1;
+    this.attrs.imageScalingFactor = imageScalingFactor !== undefined ? imageScalingFactor : 1;
+    this.attrs.imagePosition = imagePosition || 'center-center';
     this.collider = opts;
     this.__boundingRect = { true: null, false: null };
     this.__bounds = { true: null, false: null };

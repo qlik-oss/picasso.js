@@ -3946,15 +3946,15 @@
                   "optional": true,
                   "type": "number"
                 },
+                "imageScalingFactor": {
+                  "description": "Image scaling factor",
+                  "optional": true,
+                  "type": "number"
+                },
                 "imageSrc": {
                   "description": "Image source",
                   "optional": true,
                   "type": "string"
-                },
-                "imgScalingFactor": {
-                  "description": "Image scaling factor",
-                  "optional": true,
-                  "type": "number"
                 },
                 "position": {
                   "description": "Position of image",
@@ -3963,7 +3963,7 @@
                   "type": "string"
                 },
                 "symbol": {
-                  "description": "Shape of image",
+                  "description": "Shape of image: 'rectangle' or 'circle'",
                   "optional": true,
                   "defaultValue": "rectangle",
                   "type": "string"

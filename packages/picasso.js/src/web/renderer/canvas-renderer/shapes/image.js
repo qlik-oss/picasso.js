@@ -20,7 +20,7 @@ function loadImage(src, onLoad) {
 loadImage.cache = {};
 
 export function positionImage(img) {
-  const position = img.imgPosition || 'center-center';
+  const position = img.imagePosition || 'center-center';
   if (img.symbol === 'circle') {
     const radius = Math.min(img.width, img.height) / 2;
     img.width = radius * 2;
@@ -80,8 +80,8 @@ export default function render(img, { g }) {
     ctx.clearRect(0, 0, offscreenBuffer.width, offscreenBuffer.height);
     ctx.globalAlpha = img.opacity;
     if (!img.width && !img.height) {
-      img.width = image.naturalWidth * img.imgScalingFactor;
-      img.height = image.naturalHeight * img.imgScalingFactor;
+      img.width = image.naturalWidth * img.imageScalingFactor;
+      img.height = image.naturalHeight * img.imageScalingFactor;
     }
     positionImage(img);
 

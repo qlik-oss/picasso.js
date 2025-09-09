@@ -43,18 +43,18 @@ const isValid = (item) => {
 
 function handleImageLoad({ element, attrs }) {
   return function onImageLoad() {
-    const { width, height, imgPosition, imgScalingFactor, symbol } = attrs;
+    const { width, height, imagePosition, imageScalingFactor, symbol } = attrs;
     let { x = 0, y = 0 } = attrs;
 
     let imgWidth = width > 0 ? width : this.naturalWidth;
     let imgHeight = height > 0 ? height : this.naturalHeight;
 
-    if (imgScalingFactor) {
-      imgWidth *= imgScalingFactor;
-      imgHeight *= imgScalingFactor;
+    if (imageScalingFactor) {
+      imgWidth *= imageScalingFactor;
+      imgHeight *= imageScalingFactor;
     }
 
-    switch (imgPosition) {
+    switch (imagePosition) {
       case 'top-center':
         y -= imgHeight / 2;
         break;
