@@ -20,9 +20,4 @@ jobs:
         shell: bash
         run: pnpm install --frozen-lockfile
       - name: Run unit tests
-        uses: paambaati/codeclimate-action@v9.0.0
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-        with:
-          coverageLocations: ${{github.workspace}}/reports/lcov.info:lcov
-          coverageCommand: pnpm test:unit --ci --coverage --reporters="github-actions" --reporters="summary"
+        run: pnpm test:unit
