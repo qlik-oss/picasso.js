@@ -56,6 +56,7 @@ const DEFAULT_DATA_SETTINGS = {
   /** Whether or not to show the point
    * @type {DatumBoolean=} */
   show: true,
+  imageSrc: undefined,
 };
 
 /**
@@ -155,7 +156,9 @@ function createDisplayPoints(dataPoints, { width, height }, pointSize, shapeFn) 
         strokeWidth: s.strokeWidth,
         strokeDasharray: s.strokeDasharray,
         opacity: s.opacity,
+        src: p.imageSrc,
       };
+      console.log('%c shapeSpec', 'color: orangered', shapeSpec);
       if (s === p.errorShape) {
         shapeSpec.width = s.width;
       }
@@ -192,6 +195,7 @@ const component = {
     const { width, height } = this.rect;
     const limits = extend({}, SIZE_LIMITS, this.settings.settings.sizeLimits);
     const points = resolved.items;
+    console.log('%c points', 'color: orangered', this.settings.shapeFn);
     const pointSize = getPointSizeLimits(resolved.settings.x, resolved.settings.y, width, height, limits);
     return createDisplayPoints(points, this.rect, pointSize, this.settings.shapeFn || this.symbol);
   },

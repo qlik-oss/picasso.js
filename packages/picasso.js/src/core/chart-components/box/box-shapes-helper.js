@@ -72,7 +72,7 @@ export function box({ item, boxWidth, boxPadding, rendWidth, rendHeight, flipXY 
     minPx: item.box.minHeightPx,
     maxPx: calcheight,
   });
-
+  console.log('%c box item', 'color: orangered', item);
   return extend({}, item.box, {
     type: 'rect',
     [x]: (boxPadding + item.major) * calcwidth,
@@ -83,6 +83,7 @@ export function box({ item, boxWidth, boxPadding, rendWidth, rendHeight, flipXY 
     collider: {
       type: null,
     },
+    src: item.box.imageSrc,
   });
 }
 

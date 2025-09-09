@@ -7,6 +7,7 @@ import { create as circle } from './circle';
 import { create as line } from './line';
 import { create as path } from './path';
 import { create as text } from './text';
+import { create as image } from './image';
 import registry from '../../utils/registry';
 
 const reg = registry();
@@ -24,6 +25,7 @@ reg.add('radialGradient', gradientItem);
 reg.add('conicGradient', gradientItem);
 reg.add('stop', gradientItem);
 reg.add('pattern', patternItem);
+reg.add('image', image);
 
 /* eslint-disable import/prefer-default-export */
 export function create(type, input) {
