@@ -38,7 +38,6 @@ const isValid = (item) => {
       return true;
   }
 };
-
 const maintainer = (element, item) => {
   if (isValid(item)) {
     for (const attr in item.attrs) {
