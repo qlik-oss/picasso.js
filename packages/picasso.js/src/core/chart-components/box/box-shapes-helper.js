@@ -83,7 +83,6 @@ export function box({ item, boxWidth, boxPadding, rendWidth, rendHeight, flipXY 
     collider: {
       type: null,
     },
-    src: item.box.imageSrc,
   });
 }
 
