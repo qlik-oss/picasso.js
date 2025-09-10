@@ -23,8 +23,6 @@ const mappedAttributes = {
   transform: 'transform',
   strokeDasharray: 'stroke-dasharray',
   id: 'id',
-  src: 'src',
-  symbol: 'symbol',
 };
 
 /**

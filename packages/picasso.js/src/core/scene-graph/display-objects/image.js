@@ -39,6 +39,7 @@ export default class Image extends DisplayObject {
       opacity,
       imageScalingFactor,
       imagePosition,
+      symbol,
     } = v;
     let opts;
     if (v.symbol === 'circle') {
@@ -97,6 +98,7 @@ export default class Image extends DisplayObject {
     this.attrs.opacity = opacity !== undefined ? opacity : 1;
     this.attrs.imageScalingFactor = imageScalingFactor !== undefined ? imageScalingFactor : 1;
     this.attrs.imagePosition = imagePosition || 'center-center';
+    this.attrs.symbol = symbol || 'rectangle';
     this.collider = opts;
     this.__boundingRect = { true: null, false: null };
     this.__bounds = { true: null, false: null };
