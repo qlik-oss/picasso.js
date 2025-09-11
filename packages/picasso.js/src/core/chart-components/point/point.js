@@ -57,6 +57,31 @@ const DEFAULT_DATA_SETTINGS = {
    * @type {DatumBoolean=} */
   show: true,
 };
+/**
+ * Image settings. Applies only when point shape is set to 'image'.
+ * @typedef {object=}
+ * @alias ComponentPoint.settings.imageSettings
+ */
+const DEFAULT_IMAGE_SETTINGS = {
+  /** Image source
+   * @type {string=} */
+  imageSrc: undefined,
+  /** Image scaling factor
+   * @type {number=} */
+  imageScalingFactor: undefined,
+  /** Position of image
+   * @type {string=} */
+  position: 'center-center',
+  /** Shape of image: 'rectangle' or 'circle'
+   * @type {string=} */
+  symbol: 'rectangle',
+  /** Image width. If not set, the image's natural width is used
+   * @type {number=} */
+  width: undefined,
+  /** Image height. If not set, the image's natural height is used
+   * @type {number=} */
+  height: undefined,
+};
 
 /**
  * @typedef {object=}
@@ -141,7 +166,6 @@ function createDisplayPoints(dataPoints, { width, height }, pointSize, shapeFn) 
         s = DEFAULT_ERROR_SETTINGS.errorShape;
         size = pointSize.min + s.size * (pointSize.max - pointSize.min);
       }
-
       const [type, typeProps] = getType(s);
       const shapeSpec = {
         ...typeProps,
@@ -155,12 +179,12 @@ function createDisplayPoints(dataPoints, { width, height }, pointSize, shapeFn) 
         strokeWidth: s.strokeWidth,
         strokeDasharray: s.strokeDasharray,
         opacity: s.opacity,
+        imageSettings: s.imageSettings,
       };
       if (s === p.errorShape) {
         shapeSpec.width = s.width;
       }
       const shape = shapeFn(shapeSpec);
-
       shape.data = p.data;
       return shape;
     });
@@ -192,9 +216,14 @@ const component = {
     const { width, height } = this.rect;
     const limits = extend({}, SIZE_LIMITS, this.settings.settings.sizeLimits);
     const points = resolved.items;
+    if (points.length > 0 && points[0].shape === 'image') {
+      data.items.forEach((d, i) => {
+        points[i].imageSettings = extend({}, DEFAULT_IMAGE_SETTINGS, this.settings.settings.imageSettings);
+      });
+    }
+
     const pointSize = getPointSizeLimits(resolved.settings.x, resolved.settings.y, width, height, limits);
     return createDisplayPoints(points, this.rect, pointSize, this.settings.shapeFn || this.symbol);
   },
 };
-
 export default component;

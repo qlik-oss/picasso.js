@@ -34,10 +34,91 @@ const isValid = (item) => {
       return !isNaN(item.attrs.x) && !isNaN(item.attrs.y) && !isNaN(item.attrs.width) && !isNaN(item.attrs.height);
     case 'text':
       return !isNaN(item.attrs.x) && !isNaN(item.attrs.y);
+    case 'image':
+      return !isNaN(item.attrs.x) && !isNaN(item.attrs.y);
     default:
       return true;
   }
 };
+
+function handleImageLoad({ element, attrs }) {
+  return function onImageLoad() {
+    const { width, height, imagePosition, imageScalingFactor, symbol } = attrs;
+    let { x = 0, y = 0 } = attrs;
+
+    let imgWidth = width > 0 ? width : this.naturalWidth;
+    let imgHeight = height > 0 ? height : this.naturalHeight;
+
+    if (imageScalingFactor) {
+      imgWidth *= imageScalingFactor;
+      imgHeight *= imageScalingFactor;
+    }
+
+    switch (imagePosition) {
+      case 'top-center':
+        y -= imgHeight / 2;
+        break;
+      case 'center-left':
+        x -= imgWidth / 2;
+        break;
+      case 'center-right':
+        x += imgWidth / 2;
+        break;
+      case 'top-left':
+        x -= imgWidth / 2;
+        y -= imgHeight / 2;
+        break;
+      case 'top-right':
+        x += imgWidth / 2;
+        y -= imgHeight / 2;
+        break;
+      case 'bottom-left':
+        x -= imgWidth / 2;
+        y += imgHeight / 2;
+        break;
+      case 'bottom-right':
+        x += imgWidth / 2;
+        y += imgHeight / 2;
+        break;
+      case 'bottom-center':
+        y += imgHeight / 2;
+        break;
+      default:
+        break;
+    }
+
+    element.setAttribute('width', imgWidth);
+    element.setAttribute('height', imgHeight);
+    element.setAttribute('x', x - imgWidth / 2);
+    element.setAttribute('y', y - imgHeight / 2);
+    element.setAttribute('preserveAspectRatio', 'none');
+
+    if (symbol === 'circle') {
+      const svg = element.ownerSVGElement;
+      if (!svg) {
+        return;
+      }
+
+      const id = `clip-${Math.random().toString(36).substr(2, 9)}`;
+      if (!svg.querySelector(`#${id}`)) {
+        const defs =
+          svg.querySelector('defs') || svg.insertBefore(document.createElementNS(svgNs, 'defs'), svg.firstChild);
+
+        const clipPath = document.createElementNS(svgNs, 'clipPath');
+        clipPath.setAttribute('id', id);
+
+        const circle = document.createElementNS(svgNs, 'circle');
+        circle.setAttribute('cx', x);
+        circle.setAttribute('cy', y);
+        circle.setAttribute('r', Math.min(imgWidth, imgHeight) / 2);
+        clipPath.appendChild(circle);
+        defs.appendChild(clipPath);
+      }
+
+      element.setAttribute('clip-path', `url(#${id})`);
+    }
+  };
+}
 
 const maintainer = (element, item) => {
   if (isValid(item)) {
@@ -68,6 +149,11 @@ const maintainer = (element, item) => {
         const t = element.ownerDocument.createElementNS(svgNs, 'title');
         t.textContent = item.attrs.title;
         element.appendChild(t);
+      } else if (item.type === 'image' && attr === 'src') {
+        element.setAttributeNS('http://www.w3.org/1999/xlink', 'href', item.attrs.src);
+        let img = new Image();
+        img.src = item.attrs.src;
+        img.onload = handleImageLoad({ element, attrs: item.attrs });
       } else {
         element.setAttribute(attr, item.attrs[attr]);
       }

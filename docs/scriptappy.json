@@ -3936,6 +3936,45 @@
               "defaultValue": "#333",
               "type": "#/definitions/DatumString"
             },
+            "imageSettings": {
+              "description": "Image settings. Applies only when point shape is set to 'image'.",
+              "optional": true,
+              "kind": "object",
+              "entries": {
+                "height": {
+                  "description": "Image height. If not set, the image's natural height is used",
+                  "optional": true,
+                  "type": "number"
+                },
+                "imageScalingFactor": {
+                  "description": "Image scaling factor",
+                  "optional": true,
+                  "type": "number"
+                },
+                "imageSrc": {
+                  "description": "Image source",
+                  "optional": true,
+                  "type": "string"
+                },
+                "position": {
+                  "description": "Position of image",
+                  "optional": true,
+                  "defaultValue": "center-center",
+                  "type": "string"
+                },
+                "symbol": {
+                  "description": "Shape of image: 'rectangle' or 'circle'",
+                  "optional": true,
+                  "defaultValue": "rectangle",
+                  "type": "string"
+                },
+                "width": {
+                  "description": "Image width. If not set, the image's natural width is used",
+                  "optional": true,
+                  "type": "number"
+                }
+              }
+            },
             "label": {
               "description": "Label",
               "optional": true,
