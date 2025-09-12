@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0](https://github.com/qlik-oss/picasso.js/compare/v2.8.2...v2.9.0) (2025-09-12)
+
+### Features
+
+- add image shape to points ([#916](https://github.com/qlik-oss/picasso.js/issues/916)) ([b69156f](https://github.com/qlik-oss/picasso.js/commit/b69156fb4de7e85276f3618fefaabbc9c9633de5))
+
 ## [2.8.2](https://github.com/qlik-oss/picasso.js/compare/v2.8.1...v2.8.2) (2025-04-25)
 
 ### Bug Fixes
