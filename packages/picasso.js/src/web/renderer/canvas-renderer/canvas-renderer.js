@@ -242,17 +242,14 @@ export function renderer(sceneFn = sceneFactory) {
       buffer.apply();
       return true;
     }
-    let containsImage = false;
     if (hasChangedRect) {
-      containsImage = Array.isArray(shapes) && shapes.length > 0 && shapes[0].type === 'image';
       el.style.left = `${rect.computedPhysical.x}px`;
       el.style.top = `${rect.computedPhysical.y}px`;
       el.style.width = `${rect.computedPhysical.width}px`;
       el.style.height = `${rect.computedPhysical.height}px`;
-      if (!containsImage) {
-        el.width = Math.round(rect.computedPhysical.width * dpiRatio);
-        el.height = Math.round(rect.computedPhysical.height * dpiRatio);
-      }
+      el.width = Math.round(rect.computedPhysical.width * dpiRatio);
+      el.height = Math.round(rect.computedPhysical.height * dpiRatio);
+
       if (buffer) {
         buffer.updateSize({ rect, dpiRatio, canvasBufferSize: settings.canvasBufferSize });
       }
@@ -267,7 +264,7 @@ export function renderer(sceneFn = sceneFactory) {
     const doRender = hasChangedRect || hasChangedScene;
     const progressive = typeof settings.progressive === 'function' && settings.progressive();
     if (doRender) {
-      if ((!progressive || progressive.isFirst) && !containsImage) {
+      if (!progressive || progressive.isFirst) {
         canvasRenderer.clear();
       }
       renderShapes(newScene.children, g, shapeToCanvasMap, {
