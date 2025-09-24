@@ -61,11 +61,10 @@ export function positionImage(img) {
 }
 export default function render(img, { g }) {
   const canvas = g.canvas;
-
+  const currentTransform = g.getTransform();
   const ratio = window.devicePixelRatio || 1;
   const logicalWidth = canvas.clientWidth;
   const logicalHeight = canvas.clientHeight;
-  console.log('logicalWidth,', logicalWidth, 'Width', canvas.width);
   const renderWidth = logicalWidth * ratio;
   const renderHeight = logicalHeight * ratio;
   if (canvas.width !== renderWidth || canvas.height !== renderHeight) {
@@ -79,7 +78,6 @@ export default function render(img, { g }) {
   }
   loadImage(img.src, (image) => {
     const ctx = offscreenBuffer.getContext('2d');
-    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
     ctx.clearRect(0, 0, offscreenBuffer.width, offscreenBuffer.height);
     ctx.globalAlpha = img.opacity;
     if (!img.width && !img.height) {
@@ -106,10 +104,7 @@ export default function render(img, { g }) {
       ctx.drawImage(image, img.x, img.y, img.width, img.height);
     }
 
-    // Copy to visible canvas
-    // g.setTransform(1, 0, 0, 1, 0, 0);
-    // g.setTransform(ratio, 0, 0, ratio, 0, 0);
-
+    g.setTransform(currentTransform);
     g.clearRect(0, 0, canvas.width, canvas.height);
     g.drawImage(offscreenBuffer, 0, 0, renderWidth, renderHeight, 0, 0, canvas.width, canvas.height);
     if (img.updateCollider) {
