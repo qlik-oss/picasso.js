@@ -37,6 +37,7 @@ describe('render()', () => {
       drawImage: sinon.spy(),
       save: sinon.spy(),
       restore: sinon.spy(),
+      getTransform: sinon.spy(),
     };
 
     // Create a mock canvas
@@ -53,6 +54,7 @@ describe('render()', () => {
       setTransform: sinon.spy(),
       clearRect: sinon.spy(),
       drawImage: sinon.spy(),
+      getTransform: sinon.spy(),
     };
 
     // Mock document if not defined (for Node.js test environments)

@@ -30,9 +30,6 @@ export default class Circle extends DisplayObject {
     );
 
     super.set(v);
-    if (v.data.label === 'plugin') {
-      console.log('Circle without label');
-    }
     this.attrs.cx = cx;
     this.attrs.cy = cy;
     this.attrs.r = r;
