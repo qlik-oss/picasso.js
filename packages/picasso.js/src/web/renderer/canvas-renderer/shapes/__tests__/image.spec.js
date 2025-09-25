@@ -1,7 +1,7 @@
 import render, { positionImage } from '../image'; // adjust path as needed
 
 describe('render()', () => {
-  let canvas, g, ctx, createElementStub, lastCreatedImage;
+  let canvas, g, createElementStub, lastCreatedImage;
 
   beforeEach(() => {
     // Mock Image class
@@ -27,26 +27,12 @@ describe('render()', () => {
       naturalHeight = 50;
     };
 
-    // Create a mocked canvas context
-    ctx = {
-      setTransform: sinon.spy(),
-      clearRect: sinon.spy(),
-      beginPath: sinon.spy(),
-      arc: sinon.spy(),
-      clip: sinon.spy(),
-      drawImage: sinon.spy(),
-      save: sinon.spy(),
-      restore: sinon.spy(),
-      getTransform: sinon.spy(),
-    };
-
     // Create a mock canvas
     canvas = {
       clientWidth: 200,
       clientHeight: 100,
       width: 0,
       height: 0,
-      getContext: sinon.stub().returns(ctx),
     };
 
     g = {
@@ -55,6 +41,12 @@ describe('render()', () => {
       clearRect: sinon.spy(),
       drawImage: sinon.spy(),
       getTransform: sinon.spy(),
+      save: sinon.spy(),
+      beginPath: sinon.spy(),
+      arc: sinon.spy(),
+      clip: sinon.spy(),
+      restore: sinon.spy(),
+      globalAlpha: 1,
     };
 
     // Mock document if not defined (for Node.js test environments)
@@ -64,7 +56,6 @@ describe('render()', () => {
     const doc = global.document;
     // Stub document.createElement
     createElementStub = sinon.stub(doc, 'createElement').callsFake(() => ({
-      getContext: () => ctx,
       width: 0,
       height: 0,
     }));
@@ -92,8 +83,8 @@ describe('render()', () => {
     render(img, { g });
     lastCreatedImage.onload();
 
-    expect(ctx.arc.called).to.be.true;
-    expect(ctx.drawImage.called).to.be.true;
+    expect(g.arc.called).to.be.true;
+    expect(g.drawImage.called).to.be.true;
     expect(g.drawImage.called).to.be.true;
     done();
   });
@@ -109,8 +100,8 @@ describe('render()', () => {
 
     render(img, { g });
     lastCreatedImage.onload();
-    expect(ctx.drawImage.called).to.be.true;
-    expect(ctx.arc.called).to.be.false; // should not draw arc for square
+    expect(g.drawImage.called).to.be.true;
+    expect(g.arc.called).to.be.false; // should not draw arc for square
     expect(g.drawImage.called).to.be.true;
     done();
   });
@@ -128,7 +119,7 @@ describe('render()', () => {
     lastCreatedImage.onload();
     expect(canvas.width).to.equal(400); // 200 * 2
     expect(canvas.height).to.equal(200); // 100 * 2
-    expect(ctx.clearRect.called).to.be.true;
+    expect(g.clearRect.called).to.be.true;
     expect(g.clearRect.called).to.be.true;
     done();
   });
