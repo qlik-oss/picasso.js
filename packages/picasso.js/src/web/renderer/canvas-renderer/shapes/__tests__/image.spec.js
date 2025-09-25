@@ -131,10 +131,10 @@ describe('render()', () => {
       expect(img.y).to.equal(90); // y - height/2
     });
 
-    it('scales image if symbol is circle', () => {
+    it('do not scale image if symbol is circle', () => {
       const img = { symbol: 'circle', width: 80, height: 60 };
       positionImage(img);
-      expect(img.width).to.equal(60);
+      expect(img.width).to.equal(80);
       expect(img.height).to.equal(60);
     });
   });
