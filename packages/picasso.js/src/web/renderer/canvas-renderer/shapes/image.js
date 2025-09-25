@@ -1,5 +1,3 @@
-let offscreenBuffer = null;
-
 function loadImage(src, onLoad) {
   if (loadImage.cache[src]) {
     onLoad(loadImage.cache[src]);
@@ -67,23 +65,28 @@ export default function render(img, { g }) {
   const logicalHeight = canvas.clientHeight;
   const renderWidth = logicalWidth * ratio;
   const renderHeight = logicalHeight * ratio;
+
+  // Ensure canvas is correctly sized for high-DPI
   if (canvas.width !== renderWidth || canvas.height !== renderHeight) {
     canvas.width = renderWidth;
     canvas.height = renderHeight;
   }
-  if (!offscreenBuffer || offscreenBuffer.width !== renderWidth || offscreenBuffer.height !== renderHeight) {
-    offscreenBuffer = document.createElement('canvas');
-    offscreenBuffer.width = renderWidth;
-    offscreenBuffer.height = renderHeight;
-  }
+
+  // Load and draw image
   loadImage(img.src, (image) => {
-    const ctx = offscreenBuffer.getContext('2d');
-    ctx.clearRect(0, 0, offscreenBuffer.width, offscreenBuffer.height);
-    ctx.globalAlpha = img.opacity;
+    // Clear main canvas
+    g.setTransform(1, 0, 0, 1, 0, 0); // Reset transform before clearing
+    g.clearRect(0, 0, canvas.width, canvas.height);
+    g.setTransform(currentTransform); // Restore previous transform
+
+    g.globalAlpha = img.opacity;
+
+    // Set default dimensions if not set
     if (!img.width && !img.height) {
       img.width = image.naturalWidth * img.imageScalingFactor;
       img.height = image.naturalHeight * img.imageScalingFactor;
     }
+
     positionImage(img);
 
     if (img.symbol === 'circle') {
@@ -92,23 +95,22 @@ export default function render(img, { g }) {
       img.cy = img.y;
       const drawX = img.cx - img.r;
       const drawY = img.cy - img.r;
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(img.cx, img.cy, img.r, 0, Math.PI * 2);
-      ctx.clip();
-      ctx.drawImage(image, drawX, drawY, img.r * 2, img.r * 2);
-      ctx.restore();
+
+      g.save();
+      g.beginPath();
+      g.arc(img.cx, img.cy, img.r, 0, Math.PI * 2);
+      g.clip();
+      g.drawImage(image, drawX, drawY, img.r * 2, img.r * 2);
+      g.restore();
     } else {
       img.x -= img.width / 2;
       img.y -= img.height / 2;
-      ctx.drawImage(image, img.x, img.y, img.width, img.height);
+      g.drawImage(image, img.x, img.y, img.width, img.height);
     }
 
-    g.setTransform(currentTransform);
-    g.clearRect(0, 0, canvas.width, canvas.height);
-    g.drawImage(offscreenBuffer, 0, 0, renderWidth, renderHeight, 0, 0, canvas.width, canvas.height);
+    g.globalAlpha = 1; // Reset alpha after draw
+
     if (img.updateCollider) {
-      // Update collider after image has been loaded and positioned
       img.updateCollider(img);
     }
   });
