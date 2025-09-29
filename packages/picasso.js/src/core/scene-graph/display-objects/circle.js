@@ -30,7 +30,6 @@ export default class Circle extends DisplayObject {
     );
 
     super.set(v);
-
     this.attrs.cx = cx;
     this.attrs.cy = cy;
     this.attrs.r = r;

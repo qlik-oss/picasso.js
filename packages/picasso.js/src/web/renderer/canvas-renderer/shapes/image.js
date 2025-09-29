@@ -1,5 +1,3 @@
-let offscreenBuffer = null;
-
 function loadImage(src, onLoad) {
   if (loadImage.cache[src]) {
     onLoad(loadImage.cache[src]);
@@ -21,39 +19,41 @@ loadImage.cache = {};
 
 export function positionImage(img) {
   const position = img.imagePosition || 'center-center';
+  let width = img.width;
+  let height = img.height;
   if (img.symbol === 'circle') {
     const radius = Math.min(img.width, img.height) / 2;
-    img.width = radius * 2;
-    img.height = radius * 2;
+    width = radius * 2;
+    height = radius * 2;
   }
   switch (position) {
     case 'top-center':
-      img.y -= img.height / 2;
+      img.y -= height / 2;
       break;
     case 'center-left':
-      img.x -= img.width / 2;
+      img.x -= width / 2;
       break;
     case 'center-right':
-      img.x += img.width / 2;
+      img.x += width / 2;
       break;
     case 'top-left':
-      img.x -= img.width / 2;
-      img.y -= img.height / 2;
+      img.x -= width / 2;
+      img.y -= height / 2;
       break;
     case 'top-right':
-      img.x += img.width / 2;
-      img.y -= img.height / 2;
+      img.x += width / 2;
+      img.y -= height / 2;
       break;
     case 'bottom-left':
-      img.x -= img.width / 2;
-      img.y += img.height / 2;
+      img.x -= width / 2;
+      img.y += height / 2;
       break;
     case 'bottom-right':
-      img.x += img.width / 2;
-      img.y += img.height / 2;
+      img.x += width / 2;
+      img.y += height / 2;
       break;
     case 'bottom-center':
-      img.y += img.height / 2;
+      img.y += height / 2;
       break;
     default:
       break;
@@ -61,58 +61,55 @@ export function positionImage(img) {
 }
 export default function render(img, { g }) {
   const canvas = g.canvas;
-
+  const currentTransform = g.getTransform();
   const ratio = window.devicePixelRatio || 1;
   const logicalWidth = canvas.clientWidth;
   const logicalHeight = canvas.clientHeight;
-
   const renderWidth = logicalWidth * ratio;
   const renderHeight = logicalHeight * ratio;
 
-  if (!offscreenBuffer || offscreenBuffer.width !== renderWidth || offscreenBuffer.height !== renderHeight) {
-    offscreenBuffer = document.createElement('canvas');
-    offscreenBuffer.width = renderWidth;
-    offscreenBuffer.height = renderHeight;
+  // Ensure canvas is correctly sized for high-DPI
+  if (canvas.width !== renderWidth || canvas.height !== renderHeight) {
+    canvas.width = renderWidth;
+    canvas.height = renderHeight;
   }
+
+  // Load and draw image
   loadImage(img.src, (image) => {
-    const ctx = offscreenBuffer.getContext('2d');
-    ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-    ctx.clearRect(0, 0, offscreenBuffer.width, offscreenBuffer.height);
-    ctx.globalAlpha = img.opacity;
+    g.setTransform(1, 0, 0, 1, 0, 0);
+    g.clearRect(0, 0, canvas.width, canvas.height);
+    g.setTransform(currentTransform);
+    g.globalAlpha = img.opacity;
+
     if (!img.width && !img.height) {
       img.width = image.naturalWidth * img.imageScalingFactor;
       img.height = image.naturalHeight * img.imageScalingFactor;
     }
+
     positionImage(img);
 
     if (img.symbol === 'circle') {
+      const imgCenterX = img.x;
+      const imgCenterY = img.y;
       img.r = Math.min(img.width, img.height) / 2;
-      img.cx = img.x;
-      img.cy = img.y;
-      const drawX = img.cx - img.r;
-      const drawY = img.cy - img.r;
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(img.cx, img.cy, img.r, 0, Math.PI * 2);
-      ctx.clip();
-      ctx.drawImage(image, drawX, drawY, img.r * 2, img.r * 2);
-      ctx.restore();
+      const drawX = imgCenterX - img.width / 2;
+      const drawY = imgCenterY - img.height / 2;
+
+      g.save();
+      g.beginPath();
+      g.arc(imgCenterX, imgCenterY, img.r, 0, Math.PI * 2);
+      g.clip();
+      g.drawImage(image, drawX, drawY, img.width, img.height);
+      g.restore();
     } else {
       img.x -= img.width / 2;
       img.y -= img.height / 2;
-      ctx.drawImage(image, img.x, img.y, img.width, img.height);
+      g.drawImage(image, img.x, img.y, img.width, img.height);
     }
 
-    // Copy to visible canvas
-    if (canvas.width !== renderWidth || canvas.height !== renderHeight) {
-      canvas.width = renderWidth;
-      canvas.height = renderHeight;
-    }
-    g.setTransform(1, 0, 0, 1, 0, 0);
-    g.clearRect(0, 0, canvas.width, canvas.height);
-    g.drawImage(offscreenBuffer, 0, 0, renderWidth, renderHeight, 0, 0, canvas.width, canvas.height);
+    g.globalAlpha = 1;
+
     if (img.updateCollider) {
-      // Update collider after image has been loaded and positioned
       img.updateCollider(img);
     }
   });
