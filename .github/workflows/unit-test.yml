@@ -19,7 +19,7 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: pnpm install --frozen-lockfile
-      - name: Run unit tests and publish to Qlty
+      - name: Run unit tests and upload coverage to Qlty
         run: pnpm test:unit --coverage
       - uses: qltysh/qlty-action/coverage@v2
         with:
