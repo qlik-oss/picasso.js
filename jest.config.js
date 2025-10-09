@@ -8,7 +8,15 @@ module.exports = {
     '\\.[jt]sx?$': 'babel-jest',
   },
   transformIgnorePatterns: [`<rootDir>//node_modules/(?!(${esModules})/)`],
-  reporters: ['default', 'jest-junit'],
+  reporters: [
+    'default',
+    [
+      'jest-junit',
+      {
+        outputDirectory: './reports/junit',
+      },
+    ],
+  ],
   coverageReporters: ['text-summary', 'lcov'],
-  coverageDirectory: './reports',
+  coverageDirectory: './reports/coverage',
 };

@@ -19,5 +19,9 @@ jobs:
       - name: Install dependencies
         shell: bash
         run: pnpm install --frozen-lockfile
-      - name: Run unit tests
-        run: pnpm test:unit
+      - name: Run unit tests and publish to Qlty
+        run: pnpm test:unit --coverage
+      - uses: qltysh/qlty-action/coverage@v2
+        with:
+          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
+          files: reports/coverage/lcov.info
