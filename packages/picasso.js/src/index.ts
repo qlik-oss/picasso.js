@@ -1,4 +1,3 @@
-import extend from 'extend';
 import about from './about';
 
 import { chart, renderer } from './core';
@@ -17,63 +16,64 @@ import registry from './core/utils/registry';
 
 import { style, palettes } from './core/theme/light';
 
-function usePlugin(plugin, options = {}, api) {
+type Registry = ReturnType<typeof registry>;
+
+interface Registries {
+  component?: Registry;
+  data?: Registry;
+  formatter?: Registry;
+  interaction?: Registry;
+  renderer?: Registry;
+  scale?: Registry;
+  symbol?: Registry;
+  logger?: ReturnType<typeof loggerFn>;
+}
+
+/**
+ * Configuration for picasso.js instance
+ */
+export interface PicassoConfig {
+  /** Renderer configuration */
+  renderer?: {
+    /** Priority order for renderer selection */
+    prio?: string[];
+  };
+  /** Logger configuration */
+  logger?: {
+    /** Log level: 0=off, 1=error, 2=warn, 3=info, 4=debug */
+    level?: 0 | 1 | 2 | 3 | 4;
+  };
+  /** Style configuration object */
+  style?: object;
+  /** Color palette definitions */
+  palettes?: object[];
+}
+
+/**
+ * Callback function to register a plugin
+ */
+interface Plugin {
+  (registries: Registries, options: object): void;
+}
+
+interface ChartDefinition {}
+interface Chart {}
+
+function usePlugin(plugin: Plugin, options = {}, api: object) {
   plugin(api, options);
 }
 
-function pic(config = {}, registries = {}) {
+function pic(config: PicassoConfig = {}, registries: Registries = {}) {
   const logger = loggerFn(config.logger);
 
-  /**
-   * @lends picassojs
-   */
-  const regis = {
-    // -- registries --
-    /**
-     * Component registry
-     * @type {registry}
-     */
+  const regis: Required<Registries> = {
     component: registry(registries.component, 'component', logger),
-    /**
-     * Data registry
-     * @type {registry}
-     */
     data: registry(registries.data, 'data', logger),
-    /**
-     * Formatter registry
-     * @type {registry}
-     */
     formatter: registry(registries.formatter, 'formatter', logger),
-    /**
-     * Interaction registry
-     * @type {registry}
-     */
     interaction: registry(registries.interaction, 'interaction', logger),
-    /**
-     * Renderer registry
-     * @type {registry}
-     * @example
-     * const svgFactory = picassojs.renderer('svg');
-     * const svgRenderer = svgFactory();
-     */
-    renderer: renderer(registries.renderer, 'renderer', logger),
-    /**
-     * Scale registry
-     * @type {registry}
-     */
+    renderer: renderer(registries.renderer),
     scale: registry(registries.scale, 'scale', logger),
-    /**
-     * Symbol registry
-     * @type {registry}
-     * @private
-     */
     symbol: registry(registries.symbol, 'symbol', logger),
-    // -- misc --
-    /**
-     * log some some stuff
-     * @type {logger}
-     * @private
-     */
     logger,
   };
 
@@ -83,25 +83,15 @@ function pic(config = {}, registries = {}) {
 
   /**
    * picasso.js entry point
-   * @entry
-   * @alias picassojs
-   * @param {object=} cfg
-   * @param {object=} cfg.renderer
-   * @param {Array<string>} cfg.renderer.prio
-   * @param {object=} cfg.logger
-   * @param {0|1|2|3|4} cfg.logger.level
-   * @param {object=} cfg.style
-   * @param {Array<object>=} cfg.palettes
-   * @returns {picassojs}
    * @example
    * import picasso from 'picasso.js';
    *
    * const configuredPicasso = picasso({ renderer: { prio: ['canvas'] } }) // All components will render using the canvas renderer
    */
-  function picassojs(cfg = {}) {
+  function picassojs(cfg: PicassoConfig = {}) {
     let cc = {
-      palettes: config.palettes.concat(cfg.palettes || []),
-      style: extend({}, config.style, cfg.style),
+      palettes: (config.palettes || []).concat(cfg.palettes || []),
+      style: { ...config.style, ...cfg.style },
       logger: cfg.logger || config.logger,
       renderer: cfg.renderer || config.renderer,
     };
@@ -109,28 +99,9 @@ function pic(config = {}, registries = {}) {
   }
 
   /**
-   * @typedef {object} Registries
-   * @property {registry} component Component registry
-   * @property {registry} data Data registry
-   * @property {registry} formatter Formatter registry
-   * @property {registry} interaction Interaction registry
-   * @property {registry} renderer Renderer registry
-   * @property {registry} scale Scale registry
-   */
-
-  /**
-   * Callback function to register a plugin
-   * @callback plugin
-   * @param {Registries} registries
-   * @param {object} options
-   */
-
-  /**
    * Plugin registry
-   * @param {plugin} plugin
-   * @param {object} [options]
    */
-  picassojs.use = (plugin, options = {}) => usePlugin(plugin, options, regis);
+  picassojs.use = (plugin: Plugin, options = {}) => usePlugin(plugin, options, regis);
 
   /**
    * @param {ChartDefinition} definition
@@ -202,22 +173,31 @@ function pic(config = {}, registries = {}) {
     },
   });
    */
-  picassojs.chart = (definition) =>
-    chart(definition, {
-      registries: regis,
-      logger,
-      style: config.style,
-      palettes: config.palettes,
-    });
+  picassojs.chart = (definition: ChartDefinition): Chart =>
+    chart(definition, { registries: regis, logger, style: config.style, palettes: config.palettes });
+
   picassojs.config = () => config;
 
-  Object.keys(regis).forEach((key) => {
-    picassojs[key] = regis[key];
-  });
+  picassojs.component = regis.component;
+
+  picassojs.data = regis.data;
+
+  picassojs.formatter = regis.formatter;
+
+  picassojs.interaction = regis.interaction;
+
+  picassojs.scale = regis.scale;
+
+  /**
+   * Renderer registry
+   * @example
+   * const svgFactory = picassojs.renderer('svg');
+   * const svgRenderer = svgFactory();
+   */
+  picassojs.renderer = regis.renderer;
 
   /**
    * picasso.js version
-   * @type {string}
    */
   picassojs.version = about.version;
 
@@ -225,16 +205,7 @@ function pic(config = {}, registries = {}) {
 }
 
 const p = pic(
-  {
-    renderer: {
-      prio: ['svg', 'canvas'],
-    },
-    logger: {
-      level: 0,
-    },
-    style,
-    palettes,
-  },
+  { renderer: { prio: ['svg', 'canvas'] }, logger: { level: 0 }, style, palettes },
   {
     component: componentRegistry,
     data: dataRegistry,
