@@ -32,7 +32,7 @@ const config = (isEsm) => {
     .join('');
 
   const cfg = {
-    input: path.resolve(cwd, 'src', 'index'),
+    input: path.resolve(cwd, 'src', 'index.ts'),
     output: {
       file: path.resolve(dir, basename),
       format: isEsm ? 'es' : 'umd',
@@ -44,10 +44,12 @@ const config = (isEsm) => {
       banner,
     },
     plugins: [
-      nodeResolve(),
+      nodeResolve({ extensions: ['.js', '.ts'] }),
       babel({
+        extensions: ['.js', '.ts'],
         include: ['src/**'],
         presets: [
+          '@babel/preset-typescript',
           [
             '@babel/preset-env',
             {

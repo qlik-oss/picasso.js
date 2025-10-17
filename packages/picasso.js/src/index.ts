@@ -29,41 +29,40 @@ interface Registries {
   logger?: ReturnType<typeof loggerFn>;
 }
 
-/**
- * Configuration for picasso.js instance
- */
-export interface PicassoConfig {
-  /** Renderer configuration */
-  renderer?: {
-    /** Priority order for renderer selection */
-    prio?: string[];
-  };
-  /** Logger configuration */
-  logger?: {
-    /** Log level: 0=off, 1=error, 2=warn, 3=info, 4=debug */
-    level?: 0 | 1 | 2 | 3 | 4;
-  };
-  /** Style configuration object */
-  style?: object;
-  /** Color palette definitions */
-  palettes?: object[];
+declare namespace picassojs {
+  /**
+   * Configuration for picasso.js instance
+   */
+  export interface PicassoConfig {
+    /** Renderer configuration */
+    renderer?: {
+      /** Priority order for renderer selection */
+      prio?: string[];
+    };
+    /** Logger configuration */
+    logger?: {
+      /** Log level: 0=off, 1=error, 2=warn, 3=info, 4=debug */
+      level?: 0 | 1 | 2 | 3 | 4;
+    };
+    /** Style configuration object */
+    style?: object;
+    /** Color palette definitions */
+    palettes?: object[];
+  }
+
+  /**
+   * Callback function to register a plugin
+   */
+  export interface Plugin {
+    (registries: Registries, options: object): void;
+  }
 }
 
-/**
- * Callback function to register a plugin
- */
-interface Plugin {
-  (registries: Registries, options: object): void;
-}
-
-interface ChartDefinition {}
-interface Chart {}
-
-function usePlugin(plugin: Plugin, options = {}, api: object) {
+function usePlugin(plugin: picassojs.Plugin, options = {}, api: object) {
   plugin(api, options);
 }
 
-function pic(config: PicassoConfig = {}, registries: Registries = {}) {
+function pic(config: picassojs.PicassoConfig = {}, registries: Registries = {}) {
   const logger = loggerFn(config.logger);
 
   const regis: Required<Registries> = {
@@ -88,7 +87,7 @@ function pic(config: PicassoConfig = {}, registries: Registries = {}) {
    *
    * const configuredPicasso = picasso({ renderer: { prio: ['canvas'] } }) // All components will render using the canvas renderer
    */
-  function picassojs(cfg: PicassoConfig = {}) {
+  function picassojs(cfg: picassojs.PicassoConfig = {}) {
     let cc = {
       palettes: (config.palettes || []).concat(cfg.palettes || []),
       style: { ...config.style, ...cfg.style },
@@ -101,11 +100,9 @@ function pic(config: PicassoConfig = {}, registries: Registries = {}) {
   /**
    * Plugin registry
    */
-  picassojs.use = (plugin: Plugin, options = {}) => usePlugin(plugin, options, regis);
+  picassojs.use = (plugin: picassojs.Plugin, options = {}) => usePlugin(plugin, options, regis);
 
   /**
-   * @param {ChartDefinition} definition
-   * @returns {Chart}
    * @example
    * picasso.chart({
     element: document.querySelector('#container'), // This is the element to render the chart in
@@ -173,7 +170,7 @@ function pic(config: PicassoConfig = {}, registries: Registries = {}) {
     },
   });
    */
-  picassojs.chart = (definition: ChartDefinition): Chart =>
+  picassojs.chart = (definition: picassojs.ChartDefinition): picassojs.Chart =>
     chart(definition, { registries: regis, logger, style: config.style, palettes: config.palettes });
 
   picassojs.config = () => config;

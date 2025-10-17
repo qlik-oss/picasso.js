@@ -21,14 +21,13 @@
   },
   "files": [
     "/dist",
-    "/src",
-    "/types/index.d.ts"
+    "/src"
   ],
   "main": "dist/picasso.js",
   "module": "dist/picasso.esm.js",
-  "types": "types/index.d.ts",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "build": "rollup --config ../../rollup.config.js",
+    "build": "rollup --config ../../rollup.config.js && tsc",
     "build:watch": "pnpm run build -w",
     "lint": "eslint src test",
     "lint:fix": "npm run lint -- --fix",

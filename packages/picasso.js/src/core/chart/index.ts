@@ -15,254 +15,286 @@ import { testRectPoint } from '../math/narrow-phase-collision';
 import themeFn from '../theme';
 import componentCollectionFn from './component-collection';
 
-/**
- * @callback customLayoutFunction
- * @param {Rect} rect
- * @param {object[]} components
- * @param {string} components[].key
- * @param {object} components[].dockConfig
- * @param {function} components[].resize
- * @param {function} components[].preferredSize
- */
+declare namespace picassojs {
+  export interface ChartDefinition {
+    /** Called when the chart has been created */
+    created?(): void;
+    /** Called before the chart has been mounted */
+    beforeMount?(): void;
+    /** Called after the chart has been mounted */
+    mounted?(element: HTMLElement): void;
+    /** Called before the chart has been rendered */
+    beforeRender?(): void;
+    /** Called before the chart has been updated */
+    beforeUpdate?(): void;
+    /** Called after the chart has been updated */
+    updated?(): void;
+    /** Called before the chart has been destroyed */
+    beforeDestroy?(): void;
+    /** Called after the chart has been destroyed */
+    destroyed?(): void;
+    /** Element to attach chart to */
+    element?: HTMLElement;
+    /** Chart data */
+    data: Array<picassojs.DataSource> | picassojs.DataSource;
+    /** Chart settings */
+    settings?: ChartSettings;
+    on: object;
+  }
 
-/**
- * Called when the chart has been created
- * @callback ChartDefinition~created
- */
+  export interface ComponentSettings {
+    /** Component type (ex: axis, point, ...) */
+    type: string;
+    /** Function returning the  preferred size */
+    preferredSize?(): { width: number; height: number };
+    /** Called when the component has been created */
+    created?(): void;
+    /** Called before the component has been mounted */
+    beforeMount?(): void;
+    /** Called after the component has been mounted */
+    mounted?(): void;
+    /** Called before the component has been updated */
+    beforeUpdate?(): void;
+    /** Called after the component has been updated */
+    updated?(): void;
+    /** Called before the component has been rendered */
+    beforeRender?(): void;
+    /** Called before the component has been destroyed */
+    beforeDestroy?(): void;
+    /** Called after the component has been destroyed */
+    destroyed?(): void;
+    /** Brush settings */
+    brush?: {
+      /** Trigger settings */
+      trigger?: BrushTriggerSettings[];
+      /** Consume settings */
+      consume?: BrushConsumeSettings[];
+      /** Sort function for nodes. Should return sorted nodes. */
+      sortNodes?(nodes: any[]): any[];
+    };
+    /** Layout settings */
+    layout?: {
+      /** Display order */
+      displayOrder?: number;
+      /** Priority order */
+      prioOrder?: number;
+      /** Refer to layout sizes defined by layoutModes in `strategy` */
+      minimumLayoutMode?: string | { width: string; height: string };
+      dock?: 'left' | 'right' | 'top' | 'bottom';
+    };
+    /** If the component should be rendered */
+    show?: boolean;
+    /** Named scale. Will be provided to the component if it asks for it. */
+    scale?: string;
+    /** Named formatter. Fallback to create formatter from scale. Will be provided to the component if it asks for it. */
+    formatter?: string;
+    /**
+     * Optional list of child components
+     * @experimental
+     */
+    components?: ComponentSettings[];
+    /**
+     * Layout strategy used for child components.
+     * @experimental
+     */
+    strategy?: DockLayoutSettings | CustomLayoutFunction;
+    /** Extracted data that should be available to the component */
+    data?: DataExtraction | DataFieldExtraction;
+    /** Settings for the renderer used to render the component */
+    rendererSettings?: RendererSettings;
+    /** Component key */
+    key?: string;
+  }
 
-/**
- * Called before the chart has been mounted
- * @callback ChartDefinition~beforeMount
- */
+  export type CustomLayoutFunction = (
+    rect: Rect,
+    components: { key: string; dockConfig: object; resize: () => {}; preferredSize: () => {} }[]
+  ) => void;
 
-/**
- * Called after the chart has been mounted
- * @callback ChartDefinition~mounted
- * @param {HTMLElement} element The element the chart been mounted to
- */
+  export interface ChartSettings {
+    /** Components */
+    components?: ComponentTypes[];
+    /** Dictionary with scale definitions */
+    scales?: Record<string, ScaleDefinition>;
+    /** Dictionary with formatter definitions */
+    formatters?: Record<string, FormatterDefinition>;
+    /** Dock layout strategy */
+    strategy?: DockLayoutSettings;
+    /** Interaction handlers */
+    interactions?: InteractionSettings[];
+    /** Collections */
+    collections?: CollectionSettings[];
+  }
 
-/**
- * Called before the chart has been rendered
- * @callback ChartDefinition~beforeRender
- */
+  /**
+   * @example
+   * {
+   *    on: 'tap',
+   *    action: 'toggle',
+   *    contexts: ['selection', 'tooltip'],
+   *    data: ['x'],
+   *    propagation: 'stop', // 'stop' => prevent trigger from propagating further than the first shape
+   *    globalPropagation: 'stop', // 'stop' => prevent trigger of same type to be triggered on other components
+   *    touchRadius: 24,
+   *    mouseRadius: 10
+   *  }
+   */
+  export interface BrushTriggerSettings {
+    /** Type of interaction to trigger brush on */
+    on?: string;
+    /** Type of interaction to respond with */
+    action?: string;
+    /** Name of the brushing contexts to affect */
+    contexts?: string[];
+    /** The mapped data properties to add to the brush */
+    data?: string[];
+    /** Control the event propagation when multiple shapes are tapped. Disabled by default */
+    propagation?: string;
+    /** Control the event propagation between components. Disabled by default */
+    globalPropagation?: string;
+    /** Extend contact area for touch events. Disabled by default */
+    touchRadius?: number;
+    /** Extend contact area for regular mouse events. Disabled by default */
+    mouseRadius?: number;
+  }
 
-/**
- * Called before the chart has been updated
- * @callback ChartDefinition~beforeUpdate
- */
+  /** @example
+   * {
+   *    context: 'selection',
+   *    data: ['x'],
+   *    filter: (shape) => shape.type === 'circle',
+   *    style: {
+   *      active: {
+   *        fill: 'red',
+   *        stroke: '#333',
+   *        strokeWidth: (shape) => shape.strokeWidth * 2,
+   *      },
+   *      inactive: {},
+   *    },
+   * }
+   */
+  export interface BrushConsumeSettings {
+    /** Name of the brush context to observe */
+    context?: string;
+    /** The mapped data properties to observe */
+    data?: string[];
+    /** Data properties operator: and, or, xor. */
+    mode?: string;
+    /** Filtering function */
+    filter?: (shape: any) => boolean;
+    /** The style to apply to the shapes of the component */
+    style?: {
+      /** The style of active data points */
+      active?: Record<string, any>;
+      /** The style of inactive data points */
+      inactive?: Record<string, any>;
+    };
+  }
 
-/**
- * Called after the chart has been updated
- * @callback ChartDefinition~updated
- */
+  /**
+   * @experimental
+   */
+  export interface RendererSettings {
+    /** Setting for applying transform without re-rendering the whole component completely. */
+    transform?: RendererSettings.TransformFunction;
+    /** Specifies the size of buffer canvas (used together with transform setting). */
+    canvasBufferSize?: RendererSettings.CanvasBufferSize;
+    /** Setting for applying progressive rendering to a canvas renderer */
+    progressive?: RendererSettings.Progressive;
+    /** Setting to disable the screen reader for the component. If set to true, screen reader support will be disabled. This setting is not relevant when using the canvas renderer. */
+    disableScreenReader?: boolean;
+  }
 
-/**
- * Called before the chart has been destroyed
- * @callback ChartDefinition~beforeDestroy
- */
+  namespace RendererSettings {
+    /**
+     * An object containing width and height of the canvas buffer or a function returning an object on that format.
+     * Gets a rect object as input parameter.
+     * @experimental
+     */
+    type CanvasBufferSize = (() => void) | object;
 
-/**
- * Called after the chart has been destroyed
- * @callback ChartDefinition~destroyed
- */
+    /**
+     * A function which returns either (1) false (to specify no progressive rendering used) or an object specifing the data chunk rendered.
+     * This is only applied to a canvas renderer.
+     * @experimental
+     */
+    type Progressive = () => picassojs.ProgressiveObject | boolean;
+
+    /**
+     * Should return a transform object if transformation should be applied, otherwise undefined or a falsy value.
+     * Transforms can be applied with the canvas, svg and dom renderer.
+     * Transform is applied when running chart.update, see example.
+     * !Important: When a transform is applied to a component, the underlaying node representations are not updated with the new positions/sizes, which
+     * can cause problems for operations that relies on the positioning of the shapes/nodes (such as tooltips, selections etc). An extra chart update
+     * without a transform is therefore needed to make sure the node position information is in sync with the visual representation again.
+     * @experimental
+     * @example
+     * const pointComponentDef = {
+     *   type: 'point',
+     *   rendererSettings: {
+     *     tranform() {
+     *       if(shouldApplyTransform) {
+     *         return {
+     *           horizontalScaling: 1,
+     *           horizontalSkewing: 0,
+     *           verticalSkewing: 0,
+     *           verticalScaling: 1,
+     *           horizontalMoving: x,
+     *           verticalMoving: y
+     *         };
+     *       }
+     *     }
+     *   }
+     *   data: {
+     * // ............
+     *
+     * chart.update({ partialData: true });
+     */
+    type TransformFunction = () => picassojs.TransformObject;
+  }
+
+  /** A format to represent a transformation. */
+  export interface TransformObject {
+    horizontalScaling: number;
+    horizontalSkewing: number;
+    verticalSkewing: number;
+    verticalScaling: number;
+    horizontalMoving: number;
+    verticalMoving: number;
+  }
+
+  /**
+   * A format to represent a data chunk to be rendered.
+   * @experimental
+   */
+  export interface ProgressiveObject {
+    /** Start index of a data chunk. */
+    start: number;
+    /** End index of a data chunk. */
+    end: number;
+    /** If it is the first data chunk rendered. This helps to clear a canvas before rendering. */
+    isFirst: boolean;
+    /** If it is the last data chunk rendered. This helps to update other components depending on a component with progressive rendering. */
+    isLast: boolean;
+  }
+
+  export interface BrushTargetConfig {
+    /** Component key */
+    key: string;
+    /** Name of the brushing contexts to affect */
+    contexts?: string[];
+    /** The mapped data properties to add to the brush */
+    data?: string[];
+    /** Type of action to respond with */
+    action?: string;
+  }
+}
 
 /**
  * @typedef {ComponentAxis | ComponentBox | ComponentBrushArea | ComponentBrushAreaDir | ComponentBrushLasso | ComponentBrushRange | ComponentContainer | ComponentGridLine | ComponentLabels | ComponentLegendCat | ComponentLegendSeq | ComponentLine | ComponentPie | ComponentPoint | ComponentRefLine | ComponentText | ComponentTooltip} ComponentTypes
  */
 
-/**
- * @typedef {object} ChartSettings
- * @property {ComponentTypes[]} [components] Components
- * @property {object.<string, ScaleDefinition>} [scales] Dictionary with scale definitions
- * @property {object.<string, FormatterDefinition>} [formatters] Dictionary with formatter definitions
- * @property {DockLayoutSettings} [strategy] Dock layout strategy
- * @property {InteractionSettings[]} [interactions] Interaction handlers
- * @property {CollectionSettings[]} [collections] Collections
- */
-
-/**
- * Generic settings available to all components
- * @interface ComponentSettings
- * @property {string} type - Component type (ex: axis, point, ...)
- * @property {function} [preferredSize] - Function returning the preferred size
- * @property {function} [created] Called when the component has been created
- * @property {function} [beforeMount] Called before the component has been mounted
- * @property {function} [mounted] Called after the component has been mounted
- * @property {function} [beforeUpdate] Called before the component has been updated
- * @property {function} [updated] Called after the component has been updated
- * @property {function} [beforeRender] Called before the component has been rendered
- * @property {function} [beforeDestroy] Called before the component has been destroyed
- * @property {function} [destroyed] Called after the component has been destroyed
- * @property {object} [brush] Brush settings
- * @property {BrushTriggerSettings[]} [brush.trigger] Trigger settings
- * @property {BrushConsumeSettings[]} [brush.consume] Consume settings
- * @property {function} [brush.sortNodes] Sorting function for nodes. Should return sorted nodes.
- * @property {object} [layout] Layout settings
- * @property {number} [layout.displayOrder = 0]
- * @property {number} [layout.prioOrder = 0]
- * @property {string | {width: string, height: string}} [layout.minimumLayoutMode] Refer to layout sizes defined by layoutModes in `strategy`
- * @property {string} [layout.dock] left, right, top or bottom
- * @property {boolean} [show = true] If the component should be rendered
- * @property {string} [scale] Named scale. Will be provided to the component if it asks for it.
- * @property {string} [formatter] Named formatter. Fallback to create formatter from scale. Will be provided to the component if it asks for it.
- * @property {ComponentSettings[]} [components] Optional list of child components
- * @property {DockLayoutSettings|customLayoutFunction} [strategy] Layout strategy used for child components.
- * @property {DataExtraction|DataFieldExtraction} [data] Extracted data that should be available to the component
- * @property {RendererSettings} [rendererSettings] Settings for the renderer used to render the component
- * @property {string} [key] Component key
- */
-
-// mark strategy as experimental
-/**
- * @type {DockLayoutSettings|customLayoutFunction}
- * @name strategy
- * @memberof ComponentSettings
- * @experimental
- */
-
-// mark components as experimental
-/**
- * @type {ComponentSettings[]}
- * @name components
- * @memberof ComponentSettings
- * @experimental
- */
-
-/**
- * @typedef {object} BrushTriggerSettings
- * @property {string} [on] Type of interaction to trigger brush on
- * @property {string} [action] Type of interaction to respond with
- * @property {string[]} [contexts] Name of the brushing contexts to affect
- * @property {string[]} [data] The mapped data properties to add to the brush
- * @property {string} [propagation] Control the event propagation when multiple shapes are tapped. Disabled by default
- * @property {string} [globalPropagation] Control the event propagation between components. Disabled by default
- * @property {number} [touchRadius] Extend contact area for touch events. Disabled by default
- * @property {number} [mouseRadius] Extend contact area for regular mouse events. Disabled by default
- * @example
- * {
- *    on: 'tap',
- *    action: 'toggle',
- *    contexts: ['selection', 'tooltip'],
- *    data: ['x'],
- *    propagation: 'stop', // 'stop' => prevent trigger from propagating further than the first shape
- *    globalPropagation: 'stop', // 'stop' => prevent trigger of same type to be triggered on other components
- *    touchRadius: 24,
- *    mouseRadius: 10
- *  }
- */
-
-/**
- * @typedef {object} BrushConsumeSettings
- * @property {string} [context] Name of the brush context to observe
- * @property {string[]} [data] The mapped data properties to observe
- * @property {string} [mode] Data properties operator: and, or, xor.
- * @property {function} [filter] Filtering function
- * @property {object} [style] The style to apply to the shapes of the component
- * @property {object.<string, any>} [style.active] The style of active data points
- * @property {object.<string, any>} [style.inactive] The style of inactive data points
- * @example
- * {
- *    context: 'selection',
- *    data: ['x'],
- *    filter: (shape) => shape.type === 'circle',
- *    style: {
- *      active: {
- *        fill: 'red',
- *        stroke: '#333',
- *        strokeWidth: (shape) => shape.strokeWidth * 2,
- *      },
- *      inactive: {},
- *    },
- * }
- */
-
-/**
- * @typedef {object} RendererSettings
- * @property {RendererSettings~TransformFunction} [transform] Setting for applying transform without re-rendering the whole component completely.
- * @property {RendererSettings~CanvasBufferSize} [canvasBufferSize] Specifies the size of buffer canvas (used together with transform setting).
- * @property {RendererSettings~Progressive} [progressive] Setting for applying progressive rendering to a canvas renderer
- * @property {boolean} [disableScreenReader = false] Setting to disable the screen reader for the component. If set to true, screen reader support will be disabled. This setting is not relevant when using the canvas renderer.
- * @experimental
- */
-
-/**
- * Should return a transform object if transformation should be applied, otherwise undefined or a falsy value.
- * Transforms can be applied with the canvas, svg and dom renderer.
- * Transform is applied when running chart.update, see example.
- * !Important: When a transform is applied to a component, the underlaying node representations are not updated with the new positions/sizes, which
- * can cause problems for operations that relies on the positioning of the shapes/nodes (such as tooltips, selections etc). An extra chart update
- * without a transform is therefore needed to make sure the node position information is in sync with the visual representation again.
- * @typedef {function} RendererSettings~TransformFunction
- * @returns {TransformObject}
- * @experimental
- * @example
- * const pointComponentDef = {
- *   type: 'point',
- *   rendererSettings: {
- *     tranform() {
- *       if(shouldApplyTransform) {
- *         return {
- *           horizontalScaling: 1,
- *           horizontalSkewing: 0,
- *           verticalSkewing: 0,
- *           verticalScaling: 1,
- *           horizontalMoving: x,
- *           verticalMoving: y
- *         };
- *       }
- *     }
- *   }
- *   data: {
- * // ............
- *
- * chart.update({ partialData: true });
- */
-
-/**
- * An object containing width and height of the canvas buffer or a function returning an object on that format.
- * Gets a rect object as input parameter.
- * @typedef {function|object} RendererSettings~CanvasBufferSize
- * @experimental
- */
-
-/**
- * A format to represent a transformation.
- * @typedef {object} TransformObject
- * @property {number} horizontalScaling
- * @property {number} horizontalSkewing
- * @property {number} verticalSkewing
- * @property {number} verticalScaling
- * @property {number} horizontalMoving
- * @property {number} verticalMoving
- */
-
-/**
- * A function which returns either (1) false (to specify no progressive rendering used) or an object specifing the data chunk rendered.
- *  This is only applied to a canvas renderer.
- * @typedef {function} RendererSettings~Progressive
- * @returns {ProgressiveObject|boolean}
- * @experimental
- */
-
-/**
- * A format to represent a data chunk to be rendered.
- * @typedef {object} ProgressiveObject
- * @property {number} start - Start index of a data chunk.
- * @property {number} end - End index of a data chunk.
- * @property {boolean} isFirst - If it is the first data chunk rendered. This helps to clear a canvas before rendering.
- * @property {boolean} isLast - If it is the last data chunk rendered. This helps to update other components depending on a component with progressive rendering.
- * @experimental
- */
-
-/**
- * @typedef {object} BrushTargetConfig
- * @property {string} key - Component key
- * @property {string[]} [contexts] - Name of the brushing contexts to affect
- * @property {string[]} [data] - The mapped data properties to add to the brush
- * @property {string} [action='set'] - Type of action to respond with
- */
-
-function addComponentDelta(shape, containerBounds, componentBounds) {
+function addComponentDelta(shape: picassojs.Shape, containerBounds, componentBounds) {
   const dx = containerBounds.left - componentBounds.left;
   const dy = containerBounds.top - componentBounds.top;
   const type = getShapeType(shape);
@@ -308,7 +340,7 @@ function addComponentDelta(shape, containerBounds, componentBounds) {
   return deltaShape;
 }
 
-const moveToPosition = (element, comp, index) => {
+const moveToPosition = (element: HTMLElement, comp, index: number) => {
   const el = comp.instance.renderer().element();
   if (isNaN(index) || !el || !element || !element.children) {
     return;
@@ -337,7 +369,7 @@ const moveToPosition = (element, comp, index) => {
   }
 };
 
-export function orderComponents(element, ordered) {
+export function orderComponents(element: HTMLElement, ordered: any[]) {
   const elToIdx = [];
   let numElements = 0;
   ordered.forEach((comp) => {
@@ -356,18 +388,7 @@ export function orderComponents(element, ordered) {
   ordered.forEach((comp, i) => moveToPosition(element, comp, elToIdx[i]));
 }
 
-function chartFn(definition, context) {
-  /**
-   * @typedef {object} ChartDefinition
-   * @property {ChartDefinition~beforeDestroy} [beforeDestroy]
-   * @property {ChartDefinition~beforeMount} [beforeMount]
-   * @property {ChartDefinition~beforeRender} [beforeRender]
-   * @property {ChartDefinition~beforeUpdate} [beforeUpdate]
-   * @property {ChartDefinition~created} [created]
-   * @property {ChartDefinition~destroyed} [destroyed]
-   * @property {ChartDefinition~mounted} [mounted]
-   * @property {ChartDefinition~updated} [updated]
-   */
+function chartFn(definition: ChartDefinition, context) {
   let {
     /**
      * Element to attach chart to
@@ -1088,7 +1109,7 @@ function chartFn(definition, context) {
    * @param {string} key - Component key
    * @returns {Component} Component context
    */
-  instance.component = (key) => {
+  instance.component = (key: string) => {
     const component = componentsC.findComponentByKey(key);
     return component?.instance.ctx;
   };

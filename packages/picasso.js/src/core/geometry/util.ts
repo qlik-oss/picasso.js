@@ -1,6 +1,7 @@
+import { picassojs } from '.';
 import { isNumber } from '../utils/is-number';
 
-export function getMinMax(points) {
+export function getMinMax(points: picassojs.Point[]): [number, number, number, number] {
   const num = points.length;
   let xMin = NaN;
   let xMax = NaN;
@@ -21,7 +22,7 @@ export function getMinMax(points) {
  * @param {oject} line
  * @returns {Point[]} Array of points
  */
-export function lineToPoints(line) {
+export function lineToPoints(line: picassojs.Line): picassojs.Point[] {
   const x1 = line.x1 || 0;
   const y1 = line.y1 || 0;
   const x2 = line.x2 || 0;
@@ -37,7 +38,7 @@ export function lineToPoints(line) {
  * @param {oject} rect
  * @returns {Point[]} Array of points
  */
-export function rectToPoints(rect) {
+export function rectToPoints(rect: picassojs.Rect): picassojs.Point[] {
   return [
     { x: rect.x, y: rect.y },
     { x: rect.x + rect.width, y: rect.y },
@@ -46,7 +47,7 @@ export function rectToPoints(rect) {
   ];
 }
 
-export function pointsToRect(points) {
+export function pointsToRect(points: picassojs.Point[]): picassojs.Rect {
   const [xMin, yMin, xMax, yMax] = getMinMax(points);
 
   return {
@@ -57,7 +58,7 @@ export function pointsToRect(points) {
   };
 }
 
-export function pointsToCircle(points, r) {
+export function pointsToCircle(points: picassojs.Point[], r: number): picassojs.Circle {
   return {
     cx: points[0].x,
     cy: points[0].y,
@@ -65,7 +66,7 @@ export function pointsToCircle(points, r) {
   };
 }
 
-export function pointsToLine(points) {
+export function pointsToLine(points: picassojs.Point[]): picassojs.Line {
   return {
     x1: points[0].x,
     y1: points[0].y,
@@ -74,11 +75,11 @@ export function pointsToLine(points) {
   };
 }
 
-export function pointToArray(p) {
+export function pointToArray(p: picassojs.Point): number[] {
   return [p.x, p.y];
 }
 
-export function arrayToPoint(ary) {
+export function arrayToPoint(ary: number[]): picassojs.Point {
   return { x: ary[0], y: ary[1] };
 }
 
@@ -87,41 +88,26 @@ export function arrayToPoint(ary) {
  * @param {oject}
  * @returns {string} Type of geometry
  */
-export function getShapeType(shape) {
-  const {
-    x,
-    y, // Point
-    width,
-    height, // Rect
-    x1,
-    x2,
-    y1,
-    y2, // Line
-    cx,
-    cy,
-    r, // Circle
-    vertices, // Polygon or GeoPolygon
-  } = shape || {};
-
-  if (isNumber(cx) && isNumber(cy) && isNumber(r)) {
+export function getShapeType(shape: picassojs.Shape): string | null {
+  if ('cx' in shape && isNumber(shape.cx) && isNumber(shape.cy) && isNumber(shape.r)) {
     return 'circle';
   }
-  if (isNumber(x1) && isNumber(x2) && isNumber(y1) && isNumber(y2)) {
+  if ('x1' in shape && isNumber(shape.x1) && isNumber(shape.x2) && isNumber(shape.y1) && isNumber(shape.y2)) {
     return 'line';
   }
-  if (isNumber(x) && isNumber(y) && isNumber(width) && isNumber(height)) {
+  if ('height' in shape && isNumber(shape.x) && isNumber(shape.y) && isNumber(shape.width) && isNumber(shape.height)) {
     return 'rect';
   }
-  if (isNumber(x) && isNumber(y)) {
+  if ('x' in shape && 'y' in shape && isNumber(shape.x) && isNumber(shape.y)) {
     return 'point';
   }
-  if (Array.isArray(vertices)) {
-    return vertices.every((item) => Array.isArray(item)) ? 'geopolygon' : 'polygon';
+  if ('vertices' in shape && Array.isArray(shape.vertices)) {
+    return shape.vertices.every((item) => Array.isArray(item)) ? 'geopolygon' : 'polygon';
   }
   return null;
 }
 
-export function expandRect(size, rect) {
+export function expandRect(size: number, rect: picassojs.Rect): picassojs.Rect {
   return {
     x: rect.x - size,
     y: rect.y - size,
