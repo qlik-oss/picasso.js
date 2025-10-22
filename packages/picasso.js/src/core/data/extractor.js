@@ -99,7 +99,14 @@ export default function extract(dataConfig, data = {}, opts = {}) {
     }
 
     if (dataConfig && dataConfig.stack) {
-      stack(extracted, dataConfig.stack, data.dataset);
+      if (Array.isArray(dataConfig.stack.stackByKey)) {
+        dataConfig.stack.stackByKey.forEach((key) => {
+          const dataItems = extracted.items.filter((d) => d.key?.value && d.key.value === key);
+          stack(extracted, dataConfig.stack, data.dataset, dataItems);
+        });
+      } else {
+        stack(extracted, dataConfig.stack, data.dataset, extracted.items);
+      }
     }
   }
   if (dataConfig && !Array.isArray(dataConfig) && typeof dataConfig.filter === 'function' && extracted.items) {

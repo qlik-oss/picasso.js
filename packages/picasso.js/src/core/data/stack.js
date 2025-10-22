@@ -28,7 +28,8 @@ const ORDERS = {
   reverse: stackOrderReverse,
 };
 
-export default function stacked(data, config, ds) {
+export default function stacked(data, config, ds, dataItems) {
+  const itemsArray = dataItems || data.items;
   const stackIds = {};
   const stackFn = config.stackKey;
   const valueFn = config.value;
@@ -42,8 +43,8 @@ export default function stacked(data, config, ds) {
 
   let valueFields = {};
 
-  for (let i = 0; i < data.items.length; i++) {
-    let p = data.items[i];
+  for (let i = 0; i < itemsArray.length; i++) {
+    let p = itemsArray[i];
     let sourceField = valueRef ? p[valueRef] : null;
     if (sourceField && sourceField.source) {
       let ff = `${sourceField.source.key || ''}/${sourceField.source.field}`;

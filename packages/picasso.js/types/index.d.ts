@@ -1237,6 +1237,7 @@ declare namespace picassojs {
         stack?: {
             stackKey: picassojs.DataExtraction.StackKeyCallback;
             value: picassojs.DataExtraction.StackValueCallback;
+            stackByKey?: string[];
         };
         filter?: picassojs.DataExtraction.FilterCallback;
         sort?: picassojs.DataExtraction.SortCallback;
