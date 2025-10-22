@@ -99,10 +99,10 @@ export default function extract(dataConfig, data = {}, opts = {}) {
     }
 
     if (dataConfig && dataConfig.stack) {
-      if (Array.isArray(dataConfig.stack.stackByAxis)) {
-        dataConfig.stack.stackByAxis.forEach((axis) => {
-          const dataAxisItems = extracted.items.filter((d) => d.key?.value && d.key.value === axis);
-          stack(extracted, dataConfig.stack, data.dataset, dataAxisItems);
+      if (Array.isArray(dataConfig.stack.stackByKey)) {
+        dataConfig.stack.stackByKey.forEach((key) => {
+          const dataItems = extracted.items.filter((d) => d.key?.value && d.key.value === key);
+          stack(extracted, dataConfig.stack, data.dataset, dataItems);
         });
       } else {
         stack(extracted, dataConfig.stack, data.dataset, extracted.items);

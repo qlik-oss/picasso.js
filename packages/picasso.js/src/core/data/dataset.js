@@ -256,7 +256,7 @@ export default ds;
  * @property {object} [stack] If provided, defines how the data should be stacked
  * @property {DataExtraction~StackKeyCallback} stack.stackKey Callback function. Should return the key to stack by
  * @property {DataExtraction~StackValueCallback} stack.value Callback function. Should return the data value to stack with
- * @property {Array<string>} [stack.stackByAxis] Optional list of axis keys to stack by
+ * @property {Array<string>} [stack.stackByKey] Optional list of keys to stack by
  * @property {DataExtraction~FilterCallback} [filter] Callback function to filter the extracted data items
  * @property {DataExtraction~SortCallback} [sort] Callback function to sort the extracted data items
  * @example
