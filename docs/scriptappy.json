@@ -5110,6 +5110,14 @@
             "value": {
               "description": "Callback function. Should return the data value to stack with",
               "type": "#/definitions/DataExtraction/definitions/StackValueCallback"
+            },
+            "stackByAxis": {
+              "description": "Optional list of axis keys to stack by",
+              "optional": true,
+              "kind": "array",
+              "items": {
+                "type": "string"
+              }
             }
           }
         },
