@@ -125,6 +125,7 @@ jobs:
           at: ~/picassojs
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
+      - run: pnpm exec puppeteer browsers install chrome
       - run: pnpm run test:integration:ci
 
 workflows:
