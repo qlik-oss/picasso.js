@@ -16,56 +16,58 @@ import registry from './core/utils/registry';
 
 import { style, palettes } from './core/theme/light';
 
-type Registry = ReturnType<typeof registry>;
+import type picassojs from '../types/index';
 
-interface Registries {
-  component?: Registry;
-  data?: Registry;
-  formatter?: Registry;
-  interaction?: Registry;
-  renderer?: Registry;
-  scale?: Registry;
-  symbol?: Registry;
-  logger?: ReturnType<typeof loggerFn>;
-}
+// type Registry = ReturnType<typeof registry>;
 
-declare namespace picassojs {
-  /**
-   * Configuration for picasso.js instance
-   */
-  export interface PicassoConfig {
-    /** Renderer configuration */
-    renderer?: {
-      /** Priority order for renderer selection */
-      prio?: string[];
-    };
-    /** Logger configuration */
-    logger?: {
-      /** Log level: 0=off, 1=error, 2=warn, 3=info, 4=debug */
-      level?: 0 | 1 | 2 | 3 | 4;
-    };
-    /** Style configuration object */
-    style?: object;
-    /** Color palette definitions */
-    palettes?: object[];
-  }
+// interface Registries {
+//   component?: Registry;
+//   data?: Registry;
+//   formatter?: Registry;
+//   interaction?: Registry;
+//   renderer?: Registry;
+//   scale?: Registry;
+//   symbol?: Registry;
+//   logger?: ReturnType<typeof loggerFn>;
+// }
 
-  /**
-   * Callback function to register a plugin
-   */
-  export interface Plugin {
-    (registries: Registries, options: object): void;
-  }
-}
+// declare namespace picassojs {
+//   /**
+//    * Configuration for picasso.js instance
+//    */
+//   export interface PicassoConfig {
+//     /** Renderer configuration */
+//     renderer?: {
+//       /** Priority order for renderer selection */
+//       prio?: string[];
+//     };
+//     /** Logger configuration */
+//     logger?: {
+//       /** Log level: 0=off, 1=error, 2=warn, 3=info, 4=debug */
+//       level?: 0 | 1 | 2 | 3 | 4;
+//     };
+//     /** Style configuration object */
+//     style?: object;
+//     /** Color palette definitions */
+//     palettes?: object[];
+//   }
+
+//   /**
+//    * Callback function to register a plugin
+//    */
+//   export interface Plugin {
+//     (registries: Registries, options: object): void;
+//   }
+// }
 
 function usePlugin(plugin: picassojs.Plugin, options = {}, api: object) {
   plugin(api, options);
 }
 
-function pic(config: picassojs.PicassoConfig = {}, registries: Registries = {}) {
+function pic(config: Parameters<typeof picassojs>[0], registries: Partial<picassojs.Registries>) {
   const logger = loggerFn(config.logger);
 
-  const regis: Required<Registries> = {
+  const regis: Required<picassojs.Registries> = {
     component: registry(registries.component, 'component', logger),
     data: registry(registries.data, 'data', logger),
     formatter: registry(registries.formatter, 'formatter', logger),
@@ -87,7 +89,7 @@ function pic(config: picassojs.PicassoConfig = {}, registries: Registries = {}) 
    *
    * const configuredPicasso = picasso({ renderer: { prio: ['canvas'] } }) // All components will render using the canvas renderer
    */
-  function picassojs(cfg: picassojs.PicassoConfig = {}) {
+  function picassojs(cfg = {}) {
     let cc = {
       palettes: (config.palettes || []).concat(cfg.palettes || []),
       style: { ...config.style, ...cfg.style },
