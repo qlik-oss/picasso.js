@@ -1,7 +1,6 @@
 import { timeFormatLocale } from 'd3-time-format';
 
 export default function formatter(pattern) {
-  // eslint-disable-line import/prefer-default-export
   let locale = timeFormatLocale({
     dateTime: '%x, %X',
     date: '%-m/%-d/%Y',

@@ -1,4 +1,5 @@
 import q from '../dataset';
+// eslint-disable-next-line import-x/no-relative-packages
 import { getPropsInfo } from '../../../../../packages/picasso.js/src/core/data/util';
 
 describe('augment-hierarchy', () => {

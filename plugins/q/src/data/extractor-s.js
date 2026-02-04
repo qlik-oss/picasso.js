@@ -66,7 +66,7 @@ function datumExtract(propCfg, cell, { key }) {
         ? propCfg.value(cell)
         : typeof propCfg.value !== 'undefined'
           ? propCfg.value
-          : cell, // eslint-disable-line no-nested-ternary
+          : cell,
   };
 
   datum.label =
@@ -74,7 +74,7 @@ function datumExtract(propCfg, cell, { key }) {
       ? propCfg.label(cell)
       : typeof propCfg.label !== 'undefined'
         ? String(propCfg.label)
-        : String(datum.value); // eslint-disable-line no-nested-ternary
+        : String(datum.value);
 
   if (propCfg.field) {
     datum.source = {

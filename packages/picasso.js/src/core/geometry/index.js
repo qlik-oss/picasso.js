@@ -15,11 +15,9 @@ reg.add('polygon', polygon);
 reg.add('geopolygon', geopolygon);
 reg.add('polyline', polyline);
 
-/* eslint-disable import/prefer-default-export */
 export function create(type, input) {
   return reg.get(type)(input);
 }
-/* eslint-enable import/prefer-default-export */
 
 /**
  * @typedef {object} Rect

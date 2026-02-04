@@ -1,5 +1,5 @@
 /* eslint-disable no-cond-assign */
-/* eslint-disable no-use-before-define */
+
 /* eslint-disable no-nested-ternary */
 import { color } from 'd3-color';
 import {
@@ -89,7 +89,6 @@ export default function object(a, b) {
   }
 
   return function interplolate(t) {
-    // eslint-disable-next-line guard-for-in
     for (k in i) {
       c[k] = i[k](t);
     }

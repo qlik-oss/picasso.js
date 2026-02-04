@@ -1,4 +1,5 @@
 import q from '../dataset';
+// eslint-disable-next-line import-x/no-relative-packages
 import picData from '../../../../../packages/picasso.js/src/core/data/dataset';
 
 const NxSimpleValue = { qNum: 37.6, qText: '$37.6' };

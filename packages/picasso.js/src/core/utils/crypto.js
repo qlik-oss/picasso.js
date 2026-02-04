@@ -1,5 +1,3 @@
-/* eslint import/prefer-default-export: 0 */
-
 /**
  * Hash an object
  * Modified version of Java's HashCode function

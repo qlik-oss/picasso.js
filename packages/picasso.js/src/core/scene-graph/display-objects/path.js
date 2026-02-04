@@ -73,9 +73,9 @@ export default class Path extends DisplayObject {
       const areaGenerator = area();
       const defined = stngs.coordinates ? stngs.coordinates.defined : null;
 
-      areaGenerator[major.p]((d) => d.major * major.size) // eslint-disable-line no-unexpected-multiline
-        [`${minor.p}1`]((d) => d.minor * minor.size) // eslint-disable-line no-unexpected-multiline
-        [`${minor.p}0`]((d) => d.minor0 * minor.size) // eslint-disable-line no-unexpected-multiline
+      areaGenerator[major.p]((d) => d.major * major.size)
+        [`${minor.p}1`]((d) => d.minor * minor.size)
+        [`${minor.p}0`]((d) => d.minor0 * minor.size)
         .curve(CURVES[layerObj.curve === 'monotone' ? `monotone${major.p}` : layerObj.curve]);
       if (defined) {
         areaGenerator.defined((d) => !d.dummy && typeof d.minor === 'number' && !isNaN(d.minor) && d.defined);

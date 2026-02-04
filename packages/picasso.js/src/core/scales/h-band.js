@@ -191,7 +191,6 @@ export default function scaleHierarchicalBand(settings = {}, data = {}, resource
    * @return { Object[] } Ticks for each leaf node
    */
   hBand.ticks = () =>
-    // eslint-disable-line arrow-body-style
     ticks.map((item) => {
       const start = hBand(item.key);
       const bandwidth = hBand.bandwidth(item.key);

@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import extend from 'extend';
 import DisplayObject from './display-object';
 import { rectToPoints, getMinMax } from '../../geometry/util';

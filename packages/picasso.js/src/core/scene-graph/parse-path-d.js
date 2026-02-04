@@ -128,7 +128,7 @@ export default function pathToPoints(path) {
           segments.push(points.splice(0));
         }
       // Fall through
-      case 'l': // eslint-disable-line no-fallthrough
+      case 'l':
         x += cmd[1];
         y += cmd[2];
         points.push({ x, y });
@@ -138,7 +138,7 @@ export default function pathToPoints(path) {
           segments.push(points.splice(0));
         }
       // Fall through
-      case 'L': // eslint-disable-line no-fallthrough
+      case 'L':
         x = cmd[1];
         y = cmd[2];
         points.push({ x, y });

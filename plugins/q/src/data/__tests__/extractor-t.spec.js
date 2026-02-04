@@ -1,5 +1,5 @@
 import { extract, getFieldDepth } from '../extractor-t';
-
+// eslint-disable-next-line import-x/no-relative-packages
 import { getPropsInfo, collect, track } from '../../../../../packages/picasso.js/src/core/data/util';
 
 describe('q-data-extractor-t', () => {
