@@ -1,0 +1,153 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - "v*"
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-runner
+      - name: Build
+        run: pnpm run build
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: |
+            packages/picasso.js/dist
+            plugins/q/dist
+            plugins/hammer/dist
+            docs/scriptappy.json
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-runner
+      - name: Lint
+        run: pnpm run lint
+
+  types:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-runner
+      - name: Type check
+        run: pnpm run types:check
+
+  test-unit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-runner
+      - name: Run unit tests
+        run: pnpm test:unit --coverage
+      - name: Upload coverage to Qlty
+        uses: qltysh/qlty-action/coverage@v2
+        with:
+          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
+          files: reports/coverage/lcov.info
+          total-parts-count: 2
+
+  test-component:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-runner
+      - name: Component tests
+        run: pnpm run test:component --coverage
+      - name: Upload coverage to Qlty
+        uses: qltysh/qlty-action/coverage@v2
+        with:
+          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
+          files: reports/coverage/lcov.info
+          total-parts-count: 2
+
+  test-integration:
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: ./.github/actions/setup-runner
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+      - name: Install Chrome for Puppeteer
+        run: pnpm exec puppeteer browsers install chrome
+      - name: Integration tests
+        run: pnpm run test:integration:ci
+
+  api-governance:
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+      - name: Create version.txt
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "${GITHUB_REF_TYPE:-}" == "tag" ]]; then
+            version="${GITHUB_REF_NAME#v}"
+          else
+            version="$(git describe --tags --abbrev=7 --match "v*" | sed 's/^v//')"
+          fi
+          echo "$version" > ./version.txt
+          echo "Building $version"
+      - name: Prepare API Compliance
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker pull ghcr.io/qlik-download/api-compliance
+          docker rm -f specs >/dev/null 2>&1 || true
+          docker create -v /specs --name specs alpine:3.4 /bin/true
+          docker cp ./docs/scriptappy.json specs:/specs
+      - name: Run API Compliance
+        shell: bash
+        env:
+          APICULTURIST_S3: ${{ secrets.APICULTURIST_S3 }}
+          APICULTURIST_GITHUB: ${{ secrets.APICULTURIST_GITHUB }}
+          APICULTURIST_TOKEN: ${{ secrets.APICULTURIST_TOKEN }}
+        run: |
+          set -euo pipefail
+          VER="v$(cat version.txt)"
+          docker run --volumes-from specs \
+            -e SPEC_PATHS="67d3d238-36cc-4579-8fcd-7762267171e9@/specs/scriptappy.json" \
+            -e COMMIT_SHA="$GITHUB_SHA" \
+            -e RELEASE_TAG="$VER" \
+            -e CREDENTIALS_S3_SECRETKEY="$APICULTURIST_S3" \
+            -e CREDENTIALS_GITHUB="$APICULTURIST_GITHUB" \
+            -e CREDENTIALS_COLONY="$APICULTURIST_TOKEN" \
+            ghcr.io/qlik-download/api-compliance

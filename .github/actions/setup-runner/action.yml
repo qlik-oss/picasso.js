@@ -1,0 +1,15 @@
+name: Setup Runner
+description: Setup Node.js and pnpm with dependencies installed
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: "lts/*"
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v2
+    - name: Install dependencies
+      run: pnpm install --frozen-lockfile
+      shell: bash
