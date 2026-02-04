@@ -28,11 +28,11 @@
     "node": ">=18"
   },
   "devDependencies": {
-    "@babel/cli": "7.28.3",
-    "@babel/core": "7.28.5",
-    "@babel/eslint-parser": "7.28.5",
-    "@babel/plugin-transform-react-jsx": "7.27.1",
-    "@babel/preset-env": "7.28.5",
+    "@babel/cli": "7.28.6",
+    "@babel/core": "7.29.0",
+    "@babel/eslint-parser": "7.28.6",
+    "@babel/plugin-transform-react-jsx": "7.28.6",
+    "@babel/preset-env": "7.29.0",
     "@babel/preset-react": "7.28.5",
     "@commitlint/cli": "20.4.1",
     "@commitlint/config-conventional": "20.4.1",
@@ -46,7 +46,7 @@
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-jsx-a11y": "6.10.2",
-    "eslint-plugin-prettier": "5.5.4",
+    "eslint-plugin-prettier": "5.5.5",
     "extend": "3.0.2",
     "globby": "14.1.0",
     "husky": "9.1.7",
@@ -56,9 +56,9 @@
     "jest-puppeteer": "11.0.0",
     "jsdom": "26.1.0",
     "lerna": "8.2.4",
-    "prettier": "3.7.3",
+    "prettier": "3.8.1",
     "pretty-quick": "4.2.2",
-    "puppeteer": "24.31.0",
+    "puppeteer": "24.36.1",
     "rollup": "2.79.2",
     "rollup-plugin-babel": "4.4.0",
     "rollup-plugin-commonjs": "10.1.0",
@@ -68,5 +68,5 @@
     "sinon-chai": "4.0.1",
     "typescript": "5.9.3"
   },
-  "packageManager": "pnpm@10.24.0+sha512.01ff8ae71b4419903b65c60fb2dc9d34cf8bb6e06d03bde112ef38f7a34d6904c424ba66bea5cdcf12890230bf39f9580473140ed9c946fef328b6e5238a345a"
+  "packageManager": "pnpm@10.28.2+sha512.41872f037ad22f7348e3b1debbaf7e867cfd448f2726d9cf74c08f19507c31d2c8e7a11525b983febc2df640b5438dee6023ebb1f84ed43cc2d654d2bc326264"
 }
