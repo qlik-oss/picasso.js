@@ -9,7 +9,6 @@ const SELECTOR_MAPS = {
 
 const FILTERS = {
   type: (c, objects) =>
-    // eslint-disable-line arrow-body-style
     objects.filter((o) => {
       const type = o.node.type;
 
@@ -19,7 +18,6 @@ const FILTERS = {
       return false;
     }),
   attr: (attr, operator, value, objects) =>
-    // eslint-disable-line arrow-body-style
     objects.filter((o) => {
       const v = o.node[attr];
 
@@ -42,7 +40,6 @@ const FILTERS = {
   universal: (objects) => objects,
 
   tag: (c, objects) =>
-    // eslint-disable-line arrow-body-style
     objects.filter((o) => {
       const tag = o.node.tag;
       if (tag) {

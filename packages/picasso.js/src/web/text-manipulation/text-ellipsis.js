@@ -1,7 +1,6 @@
 import { ELLIPSIS_CHAR } from './text-const';
 
 export default function ellipsText(label, measureText) {
-  // eslint-disable-line import/prefer-default-export
   const fontFamily = label['font-family'] || label.fontFamily;
   const fontSize = label['font-size'] || label.fontSize;
   const text = typeof label.text === 'string' ? label.text : `${label.text}`;

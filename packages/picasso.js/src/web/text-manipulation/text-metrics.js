@@ -29,7 +29,7 @@ function setFont({ fontWeight, fontSize, fontFamily }) {
   ) {
     return;
   }
-  context.font = [fontWeight, fontSize, fontFamily].filter((value) => !!value).join(' '); // eslint-disable-line
+  context.font = [fontWeight, fontSize, fontFamily].filter((value) => !!value).join(' ');
   contextCache.fontWeight = fontWeight;
   contextCache.fontSize = fontSize;
   contextCache.fontFamily = fontFamily;

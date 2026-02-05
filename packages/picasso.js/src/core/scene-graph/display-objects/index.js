@@ -26,8 +26,7 @@ reg.add('conicGradient', gradientItem);
 reg.add('stop', gradientItem);
 reg.add('pattern', patternItem);
 reg.add('image', image);
-/* eslint-disable import/prefer-default-export */
+
 export function create(type, input) {
   return reg.get(type)(input);
 }
-/* eslint-enable import/prefer-default-export */

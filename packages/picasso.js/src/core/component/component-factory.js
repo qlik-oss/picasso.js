@@ -155,7 +155,7 @@ function prepareContext(ctx, definition, opts) {
 function createDockDefinition(settings, preferredSize, logger) {
   const getLayoutProperty = (propName) => {
     if (settings[propName]) {
-      logger.warn(`Deprecation Warning the ${propName} property should be moved into layout: {} property`); // eslint-disable-line no-console
+      logger.warn(`Deprecation Warning the ${propName} property should be moved into layout: {} property`);
       return settings[propName];
     }
     return settings.layout ? settings.layout[propName] : undefined;

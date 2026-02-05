@@ -35,7 +35,7 @@ function hammered(Hammered) {
      * @private
      */
     function setDefaultSettings(newSettings) {
-      key = newSettings.key; //eslint-disable-line
+      key = newSettings.key;
       settings = newSettings;
       instance = { chart, mediator, settings };
       settings.gestures = settings.gestures || [];
