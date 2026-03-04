@@ -5,7 +5,7 @@ on:
     branches:
       - master
     tags:
-      - "v*"
+      - 'v*'
   pull_request:
     branches:
       - master
@@ -63,12 +63,6 @@ jobs:
       - uses: ./.github/actions/setup-runner
       - name: Run unit tests
         run: pnpm test:unit --coverage
-      - name: Upload coverage to Qlty
-        uses: qltysh/qlty-action/coverage@v2
-        with:
-          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
-          files: reports/coverage/lcov.info
-          total-parts-count: 2
 
   test-component:
     runs-on: ubuntu-latest
@@ -78,12 +72,6 @@ jobs:
       - uses: ./.github/actions/setup-runner
       - name: Component tests
         run: pnpm run test:component --coverage
-      - name: Upload coverage to Qlty
-        uses: qltysh/qlty-action/coverage@v2
-        with:
-          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
-          files: reports/coverage/lcov.info
-          total-parts-count: 2
 
   test-integration:
     needs:

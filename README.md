@@ -1,6 +1,5 @@
 [![CircleCI](https://circleci.com/gh/qlik-oss/picasso.js.svg?style=shield)](https://circleci.com/gh/qlik-oss/picasso.js)
 [![Maintainability](https://qlty.sh/gh/qlik-oss/projects/picasso.js/maintainability.svg)](https://qlty.sh/gh/qlik-oss/projects/picasso.js)
-[![Code Coverage](https://qlty.sh/gh/qlik-oss/projects/picasso.js/coverage.svg)](https://qlty.sh/gh/qlik-oss/projects/picasso.js)
 
 ![picasso.js](docs/assets/picassojs.png)
 
