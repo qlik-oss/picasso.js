@@ -53,7 +53,7 @@
     "jest-environment-jsdom": "29.7.0",
     "jest-junit": "16.0.0",
     "jest-puppeteer": "11.0.0",
-    "jsdom": "26.1.0",
+    "jsdom": "29.0.1",
     "lerna": "9.0.7",
     "prettier": "3.8.1",
     "pretty-quick": "4.2.2",
