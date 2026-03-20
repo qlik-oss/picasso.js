@@ -54,7 +54,7 @@
     "jest-junit": "16.0.0",
     "jest-puppeteer": "11.0.0",
     "jsdom": "26.1.0",
-    "lerna": "8.2.4",
+    "lerna": "9.0.7",
     "prettier": "3.8.1",
     "pretty-quick": "4.2.2",
     "puppeteer": "24.36.1",
