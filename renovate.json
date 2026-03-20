@@ -10,11 +10,6 @@
     {
       "matchPackageNames": ["d3-shape", "preact"],
       "enabled": false
-    },
-
-    {
-      "matchPackageNames": ["sinon"],
-      "ignoreVersions": ["21.0.1"]
     }
   ]
 }
