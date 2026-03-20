@@ -10,7 +10,7 @@
     "version": "pnpm run spec && pnpm run ts && git add scriptappy.json ../packages/picasso.js/types/index.d.ts"
   },
   "devDependencies": {
-    "@scriptappy/cli": "0.10.1",
+    "@scriptappy/cli": "0.10.4",
     "@scriptappy/to-dts": "1.0.0",
     "jsdoc": "4.0.5",
     "scriptappy-from-jsdoc": "0.7.0"
