@@ -1,15 +1,3 @@
 {
-  "extends": ["github>qlik-oss/renovate-config", "docker:disable", "schedule:monthly", ":dependencyDashboard"],
-  "semanticCommits": true,
-  "rangeStrategy": "bump",
-  "packageRules": [
-    {
-      "depTypeList": ["engines"],
-      "enabled": false
-    },
-    {
-      "matchPackageNames": ["d3-shape", "preact"],
-      "enabled": false
-    }
-  ]
+  "extends": ["github>qlik-oss/renovate-config"]
 }
