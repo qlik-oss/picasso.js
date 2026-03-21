@@ -39,7 +39,7 @@
     "@qlik/eslint-config": "1.4.25",
     "@rollup/plugin-terser": "0.4.4",
     "babel-plugin-istanbul": "7.0.1",
-    "chai": "4.5.0",
+    "chai": "6.2.2",
     "chai-subset": "1.6.0",
     "cross-env": "7.0.3",
     "eslint": "10.1.0",
