@@ -12,7 +12,34 @@ function generateLineNodes(result, item, halfLead, height) {
     container.id = item.id;
   }
 
-  let currentY = 0;
+  // When the text node lives in a sized slot (maxHeight is set) and is not rotated,
+  // center the multi-line block vertically within the reserved slot.
+  //
+  // Two coordinate models:
+  //
+  //   text-before-edge (left/right axis): axis-label-node's wiggle() already shifts y
+  //     down by (maxHeight − h) / 2 to pre-center a single line. We only need to
+  //     compensate for the extra spread of N lines:
+  //     centeringOffset = (height − N×lineHeight) / 2
+  //
+  //   alphabetic baseline (bottom/top axis): appendPadding sets y = padding + maxHeight
+  //     (bottom of slot); text renders upward. No wiggle pre-centering, so:
+  //     centeringOffset = height − (maxHeight + N×lineHeight) / 2
+  //
+  // Rotated (tilted) labels have a transform set and use a different positioning model.
+  const lineHeight = height + 2 * halfLead;
+  let centeringOffset = 0;
+  if (!isNaN(item.maxHeight) && !item.transform) {
+    const N = result.lines.length;
+    if (item.baseline === 'text-before-edge') {
+      // Wiggle pre-centers; adjust only for N-line spread relative to single line.
+      centeringOffset = (height - N * lineHeight) / 2;
+    } else {
+      // No pre-centering; y is at slot bottom, center the full block.
+      centeringOffset = height - (item.maxHeight + N * lineHeight) / 2;
+    }
+  }
+  let currentY = centeringOffset;
 
   result.lines.forEach((line, i) => {
     const node = extend({}, item);
