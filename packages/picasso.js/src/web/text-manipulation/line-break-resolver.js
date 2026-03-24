@@ -12,7 +12,29 @@ function generateLineNodes(result, item, halfLead, height) {
     container.id = item.id;
   }
 
-  let currentY = 0;
+  // When the text node lives in a sized slot (maxHeight is set) and is not rotated,
+  // center the multi-line block vertically within the reserved slot.
+  //
+  // Two coordinate models:
+  //   text-before-edge (left/right axis): y is at the TOP of the slot; text renders
+  //     downward. Shift down by half the unused space: (maxHeight − N×lineHeight) / 2
+  //
+  //   alphabetic baseline (bottom/top axis): appendPadding sets y = padding + maxHeight,
+  //     so y is at the BOTTOM of the slot; text renders upward. The correct offset is:
+  //     height − (maxHeight + N×lineHeight) / 2
+  //
+  // Rotated (tilted) labels have a transform set and use a different positioning model.
+  const lineHeight = height + 2 * halfLead;
+  let centeringOffset = 0;
+  if (!isNaN(item.maxHeight) && !item.transform) {
+    const N = result.lines.length;
+    if (item.baseline === 'text-before-edge') {
+      centeringOffset = (item.maxHeight - N * lineHeight) / 2;
+    } else {
+      centeringOffset = height - (item.maxHeight + N * lineHeight) / 2;
+    }
+  }
+  let currentY = centeringOffset;
 
   result.lines.forEach((line, i) => {
     const node = extend({}, item);
