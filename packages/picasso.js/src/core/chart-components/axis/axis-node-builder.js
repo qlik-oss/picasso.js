@@ -151,14 +151,33 @@ function discreteCalcMaxTextRect({ textMetrics, settings, innerRect, scale, tilt
   const textRect = { width: 0, height: h };
   if (settings.align === 'left' || settings.align === 'right') {
     textRect.width = innerRect.width - labelsSpacing(settings) - settings.paddingEnd;
+    if (settings.labels.wordBreak) {
+      // Use the full bandwidth slot so word-break computes lines dynamically:
+      // effectiveLines = min(maxLines, floor(bandwidthPx / lineHeight))
+      textRect.height = bandwidth * innerRect.height;
+    }
   } else if (layered) {
     textRect.width = bandwidth * innerRect.width * 2;
   } else if (tilted) {
     const radians = Math.abs(settings.labels.tiltAngle) * (Math.PI / 180);
-    textRect.width =
-      (innerRect.height - labelsSpacing(settings) - settings.paddingEnd - h * Math.cos(radians)) / Math.sin(radians);
+    if (settings.labels.wordBreak) {
+      const slotPx = tickBandwidth(scale, tick) * innerRect.width;
+      const fitsInSlot = Math.max(1, Math.floor((slotPx * Math.sin(radians)) / h));
+      const lineMultiplier = Math.min(settings.labels.maxLines, fitsInSlot);
+      textRect.width =
+        (innerRect.height - labelsSpacing(settings) - settings.paddingEnd - lineMultiplier * h * Math.cos(radians)) /
+        Math.sin(radians);
+      textRect.height = lineMultiplier * h;
+    } else {
+      textRect.width =
+        (innerRect.height - labelsSpacing(settings) - settings.paddingEnd - h * Math.cos(radians)) / Math.sin(radians);
+    }
   } else {
     textRect.width = bandwidth * innerRect.width;
+    if (settings.labels.wordBreak) {
+      // For top/bottom axes: reserve fixed multi-line height in the dock
+      textRect.height = h * settings.labels.maxLines;
+    }
   }
 
   textRect.width = getClampedValue({
@@ -291,6 +310,8 @@ export default function nodeBuilder(isDiscrete) {
         });
         buildOpts.maxWidth = maxSize.width;
         buildOpts.maxHeight = maxSize.height;
+        buildOpts.wordBreak = settings.labels.wordBreak;
+        buildOpts.maxLines = settings.labels.maxLines;
         buildOpts.stepSize = getStepSizeFn({
           innerRect,
           scale,
