@@ -206,6 +206,8 @@ export default function buildNode(tick, buildOpts) {
     y: 0,
     maxWidth: buildOpts.maxWidth,
     maxHeight: buildOpts.maxHeight,
+    wordBreak: buildOpts.wordBreak || undefined,
+    maxLines: buildOpts.wordBreak ? buildOpts.maxLines : undefined,
     tickValue: tick.value ?? tick.data?.value,
   };
 

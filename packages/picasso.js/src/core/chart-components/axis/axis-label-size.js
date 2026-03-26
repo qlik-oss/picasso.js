@@ -157,6 +157,7 @@ export default function getSize({ isDiscrete, rect, formatter, measureText, scal
 
     if (isDiscrete && horizontal && settings.labels.mode === 'auto') {
       if (
+        !settings.labels.wordBreak &&
         shouldAutoTilt({
           majorTicks,
           measure,
@@ -167,6 +168,7 @@ export default function getSize({ isDiscrete, rect, formatter, measureText, scal
       ) {
         state.labels.activeMode = 'tilted';
       } else {
+        // wordBreak suppresses auto-tilt; horizontal wrapping handles overflow instead
         state.labels.activeMode = 'horizontal';
       }
     }
@@ -189,10 +191,19 @@ export default function getSize({ isDiscrete, rect, formatter, measureText, scal
     let sizeFromTextRect;
     if (state.labels.activeMode === 'tilted') {
       const radians = Math.abs(settings.labels.tiltAngle) * (Math.PI / 180); // angle in radians
+      let lineMultiplier = 1;
+      if (settings.labels.wordBreak) {
+        const h = measure('M').height;
+        const slotPx = scale.bandwidth() * rect.inner.width;
+        const fitsInSlot = Math.max(1, Math.floor((slotPx * Math.sin(radians)) / h));
+        lineMultiplier = Math.min(settings.labels.maxLines, fitsInSlot);
+      }
       sizeFromTextRect = (r) =>
-        getClampedValue({ value: r.width, maxValue, minValue }) * Math.sin(radians) + r.height * Math.cos(radians);
+        getClampedValue({ value: r.width, maxValue, minValue }) * Math.sin(radians) +
+        r.height * lineMultiplier * Math.cos(radians);
     } else if (horizontal) {
-      sizeFromTextRect = (r) => r.height;
+      const lineMultiplier = settings.labels.wordBreak ? settings.labels.maxLines : 1;
+      sizeFromTextRect = (r) => r.height * lineMultiplier;
     } else {
       sizeFromTextRect = (r) => getClampedValue({ value: r.width, maxValue, minValue });
     }
@@ -223,8 +234,11 @@ export default function getSize({ isDiscrete, rect, formatter, measureText, scal
       const extendLeft = (settings.align === 'bottom') === settings.labels.tiltAngle >= 0;
       const radians = Math.abs(settings.labels.tiltAngle) * (Math.PI / 180); // angle in radians
       const h = measure('M').height;
-      const maxWidth = (textSize - h * Math.cos(radians)) / Math.sin(radians);
-      const labelWidth = (r) => Math.min(maxWidth, r.width) * Math.cos(radians) + r.height;
+      const slotPx = scale.bandwidth() * rect.inner.width;
+      const fitsInSlot = Math.max(1, Math.floor((slotPx * Math.sin(radians)) / h));
+      const lineMultiplier = settings.labels.wordBreak ? Math.min(settings.labels.maxLines, fitsInSlot) : 1;
+      const maxWidth = (textSize - lineMultiplier * h * Math.cos(radians)) / Math.sin(radians);
+      const labelWidth = (r) => Math.min(maxWidth, r.width) * Math.cos(radians) + lineMultiplier * r.height;
       const adjustByPosition = (s, i) => {
         const pos = majorTicks[i] ? majorTicks[i].position : 0;
         if (extendLeft) {
