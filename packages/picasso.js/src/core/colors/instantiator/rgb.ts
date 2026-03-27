@@ -18,27 +18,29 @@ const rRgb = /^\s*rgb\(\s*(-?\d{1,3})\s*,\s*(-?\d{1,3})\s*,\s*(-?\d{1,3})\s*\)\s
 export default function rgb(colStr) {
   const ary = rRgb.exec(colStr) || rRgba.exec(colStr) || rRgbPer.exec(colStr) || rRgbaPer.exec(colStr) || [];
 
-  const [r, g, b, a] = ary.slice(1, 5).map((val: string | number) => {
+  const strAry = ary as string[];
+  const [r, g, b, a] = strAry.slice(1, 5).map((val: string) => {
     // Last value is the Alpha which may or may not be present
-    if (ary.indexOf(val) === 4) {
-      val = parseFloat(val);
-      val = val > 1 ? 1 : val;
-      val = val < 0 ? 0 : val;
-      return val;
+    if (strAry.indexOf(val) === 4) {
+      let num = parseFloat(val);
+      num = num > 1 ? 1 : num;
+      num = num < 0 ? 0 : num;
+      return num;
     }
 
+    let num: number;
     if (val.indexOf('%') >= 0) {
-      val = parseFloat(val);
-      val = val > 100 ? 100 : val;
-      val = val < 0 ? 0 : val;
-      val = Math.round(255 * (val / 100));
+      num = parseFloat(val);
+      num = num > 100 ? 100 : num;
+      num = num < 0 ? 0 : num;
+      num = Math.round(255 * (num / 100));
     } else {
-      val = parseInt(val, 10);
-      val = val > 255 ? 255 : val;
-      val = val < 0 ? 0 : val;
+      num = parseInt(val, 10);
+      num = num > 255 ? 255 : num;
+      num = num < 0 ? 0 : num;
     }
 
-    return val;
+    return num;
   });
 
   return new RgbaColor(r, g, b, a);

@@ -16,29 +16,46 @@
  * // For multiple items
  * crispify.multiple(myArrayOfItems);
  */
-export function crispifierFactory(crispMap) {
+interface CrispItem {
+  key: string;
+  type: string;
+}
+
+interface CrispEntry {
+  append: string[];
+  round: string[];
+  condition: (item: Record<string, unknown>) => boolean;
+  conditionAppend?: (item: Record<string, unknown>) => boolean;
+  items: CrispItem[];
+}
+
+export function crispifierFactory(crispMap?: Record<string, CrispEntry>) {
   // Define the crispMap
   if (crispMap === undefined) {
-    crispMap = {};
+    crispMap = {} as Record<string, CrispEntry>;
 
     crispMap.line = {
       append: ['x1', 'x2', 'y1', 'y2'],
       round: [],
       condition: (item) => item.x1 === item.x2 || item.y1 === item.y2,
-      conditionAppend: (item) => item.strokeWidth % 2 !== 0,
+      conditionAppend: (item) => (item.strokeWidth as number) % 2 !== 0,
+      items: [],
     };
 
     crispMap.rect = {
       append: ['x', 'y'],
       round: ['width', 'height'],
       condition: () => true,
-      conditionAppend: (item) => item.strokeWidth % 2 !== 0,
+      conditionAppend: (item) => (item.strokeWidth as number) % 2 !== 0,
+      items: [],
     };
   }
 
+  const map: Record<string, CrispEntry> = crispMap;
+
   // Re-map the crispmap
-  Object.keys(crispMap).forEach((type) => {
-    const self = crispMap[type];
+  Object.keys(map).forEach((type) => {
+    const self = map[type];
 
     self.items = [];
 
@@ -64,8 +81,8 @@ export function crispifierFactory(crispMap) {
    * @return {Undefined}    Returns nothing, modifies the original item instead
    */
   function crispItem(item) {
-    if (crispMap[item.type] && crispMap[item.type].condition(item)) {
-      const self = crispMap[item.type];
+    if (map[item.type] && map[item.type].condition(item)) {
+      const self = map[item.type];
       const doAppend = self.conditionAppend === undefined || self.conditionAppend(item);
 
       self.items.forEach((i) => {

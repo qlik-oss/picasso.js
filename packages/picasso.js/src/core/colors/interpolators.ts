@@ -16,7 +16,7 @@ export default {
   interpolate: (from, to, t) => {
     let fromC = color(from),
       toC = color(to),
-      colorObj = {};
+      colorObj: { r?: number; g?: number; b?: number; h?: number; s?: number; l?: number } = {};
 
     if (typeof fromC === 'object' && typeof toC === 'object') {
       const targetType = colorObject.getColorType(toC);

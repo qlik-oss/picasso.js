@@ -25,7 +25,7 @@ import {
 class GeoLine {
   declare tolerance: number;
   declare type: string;
-  declare vectors: Line[];
+  declare vectors: Point[];
   declare x1: number;
   declare x2: number;
   declare y1: number;

@@ -47,9 +47,9 @@ const create =
   (reg = parentReg) =>
   (options: Record<string, unknown> = {}) => {
     // TODO handle reserverd properties x, y, size, data, etc..
-    const fn = reg.get(options.type);
+    const fn = reg.get(options.type as string);
     if (fn) {
-      const s = fn(options);
+      const s = (fn as (opt: Record<string, unknown>) => Record<string, unknown>)(options);
       applyOpts(s, options);
 
       if (typeof options.data !== 'undefined') {

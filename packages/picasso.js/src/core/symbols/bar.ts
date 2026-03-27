@@ -28,9 +28,6 @@ export default function bar(options) {
     points = points.map((pp) => rotate(pp, radians, p));
   }
 
-  const rect: Rect = pointsToRect(points);
-  rect.type = 'rect';
-  rect.fill = 'black';
-
-  return rect;
+  const rectBase = pointsToRect(points);
+  return { ...rectBase, type: 'rect', fill: 'black' };
 }

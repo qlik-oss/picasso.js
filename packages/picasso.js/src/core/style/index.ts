@@ -68,7 +68,8 @@ function attr(targets, attribute, defaultVal, index) {
   if (type === 'function') {
     // Return function with fallback attribute value
     const inner = attr(targets, attribute, defaultVal, index + 1);
-    target[attribute].fn = (...args) => wrapper(globalDefault, inner, target[attribute], ...args);
+    target[attribute].fn = (...args: [unknown, ...unknown[]]) =>
+      wrapper(globalDefault, inner, target[attribute], ...args);
     return target[attribute];
   }
   if (type === 'object') {

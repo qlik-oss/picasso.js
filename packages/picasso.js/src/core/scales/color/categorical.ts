@@ -94,7 +94,7 @@ export default function scaleCategorical(
       // inject explicit colors
       const order = explicitDomain
         .map((d, i) => [domain.indexOf(d), d, explicitRange[i]])
-        .sort((a, b) => (((a as unknown[])[0] as number) - (b as unknown[])[0]) as number);
+        .sort((a, b) => (((a as unknown[])[0] as number) - ((b as unknown[])[0] as number)) as number);
       order.forEach((v) => {
         const idx = domain.indexOf((v as unknown[])[1]);
         if (idx !== -1) {

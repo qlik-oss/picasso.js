@@ -43,7 +43,7 @@ class Polygon {
   declare yMin: number;
   declare xMax: number;
   declare yMax: number;
-  declare _bounds: Rect | null;
+  declare _bounds: Point[] | null;
   declare _boundingRect: Rect | null;
 
   constructor({ vertices = [] } = {}) {

@@ -16,7 +16,7 @@ reg.add('geopolygon', geopolygon);
 reg.add('polyline', polyline);
 
 export function create(type, input) {
-  return reg.get(type)(input);
+  return (reg.get(type) as (arg: unknown) => unknown)(input);
 }
 
 /**

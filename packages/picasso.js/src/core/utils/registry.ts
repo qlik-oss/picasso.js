@@ -104,7 +104,7 @@ export default function registryFactory(
     if (logger && typeof ret === 'undefined') {
       logger.warn(`${key} does not exist in ${registerName} registry`);
     }
-    return ret || get(defaultValue);
+    return ret || (typeof defaultValue === 'string' ? get(defaultValue) : undefined);
   }
 
   registry.add = add;

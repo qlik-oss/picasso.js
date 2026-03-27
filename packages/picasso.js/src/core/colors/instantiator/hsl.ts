@@ -19,7 +19,7 @@ export default function hsl(colStr) {
   const [h, s, l, a] = match.slice(1).map((v) => {
     let returnVal = parseFloat(v);
 
-    switch (match.indexOf(v)) {
+    switch ((match as string[]).indexOf(v)) {
       case 1:
         returnVal = ((returnVal % 360) + 360) % 360;
         return Math.round(returnVal);

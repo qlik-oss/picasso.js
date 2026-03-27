@@ -1,11 +1,20 @@
 import { create as factory } from './index';
 
+interface Geometry {
+  containsPoint(p: unknown): boolean;
+  intersectsLine(points: unknown): boolean;
+  intersectsRect(points: unknown): boolean;
+  intersectsCircle(c: unknown): boolean;
+  intersectsPolygon(polygon: unknown): boolean;
+  intersectsGeoPolygon(geopolygon: unknown): boolean;
+}
+
 /**
  * Construct a new GeometryCollection instance
  * @private
  */
 class GeometryCollection {
-  declare geometries: unknown[];
+  declare geometries: Geometry[];
   constructor(collection = []) {
     this.set(collection);
   }
@@ -15,7 +24,7 @@ class GeometryCollection {
     collection.forEach((geo) => {
       const geoInstance = factory(geo.type, geo);
       if (geoInstance) {
-        this.geometries.push(geoInstance);
+        this.geometries.push(geoInstance as Geometry);
       }
     });
   }
