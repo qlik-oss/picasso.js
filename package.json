@@ -34,6 +34,7 @@
     "@babel/plugin-transform-react-jsx": "7.28.6",
     "@babel/preset-env": "7.29.2",
     "@babel/preset-react": "7.28.5",
+    "@babel/preset-typescript": "^7.28.5",
     "@commitlint/cli": "20.5.0",
     "@commitlint/config-conventional": "20.5.0",
     "@qlik/eslint-config": "1.4.27",

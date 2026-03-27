@@ -2,7 +2,7 @@ const esModules = ['preact', 'd3.*'].join('|');
 
 module.exports = {
   testEnvironment: 'jsdom',
-  testMatch: ['**/src/**/__tests__/*.spec.js'],
+  testMatch: ['**/src/**/__tests__/*.spec.[jt]s'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   transform: {
     '\\.[jt]sx?$': 'babel-jest',

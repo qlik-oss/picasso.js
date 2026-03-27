@@ -44,9 +44,10 @@ const config = (isEsm) => {
       banner,
     },
     plugins: [
-      nodeResolve(),
+      nodeResolve({ extensions: ['.ts', '.tsx', '.js'] }),
       babel({
         include: ['src/**'],
+        extensions: ['.ts', '.tsx', '.js'],
         presets: [
           [
             '@babel/preset-env',
@@ -63,6 +64,7 @@ const config = (isEsm) => {
               },
             },
           ],
+          ['@babel/preset-typescript', { allowDeclareFields: true }],
         ],
         plugins: [[jsxPlugin, { pragma: 'h' }]],
       }),
