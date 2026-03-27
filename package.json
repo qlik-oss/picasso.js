@@ -22,7 +22,7 @@
     "test:unit": "jest",
     "test:unit:watch": "jest --watch",
     "prepare": "husky",
-    "types:check": "pnpm -r run types:check"
+    "types:check": "lerna run types:check --stream"
   },
   "engines": {
     "node": ">=18"
