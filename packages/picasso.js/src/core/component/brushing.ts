@@ -281,7 +281,6 @@ export function resolveEvent({ collisions, t, config, action }) {
     nodes,
     action,
     chart: config.chart,
-    data: config.data,
     trigger: t,
   });
 
@@ -308,7 +307,9 @@ function singleContactPoint(e, rect) {
 
 function resolveCollisions(e, t, renderer) {
   const rect = renderer.element().getBoundingClientRect();
-  let p = isTouchEvent(e) ? touchSingleContactPoint(e, rect) : singleContactPoint(e, rect);
+  let p: { x: number; y: number } | { cx: number; cy: number; r: number } | null = isTouchEvent(e)
+    ? touchSingleContactPoint(e, rect)
+    : singleContactPoint(e, rect);
 
   if (p === null || p.x < 0 || p.y < 0 || p.x > rect.width || p.y > rect.height) {
     // TODO include radius in this check?

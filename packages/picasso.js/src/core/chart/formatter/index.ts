@@ -5,7 +5,8 @@ export function create(options, data, deps, extractor = extractData) {
     const d = extractor(options.data, data, deps);
     if (d && d.fields && d.fields[0]) {
       // TODO Have some magic to handle and merge formatters from multiple sources
-      return d.fields[0].formatter();
+      const f0 = d.fields[0] as { formatter: () => unknown };
+      return f0.formatter();
     }
   }
 

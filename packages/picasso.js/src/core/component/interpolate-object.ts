@@ -43,7 +43,7 @@ export function genericArray(a, b) {
   };
 }
 
-export function value(a, b, k) {
+export function value(a, b, k?: string) {
   const t = typeof b;
   let c;
   return b == null || t === 'boolean'

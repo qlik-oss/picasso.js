@@ -43,7 +43,9 @@ const customLayout = (fn) => (rect, components) => {
 };
 const normalLayout = (layoutSettings) => {
   const dockLayout = createDockLayout(layoutSettings);
-  return customLayout((rect, vcomponents) => dockLayout.layout(rect, vcomponents));
+  return customLayout((rect, vcomponents) =>
+    (dockLayout.layout as (r: unknown, c: unknown) => unknown)(rect, vcomponents)
+  );
 };
 
 const getLayoutFn = (strategy) => (typeof strategy === 'function' ? customLayout(strategy) : normalLayout(strategy));

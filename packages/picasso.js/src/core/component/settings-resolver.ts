@@ -35,7 +35,7 @@ export default function settingsResolver(resources, deps = externals) {
           data,
           resources: res,
         };
-        let obj = deps.resolveForItem(context, cache.norm, i);
+        let obj = deps.resolveForItem(context, cache.norm, i) as Record<string, unknown>;
         obj.data = data.items[i];
         resolved.push(obj);
       }

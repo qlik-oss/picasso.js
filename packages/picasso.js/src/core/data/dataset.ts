@@ -97,7 +97,7 @@ const dsv = ({ data, config }) => {
   const rows = data.split('\n');
   const row0 = rows[0];
   const row1 = rows[1];
-  let delimiter = ',';
+  let delimiter: string | RegExp = ',';
   if (config && config.parse && config.parse.delimiter) {
     delimiter = config.parse.delimiter;
   } else if (row0) {
@@ -146,7 +146,7 @@ const parseData = ({ key, data, cache, config }) => {
  * @private
  * @return {Dataset}
  */
-function ds({ key, data, config } = {}) {
+function ds({ key, data, config }: { key?: string; data?: unknown; config?: unknown } = {}) {
   const cache = {
     fields: [],
   };
@@ -176,7 +176,6 @@ function ds({ key, data, config } = {}) {
     field: (query) =>
       findField(query, {
         cache,
-        matrix: data,
       }),
 
     /**
@@ -190,7 +189,7 @@ function ds({ key, data, config } = {}) {
      * @param {DataExtraction~Extract|DataFieldExtraction} config
      * @returns {Array<DatumExtract>}
      */
-    extract: (cfg) => extract(cfg, dataset, cache),
+    extract: (cfg) => extract(cfg, dataset),
 
     /**
      * @returns {null}

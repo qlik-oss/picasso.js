@@ -68,7 +68,7 @@ export function create(options, d, deps) {
   let s;
 
   if (type === 'color') {
-    if (data.fields && data.fields[0] && data.fields[0].type() === 'dimension') {
+    if (data.fields && data.fields[0] && (data.fields[0] as { type: () => string }).type() === 'dimension') {
       type = 'categorical-color';
     } else {
       type = 'sequential-color';

@@ -1,6 +1,16 @@
 import { getPropsInfo, collect, track as storeTracked } from './util';
 
-function datumExtract(propCfg, cell, { key }) {
+interface PropConfig {
+  field?: { items: () => unknown[]; key: () => string; formatter?: () => unknown };
+  value?: unknown;
+  label?: unknown;
+  filter?: (cell: unknown) => boolean;
+  reduce?: unknown;
+  reduceLabel?: unknown;
+  [key: string]: unknown;
+}
+
+function datumExtract(propCfg: PropConfig, cell: unknown, { key }: { key: string | undefined }) {
   const datum: Record<string, unknown> = {
     value:
       typeof propCfg.value === 'function' // eslint-disable-line no-nested-ternary
@@ -38,6 +48,7 @@ export default function extract(config, dataset) {
         throw Error(`Field '${cfg.field}' not found`);
       }
       const { props, main } = getPropsInfo(cfg, dataset);
+      const mainConfig = main as PropConfig;
       const propsArr = Object.keys(props);
 
       const track = !!cfg.trackBy;
@@ -49,16 +60,16 @@ export default function extract(config, dataset) {
       const mapped = [];
       for (let idx = 0; idx < items.length; idx++) {
         const mainCell = items[idx];
-        const exclude = main.filter && !main.filter(mainCell);
+        const exclude = mainConfig.filter && !mainConfig.filter(mainCell);
         if (exclude) {
           continue;
         }
-        const ret = datumExtract(main, mainCell, { key: sourceKey });
+        const ret = datumExtract(mainConfig, mainCell, { key: sourceKey });
 
         // loop through all props that need to be mapped and
         // assign 'value' and 'source' to each property
         propsArr.forEach((prop) => {
-          const p = props[prop];
+          const p = props[prop] as PropConfig;
           let propCell = p.field ? p.field.items()[idx] : mainCell;
           ret[prop] = datumExtract(p, propCell, { key: sourceKey });
         });
