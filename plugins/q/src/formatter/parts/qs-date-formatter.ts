@@ -222,7 +222,7 @@ class DateFormatter {
    * @param {Object} localeInfo
    * @param {String} pattern
    */
-  constructor(localeInfo, pattern, qtype) {
+  constructor(localeInfo, pattern, qtype?) {
     const info = localeInfo || {};
 
     if (!info.qCalendarStrings) {
@@ -342,6 +342,6 @@ class DateFormatter {
   }
 }
 
-export default function dateFormatFactory(...args) {
+export default function dateFormatFactory(...args: ConstructorParameters<typeof DateFormatter>) {
   return new DateFormatter(...args);
 }

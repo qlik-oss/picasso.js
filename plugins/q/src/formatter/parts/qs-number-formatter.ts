@@ -113,7 +113,7 @@ function formatFunctional(value, pattern, d) {
   return value;
 }
 
-function escape(value, flags, justStr) {
+function escape(value, flags, justStr?) {
   const str = escapeRegExp(value);
   if (justStr) {
     return str;
@@ -136,7 +136,7 @@ function getAbbreviations(localeInfo, listSeparator) {
     return SIprefixes;
   }
 
-  const abbreviations = {};
+  const abbreviations: Record<string, string> = {};
   let abbrs = localeInfo.qNumericalAbbreviation.split(listSeparator);
 
   abbrs.forEach((abbreviation) => {
@@ -224,7 +224,7 @@ function preparePattern(o, t, d, abbreviate) {
 
 class NumberFormatter {
   declare _prepared: Record<string, unknown> | null;
-  declare abbreviations: string[];
+  declare abbreviations: Record<string, string>;
   declare decimalDelimiter: string;
   declare localeInfo: Record<string, unknown> | null;
   declare pattern: string;
@@ -301,7 +301,7 @@ class NumberFormatter {
     return this.formatValue(value);
   }
 
-  prepare(pattern, t, d) {
+  prepare(pattern?, t?, d?) {
     let prep;
 
     if (typeof pattern === 'undefined') {
@@ -403,14 +403,14 @@ class NumberFormatter {
     }
 
     if (value === 0 && prep.zero) {
-      prep = prep.zero;
+      prep = prep.zero as Record<string, unknown>;
       return prep.pattern;
     }
     if (value < 0 && prep.negative) {
-      prep = prep.negative;
+      prep = prep.negative as Record<string, unknown>;
       value = -value;
     } else {
-      prep = prep.positive;
+      prep = prep.positive as Record<string, unknown>;
     }
     d = prep.d;
     t = prep.t;
@@ -448,10 +448,13 @@ class NumberFormatter {
           // value and lower abbreviation is for values below 0.1 (move to the right ==>)
         } else if ((exponent < 0 && lowerAbbreviation < 0) || !lowerAbbreviation) {
           // upper abbreviation is also for values below 0.1 and precision allows for using the upper abbreviation(move to the right ==>)
-          if (upperAbbreviation < 0 && upperAbbreviation - exponent <= prep.maxPrecision) {
+          if (upperAbbreviation < 0 && upperAbbreviation - exponent <= (prep.maxPrecision as number)) {
             suggestedAbbrExponent = upperAbbreviation;
             // lower abbrevaition is smaller than exponent and we can't get away with not abbreviating
-          } else if (lowerAbbreviation <= exponent && !(upperAbbreviation > 0 && -exponent <= prep.maxPrecision)) {
+          } else if (
+            lowerAbbreviation <= exponent &&
+            !(upperAbbreviation > 0 && -exponent <= (prep.maxPrecision as number))
+          ) {
             // (move to left <==)
             suggestedAbbrExponent = lowerAbbreviation;
           }
@@ -559,6 +562,6 @@ class NumberFormatter {
   }
 }
 
-export default function numberFormatFactory(...args) {
+export default function numberFormatFactory(...args: ConstructorParameters<typeof NumberFormatter>) {
   return new NumberFormatter(...args);
 }

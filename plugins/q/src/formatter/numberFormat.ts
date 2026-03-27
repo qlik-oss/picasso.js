@@ -17,7 +17,7 @@ export default function formatter(
   );
   const memoized = memoize(qformat.formatValue.bind(qformat), {
     // Handle NaN and cases where toString yields different result than +operator. Ex. a Date.
-    toKey: (value) => (isNaN(value) ? value : +value),
+    toKey: (value) => (isNaN(value as number) ? value : +(value as number)),
   });
 
   /**
