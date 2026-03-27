@@ -8,9 +8,9 @@ function isVerticalLabelOverlapping({
   rect,
   state,
 }: {
-  majorTicks: unknown;
-  measureText: unknown;
-  rect: unknown;
+  majorTicks: unknown[];
+  measureText: (s: string) => { width: number; height: number };
+  rect: { height: number };
   state?: unknown;
 }) {
   const size = rect.height;

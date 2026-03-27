@@ -44,7 +44,11 @@ function resolveLocalSettings({ state, style, settings }) {
   const dock = settings.layout.dock || state.defaultDock;
   localStgns.dock = dock;
   localStgns.align = resolveAlign(settings.settings.align, dock);
-  localStgns.labels.tiltAngle = Math.max(-90, Math.min(localStgns.labels.tiltAngle, 90));
+  localStgns.labels = localStgns.labels || {};
+  (localStgns.labels as Record<string, unknown>).tiltAngle = Math.max(
+    -90,
+    Math.min((localStgns.labels as Record<string, number>).tiltAngle, 90)
+  );
 
   const { paddingStart, paddingEnd } = localStgns;
   localStgns.paddingStart = typeof paddingStart === 'function' ? paddingStart.call(null) : paddingStart;

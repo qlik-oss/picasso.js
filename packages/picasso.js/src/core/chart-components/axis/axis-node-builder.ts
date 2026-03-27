@@ -210,7 +210,19 @@ function continuousCalcMaxTextRect({
   return textRect;
 }
 
-function getStepSizeFn({ innerRect, scale, settings, tick }) {
+function getStepSizeFn({
+  innerRect,
+  scale,
+  settings,
+  tick,
+  ticks,
+}: {
+  innerRect: any;
+  scale: any;
+  settings: any;
+  tick: any;
+  ticks?: any;
+}) {
   const size = settings.align === 'top' || settings.align === 'bottom' ? innerRect.width : innerRect.height;
   const bandwidth = tickBandwidth(scale, tick);
   return size * bandwidth;
