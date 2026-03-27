@@ -30,7 +30,7 @@ export default function ordinal(settings: ScaleSettings = {}, data: ScaleData = 
     Record<string, unknown>;
 
   const ctx = { data, resources };
-  const stgns = resolveSettings(settings, DEFAULT_SETTINGS, ctx);
+  const stgns = resolveSettings(settings, DEFAULT_SETTINGS, ctx) as typeof DEFAULT_SETTINGS & Record<string, unknown>;
 
   const valueFn = typeof settings.value === 'function' ? settings.value : (d) => d.datum.value;
   const labelFn = typeof settings.label === 'function' ? settings.label : (d) => d.datum.label;

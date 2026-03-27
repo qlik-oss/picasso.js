@@ -98,7 +98,7 @@ function getRectFromCircleIntersection({ radius, size, angle }) {
     default:
       throw new Error('invalid angle');
   }
-  let bounds: Record<string, number | boolean | null> = {
+  let bounds: Record<string, string | number | boolean | null> = {
     x: intersection.x + offset.x,
     y: intersection.y + offset.y,
     width,
@@ -116,7 +116,7 @@ function getHorizontalInsideSliceRect({ slice, padding, measured, store }) {
     height: measured.height + padding * 2,
   };
 
-  let bounds: Record<string, number | boolean | null> = getRectFromCircleIntersection({
+  let bounds: Record<string, string | number | boolean | null> = getRectFromCircleIntersection({
     radius: outerRadius,
     size,
     angle: middle,
@@ -153,7 +153,7 @@ function getHorizontalIntoSliceRect({ slice, padding, measured }) {
     height: measured.height + padding * 2,
   };
 
-  let bounds: Record<string, number | boolean | null> = getRectFromCircleIntersection({
+  let bounds: Record<string, string | number | boolean | null> = getRectFromCircleIntersection({
     radius: outerRadius,
     size,
     angle: middle,
@@ -211,7 +211,7 @@ function getRotatedInsideSliceRect({ slice, measured, padding }) {
 
   const middle = normalize((start + end) / 2);
   let r = outerRadius - padding;
-  let bounds: Record<string, number | boolean | null> = {
+  let bounds: Record<string, string | number | boolean | null> = {
     x: Math.sin(middle) * r,
     y: -Math.cos(middle) * r,
     width: maxWidth,
@@ -267,7 +267,7 @@ function getRotatedOusideSliceRect({ slice, measured, padding, view }) {
     return null;
   }
 
-  let bounds: Record<string, number | boolean | null> = {
+  let bounds: Record<string, string | number | boolean | null> = {
     x,
     y,
     width: maxWidth,
@@ -442,7 +442,7 @@ function getHorizontalOusideSliceRect({ slice, measured, padding, view, context 
     return null;
   }
 
-  let bounds: Record<string, number | boolean | null> = {
+  let bounds: Record<string, string | number | boolean | null> = {
     x,
     y,
     width: maxWidth,
@@ -553,7 +553,25 @@ export function getSliceRect({ slice, direction, position, padding, measured, vi
 }
 
 function findBestPlacement(
-  { context, direction, measured, node, placementSettings, rect, store },
+  {
+    context,
+    direction,
+    lblStngs,
+    measured,
+    node,
+    placementSettings,
+    rect,
+    store,
+  }: {
+    context: Record<string, unknown>;
+    direction: unknown;
+    lblStngs?: unknown;
+    measured: Record<string, unknown>;
+    node: Record<string, unknown>;
+    placementSettings: unknown[];
+    rect: Record<string, unknown>;
+    store: Record<string, unknown>;
+  },
   sliceRect = getSliceRect
 ) {
   for (let p = 0; p < placementSettings.length; p++) {
@@ -677,7 +695,7 @@ export function slices(
     style.label
   );
 
-  defaults.fontSize = parseInt(defaults.fontSize, 10);
+  defaults.fontSize = parseInt(defaults.fontSize as string, 10);
 
   const labelSettings = settings.labels.map((labelSetting) => extend({}, defaults, settings, labelSetting));
 

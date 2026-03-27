@@ -61,7 +61,8 @@ export default function scaleSequentialColor(
   resources: ScaleResources = {}
 ) {
   const s = linear(settings, data, resources).clamp(true).interpolate(interpolateRgb);
-  const stgns = resolveSettings(settings, DEFAULT_SETTINGS, { data, resources });
+  const stgns = resolveSettings(settings, DEFAULT_SETTINGS, { data, resources }) as typeof DEFAULT_SETTINGS &
+    Record<string, unknown>;
   const isDomain = Array.isArray(stgns.domain) && stgns.domain.length;
   const isRange = Array.isArray(stgns.range) && stgns.range.length;
 
@@ -76,12 +77,14 @@ export default function scaleSequentialColor(
 
   extend(true, fn, s);
   const [min, max] = minmax(stgns, data ? data.fields : []);
-  const num = isDomain ? stgns.domain.length : -1;
-  const DEFAULT_COLORS = resources.theme ? resources.theme.palette('sequential', num > 0 ? num : 2) : [];
+  const num = isDomain ? (stgns.domain as unknown[]).length : -1;
+  const DEFAULT_COLORS = resources.theme
+    ? (resources.theme as Record<string, (...args: unknown[]) => unknown>).palette('sequential', num > 0 ? num : 2)
+    : [];
 
   const range = isRange ? stgns.range : DEFAULT_COLORS;
-  fn.range(stgns.invert ? range.slice().reverse() : range.slice());
-  fn.domain(isDomain ? stgns.domain : generateDomain(fn.range(), min, max));
+  fn.range((stgns.invert ? (range as unknown[]).slice().reverse() : (range as unknown[]).slice()) as number[]);
+  fn.domain(isDomain ? (stgns.domain as number[]) : generateDomain((fn.range as () => number[])(), min, max));
 
   return fn;
 }

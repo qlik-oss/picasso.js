@@ -8,6 +8,30 @@ import create from '../index';
 import injectTextBoundsFn from '../../text-manipulation/inject-textbounds';
 import CanvasBuffer from './canvas-buffer';
 
+interface SceneObject {
+  children: unknown[];
+  equals(d: SceneObject | null | undefined): boolean;
+  findShapes(selector: string): unknown[];
+  getItemsFrom(input: unknown): unknown[];
+}
+
+type CanvasMapEntry = [string, string] | [string, string, (v: unknown) => unknown];
+
+type CanvasRendererInstance = Omit<
+  ReturnType<typeof create>,
+  'settings' | 'appendTo' | 'getScene' | 'render' | 'itemsAt' | 'findShapes' | 'size'
+> & {
+  settings: (rendererSettings?: Record<string, unknown>) => Record<string, unknown>;
+  appendTo: (element: Element) => HTMLCanvasElement;
+  getScene: (shapes: unknown[]) => SceneObject;
+  render: (shapes: unknown[]) => boolean;
+  itemsAt: (input: unknown) => unknown[];
+  findShapes: (selector: string) => unknown[];
+  size: (opts?: unknown) => ReturnType<typeof createRendererBox>;
+  // Note: the base create() has a typo 'destory'; we add the correctly-spelled 'destroy' here
+  destroy: () => void;
+};
+
 const reg = registry();
 
 function toLineDash(p) {
@@ -42,30 +66,32 @@ function resolveMatrix(p, g) {
 function applyContext(
   g: CanvasRenderingContext2D,
   s: Record<string, unknown>,
-  shapeToCanvasMap: Record<string, unknown>,
+  shapeToCanvasMap: CanvasMapEntry[],
   computed: Record<string, unknown> = {}
 ) {
   const computedKeys = Object.keys(computed);
+  const attrs = s.attrs as Record<string, unknown>;
+  const gRecord = g as unknown as Record<string, unknown>;
 
   for (let i = 0, len = shapeToCanvasMap.length; i < len; i++) {
-    let cmd = shapeToCanvasMap[i];
+    const cmd = shapeToCanvasMap[i];
     const shapeCmd = cmd[0];
     const canvasCmd = cmd[1];
     const convertCmd = cmd[2];
 
-    if (shapeCmd in s.attrs && !(canvasCmd in computed) && g[canvasCmd] !== s.attrs[shapeCmd]) {
-      const val = convertCmd ? convertCmd(s.attrs[shapeCmd]) : s.attrs[shapeCmd];
-      if (typeof g[canvasCmd] === 'function') {
-        g[canvasCmd](val);
+    if (shapeCmd in attrs && !(canvasCmd in computed) && gRecord[canvasCmd] !== attrs[shapeCmd]) {
+      const val = convertCmd ? convertCmd(attrs[shapeCmd]) : attrs[shapeCmd];
+      if (typeof gRecord[canvasCmd] === 'function') {
+        (gRecord[canvasCmd] as (v: unknown) => void)(val);
       } else {
-        g[canvasCmd] = val;
+        gRecord[canvasCmd] = val;
       }
     }
   }
 
   for (let i = 0, len = computedKeys.length; i < len; i++) {
     const key = computedKeys[i];
-    g[key] = computed[key];
+    gRecord[key] = computed[key];
   }
 }
 
@@ -100,7 +126,7 @@ function renderShapes(shapes, g, shapeToCanvasMap, deps) {
     }
 
     if (reg.has(shape.type)) {
-      reg.get(shape.type)(shape.attrs, {
+      (reg.get(shape.type) as (attrs: unknown, opts: unknown) => void)(shape.attrs, {
         g,
         doFill: 'fill' in shape.attrs && shape.attrs.fill !== 'none',
         doStroke: 'stroke' in shape.attrs && shape.attrs['stroke-width'] !== 0,
@@ -153,7 +179,7 @@ export function renderer(sceneFn = sceneFactory) {
   let scene;
   let hasChangedRect = false;
   let rect = createRendererBox();
-  const shapeToCanvasMap = [
+  const shapeToCanvasMap: CanvasMapEntry[] = [
     ['fill', 'fillStyle'],
     ['stroke', 'strokeStyle'],
     ['opacity', 'globalAlpha'],
@@ -165,8 +191,7 @@ export function renderer(sceneFn = sceneFactory) {
 
   let patterns;
 
-  const canvasRenderer: ReturnType<typeof create> & Record<string, unknown> = create() as ReturnType<typeof create> &
-    Record<string, unknown>;
+  const canvasRenderer = create() as unknown as CanvasRendererInstance;
 
   canvasRenderer.element = () => el;
 
@@ -223,6 +248,7 @@ export function renderer(sceneFn = sceneFactory) {
 
     return sceneFn({
       items: [sceneContainer],
+      stage: undefined,
       dpi: dpiRatio,
       on: {
         create: [onLineBreak(canvasRenderer.measureText), injectTextBoundsFn(canvasRenderer)],
@@ -240,7 +266,7 @@ export function renderer(sceneFn = sceneFactory) {
 
     const g = (buffer && buffer.getContext()) || el.getContext('2d');
     const dpiRatio = dpiScale(g);
-    const transform = buffer && settings.transform();
+    const transform = buffer && typeof settings.transform === 'function' && settings.transform();
     if (transform) {
       // clear canvas
       el.width = el.width; // eslint-disable-line

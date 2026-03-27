@@ -248,7 +248,7 @@ export default function scaleLinear(
    * @return { number }
    */
   fn.start = function start() {
-    return fn.domain()[0];
+    return (fn.domain as () => number[])()[0];
   };
 
   /**
@@ -256,7 +256,8 @@ export default function scaleLinear(
    * @return { number }
    */
   fn.end = function end() {
-    return fn.domain()[this.domain().length - 1];
+    const domain = (fn.domain as () => number[])();
+    return domain[domain.length - 1];
   };
 
   /**
@@ -311,8 +312,8 @@ export default function scaleLinear(
 
   fn.copy = function copy() {
     const cop = scaleLinear(settings, data, resources);
-    cop.domain(fn.domain());
-    cop.range(fn.range());
+    cop.domain((fn.domain as () => number[])());
+    cop.range((fn.range as () => number[])());
     cop.clamp(d3Scale.clamp());
     return cop;
   };
@@ -352,7 +353,7 @@ export default function scaleLinear(
 
   fn.domain([mini, maxi]);
   fn.range(stgns.invert ? [1, 0] : [0, 1]);
-  normScale.invert = stgns.invert;
+  normScale.invert = stgns.invert as boolean;
 
   return fn;
 }

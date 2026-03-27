@@ -409,8 +409,8 @@ function chartFn(definition, context) {
   let currentScrollApis = null; // Build scroll apis
   let currentInteractions = [];
 
-  let dataset = () => {};
-  let dataCollection = () => {};
+  let dataset: (() => void) | ReturnType<typeof datasources> = () => {};
+  let dataCollection: (() => void) | ReturnType<typeof dataCollections> = () => {};
   const brushes = {};
   let stopBrushing = false;
 
@@ -481,7 +481,7 @@ function chartFn(definition, context) {
     }
     const rect = getElementRect(element);
 
-    return componentsC.layout({ layoutSettings, rect });
+    return (componentsC as Record<string, (...args: unknown[]) => unknown>).layout({ layoutSettings, rect });
   };
 
   const created = createCallback('created');
@@ -493,7 +493,7 @@ function chartFn(definition, context) {
   const beforeDestroy = createCallback('beforeDestroy');
   const destroyed = createCallback('destroyed');
 
-  const set = (_data, _settings, { partialData } = {}) => {
+  const set = (_data, _settings, { partialData }: { partialData?: boolean } = {}) => {
     const { formatters = {}, scales = {}, scroll = {} } = _settings;
 
     dataset = datasources(_data, { logger, types: registries.data });
@@ -532,7 +532,7 @@ function chartFn(definition, context) {
 
     set(data, settings);
 
-    componentsC.set({ components });
+    (componentsC as Record<string, (...args: unknown[]) => unknown>).set({ components });
 
     const { visible, hidden, ordered } = layout();
     visibleComponents = visible;
@@ -633,7 +633,11 @@ function chartFn(definition, context) {
 
     const onBrushTap = (e) => {
       const comps = eventInfo.comps || componentsFromPoint(e);
-      if (comps.every((c) => c.instance.def.disableTriggers)) {
+      if (
+        (comps as unknown[]).every(
+          (c: Record<string, unknown>) => (c.instance as Record<string, unknown>).def.disableTriggers
+        )
+      ) {
         return;
       }
 
@@ -644,7 +648,7 @@ function chartFn(definition, context) {
         return;
       }
 
-      for (let i = comps.length - 1; i >= 0; i--) {
+      for (let i = (comps as unknown[]).length - 1; i >= 0; i--) {
         const comp = comps[i];
         comp.instance.onBrushTap(e);
         if (stopBrushing) {
@@ -719,7 +723,7 @@ function chartFn(definition, context) {
     }
     if (newProps.settings) {
       settings = newProps.settings;
-      setInteractions(newProps.settings.interactions);
+      setInteractions((newProps.settings as Record<string, unknown>).interactions);
     }
 
     beforeUpdate();
@@ -728,14 +732,20 @@ function chartFn(definition, context) {
 
     const { formatters, scales, components = [] } = settings;
 
-    componentsC.update({ components, data, excludeFromUpdate, formatters, scales });
+    (componentsC as Record<string, (...args: unknown[]) => unknown>).update({
+      components,
+      data,
+      excludeFromUpdate,
+      formatters,
+      scales,
+    });
 
-    componentsC.forEach((comp) => {
+    (componentsC as Record<string, (...args: unknown[]) => unknown>).forEach((comp) => {
       if (comp.updateWith) {
         comp.instance.set(comp.updateWith);
       }
     });
-    componentsC.forEach((comp) => {
+    (componentsC as Record<string, (...args: unknown[]) => unknown>).forEach((comp) => {
       if (comp.updateWith) {
         comp.instance.beforeUpdate();
       }
@@ -760,7 +770,7 @@ function chartFn(definition, context) {
     }
     if (newProps.settings) {
       settings = newProps.settings;
-      setInteractions(newProps.settings.interactions);
+      setInteractions((newProps.settings as Record<string, unknown>).interactions);
     }
 
     beforeUpdate();
@@ -769,14 +779,20 @@ function chartFn(definition, context) {
 
     const { formatters, scales, components = [] } = settings;
 
-    componentsC.update({ components, data, excludeFromUpdate, formatters, scales });
+    (componentsC as Record<string, (...args: unknown[]) => unknown>).update({
+      components,
+      data,
+      excludeFromUpdate,
+      formatters,
+      scales,
+    });
 
-    componentsC.forEach((comp) => {
+    (componentsC as Record<string, (...args: unknown[]) => unknown>).forEach((comp) => {
       if (comp.updateWith) {
         comp.instance.set(comp.updateWith);
       }
     });
-    componentsC.forEach((comp) => {
+    (componentsC as Record<string, (...args: unknown[]) => unknown>).forEach((comp) => {
       if (comp.updateWith) {
         comp.instance.beforeUpdate();
       }
@@ -786,7 +802,7 @@ function chartFn(definition, context) {
     const toRender = [];
     let toRenderOrUpdate;
     if (partialData) {
-      componentsC.forEach((comp) => {
+      (componentsC as Record<string, (...args: unknown[]) => unknown>).forEach((comp) => {
         if ((comp.updateWith || comp.applyTransform) && comp.visible) {
           toUpdate.push(comp);
         }
@@ -850,7 +866,7 @@ function chartFn(definition, context) {
    */
   instance.destroy = () => {
     beforeDestroy();
-    componentsC.destroy();
+    (componentsC as Record<string, (...args: unknown[]) => unknown>).destroy();
     unmount();
     delete instance.update;
     delete instance.destroy;
@@ -1009,9 +1025,9 @@ function chartFn(definition, context) {
    * @param {string} key - Get the dataset identified by `key`
    * @returns {Dataset}
    */
-  instance.dataset = (key) => dataset(key);
+  instance.dataset = (key) => (dataset as (key: string) => unknown)(key);
 
-  instance.dataCollection = (key) => dataCollection(key);
+  instance.dataCollection = (key) => (dataCollection as (key: string) => unknown)(key);
 
   /**
    * Get all registered scales
@@ -1089,7 +1105,7 @@ function chartFn(definition, context) {
    * @returns {Component} Component context
    */
   instance.component = (key) => {
-    const component = componentsC.findComponentByKey(key);
+    const component = (componentsC as Record<string, (...args: unknown[]) => unknown>).findComponentByKey(key);
     return component?.instance.ctx;
   };
 
@@ -1140,7 +1156,7 @@ function chartFn(definition, context) {
 
   if (element) {
     beforeMount();
-    mount(element);
+    mount();
     mounted(element);
     instance.element = element;
   }

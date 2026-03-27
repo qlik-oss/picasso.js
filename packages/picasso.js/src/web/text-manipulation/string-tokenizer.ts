@@ -5,6 +5,17 @@ export const NO_BREAK = 0;
 export const MANDATORY = 1;
 export const BREAK_ALLOWED = 2;
 
+export interface TokenActive {
+  index: number;
+  value: string;
+  breakOpportunity: number;
+  suppress: boolean;
+  hyphenation: boolean;
+  width: number;
+  height: number;
+  done: false;
+}
+
 export function includesLineBreak(c) {
   if (typeof c === 'string') {
     return c.search(LINEBREAK_REGEX) !== -1;
@@ -54,6 +65,15 @@ export default function stringTokenizer({
   noBreakAllowedIdentifiers = [],
   suppressIdentifier = [includesWhiteSpace, includesLineBreak, (chunk) => chunk === ''],
   hyphenationIdentifiers = [hyphenationAllowed],
+}: {
+  string?: string;
+  separator?: string | RegExp;
+  reverse?: boolean;
+  measureText?: (text: string) => { width: number; height: number };
+  mandatoryBreakIdentifiers?: Array<(chunk: string, i: number, chunks: string[]) => boolean>;
+  noBreakAllowedIdentifiers?: Array<(chunk: string, i: number, chunks: string[]) => boolean>;
+  suppressIdentifier?: Array<(chunk: string, i: number, chunks: string[]) => boolean>;
+  hyphenationIdentifiers?: Array<(chunk: string, i: number, chunks: string[]) => boolean>;
 } = {}) {
   const chunks = String(string).split(separator);
   cleanEmptyChunks(chunks);
@@ -75,11 +95,11 @@ export default function stringTokenizer({
       hyphenation: hyphenationIdentifiers.some((fn) => fn(chunk, i, chunks)),
       width: textMeasure.width,
       height: textMeasure.height,
-      done: false,
+      done: false as const,
     };
   }
 
-  function next(jumpToPosition) {
+  function next(jumpToPosition?: number) {
     if (isNaN(jumpToPosition)) {
       if (reverse) {
         position--;
@@ -93,7 +113,7 @@ export default function stringTokenizer({
     if (isNotDone(position)) {
       return peek(position);
     }
-    return { done: true };
+    return { done: true as const };
   }
 
   return {

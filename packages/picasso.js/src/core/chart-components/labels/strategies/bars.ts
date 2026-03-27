@@ -47,7 +47,7 @@ function isGoodPlacement(orientation, rect, label, fitsHorizontally, overflow) {
     fitWidth = fitsHorizontally || overflow || isTextWidthInRectWidth(rect, label, true);
     fitHeight = isTextHeightInRectHeight(rect, label, !fitsHorizontally);
   } else {
-    fitWidth = isTextWidthInRectWidth(rect, label);
+    fitWidth = isTextWidthInRectWidth(rect, label, false);
     fitHeight = overflow || isTextHeightInRectHeight(rect, label, false);
   }
   return fitWidth && fitHeight;
@@ -90,9 +90,9 @@ export function placeTextInRect(rect, text, opts) {
     label.x = placeSegmentInSegment(rect.x, rect.width, textMetrics.height, opts.align) + baseLineOffset;
     label.y = placeSegmentInSegment(rect.y, rect.height, textMetrics.width, opts.justify);
     if (opts.dock === 'right') {
-      label.transform = `rotate(90, ${label.x + label.dx}, ${label.y + label.dy}) translate(${textMetrics.width}, 0)`;
+      label.transform = `rotate(90, ${(label.x as number) + (label.dx as number)}, ${(label.y as number) + (label.dy as number)}) translate(${textMetrics.width}, 0)`;
     } else {
-      label.transform = `rotate(-90, ${label.x + label.dx}, ${label.y + label.dy})`;
+      label.transform = `rotate(-90, ${(label.x as number) + (label.dx as number)}, ${(label.y as number) + (label.dy as number)})`;
     }
   } else {
     label.x = placeSegmentInSegment(rect.x, rect.width, textMetrics.width, opts.align);
@@ -113,8 +113,14 @@ function limitBounds(bounds, view) {
   bounds.height = maxY - minY;
 }
 
-function pad(bounds: Record<string, number>, measured: Record<string, number>, padding: Record<string, number> = {}) {
-  const { top = PADDING, bottom = PADDING, left = PADDING, right = PADDING } = padding;
+function pad(
+  bounds: Record<string, number>,
+  measured: Record<string, number>,
+  padding: number | Record<string, number | ((m: Record<string, number>) => number)> = {}
+) {
+  const paddingObj: Record<string, number | ((m: Record<string, number>) => number)> =
+    typeof padding === 'number' ? { top: padding, bottom: padding, left: padding, right: padding } : padding;
+  const { top = PADDING, bottom = PADDING, left = PADDING, right = PADDING } = paddingObj;
   const leftPadding = typeof left === 'function' ? left(measured) : left;
   const rightPadding = typeof right === 'function' ? right(measured) : right;
   const topPadding = typeof top === 'function' ? top(measured) : top;
@@ -165,13 +171,23 @@ export function findBestPlacement(
   {
     direction,
     fitsHorizontally,
-    // lblStngs,
+    lblStngs,
     measured,
     node,
     orientation,
-    // placements,
+    placements,
     placementSettings,
     rect,
+  }: {
+    direction: unknown;
+    fitsHorizontally: unknown;
+    lblStngs?: unknown;
+    measured: Record<string, unknown>;
+    node: Record<string, unknown>;
+    orientation: unknown;
+    placements?: unknown;
+    placementSettings: unknown[];
+    rect: Record<string, unknown>;
   },
   barRect = getBarRect
 ) {
@@ -216,18 +232,24 @@ function approxTextBounds(
   textMetrics: Record<string, unknown>,
   rotated: boolean,
   rect: Record<string, unknown>,
-  padding: Record<string, number> = {}
+  padding: number | Record<string, number | ((m: Record<string, number>) => number)> = {}
 ) {
-  const { top = PADDING, bottom = PADDING, left = PADDING, right = PADDING } = padding;
-  const leftPadding = typeof left === 'function' ? left(textMetrics) : left;
-  const rightPadding = typeof right === 'function' ? right(textMetrics) : right;
-  const topPadding = typeof top === 'function' ? top(textMetrics) : top;
-  const bottomPadding = typeof bottom === 'function' ? bottom(textMetrics) : bottom;
-  const x0 = label.x + label.dx;
-  const y0 = label.y + label.dy;
-  const height = rotated ? Math.min(textMetrics.width, rect.height) : Math.min(textMetrics.height, rect.width);
-  const width = rotated ? Math.min(textMetrics.height, rect.height) : Math.min(textMetrics.width, rect.width);
-  const offset = textMetrics.height * 0.5;
+  const paddingObj: Record<string, number | ((m: Record<string, number>) => number)> =
+    typeof padding === 'number' ? { top: padding, bottom: padding, left: padding, right: padding } : padding;
+  const { top = PADDING, bottom = PADDING, left = PADDING, right = PADDING } = paddingObj;
+  const leftPadding = typeof left === 'function' ? left(textMetrics as Record<string, number>) : left;
+  const rightPadding = typeof right === 'function' ? right(textMetrics as Record<string, number>) : right;
+  const topPadding = typeof top === 'function' ? top(textMetrics as Record<string, number>) : top;
+  const bottomPadding = typeof bottom === 'function' ? bottom(textMetrics as Record<string, number>) : bottom;
+  const x0 = (label.x as number) + (label.dx as number);
+  const y0 = (label.y as number) + (label.dy as number);
+  const height = rotated
+    ? Math.min(textMetrics.width as number, rect.height as number)
+    : Math.min(textMetrics.height as number, rect.width as number);
+  const width = rotated
+    ? Math.min(textMetrics.height as number, rect.height as number)
+    : Math.min(textMetrics.width as number, rect.width as number);
+  const offset = (textMetrics.height as number) * 0.5;
   const PADDING_OFFSET = 1e-9; // Needed to support a case when multiple bars are on the same location
   const x = rotated ? x0 - offset : x0;
   const y = rotated ? y0 : y0 - offset;
@@ -241,7 +263,21 @@ function approxTextBounds(
 }
 
 export function placeInBars(
-  { chart, targetNodes, rect, fitsHorizontally, collectiveOrientation },
+  {
+    chart,
+    targetNodes,
+    rect,
+    fitsHorizontally,
+    collectiveOrientation,
+    stngs,
+  }: {
+    chart: Record<string, unknown>;
+    targetNodes: unknown[];
+    rect: Record<string, unknown>;
+    fitsHorizontally: unknown;
+    collectiveOrientation: unknown;
+    stngs?: unknown;
+  },
   findPlacement = findBestPlacement,
   placer = placeTextInRect,
   postFilter = filterOverlapping
@@ -486,7 +522,7 @@ export function bars({ settings, chart, nodes, rect, renderer, style }, placer =
     style.label
   );
 
-  defaults.fontSize = parseInt(defaults.fontSize, 10);
+  defaults.fontSize = parseInt(defaults.fontSize as string, 10);
 
   const labelSettings = settings.labels.map((labelSetting) => extend({}, defaults, settings, labelSetting));
 

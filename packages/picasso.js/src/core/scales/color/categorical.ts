@@ -41,26 +41,41 @@ export default function scaleCategorical(
   const s = ordinal(settings, data, resources);
   const theme = resources.theme;
   const stgns: Record<string, unknown> = resolveSettings(settings, DEFAULT_SETTINGS, { data, resources });
-  stgns.explicit = resolveSettings(settings.explicit, DEFAULT_EXPLICIT_SETTINGS, { data, resources });
+  stgns.explicit = resolveSettings(settings.explicit, DEFAULT_EXPLICIT_SETTINGS, {
+    data,
+    resources,
+  }) as typeof DEFAULT_EXPLICIT_SETTINGS & Record<string, unknown>;
 
-  let range;
-  if (!Array.isArray(stgns.range) || stgns.range.length === 0) {
-    range = theme ? theme.palette('categorical', s.domain().length).slice() : [];
+  let range: unknown[];
+  if (!Array.isArray(stgns.range) || (stgns.range as unknown[]).length === 0) {
+    range = theme
+      ? (
+          (theme as Record<string, (...args: unknown[]) => unknown>).palette(
+            'categorical',
+            (s.domain as () => unknown[])().length
+          ) as unknown[]
+        ).slice()
+      : [];
   } else {
-    range = stgns.range.slice();
+    range = (stgns.range as unknown[]).slice();
   }
 
   if (stgns.unknown) {
-    s.unknown(stgns.unknown);
-  } else if (theme && theme.palette('unknown')) {
-    let un = theme.palette('unknown');
-    s.unknown(un[0]);
+    (s as Record<string, (v: unknown) => void>).unknown(stgns.unknown);
+  } else if (theme && (theme as Record<string, (...args: unknown[]) => unknown>).palette('unknown')) {
+    let un = (theme as Record<string, (...args: unknown[]) => unknown>).palette('unknown') as unknown[];
+    (s as Record<string, (v: unknown) => void>).unknown(un[0]);
   }
 
-  if (Array.isArray(stgns.explicit.domain) && stgns.explicit.domain.length) {
-    const domain = s.domain().slice();
-    const explicitDomain = stgns.explicit.domain;
-    const explicitRange = Array.isArray(stgns.explicit.range) ? stgns.explicit.range : [];
+  if (
+    Array.isArray((stgns.explicit as Record<string, unknown>).domain) &&
+    ((stgns.explicit as Record<string, unknown>).domain as unknown[]).length
+  ) {
+    const domain = (s.domain as () => unknown[])().slice();
+    const explicitDomain = (stgns.explicit as Record<string, unknown>).domain as unknown[];
+    const explicitRange = Array.isArray((stgns.explicit as Record<string, unknown>).range)
+      ? ((stgns.explicit as Record<string, unknown>).range as unknown[])
+      : [];
 
     // duplicate range values to cover entire domain
     const numCopies = Math.floor(domain.length / range.length);
@@ -68,7 +83,7 @@ export default function scaleCategorical(
       range = range.concat(range);
     }
 
-    if (stgns.explicit.override) {
+    if ((stgns.explicit as Record<string, unknown>).override) {
       for (let i = 0; i < explicitDomain.length; i++) {
         const index = domain.indexOf(explicitDomain[i]);
         if (index > -1) {
@@ -77,11 +92,13 @@ export default function scaleCategorical(
       }
     } else {
       // inject explicit colors
-      const order = explicitDomain.map((d, i) => [domain.indexOf(d), d, explicitRange[i]]).sort((a, b) => a[0] - b[0]);
+      const order = explicitDomain
+        .map((d, i) => [domain.indexOf(d), d, explicitRange[i]])
+        .sort((a, b) => (((a as unknown[])[0] as number) - (b as unknown[])[0]) as number);
       order.forEach((v) => {
-        const idx = domain.indexOf(v[1]);
+        const idx = domain.indexOf((v as unknown[])[1]);
         if (idx !== -1) {
-          range.splice(idx, 0, v[2]);
+          range.splice(idx, 0, (v as unknown[])[2]);
         }
       });
     }

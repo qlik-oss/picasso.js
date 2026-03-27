@@ -108,9 +108,10 @@ export default function scaleThresholdColor(
   resources: ScaleResources = {}
 ) {
   const d3Scale = scaleThreshold();
-  const stgns = resolveSettings(settings, DEFAULT_SETTINGS, { data, resources });
-  const isDomain = Array.isArray(stgns.domain) && stgns.domain.length;
-  const isRange = Array.isArray(stgns.range) && stgns.range.length;
+  const stgns = resolveSettings(settings, DEFAULT_SETTINGS, { data, resources }) as typeof DEFAULT_SETTINGS &
+    Record<string, unknown>;
+  const isDomain = Array.isArray(stgns.domain) && (stgns.domain as unknown[]).length;
+  const isRange = Array.isArray(stgns.range) && (stgns.range as unknown[]).length;
 
   /**
    * @alias thresholdColor
@@ -130,32 +131,34 @@ export default function scaleThresholdColor(
   const fields = data.fields;
 
   const [min, max] = minmax(stgns, fields);
-  const num = isDomain ? stgns.domain.length : -1;
-  const DEFAULT_COLORS = resources.theme ? resources.theme.palette('sequential', num > 0 ? num : 2) : [];
+  const num = isDomain ? (stgns.domain as unknown[]).length : -1;
+  const DEFAULT_COLORS = resources.theme
+    ? (resources.theme as Record<string, (...args: unknown[]) => unknown>).palette('sequential', num > 0 ? num : 2)
+    : [];
 
-  let range = isRange ? stgns.range : DEFAULT_COLORS;
-  let domain = [];
+  let range: unknown = isRange ? stgns.range : DEFAULT_COLORS;
+  let domain: unknown[] = [];
 
   if (isDomain) {
-    domain = stgns.domain;
+    domain = stgns.domain as unknown[];
   } else if (stgns.nice) {
-    domain = generateNiceDomain(range, min, max);
+    domain = generateNiceDomain(range as unknown[], min, max);
   } else {
     domain = [min + (max - min) / 2];
   }
 
-  if (range.length > domain.length + 1) {
+  if ((range as unknown[]).length > domain.length + 1) {
     // Generate limits from range
-    domain = generateDomain(range, min, max);
-  } else if (range.length < domain.length + 1) {
+    domain = generateDomain(range as unknown[], min, max);
+  } else if ((range as unknown[]).length < domain.length + 1) {
     // Generate additional colors
-    range = generateRange(domain, range, min, max);
+    range = generateRange(domain as number[], range as string[], min, max);
   }
 
   fn.data = () => data;
 
-  fn.range(stgns.invert ? range.slice().reverse() : range);
-  fn.domain(domain);
+  (fn as typeof d3Scale).range(stgns.invert ? (range as unknown[]).slice().reverse() : (range as unknown[]));
+  (fn as typeof d3Scale).domain(domain as number[]);
 
   return fn;
 }

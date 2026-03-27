@@ -40,7 +40,7 @@ export const DEFAULT_SETTINGS = {
 
 export default function scaleBand(settings: ScaleSettings = {}, data: ScaleData = {}, resources: ScaleResources = {}) {
   const ctx = { data, resources };
-  const stgns = resolveSettings(settings, DEFAULT_SETTINGS, ctx);
+  const stgns = resolveSettings(settings, DEFAULT_SETTINGS, ctx) as typeof DEFAULT_SETTINGS & Record<string, unknown>;
   const items = data.items || [];
   const domainToDataMapping = {};
   const values = [];
@@ -76,7 +76,7 @@ export default function scaleBand(settings: ScaleSettings = {}, data: ScaleData 
      */
     band.ticks = function ticks(input: ScaleSettings = {}) {
       input.scale = band;
-      return generateDiscreteTicks(input, fsettings.trackBy || 'label');
+      return generateDiscreteTicks(input as { scale: typeof band });
     };
   }
   /**

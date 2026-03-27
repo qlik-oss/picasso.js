@@ -214,7 +214,7 @@ export default function scaleHierarchicalBand(
     return hBand;
   };
 
-  hBand.domain(values);
+  (hBand as typeof bandInstance).domain(values);
 
   return hBand;
 }

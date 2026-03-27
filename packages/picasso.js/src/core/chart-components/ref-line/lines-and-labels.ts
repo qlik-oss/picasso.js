@@ -154,10 +154,10 @@ export function alignmentToNumber(align) {
  */
 export function createLineWithLabel({ chart, blueprint, renderer, p, settings, items, slopeLine }) {
   let doesNotCollide = true;
-  let line = false;
-  let rect = false;
-  let label = false;
-  let value = false;
+  let line: false | Record<string, unknown> = false;
+  let rect: false | Record<string, unknown> | undefined = false;
+  let label: false | Record<string, unknown> = false;
+  let value: false | Record<string, unknown> = false;
   let style = extend(true, {}, settings.style.line, p.line || {});
   let slopeStyle = extend(true, refLabelDefaultSettings(), settings.style.label || {}, { fill: style.stroke });
 
@@ -242,15 +242,19 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
     let align = alignmentToNumber(p.flipXY ? item.vAlign : item.align);
     let vAlign = alignmentToNumber(p.flipXY ? item.align : item.vAlign);
 
-    let calcWidth = Math.min(1 + measured.width + labelPadding * 2, item.maxWidth * blueprint.width, item.maxWidthPx);
-    let calcHeight = measured.height + labelPadding * 2;
+    let calcWidth = Math.min(
+      1 + (measured.width as number) + (labelPadding as number) * 2,
+      (item.maxWidth as number) * blueprint.width,
+      item.maxWidthPx as number
+    );
+    let calcHeight = (measured.height as number) + (labelPadding as number) * 2;
 
     let rectWidth = p.flipXY ? calcHeight : calcWidth;
     let rectHeight = p.flipXY ? calcWidth : calcHeight;
 
     rect = blueprint.processItem({
       fn: ({ width, height }) => {
-        let x = p.position * width - (p.flipXY ? calcHeight : calcWidth) * (1 - align);
+        let x = (p.position as number) * width - (p.flipXY ? calcHeight : calcWidth) * (1 - align);
         x = p.flipXY ? x : Math.max(x, 0);
         const y = Math.max(Math.abs(vAlign * height - rectHeight * vAlign), 0);
         return {
@@ -259,24 +263,26 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
           y,
           width: p.flipXY ? rectWidth : Math.min(rectWidth, blueprint.width - x),
           height: rectHeight,
-          stroke: item.background.stroke,
-          strokeWidth: item.background.strokeWidth,
-          fill: item.background.fill,
-          opacity: item.background.opacity,
+          stroke: (item.background as Record<string, unknown>).stroke,
+          strokeWidth: (item.background as Record<string, unknown>).strokeWidth,
+          fill: (item.background as Record<string, unknown>).fill,
+          opacity: (item.background as Record<string, unknown>).opacity,
         };
       },
       flipXY: p.flipXY || false, // This flips individual points (Y-lines)
     });
 
     if (
-      rect.x < -1 ||
-      rect.x + rect.width > blueprint.width + 1 ||
-      rect.y < -1 ||
-      rect.y + rect.height > blueprint.height + 1
+      rect !== false &&
+      ((rect as Record<string, number>).x < -1 ||
+        (rect as Record<string, number>).x + (rect as Record<string, number>).width > blueprint.width + 1 ||
+        (rect as Record<string, number>).y < -1 ||
+        (rect as Record<string, number>).y + (rect as Record<string, number>).height > blueprint.height + 1)
     ) {
       // do not create labels if out of bounds
       rect = undefined;
-    } else {
+    } else if (rect !== false) {
+      const rectObj = rect as Record<string, number>;
       // Labels are just basic objects attached to a corner of a rect,
       // and this rect needs to already be processed
       // so there is no blueprint.processItem required here
@@ -287,9 +293,9 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
         opacity: item.opacity,
         fontFamily: item.fontFamily,
         fontSize: item.fontSize,
-        x: rect.x + labelPadding,
-        y: rect.y + rect.height / 2 + measured.height / 3,
-        maxWidth: rect.width - labelPadding * 2 - measuredValue.width,
+        x: rectObj.x + (labelPadding as number),
+        y: rectObj.y + rectObj.height / 2 + (measured.height as number) / 3,
+        maxWidth: rectObj.width - (labelPadding as number) * 2 - (measuredValue.width as number),
         anchor: 'start',
       };
 
@@ -301,8 +307,11 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
           opacity: item.opacity,
           fontFamily: item.fontFamily,
           fontSize: item.fontSize,
-          x: label.x + 3 + (rect.width - (measuredValue.width + labelPadding * 2)),
-          y: label.y,
+          x:
+            (label as Record<string, number>).x +
+            3 +
+            (rectObj.width - ((measuredValue.width as number) + (labelPadding as number) * 2)),
+          y: (label as Record<string, number>).y,
         };
       }
 
@@ -360,9 +369,10 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
         ? getMaxXPosition(chart, slopeLine.slope, slopeLine.value)
         : undefined;
       const xPadding = maxX !== undefined && !slopeLine.isRtl ? slopeStyle.padding * 3 : slopeStyle.padding;
-      const yPadding = maxX !== undefined || slopeLine.slope > 0 ? slopeStyle.padding * 3 : slopeStyle.padding;
+      const yPadding =
+        maxX !== undefined || (slopeLine.slope as number) > 0 ? (slopeStyle.padding as number) * 3 : slopeStyle.padding;
       const x = calculateX(slopeLine, line, maxX, measured, blueprint, slopeStyle);
-      const y = Math.min(line.y1, line.y2);
+      const y = Math.min((line as Record<string, number>).y1, (line as Record<string, number>).y2);
       // if coloredBackground is true make a rect
       if (slopeLine.label?.stroke) {
         labelBackground = {

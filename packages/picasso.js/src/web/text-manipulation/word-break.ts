@@ -1,4 +1,4 @@
-import stringTokenizer, { MANDATORY, BREAK_ALLOWED } from './string-tokenizer';
+import stringTokenizer, { MANDATORY, BREAK_ALLOWED, TokenActive } from './string-tokenizer';
 import { HYPHENS_CHAR } from './text-const';
 import { fontSizeToLineHeight } from './font-size-to-height';
 
@@ -77,19 +77,23 @@ function breakSequence(state, token, measureText) {
   });
 
   while (state.lines.length < state.maxLines) {
-    let charToken = charTokenIterator.next();
+    const charToken = charTokenIterator.next();
     if (charToken.done) {
       break;
-    } else if (
-      state.width + charToken.width > state.maxWidth &&
-      charToken.breakOpportunity === BREAK_ALLOWED &&
+    }
+    const activeToken = charToken as TokenActive;
+    if (
+      state.width + activeToken.width > state.maxWidth &&
+      activeToken.breakOpportunity === BREAK_ALLOWED &&
       state.line.length > 0
     ) {
-      charToken = state.hyphens.enabled ? insertHyphenAndJump(state, charToken, charTokenIterator) : charToken;
+      const resolvedToken = state.hyphens.enabled
+        ? insertHyphenAndJump(state, activeToken, charTokenIterator)
+        : activeToken;
       newLine(state);
-      appendToLine(state, charToken);
+      appendToLine(state, resolvedToken);
     } else {
-      appendToLine(state, charToken);
+      appendToLine(state, activeToken);
     }
   }
 }
@@ -106,25 +110,27 @@ export function breakAll(node, measureText) {
   let reduced = true;
 
   while (state.lines.length < state.maxLines) {
-    let token = iterator.next();
+    const token = iterator.next();
 
     if (token.done) {
       newLine(state);
       reduced = false;
       break;
-    } else if (token.breakOpportunity === MANDATORY) {
+    }
+    const activeToken = token as TokenActive;
+    if (activeToken.breakOpportunity === MANDATORY) {
       newLine(state);
-    } else if (state.width + token.width > state.maxWidth && token.breakOpportunity === BREAK_ALLOWED) {
-      if (token.suppress) {
+    } else if (state.width + activeToken.width > state.maxWidth && activeToken.breakOpportunity === BREAK_ALLOWED) {
+      if (activeToken.suppress) {
         // Token is suppressable and can be ignored
-        state.width += token.width;
+        state.width += activeToken.width;
       } else {
-        token = state.hyphens.enabled ? insertHyphenAndJump(state, token, iterator) : token;
+        const resolvedToken = state.hyphens.enabled ? insertHyphenAndJump(state, activeToken, iterator) : activeToken;
         newLine(state);
-        appendToLine(state, token);
+        appendToLine(state, resolvedToken);
       }
     } else {
-      appendToLine(state, token);
+      appendToLine(state, activeToken);
     }
   }
 
@@ -145,27 +151,29 @@ export function breakWord(node, measureText) {
   let reduced = true;
 
   while (state.lines.length < state.maxLines) {
-    let token = iterator.next();
+    const token = iterator.next();
 
     if (token.done) {
       newLine(state);
       reduced = false;
       break;
-    } else if (token.breakOpportunity === MANDATORY) {
+    }
+    const activeToken = token as TokenActive;
+    if (activeToken.breakOpportunity === MANDATORY) {
       newLine(state);
-    } else if (state.width + token.width > state.maxWidth && token.breakOpportunity === BREAK_ALLOWED) {
-      if (token.suppress) {
+    } else if (state.width + activeToken.width > state.maxWidth && activeToken.breakOpportunity === BREAK_ALLOWED) {
+      if (activeToken.suppress) {
         // Token is suppressable and can be ignored
         newLine(state);
-      } else if (token.width > state.maxWidth) {
+      } else if (activeToken.width > state.maxWidth) {
         // Single sequence is wider then maxWidth, break sequence into multiple lines
-        breakSequence(state, token, measureText);
+        breakSequence(state, activeToken, measureText);
       } else {
         newLine(state);
-        appendToLine(state, token);
+        appendToLine(state, activeToken);
       }
     } else {
-      appendToLine(state, token);
+      appendToLine(state, activeToken);
     }
   }
 
