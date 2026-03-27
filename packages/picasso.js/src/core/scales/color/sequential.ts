@@ -1,4 +1,4 @@
-import type { ScaleSettings, ScaleData, ScaleResources } from '../../types';
+import type { ScaleSettings, ScaleData, ScaleResources } from '../../../types';
 import { interpolateRgb } from 'd3-interpolate';
 import extend from 'extend';
 import minmax from '../../utils/min-max';

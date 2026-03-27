@@ -1,4 +1,4 @@
-import type { ScaleSettings, ScaleData, ScaleResources } from '../../types';
+import type { ScaleSettings, ScaleData, ScaleResources } from '../../../types';
 import ordinal from '../ordinal';
 import resolveSettings from '../settings-resolver';
 

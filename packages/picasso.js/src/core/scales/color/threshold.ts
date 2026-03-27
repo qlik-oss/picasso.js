@@ -1,4 +1,4 @@
-import type { ScaleSettings, ScaleData, ScaleResources } from '../../types';
+import type { ScaleSettings, ScaleData, ScaleResources } from '../../../types';
 import { scaleThreshold, scaleLinear } from 'd3-scale';
 import { notNumber } from '../../utils/is-number';
 import minmax from '../../utils/min-max';

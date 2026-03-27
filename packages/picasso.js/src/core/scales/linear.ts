@@ -4,7 +4,7 @@ import extend from 'extend';
 import { notNumber } from '../utils/is-number';
 import { generateContinuousTicks } from './ticks/tick-generators';
 import resolveSettings from './settings-resolver';
-import type { ScaleSettings, ScaleData, ScaleResources } from '../types';
+import type { ScaleSettings, ScaleData, ScaleResources } from '../../types';
 
 export const DEFAULT_SETTINGS = {
   min: NaN,

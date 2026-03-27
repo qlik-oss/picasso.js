@@ -1,29 +1,22 @@
 {
+  "extends": "@qlik/tsconfig/recommended",
   "compilerOptions": {
-    /* Language and Environment */
-    "target": "es2016",
+    /* JSX with preact (uses h factory, not React.createElement) */
     "jsx": "react",
     "jsxFactory": "h",
 
-    /* Modules */
-    "module": "esnext",
+    /* Module resolution - use node for compatibility with existing imports */
     "moduleResolution": "node",
 
-    /* JavaScript Support */
-    "allowJs": false,
-    "checkJs": false,
-
-    /* Emit */
-    "noEmit": true,
-
-    /* Interop Constraints */
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-
-    /* Type Checking - lenient settings for migration */
+    /* Incremental migration overrides - to be tightened over time */
     "strict": false,
     "noImplicitAny": false,
-    "skipLibCheck": true
+    "strictNullChecks": false,
+    "noImplicitReturns": false,
+    "verbatimModuleSyntax": false,
+
+    /* Keep allowJs off - all source files are now .ts */
+    "allowJs": false
   },
   "include": ["packages/picasso.js/src/**/*.ts", "packages/picasso.js/src/**/*.tsx", "plugins/*/src/**/*.ts"],
   "exclude": ["**/node_modules", "**/dist", "**/__tests__", "**/*.spec.ts"]

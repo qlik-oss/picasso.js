@@ -1,4 +1,4 @@
-import type { LogLevel, LoggerOptions, Logger } from '../types';
+import type { LogLevel, LoggerOptions, Logger } from '../../types';
 
 const LOG_LEVEL: Record<string, LogLevel> = {
   OFF: 0,

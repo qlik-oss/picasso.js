@@ -4,7 +4,7 @@ import EventEmitter from '../utils/event-emitter';
 
 import rangeCollection from './range-collection';
 import valueCollection from './value-collection';
-import type { BrushConfig, BrushItem, BrushRangeItem } from '../types';
+import type { BrushConfig, BrushItem, BrushRangeItem } from '../../types';
 
 /**
  * @typedef {object} BrushConfig
@@ -343,17 +343,33 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
     },
   };
 
+  /** Info object returned by brushes() */
+  interface BrushInfo {
+    type: 'range' | 'value';
+    id: string;
+    brush: {
+      values(): Array<string | number>;
+      ranges(): Array<{ min: number; max: number }>;
+    };
+  }
+
+  /** Internal state shape for _state() */
+  interface BrushState {
+    values?: Record<string, Array<string | number>>;
+    ranges?: Record<string, Array<{ min: number; max: number }>>;
+  }
+
   /** Brush instance interface */
   interface BrushInstance {
     (): void;
     configure(config: BrushConfig): void;
     link(target: BrushInstance): void;
-    _state(s?: unknown): unknown;
+    _state(s?: BrushState): BrushState;
     start(...args: unknown[]): void;
     end(...args: unknown[]): void;
     isActive(): boolean;
     clear(): void;
-    brushes(): Record<string, unknown>;
+    brushes(): BrushInfo[];
     addValue(key: string, value: string | number): void;
     addValues(items: BrushItem[]): void;
     setValues(items: BrushItem[]): void;
@@ -368,6 +384,8 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
     removeRanges(items: BrushRangeItem[]): void;
     setRange(key: string, range: { min: number; max: number }): void;
     setRanges(items: BrushRangeItem[]): void;
+    toggleRange(key: string, range: { min: number; max: number }): void;
+    toggleRanges(items: BrushRangeItem[]): void;
     containsRange(key: string, range: { min: number; max: number }): boolean;
     containsRangeValue(key: string, value: number): boolean;
     addAndRemoveValues(addItems: BrushItem[], removeItems: BrushItem[]): void;

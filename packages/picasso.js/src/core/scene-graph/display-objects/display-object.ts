@@ -8,7 +8,7 @@ import nodeSelector from '../node-selector';
 import createSceneNode from '../scene-node';
 import { resolveCollionsOnNode, hasCollisionOnNode } from '../collision-resolver';
 import { assignMappedAttribute } from '../attributes';
-import type { Rect, Point } from '../../types';
+import type { Rect, Point } from '../../../types';
 
 /** Collider configuration */
 interface ColliderConfig {

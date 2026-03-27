@@ -1,4 +1,4 @@
-import type { Point, Line as GeoLineType } from '../types';
+import type { Point, Line as GeoLineType } from '../../types';
 import { pointsToLine, pointsToRect } from './util';
 import {
   testCircleLine,

@@ -1,4 +1,4 @@
-import type { BrushRangeConfig } from '../types';
+import type { BrushRangeConfig } from '../../types';
 
 function lessThanOrEqual(value, limit) {
   return value <= limit;
@@ -8,7 +8,7 @@ function lessThan(value, limit) {
   return value < limit;
 }
 
-function index(boundaries, point, after) {
+function index(boundaries: number[], point: number, after?: boolean): number {
   let i = 0;
   while (i < boundaries.length && point > boundaries[i]) {
     ++i;
@@ -19,7 +19,12 @@ function index(boundaries, point, after) {
   return i;
 }
 
-function contains(boundaries, point, minCondition, maxCondition) {
+function contains(
+  boundaries: number[],
+  point: number,
+  minCondition: ((value: number, limit: number) => boolean) | undefined,
+  maxCondition: ((value: number, limit: number) => boolean) | undefined
+): boolean {
   const len = boundaries.length;
 
   for (let i = 1; i < len; i += 2) {

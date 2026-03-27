@@ -82,11 +82,13 @@ export interface BrushItem {
   values?: Array<string | number>;
 }
 
-/** A brush range item */
+/** A brush range item (used in addRanges, removeRanges, setRanges, toggleRanges) */
 export interface BrushRangeItem {
   key: string;
-  min: number;
-  max: number;
+  /** Single range object */
+  range?: { min: number; max: number };
+  /** Multiple ranges */
+  ranges?: Array<{ min: number; max: number }>;
 }
 
 /** Scale ratio */

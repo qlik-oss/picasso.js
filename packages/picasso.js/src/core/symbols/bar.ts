@@ -1,7 +1,7 @@
 import { rotate } from '../math/vector';
 import { pointsToRect } from '../geometry/util';
 import { toRadians } from '../math/angles';
-import type { Rect } from '../types';
+import type { Rect } from '../../types';
 
 /**
  * @private

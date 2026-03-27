@@ -1,4 +1,4 @@
-import type { RegistryFn, Logger } from '../types';
+import type { RegistryFn, Logger } from '../../types';
 
 interface ParentRegistry {
   get(key: string): unknown;

@@ -1,7 +1,7 @@
 import { scaleOrdinal } from 'd3-scale';
 import extend from 'extend';
 import resolveSettings from './settings-resolver';
-import type { ScaleSettings, ScaleData, ScaleResources } from '../types';
+import type { ScaleSettings, ScaleData, ScaleResources } from '../../types';
 
 const DEFAULT_SETTINGS = {
   domain: [],

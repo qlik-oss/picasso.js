@@ -1,4 +1,4 @@
-import type { DisplayNodeSettings } from '../../types';
+import type { DisplayNodeSettings } from '../../../types';
 import extend from 'extend';
 import DisplayObject from './display-object';
 import NodeContainer from '../node-container';

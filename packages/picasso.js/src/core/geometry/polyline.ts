@@ -1,4 +1,4 @@
-import type { Point, Line } from '../types';
+import type { Point, Line } from '../../types';
 import { pointsToLine, pointsToRect } from './util';
 import {
   testCircleLine,

@@ -1,5 +1,5 @@
 import extend from 'extend';
-import type { DisplayNodeSettings } from '../../types';
+import type { DisplayNodeSettings } from '../../../types';
 import {
   arc,
   area,
