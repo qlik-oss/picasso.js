@@ -6,7 +6,7 @@
     "jsxFactory": "h",
 
     /* Module resolution - use node for compatibility with existing imports */
-    "moduleResolution": "node",
+    "moduleResolution": "node10",
 
     /* Incremental migration overrides - to be tightened over time */
     "strict": false,
