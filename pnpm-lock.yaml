@@ -53,6 +53,9 @@ importers:
       '@types/sinon':
         specifier: ^17.0.4
         version: 17.0.4
+      '@typescript-eslint/parser':
+        specifier: ^8.57.2
+        version: 8.57.2(eslint@10.1.0(jiti@2.6.1))(typescript@6.0.2)
       babel-plugin-istanbul:
         specifier: 7.0.1
         version: 7.0.1

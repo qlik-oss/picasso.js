@@ -43,6 +43,7 @@
     "@types/chai": "^4.3.20",
     "@types/jest": "^29.5.14",
     "@types/sinon": "^17.0.4",
+    "@typescript-eslint/parser": "^8.57.2",
     "babel-plugin-istanbul": "7.0.1",
     "chai": "6.2.2",
     "chai-subset": "1.6.0",
