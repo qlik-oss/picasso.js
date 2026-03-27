@@ -1,19 +1,4 @@
 {
-  "extends": "@qlik/tsconfig/recommended",
-  "compilerOptions": {
-    /* JSX with preact (uses h factory, not React.createElement) */
-    "jsx": "react",
-    "jsxFactory": "h",
-
-    /* Incremental migration overrides - to be tightened over time */
-    "strict": false,
-    "noImplicitAny": false,
-    "strictNullChecks": false,
-    "noImplicitReturns": false,
-    "verbatimModuleSyntax": false,
-
-    /* Keep allowJs off - all source files are now .ts */
-    "allowJs": false
-  },
-  "references": [{ "path": "./packages/picasso.js" }, { "path": "./plugins/q" }, { "path": "./plugins/hammer" }]
+  "references": [{ "path": "./packages/picasso.js" }, { "path": "./plugins/q" }, { "path": "./plugins/hammer" }],
+  "files": []
 }

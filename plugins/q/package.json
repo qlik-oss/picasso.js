@@ -17,7 +17,8 @@
     "build": "rollup --config ../../rollup.config.js",
     "build:watch": "pnpm run build -w",
     "lint": "eslint src",
-    "prepublishOnly": "rm -rf dist && npm run build"
+    "prepublishOnly": "rm -rf dist && npm run build",
+    "types:check": "tsc --noEmit"
   },
   "devDependencies": {
     "d3-hierarchy": "3.1.2",
