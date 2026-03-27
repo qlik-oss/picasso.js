@@ -7,6 +7,70 @@ import settingsResolver from './settings-resolver';
 import { styler as brushStyler, resolveTapEvent, resolveOverEvent, brushFromSceneNodes } from './brushing';
 import createSymbolFactory from '../symbols';
 import createDockConfig from '../layout/dock/config';
+import type { RegistryFn } from '../utils/registry';
+
+interface DatasetSource {
+  hierarchy?: (config: unknown) => { hierarchy?: (c: unknown) => unknown; fields(): unknown[] } | null;
+  fields(): unknown[];
+  extract(config: unknown): unknown[];
+  field(key: string): { value?: (v: unknown) => unknown; label?: (v: unknown) => string; items(): unknown[] } | null;
+}
+
+interface ChartContext {
+  logger: () => { warn: (...args: unknown[]) => void };
+  dataset?: (key?: string) => DatasetSource | null;
+  dataCollection?: (key: string) => Record<string, unknown>;
+  scale?: (key: string) => unknown;
+  formatter?: (key: string | Record<string, unknown>) => unknown;
+  storage?: unknown;
+  brush?: (key: string) => unknown;
+  toggleBrushing?: (value: boolean) => void;
+}
+
+interface RegistriesContext {
+  renderer: (key?: string) => () => unknown;
+  symbol?: RegistryFn;
+}
+
+interface ThemeContext {
+  style: (config: Record<string, unknown>) => unknown;
+}
+
+interface RendererContext {
+  settings?: (s: unknown) => void;
+  element?: () => unknown;
+  size?: (s: unknown) => unknown;
+  renderArgs?: unknown[];
+  render?: (n?: unknown) => void;
+  clear?: () => void;
+  destroy?: () => void;
+  setKey?: (k: string) => void;
+  appendTo?: (c: unknown) => unknown;
+  findShapes?: (s: string) => unknown[];
+  itemsAt?: (s: unknown) => { node: unknown }[];
+}
+
+interface ComponentFactoryContext {
+  chart?: ChartContext;
+  container?: unknown;
+  mediator?: unknown;
+  registries?: RegistriesContext;
+  theme?: ThemeContext;
+  renderer?: unknown;
+  settings?: unknown;
+}
+
+interface ExtractedData {
+  items?: unknown[];
+  fields?: unknown[];
+  source?: unknown;
+  value?: unknown;
+  label?: unknown;
+  children?: unknown;
+  root?: unknown;
+  graph?: unknown;
+  [key: string]: unknown;
+}
 
 const isReservedProperty = (prop) =>
   [
@@ -161,7 +225,14 @@ function createDockDefinition(settings, preferredSize, logger) {
     return settings.layout ? settings.layout[propName] : undefined;
   };
 
-  const def: { displayOrder?: unknown; dock?: unknown; prioOrder?: unknown; minimumLayoutMode?: unknown } = {};
+  const def: {
+    displayOrder?: unknown;
+    dock?: unknown;
+    prioOrder?: unknown;
+    minimumLayoutMode?: unknown;
+    show?: unknown;
+    preferredSize?: unknown;
+  } = {};
   def.displayOrder = getLayoutProperty('displayOrder');
   def.dock = getLayoutProperty('dock');
   def.prioOrder = getLayoutProperty('prioOrder');
@@ -212,7 +283,7 @@ function tearDownEmitter(ctx, emitter) {
 // beforeUpdate -> beforeRender -> render -> updated
 
 // TODO support es6 classes
-function componentFactory(definition, context: Record<string, unknown> = {}) {
+function componentFactory(definition, context: ComponentFactoryContext = {}) {
   const { defaultSettings = {}, _DO_NOT_USE_getInfo = () => ({}) } = definition;
   const {
     chart,
@@ -225,7 +296,7 @@ function componentFactory(definition, context: Record<string, unknown> = {}) {
   const emitter = EventEmitter.mixin({});
   let config = context.settings || {};
   let settings = extend(true, {}, defaultSettings, config);
-  let data = [];
+  let data: ExtractedData | unknown[] = [];
   let scale;
   let formatter;
   let element;
@@ -282,7 +353,7 @@ function componentFactory(definition, context: Record<string, unknown> = {}) {
   }
 
   const preferredSize = createCallback('preferredSize', () => 0, true);
-  const resize = createCallback('resize', ({ inner }) => inner);
+  const resize = createCallback('resize', (({ inner }: { inner: unknown }) => inner) as () => void);
   const created = createCallback('created');
   const beforeMount = createCallback('beforeMount');
   const mounted = createCallback('mounted');
@@ -321,21 +392,23 @@ function componentFactory(definition, context: Record<string, unknown> = {}) {
   });
 
   const rendString = settings.renderer || definition.renderer;
-  const rend = rendString ? renderer || registries.renderer(rendString)() : renderer || registries.renderer()();
+  const rend: RendererContext = rendString
+    ? (renderer as RendererContext) || (registries?.renderer(rendString) as () => RendererContext)()
+    : (renderer as RendererContext) || (registries?.renderer() as () => RendererContext)();
   if (typeof rend.settings === 'function') {
     rend.settings(settings.rendererSettings);
   }
   brushArgs.renderer = rend;
 
-  const dockConfigCallbackContext = { resources: chart.logger ? { logger: chart.logger() } : {} };
+  const dockConfigCallbackContext = { resources: chart?.logger ? { logger: chart.logger() } : {} };
   let dockConfig = createDockConfig(
-    createDockDefinition(settings, preferredSize, chart.logger()),
+    createDockDefinition(settings, preferredSize, chart?.logger()),
     dockConfigCallbackContext
   );
 
-  const appendComponentMeta = (node) => {
+  const appendComponentMeta = (node: Record<string, unknown>) => {
     node.key = settings.key;
-    node.element = rend.element();
+    node.element = rend.element?.();
   };
 
   const fn = () => {};
@@ -348,14 +421,14 @@ function componentFactory(definition, context: Record<string, unknown> = {}) {
       config = opts.settings;
       settings = extend(true, {}, defaultSettings, opts.settings);
       dockConfig = createDockConfig(
-        createDockDefinition(settings, preferredSize, chart.logger()),
+        createDockDefinition(settings, preferredSize, chart?.logger()),
         dockConfigCallbackContext
       );
       brushArgs.config = settings.brush || {};
     }
 
     if (settings.scale) {
-      scale = chart.scale(settings.scale);
+      scale = chart?.scale(settings.scale);
     }
 
     if (settings.data) {
@@ -363,35 +436,38 @@ function componentFactory(definition, context: Record<string, unknown> = {}) {
       const progressive = typeof rendererSettings?.progressive === 'function' && rendererSettings.progressive();
       const extracted = extractData(
         settings.data,
-        { dataset: chart.dataset, collection: chart.dataCollection },
-        { logger: chart.logger() },
-        chart.dataCollection
-      );
+        { dataset: chart?.dataset, collection: chart?.dataCollection },
+        { logger: chart?.logger() }
+      ) as ExtractedData;
       if (!progressive) {
         data = extracted;
       } else if (progressive.isFirst) {
         data = extracted;
-        if (data.items) {
-          data.items = [...extracted.items];
+        if ((data as ExtractedData).items && extracted.items) {
+          (data as ExtractedData).items = [...extracted.items];
         }
-      } else if (data.items) {
-        data.items = [...data.items, ...(extracted.items || [])];
+      } else if ((data as ExtractedData).items) {
+        (data as ExtractedData).items = [...(data as ExtractedData).items!, ...(extracted.items || [])];
       }
     } else if (scale) {
-      data = scale.data();
+      data = (scale as { data: () => ExtractedData | unknown[] }).data();
     } else {
       data = [];
     }
 
     if (typeof settings.formatter === 'string') {
-      formatter = chart.formatter(settings.formatter);
+      formatter = chart?.formatter(settings.formatter);
     } else if (typeof settings.formatter === 'object') {
-      formatter = chart.formatter(settings.formatter);
-    } else if (scale && scale.data().fields) {
-      formatter = scale.data().fields[0].formatter();
+      formatter = chart?.formatter(settings.formatter);
+    } else if (scale && (scale as Record<string, () => { fields?: unknown[] }>).data().fields) {
+      formatter = (
+        (scale as Record<string, () => { fields?: { formatter: () => unknown }[] }>).data().fields![0] as {
+          formatter: () => unknown;
+        }
+      ).formatter();
     }
 
-    style = theme.style(settings.style || {});
+    style = theme?.style(settings.style || {});
   };
 
   fn.resize = (inner: Record<string, unknown> = {}, outer: Record<string, unknown> = {}) => {
@@ -400,9 +476,9 @@ function componentFactory(definition, context: Record<string, unknown> = {}) {
       outer,
     });
     if (newSize) {
-      size = rend.size(newSize);
+      size = rend.size?.(newSize);
     } else {
-      size = rend.size(inner);
+      size = rend.size?.(inner);
     }
     instanceContext.rect = extend(
       true,
@@ -426,14 +502,16 @@ function componentFactory(definition, context: Record<string, unknown> = {}) {
   fn.getRect = () => instanceContext.rect;
 
   const getRenderArgs = () => {
-    const renderArgs = rend.renderArgs ? rend.renderArgs.slice(0) : [];
+    const renderArgs = (rend as Record<string, unknown>).renderArgs
+      ? ((rend as Record<string, unknown>).renderArgs as unknown[]).slice(0)
+      : [];
     const { rendererSettings } = settings;
     let d = data;
     const progressive = typeof rendererSettings?.progressive === 'function' && rendererSettings.progressive();
-    if (data.items && progressive) {
+    if ((data as ExtractedData).items && progressive) {
       d = {
         ...data,
-        items: data.items.slice(progressive.start, progressive.end),
+        items: ((data as ExtractedData).items as unknown[]).slice(progressive.start, progressive.end),
       };
     }
     renderArgs.push({
@@ -468,20 +546,20 @@ function componentFactory(definition, context: Record<string, unknown> = {}) {
   fn.render = () => {
     const nodes = render.call(definitionContext, ...getRenderArgs());
     updateBrushNodes(nodes);
-    rend.render(nodes);
+    rend.render?.(nodes);
     currentNodes = nodes;
     preComputedRect = instanceContext.rect.computed;
   };
 
   fn.hide = () => {
     fn.unmount();
-    rend.size({
+    rend.size?.({
       x: 0,
       y: 0,
       width: 0,
       height: 0,
     });
-    rend.clear();
+    rend.clear?.();
   };
 
   fn.beforeUpdate = () => {
@@ -494,13 +572,13 @@ function componentFactory(definition, context: Record<string, unknown> = {}) {
   let currentTween;
   fn.update = () => {
     if (currentTween) {
-      currentTween.stop();
+      (currentTween as { stop: () => void }).stop();
     }
 
     const { rendererSettings, brush, animations } = settings;
 
     if (typeof rendererSettings?.transform === 'function' && rendererSettings.transform()) {
-      rend.render();
+      rend.render?.();
       currentNodes = null;
       return;
     }
@@ -547,17 +625,17 @@ function componentFactory(definition, context: Record<string, unknown> = {}) {
         },
         { renderer: rend },
         animations,
-        chart.storage
+        chart?.storage
       );
       currentTween.start();
     } else {
-      rend.render(nodes);
+      rend.render?.(nodes);
     }
     currentNodes = nodes;
     preComputedRect = instanceContext.rect.computed;
 
-    if (rend.setKey && typeof config.key === 'string') {
-      rend.setKey(config.key);
+    if (rend.setKey && typeof (config as Record<string, unknown>).key === 'string') {
+      rend.setKey((config as Record<string, unknown>).key as string);
     }
   };
 
@@ -566,7 +644,7 @@ function componentFactory(definition, context: Record<string, unknown> = {}) {
   fn.destroy = () => {
     fn.unmount();
     beforeDestroy(element);
-    rend.destroy();
+    rend.destroy?.();
     destroyed();
     element = null;
   };
@@ -585,7 +663,7 @@ function componentFactory(definition, context: Record<string, unknown> = {}) {
         bs.update();
       }
     });
-    rend.render(nodes);
+    rend.render?.(nodes);
   };
 
   // Set contexts, note that the definition and instance need different contexts (for example if they have different 'require' props)
@@ -604,7 +682,7 @@ function componentFactory(definition, context: Record<string, unknown> = {}) {
     update: () => updateNodes,
     registries: () => registries,
     resolver: () => resolver,
-    symbol: () => createSymbolFactory(registries.symbol),
+    symbol: () => createSymbolFactory(registries?.symbol),
   });
 
   /**
@@ -630,13 +708,13 @@ function componentFactory(definition, context: Record<string, unknown> = {}) {
   fn.getBrushedShapes = function getBrushedShapes(brushCtx, mode, props) {
     const shapes = [];
     if (settings.brush && settings.brush.consume) {
-      const brusher = chart.brush(brushCtx);
-      const sceneNodes = rend.findShapes('*');
+      const brusher = chart?.brush(brushCtx) as Record<string, (d: unknown, p: unknown, m: unknown) => boolean>;
+      const sceneNodes = (rend as Record<string, (s: string) => unknown[]>).findShapes('*');
       settings.brush.consume
         .filter((t) => t.context === brushCtx)
         .forEach((consume) => {
           for (let i = 0; i < sceneNodes.length; i++) {
-            const node = sceneNodes[i];
+            const node = sceneNodes[i] as Record<string, unknown>;
             if (node.data && brusher.containsMappedData(node.data, props || consume.data, mode)) {
               appendComponentMeta(node);
               shapes.push(node);
@@ -659,17 +737,17 @@ function componentFactory(definition, context: Record<string, unknown> = {}) {
   };
 
   fn.shapesAt = (shape: unknown, opts: Record<string, unknown> = {}) => {
-    const items = rend.itemsAt(shape);
+    const items = (rend as Record<string, (s: unknown) => { node: unknown }[]>).itemsAt(shape);
     let shapes;
 
     if (opts && opts.propagation === 'stop' && items.length > 0) {
-      shapes = [items.pop().node];
+      shapes = [items.pop()!.node];
     } else {
       shapes = items.map((i) => i.node);
     }
 
     for (let i = 0, num = shapes.length; i < num; i++) {
-      appendComponentMeta(shapes[i]);
+      appendComponentMeta(shapes[i] as Record<string, unknown>);
     }
 
     return shapes;
@@ -684,14 +762,13 @@ function componentFactory(definition, context: Record<string, unknown> = {}) {
       action,
       trigger,
       chart,
-      data: brushArgs.data,
     });
   };
 
   fn.mount = () => {
-    element = rend.element && rend.element() ? element : rend.appendTo(container);
-    if (rend.setKey && typeof config.key === 'string') {
-      rend.setKey(config.key);
+    element = rend.element && rend.element() ? element : rend.appendTo?.(container);
+    if (rend.setKey && typeof (config as Record<string, unknown>).key === 'string') {
+      rend.setKey((config as Record<string, unknown>).key as string);
     }
 
     if (settings.brush) {
@@ -725,7 +802,7 @@ function componentFactory(definition, context: Record<string, unknown> = {}) {
   fn.onBrushTap = (e) => {
     brushTriggers.tap.forEach((t) => {
       if (resolveTapEvent({ e, t, config: brushArgs }) && t.globalPropagation === 'stop') {
-        chart.toggleBrushing(true);
+        chart?.toggleBrushing?.(true);
       }
     });
   };
@@ -733,7 +810,7 @@ function componentFactory(definition, context: Record<string, unknown> = {}) {
   fn.onBrushOver = (e) => {
     brushTriggers.over.forEach((t) => {
       if (resolveOverEvent({ e, t, config: brushArgs }) && t.globalPropagation === 'stop') {
-        chart.toggleBrushing(true);
+        chart?.toggleBrushing?.(true);
       }
     });
   };
