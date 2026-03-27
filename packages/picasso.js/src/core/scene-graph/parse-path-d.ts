@@ -1,4 +1,5 @@
 import { parsePath } from 'path2d';
+import type { PathCommand } from 'path2d';
 import arcToCenter, { PI_X2 } from '../math/arc-to-center';
 import cubicCurveToPoints from '../math/cubic-bezier-curve-interpolation';
 import quadCurveToPoints from '../math/quad-bezier-curve-interpolation';
@@ -108,7 +109,7 @@ export default function pathToPoints(path) {
   let qcpy = null;
 
   for (let i = 0; i < commands.length; ++i) {
-    const cmd: unknown[] = commands[i];
+    const cmd = commands[i] as [string, ...number[]];
     const pathType = cmd[0];
 
     // Reset control point if command is not cubic

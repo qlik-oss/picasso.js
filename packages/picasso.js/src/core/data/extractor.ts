@@ -1,9 +1,17 @@
 import stack from './stack';
 
+/** A data set/source with extraction methods */
+interface DatasetSource {
+  hierarchy?: (config: unknown) => { hierarchy?: (c: unknown) => unknown; fields(): unknown[] } | null;
+  fields(): unknown[];
+  extract(config: unknown): unknown[];
+  field(key: string): { value?: (v: unknown) => unknown; label?: (v: unknown) => string; items(): unknown[] } | null;
+}
+
 /** Data object passed to extract function */
 interface DataSource {
-  dataset?: (key: string) => unknown;
-  collection?: (key: string) => unknown;
+  dataset?: (key: string) => DatasetSource | null;
+  collection?: (key: string) => Record<string, unknown>;
   field?: (query: string) => unknown;
   [key: string]: unknown;
 }
@@ -27,7 +35,33 @@ interface ExtractedData {
   [key: string]: unknown;
 }
 
-export default function extract(dataConfig: unknown, data: DataSource = {}, opts: ExtractOptions = {}) {
+/** Data extraction configuration */
+interface DataConfig {
+  collection?: string;
+  source?: string;
+  value?: (v: unknown) => unknown;
+  label?: (v: unknown) => string;
+  groupBy?: unknown;
+  mapTo?: unknown;
+  hierarchy?: unknown;
+  items?: unknown[];
+  skipNormalize?: boolean;
+  extract?: DataConfig | DataConfig[];
+  field?: string;
+  fields?: Array<string | { source?: string; field?: string }>;
+  amend?: unknown[];
+  stack?: { stackByKey?: string[]; [key: string]: unknown };
+  map?: (v: unknown, i: number, arr: unknown[]) => unknown;
+  filter?: (v: unknown) => boolean;
+  sort?: (a: unknown, b: unknown) => number;
+  [key: string]: unknown;
+}
+
+export default function extract(
+  dataConfig: DataConfig | DataConfig[] | null | undefined,
+  data: DataSource = {},
+  opts: ExtractOptions = {}
+) {
   let extracted: ExtractedData = {
     // items: [],
     // fields: [],
@@ -109,7 +143,7 @@ export default function extract(dataConfig: unknown, data: DataSource = {}, opts
           if (typeof obj === 'object' && typeof obj.field !== 'undefined') {
             f = s.field(obj.field);
           } else {
-            f = s.field(obj);
+            f = s.field(obj as string);
           }
           if (f) {
             if (!extracted.fields) {
@@ -128,7 +162,9 @@ export default function extract(dataConfig: unknown, data: DataSource = {}, opts
     if (dataConfig && dataConfig.stack) {
       if (Array.isArray(dataConfig.stack.stackByKey)) {
         dataConfig.stack.stackByKey.forEach((key) => {
-          const dataItems = extracted.items.filter((d) => d.key?.value && d.key.value === key);
+          const dataItems = extracted.items.filter(
+            (d) => (d as Record<string, unknown>)?.['key'] && (d as Record<string, unknown>)['key'] === key
+          );
           stack(extracted, dataConfig.stack, data.dataset, dataItems);
         });
       } else {
