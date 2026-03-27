@@ -257,7 +257,7 @@ const component = {
     this.state.activeNodes = [];
     this.state.pointer = {};
   },
-  show(event, { nodes, duration, delay } = {}) {
+  show(event, { nodes, duration, delay }: { nodes?: any; duration?: any; delay?: any } = {}) {
     if (this.state.prevent || !this.state.targetElement) {
       return;
     }

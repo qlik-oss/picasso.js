@@ -44,7 +44,7 @@ function getTooltipLeft({ options, docks, dockOffsets, targetBounds, area, width
   return left;
 }
 
-function getComputedArrowStyle(offset, borderWidth) {
+function getComputedArrowStyle(offset, borderWidth?) {
   const sign = offset > 0 ? '-' : '+';
   offset = Math.abs(offset);
   if (borderWidth === undefined) {
@@ -404,10 +404,15 @@ export default function placement({ width, height }, { chart, state, props }) {
   propCtx.options = opts;
   const plcm = STRATEGIES[opts.type](propCtx);
 
-  let { x: minX, y: minY, width: maxX, height: maxY } = propCtx.resources.getComponentBoundsFromNode(propCtx.nodes[0]);
-  minX += propCtx.pointer.dx;
+  let {
+    x: minX,
+    y: minY,
+    width: maxX,
+    height: maxY,
+  } = (propCtx as any).resources.getComponentBoundsFromNode((propCtx as any).nodes[0]);
+  minX += (propCtx as any).pointer.dx;
   maxX += minX;
-  minY += propCtx.pointer.dy;
+  minY += (propCtx as any).pointer.dy;
   maxY += minY;
 
   // Clamp tooltip position

@@ -3,9 +3,9 @@
   "compilerOptions": {
     "composite": true,
     "noEmit": false,
-    "rootDir": "./src",
+    "rootDir": ".",
     "outDir": "./dist/.tsc"
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx"],
-  "exclude": ["**/node_modules", "**/dist", "**/__tests__", "**/*.spec.ts"]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "test/helpers/*.ts"],
+  "exclude": ["**/node_modules", "**/dist"]
 }

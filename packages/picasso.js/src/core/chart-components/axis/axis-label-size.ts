@@ -19,7 +19,7 @@ function isVerticalLabelOverlapping({
     return false;
   }
 
-  const d = size * Math.abs(majorTicks[0].position - majorTicks[1].position);
+  const d = size * Math.abs((majorTicks[0] as any).position - (majorTicks[1] as any).position);
   if (d < textHeight) {
     return true;
   }

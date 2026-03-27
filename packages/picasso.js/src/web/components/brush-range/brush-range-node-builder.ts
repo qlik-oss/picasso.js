@@ -66,7 +66,7 @@ function buildLine({ h, isVertical, value, pos, align, borderHit, state, idx }) 
   );
 }
 
-function buildBubble({ h, isVertical, label, otherValue, rangeIdx, idx, pos, align, state, value }) {
+function buildBubble({ h, isVertical, label, otherValue, rangeIdx, idx, pos, align, state, value, style = undefined }) {
   const isAlignStart = align !== 'end';
   const isOutside = state.settings.bubbles.placement === 'outside';
   let outside = 'none';
@@ -207,7 +207,7 @@ export default function buildRange({ borderHit, els, isVertical, state, vStart, 
     const targetEnd = hasScale ? state.scale.norm(vEnd) * targetSize : vEnd;
     const targetHeight = Math.abs(targetStart - targetEnd);
     const targetTop = Math.min(targetStart, targetEnd);
-    const targetArea: Record<string, number | null> = {
+    const targetArea: Record<string, any> = {
       h: state.h,
       isVertical,
       top: targetTop,
@@ -237,7 +237,7 @@ export default function buildRange({ borderHit, els, isVertical, state, vStart, 
             width: `${target.width}px`,
           },
         },
-        [buildArea(targetArea)]
+        [buildArea(targetArea as any)]
       )
     );
   }

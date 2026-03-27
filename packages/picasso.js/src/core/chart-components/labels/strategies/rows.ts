@@ -107,7 +107,7 @@ export function rows({ settings, chart, nodes, renderer, style }, placer = place
     style.label
   );
 
-  defaults.fontSize = parseInt(defaults.fontSize, 10);
+  defaults.fontSize = parseInt(defaults.fontSize as string, 10);
 
   const rowSettings = extend({}, defaults, settings);
 
@@ -191,7 +191,7 @@ export function rows({ settings, chart, nodes, renderer, style }, placer = place
         fontSize: lblStngs.fontSize,
         fontFamily: lblStngs.fontFamily,
         textMetrics: measurements[j],
-      });
+      }) as Record<string, unknown>;
       if (label) {
         if (label.text && label.text !== ELLIPSIS_CHAR) {
           const ellipsed = ellipsText(label, renderer.measureText);

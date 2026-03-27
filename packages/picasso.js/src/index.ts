@@ -92,7 +92,7 @@ function pic(config: PicassoConfig = {}, registries: Partial<Registries> = {}) {
      * const svgFactory = picassojs.renderer('svg');
      * const svgRenderer = svgFactory();
      */
-    renderer: renderer(registries.renderer, 'renderer', logger),
+    renderer: renderer(registries.renderer),
     /**
      * Scale registry
      * @type {registry}
@@ -282,8 +282,8 @@ const p = pic(
   }
 );
 
-components.forEach(p.use);
-renderers.forEach(p.use);
-scales.forEach(p.use);
+components.forEach((c) => p.use(c));
+renderers.forEach((c) => p.use(c));
+scales.forEach((c) => p.use(c));
 
 export default p;

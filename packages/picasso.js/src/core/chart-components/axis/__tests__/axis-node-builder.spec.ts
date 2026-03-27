@@ -38,7 +38,7 @@ describe('Axis Node Builder', () => {
       };
       nodes.push(...[lowerNode, middleNode, upperNode]);
 
-      filterOverlappingLabels(nodes);
+      (filterOverlappingLabels as any)(nodes);
 
       expect(nodes.map((n) => n.name)).to.deep.equal(['lower', 'upper']);
     });
@@ -73,7 +73,7 @@ describe('Axis Node Builder', () => {
       };
       nodes.push(...[lowerNode, middleNode, upperNode]);
 
-      filterOverlappingLabels(nodes);
+      (filterOverlappingLabels as any)(nodes);
 
       expect(nodes.map((n) => n.name)).to.deep.equal(['upper']);
     });
@@ -99,7 +99,7 @@ describe('Axis Node Builder', () => {
       };
       nodes.push(...[lowerNode, upperNode]);
 
-      filterOverlappingLabels(nodes);
+      (filterOverlappingLabels as any)(nodes);
 
       expect(nodes.map((n) => n.name)).to.deep.equal(['upper']);
     });
@@ -116,7 +116,7 @@ describe('Axis Node Builder', () => {
       };
       nodes.push(...[upperNode]);
 
-      filterOverlappingLabels(nodes);
+      (filterOverlappingLabels as any)(nodes);
 
       expect(nodes.map((n) => n.name)).to.deep.equal(['upper']);
     });
@@ -187,7 +187,7 @@ describe('Axis Node Builder', () => {
       };
       nodes.push(...[lowerNode, node1, node2, node3, node4, node5, upperNode]);
 
-      filterOverlappingLabels(nodes);
+      (filterOverlappingLabels as any)(nodes);
 
       expect(nodes.map((n) => n.name)).to.deep.equal(['lower', 'node2', 'node4', 'upper']);
     });
@@ -258,7 +258,7 @@ describe('Axis Node Builder', () => {
       };
       nodes.push(...[lowerNode, node1, node2, node3, node4, node5, upperNode]);
 
-      filterOverlappingLabels(nodes);
+      (filterOverlappingLabels as any)(nodes);
 
       expect(nodes.map((n) => n.name)).to.deep.equal(['lower', 'node1', 'node2', 'node3', 'node4', 'node5', 'upper']);
     });

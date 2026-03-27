@@ -120,14 +120,14 @@ export function extractFieldFromId(id, layout) {
  * @return {object[]} An array of relevant selections
  */
 export default function qBrush(
-  brush: unknown,
+  brush: any,
   opts: { byCells?: boolean; primarySource?: string; [key: string]: unknown } = {},
-  layout: unknown
+  layout: any
 ) {
   const byCells = opts.byCells;
   const primarySource = opts.primarySource;
   const selections = [];
-  const methods: Record<string, unknown> = {};
+  const methods: Record<string, any> = {};
   const isActive = brush.isActive();
   let hasValues = false;
   brush.brushes().forEach((b) => {

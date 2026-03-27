@@ -74,7 +74,7 @@ describe('BrushRange Interaction', () => {
         ranges: () => [],
         targetSize,
       });
-      expect(state.started, 'started should be true').to.be.true;
+      (expect as any)(state.started, 'started should be true').to.be.true;
     });
 
     describe('should set state.active', () => {
@@ -164,8 +164,8 @@ describe('BrushRange Interaction', () => {
           limitHigh: 1,
           mode: 'modify',
         });
-        expect(state.start, 'start').to.equals(0);
-        expect(state.current, 'current').to.equals(0.5);
+        (expect as any)(state.start, 'start').to.equals(0);
+        (expect as any)(state.current, 'current').to.equals(0.5);
       });
 
       it('should detect drag in bubbles', () => {
@@ -173,7 +173,7 @@ describe('BrushRange Interaction', () => {
           hasAttribute: sinon.stub().returns(true),
           getAttribute: sinon.stub().withArgs('data-idx').returns('0').withArgs('data-other-value').returns('0'),
         };
-        global.document.elementFromPoint.returns(bubbleElement);
+        (global.document.elementFromPoint as any).returns(bubbleElement);
         element.contains.returns(true);
         state.started = false;
         const ranges = [{ min: 0, max: 0.3 }];
@@ -192,8 +192,8 @@ describe('BrushRange Interaction', () => {
           limitHigh: 1,
           mode: 'modify',
         });
-        expect(state.start, 'start').to.equals(0);
-        expect(state.current, 'current').to.equals(0.5);
+        (expect as any)(state.start, 'start').to.equals(0);
+        (expect as any)(state.current, 'current').to.equals(0.5);
       });
 
       it('start if within targetRect', () => {
@@ -274,7 +274,7 @@ describe('BrushRange Interaction', () => {
     it('should set started to false', () => {
       state.started = true;
       end(state, () => []);
-      expect(state.started, 'started should be false').to.be.false;
+      (expect as any)(state.started, 'started should be false').to.be.false;
     });
   });
 });

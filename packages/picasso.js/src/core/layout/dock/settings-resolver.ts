@@ -1,6 +1,8 @@
 import extend from 'extend';
 import type { Rect } from '../../geometry/rect';
 
+type ExtendedRect = Rect & { align?: number; preserveAspectRatio?: boolean };
+
 function roundRect(rect) {
   rect.x = Math.floor(rect.x);
   rect.y = Math.floor(rect.y);
@@ -15,7 +17,7 @@ export function resolveContainerRects(rect, settings) {
     width: 0,
     height: 0,
   };
-  const logicalContainerRect: Rect = {
+  const logicalContainerRect: ExtendedRect = {
     x: 0,
     y: 0,
     width: 0,

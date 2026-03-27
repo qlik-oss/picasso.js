@@ -1,6 +1,15 @@
 import { createFromMetaInfo } from '../formatter';
 
-export default function qField({ meta, id, key, localeInfo, fieldExtractor, value, type, sourceField } = {}) {
+export default function qField({
+  meta,
+  id,
+  key,
+  localeInfo,
+  fieldExtractor,
+  value,
+  type,
+  sourceField,
+}: Record<string, any> = {}) {
   let values;
 
   const valueFn = value || (type === 'dimension' ? (d) => d?.qElemNo : (d) => d?.qValue);

@@ -83,11 +83,7 @@ const component = {
       resolver,
     });
 
-    const { settings, items } = resolved;
-
     const shapes = buildShapes({
-      items,
-      settings,
       width,
       height,
       flipXY,

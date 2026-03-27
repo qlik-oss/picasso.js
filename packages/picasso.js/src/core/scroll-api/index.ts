@@ -31,7 +31,7 @@ export default function scrollApi() {
       const newStart = Math.max(min, Math.min(max - viewSize, value));
       if (start !== newStart) {
         start = newStart;
-        s.emit('update');
+        (s as any).emit('update');
       }
     },
 
@@ -58,7 +58,7 @@ export default function scrollApi() {
       }
 
       if (triggerUpdate) {
-        s.emit('update');
+        (s as any).emit('update');
       }
     },
 

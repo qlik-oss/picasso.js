@@ -22,7 +22,7 @@ describe('Instance handler', () => {
   it('cancelActive', () => {
     const spy = sinon.spy();
     setActive(spy);
-    cancelActive();
+    cancelActive(undefined as any);
 
     expect(spy).to.have.been.calledOnce;
   });

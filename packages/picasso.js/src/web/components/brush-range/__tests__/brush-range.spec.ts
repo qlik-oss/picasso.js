@@ -261,13 +261,13 @@ describe('Brush Range', () => {
   describe('linear', () => {
     beforeEach(() => {
       const scale = linearScale();
-      scale.type = 'linear';
+      (scale as any).type = 'linear';
       scale.data = () => ({
         fields: [
           {
             id: () => 'foo',
             formatter: () => (v) => v,
-          },
+          } as any,
         ],
       });
       chartMock.scale = sandbox.stub().returns(scale);

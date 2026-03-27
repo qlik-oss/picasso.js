@@ -29,7 +29,7 @@ describe('svg-gradient', () => {
       };
       p.onCreate(state);
 
-      expect(state.node.fillReference).to.equal("url('#picasso-gradient-13-2')");
+      expect((state.node as any).fillReference).to.equal("url('#picasso-gradient-13-2')");
     });
 
     it('should set strokeReference when stroke is a gradient', () => {
@@ -42,7 +42,7 @@ describe('svg-gradient', () => {
       };
       p.onCreate(state);
 
-      expect(state.node.strokeReference).to.equal("url('#picasso-gradient-13-2')");
+      expect((state.node as any).strokeReference).to.equal("url('#picasso-gradient-13-2')");
     });
 
     it('should create a radial gradient node', () => {

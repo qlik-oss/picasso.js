@@ -36,7 +36,7 @@ describe('canvasBuffer', () => {
   describe('updateSize', () => {
     it('should set default buffer size if not provided', () => {
       const buffer = new CanvasBuffer(targetCanvas);
-      buffer.updateSize({ rect, dpiRatio: 2 });
+      buffer.updateSize({ rect, dpiRatio: 2 } as any);
       expect(buffer.bufferCanvas.style.width).to.equal('800px');
       expect(buffer.bufferCanvas.style.height).to.equal('700px');
       expect(buffer.bufferCanvas.width).to.equal(1600);
@@ -45,7 +45,7 @@ describe('canvasBuffer', () => {
 
     it('should set provided canvasBufferSize', () => {
       const buffer = new CanvasBuffer(targetCanvas);
-      buffer.updateSize({ rect, dpiRatio: 2, canvasBufferSize: { width: 1000, height: 600 } });
+      buffer.updateSize({ rect, dpiRatio: 2, canvasBufferSize: { width: 1000, height: 600 } } as any);
       expect(buffer.bufferCanvas.style.width).to.equal('1000px');
       expect(buffer.bufferCanvas.style.height).to.equal('600px');
       expect(buffer.bufferCanvas.width).to.equal(2000);
@@ -56,7 +56,7 @@ describe('canvasBuffer', () => {
   describe('apply', () => {
     it('should draw bufferCanvas on targetCanvas', () => {
       const buffer = new CanvasBuffer(targetCanvas);
-      buffer.updateSize({ rect, dpiRatio: 2 });
+      buffer.updateSize({ rect, dpiRatio: 2 } as any);
       buffer.apply();
       expect(drawImage).to.have.been.calledWith(bufferCanvas, 0, 0);
     });

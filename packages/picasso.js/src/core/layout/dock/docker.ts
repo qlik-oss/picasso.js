@@ -241,8 +241,8 @@ function positionComponents({ visible, layoutRect, reducedRect, containerRect, t
       return diff;
     })
     .forEach((c) => {
-      let outerRect: Record<string, number> = {};
-      let rect: Record<string, number> = {};
+      let outerRect: Record<string, any> = {};
+      let rect: Record<string, any> = {};
       const d = c.config.dock();
       switch (d) {
         case 'top':

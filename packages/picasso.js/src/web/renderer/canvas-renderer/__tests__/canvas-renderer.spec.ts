@@ -15,7 +15,7 @@ describe('canvas renderer', () => {
       getContext: sinon.spy(),
     };
     sandbox.stub(canvasBuffer, 'default');
-    canvasBuffer.default.returns(mockedCanvasBuffer);
+    (canvasBuffer.default as any).returns(mockedCanvasBuffer);
     r = renderer(sceneFn);
   });
 

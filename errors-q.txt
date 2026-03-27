@@ -1,0 +1,154 @@
+plugins/q/src/brush/__tests__/q-brush.spec.ts(16,12): error TS2554: Expected 3 arguments, but got 1.
+plugins/q/src/brush/__tests__/q-brush.spec.ts(30,24): error TS2554: Expected 3 arguments, but got 1.
+plugins/q/src/brush/__tests__/q-brush.spec.ts(49,26): error TS2554: Expected 3 arguments, but got 1.
+plugins/q/src/brush/__tests__/q-brush.spec.ts(54,26): error TS2554: Expected 3 arguments, but got 1.
+plugins/q/src/brush/__tests__/q-brush.spec.ts(83,26): error TS2554: Expected 3 arguments, but got 1.
+plugins/q/src/brush/__tests__/q-brush.spec.ts(88,26): error TS2554: Expected 3 arguments, but got 1.
+plugins/q/src/brush/__tests__/q-brush.spec.ts(126,26): error TS2554: Expected 3 arguments, but got 2.
+plugins/q/src/brush/__tests__/q-brush.spec.ts(164,26): error TS2554: Expected 3 arguments, but got 2.
+plugins/q/src/brush/__tests__/q-brush.spec.ts(226,26): error TS2554: Expected 3 arguments, but got 1.
+plugins/q/src/brush/__tests__/q-brush.spec.ts(231,26): error TS2554: Expected 3 arguments, but got 1.
+plugins/q/src/brush/__tests__/q-brush.spec.ts(288,26): error TS2554: Expected 3 arguments, but got 2.
+plugins/q/src/brush/__tests__/q-brush.spec.ts(293,26): error TS2554: Expected 3 arguments, but got 2.
+plugins/q/src/brush/__tests__/q-brush.spec.ts(298,26): error TS2554: Expected 3 arguments, but got 2.
+plugins/q/src/brush/__tests__/q-brush.spec.ts(504,15): error TS2554: Expected 2 arguments, but got 1.
+plugins/q/src/brush/__tests__/q-brush.spec.ts(509,15): error TS2554: Expected 2 arguments, but got 1.
+plugins/q/src/brush/__tests__/q-brush.spec.ts(518,15): error TS2554: Expected 2 arguments, but got 1.
+plugins/q/src/brush/__tests__/q-brush.spec.ts(527,15): error TS2554: Expected 2 arguments, but got 1.
+plugins/q/src/brush/__tests__/q-brush.spec.ts(536,15): error TS2554: Expected 2 arguments, but got 1.
+plugins/q/src/brush/__tests__/q-brush.spec.ts(545,15): error TS2554: Expected 2 arguments, but got 1.
+plugins/q/src/brush/__tests__/q-brush.spec.ts(554,15): error TS2554: Expected 2 arguments, but got 1.
+plugins/q/src/brush/__tests__/q-brush.spec.ts(577,15): error TS2554: Expected 2 arguments, but got 1.
+plugins/q/src/brush/__tests__/q-brush.spec.ts(600,15): error TS2554: Expected 2 arguments, but got 1.
+plugins/q/src/brush/__tests__/q-brush.spec.ts(609,15): error TS2554: Expected 2 arguments, but got 1.
+plugins/q/src/brush/__tests__/q-brush.spec.ts(668,26): error TS2554: Expected 3 arguments, but got 1.
+plugins/q/src/brush/__tests__/q-brush.spec.ts(673,26): error TS2554: Expected 3 arguments, but got 1.
+plugins/q/src/data/__tests__/augment-hierarchy.spec.ts(3,30): error TS6305: Output file '/home/runner/work/picasso.js/picasso.js/packages/picasso.js/dist/.tsc/src/core/data/util.d.ts' has not been built from source file '/home/runner/work/picasso.js/picasso.js/packages/picasso.js/src/core/data/util.ts'.
+plugins/q/src/data/__tests__/augment-hierarchy.spec.ts(7,7): error TS2339: Property 'util' does not exist on type '({ key, data, config, }?: { key?: string; data?: object; config?: Record<string, unknown>; }) => { key: () => string; raw: () => any; field: (query: any) => any; fields: () => any[]; extract: (extractionConfig: any) => any; hierarchy: (hierarchyConfig: any) => any; _cache: () => { ...; }; }'.
+plugins/q/src/data/__tests__/augment-hierarchy.spec.ts(13,7): error TS2339: Property 'util' does not exist on type '({ key, data, config, }?: { key?: string; data?: object; config?: Record<string, unknown>; }) => { key: () => string; raw: () => any; field: (query: any) => any; fields: () => any[]; extract: (extractionConfig: any) => any; hierarchy: (hierarchyConfig: any) => any; _cache: () => { ...; }; }'.
+plugins/q/src/data/__tests__/augment-hierarchy.spec.ts(137,50): error TS2554: Expected 1 arguments, but got 0.
+plugins/q/src/data/__tests__/dataset.spec.ts(3,21): error TS6305: Output file '/home/runner/work/picasso.js/picasso.js/packages/picasso.js/dist/.tsc/src/core/data/dataset.d.ts' has not been built from source file '/home/runner/work/picasso.js/picasso.js/packages/picasso.js/src/core/data/dataset.ts'.
+plugins/q/src/data/__tests__/dataset.spec.ts(104,10): error TS2339: Property 'qEffectiveInterColumnSortOrder' does not exist on type '{ qMode: any; qDimensionInfo: { qFallbackTitle: string; }[]; qMeasureInfo: ({ qFallbackTitle?: undefined; qNumFormat?: undefined; qAttrExprInfo?: undefined; qAttrDimInfo?: undefined; } | { qFallbackTitle: string; qNumFormat: { ...; }; qAttrExprInfo: ({ ...; } | { ...; })[]; qAttrDimInfo: {}[]; })[]; qDataPages: { .....'.
+plugins/q/src/data/__tests__/dataset.spec.ts(106,10): error TS2339: Property 'qEffectiveInterColumnSortOrder' does not exist on type '{ qMode: any; qDimensionInfo: { qFallbackTitle: string; }[]; qMeasureInfo: ({ qFallbackTitle?: undefined; qNumFormat?: undefined; qAttrExprInfo?: undefined; qAttrDimInfo?: undefined; } | { qFallbackTitle: string; qNumFormat: { ...; }; qAttrExprInfo: ({ ...; } | { ...; })[]; qAttrDimInfo: {}[]; })[]; qDataPages: { .....'.
+plugins/q/src/data/__tests__/dataset.spec.ts(175,7): error TS2339: Property 'util' does not exist on type '({ key, data, config, }?: { key?: string; data?: object; config?: Record<string, unknown>; }) => { key: () => string; raw: () => any; field: (query: any) => any; fields: () => any[]; extract: (extractionConfig: any) => any; hierarchy: (hierarchyConfig: any) => any; _cache: () => { ...; }; }'.
+plugins/q/src/data/__tests__/dataset.spec.ts(179,7): error TS2339: Property 'util' does not exist on type '({ key, data, config, }?: { key?: string; data?: object; config?: Record<string, unknown>; }) => { key: () => string; raw: () => any; field: (query: any) => any; fields: () => any[]; extract: (extractionConfig: any) => any; hierarchy: (hierarchyConfig: any) => any; _cache: () => { ...; }; }'.
+plugins/q/src/data/__tests__/dataset.spec.ts(185,17): error TS2551: Property 'throw' does not exist on type 'JestMatchers<() => { key: () => string; raw: () => any; field: (query: any) => any; fields: () => any[]; extract: (extractionConfig: any) => any; hierarchy: (hierarchyConfig: any) => any; _cache: () => { fields: any[]; wrappedFields: any[]; allFields: any[]; virtualFields: any[]; }; }>'. Did you mean 'toThrow'?
+plugins/q/src/data/__tests__/dataset.spec.ts(190,17): error TS2551: Property 'throw' does not exist on type 'JestMatchers<() => { key: () => string; raw: () => any; field: (query: any) => any; fields: () => any[]; extract: (extractionConfig: any) => any; hierarchy: (hierarchyConfig: any) => any; _cache: () => { fields: any[]; wrappedFields: any[]; allFields: any[]; virtualFields: any[]; }; }>'. Did you mean 'toThrow'?
+plugins/q/src/data/__tests__/extractor-s.spec.ts(4,32): error TS6305: Output file '/home/runner/work/picasso.js/picasso.js/packages/picasso.js/dist/.tsc/src/core/data/util.d.ts' has not been built from source file '/home/runner/work/picasso.js/picasso.js/packages/picasso.js/src/core/data/util.ts'.
+plugins/q/src/data/__tests__/extractor-s.spec.ts(858,19): error TS2554: Expected 4 arguments, but got 1.
+plugins/q/src/data/__tests__/extractor-s.spec.ts(864,19): error TS2554: Expected 4 arguments, but got 3.
+plugins/q/src/data/__tests__/extractor-s.spec.ts(877,19): error TS2554: Expected 4 arguments, but got 3.
+plugins/q/src/data/__tests__/extractor-s.spec.ts(884,14): error TS2349: This expression is not callable.
+plugins/q/src/data/__tests__/extractor-s.spec.ts(897,19): error TS2554: Expected 4 arguments, but got 3.
+plugins/q/src/data/__tests__/extractor-s.spec.ts(904,14): error TS2349: This expression is not callable.
+plugins/q/src/data/__tests__/extractor-s.spec.ts(917,19): error TS2554: Expected 4 arguments, but got 3.
+plugins/q/src/data/__tests__/extractor-s.spec.ts(924,14): error TS2349: This expression is not callable.
+plugins/q/src/data/__tests__/extractor-s.spec.ts(932,19): error TS2554: Expected 4 arguments, but got 3.
+plugins/q/src/data/__tests__/extractor-s.spec.ts(939,14): error TS2349: This expression is not callable.
+plugins/q/src/data/__tests__/extractor-s.spec.ts(958,16): error TS2349: This expression is not callable.
+plugins/q/src/data/__tests__/extractor-s.spec.ts(978,16): error TS2349: This expression is not callable.
+plugins/q/src/data/__tests__/extractor-t.spec.ts(3,46): error TS6305: Output file '/home/runner/work/picasso.js/picasso.js/packages/picasso.js/dist/.tsc/src/core/data/util.d.ts' has not been built from source file '/home/runner/work/picasso.js/picasso.js/packages/picasso.js/src/core/data/util.ts'.
+plugins/q/src/data/__tests__/field.spec.ts(32,14): error TS2339: Property 'qStateCounts' does not exist on type '{ qMin: number; qMax: number; qTags: string[]; qFallbackTitle: string; qNumFormat: { qType: string; }; }'.
+plugins/q/src/data/__tests__/field.spec.ts(38,14): error TS2339: Property 'qSize' does not exist on type '{ qMin: number; qMax: number; qTags: string[]; qFallbackTitle: string; qNumFormat: { qType: string; }; }'.
+plugins/q/src/data/__tests__/field.spec.ts(44,15): error TS2554: Expected 2 arguments, but got 0.
+plugins/q/src/data/__tests__/field.spec.ts(49,17): error TS2554: Expected 3 arguments, but got 0.
+plugins/q/src/data/__tests__/field.spec.ts(50,16): error TS2339: Property 'qStateCounts' does not exist on type '{ qMin: number; qMax: number; qTags: string[]; qFallbackTitle: string; qNumFormat: { qType: string; }; }'.
+plugins/q/src/data/__tests__/field.spec.ts(56,15): error TS2554: Expected 2 arguments, but got 0.
+plugins/q/src/data/__tests__/field.spec.ts(61,15): error TS2554: Expected 2 arguments, but got 0.
+plugins/q/src/data/__tests__/field.spec.ts(66,15): error TS2554: Expected 2 arguments, but got 0.
+plugins/q/src/data/__tests__/field.spec.ts(71,15): error TS2554: Expected 2 arguments, but got 0.
+plugins/q/src/data/__tests__/field.spec.ts(76,15): error TS2554: Expected 2 arguments, but got 0.
+plugins/q/src/data/__tests__/field.spec.ts(81,15): error TS2554: Expected 2 arguments, but got 0.
+plugins/q/src/data/__tests__/field.spec.ts(86,15): error TS2554: Expected 2 arguments, but got 0.
+plugins/q/src/data/__tests__/field.spec.ts(107,15): error TS2554: Expected 2 arguments, but got 0.
+plugins/q/src/data/__tests__/field.spec.ts(113,15): error TS2554: Expected 2 arguments, but got 0.
+plugins/q/src/data/__tests__/field.spec.ts(119,15): error TS2554: Expected 2 arguments, but got 0.
+plugins/q/src/data/__tests__/field.spec.ts(124,15): error TS2554: Expected 2 arguments, but got 0.
+plugins/q/src/data/__tests__/util.spec.ts(8,15): error TS2554: Expected 3 arguments, but got 2.
+plugins/q/src/data/__tests__/util.spec.ts(9,12): error TS2349: This expression is not callable.
+plugins/q/src/data/__tests__/util.spec.ts(20,15): error TS2554: Expected 3 arguments, but got 2.
+plugins/q/src/data/__tests__/util.spec.ts(21,12): error TS2349: This expression is not callable.
+plugins/q/src/data/__tests__/util.spec.ts(36,15): error TS2554: Expected 3 arguments, but got 2.
+plugins/q/src/data/__tests__/util.spec.ts(37,12): error TS2349: This expression is not callable.
+plugins/q/src/formatter/__tests__/formatter.spec.ts(41,15): error TS2554: Expected 1-2 arguments, but got 0.
+plugins/q/src/formatter/__tests__/formatter.spec.ts(42,14): error TS2339: Property 'pattern' does not exist on type '{ (value: any): any; format(p: any, v: any, t: any, d: any): any; pattern(p: any): string; } | { (value: any): any; format(p: any, v: any): any; locale(li: any): any; qtype(nqt: any): string; }'.
+plugins/q/src/formatter/__tests__/formatter.spec.ts(49,14): error TS2339: Property 'pattern' does not exist on type '{ (value: any): any; format(p: any, v: any, t: any, d: any): any; pattern(p: any): string; } | { (value: any): any; format(p: any, v: any): any; locale(li: any): any; qtype(nqt: any): string; }'.
+plugins/q/src/formatter/__tests__/formatter.spec.ts(58,14): error TS2339: Property 'pattern' does not exist on type '{ (value: any): any; format(p: any, v: any, t: any, d: any): any; pattern(p: any): string; } | { (value: any): any; format(p: any, v: any): any; locale(li: any): any; qtype(nqt: any): string; }'.
+plugins/q/src/formatter/__tests__/formatter.spec.ts(69,14): error TS2339: Property 'pattern' does not exist on type '{ (value: any): any; format(p: any, v: any, t: any, d: any): any; pattern(p: any): string; } | { (value: any): any; format(p: any, v: any): any; locale(li: any): any; qtype(nqt: any): string; }'.
+plugins/q/src/formatter/__tests__/formatter.spec.ts(81,14): error TS2339: Property 'pattern' does not exist on type '{ (value: any): any; format(p: any, v: any, t: any, d: any): any; pattern(p: any): string; } | { (value: any): any; format(p: any, v: any): any; locale(li: any): any; qtype(nqt: any): string; }'.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(8,11): error TS2554: Expected 5 arguments, but got 0.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(19,15): error TS2554: Expected 5 arguments, but got 3.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(27,15): error TS2554: Expected 5 arguments, but got 3.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(31,15): error TS2554: Expected 5 arguments, but got 3.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(37,15): error TS2554: Expected 5 arguments, but got 4.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(45,15): error TS2554: Expected 5 arguments, but got 4.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(53,15): error TS2554: Expected 5 arguments, but got 4.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(61,15): error TS2554: Expected 5 arguments, but got 3.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(75,15): error TS2554: Expected 5 arguments, but got 3.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(81,15): error TS2554: Expected 5 arguments, but got 3.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(86,15): error TS2554: Expected 5 arguments, but got 3.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(91,15): error TS2554: Expected 5 arguments, but got 3.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(96,15): error TS2554: Expected 5 arguments, but got 3.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(101,15): error TS2554: Expected 5 arguments, but got 2.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(105,15): error TS2554: Expected 5 arguments, but got 3.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(109,15): error TS2554: Expected 5 arguments, but got 3.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(113,15): error TS2554: Expected 5 arguments, but got 3.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(119,15): error TS2554: Expected 5 arguments, but got 3.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(126,15): error TS2554: Expected 5 arguments, but got 2.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(130,15): error TS2554: Expected 5 arguments, but got 2.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(134,15): error TS2554: Expected 5 arguments, but got 2.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(138,15): error TS2554: Expected 5 arguments, but got 3.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(142,15): error TS2554: Expected 5 arguments, but got 2.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(148,15): error TS2554: Expected 5 arguments, but got 3.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(152,15): error TS2554: Expected 5 arguments, but got 3.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(156,15): error TS2554: Expected 5 arguments, but got 3.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(160,15): error TS2554: Expected 5 arguments, but got 3.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(166,15): error TS2554: Expected 5 arguments, but got 3.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(170,15): error TS2554: Expected 5 arguments, but got 3.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(174,15): error TS2554: Expected 5 arguments, but got 3.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(178,15): error TS2554: Expected 5 arguments, but got 3.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(182,15): error TS2554: Expected 5 arguments, but got 3.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(186,15): error TS2554: Expected 5 arguments, but got 3.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(190,15): error TS2554: Expected 5 arguments, but got 3.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(196,15): error TS2554: Expected 5 arguments, but got 3.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(200,15): error TS2554: Expected 5 arguments, but got 3.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(206,15): error TS2554: Expected 5 arguments, but got 1.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(214,15): error TS2554: Expected 5 arguments, but got 1.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(222,15): error TS2554: Expected 5 arguments, but got 1.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(231,15): error TS2554: Expected 5 arguments, but got 1.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(245,15): error TS2554: Expected 5 arguments, but got 1.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(253,15): error TS2554: Expected 5 arguments, but got 3.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(262,15): error TS2554: Expected 5 arguments, but got 2.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(266,15): error TS2554: Expected 5 arguments, but got 2.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(272,15): error TS2554: Expected 5 arguments, but got 1.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(279,15): error TS2554: Expected 5 arguments, but got 1.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(287,15): error TS2554: Expected 5 arguments, but got 1.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(291,15): error TS2554: Expected 5 arguments, but got 1.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(296,15): error TS2554: Expected 5 arguments, but got 1.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(302,15): error TS2554: Expected 5 arguments, but got 1.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(309,15): error TS2554: Expected 5 arguments, but got 1.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(316,15): error TS2554: Expected 5 arguments, but got 1.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(330,15): error TS2554: Expected 5 arguments, but got 1.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(339,15): error TS2554: Expected 5 arguments, but got 1.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(346,15): error TS2554: Expected 5 arguments, but got 1.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(356,15): error TS2554: Expected 5 arguments, but got 1.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(366,15): error TS2554: Expected 5 arguments, but got 1.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(375,15): error TS2554: Expected 5 arguments, but got 1.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(379,15): error TS2554: Expected 5 arguments, but got 1.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(387,15): error TS2554: Expected 5 arguments, but got 1.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(412,15): error TS2554: Expected 5 arguments, but got 1.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(421,15): error TS2554: Expected 5 arguments, but got 1.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(432,15): error TS2554: Expected 5 arguments, but got 1.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(439,15): error TS2554: Expected 5 arguments, but got 1.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(446,15): error TS2554: Expected 5 arguments, but got 1.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(456,17): error TS2554: Expected 5 arguments, but got 1.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(477,17): error TS2554: Expected 5 arguments, but got 1.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(483,17): error TS2554: Expected 5 arguments, but got 1.
+plugins/q/src/formatter/__tests__/numberFormat.spec.ts(499,13): error TS2554: Expected 5 arguments, but got 0.
+plugins/q/src/formatter/__tests__/timeFormat.spec.ts(102,11): error TS2554: Expected 1-3 arguments, but got 0.
+plugins/q/src/formatter/__tests__/timeFormat.spec.ts(127,11): error TS2554: Expected 1-3 arguments, but got 0.
+plugins/q/src/scales/qTime/__tests__/qTime.spec.ts(38,19): error TS2554: Expected 2 arguments, but got 1.
+plugins/q/src/scales/qTime/__tests__/qTime.spec.ts(48,19): error TS2554: Expected 2 arguments, but got 1.
+plugins/q/src/scales/qTime/__tests__/qTime.spec.ts(68,17): error TS2554: Expected 2 arguments, but got 1.
+plugins/q/src/scales/qTime/__tests__/qTime.spec.ts(79,21): error TS2554: Expected 2 arguments, but got 1.
+plugins/q/src/scales/qTime/__tests__/qTime.spec.ts(93,21): error TS2554: Expected 2 arguments, but got 1.

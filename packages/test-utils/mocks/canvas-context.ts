@@ -21,7 +21,7 @@ function gradientFactory(gradientType) {
 class CanvasPattern {}
 
 function canvascontext(contextType = '2d') {
-  let item = {
+  let item: Record<string, any> = {
     save: sinon.spy(),
     beginPath: sinon.spy(),
     moveTo: sinon.spy(),
@@ -31,7 +31,7 @@ function canvascontext(contextType = '2d') {
     scale: sinon.spy(),
     rect: sinon.spy(),
     setTransform: sinon.spy(),
-    createPattern: sinon.spy((...args) => new CanvasPattern(...args)),
+    createPattern: sinon.spy((...args: any[]) => new CanvasPattern()),
     measureText: (text) => ({ width: text.length }),
   };
 

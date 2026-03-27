@@ -5,7 +5,8 @@ describe('render()', () => {
 
   beforeEach(() => {
     // Mock Image class
-    global.Image = class {
+    (global as any).Image = class {
+      _src: string = '';
       constructor() {
         lastCreatedImage = this; // Store the last created image for testing
       }
@@ -51,7 +52,7 @@ describe('render()', () => {
 
     // Mock document if not defined (for Node.js test environments)
     if (typeof global.document === 'undefined') {
-      global.document = {};
+      (global as any).document = {};
     }
     const doc = global.document;
     // Stub document.createElement

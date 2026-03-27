@@ -80,7 +80,7 @@ export function oobManager({ blueprint, oob, settings, items }) {
       let indicator = blueprint.processItem({
         fn: ({ width, height }) => {
           /* eslint no-loop-func: 0 */
-          let x = position * width + (position === '1' ? -xPadding : xPadding);
+          let x = (position as unknown as number) * width + (position === '1' ? -xPadding : xPadding);
           let y = flipXY ? yPadding : height - yPadding;
 
           if (style.type === 'arc') {

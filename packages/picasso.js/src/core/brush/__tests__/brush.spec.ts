@@ -122,7 +122,7 @@ describe('brush', () => {
         values: sandbox.stub(),
       };
       vcc = sandbox.stub().returns(v);
-      bb = brush({ vc: vcc, rc: noop });
+      bb = brush({ vc: vcc, rc: noop as any });
     });
 
     it('should call value.add() with value "Car"', () => {
@@ -174,7 +174,7 @@ describe('brush', () => {
         values: sandbox.stub(),
       };
       vcc = sandbox.stub().returns(v);
-      bb = brush({ vc: vcc, rc: noop });
+      bb = brush({ vc: vcc, rc: noop as any });
       bb.addValue('garage');
     });
 
@@ -213,7 +213,7 @@ describe('brush', () => {
         v = { ranges: sandbox.stub() };
         v[action] = sandbox.stub();
         rcc = sandbox.stub().returns(v);
-        bb = brush({ rc: rcc, vc: noop });
+        bb = brush({ rc: rcc, vc: noop as any });
         v[action].returns(true);
       });
 
@@ -266,7 +266,7 @@ describe('brush', () => {
         contains: sandbox.stub(),
       };
       vcc = sandbox.stub().returns(v);
-      bb = brush({ vc: vcc, rc: noop });
+      bb = brush({ vc: vcc, rc: noop as any });
       bb.addKeyAlias('_ali', 'ALI');
     });
 
@@ -307,7 +307,7 @@ describe('brush', () => {
         containsValue: sandbox.stub(),
       };
       rcc = sandbox.stub().returns(v);
-      bb = brush({ vc: noop, rc: rcc });
+      bb = brush({ vc: noop as any, rc: rcc });
       bb.addKeyAlias('_range-ali', 'margin');
     });
 
@@ -348,7 +348,7 @@ describe('brush', () => {
         containsRange: sandbox.stub(),
       };
       rcc = sandbox.stub().returns(v);
-      bb = brush({ vc: noop, rc: rcc });
+      bb = brush({ vc: noop as any, rc: rcc });
       bb.addKeyAlias('_range-ali', 'margin');
     });
 
@@ -769,7 +769,7 @@ describe('brush', () => {
         values: sandbox.stub(),
       };
       vcc = sandbox.stub().returns(v);
-      bb = brush({ vc: vcc, rc: noop });
+      bb = brush({ vc: vcc, rc: noop as any });
       bb.addValue('garage');
 
       valuesToAdd = [{ key: 'garage', value: 'Car' }];

@@ -82,12 +82,12 @@ function generateTitle({ title, definitionSettings, dock, rect, measureText, sty
     struct.x = dock === 'left' ? rect.width - definitionSettings.paddingStart : definitionSettings.paddingStart;
     struct.dx = dock === 'left' ? -(textRect.height / 3) : textRect.height / 3;
     const rotation = dock === 'left' ? 270 : 90;
-    struct.transform = `rotate(${rotation}, ${struct.x + struct.dx}, ${struct.y + struct.dy})`;
+    struct.transform = `rotate(${rotation}, ${(struct.x as number) + (struct.dx as number)}, ${(struct.y as number) + (struct.dy as number)})`;
     struct.maxWidth = rect.height * 0.8;
   }
 
   if (!isNaN(definitionSettings.maxLengthPx)) {
-    struct.maxWidth = Math.min(struct.maxWidth, definitionSettings.maxLengthPx);
+    struct.maxWidth = Math.min(struct.maxWidth as number, definitionSettings.maxLengthPx);
   }
 
   return struct;

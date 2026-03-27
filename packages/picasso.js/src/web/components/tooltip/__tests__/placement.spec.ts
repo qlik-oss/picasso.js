@@ -1,6 +1,7 @@
 import placement, { calcOffset } from '../placement';
 
-class Rect {
+class RectMock {
+  [key: string]: any;
   constructor() {
     this.x = 0;
     this.y = 0;
@@ -28,7 +29,7 @@ describe('placement', () => {
   beforeEach(() => {
     componentMock = {
       key: 'aKey',
-      rect: new Rect(),
+      rect: new RectMock(),
     };
 
     size = {
@@ -67,7 +68,7 @@ describe('placement', () => {
     global.window ??= {
       innerWidth: 500,
       innerHeight: 500,
-    };
+    } as any;
   });
 
   afterEach(() => {

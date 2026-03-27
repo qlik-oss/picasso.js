@@ -3,7 +3,7 @@ import timeFormat from './timeFormat';
 
 export { numberFormat, timeFormat };
 
-export function createFromMetaInfo(meta, localeInfo) {
+export function createFromMetaInfo(meta, localeInfo?) {
   if (meta && meta.qNumFormat && ['D', 'T', 'TS', 'IV'].indexOf(meta.qNumFormat.qType) !== -1) {
     return timeFormat(meta.qNumFormat.qFmt, meta.qNumFormat.qType, localeInfo);
   }

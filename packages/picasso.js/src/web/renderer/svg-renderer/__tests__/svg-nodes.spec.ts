@@ -197,7 +197,7 @@ describe('svg-nodes', () => {
       maintainer(el, item);
 
       expect(el.appendChild).to.have.been.calledWith(titleElm);
-      expect(titleElm.textContent).to.equal('my title');
+      expect((titleElm as any).textContent).to.equal('my title');
     });
 
     describe('should ignore item with "NaN" attributes', () => {

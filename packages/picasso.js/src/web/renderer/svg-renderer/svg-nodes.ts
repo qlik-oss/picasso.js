@@ -110,7 +110,7 @@ function handleImageLoad({ element, attrs }) {
         const circle = document.createElementNS(svgNs, 'circle');
         circle.setAttribute('cx', x);
         circle.setAttribute('cy', y);
-        circle.setAttribute('r', Math.min(imgWidth, imgHeight) / 2);
+        circle.setAttribute('r', String(Math.min(imgWidth, imgHeight) / 2));
         clipPath.appendChild(circle);
         defs.appendChild(clipPath);
       }

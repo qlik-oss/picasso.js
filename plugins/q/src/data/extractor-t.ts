@@ -147,7 +147,7 @@ function datumExtract(propCfg, cell, { key }) {
   return datum;
 }
 
-function doIt({ propsArr, props, item, itemData, ret, sourceKey }) {
+function doIt({ propsArr, props, item, itemData, ret, sourceKey, isTree = false }) {
   for (let i = 0; i < propsArr.length; i++) {
     const pCfg = props[propsArr[i]];
     const arr = pCfg.fields || [pCfg];
@@ -303,7 +303,7 @@ const attachPropsAccessors = ({ propsArr, props, cube, cache, itemDepthObject, f
     for (let j = 0; j < arr.length; j++) {
       const p = arr[j];
       if (p.field !== f) {
-        const depthObject = getFieldDepth(p.field, { cube, cache });
+        const depthObject = getFieldDepth(p.field, { cube });
         const accessors = getFieldAccessor(itemDepthObject, depthObject);
         p.accessor = accessors.nodeFn; // nodes accessor
         p.valueAccessor = accessors.valueFn; // cell accessor
@@ -313,7 +313,7 @@ const attachPropsAccessors = ({ propsArr, props, cube, cache, itemDepthObject, f
   }
 };
 
-export function augment(config: Record<string, unknown> = {}, dataset: unknown, cache: unknown, util: unknown) {
+export function augment(config: Record<string, unknown> = {}, dataset: any, cache: any, util: any) {
   const cube = dataset.raw();
   const sourceKey = dataset.key();
   const h = cube.qMode === 'S' ? getHierarchyForSMode(dataset) : getHierarchy(cube, cache, config);
@@ -348,7 +348,7 @@ export function augment(config: Record<string, unknown> = {}, dataset: unknown, 
     const propsArr = Object.keys(props);
     propDefs[i] = { propsArr, props, main };
 
-    const itemDepthObject = f ? getFieldDepth(f, { cube, cache }) : { fieldDepth: 0 };
+    const itemDepthObject = f ? getFieldDepth(f, { cube }) : { fieldDepth: 0 };
 
     attachPropsAccessors({
       propsArr,
@@ -387,7 +387,7 @@ export function augment(config: Record<string, unknown> = {}, dataset: unknown, 
   return h;
 }
 
-export function extract(config, dataset, cache, util) {
+export function extract(config, dataset: any, cache: any, util: any) {
   const cfgs = Array.isArray(config) ? config : [config];
   let dataItems = [];
   for (let g = 0; g < cfgs.length; g++) {
@@ -403,7 +403,7 @@ export function extract(config, dataset, cache, util) {
       const { props, main } = util.normalizeConfig(cfgs[g], dataset);
       const propsArr = Object.keys(props);
 
-      const itemDepthObject = getFieldDepth(f, { cube, cache });
+      const itemDepthObject = getFieldDepth(f, { cube });
       const { nodeFn, attrFn, valueFn } = getFieldAccessor({ fieldDepth: 0 }, itemDepthObject);
 
       attachPropsAccessors({
@@ -420,7 +420,7 @@ export function extract(config, dataset, cache, util) {
       const tracker = {};
       const trackedItems = [];
 
-      const items = nodeFn(cache.tree);
+      const items = (nodeFn as Function)(cache.tree);
       const mapped = [];
       for (let i = 0; i < items.length; i++) {
         const item = items[i];

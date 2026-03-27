@@ -60,7 +60,7 @@ export default function componentFactoryFixture() {
           },
         };
 
-        s.computedPhysical = {
+        (s as any).computedPhysical = {
           x: s.x,
           y: s.y,
           width: s.width,

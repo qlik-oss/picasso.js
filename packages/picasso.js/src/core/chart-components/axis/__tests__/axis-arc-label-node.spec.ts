@@ -60,7 +60,7 @@ describe('Axis Arc Label Node', () => {
         textRect,
         tickSize: 6,
       };
-      tick = createTick(0);
+      tick = (createTick as any)(0);
     });
 
     describe('Style align', () => {

@@ -89,7 +89,7 @@ describe('renderer-box', () => {
     it('should return default x value given input is invalid', () => {
       const b = box({
         scaleRatio: { y: 2 },
-      });
+      } as any);
       expect(b).to.containSubset({
         scaleRatio: { x: 1, y: 2 },
       });
@@ -98,7 +98,7 @@ describe('renderer-box', () => {
     it('should return default y value given input is invalid', () => {
       const b = box({
         scaleRatio: { x: 2 },
-      });
+      } as any);
       expect(b).to.containSubset({
         scaleRatio: { x: 2, y: 1 },
       });
@@ -125,7 +125,7 @@ describe('renderer-box', () => {
     it('should return default left value given input is invalid', () => {
       const b = box({
         margin: { top: 2 },
-      });
+      } as any);
       expect(b).to.containSubset({
         margin: { left: 0, top: 2 },
       });
@@ -134,7 +134,7 @@ describe('renderer-box', () => {
     it('should return default top value given input is invalid', () => {
       const b = box({
         margin: { left: 2 },
-      });
+      } as any);
       expect(b).to.containSubset({
         margin: { left: 2, top: 0 },
       });

@@ -1,4 +1,4 @@
-export default function createRect(x, y, width, height, margin) {
+export default function createRect(x?, y?, width?, height?, margin?) {
   return {
     x: isNaN(x) ? 0 : x,
     y: isNaN(x) ? 0 : y,

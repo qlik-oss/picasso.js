@@ -76,7 +76,7 @@ function getTicks(ctx, majorScale) {
     return {
       value,
       label,
-      pos: majorScale.norm(parseFloat(value, 10)),
+      pos: majorScale.norm(parseFloat(value)),
       textMetrics: ctx.renderer.measureText({
         text: label,
         fontSize: ctx.stgns.tick.fontSize,
@@ -136,7 +136,7 @@ function initState(ctx) {
           w += titleStgns.padding;
           mw += titleStgns.padding;
         }
-        return Math.min(w, mw, state.rect.width);
+        return Math.min(w, mw, (state.rect as any).width);
       },
       requiredHeight: () => {
         if (!titleStgns.show) {
@@ -146,7 +146,7 @@ function initState(ctx) {
         if (isVertical) {
           h += titleStgns.padding;
         }
-        return Math.min(h, state.rect.height);
+        return Math.min(h, (state.rect as any).height);
       },
     },
     ticks: {
@@ -155,7 +155,7 @@ function initState(ctx) {
       length: Math.min(Math.max(...tickValues.map((t) => t.textMetrics.width)), ctx.stgns.tick.maxLengthPx),
       requiredHeight: () =>
         tickAnchor === 'top'
-          ? Math.max(...state.ticks.values.map((t) => t.textMetrics.height)) + ctx.stgns.tick.padding
+          ? Math.max(...(state.ticks as any).values.map((t) => t.textMetrics.height)) + ctx.stgns.tick.padding
           : 0,
       height: Math.max(...tickValues.map((t) => t.textMetrics.height)),
     },

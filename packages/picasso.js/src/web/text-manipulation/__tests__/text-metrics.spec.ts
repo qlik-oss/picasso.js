@@ -42,7 +42,7 @@ describe('text-metrics', () => {
     it('should return correct result', () => {
       argument.fontSize = ++cacheId;
 
-      const result = measureText(argument);
+      const result = measureText(argument as any);
 
       expect(result).to.deep.equal({ width: 150, height: 16 });
     });
@@ -50,7 +50,7 @@ describe('text-metrics', () => {
     it('should set the correct font before firing measureText', () => {
       argument.fontSize = ++cacheId;
 
-      measureText(argument);
+      measureText(argument as any);
 
       expect(canvasContextMock.font).to.equal(`${cacheId} Arial`);
       expect(fontWasUnset).to.equal(false);
@@ -59,7 +59,7 @@ describe('text-metrics', () => {
     it('should fire measureText once with correct arguments', () => {
       argument.fontSize = ++cacheId;
 
-      measureText(argument);
+      measureText(argument as any);
 
       expect(canvasContextMock.measureText).to.have.been.calledOnce;
       expect(canvasContextMock.measureText).to.have.been.calledWith('Test');
@@ -68,15 +68,15 @@ describe('text-metrics', () => {
     it('should reuse the previously created canvas element', () => {
       argument.fontSize = ++cacheId;
 
-      measureText(argument);
+      measureText(argument as any);
 
-      const preCallCount = global.document.createElement.callCount;
+      const preCallCount = (global.document.createElement as any).callCount;
 
       argument.fontSize = ++cacheId;
 
-      measureText(argument);
+      measureText(argument as any);
 
-      const postCallCount = global.document.createElement.callCount;
+      const postCallCount = (global.document.createElement as any).callCount;
 
       expect(preCallCount).to.equal(postCallCount);
     });
@@ -84,11 +84,11 @@ describe('text-metrics', () => {
     it('should reuse past width calculations if arguments match previous use case', () => {
       argument.fontSize = ++cacheId;
 
-      measureText(argument);
+      measureText(argument as any);
 
       expect(canvasContextMock.measureText.withArgs('Test').calledOnce).to.equal(true);
 
-      measureText(argument);
+      measureText(argument as any);
 
       expect(canvasContextMock.measureText.withArgs('Test').calledOnce).to.equal(true);
     });
@@ -96,13 +96,13 @@ describe('text-metrics', () => {
     it('should not reuse past width calculations if arguments does not match previous use case', () => {
       argument.fontSize = ++cacheId;
 
-      measureText(argument);
+      measureText(argument as any);
 
       expect(canvasContextMock.measureText.withArgs('Test').calledOnce).to.equal(true);
 
       argument.fontSize = ++cacheId;
 
-      measureText(argument);
+      measureText(argument as any);
 
       expect(canvasContextMock.measureText.withArgs('Test').calledTwice).to.equal(true);
     });

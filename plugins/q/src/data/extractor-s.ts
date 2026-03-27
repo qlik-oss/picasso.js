@@ -95,7 +95,7 @@ function cellToValue({ cache, f, mainCell, p, prop, page, rowIdx, row, sourceKey
     }
     propCell = extend({ qRow: rowIdx }, propCellFn(row));
   }
-  target[targetProp] = datumExtract(p, propCell, { key: sourceKey }, prop);
+  target[targetProp] = datumExtract(p, propCell, { key: sourceKey });
 }
 
 export default function extract(config, dataset, cache, util) {
@@ -146,7 +146,6 @@ export default function extract(config, dataset, cache, util) {
                 mainCell,
                 p: arr[m],
                 prop: propsArr[l],
-                props,
                 page: cube.qDataPages[j],
                 rowIdx,
                 row: cube.qDataPages[j].qMatrix[k],
@@ -158,8 +157,8 @@ export default function extract(config, dataset, cache, util) {
             }
 
             if (p.fields) {
-              const fieldValues = ret[propsArr[l]].map((v) => v.value);
-              const fieldLabels = ret[propsArr[l]].map((v) => v.label);
+              const fieldValues = (ret[propsArr[l]] as any[]).map((v) => v.value);
+              const fieldLabels = (ret[propsArr[l]] as any[]).map((v) => v.label);
               ret[propsArr[l]] = {
                 value:
                   typeof p.value === 'function'
@@ -172,7 +171,7 @@ export default function extract(config, dataset, cache, util) {
                     ? p.label(fieldLabels)
                     : typeof p.label !== 'undefined'
                       ? String(p.label)
-                      : String(ret[propsArr[l]].value),
+                      : String((ret[propsArr[l]] as any).value),
               };
             }
           }

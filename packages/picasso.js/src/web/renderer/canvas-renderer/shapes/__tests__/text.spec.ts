@@ -44,21 +44,21 @@ describe('text', () => {
     });
 
     it('should set font correctly', () => {
-      render(text, { g });
+      render(text, { g } as any);
 
       expect(g.font).to.equal('normal 15px sans');
     });
 
     it('should set defined fontWeight', () => {
       text['font-weight'] = 'bold';
-      render(text, { g });
+      render(text, { g } as any);
 
       expect(g.font).to.equal('bold 15px sans');
     });
 
     it('should not fire stroke if stroke condition is falsy', () => {
       falsys.forEach((value) => {
-        render(text, { g, doStroke: value });
+        render(text, { g, doStroke: value } as any);
 
         expect(g.strokeText.called).to.equal(false);
       });
@@ -68,7 +68,7 @@ describe('text', () => {
       truthys.forEach((value) => {
         g.strokeText.resetHistory();
 
-        render(text, { g, doStroke: value });
+        render(text, { g, doStroke: value } as any);
 
         expect(g.strokeText.calledOnce).to.equal(true);
       });
@@ -89,7 +89,7 @@ describe('text', () => {
         it(`should be set correctly when text-anchor is ${fixture.value}`, () => {
           text['text-anchor'] = fixture.value;
 
-          render(text, { g });
+          render(text, { g } as any);
 
           expect(g.textAlign).to.equal(fixture.expected);
         });
@@ -100,7 +100,7 @@ describe('text', () => {
       it('should transform dominant-baseline into a dy value', () => {
         text['dominant-baseline'] = 'ideographic';
         text['font-size'] = '10px';
-        render(text, { g });
+        render(text, { g } as any);
 
         expect(g.fillText.args[0][2]).to.equal(2 + 4 - 2); // Validate y params
       });

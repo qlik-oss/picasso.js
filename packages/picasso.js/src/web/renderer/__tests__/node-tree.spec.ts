@@ -21,8 +21,8 @@ describe('node-tree', () => {
         nodes = [{ content: { type: '1' } }, { content: { type: '2' } }];
 
       createNodes(nodes, p, fn);
-      expect(nodes[0].object).to.equal('step 1');
-      expect(nodes[1].object).to.equal('step 2');
+      expect((nodes[0] as any).object).to.equal('step 1');
+      expect((nodes[1] as any).object).to.equal('step 2');
     });
   });
 
@@ -48,7 +48,7 @@ describe('node-tree', () => {
     it('should call maintainer function with object instance and content', () => {
       let fn = sinon.spy(),
         nodes = [{ object: 'a', content: 'foo' }, { object: 'b', content: false }, {}, { object: null }];
-      updateNodes(nodes, null, fn);
+      updateNodes(nodes, null as any, fn, undefined as any);
       expect(fn.callCount).to.equal(2);
       expect(fn.firstCall).to.have.been.calledWithExactly('a', 'foo');
       expect(fn.secondCall).to.have.been.calledWithExactly('b', false);

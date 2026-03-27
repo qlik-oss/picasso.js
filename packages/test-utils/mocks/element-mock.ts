@@ -1,7 +1,7 @@
 import canvascontext from './canvas-context';
 
-function element(name, rect = { x: 0, y: 0, width: 100, height: 100 }) {
-  const e = {
+function element(name = '', rect = { x: 0, y: 0, width: 100, height: 100 }) {
+  const e: Record<string, any> = {
     name,
     attributes: {},
     style: {},

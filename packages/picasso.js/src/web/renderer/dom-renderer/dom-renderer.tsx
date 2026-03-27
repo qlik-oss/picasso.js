@@ -31,7 +31,7 @@ export default function renderer(opts: DomRendererOptions = {}) {
 
   dom.root = () => el;
 
-  dom.settings = (rendererSettings) => {
+  (dom as any).settings = (rendererSettings) => {
     if (rendererSettings) {
       Object.keys(settings).forEach((key) => {
         if (rendererSettings[key] !== undefined) {
@@ -43,7 +43,7 @@ export default function renderer(opts: DomRendererOptions = {}) {
     return settings;
   };
 
-  dom.appendTo = (element) => {
+  (dom as any).appendTo = (element) => {
     if (!el) {
       el = createElement('div');
       el.style.position = 'absolute';
@@ -57,12 +57,12 @@ export default function renderer(opts: DomRendererOptions = {}) {
     return el;
   };
 
-  dom.render = (nodes) => {
+  (dom as any).render = (nodes) => {
     if (!el) {
       return false;
     }
 
-    const transformation = typeof settings.transform === 'function' && settings.transform();
+    const transformation = typeof (settings as any).transform === 'function' && (settings as any).transform();
     if (transformation) {
       const {
         horizontalScaling,
@@ -79,7 +79,7 @@ export default function renderer(opts: DomRendererOptions = {}) {
 
     const disableScreenReader = settings.disableScreenReader;
     if (disableScreenReader) {
-      el.setAttribute('aria-hidden', true);
+      el.setAttribute('aria-hidden', 'true');
     }
 
     el.style.left = `${rect.computedPhysical.x}px`;
@@ -94,7 +94,7 @@ export default function renderer(opts: DomRendererOptions = {}) {
       vNode = nodes;
     }
 
-    dNode = render(vNode, el, dNode);
+    dNode = render(vNode, el, dNode as any);
 
     return true;
   };
@@ -123,7 +123,7 @@ export default function renderer(opts: DomRendererOptions = {}) {
     dNode = null;
   };
 
-  dom.size = (inner) => {
+  (dom as any).size = (inner) => {
     if (inner) {
       rect = createRendererBox(inner);
     }

@@ -10,6 +10,8 @@
     "noImplicitReturns": false,
     "verbatimModuleSyntax": false,
 
-    "allowJs": false
+    "allowJs": false,
+
+    "types": ["jest"]
   }
 }

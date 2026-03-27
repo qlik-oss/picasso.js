@@ -46,7 +46,7 @@ describe('picasso.js', () => {
           prio: ['custom'],
         },
       });
-      expect(pic.renderer.default()).to.equal('custom');
+      expect((pic as any).renderer.default()).to.equal('custom');
     });
 
     it('should set default log level', () => {
@@ -55,7 +55,7 @@ describe('picasso.js', () => {
           level: 3,
         },
       });
-      expect(pic.logger.level()).to.equal(3);
+      expect((pic as any).logger.level()).to.equal(3);
     });
 
     it('should inherit style', () => {
@@ -69,13 +69,13 @@ describe('picasso.js', () => {
           fill: 'cyan',
         },
       });
-      expect(pic.config().style.fill).to.equal('cyan');
-      expect(pic.config().style.stroke).to.equal('green');
+      expect((pic.config().style as any).fill).to.equal('cyan');
+      expect((pic.config().style as any).stroke).to.equal('green');
     });
 
     it('should extend palettes', () => {
       const pic = picasso({
-        palettes: ['fancy'],
+        palettes: ['fancy'] as any,
       });
       expect(pic.config().palettes[3]).to.equal('fancy');
     });

@@ -8,9 +8,9 @@ describe('dom renderer', () => {
   beforeEach(() => {
     sandbox = sinon.createSandbox();
     rend = renderer({
-      createElement: element,
+      createElement: element as any,
       createTextNode: (text) => text,
-    });
+    } as any);
   });
 
   afterEach(() => {
