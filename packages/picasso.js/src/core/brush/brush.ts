@@ -4,7 +4,28 @@ import EventEmitter from '../utils/event-emitter';
 
 import rangeCollection from './range-collection';
 import valueCollection from './value-collection';
-import type { BrushConfig, BrushItem, BrushRangeItem } from '../../types';
+import type { BrushRangeConfig } from './range-collection';
+
+/** Brush configuration */
+export interface BrushConfig {
+  ranges?: BrushRangeConfig[];
+}
+
+/** A brush value item */
+export interface BrushItem {
+  key: string;
+  value?: string | number;
+  values?: Array<string | number>;
+}
+
+/** A brush range item (used in addRanges, removeRanges, setRanges, toggleRanges) */
+export interface BrushRangeItem {
+  key: string;
+  /** Single range object */
+  range?: { min: number; max: number };
+  /** Multiple ranges */
+  ranges?: Array<{ min: number; max: number }>;
+}
 
 /**
  * @typedef {object} BrushConfig

@@ -1,5 +1,5 @@
 import registry from '../utils/registry';
-import type { RegistryFn } from '../../types';
+import type { RegistryFn } from '../utils/registry';
 
 const rendererRegistry = (
   reg?: RegistryFn | null

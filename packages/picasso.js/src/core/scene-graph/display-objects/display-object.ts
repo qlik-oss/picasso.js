@@ -8,7 +8,27 @@ import nodeSelector from '../node-selector';
 import createSceneNode from '../scene-node';
 import { resolveCollionsOnNode, hasCollisionOnNode } from '../collision-resolver';
 import { assignMappedAttribute } from '../attributes';
-import type { Rect, Point } from '../../../types';
+import type { Rect } from '../../geometry/rect';
+import type { Point } from '../../geometry/util';
+
+/** Display node settings (used in display object set methods) */
+export interface DisplayNodeSettings {
+  type?: string;
+  fill?: string;
+  stroke?: string;
+  strokeWidth?: number;
+  strokeDasharray?: string | number[];
+  opacity?: number;
+  transform?: string;
+  data?: unknown;
+  desc?: object;
+  tag?: string;
+  id?: string;
+  collider?: unknown;
+  fillReference?: string;
+  strokeReference?: string;
+  [key: string]: unknown;
+}
 
 /** Collider configuration */
 interface ColliderConfig {

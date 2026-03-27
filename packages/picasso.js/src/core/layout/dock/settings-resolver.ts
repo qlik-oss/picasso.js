@@ -1,5 +1,5 @@
 import extend from 'extend';
-import type { Rect } from '../../../types';
+import type { Rect } from '../../geometry/rect';
 
 function roundRect(rect) {
   rect.x = Math.floor(rect.x);

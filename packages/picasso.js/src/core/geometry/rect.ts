@@ -1,4 +1,12 @@
 import { pointsToLine, pointsToRect } from './util';
+
+/** Represents an axis-aligned bounding rectangle */
+export interface Rect {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
 import {
   testCircleRect,
   testPolygonRect,

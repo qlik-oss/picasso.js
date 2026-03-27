@@ -1,4 +1,9 @@
-import type { BrushRangeConfig } from '../../types';
+/** Brush range configuration */
+export interface BrushRangeConfig {
+  key?: string;
+  includeMin?: boolean;
+  includeMax?: boolean;
+}
 
 function lessThanOrEqual(value, limit) {
   return value <= limit;

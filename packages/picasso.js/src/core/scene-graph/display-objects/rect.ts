@@ -1,4 +1,4 @@
-import type { DisplayNodeSettings } from '../../../types';
+import type { DisplayNodeSettings } from './display-object';
 import extend from 'extend';
 import DisplayObject from './display-object';
 import { rectToPoints, getMinMax } from '../../geometry/util';

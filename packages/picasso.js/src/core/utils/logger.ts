@@ -1,4 +1,22 @@
-import type { LogLevel, LoggerOptions, Logger } from '../../types';
+/** Log level values */
+export type LogLevel = 0 | 1 | 2 | 3 | 4;
+
+/** Logger instance interface */
+export interface Logger {
+  log(lev: LogLevel, ...args: unknown[]): void;
+  error(...args: unknown[]): void;
+  warn(...args: unknown[]): void;
+  info(...args: unknown[]): void;
+  debug(...args: unknown[]): void;
+  level(lev?: LogLevel): LogLevel;
+  LOG_LEVEL: Record<string, LogLevel>;
+}
+
+/** Logger factory options */
+export interface LoggerOptions {
+  level?: LogLevel;
+  pipe?: Pick<Console, 'error' | 'warn' | 'info' | 'log'>;
+}
 
 const LOG_LEVEL: Record<string, LogLevel> = {
   OFF: 0,

@@ -2,7 +2,7 @@ import extend from 'extend';
 import { scaleBand as d3ScaleBand } from 'd3-scale';
 import { generateDiscreteTicks } from './ticks/tick-generators';
 import resolveSettings from './settings-resolver';
-import type { ScaleSettings, ScaleData, ScaleResources } from '../../types';
+import type { ScaleSettings, ScaleData, ScaleResources } from './settings-resolver';
 
 export const DEFAULT_SETTINGS = {
   padding: 0,

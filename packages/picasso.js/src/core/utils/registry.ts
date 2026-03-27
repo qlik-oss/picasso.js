@@ -1,4 +1,19 @@
-import type { RegistryFn, Logger } from '../../types';
+import type { Logger } from './logger';
+
+/** Registry function interface - maps keys to registered values */
+export interface RegistryFn {
+  (key: string, value?: unknown): unknown;
+  add(key: string, value: unknown): boolean;
+  get(key: string): unknown;
+  has(key: string): boolean;
+  remove(key: string): unknown;
+  getKeys(): string[];
+  getValues(): unknown[];
+  default(d?: unknown): unknown;
+  register(key: string, value: unknown): boolean;
+  prio?: (p?: string[]) => string[];
+  types?: () => string[];
+}
 
 interface ParentRegistry {
   get(key: string): unknown;

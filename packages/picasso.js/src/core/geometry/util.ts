@@ -1,5 +1,11 @@
 import { isNumber } from '../utils/is-number';
 
+/** Represents a 2D point */
+export interface Point {
+  x: number;
+  y: number;
+}
+
 export function getMinMax(points) {
   const num = points.length;
   let xMin = NaN;

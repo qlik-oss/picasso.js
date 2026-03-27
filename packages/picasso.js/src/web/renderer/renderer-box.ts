@@ -12,7 +12,40 @@
  * @property {number} [margin.top] - Top margin
  */
 
-import type { RendererBox, ScaleRatio, Margin, EdgeBleed, Rect } from '../../../types';
+import type { Rect } from '../../core/geometry/rect';
+
+/** Scale ratio */
+export interface ScaleRatio {
+  x: number;
+  y: number;
+}
+
+/** Margin */
+export interface Margin {
+  left: number;
+  top: number;
+}
+
+/** Edge bleed */
+export interface EdgeBleed {
+  left: number;
+  right: number;
+  top: number;
+  bottom: number;
+  bool: boolean;
+}
+
+/** Renderer box - the physical/logical dimensions */
+export interface RendererBox {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  scaleRatio: ScaleRatio;
+  margin: Margin;
+  edgeBleed: EdgeBleed;
+  computedPhysical: Rect;
+}
 
 /** Input options for renderer box creation */
 interface RendererBoxInput {

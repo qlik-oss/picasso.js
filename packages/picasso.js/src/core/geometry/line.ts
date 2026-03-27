@@ -1,5 +1,14 @@
-import type { Point, Line as GeoLineType } from '../../types';
+import type { Point } from './util';
 import { pointsToLine, pointsToRect } from './util';
+
+/** Represents a line segment */
+export interface Line {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+  tolerance?: number;
+}
 import {
   testCircleLine,
   testPolygonLine,
@@ -16,7 +25,7 @@ import {
 class GeoLine {
   declare tolerance: number;
   declare type: string;
-  declare vectors: GeoLineType[];
+  declare vectors: Line[];
   declare x1: number;
   declare x2: number;
   declare y1: number;

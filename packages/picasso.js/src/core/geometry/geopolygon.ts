@@ -1,4 +1,5 @@
-import type { Point, Rect } from '../../types';
+import type { Point } from './util';
+import type { Rect } from './rect';
 import { create as createPolygon } from './polygon';
 import { pointsToLine, pointsToRect } from './util';
 import {

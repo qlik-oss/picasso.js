@@ -1,7 +1,7 @@
 import extend from 'extend';
 import bandScale, { DEFAULT_SETTINGS } from './band';
 import resolveSettings from './settings-resolver';
-import type { ScaleSettings, ScaleData, ScaleResources } from '../../types';
+import type { ScaleSettings, ScaleData, ScaleResources } from './settings-resolver';
 
 const DEFAULT_TICKS_SETTINGS = {
   depth: 0,
