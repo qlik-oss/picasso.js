@@ -61,7 +61,7 @@ export function startArea({ state, e, renderer, ranges, targetSize }) {
     target = null;
   }
 
-  const tempState: any = {
+  const tempState: Record<string, unknown> = {
     started: true,
   };
 
@@ -166,7 +166,7 @@ export function start({ state, e, renderer, ranges, targetSize }) {
     target = null;
   }
 
-  const tempState: any = {
+  const tempState: Record<string, unknown> = {
     started: true,
   };
 

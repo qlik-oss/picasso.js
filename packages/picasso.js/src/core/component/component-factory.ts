@@ -161,7 +161,7 @@ function createDockDefinition(settings, preferredSize, logger) {
     return settings.layout ? settings.layout[propName] : undefined;
   };
 
-  const def: any = {};
+  const def: { displayOrder?: unknown; dock?: unknown; prioOrder?: unknown; minimumLayoutMode?: unknown } = {};
   def.displayOrder = getLayoutProperty('displayOrder');
   def.dock = getLayoutProperty('dock');
   def.prioOrder = getLayoutProperty('prioOrder');
@@ -212,7 +212,7 @@ function tearDownEmitter(ctx, emitter) {
 // beforeUpdate -> beforeRender -> render -> updated
 
 // TODO support es6 classes
-function componentFactory(definition, context: any = {}) {
+function componentFactory(definition, context: Record<string, unknown> = {}) {
   const { defaultSettings = {}, _DO_NOT_USE_getInfo = () => ({}) } = definition;
   const {
     chart,
@@ -343,7 +343,7 @@ function componentFactory(definition, context: any = {}) {
   fn.dockConfig = () => dockConfig;
 
   // Set new settings - will trigger mapping of data and creation of scale / formatter.
-  fn.set = (opts: any = {}) => {
+  fn.set = (opts: Record<string, unknown> = {}) => {
     if (opts.settings) {
       config = opts.settings;
       settings = extend(true, {}, defaultSettings, opts.settings);
@@ -394,7 +394,7 @@ function componentFactory(definition, context: any = {}) {
     style = theme.style(settings.style || {});
   };
 
-  fn.resize = (inner: any = {}, outer: any = {}) => {
+  fn.resize = (inner: Record<string, unknown> = {}, outer: Record<string, unknown> = {}) => {
     const newSize = resize({
       inner,
       outer,
@@ -658,7 +658,7 @@ function componentFactory(definition, context: any = {}) {
     return shapes;
   };
 
-  fn.shapesAt = (shape, opts: any = {}) => {
+  fn.shapesAt = (shape: unknown, opts: Record<string, unknown> = {}) => {
     const items = rend.itemsAt(shape);
     let shapes;
 
@@ -675,7 +675,7 @@ function componentFactory(definition, context: any = {}) {
     return shapes;
   };
 
-  fn.brushFromShapes = (shapes, trigger: any = {}) => {
+  fn.brushFromShapes = (shapes: unknown[], trigger: Record<string, unknown> = {}) => {
     trigger.contexts = Array.isArray(trigger.contexts) ? trigger.contexts : [];
     const action = trigger.action || 'toggle';
 

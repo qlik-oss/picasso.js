@@ -39,7 +39,12 @@ function resolveMatrix(p, g) {
   g.setTransform(p[0][0], p[1][0], p[0][1], p[1][1], p[0][2], p[1][2]);
 }
 
-function applyContext(g, s, shapeToCanvasMap, computed: any = {}) {
+function applyContext(
+  g: CanvasRenderingContext2D,
+  s: Record<string, unknown>,
+  shapeToCanvasMap: Record<string, unknown>,
+  computed: Record<string, unknown> = {}
+) {
   const computedKeys = Object.keys(computed);
 
   for (let i = 0, len = shapeToCanvasMap.length; i < len; i++) {
@@ -67,7 +72,7 @@ function applyContext(g, s, shapeToCanvasMap, computed: any = {}) {
 function renderShapes(shapes, g, shapeToCanvasMap, deps) {
   for (let i = 0, len = shapes.length; i < len; i++) {
     let shape = shapes[i];
-    let computed: any = {};
+    let computed: Record<string, unknown> = {};
     g.save();
 
     if (shape.attrs && (shape.attrs.fill || shape.attrs.stroke)) {
@@ -140,7 +145,7 @@ function applyTransform({ el, dpiRatio, transform }) {
 export function renderer(sceneFn = sceneFactory) {
   let el;
   let buffer;
-  const settings: any = {
+  const settings: Record<string, unknown> = {
     transform: undefined,
     canvasBufferSize: undefined,
     progressive: undefined,
@@ -160,7 +165,8 @@ export function renderer(sceneFn = sceneFactory) {
 
   let patterns;
 
-  const canvasRenderer: any = create();
+  const canvasRenderer: ReturnType<typeof create> & Record<string, unknown> = create() as ReturnType<typeof create> &
+    Record<string, unknown>;
 
   canvasRenderer.element = () => el;
 

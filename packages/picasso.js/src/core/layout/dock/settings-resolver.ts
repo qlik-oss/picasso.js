@@ -1,4 +1,5 @@
 import extend from 'extend';
+import type { Rect } from '../../types';
 
 function roundRect(rect) {
   rect.x = Math.floor(rect.x);
@@ -14,7 +15,7 @@ export function resolveContainerRects(rect, settings) {
     width: 0,
     height: 0,
   };
-  const logicalContainerRect: any = {
+  const logicalContainerRect: Rect = {
     x: 0,
     y: 0,
     width: 0,

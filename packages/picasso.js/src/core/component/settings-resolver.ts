@@ -8,7 +8,7 @@ const externals = {
 };
 
 export default function settingsResolver(resources, deps = externals) {
-  let cache: any = {};
+  let cache: Record<string, unknown> = {};
 
   function resolve({ data, settings, defaults = {}, scaled }) {
     const norm = (cache.norm = deps.normalizeSettings(settings, defaults, resources.chart));

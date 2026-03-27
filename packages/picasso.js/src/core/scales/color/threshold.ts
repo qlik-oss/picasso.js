@@ -1,3 +1,4 @@
+import type { ScaleSettings, ScaleData, ScaleResources } from '../../types';
 import { scaleThreshold, scaleLinear } from 'd3-scale';
 import { notNumber } from '../../utils/is-number';
 import minmax from '../../utils/min-max';
@@ -101,7 +102,11 @@ function generateNiceDomain(range, min, max) {
  * t.range(); // Generates from colors and domain: ['rgb(0,0,0)','rgb(85,85,85)','rgb(170,170,170)','rgb(255,255,255)']
  */
 
-export default function scaleThresholdColor(settings: any = {}, data: any = {}, resources: any = {}) {
+export default function scaleThresholdColor(
+  settings: ScaleSettings = {},
+  data: ScaleData = {},
+  resources: ScaleResources = {}
+) {
   const d3Scale = scaleThreshold();
   const stgns = resolveSettings(settings, DEFAULT_SETTINGS, { data, resources });
   const isDomain = Array.isArray(stgns.domain) && stgns.domain.length;

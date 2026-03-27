@@ -1,7 +1,7 @@
 import { getPropsInfo, collect, track as storeTracked } from './util';
 
 function datumExtract(propCfg, cell, { key }) {
-  const datum: any = {
+  const datum: Record<string, unknown> = {
     value:
       typeof propCfg.value === 'function' // eslint-disable-line no-nested-ternary
         ? propCfg.value(cell)

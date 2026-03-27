@@ -64,7 +64,7 @@ function normalizeProperties(cfg, dataset, dataProperties, main) {
   const mainField = main.field || (typeof cfg.field !== 'undefined' ? dataset.field(cfg.field) : null);
   Object.keys(dataProperties).forEach((key) => {
     const pConfig = dataProperties[key];
-    const prop: any = (props[key] = {});
+    const prop: Record<string, unknown> = (props[key] = {} as Record<string, unknown>);
     if (['number', 'string', 'boolean'].indexOf(typeof pConfig) !== -1) {
       prop.type = 'primitive';
       prop.value = pConfig;
@@ -182,7 +182,7 @@ function collectItems(items, cfg, formatter, prop) {
 
   // // ret[prop].label = String(propsFormatters[prop](ret[prop].value));
 
-  const ret: any = {
+  const ret: Record<string, unknown> = {
     value: v,
     label: b,
   };

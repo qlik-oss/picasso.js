@@ -8,7 +8,7 @@ import field from './field';
 function createFields(path, obj, prefix, parentKey, opts) {
   return (obj[path] || []).map((meta, i) => {
     const fieldKey = `${parentKey ? `${parentKey}/` : ''}${path}/${i}`;
-    const f: any = {
+    const f: { instance: unknown; attrDims?: unknown[]; attrExps?: unknown[] } = {
       instance: field(
         extend(
           {
@@ -68,7 +68,7 @@ export default function q({
 
   const deps = q.util;
 
-  const opts: any = {
+  const opts: Record<string, unknown> = {
     cache,
     cube,
     localeInfo: config.localeInfo,

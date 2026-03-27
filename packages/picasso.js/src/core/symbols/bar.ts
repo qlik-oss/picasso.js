@@ -1,6 +1,7 @@
 import { rotate } from '../math/vector';
 import { pointsToRect } from '../geometry/util';
 import { toRadians } from '../math/angles';
+import type { Rect } from '../types';
 
 /**
  * @private
@@ -27,7 +28,7 @@ export default function bar(options) {
     points = points.map((pp) => rotate(pp, radians, p));
   }
 
-  const rect: any = pointsToRect(points);
+  const rect: Rect = pointsToRect(points);
   rect.type = 'rect';
   rect.fill = 'black';
 

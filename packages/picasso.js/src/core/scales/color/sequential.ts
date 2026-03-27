@@ -1,3 +1,4 @@
+import type { ScaleSettings, ScaleData, ScaleResources } from '../../types';
 import { interpolateRgb } from 'd3-interpolate';
 import extend from 'extend';
 import minmax from '../../utils/min-max';
@@ -54,7 +55,11 @@ function generateDomain(range, min, max) {
  * });
  */
 
-export default function scaleSequentialColor(settings: any = {}, data: any = {}, resources: any = {}) {
+export default function scaleSequentialColor(
+  settings: ScaleSettings = {},
+  data: ScaleData = {},
+  resources: ScaleResources = {}
+) {
   const s = linear(settings, data, resources).clamp(true).interpolate(interpolateRgb);
   const stgns = resolveSettings(settings, DEFAULT_SETTINGS, { data, resources });
   const isDomain = Array.isArray(stgns.domain) && stgns.domain.length;

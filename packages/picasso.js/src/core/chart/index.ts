@@ -616,7 +616,7 @@ function chartFn(definition, context) {
       });
     });
 
-    const eventInfo: any = {};
+    const eventInfo: Record<string, unknown> = {};
     const onTapDown = (e) => {
       if (e.touches) {
         eventInfo.x = e.touches[0].clientX;
@@ -712,7 +712,7 @@ function chartFn(definition, context) {
    * @param {string[]} [def.excludeFromUpdate=[]] Keys of components to not include in the layout
    * @experimental
    */
-  instance.layoutComponents = (newProps: any = {}) => {
+  instance.layoutComponents = (newProps: Record<string, unknown> = {}) => {
     const { excludeFromUpdate = [] } = newProps;
     if (newProps.data) {
       data = newProps.data;
@@ -752,7 +752,7 @@ function chartFn(definition, context) {
    * @param {boolean} [def.partialData=false] If set to true, will trigger a data update only. Meaning the layout will not be updated
    * @param {string[]} [def.excludeFromUpdate=[]] Keys of components to not include in the update
    */
-  instance.update = (newProps: any = {}) => {
+  instance.update = (newProps: Record<string, unknown> = {}) => {
     const { partialData, excludeFromUpdate = [] } = newProps;
     let visibleOrdered;
     if (newProps.data) {
@@ -932,7 +932,7 @@ function chartFn(definition, context) {
    *  }
    * );
    */
-  instance.shapesAt = (shape, opts: any = {}) => {
+  instance.shapesAt = (shape: unknown, opts: Record<string, unknown> = {}) => {
     let result = [];
     const containerBounds = element.getBoundingClientRect();
     let comps = visibleComponents; // Assume that visibleComponents is ordererd according to displayOrder

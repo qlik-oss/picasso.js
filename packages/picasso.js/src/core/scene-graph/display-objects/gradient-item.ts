@@ -1,3 +1,4 @@
+import type { DisplayNodeSettings } from '../../types';
 import DisplayObject from './display-object';
 import NodeContainer from '../node-container';
 
@@ -31,14 +32,14 @@ const allowedAttrs = ['x1', 'x2', 'y1', 'y2', 'id', 'offset', 'style'];
 
 export default class GradientItem extends DisplayObject {
   declare _boundingRect: any;
-  constructor(s: any = {}) {
+  constructor(s: DisplayNodeSettings = {}) {
     const { type = 'container' } = s;
     super(type);
     this.set(s);
     this._boundingRect = {};
   }
 
-  set(v: any = {}) {
+  set(v: DisplayNodeSettings = {}) {
     super.set(v);
 
     const attrs = this.attrs;

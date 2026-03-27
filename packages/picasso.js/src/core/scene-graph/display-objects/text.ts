@@ -1,3 +1,4 @@
+import type { DisplayNodeSettings } from '../../types';
 import extend from 'extend';
 import DisplayObject from './display-object';
 import { rectToPoints, getMinMax } from '../../geometry/util';
@@ -40,7 +41,7 @@ export default class Text extends DisplayObject {
     this.set(...s);
   }
 
-  set(v: any = {}) {
+  set(v: DisplayNodeSettings = {}) {
     const { x = 0, y = 0, dx = 0, dy = 0, textBoundsFn, text, title, collider, boundingRect, ellipsed } = v;
 
     super.set(v);

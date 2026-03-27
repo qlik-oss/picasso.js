@@ -146,7 +146,7 @@ export default function getSize({ isDiscrete, rect, formatter, measureText, scal
       .filter(isMajorTick);
 
     const measure = (text) => {
-      const m: any = measureText({
+      const m: Record<string, number> = measureText({
         text,
         fontSize: settings.labels.fontSize,
         fontFamily: settings.labels.fontFamily,

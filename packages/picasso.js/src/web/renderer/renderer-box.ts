@@ -12,14 +12,35 @@
  * @property {number} [margin.top] - Top margin
  */
 
+import type { RendererBox, ScaleRatio, Margin, EdgeBleed, Rect } from '../../../types';
+
+/** Input options for renderer box creation */
+interface RendererBoxInput {
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+  scaleRatio?: ScaleRatio;
+  margin?: Margin;
+  edgeBleed?: Partial<EdgeBleed>;
+}
+
 /**
  * Create the renderer box
  * @private
  * @param {Renderer~SizeDefinition} [opts]
  * @returns {Renderer~SizeDefinition} A svg renderer instance
  */
-export default function createRendererBox({ x, y, width, height, scaleRatio, margin, edgeBleed } = {}) {
-  const box: any = {
+export default function createRendererBox({
+  x,
+  y,
+  width,
+  height,
+  scaleRatio,
+  margin,
+  edgeBleed,
+}: RendererBoxInput = {}): RendererBox & { computedPhysical: Rect } {
+  const box: RendererBox & { computedPhysical: Rect } = {
     x: 0,
     y: 0,
     width: 0,
@@ -39,6 +60,7 @@ export default function createRendererBox({ x, y, width, height, scaleRatio, mar
       bottom: 0,
       bool: false,
     },
+    computedPhysical: { x: 0, y: 0, width: 0, height: 0 },
   };
 
   box.x = isNaN(x) ? box.x : x;

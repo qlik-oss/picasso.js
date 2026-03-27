@@ -54,7 +54,7 @@ function render({ rect }, renderer, itemized) {
 export default function titleRenderer(legend) {
   let itemized;
 
-  const api: any = {
+  const api: Record<string, unknown> = {
     itemize: (obj) => {
       itemized = itemize(obj, legend);
     },

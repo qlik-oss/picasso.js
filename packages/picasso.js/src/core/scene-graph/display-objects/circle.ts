@@ -1,3 +1,4 @@
+import type { DisplayNodeSettings } from '../../types';
 import extend from 'extend';
 import DisplayObject from './display-object';
 import { getMinMax } from '../../geometry/util';
@@ -19,7 +20,7 @@ export default class Circle extends DisplayObject {
     this.set(...s);
   }
 
-  set(v: any = {}) {
+  set(v: DisplayNodeSettings = {}) {
     const { cx = 0, cy = 0, r = 0, collider } = v;
     const opts = extend(
       {

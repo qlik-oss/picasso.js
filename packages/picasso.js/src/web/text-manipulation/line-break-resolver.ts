@@ -5,7 +5,7 @@ import { includesLineBreak } from './string-tokenizer';
 import { fontSizeToLineHeight } from './font-size-to-height';
 
 function generateLineNodes(result, item, halfLead, height) {
-  const container: any = { type: 'container', children: [] };
+  const container: { type: string; children: unknown[] } = { type: 'container', children: [] };
 
   if (typeof item.id !== 'undefined') {
     // TODO also inherit data attribute and more?

@@ -98,7 +98,7 @@ function getRectFromCircleIntersection({ radius, size, angle }) {
     default:
       throw new Error('invalid angle');
   }
-  let bounds: any = {
+  let bounds: Record<string, number | boolean | null> = {
     x: intersection.x + offset.x,
     y: intersection.y + offset.y,
     width,
@@ -116,7 +116,7 @@ function getHorizontalInsideSliceRect({ slice, padding, measured, store }) {
     height: measured.height + padding * 2,
   };
 
-  let bounds: any = getRectFromCircleIntersection({
+  let bounds: Record<string, number | boolean | null> = getRectFromCircleIntersection({
     radius: outerRadius,
     size,
     angle: middle,
@@ -153,7 +153,7 @@ function getHorizontalIntoSliceRect({ slice, padding, measured }) {
     height: measured.height + padding * 2,
   };
 
-  let bounds: any = getRectFromCircleIntersection({
+  let bounds: Record<string, number | boolean | null> = getRectFromCircleIntersection({
     radius: outerRadius,
     size,
     angle: middle,
@@ -211,7 +211,7 @@ function getRotatedInsideSliceRect({ slice, measured, padding }) {
 
   const middle = normalize((start + end) / 2);
   let r = outerRadius - padding;
-  let bounds: any = {
+  let bounds: Record<string, number | boolean | null> = {
     x: Math.sin(middle) * r,
     y: -Math.cos(middle) * r,
     width: maxWidth,
@@ -267,7 +267,7 @@ function getRotatedOusideSliceRect({ slice, measured, padding, view }) {
     return null;
   }
 
-  let bounds: any = {
+  let bounds: Record<string, number | boolean | null> = {
     x,
     y,
     width: maxWidth,
@@ -442,7 +442,7 @@ function getHorizontalOusideSliceRect({ slice, measured, padding, view, context 
     return null;
   }
 
-  let bounds: any = {
+  let bounds: Record<string, number | boolean | null> = {
     x,
     y,
     width: maxWidth,
@@ -469,7 +469,7 @@ function cbContext(node, chart) {
 }
 
 function placeTextOnPoint(rect, text, opts) {
-  const label: any = {
+  const label: Record<string, unknown> = {
     type: 'text',
     text,
     maxWidth: rect.width,
@@ -666,7 +666,7 @@ export function slices(
   findPlacement = findBestPlacement,
   placer = placeTextOnPoint
 ) {
-  const defaults: any = extend(
+  const defaults: Record<string, unknown> = extend(
     {
       fontSize: 12,
       fontFamily: 'Arial',
@@ -734,7 +734,7 @@ export function slices(
 
         const fill = typeof placement.fill === 'function' ? placement.fill(arg, i) : placement.fill;
 
-        const label: any = placer(bounds, text, {
+        const label: Record<string, unknown> = placer(bounds, text, {
           fill,
           fontSize: lblStngs.fontSize,
           fontFamily: lblStngs.fontFamily,

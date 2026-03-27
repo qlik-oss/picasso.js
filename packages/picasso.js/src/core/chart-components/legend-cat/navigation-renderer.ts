@@ -38,7 +38,7 @@ function btn(h, { size, isActive, direction, nav, attrs }) {
       attrsMerged.tabindex = nav.button.tabIndex;
     }
   }
-  const style: any = {
+  const style: Record<string, unknown> = {
     width: `${size}px`,
     minWidth: `${size}px`,
     height: `${size}px`,
@@ -148,7 +148,7 @@ function render(renderer, { rect, itemRenderer }, itemized, legend) {
 export default function navRenderer(legend) {
   let itemized;
 
-  const nav: any = {
+  const nav: Record<string, unknown> = {
     itemize: (obj) => {
       itemized = itemize(obj);
     },

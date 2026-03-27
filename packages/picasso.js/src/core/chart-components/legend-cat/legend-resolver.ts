@@ -153,7 +153,7 @@ export default function resolveSettings(comp) {
     }
 
     for (let i = 0; i < domain.length - 1; i++) {
-      const it: any = {
+      const it: Record<string, unknown> = {
         value: domain[i],
         label: `${formatter(domain[i])} - < ${formatter(domain[i + 1])}`,
       };

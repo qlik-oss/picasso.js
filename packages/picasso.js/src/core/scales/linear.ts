@@ -4,6 +4,7 @@ import extend from 'extend';
 import { notNumber } from '../utils/is-number';
 import { generateContinuousTicks } from './ticks/tick-generators';
 import resolveSettings from './settings-resolver';
+import type { ScaleSettings, ScaleData, ScaleResources } from '../types';
 
 export const DEFAULT_SETTINGS = {
   min: NaN,
@@ -99,11 +100,15 @@ function initNormScale(normScale, scale) {
  * @return { linear }
  */
 
-export default function scaleLinear(settings: any = {}, data: any = {}, resources: any = {}) {
+export default function scaleLinear(
+  settings: ScaleSettings = {},
+  data: ScaleData = {},
+  resources: ScaleResources = {}
+) {
   const d3Scale = d3ScaleLinear();
   const normScale = { instance: null, invert: false };
   const ctx = { data, resources };
-  const stgns: any = resolveSettings(settings, DEFAULT_SETTINGS, ctx);
+  const stgns: Record<string, unknown> = resolveSettings(settings, DEFAULT_SETTINGS, ctx);
   stgns.ticks = resolveSettings(settings.ticks, DEFAULT_TICKS_SETTINGS, ctx);
   stgns.minorTicks = resolveSettings(settings.minorTicks, DEFAULT_MINORTICKS_SETTINGS, ctx);
   let tickCache;

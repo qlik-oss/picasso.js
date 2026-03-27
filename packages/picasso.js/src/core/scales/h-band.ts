@@ -1,6 +1,7 @@
 import extend from 'extend';
 import bandScale, { DEFAULT_SETTINGS } from './band';
 import resolveSettings from './settings-resolver';
+import type { ScaleSettings, ScaleData, ScaleResources } from '../types';
 
 const DEFAULT_TICKS_SETTINGS = {
   depth: 0,
@@ -101,9 +102,13 @@ function flattenTree(rootNode, settings, ctx) {
  * @return { h-band }
  */
 
-export default function scaleHierarchicalBand(settings: any = {}, data: any = {}, resources: any = {}) {
+export default function scaleHierarchicalBand(
+  settings: ScaleSettings = {},
+  data: ScaleData = {},
+  resources: ScaleResources = {}
+) {
   const ctx = { data, resources };
-  const stgns: any = resolveSettings(settings, DEFAULT_SETTINGS, ctx);
+  const stgns: Record<string, unknown> = resolveSettings(settings, DEFAULT_SETTINGS, ctx);
   stgns.ticks = resolveSettings(settings.ticks, DEFAULT_TICKS_SETTINGS, ctx);
   stgns.value = typeof settings.value === 'function' ? settings.value : (d) => d.datum.value;
   stgns.label = typeof settings.label === 'function' ? settings.label : (d) => d.datum.value;

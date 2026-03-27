@@ -39,7 +39,7 @@ function resolveLocalSettings({ state, style, settings }) {
     state.isDiscrete ? DEFAULT_DISCRETE_SETTINGS : DEFAULT_CONTINUOUS_SETTINGS,
     style
   );
-  const localStgns: any = extend(true, {}, defaultStgns, settings.settings);
+  const localStgns: Record<string, unknown> = extend(true, {}, defaultStgns, settings.settings);
 
   const dock = settings.layout.dock || state.defaultDock;
   localStgns.dock = dock;
@@ -151,7 +151,7 @@ const axisComponent = {
 
     return reqSize;
   },
-  beforeUpdate(opts: any = {}) {
+  beforeUpdate(opts: Record<string, unknown> = {}) {
     const { settings } = opts;
     this.setState(settings);
   },

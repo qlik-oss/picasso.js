@@ -119,11 +119,15 @@ export function extractFieldFromId(id, layout) {
  * @param {object} [layout] QIX data layout. Needed only when brushing on attribute expressions, to be able to calculate the measure index.
  * @return {object[]} An array of relevant selections
  */
-export default function qBrush(brush, opts: any = {}, layout) {
+export default function qBrush(
+  brush: unknown,
+  opts: { byCells?: boolean; primarySource?: string; [key: string]: unknown } = {},
+  layout: unknown
+) {
   const byCells = opts.byCells;
   const primarySource = opts.primarySource;
   const selections = [];
-  const methods: any = {};
+  const methods: Record<string, unknown> = {};
   const isActive = brush.isActive();
   let hasValues = false;
   brush.brushes().forEach((b) => {

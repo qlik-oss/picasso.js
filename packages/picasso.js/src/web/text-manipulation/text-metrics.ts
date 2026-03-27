@@ -7,7 +7,7 @@ import { includesLineBreak } from './string-tokenizer';
 
 const heightCache = {};
 const widthCache = {};
-const contextCache: any = {
+const contextCache: Record<string, unknown> = {
   fontSize: undefined,
   fontFamily: undefined,
 };
@@ -148,7 +148,7 @@ export function textBounds(node, measureFn = measureText) {
 
   if (lineBreakFn && (tm.width > node.maxWidth || includesLineBreak(node.text))) {
     const resolvedLineBreaks = lineBreakFn(node, (text) => measureFn({ text, fontFamily, fontSize }));
-    const nodeCopy: any = extend({}, node);
+    const nodeCopy: Record<string, unknown> = extend({}, node);
     let maxWidth = 0;
     let widestLine = '';
     for (let i = 0, len = resolvedLineBreaks.lines.length; i < len; i++) {
@@ -161,7 +161,7 @@ export function textBounds(node, measureFn = measureText) {
       }
     }
     nodeCopy.text = widestLine;
-    const bounds: any = calcTextBounds(nodeCopy, measureFn);
+    const bounds: Record<string, number> = calcTextBounds(nodeCopy, measureFn);
     bounds.height = fontSizeToLineHeight(node) * resolvedLineBreaks.lines.length;
 
     return bounds;

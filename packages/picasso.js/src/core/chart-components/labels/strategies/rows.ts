@@ -95,7 +95,7 @@ function getBounds(node) {
  */
 
 export function rows({ settings, chart, nodes, renderer, style }, placer = placeTextInRect) {
-  const defaults: any = extend(
+  const defaults: Record<string, unknown> = extend(
     {
       fontSize: 12,
       fontFamily: 'Arial',
@@ -113,7 +113,7 @@ export function rows({ settings, chart, nodes, renderer, style }, placer = place
 
   const labelSettings = settings.labels.map((labelSetting) => extend({}, rowSettings, labelSetting));
 
-  const labelStruct: any = {};
+  const labelStruct: Record<string, unknown> = {};
   const labels = [];
 
   for (let i = 0, len = nodes.length; i < len; i++) {
@@ -185,7 +185,7 @@ export function rows({ settings, chart, nodes, renderer, style }, placer = place
       currentY += measurements[j].height + rowSettings.padding;
       let fill = typeof lblStngs.fill === 'function' ? lblStngs.fill(arg, i) : lblStngs.fill;
       const linkData = typeof lblStngs.linkData === 'function' ? lblStngs.linkData(arg, i) : undefined;
-      let label: any = placer(rect, texts[j], {
+      let label: Record<string, unknown> = placer(rect, texts[j], {
         fill,
         align: lblStngs.align,
         fontSize: lblStngs.fontSize,

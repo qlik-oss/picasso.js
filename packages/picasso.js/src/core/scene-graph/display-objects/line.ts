@@ -1,3 +1,4 @@
+import type { DisplayNodeSettings } from '../../types';
 import extend from 'extend';
 import DisplayObject from './display-object';
 import { lineToPoints, getMinMax } from '../../geometry/util';
@@ -20,7 +21,7 @@ export default class Line extends DisplayObject {
     this.set(...s);
   }
 
-  set(v: any = {}) {
+  set(v: DisplayNodeSettings = {}) {
     const { x1 = 0, y1 = 0, x2 = 0, y2 = 0, collider } = v;
     super.set(v);
     this.attrs.x1 = x1;

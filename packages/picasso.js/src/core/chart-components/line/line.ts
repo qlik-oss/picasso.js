@@ -94,7 +94,7 @@ const SETTINGS = {
 };
 
 function createDisplayLayer(points, { generatorType, item, data, major, minor, layerObj, stngs }, fill = '') {
-  const d: any = {
+  const d: Record<string, unknown> = {
     type: 'path',
     points,
     generatorType,

@@ -207,7 +207,7 @@ export default function buildRange({ borderHit, els, isVertical, state, vStart, 
     const targetEnd = hasScale ? state.scale.norm(vEnd) * targetSize : vEnd;
     const targetHeight = Math.abs(targetStart - targetEnd);
     const targetTop = Math.min(targetStart, targetEnd);
-    const targetArea: any = {
+    const targetArea: Record<string, number | null> = {
       h: state.h,
       isVertical,
       top: targetTop,

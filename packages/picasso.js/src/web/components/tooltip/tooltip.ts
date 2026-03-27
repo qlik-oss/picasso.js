@@ -245,7 +245,7 @@ const component = {
     hide() {
       this.hide();
     },
-    show(event, opts: any = {}) {
+    show(event: Event, opts: Record<string, unknown> = {}) {
       this.show(event, opts);
     },
     prevent(p) {

@@ -5,7 +5,7 @@ export default function patternizer(bucket, hasher = hashObject) {
   let uid = Date.now();
   const p = {
     onCreate(state) {
-      let inputs: any = {};
+      let inputs: Record<string, unknown> = {};
 
       if (
         state.node &&

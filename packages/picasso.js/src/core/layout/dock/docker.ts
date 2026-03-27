@@ -241,8 +241,8 @@ function positionComponents({ visible, layoutRect, reducedRect, containerRect, t
       return diff;
     })
     .forEach((c) => {
-      let outerRect: any = {};
-      let rect: any = {};
+      let outerRect: Record<string, number> = {};
+      let rect: Record<string, number> = {};
       const d = c.config.dock();
       switch (d) {
         case 'top':
@@ -413,7 +413,7 @@ function filterComponents(components, settings, rect) {
 function dockLayout(initialSettings) {
   let settings = resolveSettings(initialSettings);
 
-  const docker: any = {};
+  const docker: Record<string, unknown> = {};
 
   docker.layout = function layout(rect, components = []) {
     if (!rect || isNaN(rect.x) || isNaN(rect.y) || isNaN(rect.width) || isNaN(rect.height)) {

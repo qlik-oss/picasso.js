@@ -49,7 +49,7 @@ const normalLayout = (layoutSettings) => {
 const getLayoutFn = (strategy) => (typeof strategy === 'function' ? customLayout(strategy) : normalLayout(strategy));
 
 function collectionFn({ createComponent }) {
-  const instance: any = {};
+  const instance: Record<string, unknown> = {};
   let allComponents = [];
   let topComponents = [];
 

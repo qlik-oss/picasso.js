@@ -191,7 +191,7 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
   }
 
   if (p.label && p.label.show !== false && !(slopeLine?.slope && slopeLine.slope !== 0)) {
-    const item: any = extend(
+    const item: Record<string, unknown> = extend(
       true,
       refLabelDefaultSettings(),
       settings.style.label || {},

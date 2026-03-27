@@ -56,7 +56,7 @@ function resolveGeometryCollision(node, type, input) {
 }
 
 function inverseTransform(node, input) {
-  let transformedInput: any = {};
+  let transformedInput: Record<string, unknown> = {};
   if (node.modelViewMatrix) {
     if (Array.isArray(input)) {
       // Rect or Line
@@ -140,7 +140,7 @@ function hasCollision(nodes, intersectionType, input) {
 
 function resolveShape(shape, ratio = 1) {
   const type = getShapeType(shape);
-  let _shape: any = {};
+  let _shape: Record<string, unknown> = {};
 
   switch (type) {
     case 'circle':

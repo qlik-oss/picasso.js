@@ -121,7 +121,7 @@ function getFieldAccessor(sourceDepthObject, targetDepthObject) {
 }
 
 function datumExtract(propCfg, cell, { key }) {
-  const datum: any = {
+  const datum: Record<string, unknown> = {
     value:
       typeof propCfg.value === 'function'
         ? propCfg.value(cell)
@@ -313,7 +313,7 @@ const attachPropsAccessors = ({ propsArr, props, cube, cache, itemDepthObject, f
   }
 };
 
-export function augment(config: any = {}, dataset, cache, util) {
+export function augment(config: Record<string, unknown> = {}, dataset: unknown, cache: unknown, util: unknown) {
   const cube = dataset.raw();
   const sourceKey = dataset.key();
   const h = cube.qMode === 'S' ? getHierarchyForSMode(dataset) : getHierarchy(cube, cache, config);

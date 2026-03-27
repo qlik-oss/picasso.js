@@ -12,7 +12,7 @@ export default function gradienter(bucket, hasher = hashObject) {
 
       if (!cache[gradientHash]) {
         let { orientation, degree, stops = [] } = item[attr];
-        let gradient: any = {};
+        let gradient: Record<string, unknown> = {};
 
         if (degree === undefined) {
           degree = 90;

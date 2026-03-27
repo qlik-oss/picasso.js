@@ -1,3 +1,5 @@
+import type { BrushRangeConfig } from '../types';
+
 function lessThanOrEqual(value, limit) {
   return value <= limit;
 }
@@ -28,14 +30,28 @@ function contains(boundaries, point, minCondition, maxCondition) {
   return false;
 }
 
-export default function rangeCollection(config: any = {}) {
-  let maxCondition;
-  let minCondition;
-  let boundaries = [];
+export default function rangeCollection(config: BrushRangeConfig = {}) {
+  let maxCondition: ((value: number, limit: number) => boolean) | undefined;
+  let minCondition: ((value: number, limit: number) => boolean) | undefined;
+  let boundaries: number[] = [];
 
-  const fn: any = function () {};
+  interface RangeCollectionFn {
+    (): void;
+    configure(c: BrushRangeConfig): void;
+    add(range: { min: number; max: number }): boolean;
+    remove(range: { min: number; max: number }): boolean;
+    set(range: { min: number; max: number }): boolean;
+    containsValue(value: number): boolean;
+    containsRange(range: { min: number; max: number }): boolean;
+    toggle(range: { min: number; max: number }): boolean;
+    ranges(): Array<{ min: number; max: number }>;
+    clear(): void;
+    containsRangeValue(value: number): boolean;
+  }
 
-  fn.configure = (c: any = {}) => {
+  const fn: RangeCollectionFn = function () {} as RangeCollectionFn;
+
+  fn.configure = (c: BrushRangeConfig = {}) => {
     const { includeMax = true, includeMin = true } = c;
     maxCondition = includeMax ? lessThanOrEqual : lessThan;
     minCondition = includeMin ? lessThanOrEqual : lessThan;

@@ -199,7 +199,7 @@ function wiggle(buildOpts, isVertical) {
 }
 
 export default function buildNode(tick, buildOpts) {
-  const struct: any = {
+  const struct: Record<string, unknown> = {
     type: 'text',
     text: checkText(tick.label),
     x: 0,

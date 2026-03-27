@@ -1,6 +1,7 @@
 import { scaleOrdinal } from 'd3-scale';
 import extend from 'extend';
 import resolveSettings from './settings-resolver';
+import type { ScaleSettings, ScaleData, ScaleResources } from '../types';
 
 const DEFAULT_SETTINGS = {
   domain: [],
@@ -15,7 +16,7 @@ const DEFAULT_SETTINGS = {
  * @param { dataset } data
  * @return { ordinal }
  */
-export default function ordinal(settings: any = {}, data: any = {}, resources: any = {}) {
+export default function ordinal(settings: ScaleSettings = {}, data: ScaleData = {}, resources: ScaleResources = {}) {
   /**
    * An augmented {@link https://github.com/d3/d3-scale#_ordinal|d3 ordinal scale}
    * @private
@@ -23,7 +24,10 @@ export default function ordinal(settings: any = {}, data: any = {}, resources: a
    * @param { Object }
    * @return { number }
    */
-  const fn: any = scaleOrdinal();
+  const fn: ReturnType<typeof scaleOrdinal> & Record<string, unknown> = scaleOrdinal() as ReturnType<
+    typeof scaleOrdinal
+  > &
+    Record<string, unknown>;
 
   const ctx = { data, resources };
   const stgns = resolveSettings(settings, DEFAULT_SETTINGS, ctx);

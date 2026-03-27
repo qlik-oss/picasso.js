@@ -1,3 +1,4 @@
+import type { DisplayNodeSettings } from '../../types';
 import extend from 'extend';
 import DisplayObject from './display-object';
 import NodeContainer from '../node-container';
@@ -14,13 +15,13 @@ const NC = NodeContainer.prototype;
 export default class Container extends DisplayObject {
   declare __boundingRect: any;
   declare __bounds: any;
-  constructor(s: any = {}) {
+  constructor(s: DisplayNodeSettings = {}) {
     const { type = 'container' } = s;
     super(type);
     this.set(s);
   }
 
-  set(v: any = {}) {
+  set(v: DisplayNodeSettings = {}) {
     super.set(v);
 
     const { collider } = v;

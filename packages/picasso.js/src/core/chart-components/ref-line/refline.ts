@@ -4,7 +4,7 @@ import { isOob, oobManager } from './oob';
 import { createLineWithLabel } from './lines-and-labels';
 
 function createOobData(line) {
-  const data: any = {
+  const data: Record<string, unknown> = {
     value: line.value,
   };
 

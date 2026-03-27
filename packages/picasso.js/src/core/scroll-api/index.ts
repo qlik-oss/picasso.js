@@ -12,7 +12,7 @@ export default function scrollApi() {
    * @private
    * @alias scroll
    */
-  const s: any = {
+  const s: Record<string, unknown> = {
     /**
      * Move the current scroll
      * @param {number} value

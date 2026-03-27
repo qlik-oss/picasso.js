@@ -71,7 +71,7 @@ function tickBandwidth(scale, tick) {
 function labelBuilder(ticks, buildOpts, resolveTickOpts) {
   return ticks.map((tick, idx) => {
     resolveTickOpts(tick, idx);
-    const label: any = buildLabel(tick, buildOpts);
+    const label: Record<string, unknown> = buildLabel(tick, buildOpts);
     label.data = tick.data;
     return label;
   });
@@ -80,7 +80,7 @@ function labelBuilder(ticks, buildOpts, resolveTickOpts) {
 function arcLabelBuilder(ticks, buildOpts, resolveTickOpts) {
   return ticks.map((tick, idx) => {
     resolveTickOpts(tick, idx);
-    const label: any = buildArcLabels(tick, buildOpts);
+    const label: Record<string, unknown> = buildArcLabels(tick, buildOpts);
     label.data = tick.data;
     return label;
   });
@@ -94,7 +94,7 @@ function layeredLabelBuilder(ticks, buildOpts, settings, resolveTickOpts) {
     const padding2 = spacing + buildOpts.maxHeight + settings.labels.margin;
     buildOpts.layer = idx % 2;
     buildOpts.padding = idx % 2 === 0 ? padding : padding2;
-    const label: any = buildLabel(tick, buildOpts);
+    const label: Record<string, unknown> = buildLabel(tick, buildOpts);
     label.data = tick.data;
     return label;
   });
@@ -233,7 +233,7 @@ export default function nodeBuilder(isDiscrete) {
     const nodes = [];
     const major = majorTicks(ticks);
     const minor = minorTicks(ticks);
-    const buildOpts: any = {
+    const buildOpts: Record<string, unknown> = {
       innerRect,
       align: settings.align,
       outerRect,

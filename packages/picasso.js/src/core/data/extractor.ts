@@ -1,7 +1,34 @@
 import stack from './stack';
 
-export default function extract(dataConfig, data: any = {}, opts: any = {}) {
-  let extracted: any = {
+/** Data object passed to extract function */
+interface DataSource {
+  dataset?: (key: string) => unknown;
+  collection?: (key: string) => unknown;
+  field?: (query: string) => unknown;
+  [key: string]: unknown;
+}
+
+/** Options for extract function */
+interface ExtractOptions {
+  logger?: { warn: (...args: unknown[]) => void };
+  [key: string]: unknown;
+}
+
+/** Extracted data item */
+interface ExtractedData {
+  items?: unknown[];
+  fields?: unknown[];
+  source?: unknown;
+  value?: unknown;
+  label?: unknown;
+  children?: unknown;
+  root?: unknown;
+  graph?: unknown;
+  [key: string]: unknown;
+}
+
+export default function extract(dataConfig: unknown, data: DataSource = {}, opts: ExtractOptions = {}) {
+  let extracted: ExtractedData = {
     // items: [],
     // fields: [],
     // source: null,

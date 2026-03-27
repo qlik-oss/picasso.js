@@ -60,7 +60,7 @@ export function getFieldAccessor(field, page, deps, columnOrder) {
 // };
 
 function datumExtract(propCfg, cell, { key }) {
-  const datum: any = {
+  const datum: Record<string, unknown> = {
     value:
       typeof propCfg.value === 'function'
         ? propCfg.value(cell)

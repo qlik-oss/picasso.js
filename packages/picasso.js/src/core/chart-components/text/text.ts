@@ -38,7 +38,7 @@ function getTextAnchor(dock, anchor) {
 }
 
 function generateTitle({ title, definitionSettings, dock, rect, measureText, style }) {
-  const struct: any = {
+  const struct: Record<string, unknown> = {
     type: 'text',
     text: title,
     x: 0,

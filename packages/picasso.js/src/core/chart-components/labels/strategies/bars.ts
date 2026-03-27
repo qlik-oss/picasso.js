@@ -66,7 +66,7 @@ export function placeSegmentInSegment(majorSegmentPosition, majorSegmentSize, mi
 }
 
 export function placeTextInRect(rect, text, opts) {
-  const label: any = {
+  const label: Record<string, unknown> = {
     type: 'text',
     text,
     maxWidth: opts.rotate ? rect.height : rect.width,
@@ -113,7 +113,7 @@ function limitBounds(bounds, view) {
   bounds.height = maxY - minY;
 }
 
-function pad(bounds, measured, padding: any = {}) {
+function pad(bounds: Record<string, number>, measured: Record<string, number>, padding: Record<string, number> = {}) {
   const { top = PADDING, bottom = PADDING, left = PADDING, right = PADDING } = padding;
   const leftPadding = typeof left === 'function' ? left(measured) : left;
   const rightPadding = typeof right === 'function' ? right(measured) : right;
@@ -126,7 +126,7 @@ function pad(bounds, measured, padding: any = {}) {
 }
 
 export function getBarRect({ bar, view, direction, position, padding = PADDING, measured }) {
-  const bounds: any = {};
+  const bounds: Record<string, number> = {};
   extend(bounds, bar);
 
   if (!position || position === 'inside') {
@@ -211,7 +211,13 @@ export function findBestPlacement(
   return { bounds, placement };
 }
 
-function approxTextBounds(label, textMetrics, rotated, rect, padding: any = {}) {
+function approxTextBounds(
+  label: Record<string, unknown>,
+  textMetrics: Record<string, unknown>,
+  rotated: boolean,
+  rect: Record<string, unknown>,
+  padding: Record<string, number> = {}
+) {
   const { top = PADDING, bottom = PADDING, left = PADDING, right = PADDING } = padding;
   const leftPadding = typeof left === 'function' ? left(textMetrics) : left;
   const rightPadding = typeof right === 'function' ? right(textMetrics) : right;
@@ -360,7 +366,7 @@ export function placeInBars(
 }
 
 export function precalculate({ nodes, rect, chart, labelSettings, placementSettings, settings, renderer }) {
-  const labelStruct: any = {};
+  const labelStruct: Record<string, unknown> = {};
   const targetNodes = [];
   let target;
   let fitsHorizontally = true;
@@ -469,7 +475,7 @@ export function getOrientation({ orientation = 'auto', defaultOrientation = 'h' 
  */
 
 export function bars({ settings, chart, nodes, rect, renderer, style }, placer = placeInBars) {
-  const defaults: any = extend(
+  const defaults: Record<string, unknown> = extend(
     {
       fontSize: 12,
       fontFamily: 'Arial',

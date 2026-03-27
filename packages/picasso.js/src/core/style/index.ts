@@ -169,7 +169,7 @@ export function resolveForDataObject(props, dataObj, index, allData, contextProp
     const propData = exists && props[s].ref ? dataObj[props[s].ref] : dataObj;
     if (typeof props[s] === 'function') {
       // custom accessor function, not scale!
-      const fnContext: any = extend({}, { data: dataObj }, contextProps);
+      const fnContext: Record<string, unknown> = extend({}, { data: dataObj }, contextProps);
       if (hasScale) {
         fnContext.scale = props[s].scale;
       }

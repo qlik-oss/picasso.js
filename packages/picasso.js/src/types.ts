@@ -139,3 +139,40 @@ export interface DataField {
 
 /** Plugin function signature */
 export type Plugin = (registries: unknown, options?: Record<string, unknown>) => void;
+
+/** Generic scale factory settings */
+export interface ScaleSettings {
+  [key: string]: unknown;
+}
+
+/** Scale data input */
+export interface ScaleData {
+  items?: unknown[];
+  fields?: DataField[];
+  [key: string]: unknown;
+}
+
+/** Scale resources (chart context) */
+export interface ScaleResources {
+  chart?: unknown;
+  [key: string]: unknown;
+}
+
+/** Display node settings (used in display object set methods) */
+export interface DisplayNodeSettings {
+  type?: string;
+  fill?: string;
+  stroke?: string;
+  strokeWidth?: number;
+  strokeDasharray?: string | number[];
+  opacity?: number;
+  transform?: string;
+  data?: unknown;
+  desc?: object;
+  tag?: string;
+  id?: string;
+  collider?: unknown;
+  fillReference?: string;
+  strokeReference?: string;
+  [key: string]: unknown;
+}

@@ -2,6 +2,7 @@ import extend from 'extend';
 import { scaleBand as d3ScaleBand } from 'd3-scale';
 import { generateDiscreteTicks } from './ticks/tick-generators';
 import resolveSettings from './settings-resolver';
+import type { ScaleSettings, ScaleData, ScaleResources } from '../types';
 
 export const DEFAULT_SETTINGS = {
   padding: 0,
@@ -37,7 +38,7 @@ export const DEFAULT_SETTINGS = {
  * @return { band }
  */
 
-export default function scaleBand(settings: any = {}, data: any = {}, resources: any = {}) {
+export default function scaleBand(settings: ScaleSettings = {}, data: ScaleData = {}, resources: ScaleResources = {}) {
   const ctx = { data, resources };
   const stgns = resolveSettings(settings, DEFAULT_SETTINGS, ctx);
   const items = data.items || [];
@@ -73,7 +74,7 @@ export default function scaleBand(settings: any = {}, data: any = {}, resources:
      * Generate discrete ticks
      * @return {Object[]} Array of ticks
      */
-    band.ticks = function ticks(input: any = {}) {
+    band.ticks = function ticks(input: ScaleSettings = {}) {
       input.scale = band;
       return generateDiscreteTicks(input, fsettings.trackBy || 'label');
     };
@@ -86,7 +87,10 @@ export default function scaleBand(settings: any = {}, data: any = {}, resources:
    * @param { Object } value
    * @return { number }
    */
-  const band: any = d3ScaleBand();
+  const band: ReturnType<typeof d3ScaleBand> & Record<string, unknown> = d3ScaleBand() as ReturnType<
+    typeof d3ScaleBand
+  > &
+    Record<string, unknown>;
   augmentScaleBand(band, settings);
 
   /**

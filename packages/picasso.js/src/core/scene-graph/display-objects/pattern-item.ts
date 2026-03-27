@@ -1,3 +1,4 @@
+import type { DisplayNodeSettings } from '../../types';
 import DisplayObject from './display-object';
 import NodeContainer from '../node-container';
 
@@ -32,14 +33,14 @@ const allowedAttrs = ['patternUnits', 'x', 'y', 'width', 'height', 'id'];
 
 export default class PatternItem extends DisplayObject {
   declare _boundingRect: any;
-  constructor(s: any = {}) {
+  constructor(s: DisplayNodeSettings = {}) {
     const { type = 'container' } = s;
     super(type);
     this.set(s);
     this._boundingRect = {};
   }
 
-  set(v: any = {}) {
+  set(v: DisplayNodeSettings = {}) {
     super.set(v);
 
     const attrs = this.attrs;

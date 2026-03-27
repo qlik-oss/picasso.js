@@ -221,7 +221,7 @@ export function brushDataPoints({ dataPoints, action, chart, trigger }) {
     dataProps.forEach((p) => {
       let d = dataPoint && !p ? dataPoint : dataPoint[p];
       if (d) {
-        let it: any = { key: d.source.field };
+        let it: { key: string; [key: string]: unknown } = { key: d.source.field };
         if (typeof d.source.key !== 'undefined') {
           it.key = `${d.source.key}/${d.source.field}`;
         }

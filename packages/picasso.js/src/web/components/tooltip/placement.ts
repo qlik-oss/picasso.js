@@ -215,7 +215,7 @@ function alignToPoint({ options, pointer, width, height, dockOrder, x, y }) {
   for (let i = 0; i < dockOrder.length; i += 1) {
     const dock = dockOrder[i];
 
-    const offset: any = calcOffset({
+    const offset: Record<string, number> = calcOffset({
       area,
       vx,
       vy,
@@ -224,12 +224,12 @@ function alignToPoint({ options, pointer, width, height, dockOrder, x, y }) {
       offset: dockOffsets[dock],
     });
 
-    const computedTooltipStyle: any = {
+    const computedTooltipStyle: Record<string, string> = {
       left: `${x}px`,
       top: `${y}px`,
       transform: dockTransforms[dock],
     };
-    const computedArrowStyle: any = getComputedArrowStyle(options.offset)[dock];
+    const computedArrowStyle: Record<string, string> = getComputedArrowStyle(options.offset)[dock];
 
     if (offset.x !== 0) {
       computedTooltipStyle.width = `${width - edgeMargin - Math.abs(offset.x)}px`;
@@ -241,7 +241,7 @@ function alignToPoint({ options, pointer, width, height, dockOrder, x, y }) {
       }
     }
 
-    const result: any = {
+    const result: Record<string, unknown> = {
       computedTooltipStyle,
       computedArrowStyle,
       dock,
@@ -362,7 +362,7 @@ const STRATEGIES = {
 };
 
 export default function placement({ width, height }, { chart, state, props }) {
-  const propCtx: any = {
+  const propCtx: Record<string, unknown> = {
     resources: {
       formatter: chart.formatter,
       scale: chart.scale,
