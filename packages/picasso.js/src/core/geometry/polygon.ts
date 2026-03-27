@@ -1,3 +1,4 @@
+import type { Point, Rect } from '../types';
 import { pointsToLine, pointsToRect } from './util';
 import {
   testCirclePolygon,
@@ -35,14 +36,14 @@ function removeDuplicates(vertices) {
  */
 class Polygon {
   declare type: string;
-  declare vertices: any[];
-  declare edges: any[][];
+  declare vertices: Point[];
+  declare edges: [Point, Point][];
   declare xMin: number;
   declare yMin: number;
   declare xMax: number;
   declare yMax: number;
-  declare _bounds: any;
-  declare _boundingRect: any;
+  declare _bounds: Rect | null;
+  declare _boundingRect: Rect | null;
 
   constructor({ vertices = [] } = {}) {
     this.set({ vertices });

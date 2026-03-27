@@ -4,6 +4,7 @@ import EventEmitter from '../utils/event-emitter';
 
 import rangeCollection from './range-collection';
 import valueCollection from './value-collection';
+import type { BrushConfig, BrushItem, BrushRangeItem } from '../types';
 
 /**
  * @typedef {object} BrushConfig
@@ -342,12 +343,49 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
     },
   };
 
+  /** Brush instance interface */
+  interface BrushInstance {
+    (): void;
+    configure(config: BrushConfig): void;
+    link(target: BrushInstance): void;
+    _state(s?: unknown): unknown;
+    start(...args: unknown[]): void;
+    end(...args: unknown[]): void;
+    isActive(): boolean;
+    clear(): void;
+    brushes(): Record<string, unknown>;
+    addValue(key: string, value: string | number): void;
+    addValues(items: BrushItem[]): void;
+    setValues(items: BrushItem[]): void;
+    removeValue(key: string, value: string | number): void;
+    removeValues(items: BrushItem[]): void;
+    toggleValue(key: string, value: string | number): void;
+    toggleValues(items: BrushItem[]): void;
+    containsValue(key: string, value: string | number): boolean;
+    addRange(key: string, range: { min: number; max: number }): void;
+    addRanges(items: BrushRangeItem[]): void;
+    removeRange(key: string, range: { min: number; max: number }): void;
+    removeRanges(items: BrushRangeItem[]): void;
+    setRange(key: string, range: { min: number; max: number }): void;
+    setRanges(items: BrushRangeItem[]): void;
+    containsRange(key: string, range: { min: number; max: number }): boolean;
+    containsRangeValue(key: string, value: number): boolean;
+    addAndRemoveValues(addItems: BrushItem[], removeItems: BrushItem[]): void;
+    intercept(name: string, ic: () => void): void;
+    removeInterceptor(name: string, ic: () => void): void;
+    removeAllInterceptors(name?: string): void;
+    addKeyAlias(key: string, alias: string): void;
+    removeKeyAlias(key: string): void;
+    emit(event: string, ...args: unknown[]): void;
+    containsMappedData(item: unknown, props: unknown[], mode: string): boolean;
+  }
+
   /**
    * A brush context
    * @alias Brush
    * @interface
    */
-  const fn: any = {};
+  const fn: BrushInstance = {} as BrushInstance;
 
   /**
    * Triggered when this brush is activated
@@ -381,7 +419,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    *   ]
    * })
    */
-  fn.configure = (config: any = {}) => {
+  fn.configure = (config: BrushConfig = {}) => {
     if (Array.isArray(config.ranges) && config.ranges.length) {
       rangeConfig = {
         sources: {},

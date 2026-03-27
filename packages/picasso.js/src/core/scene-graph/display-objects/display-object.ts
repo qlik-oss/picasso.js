@@ -8,39 +8,36 @@ import nodeSelector from '../node-selector';
 import createSceneNode from '../scene-node';
 import { resolveCollionsOnNode, hasCollisionOnNode } from '../collision-resolver';
 import { assignMappedAttribute } from '../attributes';
+import type { Rect, Point } from '../../types';
 
-/**
- * @private
- * @typedef {object} DisplayObject
- * @property {string} type
- * @property {string|GradientNode|PatternNode} [fill] - {@link https://www.w3.org/TR/fill-stroke-3/#fill-shorthand}
- * @property {string|GradientNode|PatternNode} [stroke] - {@link https://www.w3.org/TR/fill-stroke-3/#propdef-stroke}
- * @property {number} [strokeWidth] - {@link https://www.w3.org/TR/fill-stroke-3/#propdef-stroke-width}
- * @property {string|number[]} [strokeDasharray] - {@link https://www.w3.org/TR/fill-stroke-3/#propdef-stroke-dasharray}
- * @property {number} [opacity] - {@link https://www.w3.org/TR/css-color-4/#propdef-opacity}
- * @property {string} [transform] - {@link https://www.w3.org/TR/SVG/coords.html#TransformAttribute}
- * @property {object} [data] - Data object, may contain any properties
- * @property {object} [desc] - Meta-data object, may contain any properties
- * @property {string} [tag] - White-space seperated list of tags
- * @property {string} [id] - Unique identifier of the node
- * @property {object} [collider]
- */
+/** Collider configuration */
+interface ColliderConfig {
+  type: string | null;
+  definition: unknown;
+  fn: ((shape: unknown) => boolean) | null;
+}
+
+/** Display object attribute map */
+interface AttrMap {
+  [key: string]: unknown;
+}
 
 class DisplayObject extends Node {
-  declare _attrs: any;
-  declare _collider: any;
-  declare _imvm: any;
-  declare _mvm: any;
-  declare _node: any;
-  declare _parent: any;
-  declare _stage: any;
-  declare boundingRect: any;
-  declare data: any;
-  declare desc: any;
-  declare fillReference: any;
-  declare strokeReference: any;
-  declare tag: any;
-  constructor(type) {
+  declare _attrs: AttrMap;
+  declare _collider: ColliderConfig;
+  declare _imvm: Matrix | null;
+  declare _mvm: Matrix | null;
+  declare _node: object | null;
+  declare _parent: DisplayObject | null;
+  declare _stage: DisplayObject | null;
+  declare boundingRect: ((includeTransform?: boolean) => Rect) | undefined;
+  declare data: unknown;
+  declare desc: object | undefined;
+  declare fillReference: string | undefined;
+  declare strokeReference: string | undefined;
+  declare tag: string | undefined;
+
+  constructor(type: string) {
     super(type);
     this._stage = null;
     this._collider = {
@@ -52,10 +49,16 @@ class DisplayObject extends Node {
     this._node = null;
   }
 
-  set(v: any = {}) {
+  set(v: Record<string, unknown> = {}) {
     this.node = v;
 
-    const { data, desc, tag, strokeReference, fillReference } = v;
+    const { data, desc, tag, strokeReference, fillReference } = v as {
+      data?: unknown;
+      desc?: object;
+      tag?: string;
+      strokeReference?: string;
+      fillReference?: string;
+    };
 
     assignMappedAttribute(this.attrs, v);
 

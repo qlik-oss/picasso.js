@@ -1,8 +1,8 @@
 class Node {
-  declare _ancestors: any;
-  declare _children: any;
-  declare _parent: any;
-  declare data: any;
+  declare _ancestors: Node[] | null;
+  declare _children: Node[];
+  declare _parent: Node | null;
+  declare data: unknown;
   /**
    * @private
    */

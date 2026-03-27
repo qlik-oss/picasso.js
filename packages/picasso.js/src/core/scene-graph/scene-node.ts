@@ -78,20 +78,20 @@ function colliderToShape(node, dpi) {
  * Read-only object representing a node on the scene.
  */
 class SceneNode {
-  declare _attrs: any;
-  declare _bounds: any;
-  declare _cache: any;
-  declare _children: any;
-  declare _collider: any;
-  declare _data: any;
-  declare _desc: any;
-  declare _dpi: any;
-  declare _element: any;
-  declare _getElementBoundingRect: any;
-  declare _key: any;
-  declare _parent: any;
-  declare _tag: any;
-  declare _type: any;
+  declare _attrs: Record<string, unknown>;
+  declare _bounds: { x: number; y: number; width: number; height: number } | null;
+  declare _cache: Record<string, unknown> | null;
+  declare _children: unknown[];
+  declare _collider: unknown;
+  declare _data: unknown;
+  declare _desc: object | null;
+  declare _dpi: number;
+  declare _element: Element | null;
+  declare _getElementBoundingRect: (() => DOMRect) | null;
+  declare _key: string | undefined;
+  declare _parent: unknown;
+  declare _tag: string | null;
+  declare _type: string;
   constructor(node) {
     this._bounds = (includeTransform = true) => {
       const { x, y, width, height } = node.boundingRect

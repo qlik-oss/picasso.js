@@ -1,4 +1,6 @@
-const LOG_LEVEL = {
+import type { LogLevel, LoggerOptions, Logger } from '../types';
+
+const LOG_LEVEL: Record<string, LogLevel> = {
   OFF: 0,
   ERROR: 1,
   WARN: 2,
@@ -6,8 +8,8 @@ const LOG_LEVEL = {
   DEBUG: 4,
 };
 
-const loggerFn = ({ level = LOG_LEVEL.OFF, pipe = console } = {}) => {
-  let currentlevel = level;
+const loggerFn = ({ level = LOG_LEVEL.OFF, pipe = console }: LoggerOptions = {}): Logger => {
+  let currentlevel: LogLevel = level as LogLevel;
 
   const LOG_FN = {
     [LOG_LEVEL.OFF]: () => {},

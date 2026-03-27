@@ -46,10 +46,10 @@ function toHSL(r, g, b) {
 }
 
 class RgbaColor {
-  declare b: any;
-  declare g: any;
-  declare a: any;
-  declare r: any;
+  declare b: number;
+  declare g: number;
+  declare a: number;
+  declare r: number;
   /**
    * Class representing a RGBA Color
    * @private

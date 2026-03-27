@@ -1,11 +1,11 @@
 import crispify from './crispifier';
 
 class Transposer {
-  declare crisp: any;
-  declare flipXY: any;
-  declare height: any;
-  declare storage: any;
-  declare width: any;
+  declare crisp: boolean;
+  declare flipXY: boolean;
+  declare height: number;
+  declare storage: unknown[];
+  declare width: number;
   /**
    * @private
    */

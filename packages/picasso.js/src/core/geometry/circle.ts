@@ -1,3 +1,4 @@
+import type { Point } from '../types';
 import { pointsToLine, pointsToRect } from './util';
 import {
   testCirclePoint,
@@ -13,11 +14,11 @@ import {
  * @private
  */
 class GeoCircle {
-  declare cx: any;
-  declare cy: any;
-  declare r: any;
-  declare type: any;
-  declare vector: any;
+  declare cx: number;
+  declare cy: number;
+  declare r: number;
+  declare type: string;
+  declare vector: Point;
   constructor({ cx = 0, cy = 0, r = 0, minRadius = 0 } = {}) {
     this.set({
       cx,

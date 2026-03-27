@@ -1,6 +1,6 @@
 class Matrix {
-  declare _elements: any;
-  declare _stack: any;
+  declare _elements: number[][];
+  declare _stack: number[][][];
   /**
    * Creates a matrix with identity values.
    * @private

@@ -10,8 +10,8 @@ const DEFAULT_PADDING = {
  * @private
  */
 class CanvasBuffer {
-  declare bufferCanvas: any;
-  declare targetCanvas: any;
+  declare bufferCanvas: HTMLCanvasElement;
+  declare targetCanvas: HTMLCanvasElement;
   constructor(targetCanvas) {
     this.targetCanvas = targetCanvas;
     this.bufferCanvas = targetCanvas.cloneNode();

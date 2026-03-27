@@ -1,7 +1,7 @@
 import Node from './node';
 
 class NodeContainer extends Node {
-  declare _children: any;
+  declare _children: Node[];
   addChild(c) {
     if (!c || !(c instanceof Node)) {
       throw new TypeError(`Expecting a Node as argument, but got ${c}`);

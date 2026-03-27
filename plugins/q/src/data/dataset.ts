@@ -45,7 +45,11 @@ function createFields(path, obj, prefix, parentKey, opts) {
   });
 }
 
-export default function q({ key, data, config: any = {} } = {}) {
+export default function q({
+  key,
+  data,
+  config = {},
+}: { key?: string; data?: object; config?: Record<string, unknown> } = {}) {
   const cache = {
     fields: [],
     wrappedFields: [],

@@ -5,7 +5,7 @@ import { create as factory } from './index';
  * @private
  */
 class GeometryCollection {
-  declare geometries: any;
+  declare geometries: unknown[];
   constructor(collection = []) {
     this.set(collection);
   }

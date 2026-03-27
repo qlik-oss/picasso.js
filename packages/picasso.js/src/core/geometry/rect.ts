@@ -13,11 +13,11 @@ import {
  * @private
  */
 class GeoRect {
-  declare height: any;
-  declare type: any;
-  declare width: any;
-  declare x: any;
-  declare y: any;
+  declare height: number;
+  declare type: string;
+  declare width: number;
+  declare x: number;
+  declare y: number;
   constructor({ x = 0, y = 0, width = 0, height = 0, minWidth = 0, minHeight = 0 } = {}) {
     this.set({
       x,

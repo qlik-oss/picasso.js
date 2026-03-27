@@ -1,3 +1,4 @@
+import type { Point, Line } from '../types';
 import { pointsToLine, pointsToRect } from './util';
 import {
   testCircleLine,
@@ -17,9 +18,9 @@ function pointsAreNotEqual(p0, p1) {
  * @private
  */
 class GeoPolyline {
-  declare _points: any;
-  declare segments: any;
-  declare type: any;
+  declare _points: Point[];
+  declare segments: Line[];
+  declare type: string;
   constructor({ points = [] } = {}) {
     this.set({ points });
   }

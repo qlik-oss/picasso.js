@@ -1,3 +1,4 @@
+import type { Point, Rect } from '../types';
 import { create as createPolygon } from './polygon';
 import { pointsToLine, pointsToRect } from './util';
 import {
@@ -35,15 +36,15 @@ function removeDuplicates(vertices) {
  */
 class GeoPolygon {
   declare type: string;
-  declare vertices: any[][];
+  declare vertices: Point[][];
   declare numPolygons: number;
-  declare polygons: any[];
+  declare polygons: ReturnType<typeof createPolygon>[];
   declare xMin: number;
   declare yMin: number;
   declare xMax: number;
   declare yMax: number;
-  declare _bounds: any;
-  declare _boundingRect: any;
+  declare _bounds: Rect | null;
+  declare _boundingRect: Rect | null;
 
   constructor({ vertices = [[]] } = {}) {
     this.set({ vertices });

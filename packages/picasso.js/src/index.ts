@@ -16,18 +16,50 @@ import loggerFn from './core/utils/logger';
 import registry from './core/utils/registry';
 
 import { style, palettes } from './core/theme/light';
+import type { Logger, RegistryFn, Plugin, LogLevel } from './types';
 
-function usePlugin(plugin, options: any = {}, api) {
+/** Configuration for the renderer */
+interface RendererConfig {
+  prio?: string[];
+}
+
+/** Configuration for the logger */
+interface LoggerConfig {
+  level?: LogLevel;
+}
+
+/** Configuration passed to picasso factory */
+interface PicassoConfig {
+  renderer?: RendererConfig;
+  logger?: LoggerConfig;
+  style?: object;
+  palettes?: object[];
+}
+
+/** The set of registries used internally */
+interface Registries {
+  component: RegistryFn;
+  data: RegistryFn;
+  formatter: RegistryFn;
+  interaction: RegistryFn;
+  renderer: RegistryFn;
+  scale: RegistryFn;
+  symbol: RegistryFn;
+  logger: Logger;
+  [key: string]: unknown;
+}
+
+function usePlugin(plugin: Plugin, options: Record<string, unknown> = {}, api: Registries): void {
   plugin(api, options);
 }
 
-function pic(config: any = {}, registries: any = {}) {
+function pic(config: PicassoConfig = {}, registries: Partial<Registries> = {}) {
   const logger = loggerFn(config.logger);
 
   /**
    * @lends picassojs
    */
-  const regis: any = {
+  const regis: Registries = {
     // -- registries --
     /**
      * Component registry
@@ -98,7 +130,7 @@ function pic(config: any = {}, registries: any = {}) {
    *
    * const configuredPicasso = picasso({ renderer: { prio: ['canvas'] } }) // All components will render using the canvas renderer
    */
-  function picassojs(cfg: any = {}) {
+  function picassojs(cfg: PicassoConfig = {}) {
     let cc = {
       palettes: config.palettes.concat(cfg.palettes || []),
       style: extend({}, config.style, cfg.style),
@@ -130,7 +162,7 @@ function pic(config: any = {}, registries: any = {}) {
    * @param {plugin} plugin
    * @param {object} [options]
    */
-  picassojs.use = (plugin, options: any = {}) => usePlugin(plugin, options, regis);
+  picassojs.use = (plugin: Plugin, options: Record<string, unknown> = {}) => usePlugin(plugin, options, regis);
 
   /**
    * @param {ChartDefinition} definition

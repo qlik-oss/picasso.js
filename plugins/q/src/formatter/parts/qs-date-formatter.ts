@@ -209,12 +209,13 @@ function getMasks(inst, d) {
 }
 
 class DateFormatter {
-  declare localeInfo: any;
-  declare locale_days: any;
-  declare locale_days_abbr: any;
-  declare locale_months: any;
-  declare locale_months_abbr: any;
-  declare subtype: any;
+  declare localeInfo: Record<string, unknown>;
+  declare locale_days: string[];
+  declare locale_days_abbr: string[];
+  declare locale_months: string[];
+  declare locale_months_abbr: string[];
+  declare subtype: string | undefined;
+  declare pattern: string;
   /**
    * @name DateFormatter
    * @constructs

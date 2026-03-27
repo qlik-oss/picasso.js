@@ -1,3 +1,4 @@
+import type { Point, Line as GeoLineType } from '../types';
 import { pointsToLine, pointsToRect } from './util';
 import {
   testCircleLine,
@@ -13,14 +14,14 @@ import {
  * @private
  */
 class GeoLine {
-  declare tolerance: any;
-  declare type: any;
-  declare vectors: any;
-  declare x1: any;
-  declare x2: any;
-  declare y1: any;
-  declare y2: any;
-  declare zeroSize: any;
+  declare tolerance: number;
+  declare type: string;
+  declare vectors: GeoLineType[];
+  declare x1: number;
+  declare x2: number;
+  declare y1: number;
+  declare y2: number;
+  declare zeroSize: boolean;
   constructor({ x1 = 0, y1 = 0, x2 = 0, y2 = 0, tolerance = 0 } = {}) {
     this.set({
       x1,

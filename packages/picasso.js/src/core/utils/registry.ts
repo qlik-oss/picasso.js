@@ -1,7 +1,19 @@
-export default function registryFactory(parentRegistry?: any, registerName = 'unspecified', logger?: any) {
-  let defaultValue;
-  const reg = {};
-  const parent = parentRegistry || {
+import type { RegistryFn, Logger } from '../types';
+
+interface ParentRegistry {
+  get(key: string): unknown;
+  has(key: string): boolean;
+  default(d?: unknown): unknown;
+}
+
+export default function registryFactory(
+  parentRegistry?: RegistryFn | null,
+  registerName = 'unspecified',
+  logger?: Logger | null
+): RegistryFn {
+  let defaultValue: unknown;
+  const reg: Record<string, unknown> = {};
+  const parent: ParentRegistry = parentRegistry || {
     get: () => undefined,
     has: () => false,
     default: () => undefined,
@@ -22,7 +34,7 @@ export default function registryFactory(parentRegistry?: any, registerName = 'un
    * });
    *
    */
-  function add(key, value) {
+  function add(key: string, value: unknown): boolean {
     if (!key || typeof key !== 'string') {
       throw new TypeError('Invalid argument: key must be a non-empty string');
     }
@@ -33,15 +45,15 @@ export default function registryFactory(parentRegistry?: any, registerName = 'un
     return true;
   }
 
-  function get(key) {
+  function get(key: string): unknown {
     return reg[key] || parent.get(key);
   }
 
-  function has(key) {
+  function has(key: string): boolean {
     return !!reg[key] || parent.has(key);
   }
 
-  function remove(key) {
+  function remove(key: string): unknown {
     const d = reg[key];
     delete reg[key];
     return d;
@@ -55,7 +67,7 @@ export default function registryFactory(parentRegistry?: any, registerName = 'un
     return Object.keys(reg).map((key) => reg[key]);
   }
 
-  function deflt(d) {
+  function deflt(d?: unknown): unknown {
     if (typeof d !== 'undefined') {
       defaultValue = d;
     }
@@ -69,7 +81,7 @@ export default function registryFactory(parentRegistry?: any, registerName = 'un
    * @param {any} [value] Value to store in the registry.
    * @returns {any} Registered value
    */
-  function registry(key, value) {
+  function registry(key: string, value?: unknown): unknown {
     if (typeof value !== 'undefined') {
       return add(key, value);
     }

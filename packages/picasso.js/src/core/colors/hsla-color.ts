@@ -65,10 +65,10 @@ function toByte(h, s, l) {
 }
 
 class HslaColor {
-  declare h: any;
-  declare l: any;
-  declare s: any;
-  declare a: any;
+  declare h: number;
+  declare l: number;
+  declare s: number;
+  declare a: number;
   /**
    * Create a HSLA Color
    * @private

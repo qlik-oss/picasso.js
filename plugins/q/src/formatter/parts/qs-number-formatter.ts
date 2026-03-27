@@ -223,14 +223,15 @@ function preparePattern(o, t, d, abbreviate) {
 }
 
 class NumberFormatter {
-  declare _prepared: any;
-  declare abbreviations: any;
-  declare decimalDelimiter: any;
-  declare localeInfo: any;
-  declare patternSeparator: any;
-  declare subtype: any;
-  declare thousandDelimiter: any;
-  declare type: any;
+  declare _prepared: Record<string, unknown> | null;
+  declare abbreviations: string[];
+  declare decimalDelimiter: string;
+  declare localeInfo: Record<string, unknown> | null;
+  declare pattern: string;
+  declare patternSeparator: string;
+  declare subtype: string | undefined;
+  declare thousandDelimiter: string;
+  declare type: string;
   /**
    * @name NumberFormatter
    * @constructs
