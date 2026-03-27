@@ -39,15 +39,15 @@ export default function patternizer(bucket, hasher = hashObject) {
             patternUnits: 'userSpaceOnUse',
             x: 0,
             y: 0,
-            width: input.width,
-            height: input.height,
+            width: (input as Record<string, unknown>).width,
+            height: (input as Record<string, unknown>).height,
             type: 'pattern',
             id: pnid,
             children: [],
-            fill: input.fill,
+            fill: (input as Record<string, unknown>).fill,
           };
 
-          input.shapes.forEach((s) => {
+          ((input as Record<string, unknown>).shapes as unknown[]).forEach((s) => {
             pn.children.push(s);
           });
 

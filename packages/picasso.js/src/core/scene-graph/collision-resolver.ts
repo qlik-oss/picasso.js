@@ -79,9 +79,9 @@ function inverseTransform(node, input) {
 
   if (Array.isArray(transformedInput.vertices)) {
     if (transformedInput.vertices.every((item) => Array.isArray(item))) {
-      transformedInput = createGeoPolygon(transformedInput);
+      transformedInput = createGeoPolygon(transformedInput) as unknown as Record<string, unknown>;
     } else {
-      transformedInput = createPolygon(transformedInput); // TODO Shouldn't have to do this here, currently its beacause a collision algorithm optimization, i.e. caching of polygon bounds
+      transformedInput = createPolygon(transformedInput) as unknown as Record<string, unknown>; // TODO Shouldn't have to do this here, currently its beacause a collision algorithm optimization, i.e. caching of polygon bounds
     }
   }
 
@@ -140,13 +140,13 @@ function hasCollision(nodes, intersectionType, input) {
 
 function resolveShape(shape, ratio = 1) {
   const type = getShapeType(shape);
-  let _shape: Record<string, unknown> = {};
+  let _shape: Record<string, unknown> | { x: number; y: number }[] = {};
 
   switch (type) {
     case 'circle':
-      _shape.cx = shape.cx * ratio;
-      _shape.cy = shape.cy * ratio;
-      _shape.r = shape.r;
+      (_shape as Record<string, unknown>).cx = shape.cx * ratio;
+      (_shape as Record<string, unknown>).cy = shape.cy * ratio;
+      (_shape as Record<string, unknown>).r = shape.r;
       return ['intersectsCircle', _shape];
     case 'rect':
       _shape = rectToPoints(shape).map((p) => scalarMultiply(p, ratio));
@@ -158,10 +158,12 @@ function resolveShape(shape, ratio = 1) {
       _shape = scalarMultiply(shape, ratio);
       return ['containsPoint', _shape];
     case 'polygon':
-      _shape.vertices = shape.vertices.map((vertex) => scalarMultiply(vertex, ratio));
+      (_shape as Record<string, unknown>).vertices = shape.vertices.map((vertex) => scalarMultiply(vertex, ratio));
       return ['intersectsPolygon', _shape];
     case 'geopolygon':
-      _shape.vertices = shape.vertices.map((vertices) => vertices.map((vertex) => scalarMultiply(vertex, ratio)));
+      (_shape as Record<string, unknown>).vertices = shape.vertices.map((vertices) =>
+        vertices.map((vertex) => scalarMultiply(vertex, ratio))
+      );
       return ['intersectsGeoPolygon', _shape];
     default:
       return [];

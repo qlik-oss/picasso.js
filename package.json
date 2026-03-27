@@ -22,7 +22,7 @@
     "test:unit": "jest",
     "test:unit:watch": "jest --watch",
     "prepare": "husky",
-    "types:check": "tsc --noEmit"
+    "types:check": "tsc --build --noEmit"
   },
   "engines": {
     "node": ">=18"

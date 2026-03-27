@@ -3,7 +3,13 @@ import extend from 'extend';
 import DisplayObject from './display-object';
 import { rectToPoints, getMinMax } from '../../geometry/util';
 
-function hasData({ data, _boundingRect, _textBoundsFn }) {
+interface HasDataNode {
+  data: unknown;
+  _textBoundsFn?: unknown;
+  _boundingRect?: unknown;
+}
+
+function hasData({ data, _boundingRect, _textBoundsFn }: HasDataNode) {
   return typeof data !== 'undefined' && data !== null && (_boundingRect || _textBoundsFn);
 }
 

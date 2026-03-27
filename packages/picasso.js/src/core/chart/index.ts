@@ -534,22 +534,25 @@ function chartFn(definition, context) {
 
     (componentsC as Record<string, (...args: unknown[]) => unknown>).set({ components });
 
-    const { visible, hidden, ordered } = layout();
+    const { visible, hidden, ordered } = layout() as { visible: unknown[]; hidden: unknown[]; ordered: unknown[] };
     visibleComponents = visible;
 
     hidden.forEach((comp) => {
-      comp.instance.hide();
-      comp.visible = false;
+      const c = comp as Record<string, unknown>;
+      ((c.instance as Record<string, unknown>).hide as () => void)();
+      c.visible = false;
     });
 
-    visible.forEach((comp) => comp.instance.beforeMount());
-    visible.forEach((comp) => comp.instance.mount());
-    visible.forEach((comp) => comp.instance.beforeRender());
+    visible.forEach((comp) => ((comp as Record<string, unknown>).instance as Record<string, () => void>).beforeMount());
+    visible.forEach((comp) => ((comp as Record<string, unknown>).instance as Record<string, () => void>).mount());
+    visible.forEach((comp) =>
+      ((comp as Record<string, unknown>).instance as Record<string, () => void>).beforeRender()
+    );
 
-    visible.forEach((comp) => comp.instance.render());
-    visible.forEach((comp) => comp.instance.mounted());
+    visible.forEach((comp) => ((comp as Record<string, unknown>).instance as Record<string, () => void>).render());
+    visible.forEach((comp) => ((comp as Record<string, unknown>).instance as Record<string, () => void>).mounted());
     visible.forEach((comp) => {
-      comp.visible = true;
+      (comp as Record<string, unknown>).visible = true;
     });
     orderComponents(element, ordered);
   };
@@ -635,7 +638,8 @@ function chartFn(definition, context) {
       const comps = eventInfo.comps || componentsFromPoint(e);
       if (
         (comps as unknown[]).every(
-          (c: Record<string, unknown>) => (c.instance as Record<string, unknown>).def.disableTriggers
+          (c: Record<string, unknown>) =>
+            ((c.instance as Record<string, unknown>).def as Record<string, unknown>).disableTriggers
         )
       ) {
         return;
@@ -723,7 +727,7 @@ function chartFn(definition, context) {
     }
     if (newProps.settings) {
       settings = newProps.settings;
-      setInteractions((newProps.settings as Record<string, unknown>).interactions);
+      setInteractions((newProps.settings as Record<string, unknown>).interactions as unknown[]);
     }
 
     beforeUpdate();
@@ -770,12 +774,12 @@ function chartFn(definition, context) {
     }
     if (newProps.settings) {
       settings = newProps.settings;
-      setInteractions((newProps.settings as Record<string, unknown>).interactions);
+      setInteractions((newProps.settings as Record<string, unknown>).interactions as unknown[]);
     }
 
     beforeUpdate();
 
-    set(data, settings, { partialData });
+    set(data, settings, { partialData: partialData as boolean });
 
     const { formatters, scales, components = [] } = settings;
 
@@ -809,13 +813,14 @@ function chartFn(definition, context) {
       });
       toRenderOrUpdate = toUpdate;
     } else {
-      const { visible, hidden, ordered } = layout(); // Relayout
+      const { visible, hidden, ordered } = layout() as { visible: unknown[]; hidden: unknown[]; ordered: unknown[] }; // Relayout
       visibleComponents = visible;
       toRenderOrUpdate = visible;
       visibleOrdered = ordered;
 
       visible.forEach((comp) => {
-        if (comp.updateWith && comp.visible) {
+        const c = comp as Record<string, unknown>;
+        if (c.updateWith && c.visible) {
           toUpdate.push(comp);
         } else {
           toRender.push(comp);
@@ -823,15 +828,18 @@ function chartFn(definition, context) {
       });
 
       hidden.forEach((comp) => {
-        comp.instance.hide();
-        comp.visible = false;
-        delete comp.updateWith;
-        comp.applyTransform = false;
+        const c = comp as Record<string, unknown>;
+        ((c.instance as Record<string, unknown>).hide as () => void)();
+        c.visible = false;
+        delete c.updateWith;
+        c.applyTransform = false;
       });
     }
 
-    toRender.forEach((comp) => comp.instance.beforeMount());
-    toRender.forEach((comp) => comp.instance.mount());
+    toRender.forEach((comp) =>
+      ((comp as Record<string, unknown>).instance as Record<string, () => void>).beforeMount()
+    );
+    toRender.forEach((comp) => ((comp as Record<string, unknown>).instance as Record<string, () => void>).mount());
 
     toRenderOrUpdate.forEach((comp) => comp.instance.beforeRender());
 
@@ -1106,7 +1114,7 @@ function chartFn(definition, context) {
    */
   instance.component = (key) => {
     const component = (componentsC as Record<string, (...args: unknown[]) => unknown>).findComponentByKey(key);
-    return component?.instance.ctx;
+    return (component as Record<string, unknown> | undefined)?.instance;
   };
 
   instance.logger = () => logger;

@@ -31,6 +31,6 @@ export class Collision {
   }
 }
 
-export default function create(...a) {
-  return new Collision(...a);
+export default function create(node: unknown) {
+  return new Collision(node);
 }

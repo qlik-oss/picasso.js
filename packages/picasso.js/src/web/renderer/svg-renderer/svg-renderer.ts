@@ -45,11 +45,11 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
   const patterns = patternizer(defs.children);
   const gradients = gradienter(defs.children);
 
-  svg.element = () => el;
+  svg.element = (() => el) as unknown as () => void;
 
-  svg.root = () => group;
+  svg.root = (() => group) as unknown as () => void;
 
-  svg.settings = (rendererSettings) => {
+  svg.settings = ((rendererSettings) => {
     if (rendererSettings) {
       Object.keys(settings).forEach((key) => {
         if (rendererSettings[key] !== undefined) {
@@ -59,9 +59,9 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
     }
 
     return settings;
-  };
+  }) as unknown as () => void;
 
-  svg.appendTo = (element) => {
+  svg.appendTo = ((element) => {
     if (!el) {
       el = element.ownerDocument.createElementNS(ns, 'svg');
       el.style.position = 'absolute';
@@ -77,9 +77,9 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
     element.appendChild(el);
 
     return el;
-  };
+  }) as unknown as () => void;
 
-  svg.getScene = (nodes) => {
+  svg.getScene = ((nodes) => {
     const scaleX = rect.scaleRatio.x;
     const scaleY = rect.scaleRatio.y;
 
@@ -97,6 +97,8 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
 
     return sceneFn({
       items: [sceneContainer],
+      stage: undefined,
+      dpi: undefined,
       on: {
         create: [
           (state) => {
@@ -110,9 +112,9 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
         ],
       },
     });
-  };
+  }) as unknown as () => unknown[];
 
-  svg.render = (nodes) => {
+  svg.render = ((nodes) => {
     if (!el) {
       return false;
     }
@@ -148,24 +150,32 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
     patterns.clear();
     defs.children.length = 0;
 
-    const newScene = svg.getScene(nodes);
+    const newScene = (svg.getScene as (nodes: unknown) => { equals?: (other: unknown) => boolean; children?: unknown })(
+      nodes
+    );
 
-    const hasChangedScene = scene ? !newScene.equals(scene) : true;
+    const hasChangedScene = scene ? !(newScene.equals?.(scene) ?? false) : true;
 
     const doRender = hasChangedRect || hasChangedScene;
     if (doRender) {
       svg.clear();
-      tree.render(newScene.children, group);
+      (tree as { render?: (children: unknown, group: unknown) => void }).render?.(newScene.children, group);
     }
 
     hasChangedRect = false;
     scene = newScene;
     return doRender;
-  };
+  }) as unknown as () => boolean;
 
-  svg.itemsAt = (input) => (scene ? scene.getItemsFrom(input) : []);
+  svg.itemsAt = ((input) =>
+    scene
+      ? ((scene as { getItemsFrom?: (input: unknown) => unknown[] }).getItemsFrom?.(input) ?? [])
+      : []) as unknown as () => unknown[];
 
-  svg.findShapes = (selector) => (scene ? scene.findShapes(selector) : []);
+  svg.findShapes = ((selector) =>
+    scene
+      ? ((scene as { findShapes?: (selector: unknown) => unknown[] }).findShapes?.(selector) ?? [])
+      : []) as unknown as () => unknown[];
 
   svg.clear = () => {
     if (!group) {
@@ -187,7 +197,7 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
     group = null;
   };
 
-  svg.size = (opts) => {
+  svg.size = ((opts) => {
     if (opts) {
       const newRect = createRendererBox(opts);
 
@@ -198,7 +208,7 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
     }
 
     return rect;
-  };
+  }) as unknown as () => void;
 
   return svg;
 }

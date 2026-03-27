@@ -27,6 +27,6 @@ reg.add('stop', gradientItem);
 reg.add('pattern', patternItem);
 reg.add('image', image);
 
-export function create(type, input) {
-  return reg.get(type)(input);
+export function create(type: string, input: unknown) {
+  return (reg.get(type) as (input: unknown) => unknown)(input);
 }

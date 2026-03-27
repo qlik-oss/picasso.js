@@ -58,10 +58,11 @@ export const reducers = {
   },
 };
 
-function normalizeProperties(cfg, dataset, dataProperties, main) {
+function normalizeProperties(cfg, dataset, dataProperties, main): Record<string, unknown> {
   // console.log('======', cfg, main, dataset);
-  const props = {};
-  const mainField = main.field || (typeof cfg.field !== 'undefined' ? dataset.field(cfg.field) : null);
+  const props: Record<string, unknown> = {};
+  const mainField =
+    (main as Record<string, unknown>).field || (typeof cfg.field !== 'undefined' ? dataset.field(cfg.field) : null);
   Object.keys(dataProperties).forEach((key) => {
     const pConfig = dataProperties[key];
     const prop: Record<string, unknown> = (props[key] = {} as Record<string, unknown>);
@@ -75,12 +76,14 @@ function normalizeProperties(cfg, dataset, dataProperties, main) {
       prop.field = mainField;
     } else if (typeof pConfig === 'object') {
       if (pConfig.fields) {
-        prop.fields = pConfig.fields.map((ff) => normalizeProperties(cfg, dataset, { main: ff }, main).main);
+        prop.fields = pConfig.fields.map(
+          (ff) => (normalizeProperties(cfg, dataset, { main: ff }, main) as Record<string, unknown>).main
+        );
       } else if (typeof pConfig.field !== 'undefined') {
         prop.type = 'field';
         prop.field = dataset.field(pConfig.field);
-        prop.value = prop.field.value;
-        prop.label = prop.field.label;
+        prop.value = (prop.field as Record<string, unknown>).value;
+        prop.label = (prop.field as Record<string, unknown>).label;
       } else if (mainField) {
         prop.value = mainField.value;
         prop.label = mainField.label;
@@ -100,17 +103,22 @@ function normalizeProperties(cfg, dataset, dataProperties, main) {
         prop.reduce = pConfig.reduce;
       } else if (pConfig.reduce) {
         prop.reduce = reducers[pConfig.reduce];
-      } else if (prop.field && prop.field.reduce) {
-        prop.reduce = typeof prop.field.reduce === 'string' ? reducers[prop.field.reduce] : prop.field.reduce;
+      } else if (prop.field && (prop.field as Record<string, unknown>).reduce) {
+        prop.reduce =
+          typeof (prop.field as Record<string, unknown>).reduce === 'string'
+            ? reducers[(prop.field as Record<string, unknown>).reduce as string]
+            : (prop.field as Record<string, unknown>).reduce;
       }
 
       if (typeof pConfig.reduceLabel === 'function') {
         prop.reduceLabel = pConfig.reduceLabel;
       } else if (pConfig.reduceLabel) {
         prop.reduceLabel = reducers[pConfig.reduceLabel];
-      } else if (prop.field && prop.field.reduceLabel) {
+      } else if (prop.field && (prop.field as Record<string, unknown>).reduceLabel) {
         prop.reduceLabel =
-          typeof prop.field.reduceLabel === 'string' ? reducers[prop.field.reduceLabel] : prop.field.reduceLabel;
+          typeof (prop.field as Record<string, unknown>).reduceLabel === 'string'
+            ? reducers[(prop.field as Record<string, unknown>).reduceLabel as string]
+            : (prop.field as Record<string, unknown>).reduceLabel;
       }
     }
   });
@@ -160,12 +168,12 @@ export function getPropsInfo(cfg, dataset) {
       },
     },
     {}
-  );
+  ) as { main: Record<string, unknown> };
   const props = normalizeProperties(cfg, dataset, cfg.props || {}, main);
   return { props, main };
 }
 
-function collectItems(items, cfg, formatter, prop) {
+function collectItems(items, cfg, formatter, prop?) {
   const values = Array(items.length);
   const labels = Array(items.length);
   let it;

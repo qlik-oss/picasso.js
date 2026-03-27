@@ -3,10 +3,11 @@ class Node {
   declare _children: Node[];
   declare _parent: Node | null;
   declare data: unknown;
+  declare type: string;
   /**
    * @private
    */
-  constructor(type) {
+  constructor(type: string) {
     this._parent = null;
     this._children = [];
     this._ancestors = null;
@@ -20,7 +21,8 @@ class Node {
    */
   detach() {
     if (this._parent) {
-      this._parent.removeChild(this);
+      const parent = this._parent as Node & { removeChild?: (c: Node) => void };
+      parent.removeChild?.(this);
     }
     return this;
   }

@@ -79,17 +79,17 @@ function colliderToShape(node, dpi) {
  */
 class SceneNode {
   declare _attrs: Record<string, unknown>;
-  declare _bounds: { x: number; y: number; width: number; height: number } | null;
+  declare _bounds: (includeTransform?: boolean) => { x: number; y: number; width: number; height: number };
   declare _cache: Record<string, unknown> | null;
-  declare _children: unknown[];
-  declare _collider: unknown;
+  declare _children: () => SceneNode[];
+  declare _collider: () => unknown;
   declare _data: unknown;
   declare _desc: object | null;
   declare _dpi: number;
   declare _element: Element | null;
   declare _getElementBoundingRect: (() => DOMRect) | null;
   declare _key: string | undefined;
-  declare _parent: unknown;
+  declare _parent: () => SceneNode | null;
   declare _tag: string | null;
   declare _type: string;
   constructor(node) {
@@ -123,10 +123,10 @@ class SceneNode {
       elementBoundingRect: null,
     };
     this._getElementBoundingRect = () => {
-      if (!this._cache.elementBoundingRect && this.element) {
-        this._cache.elementBoundingRect = this.element.getBoundingClientRect();
+      if (!this._cache!.elementBoundingRect && this.element) {
+        this._cache!.elementBoundingRect = this.element.getBoundingClientRect();
       }
-      return this._cache.elementBoundingRect || { left: 0, top: 0 };
+      return (this._cache!.elementBoundingRect as DOMRect) || ({ left: 0, top: 0 } as DOMRect);
     };
   }
 
@@ -290,7 +290,7 @@ class SceneNode {
   }
 }
 
-export default function create(...a) {
+export default function create(...a: [unknown]) {
   return new SceneNode(...a);
 }
 

@@ -22,6 +22,25 @@ export default class Image extends DisplayObject {
   declare __bounds: any;
   constructor(...s) {
     super('image');
+
+    this.boundingRect = (includeTransform = false) => {
+      if (this.__boundingRect[includeTransform as any] !== null) {
+        return this.__boundingRect[includeTransform as any];
+      }
+      const p = rectToPoints(this.attrs);
+      const pt = includeTransform && this.modelViewMatrix ? this.modelViewMatrix.transformPoints(p) : p;
+      const [xMin, yMin, xMax, yMax] = getMinMax(pt);
+
+      this.__boundingRect[includeTransform as any] = {
+        x: xMin,
+        y: yMin,
+        width: xMax - xMin,
+        height: yMax - yMin,
+      };
+
+      return this.__boundingRect[includeTransform as any];
+    };
+
     this.set(...s);
   }
 
@@ -68,26 +87,26 @@ export default class Image extends DisplayObject {
     }
     super.set(v);
 
-    if (width >= 0) {
+    if ((width as number) >= 0) {
       this.attrs.x = x;
       this.attrs.width = width;
     } else {
-      this.attrs.x = x + width;
-      this.attrs.width = -width;
+      this.attrs.x = (x as number) + (width as number);
+      this.attrs.width = -(width as number);
     }
 
-    if (height >= 0) {
+    if ((height as number) >= 0) {
       this.attrs.y = y;
       this.attrs.height = height;
     } else {
-      this.attrs.y = y + height;
-      this.attrs.height = -height;
+      this.attrs.y = (y as number) + (height as number);
+      this.attrs.height = -(height as number);
     }
 
-    if (rx > 0) {
+    if ((rx as number) > 0) {
       this.attrs.rx = rx;
     }
-    if (ry > 0) {
+    if ((ry as number) > 0) {
       this.attrs.ry = ry;
     }
 
@@ -132,30 +151,12 @@ export default class Image extends DisplayObject {
     this.collider = opts;
   }
 
-  boundingRect(includeTransform = false) {
-    if (this.__boundingRect[includeTransform as any] !== null) {
-      return this.__boundingRect[includeTransform as any];
-    }
-    const p = rectToPoints(this.attrs);
-    const pt = includeTransform && this.modelViewMatrix ? this.modelViewMatrix.transformPoints(p) : p;
-    const [xMin, yMin, xMax, yMax] = getMinMax(pt);
-
-    this.__boundingRect[includeTransform as any] = {
-      x: xMin,
-      y: yMin,
-      width: xMax - xMin,
-      height: yMax - yMin,
-    };
-
-    return this.__boundingRect[includeTransform as any];
-  }
-
   bounds(includeTransform = false) {
     if (this.__bounds[includeTransform as any] !== null) {
       return this.__bounds[includeTransform as any];
     }
-    if (this._node.symbol === 'circle') {
-      const rect = this.boundingRect(includeTransform);
+    if ((this._node as Record<string, unknown>)?.symbol === 'circle') {
+      const rect = this.boundingRect!(includeTransform);
       const r = Math.min(rect.width, rect.height) / 2;
       const cx = rect.x;
       const cy = rect.y;

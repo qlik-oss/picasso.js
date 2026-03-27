@@ -17,6 +17,24 @@ export default class Circle extends DisplayObject {
   declare __bounds: any;
   constructor(...s) {
     super('circle');
+
+    this.boundingRect = (includeTransform = false) => {
+      if (this.__boundingRect[includeTransform as any] !== null) {
+        return this.__boundingRect[includeTransform as any];
+      }
+      // TODO Handle Circle bounds correctly for a circle transformed to an non axis aligned ellipse/circle
+      // Current solution only rotate the bounds, giving a larger boundingRect if rotated
+      const p = this.bounds(includeTransform);
+
+      this.__boundingRect[includeTransform as any] = {
+        x: p[0].x,
+        y: p[0].y,
+        width: p[2].x - p[0].x,
+        height: p[2].y - p[0].y,
+      };
+      return this.__boundingRect[includeTransform as any];
+    };
+
     this.set(...s);
   }
 
@@ -42,33 +60,16 @@ export default class Circle extends DisplayObject {
     this.__bounds = { true: null, false: null };
   }
 
-  boundingRect(includeTransform = false) {
-    if (this.__boundingRect[includeTransform as any] !== null) {
-      return this.__boundingRect[includeTransform as any];
-    }
-    // TODO Handle Circle bounds correctly for a circle transformed to an non axis aligned ellipse/circle
-    // Current solution only rotate the bounds, giving a larger boundingRect if rotated
-    const p = this.bounds(includeTransform);
-
-    this.__boundingRect[includeTransform as any] = {
-      x: p[0].x,
-      y: p[0].y,
-      width: p[2].x - p[0].x,
-      height: p[2].y - p[0].y,
-    };
-    return this.__boundingRect[includeTransform as any];
-  }
-
   bounds(includeTransform = false) {
     if (this.__bounds[includeTransform as any] !== null) {
       return this.__bounds[includeTransform as any];
     }
     // TODO Handle Circle bounds correctly for a circle transformed to an non axis aligned ellipse/circle
     const { cx, cy, r: rX, r: rY } = this.attrs;
-    const x = cx - rX;
-    const y = cy - rY;
-    let w = rX * 2;
-    let h = rY * 2;
+    const x = (cx as number) - (rX as number);
+    const y = (cy as number) - (rY as number);
+    let w = (rX as number) * 2;
+    let h = (rY as number) * 2;
     let p = [
       { x, y },
       { x: x + w, y },

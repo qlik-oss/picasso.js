@@ -8,7 +8,7 @@ const getFormatter = (data) => {
     return data.formatter();
   }
   const f = data.formatter || {};
-  return formatterFn(f.type || 'd3-number')(f.format || '');
+  return (formatterFn(f.type || 'd3-number') as (format: string) => unknown)(f.format || '');
 };
 
 const accessors = {

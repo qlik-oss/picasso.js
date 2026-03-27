@@ -2,7 +2,17 @@ function isMajorTick(tick) {
   return !tick.isMinor && tick.position >= 0 && tick.position <= 1;
 }
 
-function isVerticalLabelOverlapping({ majorTicks, measureText, rect }) {
+function isVerticalLabelOverlapping({
+  majorTicks,
+  measureText,
+  rect,
+  state,
+}: {
+  majorTicks: unknown;
+  measureText: unknown;
+  rect: unknown;
+  state?: unknown;
+}) {
   const size = rect.height;
   const textHeight = measureText('M').height;
   if (majorTicks.length < 2) {
@@ -107,9 +117,21 @@ function isToLarge({ rect, state, majorTicks, measure, horizontal }) {
   });
 }
 
-export function getClampedValue({ value, maxValue, minValue, range, modifier }) {
-  if (!isNaN(range) && !isNaN(modifier)) {
-    value = range * modifier;
+export function getClampedValue({
+  value,
+  maxValue,
+  minValue,
+  range,
+  modifier,
+}: {
+  value: number;
+  maxValue: number;
+  minValue: number;
+  range?: number;
+  modifier?: number;
+}) {
+  if (!isNaN(range!) && !isNaN(modifier!)) {
+    value = range! * modifier!;
   }
 
   if (value > maxValue) {

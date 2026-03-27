@@ -16,7 +16,7 @@ class NodeContainer extends Node {
     }
 
     if (c._parent && c._parent !== this) {
-      c._parent.removeChild(c);
+      (c._parent as NodeContainer).removeChild(c);
     }
 
     this._children.push(c);

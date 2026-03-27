@@ -116,7 +116,7 @@ function getHorizontalInsideSliceRect({ slice, padding, measured, store }) {
     height: measured.height + padding * 2,
   };
 
-  let bounds: Record<string, string | number | boolean | null> = getRectFromCircleIntersection({
+  let bounds = getRectFromCircleIntersection({
     radius: outerRadius,
     size,
     angle: middle,
@@ -126,7 +126,7 @@ function getHorizontalInsideSliceRect({ slice, padding, measured, store }) {
     return null;
   }
 
-  bounds.baseline = 'top';
+  (bounds as Record<string, string | number | boolean | null>).baseline = 'top';
 
   pad(bounds, padding);
 
@@ -135,10 +135,10 @@ function getHorizontalInsideSliceRect({ slice, padding, measured, store }) {
   }
 
   store.insideLabelBounds.push({
-    x: bounds.x - LABEL_OVERLAP_THRESHOLD_X,
-    y: bounds.y,
-    width: bounds.width + LABEL_OVERLAP_THRESHOLD_X * 2,
-    height: bounds.height,
+    x: (bounds.x as number) - LABEL_OVERLAP_THRESHOLD_X,
+    y: bounds.y as number,
+    width: (bounds.width as number) + LABEL_OVERLAP_THRESHOLD_X * 2,
+    height: bounds.height as number,
   }); // Copy as bounds is mutated else where
 
   return bounds;
@@ -578,12 +578,12 @@ function findBestPlacement(
     let placement = placementSettings[p];
     let bounds = sliceRect({
       context,
-      slice: node.desc.slice,
+      slice: (node.desc as Record<string, unknown>).slice,
       view: rect,
       direction,
-      position: placement.position,
+      position: (placement as Record<string, unknown>).position,
       measured,
-      padding: placement.padding,
+      padding: (placement as Record<string, unknown>).padding,
       store,
     });
 
@@ -740,7 +740,7 @@ export function slices(
       const placement = bestPlacement.placement;
 
       if (bounds && placement) {
-        if (placement.position === 'outside' && direction !== 'rotate') {
+        if ((placement as Record<string, unknown>).position === 'outside' && direction !== 'rotate') {
           updateContext({ context, node, bounds });
 
           const topLeftBounds = getTopLeftBounds(bounds);
@@ -750,7 +750,10 @@ export function slices(
           }
         }
 
-        const fill = typeof placement.fill === 'function' ? placement.fill(arg, i) : placement.fill;
+        const fill =
+          typeof (placement as Record<string, unknown>).fill === 'function'
+            ? ((placement as Record<string, unknown>).fill as (arg: unknown, i: number) => unknown)(arg, i)
+            : (placement as Record<string, unknown>).fill;
 
         const label: Record<string, unknown> = placer(bounds, text, {
           fill,

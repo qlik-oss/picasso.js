@@ -91,7 +91,8 @@ export function measureText({ text, fontWeight, fontSize, fontFamily }) {
 function calcTextBounds(attrs, measureFn = measureText) {
   const fontSize = attrs['font-size'] || attrs.fontSize;
   const fontFamily = attrs['font-family'] || attrs.fontFamily;
-  const textMeasure = measureFn({ text: attrs.text, fontFamily, fontSize });
+  const fontWeight = attrs['font-weight'] || attrs.fontWeight || 'normal';
+  const textMeasure = measureFn({ text: attrs.text, fontFamily, fontSize, fontWeight });
   const calWidth = Math.min(attrs.maxWidth || textMeasure.width, textMeasure.width); // Use actual value if max is not set
   const x = attrs.x || 0;
   const y = attrs.y || 0;
@@ -144,17 +145,18 @@ export function textBounds(node, measureFn = measureText) {
   const lineBreakFn = resolveLineBreakAlgorithm(node);
   const fontSize = node['font-size'] || node.fontSize;
   const fontFamily = node['font-family'] || node.fontFamily;
-  const tm = measureFn({ text: node.text, fontFamily, fontSize });
+  const fontWeight = node['font-weight'] || node.fontWeight || 'normal';
+  const tm = measureFn({ text: node.text, fontFamily, fontSize, fontWeight });
 
   if (lineBreakFn && (tm.width > node.maxWidth || includesLineBreak(node.text))) {
-    const resolvedLineBreaks = lineBreakFn(node, (text) => measureFn({ text, fontFamily, fontSize }));
+    const resolvedLineBreaks = lineBreakFn(node, (text) => measureFn({ text, fontFamily, fontSize, fontWeight }));
     const nodeCopy: Record<string, unknown> = extend({}, node);
     let maxWidth = 0;
     let widestLine = '';
     for (let i = 0, len = resolvedLineBreaks.lines.length; i < len; i++) {
       let line = resolvedLineBreaks.lines[i];
       line += i === len - 1 && resolvedLineBreaks.reduced ? ELLIPSIS_CHAR : '';
-      const width = measureFn({ text: line, fontSize, fontFamily }).width;
+      const width = measureFn({ text: line, fontSize, fontFamily, fontWeight }).width;
       if (width >= maxWidth) {
         maxWidth = width;
         widestLine = line;

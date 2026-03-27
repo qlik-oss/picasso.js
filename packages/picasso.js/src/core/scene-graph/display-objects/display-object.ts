@@ -30,11 +30,28 @@ export interface DisplayNodeSettings {
   [key: string]: unknown;
 }
 
+/** Geometry object with intersection methods, returned by geometry factories */
+export interface ColliderFn {
+  containsPoint(p: unknown): boolean;
+  intersectsLine(points: unknown): boolean;
+  intersectsRect(points: unknown): boolean;
+  intersectsCircle(c: unknown): boolean;
+  intersectsPolygon(polygon: unknown): boolean;
+  intersectsGeoPolygon(geopolygon: unknown): boolean;
+  set?(definition: unknown): void;
+}
+
+/** Input accepted by the collider setter */
+export interface ColliderDefinition {
+  type?: string | null;
+  [key: string]: unknown;
+}
+
 /** Collider configuration */
 interface ColliderConfig {
   type: string | null;
   definition: unknown;
-  fn: ((shape: unknown) => boolean) | null;
+  fn: ColliderFn | null;
 }
 
 /** Display object attribute map */
@@ -50,7 +67,6 @@ class DisplayObject extends Node {
   declare _node: object | null;
   declare _parent: DisplayObject | null;
   declare _stage: DisplayObject | null;
-  declare boundingRect: ((includeTransform?: boolean) => Rect) | undefined;
   declare data: unknown;
   declare desc: object | undefined;
   declare fillReference: string | undefined;
@@ -147,8 +163,8 @@ class DisplayObject extends Node {
 
     if (a.length > 0) {
       for (let i = a.length - 1; i >= 0; i--) {
-        a[i].resolveLocalTransform(m);
-        m = a[i].modelViewMatrix;
+        (a[i] as DisplayObject).resolveLocalTransform(m);
+        m = (a[i] as DisplayObject).modelViewMatrix;
       }
     }
 
@@ -228,8 +244,19 @@ class DisplayObject extends Node {
     return this._node;
   }
 
-  set collider(definition) {
-    const type = Array.isArray(definition) ? 'collection' : definition && definition.type;
+  /**
+   * Default bounding rect implementation; subclasses override this.
+   * Returns a zero-sized rectangle — only called when a subclass does not provide
+   * a concrete implementation, which should not happen in normal usage.
+   */
+  boundingRect(_includeTransform?: boolean): Rect {
+    return { x: 0, y: 0, width: 0, height: 0 };
+  }
+
+  set collider(definition: unknown) {
+    const type = Array.isArray(definition)
+      ? 'collection'
+      : (definition as ColliderDefinition) && (definition as ColliderDefinition).type;
     if (typeof type !== 'string') {
       // Non string type definition resets the collider
       this._collider.type = null;
@@ -240,7 +267,7 @@ class DisplayObject extends Node {
 
     // Check if a collider of the same type is already defined, if so, do an update
     if (this._collider !== null && this._collider.type === type && this._collider.fn !== null) {
-      this._collider.fn.set(definition);
+      this._collider.fn.set?.(definition);
       this._collider.definition = definition;
       return;
     }
@@ -259,13 +286,13 @@ class DisplayObject extends Node {
     // Resolve geometry function and store it in cache
     switch (this._collider.type) {
       case 'collection':
-        this._collider.fn = geometryCollection(this._collider.definition);
+        this._collider.fn = geometryCollection(this._collider.definition) as ColliderFn;
         break;
       case 'frontChild': // TODO Deprecate
         // Front child is not resolved by a function on this node, but instead on one of its child nodes
         return true;
       case 'bounds':
-        this._collider.fn = geometry('rect', this.boundingRect());
+        this._collider.fn = geometry('rect', this.boundingRect()) as ColliderFn;
         break;
       case 'line':
       case 'rect':
@@ -273,7 +300,7 @@ class DisplayObject extends Node {
       case 'polygon':
       case 'geopolygon':
       case 'polyline':
-        this._collider.fn = geometry(this._collider.type, this._collider.definition);
+        this._collider.fn = geometry(this._collider.type, this._collider.definition) as ColliderFn;
         break;
       default:
         return null;
