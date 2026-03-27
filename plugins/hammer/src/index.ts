@@ -1,4 +1,5 @@
 /* global Hammer */
+declare const Hammer: any;
 import hammer from './hammer';
 
 export default function initialize(picassoOrHammer) {

@@ -40,7 +40,7 @@ export default class Text extends DisplayObject {
     this.set(...s);
   }
 
-  set(v = {}) {
+  set(v: any = {}) {
     const { x = 0, y = 0, dx = 0, dy = 0, textBoundsFn, text, title, collider, boundingRect, ellipsed } = v;
 
     super.set(v);

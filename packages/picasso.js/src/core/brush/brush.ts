@@ -381,7 +381,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    *   ]
    * })
    */
-  fn.configure = (config = {}) => {
+  fn.configure = (config: any = {}) => {
     if (Array.isArray(config.ranges) && config.ranges.length) {
       rangeConfig = {
         sources: {},

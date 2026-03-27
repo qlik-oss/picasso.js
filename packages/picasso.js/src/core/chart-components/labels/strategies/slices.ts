@@ -116,7 +116,7 @@ function getHorizontalInsideSliceRect({ slice, padding, measured, store }) {
     height: measured.height + padding * 2,
   };
 
-  let bounds = getRectFromCircleIntersection({
+  let bounds: any = getRectFromCircleIntersection({
     radius: outerRadius,
     size,
     angle: middle,
@@ -153,7 +153,7 @@ function getHorizontalIntoSliceRect({ slice, padding, measured }) {
     height: measured.height + padding * 2,
   };
 
-  let bounds = getRectFromCircleIntersection({
+  let bounds: any = getRectFromCircleIntersection({
     radius: outerRadius,
     size,
     angle: middle,
@@ -666,7 +666,7 @@ export function slices(
   findPlacement = findBestPlacement,
   placer = placeTextOnPoint
 ) {
-  const defaults = extend(
+  const defaults: any = extend(
     {
       fontSize: 12,
       fontFamily: 'Arial',
@@ -734,7 +734,7 @@ export function slices(
 
         const fill = typeof placement.fill === 'function' ? placement.fill(arg, i) : placement.fill;
 
-        const label = placer(bounds, text, {
+        const label: any = placer(bounds, text, {
           fill,
           fontSize: lblStngs.fontSize,
           fontFamily: lblStngs.fontFamily,

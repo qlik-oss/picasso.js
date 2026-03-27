@@ -1,4 +1,4 @@
-export default function registryFactory(parentRegistry, registerName = 'unspecified', logger) {
+export default function registryFactory(parentRegistry?: any, registerName = 'unspecified', logger?: any) {
   let defaultValue;
   const reg = {};
   const parent = parentRegistry || {

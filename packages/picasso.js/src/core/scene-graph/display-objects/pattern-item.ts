@@ -32,14 +32,14 @@ const allowedAttrs = ['patternUnits', 'x', 'y', 'width', 'height', 'id'];
 
 export default class PatternItem extends DisplayObject {
   declare _boundingRect: any;
-  constructor(s = {}) {
+  constructor(s: any = {}) {
     const { type = 'container' } = s;
     super(type);
     this.set(s);
     this._boundingRect = {};
   }
 
-  set(v = {}) {
+  set(v: any = {}) {
     super.set(v);
 
     const attrs = this.attrs;

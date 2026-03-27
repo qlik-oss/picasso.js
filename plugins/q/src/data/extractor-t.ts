@@ -313,7 +313,7 @@ const attachPropsAccessors = ({ propsArr, props, cube, cache, itemDepthObject, f
   }
 };
 
-export function augment(config = {}, dataset, cache, util) {
+export function augment(config: any = {}, dataset, cache, util) {
   const cube = dataset.raw();
   const sourceKey = dataset.key();
   const h = cube.qMode === 'S' ? getHierarchyForSMode(dataset) : getHierarchy(cube, cache, config);

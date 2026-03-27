@@ -31,14 +31,14 @@ const allowedAttrs = ['x1', 'x2', 'y1', 'y2', 'id', 'offset', 'style'];
 
 export default class GradientItem extends DisplayObject {
   declare _boundingRect: any;
-  constructor(s = {}) {
+  constructor(s: any = {}) {
     const { type = 'container' } = s;
     super(type);
     this.set(s);
     this._boundingRect = {};
   }
 
-  set(v = {}) {
+  set(v: any = {}) {
     super.set(v);
 
     const attrs = this.attrs;

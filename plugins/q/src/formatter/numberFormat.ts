@@ -2,7 +2,7 @@ import numberFormatFactory from './parts/qs-number-formatter';
 import memoize from './memoize';
 
 export default function formatter(pattern, thousand, decimal, qType, localeInfo) {
-  const qformat = numberFormatFactory(localeInfo, pattern, thousand, decimal, qType);
+  const qformat: any = numberFormatFactory(localeInfo, pattern, thousand, decimal, qType);
   const memoized = memoize(qformat.formatValue.bind(qformat), {
     // Handle NaN and cases where toString yields different result than +operator. Ex. a Date.
     toKey: (value) => (isNaN(value) ? value : +value),

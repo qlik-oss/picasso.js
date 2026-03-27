@@ -1,4 +1,4 @@
-export default function memoize(func, opts = {}) {
+export default function memoize(func, opts: any = {}) {
   const { size = 5000, multipleArguments = false, toKey = (arg) => arg } = opts;
   let cache = Object.create(null);
   let index = Object.create(null);

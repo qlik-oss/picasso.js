@@ -113,7 +113,7 @@ function limitBounds(bounds, view) {
   bounds.height = maxY - minY;
 }
 
-function pad(bounds, measured, padding = {}) {
+function pad(bounds, measured, padding: any = {}) {
   const { top = PADDING, bottom = PADDING, left = PADDING, right = PADDING } = padding;
   const leftPadding = typeof left === 'function' ? left(measured) : left;
   const rightPadding = typeof right === 'function' ? right(measured) : right;
@@ -211,7 +211,7 @@ export function findBestPlacement(
   return { bounds, placement };
 }
 
-function approxTextBounds(label, textMetrics, rotated, rect, padding = {}) {
+function approxTextBounds(label, textMetrics, rotated, rect, padding: any = {}) {
   const { top = PADDING, bottom = PADDING, left = PADDING, right = PADDING } = padding;
   const leftPadding = typeof left === 'function' ? left(textMetrics) : left;
   const rightPadding = typeof right === 'function' ? right(textMetrics) : right;
@@ -469,7 +469,7 @@ export function getOrientation({ orientation = 'auto', defaultOrientation = 'h' 
  */
 
 export function bars({ settings, chart, nodes, rect, renderer, style }, placer = placeInBars) {
-  const defaults = extend(
+  const defaults: any = extend(
     {
       fontSize: 12,
       fontFamily: 'Arial',

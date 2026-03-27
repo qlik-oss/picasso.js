@@ -14,13 +14,13 @@ const NC = NodeContainer.prototype;
 export default class Container extends DisplayObject {
   declare __boundingRect: any;
   declare __bounds: any;
-  constructor(s = {}) {
+  constructor(s: any = {}) {
     const { type = 'container' } = s;
     super(type);
     this.set(s);
   }
 
-  set(v = {}) {
+  set(v: any = {}) {
     super.set(v);
 
     const { collider } = v;

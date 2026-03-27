@@ -12,7 +12,7 @@ export default function scrollApi() {
    * @private
    * @alias scroll
    */
-  const s = {
+  const s: any = {
     /**
      * Move the current scroll
      * @param {number} value

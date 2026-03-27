@@ -19,7 +19,7 @@
  * @returns {Renderer~SizeDefinition} A svg renderer instance
  */
 export default function createRendererBox({ x, y, width, height, scaleRatio, margin, edgeBleed } = {}) {
-  const box = {
+  const box: any = {
     x: 0,
     y: 0,
     width: 0,

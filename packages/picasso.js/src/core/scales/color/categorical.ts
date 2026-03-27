@@ -32,10 +32,10 @@ const DEFAULT_EXPLICIT_SETTINGS = {
  * @param { dataset } [dataset]
  * @return { ordinal }
  */
-export default function scaleCategorical(settings = {}, data = {}, resources = {}) {
+export default function scaleCategorical(settings: any = {}, data: any = {}, resources: any = {}) {
   const s = ordinal(settings, data, resources);
   const theme = resources.theme;
-  const stgns = resolveSettings(settings, DEFAULT_SETTINGS, { data, resources });
+  const stgns: any = resolveSettings(settings, DEFAULT_SETTINGS, { data, resources });
   stgns.explicit = resolveSettings(settings.explicit, DEFAULT_EXPLICIT_SETTINGS, { data, resources });
 
   let range;

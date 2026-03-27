@@ -148,7 +148,7 @@ export function textBounds(node, measureFn = measureText) {
 
   if (lineBreakFn && (tm.width > node.maxWidth || includesLineBreak(node.text))) {
     const resolvedLineBreaks = lineBreakFn(node, (text) => measureFn({ text, fontFamily, fontSize }));
-    const nodeCopy = extend({}, node);
+    const nodeCopy: any = extend({}, node);
     let maxWidth = 0;
     let widestLine = '';
     for (let i = 0, len = resolvedLineBreaks.lines.length; i < len; i++) {
@@ -161,7 +161,7 @@ export function textBounds(node, measureFn = measureText) {
       }
     }
     nodeCopy.text = widestLine;
-    const bounds = calcTextBounds(nodeCopy, measureFn);
+    const bounds: any = calcTextBounds(nodeCopy, measureFn);
     bounds.height = fontSizeToLineHeight(node) * resolvedLineBreaks.lines.length;
 
     return bounds;

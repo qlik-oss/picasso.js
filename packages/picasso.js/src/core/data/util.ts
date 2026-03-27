@@ -64,7 +64,7 @@ function normalizeProperties(cfg, dataset, dataProperties, main) {
   const mainField = main.field || (typeof cfg.field !== 'undefined' ? dataset.field(cfg.field) : null);
   Object.keys(dataProperties).forEach((key) => {
     const pConfig = dataProperties[key];
-    const prop = (props[key] = {});
+    const prop: any = (props[key] = {});
     if (['number', 'string', 'boolean'].indexOf(typeof pConfig) !== -1) {
       prop.type = 'primitive';
       prop.value = pConfig;

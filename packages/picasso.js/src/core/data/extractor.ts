@@ -1,7 +1,7 @@
 import stack from './stack';
 
-export default function extract(dataConfig, data = {}, opts = {}) {
-  let extracted = {
+export default function extract(dataConfig, data: any = {}, opts: any = {}) {
+  let extracted: any = {
     // items: [],
     // fields: [],
     // source: null,

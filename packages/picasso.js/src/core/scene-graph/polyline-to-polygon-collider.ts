@@ -13,7 +13,7 @@ function rotatePoint(p, angle, radius) {
   };
 }
 
-export default function polylineToPolygonCollider(points, radius, opts = {}) {
+export default function polylineToPolygonCollider(points, radius, opts: any = {}) {
   const open = [];
   const close = [];
 

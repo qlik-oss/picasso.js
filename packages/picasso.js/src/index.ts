@@ -17,17 +17,17 @@ import registry from './core/utils/registry';
 
 import { style, palettes } from './core/theme/light';
 
-function usePlugin(plugin, options = {}, api) {
+function usePlugin(plugin, options: any = {}, api) {
   plugin(api, options);
 }
 
-function pic(config = {}, registries = {}) {
+function pic(config: any = {}, registries: any = {}) {
   const logger = loggerFn(config.logger);
 
   /**
    * @lends picassojs
    */
-  const regis = {
+  const regis: any = {
     // -- registries --
     /**
      * Component registry
@@ -98,7 +98,7 @@ function pic(config = {}, registries = {}) {
    *
    * const configuredPicasso = picasso({ renderer: { prio: ['canvas'] } }) // All components will render using the canvas renderer
    */
-  function picassojs(cfg = {}) {
+  function picassojs(cfg: any = {}) {
     let cc = {
       palettes: config.palettes.concat(cfg.palettes || []),
       style: extend({}, config.style, cfg.style),
@@ -130,7 +130,7 @@ function pic(config = {}, registries = {}) {
    * @param {plugin} plugin
    * @param {object} [options]
    */
-  picassojs.use = (plugin, options = {}) => usePlugin(plugin, options, regis);
+  picassojs.use = (plugin, options: any = {}) => usePlugin(plugin, options, regis);
 
   /**
    * @param {ChartDefinition} definition

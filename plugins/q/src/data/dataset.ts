@@ -8,7 +8,7 @@ import field from './field';
 function createFields(path, obj, prefix, parentKey, opts) {
   return (obj[path] || []).map((meta, i) => {
     const fieldKey = `${parentKey ? `${parentKey}/` : ''}${path}/${i}`;
-    const f = {
+    const f: any = {
       instance: field(
         extend(
           {
@@ -45,7 +45,7 @@ function createFields(path, obj, prefix, parentKey, opts) {
   });
 }
 
-export default function q({ key, data, config = {} } = {}) {
+export default function q({ key, data, config: any = {} } = {}) {
   const cache = {
     fields: [],
     wrappedFields: [],
@@ -64,7 +64,7 @@ export default function q({ key, data, config = {} } = {}) {
 
   const deps = q.util;
 
-  const opts = {
+  const opts: any = {
     cache,
     cube,
     localeInfo: config.localeInfo,

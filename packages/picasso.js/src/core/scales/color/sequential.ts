@@ -54,7 +54,7 @@ function generateDomain(range, min, max) {
  * });
  */
 
-export default function scaleSequentialColor(settings = {}, data = {}, resources = {}) {
+export default function scaleSequentialColor(settings: any = {}, data: any = {}, resources: any = {}) {
   const s = linear(settings, data, resources).clamp(true).interpolate(interpolateRgb);
   const stgns = resolveSettings(settings, DEFAULT_SETTINGS, { data, resources });
   const isDomain = Array.isArray(stgns.domain) && stgns.domain.length;

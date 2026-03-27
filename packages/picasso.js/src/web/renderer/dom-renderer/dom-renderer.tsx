@@ -2,18 +2,18 @@ import { h, render } from 'preact';
 import createRendererBox from '../renderer-box';
 import create from '../index';
 
-export default function renderer(opts = {}) {
+export default function renderer(opts: any = {}) {
   const { createElement = document.createElement.bind(document) } = opts;
 
   let el;
   let rect = createRendererBox();
   let dNode;
-  const settings = {
+  const settings: any = {
     transform: undefined,
     disableScreenReader: false,
   };
 
-  const dom = create();
+  const dom: any = create();
 
   dom.element = () => el;
 

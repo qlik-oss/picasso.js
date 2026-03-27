@@ -39,7 +39,7 @@ function getMinMax(settings, data, values) {
 }
 
 export default function qTime(settings, data) {
-  const stgns = extend({}, DEFAULT_SETTINGS, settings);
+  const stgns: any = extend({}, DEFAULT_SETTINGS, settings);
   const values = Array.isArray(stgns.values) ? stgns.values : [];
   const d3Scale = d3ScaleLinear();
 

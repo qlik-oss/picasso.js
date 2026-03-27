@@ -148,7 +148,7 @@ function render(renderer, { rect, itemRenderer }, itemized, legend) {
 export default function navRenderer(legend) {
   let itemized;
 
-  const nav = {
+  const nav: any = {
     itemize: (obj) => {
       itemized = itemize(obj);
     },

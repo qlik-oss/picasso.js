@@ -245,7 +245,7 @@ const component = {
     hide() {
       this.hide();
     },
-    show(event, opts = {}) {
+    show(event, opts: any = {}) {
       this.show(event, opts);
     },
     prevent(p) {

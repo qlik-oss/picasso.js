@@ -15,7 +15,7 @@ const DEFAULT_SETTINGS = {
  * @param { dataset } data
  * @return { ordinal }
  */
-export default function ordinal(settings = {}, data = {}, resources = {}) {
+export default function ordinal(settings: any = {}, data: any = {}, resources: any = {}) {
   /**
    * An augmented {@link https://github.com/d3/d3-scale#_ordinal|d3 ordinal scale}
    * @private
@@ -23,7 +23,7 @@ export default function ordinal(settings = {}, data = {}, resources = {}) {
    * @param { Object }
    * @return { number }
    */
-  const fn = scaleOrdinal();
+  const fn: any = scaleOrdinal();
 
   const ctx = { data, resources };
   const stgns = resolveSettings(settings, DEFAULT_SETTINGS, ctx);

@@ -20,7 +20,7 @@ export default class Rect extends DisplayObject {
     this.set(...s);
   }
 
-  set(v = {}) {
+  set(v: any = {}) {
     const { x = 0, y = 0, width = 0, height = 0, rx = 0, ry = 0, collider } = v;
     const opts = extend(
       {

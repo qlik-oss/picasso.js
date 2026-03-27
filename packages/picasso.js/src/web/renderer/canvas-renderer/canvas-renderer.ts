@@ -39,7 +39,7 @@ function resolveMatrix(p, g) {
   g.setTransform(p[0][0], p[1][0], p[0][1], p[1][1], p[0][2], p[1][2]);
 }
 
-function applyContext(g, s, shapeToCanvasMap, computed = {}) {
+function applyContext(g, s, shapeToCanvasMap, computed: any = {}) {
   const computedKeys = Object.keys(computed);
 
   for (let i = 0, len = shapeToCanvasMap.length; i < len; i++) {
@@ -140,7 +140,7 @@ function applyTransform({ el, dpiRatio, transform }) {
 export function renderer(sceneFn = sceneFactory) {
   let el;
   let buffer;
-  const settings = {
+  const settings: any = {
     transform: undefined,
     canvasBufferSize: undefined,
     progressive: undefined,
@@ -160,7 +160,7 @@ export function renderer(sceneFn = sceneFactory) {
 
   let patterns;
 
-  const canvasRenderer = create();
+  const canvasRenderer: any = create();
 
   canvasRenderer.element = () => el;
 

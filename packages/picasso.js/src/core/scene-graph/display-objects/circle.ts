@@ -19,7 +19,7 @@ export default class Circle extends DisplayObject {
     this.set(...s);
   }
 
-  set(v = {}) {
+  set(v: any = {}) {
     const { cx = 0, cy = 0, r = 0, collider } = v;
     const opts = extend(
       {

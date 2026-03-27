@@ -45,7 +45,7 @@ function applyOpts(obj, opts = {}) {
  */
 const create =
   (reg = parentReg) =>
-  (options = {}) => {
+  (options: any = {}) => {
     // TODO handle reserverd properties x, y, size, data, etc..
     const fn = reg.get(options.type);
     if (fn) {

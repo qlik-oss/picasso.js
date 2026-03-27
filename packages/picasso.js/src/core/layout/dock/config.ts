@@ -13,7 +13,7 @@
  *  show: true
  * });
  */
-function create(settings = {}, callbackContext = {}) {
+function create(settings: any = {}, callbackContext: any = {}) {
   let {
     dock = 'center',
     displayOrder = 0,

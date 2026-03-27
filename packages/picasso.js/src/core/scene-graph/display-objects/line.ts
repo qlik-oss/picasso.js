@@ -20,7 +20,7 @@ export default class Line extends DisplayObject {
     this.set(...s);
   }
 
-  set(v = {}) {
+  set(v: any = {}) {
     const { x1 = 0, y1 = 0, x2 = 0, y2 = 0, collider } = v;
     super.set(v);
     this.attrs.x1 = x1;

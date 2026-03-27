@@ -71,7 +71,7 @@ function tickBandwidth(scale, tick) {
 function labelBuilder(ticks, buildOpts, resolveTickOpts) {
   return ticks.map((tick, idx) => {
     resolveTickOpts(tick, idx);
-    const label = buildLabel(tick, buildOpts);
+    const label: any = buildLabel(tick, buildOpts);
     label.data = tick.data;
     return label;
   });
@@ -80,7 +80,7 @@ function labelBuilder(ticks, buildOpts, resolveTickOpts) {
 function arcLabelBuilder(ticks, buildOpts, resolveTickOpts) {
   return ticks.map((tick, idx) => {
     resolveTickOpts(tick, idx);
-    const label = buildArcLabels(tick, buildOpts);
+    const label: any = buildArcLabels(tick, buildOpts);
     label.data = tick.data;
     return label;
   });
@@ -94,7 +94,7 @@ function layeredLabelBuilder(ticks, buildOpts, settings, resolveTickOpts) {
     const padding2 = spacing + buildOpts.maxHeight + settings.labels.margin;
     buildOpts.layer = idx % 2;
     buildOpts.padding = idx % 2 === 0 ? padding : padding2;
-    const label = buildLabel(tick, buildOpts);
+    const label: any = buildLabel(tick, buildOpts);
     label.data = tick.data;
     return label;
   });

@@ -99,11 +99,11 @@ function initNormScale(normScale, scale) {
  * @return { linear }
  */
 
-export default function scaleLinear(settings = {}, data = {}, resources = {}) {
+export default function scaleLinear(settings: any = {}, data: any = {}, resources: any = {}) {
   const d3Scale = d3ScaleLinear();
   const normScale = { instance: null, invert: false };
   const ctx = { data, resources };
-  const stgns = resolveSettings(settings, DEFAULT_SETTINGS, ctx);
+  const stgns: any = resolveSettings(settings, DEFAULT_SETTINGS, ctx);
   stgns.ticks = resolveSettings(settings.ticks, DEFAULT_TICKS_SETTINGS, ctx);
   stgns.minorTicks = resolveSettings(settings.minorTicks, DEFAULT_MINORTICKS_SETTINGS, ctx);
   let tickCache;

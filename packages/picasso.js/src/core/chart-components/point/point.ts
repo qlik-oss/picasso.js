@@ -167,7 +167,7 @@ function createDisplayPoints(dataPoints, { width, height }, pointSize, shapeFn) 
         size = pointSize.min + s.size * (pointSize.max - pointSize.min);
       }
       const [type, typeProps] = getType(s);
-      const shapeSpec = {
+      const shapeSpec: any = {
         ...typeProps,
         type,
         label: p.label,
@@ -184,7 +184,7 @@ function createDisplayPoints(dataPoints, { width, height }, pointSize, shapeFn) 
       if (s === p.errorShape) {
         shapeSpec.width = s.width;
       }
-      const shape = shapeFn(shapeSpec);
+      const shape: any = shapeFn(shapeSpec);
       shape.data = p.data;
       return shape;
     });

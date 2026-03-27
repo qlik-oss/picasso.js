@@ -101,9 +101,9 @@ function flattenTree(rootNode, settings, ctx) {
  * @return { h-band }
  */
 
-export default function scaleHierarchicalBand(settings = {}, data = {}, resources = {}) {
+export default function scaleHierarchicalBand(settings: any = {}, data: any = {}, resources: any = {}) {
   const ctx = { data, resources };
-  const stgns = resolveSettings(settings, DEFAULT_SETTINGS, ctx);
+  const stgns: any = resolveSettings(settings, DEFAULT_SETTINGS, ctx);
   stgns.ticks = resolveSettings(settings.ticks, DEFAULT_TICKS_SETTINGS, ctx);
   stgns.value = typeof settings.value === 'function' ? settings.value : (d) => d.datum.value;
   stgns.label = typeof settings.label === 'function' ? settings.label : (d) => d.datum.value;

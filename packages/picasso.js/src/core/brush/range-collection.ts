@@ -28,14 +28,14 @@ function contains(boundaries, point, minCondition, maxCondition) {
   return false;
 }
 
-export default function rangeCollection(config = {}) {
+export default function rangeCollection(config: any = {}) {
   let maxCondition;
   let minCondition;
   let boundaries = [];
 
-  function fn() {}
+  const fn: any = function () {};
 
-  fn.configure = (c = {}) => {
+  fn.configure = (c: any = {}) => {
     const { includeMax = true, includeMin = true } = c;
     maxCondition = includeMax ? lessThanOrEqual : lessThan;
     minCondition = includeMin ? lessThanOrEqual : lessThan;
@@ -54,7 +54,7 @@ export default function rangeCollection(config = {}) {
     }
 
     const before = boundaries.join(',');
-    boundaries.splice(...args);
+    boundaries.splice(...(args as [number, number, ...number[]]));
     const after = boundaries.join(',');
     return before !== after;
   };
@@ -71,7 +71,7 @@ export default function rangeCollection(config = {}) {
       args.push(max);
     }
     const before = boundaries.join(',');
-    boundaries.splice(...args);
+    boundaries.splice(...(args as [number, number, ...number[]]));
     const after = boundaries.join(',');
     return before !== after;
   };

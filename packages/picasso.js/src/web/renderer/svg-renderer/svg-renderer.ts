@@ -30,12 +30,12 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
   let hasChangedRect = false;
   let rect = createRendererBox();
   let scene;
-  const settings = {
+  const settings: any = {
     transform: undefined,
     disableScreenReader: false,
   };
 
-  const svg = create();
+  const svg: any = create();
 
   const defs = {
     type: 'defs',

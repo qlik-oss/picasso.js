@@ -60,7 +60,7 @@ export default class Path extends DisplayObject {
     this.set(...s);
   }
 
-  set(v = {}) {
+  set(v: any = {}) {
     super.set(v);
     this.segments = [];
     this.points = [];
@@ -69,7 +69,7 @@ export default class Path extends DisplayObject {
       arcGen.innerRadius(v.desc.slice.innerRadius);
       arcGen.outerRadius(v.desc.slice.outerRadius);
       arcGen.cornerRadius(v.desc.slice.cornerRadius);
-      const d = arcGen(v.arcDatum);
+      const d: any = arcGen(v.arcDatum);
       this.attrs.d = d;
     } else if (v.points) {
       const { major, minor, layerObj, points, stngs, generatorType } = v;

@@ -37,7 +37,7 @@ export const DEFAULT_SETTINGS = {
  * @return { band }
  */
 
-export default function scaleBand(settings = {}, data = {}, resources = {}) {
+export default function scaleBand(settings: any = {}, data: any = {}, resources: any = {}) {
   const ctx = { data, resources };
   const stgns = resolveSettings(settings, DEFAULT_SETTINGS, ctx);
   const items = data.items || [];
@@ -73,7 +73,7 @@ export default function scaleBand(settings = {}, data = {}, resources = {}) {
      * Generate discrete ticks
      * @return {Object[]} Array of ticks
      */
-    band.ticks = function ticks(input = {}) {
+    band.ticks = function ticks(input: any = {}) {
       input.scale = band;
       return generateDiscreteTicks(input, fsettings.trackBy || 'label');
     };
@@ -86,7 +86,7 @@ export default function scaleBand(settings = {}, data = {}, resources = {}) {
    * @param { Object } value
    * @return { number }
    */
-  const band = d3ScaleBand();
+  const band: any = d3ScaleBand();
   augmentScaleBand(band, settings);
 
   /**

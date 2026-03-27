@@ -212,7 +212,7 @@ function tearDownEmitter(ctx, emitter) {
 // beforeUpdate -> beforeRender -> render -> updated
 
 // TODO support es6 classes
-function componentFactory(definition, context = {}) {
+function componentFactory(definition, context: any = {}) {
   const { defaultSettings = {}, _DO_NOT_USE_getInfo = () => ({}) } = definition;
   const {
     chart,
@@ -343,7 +343,7 @@ function componentFactory(definition, context = {}) {
   fn.dockConfig = () => dockConfig;
 
   // Set new settings - will trigger mapping of data and creation of scale / formatter.
-  fn.set = (opts = {}) => {
+  fn.set = (opts: any = {}) => {
     if (opts.settings) {
       config = opts.settings;
       settings = extend(true, {}, defaultSettings, opts.settings);
@@ -394,7 +394,7 @@ function componentFactory(definition, context = {}) {
     style = theme.style(settings.style || {});
   };
 
-  fn.resize = (inner = {}, outer = {}) => {
+  fn.resize = (inner: any = {}, outer: any = {}) => {
     const newSize = resize({
       inner,
       outer,
@@ -658,7 +658,7 @@ function componentFactory(definition, context = {}) {
     return shapes;
   };
 
-  fn.shapesAt = (shape, opts = {}) => {
+  fn.shapesAt = (shape, opts: any = {}) => {
     const items = rend.itemsAt(shape);
     let shapes;
 
@@ -675,7 +675,7 @@ function componentFactory(definition, context = {}) {
     return shapes;
   };
 
-  fn.brushFromShapes = (shapes, trigger = {}) => {
+  fn.brushFromShapes = (shapes, trigger: any = {}) => {
     trigger.contexts = Array.isArray(trigger.contexts) ? trigger.contexts : [];
     const action = trigger.action || 'toggle';
 

@@ -108,7 +108,7 @@ export default function pathToPoints(path) {
   let qcpy = null;
 
   for (let i = 0; i < commands.length; ++i) {
-    const cmd = commands[i];
+    const cmd: any = commands[i];
     const pathType = cmd[0];
 
     // Reset control point if command is not cubic

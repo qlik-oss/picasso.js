@@ -119,7 +119,7 @@ function initState(ctx) {
     lineHeight: titleStgns.lineHeight,
   });
 
-  const state = {
+  const state: any = {
     isVertical,
     nodes: [],
     title: {

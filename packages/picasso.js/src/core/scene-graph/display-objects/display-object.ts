@@ -52,7 +52,7 @@ class DisplayObject extends Node {
     this._node = null;
   }
 
-  set(v = {}) {
+  set(v: any = {}) {
     this.node = v;
 
     const { data, desc, tag, strokeReference, fillReference } = v;

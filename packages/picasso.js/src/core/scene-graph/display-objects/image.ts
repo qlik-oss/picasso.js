@@ -24,7 +24,7 @@ export default class Image extends DisplayObject {
     this.set(...s);
   }
 
-  set(v = {}) {
+  set(v: any = {}) {
     const {
       x = 0,
       y = 0,

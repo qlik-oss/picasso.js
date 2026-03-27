@@ -191,7 +191,13 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
   }
 
   if (p.label && p.label.show !== false && !(slopeLine?.slope && slopeLine.slope !== 0)) {
-    const item = extend(true, refLabelDefaultSettings(), settings.style.label || {}, { fill: style.stroke }, p.label);
+    const item: any = extend(
+      true,
+      refLabelDefaultSettings(),
+      settings.style.label || {},
+      { fill: style.stroke },
+      p.label
+    );
     let formatter;
     let measuredValue = {
       width: 0,
