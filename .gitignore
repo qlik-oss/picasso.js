@@ -1,6 +1,7 @@
 *.rej
 *.tmp
 *.log
+*.tsbuildinfo
 .DS_Store
 junit.xml
 stats.json
