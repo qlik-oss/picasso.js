@@ -32,7 +32,7 @@ const NC = NodeContainer.prototype;
 const allowedAttrs = ['patternUnits', 'x', 'y', 'width', 'height', 'id'];
 
 export default class PatternItem extends DisplayObject {
-  declare _boundingRect: any;
+  declare _boundingRect: Record<string, unknown>;
   constructor(s: DisplayNodeSettings = {}) {
     const { type = 'container' } = s;
     super(type);

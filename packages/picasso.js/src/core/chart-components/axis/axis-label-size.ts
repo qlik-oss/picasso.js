@@ -6,7 +6,6 @@ function isVerticalLabelOverlapping({
   majorTicks,
   measureText,
   rect,
-  state,
 }: {
   majorTicks: unknown[];
   measureText: (s: string) => { width: number; height: number };
@@ -19,7 +18,9 @@ function isVerticalLabelOverlapping({
     return false;
   }
 
-  const d = size * Math.abs((majorTicks[0] as any).position - (majorTicks[1] as any).position);
+  const d =
+    size *
+    Math.abs((majorTicks[0] as { position: number }).position - (majorTicks[1] as { position: number }).position);
   if (d < textHeight) {
     return true;
   }

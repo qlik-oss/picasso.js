@@ -62,13 +62,13 @@ export default function qTime(settings, data) {
 
   fn.data = () => data;
 
-  fn.ticks = ({ distance }: { distance?: any } = {}) => {
+  fn.ticks = ({ distance }: { distance?: number } = {}) => {
     // TODO get measureText and maxwidth here?
-    const lvl = levels[stgns.level as any] as any;
+    const lvl = (levels as Record<string, { index: number | null; minor: number | null }>)[stgns.level as string];
     if (lvl.index !== null) {
-      const ticks = tickFn.transformTicks((values[lvl.index] as any).qTicks);
+      const ticks = tickFn.transformTicks((values[lvl.index] as { qTicks: unknown[] }).qTicks);
       if (lvl.minor !== null) {
-        const mt = tickFn.transformTicks((values[lvl.minor] as any).qTicks).map((m) => {
+        const mt = tickFn.transformTicks((values[lvl.minor] as { qTicks: unknown[] }).qTicks).map((m) => {
           m.isMinor = true;
           return m;
         });

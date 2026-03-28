@@ -215,13 +215,13 @@ function getStepSizeFn({
   scale,
   settings,
   tick,
-  ticks,
+  ticks: _ticks,
 }: {
-  innerRect: any;
-  scale: any;
-  settings: any;
-  tick: any;
-  ticks?: any;
+  innerRect: { width: number; height: number };
+  scale: unknown;
+  settings: { align?: string };
+  tick: unknown;
+  ticks?: unknown;
 }) {
   const size = settings.align === 'top' || settings.align === 'bottom' ? innerRect.width : innerRect.height;
   const bandwidth = tickBandwidth(scale, tick);

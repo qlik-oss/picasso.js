@@ -73,11 +73,11 @@ function diff(from, to) {
 
   items = updatedNew.concat(added);
 
-  (added as any).isTree = true;
-  (removed as any).isTree = true;
-  (updatedNew as any).isTree = true;
-  (updatedOld as any).isTree = true;
-  (items as any).isTree = true;
+  (added as unknown as Record<string, unknown>).isTree = true;
+  (removed as unknown as Record<string, unknown>).isTree = true;
+  (updatedNew as unknown as Record<string, unknown>).isTree = true;
+  (updatedOld as unknown as Record<string, unknown>).isTree = true;
+  (items as unknown as Record<string, unknown>).isTree = true;
 
   return {
     added,

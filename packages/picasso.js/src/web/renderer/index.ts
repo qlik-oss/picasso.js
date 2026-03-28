@@ -107,7 +107,7 @@ export default function create() {
     textBounds,
 
     setKey: (key) => {
-      (renderer.element() as any).setAttribute('data-key', key);
+      (renderer.element() as unknown as HTMLElement).setAttribute('data-key', key);
     },
   };
 

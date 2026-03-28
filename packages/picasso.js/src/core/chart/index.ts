@@ -889,7 +889,7 @@ function chartFn(definition, context) {
    * @param {string} key Which component to get shapes from. Default gives shapes from all components.
    * @return {Array<object>} Array of objects containing shape and parent element
    */
-  instance.getAffectedShapes = (ctx, mode = 'and', props, key) => {
+  instance.getAffectedShapes = (ctx, mode = 'and', props?: unknown[], key?: string) => {
     let shapes = [];
     visibleComponents
       .filter((comp) => key === undefined || key === null || comp.key === key)

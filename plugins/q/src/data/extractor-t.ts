@@ -6,6 +6,31 @@ import picker from '../json-path-resolver';
 
 import { treeAccessor } from './util';
 
+interface Cube {
+  qMode?: string;
+  qEffectiveInterColumnSortOrder?: unknown[];
+  qDimensionInfo?: unknown[];
+  [key: string]: unknown;
+}
+
+interface ExtractDataset {
+  raw(): Cube;
+  key(): string;
+  field(query: unknown): unknown;
+}
+
+interface ExtractCache {
+  fields: { key(): string }[];
+  tree?: unknown;
+  [key: string]: unknown;
+}
+
+interface ExtractUtil {
+  normalizeConfig(config: unknown, dataset: unknown): { props: Record<string, unknown>; main: Record<string, unknown> };
+  track?(options: unknown): void;
+  collect?(items: unknown[], options: unknown): unknown[];
+}
+
 const DIM_RX = /^qDimensionInfo(?:\/(\d+))?/;
 const M_RX = /^\/?qMeasureInfo\/(\d+)/;
 const ATTR_EXPR_RX = /\/qAttrExprInfo\/(\d+)/;
@@ -147,7 +172,7 @@ function datumExtract(propCfg, cell, { key }) {
   return datum;
 }
 
-function doIt({ propsArr, props, item, itemData, ret, sourceKey, isTree = false }) {
+function doIt({ propsArr, props, item, itemData, ret, sourceKey, isTree: _isTree = false }) {
   for (let i = 0; i < propsArr.length; i++) {
     const pCfg = props[propsArr[i]];
     const arr = pCfg.fields || [pCfg];
@@ -296,7 +321,7 @@ function getHierarchyForSMode(dataset) {
   return h;
 }
 
-const attachPropsAccessors = ({ propsArr, props, cube, cache, itemDepthObject, f }) => {
+const attachPropsAccessors = ({ propsArr, props, cube, cache: _cache, itemDepthObject, f }) => {
   for (let i = 0; i < propsArr.length; i++) {
     const pCfg = props[propsArr[i]];
     const arr = pCfg.fields ? pCfg.fields : [pCfg];
@@ -313,7 +338,12 @@ const attachPropsAccessors = ({ propsArr, props, cube, cache, itemDepthObject, f
   }
 };
 
-export function augment(config: Record<string, unknown> = {}, dataset: any, cache: any, util: any) {
+export function augment(
+  dataset: ExtractDataset,
+  cache: ExtractCache,
+  util: ExtractUtil,
+  config: Record<string, unknown> = {}
+) {
   const cube = dataset.raw();
   const sourceKey = dataset.key();
   const h = cube.qMode === 'S' ? getHierarchyForSMode(dataset) : getHierarchy(cube, cache, config);
@@ -328,16 +358,16 @@ export function augment(config: Record<string, unknown> = {}, dataset: any, cach
     if (i > 0) {
       if (cube.qMode === 'S') {
         const order = getDimensionColumnOrder(cube);
-        let idx = order[i - 1];
+        let idx = order[i - 1] as number;
         f = cache.fields[idx];
       } else {
-        let idx = cube.qEffectiveInterColumnSortOrder[i - 1];
+        let idx = cube.qEffectiveInterColumnSortOrder![i - 1] as number;
         // if (idx === -1) { // pseudo
         //   let childIdx = node.parent.children.indexOf(node);
         //   idx = cube.qDimensionInfo.length + childIdx; // measure field
         // }
-        if (i > cube.qEffectiveInterColumnSortOrder.length) {
-          idx = cube.qDimensionInfo.length;
+        if (i > cube.qEffectiveInterColumnSortOrder!.length) {
+          idx = cube.qDimensionInfo!.length;
         }
 
         f = cache.fields[idx];
@@ -387,7 +417,7 @@ export function augment(config: Record<string, unknown> = {}, dataset: any, cach
   return h;
 }
 
-export function extract(config, dataset: any, cache: any, util: any) {
+export function extract(config, dataset: ExtractDataset, cache: ExtractCache, util: ExtractUtil) {
   const cfgs = Array.isArray(config) ? config : [config];
   let dataItems = [];
   for (let g = 0; g < cfgs.length; g++) {
@@ -420,12 +450,12 @@ export function extract(config, dataset: any, cache: any, util: any) {
       const tracker = {};
       const trackedItems = [];
 
-      const items = (nodeFn as Function)(cache.tree);
+      const items = (nodeFn as (...args: unknown[]) => unknown[])(cache.tree);
       const mapped = [];
       for (let i = 0; i < items.length; i++) {
         const item = items[i];
         const itemData = attrFn ? attrFn(valueFn(item)) : valueFn(item);
-        const exclude = main.filter && !main.filter(itemData);
+        const exclude = main.filter && !(main.filter as (item: unknown) => unknown)(itemData);
         if (exclude) {
           continue;
         }

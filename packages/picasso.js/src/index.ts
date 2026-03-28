@@ -53,7 +53,7 @@ interface Registries {
   [key: string]: unknown;
 }
 
-function usePlugin(plugin: Plugin, options: Record<string, unknown> = {}, api: Registries): void {
+function usePlugin(plugin: Plugin, api: Registries, options: Record<string, unknown> = {}): void {
   plugin(api, options);
 }
 
@@ -166,7 +166,7 @@ function pic(config: PicassoConfig = {}, registries: Partial<Registries> = {}) {
    * @param {plugin} plugin
    * @param {object} [options]
    */
-  picassojs.use = (plugin: Plugin, options: Record<string, unknown> = {}) => usePlugin(plugin, options, regis);
+  picassojs.use = (plugin: Plugin, options: Record<string, unknown> = {}) => usePlugin(plugin, regis, options);
 
   /**
    * @param {ChartDefinition} definition

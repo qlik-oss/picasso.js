@@ -47,7 +47,7 @@ export default function scaleBand(settings: ScaleSettings = {}, data: ScaleData 
   const labels = [];
 
   // I would like to define this outside of scaleBand but it cause the documentation to be in the wrong order
-  function augmentScaleBand(band, fsettings) {
+  function augmentScaleBand(band, _fsettings) {
     band.data = () => data;
 
     band.datum = (domainValue) => items[domainToDataMapping[domainValue]];

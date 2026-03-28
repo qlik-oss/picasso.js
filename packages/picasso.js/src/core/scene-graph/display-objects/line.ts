@@ -14,8 +14,8 @@ import { lineToPoints, getMinMax } from '../../geometry/util';
  */
 
 export default class Line extends DisplayObject {
-  declare __boundingRect: any;
-  declare __bounds: any;
+  declare __boundingRect: Record<string, { x: number; y: number; width: number; height: number } | null>;
+  declare __bounds: Record<string, Array<{ x: number; y: number }> | null>;
   constructor(...s) {
     super('line');
     this.set(...s);
@@ -42,8 +42,8 @@ export default class Line extends DisplayObject {
   }
 
   boundingRect(includeTransform = false) {
-    if (this.__boundingRect[includeTransform as any] !== null) {
-      return this.__boundingRect[includeTransform as any];
+    if (this.__boundingRect[String(includeTransform)] !== null) {
+      return this.__boundingRect[String(includeTransform)];
     }
     let p = lineToPoints(this.attrs);
 
@@ -54,27 +54,27 @@ export default class Line extends DisplayObject {
     const [xMin, yMin, xMax, yMax] = getMinMax(p);
     const hasSize = xMin !== xMax || yMin !== yMax;
 
-    this.__boundingRect[includeTransform as any] = {
+    this.__boundingRect[String(includeTransform)] = {
       x: xMin,
       y: yMin,
       width: hasSize ? Math.max(1, xMax - xMin) : 0,
       height: hasSize ? Math.max(1, yMax - yMin) : 0,
     };
-    return this.__boundingRect[includeTransform as any];
+    return this.__boundingRect[String(includeTransform)];
   }
 
   bounds(includeTransform = false) {
-    if (this.__bounds[includeTransform as any] !== null) {
-      return this.__bounds[includeTransform as any];
+    if (this.__bounds[String(includeTransform)] !== null) {
+      return this.__bounds[String(includeTransform)];
     }
     const rect = this.boundingRect(includeTransform);
-    this.__bounds[includeTransform as any] = [
+    this.__bounds[String(includeTransform)] = [
       { x: rect.x, y: rect.y },
       { x: rect.x + rect.width, y: rect.y },
       { x: rect.x + rect.width, y: rect.y + rect.height },
       { x: rect.x, y: rect.y + rect.height },
     ];
-    return this.__bounds[includeTransform as any];
+    return this.__bounds[String(includeTransform)];
   }
 }
 

@@ -9,7 +9,6 @@ import createSceneNode from '../scene-node';
 import { resolveCollionsOnNode, hasCollisionOnNode } from '../collision-resolver';
 import { assignMappedAttribute } from '../attributes';
 import type { Rect } from '../../geometry/rect';
-import type { Point } from '../../geometry/util';
 
 /** Display node settings (used in display object set methods) */
 export interface DisplayNodeSettings {

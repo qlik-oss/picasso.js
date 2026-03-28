@@ -47,7 +47,7 @@ function traverse(items, parent, matrix, on) {
       }
 
       if (!matrix.isIdentity()) {
-        (displayNode as any).modelViewMatrix = matrix.clone();
+        (displayNode as Record<string, unknown>).modelViewMatrix = matrix.clone();
       }
 
       parent.addChild(displayNode);

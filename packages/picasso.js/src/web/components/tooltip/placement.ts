@@ -404,15 +404,23 @@ export default function placement({ width, height }, { chart, state, props }) {
   propCtx.options = opts;
   const plcm = STRATEGIES[opts.type](propCtx);
 
+  type PropCtxTyped = {
+    resources: {
+      getComponentBoundsFromNode: (node: unknown) => { x: number; y: number; width: number; height: number };
+    };
+    nodes: unknown[];
+    pointer: { dx: number; dy: number };
+  };
+  const typedCtx = propCtx as unknown as PropCtxTyped;
   let {
     x: minX,
     y: minY,
     width: maxX,
     height: maxY,
-  } = (propCtx as any).resources.getComponentBoundsFromNode((propCtx as any).nodes[0]);
-  minX += (propCtx as any).pointer.dx;
+  } = typedCtx.resources.getComponentBoundsFromNode(typedCtx.nodes[0]);
+  minX += typedCtx.pointer.dx;
   maxX += minX;
-  minY += (propCtx as any).pointer.dy;
+  minY += typedCtx.pointer.dy;
   maxY += minY;
 
   // Clamp tooltip position

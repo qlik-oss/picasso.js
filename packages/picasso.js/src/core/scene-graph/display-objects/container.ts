@@ -13,8 +13,8 @@ import NodeContainer from '../node-container';
 const NC = NodeContainer.prototype;
 
 export default class Container extends DisplayObject {
-  declare __boundingRect: any;
-  declare __bounds: any;
+  declare __boundingRect: Record<string, { x: number; y: number; width: number; height: number } | null>;
+  declare __bounds: Record<string, Array<{ x: number; y: number }> | null>;
   constructor(s: DisplayNodeSettings = {}) {
     const { type = 'container' } = s;
     super(type);
@@ -39,7 +39,7 @@ export default class Container extends DisplayObject {
 
   appendChildRect(child, includeTransform) {
     if (typeof child.bounds !== 'undefined') {
-      const rect = this.__boundingRect[includeTransform] || {};
+      const rect = this.__boundingRect[String(includeTransform)] || { x: NaN, y: NaN, width: NaN, height: NaN };
       const [p0, , p2] = child.bounds(includeTransform);
       const { x: xMin, y: yMin } = p0;
       const { x: xMax, y: yMax } = p2;
@@ -52,13 +52,13 @@ export default class Container extends DisplayObject {
       rect.width = _xMax - rect.x;
       rect.height = _yMax - rect.y;
 
-      this.__boundingRect[includeTransform] = rect;
+      this.__boundingRect[String(includeTransform)] = rect;
     }
   }
 
   boundingRect(includeTransform = false) {
-    if (this.__boundingRect[includeTransform as any] !== null) {
-      return this.__boundingRect[includeTransform as any];
+    if (this.__boundingRect[String(includeTransform)] !== null) {
+      return this.__boundingRect[String(includeTransform)];
     }
 
     const num = this.children.length;
@@ -67,32 +67,32 @@ export default class Container extends DisplayObject {
       this.appendChildRect(this.children[i], includeTransform);
     }
 
-    this.__boundingRect[includeTransform as any] = extend(
+    this.__boundingRect[String(includeTransform)] = extend(
       {
         x: 0,
         y: 0,
         width: 0,
         height: 0,
       },
-      this.__boundingRect[includeTransform as any]
+      this.__boundingRect[String(includeTransform)]
     );
 
-    return this.__boundingRect[includeTransform as any];
+    return this.__boundingRect[String(includeTransform)];
   }
 
   bounds(includeTransform = false) {
-    if (this.__bounds[includeTransform as any] !== null) {
-      return this.__bounds[includeTransform as any];
+    if (this.__bounds[String(includeTransform)] !== null) {
+      return this.__bounds[String(includeTransform)];
     }
     const rect = this.boundingRect(includeTransform);
 
-    this.__bounds[includeTransform as any] = [
+    this.__bounds[String(includeTransform)] = [
       { x: rect.x, y: rect.y },
       { x: rect.x + rect.width, y: rect.y },
       { x: rect.x + rect.width, y: rect.y + rect.height },
       { x: rect.x, y: rect.y + rect.height },
     ];
-    return this.__bounds[includeTransform as any];
+    return this.__bounds[String(includeTransform)];
   }
 
   addChild(c) {

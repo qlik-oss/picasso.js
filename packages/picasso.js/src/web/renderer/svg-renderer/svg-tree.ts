@@ -2,10 +2,10 @@ import { createTree } from '../node-tree';
 import { creator, maintainer, destroyer } from './svg-nodes';
 
 export default class TreeItemRenderer {
-  declare create: any;
-  declare nodeCreator: any;
-  declare nodeDestroyer: any;
-  declare nodeMaintainer: any;
+  declare create: (...args: unknown[]) => unknown;
+  declare nodeCreator: (...args: unknown[]) => unknown;
+  declare nodeDestroyer: (...args: unknown[]) => unknown;
+  declare nodeMaintainer: (...args: unknown[]) => unknown;
   /**
    * Constructor
    * @private

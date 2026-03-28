@@ -13,26 +13,26 @@ import { getMinMax } from '../../geometry/util';
  */
 
 export default class Circle extends DisplayObject {
-  declare __boundingRect: any;
-  declare __bounds: any;
+  declare __boundingRect: Record<string, { x: number; y: number; width: number; height: number } | null>;
+  declare __bounds: Record<string, Array<{ x: number; y: number }> | null>;
   constructor(...s) {
     super('circle');
 
     this.boundingRect = (includeTransform = false) => {
-      if (this.__boundingRect[includeTransform as any] !== null) {
-        return this.__boundingRect[includeTransform as any];
+      if (this.__boundingRect[String(includeTransform)] !== null) {
+        return this.__boundingRect[String(includeTransform)];
       }
       // TODO Handle Circle bounds correctly for a circle transformed to an non axis aligned ellipse/circle
       // Current solution only rotate the bounds, giving a larger boundingRect if rotated
       const p = this.bounds(includeTransform);
 
-      this.__boundingRect[includeTransform as any] = {
+      this.__boundingRect[String(includeTransform)] = {
         x: p[0].x,
         y: p[0].y,
         width: p[2].x - p[0].x,
         height: p[2].y - p[0].y,
       };
-      return this.__boundingRect[includeTransform as any];
+      return this.__boundingRect[String(includeTransform)];
     };
 
     this.set(...s);
@@ -61,8 +61,8 @@ export default class Circle extends DisplayObject {
   }
 
   bounds(includeTransform = false) {
-    if (this.__bounds[includeTransform as any] !== null) {
-      return this.__bounds[includeTransform as any];
+    if (this.__bounds[String(includeTransform)] !== null) {
+      return this.__bounds[String(includeTransform)];
     }
     // TODO Handle Circle bounds correctly for a circle transformed to an non axis aligned ellipse/circle
     const { cx, cy, r: rX, r: rY } = this.attrs;
@@ -83,17 +83,17 @@ export default class Circle extends DisplayObject {
       w = xMax - xMin;
       h = yMax - yMin;
 
-      this.__bounds[includeTransform as any] = [
+      this.__bounds[String(includeTransform)] = [
         { x: xMin, y: yMin },
         { x: xMin + w, y: yMin },
         { x: xMin + w, y: yMin + h },
         { x: xMin, y: yMin + h },
       ];
     } else {
-      this.__bounds[includeTransform as any] = p;
+      this.__bounds[String(includeTransform)] = p;
     }
 
-    return this.__bounds[includeTransform as any];
+    return this.__bounds[String(includeTransform)];
   }
 }
 

@@ -1,5 +1,4 @@
 import { parsePath } from 'path2d';
-import type { PathCommand } from 'path2d';
 import arcToCenter, { PI_X2 } from '../math/arc-to-center';
 import cubicCurveToPoints from '../math/cubic-bezier-curve-interpolation';
 import quadCurveToPoints from '../math/quad-bezier-curve-interpolation';

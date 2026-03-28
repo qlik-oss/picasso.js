@@ -171,11 +171,11 @@ export function findBestPlacement(
   {
     direction,
     fitsHorizontally,
-    lblStngs,
+    lblStngs: _lblStngs,
     measured,
     node,
     orientation,
-    placements,
+    placements: _placements,
     placementSettings,
     rect,
   }: {
@@ -269,7 +269,7 @@ export function placeInBars(
     rect,
     fitsHorizontally,
     collectiveOrientation,
-    stngs,
+    stngs: _stngs,
   }: {
     chart: Record<string, unknown>;
     targetNodes: unknown[];

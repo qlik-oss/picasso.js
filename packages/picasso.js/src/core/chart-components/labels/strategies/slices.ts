@@ -556,7 +556,7 @@ function findBestPlacement(
   {
     context,
     direction,
-    lblStngs,
+    lblStngs: _lblStngs,
     measured,
     node,
     placementSettings,

@@ -86,7 +86,20 @@ function datumExtract(propCfg, cell, { key }) {
   return datum;
 }
 
-function cellToValue({ cache, f, mainCell, p, prop, page, rowIdx, row, sourceKey, target, targetProp, columnOrder }) {
+function cellToValue({
+  cache,
+  f,
+  mainCell,
+  p,
+  prop: _prop,
+  page,
+  rowIdx,
+  row,
+  sourceKey,
+  target,
+  targetProp,
+  columnOrder,
+}) {
   let propCell = mainCell;
   if (p.field && p.field !== f) {
     const propCellFn = getFieldAccessor(p.field, page, { cache }, columnOrder);
@@ -157,8 +170,8 @@ export default function extract(config, dataset, cache, util) {
             }
 
             if (p.fields) {
-              const fieldValues = (ret[propsArr[l]] as any[]).map((v) => v.value);
-              const fieldLabels = (ret[propsArr[l]] as any[]).map((v) => v.label);
+              const fieldValues = (ret[propsArr[l]] as Array<{ value: unknown; label: string }>).map((v) => v.value);
+              const fieldLabels = (ret[propsArr[l]] as Array<{ value: unknown; label: string }>).map((v) => v.label);
               ret[propsArr[l]] = {
                 value:
                   typeof p.value === 'function'
@@ -171,7 +184,7 @@ export default function extract(config, dataset, cache, util) {
                     ? p.label(fieldLabels)
                     : typeof p.label !== 'undefined'
                       ? String(p.label)
-                      : String((ret[propsArr[l]] as any).value),
+                      : String((ret[propsArr[l]] as { value: unknown }).value),
               };
             }
           }

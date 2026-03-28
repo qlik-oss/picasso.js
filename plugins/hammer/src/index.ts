@@ -1,5 +1,8 @@
 /* global Hammer */
-declare const Hammer: any;
+declare const Hammer: {
+  Manager: new (element: Element, options?: Record<string, unknown>) => unknown;
+  [key: string]: unknown;
+};
 import hammer from './hammer';
 
 export default function initialize(picassoOrHammer) {

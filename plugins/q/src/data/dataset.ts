@@ -57,7 +57,7 @@ export default function q({
     virtualFields: [],
   };
 
-  const cube: any = data;
+  const cube = data as Record<string, unknown>;
   if (!cube) {
     throw new Error('Missing "data" input');
   }
@@ -66,7 +66,7 @@ export default function q({
     throw new Error('The "data" input is not recognized as a hypercube');
   }
 
-  const deps = (q as any).util;
+  const deps = (q as unknown as Record<string, unknown>).util;
 
   const opts: Record<string, unknown> = {
     cache,
@@ -81,10 +81,12 @@ export default function q({
   const dataset = {
     key: () => key,
     raw: () => cube,
-    field: (query) => findField(query, opts as any),
+    field: (query) => findField(query, opts as { cache: unknown }),
     fields: () => cache.fields.slice(),
-    extract: (extractionConfig) => (opts.extractor as Function)(extractionConfig, dataset, cache, deps),
-    hierarchy: (hierarchyConfig) => (opts.hierarchy as Function)(hierarchyConfig, dataset, cache, deps),
+    extract: (extractionConfig) =>
+      (opts.extractor as (...args: unknown[]) => unknown)(extractionConfig, dataset, cache, deps),
+    hierarchy: (hierarchyConfig) =>
+      (opts.hierarchy as (...args: unknown[]) => unknown)(dataset, cache, deps, hierarchyConfig),
     _cache: () => cache,
   };
 
@@ -100,7 +102,7 @@ export default function q({
     opts.extractor = () => []; // TODO - throw unsupported error?
   }
 
-  opts.fieldExtractor = (f) => (opts.extractor as Function)({ field: f }, dataset, cache, deps);
+  opts.fieldExtractor = (f) => (opts.extractor as (...args: unknown[]) => unknown)({ field: f }, dataset, cache, deps);
 
   const dimAcc = cube.qMode === 'S' ? (d) => d.qElemNumber : undefined;
   const measAcc = cube.qMode === 'S' ? (d) => d.qNum : undefined;
@@ -125,7 +127,14 @@ export default function q({
 
   traverse(cache.wrappedFields);
 
-  ((config.virtualFields || []) as any[]).forEach((v) => {
+  (
+    (config.virtualFields || []) as Array<{
+      from: string;
+      key: string;
+      override?: Record<string, unknown>;
+      [key: string]: unknown;
+    }>
+  ).forEach((v) => {
     // key: 'temporal',
     // from: 'qDimensionInfo/0',
     // override: {
@@ -136,7 +145,7 @@ export default function q({
       meta: sourceField.raw(),
       id: `${key}/${v.key}`,
       sourceField,
-      fieldExtractor: (ff) => (opts.extractor as Function)({ field: ff }, dataset, cache, deps),
+      fieldExtractor: (ff) => (opts.extractor as (...args: unknown[]) => unknown)({ field: ff }, dataset, cache, deps),
       key: v.key,
       type: sourceField.type(),
       localeInfo: opts.localeInfo,

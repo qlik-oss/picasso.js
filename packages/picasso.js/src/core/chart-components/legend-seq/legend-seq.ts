@@ -136,7 +136,7 @@ function initState(ctx) {
           w += titleStgns.padding;
           mw += titleStgns.padding;
         }
-        return Math.min(w, mw, (state.rect as any).width);
+        return Math.min(w, mw, (state.rect as { width: number }).width);
       },
       requiredHeight: () => {
         if (!titleStgns.show) {
@@ -146,7 +146,7 @@ function initState(ctx) {
         if (isVertical) {
           h += titleStgns.padding;
         }
-        return Math.min(h, (state.rect as any).height);
+        return Math.min(h, (state.rect as { height: number }).height);
       },
     },
     ticks: {
@@ -155,7 +155,11 @@ function initState(ctx) {
       length: Math.min(Math.max(...tickValues.map((t) => t.textMetrics.width)), ctx.stgns.tick.maxLengthPx),
       requiredHeight: () =>
         tickAnchor === 'top'
-          ? Math.max(...(state.ticks as any).values.map((t) => t.textMetrics.height)) + ctx.stgns.tick.padding
+          ? Math.max(
+              ...(state.ticks as { values: { textMetrics: { height: number } }[] }).values.map(
+                (t) => t.textMetrics.height
+              )
+            ) + ctx.stgns.tick.padding
           : 0,
       height: Math.max(...tickValues.map((t) => t.textMetrics.height)),
     },

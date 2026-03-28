@@ -119,15 +119,44 @@ export function extractFieldFromId(id, layout) {
  * @param {object} [layout] QIX data layout. Needed only when brushing on attribute expressions, to be able to calculate the measure index.
  * @return {object[]} An array of relevant selections
  */
+type BrushItem = {
+  id: string;
+  type: string;
+  brush: {
+    ranges(): Array<{ min: number; max: number; [key: string]: unknown }>;
+    values(): unknown[];
+  };
+  cells?: unknown[];
+  [key: string]: unknown;
+};
+
+type MethodEntry = {
+  path: string;
+  ranges?: Array<{ [key: string]: unknown }>;
+  values?: unknown[];
+  cols?: unknown[];
+  cells?: Array<{ [key: string]: unknown }>;
+};
+
+type QLayout = {
+  qHyperCube?: {
+    qMode?: string;
+    qNoOfLeftDims?: number;
+    qEffectiveInterColumnSortOrder?: number[];
+    [key: string]: unknown;
+  };
+  [key: string]: unknown;
+};
+
 export default function qBrush(
-  brush: any,
+  brush: { isActive(): boolean; brushes(): BrushItem[]; [key: string]: unknown },
   opts: { byCells?: boolean; primarySource?: string; [key: string]: unknown } = {},
-  layout: any
+  layout?: QLayout
 ) {
   const byCells = opts.byCells;
   const primarySource = opts.primarySource;
   const selections = [];
-  const methods: Record<string, any> = {};
+  const methods: Record<string, MethodEntry> = {};
   const isActive = brush.isActive();
   let hasValues = false;
   brush.brushes().forEach((b) => {

@@ -82,6 +82,10 @@ export default qlik.compose(
       // Function type: original code uses Function broadly
       '@typescript-eslint/ban-types': 'off',
       '@typescript-eslint/consistent-type-imports': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_', destructuredArrayIgnorePattern: '^_' },
+      ],
     },
   },
   {
@@ -105,7 +109,6 @@ export default qlik.compose(
       'no-unused-expressions': 'off',
       '@typescript-eslint/no-unused-expressions': 'off',
       'no-loss-of-precision': 'off',
-      '@typescript-eslint/no-explicit-any': 'off',
     },
   }
 );

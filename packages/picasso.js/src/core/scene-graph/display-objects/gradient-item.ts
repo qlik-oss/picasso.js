@@ -31,7 +31,7 @@ const NC = NodeContainer.prototype;
 const allowedAttrs = ['x1', 'x2', 'y1', 'y2', 'id', 'offset', 'style'];
 
 export default class GradientItem extends DisplayObject {
-  declare _boundingRect: any;
+  declare _boundingRect: Record<string, unknown>;
   constructor(s: DisplayNodeSettings = {}) {
     const { type = 'container' } = s;
     super(type);

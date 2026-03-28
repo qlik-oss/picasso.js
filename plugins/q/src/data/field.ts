@@ -9,7 +9,24 @@ export default function qField({
   value,
   type,
   sourceField,
-}: Record<string, any> = {}) {
+}: {
+  meta?: {
+    qFallbackTitle?: string;
+    label?: string;
+    qMin?: number;
+    qMax?: number;
+    qTags?: string[];
+    [key: string]: unknown;
+  };
+  id?: unknown;
+  key?: unknown;
+  localeInfo?: unknown;
+  fieldExtractor?: (f: unknown) => unknown;
+  value?: unknown;
+  type?: unknown;
+  sourceField?: unknown;
+  [key: string]: unknown;
+} = {}) {
   let values;
 
   const valueFn = value || (type === 'dimension' ? (d) => d?.qElemNo : (d) => d?.qValue);

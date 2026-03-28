@@ -4,7 +4,7 @@ import numberFormat from './formatter/numberFormat';
 import timeFormat from './formatter/timeFormat';
 
 export default function initialize(picasso) {
-  (data as any).util = picasso.data('matrix').util;
+  (data as unknown as Record<string, unknown>).util = picasso.data('matrix').util;
   picasso.data('q', data);
   picasso.formatter('q-number', numberFormat);
   picasso.formatter('q-time', timeFormat);

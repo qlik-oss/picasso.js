@@ -38,10 +38,10 @@ function hasData({ data, _boundingRect, _textBoundsFn }: HasDataNode) {
  */
 
 export default class Text extends DisplayObject {
-  declare __boundingRect: any;
-  declare __bounds: any;
-  declare _textBoundsFn: any;
-  declare ellipsed: any;
+  declare __boundingRect: Record<string, { x: number; y: number; width: number; height: number } | null>;
+  declare __bounds: Record<string, Array<{ x: number; y: number }> | null>;
+  declare _textBoundsFn: ((attrs?: unknown) => unknown) | null;
+  declare ellipsed: string;
   constructor(...s) {
     super('text');
     this.set(...s);
@@ -62,7 +62,7 @@ export default class Text extends DisplayObject {
     if (typeof boundingRect === 'object') {
       this._textBoundsFn = () => boundingRect;
     } else if (typeof textBoundsFn === 'function') {
-      this._textBoundsFn = textBoundsFn;
+      this._textBoundsFn = textBoundsFn as (attrs?: unknown) => unknown;
     }
 
     if (typeof ellipsed === 'string') {
@@ -76,8 +76,8 @@ export default class Text extends DisplayObject {
   }
 
   boundingRect(includeTransform = false) {
-    if (this.__boundingRect[includeTransform as any] !== null) {
-      return this.__boundingRect[includeTransform as any];
+    if (this.__boundingRect[String(includeTransform)] !== null) {
+      return this.__boundingRect[String(includeTransform)];
     }
 
     let rect;
@@ -96,29 +96,29 @@ export default class Text extends DisplayObject {
     const pt = includeTransform && this.modelViewMatrix ? this.modelViewMatrix.transformPoints(p) : p;
     const [xMin, yMin, xMax, yMax] = getMinMax(pt);
 
-    this.__boundingRect[includeTransform as any] = {
+    this.__boundingRect[String(includeTransform)] = {
       x: xMin,
       y: yMin,
       width: xMax - xMin,
       height: yMax - yMin,
     };
 
-    return this.__boundingRect[includeTransform as any];
+    return this.__boundingRect[String(includeTransform)];
   }
 
   bounds(includeTransform = false) {
-    if (this.__bounds[includeTransform as any] !== null) {
-      return this.__bounds[includeTransform as any];
+    if (this.__bounds[String(includeTransform)] !== null) {
+      return this.__bounds[String(includeTransform)];
     }
     const rect = this.boundingRect(includeTransform);
 
-    this.__bounds[includeTransform as any] = [
+    this.__bounds[String(includeTransform)] = [
       { x: rect.x, y: rect.y },
       { x: rect.x + rect.width, y: rect.y },
       { x: rect.x + rect.width, y: rect.y + rect.height },
       { x: rect.x, y: rect.y + rect.height },
     ];
-    return this.__bounds[includeTransform as any];
+    return this.__bounds[String(includeTransform)];
   }
 }
 

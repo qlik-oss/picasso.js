@@ -18,27 +18,27 @@ import { rectToPoints, getMinMax } from '../../geometry/util';
  */
 
 export default class Image extends DisplayObject {
-  declare __boundingRect: any;
-  declare __bounds: any;
+  declare __boundingRect: Record<string, { x: number; y: number; width: number; height: number } | null>;
+  declare __bounds: Record<string, Array<{ x: number; y: number }> | null>;
   constructor(...s) {
     super('image');
 
     this.boundingRect = (includeTransform = false) => {
-      if (this.__boundingRect[includeTransform as any] !== null) {
-        return this.__boundingRect[includeTransform as any];
+      if (this.__boundingRect[String(includeTransform)] !== null) {
+        return this.__boundingRect[String(includeTransform)];
       }
       const p = rectToPoints(this.attrs);
       const pt = includeTransform && this.modelViewMatrix ? this.modelViewMatrix.transformPoints(p) : p;
       const [xMin, yMin, xMax, yMax] = getMinMax(pt);
 
-      this.__boundingRect[includeTransform as any] = {
+      this.__boundingRect[String(includeTransform)] = {
         x: xMin,
         y: yMin,
         width: xMax - xMin,
         height: yMax - yMin,
       };
 
-      return this.__boundingRect[includeTransform as any];
+      return this.__boundingRect[String(includeTransform)];
     };
 
     this.set(...s);
@@ -152,8 +152,8 @@ export default class Image extends DisplayObject {
   }
 
   bounds(includeTransform = false) {
-    if (this.__bounds[includeTransform as any] !== null) {
-      return this.__bounds[includeTransform as any];
+    if (this.__bounds[String(includeTransform)] !== null) {
+      return this.__bounds[String(includeTransform)];
     }
     if ((this._node as Record<string, unknown>)?.symbol === 'circle') {
       const rect = this.boundingRect!(includeTransform);
@@ -177,26 +177,26 @@ export default class Image extends DisplayObject {
         w = xMax - xMin;
         h = yMax - yMin;
 
-        this.__bounds[includeTransform as any] = [
+        this.__bounds[String(includeTransform)] = [
           { x: xMin, y: yMin },
           { x: xMin + w, y: yMin },
           { x: xMin + w, y: yMin + h },
           { x: xMin, y: yMin + h },
         ];
       } else {
-        this.__bounds[includeTransform as any] = p;
+        this.__bounds[String(includeTransform)] = p;
       }
 
-      return this.__bounds[includeTransform as any];
+      return this.__bounds[String(includeTransform)];
     }
     const rect = this.boundingRect(includeTransform);
-    this.__bounds[includeTransform as any] = [
+    this.__bounds[String(includeTransform)] = [
       { x: rect.x, y: rect.y },
       { x: rect.x + rect.width, y: rect.y },
       { x: rect.x + rect.width, y: rect.y + rect.height },
       { x: rect.x, y: rect.y + rect.height },
     ];
-    return this.__bounds[includeTransform as any];
+    return this.__bounds[String(includeTransform)];
   }
 }
 

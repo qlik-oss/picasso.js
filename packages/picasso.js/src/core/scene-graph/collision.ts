@@ -1,9 +1,9 @@
 import createSceneNode from './scene-node';
 
 export class Collision {
-  declare _input: any;
-  declare _node: any;
-  declare _parent: any;
+  declare _input: unknown;
+  declare _node: unknown;
+  declare _parent: unknown;
   constructor(node) {
     this._node = createSceneNode(node);
     this._parent = null;
