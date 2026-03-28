@@ -77,7 +77,7 @@ function buildBubble({
   align,
   state,
   value,
-  _style = undefined,
+  style: _style = undefined,
 }) {
   const isAlignStart = align !== 'end';
   const isOutside = state.settings.bubbles.placement === 'outside';
