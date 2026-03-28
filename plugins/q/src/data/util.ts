@@ -1,5 +1,5 @@
-function flattenTree(children, steps, arrIndexAtTargetDepth) {
-  let arr = [];
+function flattenTree(children: any[], steps: number, arrIndexAtTargetDepth: number): any[] {
+  let arr: any[] = [];
   if (!children || !children.length) {
     return arr;
   }
@@ -16,14 +16,14 @@ function flattenTree(children, steps, arrIndexAtTargetDepth) {
   return arr;
 }
 
-export function treeAccessor(sourceDepth, targetDepth, arrIndexAtTargetDepth) {
+export function treeAccessor(sourceDepth: number, targetDepth: number, arrIndexAtTargetDepth: number): ((node: any) => any) | false {
   if (sourceDepth === targetDepth) {
-    return (d) => d;
+    return (d: any) => d;
   }
   if (sourceDepth > targetDepth) {
     // traverse upwards
     const steps = Math.max(0, Math.min(100, sourceDepth - targetDepth));
-    return (node) => {
+    return (node: any) => {
       let n = node;
       for (let i = 0; i < steps; ++i) {
         n = n.parent;
@@ -34,12 +34,12 @@ export function treeAccessor(sourceDepth, targetDepth, arrIndexAtTargetDepth) {
   if (targetDepth > sourceDepth) {
     // flatten descendants
     const steps = Math.max(0, Math.min(100, targetDepth - sourceDepth));
-    return (node) => flattenTree(node.children, steps - 1, arrIndexAtTargetDepth);
+    return (node: any) => flattenTree(node.children, steps - 1, arrIndexAtTargetDepth);
   }
   return false;
 }
 
-export function findField(query, { cache }) {
+export function findField(query: any, { cache }: { cache: any }): any {
   if (typeof query === 'number') {
     return cache.fields[query];
   }

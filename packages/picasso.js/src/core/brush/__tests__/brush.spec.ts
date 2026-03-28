@@ -900,18 +900,19 @@ describe('brush', () => {
   });
 
   describe('configure', () => {
-    let configureSpy;
-    let updateSpy;
+    let configureSpy: sinon.SinonSpy;
+    let updateSpy: sinon.SinonSpy;
+    let rcStub: sinon.SinonStub;
 
     beforeEach(() => {
       configureSpy = sandbox.spy();
       updateSpy = sandbox.spy();
-      rc = sandbox.stub().returns({
+      rcStub = sandbox.stub().returns({
         add: () => {},
         configure: configureSpy,
       });
 
-      b = brush({ rc });
+      b = brush({ rc: rcStub as any });
       b.on('update', updateSpy);
     });
 

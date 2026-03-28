@@ -2,36 +2,92 @@ import extend from 'extend';
 
 /* eslint no-mixed-operators:0 */
 
-function placeTextInRect(rect, label, opts) {
-  const textMetrics = opts.textMetrics;
+interface Rect {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+interface Label {
+  baseline?: string;
+  x?: number;
+  y?: number;
+  fontSize?: number | string;
+  anchor?: string;
+}
+
+interface Size {
+  x: number;
+  y: number;
+}
+
+interface GlobalMetrics {
+  maxLabelBounds: { width: number; height: number };
+  maxSymbolSize: number;
+  spacing: number;
+  maxItemBounds: { width: number; height: number };
+  [key: string]: unknown;
+}
+
+interface SymbolMeta {
+  size: number;
+  align?: number;
+  justify?: number;
+}
+
+interface LegendItem {
+  label: { displayObject: Label; bounds: Rect };
+  symbol: { meta: SymbolMeta };
+  [key: string]: unknown;
+}
+
+interface RenderItemConfig {
+  x?: number;
+  y: number;
+  item: LegendItem;
+  globalMetrics: GlobalMetrics;
+  createSymbol: (config: Record<string, unknown>) => Record<string, unknown>;
+  direction?: string;
+}
+
+interface Container {
+  type: string;
+  data?: unknown;
+  children: unknown[];
+  collider?: Record<string, unknown>;
+}
+
+function placeTextInRect(rect: Rect, label: Label, opts: Record<string, unknown>): Label {
+  const textMetrics = opts.textMetrics as Rect;
 
   if (rect.height < textMetrics.height) {
-    return false;
+    return false as unknown as Label;
   }
 
   const wiggleWidth = Math.max(0, rect.width - textMetrics.width);
   label.baseline = 'text-before-edge';
   const wiggleHeight = Math.max(0, rect.height - textMetrics.height);
-  label.x = rect.x + opts.align * wiggleWidth;
-  label.y = rect.y + opts.justify * wiggleHeight + parseInt(label.fontSize, 10) * 0.175; // 0.175 - basline offset
+  label.x = rect.x + (opts.align as number) * wiggleWidth;
+  label.y = rect.y + (opts.justify as number) * wiggleHeight + parseInt(label.fontSize as string, 10) * 0.175; // 0.175 - basline offset
 
   return label;
 }
 
-function wiggleSymbol(container, size, opts) {
+function wiggleSymbol(container: Rect, size: number, opts: Record<string, unknown>): Size {
   const wiggleWidth = Math.max(0, container.width - size);
   const wiggleHeight = Math.max(0, container.height - size);
 
   return {
-    x: container.x + size / 2 + opts.align * wiggleWidth,
-    y: container.y + size / 2 + opts.justify * wiggleHeight,
+    x: container.x + size / 2 + (opts.align as number) * wiggleWidth,
+    y: container.y + size / 2 + (opts.justify as number) * wiggleHeight,
   };
 }
 
-export function createRenderItem({ x = 0, y, item, globalMetrics, createSymbol, direction = 'ltr' }) {
-  let label = item.label.displayObject;
-  let labelBounds = item.label.bounds;
-  let symbolItem = item.symbol.meta;
+export function createRenderItem({ x = 0, y, item, globalMetrics, createSymbol, direction = 'ltr' }: RenderItemConfig): Record<string, unknown> {
+  let label = (item.label.displayObject as Label);
+  let labelBounds = item.label.bounds as Rect;
+  let symbolItem = (item.symbol.meta as SymbolMeta);
   const rtl = direction === 'rtl';
 
   let labelRect = {

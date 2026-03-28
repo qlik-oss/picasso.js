@@ -26,36 +26,36 @@ export default function qField({
   type?: unknown;
   sourceField?: unknown;
   [key: string]: unknown;
-} = {}) {
-  let values;
+} = {}): Record<string, unknown> {
+  let values: unknown;
 
-  const valueFn = value || (type === 'dimension' ? (d) => d?.qElemNo : (d) => d?.qValue);
-  const labelFn = (d) => d?.qText || '';
+  const valueFn = value || (type === 'dimension' ? (d: unknown) => (d as Record<string, unknown>)?.qElemNo : (d: unknown) => (d as Record<string, unknown>)?.qValue);
+  const labelFn = (d: unknown) => (d as Record<string, unknown>)?.qText || '';
   const reduce = type === 'dimension' ? 'first' : 'avg';
   const formatter = createFromMetaInfo(meta, localeInfo);
-  const reduceLabel = type === 'dimension' ? 'first' : (labels, v) => formatter(v);
+  const reduceLabel = type === 'dimension' ? 'first' : (labels: unknown, v: unknown) => formatter(v);
 
-  const f = {
+  const f: Record<string, unknown> = {
     id: () => id,
     key: () => key,
     raw: () => meta,
-    title: () => meta.qFallbackTitle || meta.label,
+    title: () => (meta?.qFallbackTitle || meta?.label),
     type: () => type,
     origin: () => sourceField,
     items: () => {
       if (!values) {
-        values = fieldExtractor(f);
+        values = fieldExtractor?.(f);
       }
       return values;
     },
-    min: () => meta.qMin,
-    max: () => meta.qMax,
+    min: () => meta?.qMin,
+    max: () => meta?.qMax,
     value: valueFn,
     label: labelFn,
     reduce,
     reduceLabel,
     formatter: () => formatter,
-    tags: () => meta.qTags,
+    tags: () => meta?.qTags,
   };
 
   return f;

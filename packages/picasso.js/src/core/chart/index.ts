@@ -35,6 +35,8 @@ interface Shape extends Record<string, unknown> {
 interface Bounds {
   left: number;
   top: number;
+  x?: number;
+  y?: number;
   width?: number;
   height?: number;
   right?: number;
@@ -79,6 +81,10 @@ interface ChartInstance extends Record<string, unknown> {
   componentsFromPoint?: (p: Record<string, number>) => unknown[];
   shapesAt?: (shape: unknown, opts?: Record<string, unknown>) => unknown[];
   brush?: (config: Record<string, unknown>) => void;
+  logger?: () => Record<string, unknown>;
+  theme?: () => Record<string, unknown>;
+  storage?: Record<string, unknown>;
+  element?: HTMLElement | null;
 }
 
 /**
@@ -816,14 +822,16 @@ function chartFn(definition: Record<string, unknown>, context: Record<string, un
       scales,
     });
 
-    (componentsC as Record<string, (...args: unknown[]) => unknown>).forEach((comp) => {
-      if (comp.updateWith) {
-        comp.instance.set(comp.updateWith);
+    (componentsC as Record<string, (...args: unknown[]) => unknown>).forEach((comp: unknown) => {
+      const c = comp as unknown as Component;
+      if (c.updateWith) {
+        (c.instance as Record<string, (updateWith: unknown) => void>).set?.(c.updateWith);
       }
     });
-    (componentsC as Record<string, (...args: unknown[]) => unknown>).forEach((comp) => {
-      if (comp.updateWith) {
-        comp.instance.beforeUpdate();
+    (componentsC as Record<string, (...args: unknown[]) => unknown>).forEach((comp: unknown) => {
+      const c = comp as unknown as Component;
+      if (c.updateWith) {
+        ((c.instance as Record<string, () => void>).beforeUpdate)?.();
       }
     });
 
@@ -863,14 +871,16 @@ function chartFn(definition: Record<string, unknown>, context: Record<string, un
       scales,
     });
 
-    (componentsC as Record<string, (...args: unknown[]) => unknown>).forEach((comp) => {
-      if (comp.updateWith) {
-        comp.instance.set(comp.updateWith);
+    (componentsC as Record<string, (...args: unknown[]) => unknown>).forEach((comp: unknown) => {
+      const c = comp as unknown as Component;
+      if (c.updateWith) {
+        (c.instance as Record<string, (updateWith: unknown) => void>).set?.(c.updateWith);
       }
     });
-    (componentsC as Record<string, (...args: unknown[]) => unknown>).forEach((comp) => {
-      if (comp.updateWith) {
-        comp.instance.beforeUpdate();
+    (componentsC as Record<string, (...args: unknown[]) => unknown>).forEach((comp: unknown) => {
+      const c = comp as unknown as Component;
+      if (c.updateWith) {
+        ((c.instance as Record<string, () => void>).beforeUpdate)?.();
       }
     });
 
