@@ -1,7 +1,7 @@
 import numberFormat from '../numberFormat';
 
 describe('d3 numberFormat', () => {
-  let formatter;
+  let formatter: any;
 
   beforeEach(() => {
     formatter = numberFormat('0.2f');

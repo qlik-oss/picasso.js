@@ -23,7 +23,7 @@ describe('Colors', () => {
     });
 
     it('should normalize angle values', () => {
-      let c = color('hsla(-120, 100% ,50%, 0.5)');
+      let c: any = color('hsla(-120, 100% ,50%, 0.5)');
       expect(c).to.deep.equal({
         h: 240,
         s: 1,
@@ -71,7 +71,7 @@ describe('Colors', () => {
     });
 
     it('should allow decimal values and round to nearest integer', () => {
-      let c = color('hsla(180.6, 11.6% , 19.6%, 1)');
+      let c: any = color('hsla(180.6, 11.6% , 19.6%, 1)');
       expect(c).to.deep.equal({
         h: 181,
         s: 0.12,
@@ -89,7 +89,7 @@ describe('Colors', () => {
     });
 
     it('should not allow saturation and lightness values without a percentage character', () => {
-      let c = color('hsla(18, 1 , 0.5, 1)');
+      let c: any = color('hsla(18, 1 , 0.5, 1)');
       expect(c).to.deep.equal(undefined);
 
       c = color('hsl(18, 1 , 1)');
@@ -97,7 +97,7 @@ describe('Colors', () => {
     });
 
     it('should use percentage in string output', () => {
-      let c = color('hsl(230, 100% ,50%)').toString();
+      let c: any = color('hsl(230, 100% ,50%)').toString();
       expect(c).to.equal('hsla(230, 100%, 50%, 1)');
 
       c = color('hsla(230, 100% ,50%, 0.5)').toString();
@@ -105,7 +105,7 @@ describe('Colors', () => {
     });
 
     it('should not allow non-digit characters', () => {
-      let c = color('hsla(a,b,c,d)');
+      let c: any = color('hsla(a,b,c,d)');
       expect(c).to.equal(undefined);
 
       c = color('hsl(a,b,c)');
@@ -113,7 +113,7 @@ describe('Colors', () => {
     });
 
     it('should handle whitespace', () => {
-      let c = color(' hsla( 120 , 100% , 50% , 0.5 ) ');
+      let c: any = color(' hsla( 120 , 100% , 50% , 0.5 ) ');
       expect(c).to.deep.equal({
         h: 120,
         s: 1,
@@ -173,7 +173,7 @@ describe('Colors', () => {
     });
 
     it('should clip numerical values', () => {
-      let c = color('rgba(256,256,256,1)');
+      let c: any = color('rgba(256,256,256,1)');
       expect(c).to.deep.equal({
         r: 255,
         g: 255,
@@ -191,7 +191,7 @@ describe('Colors', () => {
     });
 
     it('should clip negative numerical values', () => {
-      let c = color('rgba(-1,-1,-1,1)');
+      let c: any = color('rgba(-1,-1,-1,1)');
       expect(c).to.deep.equal({
         r: 0,
         g: 0,
@@ -209,7 +209,7 @@ describe('Colors', () => {
     });
 
     it('should clip percentage values', () => {
-      let c = color('rgba(101%,101%,101%,1)');
+      let c: any = color('rgba(101%,101%,101%,1)');
       expect(c).to.deep.equal({
         r: 255,
         g: 255,
@@ -237,7 +237,7 @@ describe('Colors', () => {
     });
 
     it('should handle numerical boundry values', () => {
-      let c = color('rgb(255,255,255)');
+      let c: any = color('rgb(255,255,255)');
       expect(c).to.deep.equal({
         r: 255,
         g: 255,
@@ -255,7 +255,7 @@ describe('Colors', () => {
     });
 
     it('should handle percentage boundry values', () => {
-      let c = color('rgb(100%,100%,100%)');
+      let c: any = color('rgb(100%,100%,100%)');
       expect(c).to.deep.equal({
         r: 255,
         g: 255,
@@ -273,7 +273,7 @@ describe('Colors', () => {
     });
 
     it('should handle whitespace', () => {
-      let c = color(' rgb( 100% , 100% , 100% ) ');
+      let c: any = color(' rgb( 100% , 100% , 100% ) ');
       expect(c).to.deep.equal({
         r: 255,
         g: 255,
@@ -301,7 +301,7 @@ describe('Colors', () => {
     });
 
     it('should not allow non-digit characters', () => {
-      let c = color('rgba(a,b,c,d)');
+      let c: any = color('rgba(a,b,c,d)');
       expect(c).to.deep.equal(undefined);
 
       c = color('rgb(a,b,c)');
@@ -309,7 +309,7 @@ describe('Colors', () => {
     });
 
     it('should not allow mixing numerial and percentage values', () => {
-      let c = color('rgba(255,10%,123,1)');
+      let c: any = color('rgba(255,10%,123,1)');
       expect(c).to.deep.equal(undefined);
 
       c = color('rgb(123,55%,90%)');
@@ -317,7 +317,7 @@ describe('Colors', () => {
     });
 
     it('should not allow decimal values', () => {
-      let c = color('rgba(25.5, 99.9, 0.1, 1)');
+      let c: any = color('rgba(25.5, 99.9, 0.1, 1)');
       expect(c).to.deep.equal(undefined);
 
       c = color('rgb(25.5, 99.9, 0.1)');
@@ -388,7 +388,7 @@ describe('Colors', () => {
     });
 
     it('should only allow six or three digit hex values', () => {
-      let c = color('#ffff');
+      let c: any = color('#ffff');
       expect(c).to.equal(undefined);
 
       c = color('#ff');
@@ -484,7 +484,7 @@ describe('Colors', () => {
 
   describe('Conversions from RGBA', () => {
     it('should convert RGB to HSL', () => {
-      let c1 = color('rgb(3, 33, 99)'),
+      let c1: any = color('rgb(3, 33, 99)'),
         c2 = color('rgb(0, 0, 0)'),
         c3 = color('rgb(255, 255, 255)');
 
@@ -530,11 +530,11 @@ describe('Colors', () => {
     });
 
     it('should compare 2 RGBA colors, return false', () => {
-      let c1 = color('rgba(50, 50, 50, 0.6)'),
+      let c1: any = color('rgba(50, 50, 50, 0.6)'),
         c2 = color('rgba(50, 50, 50, 1)');
       expect(c1.isEqual(c2)).to.deep.equal(false);
 
-      let c3 = color('rgba(50, 50, 50, 0.6)'),
+      let c3: any = color('rgba(50, 50, 50, 0.6)'),
         c4 = color('rgba(50, 51, 50, 0.6)');
       expect(c3.isEqual(c4)).to.deep.equal(false);
     });
@@ -542,7 +542,7 @@ describe('Colors', () => {
 
   describe('Conversions from HSLA', () => {
     it('should convert HSL to RGB', () => {
-      let c1 = color('hsl(0, 100%, 100%)'),
+      let c1: any = color('hsl(0, 100%, 100%)'),
         c2 = color('hsl(0, 0%, 0%)'),
         c3 = color('hsl(359, 60%, 50%)'),
         c4 = color('hsl(128, 50%, 33%)');
@@ -602,7 +602,7 @@ describe('Colors', () => {
 
   describe('Color luminance', () => {
     it('should calculate luminance of RGBA color', () => {
-      let c1 = color('yellow'),
+      let c1: any = color('yellow'),
         c2 = color('white'),
         c3 = color('black'),
         c4 = color('blue');
@@ -613,7 +613,7 @@ describe('Colors', () => {
     });
 
     it('should calculate luminance of HSLA color', () => {
-      let c1 = color('hsl(60,100%,50%)'),
+      let c1: any = color('hsl(60,100%,50%)'),
         c2 = color('hsl(0,0%,100%)'),
         c3 = color('hsl(0,0%,0%)'),
         c4 = color('hsl(309,85%,51%)');
@@ -625,7 +625,7 @@ describe('Colors', () => {
     });
 
     it('should calculate if the color is dark', () => {
-      let c1 = color('black'),
+      let c1: any = color('black'),
         c2 = color('white'),
         c3 = color('hsl(240, 100%, 50%)'),
         c4 = color('lightblue');
@@ -639,7 +639,7 @@ describe('Colors', () => {
 
   describe('Color utils', () => {
     it('should calculate contrast of two RGBA colors', () => {
-      let c1 = color('white'),
+      let c1: any = color('white'),
         c2 = color('navy'),
         c3 = color('yellow');
 
@@ -648,7 +648,7 @@ describe('Colors', () => {
     });
 
     it('should calculate contrast of two HSLA colors', () => {
-      let c1 = color('hsl(0, 0%, 100%)'),
+      let c1: any = color('hsl(0, 0%, 100%)'),
         c2 = color('hsl(240, 100%, 25%)'),
         c3 = color('hsl(60, 100%, 50%)');
 
@@ -657,7 +657,7 @@ describe('Colors', () => {
     });
 
     it('should calculate contrast between RGB and HSL colors', () => {
-      let c1 = color('white'),
+      let c1: any = color('white'),
         c2 = color('hsl(60, 100%, 50%)');
 
       expect((color as any).utils.getContrast(c1, c2)).to.equal(1.059241105334474);

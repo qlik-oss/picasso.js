@@ -7,11 +7,11 @@ describe('Legend Sequential', () => {
   const ticksSelector = '[id="legend-seq-ticks"] text';
   const tickFillBoundarySelector = '[id="legend-seq-ticks"] rect';
   const titleSelector = '.legend-title';
-  let componentFixture;
-  let userDef;
-  let container;
-  let chartMock;
-  let theme;
+  let componentFixture: any;
+  let userDef: any;
+  let container: any;
+  let chartMock: any;
+  let theme: any;
 
   function render() {
     componentFixture.simulateCreate(legendSeq, userDef);

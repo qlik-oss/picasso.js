@@ -2,7 +2,7 @@ import stack from '../stack';
 
 describe('stack', () => {
   const valueField = { key: 'nyckel', field: 'sales' };
-  let data;
+  let data: any;
   beforeEach(() => {
     data = {
       items: [

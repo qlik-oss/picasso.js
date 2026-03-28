@@ -1,8 +1,8 @@
 import getHorizontalWidth from '../get-continuous-label-rect';
 
 describe('axis - get horizontal continuous label width', () => {
-  let opts;
-  let width;
+  let opts: any;
+  let width: any;
 
   beforeEach(() => {
     opts = {

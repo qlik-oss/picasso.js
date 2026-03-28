@@ -2,13 +2,13 @@ import componentFactoryFixture from '../../../../../test/helpers/component-facto
 import component from '../legend-cat';
 
 describe('legend-cat', () => {
-  let renderedItems;
-  let chart;
-  let componentFixture;
-  let opts;
-  let domRenderer;
+  let renderedItems: any;
+  let chart: any;
+  let componentFixture: any;
+  let opts: any;
+  let domRenderer: any;
   const sandbox = sinon.createSandbox();
-  let h;
+  let h: any;
 
   beforeEach(() => {
     opts = {
@@ -42,7 +42,7 @@ describe('legend-cat', () => {
       .registries.renderer.withArgs('dom')
       .returns(() => domRenderer);
     chart = componentFixture.mocks().chart;
-    const scale = (d) => `-${d}-`;
+    const scale = (d: any) => `-${d}-`;
     scale.domain = () => [1];
     scale.data = () => [1];
     scale.labels = () => ['first'];
@@ -127,7 +127,7 @@ describe('legend-cat', () => {
     };
 
     chart = componentFixture.mocks().chart;
-    const scale = (d) => `-${d}-`;
+    const scale = (d: any) => `-${d}-`;
     scale.domain = () => [1];
     scale.data = () => [1];
     scale.labels = () => ['fidfd fg dt'];

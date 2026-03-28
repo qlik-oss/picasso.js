@@ -1,15 +1,15 @@
 import arcToCenter from '../arc-to-center';
 
 describe('Arc to center', () => {
-  let rx;
-  let ry;
-  let rotation;
-  let largeArcFlag;
-  let sweepFlag;
-  let endX;
-  let endY;
-  let startX;
-  let startY;
+  let rx: any;
+  let ry: any;
+  let rotation: any;
+  let largeArcFlag: any;
+  let sweepFlag: any;
+  let endX: any;
+  let endY: any;
+  let startX: any;
+  let startY: any;
 
   beforeEach(() => {
     startX = 0;

@@ -3,8 +3,8 @@ import { create as createPolygon } from '../polygon';
 import { rectToPoints, lineToPoints } from '../util';
 
 describe('Polyline', () => {
-  let p;
-  let points;
+  let p: any;
+  let points: any;
 
   beforeEach(() => {
     points = [

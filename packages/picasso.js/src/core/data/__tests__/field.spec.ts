@@ -10,7 +10,7 @@ describe('Field', () => {
       title: 'wohoo',
       values: ['a', 'c', 'a'],
     };
-    let f;
+    let f: any;
     beforeEach(() => {
       f = field(dd);
     });
@@ -45,7 +45,7 @@ describe('Field', () => {
   });
 
   describe('custom accessors', () => {
-    let f;
+    let f: any;
     beforeEach(() => {
       f = field(
         {

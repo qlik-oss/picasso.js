@@ -2,9 +2,9 @@ import component from '../debug-path-to-points';
 import componentFactoryFixture from '../../../../../test/helpers/component-factory-fixture';
 
 describe('debug-path-to-points', () => {
-  let componentFixture;
-  let opts;
-  let shapes;
+  let componentFixture: any;
+  let opts: any;
+  let shapes: any;
 
   beforeEach(() => {
     componentFixture = componentFactoryFixture();

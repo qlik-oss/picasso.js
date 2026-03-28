@@ -3,7 +3,7 @@ import { normalizeSettings, resolveForItem } from '..';
 describe('property-resolver', () => {
   describe('setting normalization', () => {
     it('should normalize primitives', () => {
-      let norm = normalizeSettings(
+      let norm: any = normalizeSettings(
         {
           fill: 'red',
           doit: false,
@@ -21,7 +21,7 @@ describe('property-resolver', () => {
     });
 
     it('should not override defaults when type does not match', () => {
-      let norm = normalizeSettings(
+      let norm: any = normalizeSettings(
         {
           fill: 3,
           show: 'yes',
@@ -38,8 +38,8 @@ describe('property-resolver', () => {
     });
 
     it('should normalize functions', () => {
-      let fn = () => 'red';
-      let norm = normalizeSettings(
+      let fn: any = () => 'red';
+      let norm: any = normalizeSettings(
         {
           fill: fn,
         },
@@ -53,8 +53,8 @@ describe('property-resolver', () => {
     });
 
     it('should normalize objects', () => {
-      let fn = () => 'red';
-      let norm = normalizeSettings(
+      let fn: any = () => 'red';
+      let norm: any = normalizeSettings(
         {
           fill: {
             fn,
@@ -72,7 +72,7 @@ describe('property-resolver', () => {
       const c = {
         scale: () => 'scaleInstance',
       };
-      let norm = normalizeSettings(
+      let norm: any = normalizeSettings(
         {
           fill: {
             scale: 'foo',
@@ -89,7 +89,7 @@ describe('property-resolver', () => {
     });
 
     it('should attach reference', () => {
-      let norm = normalizeSettings(
+      let norm: any = normalizeSettings(
         {
           fill: {
             ref: 'foo',

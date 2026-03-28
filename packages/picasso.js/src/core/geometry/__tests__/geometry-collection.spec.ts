@@ -1,7 +1,7 @@
 import GeometryCollection from '../geometry-collection';
 
 describe('GeometryCollection', () => {
-  let c;
+  let c: any;
 
   describe('Constructor', () => {
     it('should set correct default values', () => {
@@ -52,10 +52,10 @@ describe('GeometryCollection', () => {
   });
 
   describe('Intersection', () => {
-    let stub0;
-    let stub1;
-    let stub2;
-    let match;
+    let stub0: any;
+    let stub1: any;
+    let stub2: any;
+    let match: any;
 
     beforeEach(() => {
       c = new GeometryCollection([

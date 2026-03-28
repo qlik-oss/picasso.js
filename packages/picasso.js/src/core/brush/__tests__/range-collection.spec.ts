@@ -12,7 +12,7 @@ describe('range-collection', () => {
   });
 
   describe('add', () => {
-    let r;
+    let r: any;
     beforeEach(() => {
       r = range();
     });
@@ -54,7 +54,7 @@ describe('range-collection', () => {
   });
 
   describe('remove', () => {
-    let r;
+    let r: any;
     beforeEach(() => {
       r = range();
       r.add({ min: -10, max: 20 });
@@ -83,7 +83,7 @@ describe('range-collection', () => {
   });
 
   describe('clear', () => {
-    let r;
+    let r: any;
     beforeEach(() => {
       r = range();
     });
@@ -105,7 +105,7 @@ describe('range-collection', () => {
   });
 
   describe('containsValue', () => {
-    let r;
+    let r: any;
     beforeEach(() => {
       r = range();
       r.add({ min: -10, max: 20 });
@@ -141,7 +141,7 @@ describe('range-collection', () => {
   });
 
   describe('containsRange', () => {
-    let r;
+    let r: any;
     beforeEach(() => {
       r = range();
       r.add({ min: -10, max: 20 });
@@ -174,7 +174,7 @@ describe('range-collection', () => {
   });
 
   describe('toggle', () => {
-    let r;
+    let r: any;
     beforeEach(() => {
       r = range();
       r.add({ min: -5, max: 10 });

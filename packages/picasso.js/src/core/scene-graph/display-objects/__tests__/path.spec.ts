@@ -170,7 +170,7 @@ describe('Path', () => {
 
       it('should render disconnected path for disconnected lines with unordered domain', () => {
         const domain = ['A', 'B', 'C', 'D', 'E'];
-        const domainScale = (v) => domain.indexOf(v) / 4;
+        const domainScale = (v: any) => domain.indexOf(v) / 4;
         domainScale.domain = () => domain;
         domainScale.range = () => [0, 1];
         componentFixture.mocks().chart.scale.returns(domainScale);
@@ -197,7 +197,7 @@ describe('Path', () => {
 
       it('should render disconnected path for disconnected lines with unordered domain based on major data', () => {
         const domain = ['A', 'B', 'C', 'D', 'E'];
-        const domainScale = (v) => domain.indexOf(v) / 4;
+        const domainScale = (v: any) => domain.indexOf(v) / 4;
         domainScale.domain = () => domain;
         domainScale.range = () => [0, 1];
         componentFixture.mocks().chart.scale.returns(domainScale);

@@ -177,7 +177,7 @@ describe('legend-resolver', () => {
     });
 
     it('should resolve labels by `label` function if available', () => {
-      settings.scale.label = (d) => `label ${d}`;
+      settings.scale.label = (d: any) => `label ${d}`;
       settings.scale.domain = () => ['b', 'a'];
       resolved = resolveSettings(settings);
 

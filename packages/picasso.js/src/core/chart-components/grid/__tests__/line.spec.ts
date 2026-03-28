@@ -2,15 +2,15 @@ import componentFactoryFixture from '../../../../../test/helpers/component-facto
 import lineComponent from '../line';
 
 describe('line component', () => {
-  let rendererOutput;
-  let chart;
-  let shapeFn;
-  let componentFixture;
-  let opts;
-  let xScale;
-  let yScale;
-  let xTick;
-  let yTick;
+  let rendererOutput: any;
+  let chart: any;
+  let shapeFn: any;
+  let componentFixture: any;
+  let opts: any;
+  let xScale: any;
+  let yScale: any;
+  let xTick: any;
+  let yTick: any;
 
   beforeEach(() => {
     xTick = {

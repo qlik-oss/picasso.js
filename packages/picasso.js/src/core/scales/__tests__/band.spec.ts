@@ -1,7 +1,7 @@
 import band from '../band';
 
 describe('OrdinalScale', () => {
-  let scale;
+  let scale: any;
   beforeEach(() => {
     // scale = band();
   });
@@ -13,8 +13,8 @@ describe('OrdinalScale', () => {
   });
 
   describe('with input settings', () => {
-    let items;
-    let settings;
+    let items: any;
+    let settings: any;
     const fields = [];
     const dataset = {
       fields: [{}],

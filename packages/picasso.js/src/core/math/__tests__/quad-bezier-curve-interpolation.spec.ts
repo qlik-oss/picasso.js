@@ -9,9 +9,9 @@ function approxEqual(ary, expected) {
 }
 
 describe('Quad Bezier curve', () => {
-  let p0;
-  let p1;
-  let p2;
+  let p0: any;
+  let p1: any;
+  let p2: any;
 
   beforeEach(() => {
     p0 = { x: 0, y: 0 };

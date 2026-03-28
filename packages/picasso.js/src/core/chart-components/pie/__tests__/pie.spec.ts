@@ -2,9 +2,9 @@ import componentFactoryFixture from '../../../../../test/helpers/component-facto
 import component, { arcValue } from '../pie';
 
 describe('pie', () => {
-  let rendered;
-  let componentFixture;
-  let opts;
+  let rendered: any;
+  let componentFixture: any;
+  let opts: any;
 
   beforeEach(() => {
     opts = {

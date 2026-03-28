@@ -2,11 +2,11 @@ import componentFactoryFixture from '../../../../../test/helpers/component-facto
 import brushLasso from '../brush-lasso';
 
 describe('brush-lasso', () => {
-  let componentFixture;
-  let instance;
-  let config;
-  let rendererOutput;
-  let chartMock;
+  let componentFixture: any;
+  let instance: any;
+  let config: any;
+  let rendererOutput: any;
+  let chartMock: any;
 
   beforeEach(() => {
     componentFixture = componentFactoryFixture();
@@ -30,7 +30,7 @@ describe('brush-lasso', () => {
     instance.def.move({ center: { x: 11, y: 0 } });
     rendererOutput = componentFixture.getRenderOutput().reduce((a, b) => (a.type === 'path' ? a : b), {});
 
-    let expected = {
+    let expected: any = {
       visible: true,
       type: 'path', // Lasso
       d: 'M1 2 L11 12 L11 0 ',
@@ -51,7 +51,7 @@ describe('brush-lasso', () => {
     instance.def.move({ center: { x: 10, y: 10 } });
     rendererOutput = componentFixture.getRenderOutput().reduce((a, b) => (a.type === 'circle' ? a : b), {});
 
-    let expected = {
+    let expected: any = {
       visible: true,
       type: 'circle', // Start point
       cx: 1,
@@ -127,9 +127,9 @@ describe('brush-lasso', () => {
   // });
 
   describe('call cycle', () => {
-    let spy;
-    let shapesAtStub;
-    let brushFromShapesStub;
+    let spy: any;
+    let shapesAtStub: any;
+    let brushFromShapesStub: any;
 
     beforeEach(() => {
       spy = componentFixture.sandbox().spy();
@@ -195,7 +195,7 @@ describe('brush-lasso', () => {
       instance.def.move({ center: { x: 11, y: 12 } });
       rendererOutput = componentFixture.getRenderOutput().reduce((a, b) => (a.type === 'path' ? a : b), {});
 
-      let expected = {
+      let expected: any = {
         visible: true,
         type: 'path', // Lasso
         d: 'M1 2 L11 12 ',
@@ -254,7 +254,7 @@ describe('brush-lasso', () => {
       instance.def.move({ center: { x: 11, y: 12 } });
       rendererOutput = componentFixture.getRenderOutput().reduce((a, b) => (a.type === 'circle' ? a : b), {});
 
-      let expected = {
+      let expected: any = {
         visible: true,
         type: 'circle', // Start point
         cx: 1,

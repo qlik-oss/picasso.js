@@ -5,7 +5,7 @@ describe('extractor', () => {
   let extractStub: any;
 
   beforeEach(() => {
-    extractStub = (ctx) => ctx.node;
+    extractStub = (ctx: any) => ctx.node;
 
     context = {
       chart: { scale: 0, formatter: 1 },

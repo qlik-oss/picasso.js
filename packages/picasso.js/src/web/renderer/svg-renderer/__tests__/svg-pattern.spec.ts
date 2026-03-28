@@ -9,7 +9,7 @@ describe('svg-pattern', () => {
   beforeEach(() => {
     bucket = [];
     clock = sinon.useFakeTimers(13);
-    let i = 1;
+    let i: any = 1;
     hasher = () => ++i;
     p = patternizer(bucket, hasher);
   });

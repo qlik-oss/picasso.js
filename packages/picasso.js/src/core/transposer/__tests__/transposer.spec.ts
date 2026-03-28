@@ -1,7 +1,7 @@
 import { transposer } from '../transposer';
 
 describe('transposer', () => {
-  let draw = transposer();
+  let draw: any = transposer();
 
   it('should return correct opposite keys', () => {
     draw.flipXY = true;

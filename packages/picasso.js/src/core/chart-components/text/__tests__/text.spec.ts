@@ -9,12 +9,12 @@ function assertNodeProperties(node, expected) {
 }
 
 describe('Text component', () => {
-  let config;
-  let scale = band();
-  let componentFixture;
-  let opts;
-  let chart;
-  let theme;
+  let config: any;
+  let scale: any = band();
+  let componentFixture: any;
+  let opts: any;
+  let chart: any;
+  let theme: any;
 
   function simulateRender() {
     componentFixture.simulateCreate(textComponent, config);

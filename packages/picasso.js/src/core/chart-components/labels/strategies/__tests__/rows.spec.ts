@@ -2,7 +2,7 @@ import * as ellipsText from '../../../../../web/text-manipulation/text-ellipsis'
 import { rows } from '../rows';
 
 describe('labeling - rows', () => {
-  let sandbox;
+  let sandbox: any;
 
   beforeAll(() => {
     sandbox = sinon.createSandbox();
@@ -15,8 +15,8 @@ describe('labeling - rows', () => {
   });
 
   describe('rows strategy', () => {
-    let chart;
-    let renderer;
+    let chart: any;
+    let renderer: any;
 
     beforeEach(() => {
       chart = {};
@@ -47,7 +47,7 @@ describe('labeling - rows', () => {
         },
       ];
       renderer.measureText.returns({ width: 20, height: 10 });
-      let labels = rows(
+      let labels: any = rows(
         {
           settings,
           chart,
@@ -82,7 +82,7 @@ describe('labeling - rows', () => {
         },
       ];
       renderer.measureText.returns({ width: 50, height: 18 });
-      let labels = rows(
+      let labels: any = rows(
         {
           settings,
           chart,
@@ -125,7 +125,7 @@ describe('labeling - rows', () => {
         },
       ];
       renderer.measureText.returns({ width: 20, height: 14 });
-      let labels = rows(
+      let labels: any = rows(
         {
           settings,
           chart,
@@ -168,7 +168,7 @@ describe('labeling - rows', () => {
         },
       ];
       renderer.measureText.returns({ width: 20, height: 14 });
-      let labels = rows(
+      let labels: any = rows(
         {
           settings,
           chart,
@@ -200,7 +200,7 @@ describe('labeling - rows', () => {
         },
       ];
       renderer.measureText.returns({ width: 20, height: 10 });
-      let labels = rows(
+      let labels: any = rows(
         {
           settings,
           chart,
@@ -232,7 +232,7 @@ describe('labeling - rows', () => {
         },
       ];
       renderer.measureText.returns({ width: 20, height: 10 });
-      let labels = rows(
+      let labels: any = rows(
         {
           settings,
           chart,
@@ -271,7 +271,7 @@ describe('labeling - rows', () => {
 
       ellipsText.default.returns('et…');
 
-      let labels = rows(
+      let labels: any = rows(
         {
           settings,
           chart,
@@ -315,7 +315,7 @@ describe('labeling - rows', () => {
 
       ellipsText.default.returns('…');
 
-      let labels = rows(
+      let labels: any = rows(
         {
           settings,
           chart,
@@ -355,7 +355,7 @@ describe('labeling - rows', () => {
         },
       ];
       renderer.measureText.returns({ width: 20, height: 10 });
-      let labels = rows(
+      let labels: any = rows(
         {
           settings,
           chart,
@@ -389,7 +389,7 @@ describe('labeling - rows', () => {
         },
       ];
       renderer.measureText.returns({ width: 20, height: 10 });
-      let labels = rows(
+      let labels: any = rows(
         {
           settings,
           chart,

@@ -2,7 +2,7 @@ import resolve from '../json-path-resolver';
 
 describe('JSON Path mashup resolver', () => {
   it('should resolve basic path', () => {
-    let p = '/path/to/paradise',
+    let p: any = '/path/to/paradise',
       obj = {
         path: {
           to: {
@@ -14,7 +14,7 @@ describe('JSON Path mashup resolver', () => {
   });
 
   it('should resolve path to array index', () => {
-    let p = '/cars/1',
+    let p: any = '/cars/1',
       obj = {
         cars: ['first', 'second'],
       };
@@ -23,7 +23,7 @@ describe('JSON Path mashup resolver', () => {
   });
 
   it('should map array values when path to specific value is skipped', () => {
-    let p = '/cars//brand',
+    let p: any = '/cars//brand',
       obj = {
         cars: [
           { brand: 'BMW', color: 'red' },
@@ -36,7 +36,7 @@ describe('JSON Path mashup resolver', () => {
   });
 
   it('should map array values within a correct range of indexes', () => {
-    let p = '/cars/0...1/brand',
+    let p: any = '/cars/0...1/brand',
       obj = {
         cars: [
           { brand: 'BMW', color: 'red' },
@@ -49,7 +49,7 @@ describe('JSON Path mashup resolver', () => {
   });
 
   it('should map array values within a correct set of indexes', () => {
-    let p = '/cars/1,2/brand',
+    let p: any = '/cars/1,2/brand',
       obj = {
         cars: [
           { brand: 'BMW', color: 'red' },

@@ -1,8 +1,8 @@
 import threshold from '../threshold';
 
 describe('Threshold', () => {
-  let ths;
-  let theme;
+  let ths: any;
+  let theme: any;
 
   const defaultColors = ['rgb(180,221,212)', 'rgb(34, 83, 90)'];
 
@@ -14,9 +14,9 @@ describe('Threshold', () => {
   });
 
   describe('basics', () => {
-    let min = 0;
-    let max = 100;
-    let settings = {};
+    let min: any = 0;
+    let max: any = 100;
+    let settings: any = {};
     const fields = [{ min: () => min, max: () => max }];
 
     beforeEach(() => {
@@ -63,9 +63,9 @@ describe('Threshold', () => {
   });
 
   describe('generate thresholds', () => {
-    let min = 0;
-    let max = 100;
-    let settings = {};
+    let min: any = 0;
+    let max: any = 100;
+    let settings: any = {};
     const fields = [{ min: () => min, max: () => max }];
 
     beforeEach(() => {
@@ -213,9 +213,9 @@ describe('Threshold', () => {
   });
 
   describe('generate colors', () => {
-    let min = 0;
-    let max = 100;
-    let settings = {};
+    let min: any = 0;
+    let max: any = 100;
+    let settings: any = {};
     const fields = [{ min: () => min, max: () => max }];
 
     beforeEach(() => {

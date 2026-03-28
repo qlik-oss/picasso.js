@@ -9,7 +9,7 @@ import itemRendererFactory, {
 
 describe('legend-item-renderer', () => {
   describe('itemize', () => {
-    let created;
+    let created: any;
     beforeEach(() => {
       created = itemize(
         {
@@ -61,7 +61,7 @@ describe('legend-item-renderer', () => {
 
   describe('extent', () => {
     it('should calculate when vertical', () => {
-      let x = extent(
+      let x: any = extent(
         {
           items: [1, 2, 3, 4, 5],
           layout: {
@@ -77,7 +77,7 @@ describe('legend-item-renderer', () => {
     });
 
     it('should calculate when horizontal', () => {
-      let x = extent(
+      let x: any = extent(
         {
           items: [1, 2, 3, 4, 5],
           layout: { orientation: 'horizontal', margin: { horizontal: 17 } },
@@ -93,7 +93,7 @@ describe('legend-item-renderer', () => {
 
   describe('spread', () => {
     it('should calculate when vertical', () => {
-      let x = spread(
+      let x: any = spread(
         {
           layout: { margin: { horizontal: 13 } },
           globalMetrics: { maxItemBounds: { width: 10, height: 20 } },
@@ -105,7 +105,7 @@ describe('legend-item-renderer', () => {
     });
 
     it('should calculate when horizontal', () => {
-      let x = spread(
+      let x: any = spread(
         {
           layout: { orientation: 'horizontal', margin: { vertical: 7 } },
           globalMetrics: { spacing: 4, maxItemBounds: { width: 10, height: 20 } },
@@ -174,7 +174,7 @@ describe('legend-item-renderer', () => {
   });
 
   describe('getItemsToRender', () => {
-    let rendered;
+    let rendered: any;
     describe('vertical', () => {
       beforeEach(() => {
         const itemized = {
@@ -320,11 +320,11 @@ describe('legend-item-renderer', () => {
   });
 
   describe('offset', () => {
-    let sandbox;
-    let legend;
-    let api;
-    let obj;
-    let overflow;
+    let sandbox: any;
+    let legend: any;
+    let api: any;
+    let obj: any;
+    let overflow: any;
 
     beforeEach(() => {
       sandbox = sinon.createSandbox();

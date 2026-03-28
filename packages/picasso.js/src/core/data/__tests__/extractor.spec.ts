@@ -64,7 +64,7 @@ describe('extract data', () => {
       const dataset = () => ({
         field: () => country,
       });
-      let d = extract(
+      let d: any = extract(
         {
           field: 'dim',
         },
@@ -82,7 +82,7 @@ describe('extract data', () => {
         field: () => country,
         extract: () => [1, 2],
       });
-      let d = extract(
+      let d: any = extract(
         {
           extract: [{ field: 'dim' }],
         },
@@ -98,7 +98,7 @@ describe('extract data', () => {
         field: () => country,
         extract: () => [1, 2],
       });
-      let d = extract(
+      let d: any = extract(
         {
           fields: ['dim', 'dim'],
         },
@@ -119,7 +119,7 @@ describe('extract data', () => {
       datasetFn.withArgs('one').returns(dOne);
       datasetFn.withArgs('two').returns(dTwo);
 
-      let d = extract(
+      let d: any = extract(
         {
           fields: [
             {
@@ -150,7 +150,7 @@ describe('extract data', () => {
       datasetFn.withArgs('one').returns(dOne);
       datasetFn.withArgs('two').returns(dTwo);
 
-      let d = extract(
+      let d: any = extract(
         {
           extract: [
             {
@@ -172,7 +172,7 @@ describe('extract data', () => {
       const dataset = () => ({
         field: () => country,
       });
-      let d = extract(
+      let d: any = extract(
         {
           field: 'dim',
           value: (x) => x.v + 5,
@@ -192,7 +192,7 @@ describe('extract data', () => {
         field: () => country,
         extract: () => [1, 2],
       });
-      let d = extract(
+      let d: any = extract(
         {
           extract: [{ field: 'dim' }],
           amend: [7, { value: 8, label: { value: 'etikett' } }],
@@ -207,8 +207,8 @@ describe('extract data', () => {
 
   describe('from collection', () => {
     it('should return a collection', () => {
-      let collection = sinon.stub().withArgs('nyckel').returns({ foo: 'my collection' });
-      let d = extract(
+      let collection: any = sinon.stub().withArgs('nyckel').returns({ foo: 'my collection' });
+      let d: any = extract(
         {
           collection: 'nyckel',
         },

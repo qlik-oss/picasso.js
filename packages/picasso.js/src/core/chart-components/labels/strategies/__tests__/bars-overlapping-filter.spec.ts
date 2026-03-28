@@ -1,8 +1,8 @@
 import create, { binaryLeftSearch } from '../bars-overlapping-filter';
 
 describe('binaryLeftSearch', () => {
-  const extractBounds = (item) => item.rect;
-  let ary;
+  const extractBounds = (item: any) => item.rect;
+  let ary: any;
 
   beforeEach(() => {
     ary = [
@@ -35,7 +35,7 @@ describe('binaryLeftSearch', () => {
   });
 
   it('should handle no possible intersections', () => {
-    let left = binaryLeftSearch({ x: -999 }, ary, 'x', 'width', extractBounds);
+    let left: any = binaryLeftSearch({ x: -999 }, ary, 'x', 'width', extractBounds);
     expect(left).to.equal(0); // Return first index
 
     left = binaryLeftSearch({ x: 999 }, ary, 'x', 'width', extractBounds);
@@ -44,7 +44,7 @@ describe('binaryLeftSearch', () => {
 });
 
 describe('filter overlapping labels', () => {
-  let context;
+  let context: any;
   function createBounds(x, y, width, height) {
     return {
       x,

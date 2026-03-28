@@ -6,7 +6,7 @@ describe('component - label', () => {
       const chart = {
         component: () => 0,
       };
-      let labels = strategy({
+      let labels: any = strategy({
         chart,
         source: {},
       });
@@ -20,7 +20,7 @@ describe('component - label', () => {
       };
       chart.component.withArgs('bars').returns({});
       chart.findShapes.withArgs('circle').returns([{ key: 'bars' }, { key: 'points' }, { key: 'bars' }]);
-      let labels = strategy(
+      let labels: any = strategy(
         {
           chart,
           source: {

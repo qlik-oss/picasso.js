@@ -2,7 +2,7 @@ import categorical from '../categorical';
 
 describe('categorical', () => {
   it('should return greyish color for unknown values (default)', () => {
-    let s = categorical(
+    let s: any = categorical(
       {},
       {},
       {
@@ -15,7 +15,7 @@ describe('categorical', () => {
   });
 
   it('should return red color for unknown values', () => {
-    let s = categorical({
+    let s: any = categorical({
       unknown: 'red',
     });
     expect(s()).to.equal('red');
@@ -23,7 +23,7 @@ describe('categorical', () => {
 
   it('should return default range from theme', () => {
     const defaultColors = ['fancy'];
-    let s = categorical(
+    let s: any = categorical(
       {},
       {},
       {

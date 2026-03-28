@@ -1,8 +1,8 @@
 import sequential from '../sequential';
 
 describe('Sequential', () => {
-  let seq;
-  let theme;
+  let seq: any;
+  let theme: any;
   beforeEach(() => {
     seq = sequential();
     theme = {
@@ -12,9 +12,9 @@ describe('Sequential', () => {
   });
 
   describe('Basic colors', () => {
-    let min = 0;
-    let max = 100;
-    let settings = {};
+    let min: any = 0;
+    let max: any = 100;
+    let settings: any = {};
     const fields = [{ min: () => min, max: () => max }];
 
     beforeEach(() => {
@@ -111,9 +111,9 @@ describe('Sequential', () => {
   });
 
   describe('Generate limits', () => {
-    let min = 0;
-    let max = 100;
-    let settings = {};
+    let min: any = 0;
+    let max: any = 100;
+    let settings: any = {};
     const fields = [{ min: () => min, max: () => max }];
 
     beforeEach(() => {

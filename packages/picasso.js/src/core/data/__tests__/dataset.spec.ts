@@ -20,7 +20,7 @@ describe('dataset', () => {
   });
 
   describe('object array', () => {
-    let d;
+    let d: any;
     beforeAll(() => {
       const data = [
         { product: 'Cars', sales: 56 },
@@ -49,7 +49,7 @@ describe('dataset', () => {
   });
 
   describe('object array with config', () => {
-    let d;
+    let d: any;
     beforeAll(() => {
       const data = [
         { product: 'Cars', sales: 56 },
@@ -128,7 +128,7 @@ describe('dataset', () => {
   });
 
   describe('2d matrix', () => {
-    let d;
+    let d: any;
     beforeAll(() => {
       const data = [
         ['Product', 'Sales'],
@@ -150,7 +150,7 @@ describe('dataset', () => {
   });
 
   describe('2d matrix with config', () => {
-    let d;
+    let d: any;
     beforeAll(() => {
       const data = [
         ['Product', 'Sales'],
@@ -218,7 +218,7 @@ describe('dataset', () => {
   });
 
   describe('2d matrix without headers', () => {
-    let d;
+    let d: any;
     beforeAll(() => {
       const data = [
         ['Cars', 56],
@@ -244,7 +244,7 @@ describe('dataset', () => {
   });
 
   describe('dsv with explicit delimiter', () => {
-    let d;
+    let d: any;
     beforeAll(() => {
       const data = 'Product|Sales\nCars|56\nBikes|34';
       d = dataset({

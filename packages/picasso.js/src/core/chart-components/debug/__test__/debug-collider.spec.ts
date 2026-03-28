@@ -2,9 +2,9 @@ import component from '../debug-collider';
 import componentFactoryFixture from '../../../../../test/helpers/component-factory-fixture';
 
 describe('debug-collider', () => {
-  let componentFixture;
-  let opts;
-  let shapes;
+  let componentFixture: any;
+  let opts: any;
+  let shapes: any;
 
   beforeEach(() => {
     componentFixture = componentFactoryFixture();

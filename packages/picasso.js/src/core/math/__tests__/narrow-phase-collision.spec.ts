@@ -2,7 +2,7 @@ import { testPolygonLine, testPolygonRect } from '../narrow-phase-collision';
 import { create } from '../../geometry/polygon';
 
 describe('NarrowPhaseCollision', () => {
-  let polygon;
+  let polygon: any;
   const convexPolygon = [
     { x: 0, y: 25 },
     { x: 25, y: 0 },

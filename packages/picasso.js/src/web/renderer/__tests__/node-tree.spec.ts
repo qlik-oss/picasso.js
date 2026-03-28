@@ -7,7 +7,7 @@ function getContent(arr) {
 describe('node-tree', () => {
   describe('createNodes', () => {
     it('should call factory function with type and parent params', () => {
-      let fn = sinon.spy(),
+      let fn: any = sinon.spy(),
         p = {},
         nodes = [{ content: { type: 'a' } }, { content: { type: 'b' } }];
       createNodes(nodes, p, fn);
@@ -16,7 +16,7 @@ describe('node-tree', () => {
     });
 
     it('should store created objects', () => {
-      let fn = (s) => `step ${s}`,
+      let fn: any = (s: any) => `step ${s}`,
         p = {},
         nodes = [{ content: { type: '1' } }, { content: { type: '2' } }];
 
@@ -28,7 +28,7 @@ describe('node-tree', () => {
 
   describe('destroyNodes', () => {
     it('should call factory function with object instance', () => {
-      let fn = sinon.spy(),
+      let fn: any = sinon.spy(),
         nodes = [{ object: 'a' }, { object: 'b' }, {}, { object: null }];
       destroyNodes(nodes, fn);
       expect(fn.callCount).to.equal(2);
@@ -37,7 +37,7 @@ describe('node-tree', () => {
     });
 
     it('should nullify node object', () => {
-      let fn = () => {},
+      let fn: any = () => {},
         nodes = [{ object: 'a' }, { object: 'b' }];
       destroyNodes(nodes, fn);
       expect(nodes).to.deep.equal([{ object: null }, { object: null }]);
@@ -46,7 +46,7 @@ describe('node-tree', () => {
 
   describe('updateNodes', () => {
     it('should call maintainer function with object instance and content', () => {
-      let fn = sinon.spy(),
+      let fn: any = sinon.spy(),
         nodes = [{ object: 'a', content: 'foo' }, { object: 'b', content: false }, {}, { object: null }];
       updateNodes(nodes, null as any, fn, undefined as any);
       expect(fn.callCount).to.equal(2);

@@ -150,7 +150,7 @@ describe('Axis size calculator', () => {
     settings.dock = 'left';
     settings.align = 'left';
     settings.labels.show = true;
-    let size = sizeFn(rect);
+    let size: any = sizeFn(rect);
     expect(size.size).to.equals(16 /* = 10(margin) + 4(label padding) + 2(text size) */);
 
     ticks[0].label = 'AAAAAA';
@@ -163,7 +163,7 @@ describe('Axis size calculator', () => {
     settings.align = 'left';
     settings.labels.show = true;
     settings.labels.maxGlyphCount = 3;
-    let size = sizeFn(rect);
+    let size: any = sizeFn(rect);
     expect(size.size).to.equals(17 /* = 10(margin) + 4(label padding) + 3(text size) */);
 
     ticks[0].label = 'AAAAAA';
@@ -175,7 +175,7 @@ describe('Axis size calculator', () => {
     settings.dock = 'bottom';
     settings.align = 'bottom';
     settings.labels.show = true;
-    let size = sizeFn(rect);
+    let size: any = sizeFn(rect);
     expect(size.size).to.equals(19);
 
     ticks[0].label = 'AAAAAA';

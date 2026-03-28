@@ -325,7 +325,7 @@ describe('point component', () => {
       },
     };
 
-    const xScale = (v) => v;
+    const xScale = (v: any) => v;
     xScale.bandwidth = () => 0.2; // max size: width * 0.2 * maxRelDiscrete -> 40, // min size: width * 0.2 * minRelDiscrete -> 10
     chart.scale.onCall(0).returns(xScale);
 

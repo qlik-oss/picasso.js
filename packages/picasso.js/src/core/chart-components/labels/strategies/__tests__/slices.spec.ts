@@ -120,8 +120,8 @@ describe('labeling - slices', () => {
     });
 
     it('rotated outside', () => {
-      let epsilon = 0.0001;
-      let bounds = getSliceRect({
+      let epsilon: any = 0.0001;
+      let bounds: any = getSliceRect({
         slice: {
           offset: { x: 0, y: 0 },
           start: 0,
@@ -149,8 +149,8 @@ describe('labeling - slices', () => {
     });
 
     it('rotated into', () => {
-      let epsilon = 0.0001;
-      let bounds = getSliceRect({
+      let epsilon: any = 0.0001;
+      let bounds: any = getSliceRect({
         slice: {
           offset: { x: 0, y: 0 },
           start: 0,
@@ -273,9 +273,9 @@ describe('labeling - slices', () => {
   });
 
   describe('slice strategy', () => {
-    let chart;
-    let renderer;
-    let rect;
+    let chart: any;
+    let renderer: any;
+    let rect: any;
     beforeEach(() => {
       chart = {};
       renderer = {
@@ -312,7 +312,7 @@ describe('labeling - slices', () => {
         },
       ];
       renderer.measureText.returns({ width: 19, height: 10 });
-      let labels = slices({
+      let labels: any = slices({
         settings,
         chart,
         nodes,
@@ -365,7 +365,7 @@ describe('labeling - slices', () => {
         },
       ];
       renderer.measureText.returns({ width: 20, height: 10 });
-      let labels = slices({
+      let labels: any = slices({
         settings,
         chart,
         nodes,
@@ -407,7 +407,7 @@ describe('labeling - slices', () => {
         },
       ];
       renderer.measureText.returns({ width: 20, height: 10 });
-      let labels = slices({
+      let labels: any = slices({
         settings,
         chart,
         nodes,
@@ -465,7 +465,7 @@ describe('labeling - slices', () => {
       }
 
       beforeEach(() => {
-        renderer.measureText = (opts) => {
+        renderer.measureText = (opts: any) => {
           if (opts.text.includes('…')) {
             return { width: 1, height: 1 };
           }

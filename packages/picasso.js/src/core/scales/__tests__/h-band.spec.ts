@@ -2,10 +2,10 @@ import { hierarchy } from 'd3-hierarchy';
 import hBand from '../h-band';
 
 describe('Hierarchical band scale', () => {
-  const childGen = (d) => ({ value: d });
-  let scale;
-  let data;
-  let settings;
+  const childGen = (d: any) => ({ value: d });
+  let scale: any;
+  let data: any;
+  let settings: any;
 
   beforeEach(() => {
     const leftChildren = ['A', 'B', 'C'].map(childGen);

@@ -498,7 +498,7 @@ describe('GeoRect', () => {
         const dY = Math.sin(45 * (Math.PI / 180)) * radius;
 
         // Circle is touching the edge
-        let c = { cx: 51 - dX, cy: 101 - dY, r: radius };
+        let c: any = { cx: 51 - dX, cy: 101 - dY, r: radius };
         expect(rect.intersectsCircle(c)).to.equal(true);
 
         // Circle is just outside the edge

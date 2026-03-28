@@ -2,7 +2,7 @@ import stringTokenizer, { MANDATORY, BREAK_ALLOWED, NO_BREAK } from '../string-t
 
 function toArray(iterator) {
   const ary = [];
-  let token = iterator.next();
+  let token: any = iterator.next();
 
   while (!token.done) {
     ary.push(token);

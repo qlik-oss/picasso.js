@@ -2,9 +2,9 @@ import componentFactoryFixture from '../../../../../test/helpers/component-facto
 import component from '../line';
 
 describe('line component', () => {
-  let rendered;
-  let componentFixture;
-  let opts;
+  let rendered: any;
+  let componentFixture: any;
+  let opts: any;
 
   beforeEach(() => {
     opts = {
@@ -279,7 +279,7 @@ describe('line component', () => {
   });
 
   describe('layer order', () => {
-    let config;
+    let config: any;
     beforeEach(() => {
       config = {
         data: [2.1, 2.2, 2.3, 1.1, 1.2, 1.3, 3.1, 3.2, 3.3],

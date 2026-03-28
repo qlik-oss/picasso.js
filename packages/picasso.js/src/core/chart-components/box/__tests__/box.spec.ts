@@ -2,11 +2,11 @@ import componentFactoryFixture from '../../../../../test/helpers/component-facto
 import boxMarker from '../box';
 
 describe('box component', () => {
-  let rendererOutput;
-  let chart;
-  let shapeFn;
-  let componentFixture;
-  let opts;
+  let rendererOutput: any;
+  let chart: any;
+  let shapeFn: any;
+  let componentFixture: any;
+  let opts: any;
 
   beforeEach(() => {
     // const table = {
@@ -85,9 +85,9 @@ describe('box component', () => {
       },
     ]);
 
-    const xScale = (v) => v;
+    const xScale = (v: any) => v;
     xScale.bandwidth = () => 0.5;
-    const yScale = (v) => v;
+    const yScale = (v: any) => v;
     chart.scale.withArgs('x').returns(xScale);
     chart.scale.withArgs('y').returns(yScale);
 
@@ -291,9 +291,9 @@ describe('box component', () => {
       },
     ]);
 
-    const xScale = (v) => v;
+    const xScale = (v: any) => v;
     xScale.bandwidth = () => 0.5;
-    const yScale = (v) => v;
+    const yScale = (v: any) => v;
     chart.scale.withArgs('x').returns(xScale);
     chart.scale.withArgs('y').returns(yScale);
 
@@ -329,9 +329,9 @@ describe('box component', () => {
       },
     ]);
 
-    const xScale = (v) => v;
+    const xScale = (v: any) => v;
     xScale.bandwidth = () => 0.5;
-    const yScale = (v) => v;
+    const yScale = (v: any) => v;
     chart.scale.withArgs('x').returns(xScale);
     chart.scale.withArgs('y').returns(yScale);
 
@@ -398,9 +398,9 @@ describe('box component', () => {
       },
     ]);
 
-    const xScale = (v) => v;
+    const xScale = (v: any) => v;
     xScale.bandwidth = () => 0.5;
-    const yScale = (v) => v;
+    const yScale = (v: any) => v;
     chart.scale.withArgs('x').returns(xScale);
     chart.scale.withArgs('y').returns(yScale);
 
@@ -472,9 +472,9 @@ describe('box component', () => {
       },
     ]);
 
-    const xScale = (v) => v;
+    const xScale = (v: any) => v;
     xScale.bandwidth = () => 0.5;
-    const yScale = (v) => v;
+    const yScale = (v: any) => v;
     chart.scale.withArgs('x').returns(xScale);
     chart.scale.withArgs('y').returns(yScale);
 
@@ -631,11 +631,11 @@ describe('box component', () => {
     chart.dataset().extract.returns(dataset);
 
     const xDomain = [1, 2, 3, 4, 5];
-    const xScale = (v) => xDomain.indexOf(v) * 0.2;
+    const xScale = (v: any) => xDomain.indexOf(v) * 0.2;
     xScale.domain = () => xDomain;
     xScale.bandwidth = () => 0.2;
 
-    const yScale = (v) => (v - 0.2) / 0.6;
+    const yScale = (v: any) => (v - 0.2) / 0.6;
     chart.scale.withArgs('x').returns(xScale);
     chart.scale.withArgs('y').returns(yScale);
 

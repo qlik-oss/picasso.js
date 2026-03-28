@@ -67,7 +67,7 @@ describe('svg renderer', () => {
     });
 
     it('should not create new root if it already exists', () => {
-      let el = element('div'),
+      let el: any = element('div'),
         el2 = element('div');
       svg.appendTo(el);
       const svgEl = svg.element();

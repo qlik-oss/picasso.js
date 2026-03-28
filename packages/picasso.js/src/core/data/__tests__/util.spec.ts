@@ -1,7 +1,7 @@
 import { getPropsInfo, collect } from '../util';
 
 describe('data-util', () => {
-  let ds;
+  let ds: any;
 
   beforeEach(() => {
     ds = {
@@ -197,9 +197,9 @@ describe('data-util', () => {
   });
 
   describe('collector', () => {
-    let tracked;
-    let mainField;
-    let pField;
+    let tracked: any;
+    let mainField: any;
+    let pField: any;
     beforeEach(() => {
       tracked = [
         {

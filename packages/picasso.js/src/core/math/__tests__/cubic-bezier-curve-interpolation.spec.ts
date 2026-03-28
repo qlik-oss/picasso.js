@@ -9,10 +9,10 @@ function approxEqual(ary, expected) {
 }
 
 describe('Cubic Bezier curve', () => {
-  let p0;
-  let p1;
-  let p2;
-  let p3;
+  let p0: any;
+  let p1: any;
+  let p2: any;
+  let p3: any;
 
   beforeEach(() => {
     p0 = { x: 0, y: 0 };

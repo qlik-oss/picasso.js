@@ -2,10 +2,10 @@ import * as boxShapesHelper from '../box-shapes-helper';
 import buildShapes from '../box-shapes';
 
 describe('buildShapes', () => {
-  let sandbox;
-  let resolved;
-  let keys;
-  let boxWidth;
+  let sandbox: any;
+  let resolved: any;
+  let keys: any;
+  let boxWidth: any;
 
   beforeEach(() => {
     boxWidth = 10;

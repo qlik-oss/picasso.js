@@ -1,13 +1,13 @@
 import component from '../range';
 
 describe('range component', () => {
-  let chart;
-  let renderer;
-  let context;
-  let settings;
-  let brush;
-  let scale;
-  let listeners;
+  let chart: any;
+  let renderer: any;
+  let context: any;
+  let settings: any;
+  let brush: any;
+  let scale: any;
+  let listeners: any;
   beforeEach(() => {
     chart = {
       brush: sinon.stub(),
@@ -48,7 +48,7 @@ describe('range component', () => {
       brushes: sinon.stub(),
     };
 
-    scale = (s) => s / 100; // assume scale has domain [0, 100]
+    scale = (s: any) => s / 100; // assume scale has domain [0, 100]
     scale.data = () => ({
       fields: [
         {

@@ -58,7 +58,7 @@ describe('chart formatters', () => {
           get: sinon.stub(),
         },
       };
-      formatterFn = (pattern) => (value) => `${pattern}${value}`;
+      formatterFn = (pattern: any) => (value) => `${pattern}${value}`;
     });
 
     it('should throw when type is not registered', () => {
