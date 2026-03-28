@@ -6,17 +6,29 @@ import calcRequiredSize from './axis-size-calculator';
 import crispify from '../../transposer/crispifier';
 import { scaleWithSize } from '../../scales';
 
-function alignTransform({ align, inner }) {
+interface Rect {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+interface AlignTransformInput {
+  align: string;
+  inner: Rect;
+}
+
+function alignTransform({ align, inner }: AlignTransformInput): Rect {
   if (align === 'left') {
-    return { x: inner.width + inner.x };
+    return { x: inner.width + inner.x, y: inner.y, width: inner.width, height: inner.height };
   }
   if (align === 'right' || align === 'bottom') {
     return inner;
   }
-  return { y: inner.y + inner.height };
+  return { x: inner.x, y: inner.y + inner.height, width: inner.width, height: inner.height };
 }
 
-function resolveAlign(align, dock) {
+function resolveAlign(align: string, dock: string): string {
   const horizontal = ['top', 'bottom'];
   const vertical = ['left', 'right'];
   if (horizontal.indexOf(align) !== -1 && vertical.indexOf(dock) === -1) {
@@ -28,52 +40,78 @@ function resolveAlign(align, dock) {
   return dock; // Invalid align, return current dock as default
 }
 
+interface ResolveLocalSettingsInput {
+  state: Record<string, unknown>;
+  style: Record<string, unknown>;
+  settings: Record<string, unknown>;
+}
+
 /**
  * @ignore
  * @param {object} context - The component context
  */
-function resolveLocalSettings({ state, style, settings }) {
+function resolveLocalSettings(input: ResolveLocalSettingsInput): Record<string, unknown> {
+  const { state, style, settings } = input;
   const defaultStgns = extend(
     true,
     {},
-    state.isDiscrete ? DEFAULT_DISCRETE_SETTINGS : DEFAULT_CONTINUOUS_SETTINGS,
+    (state as Record<string, unknown>).isDiscrete ? DEFAULT_DISCRETE_SETTINGS : DEFAULT_CONTINUOUS_SETTINGS,
     style
   );
-  const localStgns: Record<string, unknown> = extend(true, {}, defaultStgns, settings.settings);
+  const localStgns: Record<string, unknown> = extend(true, {}, defaultStgns, (settings as Record<string, unknown>).settings);
 
-  const dock = settings.layout.dock || state.defaultDock;
+  const dock = ((settings as Record<string, unknown>).layout as Record<string, unknown>).dock || (state as Record<string, unknown>).defaultDock;
   localStgns.dock = dock;
-  localStgns.align = resolveAlign(settings.settings.align, dock);
+  localStgns.align = resolveAlign(
+    ((settings as Record<string, unknown>).settings as Record<string, unknown>).align as string,
+    dock as string
+  );
   localStgns.labels = localStgns.labels || {};
   (localStgns.labels as Record<string, unknown>).tiltAngle = Math.max(
     -90,
-    Math.min((localStgns.labels as Record<string, number>).tiltAngle, 90)
+    Math.min((localStgns.labels as Record<string, number>).tiltAngle || 0, 90)
   );
 
   const { paddingStart, paddingEnd } = localStgns;
-  localStgns.paddingStart = typeof paddingStart === 'function' ? paddingStart.call(null) : paddingStart;
-  localStgns.paddingEnd = typeof paddingEnd === 'function' ? paddingEnd.call(null) : paddingEnd;
+  localStgns.paddingStart = typeof paddingStart === 'function' ? (paddingStart as () => unknown).call(null) : paddingStart;
+  localStgns.paddingEnd = typeof paddingEnd === 'function' ? (paddingEnd as () => unknown).call(null) : paddingEnd;
 
   return localStgns;
 }
 
-function updateActiveMode(state, settings, isDiscrete) {
-  const mode = settings.labels.mode;
+function updateActiveMode(state: Record<string, unknown>, settings: Record<string, unknown>, isDiscrete: boolean): string {
+  const mode = (settings.labels as Record<string, unknown>).mode;
 
-  if (!isDiscrete || !state.isHorizontal) {
+  if (!isDiscrete || !(state.isHorizontal as boolean)) {
     return 'horizontal';
   }
 
   if (mode === 'auto') {
-    return state.labels.activeMode;
+    return (state.labels as Record<string, unknown>).activeMode as string;
   }
-  if (['layered', 'tilted'].indexOf(settings.labels.mode) !== -1 && ['top', 'bottom'].indexOf(settings.dock) !== -1) {
-    return mode;
+  if (
+    ['layered', 'tilted'].indexOf(settings.labels as unknown as string) !== -1 &&
+    ['top', 'bottom'].indexOf((settings.dock as string) || '') !== -1
+  ) {
+    return mode as string;
   }
   return 'horizontal';
 }
 
-const axisComponent = {
+interface AxisComponentState extends Record<string, unknown> {
+  isDiscrete: boolean;
+  isHorizontal: boolean;
+  labels: { activeMode: string };
+  ticks: unknown[];
+  innerRect: Rect;
+  outerRect: Rect;
+  defaultDock: string | undefined;
+  concreteNodeBuilder: unknown;
+  settings: Record<string, unknown> | undefined;
+  pxScale?: unknown;
+}
+
+const axisComponent: any = {
   require: ['chart', 'renderer', 'dockConfig'],
   defaultSettings: {
     layout: {
@@ -88,10 +126,10 @@ const axisComponent = {
       line: '$guide-line',
     },
   },
-  created() {
+  created(this: any) {
     // State is a representation of properties that are private to this component defintion and may be modified by only in this context.
     this.state = {
-      isDiscrete: !!this.scale.bandwidth,
+      isDiscrete: !!(this.scale as Record<string, unknown>).bandwidth,
       isHorizontal: false,
       labels: {
         activeMode: 'horizontal',
@@ -120,25 +158,33 @@ const axisComponent = {
       this.state.defaultDock = 'left';
     }
 
-    this.setState(this.settings);
+    this.setState(this.settings as Record<string, unknown>);
   },
-  setState() {
-    this.state.isDiscrete = !!this.scale.bandwidth;
-    this.state.settings = resolveLocalSettings(this);
+  setState(this: any, settings?: Record<string, unknown>) {
+    this.state.isDiscrete = !!(this.scale as Record<string, unknown>).bandwidth;
+    this.state.settings = resolveLocalSettings({
+      state: this.state,
+      style: this as unknown as Record<string, unknown>,
+      settings: this as unknown as Record<string, unknown>,
+    });
 
     this.state.concreteNodeBuilder = nodeBuilder(this.state.isDiscrete);
 
-    this.dockConfig.dock(this.state.settings.dock); // Override the dock setting (TODO should be removed)
+    (this.dockConfig as any).dock((this.state.settings as Record<string, unknown>).dock); // Override the dock setting (TODO should be removed)
 
-    this.state.isHorizontal = this.state.settings.align === 'top' || this.state.settings.align === 'bottom';
-    this.state.labels.activeMode = updateActiveMode(this.state, this.state.settings, this.state.isDiscrete);
+    this.state.isHorizontal =
+      (this.state.settings as Record<string, unknown>).align === 'top' ||
+      (this.state.settings as Record<string, unknown>).align === 'bottom';
+    this.state.labels.activeMode = updateActiveMode(this.state, this.state.settings as Record<string, unknown>, this.state.isDiscrete);
   },
-  preferredSize(opts) {
-    const { formatter, state, scale } = this;
+  preferredSize(this: any, opts: Record<string, unknown>) {
+    const { formatter } = this;
 
-    const distance = this.state.isHorizontal ? opts.inner.width : opts.inner.height;
+    const distance = this.state.isHorizontal
+      ? (opts.inner as Rect).width
+      : (opts.inner as Rect).height;
 
-    this.state.pxScale = scaleWithSize(scale, distance);
+    this.state.pxScale = scaleWithSize(this.scale as any, distance);
 
     const reqSize = calcRequiredSize({
       isDiscrete: this.state.isDiscrete,
@@ -147,27 +193,27 @@ const axisComponent = {
         outer: opts.outer,
       },
       formatter,
-      measureText: this.renderer.measureText,
+      measureText: (this.renderer as Record<string, unknown>).measureText,
       scale: this.state.pxScale,
-      settings: this.state.settings,
-      state,
-    });
+      settings: this.state.settings as Record<string, unknown>,
+      state: this.state,
+    } as any);
 
     return reqSize;
   },
-  beforeUpdate(opts: Record<string, unknown> = {}) {
+  beforeUpdate(this: any, opts: Record<string, unknown> = {}) {
     const { settings } = opts;
-    this.setState(settings);
+    this.setState(settings as Record<string, unknown>);
   },
-  resize(opts) {
+  resize(this: any, opts: Record<string, unknown>) {
     const { inner, outer } = opts;
 
     const extendedInner = extend(
       {},
       inner,
       alignTransform({
-        align: this.state.settings.align,
-        inner,
+        align: (this.state.settings as Record<string, unknown>).align as string,
+        inner: inner as Rect,
       })
     );
 
@@ -177,34 +223,34 @@ const axisComponent = {
 
     return outer;
   },
-  beforeRender() {
-    const { scale, formatter } = this;
+  beforeRender(this: any) {
+    const { formatter } = this;
 
     const distance = this.state.isHorizontal ? this.state.innerRect.width : this.state.innerRect.height;
 
-    this.state.pxScale = scaleWithSize(scale, distance);
-    this.state.ticks = this.state.pxScale
+    this.state.pxScale = scaleWithSize(this.scale as any, distance);
+    this.state.ticks = (this.state.pxScale as any)
       .ticks({
         distance,
         formatter,
-      })
-      .filter((t) => t.position >= 0 && t.position <= 1);
+      } as Record<string, unknown>)
+      .filter((t: Record<string, unknown>) => (t.position as number) >= 0 && (t.position as number) <= 1);
   },
-  render() {
+  render(this: any) {
     const { state } = this;
 
-    const nodes = [];
+    const nodes: unknown[] = [];
     nodes.push(
-      ...this.state.concreteNodeBuilder.build({
+      ...(this.state.concreteNodeBuilder as any).build({
         settings: this.state.settings,
         scale: this.state.pxScale,
         innerRect: this.state.innerRect,
         outerRect: this.state.outerRect,
-        measureText: this.renderer.measureText,
-        textBounds: this.renderer.textBounds,
+        measureText: (this.renderer as Record<string, unknown>).measureText,
+        textBounds: (this.renderer as Record<string, unknown>).textBounds,
         ticks: this.state.ticks,
         state,
-      })
+      } as Record<string, unknown>) as unknown[]
     );
 
     crispify.multiple(nodes);

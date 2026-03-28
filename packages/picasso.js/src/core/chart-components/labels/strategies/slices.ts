@@ -1,9 +1,14 @@
+// @ts-ignore - extend package lacks TypeScript types
 import extend from 'extend';
 import { testCircleRect, testRectLine, testRectRect } from '../../../math/narrow-phase-collision';
 import { rectContainsRect } from '../../../math/intersection';
 import type { Rect, Point, Circle, Line } from '../../../geometry';
 
 const LABEL_OVERLAP_THRESHOLD_X = 4;
+
+// When a label is animated, the label rect width should be bit larger than the measured text width,
+// otherwise the animated label will be ellipsed.
+const LABEL_RECT_WIDTH_PADDING = 1;
 
 interface SliceBounds extends Rect {
   baseline?: 'top';
@@ -41,6 +46,37 @@ interface LineConfig {
   y1: number;
   x2: number;
   y2: number;
+}
+
+interface LabelSettings {
+  fontSize: number;
+  fontFamily: string;
+  fill: string;
+  padding: number;
+  position: string;
+  [key: string]: unknown;
+}
+
+interface ContextState {
+  q1maxY?: number;
+  q2minY?: number;
+  q3minY?: number;
+  q4maxY?: number;
+}
+
+interface Label {
+  type: string;
+  text: string;
+  maxWidth: number;
+  x: number;
+  y: number;
+  fill?: string;
+  anchor?: string;
+  baseline?: string;
+  fontSize?: string;
+  fontFamily?: string;
+  transform?: string;
+  data?: unknown;
 }
 
 function normalize(angle: number): number {
@@ -143,11 +179,21 @@ function getRectFromCircleIntersection({ radius, size, angle }: { radius: number
   return bounds;
 }
 
-function getHorizontalInsideSliceRect({ slice, padding, measured, store }) {
+function getHorizontalInsideSliceRect({
+  slice,
+  padding,
+  measured,
+  store,
+}: {
+  slice: SliceConfig;
+  padding: number;
+  measured: MeasuredText;
+  store: { insideLabelBounds: Rect[] };
+}): SliceBounds | null {
   const { start, end, outerRadius } = slice;
   const middle = normalize((start + end) / 2);
 
-  const size = {
+  const size: RectSize = {
     width: measured.width + padding * 2 + LABEL_RECT_WIDTH_PADDING,
     height: measured.height + padding * 2,
   };
@@ -162,34 +208,40 @@ function getHorizontalInsideSliceRect({ slice, padding, measured, store }) {
     return null;
   }
 
-  (bounds as Record<string, string | number | boolean | null>).baseline = 'top';
-
-  pad(bounds, padding);
+  bounds.baseline = 'top';
 
   if (store.insideLabelBounds.some((rect) => testRectRect(rect, bounds))) {
     return null;
   }
 
   store.insideLabelBounds.push({
-    x: (bounds.x as number) - LABEL_OVERLAP_THRESHOLD_X,
-    y: bounds.y as number,
-    width: (bounds.width as number) + LABEL_OVERLAP_THRESHOLD_X * 2,
-    height: bounds.height as number,
+    x: bounds.x - LABEL_OVERLAP_THRESHOLD_X,
+    y: bounds.y,
+    width: bounds.width + LABEL_OVERLAP_THRESHOLD_X * 2,
+    height: bounds.height,
   }); // Copy as bounds is mutated else where
 
   return bounds;
 }
 
-function getHorizontalIntoSliceRect({ slice, padding, measured }) {
+function getHorizontalIntoSliceRect({
+  slice,
+  padding,
+  measured,
+}: {
+  slice: SliceConfig;
+  padding: number;
+  measured: MeasuredText;
+}): SliceBounds | null {
   let { start, end, innerRadius, outerRadius } = slice;
   const middle = normalize((start + end) / 2);
 
-  let size = {
+  let size: RectSize = {
     width: measured.width + padding * 2 + LABEL_RECT_WIDTH_PADDING,
     height: measured.height + padding * 2,
   };
 
-  let bounds: Record<string, string | number | boolean | null> = getRectFromCircleIntersection({
+  let bounds = getRectFromCircleIntersection({
     radius: outerRadius,
     size,
     angle: middle,
@@ -201,7 +253,7 @@ function getHorizontalIntoSliceRect({ slice, padding, measured }) {
 
   bounds.baseline = 'top';
 
-  let startLine = {
+  let startLine: LineConfig = {
     x1: 0,
     y1: 0,
     x2: Math.sin(start) * outerRadius,
@@ -210,7 +262,7 @@ function getHorizontalIntoSliceRect({ slice, padding, measured }) {
   if (testRectLine(bounds, startLine)) {
     return null;
   }
-  let endLine = {
+  let endLine: LineConfig = {
     x1: 0,
     y1: 0,
     x2: Math.sin(end) * outerRadius,
@@ -219,7 +271,7 @@ function getHorizontalIntoSliceRect({ slice, padding, measured }) {
   if (testRectLine(bounds, endLine)) {
     return null;
   }
-  let circle = { cx: 0, cy: 0, r: innerRadius };
+  let circle: Circle = { cx: 0, cy: 0, r: innerRadius };
   if (testCircleRect(circle, bounds)) {
     return null;
   }
@@ -230,7 +282,15 @@ function getHorizontalIntoSliceRect({ slice, padding, measured }) {
 }
 
 // TODO: this case can support a justify setting
-function getRotatedInsideSliceRect({ slice, measured, padding }) {
+function getRotatedInsideSliceRect({
+  slice,
+  measured,
+  padding,
+}: {
+  slice: SliceConfig;
+  measured: MeasuredText;
+  padding: number;
+}): SliceBounds | null {
   let { start, end, innerRadius, outerRadius } = slice;
 
   let maxWidth = outerRadius - innerRadius - padding * 2;
@@ -247,7 +307,7 @@ function getRotatedInsideSliceRect({ slice, measured, padding }) {
 
   const middle = normalize((start + end) / 2);
   let r = outerRadius - padding;
-  let bounds: Record<string, string | number | boolean | null> = {
+  let bounds: SliceBounds = {
     x: Math.sin(middle) * r,
     y: -Math.cos(middle) * r,
     width: maxWidth,
@@ -263,7 +323,17 @@ function getRotatedInsideSliceRect({ slice, measured, padding }) {
   return bounds;
 }
 
-function getRotatedOusideSliceRect({ slice, measured, padding, view }) {
+function getRotatedOusideSliceRect({
+  slice,
+  measured,
+  padding,
+  view,
+}: {
+  slice: SliceConfig;
+  measured: MeasuredText;
+  padding: number;
+  view: Rect;
+}): SliceBounds | null {
   let { start, end, outerRadius, offset } = slice;
   let r = outerRadius + padding;
   let size = end - start;
@@ -303,7 +373,7 @@ function getRotatedOusideSliceRect({ slice, measured, padding, view }) {
     return null;
   }
 
-  let bounds: Record<string, string | number | boolean | null> = {
+  let bounds: SliceBounds = {
     x,
     y,
     width: maxWidth,
@@ -319,21 +389,22 @@ function getRotatedOusideSliceRect({ slice, measured, padding, view }) {
   return bounds;
 }
 
-function outOfSpace(context, section, view) {
+function outOfSpace(context: ContextState, section: number, view: Rect): boolean {
   switch (section) {
     case 0:
-      return context.q1maxY < 0;
+      return (context.q1maxY ?? -Infinity) < 0;
     case 1:
-      return context.q2minY > view.height;
+      return (context.q2minY ?? -Infinity) > view.height;
     case 2:
-      return context.q3minY > view.height;
+      return (context.q3minY ?? -Infinity) > view.height;
     case 3:
-      return context.q4maxY < 0;
+      return (context.q4maxY ?? -Infinity) < 0;
     default:
       return true;
   }
 }
-function adjustBounds(bounds, context, slice) {
+
+function adjustBounds(bounds: SliceBounds, context: ContextState, slice: SliceConfig): void {
   const LINE_PADDING = 2;
   const LIMIT = 1;
 
@@ -356,7 +427,7 @@ function adjustBounds(bounds, context, slice) {
             x2: offset.x + Math.sin(middle) * r,
             y2: offset.y - Math.cos(middle) * r,
             strokeWidth: 1,
-          };
+          } as any;
         }
       }
       break;
@@ -374,7 +445,7 @@ function adjustBounds(bounds, context, slice) {
             x2: offset.x + Math.sin(middle) * r,
             y2: offset.y - Math.cos(middle) * r,
             strokeWidth: 1,
-          };
+          } as any;
         }
       }
       break;
@@ -392,7 +463,7 @@ function adjustBounds(bounds, context, slice) {
             x2: offset.x + Math.sin(middle) * r,
             y2: offset.y - Math.cos(middle) * r,
             strokeWidth: 1,
-          };
+          } as any;
         }
       }
       break;
@@ -410,7 +481,7 @@ function adjustBounds(bounds, context, slice) {
             x2: offset.x + Math.sin(middle) * r,
             y2: offset.y - Math.cos(middle) * r,
             strokeWidth: 1,
-          };
+          } as any;
         }
       }
       break;
@@ -418,7 +489,16 @@ function adjustBounds(bounds, context, slice) {
       break;
   }
 }
-function updateContext({ context, node, bounds }) {
+
+function updateContext({
+  context,
+  node,
+  bounds,
+}: {
+  context: ContextState;
+  node: { desc: { slice: SliceConfig } };
+  bounds: SliceBounds;
+}): void {
   const PADDING = 2;
   let { start, end } = node.desc.slice;
   const middle = normalize((start + end) / 2);
@@ -448,7 +528,19 @@ function updateContext({ context, node, bounds }) {
   }
 }
 
-function getHorizontalOusideSliceRect({ slice, measured, padding, view, context }) {
+function getHorizontalOusideSliceRect({
+  slice,
+  measured,
+  padding,
+  view,
+  context,
+}: {
+  slice: SliceConfig;
+  measured: MeasuredText;
+  padding: number;
+  view: Rect;
+  context: ContextState;
+}): SliceBounds | null {
   let { start, end, outerRadius, offset } = slice;
   const middle = normalize((start + end) / 2);
 
@@ -478,7 +570,7 @@ function getHorizontalOusideSliceRect({ slice, measured, padding, view, context 
     return null;
   }
 
-  let bounds: Record<string, string | number | boolean | null> = {
+  let bounds: SliceBounds = {
     x,
     y,
     width: maxWidth,
@@ -494,7 +586,7 @@ function getHorizontalOusideSliceRect({ slice, measured, padding, view, context 
   return bounds;
 }
 
-function cbContext(node, chart) {
+function cbContext(node: any, chart: any): any {
   return {
     node,
     data: node.data,
@@ -504,8 +596,8 @@ function cbContext(node, chart) {
   };
 }
 
-function placeTextOnPoint(rect, text, opts) {
-  const label: Record<string, unknown> = {
+function placeTextOnPoint(rect: SliceBounds, text: string, opts: { fill?: string; fontSize: number; fontFamily: string }): Label {
+  const label: Label = {
     type: 'text',
     text,
     maxWidth: rect.width,
@@ -518,19 +610,37 @@ function placeTextOnPoint(rect, text, opts) {
     fontFamily: opts.fontFamily,
   };
 
-  if (!isNaN(rect.angle)) {
-    let angle = rect.angle * (360 / (Math.PI * 2));
+  if (!isNaN(rect.angle ?? NaN)) {
+    let angle = (rect.angle ?? 0) * (360 / (Math.PI * 2));
     label.transform = `rotate(${angle}, ${label.x}, ${label.y})`;
   }
 
   return label;
 }
 
-export function getSliceRect({ slice, direction, position, padding, measured, view, context, store }) {
+export function getSliceRect({
+  slice,
+  direction,
+  position,
+  padding,
+  measured,
+  view,
+  context,
+  store,
+}: {
+  slice: SliceConfig;
+  direction: string;
+  position: string;
+  padding: number;
+  measured: MeasuredText;
+  view: Rect;
+  context: ContextState;
+  store: { insideLabelBounds: Rect[] };
+}): SliceBounds | null {
   let { start, end, innerRadius, offset } = slice;
 
-  let bounds;
-  let s;
+  let bounds: SliceBounds | null;
+  let s: SliceConfig;
   switch (position) {
     case 'into':
       if (direction === 'rotate') {
@@ -545,6 +655,7 @@ export function getSliceRect({ slice, direction, position, padding, measured, vi
         end,
         innerRadius: 0,
         outerRadius: innerRadius,
+        offset,
       };
       if (direction === 'rotate') {
         bounds = getRotatedInsideSliceRect({ slice: s, measured, padding });
@@ -599,27 +710,27 @@ function findBestPlacement(
     rect,
     store,
   }: {
-    context: Record<string, unknown>;
-    direction: unknown;
-    lblStngs?: unknown;
-    measured: Record<string, unknown>;
-    node: Record<string, unknown>;
-    placementSettings: unknown[];
-    rect: Record<string, unknown>;
-    store: Record<string, unknown>;
+    context: ContextState;
+    direction: string;
+    lblStngs?: LabelSettings;
+    measured: MeasuredText;
+    node: { desc: { slice: SliceConfig } };
+    placementSettings: any[];
+    rect: Rect;
+    store: { insideLabelBounds: Rect[] };
   },
   sliceRect = getSliceRect
-) {
+): { bounds: SliceBounds | null; placement: any } {
   for (let p = 0; p < placementSettings.length; p++) {
     let placement = placementSettings[p];
     let bounds = sliceRect({
       context,
-      slice: (node.desc as Record<string, unknown>).slice,
+      slice: node.desc.slice,
       view: rect,
       direction,
-      position: (placement as Record<string, unknown>).position,
+      position: placement.position,
       measured,
-      padding: (placement as Record<string, unknown>).padding,
+      padding: placement.padding,
       store,
     });
 
@@ -638,11 +749,11 @@ function findBestPlacement(
  *   first quarter before the second
  *   forth quarter before the third
  */
-function sortNodes(nodes) {
-  const q1 = [];
-  const q2 = [];
-  const q3 = [];
-  const q4 = [];
+function sortNodes(nodes: any[]): any[] {
+  const q1: any[] = [];
+  const q2: any[] = [];
+  const q3: any[] = [];
+  const q4: any[] = [];
   for (let i = 0; i < nodes.length; ++i) {
     const { start, end } = nodes[i].desc.slice;
     const middle = normalize((start + end) / 2);
@@ -665,12 +776,12 @@ function sortNodes(nodes) {
     }
   }
 
-  const sortFn = (a, b) => {
+  const sortFn = (a: any, b: any) => {
     const middleA = normalize((a.desc.slice.start + a.desc.slice.end) / 2);
     const middleB = normalize((b.desc.slice.start + b.desc.slice.end) / 2);
     return middleA - middleB;
   };
-  const reverseSortFn = (a, b) => sortFn(b, a);
+  const reverseSortFn = (a: any, b: any) => sortFn(b, a);
 
   q1.sort(reverseSortFn);
   q2.sort(sortFn);
@@ -679,12 +790,12 @@ function sortNodes(nodes) {
   return q1.concat(q2, q4, q3);
 }
 
-function measureText(text, stgns, renderer) {
+function measureText(text: string, stgns: LabelSettings, renderer: any): MeasuredText {
   const fontFamily = stgns.fontFamily;
   const fontSize = `${stgns.fontSize}px`;
   const metrics = renderer.measureText({ text, fontFamily, fontSize });
 
-  metrics.minReqWidth = Math.min(
+  (metrics as any).minReqWidth = Math.min(
     metrics.width,
     renderer.measureText({
       text: `${text[0]}…`,
@@ -693,7 +804,7 @@ function measureText(text, stgns, renderer) {
     }).width
   );
 
-  return metrics;
+  return metrics as MeasuredText;
 }
 
 /**
@@ -716,11 +827,11 @@ function measureText(text, stgns, renderer) {
  */
 
 export function slices(
-  { settings, chart, nodes, rect, renderer, style },
+  { settings, chart, nodes, rect, renderer, style }: any,
   findPlacement = findBestPlacement,
   placer = placeTextOnPoint
-) {
-  const defaults: Record<string, unknown> = extend(
+): Label[] {
+  const defaults: Record<string, any> = extend(
     {
       fontSize: 12,
       fontFamily: 'Arial',
@@ -733,26 +844,26 @@ export function slices(
 
   defaults.fontSize = parseInt(defaults.fontSize as string, 10);
 
-  const labelSettings = settings.labels.map((labelSetting) => extend({}, defaults, settings, labelSetting));
+  const labelSettings = settings.labels.map((labelSetting: any) => extend({}, defaults, settings, labelSetting));
 
-  const placementSettings = settings.labels.map((labelSetting) =>
-    labelSetting.placements.map((placement) => extend({}, defaults, settings, labelSetting, placement))
+  const placementSettings = settings.labels.map((labelSetting: any) =>
+    labelSetting.placements.map((placement: any) => extend({}, defaults, settings, labelSetting, placement))
   );
 
-  const labels = [];
+  const labels: Label[] = [];
   const store = {
-    insideLabelBounds: [],
+    insideLabelBounds: [] as Rect[],
   };
 
   nodes = sortNodes(nodes);
-  const context = {};
+  const context: ContextState = {};
 
   for (let i = 0, len = nodes.length; i < len; i++) {
     const node = nodes[i];
     const arg = cbContext(node, chart);
 
     for (let j = 0; j < labelSettings.length; j++) {
-      const lblStngs = labelSettings[j];
+      const lblStngs = labelSettings[j] as LabelSettings;
       const text = typeof lblStngs.label === 'function' ? lblStngs.label(arg, i) : '';
       if (!text) {
         continue;
@@ -776,7 +887,7 @@ export function slices(
       const placement = bestPlacement.placement;
 
       if (bounds && placement) {
-        if ((placement as Record<string, unknown>).position === 'outside' && direction !== 'rotate') {
+        if (placement.position === 'outside' && direction !== 'rotate') {
           updateContext({ context, node, bounds });
 
           const topLeftBounds = getTopLeftBounds(bounds);
@@ -787,15 +898,14 @@ export function slices(
         }
 
         const fill =
-          typeof (placement as Record<string, unknown>).fill === 'function'
-            ? ((placement as Record<string, unknown>).fill as (arg: unknown, i: number) => unknown)(arg, i)
-            : (placement as Record<string, unknown>).fill;
+          typeof placement.fill === 'function'
+            ? (placement.fill as (arg: unknown, i: number) => unknown)(arg, i)
+            : placement.fill;
 
-        const label: Record<string, unknown> = placer(bounds, text, {
+        const label: Label = placer(bounds, text, {
           fill,
           fontSize: lblStngs.fontSize,
           fontFamily: lblStngs.fontFamily,
-          textMetrics: measured,
         });
 
         if (label) {
@@ -805,7 +915,7 @@ export function slices(
           labels.push(label);
           if (bounds.line) {
             bounds.line.stroke = fill;
-            labels.push(bounds.line);
+            labels.push(bounds.line as any);
           }
         }
       }

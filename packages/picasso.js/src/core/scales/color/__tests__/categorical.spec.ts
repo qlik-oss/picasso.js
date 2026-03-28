@@ -7,7 +7,7 @@ describe('categorical', () => {
       {},
       {
         theme: {
-          palette: (name) => (name === 'unknown' ? ['#d2d2d2'] : []),
+          palette: (name: string) => (name === 'unknown' ? ['#d2d2d2'] : []),
         },
       }
     );
@@ -28,7 +28,7 @@ describe('categorical', () => {
       {},
       {
         theme: {
-          palette: (name) => (name === 'categorical' ? defaultColors : []),
+          palette: (name: string) => (name === 'categorical' ? defaultColors : []),
         },
       }
     );
@@ -36,8 +36,8 @@ describe('categorical', () => {
   });
 
   describe('explicit', () => {
-    let settings;
-    let s;
+    let settings: Record<string, unknown>;
+    let s: any;
     beforeEach(() => {
       settings = {
         domain: ['Sweden', 'Italy', 'England', 'France', 'Canada'],
@@ -64,7 +64,7 @@ describe('categorical', () => {
 
     it('should override range', () => {
       settings.domain = ['Italy', 'France', 'Sweden', 'Canada'];
-      settings.explicit.override = true;
+      (settings as any).explicit.override = true;
       // range is first duplicated to fit domain:  [blue, red] -> [blue, red, blue, red]
       // then override -> [green, red, yellow, blue]
 

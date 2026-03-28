@@ -1,10 +1,10 @@
 import patternizer from '../svg-pattern';
 
 describe('svg-pattern', () => {
-  let p;
-  let bucket;
-  let clock;
-  let hasher;
+  let p: any;
+  let bucket: any;
+  let clock: any;
+  let hasher: any;
 
   beforeEach(() => {
     bucket = [];

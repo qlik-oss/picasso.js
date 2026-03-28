@@ -1,14 +1,14 @@
 import registry from '../registry';
 
 describe('Registry', () => {
-  let reg;
-  let logger;
+  let reg: any;
+  let logger: any;
 
   beforeEach(() => {
     logger = {
       warn: sinon.spy(),
     };
-    reg = registry('', 'myRegistry', logger);
+    reg = registry('' as any, 'myRegistry', logger);
   });
 
   describe('add', () => {
@@ -19,7 +19,7 @@ describe('Registry', () => {
       expect(registered).to.equal(true);
     });
     it('should throw error if key is invalid', () => {
-      let fn = () => {
+      let fn: any = () => {
           reg.register('');
         },
         fn2 = () => {

@@ -4,14 +4,14 @@ import componentFactoryFixture from '../../../../../test/helpers/component-facto
 import brushAreaDir from '../brush-area-dir';
 
 describe('Brush Area Directional', () => {
-  let componentFixture;
-  let instance;
-  let config;
-  let rendererOutput;
-  let chartMock;
-  let theme;
-  let sandbox;
-  let size;
+  let componentFixture: any;
+  let instance: any;
+  let config: any;
+  let rendererOutput: any;
+  let chartMock: any;
+  let theme: any;
+  let sandbox: any;
+  let size: any;
 
   beforeEach(() => {
     size = {

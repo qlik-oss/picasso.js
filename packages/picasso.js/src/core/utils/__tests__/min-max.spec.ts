@@ -23,17 +23,17 @@ describe('minmax', () => {
   });
 
   it('should calculate min from object array', () => {
-    let arr = [{ min: () => 4 }, { min: () => 3 }];
+    let arr: any = [{ min: () => 4 }, { min: () => 3 }];
     expect(minmax({ max: 15 }, arr)).to.eql([3, 15]);
   });
 
   it('should calculate max from object array', () => {
-    let arr = [{ max: () => 4 }, { max: () => 3 }];
+    let arr: any = [{ max: () => 4 }, { max: () => 3 }];
     expect(minmax({ min: -4 }, arr)).to.eql([-4, 4]);
   });
 
   it('should handle NaN values in object array', () => {
-    let arr = [{ min: () => 'min', max: () => 'max' }];
+    let arr: any = [{ min: () => 'min', max: () => 'max' }];
     expect(minmax({}, arr)).to.eql([0, 1]);
   });
 });

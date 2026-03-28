@@ -113,8 +113,8 @@ describe('text-metrics', () => {
       width: text.length * (parseFloat(fontSize) || 1),
       height: fontFamily || 1,
     });
-    let node;
-    let bounds;
+    let node: any;
+    let bounds: any;
 
     beforeEach(() => {
       bounds = {};

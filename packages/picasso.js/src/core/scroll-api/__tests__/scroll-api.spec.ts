@@ -1,7 +1,7 @@
 import scrollApi from '..';
 
 describe('Scroll api', () => {
-  let scroll;
+  let scroll: any;
   beforeEach(() => {
     scroll = scrollApi();
   });

@@ -3,9 +3,9 @@ import * as setValue from '../../utils/object/set-value';
 import createStorage from '..';
 
 describe('storage', () => {
-  let sandbox;
-  let source;
-  let create;
+  let sandbox: any;
+  let source: any;
+  let create: any;
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
@@ -20,7 +20,7 @@ describe('storage', () => {
   });
 
   describe('api', () => {
-    let api;
+    let api: any;
 
     beforeEach(() => {
       api = create();

@@ -1,10 +1,10 @@
 import gradienter from '../svg-gradient';
 
 describe('svg-gradient', () => {
-  let p;
-  let bucket;
-  let clock;
-  let hasher;
+  let p: any;
+  let bucket: any;
+  let clock: any;
+  let hasher: any;
 
   beforeEach(() => {
     bucket = [];

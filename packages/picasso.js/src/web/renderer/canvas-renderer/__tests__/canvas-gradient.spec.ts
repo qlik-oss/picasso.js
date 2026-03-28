@@ -2,7 +2,7 @@ import canvascontext from 'test-utils/mocks/canvas-context';
 import createCanvasGradient from '../canvas-gradient';
 
 describe('canvas-gradient', () => {
-  let shape;
+  let shape: any;
 
   const dummyRectObject = (type = 'radial', bounds = {}) => ({
     type: 'rect',

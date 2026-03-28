@@ -201,11 +201,11 @@ describe('svg-nodes', () => {
     });
 
     describe('should ignore item with "NaN" attributes', () => {
-      let el;
-      let circle;
-      let rect;
-      let line;
-      let text;
+      let el: any;
+      let circle: any;
+      let rect: any;
+      let line: any;
+      let text: any;
 
       beforeEach(() => {
         el = {

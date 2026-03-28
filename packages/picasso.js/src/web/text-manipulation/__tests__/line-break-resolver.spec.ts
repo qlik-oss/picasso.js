@@ -2,11 +2,11 @@ import { onLineBreak } from '..';
 
 describe('Line Break Resolver', () => {
   describe('onLineBreak', () => {
-    const measureTextMock = ({ text }) => ({ width: text.length, height: 1 });
-    let measureTextSpy;
-    let node;
-    let state;
-    let fn;
+    const measureTextMock = ({ text }: any) => ({ width: text.length, height: 1 });
+    let measureTextSpy: any;
+    let node: any;
+    let state: any;
+    let fn: any;
 
     beforeEach(() => {
       node = { type: 'text', fontSize: '1px' };

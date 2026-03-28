@@ -1,7 +1,7 @@
 import loggerFn from '../logger';
 
 describe('logger', () => {
-  let logger;
+  let logger: any;
   function log() {
     logger.log(0, 'a', 'aa');
     logger.log(1, 'b', 'bb');
@@ -10,17 +10,17 @@ describe('logger', () => {
     logger.log(4, 'e', 'ee');
   }
 
-  let pipe = {
+  let pipe: any = {
     log: () => {},
     warn: () => {},
     info: () => {},
     error: () => {},
   };
 
-  let spyLog;
-  let spyWarn;
-  let spyInfo;
-  let spyError;
+  let spyLog: any;
+  let spyWarn: any;
+  let spyInfo: any;
+  let spyError: any;
 
   beforeEach(() => {
     logger = loggerFn({ pipe });

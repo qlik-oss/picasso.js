@@ -13,7 +13,7 @@ function toArray(iterator) {
 }
 
 describe('String Tokenizer', () => {
-  let tokens;
+  let tokens: any;
 
   it('should tokenize input string', () => {
     tokens = stringTokenizer({

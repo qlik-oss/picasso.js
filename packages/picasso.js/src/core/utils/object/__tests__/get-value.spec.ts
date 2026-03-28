@@ -1,7 +1,7 @@
 import getValue from '../get-value';
 
 describe('get-value', () => {
-  let object;
+  let object: any;
 
   beforeEach(() => {
     object = {

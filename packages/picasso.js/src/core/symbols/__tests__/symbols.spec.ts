@@ -1,13 +1,13 @@
 import create, { symbolRegistry as register } from '..';
 
-function fixDecimals(str, precision = 5) {
-  return str.replace(/\.([0-9]+)/gi, (match, g) => `.${g.substr(0, precision)}`);
+function fixDecimals(str: string, precision: number = 5): string {
+  return str.replace(/\.([0-9]+)/gi, (match: string, g: string) => `.${g.substr(0, precision)}`);
 }
 
 describe('Symbols', () => {
   const createSymbol = create(register);
-  let input;
-  let symbol;
+  let input: Record<string, unknown>;
+  let symbol: Record<string, unknown>;
 
   beforeEach(() => {
     input = {
@@ -28,11 +28,11 @@ describe('Symbols', () => {
     });
 
     it('should accept new symbols to be registered', () => {
-      const myNewSymbol = (options) => ({ ...options, type: 'myCustomSymbol' }); // Just return input
+      const myNewSymbol = (options: Record<string, unknown>) => ({ ...options, type: 'myCustomSymbol' }); // Just return input
       register.add('myNewSymbol', myNewSymbol);
 
       input.type = 'myNewSymbol';
-      const mySym = createSymbol(input);
+      const mySym = createSymbol(input) as Record<string, unknown>;
       expect(mySym).to.deep.equal({
         type: 'myCustomSymbol',
         x: 10,
@@ -53,7 +53,7 @@ describe('Symbols', () => {
       register.add('myNewSymbol', myNewSymbol);
 
       input.type = 'myNewSymbol';
-      const mySym = createSymbol(input);
+      const mySym = createSymbol(input) as Record<string, unknown>;
       expect(mySym).to.deep.equal({
         fill: 'red', // Default append style
         stroke: 'brown',
@@ -71,7 +71,7 @@ describe('Symbols', () => {
     });
 
     it('should output a circle', () => {
-      symbol = createSymbol(input);
+      symbol = createSymbol(input) as Record<string, unknown>;
 
       expect(symbol).to.deep.equal({
         type: 'circle',
@@ -93,7 +93,7 @@ describe('Symbols', () => {
     });
 
     it('should output a bar', () => {
-      symbol = createSymbol(input);
+      symbol = createSymbol(input) as Record<string, unknown>;
 
       expect(symbol).to.deep.equal({
         type: 'rect',
@@ -112,7 +112,7 @@ describe('Symbols', () => {
     describe('Options', () => {
       it('direction - vertical', () => {
         input.direction = 'vertical';
-        symbol = createSymbol(input);
+        symbol = createSymbol(input) as Record<string, unknown>;
 
         expect(symbol).to.deep.equal({
           type: 'rect',
@@ -136,7 +136,7 @@ describe('Symbols', () => {
     });
 
     it('should output a cross', () => {
-      symbol = createSymbol(input);
+      symbol = createSymbol(input) as Record<string, unknown>;
 
       expect(symbol).to.deep.equal({
         type: 'path',
@@ -152,7 +152,7 @@ describe('Symbols', () => {
     describe('Options', () => {
       it('width', () => {
         input.width = 1;
-        symbol = createSymbol(input);
+        symbol = createSymbol(input) as Record<string, unknown>;
 
         expect(symbol).to.deep.equal({
           type: 'path',
@@ -173,7 +173,7 @@ describe('Symbols', () => {
     });
 
     it('should output a diamond', () => {
-      symbol = createSymbol(input);
+      symbol = createSymbol(input) as Record<string, unknown>;
 
       expect(symbol).to.deep.equal({
         type: 'path',
@@ -188,7 +188,7 @@ describe('Symbols', () => {
   });
 
   describe('Line', () => {
-    let expectedCollider;
+    let expectedCollider: Record<string, unknown>;
 
     beforeEach(() => {
       input.type = 'line';
@@ -203,7 +203,7 @@ describe('Symbols', () => {
     });
 
     it('should output a horizontal line', () => {
-      symbol = createSymbol(input);
+      symbol = createSymbol(input) as Record<string, unknown>;
 
       expect(symbol).to.deep.equal({
         type: 'line',
@@ -223,7 +223,7 @@ describe('Symbols', () => {
     describe('Options', () => {
       it('direction - vertical', () => {
         input.direction = 'vertical';
-        symbol = createSymbol(input);
+        symbol = createSymbol(input) as Record<string, unknown>;
 
         expect(symbol).to.deep.equal({
           type: 'line',
@@ -248,9 +248,9 @@ describe('Symbols', () => {
     });
 
     it('should output a n-polygon', () => {
-      symbol = createSymbol(input);
+      symbol = createSymbol(input) as Record<string, unknown>;
 
-      symbol.d = fixDecimals(symbol.d);
+      symbol.d = fixDecimals((symbol as Record<string, unknown>).d as string);
 
       expect(symbol).to.deep.equal({
         type: 'path',
@@ -268,9 +268,9 @@ describe('Symbols', () => {
     describe('Options', () => {
       it('sides', () => {
         input.sides = 5;
-        symbol = createSymbol(input);
+        symbol = createSymbol(input) as Record<string, unknown>;
 
-        symbol.d = fixDecimals(symbol.d);
+        symbol.d = fixDecimals((symbol as Record<string, unknown>).d as string);
 
         expect(symbol).to.deep.equal({
           type: 'path',
@@ -287,9 +287,9 @@ describe('Symbols', () => {
 
       it('startAngle', () => {
         input.startAngle = 45;
-        symbol = createSymbol(input);
+        symbol = createSymbol(input) as Record<string, unknown>;
 
-        symbol.d = fixDecimals(symbol.d);
+        symbol.d = fixDecimals((symbol as Record<string, unknown>).d as string);
 
         expect(symbol).to.deep.equal({
           type: 'path',
@@ -312,7 +312,7 @@ describe('Symbols', () => {
     });
 
     it('should output a saltire', () => {
-      symbol = createSymbol(input);
+      symbol = createSymbol(input) as Record<string, unknown>;
 
       expect(symbol).to.deep.equal({
         type: 'path',
@@ -328,7 +328,7 @@ describe('Symbols', () => {
     describe('Options', () => {
       it('width', () => {
         input.width = 1;
-        symbol = createSymbol(input);
+        symbol = createSymbol(input) as Record<string, unknown>;
 
         expect(symbol).to.deep.equal({
           type: 'path',
@@ -349,7 +349,7 @@ describe('Symbols', () => {
     });
 
     it('should output a square', () => {
-      symbol = createSymbol(input);
+      symbol = createSymbol(input) as Record<string, unknown>;
 
       expect(symbol).to.deep.equal({
         type: 'rect',
@@ -372,9 +372,9 @@ describe('Symbols', () => {
     });
 
     it('should output a star', () => {
-      symbol = createSymbol(input);
+      symbol = createSymbol(input) as Record<string, unknown>;
 
-      symbol.d = fixDecimals(symbol.d);
+      symbol.d = fixDecimals((symbol as Record<string, unknown>).d as string);
 
       expect(symbol).to.deep.equal({
         type: 'path',
@@ -392,9 +392,9 @@ describe('Symbols', () => {
     describe('Options', () => {
       it('points', () => {
         input.points = 6;
-        symbol = createSymbol(input);
+        symbol = createSymbol(input) as Record<string, unknown>;
 
-        symbol.d = fixDecimals(symbol.d);
+        symbol.d = fixDecimals((symbol as Record<string, unknown>).d as string);
 
         expect(symbol).to.deep.equal({
           type: 'path',
@@ -411,9 +411,9 @@ describe('Symbols', () => {
 
       it('startAngle', () => {
         input.startAngle = 45;
-        symbol = createSymbol(input);
+        symbol = createSymbol(input) as Record<string, unknown>;
 
-        symbol.d = fixDecimals(symbol.d);
+        symbol.d = fixDecimals((symbol as Record<string, unknown>).d as string);
 
         expect(symbol).to.deep.equal({
           type: 'path',
@@ -430,9 +430,9 @@ describe('Symbols', () => {
 
       it('innerRadius', () => {
         input.innerRadius = input.size * 0.9;
-        symbol = createSymbol(input);
+        symbol = createSymbol(input) as Record<string, unknown>;
 
-        symbol.d = fixDecimals(symbol.d);
+        symbol.d = fixDecimals((symbol as Record<string, unknown>).d as string);
 
         expect(symbol).to.deep.equal({
           type: 'path',
@@ -455,7 +455,7 @@ describe('Symbols', () => {
     });
 
     it('should output a triangle', () => {
-      symbol = createSymbol(input);
+      symbol = createSymbol(input) as Record<string, unknown>;
 
       expect(symbol).to.deep.equal({
         type: 'path',
@@ -471,7 +471,7 @@ describe('Symbols', () => {
     describe('Options', () => {
       it('direction - up', () => {
         input.direction = 'up';
-        symbol = createSymbol(input);
+        symbol = createSymbol(input) as Record<string, unknown>;
 
         expect(symbol).to.deep.equal({
           type: 'path',
@@ -486,7 +486,7 @@ describe('Symbols', () => {
 
       it('direction - down', () => {
         input.direction = 'down';
-        symbol = createSymbol(input);
+        symbol = createSymbol(input) as Record<string, unknown>;
 
         expect(symbol).to.deep.equal({
           type: 'path',
@@ -501,7 +501,7 @@ describe('Symbols', () => {
 
       it('direction - left', () => {
         input.direction = 'left';
-        symbol = createSymbol(input);
+        symbol = createSymbol(input) as Record<string, unknown>;
 
         expect(symbol).to.deep.equal({
           type: 'path',
@@ -516,7 +516,7 @@ describe('Symbols', () => {
 
       it('direction - right', () => {
         input.direction = 'right';
-        symbol = createSymbol(input);
+        symbol = createSymbol(input) as Record<string, unknown>;
 
         expect(symbol).to.deep.equal({
           type: 'path',

@@ -1,7 +1,7 @@
 import setValue from '../set-value';
 
 describe('set-value', () => {
-  let object;
+  let object: any;
 
   beforeEach(() => {
     object = {};

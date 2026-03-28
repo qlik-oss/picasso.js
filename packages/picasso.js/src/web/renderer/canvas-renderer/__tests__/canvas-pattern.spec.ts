@@ -2,9 +2,9 @@ import elementMock from 'test-utils/mocks/element-mock';
 import patternizer from '../canvas-pattern';
 
 describe('canvas-gradient', () => {
-  let z;
-  let el;
-  let document;
+  let z: any;
+  let el: any;
+  let document: any;
 
   beforeEach(() => {
     el = elementMock('canvas');

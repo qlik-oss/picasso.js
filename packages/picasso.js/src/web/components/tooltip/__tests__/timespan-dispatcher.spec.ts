@@ -1,10 +1,10 @@
 import timeSpanDispatcher from '../timespan-dispatcher';
 
 describe('timeSpanDispatcher', () => {
-  let sandbox;
-  let action;
-  let clock;
-  let settings;
+  let sandbox: any;
+  let action: any;
+  let clock: any;
+  let settings: any;
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();

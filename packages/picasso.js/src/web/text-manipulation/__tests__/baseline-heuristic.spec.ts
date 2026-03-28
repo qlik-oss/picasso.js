@@ -1,7 +1,7 @@
 import baselineHeuristic from '../baseline-heuristic';
 
 describe('Baseline polyfill', () => {
-  let text;
+  let text: any;
 
   beforeEach(() => {
     text = {

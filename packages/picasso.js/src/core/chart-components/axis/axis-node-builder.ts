@@ -8,6 +8,7 @@ import { expandRect } from '../../geometry/util';
 import buildArcLine from './axis-arc-node';
 import buildArcTicks from './axis-arc-tick-node';
 import buildArcLabels from './axis-arc-label-node';
+import type { Rect } from '../../geometry';
 
 /** A scale with a bandwidth() method (discrete/band scale) */
 interface BandScale {
@@ -24,66 +25,95 @@ interface AxisTick {
   data?: unknown;
 }
 
-function tickSpacing(settings) {
+interface TextMetrics {
+  height: number;
+  width: number;
+}
+
+interface TextStyle {
+  fontSize: string;
+  fontFamily: string;
+}
+
+interface AxisSettings {
+  paddingStart: number;
+  paddingEnd: number;
+  line: { show: boolean; strokeWidth: number };
+  ticks: { show: boolean; margin: number; tickSize: number };
+  minorTicks: { show: boolean; margin: number; tickSize: number };
+  labels: {
+    show: boolean;
+    margin: number;
+    tiltAngle?: number;
+    maxLengthPx: number;
+    minLengthPx: number;
+    filterOverlapping: boolean;
+  };
+  align?: string;
+  arc?: { startAngle: number; endAngle: number; radius: number };
+}
+
+function tickSpacing(settings: AxisSettings): number {
   let spacing = 0;
   spacing += settings.paddingStart;
   spacing += settings.line.show ? settings.line.strokeWidth / 2 : 0;
   spacing += settings.ticks.show ? settings.ticks.margin : 0;
   return spacing;
 }
-function arcTickSpacing(settings) {
+function arcTickSpacing(settings: AxisSettings): number {
   let spacing = 0;
   spacing += settings.line.show ? settings.line.strokeWidth / 2 : 0;
   spacing += settings.ticks.show ? settings.ticks.margin : 0;
   return spacing;
 }
 
-function tickMinorSpacing(settings) {
+function tickMinorSpacing(settings: AxisSettings): number {
   return settings.line.strokeWidth + settings.minorTicks.margin;
 }
 
-function labelsSpacing(settings) {
+function labelsSpacing(settings: AxisSettings): number {
   let spacing = 0;
   spacing += settings.ticks.show ? settings.ticks.tickSize : 0;
   spacing += tickSpacing(settings) + settings.labels.margin;
   return spacing;
 }
-function arcLabelSpacing(settings) {
+
+function arcLabelSpacing(settings: AxisSettings): number {
   let spacing = 0;
   spacing += settings.ticks.show ? settings.ticks.tickSize : 0;
   spacing += arcTickSpacing(settings) + settings.labels.margin;
   return spacing;
 }
 
-function calcActualTextRect({ style, measureText, tick }) {
+function calcActualTextRect({ style, measureText, tick }: { style: TextStyle; measureText: (opts: any) => TextMetrics; tick: AxisTick }): TextMetrics {
   return measureText({
-    text: tick.label,
+    text: tick.label || '',
     fontSize: style.fontSize,
     fontFamily: style.fontFamily,
   });
 }
 
-function majorTicks(ticks) {
+function majorTicks(ticks: AxisTick[]): AxisTick[] {
   return ticks.filter((t) => !t.isMinor);
 }
 
-function minorTicks(ticks) {
+function minorTicks(ticks: AxisTick[]): AxisTick[] {
   return ticks.filter((t) => t.isMinor);
 }
 
-function tickBuilder(ticks, buildOpts) {
+function tickBuilder(ticks: AxisTick[], buildOpts: any): any[] {
   return ticks.map((tick) => buildTick(tick, buildOpts));
 }
 
-function arcTickBuilder(ticks, buildOpts) {
+function arcTickBuilder(ticks: AxisTick[], buildOpts: any): any[] {
   return ticks.map((tick) => buildArcTicks(tick, buildOpts));
 }
 
-function tickBandwidth(scale, tick) {
-  return tick ? Math.abs(tick.end - tick.start) : scale.bandwidth();
+function tickBandwidth(scale: BandScale, tick: AxisTick | null): number {
+  return tick ? Math.abs((tick.end ?? 0) - (tick.start ?? 0)) : scale.bandwidth();
 }
 
-function labelBuilder(ticks, buildOpts, resolveTickOpts) {
+function labelBuilder(ticks: AxisTick[], buildOpts: any, resolveTickOpts: (tick: AxisTick, idx: number) => void): any[] {
   return ticks.map((tick, idx) => {
     resolveTickOpts(tick, idx);
     const label: Record<string, unknown> = buildLabel(tick, buildOpts);
@@ -92,7 +122,7 @@ function labelBuilder(ticks, buildOpts, resolveTickOpts) {
   });
 }
 
-function arcLabelBuilder(ticks, buildOpts, resolveTickOpts) {
+function arcLabelBuilder(ticks: AxisTick[], buildOpts: any, resolveTickOpts: (tick: AxisTick, idx: number) => void): any[] {
   return ticks.map((tick, idx) => {
     resolveTickOpts(tick, idx);
     const label: Record<string, unknown> = buildArcLabels(tick, buildOpts);
@@ -101,7 +131,7 @@ function arcLabelBuilder(ticks, buildOpts, resolveTickOpts) {
   });
 }
 
-function layeredLabelBuilder(ticks, buildOpts, settings, resolveTickOpts) {
+function layeredLabelBuilder(ticks: AxisTick[], buildOpts: any, settings: AxisSettings, resolveTickOpts: (tick: AxisTick, idx: number) => void): any[] {
   const padding = buildOpts.padding;
   const spacing = labelsSpacing(settings);
   return ticks.map((tick, idx) => {
@@ -115,8 +145,8 @@ function layeredLabelBuilder(ticks, buildOpts, settings, resolveTickOpts) {
   });
 }
 
-export function filterOverlappingLabels(labels, ticks, buildOpts) {
-  let isOverlapping = (i, k) => {
+export function filterOverlappingLabels(labels: any[], ticks: AxisTick[] | undefined, buildOpts: any): void {
+  let isOverlapping = (i: number, k: number): boolean => {
     const rect1 = expandRect(1, labels[i].boundingRect);
     const rect2 = expandRect(1, labels[k].boundingRect);
 
@@ -158,7 +188,23 @@ export function filterOverlappingLabels(labels, ticks, buildOpts) {
   }
 }
 
-function discreteCalcMaxTextRect({ textMetrics, settings, innerRect, scale, tilted, layered, tick }) {
+function discreteCalcMaxTextRect({
+  textMetrics,
+  settings,
+  innerRect,
+  scale,
+  tilted,
+  layered,
+  tick,
+}: {
+  textMetrics: TextMetrics;
+  settings: AxisSettings;
+  innerRect: Rect;
+  scale: BandScale;
+  tilted: boolean;
+  layered: boolean;
+  tick: AxisTick | null;
+}): TextMetrics {
   const h = textMetrics.height;
 
   const bandwidth = tickBandwidth(scale, tick);
@@ -195,7 +241,17 @@ function continuousCalcMaxTextRect({
   tick,
   index,
   major,
-}) {
+}: {
+  textMetrics: TextMetrics;
+  settings: AxisSettings;
+  innerRect: Rect;
+  outerRect: Rect;
+  tilted: boolean;
+  layered: boolean;
+  tick: AxisTick | null;
+  index: number;
+  major: boolean;
+}): TextMetrics {
   const h = textMetrics.height;
 
   const textRect = { width: 0, height: h };
@@ -243,20 +299,38 @@ function getStepSizeFn({
   return size * bandwidth;
 }
 
-export default function nodeBuilder(isDiscrete) {
-  let resolveLabelRect;
+export default function nodeBuilder(isDiscrete: boolean): any {
+  let resolveLabelRect: (opts: any) => TextMetrics;
 
-  function continuous() {
+  function continuous(): any {
     resolveLabelRect = continuousCalcMaxTextRect;
     return continuous;
   }
 
-  function discrete() {
+  function discrete(): any {
     resolveLabelRect = discreteCalcMaxTextRect;
     return discrete;
   }
 
-  function build({ settings, scale, innerRect, outerRect, measureText, ticks, state, textBounds }) {
+  function build({
+    settings,
+    scale,
+    innerRect,
+    outerRect,
+    measureText,
+    ticks,
+    state,
+    textBounds,
+  }: {
+    settings: AxisSettings;
+    scale: BandScale;
+    innerRect: Rect;
+    outerRect: Rect;
+    measureText: (opts: any) => TextMetrics;
+    ticks: AxisTick[];
+    state: { labels: { activeMode: 'tilted' | 'layered' | 'default' } };
+    textBounds?: any;
+  }): any[] {
     const nodes = [];
     const major = majorTicks(ticks);
     const minor = minorTicks(ticks);
@@ -302,8 +376,8 @@ export default function nodeBuilder(isDiscrete) {
       buildOpts.angle = settings.labels.tiltAngle;
       buildOpts.paddingEnd = settings.paddingEnd;
       buildOpts.textBounds = textBounds;
-      const resolveTickOpts = (tick, index) => {
-        buildOpts.textRect = calcActualTextRect({ tick, measureText, style: buildOpts.style });
+      const resolveTickOpts = (tick: AxisTick, index: number): void => {
+        buildOpts.textRect = calcActualTextRect({ tick, measureText, style: buildOpts.style as TextStyle });
         const maxSize = resolveLabelRect({
           textMetrics: buildOpts.textRect,
           settings,

@@ -3,7 +3,7 @@ import { ellipsText } from '..';
 describe('Text Manipulation', () => {
   describe('ellips text', () => {
     const measureTextMock = ({ text }) => ({ width: text.length, height: 1 });
-    let textNode;
+    let textNode: any;
 
     beforeEach(() => {
       textNode = {

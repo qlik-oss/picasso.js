@@ -2,11 +2,11 @@ import createElement from 'test-utils/mocks/element-mock';
 import native from '../native';
 
 describe('native interaction mixin', () => {
-  let element;
-  let mediator;
-  let chart;
-  let settings;
-  let nativeInteraction;
+  let element: any;
+  let mediator: any;
+  let chart: any;
+  let settings: any;
+  let nativeInteraction: any;
 
   beforeEach(() => {
     element = createElement('div');

@@ -101,7 +101,7 @@ describe('Word Break', () => {
       it('should continue line-break if a single char is wider then maxWidth', () => {
         node.text = 'ASDFGHJKLÖÄ';
         node.maxWidth = 3;
-        let chunks = breakAll(node, (text) => ({ width: text === 'G' ? 4 : 1, height: 1 }));
+        let chunks: any = breakAll(node, (text) => ({ width: text === 'G' ? 4 : 1, height: 1 }));
         expect(chunks).to.deep.equal({
           lines: ['ASD', 'F', 'G', 'HJK', 'LÖÄ'],
           reduced: false,
@@ -183,8 +183,8 @@ describe('Word Break', () => {
   });
 
   describe('breakWord', () => {
-    const measureTextMock = (text) => ({ width: text.length, height: 1 });
-    let node;
+    const measureTextMock = (text: any) => ({ width: text.length, height: 1 });
+    let node: any;
     beforeEach(() => {
       node = {
         type: 'text',
@@ -282,7 +282,7 @@ describe('Word Break', () => {
       it('should continue line-break if a sequence is wider then maxWidth', () => {
         node.text = 'asdf qwertyuiop';
         node.maxWidth = 3;
-        let chunks = breakWord(node, measureTextMock);
+        let chunks: any = breakWord(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: ['asd', 'f q', 'wer', 'tyu', 'iop'],
           reduced: false,
@@ -378,7 +378,7 @@ describe('Word Break', () => {
         node.text = '  ASD'; // 2 whites-spaces prior to linebreak
         node.maxWidth = 3;
         node.hyphens = 'auto';
-        let chunks = breakWord(node, measureTextMock);
+        let chunks: any = breakWord(node, measureTextMock);
         expect(chunks).to.deep.equal({
           lines: ['  ', 'ASD'],
           reduced: false,

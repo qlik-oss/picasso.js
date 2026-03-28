@@ -1,8 +1,8 @@
 import render from '../render';
 
 describe('render', () => {
-  let context;
-  let placement;
+  let context: any;
+  let placement: any;
 
   beforeEach(() => {
     placement = {

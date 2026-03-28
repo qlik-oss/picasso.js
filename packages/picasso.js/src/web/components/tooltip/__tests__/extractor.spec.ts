@@ -1,8 +1,8 @@
 import extractor from '../extractor';
 
 describe('extractor', () => {
-  let context;
-  let extractStub;
+  let context: any;
+  let extractStub: any;
 
   beforeEach(() => {
     extractStub = (ctx) => ctx.node;

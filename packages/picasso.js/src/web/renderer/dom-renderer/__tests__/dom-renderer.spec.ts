@@ -2,8 +2,8 @@ import element from 'test-utils/mocks/element-mock';
 import renderer from '../dom-renderer';
 
 describe('dom renderer', () => {
-  let sandbox;
-  let rend;
+  let sandbox: any;
+  let rend: any;
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
@@ -70,7 +70,7 @@ describe('dom renderer', () => {
 
   describe('render', () => {
     /*
-    let item;
+    let item: any;
 
     beforeEach(() => {
       item = h('div');

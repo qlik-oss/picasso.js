@@ -643,8 +643,8 @@ describe('Colors', () => {
         c2 = color('navy'),
         c3 = color('yellow');
 
-      expect(color.utils.getContrast(c1, c2)).to.equal(4.7840030125136686);
-      expect(color.utils.getContrast(c1, c3)).to.equal(1.059241105334474);
+      expect((color as any).utils.getContrast(c1, c2)).to.equal(4.7840030125136686);
+      expect((color as any).utils.getContrast(c1, c3)).to.equal(1.059241105334474);
     });
 
     it('should calculate contrast of two HSLA colors', () => {
@@ -652,35 +652,35 @@ describe('Colors', () => {
         c2 = color('hsl(240, 100%, 25%)'),
         c3 = color('hsl(60, 100%, 50%)');
 
-      expect(color.utils.getContrast(c1, c2)).to.equal(4.7840030125136686);
-      expect(color.utils.getContrast(c1, c3)).to.equal(1.059241105334474);
+      expect((color as any).utils.getContrast(c1, c2)).to.equal(4.7840030125136686);
+      expect((color as any).utils.getContrast(c1, c3)).to.equal(1.059241105334474);
     });
 
     it('should calculate contrast between RGB and HSL colors', () => {
       let c1 = color('white'),
         c2 = color('hsl(60, 100%, 50%)');
 
-      expect(color.utils.getContrast(c1, c2)).to.equal(1.059241105334474);
+      expect((color as any).utils.getContrast(c1, c2)).to.equal(1.059241105334474);
     });
 
     it('should generate a linear gradient css string from a scale object', () => {
-      const colorScale = color.palettes.scientific(0, 1);
+      const colorScale = (color as any).palettes.scientific(0, 1);
 
-      expect(color.utils.linearGradient('right', colorScale)).to.equal(
+      expect((color as any).utils.linearGradient('right', colorScale)).to.equal(
         'linear-gradient(to right, rgb(61, 82, 161),rgb(58, 137, 201),rgb(119, 183, 229),rgb(180, 221, 247),rgb(230, 245, 254),rgb(255, 227, 170),rgb(249, 189, 126),rgb(237, 135, 94),rgb(210, 77, 62),rgb(174, 28, 62))'
       );
     });
 
     it('should generate a linear gradient css string from an array of color objects', () => {
       const colorAry = ['red', 'blue'].map(color);
-      expect(color.utils.linearGradient('right', colorAry)).to.equal(
+      expect((color as any).utils.linearGradient('right', colorAry)).to.equal(
         'linear-gradient(to right, rgba(255, 0, 0, 1),rgba(0, 0, 255, 1))'
       );
     });
 
     it('should generate a linear gradient css string from an array of color strings', () => {
       const colorAry = ['red', 'blue'];
-      expect(color.utils.linearGradient('right', colorAry)).to.equal('linear-gradient(to right, red,blue)');
+      expect((color as any).utils.linearGradient('right', colorAry)).to.equal('linear-gradient(to right, red,blue)');
     });
   });
 });

@@ -1,7 +1,7 @@
 import { resolveStyle } from '..';
 
 describe('Style resolver', () => {
-  let settings;
+  let settings: any;
   beforeEach(() => {
     settings = {
       stroke: 'stroke',

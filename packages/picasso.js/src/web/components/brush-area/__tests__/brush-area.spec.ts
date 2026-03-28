@@ -15,15 +15,15 @@ function hammerEvent(x, y) {
 }
 
 describe('Brush Area', () => {
-  let componentFixture;
-  let instance;
-  let config;
-  let out;
-  let theme;
-  let sandbox;
-  let container;
-  let rect;
-  let rendererSpy;
+  let componentFixture: any;
+  let instance: any;
+  let config: any;
+  let out: any;
+  let theme: any;
+  let sandbox: any;
+  let container: any;
+  let rect: any;
+  let rendererSpy: any;
 
   beforeEach(() => {
     rect = {

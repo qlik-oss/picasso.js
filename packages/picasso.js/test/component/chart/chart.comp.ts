@@ -3,15 +3,60 @@ import p from '../../../src';
 
 const { chart } = p;
 
-describe('Chart', () => {
-  let element;
-  let data;
-  let pointMarkerRed;
-  let pointMarkerGreen;
-  let pointMarkerBlue;
-  let settings;
+// Test-specific types for component configurations
+interface ComponentData {
+  extract: {
+    field: number;
+    [key: string]: unknown;
+  };
+  [key: string]: unknown;
+}
 
-  beforeEach(() => {
+interface PointMarkerConfig {
+  key: string;
+  type: string;
+  data: ComponentData;
+  settings: Record<string, unknown>;
+  brush?: Record<string, unknown>;
+}
+
+interface ChartSettings {
+  components: PointMarkerConfig[];
+}
+
+interface ShapeAttrs {
+  cx?: number;
+  cy?: number;
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+  fill?: string;
+  [key: string]: unknown;
+}
+
+interface Shape {
+  attrs: ShapeAttrs;
+  type?: string;
+}
+
+interface ChartInstance {
+  element: unknown;
+  findShapes: (selector: string) => Shape[];
+  shapesAt: (rect: Record<string, number>, opts?: Record<string, unknown>) => Shape[];
+  brushFromShapes: (shapes: Shape[], config: Record<string, unknown>) => void;
+  update: (config: Record<string, unknown>) => void;
+}
+
+describe('Chart', () => {
+  let element: unknown;
+  let data: (string | number)[][];
+  let pointMarkerRed: PointMarkerConfig;
+  let pointMarkerGreen: PointMarkerConfig;
+  let pointMarkerBlue: PointMarkerConfig;
+  let settings: ChartSettings;
+
+  beforeEach((): void => {
     element = createElement();
 
     data = [
@@ -73,7 +118,7 @@ describe('Chart', () => {
         element,
         data: { data },
         settings,
-      });
+      }) as unknown as ChartInstance;
 
       const shapes = instance.shapesAt({
         x: 0,
@@ -83,7 +128,7 @@ describe('Chart', () => {
       }); // Select all shapes in the chart
       const expectedShapes = instance.findShapes('circle');
 
-      expect(shapes.map((s) => s.attrs)).to.deep.equal(expectedShapes.map((s) => s.attrs).reverse()); // Reverse because findShapes do lookup down-n-up
+      expect(shapes.map((s: Shape): ShapeAttrs => s.attrs)).to.deep.equal(expectedShapes.map((s: Shape): ShapeAttrs => s.attrs).reverse()); // Reverse because findShapes do lookup down-n-up
     });
 
     it('should be possible to do lookup on specific components', () => {
@@ -94,7 +139,7 @@ describe('Chart', () => {
         element,
         data: { data },
         settings,
-      });
+      }) as unknown as ChartInstance;
 
       const shapes = instance.shapesAt(
         {
@@ -109,7 +154,7 @@ describe('Chart', () => {
       ); // Select all shapes in key2 component
       const expectedShapes = instance.findShapes('circle[fill="green"]'); // All shapes in key2 component are circles with fill=green
 
-      expect(shapes.map((s) => s.attrs)).to.deep.equal(expectedShapes.map((s) => s.attrs));
+      expect(shapes.map((s: Shape): ShapeAttrs => s.attrs)).to.deep.equal(expectedShapes.map((s: Shape): ShapeAttrs => s.attrs));
     });
 
     it('should stop propagation to other components if a match is found', () => {
@@ -120,7 +165,7 @@ describe('Chart', () => {
         element,
         data: { data },
         settings,
-      });
+      }) as unknown as ChartInstance;
 
       const shapes = instance.shapesAt(
         {
@@ -135,7 +180,7 @@ describe('Chart', () => {
       ); // Should start on top (visible top) component and propagation down until a match is found
       const expectedShapes = instance.findShapes('circle[fill="blue"]');
 
-      expect(shapes.map((s) => s.attrs)).to.deep.equal(expectedShapes.map((s) => s.attrs));
+      expect(shapes.map((s: Shape): ShapeAttrs => s.attrs)).to.deep.equal(expectedShapes.map((s: Shape): ShapeAttrs => s.attrs));
     });
 
     it('should stop propagation in component if a match is found', () => {
@@ -146,7 +191,7 @@ describe('Chart', () => {
         element,
         data: { data },
         settings,
-      });
+      }) as unknown as ChartInstance;
 
       const shapes = instance.shapesAt(
         {
@@ -160,7 +205,7 @@ describe('Chart', () => {
         }
       );
 
-      expect(shapes.map((s) => s.attrs.fill)).to.deep.equal(['blue', 'blue', 'green', 'red']); // Only return 1 circle for each component except blue which doesnt have propagation set to stop
+      expect(shapes.map((s: Shape): string | number | undefined => s.attrs.fill)).to.deep.equal(['blue', 'blue', 'green', 'red']); // Only return 1 circle for each component except blue which doesnt have propagation set to stop
     });
   });
 
@@ -184,7 +229,7 @@ describe('Chart', () => {
         element,
         data: { data },
         settings,
-      });
+      }) as unknown as ChartInstance;
 
       const shapes = instance.findShapes('circle');
       instance.brushFromShapes(shapes, {
@@ -199,7 +244,7 @@ describe('Chart', () => {
       });
 
       const brushedShapes = instance.findShapes('circle');
-      expect(brushedShapes.map((s) => s.attrs.fill)).to.deep.equal(['black', 'black']);
+      expect(brushedShapes.map((s: Shape): string | number | undefined => s.attrs.fill)).to.deep.equal(['black', 'black']);
     });
 
     it('should not brush provided shapes doesnt have a their parent component configured', () => {
@@ -221,7 +266,7 @@ describe('Chart', () => {
         element,
         data: { data },
         settings,
-      });
+      }) as unknown as ChartInstance;
 
       const shapes = instance.findShapes('circle');
       instance.brushFromShapes(shapes, {
@@ -236,19 +281,19 @@ describe('Chart', () => {
       });
 
       const brushedShapes = instance.findShapes('circle');
-      expect(brushedShapes.map((s) => s.attrs.fill)).to.deep.equal(['red', 'red']);
+      expect(brushedShapes.map((s: Shape): string | number | undefined => s.attrs.fill)).to.deep.equal(['red', 'red']);
     });
   });
 
   it('should render components in the correct order', () => {
-    let renderOrder = [];
-    p.component('custom-log-render', {
-      render() {
-        renderOrder.push(this.settings.key);
+    let renderOrder: (string | number)[] = [];
+    (p as any).component('custom-log-render', {
+      render(): unknown[] {
+        renderOrder.push((this as any).settings.key);
         return [];
       },
     });
-    function createComp(key, order = key) {
+    function createComp(key: number, order: number = key): Record<string, unknown> {
       return {
         key: `comp${key}`,
         layout: {
@@ -263,21 +308,21 @@ describe('Chart', () => {
     const comp2 = createComp(2);
     const comp3 = createComp(3, 1);
 
-    settings.components.push(comp2, comp0);
+    settings.components.push(comp0 as unknown as PointMarkerConfig, comp2 as unknown as PointMarkerConfig);
     const instance = chart({
       element,
       data: { data },
       settings,
-    });
+    }) as unknown as ChartInstance;
     expect(renderOrder).to.eql(['comp0', 'comp2']);
     renderOrder = [];
-    settings.components.push(comp1);
+    settings.components.push(comp1 as unknown as PointMarkerConfig);
     instance.update({
       settings,
     });
     expect(renderOrder).to.eql(['comp0', 'comp1', 'comp2']);
     renderOrder = [];
-    settings.components.push(comp3);
+    settings.components.push(comp3 as unknown as PointMarkerConfig);
     instance.update({
       settings,
     });

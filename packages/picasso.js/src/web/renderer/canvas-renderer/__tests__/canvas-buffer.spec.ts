@@ -1,11 +1,11 @@
 import CanvasBuffer from '../canvas-buffer';
 
 describe('canvasBuffer', () => {
-  let targetCanvas;
-  let bufferCanvas;
-  let rect;
-  let setTransform;
-  let drawImage;
+  let targetCanvas: any;
+  let bufferCanvas: any;
+  let rect: any;
+  let setTransform: any;
+  let drawImage: any;
 
   beforeEach(() => {
     setTransform = sinon.spy();

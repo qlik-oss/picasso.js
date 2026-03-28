@@ -93,7 +93,19 @@ const SETTINGS = {
   },
 };
 
-function createDisplayLayer(points, { generatorType, item, data, major, minor, layerObj, stngs }, fill = '') {
+function createDisplayLayer(
+  points: unknown[],
+  {
+    generatorType,
+    item,
+    data,
+    major,
+    minor,
+    layerObj,
+    stngs,
+  }: any,
+  fill = ''
+): Record<string, unknown> {
   const d: Record<string, unknown> = {
     type: 'path',
     points,
@@ -117,10 +129,10 @@ function createDisplayLayer(points, { generatorType, item, data, major, minor, l
   return d;
 }
 
-function createDisplayLayers(layers, { width, height, missingMinor0, stngs }) {
-  const nodes = [];
-  const layerStngs = stngs.layers || {};
-  layers.forEach((layer) => {
+function createDisplayLayers(layers: any[], { width, height, missingMinor0, stngs }: any): unknown[] {
+  const nodes: unknown[] = [];
+  const layerStngs: Record<string, any> = (stngs as Record<string, unknown>).layers || {};
+  layers.forEach((layer: any) => {
     const { lineObj, layerObj, areaObj, points } = layer;
 
     let minor = { size: height, p: 'y' };
@@ -188,7 +200,7 @@ function createDisplayLayers(layers, { width, height, missingMinor0, stngs }) {
   return nodes;
 }
 
-function resolve({ data, stngs, rect, resolver, style, domain }) {
+function resolve({ data, stngs, rect, resolver, style, domain }: any): any {
   const { width, height } = rect;
   const coordinates = resolver.resolve({
     data,
@@ -211,7 +223,7 @@ function resolve({ data, stngs, rect, resolver, style, domain }) {
     (typeof stngs.coordinates.layerId === 'function' || typeof stngs.coordinates.layerId === 'object');
 
   // collect points into layers
-  const layerIds = {};
+  const layerIds: Record<string, any> = {};
   let numLines = 0;
   for (let i = 0; i < coordinates.items.length; i++) {
     let p = coordinates.items[i];
@@ -284,11 +296,11 @@ function resolve({ data, stngs, rect, resolver, style, domain }) {
   };
 }
 
-function calculateVisibleLayers(opts) {
+function calculateVisibleLayers(opts: any): any {
   const { metaLayers, coordinates, layers, lines, areas } = resolve(opts);
 
-  const visibleLayers = [];
-  metaLayers.forEach((layer, ix) => {
+  const visibleLayers: any[] = [];
+  metaLayers.forEach((layer: any, ix: number) => {
     const layerObj = layers.items[ix];
     if (layerObj.show === false) {
       return;
@@ -338,7 +350,7 @@ function calculateVisibleLayers(opts) {
   return visibleLayers;
 }
 
-const lineMarkerComponent = {
+const lineMarkerComponent: any = {
   require: ['chart', 'resolver'],
   defaultSettings: {
     style: {
@@ -346,8 +358,8 @@ const lineMarkerComponent = {
       line: '$shape-outline',
     },
   },
-  created() {},
-  render({ data }) {
+  created(this: any) {},
+  render(this: any, { data }: any) {
     // console.log("DATA", data);
     const { width, height } = this.rect;
     this.stngs = this.settings.settings || {};
@@ -368,15 +380,15 @@ const lineMarkerComponent = {
 
     if (this.stngs.layers && this.stngs.layers.sort) {
       const sortable = visibleLayers
-        .map((v) => ({
+        .map((v: any) => ({
           id: v.layerObj.id,
           data: v.layerObj.data,
         }))
         .sort(this.stngs.layers.sort)
-        .map((s) => s.id);
-      visibleLayers.sort((a, b) => sortable.indexOf(a.layerObj.id) - sortable.indexOf(b.layerObj.id));
+        .map((s: any) => s.id);
+      visibleLayers.sort((a: any, b: any) => sortable.indexOf(a.layerObj.id) - sortable.indexOf(b.layerObj.id));
     } else {
-      visibleLayers.sort((a, b) => a.median - b.median);
+      visibleLayers.sort((a: any, b: any) => a.median - b.median);
     }
 
     // generate visuals
