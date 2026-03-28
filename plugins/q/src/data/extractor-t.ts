@@ -17,6 +17,7 @@ interface ExtractDataset {
   raw(): Cube;
   key(): string;
   field(query: unknown): unknown;
+  fields?(): unknown[];
 }
 
 interface ExtractCache {
@@ -58,7 +59,13 @@ export function getFieldDepth(field: unknown, { cube }: { cube: Cube }): {
   attrIdx: number;
 } {
   if (!field) {
-    return -1;
+    return {
+      fieldDepth: -1,
+      pseudoMeasureIndex: -1,
+      measureIdx: -1,
+      attrDimIdx: -1,
+      attrIdx: -1,
+    };
   }
 
   const fieldObj = field as Record<string, any>;
@@ -111,13 +118,13 @@ export function getFieldDepth(field: unknown, { cube }: { cube: Cube }): {
 
   if (isFieldDimension) {
     if (cube.qMode === 'S') {
-      fieldDepth = columnOrder[fieldIdx];
+      fieldDepth = (columnOrder as unknown[])[fieldIdx] as number;
     } else {
-      fieldDepth = treeOrder ? treeOrder.indexOf(fieldIdx) : fieldIdx;
+      fieldDepth = treeOrder ? (treeOrder as unknown[]).indexOf(fieldIdx) : fieldIdx;
     }
-  } else if (treeOrder && treeOrder.indexOf(-1) !== -1) {
+  } else if (treeOrder && (treeOrder as unknown[]).indexOf(-1) !== -1) {
     // if pseudo dimension exists in sort order
-    fieldDepth = treeOrder.indexOf(-1); // depth of pesudodimension
+    fieldDepth = (treeOrder as unknown[]).indexOf(-1); // depth of pesudodimension
   } else {
     // assume measure is at the bottom of the tree
     fieldDepth = ((cube.qDimensionInfo as unknown[]) || []).length - (cube.qMode === 'K' ? 0 : 1);
@@ -200,7 +207,7 @@ function doIt({ propsArr, props, item, itemData, ret, sourceKey, isTree: _isTree
     const pCfg = props[propsArr[i]];
     const arr = pCfg.fields || [pCfg];
     let coll: unknown[] = [];
-    let collStr: Record<string, unknown> = {};
+    let collStr: unknown[] = [];
     if (pCfg.fields) {
       coll = [];
       collStr = [];
@@ -287,24 +294,22 @@ const getHierarchy = (cube: Cube, cache: ExtractCache, config: any): any => {
 };
 
 function getHierarchyForSMode(dataset: ExtractDataset): any {
-  const matrix = dataset.raw().qDataPages.length ? dataset.raw().qDataPages[0].qMatrix : [];
+  const matrix = (dataset.raw() as any).qDataPages?.length ? (dataset.raw() as any).qDataPages[0].qMatrix : [];
   const order = getColumnOrder(dataset);
-  const fields = dataset.fields();
-  const dimensions = dataset
-    .fields()
-    .filter((f) => f.type() === 'dimension')
-    .map((f) => order.indexOf(fields.indexOf(f)));
-  const measures = dataset
-    .fields()
-    .filter((f) => f.type() === 'measure')
-    .map((f) => order.indexOf(fields.indexOf(f)));
+  const fields = (dataset.fields?.() || []) as unknown[];
+  const dimensions = (dataset.fields?.() || [])
+    .filter((f: any) => f.type() === 'dimension')
+    .map((f: any) => order.indexOf(fields.indexOf(f)));
+  const measures = (dataset.fields?.() || [])
+    .filter((f: any) => f.type() === 'measure')
+    .map((f: any) => order.indexOf(fields.indexOf(f)));
 
-  const root = {
+  const root: any = {
     __id: '__root',
     qValues: [],
   };
 
-  const keys = {
+  const keys: Record<string, any> = {
     __root: root,
   };
 
@@ -335,11 +340,11 @@ function getHierarchyForSMode(dataset: ExtractDataset): any {
     }
   }
 
-  const nodes = Object.keys(keys).map((key) => keys[key]);
+  const nodes = Object.keys(keys).map((key: string) => keys[key]);
 
   const h = stratify()
-    .id((d) => d.__id)
-    .parentId((d) => d.__parent)(nodes);
+    .id((d: any) => d.__id)
+    .parentId((d: any) => d.__parent)(nodes);
 
   return h;
 }
@@ -449,7 +454,7 @@ export function augment(
 
 export function extract(config: any, dataset: ExtractDataset, cache: ExtractCache, util: ExtractUtil): unknown[] {
   const cfgs = Array.isArray(config) ? config : [config];
-  let dataItems = [];
+  let dataItems: unknown[] = [];
   for (let g = 0; g < cfgs.length; g++) {
     if (typeof cfgs[g].field !== 'undefined') {
       const cube = dataset.raw();
@@ -477,11 +482,11 @@ export function extract(config: any, dataset: ExtractDataset, cache: ExtractCach
 
       const track = !!cfgs[g].trackBy;
       const trackType = typeof cfgs[g].trackBy;
-      const tracker = {};
-      const trackedItems = [];
+      const tracker: any = {};
+      const trackedItems: unknown[] = [];
 
       const items = (nodeFn as (...args: unknown[]) => unknown[])(cache.tree);
-      const mapped = [];
+      const mapped: unknown[] = [];
       for (let i = 0; i < items.length; i++) {
         const item = items[i];
         const itemData = attrFn ? attrFn(valueFn(item)) : valueFn(item);
@@ -501,7 +506,7 @@ export function extract(config: any, dataset: ExtractDataset, cache: ExtractCach
         // collect items based on the trackBy value
         // items with the same trackBy value are placed in an array and reduced later
         if (track) {
-          util.track({
+          (util.track as any)?.({
             cfg: cfgs[g],
             itemData,
             obj: ret,
@@ -514,11 +519,11 @@ export function extract(config: any, dataset: ExtractDataset, cache: ExtractCach
       }
       // reduce if items have been grouped
       const tmp = track
-        ? util.collect(trackedItems, {
+        ? ((util.collect as any)(trackedItems, {
             main,
             propsArr,
             props,
-          })
+          }) as unknown[])
         : mapped;
       dataItems = [...dataItems, ...tmp];
     }

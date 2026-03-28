@@ -6,6 +6,30 @@ export interface Point {
   y: number;
 }
 
+/** Represents a line segment */
+export interface Line {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+  tolerance?: number;
+}
+
+/** Represents an axis-aligned bounding rectangle */
+export interface Rect {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+/** Represents a circle */
+export interface Circle {
+  cx: number;
+  cy: number;
+  r: number;
+}
+
 export function getMinMax(points) {
   const num = points.length;
   let xMin = NaN;

@@ -1,7 +1,15 @@
 import buildLabel from '../axis-label-node';
 import { textBounds } from '../../../../web/text-manipulation';
 
-function createTick(start, end) {
+interface TestTick {
+  start: number;
+  end: number;
+  position: number;
+  label: string;
+  value: number;
+}
+
+function createTick(start: number, end: number): TestTick {
   const position = start + (end - start) / 2;
   return {
     start,
@@ -26,7 +34,7 @@ describe('Axis Label Node', () => {
     height: 0,
   };
   const textRect = { width: 10, height: 10 };
-  const measureTextMock = ({ text }) => ({ width: text.length, height: 1 });
+  const measureTextMock = ({ text }: { text: string }): { width: number; height: number } => ({ width: text.length, height: 1 });
 
   beforeEach(() => {
     innerRect.width = 50;
@@ -40,7 +48,9 @@ describe('Axis Label Node', () => {
   });
 
   describe('Label', () => {
-    let buildOpts, tick, expected;
+    let buildOpts: Record<string, unknown>;
+    let tick: TestTick;
+    let expected: Record<string, unknown>;
 
     beforeEach(() => {
       buildOpts = {
@@ -52,7 +62,7 @@ describe('Axis Label Node', () => {
         maxWidth: textRect.width,
         maxHeight: textRect.height,
         textRect,
-        textBounds: (node) => textBounds(node, measureTextMock),
+        textBounds: (node: unknown) => textBounds(node, measureTextMock),
         stepSize: 0,
       };
       tick = createTick(0.5, 0.5);

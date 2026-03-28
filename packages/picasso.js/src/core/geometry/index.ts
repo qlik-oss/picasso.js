@@ -6,6 +6,8 @@ import { create as geopolygon } from './geopolygon';
 import { create as polyline } from './polyline';
 import registry from '../utils/registry';
 
+export type { Point, Line, Rect, Circle } from './util';
+
 const reg = registry();
 
 reg.add('rect', rect);

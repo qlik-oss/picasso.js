@@ -1,21 +1,55 @@
 import extend from 'extend';
 import { resolveContainerRects, resolveSettings } from './settings-resolver';
 import { rectToPoints, pointsToRect } from '../../geometry/util';
+import type { Rect } from '../../geometry/util';
 import createRect from './create-rect';
 
-function cacheSize(c, reducedRect, layoutRect) {
+interface PreferredSizeReturn {
+  width: number;
+  height: number;
+  size?: number;
+  edgeBleed?: EdgeBleed;
+}
+
+interface Component {
+  cachedSize?: number;
+  edgeBleed?: EdgeBleed | number;
+  config: {
+    dock(): string;
+    prioOrder(): number;
+    displayOrder(): number;
+  };
+  comp: {
+    preferredSize(opts: { inner: Rect; outer: Rect; dock: string }): number | PreferredSizeReturn;
+  };
+  referencedDocks: string[];
+  key: string;
+}
+
+function cacheSize(c: Component, reducedRect: Rect, layoutRect: Rect): number {
   if (typeof c.cachedSize === 'undefined') {
     const dock = c.config.dock();
-    let size = c.comp.preferredSize({ inner: reducedRect, outer: layoutRect, dock });
+    let sizeResult = c.comp.preferredSize({ inner: reducedRect, outer: layoutRect, dock });
+    let size: PreferredSizeReturn;
+    
     // backwards compatibility
-    if (!isNaN(size)) {
-      size = { width: size, height: size };
-    } else if (size && !isNaN(size.size)) {
-      size.width = size.size;
-      size.height = size.size;
+    if (typeof sizeResult === 'number') {
+      if (!isNaN(sizeResult)) {
+        size = { width: sizeResult, height: sizeResult };
+      } else {
+        size = { width: 0, height: 0 };
+      }
+    } else if (sizeResult && typeof sizeResult.size === 'number' && !isNaN(sizeResult.size)) {
+      size = {
+        ...sizeResult,
+        width: sizeResult.size,
+        height: sizeResult.size,
+      };
+    } else {
+      size = sizeResult as PreferredSizeReturn;
     }
 
-    let relevantSize;
+    let relevantSize: number;
     if (dock === 'top' || dock === 'bottom') {
       relevantSize = size.height;
     } else if (dock === 'right' || dock === 'left') {
@@ -29,7 +63,16 @@ function cacheSize(c, reducedRect, layoutRect) {
   return c.cachedSize;
 }
 
-function validateReduceRect(rect, reducedRect, settings) {
+interface Settings {
+  center: {
+    minWidth: number;
+    minHeight: number;
+    minWidthRatio: number;
+    minHeightRatio: number;
+  };
+}
+
+function validateReduceRect(rect: Rect, reducedRect: Rect, settings: Settings): boolean {
   // Absolute value for width/height should have predence over relative value
   const minReduceWidth =
     Math.min(settings.center.minWidth, rect.width) || Math.max(rect.width * settings.center.minWidthRatio, 1);
@@ -38,7 +81,7 @@ function validateReduceRect(rect, reducedRect, settings) {
   return reducedRect.width >= minReduceWidth && reducedRect.height >= minReduceHeight;
 }
 
-function reduceDocRect(reducedRect, c) {
+function reduceDocRect(reducedRect: Rect, c: Component): void {
   switch (c.config.dock()) {
     case 'top':
       reducedRect.y += c.cachedSize;
@@ -58,7 +101,7 @@ function reduceDocRect(reducedRect, c) {
   }
 }
 
-function addEdgeBleed(currentEdgeBleed, c) {
+function addEdgeBleed(currentEdgeBleed: EdgeBleed, c: Component): void {
   const edgeBleed = c.edgeBleed;
   if (!edgeBleed) {
     return;
@@ -69,7 +112,7 @@ function addEdgeBleed(currentEdgeBleed, c) {
   currentEdgeBleed.bottom = Math.max(currentEdgeBleed.bottom, edgeBleed.bottom || 0);
 }
 
-function reduceEdgeBleed(layoutRect, reducedRect, edgeBleed) {
+function reduceEdgeBleed(layoutRect: Rect, reducedRect: Rect, edgeBleed: EdgeBleed): void {
   if (reducedRect.x < edgeBleed.left) {
     reducedRect.width -= edgeBleed.left - reducedRect.x;
     reducedRect.x = edgeBleed.left;
@@ -88,7 +131,7 @@ function reduceEdgeBleed(layoutRect, reducedRect, edgeBleed) {
   }
 }
 
-function reduceSingleLayoutRect(layoutRect, reducedRect, edgeBleed, c, settings) {
+function reduceSingleLayoutRect(layoutRect: Rect, reducedRect: Rect, edgeBleed: EdgeBleed, c: Component, settings: Settings): boolean {
   const newReduceRect = extend({}, reducedRect);
   const newEdgeBleed = extend({}, edgeBleed);
   reduceDocRect(newReduceRect, c);
@@ -125,7 +168,7 @@ function reduceSingleLayoutRect(layoutRect, reducedRect, edgeBleed, c, settings)
  * @returns {Object} containing the new visible components and additional components to be hidden.
  * @ignore
  */
-function filterReferencedDocks(visible, hidden) {
+function filterReferencedDocks(visible: Component[], hidden: Component[]): void {
   if (hidden.length === 0) {
     return;
   }
@@ -141,7 +184,7 @@ function filterReferencedDocks(visible, hidden) {
   }
 }
 
-function reduceLayoutRect({ layoutRect, visible, hidden, settings }) {
+function reduceLayoutRect({ layoutRect, visible, hidden, settings }: { layoutRect: Rect; visible: Component[]; hidden: Component[]; settings: Settings }): Rect {
   const reducedRect = createRect(layoutRect.x, layoutRect.y, layoutRect.width, layoutRect.height);
   const edgeBleed = {
     left: 0,
@@ -172,16 +215,16 @@ function reduceLayoutRect({ layoutRect, visible, hidden, settings }) {
   return reducedRect;
 }
 
-function computeRect(rect) {
+function computeRect(rect: DockRect): { x: number; y: number; width: number; height: number } {
   return {
-    x: rect.margin.left + rect.x * rect.scaleRatio.x,
-    y: rect.margin.top + rect.y * rect.scaleRatio.y,
-    width: rect.width * rect.scaleRatio.x,
-    height: rect.height * rect.scaleRatio.y,
+    x: (rect.margin?.left ?? 0) + (rect.x ?? 0) * (rect.scaleRatio?.x ?? 1),
+    y: (rect.margin?.top ?? 0) + (rect.y ?? 0) * (rect.scaleRatio?.y ?? 1),
+    width: (rect.width ?? 0) * (rect.scaleRatio?.x ?? 1),
+    height: (rect.height ?? 0) * (rect.scaleRatio?.y ?? 1),
   };
 }
 
-function appendScaleRatio(rect, outerRect, layoutRect, containerRect) {
+function appendScaleRatio(rect: DockRect, outerRect: DockRect, layoutRect: DockRect, containerRect: Rect): void {
   const scaleRatio = {
     x: containerRect.width / layoutRect.width,
     y: containerRect.height / layoutRect.height,
@@ -211,12 +254,12 @@ function appendScaleRatio(rect, outerRect, layoutRect, containerRect) {
   layoutRect.margin = margin;
 }
 
-function boundingBox(rects) {
+function boundingBox(rects: Rect[]): Rect {
   const points = [].concat(...rects.map(rectToPoints));
   return pointsToRect(points);
 }
 
-function positionComponents({ visible, layoutRect, reducedRect, containerRect, translation }) {
+function positionComponents({ visible, layoutRect, reducedRect, containerRect, translation }: { visible: Component[]; layoutRect: DockRect; reducedRect: Rect; containerRect: Rect; translation: { x: number; y: number } }): void {
   const vRect = createRect(reducedRect.x, reducedRect.y, reducedRect.width, reducedRect.height);
   const hRect = createRect(reducedRect.x, reducedRect.y, reducedRect.width, reducedRect.height);
 
@@ -420,6 +463,8 @@ interface DockRect {
   computed?: { x: number; y: number; width: number; height: number };
   scaleRatio?: { x: number; y: number };
   margin?: { left: number; top: number };
+  preserveAspectRatio?: boolean;
+  align?: number;
 }
 
 /** The docker layout object returned by dockLayout() */

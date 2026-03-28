@@ -9,15 +9,15 @@ import timeFormat, { QlikTimeToDate } from '../timeFormat';
  * you *might* end up in 2014.
  */
 const QT = QlikTimeToDate(0).getTime();
-function DateToQlikTime(value) {
+function DateToQlikTime(value: any) {
   return (value.getTime() - QT) / (60 * 60 * 24) / 1000;
 }
 
 describe('qlik timeFormat', () => {
-  let n;
+  let n: any;
 
   it('should create valid qlik date -> JS Date', () => {
-    let d = QlikTimeToDate(0);
+    let d: any = QlikTimeToDate(0);
     expect(d.toISOString()).to.equal('1899-12-30T00:00:00.000Z');
   });
 

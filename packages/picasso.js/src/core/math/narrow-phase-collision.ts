@@ -3,25 +3,47 @@
 import { sqrDistance, distanceX, distanceY } from './vector';
 import { closestPointToLine, isPointOnLine } from './intersection';
 import { lineToPoints, rectToPoints, pointsToLine } from '../geometry/util';
+import type { Point, Line, Rect, Circle } from '../geometry';
 
-function lineHasNoLength(line) {
+interface Polygon {
+  edges: [Point, Point][];
+  vertices: Point[];
+  xMin: number;
+  yMin: number;
+  xMax: number;
+  yMax: number;
+  boundingRect(): Rect;
+}
+
+interface GeoPolygon {
+  numPolygons: number;
+  polygons: Polygon[];
+  vertices: Point[][];
+  xMin: number;
+  yMin: number;
+  xMax: number;
+  yMax: number;
+  boundingRect(): Rect;
+}
+
+function lineHasNoLength(line: Line): boolean {
   return line.x1 === line.x2 && line.y1 === line.y2;
 }
 
-function rectHasNoSize(rect) {
+function rectHasNoSize(rect: Rect): boolean {
   return rect.width <= 0 || rect.height <= 0;
 }
 
-function circleHasNoSize(circle) {
+function circleHasNoSize(circle: Circle): boolean {
   return circle.r <= 0;
 }
 
-function toFewEdges(polygon) {
+function toFewEdges(polygon: Polygon): boolean {
   return polygon.edges.length <= 2;
 }
 
 // Only when the polygon1's bounds is not inside the polygon2's bounds
-function testPolygonPolygonSubCase(polygon1, polygon2) {
+function testPolygonPolygonSubCase(polygon1: Polygon, polygon2: Polygon): boolean {
   let intersects = false;
   for (let i = 0, len = polygon2.edges.length; i < len; i++) {
     intersects = testPolygonLine(polygon1, pointsToLine(polygon2.edges[i]));
@@ -33,7 +55,7 @@ function testPolygonPolygonSubCase(polygon1, polygon2) {
 }
 
 // Only when the geopolygon's bounds is not inside the polygon's bounds
-function testGeoPolygonPolygonCase1(geopolygon, polygon) {
+function testGeoPolygonPolygonCase1(geopolygon: GeoPolygon, polygon: Polygon): boolean {
   let intersects = false;
   for (let i = 0, len = polygon.edges.length; i < len; i++) {
     intersects = testGeoPolygonLine(geopolygon, pointsToLine(polygon.edges[i]));
@@ -45,7 +67,7 @@ function testGeoPolygonPolygonCase1(geopolygon, polygon) {
 }
 
 // Only when the geopolygon's bounds is inside the polygon's bounds
-function testGeoPolygonPolygonCase2(geopolygon, polygon) {
+function testGeoPolygonPolygonCase2(geopolygon: GeoPolygon, polygon: Polygon): boolean {
   let intersects = false;
   const { numPolygons, polygons } = geopolygon;
   for (let n = 0; n < numPolygons; n++) {
@@ -58,11 +80,11 @@ function testGeoPolygonPolygonCase2(geopolygon, polygon) {
 }
 
 // Only when the geopolygon1's bounds is not inside the geopolygon2's bounds
-function testGeoPolygonGeoPolygonSubCase(geopolygon1, geopolygon2) {
+function testGeoPolygonGeoPolygonSubCase(geopolygon1: GeoPolygon, geopolygon2: GeoPolygon): boolean {
   let intersects = false;
   const { numPolygons, polygons } = geopolygon2;
   for (let n = 0; n < numPolygons; n++) {
-    let polygon = polygons[n];
+    let polygon: Polygon = polygons[n];
     intersects = testGeoPolygonPolygon(geopolygon1, polygon);
     if (intersects === true) {
       return true;
@@ -84,7 +106,7 @@ function testGeoPolygonGeoPolygonSubCase(geopolygon1, geopolygon2) {
  * @param {number} point.y - y-coordinate
  * @return {boolean} true if circle contains point
  */
-export function testCirclePoint(circle, point) {
+export function testCirclePoint(circle: Circle, point: Point): boolean {
   if (circleHasNoSize(circle)) {
     return false;
   }
@@ -114,7 +136,7 @@ export function testCirclePoint(circle, point) {
  * @param {number} rect.height - height
  * @return {boolean} true if circle collide with rectangle
  */
-export function testCircleRect(circle, rect) {
+export function testCircleRect(circle: Circle, rect: Rect): boolean {
   if (rectHasNoSize(rect) || circleHasNoSize(circle)) {
     return false;
   }
@@ -157,7 +179,7 @@ export function testCircleRect(circle, rect) {
  * @param {number} line.y1 - y-coordinate
  * @return {boolean} true if circle collide with line
  */
-export function testCircleLine(circle, line) {
+export function testCircleLine(circle: Circle, line: Line): boolean {
   if (circleHasNoSize(circle) || lineHasNoLength(line)) {
     return false;
   }
@@ -188,7 +210,7 @@ export function testCircleLine(circle, line) {
  * @param {number} circle.r - circle radius
  * @return {boolean} true if circle collide with circle
  */
-export function testCircleCircle(circle1, circle2) {
+export function testCircleCircle(circle1: Circle, circle2: Circle): boolean {
   if (circleHasNoSize(circle1) || circleHasNoSize(circle2)) {
     return false;
   }
@@ -224,7 +246,7 @@ export function testCircleCircle(circle1, circle2) {
  * @param {number} polygon.edges.edge.point.y - y-coordinate
  * @return {boolean} true if circle collide with polygon
  */
-export function testCirclePolygon(circle, polygon) {
+export function testCirclePolygon(circle: Circle, polygon: Polygon): boolean {
   // TODO handle polygon that is a straight line, current impl will interrept it is a true, if radius is extended onto any of the edges
   if (toFewEdges(polygon) || circleHasNoSize(circle)) {
     return false;
@@ -266,7 +288,7 @@ export function testCirclePolygon(circle, polygon) {
  * @param {number} point.y - y-coordinate
  * @return {boolean} true if polygon conatins point
  */
-export function testPolygonPoint(polygon, point) {
+export function testPolygonPoint(polygon: Polygon, point: Point): boolean {
   // TODO handle polygon that is a straight line, current impl gives a non-deterministic output, that is depending on number of vertices
   if (toFewEdges(polygon) || !testRectPoint(polygon.boundingRect(), point)) {
     return false;
@@ -323,7 +345,7 @@ export function testPolygonPoint(polygon, point) {
  * @param {number} line.y1 - y-coordinate
  * @return {boolean} true if polygon collider with line
  */
-export function testPolygonLine(polygon, line) {
+export function testPolygonLine(polygon: Polygon, line: Line): boolean {
   // TODO handle polygon that is a straight line, current impl gives a non-deterministic output, that is depending on number of vertices
   if (toFewEdges(polygon)) {
     return false;
@@ -363,7 +385,7 @@ export function testPolygonLine(polygon, line) {
  * @param {number} rect.height - height
  * @return {boolean} true if polygon collider with rect
  */
-export function testPolygonRect(polygon, rect) {
+export function testPolygonRect(polygon: Polygon, rect: Rect): boolean {
   // TODO handle polygon that is a straight line, current impl gives a non-deterministic output, that is depending on number of vertices
   if (toFewEdges(polygon)) {
     return false;
@@ -401,7 +423,7 @@ export function testPolygonRect(polygon, rect) {
  * @param {number} rect.height - height
  * @return {boolean} true if rectangle collide with rectangle
  */
-export function testRectRect(rect1, rect2) {
+export function testRectRect(rect1: Rect, rect2: Rect): boolean {
   if (rectHasNoSize(rect1) || rectHasNoSize(rect2)) {
     return false;
   }
@@ -430,7 +452,7 @@ export function testRectRect(rect1, rect2) {
  * @param {number} rect.height - height
  * @return {boolean} true if rectangle collide with rectangle
  */
-export function testRectContainsRect(rect1, rect2) {
+export function testRectContainsRect(rect1: Rect, rect2: Rect): boolean {
   if (rectHasNoSize(rect1) || rectHasNoSize(rect2)) {
     return false;
   }
@@ -457,7 +479,7 @@ export function testRectContainsRect(rect1, rect2) {
  * @param {number} point.y - y-coordinate
  * @return {boolean} true if rectangle contains point
  */
-export function testRectPoint(rect, point) {
+export function testRectPoint(rect: Rect, point: Point): boolean {
   if (rectHasNoSize(rect)) {
     return false;
   }
@@ -482,7 +504,7 @@ export function testRectPoint(rect, point) {
  * @param {number} line.y1 - y-coordinate
  * @return {boolean} true if rectangle collide with line
  */
-export function testRectLine(rect, line) {
+export function testRectLine(rect: Rect, line: Line): boolean {
   if (lineHasNoLength(line) || rectHasNoSize(rect)) {
     return false;
   }
@@ -520,7 +542,7 @@ export function testRectLine(rect, line) {
  * @param {number} line.y1 - y-coordinate
  * @return {boolean} true if line collide with line
  */
-export function testLineLine(line1, line2) {
+export function testLineLine(line1: Line, line2: Line): boolean {
   const [p1, p2] = lineToPoints(line1);
   const [p3, p4] = lineToPoints(line2);
   const dx1 = distanceX(p2, p1);
@@ -588,7 +610,7 @@ export function testLineLine(line1, line2) {
  * @param {number} point.y - y-coordinate
  * @return {boolean} true if line contains point
  */
-export function testLinePoint(line, point) {
+export function testLinePoint(line: Line, point: Point): boolean {
   if (lineHasNoLength(line)) {
     return false;
   }
@@ -605,7 +627,7 @@ export function testLinePoint(line, point) {
  * @param {object} polygon
  * @returns {boolean} True if there is an intersection, false otherwise
  */
-export function testPolygonPolygon(polygon1, polygon2) {
+export function testPolygonPolygon(polygon1: Polygon, polygon2: Polygon): boolean {
   const rect1 = polygon1.boundingRect();
   const rect2 = polygon2.boundingRect();
   if (!testRectRect(rect1, rect2)) {
@@ -624,7 +646,7 @@ export function testPolygonPolygon(polygon1, polygon2) {
  * @param {object} polygon
  * @returns {boolean} True if there is an intersection, false otherwise
  */
-export function testGeoPolygonPolygon(geopolygon, polygon) {
+export function testGeoPolygonPolygon(geopolygon: GeoPolygon, polygon: Polygon): boolean {
   const rect1 = geopolygon.boundingRect();
   const rect2 = polygon.boundingRect();
   if (!testRectRect(rect1, rect2)) {
@@ -643,7 +665,7 @@ export function testGeoPolygonPolygon(geopolygon, polygon) {
  * @param {object} geopolygon
  * @returns {boolean} True if there is an intersection, false otherwise
  */
-export function testGeoPolygonGeoPolygon(geopolygon1, geopolygon2) {
+export function testGeoPolygonGeoPolygon(geopolygon1: GeoPolygon, geopolygon2: GeoPolygon): boolean {
   const rect1 = geopolygon1.boundingRect();
   const rect2 = geopolygon2.boundingRect();
   if (!testRectRect(rect1, rect2)) {
@@ -667,7 +689,7 @@ export function testGeoPolygonGeoPolygon(geopolygon1, geopolygon2) {
  * @param {Array} geopolygon.polygons - Array of polygons
  * @return {boolean} true if circle collide with polygon
  */
-export function testCircleGeoPolygon(circle, geopolygon) {
+export function testCircleGeoPolygon(circle: Circle, geopolygon: GeoPolygon): boolean {
   if (circleHasNoSize(circle)) {
     return false;
   }
@@ -699,7 +721,7 @@ export function testCircleGeoPolygon(circle, geopolygon) {
  * @param {number} point.y - y-coordinate
  * @return {boolean} true if polygon conatins point
  */
-export function testGeoPolygonPoint(geopolygon, point) {
+export function testGeoPolygonPoint(geopolygon: GeoPolygon, point: Point): boolean {
   if (!testRectPoint(geopolygon.boundingRect(), point)) {
     return false;
   }
@@ -751,7 +773,7 @@ export function testGeoPolygonPoint(geopolygon, point) {
  * @param {number} line.y1 - y-coordinate
  * @return {boolean} true if polygon collider with line
  */
-export function testGeoPolygonLine(geopolygon, line) {
+export function testGeoPolygonLine(geopolygon: GeoPolygon, line: Line): boolean {
   const [p1, p2] = lineToPoints(line);
   if (testGeoPolygonPoint(geopolygon, p1) || testGeoPolygonPoint(geopolygon, p2)) {
     return true;
@@ -782,7 +804,7 @@ export function testGeoPolygonLine(geopolygon, line) {
  * @param {number} rect.height - height
  * @return {boolean} true if polygon collider with rect
  */
-export function testGeoPolygonRect(geopolygon, rect) {
+export function testGeoPolygonRect(geopolygon: GeoPolygon, rect: Rect): boolean {
   const [p1, p2, p3, p4] = rectToPoints(rect);
   if (
     testGeoPolygonPoint(geopolygon, p1) ||
