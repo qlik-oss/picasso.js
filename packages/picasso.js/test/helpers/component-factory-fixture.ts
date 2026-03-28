@@ -2,27 +2,41 @@ import elementMock from 'test-utils/mocks/element-mock';
 import componentFactory from '../../src/core/component/component-factory';
 import findNodes from './node-def-selector';
 
-function computeRect(rect) {
+interface Rect {
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+}
+
+interface ComputedRect {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+function computeRect(rect: Rect): ComputedRect {
   return {
-    x: rect.x,
-    y: rect.y,
-    width: rect.width,
-    height: rect.height,
+    x: rect.x ?? 0,
+    y: rect.y ?? 0,
+    width: rect.width ?? 0,
+    height: rect.height ?? 0,
   };
 }
 
-export default function componentFactoryFixture() {
-  let comp;
-  let chartMock;
-  let rendererMock;
-  let rendererOutput = [];
-  let mediatorMock;
-  let themeMock;
-  let registriesMock;
+export default function componentFactoryFixture(): any {
+  let comp: any;
+  let chartMock: any;
+  let rendererMock: any;
+  let rendererOutput: any[] = [];
+  let mediatorMock: any;
+  let themeMock: any;
+  let registriesMock: any;
   const sandbox = sinon.createSandbox();
-  let rendererElement;
+  let rendererElement: any;
 
-  const fn = function func() {
+  const fn: any = function func() {
     chartMock = {
       brush: () => ({
         on: () => {},
@@ -38,8 +52,8 @@ export default function componentFactoryFixture() {
     };
 
     rendererMock = {
-      size(rect) {
-        const s = {
+      size(rect: Rect): any {
+        const s: any = {
           x: rect.x || 0,
           y: rect.y || 0,
           width: rect.width || 100,
@@ -68,31 +82,31 @@ export default function componentFactoryFixture() {
         };
         return s;
       },
-      render: (nodes) => {
+      render: (nodes: any[]): void => {
         rendererOutput = nodes;
       },
-      appendTo: (el) => {
+      appendTo: (el: any): any => {
         if (!rendererElement) {
           rendererElement = elementMock();
         }
         el.appendChild(rendererElement);
         return rendererElement;
       },
-      measureText: ({ text }) => ({
+      measureText: ({ text }: { text: any }): any => ({
         width: text.toString().length,
         height: 5,
       }),
-      textBounds: ({ text, x, y }) => ({
+      textBounds: ({ text, x, y }: { text: any; x?: number; y?: number }): any => ({
         x: x || 0,
         y: y || 0,
         width: text.toString().length,
         height: 5,
       }),
-      element: () => rendererElement,
-      clear: () => {},
-      destroy: () => {},
-      setKey: (key) => rendererElement.setAttribute('data-key', key),
-      settings: () => {},
+      element: (): any => rendererElement,
+      clear: (): void => {},
+      destroy: (): void => {},
+      setKey: (key: string): void => rendererElement.setAttribute('data-key', key),
+      settings: (): void => {},
     };
 
     mediatorMock = {
@@ -111,14 +125,14 @@ export default function componentFactoryFixture() {
     return fn;
   };
 
-  fn.mocks = () => ({
+  fn.mocks = (): any => ({
     chart: chartMock,
     renderer: rendererMock,
     theme: themeMock,
     registries: registriesMock,
   });
 
-  fn.simulateCreate = (componentDef, settings) => {
+  fn.simulateCreate = (componentDef: any, settings: any): any => {
     comp = componentFactory(componentDef, {
       settings,
       chart: chartMock,
@@ -133,7 +147,7 @@ export default function componentFactoryFixture() {
     return comp;
   };
 
-  fn.simulateRender = (opts) => {
+  fn.simulateRender = (opts: { inner?: any; outer?: any }): any => {
     const { inner, outer } = opts;
     if (inner && !inner.computed) {
       inner.computed = computeRect(inner);
@@ -151,7 +165,7 @@ export default function componentFactoryFixture() {
     return rendererOutput;
   };
 
-  fn.simulateUpdate = (settings) => {
+  fn.simulateUpdate = (settings: any): any => {
     comp.set({ settings });
     comp.beforeUpdate(settings);
     comp.beforeRender();
@@ -161,15 +175,15 @@ export default function componentFactoryFixture() {
     return rendererOutput;
   };
 
-  fn.simulateLayout = (opts) => comp.dockConfig().computePreferredSize(opts);
+  fn.simulateLayout = (opts: any): any => comp.dockConfig().computePreferredSize(opts);
 
-  fn.getRenderOutput = () => rendererOutput;
+  fn.getRenderOutput = (): any[] => rendererOutput;
 
-  fn.sandbox = () => sandbox;
+  fn.sandbox = (): any => sandbox;
 
-  fn.instance = () => comp;
+  fn.instance = (): any => comp;
 
-  fn.findNodes = (s) => findNodes(s, { children: rendererOutput });
+  fn.findNodes = (s: string): any[] => findNodes(s, { children: rendererOutput });
 
   return fn();
 }
