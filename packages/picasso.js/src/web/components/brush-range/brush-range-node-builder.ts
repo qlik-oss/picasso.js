@@ -2,6 +2,10 @@ import extend from 'extend';
 
 import { TARGET_SIZE, VERTICAL } from './brush-range-const';
 
+interface VirtualNode {
+  [key: string]: unknown;
+}
+
 /** Parameters for the buildArea function */
 interface AreaConfig {
   h: (...args: unknown[]) => unknown;
@@ -13,7 +17,63 @@ interface AreaConfig {
   opacity: number;
 }
 
-function buildLine({ h, isVertical, value, pos, align, borderHit, state, idx }) {
+interface BrushState {
+  targetRect?: { x: number; y: number; width: number; height: number };
+  targetFillRect?: { x: number; y: number; width: number; height: number };
+  settings: { bubbles: { align: string; placement: string; show?: boolean; fontSize?: string; fontFamily?: string; fill?: string } };
+  style: { 
+    line: { stroke: string }; 
+    target: { fill: string; opacity: number }; 
+    label?: { fontSize: string; fontFamily: string; color: string };
+    bubble: { borderRadius: number; strokeWidth: number; stroke: string; fill: string; color: string; fontFamily: string; fontSize: string };
+  };
+  size: number;
+  rect: { width: number; height: number; x: number; y: number };
+  key: string;
+  h: (...args: unknown[]) => VirtualNode;
+  scale?: { norm: (value: number) => number; domain: () => [number, number] };
+  edit?: { rangeIdx: number; bubbleIdx: number };
+  onEditConfirmed: (rangeIdx: number, value: number, otherValue: number) => void;
+  onEditCanceled: () => void;
+  format: (value: number, range?: number[]) => string;
+}
+
+interface LineConfig {
+  h: (...args: unknown[]) => VirtualNode;
+  isVertical: boolean;
+  value: number;
+  pos: number;
+  align: 'start' | 'end';
+  borderHit: number;
+  state: BrushState;
+  idx: number;
+}
+
+interface BubbleConfig {
+  h: (...args: unknown[]) => VirtualNode;
+  isVertical: boolean;
+  label: string;
+  otherValue: number;
+  rangeIdx: number;
+  idx: number;
+  pos: number;
+  align: 'start' | 'end';
+  state: BrushState;
+  value: number;
+  style?: { fontSize: string; fontFamily: string; color: string };
+}
+
+interface BuildRangeConfig {
+  borderHit: number;
+  els: VirtualNode[];
+  isVertical: boolean;
+  state: BrushState;
+  vStart: number;
+  vEnd: number;
+  idx: number;
+}
+
+function buildLine({ h, isVertical, value, pos, align, borderHit, state, idx }: LineConfig): VirtualNode {
   const isAlignStart = align !== 'end';
   const alignStart = { left: '0', top: '0' };
   const alignEnd = { right: '0', bottom: '0' };
@@ -39,13 +99,14 @@ function buildLine({ h, isVertical, value, pos, align, borderHit, state, idx }) 
   return h(
     'div',
     {
-      onmouseover(e) {
-        e.srcElement.children[0].style.backgroundColor = '#000';
-        e.srcElement.children[0].style[isVertical ? 'height' : 'width'] = '2px';
+      onmouseover(e: Event) {
+        (e.srcElement as HTMLElement).children[0] as HTMLElement;
+        ((e.srcElement as HTMLElement).children[0] as HTMLElement).style.backgroundColor = '#000';
+        ((e.srcElement as HTMLElement).children[0] as HTMLElement).style[isVertical ? 'height' : 'width'] = '2px';
       },
-      onmouseout(e) {
-        e.srcElement.children[0].style.backgroundColor = state.style.line.stroke;
-        e.srcElement.children[0].style[isVertical ? 'height' : 'width'] = '1px';
+      onmouseout(e: Event) {
+        ((e.srcElement as HTMLElement).children[0] as HTMLElement).style.backgroundColor = state.style.line.stroke;
+        ((e.srcElement as HTMLElement).children[0] as HTMLElement).style[isVertical ? 'height' : 'width'] = '1px';
       },
       'data-value': value,
       'data-key': [state.key, 'edge', idx].join('-'),
@@ -89,7 +150,7 @@ function buildBubble({
   state,
   value,
   style: _style = undefined,
-}) {
+}: BubbleConfig): VirtualNode {
   const isAlignStart = align !== 'end';
   const isOutside = state.settings.bubbles.placement === 'outside';
   let outside = 'none';
@@ -141,14 +202,14 @@ function buildBubble({
           textOverflow: '',
           fontSize: '13px', // TODO - make it styleable
         },
-        onkeyup(e) {
+      onkeyup(e: KeyboardEvent) {
           if (e.key === 'Enter') {
             e.preventDefault();
             e.stopPropagation();
-            const newValue = parseFloat(e.target.value);
+            const newValue = parseFloat((e.target as HTMLInputElement).value);
             if (isNaN(newValue)) {
               currentBorderColor = 'rgba(230, 78, 78, 0.6)';
-              e.target.style.border = `${state.style.bubble.strokeWidth}px solid ${currentBorderColor}`;
+              (e.target as HTMLInputElement).style.border = `${state.style.bubble.strokeWidth}px solid ${currentBorderColor}`;
             } else {
               state.onEditConfirmed(rangeIdx, newValue, otherValue);
             }
@@ -189,7 +250,7 @@ function buildBubble({
   );
 }
 
-function buildArea({ h, isVertical, top, height, color, on, opacity }: AreaConfig) {
+function buildArea({ h, isVertical, top, height, color, on, opacity }: AreaConfig): VirtualNode {
   return h(
     'div',
     extend(
@@ -205,20 +266,20 @@ function buildArea({ h, isVertical, top, height, color, on, opacity }: AreaConfi
           pointerEvents: 'auto',
         },
       },
-      on
+      on || {}
     ),
     []
-  );
+  ) as VirtualNode;
 }
 
-export default function buildRange({ borderHit, els, isVertical, state, vStart, vEnd, idx }) {
+export default function buildRange({ borderHit, els, isVertical, state, vStart, vEnd, idx }: BuildRangeConfig): void {
   let targetOffset = 0;
   if (state.targetRect) {
     targetOffset = isVertical ? state.targetRect.y : state.targetRect.x;
   }
   const hasScale = !!state.scale;
-  const start = hasScale ? state.scale.norm(vStart) * state.size : vStart;
-  const end = hasScale ? state.scale.norm(vEnd) * state.size : vEnd;
+  const start = hasScale ? (state.scale!.norm(vStart) * state.size) : vStart;
+  const end = hasScale ? (state.scale!.norm(vEnd) * state.size) : vEnd;
   const height = Math.abs(start - end);
   const top = Math.min(start, end) + targetOffset;
   const bottom = top + height;
@@ -226,8 +287,8 @@ export default function buildRange({ borderHit, els, isVertical, state, vStart, 
   if (state.targetRect) {
     const target = state.targetFillRect || state.targetRect;
     const targetSize = isVertical ? target.height : target.width;
-    const targetStart = hasScale ? state.scale.norm(vStart) * targetSize : vStart;
-    const targetEnd = hasScale ? state.scale.norm(vEnd) * targetSize : vEnd;
+    const targetStart = hasScale ? (state.scale!.norm(vStart) * targetSize) : vStart;
+    const targetEnd = hasScale ? (state.scale!.norm(vEnd) * targetSize) : vEnd;
     const targetHeight = Math.abs(targetStart - targetEnd);
     const targetTop = Math.min(targetStart, targetEnd);
     const targetArea: AreaConfig = {
@@ -276,7 +337,7 @@ export default function buildRange({ borderHit, els, isVertical, state, vStart, 
 
   const valStart = start < end ? vStart : vEnd;
   const valEnd = start < end ? vEnd : vStart;
-  const [min, max] = hasScale ? state.scale.domain() : [Math.min(vStart, vEnd), Math.max(vStart, vEnd)];
+  const [min, max] = hasScale ? (state.scale!.domain()) : [Math.min(vStart, vEnd), Math.max(vStart, vEnd)];
 
   const isStartVisible = valStart + 1e-5 >= min && valStart - 1e-5 <= max; // accept minor floating point difference
   const isEndVisible = valEnd - 1e-5 <= max && valEnd + 1e-5 >= min;
@@ -313,10 +374,10 @@ export default function buildRange({ borderHit, els, isVertical, state, vStart, 
 
   const bubbles = state.settings.bubbles;
   if (bubbles && bubbles.show) {
-    const fontSize = bubbles.fontSize;
-    const fontFamily = bubbles.fontFamily;
-    const fill = bubbles.fill;
-    const style = {
+    const fontSize = bubbles.fontSize || '';
+    const fontFamily = bubbles.fontFamily || '';
+    const fill = bubbles.fill || '';
+    const style: { fontSize: string; fontFamily: string; color: string } = {
       fontSize,
       fontFamily,
       color: fill,
@@ -329,7 +390,7 @@ export default function buildRange({ borderHit, els, isVertical, state, vStart, 
         buildBubble({
           h: state.h,
           isVertical,
-          align: bubbles.align,
+          align: (bubbles.align || 'start') as 'start' | 'end',
           style,
           rangeIdx: idx,
           idx: 0,
@@ -347,7 +408,7 @@ export default function buildRange({ borderHit, els, isVertical, state, vStart, 
         buildBubble({
           h: state.h,
           isVertical,
-          align: bubbles.align,
+          align: (bubbles.align || 'start') as 'start' | 'end',
           style,
           rangeIdx: idx,
           idx: 1,
@@ -362,7 +423,7 @@ export default function buildRange({ borderHit, els, isVertical, state, vStart, 
   }
 }
 
-export function getMoveDelta(state) {
+export function getMoveDelta(state: BrushState & { active: { limitHigh: number; limitLow: number; start: number; end: number }; current: number; start: number }): number {
   const posDelta = state.active.limitHigh - state.active.end;
   const negDelta = state.active.limitLow - state.active.start;
   let delta = state.current - state.start;
@@ -375,14 +436,14 @@ export function getMoveDelta(state) {
   return delta;
 }
 
-export function nodes(state) {
-  let els = [];
+export function nodes(state: BrushState & { ranges?: Array<{ min: number; max: number }>; active?: { idx: number; mode: string; start: number; end: number }; direction: number | string; current: number; start: number; format: (value: number, range: number[]) => string }): VirtualNode[] {
+  const els: VirtualNode[] = [];
 
   const isVertical = state.direction === VERTICAL;
 
   if (Array.isArray(state.ranges)) {
     // add all other ranges
-    state.ranges.forEach((r, i) => {
+    state.ranges.forEach((r: { min: number; max: number }, i: number) => {
       if (!state.active || i !== state.active.idx) {
         buildRange({
           borderHit: TARGET_SIZE,
@@ -409,7 +470,7 @@ export function nodes(state) {
         vStart = Math.min(state.start, state.current);
         vEnd = Math.max(state.start, state.current);
       } else {
-        const delta = getMoveDelta(state);
+        const delta = getMoveDelta(state as any);
         vStart = state.active.start + delta;
         vEnd = state.active.end + delta;
       }

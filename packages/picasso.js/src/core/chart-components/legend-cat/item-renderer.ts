@@ -124,7 +124,7 @@ export function createRenderItem({ x = 0, y, item, globalMetrics, createSymbol, 
 
   placeTextInRect(labelRect, label, {
     textMetrics: labelBounds,
-    fontSize: parseInt(label.fontSize, 10),
+    fontSize: parseInt(label.fontSize as string, 10),
     align: 0.0,
     justify: 0.5,
   });
@@ -151,7 +151,7 @@ export function createRenderItem({ x = 0, y, item, globalMetrics, createSymbol, 
 export function getItemsToRender(
   { viewRect }: { viewRect: Rect },
   rect: Rect,
-  { itemized, create = createRenderItem, parallels, createSymbol }: { itemized: { layout: { direction: string; orientation: string }; globalMetrics: GlobalMetrics; items: LegendItem[] }; create?: (config: RenderItemConfig) => Record<string, unknown>; parallels: number; createSymbol: (config: Record<string, unknown>) => Record<string, unknown> }
+  { itemized, create = createRenderItem, parallels, createSymbol }: { itemized: { layout: { direction: string; orientation: string; margin?: { vertical?: number; horizontal?: number } }; globalMetrics: GlobalMetrics; items: LegendItem[] }; create?: (config: RenderItemConfig) => Record<string, unknown>; parallels: number; createSymbol: (config: Record<string, unknown>) => Record<string, unknown> }
 ): unknown[] {
   const direction = itemized.layout;
   const globalMetrics = itemized.globalMetrics;
@@ -162,8 +162,8 @@ export function getItemsToRender(
   const renderItems: unknown[] = [];
   const fixedHeight = globalMetrics.maxItemBounds.height;
   const fixedWidth = globalMetrics.maxItemBounds.width;
-  const rowHeight = itemized.layout.margin?.vertical || 4 + fixedHeight;
-  const columnWidth = itemized.layout.margin?.horizontal || 4 + fixedWidth;
+  const rowHeight = (itemized.layout.margin?.vertical || 4) + fixedHeight;
+  const columnWidth = (itemized.layout.margin?.horizontal || 4) + fixedWidth;
   let x = rect.x;
   let y = rect.y;
 
@@ -244,9 +244,9 @@ export function itemize({ resolved, dock }: ItemizeInput, renderer: { textBounds
   let label: Record<string, unknown>;
   let items: LegendItem[] = [];
   let item: LegendItem;
-  let sourceItems = (resolved as Record<string, Record<string, unknown[]>>).items.items as unknown[];
-  let sourceSymbols = (resolved as Record<string, Record<string, unknown[]>>).symbols.items as unknown[];
-  let sourceLabels = (resolved as Record<string, Record<string, unknown[]>>).labels.items as Record<string, unknown>[];
+  let sourceItems = resolved.items.items as unknown[];
+  let sourceSymbols = resolved.symbols.items as unknown[];
+  let sourceLabels = resolved.labels.items as Record<string, unknown>[];
 
   let maxSymbolSize = 0;
   let maxLabelWidth = 0;
@@ -274,13 +274,13 @@ export function itemize({ resolved, dock }: ItemizeInput, renderer: { textBounds
       },
       label: {
         displayObject: label as unknown as Label,
-        bounds: (renderer as Record<string, (label: Record<string, unknown>) => Rect>).textBounds?.(label) || { x: 0, y: 0, width: 0, height: 0 },
+        bounds: renderer.textBounds?.(label) || { x: 0, y: 0, width: 0, height: 0 },
       },
     } as LegendItem;
 
     items.push(item);
 
-    maxSymbolSize = Math.max(sourceSymbols[i].size, maxSymbolSize);
+    maxSymbolSize = Math.max((sourceSymbols[i] as SymbolMeta).size, maxSymbolSize);
     maxLabelWidth = Math.max(item.label.bounds.width, maxLabelWidth);
     maxLabelHeight = Math.max(item.label.bounds.height, maxLabelHeight);
   }
@@ -313,21 +313,21 @@ export function itemize({ resolved, dock }: ItemizeInput, renderer: { textBounds
   };
 }
 
-export function extent(itemized: { items: unknown[]; layout: { orientation: string }; globalMetrics: GlobalMetrics }, parallels: number): number {
+export function extent(itemized: { items: unknown[]; layout: { orientation: string; margin?: { horizontal?: number; vertical?: number } }; globalMetrics: GlobalMetrics }, parallels: number): number {
   const count = itemized.items.length;
   const size = Math.ceil(count / parallels);
   const property = itemized.layout.orientation === 'horizontal' ? 'width' : 'height';
   const margin = property === 'width' ? 'horizontal' : 'vertical';
-  return itemized.globalMetrics.maxItemBounds[property as 'width' | 'height'] * size + (size - 1) * (itemized.layout.margin?.[margin as 'horizontal' | 'vertical'] as number);
+  return itemized.globalMetrics.maxItemBounds[property as 'width' | 'height'] * size + (size - 1) * (itemized.layout.margin?.[margin as 'horizontal' | 'vertical'] as number || 4);
 }
 
-export function spread(itemized: { items: unknown[]; layout: { orientation: string }; globalMetrics: GlobalMetrics }, parallels: number): number {
+export function spread(itemized: { items: unknown[]; layout: { orientation: string; margin?: { horizontal?: number; vertical?: number } }; globalMetrics: GlobalMetrics }, parallels: number): number {
   const size = parallels;
   const property = itemized.layout.orientation === 'horizontal' ? 'height' : 'width';
   const margin = property === 'width' ? 'horizontal' : 'vertical';
   return (
     itemized.globalMetrics.maxItemBounds[property as 'width' | 'height'] * size +
-    (size - 1) * (itemized.layout.margin?.[margin as 'horizontal' | 'vertical'] as number)
+    (size - 1) * (itemized.layout.margin?.[margin as 'horizontal' | 'vertical'] as number || 4)
   );
 }
 
@@ -336,7 +336,7 @@ export function parallelize(availableExtent: number, availableSpread: number | n
   const extentProperty = itemized.layout.orientation === 'horizontal' ? 'width' : 'height';
   const margin = extentProperty === 'width' ? 'horizontal' : 'vertical';
   const extentInPx =
-    itemized.globalMetrics.maxItemBounds[extentProperty as 'width' | 'height'] * count + (count - 1) * (itemized.layout.margin?.[margin as 'horizontal' | 'vertical'] as number);
+    itemized.globalMetrics.maxItemBounds[extentProperty as 'width' | 'height'] * count + (count - 1) * (itemized.layout.margin?.[margin as 'horizontal' | 'vertical'] as number || 4);
   let numNeeded = Math.ceil(extentInPx / availableExtent);
 
   if (availableSpread != null) {
@@ -353,24 +353,44 @@ export function parallelize(availableExtent: number, availableSpread: number | n
   return Math.max(1, Math.min(numNeeded, numInput));
 }
 
-export default function itemRenderer(legend: Record<string, unknown>, { onScroll = () => {} }: Record<string, unknown> = {}): Record<string, unknown> {
-  let itemized: Record<string, unknown>;
+interface ItemRendererApi {
+  itemize: (obj: Record<string, unknown>) => void;
+  getItemsToRender: (obj: { viewRect: Rect }) => unknown[];
+  parallelize: (availableExtent: number, availableSpread: number | null) => number;
+  hasContentOverflow: () => boolean;
+  getContentOverflow: (rect?: Rect) => number;
+  getNextSize: () => number;
+  getPrevSize: () => number;
+  hasNext: () => boolean;
+  hasPrev: () => boolean;
+  next: () => void;
+  prev: () => void;
+  scroll: (delta: number) => void;
+  offset: () => number | null;
+  orientation: () => string;
+  direction: () => string;
+  extent: () => number;
+  spread: () => number;
+}
+
+export default function itemRenderer(legend: Record<string, unknown>, { onScroll = () => {} }: { onScroll?: () => void } = {}): ItemRendererApi {
+  let itemized: ItemizeOutput;
   let parallels: number;
   let viewRect: Rect;
   let containerRect: Rect;
   let offset: number | null = null;
   let overflow = 0;
 
-  const api: Record<string, unknown> = {
+  const api: ItemRendererApi = {
     itemize: (obj: Record<string, unknown>) => {
-      itemized = itemize(obj as Record<string, unknown>, (legend as Record<string, unknown>).renderer as Record<string, unknown>);
-      offset = !isNaN((itemized as Record<string, Record<string, number>>).layout.scrollOffset as number) ? (itemized as Record<string, Record<string, number>>).layout.scrollOffset as number : offset; // Set the initial offset
+      itemized = itemize(obj as unknown as ItemizeInput, (legend as Record<string, { renderer?: { textBounds?: (label: Record<string, unknown>) => Rect } }>).renderer as { textBounds?: (label: Record<string, unknown>) => Rect });
+      offset = !isNaN((itemized.layout.scrollOffset as number)) ? (itemized.layout.scrollOffset as number) : offset; // Set the initial offset
     },
     getItemsToRender: (obj) => {
       viewRect = obj.viewRect;
       overflow = api.getContentOverflow(viewRect);
       const ext = api.extent();
-      offset = Math.max(0, Math.min(offset, overflow));
+      offset = Math.max(0, Math.min(offset || 0, overflow));
 
       containerRect = extend({}, viewRect);
 
@@ -378,7 +398,11 @@ export default function itemRenderer(legend: Record<string, unknown>, { onScroll
       containerRect[offsetProperty] -= offset;
       containerRect[offsetProperty === 'x' ? 'width' : 'height'] = ext;
 
-      return getItemsToRender(obj, containerRect, { itemized, parallels, createSymbol: legend.symbol });
+      return getItemsToRender(
+        { viewRect },
+        containerRect,
+        { itemized, parallels, createSymbol: (legend as Record<string, unknown>).symbol as (config: Record<string, unknown>) => Record<string, unknown> }
+      );
     },
     parallelize: (availableExtent, availableSpread) => {
       parallels = parallelize(availableExtent, availableSpread, itemized);
@@ -386,23 +410,23 @@ export default function itemRenderer(legend: Record<string, unknown>, { onScroll
     },
     hasContentOverflow: () => {
       const property = itemized.layout.orientation === 'horizontal' ? 'width' : 'height';
-      return extent(itemized, parallels) > viewRect[property];
+      return extent(itemized, parallels) > viewRect[property as 'width' | 'height'];
     },
     getContentOverflow: (rect = viewRect) => {
       const property = itemized.layout.orientation === 'horizontal' ? 'width' : 'height';
-      return Math.max(0, extent(itemized, parallels) - rect[property]);
+      return Math.max(0, extent(itemized, parallels) - rect[property as 'width' | 'height']);
     },
     getNextSize: () => {
       // TODO - calculate the actual size to next item to ensure alignment
       const property = itemized.layout.orientation === 'horizontal' ? 'width' : 'height';
       const margin = property === 'width' ? 'horizontal' : 'vertical';
-      return itemized.globalMetrics.maxItemBounds[property] + itemized.layout.margin[margin];
+      return itemized.globalMetrics.maxItemBounds[property as 'width' | 'height'] + (itemized.layout.margin?.[margin as 'horizontal' | 'vertical'] as number);
     },
     getPrevSize: () => {
       // TODO - calculate the actual size to next item to ensure alignment
       const property = itemized.layout.orientation === 'horizontal' ? 'width' : 'height';
       const margin = property === 'width' ? 'horizontal' : 'vertical';
-      return itemized.globalMetrics.maxItemBounds[property] + itemized.layout.margin[margin];
+      return itemized.globalMetrics.maxItemBounds[property as 'width' | 'height'] + (itemized.layout.margin?.[margin as 'horizontal' | 'vertical'] as number);
     },
     hasNext: () => {
       if (api.orientation() === 'horizontal') {
@@ -422,8 +446,8 @@ export default function itemRenderer(legend: Record<string, unknown>, { onScroll
     prev: () => {
       api.scroll(api.getPrevSize());
     },
-    scroll: (delta) => {
-      const current = Math.max(0, Math.min(overflow, offset - delta));
+    scroll: (delta: number) => {
+      const current = Math.max(0, Math.min(overflow, (offset || 0) - delta));
       if (current === offset) {
         return;
       }
@@ -433,8 +457,8 @@ export default function itemRenderer(legend: Record<string, unknown>, { onScroll
     offset: () => offset,
     orientation: () => itemized.layout.orientation,
     direction: () => itemized.layout.direction,
-    extent: () => extent(itemized, parallels), // total amount of space along orientation
-    spread: () => spread(itemized, parallels), // total amount of space perpendicular to orientation
+    extent: () => extent(itemized, parallels),
+    spread: () => spread(itemized, parallels),
   };
 
   return api;

@@ -7,23 +7,23 @@ const DEFAULT_TICKS_SETTINGS = {
   depth: 0,
 };
 
-function keyGen(node, valueFn, ctx) {
+function keyGen(node: any, valueFn: (ctx: any) => string, ctx: any): string {
   return node
     .ancestors()
-    .map((a) => valueFn(extend({ datum: a.data }, ctx)))
+    .map((a: any) => valueFn(extend({ datum: a.data }, ctx)))
     .reverse()
     .slice(1) // Delete root node
     .toString();
 }
 
-function flattenTree(rootNode, settings, ctx) {
+function flattenTree(rootNode: any, settings: any, ctx: any): { values: any[]; labels: any[]; items: Record<string, any>; ticks: any[] } {
   const ticksDepth = settings.ticks.depth;
   const valueFn = settings.value;
   const labelFn = settings.label;
-  const values = [];
-  const labels = [];
-  const items = {};
-  const ticks = [];
+  const values: any[] = [];
+  const labels: any[] = [];
+  const items: Record<string, any> = {};
+  const ticks: any[] = [];
   let expando = 0;
   if (!rootNode) {
     return {
@@ -34,7 +34,7 @@ function flattenTree(rootNode, settings, ctx) {
     };
   }
 
-  rootNode.eachAfter((node) => {
+  rootNode.eachAfter((node: any) => {
     if (node.depth > 0) {
       const key = keyGen(node, valueFn, ctx);
       const leaves = node.leaves() || [node]; // If leaf node returns itself
@@ -109,13 +109,13 @@ export default function scaleHierarchicalBand(
 ) {
   const ctx = { data, resources };
   const stgns: Record<string, unknown> = resolveSettings(settings, DEFAULT_SETTINGS, ctx);
-  stgns.ticks = resolveSettings(settings.ticks, DEFAULT_TICKS_SETTINGS, ctx);
-  stgns.value = typeof settings.value === 'function' ? settings.value : (d) => d.datum.value;
-  stgns.label = typeof settings.label === 'function' ? settings.label : (d) => d.datum.value;
+  stgns.ticks = resolveSettings((settings as any).ticks, DEFAULT_TICKS_SETTINGS, ctx);
+  stgns.value = typeof (settings as any).value === 'function' ? (settings as any).value : (d: any) => d.datum.value;
+  stgns.label = typeof (settings as any).label === 'function' ? (settings as any).label : (d: any) => d.datum.value;
 
-  let bandInstance = bandScale(stgns);
+  let bandInstance = bandScale(stgns as any);
 
-  const { values, labels, items, ticks } = flattenTree(data.root, stgns, ctx);
+  const { values, labels, items, ticks } = flattenTree((data as any).root, stgns, ctx);
 
   /**
    * @alias h-band
@@ -124,7 +124,7 @@ export default function scaleHierarchicalBand(
    * @param { Object[] } value - Array where each value is a reference to a node, going from depth 1 to n.
    * @return { number }
    */
-  const hBand = function fn(val) {
+  const hBand = function fn(val: any) {
     const strVal = String(val);
     const item = items[strVal];
     if (item) {
@@ -142,7 +142,7 @@ export default function scaleHierarchicalBand(
    * @return { number }
    */
 
-  hBand.bandwidth = function bandwidth(val) {
+  hBand.bandwidth = function bandwidth(val: any) {
     const item = items[String(val)];
     const bw = bandInstance.bandwidth();
     if (item && !item.isLeaf) {
@@ -158,7 +158,7 @@ export default function scaleHierarchicalBand(
    * @param { Object[] } [val] - Array where each value is a reference to a node, going from depth 1 to n. If omitted, step size for the leaf nodes is return.
    * @return { number }
    */
-  hBand.step = function step(val) {
+  hBand.step = function step(val: any) {
     const item = items[String(val)];
     const leafCount = item ? item.count : 1;
     let stepSize = bandInstance.step();
@@ -176,7 +176,7 @@ export default function scaleHierarchicalBand(
    * @param { Object[] } val - Array where each value is a reference to a node, going from depth 1 to n.
    * @return { Object } The datum
    */
-  hBand.datum = (val) => {
+  hBand.datum = (val: any) => {
     const item = items[String(val)];
     if (item) {
       return item.node.data;
@@ -196,7 +196,7 @@ export default function scaleHierarchicalBand(
    * @return { Object[] } Ticks for each leaf node
    */
   hBand.ticks = () =>
-    ticks.map((item) => {
+    ticks.map((item: any) => {
       const start = hBand(item.key);
       const bandwidth = hBand.bandwidth(item.key);
       return {
@@ -209,7 +209,7 @@ export default function scaleHierarchicalBand(
     });
 
   const orgPxScale = bandInstance.pxScale;
-  hBand.pxScale = function pxScale(size) {
+  hBand.pxScale = function pxScale(size: number) {
     bandInstance = orgPxScale(size);
     return hBand;
   };

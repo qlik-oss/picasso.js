@@ -4,7 +4,19 @@ import { create as createPolygon } from '../geometry/polygon';
 import { create as createGeoPolygon } from '../geometry/geopolygon';
 import { lineToPoints, rectToPoints, getShapeType } from '../geometry/util';
 
-function appendParentNode(node, collision) {
+interface Node {
+  parent?: Node;
+  type?: string;
+  collider?: { [key: string]: (input: any) => boolean } | null;
+  colliderType?: string | null;
+  descendants: Node[];
+  children?: Node[];
+  modelViewMatrix?: any;
+  inverseModelViewMatrix?: any;
+  dpi?: number;
+}
+
+function appendParentNode(node: Node, collision: any): void {
   const p = node.parent;
 
   if (p && p.type !== 'stage') {
@@ -17,13 +29,13 @@ function appendParentNode(node, collision) {
   }
 }
 
-function appendInputShape(shape, collisions) {
+function appendInputShape(shape: any, collisions: any[]): void {
   for (let i = 0, len = collisions.length; i < len; i++) {
     collisions[i].input = shape;
   }
 }
 
-function resolveFrontChildCollision(node, type, input) {
+function resolveFrontChildCollision(node: Node, type: string, input: any): any {
   const num = node.descendants.length;
 
   for (let i = num - 1; i >= 0; i--) {
@@ -32,7 +44,7 @@ function resolveFrontChildCollision(node, type, input) {
       continue;
     }
 
-    if (desc.collider[type](input)) {
+    if (desc.collider && desc.collider[type](input)) {
       const collision = createCollision(desc);
 
       appendParentNode(desc, collision);
@@ -43,8 +55,8 @@ function resolveFrontChildCollision(node, type, input) {
   return null;
 }
 
-function resolveGeometryCollision(node, type, input) {
-  if (node.collider[type](input)) {
+function resolveGeometryCollision(node: Node, type: string, input: any): any {
+  if (node.collider && node.collider[type](input)) {
     const c = createCollision(node);
 
     appendParentNode(node, c);
@@ -55,7 +67,7 @@ function resolveGeometryCollision(node, type, input) {
   return null;
 }
 
-function inverseTransform(node, input) {
+function inverseTransform(node: Node, input: any): any {
   let transformedInput: Record<string, unknown> = {};
   if (node.modelViewMatrix) {
     if (Array.isArray(input)) {
@@ -78,7 +90,7 @@ function inverseTransform(node, input) {
   }
 
   if (Array.isArray(transformedInput.vertices)) {
-    if (transformedInput.vertices.every((item) => Array.isArray(item))) {
+    if (transformedInput.vertices.every((item: any) => Array.isArray(item))) {
       transformedInput = createGeoPolygon(transformedInput) as unknown as Record<string, unknown>;
     } else {
       transformedInput = createPolygon(transformedInput) as unknown as Record<string, unknown>; // TODO Shouldn't have to do this here, currently its beacause a collision algorithm optimization, i.e. caching of polygon bounds
@@ -88,7 +100,7 @@ function inverseTransform(node, input) {
   return transformedInput;
 }
 
-function resolveCollision(node, intersectionType, input) {
+function resolveCollision(node: Node, intersectionType: string, input: any): any {
   if (node.colliderType === null) {
     return null;
   }
@@ -102,7 +114,7 @@ function resolveCollision(node, intersectionType, input) {
   return resolveGeometryCollision(node, intersectionType, transformedInput);
 }
 
-function findAllCollisions(nodes, intersectionType, ary, input) {
+function findAllCollisions(nodes: Node[], intersectionType: string, ary: any[], input: any): void {
   const num = nodes.length;
   for (let i = 0; i < num; i++) {
     const node = nodes[i];
@@ -120,7 +132,7 @@ function findAllCollisions(nodes, intersectionType, ary, input) {
   }
 }
 
-function hasCollision(nodes, intersectionType, input) {
+function hasCollision(nodes: Node[], intersectionType: string, input: any): boolean {
   const num = nodes.length;
   for (let i = 0; i < num; i++) {
     const node = nodes[i];
@@ -138,7 +150,7 @@ function hasCollision(nodes, intersectionType, input) {
   return false;
 }
 
-function resolveShape(shape, ratio = 1) {
+function resolveShape(shape: any, ratio: number = 1): (string | any)[] {
   const type = getShapeType(shape);
   let _shape: Record<string, unknown> | { x: number; y: number }[] = {};
 
@@ -149,20 +161,20 @@ function resolveShape(shape, ratio = 1) {
       (_shape as Record<string, unknown>).r = shape.r;
       return ['intersectsCircle', _shape];
     case 'rect':
-      _shape = rectToPoints(shape).map((p) => scalarMultiply(p, ratio));
+      _shape = rectToPoints(shape).map((p: any) => scalarMultiply(p, ratio));
       return ['intersectsRect', _shape];
     case 'line':
-      _shape = lineToPoints(shape).map((p) => scalarMultiply(p, ratio));
+      _shape = lineToPoints(shape).map((p: any) => scalarMultiply(p, ratio));
       return ['intersectsLine', _shape];
     case 'point':
       _shape = scalarMultiply(shape, ratio);
       return ['containsPoint', _shape];
     case 'polygon':
-      (_shape as Record<string, unknown>).vertices = shape.vertices.map((vertex) => scalarMultiply(vertex, ratio));
+      (_shape as Record<string, unknown>).vertices = shape.vertices.map((vertex: any) => scalarMultiply(vertex, ratio));
       return ['intersectsPolygon', _shape];
     case 'geopolygon':
-      (_shape as Record<string, unknown>).vertices = shape.vertices.map((vertices) =>
-        vertices.map((vertex) => scalarMultiply(vertex, ratio))
+      (_shape as Record<string, unknown>).vertices = shape.vertices.map((vertices: any) =>
+        vertices.map((vertex: any) => scalarMultiply(vertex, ratio))
       );
       return ['intersectsGeoPolygon', _shape];
     default:
@@ -170,9 +182,9 @@ function resolveShape(shape, ratio = 1) {
   }
 }
 
-export function resolveCollionsOnNode(node, shape) {
+export function resolveCollionsOnNode(node: Node, shape: any): any[] {
   const [intersectionType, _shape] = resolveShape(shape, node.dpi);
-  const collisions = [];
+  const collisions: any[] = [];
 
   if (intersectionType) {
     findAllCollisions([node], intersectionType, collisions, _shape);
@@ -181,7 +193,7 @@ export function resolveCollionsOnNode(node, shape) {
   return collisions;
 }
 
-export function hasCollisionOnNode(node, shape) {
+export function hasCollisionOnNode(node: Node, shape: any): boolean {
   const [intersectionType, _shape] = resolveShape(shape, node.dpi);
 
   return hasCollision([node], intersectionType, _shape);

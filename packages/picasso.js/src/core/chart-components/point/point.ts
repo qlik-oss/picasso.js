@@ -108,7 +108,7 @@ const SIZE_LIMITS = {
   minRelDiscrete: 0.1,
 };
 
-function getPxSpaceFromScale(s, space) {
+function getPxSpaceFromScale(s: any, space: number): { isBandwidth: boolean; value: number } {
   if (s && typeof s.bandwidth === 'function') {
     // some kind of ordinal scale
     return {
@@ -122,7 +122,7 @@ function getPxSpaceFromScale(s, space) {
   };
 }
 
-function getPointSizeLimits(x, y, width, height, limits) {
+function getPointSizeLimits(x: any, y: any, width: number, height: number, limits: any): { min: number; max: number; maxGlobal: number; minGlobal: number } {
   const xSpacePx = getPxSpaceFromScale(x ? x.scale : undefined, width);
   const ySpacePx = getPxSpaceFromScale(y ? y.scale : undefined, height);
   let maxSizePx = Math.min(
@@ -143,9 +143,9 @@ function getPointSizeLimits(x, y, width, height, limits) {
   };
 }
 
-function getType(s) {
+function getType(s: any): [string, Record<string, any>] {
   let type = DEFAULT_DATA_SETTINGS.shape;
-  let props = {};
+  let props: Record<string, any> = {};
   if (typeof s.shape === 'object' && typeof s.shape.type === 'string') {
     type = s.shape.type;
     props = s.shape;
@@ -156,10 +156,10 @@ function getType(s) {
   return [type, props];
 }
 
-function createDisplayPoints(dataPoints, { width, height }, pointSize, shapeFn) {
+function createDisplayPoints(dataPoints: any[], { width, height }: { width: number; height: number }, pointSize: any, shapeFn: (spec: Record<string, unknown>) => Record<string, unknown>): any[] {
   return dataPoints
-    .filter((p) => p.show !== false && !isNaN(p.x + p.y))
-    .map((p) => {
+    .filter((p: any) => p.show !== false && !isNaN(p.x + p.y))
+    .map((p: any) => {
       let s = p;
       let size = PX_RX.test(p.size) ? parseInt(p.size, 10) : pointSize.min + s.size * (pointSize.max - pointSize.min);
       if (notNumber(size)) {
@@ -190,40 +190,40 @@ function createDisplayPoints(dataPoints, { width, height }, pointSize, shapeFn) 
     });
 }
 
-const component = {
+const component: Record<string, any> = {
   require: ['chart', 'resolver', 'symbol'],
   defaultSettings: {
     settings: {},
     data: {},
     animations: {
       enabled: false,
-      trackBy: (node) => node.data.value,
+      trackBy: (node: any) => node.data.value,
     },
     style: {
       item: '$shape',
     },
   },
-  render({ data }) {
-    const resolved = this.resolver.resolve({
+  render({ data }: { data: any }): any[] {
+    const resolved: any = (this as any).resolver.resolve({
       data,
-      defaults: extend({}, DEFAULT_DATA_SETTINGS, this.style.item),
-      settings: this.settings.settings,
+      defaults: extend({}, DEFAULT_DATA_SETTINGS, (this as any).style.item),
+      settings: (this as any).settings.settings,
       scaled: {
-        x: this.rect.width,
-        y: this.rect.height,
+        x: (this as any).rect.width,
+        y: (this as any).rect.height,
       },
     });
-    const { width, height } = this.rect;
-    const limits = extend({}, SIZE_LIMITS, this.settings.settings.sizeLimits);
-    const points = resolved.items;
+    const { width, height } = (this as any).rect;
+    const limits = extend({}, SIZE_LIMITS, (this as any).settings.settings.sizeLimits);
+    const points: any[] = resolved.items;
     if (points.length > 0 && points[0].shape === 'image') {
-      data.items.forEach((d, i) => {
-        points[i].imageSettings = extend({}, DEFAULT_IMAGE_SETTINGS, this.settings.settings.imageSettings);
+      data.items.forEach((d: any, i: number) => {
+        points[i].imageSettings = extend({}, DEFAULT_IMAGE_SETTINGS, (this as any).settings.settings.imageSettings);
       });
     }
 
     const pointSize = getPointSizeLimits(resolved.settings.x, resolved.settings.y, width, height, limits);
-    return createDisplayPoints(points, this.rect, pointSize, this.settings.shapeFn || this.symbol);
+    return createDisplayPoints(points, (this as any).rect, pointSize, (this as any).settings.shapeFn || (this as any).symbol);
   },
 };
 export default component;
