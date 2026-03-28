@@ -28,9 +28,13 @@ interface Component {
   };
   comp: {
     preferredSize(opts: { inner: Rect; outer: Rect; dock: string }): number | PreferredSizeReturn;
+    resize(rect: DockRect, outerRect: DockRect): void;
+    visible?: boolean;
   };
   referencedDocks: string[];
   key: string;
+  outerRect?: DockRect;
+  r?: DockRect;
 }
 
 function cacheSize(c: Component, reducedRect: Rect, layoutRect: Rect): number {
@@ -114,10 +118,12 @@ function addEdgeBleed(currentEdgeBleed: EdgeBleed, c: Component): void {
   if (!edgeBleed) {
     return;
   }
-  currentEdgeBleed.left = Math.max(currentEdgeBleed.left, edgeBleed.left || 0);
-  currentEdgeBleed.right = Math.max(currentEdgeBleed.right, edgeBleed.right || 0);
-  currentEdgeBleed.top = Math.max(currentEdgeBleed.top, edgeBleed.top || 0);
-  currentEdgeBleed.bottom = Math.max(currentEdgeBleed.bottom, edgeBleed.bottom || 0);
+  if (typeof edgeBleed === 'object') {
+    currentEdgeBleed.left = Math.max(currentEdgeBleed.left, edgeBleed.left || 0);
+    currentEdgeBleed.right = Math.max(currentEdgeBleed.right, edgeBleed.right || 0);
+    currentEdgeBleed.top = Math.max(currentEdgeBleed.top, edgeBleed.top || 0);
+    currentEdgeBleed.bottom = Math.max(currentEdgeBleed.bottom, edgeBleed.bottom || 0);
+  }
 }
 
 function reduceEdgeBleed(layoutRect: Rect, reducedRect: Rect, edgeBleed: EdgeBleed): void {
@@ -233,9 +239,11 @@ function computeRect(rect: DockRect): { x: number; y: number; width: number; hei
 }
 
 function appendScaleRatio(rect: DockRect, outerRect: DockRect, layoutRect: DockRect, containerRect: Rect): void {
+  const width = layoutRect.width ?? 0;
+  const height = layoutRect.height ?? 0;
   const scaleRatio = {
-    x: containerRect.width / layoutRect.width,
-    y: containerRect.height / layoutRect.height,
+    x: containerRect.width / width,
+    y: containerRect.height / height,
   };
   const margin = {
     left: 0,
@@ -249,7 +257,7 @@ function appendScaleRatio(rect: DockRect, outerRect: DockRect, layoutRect: DockR
     scaleRatio.x = minRatio;
     scaleRatio.y = minRatio;
     const area = xLessThenY ? 'height' : 'width';
-    const spread = (containerRect[area] - layoutRect[area] * scaleRatio.x) * layoutRect.align;
+    const spread = (containerRect[area] - (layoutRect[area] ?? 0) * scaleRatio.x) * (layoutRect.align ?? 0.5);
     margin.left = xLessThenY ? 0 : spread;
     margin.top = xLessThenY ? spread : 0;
   }
@@ -262,16 +270,19 @@ function appendScaleRatio(rect: DockRect, outerRect: DockRect, layoutRect: DockR
   layoutRect.margin = margin;
 }
 
-function boundingBox(rects: Rect[]): Rect {
-  const points = [].concat(...rects.map(rectToPoints));
+function boundingBox(rects: (Rect | DockRect)[]): Rect {
+  const points: any[] = [];
+  rects.forEach(rect => {
+    points.push(...rectToPoints(rect as Rect));
+  });
   return pointsToRect(points);
 }
 
-function positionComponents({ visible, layoutRect, reducedRect, containerRect, translation }: { visible: Component[]; layoutRect: DockRect; reducedRect: Rect; containerRect: Rect; translation: { x: number; y: number } }): void {
+function positionComponents({ visible, layoutRect, reducedRect, containerRect, translation }: { visible: Component[]; layoutRect: DockRect; reducedRect: Rect; containerRect: Rect; translation: { x: number; y: number } }): Component[] {
   const vRect = createRect(reducedRect.x, reducedRect.y, reducedRect.width, reducedRect.height);
   const hRect = createRect(reducedRect.x, reducedRect.y, reducedRect.width, reducedRect.height);
 
-  const referencedComponents = {};
+  const referencedComponents: Record<string, { r: DockRect; outerRect: DockRect }> = {};
   const referenceArray = visible.slice();
   const elementOrder = referenceArray.slice().sort((a, b) => a.config.displayOrder() - b.config.displayOrder());
   visible
@@ -295,48 +306,49 @@ function positionComponents({ visible, layoutRect, reducedRect, containerRect, t
       let outerRect: DockRect = {};
       let rect: DockRect = {};
       const d = c.config.dock();
+      const cachedSize = c.cachedSize ?? 0;
       switch (d) {
         case 'top':
-          outerRect.height = rect.height = c.cachedSize;
+          outerRect.height = rect.height = cachedSize;
           outerRect.width = layoutRect.width;
           rect.width = vRect.width;
           outerRect.x = layoutRect.x;
           rect.x = vRect.x;
-          outerRect.y = rect.y = vRect.y - c.cachedSize;
+          outerRect.y = rect.y = (vRect.y ?? 0) - cachedSize;
 
-          vRect.y -= c.cachedSize;
-          vRect.height += c.cachedSize;
+          vRect.y = (vRect.y ?? 0) - cachedSize;
+          vRect.height = (vRect.height ?? 0) + cachedSize;
           break;
         case 'bottom':
           outerRect.x = layoutRect.x;
           rect.x = vRect.x;
-          outerRect.y = rect.y = vRect.y + vRect.height;
+          outerRect.y = rect.y = (vRect.y ?? 0) + (vRect.height ?? 0);
           outerRect.width = layoutRect.width;
           rect.width = vRect.width;
-          outerRect.height = rect.height = c.cachedSize;
+          outerRect.height = rect.height = cachedSize;
 
-          vRect.height += c.cachedSize;
+          vRect.height = (vRect.height ?? 0) + cachedSize;
           break;
         case 'left':
-          outerRect.x = rect.x = hRect.x - c.cachedSize;
+          outerRect.x = rect.x = (hRect.x ?? 0) - cachedSize;
           outerRect.y = layoutRect.y;
           rect.y = hRect.y;
-          outerRect.width = rect.width = c.cachedSize;
+          outerRect.width = rect.width = cachedSize;
           outerRect.height = layoutRect.height;
           rect.height = hRect.height;
 
-          hRect.x -= c.cachedSize;
-          hRect.width += c.cachedSize;
+          hRect.x = (hRect.x ?? 0) - cachedSize;
+          hRect.width = (hRect.width ?? 0) + cachedSize;
           break;
         case 'right':
-          outerRect.x = rect.x = hRect.x + hRect.width;
+          outerRect.x = rect.x = (hRect.x ?? 0) + (hRect.width ?? 0);
           outerRect.y = layoutRect.y;
           rect.y = hRect.y;
-          outerRect.width = rect.width = c.cachedSize;
+          outerRect.width = rect.width = cachedSize;
           outerRect.height = layoutRect.height;
           rect.height = hRect.height;
 
-          hRect.width += c.cachedSize;
+          hRect.width = (hRect.width ?? 0) + cachedSize;
           break;
         case 'center':
           outerRect.x = rect.x = reducedRect.x;
@@ -346,10 +358,12 @@ function positionComponents({ visible, layoutRect, reducedRect, containerRect, t
           break;
         default:
           if (c.referencedDocks.length > 0) {
-            const refs = c.referencedDocks.map((ref: string) => referencedComponents[ref]).filter((ref: Component | undefined) => !!ref);
+            const refs = c.referencedDocks
+              .map((ref: string) => referencedComponents[ref])
+              .filter((ref: { r: DockRect; outerRect: DockRect } | undefined) => !!ref);
             if (refs.length > 0) {
-              outerRect = boundingBox(refs.map((ref: Component) => ref.outerRect));
-              rect = boundingBox(refs.map((ref: Component) => ref.r));
+              outerRect = boundingBox(refs.map((ref: { r: DockRect; outerRect: DockRect }) => ref.outerRect));
+              rect = boundingBox(refs.map((ref: { r: DockRect; outerRect: DockRect }) => ref.r));
             }
           }
           break;
@@ -366,10 +380,10 @@ function positionComponents({ visible, layoutRect, reducedRect, containerRect, t
       rect.computed = computeRect(rect);
       outerRect.edgeBleed = c.edgeBleed;
       outerRect.computed = computeRect(outerRect);
-      rect.x += translation.x;
-      rect.y += translation.y;
-      outerRect.x += translation.x;
-      outerRect.y += translation.y;
+      rect.x = (rect.x ?? 0) + translation.x;
+      rect.y = (rect.y ?? 0) + translation.y;
+      outerRect.x = (outerRect.x ?? 0) + translation.x;
+      outerRect.y = (outerRect.y ?? 0) + translation.y;
       c.comp.resize(rect, outerRect);
       c.cachedSize = undefined;
       c.edgeBleed = undefined;
@@ -377,7 +391,7 @@ function positionComponents({ visible, layoutRect, reducedRect, containerRect, t
   return elementOrder;
 }
 
-function checkShowSettings(strategySettings: unknown, dockSettings: unknown, logicalContainerRect: Rect): boolean {
+function checkShowSettings(strategySettings: any, dockSettings: any, logicalContainerRect: Rect): boolean {
   const layoutModes = strategySettings.layoutModes || {};
   const minimumLayoutMode = dockSettings.minimumLayoutMode();
   let show = dockSettings.show();
@@ -396,7 +410,7 @@ function checkShowSettings(strategySettings: unknown, dockSettings: unknown, log
   return show;
 }
 
-function validateComponent(component: unknown): void {
+function validateComponent(component: any): void {
   if (!component.resize || typeof component.resize !== 'function') {
     throw new Error('Component is missing resize function');
   }
@@ -406,11 +420,11 @@ function validateComponent(component: unknown): void {
 }
 
 function filterComponents(components: unknown[], settings: unknown, rect: Rect): { visible: Component[]; hidden: Component[] } {
-  const visible = [];
-  const hidden = [];
+  const visible: Component[] = [];
+  const hidden: Component[] = [];
   // check show settings
   for (let i = 0; i < components.length; ++i) {
-    const comp = components[i];
+    const comp = components[i] as any;
     validateComponent(comp);
     // backwards compatibility
     let config = comp.dockConfig;
@@ -433,7 +447,7 @@ function filterComponents(components: unknown[], settings: unknown, rect: Rect):
       });
     }
   }
-  return [visible, hidden];
+  return { visible, hidden };
 }
 
 /**
@@ -485,7 +499,7 @@ interface Docker {
   settings(s: unknown): void;
 }
 
-function dockLayout(initialSettings: unknown): Docker {
+function dockLayout(initialSettings: any): Docker {
   let settings = resolveSettings(initialSettings);
 
   // Methods are assigned immediately below; the cast is safe since all Docker properties are defined before return.
@@ -501,7 +515,9 @@ function dockLayout(initialSettings: unknown): Docker {
 
     const { logicalContainerRect, containerRect } = resolveContainerRects(rect, settings);
 
-    const [visible, hidden] = filterComponents(components, settings, logicalContainerRect);
+    const filteredResult = filterComponents(components, settings, logicalContainerRect);
+    const visible = filteredResult.visible;
+    const hidden = filteredResult.hidden;
 
     const reducedRect = reduceLayoutRect({
       layoutRect: logicalContainerRect,

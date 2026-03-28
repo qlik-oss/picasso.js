@@ -1,6 +1,69 @@
 import extend from 'extend';
 import { testRectRect, testRectLine } from '../../math/narrow-phase-collision';
 
+interface Chart {
+  scale(opts: { scale: string }): any;
+  formatter(name: string | object): ((value: any) => string) | null;
+}
+
+interface Point {
+  x: number;
+  y: number;
+}
+
+interface Rect {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+interface Measured {
+  width: number;
+  height: number;
+}
+
+interface SlopeValue {
+  x: number;
+  y: number;
+  width: number;
+}
+
+interface SlopeLine {
+  slope: number;
+  isRtl?: boolean;
+  x1?: number;
+  y1?: number;
+  x2?: number;
+  y2?: number;
+  label?: {
+    show?: boolean;
+    showValue?: boolean;
+    text?: string;
+    stroke?: string;
+  };
+  value?: number;
+}
+
+interface LineStyle {
+  slope?: number;
+  isRtl?: boolean;
+  x1?: number;
+  y1?: number;
+  x2?: number;
+  y2?: number;
+}
+
+interface Blueprint {
+  processItem(obj: any): any;
+  width: number;
+  height: number;
+}
+
+interface Renderer {
+  measureText(opts: any): Measured;
+}
+
 const DOCK_CORNER = 0.8;
 
 export function refLabelDefaultSettings() {
@@ -21,7 +84,7 @@ export function refLabelDefaultSettings() {
   };
 }
 
-function isMaxY(chart, slope, value) {
+function isMaxY(chart: Chart, slope: number, value: number): boolean {
   // when maxY exceeds the shown scale
   const scaleX = chart.scale({ scale: 'x' });
   const scaleY = chart.scale({ scale: 'y' });
@@ -39,7 +102,7 @@ function isMaxY(chart, slope, value) {
   return false;
 }
 
-function getMaxXPosition(chart, slope, value) {
+function getMaxXPosition(chart: Chart, slope: number, value: number): any {
   // if maxY then get maxX position available on the scale
   const scaleX = chart.scale({ scale: 'x' });
   const scaleY = chart.scale({ scale: 'y' });
@@ -51,7 +114,7 @@ function getMaxXPosition(chart, slope, value) {
   return scaleX((scaleY.max() - value) / slope);
 }
 
-function getFormatter(p, chart) {
+function getFormatter(p: any, chart: Chart): ((value: any) => string) | null {
   if (typeof p.formatter === 'string') {
     return chart.formatter(p.formatter);
   }
@@ -66,7 +129,7 @@ function getFormatter(p, chart) {
   return null;
 }
 
-function isColliding(items, slopeValue, measured, xPadding, yPadding) {
+function isColliding(items: any[], slopeValue: SlopeValue, measured: Measured, xPadding: number, yPadding: number): boolean {
   for (let i = 0, len = items.length; i < len; i++) {
     const curItem = items[i];
     if (curItem?.type === 'text') {
@@ -81,13 +144,13 @@ function isColliding(items, slopeValue, measured, xPadding, yPadding) {
   return false;
 }
 
-function calculateX(slopeLine, line, maxX, measured, blueprint, slopeStyle) {
+function calculateX(slopeLine: LineStyle, line: any, maxX: number | undefined, measured: Measured, blueprint: any, slopeStyle: any): number {
   let neededPadding = 0;
   // calculate x for the various scenarios possible
   if (maxX !== undefined) {
     // docking at top
     if (maxX < DOCK_CORNER) {
-      neededPadding = slopeLine.slope < 0 || slopeLine.isRtl ? slopeStyle.padding * 3 : slopeStyle.padding * 2;
+      neededPadding = (slopeLine.slope ?? 0) < 0 || slopeLine.isRtl ? slopeStyle.padding * 3 : slopeStyle.padding * 2;
       return slopeLine.isRtl ? maxX * blueprint.width + neededPadding : maxX * blueprint.width + neededPadding;
     }
     if (maxX === 1) {
@@ -102,7 +165,7 @@ function calculateX(slopeLine, line, maxX, measured, blueprint, slopeStyle) {
         ? maxX * blueprint.width - (measured.width + slopeStyle.padding * 3)
         : maxX * blueprint.width - (measured.width + slopeStyle.padding * 6);
     }
-  } else if (slopeLine.slope > 0) {
+  } else if ((slopeLine.slope ?? 0) > 0) {
     // dock at right
     return line.x2 - (measured.width + slopeStyle.padding * 2);
   }
@@ -117,7 +180,7 @@ function calculateX(slopeLine, line, maxX, measured, blueprint, slopeStyle) {
  * @returns {number} - Normalized value 0...1
  * @ignore
  */
-export function alignmentToNumber(align) {
+export function alignmentToNumber(align: string | number | undefined): number {
   if (typeof align === 'undefined') {
     return 0;
   }
@@ -152,7 +215,23 @@ export function alignmentToNumber(align) {
  * @param {object[]} items - Array of all items (for collision detection)
  * @ignore
  */
-export function createLineWithLabel({ chart, blueprint, renderer, p, settings, items, slopeLine }) {
+export function createLineWithLabel({
+  chart,
+  blueprint,
+  renderer,
+  p,
+  settings,
+  items,
+  slopeLine,
+}: {
+  chart: Chart;
+  blueprint: Blueprint;
+  renderer: Renderer;
+  p: any;
+  settings: any;
+  items: any[];
+  slopeLine?: SlopeLine;
+}): void {
   let doesNotCollide = true;
   let line: false | Record<string, unknown> = false;
   let rect: false | Record<string, unknown> | undefined = false;
@@ -239,8 +318,8 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
 
     // let anchor = item.anchor === 'end' ? 'end' : 'start';
 
-    let align = alignmentToNumber(p.flipXY ? item.vAlign : item.align);
-    let vAlign = alignmentToNumber(p.flipXY ? item.align : item.vAlign);
+    let align = alignmentToNumber(p.flipXY ? (item.vAlign as string | number | undefined) : (item.align as string | number | undefined));
+    let vAlign = alignmentToNumber(p.flipXY ? (item.align as string | number | undefined) : (item.vAlign as string | number | undefined));
 
     let calcWidth = Math.min(
       1 + (measured.width as number) + (labelPadding as number) * 2,
@@ -253,7 +332,7 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
     let rectHeight = p.flipXY ? calcWidth : calcHeight;
 
     rect = blueprint.processItem({
-      fn: ({ width, height }) => {
+      fn: ({ width, height }: { width: number; height: number }) => {
         let x = (p.position as number) * width - (p.flipXY ? calcHeight : calcWidth) * (1 - align);
         x = p.flipXY ? x : Math.max(x, 0);
         const y = Math.max(Math.abs(vAlign * height - rectHeight * vAlign), 0);
@@ -322,13 +401,13 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
         if (curItem.type === 'rect') {
           // We only detect rects here, since rects are always behind labels,
           // and we wouldn't want to measure text one more time
-          if (testRectRect(rect, curItem)) {
+          if (rect && testRectRect(rect as unknown as Rect, curItem as Rect)) {
             doesNotCollide = false;
           }
         } else if (curItem.type === 'line') {
           // This will only collide when flipXY are the same for both objects,
           // So it only collides on objects on the same "axis"
-          if (p.flipXY === curItem.flipXY && testRectLine(rect, curItem)) {
+          if (p.flipXY === curItem.flipXY && rect && testRectLine(rect as unknown as Rect, curItem as any)) {
             doesNotCollide = false;
           }
         }
@@ -350,8 +429,8 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
     let labelBackground;
     const maxLabelWidth = 120;
 
-    let slopeLabelText = slopeLine.label?.show !== false ? slopeLine.label?.text : '';
-    if (slopeLine.label?.showValue !== false) {
+    let slopeLabelText: string = slopeLine.label?.show !== false ? (slopeLine.label?.text || '') : '';
+    if (slopeLine.label?.showValue !== false && slopeLine.value !== undefined) {
       const formatter = getFormatter(p, chart);
       const formattedValue = formatter ? formatter(slopeLine.value) : slopeLine.value;
       valueString = `(${slopeLine.slope}x + ${formattedValue})`;
@@ -365,8 +444,8 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
         fontSize: slopeStyle.fontSize,
       });
       measured.width = measured.width > maxLabelWidth ? maxLabelWidth : measured.width;
-      const maxX = isMaxY(chart, slopeLine.slope, slopeLine.value)
-        ? getMaxXPosition(chart, slopeLine.slope, slopeLine.value)
+      const maxX = isMaxY(chart, slopeLine.slope, slopeLine.value ?? 0)
+        ? getMaxXPosition(chart, slopeLine.slope, slopeLine.value ?? 0)
         : undefined;
       const xPadding = maxX !== undefined && !slopeLine.isRtl ? slopeStyle.padding * 3 : slopeStyle.padding;
       const yPadding =

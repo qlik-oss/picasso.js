@@ -1,6 +1,21 @@
 import extend from 'extend';
 import { resolveDiff } from './box-math';
 
+interface BoxItem {
+  major: number;
+  oob: { size: number; [key: string]: any };
+  start?: number;
+  end?: number;
+  box: { minHeightPx: number; width?: number; maxWidthPx?: number; minWidthPx?: number; [key: string]: any };
+  line?: Record<string, any>;
+  data?: Record<string, any>;
+}
+
+interface BoxShapeResult {
+  type: string;
+  [key: string]: any;
+}
+
 /**
  * Out of bounds shape
  * @param {object} params parameters
@@ -14,7 +29,23 @@ import { resolveDiff } from './box-math';
  * @param {function} params.symbol Symbol library function from component
  * @ignore
  */
-export function oob({ item, value, boxCenter, rendWidth, rendHeight, flipXY, symbol }) {
+export function oob({
+  item,
+  value,
+  boxCenter,
+  rendWidth,
+  rendHeight,
+  flipXY,
+  symbol,
+}: {
+  item: BoxItem;
+  value: number;
+  boxCenter: number;
+  rendWidth: number;
+  rendHeight: number;
+  flipXY: boolean;
+  symbol: (obj: any) => any;
+}): any {
   let x = 'x';
   let y = 'y';
   let calcwidth = rendWidth;
@@ -49,7 +80,21 @@ export function oob({ item, value, boxCenter, rendWidth, rendHeight, flipXY, sym
  * @param {boolean} params.flipXY wether or not to flip X and Y coordinates together with Width and Height
  * @ignore
  */
-export function box({ item, boxWidth, boxPadding, rendWidth, rendHeight, flipXY }) {
+export function box({
+  item,
+  boxWidth,
+  boxPadding,
+  rendWidth,
+  rendHeight,
+  flipXY,
+}: {
+  item: BoxItem;
+  boxWidth: number;
+  boxPadding: number;
+  rendWidth: number;
+  rendHeight: number;
+  flipXY: boolean;
+}): BoxShapeResult {
   let x = 'x';
   let y = 'y';
   let width = 'width';
@@ -98,7 +143,23 @@ export function box({ item, boxWidth, boxPadding, rendWidth, rendHeight, flipXY 
  * @param {boolean} params.flipXY wether or not to flip X and Y coordinates together with Width and Height
  * @ignore
  */
-export function verticalLine({ item, from, to, boxCenter, rendWidth, rendHeight, flipXY }) {
+export function verticalLine({
+  item,
+  from,
+  to,
+  boxCenter,
+  rendWidth,
+  rendHeight,
+  flipXY,
+}: {
+  item: BoxItem;
+  from: number;
+  to: number;
+  boxCenter: number;
+  rendWidth: number;
+  rendHeight: number;
+  flipXY: boolean;
+}): BoxShapeResult {
   let x1 = 'x1';
   let y1 = 'y1';
   let x2 = 'x2';
@@ -141,7 +202,25 @@ export function verticalLine({ item, from, to, boxCenter, rendWidth, rendHeight,
  * @param {boolean} params.flipXY wether or not to flip X and Y coordinates together with Width and Height
  * @ignore
  */
-export function horizontalLine({ item, key, position, width, boxCenter, rendWidth, rendHeight, flipXY }) {
+export function horizontalLine({
+  item,
+  key,
+  position,
+  width,
+  boxCenter,
+  rendWidth,
+  rendHeight,
+  flipXY,
+}: {
+  item: BoxItem;
+  key: string;
+  position: number;
+  width: number;
+  boxCenter: number;
+  rendWidth: number;
+  rendHeight: number;
+  flipXY: boolean;
+}): BoxShapeResult {
   let x1 = 'x1';
   let y1 = 'y1';
   let x2 = 'x2';
@@ -160,7 +239,7 @@ export function horizontalLine({ item, key, position, width, boxCenter, rendWidt
 
   const halfWidth = width / 2;
 
-  return extend({ type: 'line' }, item[key], {
+  return extend({ type: 'line' }, (item as any)[key], {
     [y1]: Math.floor(position * calcheight),
     [x1]: (boxCenter - halfWidth) * calcwidth,
     [y2]: Math.floor(position * calcheight),
@@ -183,10 +262,10 @@ export function horizontalLine({ item, key, position, width, boxCenter, rendWidt
  * @param {number} maxMajorWidth The actual maximum major width
  * @ignore
  */
-export function getBoxWidth(bandwidth, item, maxMajorWidth) {
+export function getBoxWidth(bandwidth: number, item: BoxItem, maxMajorWidth: number): number {
   const { width, maxWidthPx, minWidthPx } = item.box;
   const sign = bandwidth >= 0 ? 1 : -1;
-  let boxWidth = Math.min(sign * bandwidth * width, isNaN(maxWidthPx) ? maxMajorWidth : maxWidthPx / maxMajorWidth);
-  boxWidth = isNaN(minWidthPx) ? boxWidth : Math.max(minWidthPx / maxMajorWidth, boxWidth);
+  let boxWidth = Math.min(sign * bandwidth * (width ?? 1), isNaN(maxWidthPx as number) ? maxMajorWidth : (maxWidthPx as number) / maxMajorWidth);
+  boxWidth = isNaN(minWidthPx as number) ? boxWidth : Math.max((minWidthPx as number) / maxMajorWidth, boxWidth);
   return boxWidth * sign;
 }
