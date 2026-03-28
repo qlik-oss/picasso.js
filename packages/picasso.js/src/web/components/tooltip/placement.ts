@@ -1,4 +1,38 @@
 import extend from 'extend';
+import type { SceneNode } from '../../../core/scene-graph/scene-node';
+
+/** Result of a placement computation */
+interface PlacementResult {
+  computedTooltipStyle: Record<string, string>;
+  computedArrowStyle: Record<string, string>;
+  dock: string;
+  rect: { width: number; height: number };
+  offset?: { x: number; y: number };
+}
+
+/** Resources available to placement strategies */
+interface PlacementResources {
+  formatter: unknown;
+  scale: unknown;
+  component: unknown;
+  getComponentBoundsFromNode: (node: SceneNode) => { x: number; y: number; width: number; height: number };
+  getNodeBoundsRelativeToTarget: (node: SceneNode) => { x: number; y: number; width: number; height: number };
+}
+
+/** Context object passed to placement strategy functions */
+interface PlacementContext {
+  resources: PlacementResources;
+  nodes: SceneNode[];
+  pointer: { x?: number; y?: number; cx?: number; cy?: number; dx?: number; dy?: number };
+  width: number;
+  height: number;
+  options?: {
+    type: string;
+    offset: number;
+    dock: string;
+    area: string;
+  };
+}
 
 function getDockTransform(offset = 0) {
   return {
@@ -241,7 +275,7 @@ function alignToPoint({ options, pointer, width, height, dockOrder, x, y }) {
       }
     }
 
-    const result: Record<string, unknown> = {
+    const result: PlacementResult = {
       computedTooltipStyle,
       computedArrowStyle,
       dock,
@@ -362,7 +396,7 @@ const STRATEGIES = {
 };
 
 export default function placement({ width, height }, { chart, state, props }) {
-  const propCtx: Record<string, unknown> = {
+  const propCtx: PlacementContext = {
     resources: {
       formatter: chart.formatter,
       scale: chart.scale,
@@ -404,23 +438,15 @@ export default function placement({ width, height }, { chart, state, props }) {
   propCtx.options = opts;
   const plcm = STRATEGIES[opts.type](propCtx);
 
-  type PropCtxTyped = {
-    resources: {
-      getComponentBoundsFromNode: (node: unknown) => { x: number; y: number; width: number; height: number };
-    };
-    nodes: unknown[];
-    pointer: { dx: number; dy: number };
-  };
-  const typedCtx = propCtx as unknown as PropCtxTyped;
   let {
     x: minX,
     y: minY,
     width: maxX,
     height: maxY,
-  } = typedCtx.resources.getComponentBoundsFromNode(typedCtx.nodes[0]);
-  minX += typedCtx.pointer.dx;
+  } = propCtx.resources.getComponentBoundsFromNode(propCtx.nodes[0]);
+  minX += propCtx.pointer.dx ?? 0;
   maxX += minX;
-  minY += typedCtx.pointer.dy;
+  minY += propCtx.pointer.dy ?? 0;
   maxY += minY;
 
   // Clamp tooltip position

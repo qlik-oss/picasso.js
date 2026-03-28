@@ -9,6 +9,24 @@ import createSceneNode from '../scene-node';
 import { resolveCollionsOnNode, hasCollisionOnNode } from '../collision-resolver';
 import { assignMappedAttribute } from '../attributes';
 import type { Rect } from '../../geometry/rect';
+import type { Point } from '../../geometry/util';
+
+/** A circle shape for collision testing */
+export interface CircleShape {
+  cx: number;
+  cy: number;
+  r: number;
+}
+
+/** A polygon shape for collision testing */
+export interface PolygonShape {
+  vertices: Point[];
+}
+
+/** A geo-polygon shape (array of polygon vertex arrays) for collision testing */
+export interface GeoPolygonShape {
+  vertices: Point[][];
+}
 
 /** Display node settings (used in display object set methods) */
 export interface DisplayNodeSettings {
@@ -23,7 +41,7 @@ export interface DisplayNodeSettings {
   desc?: object;
   tag?: string;
   id?: string;
-  collider?: unknown;
+  collider?: ColliderDefinition | ColliderDefinition[] | null;
   fillReference?: string;
   strokeReference?: string;
   [key: string]: unknown;
@@ -31,13 +49,13 @@ export interface DisplayNodeSettings {
 
 /** Geometry object with intersection methods, returned by geometry factories */
 export interface ColliderFn {
-  containsPoint(p: unknown): boolean;
-  intersectsLine(points: unknown): boolean;
-  intersectsRect(points: unknown): boolean;
-  intersectsCircle(c: unknown): boolean;
-  intersectsPolygon(polygon: unknown): boolean;
-  intersectsGeoPolygon(geopolygon: unknown): boolean;
-  set?(definition: unknown): void;
+  containsPoint(p: Point): boolean;
+  intersectsLine(points: Point[]): boolean;
+  intersectsRect(points: Point[]): boolean;
+  intersectsCircle(c: CircleShape): boolean;
+  intersectsPolygon(polygon: PolygonShape): boolean;
+  intersectsGeoPolygon(geopolygon: GeoPolygonShape): boolean;
+  set?(definition: ColliderDefinition | ColliderDefinition[]): void;
 }
 
 /** Input accepted by the collider setter */
@@ -49,7 +67,7 @@ export interface ColliderDefinition {
 /** Collider configuration */
 interface ColliderConfig {
   type: string | null;
-  definition: unknown;
+  definition: ColliderDefinition | ColliderDefinition[] | null;
   fn: ColliderFn | null;
 }
 
@@ -252,7 +270,7 @@ class DisplayObject extends Node {
     return { x: 0, y: 0, width: 0, height: 0 };
   }
 
-  set collider(definition: unknown) {
+  set collider(definition: ColliderDefinition | ColliderDefinition[] | null | undefined) {
     const type = Array.isArray(definition)
       ? 'collection'
       : (definition as ColliderDefinition) && (definition as ColliderDefinition).type;

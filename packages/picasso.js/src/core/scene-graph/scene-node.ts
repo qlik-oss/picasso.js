@@ -82,7 +82,7 @@ class SceneNode {
   declare _bounds: (includeTransform?: boolean) => { x: number; y: number; width: number; height: number };
   declare _cache: Record<string, unknown> | null;
   declare _children: () => SceneNode[];
-  declare _collider: () => unknown;
+  declare _collider: () => object | null;
   declare _data: unknown;
   declare _desc: object | null;
   declare _dpi: number;
@@ -290,8 +290,8 @@ class SceneNode {
   }
 }
 
-export default function create(...a: [unknown]) {
-  return new SceneNode(...a);
+export default function create(node: object) {
+  return new SceneNode(node);
 }
 
 export { SceneNode };

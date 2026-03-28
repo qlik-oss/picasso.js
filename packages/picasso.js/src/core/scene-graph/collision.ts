@@ -1,10 +1,10 @@
-import createSceneNode from './scene-node';
+import createSceneNode, { SceneNode } from './scene-node';
 
 export class Collision {
-  declare _input: unknown;
-  declare _node: unknown;
-  declare _parent: unknown;
-  constructor(node) {
+  declare _input: object | null;
+  declare _node: SceneNode;
+  declare _parent: Collision | null;
+  constructor(node: object) {
     this._node = createSceneNode(node);
     this._parent = null;
     this._input = null;
@@ -14,7 +14,7 @@ export class Collision {
     return this._node;
   }
 
-  set parent(p) {
+  set parent(p: Collision | null) {
     this._parent = p;
   }
 
@@ -22,7 +22,7 @@ export class Collision {
     return this._parent;
   }
 
-  set input(i) {
+  set input(i: object | null) {
     this._input = i;
   }
 
@@ -31,6 +31,6 @@ export class Collision {
   }
 }
 
-export default function create(node: unknown) {
+export default function create(node: object) {
   return new Collision(node);
 }

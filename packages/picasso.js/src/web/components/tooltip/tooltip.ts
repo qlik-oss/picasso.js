@@ -4,6 +4,7 @@ import render from './render';
 import timeSpanDispatcher from './timespan-dispatcher';
 import placement from './placement';
 import { setActive, removeActive, cancelActive, remove } from './instance-handler';
+import type { SceneNode } from '../../../core/scene-graph/scene-node';
 
 /**
  * @typedef {object}
@@ -246,7 +247,7 @@ const component = {
       this.hide();
     },
     show(event: Event, opts: Record<string, unknown> = {}) {
-      this.show(event, opts);
+      this.show(event, opts as { nodes?: SceneNode[]; duration?: number; delay?: number });
     },
     prevent(p) {
       this.prevent(p);
@@ -257,7 +258,7 @@ const component = {
     this.state.activeNodes = [];
     this.state.pointer = {};
   },
-  show(event, { nodes, duration, delay }: { nodes?: unknown[]; duration?: number; delay?: number } = {}) {
+  show(event, { nodes, duration, delay }: { nodes?: SceneNode[]; duration?: number; delay?: number } = {}) {
     if (this.state.prevent || !this.state.targetElement) {
       return;
     }

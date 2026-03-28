@@ -241,8 +241,8 @@ function positionComponents({ visible, layoutRect, reducedRect, containerRect, t
       return diff;
     })
     .forEach((c) => {
-      let outerRect: Record<string, unknown> = {};
-      let rect: Record<string, unknown> = {};
+      let outerRect: DockRect = {};
+      let rect: DockRect = {};
       const d = c.config.dock();
       switch (d) {
         case 'top':
@@ -410,10 +410,33 @@ function filterComponents(components, settings, rect) {
  * @property {number} height
  */
 
+/** Extended rect used during dock layout computation */
+interface DockRect {
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+  edgeBleed?: unknown;
+  computed?: { x: number; y: number; width: number; height: number };
+  scaleRatio?: { x: number; y: number };
+  margin?: { left: number; top: number };
+}
+
+/** The docker layout object returned by dockLayout() */
+interface Docker {
+  layout(rect: { x: number; y: number; width: number; height: number }, components?: unknown[]): {
+    visible: unknown[];
+    hidden: unknown[];
+    ordered: unknown[];
+  };
+  settings(s: unknown): void;
+}
+
 function dockLayout(initialSettings) {
   let settings = resolveSettings(initialSettings);
 
-  const docker: Record<string, unknown> = {};
+  // Methods are assigned immediately below; the cast is safe since all Docker properties are defined before return.
+  const docker: Docker = {} as Docker;
 
   docker.layout = function layout(rect, components = []) {
     if (!rect || isNaN(rect.x) || isNaN(rect.y) || isNaN(rect.width) || isNaN(rect.height)) {

@@ -20,7 +20,7 @@ import type { Logger, LogLevel } from './core/utils/logger';
 import type { RegistryFn } from './core/utils/registry';
 
 /** Plugin function signature */
-type Plugin = (registries: unknown, options?: Record<string, unknown>) => void;
+type Plugin = (registries: Registries, options?: Record<string, unknown>) => void;
 
 /** Configuration for the renderer */
 interface RendererConfig {

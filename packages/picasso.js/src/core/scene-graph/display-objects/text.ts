@@ -2,11 +2,12 @@ import type { DisplayNodeSettings } from './display-object';
 import extend from 'extend';
 import DisplayObject from './display-object';
 import { rectToPoints, getMinMax } from '../../geometry/util';
+import type { Rect } from '../../geometry/rect';
 
 interface HasDataNode {
   data: unknown;
-  _textBoundsFn?: unknown;
-  _boundingRect?: unknown;
+  _textBoundsFn?: ((attrs?: Record<string, unknown>) => Rect) | null;
+  _boundingRect?: Rect | null;
 }
 
 function hasData({ data, _boundingRect, _textBoundsFn }: HasDataNode) {
@@ -40,7 +41,7 @@ function hasData({ data, _boundingRect, _textBoundsFn }: HasDataNode) {
 export default class Text extends DisplayObject {
   declare __boundingRect: Record<string, { x: number; y: number; width: number; height: number } | null>;
   declare __bounds: Record<string, Array<{ x: number; y: number }> | null>;
-  declare _textBoundsFn: ((attrs?: unknown) => unknown) | null;
+  declare _textBoundsFn: ((attrs?: Record<string, unknown>) => Rect) | null;
   declare ellipsed: string;
   constructor(...s) {
     super('text');
@@ -62,7 +63,7 @@ export default class Text extends DisplayObject {
     if (typeof boundingRect === 'object') {
       this._textBoundsFn = () => boundingRect;
     } else if (typeof textBoundsFn === 'function') {
-      this._textBoundsFn = textBoundsFn as (attrs?: unknown) => unknown;
+      this._textBoundsFn = textBoundsFn as (attrs?: Record<string, unknown>) => Rect;
     }
 
     if (typeof ellipsed === 'string') {

@@ -1,4 +1,14 @@
-function isMajorTick(tick) {
+/** An axis tick with position, label and bandwidth info */
+interface AxisTick {
+  isMinor?: boolean;
+  position: number;
+  start?: number;
+  end?: number;
+  label?: string;
+  data?: unknown;
+}
+
+function isMajorTick(tick: AxisTick) {
   return !tick.isMinor && tick.position >= 0 && tick.position <= 1;
 }
 
@@ -7,7 +17,7 @@ function isVerticalLabelOverlapping({
   measureText,
   rect,
 }: {
-  majorTicks: unknown[];
+  majorTicks: AxisTick[];
   measureText: (s: string) => { width: number; height: number };
   rect: { height: number };
   state?: unknown;
@@ -20,7 +30,7 @@ function isVerticalLabelOverlapping({
 
   const d =
     size *
-    Math.abs((majorTicks[0] as { position: number }).position - (majorTicks[1] as { position: number }).position);
+    Math.abs(majorTicks[0].position - majorTicks[1].position);
   if (d < textHeight) {
     return true;
   }

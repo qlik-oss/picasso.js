@@ -9,6 +9,21 @@ import buildArcLine from './axis-arc-node';
 import buildArcTicks from './axis-arc-tick-node';
 import buildArcLabels from './axis-arc-label-node';
 
+/** A scale with a bandwidth() method (discrete/band scale) */
+interface BandScale {
+  bandwidth(): number;
+}
+
+/** An axis tick with optional start/end for band scales */
+interface AxisTick {
+  isMinor?: boolean;
+  position?: number;
+  start?: number;
+  end?: number;
+  label?: string;
+  data?: unknown;
+}
+
 function tickSpacing(settings) {
   let spacing = 0;
   spacing += settings.paddingStart;
@@ -218,10 +233,10 @@ function getStepSizeFn({
   ticks: _ticks,
 }: {
   innerRect: { width: number; height: number };
-  scale: unknown;
+  scale: BandScale;
   settings: { align?: string };
-  tick: unknown;
-  ticks?: unknown;
+  tick: AxisTick | null;
+  ticks?: AxisTick[];
 }) {
   const size = settings.align === 'top' || settings.align === 'bottom' ? innerRect.width : innerRect.height;
   const bandwidth = tickBandwidth(scale, tick);

@@ -2,6 +2,17 @@ import extend from 'extend';
 
 import { TARGET_SIZE, VERTICAL } from './brush-range-const';
 
+/** Parameters for the buildArea function */
+interface AreaConfig {
+  h: (...args: unknown[]) => unknown;
+  isVertical: boolean;
+  top: number;
+  height: number;
+  color: string;
+  on?: Record<string, (e: Event) => void>;
+  opacity: number;
+}
+
 function buildLine({ h, isVertical, value, pos, align, borderHit, state, idx }) {
   const isAlignStart = align !== 'end';
   const alignStart = { left: '0', top: '0' };
@@ -178,7 +189,7 @@ function buildBubble({
   );
 }
 
-function buildArea({ h, isVertical, top, height, color, on, opacity }) {
+function buildArea({ h, isVertical, top, height, color, on, opacity }: AreaConfig) {
   return h(
     'div',
     extend(
@@ -219,7 +230,7 @@ export default function buildRange({ borderHit, els, isVertical, state, vStart, 
     const targetEnd = hasScale ? state.scale.norm(vEnd) * targetSize : vEnd;
     const targetHeight = Math.abs(targetStart - targetEnd);
     const targetTop = Math.min(targetStart, targetEnd);
-    const targetArea: Record<string, unknown> = {
+    const targetArea: AreaConfig = {
       h: state.h,
       isVertical,
       top: targetTop,
@@ -250,17 +261,7 @@ export default function buildRange({ borderHit, els, isVertical, state, vStart, 
           },
         },
         [
-          buildArea(
-            targetArea as unknown as {
-              h: unknown;
-              isVertical: boolean;
-              top: number;
-              height: number;
-              color: unknown;
-              on: unknown;
-              opacity: number;
-            }
-          ),
+          buildArea(targetArea),
         ]
       )
     );

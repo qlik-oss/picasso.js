@@ -1,5 +1,29 @@
 import EventEmitter from '../utils/event-emitter';
 
+/** Settings passed to the update() method of the scroll API */
+interface ScrollSettings {
+  min?: number;
+  max?: number;
+  viewSize?: number;
+}
+
+/** Scroll state returned by getState() */
+interface ScrollState {
+  min: number;
+  max: number;
+  start: number;
+  viewSize: number;
+}
+
+/** The scroll API interface */
+interface ScrollApi {
+  move(value: number): void;
+  moveTo(value: number): void;
+  update(settings: ScrollSettings): void;
+  getState(): ScrollState;
+  emit(event: string): void;
+}
+
 export default function scrollApi() {
   let min = 0;
   let max = 0;
@@ -12,7 +36,7 @@ export default function scrollApi() {
    * @private
    * @alias scroll
    */
-  const s: Record<string, unknown> = {
+  const s: ScrollApi = {
     /**
      * Move the current scroll
      * @param {number} value
@@ -31,7 +55,7 @@ export default function scrollApi() {
       const newStart = Math.max(min, Math.min(max - viewSize, value));
       if (start !== newStart) {
         start = newStart;
-        (s as { emit: (event: string) => void }).emit('update');
+        s.emit('update');
       }
     },
 
@@ -58,7 +82,7 @@ export default function scrollApi() {
       }
 
       if (triggerUpdate) {
-        (s as { emit: (event: string) => void }).emit('update');
+        s.emit('update');
       }
     },
 
@@ -73,6 +97,11 @@ export default function scrollApi() {
         start,
         viewSize,
       };
+    },
+
+    /** @remarks Implemented at runtime by EventEmitter.mixin */
+    emit(_event: string) {
+      // Implemented by EventEmitter.mixin
     },
   };
 
