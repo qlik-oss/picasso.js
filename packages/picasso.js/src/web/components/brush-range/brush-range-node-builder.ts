@@ -241,10 +241,10 @@ export default function buildRange({ borderHit, els, isVertical, state, vStart, 
     if (state.style.target.opacity < 0.8) {
       targetArea.on = {
         onmouseover(e) {
-          e.srcElement.style.opacity = state.style.target.opacity + 0.1;
+          (e.srcElement as HTMLElement).style.opacity = String(state.style.target.opacity + 0.1);
         },
         onmouseout(e) {
-          e.srcElement.style.opacity = state.style.target.opacity;
+          (e.srcElement as HTMLElement).style.opacity = String(state.style.target.opacity);
         },
       };
     }
@@ -260,9 +260,7 @@ export default function buildRange({ borderHit, els, isVertical, state, vStart, 
             width: `${target.width}px`,
           },
         },
-        [
-          buildArea(targetArea),
-        ]
+        [buildArea(targetArea)]
       )
     );
   }

@@ -44,6 +44,8 @@ export interface DisplayNodeSettings {
   collider?: ColliderDefinition | ColliderDefinition[] | null;
   fillReference?: string;
   strokeReference?: string;
+  boundingRect?: Rect;
+  textBoundsFn?: (attrs?: Record<string, unknown>) => Rect;
   [key: string]: unknown;
 }
 
@@ -294,7 +296,7 @@ class DisplayObject extends Node {
     this._collider.definition = definition;
   }
 
-  get collider() {
+  get collider(): ColliderFn | true | null {
     // Resolve geometry function from cache
     if (this._collider.fn !== null) {
       return this._collider.fn;

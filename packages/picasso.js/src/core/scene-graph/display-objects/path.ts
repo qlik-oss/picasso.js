@@ -1,5 +1,5 @@
 import extend from 'extend';
-import type { DisplayNodeSettings } from './display-object';
+import type { DisplayNodeSettings, ColliderDefinition } from './display-object';
 import type { Rect } from '../../geometry/rect';
 import {
   arc,
@@ -178,7 +178,7 @@ export default class Path extends DisplayObject {
       Array.isArray(v.collider) ||
       (typeof v.collider === 'object' && typeof (v.collider as ColliderDef).type !== 'undefined')
     ) {
-      this.collider = v.collider as unknown as (shape: unknown) => boolean;
+      this.collider = v.collider as ColliderDefinition;
     } else if (this.attrs.d) {
       this.segments = pathToSegments(this.attrs.d);
       if (this.segments.length > 1 && this.segments.every((segment) => isClosed(segment))) {
@@ -188,7 +188,7 @@ export default class Path extends DisplayObject {
             vertices: this.segments,
           },
           v.collider as Record<string, unknown>
-        ) as unknown as (shape: unknown) => boolean;
+        ) as ColliderDefinition;
         return;
       }
       this.segments.forEach((segment) => {
@@ -201,14 +201,14 @@ export default class Path extends DisplayObject {
               vertices: segment,
             },
             v.collider as Record<string, unknown>
-          ) as unknown as (shape: unknown) => boolean;
+          ) as ColliderDefinition;
         } else if (typeof v.collider === 'object' && (v.collider as ColliderDef).visual) {
           const size = (this.attrs['stroke-width'] as number) / 2;
           this.collider = polylineToPolygonCollider(
             segment,
             size,
             v.collider as Record<string, unknown>
-          ) as unknown as (shape: unknown) => boolean;
+          ) as ColliderDefinition;
         } else {
           this.collider = extend(
             {
@@ -216,7 +216,7 @@ export default class Path extends DisplayObject {
               points: segment,
             },
             v.collider as Record<string, unknown>
-          ) as unknown as (shape: unknown) => boolean;
+          ) as ColliderDefinition;
         }
       });
     }

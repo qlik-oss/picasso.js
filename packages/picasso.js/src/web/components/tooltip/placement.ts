@@ -249,7 +249,7 @@ function alignToPoint({ options, pointer, width, height, dockOrder, x, y }) {
   for (let i = 0; i < dockOrder.length; i += 1) {
     const dock = dockOrder[i];
 
-    const offset: Record<string, number> = calcOffset({
+    const offset: { x: number; y: number } = calcOffset({
       area,
       vx,
       vy,
@@ -438,12 +438,7 @@ export default function placement({ width, height }, { chart, state, props }) {
   propCtx.options = opts;
   const plcm = STRATEGIES[opts.type](propCtx);
 
-  let {
-    x: minX,
-    y: minY,
-    width: maxX,
-    height: maxY,
-  } = propCtx.resources.getComponentBoundsFromNode(propCtx.nodes[0]);
+  let { x: minX, y: minY, width: maxX, height: maxY } = propCtx.resources.getComponentBoundsFromNode(propCtx.nodes[0]);
   minX += propCtx.pointer.dx ?? 0;
   maxX += minX;
   minY += propCtx.pointer.dy ?? 0;
