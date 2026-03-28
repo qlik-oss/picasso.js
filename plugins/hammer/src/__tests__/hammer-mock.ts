@@ -1,9 +1,9 @@
 /* eslint max-classes-per-file: 0 */
 
-function getBasicEvent(event) {
-  let ix;
-  let ret;
-  ['start', 'end'].forEach((s) => {
+function getBasicEvent(event: string): string {
+  let ix: number;
+  let ret: string | undefined;
+  ['start', 'end'].forEach((s: string) => {
     ix = event.indexOf(s);
     if (ix >= 0) {
       ret = event.substring(0, ix);
@@ -12,18 +12,36 @@ function getBasicEvent(event) {
   return ret || event;
 }
 
+interface GestureOptions {
+  event?: string;
+  enable?: boolean | (() => boolean);
+  [key: string]: unknown;
+}
+
+interface BaseGestureInstance {
+  opts: GestureOptions;
+  manager?: Manager;
+  _recognizeWith: string[];
+  _requireFailure: string[];
+  recognizeWith(events: string[]): void;
+  requireFailure(events: string[]): void;
+}
+
 class Manager {
-  constructor(element) {
+  element: Element;
+  gestures: BaseGestureInstance[] = [];
+
+  constructor(element: Element) {
     this.element = element;
     this.gestures = [];
   }
 
-  add(gesture) {
+  add(gesture: BaseGestureInstance): void {
     gesture.manager = this;
     this.gestures.push(gesture);
   }
 
-  remove(event) {
+  remove(event: string): void {
     let i = 0;
     for (; i < this.gestures.length; ++i) {
       if (this.gestures[i].opts.event === event) {
@@ -35,7 +53,7 @@ class Manager {
     }
   }
 
-  get(event) {
+  get(event: string): BaseGestureInstance | null {
     for (let i = 0; i < this.gestures.length; ++i) {
       if (this.gestures[i].opts.event === event) {
         return this.gestures[i];
@@ -44,31 +62,37 @@ class Manager {
     return null;
   }
 
-  on(event, listener) {
-    if (this.get(getBasicEvent(event)).opts.enable) {
+  on(event: string, listener: EventListener): void {
+    const gesture = this.get(getBasicEvent(event));
+    if (gesture && gesture.opts.enable) {
       this.element.addEventListener(event, listener);
     }
   }
 
-  off(event, listener) {
+  off(event: string, listener: EventListener): void {
     this.element.removeEventListener(event, listener);
   }
 
-  destroy() {
+  destroy(): void {
     this.gestures = [];
   }
 }
 
-class BaseGesture {
-  constructor(opts) {
+class BaseGesture implements BaseGestureInstance {
+  opts: GestureOptions;
+  manager?: Manager;
+  _recognizeWith: string[] = [];
+  _requireFailure: string[] = [];
+
+  constructor(opts: GestureOptions) {
     this.opts = opts;
     this._recognizeWith = [];
     this._requireFailure = [];
   }
 
-  recognizeWith(events) {
-    events.forEach((event) => {
-      if (this.manager.get(event)) {
+  recognizeWith(events: string[]): void {
+    events.forEach((event: string) => {
+      if (this.manager && this.manager.get(event)) {
         this._recognizeWith.push(event);
       } else {
         throw new Error(`event "${event}" does not exist`);
@@ -76,9 +100,9 @@ class BaseGesture {
     });
   }
 
-  requireFailure(events) {
-    events.forEach((event) => {
-      if (this.manager.get(event)) {
+  requireFailure(events: string[]): void {
+    events.forEach((event: string) => {
+      if (this.manager && this.manager.get(event)) {
         this._requireFailure.push(event);
       } else {
         throw new Error(`event "${event}" does not exist`);
@@ -88,23 +112,32 @@ class BaseGesture {
 }
 
 class Tap extends BaseGesture {
-  constructor(opts) {
+  constructor(opts: GestureOptions) {
     opts.event = opts.event || 'tap';
     super(opts);
   }
 }
+
 class Pan extends BaseGesture {
-  constructor(opts) {
+  constructor(opts: GestureOptions) {
     opts.event = opts.event || 'pan';
     super(opts);
   }
 }
 
-function hammerMock() {
-  const Hammer = {};
-  Hammer.Manager = Manager;
-  Hammer.Tap = Tap;
-  Hammer.Pan = Pan;
+interface HammerMock {
+  Manager: typeof Manager;
+  Tap: typeof Tap;
+  Pan: typeof Pan;
+  [key: string]: unknown;
+}
+
+function hammerMock(): HammerMock {
+  const Hammer: HammerMock = {
+    Manager,
+    Tap,
+    Pan,
+  };
   return Hammer;
 }
 

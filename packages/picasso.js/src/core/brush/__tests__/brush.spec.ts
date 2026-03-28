@@ -1,23 +1,48 @@
+import sinon from 'sinon';
 import brush, { toggle, set } from '../brush';
 
 describe('brush', () => {
-  const noop = () => {};
-  let sandbox;
-  let vc;
-  let vcf;
-  let rc;
-  let rcf;
-  let b;
+  const noop = (): void => {};
+
+  interface MockValueCollection {
+    (): void;
+    add: sinon.SinonStub;
+    values: sinon.SinonStub;
+    remove?: sinon.SinonStub;
+    contains?: sinon.SinonStub;
+    clear?: sinon.SinonStub;
+    toString?: sinon.SinonStub;
+  }
+
+  interface MockRangeCollection {
+    (): void;
+    add: sinon.SinonStub;
+    containsValue: sinon.SinonStub;
+    remove?: sinon.SinonStub;
+    set?: sinon.SinonStub;
+    toggle?: sinon.SinonStub;
+    ranges?: sinon.SinonStub;
+    clear?: sinon.SinonStub;
+    configure?: sinon.SinonStub;
+  }
+
+  let sandbox: sinon.SinonSandbox;
+  let vc: MockValueCollection;
+  let vcf: () => MockValueCollection;
+  let rc: MockRangeCollection;
+  let rcf: () => MockRangeCollection;
+  let b: ReturnType<typeof brush>;
+
   beforeAll(() => {
     sandbox = sinon.createSandbox();
     // mock value collection
-    vc = () => {};
+    vc = (() => {}) as MockValueCollection;
     vc.add = sandbox.stub();
     vc.values = sandbox.stub();
     vcf = () => vc;
 
     // mock range collection
-    rc = () => {};
+    rc = (() => {}) as MockRangeCollection;
     rc.add = sandbox.stub();
     rc.containsValue = sandbox.stub();
     rcf = () => rc;
@@ -203,18 +228,18 @@ describe('brush', () => {
     });
   });
 
-  function testRange(action) {
+  function testRange(action: string): void {
     const fn = `${action}Range`;
     describe(fn, () => {
-      let v;
-      let rcc;
-      let bb;
+      let v: Record<string, sinon.SinonStub>;
+      let rcc: sinon.SinonStub;
+      let bb: ReturnType<typeof brush>;
       beforeEach(() => {
         v = { ranges: sandbox.stub() };
         v[action] = sandbox.stub();
         rcc = sandbox.stub().returns(v);
         bb = brush({ rc: rcc, vc: noop as any });
-        v[action].returns(true);
+        v[action]!.returns(true);
       });
 
       it(`should call range.${action}() with { min: 3 max: 7 }`, () => {

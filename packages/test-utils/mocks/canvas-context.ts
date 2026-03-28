@@ -1,18 +1,29 @@
-/* global sinon */
+import sinon from 'sinon';
 
-function gradientFactory(gradientType) {
-  function createGradient(...args) {
-    function gradient() {
+interface GradientFunction {
+  (): string;
+  stops: unknown[][];
+  type: string;
+  args: unknown[];
+  addColorStop(...args: unknown[]): void;
+}
+
+function gradientFactory(gradientType: string) {
+  function createGradient(...args: unknown[]): GradientFunction {
+    function gradient(): string {
       return `dummyGradient-${gradientType}`;
     }
 
-    gradient.stops = [];
-    gradient.type = gradientType;
-    gradient.args = args;
+    const typedGradient = gradient as unknown as GradientFunction;
+    typedGradient.stops = [];
+    typedGradient.type = gradientType;
+    typedGradient.args = args;
 
-    gradient.addColorStop = (...i) => gradient.stops.push([...i]);
+    typedGradient.addColorStop = (...i: unknown[]): void => {
+      typedGradient.stops.push([...i]);
+    };
 
-    return gradient;
+    return typedGradient;
   }
 
   return createGradient;
@@ -20,8 +31,25 @@ function gradientFactory(gradientType) {
 
 class CanvasPattern {}
 
-function canvascontext(contextType = '2d') {
-  let item: Record<string, any> = {
+interface CanvasContextMock {
+  save: sinon.SinonSpy;
+  beginPath: sinon.SinonSpy;
+  moveTo: sinon.SinonSpy;
+  arc: sinon.SinonSpy;
+  fill: sinon.SinonSpy;
+  restore: sinon.SinonSpy;
+  scale: sinon.SinonSpy;
+  rect: sinon.SinonSpy;
+  setTransform: sinon.SinonSpy;
+  createPattern: sinon.SinonSpy;
+  measureText(text: string): { width: number };
+  createRadialGradient?: (arg1: unknown, arg2: unknown, arg3: unknown, arg4: unknown, arg5: unknown, arg6: unknown) => GradientFunction;
+  createLinearGradient?: (arg1: unknown, arg2: unknown, arg3: unknown, arg4: unknown) => GradientFunction;
+  createConicGradient?: (arg1: unknown, arg2: unknown, arg3: unknown) => GradientFunction;
+}
+
+function canvascontext(contextType: string = '2d'): CanvasContextMock {
+  const item: CanvasContextMock = {
     save: sinon.spy(),
     beginPath: sinon.spy(),
     moveTo: sinon.spy(),
@@ -31,8 +59,8 @@ function canvascontext(contextType = '2d') {
     scale: sinon.spy(),
     rect: sinon.spy(),
     setTransform: sinon.spy(),
-    createPattern: sinon.spy((...args: any[]) => new CanvasPattern()),
-    measureText: (text) => ({ width: text.length }),
+    createPattern: sinon.spy((...args: unknown[]): CanvasPattern => new CanvasPattern()),
+    measureText: (text: string): { width: number } => ({ width: text.length }),
   };
 
   if (contextType === '2d') {

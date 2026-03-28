@@ -1,8 +1,22 @@
 import * as hammer from '../hammer';
 import plugin from '..';
 
+interface SinonSandbox {
+  stub(obj: any, method: string): any;
+  restore(): void;
+  spy(): any;
+}
+
+declare const sinon: {
+  createSandbox(): SinonSandbox;
+};
+
+declare global {
+  let global: Record<string, any>;
+}
+
 describe('plugin', () => {
-  let sandbox;
+  let sandbox: SinonSandbox;
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
@@ -14,28 +28,28 @@ describe('plugin', () => {
   });
 
   it('should register hammer interaction when parameter is recognized as picasso', () => {
-    hammer.default.withArgs('H').returns('plugin');
+    (hammer.default as any).withArgs('H').returns('plugin');
     const picasso = {
       interaction: sandbox.spy(),
     };
-    global.Hammer = 'H';
-    plugin(picasso);
-    delete global.Hammer;
+    (global as any).Hammer = 'H';
+    plugin(picasso as any);
+    delete (global as any).Hammer;
 
-    expect(picasso.interaction).to.have.been.calledWithExactly('hammer', 'plugin');
+    expect((picasso.interaction as any)).to.have.been.calledWithExactly('hammer', 'plugin');
   });
 
   it('should return plugin when parameter is not picasso', () => {
-    hammer.default.withArgs('HH').returns('plugin');
+    (hammer.default as any).withArgs('HH').returns('plugin');
     const Hammer = 'HH';
-    const p = plugin(Hammer);
+    const p = plugin(Hammer as any);
 
     const picasso = {
       interaction: sandbox.spy(),
     };
 
-    p(picasso);
+    (p as any)(picasso);
 
-    expect(picasso.interaction).to.have.been.calledWithExactly('hammer', 'plugin');
+    expect((picasso.interaction as any)).to.have.been.calledWithExactly('hammer', 'plugin');
   });
 });

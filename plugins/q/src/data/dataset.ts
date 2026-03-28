@@ -5,8 +5,10 @@ import { extract as TExtractor, augment as augmentTree } from './extractor-t';
 import { findField } from './util';
 import field from './field';
 
-function createFields(path, obj, prefix, parentKey, opts) {
-  return (obj[path] || []).map((meta, i) => {
+type FieldConfig = { value?: (v: unknown) => unknown; type?: string; [key: string]: unknown };
+
+function createFields(path: string, obj: Record<string, unknown>, prefix: string | undefined, parentKey: string, opts: FieldConfig): Array<{ instance: unknown; attrDims?: unknown[]; attrExps?: unknown[]; measures?: unknown[] }> {
+  return ((obj[path] as unknown[]) || []).map((meta: unknown, i: number) => {
     const fieldKey = `${parentKey ? `${parentKey}/` : ''}${path}/${i}`;
     const f: { instance: unknown; attrDims?: unknown[]; attrExps?: unknown[]; measures?: unknown[] } = {
       instance: field(
@@ -22,24 +24,24 @@ function createFields(path, obj, prefix, parentKey, opts) {
     };
     f.attrDims = createFields(
       'qAttrDimInfo',
-      meta,
+      meta as Record<string, unknown>,
       prefix,
       fieldKey,
-      extend({}, opts, { value: (v) => v?.qElemNo, type: 'dimension' })
+      extend({}, opts, { value: (v: unknown) => (v as Record<string, unknown>)?.qElemNo, type: 'dimension' })
     );
     f.attrExps = createFields(
       'qAttrExprInfo',
-      meta,
+      meta as Record<string, unknown>,
       prefix,
       fieldKey,
-      extend({}, opts, { value: (v) => v?.qNum, type: 'measure' })
+      extend({}, opts, { value: (v: unknown) => (v as Record<string, unknown>)?.qNum, type: 'measure' })
     );
     f.measures = createFields(
       'qMeasureInfo',
-      meta,
+      meta as Record<string, unknown>,
       prefix,
       fieldKey,
-      extend({}, opts, { value: (v) => v?.qValue, type: 'measure' })
+      extend({}, opts, { value: (v: unknown) => (v as Record<string, unknown>)?.qValue, type: 'measure' })
     );
     return f;
   });

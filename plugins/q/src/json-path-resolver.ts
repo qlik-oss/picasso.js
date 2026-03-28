@@ -15,7 +15,7 @@
  * };
  * resolve( path, obj ); // "heaven"
  */
-export default function resolve(path, obj) {
+export default function resolve(path: string, obj: Record<string, any>): any {
   if (path.charAt(0) === '/') {
     path = path.substring(1);
   }
