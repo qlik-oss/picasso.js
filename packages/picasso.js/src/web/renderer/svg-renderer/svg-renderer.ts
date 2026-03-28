@@ -1,0 +1,218 @@
+import { tree as treeFactory } from './svg-tree';
+import { svgNs } from './svg-nodes';
+import sceneFactory from '../../../core/scene-graph/scene';
+import { onLineBreak } from '../../text-manipulation';
+// import {
+//   resetGradients,
+//   onGradient,
+//   createDefsNode
+// } from './svg-gradient';
+
+import gradienter from './svg-gradient';
+import patternizer from './svg-pattern';
+
+import createRendererBox from '../renderer-box';
+import create from '../index';
+import injectTextBoundsFn from '../../text-manipulation/inject-textbounds';
+
+/**
+ * Create a new svg renderer
+ * @typedef {function} svgRendererFactory
+ * @param {function} [treeFactory] - Node tree factory
+ * @param {string} [ns] - Namespace definition
+ * @param {function} [sceneFn] - Scene factory
+ * @returns {Renderer} A svg renderer instance
+ */
+export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sceneFactory) {
+  const tree = treeFn();
+  let el;
+  let group;
+  let hasChangedRect = false;
+  let rect = createRendererBox();
+  let scene;
+  const settings: Record<string, unknown> = {
+    transform: undefined,
+    disableScreenReader: false,
+  };
+
+  const svg: ReturnType<typeof create> & Record<string, unknown> = create() as ReturnType<typeof create> &
+    Record<string, unknown>;
+
+  const defs = {
+    type: 'defs',
+    children: [],
+  };
+  const patterns = patternizer(defs.children);
+  const gradients = gradienter(defs.children);
+
+  svg.element = (() => el) as unknown as () => void;
+
+  svg.root = (() => group) as unknown as () => void;
+
+  svg.settings = ((rendererSettings) => {
+    if (rendererSettings) {
+      Object.keys(settings).forEach((key) => {
+        if (rendererSettings[key] !== undefined) {
+          settings[key] = rendererSettings[key];
+        }
+      });
+    }
+
+    return settings;
+  }) as unknown as () => void;
+
+  svg.appendTo = ((element) => {
+    if (!el) {
+      el = element.ownerDocument.createElementNS(ns, 'svg');
+      el.style.position = 'absolute';
+      el.style['-webkit-font-smoothing'] = 'antialiased';
+      el.style['-moz-osx-font-smoothing'] = 'antialiased';
+      el.style.pointerEvents = 'none';
+      el.setAttribute('xmlns', ns);
+      group = element.ownerDocument.createElementNS(ns, 'g');
+      group.style.pointerEvents = 'auto';
+      el.appendChild(group);
+    }
+
+    element.appendChild(el);
+
+    return el;
+  }) as unknown as () => void;
+
+  svg.getScene = ((nodes) => {
+    const scaleX = rect.scaleRatio.x;
+    const scaleY = rect.scaleRatio.y;
+
+    const sceneContainer = {
+      type: 'container',
+      children: Array.isArray(nodes) ? [...nodes, defs] : nodes,
+      transform: rect.edgeBleed.bool
+        ? `translate(${rect.edgeBleed.left * scaleX}, ${rect.edgeBleed.top * scaleY})`
+        : '',
+    };
+
+    if (scaleX !== 1 || scaleY !== 1) {
+      sceneContainer.transform += `scale(${scaleX}, ${scaleY})`;
+    }
+
+    return sceneFn({
+      items: [sceneContainer],
+      stage: undefined,
+      dpi: undefined,
+      on: {
+        create: [
+          (state) => {
+            state.node.fillReference = undefined;
+            state.node.strokeReference = undefined;
+          },
+          gradients.onCreate,
+          patterns.onCreate,
+          onLineBreak(svg.measureText),
+          injectTextBoundsFn(svg),
+        ],
+      },
+    });
+  }) as unknown as () => unknown[];
+
+  svg.render = ((nodes) => {
+    if (!el) {
+      return false;
+    }
+
+    const transformation = typeof settings.transform === 'function' && settings.transform();
+    if (transformation) {
+      const {
+        horizontalScaling,
+        horizontalSkewing,
+        verticalSkewing,
+        verticalScaling,
+        horizontalMoving,
+        verticalMoving,
+      } = transformation;
+      group.style.transform = `matrix(${horizontalScaling}, ${horizontalSkewing}, ${verticalSkewing}, ${verticalScaling}, ${horizontalMoving}, ${verticalMoving})`;
+      return true;
+    }
+    group.style.transform = '';
+
+    const disableScreenReader = settings.disableScreenReader;
+    if (disableScreenReader) {
+      el.setAttribute('aria-hidden', true);
+    }
+
+    if (hasChangedRect) {
+      el.style.left = `${rect.computedPhysical.x}px`;
+      el.style.top = `${rect.computedPhysical.y}px`;
+      el.setAttribute('width', rect.computedPhysical.width);
+      el.setAttribute('height', rect.computedPhysical.height);
+    }
+
+    gradients.clear();
+    patterns.clear();
+    defs.children.length = 0;
+
+    const newScene = (svg.getScene as (nodes: unknown) => { equals?: (other: unknown) => boolean; children?: unknown })(
+      nodes
+    );
+
+    const hasChangedScene = scene ? !(newScene.equals?.(scene) ?? false) : true;
+
+    const doRender = hasChangedRect || hasChangedScene;
+    if (doRender) {
+      svg.clear();
+      (tree as { render?: (children: unknown, group: unknown) => void }).render?.(newScene.children, group);
+    }
+
+    hasChangedRect = false;
+    scene = newScene;
+    return doRender;
+  }) as unknown as () => boolean;
+
+  svg.itemsAt = ((input) =>
+    scene
+      ? ((scene as { getItemsFrom?: (input: unknown) => unknown[] }).getItemsFrom?.(input) ?? [])
+      : []) as unknown as () => unknown[];
+
+  svg.findShapes = ((selector) =>
+    scene
+      ? ((scene as { findShapes?: (selector: unknown) => unknown[] }).findShapes?.(selector) ?? [])
+      : []) as unknown as () => unknown[];
+
+  svg.clear = () => {
+    if (!group) {
+      return svg;
+    }
+    scene = null;
+    const g = group.cloneNode(false);
+    el.replaceChild(g, group);
+    group = g;
+    return svg;
+  };
+
+  svg.destroy = () => {
+    // parentElement is not supported in IE11 for SVGElement.
+    if (el && el.parentNode) {
+      el.parentNode.removeChild(el);
+    }
+    el = null;
+    group = null;
+  };
+
+  svg.size = ((opts) => {
+    if (opts) {
+      const newRect = createRendererBox(opts);
+
+      if (JSON.stringify(rect) !== JSON.stringify(newRect)) {
+        hasChangedRect = true;
+        rect = newRect;
+      }
+    }
+
+    return rect;
+  }) as unknown as () => void;
+
+  return svg;
+}
+
+export function rendererComponent(picasso) {
+  picasso.renderer('svg', renderer);
+}

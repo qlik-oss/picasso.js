@@ -1,6 +1,7 @@
 *.rej
 *.tmp
 *.log
+*.tsbuildinfo
 .DS_Store
 junit.xml
 stats.json
@@ -14,3 +15,4 @@ reports/
 **/test/integration/artifacts/screenshots/
 **/test/integration/artifacts/*.html
 **/test/integration/artifacts/*.json
+*.bak

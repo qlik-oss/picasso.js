@@ -1,0 +1,17 @@
+{
+  "extends": "@qlik/tsconfig/recommended",
+  "compilerOptions": {
+    "jsx": "react",
+    "jsxFactory": "h",
+
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noImplicitReturns": true,
+    "verbatimModuleSyntax": true,
+
+    "allowJs": false,
+
+    "types": ["jest"]
+  }
+}

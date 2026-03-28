@@ -22,7 +22,7 @@
     "test:unit": "jest",
     "test:unit:watch": "jest --watch",
     "prepare": "husky",
-    "types:check": "tsc --noEmit"
+    "types:check": "lerna run types:check --stream"
   },
   "engines": {
     "node": ">=18"
@@ -34,10 +34,16 @@
     "@babel/plugin-transform-react-jsx": "7.28.6",
     "@babel/preset-env": "7.29.2",
     "@babel/preset-react": "7.28.5",
+    "@babel/preset-typescript": "^7.28.5",
     "@commitlint/cli": "20.5.0",
     "@commitlint/config-conventional": "20.5.0",
     "@qlik/eslint-config": "1.4.27",
+    "@qlik/tsconfig": "0.3.1",
     "@rollup/plugin-terser": "1.0.0",
+    "@types/chai": "^4.3.20",
+    "@types/jest": "^29.5.14",
+    "@types/sinon": "^17.0.4",
+    "@typescript-eslint/parser": "^8.57.2",
     "babel-plugin-istanbul": "7.0.1",
     "chai": "6.2.2",
     "chai-subset": "1.6.0",
@@ -65,7 +71,7 @@
     "rollup-plugin-serve": "1.1.1",
     "sinon": "21.0.3",
     "sinon-chai": "4.0.1",
-    "typescript": "5.9.3"
+    "typescript": "6.0.2"
   },
   "packageManager": "pnpm@10.33.0+sha512.10568bb4a6afb58c9eb3630da90cc9516417abebd3fabbe6739f0ae795728da1491e9db5a544c76ad8eb7570f5c4bb3d6c637b2cb41bfdcdb47fa823c8649319"
 }

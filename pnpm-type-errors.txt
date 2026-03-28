@@ -1,0 +1,137 @@
+packages/picasso.js/src/core/chart-components/axis/axis-label-size.ts(6,21): error TS2339: Property 'height' does not exist on type 'unknown'.
+packages/picasso.js/src/core/chart-components/axis/axis-label-size.ts(7,22): error TS2349: This expression is not callable.
+packages/picasso.js/src/core/chart-components/axis/axis-label-size.ts(8,18): error TS2339: Property 'length' does not exist on type 'unknown'.
+packages/picasso.js/src/core/chart-components/axis/axis-node-builder.ts(297,11): error TS2561: Object literal may only specify known properties, but 'ticks' does not exist in type '{ innerRect: any; scale: any; settings: any; tick: any; }'. Did you mean to write 'tick'?
+packages/picasso.js/src/core/chart-components/axis/axis.ts(47,21): error TS2339: Property 'tiltAngle' does not exist on type 'unknown'.
+packages/picasso.js/src/core/chart-components/axis/axis.ts(47,74): error TS2339: Property 'tiltAngle' does not exist on type 'unknown'.
+packages/picasso.js/src/core/chart-components/box/box.ts(86,13): error TS2339: Property 'settings' does not exist on type '{ major: any; minor: any; }'.
+packages/picasso.js/src/core/chart-components/box/box.ts(86,23): error TS2339: Property 'items' does not exist on type '{ major: any; minor: any; }'.
+packages/picasso.js/src/core/chart-components/box/box.ts(89,7): error TS2353: Object literal may only specify known properties, and 'items' does not exist in type '{ width: any; height: any; flipXY: any; resolved: any; keys: any; symbol: any; }'.
+packages/picasso.js/src/core/chart-components/labels/strategies/rows.ts(110,32): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'string'.
+packages/picasso.js/src/core/chart-components/labels/strategies/rows.ts(188,11): error TS2322: Type 'false | { type: string; text: any; maxWidth: any; x: number; y: any; dx: number; dy: number; fill: any; anchor: string; baseline: string; fontSize: string; fontFamily: any; }' is not assignable to type 'Record<string, unknown>'.
+packages/picasso.js/src/core/chart-components/legend-seq/legend-seq.ts(79,46): error TS2554: Expected 1 arguments, but got 2.
+packages/picasso.js/src/core/chart-components/legend-seq/legend-seq.ts(139,43): error TS2339: Property 'width' does not exist on type 'unknown'.
+packages/picasso.js/src/core/chart-components/legend-seq/legend-seq.ts(149,39): error TS2339: Property 'height' does not exist on type 'unknown'.
+packages/picasso.js/src/core/chart-components/legend-seq/legend-seq.ts(158,37): error TS2339: Property 'values' does not exist on type 'unknown'.
+packages/picasso.js/src/core/chart-components/point/point.ts(126,72): error TS2554: Expected 2 arguments, but got 3.
+packages/picasso.js/src/core/chart-components/point/point.ts(127,73): error TS2554: Expected 2 arguments, but got 3.
+packages/picasso.js/src/core/chart-components/ref-line/oob.ts(83,19): error TS2362: The left-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type.
+packages/picasso.js/src/core/chart-components/text/text.ts(85,47): error TS2365: Operator '+' cannot be applied to types 'unknown' and 'unknown'.
+packages/picasso.js/src/core/chart-components/text/text.ts(85,72): error TS2365: Operator '+' cannot be applied to types 'unknown' and 'unknown'.
+packages/picasso.js/src/core/chart-components/text/text.ts(90,32): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'number'.
+packages/picasso.js/src/core/chart/component-collection.ts(46,57): error TS2349: This expression is not callable.
+packages/picasso.js/src/core/chart/formatter/index.ts(8,26): error TS2339: Property 'formatter' does not exist on type 'unknown'.
+packages/picasso.js/src/core/chart/scales/index.ts(71,57): error TS2339: Property 'type' does not exist on type 'unknown'.
+packages/picasso.js/src/core/colors/hsla-color.ts(61,17): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+packages/picasso.js/src/core/colors/hsla-color.ts(62,17): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+packages/picasso.js/src/core/colors/hsla-color.ts(63,17): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+packages/picasso.js/src/core/colors/instantiator/hsl.ts(22,27): error TS2345: Argument of type 'string' is not assignable to parameter of type 'never'.
+packages/picasso.js/src/core/colors/instantiator/rgb.ts(23,21): error TS2345: Argument of type 'string | number' is not assignable to parameter of type 'never'.
+packages/picasso.js/src/core/colors/instantiator/rgb.ts(24,24): error TS2345: Argument of type 'string | number' is not assignable to parameter of type 'string'.
+packages/picasso.js/src/core/colors/instantiator/rgb.ts(30,13): error TS2339: Property 'indexOf' does not exist on type 'string | number'.
+packages/picasso.js/src/core/colors/instantiator/rgb.ts(31,24): error TS2345: Argument of type 'string | number' is not assignable to parameter of type 'string'.
+packages/picasso.js/src/core/colors/instantiator/rgb.ts(36,22): error TS2345: Argument of type 'string | number' is not assignable to parameter of type 'string'.
+packages/picasso.js/src/core/colors/interpolators.ts(29,18): error TS2339: Property 'r' does not exist on type '{}'.
+packages/picasso.js/src/core/colors/interpolators.ts(30,18): error TS2339: Property 'g' does not exist on type '{}'.
+packages/picasso.js/src/core/colors/interpolators.ts(31,18): error TS2339: Property 'b' does not exist on type '{}'.
+packages/picasso.js/src/core/colors/interpolators.ts(37,18): error TS2339: Property 'h' does not exist on type '{}'.
+packages/picasso.js/src/core/colors/interpolators.ts(38,18): error TS2339: Property 's' does not exist on type '{}'.
+packages/picasso.js/src/core/colors/interpolators.ts(39,18): error TS2339: Property 'l' does not exist on type '{}'.
+packages/picasso.js/src/core/component/brushing.ts(284,5): error TS2353: Object literal may only specify known properties, and 'data' does not exist in type '{ nodes: any; action: any; chart: any; trigger: any; }'.
+packages/picasso.js/src/core/component/brushing.ts(320,7): error TS2353: Object literal may only specify known properties, and 'cx' does not exist in type '{ x: number; y: number; }'.
+packages/picasso.js/src/core/component/brushing.ts(326,7): error TS2353: Object literal may only specify known properties, and 'cx' does not exist in type '{ x: number; y: number; }'.
+packages/picasso.js/src/core/component/interpolate-object.ts(31,12): error TS2554: Expected 3 arguments, but got 2.
+packages/picasso.js/src/core/component/settings-resolver.ts(39,13): error TS2339: Property 'data' does not exist on type '{}'.
+packages/picasso.js/src/core/data/dataset.ts(110,11): error TS2322: Type 'RegExp' is not assignable to type 'string'.
+packages/picasso.js/src/core/data/dataset.ts(114,9): error TS2322: Type 'RegExp' is not assignable to type 'string'.
+packages/picasso.js/src/core/data/dataset.ts(149,15): error TS2339: Property 'key' does not exist on type '{}'.
+packages/picasso.js/src/core/data/dataset.ts(149,20): error TS2339: Property 'data' does not exist on type '{}'.
+packages/picasso.js/src/core/data/dataset.ts(149,26): error TS2339: Property 'config' does not exist on type '{}'.
+packages/picasso.js/src/core/data/dataset.ts(179,9): error TS2353: Object literal may only specify known properties, and 'matrix' does not exist in type '{ cache: any; }'.
+packages/picasso.js/src/core/data/dataset.ts(193,45): error TS2554: Expected 2 arguments, but got 3.
+packages/picasso.js/src/core/data/extractor-matrix.ts(52,46): error TS2349: This expression is not callable.
+packages/picasso.js/src/core/data/extractor-matrix.ts(62,28): error TS2339: Property 'field' does not exist on type 'unknown'.
+packages/picasso.js/src/core/data/extractor-matrix.ts(62,38): error TS2339: Property 'field' does not exist on type 'unknown'.
+packages/picasso.js/src/core/geometry/geometry-collection.ts(28,46): error TS2339: Property 'containsPoint' does not exist on type 'unknown'.
+packages/picasso.js/src/core/geometry/geometry-collection.ts(36,46): error TS2339: Property 'intersectsLine' does not exist on type 'unknown'.
+packages/picasso.js/src/core/geometry/geometry-collection.ts(44,46): error TS2339: Property 'intersectsRect' does not exist on type 'unknown'.
+packages/picasso.js/src/core/geometry/geometry-collection.ts(52,46): error TS2339: Property 'intersectsCircle' does not exist on type 'unknown'.
+packages/picasso.js/src/core/geometry/geometry-collection.ts(60,46): error TS2339: Property 'intersectsPolygon' does not exist on type 'unknown'.
+packages/picasso.js/src/core/geometry/geometry-collection.ts(68,46): error TS2339: Property 'intersectsGeoPolygon' does not exist on type 'unknown'.
+packages/picasso.js/src/core/geometry/geopolygon.ts(157,7): error TS2739: Type '{ x: number; y: number; }[]' is missing the following properties from type 'Rect': x, y, width, height
+packages/picasso.js/src/core/geometry/index.ts(19,10): error TS2349: This expression is not callable.
+packages/picasso.js/src/core/geometry/line.ts(52,5): error TS2322: Type '{ x: number; y: number; }[]' is not assignable to type 'Line[]'.
+packages/picasso.js/src/core/geometry/polygon.ts(170,7): error TS2739: Type '{ x: number; y: number; }[]' is missing the following properties from type 'Rect': x, y, width, height
+packages/picasso.js/src/core/layout/dock/docker.ts(145,23): error TS2554: Expected 5 arguments, but got 4.
+packages/picasso.js/src/core/layout/dock/docker.ts(220,17): error TS2554: Expected 5 arguments, but got 4.
+packages/picasso.js/src/core/layout/dock/docker.ts(221,17): error TS2554: Expected 5 arguments, but got 4.
+packages/picasso.js/src/core/layout/dock/docker.ts(315,7): error TS2322: Type '{ x: any; y: any; width: number; height: number; }' is not assignable to type 'number'.
+packages/picasso.js/src/core/layout/dock/docker.ts(317,7): error TS2322: Type '{ x: any; y: any; width: number; height: number; }' is not assignable to type 'number'.
+packages/picasso.js/src/core/layout/dock/docker.ts(449,17): error TS2554: Expected 5 arguments, but got 0.
+packages/picasso.js/src/core/layout/dock/settings-resolver.ts(38,26): error TS2339: Property 'align' does not exist on type 'Rect'.
+packages/picasso.js/src/core/layout/dock/settings-resolver.ts(41,26): error TS2339: Property 'preserveAspectRatio' does not exist on type 'Rect'.
+packages/picasso.js/src/core/layout/dock/settings-resolver.ts(45,26): error TS2339: Property 'preserveAspectRatio' does not exist on type 'Rect'.
+packages/picasso.js/src/core/scales/color/categorical.ts(97,60): error TS2363: The right-hand side of an arithmetic operation must be of type 'any', 'number', 'bigint' or an enum type.
+packages/picasso.js/src/core/scene-graph/collision-resolver.ts(82,7): error TS2322: Type 'GeoPolygon' is not assignable to type 'Record<string, unknown>'.
+packages/picasso.js/src/core/scene-graph/collision-resolver.ts(84,7): error TS2322: Type 'Polygon' is not assignable to type 'Record<string, unknown>'.
+packages/picasso.js/src/core/scene-graph/collision-resolver.ts(152,7): error TS2322: Type '{ x: number; y: number; }[]' is not assignable to type 'Record<string, unknown>'.
+packages/picasso.js/src/core/scene-graph/collision-resolver.ts(155,7): error TS2322: Type '{ x: number; y: number; }[]' is not assignable to type 'Record<string, unknown>'.
+packages/picasso.js/src/core/scene-graph/collision.ts(35,24): error TS2556: A spread argument must either have a tuple type or be passed to a rest parameter.
+packages/picasso.js/src/core/scene-graph/display-objects/container.ts(59,3): error TS2425: Class 'DisplayObject' defines instance member property 'boundingRect', but extended class 'Container' defines it as instance member function.
+packages/picasso.js/src/core/scene-graph/display-objects/display-object.ts(150,14): error TS2339: Property 'resolveLocalTransform' does not exist on type 'Node'.
+packages/picasso.js/src/core/scene-graph/display-objects/display-object.ts(151,18): error TS2339: Property 'modelViewMatrix' does not exist on type 'Node'.
+packages/picasso.js/src/core/scene-graph/display-objects/display-object.ts(232,86): error TS2339: Property 'type' does not exist on type 'true | ((shape: unknown) => boolean)'.
+packages/picasso.js/src/core/scene-graph/display-objects/display-object.ts(243,25): error TS2339: Property 'set' does not exist on type '(shape: unknown) => boolean'.
+packages/picasso.js/src/core/scene-graph/display-objects/display-object.ts(262,9): error TS2322: Type 'GeometryCollection' is not assignable to type '(shape: unknown) => boolean'.
+packages/picasso.js/src/core/scene-graph/display-objects/index.ts(31,10): error TS2349: This expression is not callable.
+packages/picasso.js/src/core/scene-graph/display-objects/line.ts(44,3): error TS2425: Class 'DisplayObject' defines instance member property 'boundingRect', but extended class 'Line' defines it as instance member function.
+packages/picasso.js/src/core/scene-graph/display-objects/stage.ts(6,11): error TS2345: Argument of type 'string' is not assignable to parameter of type 'DisplayNodeSettings'.
+packages/picasso.js/src/core/scene-graph/display-objects/stage.ts(17,20): error TS2556: A spread argument must either have a tuple type or be passed to a rest parameter.
+packages/picasso.js/src/core/scene-graph/display-objects/text.ts(66,44): error TS2345: Argument of type 'this' is not assignable to parameter of type '{ data: any; _boundingRect: any; _textBoundsFn: any; }'.
+packages/picasso.js/src/core/scene-graph/display-objects/text.ts(72,3): error TS2425: Class 'DisplayObject' defines instance member property 'boundingRect', but extended class 'Text' defines it as instance member function.
+packages/picasso.js/src/core/scene-graph/node-container.ts(19,17): error TS2339: Property 'removeChild' does not exist on type 'Node'.
+packages/picasso.js/src/core/scene-graph/node.ts(13,10): error TS2339: Property 'type' does not exist on type 'Node'.
+packages/picasso.js/src/core/scene-graph/node.ts(23,20): error TS2339: Property 'removeChild' does not exist on type 'Node'.
+packages/picasso.js/src/core/scene-graph/node.ts(116,18): error TS2339: Property 'type' does not exist on type 'Node'.
+packages/picasso.js/src/core/scroll-api/index.ts(34,11): error TS2349: This expression is not callable.
+packages/picasso.js/src/core/scroll-api/index.ts(61,11): error TS2349: This expression is not callable.
+packages/picasso.js/src/core/style/index.ts(71,90): error TS2556: A spread argument must either have a tuple type or be passed to a rest parameter.
+packages/picasso.js/src/core/symbols/bar.ts(32,8): error TS2339: Property 'type' does not exist on type 'Rect'.
+packages/picasso.js/src/core/symbols/bar.ts(33,8): error TS2339: Property 'fill' does not exist on type 'Rect'.
+packages/picasso.js/src/core/symbols/index.ts(50,24): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'string'.
+packages/picasso.js/src/core/symbols/index.ts(52,17): error TS2349: This expression is not callable.
+packages/picasso.js/src/core/transposer/crispifier.ts(99,20): error TS2554: Expected 1 arguments, but got 0.
+packages/picasso.js/src/core/utils/registry.ts(107,23): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'string'.
+packages/picasso.js/src/index.ts(95,45): error TS2554: Expected 0-1 arguments, but got 3.
+packages/picasso.js/src/index.ts(285,20): error TS2345: Argument of type '(plugin: Plugin, options?: Record<string, unknown>) => void' is not assignable to parameter of type '(value: (picasso: any) => void, index: number, array: ((picasso: any) => void)[]) => void'.
+packages/picasso.js/src/index.ts(286,19): error TS2345: Argument of type '(plugin: Plugin, options?: Record<string, unknown>) => void' is not assignable to parameter of type '(value: (picasso: any) => void, index: number, array: ((picasso: any) => void)[]) => void'.
+packages/picasso.js/src/index.ts(287,16): error TS2345: Argument of type '(plugin: Plugin, options?: Record<string, unknown>) => void' is not assignable to parameter of type '(value: any, index: number, array: any[]) => void'.
+packages/picasso.js/src/web/components/brush-range/brush-range-node-builder.ts(219,7): error TS2322: Type '{ onmouseover(e: any): void; onmouseout(e: any): void; }' is not assignable to type 'number'.
+packages/picasso.js/src/web/components/brush-range/brush-range-node-builder.ts(240,20): error TS2345: Argument of type 'Record<string, number>' is not assignable to parameter of type '{ h: any; isVertical: any; top: any; height: any; color: any; on: any; opacity: any; }'.
+packages/picasso.js/src/web/components/brush-range/brush-range-node-builder.ts(310,11): error TS2353: Object literal may only specify known properties, and 'style' does not exist in type '{ h: any; isVertical: any; label: any; otherValue: any; rangeIdx: any; idx: any; pos: any; align: any; state: any; value: any; }'.
+packages/picasso.js/src/web/components/brush-range/brush-range-node-builder.ts(328,11): error TS2353: Object literal may only specify known properties, and 'style' does not exist in type '{ h: any; isVertical: any; label: any; otherValue: any; rangeIdx: any; idx: any; pos: any; align: any; state: any; value: any; }'.
+packages/picasso.js/src/web/components/tooltip/placement.ts(146,27): error TS2554: Expected 2 arguments, but got 1.
+packages/picasso.js/src/web/components/tooltip/placement.ts(169,29): error TS2554: Expected 2 arguments, but got 1.
+packages/picasso.js/src/web/components/tooltip/placement.ts(199,27): error TS2554: Expected 2 arguments, but got 1.
+packages/picasso.js/src/web/components/tooltip/placement.ts(232,56): error TS2554: Expected 2 arguments, but got 1.
+packages/picasso.js/src/web/components/tooltip/placement.ts(407,75): error TS2339: Property 'getComponentBoundsFromNode' does not exist on type 'unknown'.
+packages/picasso.js/src/web/components/tooltip/placement.ts(408,27): error TS2339: Property 'dx' does not exist on type 'unknown'.
+packages/picasso.js/src/web/components/tooltip/placement.ts(410,27): error TS2339: Property 'dy' does not exist on type 'unknown'.
+packages/picasso.js/src/web/components/tooltip/tooltip.ts(260,17): error TS2339: Property 'nodes' does not exist on type '{}'.
+packages/picasso.js/src/web/components/tooltip/tooltip.ts(260,24): error TS2339: Property 'duration' does not exist on type '{}'.
+packages/picasso.js/src/web/components/tooltip/tooltip.ts(260,34): error TS2339: Property 'delay' does not exist on type '{}'.
+packages/picasso.js/src/web/renderer/dom-renderer/dom-renderer.tsx(34,3): error TS2322: Type '(rendererSettings: any) => DomRendererSettings' is not assignable to type '() => void'.
+packages/picasso.js/src/web/renderer/dom-renderer/dom-renderer.tsx(46,3): error TS2322: Type '(element: any) => HTMLElement' is not assignable to type '() => void'.
+packages/picasso.js/src/web/renderer/dom-renderer/dom-renderer.tsx(60,3): error TS2322: Type '(nodes: any) => boolean' is not assignable to type '() => boolean'.
+packages/picasso.js/src/web/renderer/dom-renderer/dom-renderer.tsx(65,81): error TS2349: This expression is not callable.
+packages/picasso.js/src/web/renderer/dom-renderer/dom-renderer.tsx(82,38): error TS2345: Argument of type 'boolean' is not assignable to parameter of type 'string'.
+packages/picasso.js/src/web/renderer/dom-renderer/dom-renderer.tsx(97,31): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'Element | Text'.
+packages/picasso.js/src/web/renderer/dom-renderer/dom-renderer.tsx(126,3): error TS2322: Type '(inner: any) => RendererBox & { computedPhysical: Rect; }' is not assignable to type '() => void'.
+packages/picasso.js/src/web/renderer/index.ts(110,26): error TS2339: Property 'setAttribute' does not exist on type 'void'.
+packages/picasso.js/src/web/renderer/svg-renderer/svg-nodes.ts(113,34): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+packages/picasso.js/src/web/text-manipulation/line-break-resolver.ts(12,15): error TS2339: Property 'id' does not exist on type '{ type: string; children: unknown[]; }'.
+plugins/q/tsconfig.json(13,18): error TS6310: Referenced project '/home/runner/work/picasso.js/picasso.js/packages/picasso.js' may not disable emit.
+plugins/hammer/tsconfig.json(13,18): error TS6310: Referenced project '/home/runner/work/picasso.js/picasso.js/packages/picasso.js' may not disable emit.
+tsconfig.json(19,5): error TS6310: Referenced project '/home/runner/work/picasso.js/picasso.js/packages/picasso.js' may not disable emit.
+tsconfig.json(20,5): error TS6310: Referenced project '/home/runner/work/picasso.js/picasso.js/plugins/q' may not disable emit.
+tsconfig.json(21,5): error TS6310: Referenced project '/home/runner/work/picasso.js/picasso.js/plugins/hammer' may not disable emit.

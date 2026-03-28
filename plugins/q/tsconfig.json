@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "noEmit": false,
+    "rootDir": "./src",
+    "outDir": "./dist/.tsc",
+    "paths": {
+      "picasso.js": ["../../packages/picasso.js/src/index.ts"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["**/node_modules", "**/dist"],
+  "references": [{ "path": "../../packages/picasso.js" }]
+}

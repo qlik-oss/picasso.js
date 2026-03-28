@@ -2,7 +2,7 @@ const esModules = ['chai'].join('|');
 
 module.exports = {
   preset: 'jest-puppeteer',
-  testMatch: ['**/test/integration/**/*.int.js'],
+  testMatch: ['**/test/integration/**/*.int.[jt]s'],
   setupFilesAfterEnv: ['<rootDir>/jest.integration.setup.js'],
   transform: {
     '\\.[jt]sx?$': 'babel-jest',
