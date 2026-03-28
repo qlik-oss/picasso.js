@@ -25,7 +25,6 @@ export default function patternizer(bucket, hasher = hashObject) {
       }
 
       Object.keys(inputs).forEach((key) => {
-        const url = '';
         const input = inputs[key];
         const patternHash = hasher(input);
         const pnid = `picasso-pattern-${uid}-${patternHash}`;
@@ -51,7 +50,7 @@ export default function patternizer(bucket, hasher = hashObject) {
           cache[patternHash] = true;
         }
 
-        state.node[`${key}Reference`] = `url('${url}#${pnid}')`;
+        state.node[`${key}Reference`] = `url('#${pnid}')`;
       });
     },
     clear() {
