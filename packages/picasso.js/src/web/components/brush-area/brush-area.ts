@@ -1,6 +1,50 @@
 import extend from 'extend';
 import { testRectPoint } from '../../../core/math/narrow-phase-collision';
 
+interface Point {
+  x: number;
+  y: number;
+}
+
+interface Rect {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+interface EventWithCenter {
+  center: Point;
+  clientX?: number;
+  clientY?: number;
+}
+
+interface BrushContext {
+  state: {
+    boundingRect: DOMRect;
+    start: Point;
+    end: Point;
+    active: boolean;
+    brushConfig: BrushConfig[];
+  };
+  rect: Rect;
+  chart: { brush: (context: string) => { end: () => void }; shapesAt: (rect: Rect, opts: unknown) => unknown[]; brushFromShapes: (shapes: unknown[], opts: unknown) => void };
+  renderer: { element: () => HTMLCanvasElement; render: (shapes: unknown[]) => void };
+  settings: { settings: { brush: { components: Array<{ key: string; contexts: string[]; data: unknown; action?: string }> } } };
+  style: { area: Record<string, unknown> };
+  start: (e: EventWithCenter) => void;
+  move: (e: EventWithCenter) => void;
+  end: () => void;
+  cancel: () => void;
+}
+
+interface BrushConfig {
+  key: string;
+  contexts: string[];
+  data: unknown;
+  action: string;
+}
+
 /**
  * @typedef {object}
  * @alias ComponentBrushArea.settings
@@ -25,16 +69,16 @@ const DEFAULT_SETTINGS = {
  * @param {boolean} clamp - True to clamp the point inside the component bounds
  * @returns {point}
  */
-function getLocalPoint(ctx, event, clamp = true) {
-  let x;
-  let y;
+function getLocalPoint(ctx: BrushContext, event: EventWithCenter, clamp: boolean = true): Point {
+  let x: number;
+  let y: number;
 
   if (typeof event.center === 'object') {
     x = event.center.x;
     y = event.center.y;
   } else {
-    x = event.clientX;
-    y = event.clientY;
+    x = event.clientX || 0;
+    y = event.clientY || 0;
   }
 
   const localX = x - ctx.state.boundingRect.left;
@@ -53,7 +97,7 @@ function getLocalPoint(ctx, event, clamp = true) {
  * @param {object} p - Point to transform
  * @returns {point}
  */
-function localToChartPoint(ctx, p) {
+function localToChartPoint(ctx: BrushContext, p: Point): Point {
   return {
     x: p.x + ctx.rect.x,
     y: p.y + ctx.rect.y,
@@ -66,7 +110,7 @@ function localToChartPoint(ctx, p) {
  * @param {object} settings
  * @returns {object[]} An Array of brush configurations
  */
-function getBrushConfig(settings) {
+function getBrushConfig(settings: { settings: { brush: { components: Array<{ key: string; contexts: string[]; data: unknown; action?: string }> } } }): BrushConfig[] {
   return settings.settings.brush.components.map((b) => ({
     key: b.key,
     contexts: b.contexts,
@@ -81,7 +125,7 @@ function getBrushConfig(settings) {
  * @param {oject} state
  * @param {object} chart - Chart instance
  */
-function doEndBrush(state, chart) {
+function doEndBrush(state: { brushConfig: BrushConfig[] }, chart: { brush: (context: string) => { end: () => void } }): void {
   state.brushConfig.forEach((config) => {
     if (Array.isArray(config.contexts)) {
       config.contexts.forEach((context) => {
@@ -98,7 +142,7 @@ function doEndBrush(state, chart) {
  * @param {Point} p1
  * @returns {Rect}
  */
-function toRect(p0, p1) {
+function toRect(p0: Point, p1: Point): Rect {
   const xMin = Math.min(p0.x, p1.x);
   const yMin = Math.min(p0.y, p1.y);
   const xMax = Math.max(p0.x, p1.x);
@@ -117,7 +161,7 @@ function toRect(p0, p1) {
  * @private
  * @param {object} ctx
  */
-function doAreaBrush(ctx) {
+function doAreaBrush(ctx: BrushContext): void {
   if (ctx.state.active) {
     const start = localToChartPoint(ctx, ctx.state.start);
     const end = localToChartPoint(ctx, ctx.state.end);
@@ -127,11 +171,11 @@ function doAreaBrush(ctx) {
   }
 }
 
-function render(ctx) {
+function render(ctx: BrushContext): void {
   ctx.renderer.render([extend({ type: 'rect' }, toRect(ctx.state.start, ctx.state.end), ctx.style.area)]);
 }
 
-function resetState() {
+function resetState(): Omit<BrushContext['state'], 'boundingRect' | 'brushConfig'> {
   return {
     start: { x: 0, y: 0 },
     end: { x: 0, y: 0 },
@@ -151,27 +195,31 @@ const definition = {
     },
   },
   on: {
-    areaStart(e) {
+    areaStart(this: BrushContext, e: EventWithCenter) {
       this.start(e);
     },
-    areaMove(e) {
+    areaMove(this: BrushContext, e: EventWithCenter) {
       this.move(e);
     },
-    areaEnd(e) {
-      this.end(e);
+    areaEnd(this: BrushContext) {
+      this.end();
     },
-    areaCancel() {
+    areaCancel(this: BrushContext) {
       this.cancel();
     },
   },
-  created() {
-    this.state = resetState();
+  created(this: BrushContext) {
+    this.state = {
+      ...resetState(),
+      boundingRect: {} as DOMRect,
+      brushConfig: [],
+    };
   },
-  preferredSize() {
+  preferredSize(): number {
     return 0;
   },
-  render() {},
-  start(e) {
+  render(): void {},
+  start(this: BrushContext, e: EventWithCenter): void {
     this.state.boundingRect = this.renderer.element().getBoundingClientRect();
     const p = getLocalPoint(this, e, false);
 
@@ -194,7 +242,7 @@ const definition = {
     this.state.start = getLocalPoint(this, e);
     this.state.active = true;
   },
-  move(e) {
+  move(this: BrushContext, e: EventWithCenter): void {
     if (!this.state.active) {
       return;
     }
@@ -204,20 +252,28 @@ const definition = {
     doAreaBrush(this);
     render(this);
   },
-  end() {
+  end(this: BrushContext): void {
     if (!this.state.active) {
       return;
     }
 
-    this.state = resetState();
+    this.state = {
+      ...resetState(),
+      boundingRect: this.state.boundingRect,
+      brushConfig: this.state.brushConfig,
+    };
     this.renderer.render([]);
   },
-  cancel() {
+  cancel(this: BrushContext): void {
     if (!this.state.active) {
       return;
     }
     doEndBrush(this.state, this.chart);
-    this.state = resetState();
+    this.state = {
+      ...resetState(),
+      boundingRect: this.state.boundingRect,
+      brushConfig: this.state.brushConfig,
+    };
     this.renderer.render([]);
   },
 };

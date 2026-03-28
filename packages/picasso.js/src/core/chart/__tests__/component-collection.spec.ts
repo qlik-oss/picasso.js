@@ -1,7 +1,7 @@
 import componentCollectionFn from '../component-collection';
 
 function createComponent(settings) {
-  let rect;
+  let rect: any;
   const rend = {
     settings() {
       this.myRendererSettings = 'new settings';

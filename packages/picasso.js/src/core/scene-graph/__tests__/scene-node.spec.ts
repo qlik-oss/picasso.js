@@ -6,8 +6,8 @@ import { create as createContainer } from '../display-objects/container';
 import { create as createPath } from '../display-objects/path';
 
 describe('Scene Node', () => {
-  let sceneNode;
-  let nodeMock;
+  let sceneNode: any;
+  let nodeMock: any;
 
   beforeEach(() => {
     nodeMock = {

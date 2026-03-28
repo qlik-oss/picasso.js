@@ -3,8 +3,8 @@ import { create as createRect } from '../rect';
 import { create as createContainer } from '../container';
 
 describe('Stage', () => {
-  let stage;
-  let children;
+  let stage: any;
+  let children: any;
 
   beforeEach(() => {
     stage = create();

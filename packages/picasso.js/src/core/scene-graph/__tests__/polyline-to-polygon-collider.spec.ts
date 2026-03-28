@@ -1,9 +1,9 @@
 import polylineToPolygonCollider from '../polyline-to-polygon-collider';
 
 describe('polygon to polygon collider', () => {
-  let points;
-  let radius;
-  let opts;
+  let points: any;
+  let radius: any;
+  let opts: any;
 
   beforeEach(() => {
     radius = 10;

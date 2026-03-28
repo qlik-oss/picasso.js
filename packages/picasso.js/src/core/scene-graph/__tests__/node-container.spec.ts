@@ -33,7 +33,7 @@ describe('TreeNode', () => {
       });
 
       it('should not be possible to add anything else but a Node as child', () => {
-        let f = (): void => {
+        let f: any = (): void => {
             n.addChild();
           },
           ff = (): void => {
@@ -109,7 +109,7 @@ describe('TreeNode', () => {
         });
 
         it('grandparents', () => {
-          let aanc = [a, n],
+          let aanc: any = [a, n],
             banc = [b, n];
           expect(a1.ancestors.length).to.equal(2);
           expect(a2.ancestors.length).to.equal(2);
@@ -143,7 +143,7 @@ describe('TreeNode', () => {
       });
 
       it('should not be possible to add a parent/ancestor as a child', () => {
-        let a = new Node(""),
+        let a: any = new Node(""),
           b = new Node(""),
           c = new Node(""),
           f = (): void => {

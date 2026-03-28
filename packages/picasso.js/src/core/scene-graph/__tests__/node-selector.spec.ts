@@ -5,7 +5,7 @@ import Text from '../display-objects/text';
 import selector, { tokenize, filter } from '../node-selector';
 
 describe('Node Selector', () => {
-  let UNDEF;
+  let UNDEF: any;
 
   describe('Tokenize', () => {
     it('should support multiple groups', () => {
@@ -287,7 +287,7 @@ describe('Node Selector', () => {
 
       it('should be case-sensitive', () => {
         c1.tag = 'myTag';
-        let result = filter({ type: 'tag', value: '.mytag' }, [c1, c2, c3, t1, r1]);
+        let result: any = filter({ type: 'tag', value: '.mytag' }, [c1, c2, c3, t1, r1]);
         expect(result).to.deep.equal([]);
 
         c1.tag = 'mytag';
@@ -306,12 +306,12 @@ describe('Node Selector', () => {
   });
 
   describe('find', () => {
-    let c1;
-    let c2;
-    let c3;
-    let t1;
-    let r1;
-    let con1;
+    let c1: any;
+    let c2: any;
+    let c3: any;
+    let t1: any;
+    let r1: any;
+    let con1: any;
     beforeEach(() => {
       c1 = new Circle();
       c2 = new Circle();

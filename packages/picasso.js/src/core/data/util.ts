@@ -1,4 +1,43 @@
-export function findField(query, { cache }) {
+interface CacheConfig {
+  fields: Field[];
+}
+
+interface Field {
+  key(): string;
+  title(): string;
+  value?: unknown;
+  label?: unknown;
+  reduce?: string | ((values: unknown[]) => unknown);
+  reduceLabel?: string | ((labels: unknown[], value: unknown) => unknown);
+  formatter(): (value: unknown) => unknown;
+}
+
+interface Dataset {
+  field(fieldId: string | number): Field;
+}
+
+interface DataProperty {
+  field?: string | number;
+  value?: unknown;
+  label?: unknown;
+  reduce?: string | ((values: unknown[]) => unknown);
+  reduceLabel?: string | ((labels: unknown[], value: unknown) => unknown);
+  filter?: (values: unknown[]) => unknown[];
+  fields?: DataProperty[];
+}
+
+interface FieldConfig {
+  field?: string | number;
+  value?: (item: unknown) => unknown;
+  label?: (item: unknown) => unknown;
+  reduce?: string | ((values: unknown[]) => unknown);
+  reduceLabel?: string | ((labels: unknown[], value: unknown) => unknown);
+  filter?: (values: unknown[]) => unknown[];
+  props?: Record<string, DataProperty>;
+  trackBy?: string | ((item: unknown) => unknown);
+}
+
+export function findField(query: string | number, { cache }: { cache: CacheConfig }): Field | null {
   if (typeof query === 'number') {
     return cache.fields[query];
   }
@@ -18,52 +57,64 @@ export function findField(query, { cache }) {
   return null;
 }
 
-const filters = {
-  numeric: (values) => values.filter((v) => typeof v === 'number' && !isNaN(v)),
+const filters: {
+  numeric(values: unknown[]): number[];
+} = {
+  numeric: (values: unknown[]): number[] =>
+    (values as unknown[]).filter((v: unknown) => typeof v === 'number' && !isNaN(v as number)) as number[],
 };
 
-const unfilteredReducers = {
-  sum: (values) => values.reduce((a, b) => a + b, 0),
+const unfilteredReducers: {
+  sum(values: number[]): number;
+} = {
+  sum: (values: number[]): number => values.reduce((a: number, b: number) => a + b, 0),
 };
-
-// function isPrimitive(x) {
-//   const type = typeof x;
-//   return (type !== 'object' && type !== 'function');
-// }
 
 /**
  * [reducers description]
  * @type {Object}
  * @private
  */
-export const reducers = {
-  first: (values) => values[0],
-  last: (values) => values[values.length - 1],
-  min: (values) => {
+export const reducers: {
+  first(values: unknown[]): unknown;
+  last(values: unknown[]): unknown;
+  min(values: unknown[]): number;
+  max(values: unknown[]): number;
+  sum(values: unknown[]): number;
+  avg(values: unknown[]): number;
+} = {
+  first: (values: unknown[]): unknown => values[0],
+  last: (values: unknown[]): unknown => values[values.length - 1],
+  min: (values: unknown[]): number => {
     const filtered = filters.numeric(values);
-    return !filtered.length ? NaN : Math.min.apply(null, filtered);
+    return !filtered.length ? NaN : Math.min.apply(null, filtered as unknown as number[]);
   },
-  max: (values) => {
+  max: (values: unknown[]): number => {
     const filtered = filters.numeric(values);
-    return !filtered.length ? NaN : Math.max.apply(null, filtered);
+    return !filtered.length ? NaN : Math.max.apply(null, filtered as unknown as number[]);
   },
-  sum: (values) => {
+  sum: (values: unknown[]): number => {
     const filtered = filters.numeric(values);
-    return !filtered.length ? NaN : filtered.reduce((a, b) => a + b, 0);
+    return !filtered.length ? NaN : filtered.reduce((a: number, b: number) => a + b, 0);
   },
-  avg: (values) => {
+  avg: (values: unknown[]): number => {
     const filtered = filters.numeric(values);
     const len = filtered.length;
     return !len ? NaN : unfilteredReducers.sum(filtered) / len;
   },
 };
 
-function normalizeProperties(cfg, dataset, dataProperties, main): Record<string, unknown> {
-  // console.log('======', cfg, main, dataset);
+function normalizeProperties(
+  cfg: FieldConfig,
+  dataset: Dataset,
+  dataProperties: Record<string, DataProperty | unknown>,
+  main: Record<string, unknown>
+): Record<string, unknown> {
   const props: Record<string, unknown> = {};
   const mainField =
-    (main as Record<string, unknown>).field || (typeof cfg.field !== 'undefined' ? dataset.field(cfg.field) : null);
-  Object.keys(dataProperties).forEach((key) => {
+    (main as Record<string, unknown>).field ||
+    (typeof cfg.field !== 'undefined' ? dataset.field(cfg.field as string | number) : null);
+  Object.keys(dataProperties).forEach((key: string) => {
     const pConfig = dataProperties[key];
     const prop: Record<string, unknown> = (props[key] = {} as Record<string, unknown>);
     if (['number', 'string', 'boolean'].indexOf(typeof pConfig) !== -1) {
@@ -75,50 +126,57 @@ function normalizeProperties(cfg, dataset, dataProperties, main): Record<string,
       prop.label = pConfig;
       prop.field = mainField;
     } else if (typeof pConfig === 'object') {
-      if (pConfig.fields) {
-        prop.fields = pConfig.fields.map(
-          (ff) => (normalizeProperties(cfg, dataset, { main: ff }, main) as Record<string, unknown>).main
-        );
-      } else if (typeof pConfig.field !== 'undefined') {
+      const pc = pConfig as DataProperty;
+      if (pc.fields) {
+        prop.fields = pc.fields.map((ff: DataProperty) => {
+          const normalized = normalizeProperties(cfg, dataset, { main: ff }, main) as Record<
+            string,
+            unknown
+          >;
+          return normalized.main;
+        });
+      } else if (typeof pc.field !== 'undefined') {
         prop.type = 'field';
-        prop.field = dataset.field(pConfig.field);
-        prop.value = (prop.field as Record<string, unknown>).value;
-        prop.label = (prop.field as Record<string, unknown>).label;
+        prop.field = dataset.field(pc.field);
+        prop.value = (prop.field as Field).value;
+        prop.label = (prop.field as Field).label;
       } else if (mainField) {
-        prop.value = mainField.value;
-        prop.label = mainField.label;
+        prop.value = (mainField as Field).value;
+        prop.label = (mainField as Field).label;
         prop.field = mainField;
       }
 
-      if (typeof pConfig.filter === 'function') {
-        prop.filter = pConfig.filter;
+      if (typeof pc.filter === 'function') {
+        prop.filter = pc.filter;
       }
-      if (typeof pConfig.value !== 'undefined') {
-        prop.value = pConfig.value;
+      if (typeof pc.value !== 'undefined') {
+        prop.value = pc.value;
       }
-      if (typeof pConfig.label !== 'undefined') {
-        prop.label = pConfig.label;
+      if (typeof pc.label !== 'undefined') {
+        prop.label = pc.label;
       }
-      if (typeof pConfig.reduce === 'function') {
-        prop.reduce = pConfig.reduce;
-      } else if (pConfig.reduce) {
-        prop.reduce = reducers[pConfig.reduce];
-      } else if (prop.field && (prop.field as Record<string, unknown>).reduce) {
+      if (typeof pc.reduce === 'function') {
+        prop.reduce = pc.reduce;
+      } else if (pc.reduce) {
+        prop.reduce = reducers[pc.reduce as keyof typeof reducers];
+      } else if (prop.field && (prop.field as Field).reduce) {
+        const fieldReduce = (prop.field as Field).reduce;
         prop.reduce =
-          typeof (prop.field as Record<string, unknown>).reduce === 'string'
-            ? reducers[(prop.field as Record<string, unknown>).reduce as string]
-            : (prop.field as Record<string, unknown>).reduce;
+          typeof fieldReduce === 'string'
+            ? reducers[fieldReduce as keyof typeof reducers]
+            : fieldReduce;
       }
 
-      if (typeof pConfig.reduceLabel === 'function') {
-        prop.reduceLabel = pConfig.reduceLabel;
-      } else if (pConfig.reduceLabel) {
-        prop.reduceLabel = reducers[pConfig.reduceLabel];
-      } else if (prop.field && (prop.field as Record<string, unknown>).reduceLabel) {
+      if (typeof pc.reduceLabel === 'function') {
+        prop.reduceLabel = pc.reduceLabel;
+      } else if (pc.reduceLabel) {
+        prop.reduceLabel = reducers[pc.reduceLabel as keyof typeof reducers];
+      } else if (prop.field && (prop.field as Field).reduceLabel) {
+        const fieldReduceLabel = (prop.field as Field).reduceLabel;
         prop.reduceLabel =
-          typeof (prop.field as Record<string, unknown>).reduceLabel === 'string'
-            ? reducers[(prop.field as Record<string, unknown>).reduceLabel as string]
-            : (prop.field as Record<string, unknown>).reduceLabel;
+          typeof fieldReduceLabel === 'string'
+            ? reducers[fieldReduceLabel as keyof typeof reducers]
+            : fieldReduceLabel;
       }
     }
   });
@@ -154,8 +212,10 @@ cfg = {
 },
 ...]
 */
-export function getPropsInfo(cfg, dataset) {
-  // console.log('222', cfg);
+export function getPropsInfo(
+  cfg: FieldConfig,
+  dataset: Dataset
+): { props: Record<string, unknown>; main: Record<string, unknown> } {
   const { main } = normalizeProperties(
     cfg,
     dataset,
@@ -173,33 +233,42 @@ export function getPropsInfo(cfg, dataset) {
   return { props, main };
 }
 
-function collectItems(items, cfg, formatter, prop?) {
+function collectItems(
+  items: Array<Record<string, unknown>>,
+  cfg: Record<string, unknown>,
+  formatter: ((value: unknown) => unknown) | undefined,
+  prop?: string
+): Record<string, unknown> {
   const values = Array(items.length);
   const labels = Array(items.length);
   let it;
   for (let i = 0; i < items.length; i++) {
     it = prop ? items[i][prop] : items[i];
-    values[i] = it.value;
-    labels[i] = it.label;
+    values[i] = (it as Record<string, unknown>).value;
+    labels[i] = (it as Record<string, unknown>).label;
   }
 
-  const reduce = cfg.reduce;
-  const reduceLabel = cfg.reduceLabel;
+  const reduce = cfg.reduce as ((values: unknown[]) => unknown) | undefined;
+  const reduceLabel = cfg.reduceLabel as
+    | ((labels: unknown[], value: unknown) => unknown)
+    | undefined;
   const v = reduce ? reduce(values) : values;
-  const b = reduceLabel ? reduceLabel(labels, v) : formatter ? formatter(v) : String(v); // eslint-disable-line no-nested-ternary
-
-  // // ret[prop].label = String(propsFormatters[prop](ret[prop].value));
+  const b = reduceLabel
+    ? reduceLabel(labels, v)
+    : formatter
+    ? formatter(v)
+    : String(v); // eslint-disable-line no-nested-ternary
 
   const ret: Record<string, unknown> = {
     value: v,
     label: b,
   };
-  if (prop && items[0][prop].source) {
-    ret.source = items[0][prop].source;
+  if (prop && (items[0][prop] as Record<string, unknown>).source) {
+    ret.source = (items[0][prop] as Record<string, unknown>).source;
     return ret;
   }
-  if (!prop && items[0].source) {
-    ret.source = items[0].source;
+  if (!prop && (items[0] as Record<string, unknown>).source) {
+    ret.source = (items[0] as Record<string, unknown>).source;
     return ret;
   }
 
@@ -207,19 +276,36 @@ function collectItems(items, cfg, formatter, prop?) {
 }
 
 // collect items that have been grouped and reduce per group and property
-export function collect(trackedItems, { main, propsArr, props }) {
-  let dataItems = [];
-  const mainFormatter = main.field.formatter(); // || (v => v);
-  const propsFormatters = {};
-  propsArr.forEach((prop) => {
-    propsFormatters[prop] = props[prop].field ? props[prop].field.formatter() : (v) => v;
+export function collect(
+  trackedItems: Array<{ items: Array<Record<string, unknown>> }>,
+  {
+    main,
+    propsArr,
+    props,
+  }: {
+    main: Record<string, unknown>;
+    propsArr: string[];
+    props: Record<string, unknown>;
+  }
+): Array<Record<string, unknown>> {
+  const dataItems: Array<Record<string, unknown>> = [];
+  const mainFormatter = (main as unknown as { field: Field }).field.formatter();
+  const propsFormatters: Record<string, (value: unknown) => unknown> = {};
+  propsArr.forEach((prop: string) => {
+    const propConfig = props[prop] as unknown as { field?: Field };
+    propsFormatters[prop] = propConfig.field ? propConfig.field.formatter() : (v: unknown) => v;
   });
   dataItems.push(
-    ...trackedItems.map((t) => {
-      const ret = collectItems(t.items, main, mainFormatter);
+    ...trackedItems.map((t: { items: Array<Record<string, unknown>> }) => {
+      const ret = collectItems(t.items, main as Record<string, unknown>, mainFormatter);
 
-      propsArr.forEach((prop) => {
-        ret[prop] = collectItems(t.items, props[prop], propsFormatters[prop], prop);
+      propsArr.forEach((prop: string) => {
+        ret[prop] = collectItems(
+          t.items,
+          (props[prop] as Record<string, unknown>) || {},
+          propsFormatters[prop],
+          prop
+        );
       });
       return ret;
     })
@@ -228,22 +314,43 @@ export function collect(trackedItems, { main, propsArr, props }) {
   return dataItems;
 }
 
-export function track({ cfg, itemData, obj, target, tracker, trackType }) {
-  const trackId = trackType === 'function' ? cfg.trackBy(itemData) : itemData[cfg.trackBy];
-  let trackedItem = tracker[trackId];
+export function track({
+  cfg,
+  itemData,
+  obj,
+  target,
+  tracker,
+  trackType,
+}: {
+  cfg: FieldConfig;
+  itemData: Record<string, unknown>;
+  obj: Record<string, unknown>;
+  target: Array<Record<string, unknown>>;
+  tracker: Record<string, Record<string, unknown>>;
+  trackType: string;
+}): void {
+  const trackBy = cfg.trackBy as string | ((item: unknown) => unknown);
+  const trackId =
+    trackType === 'function'
+      ? (trackBy as (item: unknown) => unknown)(itemData)
+      : itemData[trackBy as string];
+  let trackedItem = tracker[String(trackId)];
   if (!trackedItem) {
-    trackedItem = tracker[trackId] = {
+    trackedItem = tracker[String(trackId)] = {
       items: [],
       id: trackId,
     };
     target.push(trackedItem);
   }
-  trackedItem.items.push(obj);
+  (trackedItem as Record<string, unknown>).items = [
+    ...((trackedItem as Record<string, unknown>).items as Array<Record<string, unknown>>),
+    obj,
+  ];
 }
 
 const ARRAY_MAX_SIZE = 10000;
 
-export function getMax(values) {
+export function getMax(values: number[]): number {
   if (values.length < ARRAY_MAX_SIZE) {
     return Math.max(...values);
   }
@@ -257,7 +364,7 @@ export function getMax(values) {
   return max;
 }
 
-export function getMin(values) {
+export function getMin(values: number[]): number {
   if (values.length < ARRAY_MAX_SIZE) {
     return Math.min(...values);
   }

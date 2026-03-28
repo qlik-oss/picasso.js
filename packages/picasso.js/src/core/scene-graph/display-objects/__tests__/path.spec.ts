@@ -3,7 +3,7 @@ import lineMarkerComponent from '../../../chart-components/line/line';
 import Path, { create } from '../path';
 
 describe('Path', () => {
-  let path;
+  let path: any;
 
   describe('Constructor', () => {
     it('should instantiate a new Path', () => {
@@ -33,10 +33,10 @@ describe('Path', () => {
     });
 
     describe('path for line', () => {
-      let sandbox;
-      let componentFixture;
-      let opts;
-      let lineNodes;
+      let sandbox: any;
+      let componentFixture: any;
+      let opts: any;
+      let lineNodes: any;
 
       beforeEach(() => {
         sandbox = sinon.createSandbox();
@@ -411,7 +411,7 @@ describe('Path', () => {
   });
 
   describe('BoundingRect', () => {
-    let d;
+    let d: any;
 
     it('should handle default values', () => {
       path = create();
@@ -540,7 +540,7 @@ describe('Path', () => {
   });
 
   describe('Bounds', () => {
-    let d;
+    let d: any;
 
     it('should handle default values', () => {
       path = create();

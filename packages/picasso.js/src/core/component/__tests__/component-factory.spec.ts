@@ -503,7 +503,7 @@ describe('Component', () => {
       renderer.render = sinon.spy();
       definition.render = () => ['node1', 'node2'];
       let transformation: any = false;
-      let transformFn = () => transformation;
+      let transformFn: any = () => transformation;
       let instance: ComponentInstance;
 
       instance = createInstance({

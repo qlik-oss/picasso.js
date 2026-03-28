@@ -3,7 +3,7 @@ import { create as createRect } from '../rect';
 import GeoRect from '../../../geometry/rect';
 
 describe('Container', () => {
-  let container;
+  let container: any;
 
   describe('Constructor', () => {
     it('should instantiate a new Container', () => {

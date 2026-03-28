@@ -2,7 +2,7 @@ import { create, collection } from '..';
 
 describe('scales', () => {
   describe('collection', () => {
-    let fn;
+    let fn: any;
     beforeEach(() => {
       fn = sinon.spy((def) => (typeof def === 'object' && !Object.keys(def).length ? 'fallback' : def));
     });
@@ -44,8 +44,8 @@ describe('scales', () => {
   });
 
   describe('create', () => {
-    let deps;
-    let scaleFn;
+    let deps: any;
+    let scaleFn: any;
     beforeEach(() => {
       deps = {
         scale: {

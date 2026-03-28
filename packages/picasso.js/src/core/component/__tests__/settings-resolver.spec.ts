@@ -1,10 +1,10 @@
 import settingsResolver from '../settings-resolver';
 
 describe('settings resolver', () => {
-  let res;
-  let normalizeSettings;
-  let resolveForItem;
-  let updateScaleSize;
+  let res: any;
+  let normalizeSettings: any;
+  let resolveForItem: any;
+  let updateScaleSize: any;
 
   beforeEach(() => {
     normalizeSettings = (...args) => [...args].join('-');

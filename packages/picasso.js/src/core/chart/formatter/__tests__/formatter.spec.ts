@@ -2,7 +2,7 @@ import { create, collection } from '..';
 
 describe('chart formatters', () => {
   describe('collection', () => {
-    let fn;
+    let fn: any;
     beforeEach(() => {
       fn = sinon.spy((def) => (typeof def === 'object' && !Object.keys(def).length ? 'fallback' : def));
     });
@@ -49,8 +49,8 @@ describe('chart formatters', () => {
   });
 
   describe('create', () => {
-    let deps;
-    let formatterFn;
+    let deps: any;
+    let formatterFn: any;
     beforeEach(() => {
       deps = {
         formatter: {

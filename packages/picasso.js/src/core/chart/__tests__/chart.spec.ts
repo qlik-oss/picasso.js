@@ -584,7 +584,7 @@ describe('Chart', () => {
 
     it('should inject missing elements', () => {
       orderComponents(el, visible);
-      let order = el.children.map((e) => e.name);
+      let order: any = el.children.map((e) => e.name);
       expect(order).to.eql(['a', 'b-1', 'b-2', 'b', 'c']);
     });
 

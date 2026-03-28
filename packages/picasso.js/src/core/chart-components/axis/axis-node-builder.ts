@@ -215,7 +215,7 @@ function discreteCalcMaxTextRect({
   } else if (layered) {
     textRect.width = bandwidth * innerRect.width * 2;
   } else if (tilted) {
-    const radians = Math.abs(settings.labels.tiltAngle) * (Math.PI / 180);
+    const radians = Math.abs((settings.labels.tiltAngle ?? 0)) * (Math.PI / 180);
     textRect.width =
       (innerRect.height - labelsSpacing(settings) - settings.paddingEnd - h * Math.cos(radians)) / Math.sin(radians);
   } else {
@@ -258,7 +258,7 @@ function continuousCalcMaxTextRect({
   if (settings.align === 'left' || settings.align === 'right') {
     textRect.width = innerRect.width - labelsSpacing(settings) - settings.paddingEnd;
   } else if (tilted) {
-    const radians = Math.abs(settings.labels.tiltAngle) * (Math.PI / 180);
+    const radians = Math.abs((settings.labels.tiltAngle ?? 0)) * (Math.PI / 180);
     textRect.width =
       (innerRect.height - labelsSpacing(settings) - settings.paddingEnd - h * Math.cos(radians)) / Math.sin(radians);
   } else {

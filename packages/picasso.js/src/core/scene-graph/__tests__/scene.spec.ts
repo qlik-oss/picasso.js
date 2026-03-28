@@ -39,7 +39,7 @@ describe('Scene', () => {
 
   describe('Events', () => {
     it('should accept create events', () => {
-      let spy = sinon.spy();
+      let spy: any = sinon.spy();
       stage = scene({
         items: [rect, rect],
         on: {

@@ -3,8 +3,8 @@ import GeoRect from '../../../geometry/rect';
 import GeoCircle from '../../../geometry/circle';
 
 describe('Circle', () => {
-  let circle;
-  let shape;
+  let circle: any;
+  let shape: any;
 
   beforeEach(() => {
     shape = {

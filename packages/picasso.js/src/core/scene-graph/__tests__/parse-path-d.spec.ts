@@ -13,8 +13,8 @@ function pathToPoints(path) {
 }
 
 describe('Parse data path', () => {
-  let path;
-  let ary;
+  let path: any;
+  let ary: any;
 
   beforeEach(() => {
     path = '';

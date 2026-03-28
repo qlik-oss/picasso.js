@@ -3,7 +3,7 @@ import { Collision } from '../../collision';
 import { SceneNode } from '../../scene-node';
 
 describe('Display Object', () => {
-  let _displayObject;
+  let _displayObject: any;
 
   beforeEach(() => {
     _displayObject = new DisplayObject();

@@ -4,7 +4,7 @@ describe('Context', () => {
   it('should handle inheritance correctly', () => {
     const session = contextFactory(['inherited']);
 
-    let context = session();
+    let context: any = session();
 
     // First level
     context.inherited = true;
@@ -33,7 +33,7 @@ describe('Context', () => {
   it('should handle inheritance with pre-made item correctly', () => {
     const session = contextFactory(['inherited']);
 
-    let context = session();
+    let context: any = session();
 
     // First level
     context = session.save({ inherited: true, notInherited: 2 });
@@ -58,7 +58,7 @@ describe('Context', () => {
   it('should handle overwriting values correctly', () => {
     const session = contextFactory(['inherited', 'inheritedTwo']);
 
-    let context = session();
+    let context: any = session();
 
     // First level
     context = session.save({ inherited: true, inheritedTwo: 2 });

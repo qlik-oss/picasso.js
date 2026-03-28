@@ -3,7 +3,7 @@ import GradientItem, { create as createGradientItem } from '../gradient-item';
 /* eslint no-unused-expressions: 0 */
 
 describe('GradientItem', () => {
-  let item;
+  let item: any;
 
   describe('Constructor', () => {
     it('should instantiate a new GradientItem', () => {
@@ -89,7 +89,7 @@ describe('GradientItem', () => {
     it('should remove properly', () => {
       item = createGradientItem();
 
-      let child = createGradientItem();
+      let child: any = createGradientItem();
 
       item.addChild(child);
       item.removeChild(child);
@@ -100,7 +100,7 @@ describe('GradientItem', () => {
     it('should remove multiple properly', () => {
       item = createGradientItem();
 
-      let children = [createGradientItem(), createGradientItem()];
+      let children: any = [createGradientItem(), createGradientItem()];
 
       item.addChildren(children);
       item.removeChildren(children);

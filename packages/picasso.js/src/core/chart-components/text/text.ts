@@ -1,6 +1,38 @@
 import extend from 'extend';
 
-function parseTitle(text, join, scale) {
+interface ScaleData {
+  fields?: Array<{ title: () => string }>;
+}
+
+interface Scale {
+  data: () => ScaleData;
+}
+
+interface TextRect {
+  width: number;
+  height: number;
+}
+
+interface TextMeasureResult {
+  height: number;
+  width?: number;
+}
+
+interface DefinitionSettings {
+  anchor: string;
+  paddingLeft?: number;
+  paddingRight?: number;
+  paddingStart: number;
+  paddingEnd: number;
+  maxLengthPx: number;
+  join: string;
+}
+
+interface StyleText {
+  text: Record<string, unknown>;
+}
+
+function parseTitle(text: string | (() => string) | unknown, join: string, scale?: Scale): string {
   let title = '';
   if (typeof text === 'function') {
     title = text();
@@ -15,7 +47,7 @@ function parseTitle(text, join, scale) {
   return title;
 }
 
-function getTextAnchor(dock, anchor) {
+function getTextAnchor(dock: string, anchor: string): string {
   let val = 'middle';
   if (dock === 'left') {
     if (anchor === 'top') {
@@ -37,7 +69,16 @@ function getTextAnchor(dock, anchor) {
   return val;
 }
 
-function generateTitle({ title, definitionSettings, dock, rect, measureText, style }) {
+interface GenerateTitleParams {
+  title: string;
+  definitionSettings: DefinitionSettings;
+  dock: string;
+  rect: { width: number; height: number };
+  measureText: (obj: Record<string, unknown>) => TextMeasureResult;
+  style: StyleText;
+}
+
+function generateTitle({ title, definitionSettings, dock, rect, measureText, style }: GenerateTitleParams): Record<string, unknown> {
   const struct: Record<string, unknown> = {
     type: 'text',
     text: title,
@@ -135,6 +176,26 @@ function generateTitle({ title, definitionSettings, dock, rect, measureText, sty
  * @property {number} [strokeWidth=0] - Stroke width of text
  * @property {number} [opacity=1] - Opacity of text
  */
+interface TextComponentContext {
+  definitionSettings: DefinitionSettings;
+  title: string;
+  scale?: Scale;
+  renderer: { measureText: (obj: Record<string, unknown>) => TextMeasureResult };
+  style: StyleText;
+  settings: {
+    layout: { dock: string };
+    text: string | (() => string);
+    settings: DefinitionSettings;
+  };
+  rect: { width: number; height: number };
+}
+
+interface UpdateOptions {
+  settings?: {
+    settings: DefinitionSettings;
+  };
+}
+
 const textComponent = {
   require: ['renderer', 'chart'],
   defaultSettings: {
@@ -157,7 +218,7 @@ const textComponent = {
     },
   },
 
-  created() {
+  created(this: TextComponentContext) {
     this.definitionSettings = this.settings.settings;
 
     const text = this.settings.text;
@@ -165,7 +226,7 @@ const textComponent = {
     this.title = parseTitle(text, join, this.scale);
   },
 
-  preferredSize() {
+  preferredSize(this: TextComponentContext): number {
     const height = this.renderer.measureText({
       text: this.title,
       fontSize: this.style.text.fontSize,
@@ -174,7 +235,7 @@ const textComponent = {
     return height + this.definitionSettings.paddingStart + this.definitionSettings.paddingEnd;
   },
 
-  render() {
+  render(this: TextComponentContext): Record<string, unknown>[] {
     const { title, definitionSettings, rect } = this;
     const nodes = [];
     nodes.push(
@@ -190,7 +251,7 @@ const textComponent = {
     return nodes;
   },
 
-  beforeUpdate(opts) {
+  beforeUpdate(this: TextComponentContext, opts: UpdateOptions): void {
     if (opts.settings) {
       extend(this.settings, opts.settings);
       this.definitionSettings = opts.settings.settings;

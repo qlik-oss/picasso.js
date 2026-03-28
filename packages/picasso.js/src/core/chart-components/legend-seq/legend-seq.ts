@@ -1,22 +1,130 @@
 import { createTitleNode, generateStopNodes, createLegendRectNode, createTickNodes } from './node-builder';
 
-function resolveAnchor(dock, anchor, map) {
-  const mapped = map[dock];
-  if (typeof mapped === 'object') {
-    if (mapped.valid.indexOf(anchor) !== -1) {
-      return anchor;
-    }
-    return mapped.default;
-  }
-
-  return map.default;
+interface AnchorMapEntry {
+  valid: string[];
+  default: string;
 }
 
-function resolveTickAnchor(settings) {
-  const dock = settings.layout.dock;
-  const anchor = settings.settings.tick.anchor;
+type AnchorMap = Record<string, AnchorMapEntry> & { default: string };
 
-  const dockAnchorMap = {
+interface Rect {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+interface TextMetrics {
+  width: number;
+  height: number;
+}
+
+interface Tick {
+  value: unknown;
+  label: string;
+  pos: number;
+  textMetrics: TextMetrics;
+}
+
+interface Scale {
+  domain(): unknown[];
+  norm(value: number): number;
+  data(): { fields?: Array<{ formatter(): (value: unknown) => unknown }> };
+}
+
+interface LegendSeqContext {
+  stgns: {
+    padding: { left: number; right: number; top: number; bottom: number };
+    tick: {
+      anchor?: string;
+      label?: (value: unknown) => string;
+      fontSize: string;
+      fontFamily: string;
+      padding: number;
+    };
+    fill: string;
+    major: string;
+    length: number;
+    maxLengthPx: number;
+    size: number;
+    title: {
+      show: boolean;
+      text?: string;
+      anchor?: string;
+      fontSize: string;
+      fontFamily: string;
+    };
+  };
+  settings: {
+    layout: { dock: string };
+    settings: Record<string, unknown>;
+  };
+  chart: {
+    scale(scaleId: string): Scale;
+  };
+  formatter?: (value: unknown) => string;
+  renderer: {
+    measureText(config: Record<string, unknown>): TextMetrics;
+  };
+}
+
+interface LegendSeqState {
+  isVertical: boolean;
+  rect: Rect;
+  ticks: {
+    anchor: string;
+    length: number;
+    values: Tick[];
+  };
+  title: {
+    anchor: string;
+    textBounds: { height: number };
+    requiredWidth(): number;
+  };
+  legend: {
+    fillScale: Scale;
+    majorScale: Scale;
+    length(): number;
+  };
+  preferredSize?: number;
+  nodes?: unknown[];
+}
+
+interface LegendSeqComponent {
+  state?: LegendSeqState;
+  stgns?: Record<string, unknown>;
+  settings: {
+    layout: { dock: string };
+    settings: Record<string, unknown>;
+  };
+  chart: { scale(id: string): Scale };
+  renderer: { measureText(config: Record<string, unknown>): TextMetrics };
+}
+
+function resolveAnchor(
+  dock: string,
+  anchor: string | null,
+  map: Record<string, unknown>
+): string {
+  const mapped = map[dock];
+  if (typeof mapped === 'object') {
+    const m = mapped as { valid: string[]; default: string };
+    if (m.valid.indexOf(anchor || '') !== -1) {
+      return anchor || '';
+    }
+    return m.default;
+  }
+
+  return (map.default as string) || '';
+}
+
+function resolveTickAnchor(settings: Record<string, unknown>): string {
+  const dock = ((settings.layout as Record<string, unknown>).dock as string) || '';
+  const anchor =
+    ((settings.settings as Record<string, unknown>).tick as Record<string, unknown>)
+      ?.anchor || null;
+
+  const dockAnchorMap: Record<string, unknown> = {
     left: { valid: ['left', 'right'], default: 'left' },
     right: { valid: ['left', 'right'], default: 'right' },
     top: { valid: ['top', 'bottom'], default: 'top' },
@@ -24,11 +132,11 @@ function resolveTickAnchor(settings) {
     default: 'right',
   };
 
-  return resolveAnchor(dock, anchor, dockAnchorMap);
+  return resolveAnchor(dock, (anchor as string) || '', dockAnchorMap);
 }
 
-function resolveTitleAnchor(settings) {
-  const dockAnchorMap = {
+function resolveTitleAnchor(settings: Record<string, unknown>): string {
+  const dockAnchorMap: Record<string, unknown> = {
     left: { valid: ['top'], default: 'top' },
     right: { valid: ['top'], default: 'top' },
     top: { valid: ['left', 'right'], default: 'left' },
@@ -36,14 +144,16 @@ function resolveTitleAnchor(settings) {
     default: 'top',
   };
 
-  const dock = settings.layout.dock;
-  const anchor = settings.settings.title.anchor;
+  const dock = ((settings.layout as Record<string, unknown>).dock as string) || '';
+  const anchor =
+    ((settings.settings as Record<string, unknown>).title as Record<string, unknown>)?.anchor ||
+    null;
 
-  return resolveAnchor(dock, anchor, dockAnchorMap);
+  return resolveAnchor(dock, (anchor as string) || '', dockAnchorMap);
 }
 
-function initRect(ctx, size) {
-  const rect = {
+function initRect(ctx: LegendSeqContext, size: Record<string, unknown>): Rect {
+  const rect: Rect = {
     x: 0,
     y: 0,
     width: 0,
@@ -52,31 +162,31 @@ function initRect(ctx, size) {
   const padding = ctx.stgns.padding;
   rect.x = padding.left;
   rect.y = padding.top;
-  rect.width = size.width - padding.left - padding.right;
-  rect.height = size.height - padding.top - padding.bottom;
+  rect.width = (size.width as number) - padding.left - padding.right;
+  rect.height = (size.height as number) - padding.top - padding.bottom;
 
   return rect;
 }
 
-function getTicks(ctx, majorScale) {
+function getTicks(ctx: LegendSeqContext, majorScale: Scale): Tick[] {
   const values = majorScale.domain();
-  let labels = values;
-  let labelFn = ctx.stgns.tick.label;
+  let labels: string[] = values.map(String);
+  let labelFn: ((value: unknown) => string) | undefined = (ctx.stgns.tick.label as ((value: unknown) => string) | undefined);
   if (!labelFn && ctx.formatter) {
-    labelFn = ctx.formatter;
+    labelFn = ctx.formatter as (value: unknown) => string;
   } else if (!labelFn && majorScale.data().fields) {
-    labelFn = majorScale.data().fields[0].formatter();
+    labelFn = majorScale.data().fields![0].formatter() as (value: unknown) => string;
   }
   if (typeof labelFn === 'function') {
-    labels = values.map(labelFn).map(String);
+    labels = values.map((v: unknown) => (labelFn as (value: unknown) => string)(v)).map(String);
   }
 
-  const ticks = values.map((value, i) => {
+  const ticks: Tick[] = values.map((value: unknown, i: number) => {
     const label = labels[i];
     return {
       value,
       label,
-      pos: majorScale.norm(parseFloat(value)),
+      pos: majorScale.norm(parseFloat(value as string)),
       textMetrics: ctx.renderer.measureText({
         text: label,
         fontSize: ctx.stgns.tick.fontSize,
@@ -88,18 +198,20 @@ function getTicks(ctx, majorScale) {
   return ticks;
 }
 
-function initState(ctx) {
-  const isVertical = ctx.settings.layout.dock !== 'top' && ctx.settings.layout.dock !== 'bottom';
-  const titleStgns = ctx.stgns.title;
+function initState(ctx: LegendSeqComponent): LegendSeqState {
+  const isVertical =
+    (ctx.settings.layout.dock as string) !== 'top' &&
+    (ctx.settings.layout.dock as string) !== 'bottom';
+  const titleStgns = (ctx.stgns?.title as Record<string, unknown>) || {};
 
-  const fillScale = ctx.chart.scale(ctx.stgns.fill);
-  const majorScale = ctx.chart.scale(ctx.stgns.major);
-  const tickValues = getTicks(ctx, majorScale);
+  const fillScale = ctx.chart.scale(ctx.stgns?.fill as string);
+  const majorScale = ctx.chart.scale(ctx.stgns?.major as string);
+  const tickValues = getTicks(ctx as unknown as LegendSeqContext, majorScale);
   const tickAnchor = resolveTickAnchor(ctx.settings);
 
-  if (typeof titleStgns.text === 'undefined') {
+  if (typeof (titleStgns.text as string | undefined) === 'undefined') {
     const fields = majorScale.data().fields;
-    titleStgns.text = fields && fields[0] ? fields[0].title() : '';
+    titleStgns.text = fields && fields[0] ? (fields[0] as unknown as { title?: () => string }).title?.() || String(fields[0].formatter?.()) : '';
   }
 
   const titleTextMetrics = ctx.renderer.measureText({
@@ -108,7 +220,9 @@ function initState(ctx) {
     fontFamily: titleStgns.fontFamily,
   });
 
-  const titleTextBounds = ctx.renderer.textBounds({
+  const titleTextBounds = ((ctx.renderer as Record<string, unknown>).textBounds as (
+    config: Record<string, unknown>
+  ) => Record<string, unknown>)({
     text: titleStgns.text,
     fontSize: titleStgns.fontSize,
     fontFamily: titleStgns.fontFamily,
@@ -127,41 +241,48 @@ function initState(ctx) {
       textMetrics: titleTextMetrics,
       textBounds: titleTextBounds,
       requiredWidth: () => {
-        if (!titleStgns.show) {
+        if (!(titleStgns.show as boolean)) {
           return 0;
         }
-        let w = titleTextBounds.width;
-        let mw = titleStgns.maxLengthPx;
+        let w = (titleTextBounds.width as number) || 0;
+        const mw = (titleStgns.maxLengthPx as number) || 100;
         if (!isVertical) {
-          w += titleStgns.padding;
-          mw += titleStgns.padding;
+          w += (titleStgns.padding as number) || 0;
         }
-        return Math.min(w, mw, (state.rect as { width: number }).width);
+        return Math.min(w, mw);
       },
       requiredHeight: () => {
-        if (!titleStgns.show) {
+        if (!(titleStgns.show as boolean)) {
           return 0;
         }
-        let h = titleTextBounds.height;
+        let h = (titleTextBounds.height as number) || 0;
         if (isVertical) {
-          h += titleStgns.padding;
+          h += (titleStgns.padding as number) || 0;
         }
-        return Math.min(h, (state.rect as { height: number }).height);
+        return h;
       },
     },
     ticks: {
       values: tickValues,
       anchor: tickAnchor,
-      length: Math.min(Math.max(...tickValues.map((t) => t.textMetrics.width)), ctx.stgns.tick.maxLengthPx),
-      requiredHeight: () =>
-        tickAnchor === 'top'
-          ? Math.max(
-              ...(state.ticks as { values: { textMetrics: { height: number } }[] }).values.map(
-                (t) => t.textMetrics.height
-              )
-            ) + ctx.stgns.tick.padding
-          : 0,
-      height: Math.max(...tickValues.map((t) => t.textMetrics.height)),
+      length: Math.min(
+        Math.max(...tickValues.map((t: Tick) => t.textMetrics.width)),
+        (ctx.stgns?.tick as Record<string, unknown>)?.maxLengthPx as number
+      ),
+      requiredHeight: () => {
+        const ticks = state.ticks as { values: Tick[] };
+        return tickAnchor === 'top'
+          ? Math.max(...ticks.values.map((t: Tick) => t.textMetrics.height)) +
+              ((ctx.stgns?.tick as Record<string, unknown>)?.padding as number)
+          : 0;
+      },
+      requiredWidth: () => {
+        const ticks = state.ticks as { values: Tick[] };
+        return tickAnchor === 'left' || tickAnchor === 'right'
+          ? Math.max(...ticks.values.map((t: Tick) => t.textMetrics.width)) +
+              ((ctx.stgns?.tick as Record<string, unknown>)?.padding as number)
+          : 0;
+      },
     },
     legend: {
       fillScale,
@@ -169,13 +290,17 @@ function initState(ctx) {
       length: () => {
         const pos = isVertical ? 'height' : 'width';
         const fnPos = isVertical ? 'requiredHeight' : 'requiredWidth';
-        const len = Math.min(state.rect[pos], state.rect[pos] * ctx.stgns.length) - state.title[fnPos]();
-        return Math.max(0, Math.min(len, ctx.stgns.maxLengthPx));
+        const len =
+          Math.min(
+            (state.rect as Record<string, unknown>)[pos] as number,
+            ((state.rect as Record<string, unknown>)[pos] as number) * (ctx.stgns?.length as number)
+          ) - ((state.title as Record<string, unknown>)[fnPos] as () => number)();
+        return Math.max(0, Math.min(len, (ctx.stgns?.maxLengthPx as number) || 250));
       },
     },
   };
 
-  return state;
+  return state as unknown as LegendSeqState;
 }
 
 /**
@@ -216,7 +341,15 @@ function initState(ctx) {
  * @property {number} [title.lineHeight=1.2] - A multiplier defining the distance between lines (only applicable with wordBreak)
  */
 
-const legendDef = {
+const legendDef: {
+  require: string[];
+  defaultSettings: Record<string, unknown>;
+  preferredSize(this: LegendSeqComponent, opts: Record<string, unknown>): number;
+  created(this: LegendSeqComponent): void;
+  beforeUpdate(this: LegendSeqComponent, opts: Record<string, unknown>): void;
+  beforeRender(this: LegendSeqComponent, opts: Record<string, unknown>): void;
+  render(this: LegendSeqComponent): unknown[];
+} = {
   require: ['chart', 'settings', 'renderer'],
   defaultSettings: {
     layout: {
@@ -241,7 +374,7 @@ const legendDef = {
         fontSize: '12px',
         fontFamily: 'Arial',
         maxLengthPx: 100,
-        anchor: null, // Use default based on dock
+        anchor: null,
         padding: 5,
       },
       title: {
@@ -256,86 +389,87 @@ const legendDef = {
         wordBreak: 'none',
         lineHeight: 1.2,
         hyphens: 'auto',
-        anchor: null, // Use default based on dock
+        anchor: null,
       },
     },
   },
-  preferredSize(opts) {
-    const state = this.state;
-    state.rect = initRect(this, opts.inner);
+  preferredSize(opts: Record<string, unknown>): number {
+    const state = this.state as LegendSeqState;
+    state.rect = initRect(this as unknown as LegendSeqContext, (opts.inner as Record<string, unknown>) || {});
 
-    // Init with size of legend
-    let prefSize = this.stgns.size;
+    let prefSize = (this.stgns?.size as number) || 15;
 
-    // Append paddings
     const paddings = state.isVertical
-      ? this.stgns.padding.left + this.stgns.padding.right
-      : this.stgns.padding.top + this.stgns.padding.bottom;
+      ? ((this.stgns?.padding as Record<string, unknown>)?.left as number) +
+        ((this.stgns?.padding as Record<string, unknown>)?.right as number)
+      : ((this.stgns?.padding as Record<string, unknown>)?.top as number) +
+        ((this.stgns?.padding as Record<string, unknown>)?.bottom as number);
     prefSize += paddings;
 
-    // Append tick size
-    const maxSize = Math.max(opts.inner.width, opts.inner.height);
+    const maxSize = Math.max(
+      (opts.inner as Record<string, unknown>)?.width as number,
+      (opts.inner as Record<string, unknown>)?.height as number
+    );
     if (state.ticks.anchor === 'left' || state.ticks.anchor === 'right') {
-      const tHeight = state.ticks.values.reduce((sum, t) => sum + t.textMetrics.height, 0);
-      if (tHeight > this.state.legend.length()) {
+      const tHeight = state.ticks.values.reduce(
+        (sum: number, t: Tick) => sum + t.textMetrics.height,
+        0
+      );
+      if (tHeight > state.legend.length()) {
         return maxSize;
       }
       prefSize += state.ticks.length;
     } else {
       const tWidth = state.ticks.length;
-      if (tWidth > this.state.legend.length()) {
+      if (tWidth > state.legend.length()) {
         return maxSize;
       }
-      prefSize += Math.max(...state.ticks.values.map((t) => t.textMetrics.height));
+      prefSize += Math.max(...state.ticks.values.map((t: Tick) => t.textMetrics.height));
     }
-    prefSize += this.stgns.tick.padding;
+    prefSize += ((this.stgns?.tick as Record<string, unknown>)?.padding as number) || 5;
 
-    // Append or use title size
-    if (this.stgns.title.show) {
+    if (((this.stgns?.title as Record<string, unknown>)?.show as boolean) || false) {
       if (state.title.anchor === 'left' || state.title.anchor === 'right') {
-        prefSize = Math.max(state.title.textBounds.height + paddings, prefSize);
+        prefSize = Math.max((state.title.textBounds as Record<string, unknown>).height as number + paddings, prefSize);
       } else {
         prefSize = Math.max(prefSize, state.title.requiredWidth() + paddings);
       }
     }
 
-    this.state.preferredSize = prefSize;
+    state.preferredSize = prefSize;
     return prefSize;
   },
-  created() {
-    this.stgns = this.settings.settings;
-
+  created(): void {
+    this.stgns = (this.settings.settings as Record<string, unknown>) || {};
     this.state = initState(this);
   },
-  beforeUpdate(opts) {
-    this.stgns = opts.settings.settings;
-
+  beforeUpdate(opts: Record<string, unknown>): void {
+    this.stgns = ((opts.settings as Record<string, unknown>)?.settings as Record<string, unknown>) || {};
     this.state = initState(this);
   },
-  beforeRender(opts) {
-    this.state.nodes = [];
-    this.state.rect = initRect(this, opts.size);
+  beforeRender(opts: Record<string, unknown>): void {
+    (this.state as LegendSeqState).nodes = [];
+    (this.state as LegendSeqState).rect = initRect(this as unknown as LegendSeqContext, (opts.size as Record<string, unknown>) || {});
 
-    if (this.stgns.title.show) {
-      const titleNode = createTitleNode(this);
-      this.state.nodes.push(titleNode);
+    if (((this.stgns?.title as Record<string, unknown>)?.show as boolean) || false) {
+      const titleNode = createTitleNode(this as unknown as Record<string, unknown>);
+      ((this.state as LegendSeqState).nodes as unknown[]).push(titleNode);
     }
 
-    const stopNodes = generateStopNodes(this);
-    const rectNode = createLegendRectNode(this, stopNodes);
-    const tickNodes = createTickNodes(this, rectNode);
+    const stopNodes = generateStopNodes(this as unknown as Record<string, unknown>);
+    const rectNode = createLegendRectNode(this as unknown as Record<string, unknown>, stopNodes);
+    const tickNodes = createTickNodes(this as unknown as Record<string, unknown>, rectNode);
 
     const targetNode = {
-      // The target node enables range selection component to limit its range to a specific area
       id: 'legend-seq-target',
       type: 'container',
       children: [rectNode, tickNodes],
     };
 
-    this.state.nodes.push(targetNode);
+    ((this.state as LegendSeqState).nodes as unknown[]).push(targetNode);
   },
-  render() {
-    return this.state.nodes;
+  render(): unknown[] {
+    return ((this.state as LegendSeqState).nodes as unknown[]) || [];
   },
 };
 

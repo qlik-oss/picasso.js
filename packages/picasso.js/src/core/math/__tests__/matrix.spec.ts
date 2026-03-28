@@ -1,7 +1,7 @@
 import Matrix from '../matrix';
 
 describe('Matrix', () => {
-  let m;
+  let m: any;
 
   beforeEach(() => {
     m = new Matrix();

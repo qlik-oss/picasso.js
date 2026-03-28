@@ -1,9 +1,9 @@
 import interpolateObject from '../interpolate-object';
 
 describe('interpolateObject', () => {
-  let source;
-  let target;
-  let sandbox;
+  let source: any;
+  let target: any;
+  let sandbox: any;
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();

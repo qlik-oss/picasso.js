@@ -1,7 +1,7 @@
 import rendererRegistry from '..';
 
 describe('renderer', () => {
-  let renderer;
+  let renderer: any;
   beforeEach(() => {
     renderer = rendererRegistry();
     renderer.register('foo', () => 'whatevz');

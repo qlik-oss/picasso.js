@@ -1,6 +1,45 @@
 import extend from 'extend';
-import { transposer } from '../../transposer/transposer';
+import Transposer, { transposer } from '../../transposer/transposer';
 import { updateScaleSize } from '../../scales';
+
+interface Tick {
+  position?: number;
+  value?: unknown;
+  data?: Record<string, unknown>;
+  isMinor?: boolean;
+  flipXY?: boolean;
+}
+
+interface Scale {
+  cachedTicks?(): Tick[];
+  ticks(config: Record<string, unknown>): Tick[];
+}
+
+interface Rect {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+interface GridLineComponent {
+  blueprint?: Transposer;
+  rect?: Rect;
+  x?: Scale | null;
+  y?: Scale | null;
+  settings: Record<string, unknown>;
+  style?: Record<string, unknown>;
+  chart: {
+    scale(scaleId: string): Scale;
+  };
+  resolver: {
+    resolve(config: Record<string, unknown>): Record<string, unknown>;
+  };
+  lines?: {
+    x: Tick[];
+    y: Tick[];
+  };
+}
 
 /**
  * Generate array of lines (ticks) from scale
@@ -11,14 +50,20 @@ import { updateScaleSize } from '../../scales';
  * @returns {array} - Returns an array of ticks
  * @ignore
  */
-function lineGen(scale, distance) {
+function lineGen(scale: Scale | undefined, distance: number): Tick[] {
   if (!scale || !distance) {
     return [];
   }
   return (scale.cachedTicks && scale.cachedTicks()) || scale.ticks({ distance });
 }
 
-const gridLineComponent = {
+const gridLineComponent: {
+  created(this: GridLineComponent): void;
+  require: string[];
+  defaultSettings: Record<string, unknown>;
+  beforeRender(this: GridLineComponent): void;
+  render(this: GridLineComponent): unknown[];
+} = {
   created() {},
 
   require: ['chart', 'renderer', 'resolver'],
@@ -36,27 +81,42 @@ const gridLineComponent = {
   beforeRender() {
     this.blueprint = transposer();
 
-    this.blueprint.width = this.rect.width;
-    this.blueprint.height = this.rect.height;
-    this.blueprint.x = this.rect.x;
-    this.blueprint.y = this.rect.y;
+    const rect = this.rect as Rect;
+    (this.blueprint as unknown as Record<string, unknown>).width = rect.width;
+    (this.blueprint as unknown as Record<string, unknown>).height = rect.height;
+    (this.blueprint as unknown as Record<string, unknown>).x = rect.x;
+    (this.blueprint as unknown as Record<string, unknown>).y = rect.y;
     this.blueprint.crisp = true;
   },
 
   render() {
     // Setup scales
-    this.x = this.settings.x ? this.chart.scale(this.settings.x) : null;
-    this.y = this.settings.y ? this.chart.scale(this.settings.y) : null;
-    updateScaleSize(this, 'x', this.rect.width);
-    updateScaleSize(this, 'y', this.rect.height);
+    this.x = (this.settings.x as string)
+      ? this.chart.scale(this.settings.x as string)
+      : null;
+    this.y = (this.settings.y as string)
+      ? this.chart.scale(this.settings.y as string)
+      : null;
+    const rect = this.rect as Rect;
+    updateScaleSize(this, 'x', rect.width);
+    updateScaleSize(this, 'y', rect.height);
 
     // Return an empty array to abort rendering when no scales are available to renderer
     if (!this.x && !this.y) {
       return [];
     }
 
-    this.settings.ticks = extend({ show: true }, this.style.ticks, this.settings.ticks || {});
-    this.settings.minorTicks = extend({ show: false }, this.style.minorTicks, this.settings.minorTicks || {});
+    const style = (this.style as Record<string, unknown>) || {};
+    this.settings.ticks = extend(
+      { show: true },
+      (style.ticks as Record<string, unknown>) || {},
+      (this.settings.ticks as Record<string, unknown>) || {}
+    );
+    this.settings.minorTicks = extend(
+      { show: false },
+      (style.minorTicks as Record<string, unknown>) || {},
+      (this.settings.minorTicks as Record<string, unknown>) || {}
+    );
 
     // Setup lines for X and Y
     this.lines = {
@@ -65,41 +125,43 @@ const gridLineComponent = {
     };
 
     // Use the lineGen function to generate appropriate ticks
-    this.lines.x = lineGen(this.x, this.rect.width);
-    this.lines.y = lineGen(this.y, this.rect.height);
+    this.lines.x = lineGen(this.x || undefined, rect.width);
+    this.lines.y = lineGen(this.y || undefined, rect.height);
 
     // Set all Y lines to flipXY by default
     // This makes the transposer flip them individually
-    this.lines.y = this.lines.y.map((i) => extend(i, { flipXY: true }));
+    this.lines.y = this.lines.y.map((i: Tick) => extend(i, { flipXY: true }));
 
-    let addTicks = ({ dir, isMinor }) => {
-      let items = this.lines[dir].filter((tick) => !!tick.isMinor === isMinor);
-      let settings = isMinor ? this.settings.minorTicks : this.settings.ticks;
-      let ticks = this.resolver.resolve({
+    const addTicks = ({ dir, isMinor }: { dir: string; isMinor: boolean }): void => {
+      const items = this.lines![dir as 'x' | 'y'].filter((tick: Tick) => !!tick.isMinor === isMinor);
+      const settings = isMinor
+        ? (this.settings.minorTicks as Record<string, unknown>)
+        : (this.settings.ticks as Record<string, unknown>);
+      const ticks = (this.resolver.resolve({
         settings,
         data: {
           items,
           dir,
         },
-      }).items;
+      }) as Record<string, unknown>).items as Array<Record<string, unknown>>;
 
-      ticks.forEach((style) => {
-        let p = style.data;
+      ticks.forEach((style: Record<string, unknown>) => {
+        const p = style.data as Record<string, unknown>;
 
         // If the style's show is falsy, don't renderer this item (to respect axis settings).
         if (style.show) {
           // Use the transposer to handle actual positioning
-          this.blueprint.push({
+          (this.blueprint as Transposer).push({
             type: 'line',
             x1: p.position,
             y1: 0,
             x2: p.position,
             y2: 1,
-            stroke: style.stroke || 'black',
+            stroke: (style.stroke as string) || 'black',
             strokeWidth: typeof style.strokeWidth !== 'undefined' ? style.strokeWidth : 1,
             strokeDasharray: typeof style.strokeDasharray !== 'undefined' ? style.strokeDasharray : undefined,
-            flipXY: p.flipXY || false, // This flips individual points (Y-lines)
-            value: p.value ?? p.data?.value,
+            flipXY: (p.flipXY as boolean) || false,
+            value: (p.value as unknown) ?? ((p.data as Record<string, unknown>)?.value as unknown),
             dir,
           });
         }
@@ -111,7 +173,7 @@ const gridLineComponent = {
     addTicks({ dir: 'y', isMinor: false });
     addTicks({ dir: 'y', isMinor: true });
 
-    return this.blueprint.output();
+    return ((this.blueprint as Transposer).output as () => unknown[])();
   },
 };
 

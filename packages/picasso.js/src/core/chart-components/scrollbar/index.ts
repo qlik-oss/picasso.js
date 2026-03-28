@@ -11,14 +11,65 @@
  * @property {boolean} [width = 16]
  */
 
-function start(_scrollbar, pos) {
+interface ScrollPosition {
+  x: number;
+  y: number;
+}
+
+interface ScrollState {
+  start: number;
+  min: number;
+  max: number;
+  viewSize: number;
+}
+
+interface CurrentMove {
+  startOffset: number;
+  startScroll: number;
+  swipe: boolean;
+}
+
+interface ScrollHandler {
+  update(p: ScrollPosition): void;
+  end(p: ScrollPosition): void;
+}
+
+interface Scrollbar {
+  settings: {
+    layout: { dock: string };
+    scroll: string;
+    settings: { invert?: boolean };
+  };
+  rect: Record<string, number>;
+  chart: {
+    scroll(scrollId: string): {
+      getState(): ScrollState;
+      moveTo(pos: number): void;
+    };
+  };
+}
+
+interface Event {
+  center: { x: number; y: number };
+  deltaX: number;
+  deltaY: number;
+}
+
+interface Renderer {
+  element(): Element;
+}
+
+function start(
+  _scrollbar: Scrollbar,
+  pos: ScrollPosition
+): ScrollHandler {
   const dock = _scrollbar.settings.layout.dock;
-  const invert = _scrollbar.settings.settings.invert;
+  const invert = _scrollbar.settings.settings.invert || false;
   const horizontal = dock === 'top' || dock === 'bottom';
   const lengthAttr = horizontal ? 'width' : 'height';
   const length = _scrollbar.rect[lengthAttr];
   const scroll = _scrollbar.chart.scroll(_scrollbar.settings.scroll);
-  let currentMove;
+  let currentMove: CurrentMove;
 
   {
     // local scope to allow reuse of variable names later
@@ -34,8 +85,9 @@ function start(_scrollbar, pos) {
       swipe: false,
     };
 
-    // Detect swipe start outsize the thumb & change startScroll to jump the scroll there.
-    const scrollPoint = (offset / length) * (scrollState.max - scrollState.min) + scrollState.min;
+    // Detect swipe start outside the thumb & change startScroll to jump the scroll there.
+    const scrollPoint =
+      (offset / length) * (scrollState.max - scrollState.min) + scrollState.min;
     if (scrollPoint < scrollState.start) {
       currentMove.startScroll = scrollPoint;
     } else if (scrollPoint > scrollState.start + scrollState.viewSize) {
@@ -43,7 +95,7 @@ function start(_scrollbar, pos) {
     }
   }
 
-  const update = (p) => {
+  const update = (p: ScrollPosition): void => {
     let offset = p[horizontal ? 'x' : 'y'];
     if (invert) {
       offset = length - offset;
@@ -56,22 +108,28 @@ function start(_scrollbar, pos) {
     }
 
     const scrollState = scroll.getState();
-    const scrollMove = ((offset - currentMove.startOffset) / length) * (scrollState.max - scrollState.min);
+    const scrollMove =
+      ((offset - currentMove.startOffset) / length) *
+      (scrollState.max - scrollState.min);
     const scrollStart = currentMove.startScroll + scrollMove;
     scroll.moveTo(scrollStart);
   };
-  const end = (p) => {
+
+  const end = (p: ScrollPosition): void => {
     let offset = p[horizontal ? 'x' : 'y'];
     if (invert) {
       offset = length - offset;
     }
     const scrollState = scroll.getState();
     if (currentMove.swipe) {
-      const scrollMove = ((offset - currentMove.startOffset) / length) * (scrollState.max - scrollState.min);
+      const scrollMove =
+        ((offset - currentMove.startOffset) / length) *
+        (scrollState.max - scrollState.min);
       const scrollStart = currentMove.startScroll + scrollMove;
       scroll.moveTo(scrollStart);
     } else {
-      const scrollCenter = (offset / length) * (scrollState.max - scrollState.min) + scrollState.min;
+      const scrollCenter =
+        (offset / length) * (scrollState.max - scrollState.min) + scrollState.min;
       const scrollStart = scrollCenter - scrollState.viewSize / 2;
       scroll.moveTo(scrollStart);
     }
@@ -83,7 +141,7 @@ function start(_scrollbar, pos) {
   };
 }
 
-function getLocalPos(event, renderer) {
+function getLocalPos(event: Event, renderer: Renderer): ScrollPosition {
   const containerRect = renderer.element().getBoundingClientRect();
   return {
     x: event.center.x - containerRect.left,
@@ -91,39 +149,57 @@ function getLocalPos(event, renderer) {
   };
 }
 
+interface ScrollbarComponent extends Scrollbar, Renderer {
+  currentMove?: ScrollHandler | null;
+  require: string[];
+  on: Record<string, (this: ScrollbarComponent, event?: Event) => void>;
+  defaultSettings: Record<string, unknown>;
+  preferredSize(this: ScrollbarComponent, rect: Record<string, number>): number;
+  render(this: ScrollbarComponent, h: unknown): unknown[];
+}
+
 const scrollbarComponent = {
   require: ['chart', 'renderer'],
   on: {
-    panStart(event) {
-      const pos = getLocalPos(event, this.renderer);
-      const startPos = {
+    panStart(this: ScrollbarComponent, event: Event): void {
+      const pos = getLocalPos(event, this as unknown as Renderer);
+      const startPos: ScrollPosition = {
         x: pos.x - event.deltaX,
         y: pos.y - event.deltaY,
       };
-      this.currentMove = start(this, startPos);
-      this.currentMove.update(pos);
+      (this as unknown as Record<string, unknown>).currentMove = start(
+        this as unknown as Scrollbar,
+        startPos
+      );
+      ((this as unknown as Record<string, unknown>).currentMove as ScrollHandler).update(pos);
     },
-    panMove(event) {
-      if (!this.currentMove) {
+    panMove(this: ScrollbarComponent, event: Event): void {
+      const currentMove = (this as unknown as Record<string, unknown>).currentMove as
+        | ScrollHandler
+        | null;
+      if (!currentMove) {
         return;
       }
-      const pos = getLocalPos(event, this.renderer);
-      this.currentMove.update(pos);
+      const pos = getLocalPos(event, this as unknown as Renderer);
+      currentMove.update(pos);
     },
-    panEnd(event) {
-      if (!this.currentMove) {
+    panEnd(this: ScrollbarComponent, event: Event): void {
+      const currentMove = (this as unknown as Record<string, unknown>).currentMove as
+        | ScrollHandler
+        | null;
+      if (!currentMove) {
         return;
       }
-      const pos = getLocalPos(event, this.renderer);
-      this.currentMove.end(pos);
-      this.currentMove = null;
+      const pos = getLocalPos(event, this as unknown as Renderer);
+      currentMove.end(pos);
+      (this as unknown as Record<string, unknown>).currentMove = null;
     },
-    panCancel() {
-      this.currentMove = null;
+    panCancel(this: ScrollbarComponent): void {
+      (this as unknown as Record<string, unknown>).currentMove = null;
     },
-    tap(event) {
-      const pos = getLocalPos(event, this.renderer);
-      const move = start(this, pos);
+    tap(this: ScrollbarComponent, event: Event): void {
+      const pos = getLocalPos(event, this as unknown as Renderer);
+      const move = start(this as unknown as Scrollbar, pos);
       move.end(pos);
     },
   },
@@ -131,21 +207,23 @@ const scrollbarComponent = {
     settings: {
       backgroundColor: '#eee',
       thumbColor: '#ccc',
-      width: 16, // 32 for touch
+      width: 16,
     },
   },
 
-  preferredSize: function preferredSize(rect) {
-    const scrollState = this.chart.scroll(this.settings.scroll).getState();
-    // hide the scrollbar if it is not possible to scroll
+  preferredSize(this: ScrollbarComponent, rect: Record<string, number>): number {
+    const scrollState = this.chart
+      .scroll((this.settings as Record<string, unknown>).scroll as string)
+      .getState();
     if (scrollState.viewSize >= scrollState.max - scrollState.min) {
       const toLargeSize = Math.max(rect.width, rect.height);
       return toLargeSize;
     }
-    return this.settings.settings.width;
+    return ((this.settings as Record<string, unknown>).settings as Record<string, unknown>)
+      .width as number;
   },
 
-  render: function render(h) {
+  render(this: ScrollbarComponent, h: unknown): unknown[] {
     const dock = this.settings.layout.dock;
     const invert = this.settings.settings.invert;
     const horizontal = dock === 'top' || dock === 'bottom';
@@ -162,36 +240,50 @@ const scrollbarComponent = {
       thumbStart = length - thumbStart - thumbRange;
     }
 
-    return h(
-      'div',
-      {
-        style: {
-          position: 'relative',
-          width: '100%',
-          height: '100%',
-          background: this.settings.settings.backgroundColor,
-          pointerEvents: 'auto',
+    return [
+      (h as (...args: unknown[]) => unknown)(
+        'div',
+        {
+          style: {
+            position: 'relative',
+            width: '100%',
+            height: '100%',
+            background: ((this.settings as Record<string, unknown>).settings as Record<string, unknown>)
+              .backgroundColor,
+            pointerEvents: 'auto',
+          },
         },
-      },
-      [].concat(
-        h('div', {
+        (h as (...args: unknown[]) => unknown)('div', {
           class: 'scroller',
           style: {
             position: 'absolute',
             [horizontal ? 'left' : 'top']: `${thumbStart}px`,
             [horizontal ? 'top' : 'left']: '25%',
-            [horizontal ? 'height' : 'width']: '50%', // ${width}px
+            [horizontal ? 'height' : 'width']: '50%',
             [lengthAttr]: `${Math.max(1, thumbRange)}px`,
-            background: this.settings.settings.thumbColor,
+            background: ((this.settings as Record<string, unknown>).settings as Record<string, unknown>)
+              .thumbColor,
           },
         })
-      )
-    );
+      ),
+    ];
   },
+} as unknown as (
+  Record<string, unknown> & {
+    require: string[];
+    on: Record<string, (this: ScrollbarComponent, event?: Event) => void>;
+    defaultSettings: Record<string, unknown>;
+    preferredSize(this: ScrollbarComponent, rect: Record<string, number>): number;
+    render(this: ScrollbarComponent, h: unknown): unknown[];
+    renderer: string;
+  }
+);
 
-  renderer: 'dom',
-};
+(scrollbarComponent as Record<string, unknown>).renderer = 'dom';
 
-export default function scrollbar(picasso) {
-  picasso.component('scrollbar', scrollbarComponent);
+export default function scrollbar(picasso: Record<string, unknown>): void {
+  (picasso.component as (name: string, component: Record<string, unknown>) => void)(
+    'scrollbar',
+    scrollbarComponent as Record<string, unknown>
+  );
 }

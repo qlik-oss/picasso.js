@@ -1,8 +1,8 @@
 import Image, { create as createImage } from '../image';
 
 describe('Image', () => {
-  let image;
-  let shape;
+  let image: any;
+  let shape: any;
 
   beforeEach(() => {
     shape = {

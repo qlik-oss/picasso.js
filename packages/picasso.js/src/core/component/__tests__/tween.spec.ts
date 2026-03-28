@@ -1,8 +1,8 @@
 import { findCommonPointsFromTwoLines } from '../tween';
 
 describe('findCommonPointsFromTwoLines', () => {
-  let oldLine;
-  let currentLine;
+  let oldLine: any;
+  let currentLine: any;
 
   beforeEach(() => {
     oldLine = {
