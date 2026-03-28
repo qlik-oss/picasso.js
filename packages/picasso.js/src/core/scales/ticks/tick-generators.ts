@@ -1,21 +1,21 @@
 import { notNumber } from '../../utils/is-number';
 
-function applyFormat(formatter) {
-  return typeof formatter === 'undefined' ? (t) => t : (t) => formatter(t);
+function applyFormat(formatter: any): (t: any) => any {
+  return typeof formatter === 'undefined' ? (t: any) => t : (t: any) => (formatter as any)(t);
 }
 
-function clamp(val) {
+function clamp(val: any): number {
   return Math.max(0, Math.min(1, val));
 }
 
-function isObject(obj) {
+function isObject(obj: any): boolean {
   return typeof obj === 'object';
 }
 
-function minorTicksGenerator(count, start, end) {
+function minorTicksGenerator(count: any, start: any, end: any): any[] {
   const r = Math.abs(start - end);
   const interval = r / (count + 1);
-  const ticks = [];
+  const ticks: any[] = [];
   for (let i = 1; i <= count; i++) {
     const v = i * interval;
     ticks.push(start < end ? start + v : start - v);
@@ -23,7 +23,7 @@ function minorTicksGenerator(count, start, end) {
   return ticks;
 }
 
-function appendMinorTicks(majorTicks, minorCount, scale) {
+function appendMinorTicks(majorTicks: any, minorCount: any, scale: any): any {
   if (majorTicks.length === 1) {
     return majorTicks;
   }
@@ -49,7 +49,7 @@ function appendMinorTicks(majorTicks, minorCount, scale) {
     }
   }
 
-  return ticks.filter((t) => t >= scale.min() && t <= scale.max());
+  return ticks.filter((t: any) => t >= scale.min() && t <= scale.max());
 }
 
 /**
@@ -67,21 +67,21 @@ export function looseDistanceBasedGenerator({
   minorCount = 0,
   unitDivider = 100,
   formatter = undefined,
-}) {
+}: any): any[] {
   const step = !notNumber(unitDivider) && !notNumber(distance) ? Math.max(distance / unitDivider, 2) : 2;
   const count = Math.min(1000, Math.round(step)); // safe guard against huge numbers
-  let majorTicks = scale.ticks(count);
+  let majorTicks = (scale as any).ticks(count);
   if (majorTicks.length <= 1) {
-    majorTicks = scale.ticks(count + 1);
+    majorTicks = (scale as any).ticks(count + 1);
   }
 
   const ticks = minorCount > 0 ? appendMinorTicks(majorTicks, minorCount, scale) : majorTicks;
-  ticks.sort((a, b) => a - b);
+  ticks.sort((a: any, b: any) => a - b);
 
-  const ticksFormatted = ticks.map(applyFormat(formatter));
+  const ticksFormatted = (ticks as any[]).map(applyFormat(formatter));
 
-  return ticks.map((tick, i) => {
-    const position = scale(tick);
+  return (ticks as any[]).map((tick: any, i: number) => {
+    const position = (scale as any)(tick);
     return {
       position,
       start: position,
@@ -109,20 +109,20 @@ export function tightDistanceBasedGenerator({
   minorCount = 0,
   unitDivider = 100,
   formatter = undefined,
-}) {
+}: any): any[] {
   const step = !notNumber(unitDivider) && !notNumber(distance) ? Math.max(distance / unitDivider, 2) : 2;
   const count = Math.min(1000, Math.round(step)); // safe guard against huge numbers
   const n = count > 10 ? 10 : count;
-  scale.nice(n);
+  (scale as any).nice(n);
 
-  const majorTicks = scale.ticks(count);
+  const majorTicks = (scale as any).ticks(count);
   const ticks = minorCount > 0 ? appendMinorTicks(majorTicks, minorCount, scale) : majorTicks;
-  ticks.sort((a, b) => a - b);
+  ticks.sort((a: any, b: any) => a - b);
 
-  const ticksFormatted = ticks.map(applyFormat(formatter));
+  const ticksFormatted = (ticks as any[]).map(applyFormat(formatter));
 
-  return ticks.map((tick, i) => {
-    const position = scale(tick);
+  return (ticks as any[]).map((tick: any, i: number) => {
+    const position = (scale as any)(tick);
     return {
       position,
       start: position,
@@ -134,9 +134,9 @@ export function tightDistanceBasedGenerator({
   });
 }
 
-function ticksByCount({ count, minorCount, scale, formatter }) {
-  return scale.ticks((count - 1) * minorCount + count).map((tick, i) => {
-    const position = scale(tick);
+function ticksByCount({ count, minorCount, scale, formatter }: any): any[] {
+  return (scale as any).ticks((count - 1) * minorCount + count).map((tick: any, i: number) => {
+    const position = (scale as any)(tick);
     return {
       position,
       start: position,
@@ -148,30 +148,30 @@ function ticksByCount({ count, minorCount, scale, formatter }) {
   });
 }
 
-function ticksByValue({ values, scale, formatter = (v) => v }) {
-  return values
-    .sort((a, b) => (isObject(a) ? a.value : a) - (isObject(b) ? b.value : b))
-    .filter((v, i, ary) => {
+function ticksByValue({ values, scale, formatter = (v: any) => v }: any): any {
+  return (values as any[])
+    .sort((a: any, b: any) => (isObject(a) ? a.value : a) - (isObject(b) ? b.value : b))
+    .filter((v: any, i: number, ary: any[]) => {
       const val = isObject(v) ? v.value : v;
-      return val <= scale.max() && val >= scale.min() && ary.indexOf(v) === i;
+      return val <= (scale as any).max() && val >= (scale as any).min() && ary.indexOf(v) === i;
     })
-    .map((v) => {
+    .map((v: any) => {
       const isObj = isObject(v);
       const value = isObj ? v.value : v;
-      const position = scale(value);
+      const position = (scale as any)(value);
       return {
         position,
         value,
         label: isObj && typeof v.label !== 'undefined' ? v.label : formatter(value),
         isMinor: isObj ? !!v.isMinor : false,
-        start: isObj && !isNaN(v.start) ? clamp(scale(v.start)) : position, // TODOHandle end < start?
-        end: isObj && !isNaN(v.end) ? clamp(scale(v.end)) : position, // TODO Handle start > end?
+        start: isObj && !isNaN(v.start) ? clamp((scale as any)(v.start)) : position, // TODOHandle end < start?
+        end: isObj && !isNaN(v.end) ? clamp((scale as any)(v.end)) : position, // TODO Handle start > end?
       };
     });
 }
 
-function forceTicksAtBounds(ticks, scale, formatter) {
-  const ticksP = ticks.map((t) => t.position);
+function forceTicksAtBounds(ticks: any, scale: any, formatter: any): void {
+  const ticksP = (ticks as any[]).map((t: any) => t.position);
   const range = scale.range();
 
   if (ticksP.indexOf(range[0]) === -1) {
@@ -202,33 +202,37 @@ function forceTicksAtBounds(ticks, scale, formatter) {
   }
 }
 
-export function generateContinuousTicks({ settings, scale, distance, formatter = (val) => val }) {
-  let ticks;
+export function generateContinuousTicks({ settings, scale, distance, formatter = (val: any) => val }: any): any[] {
+  let ticks: any;
   const minorCount =
-    settings.minorTicks && !notNumber(settings.minorTicks.count) ? Math.min(100, settings.minorTicks.count) : 0;
+    (settings as Record<string, any>).minorTicks && !notNumber((settings as Record<string, any>).minorTicks.count)
+      ? Math.min(100, (settings as Record<string, any>).minorTicks.count)
+      : 0;
 
-  if (Array.isArray(settings.ticks.values)) {
-    const values = settings.ticks.values.filter((v) => (typeof v === 'object' ? !notNumber(v.value) : !notNumber(v)));
-    ticks = ticksByValue({ values, scale: scale.copy(), formatter });
-  } else if (!notNumber(settings.ticks.count)) {
-    const count = Math.min(1000, settings.ticks.count);
+  if (Array.isArray((settings as Record<string, any>).ticks.values)) {
+    const values = ((settings as Record<string, any>).ticks.values as any[]).filter(
+      (v: any) => (typeof v === 'object' ? !notNumber(v.value) : !notNumber(v))
+    );
+    ticks = ticksByValue({ values, scale: (scale as any).copy(), formatter });
+  } else if (!notNumber((settings as Record<string, any>).ticks.count)) {
+    const count = Math.min(1000, (settings as Record<string, any>).ticks.count);
     ticks = ticksByCount({
       count,
       minorCount,
-      scale: scale.copy(),
+      scale: (scale as any).copy(),
       formatter,
     });
   } else {
-    const tickGen = settings.ticks.tight ? tightDistanceBasedGenerator : looseDistanceBasedGenerator;
+    const tickGen = (settings as Record<string, any>).ticks.tight ? tightDistanceBasedGenerator : looseDistanceBasedGenerator;
     ticks = tickGen({
       distance,
       minorCount,
-      unitDivider: settings.ticks.distance,
+      unitDivider: (settings as Record<string, any>).ticks.distance,
       scale,
       formatter,
     });
 
-    if (settings.ticks.forceBounds) {
+    if ((settings as Record<string, any>).ticks.forceBounds) {
       forceTicksAtBounds(ticks, scale, formatter);
     }
   }
@@ -236,15 +240,15 @@ export function generateContinuousTicks({ settings, scale, distance, formatter =
   return ticks;
 }
 
-export function generateDiscreteTicks({ scale }) {
-  const domain = scale.domain();
+export function generateDiscreteTicks({ scale }: any): any[] {
+  const domain = (scale as any).domain();
   const values = domain;
-  const dataItems = scale.data().items;
-  const labels = scale.labels ? scale.labels() : values;
-  const bandwidth = scale.bandwidth();
+  const dataItems = (scale as any).data().items;
+  const labels = (scale as any).labels ? (scale as any).labels() : values;
+  const bandwidth = (scale as any).bandwidth();
 
-  return values.map((d, i) => {
-    const start = scale(d);
+  return values.map((d: any, i: number) => {
+    const start = (scale as any)(d);
     return {
       position: start + bandwidth / 2,
       label: `${labels[i]}`,

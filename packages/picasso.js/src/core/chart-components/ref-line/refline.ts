@@ -3,7 +3,7 @@ import { transposer } from '../../transposer/transposer';
 import { isOob, oobManager } from './oob';
 import { createLineWithLabel } from './lines-and-labels';
 
-function createOobData(line) {
+function createOobData(line: any): Record<string, unknown> {
   const data: Record<string, unknown> = {
     value: line.value,
   };
@@ -15,17 +15,17 @@ function createOobData(line) {
   return data;
 }
 
-function filterUndefinedValue(line) {
+function filterUndefinedValue(line: any): boolean {
   const value = typeof line.value === 'function' ? line.value() : line.value;
   return typeof value !== 'undefined';
 }
 
-function isInvert(scale) {
+function isInvert(scale: any): boolean {
   const range = scale.range();
   return range?.length === 2 && range[0] > range[1];
 }
 
-function getPosition(scale, value) {
+function getPosition(scale: any, value: any): any {
   const min = scale.min();
   const max = scale.max();
   if (min === max) {
@@ -40,11 +40,11 @@ function getPosition(scale, value) {
   return scale(value);
 }
 const EPSILON = 1e-15;
-function isIdentical(p1, p2) {
+function isIdentical(p1: any, p2: any): boolean {
   return p1 && p2 && Math.abs(p1.x - p2.x) < EPSILON && Math.abs(p1.y - p2.y) < EPSILON;
 }
 
-function removeDuplication(intersections) {
+function removeDuplication(intersections: any[]): void {
   if (isIdentical(intersections[0], intersections[1])) {
     intersections[1] = undefined;
   }
@@ -146,7 +146,7 @@ function removeDuplication(intersections) {
  * @property {number} [opacity=1] - Opacity
  */
 
-const refLineComponent = {
+const refLineComponent: any = {
   require: ['chart', 'renderer'],
   defaultSettings: {
     layout: {
@@ -187,11 +187,11 @@ const refLineComponent = {
     },
   },
 
-  preferredSize() {
+  preferredSize(this: any) {
     return 30;
   },
 
-  beforeRender() {
+  beforeRender(this: any) {
     this.blueprint = transposer();
 
     this.blueprint.width = this.rect.width;
@@ -201,7 +201,7 @@ const refLineComponent = {
     this.blueprint.crisp = true;
   },
 
-  render() {
+  render(this: any) {
     let settings = this.settings;
 
     // Setup lines for X and Y
@@ -225,7 +225,7 @@ const refLineComponent = {
     };
 
     // Convert a value to an actual position using the scale
-    this.lines.x = this.lines.x.filter(filterUndefinedValue).map((line) => {
+    this.lines.x = (this.lines.x as any[]).filter(filterUndefinedValue).map((line: any) => {
       if (typeof line.value === 'function') {
         line.value = line.value();
       }
@@ -240,7 +240,7 @@ const refLineComponent = {
     });
     // Set all Y lines to flipXY by default
     // This makes the transposer flip them individually
-    this.lines.y = this.lines.y.filter(filterUndefinedValue).map((line) => {
+    this.lines.y = (this.lines.y as any[]).filter(filterUndefinedValue).map((line: any) => {
       if (typeof line.value === 'function') {
         line.value = line.value();
       }
@@ -255,26 +255,26 @@ const refLineComponent = {
     });
 
     // Move out of bounds lines (OOB) to separate rendering
-    this.lines.x = this.lines.x.filter((line) => {
+    this.lines.x = (this.lines.x as any[]).filter((line: any) => {
       if (line.position < 0 || line.position > 1) {
-        oob[`x${line.position > 1 ? 1 : 0}`].push(createOobData(line));
+        (oob as Record<string, any>)[`x${line.position > 1 ? 1 : 0}`].push(createOobData(line));
         return false;
       }
       return true;
     });
 
-    this.lines.y = this.lines.y.filter((line) => {
+    this.lines.y = (this.lines.y as any[]).filter((line: any) => {
       if (line.slope && line.slope !== 0) {
         return true;
       }
       if (line.position < 0 || line.position > 1) {
-        oob[`y${line.position > 1 ? 1 : 0}`].push(createOobData(line));
+        (oob as Record<string, any>)[`y${line.position > 1 ? 1 : 0}`].push(createOobData(line));
         return false;
       }
       return true;
     });
 
-    let items = [];
+    let items: any[] = [];
 
     // Loop through all X and Y lines
     [...this.lines.x, ...this.lines.y].forEach((p) => {
@@ -314,7 +314,7 @@ const refLineComponent = {
           }
           intersections = intersections.filter((i) => !!i);
           if (intersections.length < 2) {
-            oob[`y${y1 > maxY ? 0 : 1}`].push(createOobData(p));
+            (oob as Record<string, any>)[`y${y1 > maxY ? 0 : 1}`].push(createOobData(p));
             return;
           }
           slopeLine.x1 = intersections[0].x;

@@ -4,7 +4,7 @@ import interpolateObject from './interpolate-object';
 
 /* globals window */
 
-function nodeId(node, i) {
+function nodeId(node: any, i: number): any {
   if (node.data) {
     return node.data.value;
   }
@@ -14,36 +14,36 @@ function nodeId(node, i) {
   return i;
 }
 
-export function findCommonPointsFromTwoLines(oldLine, currentLine) {
-  const oldPoints = oldLine.points.filter((point) => !point.dummy);
-  const currentPoints = currentLine.points.filter((point) => !point.dummy);
-  const currentPointsValues = currentPoints.map((point) => point.data.major.value);
+export function findCommonPointsFromTwoLines(oldLine: any, currentLine: any): any {
+  const oldPoints = (oldLine.points as any[]).filter((point: any) => !point.dummy);
+  const currentPoints = (currentLine.points as any[]).filter((point: any) => !point.dummy);
+  const currentPointsValues = currentPoints.map((point: any) => point.data.major.value);
   const commonPointsValues = oldPoints
-    .filter((point) => currentPointsValues.includes(point.data.major.value))
-    .map((point) => point.data.major.value);
-  const oldCommonPoints = oldPoints.filter((point) => commonPointsValues.includes(point.data.major.value));
-  const currentCommonPoints = currentPoints.filter((point) => commonPointsValues.includes(point.data.major.value));
+    .filter((point: any) => currentPointsValues.includes(point.data.major.value))
+    .map((point: any) => point.data.major.value);
+  const oldCommonPoints = oldPoints.filter((point: any) => commonPointsValues.includes(point.data.major.value));
+  const currentCommonPoints = currentPoints.filter((point: any) => commonPointsValues.includes(point.data.major.value));
   return { old: oldCommonPoints, current: currentCommonPoints };
 }
 
-export default function tween({ old, current }, { renderer }, config, chartStorage) {
-  let ticker;
-  let toBeUpdated = [];
-  let entered = { nodes: [], ips: [] };
-  let exited = { nodes: [], ips: [] };
-  let updated = { nodes: [], ips: [] };
-  let stages = [];
-  let targetScene = null;
+export default function tween({ old, current }: any, { renderer }: any, config: any, chartStorage: any): any {
+  let ticker: any;
+  let toBeUpdated: any[] = [];
+  let entered: any = { nodes: [], ips: [] };
+  let exited: any = { nodes: [], ips: [] };
+  let updated: any = { nodes: [], ips: [] };
+  let stages: any[] = [];
+  let targetScene: any = null;
   const trackBy = config.trackBy || nodeId;
 
   const tweener = {
-    start() {
-      let ids = {};
-      old.forEach((node, i) => {
+    start(this: any) {
+      let ids: Record<string, any> = {};
+      (old as any[]).forEach((node: any, i: number) => {
         let id = trackBy(node, i);
         ids[id] = node;
       });
-      current.forEach((node, i) => {
+      (current as any[]).forEach((node: any, i: number) => {
         let id = trackBy(node, i);
         if (ids[id]) {
           if (node.type === 'path' && node.points && node.points.length > 0 && node.data.source.key !== 'trend') {
@@ -129,7 +129,7 @@ export default function tween({ old, current }, { renderer }, config, chartStora
       }
       let t = (Date.now() - currentStage.started) / currentStage.duration;
       let currentNodes = [];
-      let tweenedNodes = currentStage.tweens.map((ip) => ip(currentStage.easing(Math.min(1, t))));
+      let tweenedNodes = (currentStage.tweens as any[]).map((ip: any) => ip(currentStage.easing(Math.min(1, t))));
       const { adjustTweenedNodes } = config;
       if (adjustTweenedNodes) {
         adjustTweenedNodes(tweenedNodes);
