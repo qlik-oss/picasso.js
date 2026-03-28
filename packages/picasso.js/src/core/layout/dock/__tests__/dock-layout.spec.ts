@@ -2,17 +2,41 @@ import dockLayout from '../docker';
 import createRect from '../create-rect';
 import dockConfig from '../config';
 
+type Rect = ReturnType<typeof createRect>;
+type DockConfig = ReturnType<typeof dockConfig>;
+
+interface ComponentMockOptions {
+  dock?: string;
+  displayOrder?: number;
+  prioOrder?: number;
+  edgeBleed?: Record<string, unknown>;
+  minimumLayoutMode?: unknown;
+  size?: number;
+  key?: string;
+}
+
+interface ComponentMock {
+  key?: string;
+  dockConfig: DockConfig;
+  preferredSize(): { width: number; height: number; edgeBleed?: Record<string, unknown> };
+  resize(innerRect: Rect, outerRect: Rect): void;
+  rect: Rect;
+  outer: Rect;
+}
+
 describe('Dock Layout', () => {
-  const componentMock = function componentMock({
-    dock = '',
-    displayOrder = 0,
-    prioOrder = 0,
-    edgeBleed = {},
-    minimumLayoutMode,
-    size = 0,
-    key,
-  } = {}) {
-    const dummy = {};
+  const componentMock = function componentMock(options: ComponentMockOptions = {}): ComponentMock {
+    const {
+      dock = '',
+      displayOrder = 0,
+      prioOrder = 0,
+      edgeBleed = {},
+      minimumLayoutMode,
+      size = 0,
+      key,
+    } = options;
+
+    const dummy: Partial<ComponentMock> = {};
     dummy.key = key;
     dummy.dockConfig = dockConfig({
       dock,
@@ -23,10 +47,11 @@ describe('Dock Layout', () => {
 
     dummy.preferredSize = () => ({ width: size, height: size, edgeBleed });
 
-    let outerRect = createRect();
-    let innerRect = createRect();
-    dummy.resize = function resize(...args) {
-      [innerRect, outerRect] = args;
+    let outerRect: Rect = createRect();
+    let innerRect: Rect = createRect();
+    dummy.resize = function resize(inner: Rect, outer: Rect) {
+      innerRect = inner;
+      outerRect = outer;
     };
 
     Object.defineProperties(dummy, {
@@ -38,12 +63,12 @@ describe('Dock Layout', () => {
       },
     });
 
-    return dummy;
+    return dummy as ComponentMock;
   };
 
   describe('Layout', () => {
-    let rect;
-    let dl;
+    let rect: Rect;
+    let dl: ReturnType<typeof dockLayout>;
 
     beforeEach(() => {
       rect = createRect(0, 0, 1000, 1000);
@@ -313,8 +338,8 @@ describe('Dock Layout', () => {
   });
 
   describe('Layout', () => {
-    let rect;
-    let dl;
+    let rect: Rect;
+    let dl: ReturnType<typeof dockLayout>;
 
     beforeEach(() => {
       rect = createRect(500, 500, 1000, 1000);
@@ -399,9 +424,9 @@ describe('Dock Layout', () => {
   });
 
   describe('Settings', () => {
-    let settings;
-    let container;
-    let dl;
+    let settings: Record<string, unknown>;
+    let container: Rect;
+    let dl: ReturnType<typeof dockLayout>;
 
     beforeEach(() => {
       settings = {

@@ -172,7 +172,7 @@ describe('extractor-s', () => {
     deps.normalizeConfig.returns({
       main: {
         field: dataset.field('Dim2'),
-        value: (d) => d,
+        value: (d: any) => d,
         label: dataset.field('Dim2').label,
       },
       props: {},
@@ -224,11 +224,11 @@ describe('extractor-s', () => {
       main: {
         field: dataset.field('Dim2'),
         label: dataset.field('Dim2').label,
-        value: (d) => d,
+        value: (d: any) => d,
       },
       props: {
         text: {
-          value: (d) => d.qText,
+          value: (d: any) => d.qText,
           field: dataset.field('Dim2'),
         },
       },
@@ -328,10 +328,10 @@ describe('extractor-s', () => {
       main: {
         field: dataset.field('Dim2'),
         label: dataset.field('Dim2').label,
-        value: (v) => v,
+        value: (v: any) => v,
       },
       props: {
-        num: { value: (d) => d.qNum + 1, field: dataset.field('qMeasureInfo/0'), label: (v) => v.qText },
+        num: { value: (d: any) => d.qNum + 1, field: dataset.field('qMeasureInfo/0'), label: (v: any) => v.qText },
       },
     });
     const m = extract(
@@ -427,13 +427,13 @@ describe('extractor-s', () => {
     deps.normalizeConfig.returns({
       main: {
         field: mainField,
-        value: (v) => v,
-        label: (v) => v.qText,
+        value: (v: any) => v,
+        label: (v: any) => v.qText,
       },
       props: {
         item: {
-          value: (d) => d,
-          label: (v) => v.qText,
+          value: (d: any) => d,
+          label: (v: any) => v.qText,
           field: meField,
           source: { key: ds.key(), field: meField.key() },
         },
@@ -505,7 +505,7 @@ describe('extractor-s', () => {
       {
         title: () => 'minime',
         key: () => 'measure1',
-        formatter: () => (v) => `£${v}`,
+        formatter: () => (v: any) => `£${v}`,
       },
     ];
     const c = {
@@ -543,25 +543,25 @@ describe('extractor-s', () => {
     deps.normalizeConfig.returns({
       main: {
         field: mainField,
-        value: (v) => v,
-        label: (v) => v.qText,
-        reduce: (values) => values.map((v) => v.qText).join(','),
+        value: (v: any) => v,
+        label: (v: any) => v.qText,
+        reduce: (values: any) => values.map((v: any) => v.qText).join(','),
       },
       props: {
-        item: { value: (d) => d.qElemNumber, field: mainField, source: { key: ds.key(), field: mainField.key() } },
+        item: { value: (d: any) => d.qElemNumber, field: mainField, source: { key: ds.key(), field: mainField.key() } },
         min: {
-          value: (d) => d.qNum,
+          value: (d: any) => d.qNum,
           field: meField,
-          label: (v) => v.qText,
+          label: (v: any) => v.qText,
           source: { key: ds.key(), field: meField.key() },
-          reduce: (values) => Math.min(...values),
+          reduce: (values: any) => Math.min(...values),
         },
       },
     });
     const m = extract(
       {
         field: 'reduuuced',
-        trackBy: (cell) => cell.qElemNumber,
+        trackBy: (cell: any) => cell.qElemNumber,
       },
       ds,
       { fields: fs },
@@ -590,17 +590,17 @@ describe('extractor-s', () => {
       {
         title: () => 'reduceMe',
         key: () => 'reduuuced',
-        formatter: () => (v) => `<${v}>`,
+        formatter: () => (v: any) => `<${v}>`,
       },
       {
         title: () => 'minime',
         key: () => 'measure1',
-        formatter: () => (v) => `£${v}`,
+        formatter: () => (v: any) => `£${v}`,
       },
       {
         title: () => 'negative',
         key: () => 'measure2',
-        formatter: () => (v) => `£${v}`,
+        formatter: () => (v: any) => `£${v}`,
       },
     ];
     const c = {
@@ -640,35 +640,35 @@ describe('extractor-s', () => {
     deps.normalizeConfig.returns({
       main: {
         field: mainField,
-        value: (v) => v,
-        reduce: (values) => values.map((v) => v.qText).join(','),
+        value: (v: any) => v,
+        reduce: (values: any) => values.map((v: any) => v.qText).join(','),
       },
       props: {
         total: {
           fields: [
             {
-              value: (d) => d.qNum,
+              value: (d: any) => d.qNum,
               field: meField,
               source: { key: ds.key(), field: meField.key() },
-              reduce: (values) => Math.min(...values),
+              reduce: (values: any) => Math.min(...values),
             },
             {
-              value: (d) => d.qNum,
+              value: (d: any) => d.qNum,
               field: negField,
               source: { key: ds.key(), field: negField.key() },
-              reduce: (values) => Math.min(...values),
+              reduce: (values: any) => Math.min(...values),
             },
           ],
-          value: (values) => values.join('::'),
-          label: (values) => values.join('---'),
-          reduce: (values) => values.join(', '),
+          value: (values: any) => values.join('::'),
+          label: (values: any) => values.join('---'),
+          reduce: (values: any) => values.join(', '),
         },
       },
     });
     const m = extract(
       {
         field: 'reduuuced',
-        trackBy: (cell) => cell.qElemNumber,
+        trackBy: (cell: any) => cell.qElemNumber,
       },
       ds,
       { fields: fs },
@@ -695,17 +695,17 @@ describe('extractor-s', () => {
       {
         title: () => 'reduceMe',
         key: () => 'reduuuced',
-        formatter: () => (v) => v.qText,
+        formatter: () => (v: any) => v.qText,
       },
       {
         title: () => 'minime',
         key: () => 'measure1',
-        formatter: () => (v) => `£${v}`,
+        formatter: () => (v: any) => `£${v}`,
       },
       {
         title: () => 'negative',
         key: () => 'measure2',
-        formatter: () => (v) => `£${v}`,
+        formatter: () => (v: any) => `£${v}`,
       },
     ];
     const c = {
@@ -745,27 +745,27 @@ describe('extractor-s', () => {
     deps.normalizeConfig.returns({
       main: {
         field: mainField,
-        value: (v) => v.qText,
-        reduce: (values) => values.map((v) => v.qText).join(','),
+        value: (v: any) => v.qText,
+        reduce: (values: any) => values.map((v: any) => v.qText).join(','),
       },
       props: {
         total: {
           fields: [
             {
-              value: (d) => d.qNum,
+              value: (d: any) => d.qNum,
               field: meField,
               source: { key: ds.key(), field: meField.key() },
-              reduce: (values) => Math.min(...values),
+              reduce: (values: any) => Math.min(...values),
             },
             {
-              value: (d) => d.qNum,
+              value: (d: any) => d.qNum,
               field: negField,
               source: { key: ds.key(), field: negField.key() },
-              reduce: (values) => Math.min(...values),
+              reduce: (values: any) => Math.min(...values),
             },
           ],
-          value: (values) => values.join(':'),
-          label: (values) => values.join('|'),
+          value: (values: any) => values.join(':'),
+          label: (values: any) => values.join('|'),
         },
       },
     });
@@ -804,7 +804,7 @@ describe('extractor-s', () => {
       main: {
         field: dataset.field('Dim2'),
         label: (d) => d.qText,
-        filter: (v) => v.qNum !== 7,
+        filter: (v: any) => v.qNum !== 7,
       },
       props: {},
     });
@@ -841,7 +841,7 @@ describe('extractor-s', () => {
   });
 
   describe('getFieldAccessor', () => {
-    let localCache;
+    let localCache: any;
 
     beforeEach(() => {
       localCache = {

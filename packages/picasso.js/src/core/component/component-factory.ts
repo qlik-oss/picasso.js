@@ -9,6 +9,42 @@ import createSymbolFactory from '../symbols';
 import createDockConfig from '../layout/dock/config';
 import type { RegistryFn } from '../utils/registry';
 
+interface BrushStyler {
+  cleanUp: () => void;
+  isActive: () => boolean;
+  update: () => void;
+}
+
+interface BrushConsume {
+  context?: string;
+  style?: unknown;
+  data?: unknown;
+}
+
+interface BrushTrigger {
+  on?: string;
+  context?: string;
+  globalPropagation?: string;
+  [key: string]: unknown;
+}
+
+interface BrushSettings {
+  consume?: BrushConsume[];
+  trigger?: BrushTrigger[];
+  [key: string]: unknown;
+}
+
+interface EventListener {
+  event: string;
+  listener: (...args: unknown[]) => void;
+}
+
+interface CreateCallbackOptions {
+  method: string;
+  defaultMethod?: () => unknown;
+  canBeValue?: boolean;
+}
+
 interface DatasetSource {
   hierarchy?: (config: unknown) => { hierarchy?: (c: unknown) => unknown; fields(): unknown[] } | null;
   fields(): unknown[];
@@ -90,36 +126,6 @@ interface PrepareContextOptions {
   _DO_NOT_USE_getInfo?: (ctx?: unknown) => unknown;
   symbol?: () => unknown;
   isVisible?: () => boolean;
-}
-
-interface BrushConsume {
-  context?: string;
-  style?: unknown;
-  data?: unknown;
-}
-
-interface BrushTrigger {
-  on?: string;
-  context?: string;
-  globalPropagation?: string;
-  [key: string]: unknown;
-}
-
-interface BrushSettings {
-  consume?: BrushConsume[];
-  trigger?: BrushTrigger[];
-  [key: string]: unknown;
-}
-
-interface EventListener {
-  event: string;
-  listener: (...args: unknown[]) => void;
-}
-
-interface CreateCallbackOptions {
-  method: string;
-  defaultMethod?: () => unknown;
-  canBeValue?: boolean;
 }
 
 const isReservedProperty = (prop: string): boolean =>
@@ -217,11 +223,11 @@ function prepareContext(ctx: Record<string, unknown>, definition: Record<string,
     ctx._DO_NOT_USE_getInfo = _DO_NOT_USE_getInfo;
   }
 
-  Object.keys(definition).forEach((key) => {
+  Object.keys(definition).forEach((key: string) => {
     if (!isReservedProperty(key)) {
       // Add non-lifecycle methods to the context
       if (typeof definition[key] === 'function') {
-        ctx[key] = definition[key].bind(ctx);
+        ctx[key] = (definition[key] as (...args: unknown[]) => unknown).bind(ctx);
       } else {
         ctx[key] = definition[key];
       }
@@ -229,40 +235,44 @@ function prepareContext(ctx: Record<string, unknown>, definition: Record<string,
   });
 
   // Add properties to context
-  require.forEach((req) => {
+  const requireArray = require as string[];
+  requireArray.forEach((req: string) => {
     if (req === 'renderer') {
       Object.defineProperty(ctx, 'renderer', {
         get: renderer,
       });
     } else if (req === 'chart') {
       Object.defineProperty(ctx, 'chart', {
-        get: chart,
+        get: () => opts.chart?.(),
       });
     } else if (req === 'dockConfig') {
       Object.defineProperty(ctx, 'dockConfig', {
-        get: dockConfig,
+        get: () => opts.dockConfig?.(),
       });
     } else if (req === 'instance') {
       Object.defineProperty(ctx, 'instance', {
-        get: instance,
+        get: opts.instance,
       });
-    } else if (req === 'update' && update) {
+    } else if (req === 'update' && opts.update) {
       Object.defineProperty(ctx, 'update', {
-        get: update,
+        get: opts.update,
       });
     } else if (req === 'resolver') {
       Object.defineProperty(ctx, 'resolver', {
-        get: resolver,
+        get: opts.resolver,
       });
     } else if (req === 'symbol') {
       Object.defineProperty(ctx, 'symbol', {
-        get: symbol,
+        get: opts.symbol,
       });
     }
   });
 
-  Object.keys(mediatorSettings).forEach((eventName) => {
-    ctx.mediator.on(eventName, mediatorSettings[eventName].bind(ctx));
+  Object.keys(definition.mediator || {}).forEach((eventName: string) => {
+    (opts.mediator as Record<string, (event: string, handler: (...args: unknown[]) => void) => void>)?.on(
+      eventName,
+      ((definition.mediator as Record<string, (...args: unknown[]) => void>)[eventName] as (...args: unknown[]) => void).bind(ctx),
+    );
   });
 }
 
@@ -272,29 +282,26 @@ function createDockDefinition(settings: Record<string, unknown>, preferredSize: 
       logger.warn(`Deprecation Warning the ${propName} property should be moved into layout: {} property`);
       return settings[propName];
     }
-    return settings.layout ? settings.layout[propName] : undefined;
+    const layout = settings.layout as Record<string, unknown> | undefined;
+    return layout ? layout[propName] : undefined;
   };
 
-  const def: {
-    displayOrder?: unknown;
-    dock?: unknown;
-    prioOrder?: unknown;
-    minimumLayoutMode?: unknown;
-    show?: unknown;
-    preferredSize?: unknown;
-  } = {};
+  const def: Record<string, unknown> = {};
   def.displayOrder = getLayoutProperty('displayOrder');
   def.dock = getLayoutProperty('dock');
   def.prioOrder = getLayoutProperty('prioOrder');
   def.minimumLayoutMode = getLayoutProperty('minimumLayoutMode');
 
   // move layout properties to layout object
-  settings.layout = settings.layout || {};
-  settings.layout.displayOrder =
-    typeof def.displayOrder !== 'undefined' ? def.displayOrder : settings.layout.displayOrder;
-  settings.layout.prioOrder = typeof def.prioOrder !== 'undefined' ? def.prioOrder : settings.layout.prioOrder;
-  settings.layout.dock = def.dock || settings.layout.dock;
-  settings.layout.minimumLayoutMode = def.minimumLayoutMode || settings.layout.minimumLayoutMode;
+  if (!settings.layout) {
+    settings.layout = {};
+  }
+  const layout = settings.layout as Record<string, unknown>;
+  layout.displayOrder =
+    typeof def.displayOrder !== 'undefined' ? def.displayOrder : layout.displayOrder;
+  layout.prioOrder = typeof def.prioOrder !== 'undefined' ? def.prioOrder : layout.prioOrder;
+  layout.dock = def.dock || layout.dock;
+  layout.minimumLayoutMode = def.minimumLayoutMode || layout.minimumLayoutMode;
 
   // not directly a dock layout property
   def.show = settings.show;
@@ -367,7 +374,7 @@ function componentFactory(definition: Record<string, unknown>, context: Componen
     tap: [],
     over: [],
   };
-  const brushStylers: Array<Record<string, unknown>> = [];
+  const brushStylers: BrushStyler[] = [];
   const definitionContext: Record<string, unknown> = {};
   const instanceContext = extend({}, config);
 
@@ -413,7 +420,7 @@ function componentFactory(definition: Record<string, unknown>, context: Componen
   const beforeRender = createCallback('beforeRender');
   const beforeDestroy = createCallback('beforeDestroy');
   const destroyed = createCallback('destroyed');
-  const render = definition.render; // Do not allow overriding of this function
+  const render = definition.render as (...args: unknown[]) => unknown; // Do not allow overriding of this function
 
   const addBrushStylers = (): void => {
     if (settings.brush) {
@@ -452,8 +459,8 @@ function componentFactory(definition: Record<string, unknown>, context: Componen
 
   const dockConfigCallbackContext = { resources: chart?.logger ? { logger: chart.logger() } : {} };
   let dockConfig = createDockConfig(
-    createDockDefinition(settings, preferredSize, chart?.logger()),
-    dockConfigCallbackContext
+    createDockDefinition(settings, preferredSize, chart?.logger?.() || { warn: () => {} }),
+    dockConfigCallbackContext as Record<string, unknown>
   );
 
   const appendComponentMeta = (node: Record<string, unknown>) => {
@@ -471,8 +478,8 @@ function componentFactory(definition: Record<string, unknown>, context: Componen
       config = opts.settings;
       settings = extend(true, {}, defaultSettings, opts.settings);
       dockConfig = createDockConfig(
-        createDockDefinition(settings, preferredSize, chart?.logger()),
-        dockConfigCallbackContext
+        createDockDefinition(settings, preferredSize, chart?.logger?.() || { warn: () => {} }),
+        dockConfigCallbackContext as Record<string, unknown>
       );
       brushArgs.config = settings.brush || {};
     }
@@ -778,7 +785,7 @@ function componentFactory(definition: Record<string, unknown>, context: Componen
   };
 
   fn.findShapes = (selector: string): unknown[] => {
-    const shapes = (currentTween?.inProgress() ? currentTween.targetScene : rend).findShapes(selector);
+    const shapes = (currentTween?.inProgress() ? (currentTween as Record<string, unknown>).targetScene : rend).findShapes(selector);
     for (let i = 0, num = shapes.length; i < num; i++) {
       appendComponentMeta(shapes[i]);
     }
@@ -786,9 +793,9 @@ function componentFactory(definition: Record<string, unknown>, context: Componen
     return shapes;
   };
 
-  fn.shapesAt = (shape: unknown, opts: Record<string, unknown> = {}) => {
+  fn.shapesAt = (shape: unknown, opts: Record<string, unknown> = {}): unknown[] => {
     const items = (rend as Record<string, (s: unknown) => { node: unknown }[]>).itemsAt(shape);
-    let shapes;
+    let shapes: unknown[];
 
     if (opts && opts.propagation === 'stop' && items.length > 0) {
       shapes = [items.pop()!.node];
@@ -803,7 +810,7 @@ function componentFactory(definition: Record<string, unknown>, context: Componen
     return shapes;
   };
 
-  fn.brushFromShapes = (shapes: unknown[], trigger: Record<string, unknown> = {}) => {
+  fn.brushFromShapes = (shapes: unknown[], trigger: Record<string, unknown> = {}): void => {
     trigger.contexts = Array.isArray(trigger.contexts) ? trigger.contexts : [];
     const action = trigger.action || 'toggle';
 
@@ -815,7 +822,7 @@ function componentFactory(definition: Record<string, unknown>, context: Componen
     });
   };
 
-  fn.mount = () => {
+  fn.mount = (): void => {
     element = rend.element && rend.element() ? element : rend.appendTo?.(container);
     if (rend.setKey && typeof (config as Record<string, unknown>).key === 'string') {
       rend.setKey((config as Record<string, unknown>).key as string);
@@ -832,10 +839,10 @@ function componentFactory(definition: Record<string, unknown>, context: Componen
     isVisible = true;
   };
 
-  fn.mounted = () => mounted(element);
+  fn.mounted = (): void => mounted(element);
 
-  fn.unmount = () => {
-    [instanceContext, definitionContext].forEach((ctx) => {
+  fn.unmount = (): void => {
+    [instanceContext, definitionContext].forEach((ctx: Record<string, unknown>) => {
       tearDownEmitter(ctx, emitter);
     });
     brushTriggers.tap = [];
@@ -849,16 +856,16 @@ function componentFactory(definition: Record<string, unknown>, context: Componen
     isVisible = false;
   };
 
-  fn.onBrushTap = (e) => {
-    brushTriggers.tap.forEach((t) => {
+  fn.onBrushTap = (e: unknown): void => {
+    brushTriggers.tap.forEach((t: BrushTrigger) => {
       if (resolveTapEvent({ e, t, config: brushArgs }) && t.globalPropagation === 'stop') {
         chart?.toggleBrushing?.(true);
       }
     });
   };
 
-  fn.onBrushOver = (e) => {
-    brushTriggers.over.forEach((t) => {
+  fn.onBrushOver = (e: unknown): void => {
+    brushTriggers.over.forEach((t: BrushTrigger) => {
       if (resolveOverEvent({ e, t, config: brushArgs }) && t.globalPropagation === 'stop') {
         chart?.toggleBrushing?.(true);
       }
