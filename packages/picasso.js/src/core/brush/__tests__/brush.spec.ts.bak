@@ -140,14 +140,14 @@ describe('brush', () => {
   describe('addValue', () => {
     let v: Record<string, sinon.SinonStub>;
     let vcc: sinon.SinonStub;
-    let bb: ReturnType<typeof brush>;
+    let bb: BrushWithEvents;
     beforeEach(() => {
       v = {
         add: sandbox.stub(),
         values: sandbox.stub(),
       };
       vcc = sandbox.stub().returns(v);
-      bb = brush({ vc: vcc as any, rc: noop as any }) as ReturnType<typeof brush>;
+      bb = brush({ vc: vcc as any, rc: noop as any }) as BrushWithEvents;
     });
 
     it('should call value.add() with value "Car"', () => {
@@ -191,7 +191,7 @@ describe('brush', () => {
   describe('removeValue', () => {
     let v: Record<string, sinon.SinonStub>;
     let vcc: sinon.SinonStub;
-    let bb: ReturnType<typeof brush>;
+    let bb: BrushWithEvents;
     beforeEach(() => {
       v = {
         remove: sandbox.stub(),
@@ -199,7 +199,7 @@ describe('brush', () => {
         values: sandbox.stub(),
       };
       vcc = sandbox.stub().returns(v);
-      bb = brush({ vc: vcc as any, rc: noop as any }) as ReturnType<typeof brush>;
+      bb = brush({ vc: vcc as any, rc: noop as any }) as BrushWithEvents;
       bb.addValue('garage');
     });
 
@@ -233,12 +233,12 @@ describe('brush', () => {
     describe(fn, () => {
       let v: Record<string, sinon.SinonStub>;
       let rcc: sinon.SinonStub;
-      let bb: ReturnType<typeof brush>;
+      let bb: BrushWithEvents;
       beforeEach(() => {
         v = { ranges: sandbox.stub() };
         v[action] = sandbox.stub();
         rcc = sandbox.stub().returns(v);
-        bb = brush({ rc: rcc as any, vc: noop as any }) as ReturnType<typeof brush>;
+        bb = brush({ rc: rcc as any, vc: noop as any }) as BrushWithEvents;
         v[action]!.returns(true);
       });
 
@@ -284,14 +284,14 @@ describe('brush', () => {
   describe('containsValue', () => {
     let v: Record<string, sinon.SinonStub>;
     let vcc: sinon.SinonStub;
-    let bb: ReturnType<typeof brush>;
+    let bb: BrushWithEvents;
     beforeEach(() => {
       v = {
         add: sandbox.stub(),
         contains: sandbox.stub(),
       };
       vcc = sandbox.stub().returns(v);
-      bb = brush({ vc: vcc as any, rc: noop as any }) as ReturnType<typeof brush>;
+      bb = brush({ vc: vcc as any, rc: noop as any }) as BrushWithEvents;
       bb.addKeyAlias('_ali', 'ALI');
     });
 
@@ -325,14 +325,14 @@ describe('brush', () => {
   describe('containsRangeValue', () => {
     let v: Record<string, sinon.SinonStub>;
     let rcc: sinon.SinonStub;
-    let bb: ReturnType<typeof brush>;
+    let bb: BrushWithEvents;
     beforeEach(() => {
       v = {
         add: sandbox.stub(),
         containsValue: sandbox.stub(),
       };
       rcc = sandbox.stub().returns(v);
-      bb = brush({ vc: noop as any, rc: rcc as any }) as ReturnType<typeof brush>;
+      bb = brush({ vc: noop as any, rc: rcc as any }) as BrushWithEvents;
       bb.addKeyAlias('_range-ali', 'margin');
     });
 
@@ -343,22 +343,22 @@ describe('brush', () => {
     it('should return true when given value exists', () => {
       bb.addRange('speed');
       v.containsValue.returns(true);
-      expect(bb.containsRangeValue('speed', 'some range' as any)).to.equal(true);
+      expect(bb.containsRangeValue('speed', 'some range')).to.equal(true);
       expect(v.containsValue).to.have.been.calledWith('some range');
     });
 
     it('should return true when given value exists for an aliased key', () => {
       bb.addRange('_range-ali');
       v.containsValue.returns(true);
-      expect(bb.containsRangeValue('_range-ali', 'some range' as any)).to.equal(true);
-      expect(bb.containsRangeValue('margin', 'some range' as any)).to.equal(true);
+      expect(bb.containsRangeValue('_range-ali', 'some range')).to.equal(true);
+      expect(bb.containsRangeValue('margin', 'some range')).to.equal(true);
       expect(v.containsValue).to.have.been.calledWith('some range');
     });
 
     it('should return false when given value does not exist', () => {
       bb.addRange('speed');
       v.containsValue.returns(false);
-      expect(bb.containsRangeValue('speed', 'very fast' as any)).to.equal(false);
+      expect(bb.containsRangeValue('speed', 'very fast')).to.equal(false);
       expect(v.containsValue).to.have.been.calledWith('very fast');
     });
   });
@@ -366,14 +366,14 @@ describe('brush', () => {
   describe('containsRange', () => {
     let v: Record<string, sinon.SinonStub>;
     let rcc: sinon.SinonStub;
-    let bb: ReturnType<typeof brush>;
+    let bb: BrushWithEvents;
     beforeEach(() => {
       v = {
         add: sandbox.stub(),
         containsRange: sandbox.stub(),
       };
       rcc = sandbox.stub().returns(v);
-      bb = brush({ vc: noop as any, rc: rcc as any }) as ReturnType<typeof brush>;
+      bb = brush({ vc: noop as any, rc: rcc as any }) as BrushWithEvents;
       bb.addKeyAlias('_range-ali', 'margin');
     });
 
@@ -384,22 +384,22 @@ describe('brush', () => {
     it('should return true when given value exists', () => {
       bb.addRange('speed');
       v.containsRange.returns(true);
-      expect(bb.containsRange('speed', 'some range' as any)).to.equal(true);
+      expect(bb.containsRange('speed', 'some range')).to.equal(true);
       expect(v.containsRange).to.have.been.calledWith('some range');
     });
 
     it('should return true when given value exists for an aliased key', () => {
       bb.addRange('_range-ali');
       v.containsRange.returns(true);
-      expect(bb.containsRange('_range-ali', 'some range' as any)).to.equal(true);
-      expect(bb.containsRange('margin', 'some range' as any)).to.equal(true);
+      expect(bb.containsRange('_range-ali', 'some range')).to.equal(true);
+      expect(bb.containsRange('margin', 'some range')).to.equal(true);
       expect(v.containsRange).to.have.been.calledWith('some range');
     });
 
     it('should return false when given value does not exist', () => {
       bb.addRange('speed');
       v.containsRange.returns(false);
-      expect(bb.containsRange('speed', 'very fast' as any)).to.equal(false);
+      expect(bb.containsRange('speed', 'very fast')).to.equal(false);
       expect(v.containsRange).to.have.been.calledWith('very fast');
     });
   });
@@ -428,7 +428,7 @@ describe('brush', () => {
   describe('containsData', () => {
     let v: Record<string, sinon.SinonStub>;
     let rcc: sinon.SinonStub;
-    let bb: ReturnType<typeof brush>;
+    let bb: BrushWithEvents;
     let d: Record<string, any>;
 
     let val: Record<string, sinon.SinonStub>;
@@ -446,7 +446,7 @@ describe('brush', () => {
       };
       rcc = sandbox.stub().returns(v);
       vcc = sandbox.stub().returns(val);
-      bb = brush({ vc: vcc as any, rc: rcc as any }) as ReturnType<typeof brush>;
+      bb = brush({ vc: vcc as any, rc: rcc as any }) as BrushWithEvents;
       d = {
         x: { value: 7, source: { field: 'sales', type: 'quant' } },
         span: { value: [5, 10], source: { field: 'margin', type: 'quant' } },
@@ -692,7 +692,7 @@ describe('brush', () => {
 
     it('should remove old values', () => {
       v.values.returns(['Cars', 'Skateboards']); // existing values
-      const items: Array<{ key: string; value?: string | number }> = [];
+      const items = [];
       const changed = set({
         items,
         vc: vcoll,
@@ -730,8 +730,8 @@ describe('brush', () => {
   });
 
   describe('interceptors', () => {
-    let cb: sinon.SinonSpy;
-    let interceptor: sinon.SinonStub;
+    let cb;
+    let interceptor;
     beforeEach(() => {
       cb = sandbox.spy();
       b.on('update', cb);
@@ -784,7 +784,7 @@ describe('brush', () => {
   describe('addAndRemoveValues', () => {
     let v: Record<string, sinon.SinonStub>;
     let vcc: sinon.SinonStub;
-    let bb: ReturnType<typeof brush>;
+    let bb: BrushWithEvents;
     let valuesToAdd: Array<{ key: string; value: string }>;
     let valuesToRemove: Array<{ key: string; value: string }>;
     beforeEach(() => {
@@ -794,7 +794,7 @@ describe('brush', () => {
         values: sandbox.stub(),
       };
       vcc = sandbox.stub().returns(v);
-      bb = brush({ vc: vcc as any, rc: noop as any }) as ReturnType<typeof brush>;
+      bb = brush({ vc: vcc as any, rc: noop as any }) as BrushWithEvents;
       bb.addValue('garage');
 
       valuesToAdd = [{ key: 'garage', value: 'Car' }];

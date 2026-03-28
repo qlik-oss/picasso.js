@@ -27,7 +27,7 @@ interface Shape extends Record<string, unknown> {
   y2?: number;
   width?: number;
   height?: number;
-  vertices?: Array<{ x: number; y: number }> | Array<Array<{ x: number; y: number }>>;
+  vertices?: Array<Array<{ x: number; y: number }>>;
   type?: string;
   [key: string]: unknown;
 }
@@ -336,36 +336,47 @@ function addComponentDelta(shape: Shape, containerBounds: Bounds, componentBound
 
   switch (type) {
     case 'circle':
-      deltaShape.cx += dx;
-      deltaShape.cy += dy;
+      if (typeof deltaShape.cx === 'number') deltaShape.cx += dx;
+      if (typeof deltaShape.cy === 'number') deltaShape.cy += dy;
       break;
     case 'polygon':
-      for (let i = 0, num = deltaShape.vertices.length; i < num; i++) {
-        const v = deltaShape.vertices[i];
-        v.x += dx;
-        v.y += dy;
+      if (Array.isArray(deltaShape.vertices)) {
+        for (let i = 0, num = deltaShape.vertices.length; i < num; i++) {
+          const v = deltaShape.vertices[i];
+          if (Array.isArray(v)) continue; // Skip if it's 2D array
+          if (typeof v === 'object' && v !== null && 'x' in v && 'y' in v) {
+            (v as { x: number; y: number }).x += dx;
+            (v as { x: number; y: number }).y += dy;
+          }
+        }
       }
       break;
     case 'geopolygon': // vertices is 2D array
-      for (let n = 0; n < deltaShape.vertices.length; n++) {
-        const vertices = deltaShape.vertices[n];
-        for (let i = 0, num = vertices.length; i < num; i++) {
-          const v = vertices[i];
-          v.x += dx;
-          v.y += dy;
+      if (Array.isArray(deltaShape.vertices)) {
+        for (let n = 0; n < deltaShape.vertices.length; n++) {
+          const vertices = deltaShape.vertices[n];
+          if (Array.isArray(vertices)) {
+            for (let i = 0, num = vertices.length; i < num; i++) {
+              const v = vertices[i];
+              if (typeof v === 'object' && v !== null && 'x' in v && 'y' in v) {
+                (v as { x: number; y: number }).x += dx;
+                (v as { x: number; y: number }).y += dy;
+              }
+            }
+          }
         }
       }
       break;
     case 'line':
-      deltaShape.x1 += dx;
-      deltaShape.y1 += dy;
-      deltaShape.x2 += dx;
-      deltaShape.y2 += dy;
+      if (typeof deltaShape.x1 === 'number') deltaShape.x1 += dx;
+      if (typeof deltaShape.y1 === 'number') deltaShape.y1 += dy;
+      if (typeof deltaShape.x2 === 'number') deltaShape.x2 += dx;
+      if (typeof deltaShape.y2 === 'number') deltaShape.y2 += dy;
       break;
     case 'point':
     case 'rect':
-      deltaShape.x += dx;
-      deltaShape.y += dy;
+      if (typeof deltaShape.x === 'number') deltaShape.x += dx;
+      if (typeof deltaShape.y === 'number') deltaShape.y += dy;
       break;
     default:
       break;
@@ -385,16 +396,17 @@ const moveToPosition = (element: HTMLElement | null, comp: Component, index: num
   if (el === node) {
     return;
   }
-  const additionalEl = (comp.instance.def as Record<string, unknown>).additionalElements && (comp.instance.def as Record<string, () => HTMLElement[] | null>).additionalElements?.()?.filter(Boolean);
+  const additionalElResult = (comp.instance.def as Record<string, unknown>).additionalElements && (comp.instance.def as Record<string, () => HTMLElement[] | null>).additionalElements?.();
+  const additionalEl = additionalElResult && Array.isArray(additionalElResult) ? additionalElResult.filter(Boolean) : undefined;
   if (element.insertBefore && typeof node !== 'undefined') {
     element.insertBefore(el, node);
-    if (additionalEl) {
+    if (additionalEl && Array.isArray(additionalEl)) {
       additionalEl.forEach((ae: HTMLElement) => {
         element.insertBefore(ae, el);
       });
     }
   } else {
-    if (additionalEl) {
+    if (additionalEl && Array.isArray(additionalEl)) {
       additionalEl.forEach((ae: HTMLElement) => {
         element.appendChild(ae);
       });
@@ -413,9 +425,9 @@ export function orderComponents(element: HTMLElement, ordered: Component[]): voi
     numElements++;
 
     // check additional elements
-    const additionalEl = (comp.instance.def as Record<string, unknown>).additionalElements && (comp.instance.def as Record<string, () => HTMLElement[] | null>).additionalElements?.();
-    if (additionalEl) {
-      numElements += additionalEl.length;
+    const additionalElResult = (comp.instance.def as Record<string, unknown>).additionalElements && (comp.instance.def as Record<string, () => HTMLElement[] | null>).additionalElements?.();
+    if (additionalElResult && Array.isArray(additionalElResult)) {
+      numElements += additionalElResult.length;
     }
   });
 
@@ -434,27 +446,16 @@ function chartFn(definition: Record<string, unknown>, context: Record<string, un
    * @property {ChartDefinition~mounted} [mounted]
    * @property {ChartDefinition~updated} [updated]
    */
-  let {
-    /**
-     * Element to attach chart to
-     * @type {HTMLElement}
-     * @memberof ChartDefinition
-     */
-    element,
-    /**
-     * Chart data
-     * @type {Array<DataSource>|DataSource}
-     * @memberof ChartDefinition
-     */
-    data = [],
-    /**
-     * Chart settings
-     * @type {ChartSettings}
-     * @memberof ChartDefinition
-     */
-    settings = {},
-    on = {},
-  } = definition;
+  let element: HTMLElement | null = null;
+  let data: unknown = [];
+  let settings: Record<string, unknown> = {};
+  let on: Record<string, (e: Event) => void> = {};
+
+  const def = definition as Record<string, unknown>;
+  if ('element' in def) element = def.element as HTMLElement | null;
+  if ('data' in def) data = def.data;
+  if ('settings' in def) settings = def.settings as Record<string, unknown>;
+  if ('on' in def) on = def.on as Record<string, (e: Event) => void>;
 
   const registries = (context as Record<string, unknown>).registries as Record<string, unknown>;
   const logger = (context as Record<string, unknown>).logger as Record<string, unknown>;
@@ -914,22 +915,22 @@ function chartFn(definition: Record<string, unknown>, context: Record<string, un
 
     toRenderOrUpdate.forEach((comp: Component) => {
       if ((comp.updateWith || comp.applyTransform) && comp.visible) {
-        ((comp.instance as Record<string, () => void>).update) as () => void;
+        ((comp.instance as Record<string, () => void>).update)?.();
       } else {
-        comp.instance.render();
+        ((comp.instance as Record<string, () => void>).render)?.();
       }
     });
 
     // Ensure that displayOrder is keept, only do so on re-layout update.
     // Which is only the case if partialData is false.
     if (!partialData) {
-      orderComponents(element, visibleOrdered);
+      orderComponents(element as HTMLElement, visibleOrdered as Component[]);
     }
 
-    toRender.forEach((comp) => comp.instance.mounted());
-    toUpdate.forEach((comp) => comp.instance.updated());
+    toRender.forEach((comp: Component) => ((comp.instance as Record<string, () => void>).mounted)?.());
+    toUpdate.forEach((comp: Component) => ((comp.instance as Record<string, () => void>).updated)?.());
 
-    visibleComponents.forEach((comp) => {
+    visibleComponents.forEach((comp: Component) => {
       delete comp.updateWith;
       comp.visible = true;
       comp.applyTransform = false;
@@ -941,9 +942,9 @@ function chartFn(definition: Record<string, unknown>, context: Record<string, un
   /**
    * Destroy the chart instance.
    */
-  instance.destroy = () => {
+  instance.destroy = (): void => {
     beforeDestroy();
-    (componentsC as Record<string, (...args: unknown[]) => unknown>).destroy();
+    (componentsC as Record<string, (...args: unknown[]) => void>).destroy?.();
     unmount();
     delete instance.update;
     delete instance.destroy;
@@ -958,12 +959,12 @@ function chartFn(definition: Record<string, unknown>, context: Record<string, un
    * @param {string} key Which component to get shapes from. Default gives shapes from all components.
    * @return {Array<object>} Array of objects containing shape and parent element
    */
-  instance.getAffectedShapes = (ctx, mode = 'and', props?: unknown[], key?: string) => {
-    let shapes = [];
+  instance.getAffectedShapes = (ctx: string, mode: string = 'and', props?: unknown[], key?: string): unknown[] => {
+    let shapes: unknown[] = [];
     visibleComponents
-      .filter((comp) => key === undefined || key === null || comp.key === key)
-      .forEach((comp) => {
-        const brushedShapes = comp.instance.getBrushedShapes(ctx, mode, props);
+      .filter((comp: Component) => key === undefined || key === null || comp.key === key)
+      .forEach((comp: Component) => {
+        const brushedShapes = (comp.instance.getBrushedShapes as (ctx: string, mode: string, props?: unknown[]) => unknown[])(ctx, mode, props);
         shapes = [...shapes, ...brushedShapes];
       });
     return shapes;
@@ -979,10 +980,10 @@ function chartFn(definition: Record<string, unknown>, context: Record<string, un
    * chart.findShapes('Circle[fill="red"][stroke!="black"]') // [CircleNode, CircleNode]
    * chart.findShapes('Container Rect') // [Rect, Rect]
    */
-  instance.findShapes = (selector) => {
-    let shapes = [];
-    visibleComponents.forEach((c) => {
-      const matchedShapes = c.instance.findShapes(selector);
+  instance.findShapes = (selector: string): unknown[] => {
+    let shapes: unknown[] = [];
+    visibleComponents.forEach((c: Component) => {
+      const matchedShapes = (c.instance.findShapes as (selector: string) => unknown[])(selector);
       shapes = [...shapes, ...matchedShapes];
     });
     return shapes;
@@ -993,7 +994,7 @@ function chartFn(definition: Record<string, unknown>, context: Record<string, un
    * @param {Point} p - Point with x- and y-coordinate. The coordinate is relative to the browser viewport.
    * @returns {Array<Component>} Array of component contexts
    */
-  instance.componentsFromPoint = (p) => componentsFromPoint(p).map((comp) => comp.instance.ctx);
+  instance.componentsFromPoint = (p: Record<string, number>): unknown[] => componentsFromPoint(p).map((comp: Component) => (comp.instance.ctx as unknown));
 
   /**
    * Get all nodes colliding with a geometrical shape (circle, line, rectangle, point, polygon, geopolygon).
@@ -1025,27 +1026,27 @@ function chartFn(definition: Record<string, unknown>, context: Record<string, un
    *  }
    * );
    */
-  instance.shapesAt = (shape: unknown, opts: Record<string, unknown> = {}) => {
-    let result = [];
-    const containerBounds = element.getBoundingClientRect();
-    let comps = visibleComponents; // Assume that visibleComponents is ordererd according to displayOrder
+  instance.shapesAt = (shape: unknown, opts: Record<string, unknown> = {}): unknown[] => {
+    let result: unknown[] = [];
+    const containerBounds: Bounds = (element as HTMLElement).getBoundingClientRect() as Bounds;
+    let comps: Component[] | Array<Record<string, unknown>> = visibleComponents; // Assume that visibleComponents is ordererd according to displayOrder
 
-    if (Array.isArray(opts.components) && opts.components.length > 0) {
-      const compKeys = opts.components.map((c) => c.key);
+    if (Array.isArray(opts.components) && (opts.components as unknown[]).length > 0) {
+      const compKeys = ((opts.components as unknown[]) as Array<Record<string, unknown>>).map((c: Record<string, unknown>) => c.key);
       comps = visibleComponents
-        .filter((c) => compKeys.indexOf(c.key) !== -1)
-        .map((c) => ({
+        .filter((c: Component) => compKeys.indexOf(c.key) !== -1)
+        .map((c: Component) => ({
           instance: c.instance,
-          opts: opts.components[compKeys.indexOf(c.key)],
+          opts: (opts.components as Array<Record<string, unknown>>)[compKeys.indexOf(c.key)],
         }));
     }
 
     for (let i = comps.length - 1; i >= 0; i--) {
-      const c = comps[i];
-      const componentBounds = c.instance.renderer().element().getBoundingClientRect();
-      const deltaShape = addComponentDelta(shape, containerBounds, componentBounds);
-      const shapes = c.instance.shapesAt(deltaShape, c.opts);
-      const stopPropagation = shapes.length > 0 && opts.propagation === 'stop';
+      const c: Record<string, unknown> = comps[i] as Record<string, unknown>;
+      const componentBounds: Bounds = ((c.instance as Record<string, unknown>).renderer as () => Record<string, unknown>)().element?.() as Bounds;
+      const deltaShape = addComponentDelta(shape as Shape, containerBounds, componentBounds);
+      const shapes = ((c.instance as Record<string, unknown>).shapesAt as (shape: Shape, opts?: Record<string, unknown>) => unknown[])(deltaShape, c.opts as Record<string, unknown>);
+      const stopPropagation = shapes.length > 0 && (opts.propagation as string) === 'stop';
 
       result = [...result, ...shapes];
 
@@ -1076,14 +1077,14 @@ function chartFn(definition: Record<string, unknown>, context: Record<string, un
    * };
    * chartInstance.brushFromShapes(shapes, config);
    */
-  instance.brushFromShapes = (shapes, config = { components: [] }) => {
-    for (let i = 0; i < config.components.length; i++) {
-      const iKey = config.components[i].key;
+  instance.brushFromShapes = (shapes: unknown[], config: Record<string, unknown> = { components: [] }): void => {
+    for (let i = 0; i < ((config.components as unknown[]) || []).length; i++) {
+      const iKey = ((config.components as Array<Record<string, unknown>>)[i] as Record<string, unknown>).key;
       visibleComponents
-        .filter((c) => iKey === c.key)
-        .forEach((c) => {
-          let compShapes = shapes.filter((shape) => shape.key === c.key);
-          c.instance.brushFromShapes(compShapes, config.components[i]);
+        .filter((c: Component) => iKey === c.key)
+        .forEach((c: Component) => {
+          const compShapes: unknown[] = shapes.filter((shape: Record<string, unknown>) => (shape.key as string) === c.key);
+          ((c.instance as Record<string, unknown>).brushFromShapes as (shapes: unknown[], config: Record<string, unknown>) => void)(compShapes, (config.components as Array<Record<string, unknown>>)[i] as Record<string, unknown>);
         });
     }
   };
@@ -1093,8 +1094,8 @@ function chartFn(definition: Record<string, unknown>, context: Record<string, un
    * @param {string} name - Name of scroll api
    * @returns {object}
    */
-  instance.scroll = function scroll(name = 'default') {
-    return getOrCreateScrollApi(name, currentScrollApis);
+  instance.scroll = function scroll(name: string = 'default'): Record<string, unknown> {
+    return getOrCreateScrollApi(name, currentScrollApis as Record<string, unknown>);
   };
 
   /**
@@ -1102,24 +1103,24 @@ function chartFn(definition: Record<string, unknown>, context: Record<string, un
    * @param {string} key - Get the dataset identified by `key`
    * @returns {Dataset}
    */
-  instance.dataset = (key) => (dataset as (key: string) => unknown)(key);
+  instance.dataset = (key: string): unknown => (dataset as (key: string) => unknown)(key);
 
-  instance.dataCollection = (key) => (dataCollection as (key: string) => unknown)(key);
+  instance.dataCollection = (key: string): unknown => (dataCollection as (key: string) => unknown)(key);
 
   /**
    * Get all registered scales
    * @returns {Object<string,Scale>}
    */
-  instance.scales = function scales() {
-    return currentScales.all();
+  instance.scales = function scales(): Record<string, unknown> {
+    return (currentScales as Record<string, (...args: unknown[]) => Record<string, unknown>>).all?.() || {};
   };
 
   /**
    * Get all registered formatters
    * @returns {Object<string,formatter>}
    */
-  instance.formatters = function formatters() {
-    return currentFormatters.all();
+  instance.formatters = function formatters(): Record<string, unknown> {
+    return (currentFormatters as Record<string, (...args: unknown[]) => Record<string, unknown>>).all?.() || {};
   };
 
   /**
@@ -1127,11 +1128,11 @@ function chartFn(definition: Record<string, unknown>, context: Record<string, un
    * @param {string} name - Name of the brush context. If no match is found, a new brush context is created and returned.
    * @returns {Brush}
    */
-  instance.brush = function brushFn(name = 'default') {
-    if (!brushes[name]) {
-      brushes[name] = brush();
+  instance.brush = function brushFn(name: string = 'default'): unknown {
+    if (!(brushes as Record<string, unknown>)[name]) {
+      (brushes as Record<string, unknown>)[name] = brush();
     }
-    return brushes[name];
+    return (brushes as Record<string, unknown>)[name];
   };
 
   /**
@@ -1143,8 +1144,8 @@ function chartFn(definition: Record<string, unknown>, context: Record<string, un
    * instance.scale({ scale: 'nameOfMyScale' }); // Fetch an existing scale by name
    * instance.scale({ source: '0/1', type: 'linear' }); // Create a new scale
    */
-  instance.scale = function scale(v) {
-    return currentScales.get(v);
+  instance.scale = function scale(v: string | Record<string, unknown>): unknown {
+    return (currentScales as Record<string, (v: string | Record<string, unknown>) => unknown>).get?.(v);
   };
 
   /**
@@ -1161,16 +1162,16 @@ function chartFn(definition: Record<string, unknown>, context: Record<string, un
    *  format: '1.0.%'
    * }); // Create a new formatter
    */
-  instance.formatter = function formatter(v) {
-    return currentFormatters.get(v);
+  instance.formatter = function formatter(v: string | Record<string, unknown>): unknown {
+    return (currentFormatters as Record<string, (v: string | Record<string, unknown>) => unknown>).get?.(v);
   };
 
   /**
    * @param {boolean} [val] - Toggle brushing on or off. If value is omitted, a toggle action is applied to the current state.
    */
-  instance.toggleBrushing = function toggleBrushing(val) {
+  instance.toggleBrushing = function toggleBrushing(val?: boolean): void {
     if (typeof val !== 'undefined') {
-      stopBrushing = val;
+      stopBrushing = val as boolean;
     } else {
       stopBrushing = !stopBrushing;
     }
@@ -1181,14 +1182,14 @@ function chartFn(definition: Record<string, unknown>, context: Record<string, un
    * @param {string} key - Component key
    * @returns {Component} Component context
    */
-  instance.component = (key) => {
-    const component = (componentsC as Record<string, (...args: unknown[]) => unknown>).findComponentByKey(key);
-    return (component as Record<string, Record<string, unknown>> | undefined)?.instance?.ctx;
+  instance.component = (key: string): unknown => {
+    const component = (componentsC as Record<string, (key: string) => Record<string, unknown> | undefined>).findComponentByKey?.(key);
+    return ((component as Record<string, Record<string, unknown>> | undefined)?.instance as Record<string, unknown>)?.ctx;
   };
 
-  instance.logger = () => logger;
+  instance.logger = (): Record<string, unknown> => logger as Record<string, unknown>;
 
-  instance.theme = () => theme;
+  instance.theme = (): Record<string, unknown> => theme as Record<string, unknown>;
 
   instance.storage = createStorage({ animations: { updatingStageMeta: { isInit: false, shouldBeRemoved: false } } });
 
@@ -1211,19 +1212,19 @@ function chartFn(definition: Record<string, unknown>, context: Record<string, un
    * chart.interactions.off(); // Toggle off all interactions instances
    */
   Object.defineProperty(instance, 'interactions', {
-    get() {
+    get(): Record<string, unknown> {
       return /** @lends Chart.interactions */ {
         /** @type Array<Interaction> */
         instances: currentInteractions,
         /** Enable all interaction instances */
-        on() {
+        on(): void {
           addDefaultEventListeners();
-          currentInteractions.forEach((i) => i.on());
+          currentInteractions.forEach((i: Interaction) => (i.on as () => void)?.());
         },
         /** Disable all interaction instances */
-        off() {
+        off(): void {
           removeDefaultEventListeners();
-          currentInteractions.forEach((i) => i.off());
+          currentInteractions.forEach((i: Interaction) => (i.off as () => void)?.());
         },
       };
     },
@@ -1232,10 +1233,10 @@ function chartFn(definition: Record<string, unknown>, context: Record<string, un
   created();
 
   if (element) {
-    beforeMount();
+    (beforeMount as () => void)?.();
     mount();
-    mounted(element);
-    instance.element = element;
+    (mounted as (el: HTMLElement) => void)?.(element as HTMLElement);
+    (instance as Record<string, unknown>).element = element;
   }
 
   return instance;

@@ -7,11 +7,13 @@ export function getFieldAccessor(field: unknown, page: Record<string, any>, deps
     return -1;
   }
   const cache = deps.cache;
-  const origin = field.origin ? field.origin() : null;
+  const fieldObj = field as Record<string, any>;
+  const origin = fieldObj.origin ? fieldObj.origin() : null;
+  let workingField = field;
   if (origin) {
-    field = origin;
+    workingField = origin;
   }
-  let fieldIdx = cache.fields.indexOf(field);
+  let fieldIdx = cache.fields.indexOf(workingField);
   let attrIdx = -1;
   let attrDimIdx = -1;
   if (fieldIdx === -1) {
@@ -109,8 +111,8 @@ function cellToValue({
   rowIdx: number;
   row: any;
   sourceKey: unknown;
-  target: Record<string, unknown>;
-  targetProp: string;
+  target: Record<string | number, unknown> | unknown[];
+  targetProp: string | number;
   columnOrder: unknown;
 }): void {
   let propCell = mainCell;
@@ -121,12 +123,16 @@ function cellToValue({
     }
     propCell = extend({ qRow: rowIdx }, propCellFn(row));
   }
-  target[targetProp] = datumExtract(p, propCell, { key: sourceKey });
+  if (Array.isArray(target)) {
+    (target as unknown[])[targetProp as number] = datumExtract(p, propCell, { key: sourceKey });
+  } else {
+    (target as Record<string | number, unknown>)[targetProp] = datumExtract(p, propCell, { key: sourceKey });
+  }
 }
 
-export default function extract(config, dataset, cache, util) {
+export default function extract(config: any, dataset: any, cache: any, util: any): unknown[] {
   const cfgs = Array.isArray(config) ? config : [config];
-  let dataItems = [];
+  let dataItems: unknown[] = [];
   for (let i = 0; i < cfgs.length; i++) {
     if (typeof cfgs[i].field !== 'undefined') {
       const cube = dataset.raw();
@@ -137,9 +143,9 @@ export default function extract(config, dataset, cache, util) {
 
       const track = !!cfgs[i].trackBy;
       const trackType = typeof cfgs[i].trackBy;
-      const tracker = {};
-      const trackedItems = [];
-      const items = [];
+      const tracker: Record<string, any> = {};
+      const trackedItems: unknown[] = [];
+      const items: unknown[] = [];
 
       for (let j = 0; j < cube.qDataPages.length; j++) {
         const fn = getFieldAccessor(f, cube.qDataPages[j], { cache }, cube.qColumnOrder);
@@ -176,7 +182,7 @@ export default function extract(config, dataset, cache, util) {
                 rowIdx,
                 row: cube.qDataPages[j].qMatrix[k],
                 sourceKey,
-                target: p.fields ? ret[propsArr[l]] : ret,
+                target: (p.fields ? ret[propsArr[l]] : ret) as Record<string | number, unknown> | unknown[],
                 targetProp: p.fields ? m : propsArr[l],
                 columnOrder: cube.qColumnOrder,
               });
