@@ -49,7 +49,7 @@ describe('brush', () => {
   });
 
   beforeEach(() => {
-    b = brush({ vc: vcf, rc: rcf });
+    b = brush({ vc: vcf as any, rc: rcf as any }) as BrushWithEvents;
     b.addKeyAlias('_aliased', 'region');
   });
 
@@ -138,16 +138,16 @@ describe('brush', () => {
   });
 
   describe('addValue', () => {
-    let v;
-    let vcc;
-    let bb;
+    let v: Record<string, sinon.SinonStub>;
+    let vcc: sinon.SinonStub;
+    let bb: BrushWithEvents;
     beforeEach(() => {
       v = {
         add: sandbox.stub(),
         values: sandbox.stub(),
       };
       vcc = sandbox.stub().returns(v);
-      bb = brush({ vc: vcc, rc: noop as any });
+      bb = brush({ vc: vcc as any, rc: noop as any }) as BrushWithEvents;
     });
 
     it('should call value.add() with value "Car"', () => {
@@ -189,9 +189,9 @@ describe('brush', () => {
   });
 
   describe('removeValue', () => {
-    let v;
-    let vcc;
-    let bb;
+    let v: Record<string, sinon.SinonStub>;
+    let vcc: sinon.SinonStub;
+    let bb: BrushWithEvents;
     beforeEach(() => {
       v = {
         remove: sandbox.stub(),
@@ -199,7 +199,7 @@ describe('brush', () => {
         values: sandbox.stub(),
       };
       vcc = sandbox.stub().returns(v);
-      bb = brush({ vc: vcc, rc: noop as any });
+      bb = brush({ vc: vcc as any, rc: noop as any }) as BrushWithEvents;
       bb.addValue('garage');
     });
 
@@ -233,47 +233,47 @@ describe('brush', () => {
     describe(fn, () => {
       let v: Record<string, sinon.SinonStub>;
       let rcc: sinon.SinonStub;
-      let bb: ReturnType<typeof brush>;
+      let bb: BrushWithEvents;
       beforeEach(() => {
         v = { ranges: sandbox.stub() };
         v[action] = sandbox.stub();
         rcc = sandbox.stub().returns(v);
-        bb = brush({ rc: rcc, vc: noop as any });
+        bb = brush({ rc: rcc as any, vc: noop as any }) as BrushWithEvents;
         v[action]!.returns(true);
       });
 
       it(`should call range.${action}() with { min: 3 max: 7 }`, () => {
-        bb[fn]('speed', { min: 3, max: 7 });
+        (bb as any)[fn]('speed', { min: 3, max: 7 });
         expect(rcc.callCount).to.equal(1);
         expect(v[action]).to.have.been.calledWith({ min: 3, max: 7 });
       });
 
       it('should not create more than one instance per id', () => {
-        bb[fn]('speed', {});
-        bb[fn]('speed', {});
+        (bb as any)[fn]('speed', {});
+        (bb as any)[fn]('speed', {});
         expect(rcc.callCount).to.equal(1);
       });
 
       it('should emit "start" event if not activated', () => {
         const cb = sandbox.spy();
         bb.on('start', cb);
-        bb[fn]('speed', {});
-        bb[fn]('speed', {});
+        (bb as any)[fn]('speed', {});
+        (bb as any)[fn]('speed', {});
         expect(cb.callCount).to.equal(1);
       });
 
       it('should emit "update" event', () => {
         const cb = sandbox.spy();
         bb.on('update', cb);
-        bb[fn]('speed', {});
+        (bb as any)[fn]('speed', {});
         expect(cb.callCount).to.equal(1);
       });
 
       it('should not emit "update" event when state does not change', () => {
         const cb = sandbox.spy();
-        v[action].returns(false);
+        v[action]!.returns(false);
         bb.on('update', cb);
-        bb[fn]('speed', {});
+        (bb as any)[fn]('speed', {});
         expect(cb.callCount).to.equal(0);
       });
     });
@@ -282,16 +282,16 @@ describe('brush', () => {
   ['add', 'remove', 'toggle', 'set'].forEach(testRange);
 
   describe('containsValue', () => {
-    let v;
-    let vcc;
-    let bb;
+    let v: Record<string, sinon.SinonStub>;
+    let vcc: sinon.SinonStub;
+    let bb: BrushWithEvents;
     beforeEach(() => {
       v = {
         add: sandbox.stub(),
         contains: sandbox.stub(),
       };
       vcc = sandbox.stub().returns(v);
-      bb = brush({ vc: vcc, rc: noop as any });
+      bb = brush({ vc: vcc as any, rc: noop as any }) as BrushWithEvents;
       bb.addKeyAlias('_ali', 'ALI');
     });
 
@@ -323,16 +323,16 @@ describe('brush', () => {
   });
 
   describe('containsRangeValue', () => {
-    let v;
-    let rcc;
-    let bb;
+    let v: Record<string, sinon.SinonStub>;
+    let rcc: sinon.SinonStub;
+    let bb: BrushWithEvents;
     beforeEach(() => {
       v = {
         add: sandbox.stub(),
         containsValue: sandbox.stub(),
       };
       rcc = sandbox.stub().returns(v);
-      bb = brush({ vc: noop as any, rc: rcc });
+      bb = brush({ vc: noop as any, rc: rcc as any }) as BrushWithEvents;
       bb.addKeyAlias('_range-ali', 'margin');
     });
 
@@ -364,16 +364,16 @@ describe('brush', () => {
   });
 
   describe('containsRange', () => {
-    let v;
-    let rcc;
-    let bb;
+    let v: Record<string, sinon.SinonStub>;
+    let rcc: sinon.SinonStub;
+    let bb: BrushWithEvents;
     beforeEach(() => {
       v = {
         add: sandbox.stub(),
         containsRange: sandbox.stub(),
       };
       rcc = sandbox.stub().returns(v);
-      bb = brush({ vc: noop as any, rc: rcc });
+      bb = brush({ vc: noop as any, rc: rcc as any }) as BrushWithEvents;
       bb.addKeyAlias('_range-ali', 'margin');
     });
 
@@ -426,13 +426,13 @@ describe('brush', () => {
   });
 
   describe('containsData', () => {
-    let v;
-    let rcc;
-    let bb;
-    let d;
+    let v: Record<string, sinon.SinonStub>;
+    let rcc: sinon.SinonStub;
+    let bb: BrushWithEvents;
+    let d: Record<string, any>;
 
-    let val;
-    let vcc;
+    let val: Record<string, sinon.SinonStub>;
+    let vcc: sinon.SinonStub;
 
     beforeEach(() => {
       v = {
@@ -446,7 +446,7 @@ describe('brush', () => {
       };
       rcc = sandbox.stub().returns(v);
       vcc = sandbox.stub().returns(val);
-      bb = brush({ vc: vcc, rc: rcc });
+      bb = brush({ vc: vcc as any, rc: rcc as any }) as BrushWithEvents;
       d = {
         x: { value: 7, source: { field: 'sales', type: 'quant' } },
         span: { value: [5, 10], source: { field: 'margin', type: 'quant' } },
@@ -543,8 +543,8 @@ describe('brush', () => {
   });
 
   describe('toggle', () => {
-    let v;
-    let vcoll;
+    let v: Record<string, sinon.SinonStub>;
+    let vcoll: sinon.SinonStub;
 
     beforeEach(() => {
       v = {
@@ -613,8 +613,8 @@ describe('brush', () => {
   });
 
   describe('set', () => {
-    let v;
-    let vcoll;
+    let v: Record<string, sinon.SinonStub>;
+    let vcoll: sinon.SinonStub;
 
     beforeEach(() => {
       v = {
@@ -782,11 +782,11 @@ describe('brush', () => {
   });
 
   describe('addAndRemoveValues', () => {
-    let v;
-    let vcc;
-    let bb;
-    let valuesToAdd;
-    let valuesToRemove;
+    let v: Record<string, sinon.SinonStub>;
+    let vcc: sinon.SinonStub;
+    let bb: BrushWithEvents;
+    let valuesToAdd: Array<{ key: string; value: string }>;
+    let valuesToRemove: Array<{ key: string; value: string }>;
     beforeEach(() => {
       v = {
         remove: sandbox.stub(),
@@ -794,7 +794,7 @@ describe('brush', () => {
         values: sandbox.stub(),
       };
       vcc = sandbox.stub().returns(v);
-      bb = brush({ vc: vcc, rc: noop as any });
+      bb = brush({ vc: vcc as any, rc: noop as any }) as BrushWithEvents;
       bb.addValue('garage');
 
       valuesToAdd = [{ key: 'garage', value: 'Car' }];

@@ -7,14 +7,6 @@ interface SinonSandbox {
   spy(): any;
 }
 
-declare const sinon: {
-  createSandbox(): SinonSandbox;
-};
-
-declare global {
-  let global: Record<string, any>;
-}
-
 describe('plugin', () => {
   let sandbox: SinonSandbox;
 

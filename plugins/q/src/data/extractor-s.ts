@@ -2,7 +2,7 @@
 
 import extend from 'extend';
 
-export function getFieldAccessor(field, page, deps, columnOrder) {
+export function getFieldAccessor(field: unknown, page: Record<string, any>, deps: Record<string, any>, columnOrder: unknown): ((row: any) => any) | -1 {
   if (!field) {
     return -1;
   }
@@ -16,8 +16,8 @@ export function getFieldAccessor(field, page, deps, columnOrder) {
   let attrDimIdx = -1;
   if (fieldIdx === -1) {
     for (let i = 0; i < cache.wrappedFields.length; i++) {
-      attrDimIdx = cache.wrappedFields[i].attrDims.map((v) => v.instance).indexOf(field);
-      attrIdx = cache.wrappedFields[i].attrExps.map((v) => v.instance).indexOf(field);
+      attrDimIdx = (cache.wrappedFields[i].attrDims || []).map((v: unknown) => (v as Record<string, unknown>).instance).indexOf(field);
+      attrIdx = (cache.wrappedFields[i].attrExps || []).map((v: unknown) => (v as Record<string, unknown>).instance).indexOf(field);
       if (attrDimIdx !== -1 || attrIdx !== -1) {
         fieldIdx = i;
         break;
@@ -40,13 +40,13 @@ export function getFieldAccessor(field, page, deps, columnOrder) {
   }
 
   if (attrDimIdx >= 0) {
-    return (row) => row[fieldIdx].qAttrDims.qValues[attrDimIdx];
+    return (row: any) => row[fieldIdx].qAttrDims.qValues[attrDimIdx];
   }
   if (attrIdx >= 0) {
-    return (row) => row[fieldIdx].qAttrExps.qValues[attrIdx];
+    return (row: any) => row[fieldIdx].qAttrExps.qValues[attrIdx];
   }
 
-  return (row) => row[fieldIdx];
+  return (row: any) => row[fieldIdx];
 }
 
 // TODO - handle 'other' value
@@ -59,7 +59,7 @@ export function getFieldAccessor(field, page, deps, columnOrder) {
 //   }
 // };
 
-function datumExtract(propCfg, cell, { key }) {
+function datumExtract(propCfg: Record<string, any>, cell: any, { key }: { key: unknown }): Record<string, unknown> {
   const datum: Record<string, unknown> = {
     value:
       typeof propCfg.value === 'function'
@@ -99,7 +99,20 @@ function cellToValue({
   target,
   targetProp,
   columnOrder,
-}) {
+}: {
+  cache: Record<string, any>;
+  f: unknown;
+  mainCell: any;
+  p: Record<string, any>;
+  prop: unknown;
+  page: Record<string, any>;
+  rowIdx: number;
+  row: any;
+  sourceKey: unknown;
+  target: Record<string, unknown>;
+  targetProp: string;
+  columnOrder: unknown;
+}): void {
   let propCell = mainCell;
   if (p.field && p.field !== f) {
     const propCellFn = getFieldAccessor(p.field, page, { cache }, columnOrder);

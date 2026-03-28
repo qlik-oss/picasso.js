@@ -52,7 +52,12 @@ export default function q({
   data,
   config = {},
 }: { key?: string; data?: object; config?: Record<string, unknown> } = {}) {
-  const cache = {
+  const cache: {
+    fields: unknown[];
+    wrappedFields: Array<{ instance: unknown; attrDims?: unknown[]; attrExps?: unknown[]; measures?: unknown[] }>;
+    allFields: unknown[];
+    virtualFields: unknown[];
+  } = {
     fields: [],
     wrappedFields: [],
     allFields: [],
@@ -83,11 +88,11 @@ export default function q({
   const dataset = {
     key: () => key,
     raw: () => cube,
-    field: (query) => findField(query, opts as { cache: unknown }),
+    field: (query: unknown) => findField(query, opts as { cache: unknown }),
     fields: () => cache.fields.slice(),
-    extract: (extractionConfig) =>
+    extract: (extractionConfig: unknown) =>
       (opts.extractor as (...args: unknown[]) => unknown)(extractionConfig, dataset, cache, deps),
-    hierarchy: (hierarchyConfig) =>
+    hierarchy: (hierarchyConfig: unknown) =>
       (opts.hierarchy as (...args: unknown[]) => unknown)(dataset, cache, deps, hierarchyConfig),
     _cache: () => cache,
   };
@@ -104,10 +109,10 @@ export default function q({
     opts.extractor = () => []; // TODO - throw unsupported error?
   }
 
-  opts.fieldExtractor = (f) => (opts.extractor as (...args: unknown[]) => unknown)({ field: f }, dataset, cache, deps);
+  opts.fieldExtractor = (f: unknown) => (opts.extractor as (...args: unknown[]) => unknown)({ field: f }, dataset, cache, deps);
 
-  const dimAcc = cube.qMode === 'S' ? (d) => d.qElemNumber : undefined;
-  const measAcc = cube.qMode === 'S' ? (d) => d.qNum : undefined;
+  const dimAcc = cube.qMode === 'S' ? (d: unknown) => (d as Record<string, unknown>).qElemNumber : undefined;
+  const measAcc = cube.qMode === 'S' ? (d: unknown) => (d as Record<string, unknown>).qNum : undefined;
 
   cache.wrappedFields.push(
     ...createFields('qDimensionInfo', cube, key, '', extend({}, opts, { value: dimAcc, type: 'dimension' }))
@@ -118,12 +123,12 @@ export default function q({
 
   cache.fields = cache.wrappedFields.map((f) => f.instance);
 
-  const traverse = (arr) => {
+  const traverse = (arr: Array<{ instance: unknown; attrDims?: unknown[]; attrExps?: unknown[]; measures?: unknown[] }>): void => {
     arr.forEach((f) => {
       cache.allFields.push(f.instance);
-      traverse(f.measures);
-      traverse(f.attrDims);
-      traverse(f.attrExps);
+      if (f.measures) traverse(f.measures as Array<{ instance: unknown; attrDims?: unknown[]; attrExps?: unknown[]; measures?: unknown[] }>);
+      if (f.attrDims) traverse(f.attrDims as Array<{ instance: unknown; attrDims?: unknown[]; attrExps?: unknown[]; measures?: unknown[] }>);
+      if (f.attrExps) traverse(f.attrExps as Array<{ instance: unknown; attrDims?: unknown[]; attrExps?: unknown[]; measures?: unknown[] }>);
     });
   };
 
@@ -136,7 +141,7 @@ export default function q({
       override?: Record<string, unknown>;
       [key: string]: unknown;
     }>
-  ).forEach((v) => {
+  ).forEach((v: { from: string; key: string; override?: Record<string, unknown>; [key: string]: unknown }) => {
     // key: 'temporal',
     // from: 'qDimensionInfo/0',
     // override: {

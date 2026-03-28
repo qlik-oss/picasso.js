@@ -15,6 +15,72 @@ import { testRectPoint } from '../math/narrow-phase-collision';
 import themeFn from '../theme';
 import componentCollectionFn from './component-collection';
 
+// Type definitions for commonly used types
+interface Shape extends Record<string, unknown> {
+  cx?: number;
+  cy?: number;
+  x?: number;
+  y?: number;
+  x1?: number;
+  y1?: number;
+  x2?: number;
+  y2?: number;
+  width?: number;
+  height?: number;
+  vertices?: Array<{ x: number; y: number }> | Array<Array<{ x: number; y: number }>>;
+  type?: string;
+  [key: string]: unknown;
+}
+
+interface Bounds {
+  left: number;
+  top: number;
+  width?: number;
+  height?: number;
+  right?: number;
+  bottom?: number;
+}
+
+interface Component {
+  instance: Record<string, unknown>;
+  settings: Record<string, unknown>;
+  key?: string;
+  hasKey?: boolean;
+  visible?: boolean;
+  updateWith?: unknown;
+  applyTransform?: boolean;
+}
+
+interface EventInfo extends Record<string, unknown> {
+  x?: number;
+  y?: number;
+  multiTouch?: boolean;
+  time?: number;
+  comps?: Component[];
+}
+
+interface Listener {
+  key: string;
+  listener: (e: Event) => void;
+}
+
+interface Interaction extends Record<string, unknown> {
+  key?: string;
+  type: string;
+  destroy?: () => void;
+  set?: (settings: Record<string, unknown>) => void;
+}
+
+interface ChartInstance extends Record<string, unknown> {
+  update?: (opts?: Record<string, unknown>) => void;
+  destroy?: () => void;
+  getAffectedShapes?: (ctx: string, mode?: string, props?: unknown[], key?: string) => unknown[];
+  findShapes?: (selector: string) => unknown[];
+  componentsFromPoint?: (p: Record<string, number>) => unknown[];
+  shapesAt?: (shape: unknown, opts?: Record<string, unknown>) => unknown[];
+  brush?: (config: Record<string, unknown>) => void;
+}
+
 /**
  * @callback customLayoutFunction
  * @param {Rect} rect
@@ -262,11 +328,11 @@ import componentCollectionFn from './component-collection';
  * @property {string} [action='set'] - Type of action to respond with
  */
 
-function addComponentDelta(shape, containerBounds, componentBounds) {
+function addComponentDelta(shape: Shape, containerBounds: Bounds, componentBounds: Bounds): Shape {
   const dx = containerBounds.left - componentBounds.left;
   const dy = containerBounds.top - componentBounds.top;
   const type = getShapeType(shape);
-  const deltaShape = extend(true, {}, shape);
+  const deltaShape: Shape = extend(true, {}, shape);
 
   switch (type) {
     case 'circle':
@@ -308,8 +374,8 @@ function addComponentDelta(shape, containerBounds, componentBounds) {
   return deltaShape;
 }
 
-const moveToPosition = (element, comp, index) => {
-  const el = comp.instance.renderer().element();
+const moveToPosition = (element: HTMLElement | null, comp: Component, index: number): void => {
+  const el = (comp.instance.renderer as () => Record<string, unknown>)().element?.() as HTMLElement | null;
   if (isNaN(index) || !el || !element || !element.children) {
     return;
   }
@@ -319,44 +385,44 @@ const moveToPosition = (element, comp, index) => {
   if (el === node) {
     return;
   }
-  const additionalEl = comp.instance.def.additionalElements && comp.instance.def.additionalElements().filter(Boolean);
+  const additionalEl = (comp.instance.def as Record<string, unknown>).additionalElements && (comp.instance.def as Record<string, () => HTMLElement[] | null>).additionalElements?.()?.filter(Boolean);
   if (element.insertBefore && typeof node !== 'undefined') {
     element.insertBefore(el, node);
     if (additionalEl) {
-      additionalEl.forEach((ae) => {
+      additionalEl.forEach((ae: HTMLElement) => {
         element.insertBefore(ae, el);
       });
     }
   } else {
     if (additionalEl) {
-      additionalEl.forEach((ae) => {
-        element.appendChild(ae, el);
+      additionalEl.forEach((ae: HTMLElement) => {
+        element.appendChild(ae);
       });
     }
     element.appendChild(el);
   }
 };
 
-export function orderComponents(element, ordered) {
-  const elToIdx = [];
+export function orderComponents(element: HTMLElement, ordered: Component[]): void {
+  const elToIdx: number[] = [];
   let numElements = 0;
-  ordered.forEach((comp) => {
+  ordered.forEach((comp: Component) => {
     elToIdx.push(numElements);
 
     // assume each component has at least one element
     numElements++;
 
     // check additional elements
-    const additionalEl = comp.instance.def.additionalElements && comp.instance.def.additionalElements();
+    const additionalEl = (comp.instance.def as Record<string, unknown>).additionalElements && (comp.instance.def as Record<string, () => HTMLElement[] | null>).additionalElements?.();
     if (additionalEl) {
       numElements += additionalEl.length;
     }
   });
 
-  ordered.forEach((comp, i) => moveToPosition(element, comp, elToIdx[i]));
+  ordered.forEach((comp: Component, i: number) => moveToPosition(element, comp, elToIdx[i]));
 }
 
-function chartFn(definition, context) {
+function chartFn(definition: Record<string, unknown>, context: Record<string, unknown>): ChartInstance {
   /**
    * @typedef {object} ChartDefinition
    * @property {ChartDefinition~beforeDestroy} [beforeDestroy]
@@ -390,36 +456,36 @@ function chartFn(definition, context) {
     on = {},
   } = definition;
 
-  const registries = context.registries;
-  const logger = context.logger;
-  const theme = themeFn(context.style, context.palettes);
+  const registries = (context as Record<string, unknown>).registries as Record<string, unknown>;
+  const logger = (context as Record<string, unknown>).logger as Record<string, unknown>;
+  const theme = themeFn((context as Record<string, unknown>).style as Record<string, unknown>, (context as Record<string, unknown>).palettes as Record<string, unknown>);
 
-  const listeners = [];
+  const listeners: Listener[] = [];
   /**
    * Chart instance
    * @alias Chart
    * @interface
    */
-  const instance = extend({}, definition);
+  const instance: ChartInstance = extend({}, definition);
   const mediator = mediatorFactory();
-  let visibleComponents = [];
+  let visibleComponents: Component[] = [];
 
-  let currentScales = null; // Built scales
-  let currentFormatters = null; // Built formatters
-  let currentScrollApis = null; // Build scroll apis
-  let currentInteractions = [];
+  let currentScales: Record<string, unknown> | null = null; // Built scales
+  let currentFormatters: Record<string, unknown> | null = null; // Built formatters
+  let currentScrollApis: Record<string, unknown> | null = null; // Build scroll apis
+  let currentInteractions: Interaction[] = [];
 
-  let dataset: (() => void) | ReturnType<typeof datasources> = () => {};
-  let dataCollection: (() => void) | ReturnType<typeof dataCollections> = () => {};
-  const brushes = {};
+  let dataset: ((_data: unknown) => void) | ReturnType<typeof datasources> = () => {};
+  let dataCollection: ((_settings: unknown) => void) | ReturnType<typeof dataCollections> = () => {};
+  const brushes: Record<string, unknown> = {};
   let stopBrushing = false;
 
-  const createComponent = (compSettings) => {
-    if (!registries.component.has(compSettings.type)) {
-      logger.warn(`Unknown component: ${compSettings.type}`);
+  const createComponent = (compSettings: Record<string, unknown>): Component | false => {
+    if (!(registries.component as Record<string, unknown>).has?.(compSettings.type)) {
+      (logger as Record<string, (msg: string) => void>).warn?.(`Unknown component: ${compSettings.type}`);
       return false;
     }
-    const componentDefinition = registries.component(compSettings.type);
+    const componentDefinition = (registries.component as (type: string) => Record<string, unknown>)(compSettings.type as string);
     const compInstance = componentFactory(componentDefinition, {
       settings: compSettings,
       chart: instance,
@@ -431,7 +497,7 @@ function chartFn(definition, context) {
     return {
       instance: compInstance,
       settings: extend(true, {}, compSettings),
-      key: compSettings.key,
+      key: compSettings.key as string,
       hasKey: typeof compSettings.key !== 'undefined',
     };
   };
@@ -439,13 +505,13 @@ function chartFn(definition, context) {
   const componentsC = componentCollectionFn({ createComponent });
 
   // Create a callback that calls lifecycle functions in the definition and config (if they exist).
-  function createCallback(method, defaultMethod = () => {}) {
-    return function cb(...args) {
-      const inDefinition = typeof definition[method] === 'function';
+  function createCallback(method: string, defaultMethod: (...args: unknown[]) => unknown = () => {}): (...args: unknown[]) => unknown {
+    return function cb(...args: unknown[]): unknown {
+      const inDefinition = typeof (definition as Record<string, unknown>)[method] === 'function';
 
-      let returnValue;
+      let returnValue: unknown;
       if (inDefinition) {
-        returnValue = definition[method].call(instance, ...args);
+        returnValue = ((definition as Record<string, unknown>)[method] as (...args: unknown[]) => unknown).call(instance, ...args);
       } else {
         returnValue = defaultMethod.call(instance, ...args);
       }
@@ -453,14 +519,16 @@ function chartFn(definition, context) {
     };
   }
 
-  function getElementRect(el) {
-    if (typeof el.getBoundingClientRect === 'function') {
-      const { width, height } = el.getBoundingClientRect();
+  function getElementRect(el: HTMLElement | null): Bounds {
+    if (typeof (el as Record<string, unknown>)?.getBoundingClientRect === 'function') {
+      const { width, height } = (el as HTMLElement).getBoundingClientRect();
       return {
         x: 0,
         y: 0,
         width,
         height,
+        left: 0,
+        top: 0,
       };
     }
     return {
@@ -468,6 +536,8 @@ function chartFn(definition, context) {
       y: 0,
       width: 0,
       height: 0,
+      left: 0,
+      top: 0,
     };
   }
 
@@ -493,20 +563,20 @@ function chartFn(definition, context) {
   const beforeDestroy = createCallback('beforeDestroy');
   const destroyed = createCallback('destroyed');
 
-  const set = (_data, _settings, { partialData }: { partialData?: boolean } = {}) => {
-    const { formatters = {}, scales = {}, scroll = {} } = _settings;
+  const set = (_data: unknown, _settings: Record<string, unknown>, { partialData }: { partialData?: boolean } = {}): void => {
+    const { formatters = {}, scales = {}, scroll = {} } = _settings as Record<string, unknown>;
 
-    dataset = datasources(_data, { logger, types: registries.data });
+    dataset = datasources(_data, { logger, types: (registries.data as Record<string, unknown>) });
     if (!partialData) {
-      Object.keys(brushes).forEach((b) => brushes[b].clear());
+      Object.keys(brushes).forEach((b: string) => (brushes[b] as Record<string, () => void>).clear?.());
     }
     if (_settings.palettes) {
-      theme.setPalettes(_settings.palettes);
+      (theme as Record<string, (p: unknown) => void>).setPalettes?.(_settings.palettes);
     }
     if (_settings.style) {
-      theme.setStyle(_settings.style);
+      (theme as Record<string, (s: unknown) => void>).setStyle?.(_settings.style);
     }
-    dataCollection = dataCollections(_settings.collections, { dataset }, { logger });
+    dataCollection = dataCollections(_settings.collections as unknown, { dataset }, { logger });
 
     const deps = {
       theme,
@@ -522,80 +592,81 @@ function chartFn(definition, context) {
       { dataset, collection: dataCollection },
       { ...deps, formatter: registries.formatter }
     );
-    currentScrollApis = buildScroll(scroll, currentScrollApis);
+    currentScrollApis = buildScroll(scroll as Record<string, unknown>, currentScrollApis);
   };
 
-  const render = () => {
-    const { components = [] } = settings;
+  const render = (): void => {
+    const { components = [] } = (settings as Record<string, unknown>);
 
     beforeRender();
 
-    set(data, settings);
+    set(data, settings as Record<string, unknown>);
 
-    (componentsC as Record<string, (...args: unknown[]) => unknown>).set({ components });
+    (componentsC as Record<string, (...args: unknown[]) => void>).set?.({ components });
 
-    const { visible, hidden, ordered } = layout() as { visible: unknown[]; hidden: unknown[]; ordered: unknown[] };
+    const { visible, hidden, ordered } = (layout() as { visible: Component[]; hidden: Component[]; ordered: Component[] });
     visibleComponents = visible;
 
-    hidden.forEach((comp) => {
-      const c = comp as Record<string, unknown>;
-      ((c.instance as Record<string, unknown>).hide as () => void)();
-      c.visible = false;
+    hidden.forEach((comp: Component) => {
+      ((comp.instance as Record<string, Record<string, () => void>>).hide)?.();
+      comp.visible = false;
     });
 
-    visible.forEach((comp) => ((comp as Record<string, unknown>).instance as Record<string, () => void>).beforeMount());
-    visible.forEach((comp) => ((comp as Record<string, unknown>).instance as Record<string, () => void>).mount());
-    visible.forEach((comp) =>
-      ((comp as Record<string, unknown>).instance as Record<string, () => void>).beforeRender()
+    visible.forEach((comp: Component) => ((comp.instance as Record<string, () => void>).beforeMount)?.());
+    visible.forEach((comp: Component) => ((comp.instance as Record<string, () => void>).mount)?.());
+    visible.forEach((comp: Component) =>
+      ((comp.instance as Record<string, () => void>).beforeRender)?.()
     );
 
-    visible.forEach((comp) => ((comp as Record<string, unknown>).instance as Record<string, () => void>).render());
-    visible.forEach((comp) => ((comp as Record<string, unknown>).instance as Record<string, () => void>).mounted());
-    visible.forEach((comp) => {
-      (comp as Record<string, unknown>).visible = true;
+    visible.forEach((comp: Component) => ((comp.instance as Record<string, () => void>).render)?.());
+    visible.forEach((comp: Component) => ((comp.instance as Record<string, () => void>).mounted)?.());
+    visible.forEach((comp: Component) => {
+      comp.visible = true;
     });
-    orderComponents(element, ordered);
+    orderComponents(element as HTMLElement, ordered);
   };
 
-  function setInteractions(interactions = []) {
-    const current = {};
-    const newKeys = interactions.filter((it) => !!it.key).map((it) => it.key);
-    currentInteractions.forEach((cit) => {
+  function setInteractions(interactions: Interaction[] = []): void {
+    const current: Record<string, Interaction> = {};
+    const newKeys: (string | undefined)[] = interactions.filter((it: Interaction) => !!it.key).map((it: Interaction) => it.key);
+    currentInteractions.forEach((cit: Interaction) => {
       if (cit.key && newKeys.indexOf(cit.key) !== -1) {
         // keep old instance
         current[cit.key] = cit;
       } else {
-        cit.destroy();
+        cit.destroy?.();
       }
     });
-    currentInteractions = interactions.map((intSettings) => {
-      const intDefinition =
+    currentInteractions = interactions.map((intSettings: Interaction) => {
+      const intDefinition: Interaction =
         intSettings.key && current[intSettings.key]
           ? current[intSettings.key]
-          : registries.interaction(intSettings.type)(instance, mediator, element);
-      intDefinition.set(intSettings);
+          : ((registries.interaction as (type: string) => (inst: ChartInstance, med: unknown, el: HTMLElement) => Interaction)(intSettings.type as string)(instance as ChartInstance, mediator, element as HTMLElement));
+      (intDefinition.set as (settings: Interaction) => void)?.(intSettings);
       return intDefinition;
     });
   }
 
-  const componentsFromPoint = (p) => {
-    const br = element.getBoundingClientRect();
+  const componentsFromPoint = (p: Record<string, number>): Component[] => {
+    const br = (element as HTMLElement).getBoundingClientRect();
     const x = 'clientX' in p ? p.clientX : p.x;
     const y = 'clientY' in p ? p.clientY : p.y;
     const tp = { x: x - br.left, y: y - br.top };
-    const ret = [];
-    visibleComponents.forEach((c) => {
-      const r = c.instance.getRect();
+    const ret: Component[] = [];
+    visibleComponents.forEach((c: Component) => {
+      const r = (c.instance.getRect as () => Record<string, unknown>)();
       // Do test on physical rect and use computed rect if available, otherwise fallback to computing a new rect for legacy support
       if (
         testRectPoint(
-          r.computedPhysical
-            ? r.computedPhysical
+          (r.computedPhysical as Bounds)
+            ? (r.computedPhysical as Bounds)
             : {
-                x: r.margin.left + r.x * r.scaleRatio.x,
-                y: r.margin.top + r.y * r.scaleRatio.y,
-                width: r.width * r.scaleRatio.x,
-                height: r.height * r.scaleRatio.y,
+                x: ((r.margin as Record<string, number>).left + (r.x as number) * ((r.scaleRatio as Record<string, number>).x as number)) as number,
+                y: ((r.margin as Record<string, number>).top + (r.y as number) * ((r.scaleRatio as Record<string, number>).y as number)) as number,
+                width: ((r.width as number) * ((r.scaleRatio as Record<string, number>).x as number)) as number,
+                height: ((r.height as number) * ((r.scaleRatio as Record<string, number>).y as number)) as number,
+                left: 0,
+                top: 0,
               },
           tp
         )
@@ -606,67 +677,55 @@ function chartFn(definition, context) {
     return ret;
   };
 
-  const addDefaultEventListeners = () => {
+  const addDefaultEventListeners = (): void => {
     if (listeners.length || !element) {
       return;
     }
-    Object.keys(on).forEach((key) => {
-      const listener = on[key].bind(instance);
-      element.addEventListener(key, listener);
+    Object.keys(on).forEach((key: string) => {
+      const listener = (on as Record<string, (e: Event) => void>)[key].bind(instance);
+      (element as HTMLElement).addEventListener(key, listener);
       listeners.push({
         key,
         listener,
       });
     });
 
-    const eventInfo: Record<string, unknown> = {};
-    const onTapDown = (e) => {
-      if (e.touches) {
-        eventInfo.x = e.touches[0].clientX;
-        eventInfo.y = e.touches[0].clientY;
-        eventInfo.multiTouch = e.touches.length > 1;
+    const eventInfo: EventInfo = {};
+    const onTapDown = (e: TouchEvent | MouseEvent): void => {
+      if ((e as TouchEvent).touches) {
+        eventInfo.x = (e as TouchEvent).touches[0].clientX;
+        eventInfo.y = (e as TouchEvent).touches[0].clientY;
+        eventInfo.multiTouch = (e as TouchEvent).touches.length > 1;
       } else {
-        eventInfo.x = e.clientX;
-        eventInfo.y = e.clientY;
+        eventInfo.x = (e as MouseEvent).clientX;
+        eventInfo.y = (e as MouseEvent).clientY;
         eventInfo.multiTouch = false;
       }
       eventInfo.time = Date.now();
-      eventInfo.comps = componentsFromPoint(eventInfo);
+      eventInfo.comps = componentsFromPoint(eventInfo as Record<string, number>);
     };
 
-    const onBrushTap = (e) => {
-      const comps = eventInfo.comps || componentsFromPoint(e);
+    const onBrushTap = (e: Event): void => {
+      const comps: Component[] = (eventInfo.comps as Component[]) || componentsFromPoint(e as Record<string, number>);
       if (
-        (comps as unknown[]).every(
-          (c: Record<string, unknown>) =>
-            ((c.instance as Record<string, unknown>).def as Record<string, unknown>).disableTriggers
+        comps.every(
+          (c: Component) =>
+            ((c.instance as Record<string, unknown>).def as Record<string, boolean>).disableTriggers
         )
       ) {
         return;
       }
 
-      if (e.type === 'touchend') {
-        e.preventDefault();
+      if ((e as TouchEvent).type === 'touchend') {
+        (e as TouchEvent).preventDefault();
       }
       if (!isValidTapEvent(e, eventInfo)) {
         return;
       }
 
-      for (let i = (comps as unknown[]).length - 1; i >= 0; i--) {
-        const comp = comps[i];
-        comp.instance.onBrushTap(e);
-        if (stopBrushing) {
-          stopBrushing = false;
-          break;
-        }
-      }
-    };
-
-    const onBrushOver = (e) => {
-      const comps = componentsFromPoint(e);
       for (let i = comps.length - 1; i >= 0; i--) {
         const comp = comps[i];
-        comp.instance.onBrushOver(e);
+        (comp.instance.onBrushTap as (e: Event) => void)?.(e);
         if (stopBrushing) {
           stopBrushing = false;
           break;
@@ -674,40 +733,52 @@ function chartFn(definition, context) {
       }
     };
 
-    const brushEventList = [];
+    const onBrushOver = (e: Event): void => {
+      const comps: Component[] = componentsFromPoint(e as Record<string, number>);
+      for (let i = comps.length - 1; i >= 0; i--) {
+        const comp = comps[i];
+        (comp.instance.onBrushOver as (e: Event) => void)?.(e);
+        if (stopBrushing) {
+          stopBrushing = false;
+          break;
+        }
+      }
+    };
 
-    brushEventList.push({ key: 'mousedown', listener: onTapDown });
+    const brushEventList: Listener[] = [];
+
+    brushEventList.push({ key: 'mousedown', listener: onTapDown as (e: Event) => void });
     brushEventList.push({ key: 'mouseup', listener: onBrushTap });
 
-    if (detectTouchSupport(element)) {
-      brushEventList.push({ key: 'touchstart', listener: onTapDown });
+    if (detectTouchSupport(element as HTMLElement)) {
+      brushEventList.push({ key: 'touchstart', listener: onTapDown as (e: Event) => void });
       brushEventList.push({ key: 'touchend', listener: onBrushTap });
     }
 
     brushEventList.push({ key: 'mousemove', listener: onBrushOver });
 
-    brushEventList.forEach((event) => {
-      element.addEventListener(event.key, event.listener);
+    brushEventList.forEach((event: Listener) => {
+      (element as HTMLElement).addEventListener(event.key, event.listener);
       listeners.push(event);
     });
   };
 
-  const removeDefaultEventListeners = () => {
-    listeners.forEach(({ key, listener }) => element.removeEventListener(key, listener));
+  const removeDefaultEventListeners = (): void => {
+    listeners.forEach(({ key, listener }: Listener) => (element as HTMLElement).removeEventListener(key, listener));
     listeners.length = 0;
   };
 
   // Browser only
-  const mount = () => {
-    element.innerHTML = '';
+  const mount = (): void => {
+    (element as HTMLElement).innerHTML = '';
 
     render();
 
     addDefaultEventListeners();
-    setInteractions(settings.interactions);
+    setInteractions((settings as Record<string, unknown>).interactions as Interaction[]);
   };
 
-  const unmount = () => {
+  const unmount = (): void => {
     removeDefaultEventListeners();
     setInteractions();
   };
@@ -802,50 +873,48 @@ function chartFn(definition, context) {
       }
     });
 
-    const toUpdate = [];
-    const toRender = [];
-    let toRenderOrUpdate;
+    const toUpdate: Component[] = [];
+    const toRender: Component[] = [];
+    let toRenderOrUpdate: Component[];
     if (partialData) {
-      (componentsC as Record<string, (...args: unknown[]) => unknown>).forEach((comp) => {
+      (componentsC as Record<string, (cb: (comp: Component) => void) => void>).forEach((comp: Component) => {
         if ((comp.updateWith || comp.applyTransform) && comp.visible) {
           toUpdate.push(comp);
         }
       });
       toRenderOrUpdate = toUpdate;
     } else {
-      const { visible, hidden, ordered } = layout() as { visible: unknown[]; hidden: unknown[]; ordered: unknown[] }; // Relayout
+      const { visible, hidden, ordered } = (layout() as { visible: Component[]; hidden: Component[]; ordered: Component[] }); // Relayout
       visibleComponents = visible;
       toRenderOrUpdate = visible;
       visibleOrdered = ordered;
 
-      visible.forEach((comp) => {
-        const c = comp as Record<string, unknown>;
-        if (c.updateWith && c.visible) {
+      visible.forEach((comp: Component) => {
+        if (comp.updateWith && comp.visible) {
           toUpdate.push(comp);
         } else {
           toRender.push(comp);
         }
       });
 
-      hidden.forEach((comp) => {
-        const c = comp as Record<string, unknown>;
-        ((c.instance as Record<string, unknown>).hide as () => void)();
-        c.visible = false;
-        delete c.updateWith;
-        c.applyTransform = false;
+      hidden.forEach((comp: Component) => {
+        ((comp.instance as Record<string, () => void>).hide)?.();
+        comp.visible = false;
+        delete comp.updateWith;
+        comp.applyTransform = false;
       });
     }
 
-    toRender.forEach((comp) =>
-      ((comp as Record<string, unknown>).instance as Record<string, () => void>).beforeMount()
+    toRender.forEach((comp: Component) =>
+      ((comp.instance as Record<string, () => void>).beforeMount)?.()
     );
-    toRender.forEach((comp) => ((comp as Record<string, unknown>).instance as Record<string, () => void>).mount());
+    toRender.forEach((comp: Component) => ((comp.instance as Record<string, () => void>).mount)?.());
 
-    toRenderOrUpdate.forEach((comp) => comp.instance.beforeRender());
+    toRenderOrUpdate.forEach((comp: Component) => ((comp.instance as Record<string, () => void>).beforeRender)?.());
 
-    toRenderOrUpdate.forEach((comp) => {
+    toRenderOrUpdate.forEach((comp: Component) => {
       if ((comp.updateWith || comp.applyTransform) && comp.visible) {
-        comp.instance.update();
+        ((comp.instance as Record<string, () => void>).update) as () => void;
       } else {
         comp.instance.render();
       }

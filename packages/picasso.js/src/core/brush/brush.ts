@@ -391,32 +391,33 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
     isActive(): boolean;
     clear(): void;
     brushes(): BrushInfo[];
-    addValue(key: string, value: string | number): void;
+    addValue(key: string, value?: string | number): void;
     addValues(items: BrushItem[]): void;
     setValues(items: BrushItem[]): void;
-    removeValue(key: string, value: string | number): void;
+    removeValue(key: string, value?: string | number): void;
     removeValues(items: BrushItem[]): void;
-    toggleValue(key: string, value: string | number): void;
+    toggleValue(key: string, value?: string | number): void;
     toggleValues(items: BrushItem[]): void;
-    containsValue(key: string, value: string | number): boolean;
-    addRange(key: string, range: { min: number; max: number }): void;
+    containsValue(key: string, value?: string | number): boolean;
+    addRange(key: string, range?: { min: number; max: number }): void;
     addRanges(items: BrushRangeItem[]): void;
-    removeRange(key: string, range: { min: number; max: number }): void;
+    removeRange(key: string, range?: { min: number; max: number }): void;
     removeRanges(items: BrushRangeItem[]): void;
-    setRange(key: string, range: { min: number; max: number }): void;
+    setRange(key: string, range?: { min: number; max: number }): void;
     setRanges(items: BrushRangeItem[]): void;
-    toggleRange(key: string, range: { min: number; max: number }): void;
+    toggleRange(key: string, range?: { min: number; max: number }): void;
     toggleRanges(items: BrushRangeItem[]): void;
-    containsRange(key: string, range: { min: number; max: number }): boolean;
-    containsRangeValue(key: string, value: number): boolean;
-    addAndRemoveValues(addItems: BrushItem[], removeItems: BrushItem[]): void;
-    intercept(name: string, ic: () => void): void;
-    removeInterceptor(name: string, ic: () => void): void;
+    containsRange(key: string, range?: { min: number; max: number }): boolean;
+    containsRangeValue(key: string, value?: number): boolean;
+    addAndRemoveValues(addItems: BrushItem[], removeItems?: BrushItem[]): void;
+    intercept(name: string, ic?: () => void): void;
+    removeInterceptor(name: string, ic?: () => void): void;
     removeAllInterceptors(name?: string): void;
     addKeyAlias(key: string, alias: string): void;
     removeKeyAlias(key: string): void;
+    on(event: string, listener: (...args: unknown[]) => void): void;
     emit(event: string, ...args: unknown[]): void;
-    containsMappedData(item: unknown, props: unknown[], mode: string): boolean;
+    containsMappedData(item: unknown, props?: unknown[], mode?: string): boolean;
   }
 
   /**
