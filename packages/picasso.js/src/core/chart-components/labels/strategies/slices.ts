@@ -1,30 +1,66 @@
 import extend from 'extend';
 import { testCircleRect, testRectLine, testRectRect } from '../../../math/narrow-phase-collision';
 import { rectContainsRect } from '../../../math/intersection';
+import type { Rect, Point, Circle, Line } from '../../../geometry';
 
 const LABEL_OVERLAP_THRESHOLD_X = 4;
 
-// When a label is animated, the label rect width should be bit larger than the measured text width,
-// otherwise the animated label will be ellipsed.
-const LABEL_RECT_WIDTH_PADDING = 1;
+interface SliceBounds extends Rect {
+  baseline?: 'top';
+  angle?: number;
+  anchor?: 'start' | 'end';
+  line?: Line & { type: 'line'; strokeWidth: number; stroke?: string };
+}
 
-function normalize(angle) {
+interface SliceConfig {
+  start: number;
+  end: number;
+  innerRadius: number;
+  outerRadius: number;
+  offset: Point;
+}
+
+interface MeasuredText {
+  width: number;
+  height: number;
+  minReqWidth: number;
+}
+
+interface RectSize {
+  width: number;
+  height: number;
+}
+
+interface CircleIntersection {
+  x: number;
+  y: number;
+}
+
+interface LineConfig {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+}
+
+function normalize(angle: number): number {
   const PI2 = Math.PI * 2;
   return ((angle % PI2) + PI2) % PI2; // normalize
 }
 
-function pad(bounds, padding) {
+function pad(bounds: SliceBounds, padding: number): void {
   bounds.x += padding;
   bounds.width -= padding * 2;
   bounds.y += padding;
   bounds.height -= padding * 2;
 }
 
-function getTopLeftBounds(bounds) {
+function getTopLeftBounds(bounds: SliceBounds): SliceBounds {
   const x = bounds.x;
   const y = bounds.y - bounds.height / 2;
 
   return {
+    ...bounds,
     x,
     y,
     width: bounds.width,
@@ -33,7 +69,7 @@ function getTopLeftBounds(bounds) {
 }
 
 // assume 0 <= angle < (PI / 2)
-function getLineCircleIntersection(radius, offset, angle) {
+function getLineCircleIntersection(radius: number, offset: Point, angle: number): CircleIntersection | null {
   let { x, y } = offset;
 
   if (x * x + y * y > radius * radius) {
@@ -56,12 +92,12 @@ function getLineCircleIntersection(radius, offset, angle) {
 }
 
 // assume 0 <= angle < (PI * 2)
-function getRectFromCircleIntersection({ radius, size, angle }) {
+function getRectFromCircleIntersection({ radius, size, angle }: { radius: number; size: RectSize; angle: number }): SliceBounds | null {
   let { width, height } = size;
-  let lineOffset = { x: width / 2, y: height / 2 };
+  let lineOffset: Point = { x: width / 2, y: height / 2 };
   let section = Math.floor(angle / (Math.PI / 2));
-  let intersection;
-  let offset;
+  let intersection: CircleIntersection | null;
+  let offset: Point;
   switch (section) {
     case 0:
       intersection = getLineCircleIntersection(radius, lineOffset, angle);
@@ -98,7 +134,7 @@ function getRectFromCircleIntersection({ radius, size, angle }) {
     default:
       throw new Error('invalid angle');
   }
-  let bounds: Record<string, string | number | boolean | null> = {
+  let bounds: SliceBounds = {
     x: intersection.x + offset.x,
     y: intersection.y + offset.y,
     width,

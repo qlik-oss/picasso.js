@@ -35,7 +35,7 @@ interface TickInput {
 describe('Tick generators', () => {
   let settings: Settings;
   let scale: any;
-  const d3formatter: any = formatter('d3-number')('') as any;
+  const d3formatter: any = (formatter as any)('d3-number')('') as any;
   let input: TickInput;
 
   describe('continuous tick generator', () => {
@@ -58,7 +58,7 @@ describe('Tick generators', () => {
     describe('formatting', () => {
       it('should output ticks in the correct format', () => {
         settings.ticks.count = 2;
-        input.formatter = formatter('d3-number')('-1.0%') as any;
+        input.formatter = ((formatter as any)('d3-number')('-1.0%')) as any;
         const ticks = scale.ticks(input as any);
         [{ label: '0%' }, { label: '50%' }, { label: '100%' }].forEach((e: any, i: any) => {
           expect(ticks[i].label).to.equal(e.label);
@@ -179,7 +179,7 @@ describe('Tick generators', () => {
         settings.minorTicks.count = 1;
         const ticks = scale.ticks(input as any);
         expect(ticks.length).to.equal(11);
-        expect(ticks.filter((t) => t.isMinor).length).to.equal(5);
+        expect(ticks.filter((t: any) => t.isMinor).length).to.equal(5);
       });
     });
 
@@ -222,7 +222,7 @@ describe('Tick generators', () => {
         settings.minorTicks.count = 1;
         const ticks = scale.ticks(input as any);
         expect(ticks.length).to.equal(5);
-        expect(ticks.filter((t) => t.isMinor).length).to.equal(2);
+        expect(ticks.filter((t: any) => t.isMinor).length).to.equal(2);
       });
     });
 
@@ -232,7 +232,7 @@ describe('Tick generators', () => {
         settings.ticks.forceBounds = true;
         scale.domain([-99, 99]);
         const ticks = scale.ticks(input as any);
-        const majorTicks = ticks.filter((t) => !t.isMinor);
+        const majorTicks = ticks.filter((t: any) => !t.isMinor);
 
         expect(majorTicks[0]).to.deep.equal({
           position: 0,
@@ -260,7 +260,7 @@ describe('Tick generators', () => {
         };
         scale.domain([-50, 450]);
         const ticks = scale.ticks(input as any);
-        const majorTicks = ticks.filter((t) => !t.isMinor);
+        const majorTicks = ticks.filter((t: any) => !t.isMinor);
 
         expect(majorTicks[0]).to.deep.equal({
           start: 0,
@@ -357,8 +357,8 @@ describe('Tick generators', () => {
     it('should generate ticks by data', () => {
       scale = band(
         {
-          value: (d) => d.datum,
-          label: (d) => d.datum,
+          value: (d: any) => d.datum,
+          label: (d: any) => d.datum,
         },
         { items: data }
       );
@@ -393,8 +393,8 @@ describe('Tick generators', () => {
     it('should support duplicate labels by separating values and labels', () => {
       scale = band(
         {
-          value: (item) => item.datum.id.value,
-          label: (item) => item.datum.value,
+          value: (item: any) => item.datum.id.value,
+          label: (item: any) => item.datum.value,
         },
         {
           items: [

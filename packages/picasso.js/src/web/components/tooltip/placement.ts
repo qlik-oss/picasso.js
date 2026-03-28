@@ -178,11 +178,11 @@ function alignToBounds({ resources, nodes, pointer, width: elmWidth, height: elm
   if (transform) {
     return {
       computedTooltipStyle: {
-        left: `${docks[(options as any)!.dock as any].x}px`,
-        top: `${docks[(options as any)!.dock as any].y}px`,
+        left: `${(docks as Record<string, any>)[(options as any)!.dock].x}px`,
+        top: `${(docks as Record<string, any>)[(options as any)!.dock].y}px`,
         transform,
       },
-      computedArrowStyle: getComputedArrowStyle((options as any)!.offset)[(options as any)!.dock as any],
+      computedArrowStyle: (getComputedArrowStyle((options as any)!.offset) as Record<string, any>)[(options as any)!.dock],
       dock: (options as any)!.dock,
       rect: { width: elmWidth, height: elmHeight },
     };
@@ -197,16 +197,16 @@ function alignToBounds({ resources, nodes, pointer, width: elmWidth, height: elm
 
   for (let i = 0; i < dockOrder.length; i += 1) {
     const dock = dockOrder[i] as any;
-    const vx = (options as any)!.area === 'target' ? docks[dock as any].x : targetBounds.left + docks[dock as any].x;
-    const vy = (options as any)!.area === 'target' ? docks[dock as any].y : targetBounds.top + docks[dock as any].y;
-    if (isInsideArea(area, vx, vy, elmWidth, elmHeight, dockOffsets[dock as any])) {
+    const vx = (options as any)!.area === 'target' ? (docks as Record<string, any>)[dock].x : targetBounds.left + (docks as Record<string, any>)[dock].x;
+    const vy = (options as any)!.area === 'target' ? (docks as Record<string, any>)[dock].y : targetBounds.top + (docks as Record<string, any>)[dock].y;
+    if (isInsideArea(area, vx, vy, elmWidth, elmHeight, (dockOffsets as Record<string, any>)[dock])) {
       return {
         computedTooltipStyle: {
-          left: `${docks[dock as any].x}px`,
-          top: `${docks[dock as any].y}px`,
-          transform: dockTransforms[dock as any],
+          left: `${(docks as Record<string, any>)[dock].x}px`,
+          top: `${(docks as Record<string, any>)[dock].y}px`,
+          transform: (dockTransforms as Record<string, any>)[dock],
         },
-        computedArrowStyle: getComputedArrowStyle((options as any)!.offset)[dock as any],
+        computedArrowStyle: (getComputedArrowStyle((options as any)!.offset) as Record<string, any>)[dock],
         dock,
         rect: { width: elmWidth, height: elmHeight },
       };
@@ -354,8 +354,8 @@ function alignToSlice({ options, pointer, width, height, nodes, resources }: Pla
   }
 
   return alignToPoint({
-    x: center.x + outerRadius * (componentBounds.scaleRatio?.x || 1) * Math.cos(radians),
-    y: center.y + outerRadius * (componentBounds.scaleRatio?.y || 1) * Math.sin(radians),
+    x: center.x + outerRadius * ((componentBounds as any).scaleRatio?.x || 1) * Math.cos(radians),
+    y: center.y + outerRadius * ((componentBounds as any).scaleRatio?.y || 1) * Math.sin(radians),
     pointer,
     width,
     height,

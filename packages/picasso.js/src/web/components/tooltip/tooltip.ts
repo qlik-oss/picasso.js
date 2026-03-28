@@ -67,9 +67,9 @@ const DEFAULT_SETTINGS = {
    * @returns {boolean}
    */
   isEqual: (prev: SceneNode[], curr: SceneNode[]): boolean =>
-    prev.length &&
+    !!(prev.length &&
     prev.length === curr.length &&
-    prev.every((p: SceneNode, i: number) => curr[i] && JSON.stringify(p.data) === JSON.stringify(curr[i].data)),
+    prev.every((p: SceneNode, i: number) => curr[i] && JSON.stringify(p.data) === JSON.stringify(curr[i].data))),
   /**
    * @typedef {object=}
    */
