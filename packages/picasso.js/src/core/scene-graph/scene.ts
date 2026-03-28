@@ -3,9 +3,9 @@ import Matrix from '../math/matrix';
 import resolveTransform from './transform-resolver';
 import contextFactory from './context';
 
-const styleContext = contextFactory(['stroke', 'fill', 'strokeWidth', 'opacity', 'fontFamily', 'fontSize', 'baseline']);
+const styleContext = contextFactory(['stroke', 'fill', 'strokeWidth', 'opacity', 'fontFamily', 'fontSize', 'baseline'] as any);
 
-function doEvent(state, listeners) {
+function doEvent(state: any, listeners: any[]): void {
   if (!Array.isArray(listeners)) {
     return;
   }
@@ -15,16 +15,16 @@ function doEvent(state, listeners) {
   }
 }
 
-function updateState(state, index, nodes) {
+function updateState(state: any, index: number, nodes: any[]): void {
   state.node = nodes[index];
   state.index = index;
 }
 
-function traverse(items, parent, matrix, on) {
+function traverse(items: any[], parent: any, matrix: Matrix, on: any): void {
   let disabled = false;
   const state = {
     siblings: items,
-    node: null,
+    node: null as any,
     index: 0,
   };
   for (let i = 0, len = items.length; i < len; i++) {
@@ -65,7 +65,7 @@ function traverse(items, parent, matrix, on) {
   }
 }
 
-export default function scene({ items, stage, dpi, on = {} }) {
+export default function scene({ items, stage, dpi, on = {} }: { items: any[]; stage?: any; dpi: any; on?: any }): any {
   if (!stage) {
     stage = create('stage', dpi);
   }
