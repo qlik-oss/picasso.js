@@ -45,10 +45,7 @@ export default function gradienter(bucket, hasher = hashObject) {
       return `url('${url}#${gradientId}')`;
     },
     onCreate(state) {
-      let url = '';
-      if (typeof window !== 'undefined') {
-        url = window.location.href.split('#')[0];
-      }
+      const url = '';
 
       const item = state.node;
       if (item.fill && typeof item.fill === 'object' && item.fill.type === 'gradient') {

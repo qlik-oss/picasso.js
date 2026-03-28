@@ -9,9 +9,3 @@ global.sinon = sinon;
 
 chai.use(sinonChai);
 chai.use(chaiSubset);
-
-Object.defineProperty(global.window, 'location', {
-  value: { href: '' },
-  writable: true,
-  configurable: true,
-});

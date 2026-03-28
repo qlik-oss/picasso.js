@@ -25,14 +25,10 @@ export default function patternizer(bucket, hasher = hashObject) {
       }
 
       Object.keys(inputs).forEach((key) => {
-        let url = '';
+        const url = '';
         const input = inputs[key];
         const patternHash = hasher(input);
         const pnid = `picasso-pattern-${uid}-${patternHash}`;
-
-        if (typeof window !== 'undefined') {
-          url = window.location.href.split('#')[0];
-        }
 
         if (!cache[patternHash]) {
           const pn = {
