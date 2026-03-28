@@ -1,6 +1,7 @@
 import { extract, getFieldDepth } from '../extractor-t';
-// eslint-disable-next-line import-x/no-relative-packages
-import { getPropsInfo, collect, track } from '../../../../../packages/picasso.js/src/core/data/util';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { getPropsInfo, collect, track } = require('../../../../../packages/picasso.js/src/core/data/util');
 
 describe('q-data-extractor-t', () => {
   const deps = {

@@ -1,6 +1,7 @@
 import q from '../dataset';
-// eslint-disable-next-line import-x/no-relative-packages
-import picData from '../../../../../packages/picasso.js/src/core/data/dataset';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const picData = require('../../../../../packages/picasso.js/src/core/data/dataset');
 
 const NxSimpleValue = { qNum: 37.6, qText: '$37.6' };
 const NxSimpleDimValue = { qElemNo: 7, qText: 'seven' };

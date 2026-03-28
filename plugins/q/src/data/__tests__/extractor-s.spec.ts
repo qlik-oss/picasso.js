@@ -1,7 +1,8 @@
 import extract, { getFieldAccessor } from '../extractor-s';
 import q from '../dataset';
-// eslint-disable-next-line import-x/no-relative-packages
-import { collect, track } from '../../../../../packages/picasso.js/src/core/data/util';
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { collect, track } = require('../../../../../packages/picasso.js/src/core/data/util');
 
 describe('extractor-s', () => {
   const page = {
