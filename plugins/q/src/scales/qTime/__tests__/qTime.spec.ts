@@ -2,8 +2,8 @@ import qTime from '..';
 import tickGen from './tickGen';
 
 describe('Scale - qTime', () => {
-  let values;
-  let settings;
+  let values: any;
+  let settings: any;
 
   beforeEach(() => {
     values = [

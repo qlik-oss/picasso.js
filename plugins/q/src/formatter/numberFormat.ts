@@ -26,7 +26,7 @@ export default function formatter(
    * @param  {Number} value   The number to be formatted
    * @return {String}         [description]
    */
-  function format(value) {
+  function format(value: any) {
     return memoized(value);
   }
 
@@ -40,7 +40,7 @@ export default function formatter(
    * @param  {String} d   Decimal
    * @return {String}     Formatted value
    */
-  format.format = function formatFn(p, v, t, d) {
+  format.format = function formatFn(p: any, v: any, t: any, d: any) {
     memoized.clear();
     return qformat.format(v, p, t, d);
   };
@@ -51,7 +51,7 @@ export default function formatter(
    * @param  {String} p     Pattern (optional)
    * @return {String}       Returns the pattern
    */
-  format.pattern = function patternFn(p) {
+  format.pattern = function patternFn(p: any) {
     if (p) {
       memoized.clear();
       qformat.pattern = p;

@@ -803,7 +803,7 @@ describe('extractor-s', () => {
     deps.normalizeConfig.returns({
       main: {
         field: dataset.field('Dim2'),
-        label: (d) => d.qText,
+        label: (d: any) => d.qText,
         filter: (v: any) => v.qNum !== 7,
       },
       props: {},
@@ -963,7 +963,7 @@ describe('extractor-s', () => {
     it('should return correct index when object has two dimensions and one measure, qLeft is 1, and column order is empty', () => {
       const row = ['b', 200, 100];
       localCache.fields = [{}, {}, {}, {}];
-      const columnOrder = [];
+      const columnOrder: any = [];
       const expectedReturnedValues = ['b', 200, 100];
       for (let i = 0; i <= 2; i++) {
         const f = localCache.fields[i + 1];

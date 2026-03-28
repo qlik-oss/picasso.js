@@ -1,24 +1,101 @@
+// @ts-expect-error extend module has no type declarations
 import extend from 'extend';
 import calcRequiredSize from '../axis-size-calculator';
 import { DEFAULT_CONTINUOUS_SETTINGS } from '../axis-default-settings';
 
+interface Tick {
+  label: string;
+  start?: number;
+  position?: number;
+  end?: number;
+}
+
+interface Scale {
+  ticks: () => Tick[];
+  bandwidth: () => number;
+}
+
+interface Rect {
+  x: number;
+  y: number;
+  height: number;
+  width: number;
+}
+
+interface Settings {
+  labels: {
+    show?: boolean;
+    mode?: string;
+    margin?: number;
+    maxLengthPx?: number;
+    minLengthPx?: number;
+    align?: number | string;
+    offset?: number;
+    filterOverlapping?: boolean;
+    tiltAngle?: number;
+    tiltThreshold?: number;
+    maxEdgeBleed?: number;
+    maxGlyphCount?: number;
+    activeMode?: string;
+  };
+  line: {
+    show?: boolean;
+    strokeWidth?: number;
+  };
+  ticks: {
+    show?: boolean;
+    margin?: number;
+    tickSize?: number;
+  };
+  minorTicks: {
+    show?: boolean;
+    margin?: number;
+    tickSize?: number;
+  };
+  paddingStart?: number;
+  paddingEnd?: number;
+  align?: string;
+  dock?: string;
+}
+
+interface State {
+  labels: {
+    activeMode: string;
+  };
+}
+
+interface MeasureTextResult {
+  width: number;
+  height: number;
+}
+
+interface SizeResult {
+  size: number;
+  edgeBleed?: Record<string, number>;
+}
+
 describe('Axis size calculator', () => {
-  let settings;
-  let ticks;
-  let sizeFn;
-  let rect;
-  let scale;
-  let isDiscrete;
-  let state;
+  let settings: Settings;
+  let ticks: Tick[];
+  let sizeFn: (r: Rect) => SizeResult;
+  let rect: Rect;
+  let scale: Scale;
+  let isDiscrete: boolean;
+  let state: State;
 
   beforeEach(() => {
-    settings = extend(true, {}, DEFAULT_CONTINUOUS_SETTINGS);
+    settings = extend(true, {}, DEFAULT_CONTINUOUS_SETTINGS) as Settings;
     settings.labels.show = false;
     settings.labels.mode = 'horizontal';
     settings.line.show = false;
     settings.ticks.show = false;
     settings.paddingStart = 0;
     settings.paddingEnd = 10;
+    settings.minorTicks = {
+      show: false,
+      margin: 0,
+      tickSize: 3,
+    };
 
     state = {
       labels: {
@@ -26,10 +103,10 @@ describe('Axis size calculator', () => {
       },
     };
 
-    const bandwidth = (i, len) => 1 / len;
-    const start = (i, bw) => i * bw;
-    const pos = (s, bw) => s + bw / 2;
-    const end = (s, bw) => s + bw;
+    const bandwidth = (i: number, len: number): number => 1 / len;
+    const start = (i: number, bw: number): number => i * bw;
+    const pos = (s: number, bw: number): number => s + bw / 2;
+    const end = (s: number, bw: number): number => s + bw;
     ticks = ['AA', 'BB', 'CC'].map((label, i, ary) => {
       const bw = bandwidth(i, ary.length);
       const s = start(i, bw);
@@ -40,7 +117,7 @@ describe('Axis size calculator', () => {
         end: end(s, bw),
       };
     });
-    scale = {};
+    scale = {} as Scale;
     scale.ticks = sinon.stub().returns(ticks);
     scale.bandwidth = sinon.stub().returns(1 / ticks.length);
     isDiscrete = false;
@@ -50,15 +127,13 @@ describe('Axis size calculator', () => {
       height: 100,
       width: 100,
     };
-    const data = null;
     const formatter = null;
-    const measureText = ({ text = '' }) => ({ width: text.toString().length, height: 5 });
-    sizeFn = (r) =>
+    const measureText = ({ text = '' }: { text?: string }): MeasureTextResult => ({ width: text.toString().length, height: 5 });
+    sizeFn = (r: Rect): SizeResult =>
       calcRequiredSize({
         settings,
         rect: { inner: r, outer: r },
         scale,
-        data,
         formatter,
         measureText,
         isDiscrete,
@@ -278,7 +353,7 @@ describe('Axis size calculator', () => {
         ticks[1] = { label: 'BBBBBBBBBBBBBB', position: 0.5 };
         ticks[2] = { label: 'CCCCCCCCCCCCCC', position: 0.9 };
         const size = sizeFn(rect);
-        expect(size.edgeBleed.left).to.approximately(14.89949, 0.0001);
+        expect(size.edgeBleed!.left).to.approximately(14.89949, 0.0001);
       });
 
       it('maxEdgeBleed', () => {
@@ -287,7 +362,7 @@ describe('Axis size calculator', () => {
         ticks[1] = { label: 'BBBBBBBBBBBBBB', position: 0.5 };
         ticks[2] = { label: 'CCCCCCCCCCCCCC', position: 0.9 };
         const size = sizeFn(rect);
-        expect(size.edgeBleed.left).to.equals(11); // maxEdgeBleed + paddingEnd
+        expect(size.edgeBleed!.left).to.equals(11); // maxEdgeBleed + paddingEnd
       });
     });
   });

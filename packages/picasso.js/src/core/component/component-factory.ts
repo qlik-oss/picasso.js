@@ -839,7 +839,7 @@ function componentFactory(definition: Record<string, unknown>, context: Componen
     isVisible = true;
   };
 
-  fn.mounted = (): void => mounted(element);
+  fn.mounted = (): void => { mounted(element); };
 
   fn.unmount = (): void => {
     [instanceContext, definitionContext].forEach((ctx: Record<string, unknown>) => {

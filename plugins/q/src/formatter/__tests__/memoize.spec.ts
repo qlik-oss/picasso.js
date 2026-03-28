@@ -1,7 +1,7 @@
 import memoize from '../memoize';
 
 describe('memoize', () => {
-  let func;
+  let func: any;
 
   beforeEach(() => {
     func = memoize((val) => `$${val}`);

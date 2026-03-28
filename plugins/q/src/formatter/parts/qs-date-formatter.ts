@@ -20,14 +20,14 @@ const MONTHS_ABBR = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Se
 
 const SECONDS_PER_DAY = 86400;
 
-function pad(s, n) {
+function pad(s: any, n: any) {
   for (let i = s.length; i < n; i++) {
     s = `0${s}`;
   }
   return s;
 }
 
-function parseDate(d, twelveFormat) {
+function parseDate(d: any, twelveFormat: any) {
   let h = d.getUTCHours();
   let day = d.getUTCDay() - 1;
   if (twelveFormat) {
@@ -55,7 +55,7 @@ function parseDate(d, twelveFormat) {
   };
 }
 
-function getRemainder(value) {
+function getRemainder(value: any) {
   let s = value.toString().split('.');
   if (s[1]) {
     s = Number(`0.${s[1]}`);
@@ -65,7 +65,7 @@ function getRemainder(value) {
   return s;
 }
 
-function parseIntervalDays(days) {
+function parseIntervalDays(days: any) {
   const d = days;
   const h = 24 * getRemainder(d);
   const m = 60 * getRemainder(h);
@@ -81,7 +81,7 @@ function parseIntervalDays(days) {
   };
 }
 
-function parseInterval(days, pattern) {
+function parseInterval(days: any, pattern: any) {
   let units = parseIntervalDays(days),
     d = units.d,
     h = units.h,
@@ -134,13 +134,13 @@ function parseInterval(days, pattern) {
   };
 }
 
-function getMasks(inst, d) {
+function getMasks(inst: any, d: any) {
   return {
     'Y+|y+': {
       Y: `${Number(`${d.year}`.slice(-2))}`,
       YY: pad(`${d.year}`.slice(-2), 2),
       YYY: pad(`${d.year}`.slice(-3), 3),
-      def(m) {
+      def(m: any) {
         // default
         return pad(`${d.year}`, m.length);
       },
@@ -159,30 +159,30 @@ function getMasks(inst, d) {
     },
     'D+|d+': {
       D: d.date,
-      def(m) {
+      def(m: any) {
         return pad(`${d.date}`, m.length);
       },
     },
     'h+|H+': {
       h: d.h,
-      def(m) {
+      def(m: any) {
         return pad(`${d.h}`, m.length);
       },
     },
     'm+': {
       m: d.m,
-      def(m) {
+      def(m: any) {
         return pad(`${d.m}`, m.length);
       },
     },
     's+|S+': {
       s: d.s,
-      def(m) {
+      def(m: any) {
         return pad(`${d.s}`, m.length);
       },
     },
     'f+|F+': {
-      def(m) {
+      def(m: any) {
         let f = `${d.f}`,
           n = m.length - f.length;
         if (n > 0) {
@@ -196,7 +196,7 @@ function getMasks(inst, d) {
       },
     },
     't{1,2}|T{1,2}': {
-      def(m) {
+      def(m: any) {
         let t = d.t;
         if (m[0].toUpperCase() === m[0]) {
           t = t.toUpperCase();
@@ -222,7 +222,7 @@ class DateFormatter {
    * @param {Object} localeInfo
    * @param {String} pattern
    */
-  constructor(localeInfo, pattern, qtype?) {
+  constructor(localeInfo: any, pattern: any, qtype?: any) {
     const info = localeInfo || {};
 
     if (!info.qCalendarStrings) {
@@ -273,7 +273,7 @@ class DateFormatter {
    * m.format( d, 'WWWW DD MMM') // Thursday 15 Aug
    * m.format( d, 'WWW DD MMMM @ hh:mm:ss') // Thu 15 August @ 13:55:40
    */
-  format(date, pattern) {
+  format(date: any, pattern: any) {
     // Fallback pattern is set in constructor
     if (!pattern) {
       pattern = this.pattern ? this.pattern : 'YYYY-MM-DD hh:mm:ss';
@@ -305,9 +305,9 @@ class DateFormatter {
     }
     const dateTimeRegex = new RegExp(masksArr.join('|'), 'g');
 
-    const result = pattern.replace(dateTimeRegex, (m) => {
+    const result = pattern.replace(dateTimeRegex, (m: any) => {
       let r;
-      let mask;
+      let mask: string | undefined;
       for (mask in masks) {
         if (Object.prototype.hasOwnProperty.call(masks, mask)) {
           r = new RegExp(mask);
@@ -320,17 +320,20 @@ class DateFormatter {
         return '';
       }
       let value;
-      for (const submask in masks[mask]) {
-        if (submask === m || submask.toLowerCase() === m) {
-          value = masks[mask][submask];
-          if (typeof value === 'undefined') {
-            value = masks[mask][submask.toLowerCase()];
+      if (mask !== undefined) {
+        const maskObj = masks[mask as keyof typeof masks];
+        for (const submask in maskObj) {
+          if (submask === m || submask.toLowerCase() === m) {
+            value = maskObj[submask as keyof typeof maskObj];
+            if (typeof value === 'undefined') {
+              value = maskObj[submask.toLowerCase() as keyof typeof maskObj];
+            }
+            break;
           }
-          break;
         }
-      }
-      if (typeof value === 'undefined') {
-        value = masks[mask].def;
+        if (typeof value === 'undefined') {
+          value = (maskObj as any).def;
+        }
       }
 
       if (typeof value === 'function') {

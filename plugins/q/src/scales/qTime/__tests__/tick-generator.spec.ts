@@ -2,9 +2,9 @@ import { scaleLinear } from 'd3-scale';
 import tickGenerator from '../tick-generator';
 
 describe('qTime - Tick generator', () => {
-  let scale;
-  let tickFn;
-  let settings;
+  let scale: any;
+  let tickFn: any;
+  let settings: any;
 
   beforeEach(() => {
     scale = scaleLinear();
@@ -12,7 +12,7 @@ describe('qTime - Tick generator', () => {
   });
 
   describe('transformTicks', () => {
-    let qTicks;
+    let qTicks: any;
 
     beforeEach(() => {
       qTicks = [

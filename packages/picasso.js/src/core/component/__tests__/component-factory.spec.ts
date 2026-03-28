@@ -1,21 +1,117 @@
+import * as sinon from 'sinon';
 import componentFactory from '../component-factory';
 import * as tween from '../tween';
 import * as brushing from '../brushing';
 import * as extractData from '../../data/extractor';
 
+interface Brush {
+  on?: () => void;
+  containsMappedData?: (data: unknown, props?: string[], mode?: string) => boolean;
+  [key: string]: unknown;
+}
+
+interface Chart {
+  brush: () => Brush;
+  container: () => Record<string, unknown>;
+  table: () => Record<string, unknown>;
+  dataset: () => Record<string, unknown>;
+  scale: sinon.SinonStub;
+  logger: () => string;
+  storage: Record<string, unknown>;
+  containsMappedData?: (data: unknown, props?: string[], mode?: string) => boolean;
+}
+
+interface Renderer {
+  appendTo: () => void;
+  render: sinon.SinonStub | (() => Record<string, unknown>);
+  destroy: () => Record<string, unknown>;
+  size: (s: unknown) => unknown;
+  element: () => string;
+  settings?: sinon.SinonSpy;
+  findShapes?: () => Array<Record<string, unknown>>;
+  itemsAt?: () => Array<Record<string, unknown>>;
+}
+
+interface ThemeContext {
+  palette: sinon.SinonStub;
+  style: sinon.SinonStub;
+}
+
+interface ComponentDefinition {
+  defaultSettings: Record<string, unknown>;
+  created?: sinon.SinonSpy;
+  beforeMount?: sinon.SinonSpy;
+  mounted?: sinon.SinonSpy;
+  beforeRender?: sinon.SinonSpy;
+  render?: sinon.SinonSpy | sinon.SinonStub | (() => string[]);
+  resize?: sinon.SinonSpy;
+  beforeUpdate?: sinon.SinonSpy;
+  updated?: sinon.SinonSpy;
+  require?: string[];
+  [key: string]: unknown;
+}
+
+interface ComponentInstanceCtx {
+  emit: (...args: unknown[]) => void;
+  isVisible: () => boolean;
+  [key: string]: unknown;
+}
+
+interface ComponentInstance {
+  dockConfig: () => unknown;
+  set: (opts?: Record<string, unknown>) => void;
+  resize: (inner?: Record<string, unknown>, outer?: Record<string, unknown>) => void;
+  getRect: () => unknown;
+  beforeMount: () => void;
+  beforeRender: () => void;
+  render: () => void;
+  hide: () => void;
+  beforeUpdate: () => void;
+  update: () => void;
+  updated: () => void;
+  destroy: () => void;
+  getBrushedShapes: (brushCtx: string, mode?: string, props?: unknown) => unknown[];
+  findShapes: (selector: string) => unknown[];
+  shapesAt: (shape: unknown, opts?: Record<string, unknown>) => unknown[];
+  brushFromShapes: (shapes: unknown[], trigger?: Record<string, unknown>) => void;
+  mount: () => void;
+  mounted: () => void;
+  unmount: () => void;
+  onBrushTap: (e: unknown) => void;
+  onBrushOver: (e: unknown) => void;
+  def: unknown;
+  ctx: ComponentInstanceCtx;
+  renderer: () => Renderer;
+}
+
+interface ComponentConfig {
+  settings?: Record<string, unknown>;
+  chart?: Chart;
+  renderer?: Renderer;
+  theme?: ThemeContext;
+  registries?: Record<string, unknown>;
+  rendererSettings?: Record<string, unknown>;
+  rect?: Record<string, unknown>;
+  animations?: Record<string, unknown>;
+  key?: string;
+  brush?: Record<string, unknown>;
+  data?: Record<string, unknown>;
+  eventListeners?: Array<{ event: string; listener: () => void }>;
+}
+
 describe('Component', () => {
-  let sandbox;
-  let definition;
-  let created;
-  let beforeMount;
-  let mounted;
-  let beforeRender;
-  let render;
-  let beforeUpdate;
-  let updated;
-  let resize;
-  let chart;
-  let renderer;
+  let sandbox: sinon.SinonSandbox;
+  let definition: ComponentDefinition;
+  let created: sinon.SinonSpy;
+  let beforeMount: sinon.SinonSpy;
+  let mounted: sinon.SinonSpy;
+  let beforeRender: sinon.SinonSpy;
+  let render: sinon.SinonStub;
+  let beforeUpdate: sinon.SinonSpy;
+  let updated: sinon.SinonSpy;
+  let resize: sinon.SinonSpy;
+  let chart: Chart;
+  let renderer: Renderer;
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
@@ -61,7 +157,7 @@ describe('Component', () => {
       appendTo: () => {},
       render: () => ({}),
       destroy: () => ({}),
-      size: (s) => s,
+      size: (s: unknown) => s,
       element: () => 'elm',
     };
   });
@@ -70,57 +166,57 @@ describe('Component', () => {
     sandbox.restore();
   });
 
-  function createInstance(config) {
-    return componentFactory(definition, {
-      settings: config,
-      chart,
-      renderer,
+  function createInstance(config?: ComponentConfig): ComponentInstance {
+    return componentFactory(definition as any, {
+      settings: config?.settings ?? {},
+      chart: chart as any,
+      renderer: renderer as any,
       theme: {
-        palette: sinon.stub(),
-        style: sinon.stub(),
+        palette: sinon.stub() as any,
+        style: sinon.stub() as any,
       },
-    });
+    } as any) as any;
   }
 
-  function createAndRenderComponent(config) {
+  function createAndRenderComponent(config?: ComponentConfig): ComponentInstance {
     const instance = createInstance(config);
-    instance.beforeMount();
+    instance.beforeMount?.();
     instance.resize({}, {});
     instance.beforeRender();
     instance.render();
-    instance.mounted();
+    instance.mounted?.();
     return instance;
   }
 
   describe('require', () => {
     it('should be able to require symbol factory', () => {
-      const opts = {
+      const opts: any = {
         settings: {},
         chart,
         renderer,
         theme: {
-          palette: sinon.stub(),
-          style: sinon.stub(),
+          palette: sinon.stub() as any,
+          style: sinon.stub() as any,
         },
         registries: {},
       };
 
-      let fn;
+      let fn: any;
 
       definition = {
         defaultSettings: {},
         created() {
           fn = this.symbol;
         },
-      };
+      } as any;
 
-      componentFactory(definition, opts);
+      componentFactory(definition as any, opts as any);
 
       expect(fn).to.equal(undefined);
 
       definition.require = ['symbol'];
 
-      componentFactory(definition, opts);
+      componentFactory(definition as any, opts as any);
 
       expect(fn).to.be.a('Function');
     });
@@ -166,7 +262,7 @@ describe('Component', () => {
     instance.set({ settings: { brush } });
     instance.update();
     instance.onBrushTap({});
-    const { args } = brushing.resolveTapEvent.getCall(0);
+    const { args } = (brushing.resolveTapEvent as sinon.SinonStub).getCall(0);
     expect(args[0].config.config).to.eql(brush);
   });
 
@@ -179,7 +275,7 @@ describe('Component', () => {
     instance.set({ settings: { brush, data: {} } });
     instance.update();
     instance.onBrushTap({});
-    const { args } = brushing.resolveTapEvent.getCall(0);
+    const { args } = (brushing.resolveTapEvent as sinon.SinonStub).getCall(0);
     expect(args[0].config.data).to.eql({ a: 'a' });
   });
 
@@ -193,7 +289,7 @@ describe('Component', () => {
     instance.set({ settings: { brush, data: {}, rendererSettings } });
     instance.update();
     instance.onBrushTap({});
-    const { args } = brushing.resolveTapEvent.getCall(0);
+    const { args } = (brushing.resolveTapEvent as sinon.SinonStub).getCall(0);
     expect(args[0].config.data).to.eql({ b: 'b' });
   });
 
@@ -207,7 +303,7 @@ describe('Component', () => {
     instance.set({ settings: { brush, data: {}, rendererSettings } });
     instance.update();
     instance.onBrushTap({});
-    const { args } = brushing.resolveTapEvent.getCall(0);
+    const { args } = (brushing.resolveTapEvent as sinon.SinonStub).getCall(0);
     expect(args[0].config.data).to.eql({ c: 'c' });
   });
 
@@ -221,7 +317,7 @@ describe('Component', () => {
     instance.set({ settings: { brush, data: {}, rendererSettings } });
     instance.update();
     instance.onBrushTap({});
-    const { args } = brushing.resolveTapEvent.getCall(0);
+    const { args } = (brushing.resolveTapEvent as sinon.SinonStub).getCall(0);
     expect(args[0].config.data).to.eql({ items: [1, 2] });
   });
 
@@ -230,23 +326,23 @@ describe('Component', () => {
     const data2 = { items: [3, 4] };
     sandbox.stub(brushing, 'resolveTapEvent').returns(false);
     sandbox.stub(extractData, 'default');
-    extractData.default.onCall(0).returns(data1);
-    extractData.default.onCall(1).returns(data2);
+    (extractData.default as sinon.SinonStub).onCall(0).returns(data1);
+    (extractData.default as sinon.SinonStub).onCall(1).returns(data2);
     const brush = { trigger: [{ on: 'tap' }] };
     const rendererSettings = { progressive: sandbox.stub() };
-    rendererSettings.progressive.onCall(0).returns({ isFirst: true, start: 0, end: 2 });
-    rendererSettings.progressive.onCall(1).returns({ isFirst: true, start: 0, end: 2 });
-    rendererSettings.progressive.onCall(2).returns({ isFirst: true, start: 0, end: 2 });
-    rendererSettings.progressive.onCall(3).returns({ isFirst: false, start: 2, end: 4 });
-    rendererSettings.progressive.onCall(4).returns({ isFirst: false, start: 2, end: 4 });
-    rendererSettings.progressive.onCall(5).returns({ isFirst: false, start: 2, end: 4 });
+    (rendererSettings.progressive as sinon.SinonStub).onCall(0).returns({ isFirst: true, start: 0, end: 2 });
+    (rendererSettings.progressive as sinon.SinonStub).onCall(1).returns({ isFirst: true, start: 0, end: 2 });
+    (rendererSettings.progressive as sinon.SinonStub).onCall(2).returns({ isFirst: true, start: 0, end: 2 });
+    (rendererSettings.progressive as sinon.SinonStub).onCall(3).returns({ isFirst: false, start: 2, end: 4 });
+    (rendererSettings.progressive as sinon.SinonStub).onCall(4).returns({ isFirst: false, start: 2, end: 4 });
+    (rendererSettings.progressive as sinon.SinonStub).onCall(5).returns({ isFirst: false, start: 2, end: 4 });
     const instance = createAndRenderComponent();
     instance.set({ settings: { brush, data: {}, rendererSettings } });
     instance.update();
     instance.set({ settings: { brush, data: {}, rendererSettings } });
     instance.update();
     instance.onBrushTap({});
-    const { args } = brushing.resolveTapEvent.getCall(0);
+    const { args } = (brushing.resolveTapEvent as sinon.SinonStub).getCall(0);
     expect(args[0].config.data).to.eql({ items: [1, 2, 3, 4] });
   });
 
@@ -269,16 +365,16 @@ describe('Component', () => {
     const data2 = { items: [6, 7, 8, 9, 10] };
     sandbox.stub(brushing, 'resolveTapEvent').returns(false);
     sandbox.stub(extractData, 'default');
-    extractData.default.onFirstCall().returns(data1);
-    extractData.default.onSecondCall().returns(data2);
+    (extractData.default as sinon.SinonStub).onFirstCall().returns(data1);
+    (extractData.default as sinon.SinonStub).onSecondCall().returns(data2);
     const brush = { trigger: [{ on: 'tap' }] };
     const rendererSettings = { progressive: sandbox.stub() };
-    rendererSettings.progressive.onCall(0).returns({ isFirst: true, start: 0, end: 5 });
-    rendererSettings.progressive.onCall(1).returns({ isFirst: true, start: 0, end: 5 });
-    rendererSettings.progressive.onCall(2).returns({ isFirst: true, start: 0, end: 5 });
-    rendererSettings.progressive.onCall(3).returns({ isFirst: false, start: 5, end: 10 });
-    rendererSettings.progressive.onCall(4).returns({ isFirst: false, start: 5, end: 10 });
-    rendererSettings.progressive.onCall(5).returns({ isFirst: false, start: 5, end: 10 });
+    (rendererSettings.progressive as sinon.SinonStub).onCall(0).returns({ isFirst: true, start: 0, end: 5 });
+    (rendererSettings.progressive as sinon.SinonStub).onCall(1).returns({ isFirst: true, start: 0, end: 5 });
+    (rendererSettings.progressive as sinon.SinonStub).onCall(2).returns({ isFirst: true, start: 0, end: 5 });
+    (rendererSettings.progressive as sinon.SinonStub).onCall(3).returns({ isFirst: false, start: 5, end: 10 });
+    (rendererSettings.progressive as sinon.SinonStub).onCall(4).returns({ isFirst: false, start: 5, end: 10 });
+    (rendererSettings.progressive as sinon.SinonStub).onCall(5).returns({ isFirst: false, start: 5, end: 10 });
     const instance = createAndRenderComponent();
     instance.set({ settings: { brush, data: {}, rendererSettings } });
     instance.update();
@@ -295,7 +391,7 @@ describe('Component', () => {
     const data = { items: [1, 2, 3, 4, 5] };
     sandbox.stub(brushing, 'resolveTapEvent').returns(false);
     sandbox.stub(extractData, 'default');
-    extractData.default.onFirstCall().returns(data);
+    (extractData.default as sinon.SinonStub).onFirstCall().returns(data);
     render.returns(['a', 'b']);
     const brush = { trigger: [{ on: 'tap' }] };
     const rendererSettings = { progressive: false };
@@ -303,7 +399,7 @@ describe('Component', () => {
     instance.set({ settings: { brush, data: {}, rendererSettings } });
     instance.update();
     instance.onBrushTap({});
-    const { args } = brushing.resolveTapEvent.getCall(0);
+    const { args } = (brushing.resolveTapEvent as sinon.SinonStub).getCall(0);
     expect(args[0].config.nodes).to.eql(['a', 'b']);
   });
 
@@ -311,7 +407,7 @@ describe('Component', () => {
     const data = { items: [1, 2, 3, 4, 5] };
     sandbox.stub(brushing, 'resolveTapEvent').returns(false);
     sandbox.stub(extractData, 'default');
-    extractData.default.onFirstCall().returns(data);
+    (extractData.default as sinon.SinonStub).onFirstCall().returns(data);
     render.returns(['a', 'b']);
     const brush = { trigger: [{ on: 'tap' }] };
     const rendererSettings = { progressive: sandbox.stub().returns({ isFirst: true }) };
@@ -319,7 +415,7 @@ describe('Component', () => {
     instance.set({ settings: { brush, data: {}, rendererSettings } });
     instance.update();
     instance.onBrushTap({});
-    const { args } = brushing.resolveTapEvent.getCall(0);
+    const { args } = (brushing.resolveTapEvent as sinon.SinonStub).getCall(0);
     expect(args[0].config.nodes).to.eql(['a', 'b']);
   });
 
@@ -328,16 +424,16 @@ describe('Component', () => {
     const data2 = { items: [6, 7, 8, 9, 10] };
     sandbox.stub(brushing, 'resolveTapEvent').returns(false);
     sandbox.stub(extractData, 'default');
-    extractData.default.onFirstCall().returns(data1);
-    extractData.default.onSecondCall().returns(data2);
+    (extractData.default as sinon.SinonStub).onFirstCall().returns(data1);
+    (extractData.default as sinon.SinonStub).onSecondCall().returns(data2);
     const brush = { trigger: [{ on: 'tap' }] };
     const rendererSettings = { progressive: sandbox.stub() };
-    rendererSettings.progressive.onCall(0).returns({ isFirst: true, start: 0, end: 5 });
-    rendererSettings.progressive.onCall(1).returns({ isFirst: true, start: 0, end: 5 });
-    rendererSettings.progressive.onCall(2).returns({ isFirst: true, start: 0, end: 5 });
-    rendererSettings.progressive.onCall(3).returns({ isFirst: false, start: 5, end: 10 });
-    rendererSettings.progressive.onCall(4).returns({ isFirst: false, start: 5, end: 10 });
-    rendererSettings.progressive.onCall(5).returns({ isFirst: false, start: 5, end: 10 });
+    (rendererSettings.progressive as sinon.SinonStub).onCall(0).returns({ isFirst: true, start: 0, end: 5 });
+    (rendererSettings.progressive as sinon.SinonStub).onCall(1).returns({ isFirst: true, start: 0, end: 5 });
+    (rendererSettings.progressive as sinon.SinonStub).onCall(2).returns({ isFirst: true, start: 0, end: 5 });
+    (rendererSettings.progressive as sinon.SinonStub).onCall(3).returns({ isFirst: false, start: 5, end: 10 });
+    (rendererSettings.progressive as sinon.SinonStub).onCall(4).returns({ isFirst: false, start: 5, end: 10 });
+    (rendererSettings.progressive as sinon.SinonStub).onCall(5).returns({ isFirst: false, start: 5, end: 10 });
     render.onCall(0).returns(['a', 'b']);
     render.onCall(1).returns(['a', 'b']);
     render.onCall(2).returns(['c', 'd']);
@@ -347,7 +443,7 @@ describe('Component', () => {
     instance.set({ settings: { brush, data: {}, rendererSettings } });
     instance.update();
     instance.onBrushTap({});
-    const { args } = brushing.resolveTapEvent.getCall(0);
+    const { args } = (brushing.resolveTapEvent as sinon.SinonStub).getCall(0);
     expect(args[0].config.nodes).to.eql(['a', 'b', 'c', 'd']);
   });
 
@@ -406,9 +502,9 @@ describe('Component', () => {
     it('should call renderers render func without args when applying transformation', () => {
       renderer.render = sinon.spy();
       definition.render = () => ['node1', 'node2'];
-      let transformation = false;
+      let transformation: any = false;
       let transformFn = () => transformation;
-      let instance;
+      let instance: ComponentInstance;
 
       instance = createInstance({
         rendererSettings: { transform: transformFn },
@@ -422,8 +518,8 @@ describe('Component', () => {
     });
 
     it('should run tween when animations are enabled', () => {
-      let instance;
-      sandbox.stub(tween, 'default').returns({ start: sinon.spy() });
+      let instance: ComponentInstance;
+      sandbox.stub(tween, 'default').returns({ start: sinon.spy() } as any);
       definition.render = () => ['node1', 'node2'];
       instance = createInstance({
         rect: { computed: { x: 0, y: 0, width: 1, height: 1 } },
@@ -431,14 +527,14 @@ describe('Component', () => {
       });
       instance.render();
       instance.update();
-      expect(tween.default).to.have.been.calledOnce;
-      expect(tween.default.getCall(0).args[3]).to.deep.equal({ animations: 'animations-related info' });
+      expect((tween.default as sinon.SinonStub)).to.have.been.calledOnce;
+      expect((tween.default as sinon.SinonStub).getCall(0).args[3]).to.deep.equal({ animations: 'animations-related info' });
       sandbox.restore();
     });
 
     it('should not run tween when animations are disabled, case 1: enabled is not a function', () => {
-      let instance;
-      sandbox.stub(tween, 'default').returns({ start: sinon.spy() });
+      let instance: ComponentInstance;
+      sandbox.stub(tween, 'default').returns({ start: sinon.spy() } as any);
       definition.render = () => ['node1', 'node2'];
       instance = createInstance({
         rect: { computed: { x: 0, y: 0, width: 1, height: 1 } },
@@ -446,13 +542,13 @@ describe('Component', () => {
       });
       instance.render();
       instance.update();
-      expect(tween.default).to.not.have.been.called;
+      expect((tween.default as sinon.SinonStub)).to.not.have.been.called;
       sandbox.restore();
     });
 
     it('should not run tween when animations are disabled, case 2: enabled is a function', () => {
-      let instance;
-      sandbox.stub(tween, 'default').returns({ start: sinon.spy() });
+      let instance: ComponentInstance;
+      sandbox.stub(tween, 'default').returns({ start: sinon.spy() } as any);
       definition.render = () => ['node1', 'node2'];
       instance = createInstance({
         rect: { computed: { x: 0, y: 0, width: 1, height: 1 } },
@@ -460,15 +556,15 @@ describe('Component', () => {
       });
       instance.render();
       instance.update();
-      expect(tween.default).to.not.have.been.called;
+      expect((tween.default as sinon.SinonStub)).to.not.have.been.called;
       sandbox.restore();
     });
   });
 
   describe('findShapes', () => {
-    let instance;
-    let config;
-    let shapes;
+    let instance: ComponentInstance;
+    let config: Record<string, unknown>;
+    let shapes: any;
 
     beforeEach(() => {
       shapes = [{ data: 0 }, { data: 1 }, { data: 2 }];
@@ -492,9 +588,9 @@ describe('Component', () => {
   });
 
   describe('shapesAt', () => {
-    let instance;
-    let config;
-    let shapes;
+    let instance: ComponentInstance;
+    let config: Record<string, unknown>;
+    let shapes: any;
 
     beforeEach(() => {
       shapes = [{ node: { data: 0 } }, { node: { data: 1 } }, { node: { data: 2 } }];
@@ -525,7 +621,7 @@ describe('Component', () => {
   });
 
   describe('unmount', () => {
-    let instance;
+    let instance: ComponentInstance;
 
     beforeEach(() => {
       instance = createAndRenderComponent({
@@ -544,9 +640,9 @@ describe('Component', () => {
   });
 
   describe('getBrushedShapes', () => {
-    let instance;
-    let config;
-    let shapes;
+    let instance: ComponentInstance;
+    let config: any;
+    let shapes: any;
 
     beforeEach(() => {
       shapes = [{ data: 0 }, { data: 1 }, { data: 2 }];
@@ -589,7 +685,7 @@ describe('Component', () => {
     });
 
     it('should use data props parameter if submitted', () => {
-      shapes.forEach((s, i) => {
+      shapes.forEach((s: any, i: number) => {
         s.data = { x: i };
       });
       const spy = sinon.spy();
@@ -603,7 +699,7 @@ describe('Component', () => {
     });
 
     it('should fallback to brush data property if data props parameter is omitted', () => {
-      shapes.forEach((s, i) => {
+      shapes.forEach((s: any, i: number) => {
         s.data = { x: i };
       });
       const spy = sinon.spy();

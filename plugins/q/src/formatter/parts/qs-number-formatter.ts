@@ -4,7 +4,7 @@ import formatter from 'number-format.js';
 // 2.95.toFixed(1) = 3.0
 const EPSILON = 1e-15; // To make sure toFixed always round up.
 
-function escapeRegExp(str) {
+function escapeRegExp(str: any) {
   return str.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&');
 }
 
@@ -37,7 +37,7 @@ const SIprefixes = {
   functional = /^(\(rom\)|\(bin\)|\(hex\)|\(dec\)|\(oct\)|\(r(0[2-9]|[12]\d|3[0-6])\))/i,
   prec = /#|0/g;
 
-function formatRadix(value, fradix, pattern, decimal) {
+function formatRadix(value: any, fradix: any, pattern: any, decimal: any) {
   value = value.toString(fradix);
   if (pattern[1] === pattern[1].toUpperCase()) {
     value = value.toUpperCase();
@@ -52,7 +52,7 @@ function formatRadix(value, fradix, pattern, decimal) {
 
 // value must be an integer
 // value must not be in scientific notation
-function formatRoman(value, pattern) {
+function formatRoman(value: any, pattern: any) {
   let i,
     s = '',
     v = Number(String(value).slice(-3)),
@@ -80,10 +80,11 @@ function formatRoman(value, pattern) {
   return s;
 }
 
-function formatFunctional(value, pattern, d) {
+function formatFunctional(value: any, pattern: any, d: any) {
   let temp;
   if (radix.test(pattern)) {
-    value = formatRadix(value, Number(/\d{2}/.exec(pattern)[0]), pattern, d);
+    const match = /\d{2}/.exec(pattern);
+    value = formatRadix(value, Number(match?.[0]), pattern, d);
   } else if (oct.test(pattern)) {
     value = formatRadix(value, 8, pattern, d);
   } else if (dec.test(pattern)) {
@@ -113,7 +114,7 @@ function formatFunctional(value, pattern, d) {
   return value;
 }
 
-function escape(value, flags, justStr?) {
+function escape(value: any, flags: any, justStr?: any) {
   const str = escapeRegExp(value);
   if (justStr) {
     return str;
@@ -121,7 +122,7 @@ function escape(value, flags, justStr?) {
   return new RegExp(str || '', flags);
 }
 
-function createRegExp(thousand, decimal) {
+function createRegExp(thousand: any, decimal: any) {
   if (decimal) {
     decimal = escapeRegExp(decimal);
   }
@@ -131,7 +132,7 @@ function createRegExp(thousand, decimal) {
   return new RegExp(`(?:[#0]+${thousand})?[#0]+(?:${decimal}[#0]+)?`);
 }
 
-function getAbbreviations(localeInfo, listSeparator) {
+function getAbbreviations(localeInfo: any, listSeparator: any) {
   if (!localeInfo || !localeInfo.qNumericalAbbreviation) {
     return SIprefixes;
   }
@@ -139,7 +140,7 @@ function getAbbreviations(localeInfo, listSeparator) {
   const abbreviations: Record<string, string> = {};
   let abbrs = localeInfo.qNumericalAbbreviation.split(listSeparator);
 
-  abbrs.forEach((abbreviation) => {
+  abbrs.forEach((abbreviation: any) => {
     let abbreviationTuple = abbreviation.split(':');
     if (abbreviationTuple.length === 2) {
       abbreviations[abbreviationTuple[0]] = abbreviationTuple[1];
@@ -149,7 +150,7 @@ function getAbbreviations(localeInfo, listSeparator) {
   return abbreviations;
 }
 
-function preparePattern(o, t, d, abbreviate) {
+function preparePattern(o: any, t: any, d: any, abbreviate: any) {
   let parts,
     lastPart,
     pattern = o.pattern,
@@ -241,7 +242,7 @@ class NumberFormatter {
    * @param {String} [decimal]
    * @param {String} [type]
    */
-  constructor(localeInfo, pattern, thousand, decimal, type) {
+  constructor(localeInfo: any, pattern: any, thousand: any, decimal: any, type: any) {
     this.localeInfo = localeInfo;
     this.pattern = pattern;
     this.thousandDelimiter = thousand || ',';
@@ -296,12 +297,12 @@ class NumberFormatter {
    * format(10, "(bin)") // 1010; // same as (r02)
    * format(10, "(oct)") // 12; // same as (r08)
    */
-  format(value, pattern, t, d) {
+  format(value: any, pattern: any, t: any, d: any) {
     this.prepare(pattern, t, d);
     return this.formatValue(value);
   }
 
-  prepare(pattern?, t?, d?) {
+  prepare(pattern?: any, t?: any, d?: any) {
     let prep;
 
     if (typeof pattern === 'undefined') {
@@ -348,37 +349,37 @@ class NumberFormatter {
     prep = this._prepared;
 
     pattern = pattern.split(this.patternSeparator);
-    prep.positive.pattern = pattern[0];
-    prep.negative.pattern = pattern[1];
-    prep.zero.pattern = pattern[2];
+    (prep.positive as any).pattern = pattern[0];
+    (prep.negative as any).pattern = pattern[1];
+    (prep.zero as any).pattern = pattern[2];
     if (functional.test(pattern[0])) {
-      prep.positive.isFunctional = true;
+      (prep.positive as any).isFunctional = true;
     }
     if (!pattern[1]) {
       prep.negative = false;
     } else if (functional.test(pattern[1])) {
-      prep.negative.isFunctional = true;
+      (prep.negative as any).isFunctional = true;
     }
     if (!pattern[2]) {
       prep.zero = false;
     } else if (functional.test(pattern[2])) {
-      prep.zero.isFunctional = true;
+      (prep.zero as any).isFunctional = true;
     }
 
     const abbreviate = this.type === 'U';
-    if (!prep.positive.isFunctional) {
+    if (!(prep.positive as any).isFunctional) {
       preparePattern(prep.positive, t, d, abbreviate);
     }
-    if (prep.negative && !prep.negative.isFunctional) {
+    if (prep.negative && !(prep.negative as any).isFunctional) {
       preparePattern(prep.negative, t, d, abbreviate);
     }
-    if (prep.zero && !prep.zero.isFunctional) {
+    if (prep.zero && !(prep.zero as any).isFunctional) {
       preparePattern(prep.zero, t, d, abbreviate);
     }
   }
 
-  formatValue(value) {
-    let prep = this._prepared,
+  formatValue(value: any) {
+    let prep: any = this._prepared,
       temp,
       exponent,
       abbr = '',
@@ -512,7 +513,7 @@ class NumberFormatter {
         let wholePartPattern = numericPattern.split(d)[0];
         wholePartPattern += d;
 
-        value = formatter(wholePartPattern, wholePart) || '0';
+        value = formatter(wholePartPattern, String(wholePart)) || '0';
 
         if (decimalPartPattern) {
           const nDecimals = Math.max(0, Math.min(14, decimalPartPattern.length)); // the length of e.g. 0000#####
@@ -535,7 +536,7 @@ class NumberFormatter {
         }
       }
 
-      value = value.replace(prep.numericRegex, (m) => {
+      value = value.replace(prep.numericRegex, (m: any) => {
         if (m === t) {
           return prep.groupTemp;
         }
@@ -555,7 +556,7 @@ class NumberFormatter {
   static getStaticFormatter() {
     return {
       prepare() {},
-      formatValue(v) {
+      formatValue(v: any) {
         return `${v}`;
       },
     };

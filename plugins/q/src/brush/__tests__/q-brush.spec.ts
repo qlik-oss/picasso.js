@@ -1,8 +1,8 @@
 import qBrush, { extractFieldFromId } from '../q-brush';
 
 describe('q-brush', () => {
-  let brush;
-  let layout;
+  let brush: any;
+  let layout: any;
 
   beforeEach(() => {
     brush = {

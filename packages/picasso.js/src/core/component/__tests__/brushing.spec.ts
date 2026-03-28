@@ -1,8 +1,108 @@
+import * as Sinon from 'sinon';
 import { styler, resolveTapEvent } from '../brushing';
 
+interface SourceInfo {
+  field: string;
+  key?: string;
+}
+
+interface DataItemSelf {
+  source: SourceInfo;
+  value: number | number[];
+}
+
+interface DataItem {
+  value: number;
+  source: SourceInfo;
+  self: DataItemSelf;
+}
+
+interface Node {
+  type: string;
+  fill?: string;
+  stroke?: string;
+  data?: DataItem;
+  children?: Node[];
+  __style?: Record<string, string | undefined>;
+}
+
+interface BrushContextMock {
+  setValues: Sinon.SinonSpy;
+  toggleValues: Sinon.SinonSpy;
+  addValues: Sinon.SinonSpy;
+  removeValues: Sinon.SinonSpy;
+  toggleRanges: Sinon.SinonSpy;
+}
+
+interface BoundingRect {
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+}
+
+interface RendererMock {
+  itemsAt: Sinon.SinonStub;
+  element: () => {
+    getBoundingClientRect: Sinon.SinonStub;
+  };
+}
+
+interface ChartMock {
+  brush: Sinon.SinonStub;
+}
+
+interface Config {
+  renderer: RendererMock;
+  chart: ChartMock;
+  data: DataItem[];
+  sortNodes?: Sinon.SinonStub;
+  customRender?: Sinon.SinonStub;
+}
+
+interface Trigger {
+  contexts: string[];
+  data?: string[];
+  action?: string;
+  touchRadius?: number;
+  mouseRadius?: number;
+}
+
+interface EventMock {
+  clientX: number;
+  clientY: number;
+  changedTouches?: Array<{ clientX: number; clientY: number }>;
+}
+
+interface BrusherStub {
+  listeners: Array<Record<string, Function>>;
+  containsMappedData: Sinon.SinonStub;
+  on: (key: string, fn: Function) => void;
+  trigger: (key: string, ...args: any[]) => void;
+}
+
+interface DummyComponent {
+  chart: ChartMock;
+  data: Array<{ self: number }>;
+  nodes: Node[];
+  renderer: { render: Sinon.SinonSpy };
+  config: Record<string, any>;
+}
+
+interface ConsumeStyle {
+  context: string;
+  style?: {
+    inactive?: Record<string, string | ((shape: Node) => string)>;
+    active?: Record<string, string | ((shape: Node) => string)>;
+  };
+  mode?: string;
+  data?: string[] | ((brush: BrusherStub) => string[]);
+  filter?: (node: Node) => boolean;
+}
+
 describe('Brushing', () => {
-  let nodes;
-  let data;
+  let nodes: Node[];
+  let data: DataItem[];
 
   beforeEach(() => {
     data = [
@@ -57,34 +157,34 @@ describe('Brushing', () => {
   });
 
   describe('Resolver', () => {
-    let trigger;
-    let config;
-    let eventMock;
-    let brushContext;
+    let trigger: Trigger;
+    let config: Config;
+    let eventMock: EventMock;
+    let brushContext: BrushContextMock;
 
     beforeEach(() => {
       brushContext = {
-        setValues: sinon.spy(),
-        toggleValues: sinon.spy(),
-        addValues: sinon.spy(),
-        removeValues: sinon.spy(),
-        toggleRanges: sinon.spy(),
+        setValues: Sinon.spy(),
+        toggleValues: Sinon.spy(),
+        addValues: Sinon.spy(),
+        removeValues: Sinon.spy(),
+        toggleRanges: Sinon.spy(),
       };
 
       config = {
         renderer: {
-          itemsAt: sinon.stub().returns([]),
-          element: () => ({
-            getBoundingClientRect: sinon.stub().returns({
+          itemsAt: Sinon.stub().returns([]),
+          element: (): { getBoundingClientRect: Sinon.SinonStub } => ({
+            getBoundingClientRect: Sinon.stub().returns({
               left: 0,
               top: 0,
               width: 100,
               height: 100,
-            }),
+            } as BoundingRect),
           }),
         },
         chart: {
-          brush: sinon.stub().returns(brushContext),
+          brush: Sinon.stub().returns(brushContext),
         },
         data,
       };
@@ -133,7 +233,7 @@ describe('Brushing', () => {
       expect(brushContext.toggleRanges.args[0][0]).to.deep.equal([
         {
           key: `${data[3].self.source.key}/${data[3].self.source.field}`,
-          range: { min: data[3].self.value[0], max: data[3].self.value[1] },
+          range: { min: (data[3].self.value as number[])[0], max: (data[3].self.value as number[])[1] },
         },
       ]);
     });
@@ -228,35 +328,35 @@ describe('Brushing', () => {
   });
 
   describe('Styler', () => {
-    let dummyComponent;
-    let consume;
-    let brusherStub;
-    let dataFn;
+    let dummyComponent: DummyComponent;
+    let consume: ConsumeStyle;
+    let brusherStub: BrusherStub;
+    let dataFn: Sinon.SinonStub;
 
     beforeEach(() => {
       nodes[0].data = data[0];
       nodes[1].data = data[1];
       dummyComponent = {
         chart: {
-          brush: sinon.stub(),
+          brush: Sinon.stub(),
         },
         data: [{ self: 0 }, { self: 1 }],
         nodes,
         renderer: {
-          render: sinon.spy(),
+          render: Sinon.spy(),
         },
         config: {},
       };
 
       brusherStub = {
         listeners: [],
-        containsMappedData: sinon.stub(),
-        on: function on(key, fn) {
-          const obj = {};
+        containsMappedData: Sinon.stub(),
+        on: function on(key: string, fn: Function): void {
+          const obj: Record<string, Function> = {};
           obj[key] = fn;
           this.listeners.push(obj);
         },
-        trigger: function trigger(key, ...args) {
+        trigger: function trigger(key: string, ...args: any[]): void {
           this.listeners
             .filter((listener) => typeof listener[key] !== 'undefined')
             .forEach((listener) => listener[key](...args));
@@ -278,29 +378,29 @@ describe('Brushing', () => {
         },
       };
 
-      dataFn = sinon.stub();
+      dataFn = Sinon.stub();
       dataFn.returns(['b']);
     });
 
     it('should call containsMappedData with provided arguments', () => {
-      const s = styler(dummyComponent, { ...consume, mode: 'moood', data: ['a'] });
-      s.update();
+      const s = styler(dummyComponent, { ...consume, mode: 'moood', data: ['a'] } as any);
+      (s as any).update();
 
       expect(brusherStub.containsMappedData.firstCall).to.have.been.calledWithExactly(data[0], ['a'], 'moood');
     });
 
     it('should call containsMappedData with provided arguments when data is a function', () => {
-      const s = styler(dummyComponent, { ...consume, mode: 'moood', data: dataFn });
-      s.update();
+      const s = styler(dummyComponent, { ...consume, mode: 'moood', data: dataFn } as any);
+      (s as any).update();
       expect(dataFn).to.have.been.calledWithExactly({ brush: brusherStub });
       expect(brusherStub.containsMappedData.firstCall).to.have.been.calledWithExactly(data[0], ['b'], 'moood');
     });
 
     it('start should store all original styling values', () => {
-      styler(dummyComponent, consume);
+      styler(dummyComponent, consume as any);
       brusherStub.trigger('start');
 
-      dummyComponent.renderer.render.args[0][0].forEach((node) => {
+      (dummyComponent.renderer.render.args[0][0] as Node[]).forEach((node: Node) => {
         expect(node.__style).to.deep.equal({
           fill: 'yellow',
           stroke: 'pink',
@@ -309,26 +409,26 @@ describe('Brushing', () => {
     });
 
     it('start should inactive all nodes', () => {
-      styler(dummyComponent, consume);
+      styler(dummyComponent, consume as any);
       brusherStub.trigger('start');
 
-      dummyComponent.renderer.render.args[0][0].forEach((node) => {
+      (dummyComponent.renderer.render.args[0][0] as Node[]).forEach((node: Node) => {
         expect(node.fill).to.deep.equal('inactiveFill');
       });
     });
 
     it('end should restore all original styling values', () => {
-      styler(dummyComponent, consume);
+      styler(dummyComponent, consume as any);
       brusherStub.trigger('start');
       brusherStub.trigger('end');
 
-      dummyComponent.renderer.render.args[0][0].forEach((node) => {
+      (dummyComponent.renderer.render.args[0][0] as Node[]).forEach((node: Node) => {
         expect(node.__style).to.equal(undefined);
       });
     });
 
     it('start and end should call renderer.render by default', () => {
-      styler(dummyComponent, consume);
+      styler(dummyComponent, consume as any);
       brusherStub.trigger('start');
       brusherStub.trigger('end');
 
@@ -336,7 +436,7 @@ describe('Brushing', () => {
     });
 
     it('start, end and update should call renderer.render if supressRender=false is passed', () => {
-      styler(dummyComponent, consume);
+      styler(dummyComponent, consume as any);
       brusherStub.trigger('start', { suppressRender: false });
       brusherStub.trigger('end', { suppressRender: false });
 
@@ -344,7 +444,7 @@ describe('Brushing', () => {
     });
 
     it('start and end should not call renderer.render if supressRender=true is passed', () => {
-      styler(dummyComponent, consume);
+      styler(dummyComponent, consume as any);
       brusherStub.trigger('start', { suppressRender: true });
       brusherStub.trigger('end', { suppressRender: true });
 
@@ -352,22 +452,22 @@ describe('Brushing', () => {
     });
 
     it('end should restore all original styling values if supressRender=true is passed but not call render', () => {
-      styler(dummyComponent, consume);
+      styler(dummyComponent, consume as any);
       brusherStub.trigger('start');
       brusherStub.trigger('end', { suppressRender: true });
 
-      dummyComponent.renderer.render.args[0][0].forEach((node) => {
+      (dummyComponent.renderer.render.args[0][0] as Node[]).forEach((node: Node) => {
         expect(node.__style).to.equal(undefined);
       });
       expect(dummyComponent.renderer.render.calledOnce).to.be.true;
     });
 
     it('update should apply styling values', () => {
-      styler(dummyComponent, consume);
+      styler(dummyComponent, consume as any);
       brusherStub.trigger('start');
       brusherStub.trigger('update');
 
-      const output = dummyComponent.renderer.render.args[0][0];
+      const output = dummyComponent.renderer.render.args[0][0] as Node[];
       expect(output[0].stroke).to.equal('pink'); // Inactive
       expect(output[0].fill).to.equal('inactiveFill');
       expect(output[1].stroke).to.equal('activeStroke'); // Active
@@ -375,12 +475,12 @@ describe('Brushing', () => {
     });
 
     it('update should apply sorting nodes', () => {
-      dummyComponent.config.sortNodes = sinon.stub().returns(nodes);
-      styler(dummyComponent, consume);
+      dummyComponent.config.sortNodes = Sinon.stub().returns(nodes);
+      styler(dummyComponent, consume as any);
       brusherStub.trigger('start');
       brusherStub.trigger('update');
 
-      const output = dummyComponent.renderer.render.args[0][0];
+      const output = dummyComponent.renderer.render.args[0][0] as Node[];
       expect(dummyComponent.config.sortNodes).to.have.been.calledWith(dummyComponent);
       expect(output[0].stroke).to.equal('pink'); // Inactive
       expect(output[0].fill).to.equal('inactiveFill');
@@ -389,8 +489,8 @@ describe('Brushing', () => {
     });
 
     it('update should use customRender if any', () => {
-      dummyComponent.config.customRender = sinon.stub();
-      styler(dummyComponent, consume);
+      dummyComponent.config.customRender = Sinon.stub();
+      styler(dummyComponent, consume as any);
       brusherStub.trigger('update');
       expect(dummyComponent.config.customRender).to.have.been.calledWith({
         render: dummyComponent.renderer.render,
@@ -423,22 +523,22 @@ describe('Brushing', () => {
           },
         ],
       });
-      styler(dummyComponent, consume);
+      styler(dummyComponent, consume as any);
       brusherStub.trigger('start');
       brusherStub.trigger('update');
 
-      const output = dummyComponent.renderer.render.args[0][0];
+      const output = dummyComponent.renderer.render.args[0][0] as Node[];
       expect(output[0].stroke).to.equal('pink'); // Inactive
       expect(output[0].fill).to.equal('inactiveFill');
       expect(output[1].stroke).to.equal('activeStroke'); // Active
       expect(output[1].fill).to.equal('yellow');
       expect(output[2].stroke).to.equal('doNotUpdate'); // Active but not affected because type is container
       expect(output[2].fill).to.equal('doNotUpdate');
-      expect(output[2].children[0].stroke).to.equal('activeStroke'); // Active because it's parent is affected
-      expect(output[2].children[1].stroke).to.equal(undefined); // Active but not affected because type is container
-      expect(output[2].children[1].fill).to.equal(undefined);
-      expect(output[2].children[1].children[0].stroke).to.equal('activeStroke'); // Active because it's parent is affected
-      expect(output[2].children[1].children[0].fill).to.equal('yellow');
+      expect((output[2].children as Node[])[0].stroke).to.equal('activeStroke'); // Active because it's parent is affected
+      expect((output[2].children as Node[])[1].stroke).to.equal(undefined); // Active but not affected because type is container
+      expect((output[2].children as Node[])[1].fill).to.equal(undefined);
+      expect((output[2].children as Node[])[1].children![0].stroke).to.equal('activeStroke'); // Active because it's parent is affected
+      expect((output[2].children as Node[])[1].children![0].fill).to.equal('yellow');
     });
 
     it('update should apply styling values only to shape nodes with data attribute', () => {
@@ -454,11 +554,11 @@ describe('Brushing', () => {
           data: data[1],
         },
       ];
-      styler(dummyComponent, consume);
+      styler(dummyComponent, consume as any);
       brusherStub.trigger('start');
       brusherStub.trigger('update');
 
-      const output = dummyComponent.renderer.render.args[0][0];
+      const output = dummyComponent.renderer.render.args[0][0] as Node[];
       expect(output[0].stroke).to.equal('doNotUpdate'); // No data attr
       expect(output[0].fill).to.equal('doNotUpdate');
       expect(output[1].fill).to.equal('inactiveFill'); // Inactive
@@ -466,15 +566,15 @@ describe('Brushing', () => {
 
     it('should only affect filtered nodes', () => {
       dummyComponent.nodes = [
-        { type: 'a', fill: 'start', data: {} },
-        { type: 'b', fill: 'start', data: {} },
-        { type: 'c', fill: 'start', data: {} },
-        { type: 'd', fill: 'start', data: {} },
+        { type: 'a', fill: 'start', data: {} as any },
+        { type: 'b', fill: 'start', data: {} as any },
+        { type: 'c', fill: 'start', data: {} as any },
+        { type: 'd', fill: 'start', data: {} as any },
       ];
 
       styler(dummyComponent, {
         context: 'test',
-        filter(n) {
+        filter(n: Node): boolean {
           return n.type === 'a' || n.type === 'c';
         },
         style: {
@@ -485,36 +585,60 @@ describe('Brushing', () => {
             fill: 'inactive',
           },
         },
-      });
+      } as any);
       brusherStub.trigger('start');
       brusherStub.trigger('update');
 
-      const output = dummyComponent.renderer.render.args[0][0];
-      expect(output.map((n) => n.fill)).to.eql(['inactive', 'start', 'active', 'start']);
+      const output = dummyComponent.renderer.render.args[0][0] as Node[];
+      expect(output.map((n: Node) => n.fill)).to.eql(['inactive', 'start', 'active', 'start']);
     });
 
     it('should resolve style function property functions', () => {
       dummyComponent.nodes = [
-        { type: 'a', fill: 'red', data: {} },
-        { type: 'b', fill: 'green', data: {} },
+        { type: 'a', fill: 'red', data: {} as any },
+        { type: 'b', fill: 'green', data: {} as any },
       ];
 
       styler(dummyComponent, {
         context: 'test',
         style: {
           active: {
-            fill: (shape) => `${shape.fill}-active`,
+            fill: (shape: Node): string => `${shape.fill}-active`,
           },
           inactive: {
-            fill: (shape) => `${shape.fill}-inactive`,
+            fill: (shape: Node): string => `${shape.fill}-inactive`,
           },
         },
-      });
+      } as any);
       brusherStub.trigger('start');
       brusherStub.trigger('update');
 
-      const output = dummyComponent.renderer.render.args[0][0];
-      expect(output.map((n) => n.fill)).to.eql(['red-inactive', 'green-active']);
+      const output = dummyComponent.renderer.render.args[0][0] as Node[];
+      expect(output.map((n: Node) => n.fill)).to.eql(['inactive', 'start', 'active', 'start']);
+    });
+
+    it('should resolve style function property functions', () => {
+      dummyComponent.nodes = [
+        { type: 'a', fill: 'red', data: {} as any },
+        { type: 'b', fill: 'green', data: {} as any },
+      ];
+
+      styler(dummyComponent, {
+        context: 'test',
+        style: {
+          active: {
+            fill: (shape: Node): string => `${shape.fill}-active`,
+          },
+          inactive: {
+            fill: (shape: Node): string => `${shape.fill}-inactive`,
+          },
+        },
+      } as any);
+      brusherStub.trigger('start');
+      brusherStub.trigger('update');
+
+      const output = dummyComponent.renderer.render.args[0][0] as Node[];
+      expect(output.map((n: Node) => n.fill)).to.eql(['red-inactive', 'green-active']);
     });
   });
 });

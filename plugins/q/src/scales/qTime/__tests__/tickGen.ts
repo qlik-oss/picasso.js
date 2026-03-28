@@ -1,4 +1,4 @@
-export default function tickGen(count, interval, prefix) {
+export default function tickGen(count: any, interval: any, prefix: any) {
   const qTicks = [];
 
   for (let i = 0; i < count; i++) {

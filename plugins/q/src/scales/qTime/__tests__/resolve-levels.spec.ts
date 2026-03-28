@@ -2,8 +2,8 @@ import resolveLevels from '../resolve-levels';
 import tickGen from './tickGen';
 
 describe('qTime - Resolve levels', () => {
-  let data;
-  let settings;
+  let data: any;
+  let settings: any;
 
   beforeEach(() => {
     settings = {

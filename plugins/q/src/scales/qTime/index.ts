@@ -12,22 +12,22 @@ const DEFAULT_SETTINGS = {
   clamp: false,
 };
 
-function calcMinMax(values) {
+function calcMinMax(values: any) {
   // TODO To remove, just here for easier usage while developing
-  const min = values[values.length - 1].qTicks.map((t) => t.qStart);
-  const max = values[values.length - 1].qTicks.map((t) => t.qEnd);
+  const min = values[values.length - 1].qTicks.map((t: any) => t.qStart);
+  const max = values[values.length - 1].qTicks.map((t: any) => t.qEnd);
   return { min: Math.min(...min), max: Math.max(...max) };
 }
 
-function getMinMax(settings, data, values) {
+function getMinMax(settings: any, data: any, values: any) {
   const min = +settings.min;
   const max = +settings.max;
   let fieldMin = 0;
   let fieldMax = 1;
 
   if (data && Array.isArray(data.fields)) {
-    fieldMin = Math.min(data.fields.map((f) => f.min()));
-    fieldMax = Math.min(data.fields.map((f) => f.max()));
+    fieldMin = Math.min(data.fields.map((f: any) => f.min()));
+    fieldMax = Math.min(data.fields.map((f: any) => f.max()));
   } else if (Array.isArray(values)) {
     ({ min: fieldMin, max: fieldMax } = calcMinMax(values));
   }
@@ -38,7 +38,7 @@ function getMinMax(settings, data, values) {
   };
 }
 
-export default function qTime(settings, data) {
+export default function qTime(settings: any, data: any) {
   const stgns: Record<string, unknown> = extend({}, DEFAULT_SETTINGS, settings);
   const values = Array.isArray(stgns.values) ? stgns.values : [];
   const d3Scale = d3ScaleLinear();
@@ -53,7 +53,7 @@ export default function qTime(settings, data) {
 
   const tickFn = tickGenerator(d3Scale, stgns);
 
-  const fn = function fn(v) {
+  const fn = function fn(v: any) {
     if (isNaN(v)) {
       return NaN;
     }
@@ -99,7 +99,7 @@ export default function qTime(settings, data) {
    */
   fn.max = () => Math.max(min, max);
 
-  fn.hasLevel = (lvl) => levels[lvl] && levels[lvl].index !== null; // Remove, components like the axis should reqiure 0 size if not ticks are available, and thus "disappear"
+  fn.hasLevel = (lvl: any) => (levels[lvl] as any) && (levels[lvl] as any).index !== null; // Remove, components like the axis should reqiure 0 size if not ticks are available, and thus "disappear"
 
   if (settings) {
     d3Scale.range(stgns.invert ? [1, 0] : [0, 1]);

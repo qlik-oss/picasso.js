@@ -3,12 +3,107 @@ import * as boxShapesHelper from './box-shapes-helper';
 
 import { isNumber } from '../../utils/is-number';
 
-export default function buildShapes({ width, height, flipXY, resolved, keys, symbol }) {
+interface MinorItem {
+  [key: string]: unknown;
+  major?: number;
+  majorEnd?: number;
+  start?: number;
+  end?: number;
+  min?: number;
+  max?: number;
+  med?: number;
+  median?: boolean;
+  whisker?: { width: number };
+  box?: {
+    minHeightPx: number;
+    [key: string]: unknown;
+  };
+  oob?: {
+    size: number;
+    [key: string]: unknown;
+  };
+}
+
+interface MajorItem {
+  data: unknown;
+  major?: number;
+  binStart?: number;
+  binEnd?: number;
+  [key: string]: unknown;
+}
+
+interface ResolvedSettings {
+  [key: string]: unknown;
+  binStart?: unknown;
+  major?: {
+    scale?: {
+      bandwidth?: () => number;
+    };
+  };
+}
+
+interface MajorSettings {
+  binStart?: unknown;
+  major?: {
+    scale?: {
+      bandwidth?: () => number;
+    };
+  };
+  [key: string]: unknown;
+}
+
+interface MinorSettings {
+  start?: number;
+  end?: number;
+  min?: number;
+  max?: number;
+  med?: number;
+  [key: string]: unknown;
+}
+
+interface Resolved {
+  major: {
+    items: MajorItem[];
+    settings: ResolvedSettings;
+  };
+  minor: {
+    items: MinorItem[];
+    settings: MinorSettings;
+  };
+  [key: string]: {
+    items: unknown[];
+  };
+}
+
+interface ShapeContainer {
+  type: 'container';
+  data: unknown;
+  collider: { type: string };
+  children: unknown[];
+}
+
+interface BuildShapesParams {
+  width?: number;
+  height?: number;
+  flipXY?: boolean;
+  resolved: Resolved;
+  keys: string[];
+  symbol?: (config: Record<string, unknown>) => unknown;
+}
+
+export default function buildShapes({
+  width = 0,
+  height = 0,
+  flipXY = false,
+  resolved,
+  keys,
+  symbol,
+}: BuildShapesParams): ShapeContainer[] {
   // if (!settings || !settings.major || !settings.major.scale || !settings.minor || !settings.minor.scale) {
   //   return [];
   // }
 
-  const output = [];
+  const output: ShapeContainer[] = [];
   const majorItems = resolved.major.items;
 
   if (!majorItems.length) {
@@ -19,25 +114,25 @@ export default function buildShapes({ width, height, flipXY, resolved, keys, sym
   const rendHeight = height;
   const maxMajorWidth = flipXY ? height : width;
   const majorSettings = resolved.major.settings;
-  const minorProps = ['start', 'end', 'min', 'max', 'med'].filter(
+  const minorProps: string[] = ['start', 'end', 'min', 'max', 'med'].filter(
     (prop) => typeof resolved.minor.settings[prop] !== 'undefined'
   );
   const numMinorProps = minorProps.length;
-  const nonOobKeys = keys.filter((key) => key !== 'oob');
+  const nonOobKeys: string[] = keys.filter((key: string) => key !== 'oob');
 
-  let children;
-  let major;
-  let minorItem;
-  let boxWidth;
-  let boxPadding;
-  let boxCenter;
-  let isLowerOutOfBounds;
-  let isHigherOutOfBounds;
-  let isOutOfBounds;
+  let children: unknown[];
+  let major: { bandwidth?: () => number } | null;
+  let minorItem: MinorItem;
+  let boxWidth: number;
+  let boxPadding: number;
+  let boxCenter: number;
+  let isLowerOutOfBounds: boolean = false;
+  let isHigherOutOfBounds: boolean = false;
+  let isOutOfBounds: boolean = false;
   const numKeys = keys ? keys.length : 0;
   const numNonOobKeys = nonOobKeys ? nonOobKeys.length : 0;
 
-  function addBox() {
+  function addBox(): void {
     /* THE BOX */
     if (minorItem.box && isNumber(minorItem.start) && isNumber(minorItem.end)) {
       children.push(
@@ -53,7 +148,7 @@ export default function buildShapes({ width, height, flipXY, resolved, keys, sym
     }
   }
 
-  function addLine() {
+  function addLine(): void {
     /* LINES MIN - START, END - MAX */
     if (isNumber(minorItem.min) && isNumber(minorItem.start)) {
       children.push(
@@ -84,7 +179,7 @@ export default function buildShapes({ width, height, flipXY, resolved, keys, sym
     }
   }
 
-  function addMedian() {
+  function addMedian(): void {
     /* MEDIAN */
     if (minorItem.median && isNumber(minorItem.med)) {
       children.push(
@@ -102,7 +197,7 @@ export default function buildShapes({ width, height, flipXY, resolved, keys, sym
     }
   }
 
-  function addWhisker() {
+  function addWhisker(): void {
     /* WHISKERS */
     if (minorItem.whisker) {
       const whiskerWidth = boxWidth * minorItem.whisker.width;
@@ -139,7 +234,7 @@ export default function buildShapes({ width, height, flipXY, resolved, keys, sym
     }
   }
 
-  function addOutOfBounds() {
+  function addOutOfBounds(): void {
     /* OUT OF BOUNDS */
     if (isLowerOutOfBounds) {
       children.push(
@@ -168,25 +263,25 @@ export default function buildShapes({ width, height, flipXY, resolved, keys, sym
     }
   }
 
-  const addMarkerList = {
+  const addMarkerList: Record<string, () => void> = {
     box: addBox,
     line: addLine,
     median: addMedian,
     whisker: addWhisker,
   };
 
-  function checkOutOfBounds() {
-    let value;
+  function checkOutOfBounds(): void {
+    let value: unknown;
     let max = -Number.MAX_VALUE;
     let min = Number.MAX_VALUE;
     for (let n = 0; n < numMinorProps; n++) {
       value = minorItem[minorProps[n]];
       if (isNumber(value)) {
-        if (max < value) {
-          max = value;
+        if (max < (value as number)) {
+          max = value as number;
         }
-        if (min > value) {
-          min = value;
+        if (min > (value as number)) {
+          min = value as number;
         }
       }
     }
@@ -198,20 +293,20 @@ export default function buildShapes({ width, height, flipXY, resolved, keys, sym
   for (let i = 0, len = majorItems.length; i < len; i++) {
     children = [];
     major = null;
-    const majorItem = majorItems[i];
+    const majorItem: MajorItem = majorItems[i];
     const d = majorItem.data;
 
-    let majorVal = null;
-    let majorEndVal = null;
+    let majorVal: number | null = null;
+    let majorEndVal: number | null = null;
 
     if (typeof majorSettings.binStart !== 'undefined') {
       // if start and end is defined
-      majorVal = majorItem.binStart;
-      majorEndVal = majorItem.binEnd;
-      major = majorSettings.binStart.scale;
+      majorVal = majorItem.binStart as number;
+      majorEndVal = majorItem.binEnd as number;
+      major = majorSettings.binStart as { bandwidth?: () => number } | null;
     } else {
-      major = majorSettings.major.scale;
-      majorVal = major ? majorItem.major : 0;
+      major = (majorSettings.major?.scale as { bandwidth?: () => number } | undefined) ?? null;
+      majorVal = major ? (majorItem.major as number) : 0;
     }
 
     let bandwidth = 0;
@@ -221,7 +316,7 @@ export default function buildShapes({ width, height, flipXY, resolved, keys, sym
       bandwidth = major.bandwidth();
       majorVal -= bandwidth / 2;
     } else {
-      bandwidth = majorEndVal - majorVal;
+      bandwidth = (majorEndVal as number) - (majorVal as number);
     }
 
     minorItem = extend(
@@ -239,22 +334,23 @@ export default function buildShapes({ width, height, flipXY, resolved, keys, sym
 
     boxWidth = boxShapesHelper.getBoxWidth(bandwidth, minorItem, maxMajorWidth);
     boxPadding = (bandwidth - boxWidth) / 2;
-    boxCenter = boxPadding + minorItem.major + boxWidth / 2;
+    boxCenter = boxPadding + (minorItem.major as number) + boxWidth / 2;
 
     checkOutOfBounds();
 
     if (!isOutOfBounds) {
       for (let k = 0; k < numNonOobKeys; k++) {
-        if (minorItem[nonOobKeys[k]] && minorItem[nonOobKeys[k]].show === false) {
+        const nonOobKey = nonOobKeys[k];
+        if (minorItem[nonOobKey] && typeof minorItem[nonOobKey] === 'object' && (minorItem[nonOobKey] as Record<string, unknown>).show === false) {
           continue;
         }
-        addMarkerList[nonOobKeys[k]]();
+        (addMarkerList[nonOobKey] as (() => void) | undefined)?.();
       }
     } else if (minorItem.oob) {
       addOutOfBounds();
     }
 
-    const container = {
+    const container: ShapeContainer = {
       type: 'container',
       data: d,
       collider: { type: 'bounds' },

@@ -2,7 +2,10 @@ import dockLayout from '../docker';
 import createRect from '../create-rect';
 import dockConfig from '../config';
 
-type Rect = ReturnType<typeof createRect>;
+type Rect = ReturnType<typeof createRect> & {
+  scaleRatio?: { x: number; y: number };
+  margin?: { left: number; top: number };
+};
 type DockConfig = ReturnType<typeof dockConfig>;
 
 interface ComponentMockOptions {
@@ -72,7 +75,7 @@ describe('Dock Layout', () => {
 
     beforeEach(() => {
       rect = createRect(0, 0, 1000, 1000);
-      dl = dockLayout();
+      dl = dockLayout(undefined);
     });
 
     it('should handle empty components array in layout call', () => {
@@ -83,7 +86,7 @@ describe('Dock Layout', () => {
 
     it('should throw exception if rect is invalid', () => {
       const fn = () => {
-        dl.layout(null, [componentMock()]);
+        dl.layout(null as unknown as Rect, [componentMock()]);
       };
       expect(fn).to.throw('Invalid rect');
     });
@@ -100,31 +103,31 @@ describe('Dock Layout', () => {
       dl.layout(rect, components);
 
       // outer rects
-      expect(components[0].outer, 'Left outerRect had incorrect calculated size').to.deep.include({
+      expect(components[0].outer).to.deep.include({
         x: 0,
         y: 0,
         width: 50,
         height: 1000,
       });
-      expect(components[1].outer, 'Right outerRect had incorrect calculated size').to.deep.include({
+      expect(components[1].outer).to.deep.include({
         x: 900,
         y: 0,
         width: 100,
         height: 1000,
       });
-      expect(components[2].outer, 'Main outerRect had incorrect calculated size').to.deep.include({
+      expect(components[2].outer).to.deep.include({
         x: 50,
         y: 150,
         width: 850,
         height: 650,
       });
-      expect(components[3].outer, 'Top outerRect had incorrect calculated size').to.deep.include({
+      expect(components[3].outer).to.deep.include({
         x: 0,
         y: 0,
         width: 1000,
         height: 150,
       });
-      expect(components[4].outer, 'Bottom outerRect had incorrect calculated size').to.deep.include({
+      expect(components[4].outer).to.deep.include({
         x: 0,
         y: 800,
         width: 1000,
@@ -132,31 +135,31 @@ describe('Dock Layout', () => {
       });
 
       // main rects
-      expect(components[0].rect, 'Left rect had incorrect calculated size').to.deep.include({
+      expect(components[0].rect).to.deep.include({
         x: 0,
         y: 150,
         width: 50,
         height: 650,
       });
-      expect(components[1].rect, 'Right rect had incorrect calculated size').to.deep.include({
+      expect(components[1].rect).to.deep.include({
         x: 900,
         y: 150,
         width: 100,
         height: 650,
       });
-      expect(components[2].rect, 'Main rect had incorrect calculated size').to.deep.include({
+      expect(components[2].rect).to.deep.include({
         x: 50,
         y: 150,
         width: 850,
         height: 650,
       });
-      expect(components[3].rect, 'Top rect had incorrect calculated size').to.deep.include({
+      expect(components[3].rect).to.deep.include({
         x: 50,
         y: 0,
         width: 850,
         height: 150,
       });
-      expect(components[4].rect, 'Bottom rect had incorrect calculated size').to.deep.include({
+      expect(components[4].rect).to.deep.include({
         x: 50,
         y: 800,
         width: 850,
@@ -174,25 +177,25 @@ describe('Dock Layout', () => {
 
       dl.layout(rect, components);
 
-      expect(components[0].rect, 'first component rect had incorrect calculated size').to.deep.include({
+      expect(components[0].rect).to.deep.include({
         x: 250,
         y: 0,
         width: 50,
         height: 1000,
       });
-      expect(components[1].rect, 'second component rect had incorrect calculated size').to.deep.include({
+      expect(components[1].rect).to.deep.include({
         x: 150,
         y: 0,
         width: 100,
         height: 1000,
       });
-      expect(components[2].rect, 'third component rect had incorrect calculated size').to.deep.include({
+      expect(components[2].rect).to.deep.include({
         x: 0,
         y: 0,
         width: 150,
         height: 1000,
       });
-      expect(components[3].rect, 'Main innerRect had incorrect calculated size').to.deep.include({
+      expect(components[3].rect).to.deep.include({
         x: 300,
         y: 0,
         width: 700,
@@ -227,25 +230,25 @@ describe('Dock Layout', () => {
 
       dl.layout(rect, components);
 
-      expect(leftComp.rect, 'leftComp rect had incorrect calculated size').to.deep.include({
+      expect(leftComp.rect).to.deep.include({
         x: 0,
         y: 0,
         width: 300,
         height: 1000,
       });
-      expect(leftComp2.rect, 'leftComp2 rect had incorrect calculated size').to.deep.include({
+      expect(leftComp2.rect).to.deep.include({
         x: 0,
         y: 0,
         width: 0,
         height: 0,
       });
-      expect(leftComp3.rect, 'leftComp3 rect had incorrect calculated size').to.deep.include({
+      expect(leftComp3.rect).to.deep.include({
         x: 0,
         y: 0,
         width: 0,
         height: 0,
       });
-      expect(mainComp.rect, 'Main rect had incorrect calculated size').to.deep.include({
+      expect(mainComp.rect).to.deep.include({
         x: 300,
         y: 0,
         width: 700,
@@ -267,25 +270,25 @@ describe('Dock Layout', () => {
 
       dl.layout(rect, components);
 
-      expect(leftComp.rect, 'leftComp rect had incorrect calculated size').to.deep.include({
+      expect(leftComp.rect).to.deep.include({
         x: 0,
         y: 0,
         width: 300,
         height: 1000,
       });
-      expect(leftComp2.rect, 'leftComp2 rect had incorrect calculated size').to.deep.include({
+      expect(leftComp2.rect).to.deep.include({
         x: 0,
         y: 0,
         width: 0,
         height: 0,
       });
-      expect(leftComp3.rect, 'leftComp3 rect had incorrect calculated size').to.deep.include({
+      expect(leftComp3.rect).to.deep.include({
         x: 0,
         y: 0,
         width: 0,
         height: 0,
       });
-      expect(mainComp.rect, 'Main rect had incorrect calculated size').to.deep.include({
+      expect(mainComp.rect).to.deep.include({
         x: 300,
         y: 0,
         width: 700,
@@ -310,25 +313,25 @@ describe('Dock Layout', () => {
 
       dl.layout(rect, components);
 
-      expect(leftComp.rect, 'leftComp innerRect had incorrect calculated size').to.deep.include({
+      expect(leftComp.rect).to.deep.include({
         x: 0,
         y: 0,
         width: 300,
         height: 1000,
       });
-      expect(leftComp2.rect, 'leftComp2 innerRect had incorrect calculated size').to.deep.include({
+      expect(leftComp2.rect).to.deep.include({
         x: 0,
         y: 0,
         width: 0,
         height: 0,
       });
-      expect(leftComp3.rect, 'leftComp3 innerRect had incorrect calculated size').to.deep.include({
+      expect(leftComp3.rect).to.deep.include({
         x: 0,
         y: 0,
         width: 300,
         height: 1000,
       });
-      expect(mainComp.rect, 'Main innerRect had incorrect calculated size').to.deep.include({
+      expect(mainComp.rect).to.deep.include({
         x: 300,
         y: 0,
         width: 700,
@@ -343,7 +346,7 @@ describe('Dock Layout', () => {
 
     beforeEach(() => {
       rect = createRect(500, 500, 1000, 1000);
-      dl = dockLayout();
+      dl = dockLayout(undefined);
     });
 
     it('should set correct component rects when container rect is not starting in origin', () => {
@@ -358,31 +361,31 @@ describe('Dock Layout', () => {
       dl.layout(rect, components);
 
       // outer rects
-      expect(components[0].outer, 'Left outerRect had incorrect calculated size').to.deep.include({
+      expect(components[0].outer).to.deep.include({
         x: 500,
         y: 500,
         width: 50,
         height: 1000,
       });
-      expect(components[1].outer, 'Right outerRect had incorrect calculated size').to.deep.include({
+      expect(components[1].outer).to.deep.include({
         x: 1400,
         y: 500,
         width: 100,
         height: 1000,
       });
-      expect(components[2].outer, 'Main outerRect had incorrect calculated size').to.deep.include({
+      expect(components[2].outer).to.deep.include({
         x: 550,
         y: 650,
         width: 850,
         height: 650,
       });
-      expect(components[3].outer, 'Top outerRect had incorrect calculated size').to.deep.include({
+      expect(components[3].outer).to.deep.include({
         x: 500,
         y: 500,
         width: 1000,
         height: 150,
       });
-      expect(components[4].outer, 'Bottom outerRect had incorrect calculated size').to.deep.include({
+      expect(components[4].outer).to.deep.include({
         x: 500,
         y: 1300,
         width: 1000,
@@ -390,31 +393,31 @@ describe('Dock Layout', () => {
       });
 
       // main rects
-      expect(components[0].rect, 'Left rect had incorrect calculated size').to.deep.include({
+      expect(components[0].rect).to.deep.include({
         x: 500,
         y: 650,
         width: 50,
         height: 650,
       });
-      expect(components[1].rect, 'Right rect had incorrect calculated size').to.deep.include({
+      expect(components[1].rect).to.deep.include({
         x: 1400,
         y: 650,
         width: 100,
         height: 650,
       });
-      expect(components[2].rect, 'Main rect had incorrect calculated size').to.deep.include({
+      expect(components[2].rect).to.deep.include({
         x: 550,
         y: 650,
         width: 850,
         height: 650,
       });
-      expect(components[3].rect, 'Top rect had incorrect calculated size').to.deep.include({
+      expect(components[3].rect).to.deep.include({
         x: 550,
         y: 500,
         width: 850,
         height: 150,
       });
-      expect(components[4].rect, 'Bottom rect had incorrect calculated size').to.deep.include({
+      expect(components[4].rect).to.deep.include({
         x: 550,
         y: 1300,
         width: 850,
@@ -441,7 +444,7 @@ describe('Dock Layout', () => {
 
       container = createRect(0, 0, 1000, 1200);
 
-      dl = dockLayout();
+      dl = dockLayout(undefined);
     });
 
     it('should generate layout from a logical size setting', () => {
@@ -449,27 +452,27 @@ describe('Dock Layout', () => {
 
       dl.settings(settings);
       dl.layout(container, [mainComp]);
-      expect(mainComp.rect.scaleRatio, 'Main innerRect had incorrect ratio').to.deep.equal({
+      expect(mainComp.rect.scaleRatio).to.deep.equal({
         x: 2,
         y: 3,
       });
-      expect(mainComp.outer.scaleRatio, 'Main outerRect had incorrect ratio').to.deep.equal({
+      expect(mainComp.outer.scaleRatio).to.deep.equal({
         x: 2,
         y: 3,
       });
     });
 
     it('should generate layout from a logical size setting with preserved aspect ratio', () => {
-      settings.logicalSize.preserveAspectRatio = true;
+      (settings as any).logicalSize.preserveAspectRatio = true;
       const mainComp = componentMock();
       dl.settings(settings);
       dl.layout(container, [mainComp]);
       // Preserve the smallest ratio
-      expect(mainComp.rect.scaleRatio, 'innerRect had incorrect ratio').to.deep.equal({
+      expect(mainComp.rect.scaleRatio).to.deep.equal({
         x: 2,
         y: 2,
       });
-      expect(mainComp.outer.scaleRatio, 'outerRect had incorrect ratio').to.deep.equal({
+      expect(mainComp.outer.scaleRatio).to.deep.equal({
         x: 2,
         y: 2,
       });
@@ -486,7 +489,7 @@ describe('Dock Layout', () => {
       dl.settings(settings);
       dl.layout(container, [mainComp]);
 
-      expect(mainComp.rect, 'ContainerRect had incorrect size').to.deep.include({
+      expect(mainComp.rect).to.deep.include({
         x: 0,
         y: 0,
         width: 1000,
@@ -664,10 +667,10 @@ describe('Dock Layout', () => {
   });
 
   describe('minimumLayoutMode', () => {
-    let dl;
-    let rect;
+    let dl: ReturnType<typeof dockLayout>;
+    let rect: Rect;
     beforeEach(() => {
-      dl = dockLayout();
+      dl = dockLayout(undefined);
       rect = createRect(0, 0, 1000, 1000);
     });
 
@@ -682,7 +685,7 @@ describe('Dock Layout', () => {
       dl.settings(settings);
       dl.layout(rect, [mainComp]);
 
-      expect(mainComp.rect, 'Main rect had incorrect size').to.deep.include({
+      expect(mainComp.rect).to.deep.include({
         x: 0,
         y: 0,
         width: 1000,
@@ -699,7 +702,7 @@ describe('Dock Layout', () => {
       dl.settings(settings);
       dl.layout(rect, [mainComp]);
 
-      expect(mainComp.rect, 'Main rect had incorrect size').to.deep.include({
+      expect(mainComp.rect).to.deep.include({
         x: 0,
         y: 0,
         width: 0,
@@ -719,7 +722,7 @@ describe('Dock Layout', () => {
       dl.settings(settings);
       dl.layout(rect, [mainComp]);
 
-      expect(mainComp.rect, 'ContainerRect had incorrect size').to.deep.include({
+      expect(mainComp.rect).to.deep.include({
         x: 0,
         y: 0,
         width: 1000,
@@ -754,11 +757,11 @@ describe('Dock Layout', () => {
   });
 
   describe('edgeBleed', () => {
-    let rect;
-    let dl;
+    let rect: Rect;
+    let dl: ReturnType<typeof dockLayout>;
     beforeEach(() => {
       rect = createRect(0, 0, 1000, 1000);
-      dl = dockLayout();
+      dl = dockLayout(undefined);
     });
     it("should remove component when edgebleed doesn't fit", () => {
       const leftComp = componentMock({
@@ -770,13 +773,13 @@ describe('Dock Layout', () => {
 
       dl.layout(rect, [leftComp, mainComp]);
 
-      expect(leftComp.rect, 'leftComp rect had incorrect calculated size').to.deep.include({
+      expect(leftComp.rect).to.deep.include({
         x: 0,
         y: 0,
         width: 0,
         height: 0,
       });
-      expect(mainComp.rect, 'Main rect had incorrect calculated size').to.deep.include({
+      expect(mainComp.rect).to.deep.include({
         x: 0,
         y: 0,
         width: 1000,
@@ -795,19 +798,19 @@ describe('Dock Layout', () => {
 
       dl.layout(rect, [leftComp, bottomComp, mainComp]);
 
-      expect(leftComp.rect, 'leftComp innerRect had incorrect calculated size').to.deep.include({
+      expect(leftComp.rect).to.deep.include({
         x: 0,
         y: 400,
         width: 100,
         height: 600,
       });
-      expect(bottomComp.rect, 'bottomComp innerRect had incorrect calculated size').to.deep.include({
+      expect(bottomComp.rect).to.deep.include({
         x: 0,
         y: 0,
         width: 0,
         height: 0,
       });
-      expect(mainComp.rect, 'Main innerRect had incorrect calculated size').to.deep.include({
+      expect(mainComp.rect).to.deep.include({
         x: 100,
         y: 400,
         width: 900,
@@ -826,19 +829,19 @@ describe('Dock Layout', () => {
 
       dl.layout(rect, [leftComp, bottomComp, mainComp]);
 
-      expect(leftComp.rect, 'leftComp innerRect had incorrect calculated size').to.deep.include({
+      expect(leftComp.rect).to.deep.include({
         x: 0,
         y: 0,
         width: 100,
         height: 600,
       });
-      expect(bottomComp.rect, 'bottomComp innerRect had incorrect calculated size').to.deep.include({
+      expect(bottomComp.rect).to.deep.include({
         x: 100,
         y: 600,
         width: 900,
         height: 300,
       });
-      expect(mainComp.rect, 'Main innerRect had incorrect calculated size').to.deep.include({
+      expect(mainComp.rect).to.deep.include({
         x: 100,
         y: 0,
         width: 900,
@@ -859,7 +862,7 @@ describe('Dock Layout', () => {
       const mainComp = componentMock();
 
       const rect = createRect(0, 0, 1000, 1000);
-      const dl = dockLayout();
+      const dl = dockLayout(undefined);
 
       const { visible, hidden } = dl.layout(rect, [leftComp, rightComp, mainComp, topComp]);
 
@@ -879,7 +882,7 @@ describe('Dock Layout', () => {
       const mainComp = componentMock();
 
       const rect = createRect(0, 0, 1000, 1000);
-      const dl = dockLayout();
+      const dl = dockLayout(undefined);
 
       const { visible } = dl.layout(rect, [leftComp, rightComp, mainComp]);
 
@@ -897,12 +900,12 @@ describe('Dock Layout', () => {
       const onMain = componentMock({ displayOrder: -1, dock: '@main', key: 'dockAtMain' });
 
       const rect = createRect(0, 0, 1000, 1000);
-      const dl = dockLayout();
+      const dl = dockLayout(undefined);
 
       const { visible, ordered } = dl.layout(rect, [mainComp, leftComp, onLeft, onMain]);
 
-      expect(visible.map((v) => v.key)).to.eql(['main', 'y', 'dockAtY', 'dockAtMain']);
-      expect(ordered.map((v) => v.key)).to.eql(['dockAtMain', 'main', 'dockAtY', 'y']);
+      expect(visible.map((v: any) => v.key)).to.eql(['main', 'y', 'dockAtY', 'dockAtMain']);
+      expect(ordered.map((v: any) => v.key)).to.eql(['dockAtMain', 'main', 'dockAtY', 'y']);
     });
   });
 });
