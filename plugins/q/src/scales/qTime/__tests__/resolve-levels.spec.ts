@@ -1,14 +1,25 @@
 import resolveLevels from '../resolve-levels';
 import tickGen from './tickGen';
 
+interface ResolveLevelsData {
+  qTags: string[];
+  qTicks: Array<{ qStart: number; qEnd: number; qText: string }>;
+}
+
+interface ResolveLevelsSettings {
+  maxWidth: number;
+  measureText: (options: { text: string }) => { width: number };
+  anchor?: string;
+}
+
 describe('qTime - Resolve levels', () => {
-  let data: any;
-  let settings: any;
+  let data: ResolveLevelsData[] | Record<string, unknown>;
+  let settings: ResolveLevelsSettings;
 
   beforeEach(() => {
     settings = {
       maxWidth: 10000, // Omit width as a limiter
-      measureText: ({ text }) => ({ width: text.length }),
+      measureText: ({ text }: { text: string }): { width: number } => ({ width: text.length }),
     };
 
     data = [

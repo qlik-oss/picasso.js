@@ -3,6 +3,17 @@ import q from '../dataset';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const picData = require('../../../../../packages/picasso.js/src/core/data/dataset');
 
+interface CubeData {
+  qMode?: string;
+  qNodesOnDim?: unknown[];
+  qDimensionInfo: Array<{ qFallbackTitle?: string; qMeasureInfo?: unknown; [key: string]: unknown }>;
+  qMeasureInfo?: Array<{ [key: string]: unknown }>;
+  qDataPages?: Array<{ [key: string]: unknown }>;
+  qStackedDataPages?: Array<{ [key: string]: unknown }>;
+  qTreeDataPages?: Array<{ [key: string]: unknown }>;
+  qEffectiveInterColumnSortOrder?: number[];
+}
+
 const NxSimpleValue = { qNum: 37.6, qText: '$37.6' };
 const NxSimpleDimValue = { qElemNo: 7, qText: 'seven' };
 const NxCell = { qText: 'three', qElemNumber: 3, qNum: 3.1 };
@@ -23,7 +34,7 @@ const NxTreeValue = {
 };
 const NxTreeNode = { qElemNo: 9, qText: 'nine', qValues: [{}, {}, NxTreeValue] };
 
-const ds = (qMode: any, config: any = {}) => {
+const ds = (qMode: string, config?: Record<string, unknown>): ReturnType<typeof q> => {
   const qDataPages = [
     {
       qArea: {
@@ -71,7 +82,7 @@ const ds = (qMode: any, config: any = {}) => {
     },
   ];
 
-  const cube = {
+  const cube: CubeData = {
     qMode,
     qDimensionInfo: [{ qFallbackTitle: 'A' }],
     qMeasureInfo: [
@@ -121,13 +132,14 @@ const ds = (qMode: any, config: any = {}) => {
   return d;
 };
 
-const tree = () => {
+const tree = (): ReturnType<typeof q> => {
   const qTreeDataPages = [
     {
       qNodes: [NxTreeNode],
     },
   ];
-  const cube = {
+  const cube: CubeData = {
+    qMode: 'T',
     qNodesOnDim: [],
     qEffectiveInterColumnSortOrder: [0],
     qDimensionInfo: [
@@ -173,22 +185,22 @@ const tree = () => {
 
 describe('q-data', () => {
   beforeAll(() => {
-    q.util = picData.util;
+    (q as unknown as { util?: Record<string, unknown> }).util = picData.util;
   });
 
   afterAll(() => {
-    q.util = undefined;
+    (q as unknown as { util?: Record<string, unknown> }).util = undefined;
   });
 
   describe('error handling', () => {
     it('no data should throw', () => {
       const d = () => q({});
-      expect(d).throw('Missing "data" input');
+      expect(d).toThrow('Missing "data" input');
     });
 
     it('bad cube should throw', () => {
       const d = () => q({ data: {} });
-      expect(d).throw('The "data" input is not recognized as a hypercube');
+      expect(d).toThrow('The "data" input is not recognized as a hypercube');
     });
   });
 

@@ -1,24 +1,54 @@
+import type { SinonStub, SinonSpy, SinonFakeTimers } from 'sinon';
+// @ts-ignore - extend module has no types
 import extend from 'extend';
 import elementMock from 'test-utils/mocks/element-mock';
 import tooltip from '../tooltip';
 import componentFactoryFixture from '../../../../../test/helpers/component-factory-fixture';
 import * as instanceHandler from '../instance-handler';
 
-function componentMock() {
-  return {
-    emit: sinon.stub(),
+interface ComponentMockObj {
+  emit: SinonStub;
+}
+
+interface ChartMockObj {
+  componentsFromPoint: SinonStub;
+  shapesAt: SinonStub;
+  brushFromShapes: SinonStub;
+  component: SinonStub;
+  element: any;
+}
+
+interface TooltipConfig {
+  settings: {
+    filter: (nodes: unknown[]) => unknown[];
+    isEqual: SinonStub;
+    appendTo?: any;
   };
 }
 
-function chartMock() {
+interface ComponentFixture {
+  sandbox: () => any;
+  mocks: () => { chart: any };
+  simulateCreate: (component: any, config: unknown) => any;
+  simulateRender: (opts: { inner: { x: number; y: number; width: number; height: number } }) => void;
+  simulateUpdate?: (opts: any) => void;
+}
+
+function componentMock(): ComponentMockObj {
   return {
-    componentsFromPoint: sinon.stub().returns([]),
-    shapesAt: sinon.stub().returns([]),
-    brushFromShapes: sinon.stub(),
-    component: sinon.stub().returns(componentMock()),
+    emit: (sinon as any).stub(),
+  };
+}
+
+function chartMock(): ChartMockObj {
+  return {
+    componentsFromPoint: (sinon as any).stub().returns([]),
+    shapesAt: (sinon as any).stub().returns([]),
+    brushFromShapes: (sinon as any).stub(),
+    component: (sinon as any).stub().returns(componentMock()),
     element: {
       ...elementMock(),
-      getBoundingClientRect: sinon.stub().returns({
+      getBoundingClientRect: (sinon as any).stub().returns({
         left: 0,
         top: 0,
       }),
@@ -27,18 +57,18 @@ function chartMock() {
 }
 
 describe('Tooltip', () => {
-  let instance;
-  let invokeSpy;
-  let dispatcherSpy;
-  let cMock;
-  let isEql;
-  let componentFixture;
-  let sandbox;
-  let config;
-  let clock;
+  let instance: any;
+  let invokeSpy: SinonStub;
+  let dispatcherSpy: SinonSpy;
+  let cMock: ChartMockObj;
+  let isEql: SinonStub;
+  let componentFixture: ComponentFixture;
+  let sandbox: any;
+  let config: TooltipConfig;
+  let clock: SinonFakeTimers;
 
   beforeEach(() => {
-    componentFixture = componentFactoryFixture();
+    componentFixture = componentFactoryFixture() as unknown as ComponentFixture;
     sandbox = componentFixture.sandbox();
     cMock = extend(componentFixture.mocks().chart, chartMock());
     clock = sandbox.useFakeTimers();
@@ -46,7 +76,7 @@ describe('Tooltip', () => {
 
     config = {
       settings: {
-        filter: (nodes) => nodes,
+        filter: (nodes: unknown[]) => nodes,
         isEqual: isEql,
       },
     };
@@ -126,7 +156,7 @@ describe('Tooltip', () => {
   });
 
   describe('lifecycle hooks', () => {
-    let hookSpy;
+    let hookSpy: SinonSpy;
 
     beforeEach(() => {
       hookSpy = sandbox.spy();
@@ -211,7 +241,7 @@ describe('Tooltip', () => {
   });
 
   describe('appendTo', () => {
-    let container;
+    let container: { x: number; y: number; width: number; height: number; scaleRatio: { x: number; y: number } };
 
     beforeEach(() => {
       container = {
@@ -222,25 +252,25 @@ describe('Tooltip', () => {
         scaleRatio: { x: 0, y: 0 },
       };
 
-      componentFixture.mocks().renderer.size = sandbox.stub().returns(container);
+      (componentFixture.mocks() as any).renderer.size = sandbox.stub().returns(container);
     });
 
     it('should apply appendTo on mounted', () => {
       const stub = sandbox.stub().returns({ getBoundingClientRect: () => container, appendChild: sandbox.stub() });
       instance.def.props.appendTo = stub;
-      componentFixture.simulateRender({ inner: container, outer: container });
+      componentFixture.simulateRender({ inner: container, outer: container } as any);
 
       expect(stub).to.have.been.called;
-      expect(componentFixture.mocks().renderer.size).to.have.been.calledWith({ width: 100, height: 50 });
+      expect((componentFixture.mocks() as any).renderer.size).to.have.been.calledWith({ width: 100, height: 50 });
     });
 
     it('should apply appendTo on updated', () => {
       const stub = sandbox.stub().returns({ getBoundingClientRect: () => container, appendChild: sandbox.stub() });
-      config.settings.appendTo = stub;
-      componentFixture.simulateUpdate(config);
+      config.settings.appendTo = stub as any;
+      (componentFixture.simulateUpdate || (() => {}))(config);
 
       expect(stub).to.have.been.called;
-      expect(componentFixture.mocks().renderer.size).to.have.been.calledWith({ width: 100, height: 50 });
+      expect((componentFixture.mocks() as any).renderer.size).to.have.been.calledWith({ width: 100, height: 50 });
     });
   });
 });

@@ -2,11 +2,11 @@ import componentFactoryFixture from '../../../../../test/helpers/component-facto
 import pointComponent from '../point';
 
 describe('point component', () => {
-  let renderedPoints;
-  let chart;
-  let shapeFn;
-  let componentFixture;
-  let opts;
+  let renderedPoints: unknown;
+  let chart: unknown;
+  let shapeFn: (p: any) => any;
+  let componentFixture: any;
+  let opts: any;
 
   beforeEach(() => {
     opts = {
@@ -17,21 +17,21 @@ describe('point component', () => {
         height: 200,
       },
     };
-    shapeFn = (p) => p;
+    shapeFn = (p: any): any => p;
     componentFixture = componentFactoryFixture();
-    chart = componentFixture.mocks().chart;
+    chart = (componentFixture as any).mocks().chart;
 
-    componentFixture.mocks().theme.style.returns({});
+    (componentFixture as any).mocks().theme.style.returns({});
   });
 
   it('should render points with default settings', () => {
-    const config = {
+    const config: any = {
       shapeFn,
       data: [1],
     };
 
-    componentFixture.simulateCreate(pointComponent, config);
-    renderedPoints = componentFixture.simulateRender(opts);
+    (componentFixture as any).simulateCreate(pointComponent, config);
+    renderedPoints = (componentFixture as any).simulateRender(opts);
 
     expect(renderedPoints).to.deep.equal([
       {
@@ -52,7 +52,7 @@ describe('point component', () => {
   });
 
   it('should render points with default settings when settings properties are invalid', () => {
-    const config = {
+    const config: any = {
       shapeFn,
       data: [1],
       settings: {
@@ -66,8 +66,8 @@ describe('point component', () => {
       },
     };
 
-    componentFixture.simulateCreate(pointComponent, config);
-    renderedPoints = componentFixture.simulateRender(opts);
+    (componentFixture as any).simulateCreate(pointComponent, config);
+    renderedPoints = (componentFixture as any).simulateRender(opts);
 
     expect(renderedPoints).to.deep.equal([
       {
@@ -88,7 +88,7 @@ describe('point component', () => {
   });
 
   it('should render points with primitive value settings', () => {
-    const config = {
+    const config: any = {
       shapeFn,
       data: [1],
       settings: {
@@ -109,8 +109,8 @@ describe('point component', () => {
       },
     };
 
-    componentFixture.simulateCreate(pointComponent, config);
-    renderedPoints = componentFixture.simulateRender(opts);
+    (componentFixture as any).simulateCreate(pointComponent, config);
+    renderedPoints = (componentFixture as any).simulateRender(opts);
 
     expect(renderedPoints).to.deep.equal([
       {
@@ -131,7 +131,7 @@ describe('point component', () => {
   });
 
   it('should render points with function settings', () => {
-    const config = {
+    const config: any = {
       shapeFn,
       data: ['a'],
       settings: {
@@ -153,8 +153,8 @@ describe('point component', () => {
       },
     };
 
-    componentFixture.simulateCreate(pointComponent, config);
-    renderedPoints = componentFixture.simulateRender(opts);
+    (componentFixture as any).simulateCreate(pointComponent, config);
+    renderedPoints = (componentFixture as any).simulateRender(opts);
 
     expect(renderedPoints).to.deep.equal([
       {
@@ -178,7 +178,7 @@ describe('point component', () => {
   });
 
   it('should render points with data settings', () => {
-    const config = {
+    const config: any = {
       shapeFn,
       data: [
         {
@@ -222,8 +222,8 @@ describe('point component', () => {
       },
     };
 
-    componentFixture.simulateCreate(pointComponent, config);
-    renderedPoints = componentFixture.simulateRender(opts);
+    (componentFixture as any).simulateCreate(pointComponent, config);
+    renderedPoints = (componentFixture as any).simulateRender(opts);
 
     expect(renderedPoints).to.deep.equal([
       {
@@ -278,7 +278,7 @@ describe('point component', () => {
   });
 
   it('should render points with function settings and size has px format', () => {
-    const config = {
+    const config: any = {
       shapeFn,
       data: ['a'],
       settings: {
@@ -286,14 +286,14 @@ describe('point component', () => {
       },
     };
 
-    componentFixture.simulateCreate(pointComponent, config);
-    renderedPoints = componentFixture.simulateRender(opts);
+    (componentFixture as any).simulateCreate(pointComponent, config);
+    renderedPoints = (componentFixture as any).simulateRender(opts);
 
     expect(renderedPoints[0].size).to.equal(15);
   });
 
   it('should render points with data settings and size has px format', () => {
-    const config = {
+    const config: any = {
       shapeFn,
       data: [{}, {}, {}],
       settings: {
@@ -301,8 +301,8 @@ describe('point component', () => {
       },
     };
 
-    componentFixture.simulateCreate(pointComponent, config);
-    renderedPoints = componentFixture.simulateRender(opts);
+    (componentFixture as any).simulateCreate(pointComponent, config);
+    renderedPoints = (componentFixture as any).simulateRender(opts);
 
     expect(renderedPoints[0].size).to.equal(30);
     expect(renderedPoints[1].size).to.equal(31);
@@ -310,7 +310,7 @@ describe('point component', () => {
   });
 
   it('should render points with limited size when using discrete scale', () => {
-    const config = {
+    const config: any = {
       shapeFn,
       data: [0, 0.4, 1],
       settings: {
@@ -329,14 +329,14 @@ describe('point component', () => {
     xScale.bandwidth = () => 0.2; // max size: width * 0.2 * maxRelDiscrete -> 40, // min size: width * 0.2 * minRelDiscrete -> 10
     chart.scale.onCall(0).returns(xScale);
 
-    componentFixture.simulateCreate(pointComponent, config);
-    renderedPoints = componentFixture.simulateRender(opts);
+    (componentFixture as any).simulateCreate(pointComponent, config);
+    renderedPoints = (componentFixture as any).simulateRender(opts);
 
     expect(renderedPoints.map((p) => p.size)).to.deep.equal([10, 10 + 30 * 0.4, 40]);
   });
 
   it('should not render points with show as false', () => {
-    const config = {
+    const config: any = {
       shapeFn,
       data: [1],
       settings: {
@@ -358,14 +358,14 @@ describe('point component', () => {
       },
     };
 
-    componentFixture.simulateCreate(pointComponent, config);
-    renderedPoints = componentFixture.simulateRender(opts);
+    (componentFixture as any).simulateCreate(pointComponent, config);
+    renderedPoints = (componentFixture as any).simulateRender(opts);
 
     expect(renderedPoints).to.deep.equal([]);
   });
 
   it('should not render points with show function return false', () => {
-    const config = {
+    const config: any = {
       shapeFn,
       data: ['a'],
       settings: {
@@ -388,14 +388,14 @@ describe('point component', () => {
       },
     };
 
-    componentFixture.simulateCreate(pointComponent, config);
-    renderedPoints = componentFixture.simulateRender(opts);
+    (componentFixture as any).simulateCreate(pointComponent, config);
+    renderedPoints = (componentFixture as any).simulateRender(opts);
 
     expect(renderedPoints).to.deep.equal([]);
   });
 
   it('should render visible points with data settings', () => {
-    const config = {
+    const config: any = {
       shapeFn,
       data: [
         {
@@ -440,8 +440,8 @@ describe('point component', () => {
       },
     };
 
-    componentFixture.simulateCreate(pointComponent, config);
-    renderedPoints = componentFixture.simulateRender(opts);
+    (componentFixture as any).simulateCreate(pointComponent, config);
+    renderedPoints = (componentFixture as any).simulateRender(opts);
 
     expect(renderedPoints).to.deep.equal([
       {
@@ -472,7 +472,7 @@ describe('point component', () => {
   });
 
   it('should render points with custom shape', () => {
-    const config = {
+    const config: any = {
       shapeFn,
       data: [1],
       settings: {
@@ -483,8 +483,8 @@ describe('point component', () => {
       },
     };
 
-    componentFixture.simulateCreate(pointComponent, config);
-    renderedPoints = componentFixture.simulateRender(opts);
+    (componentFixture as any).simulateCreate(pointComponent, config);
+    renderedPoints = (componentFixture as any).simulateRender(opts);
 
     expect(renderedPoints).to.deep.equal([
       {
@@ -506,7 +506,7 @@ describe('point component', () => {
   });
 
   it('should render points with custom shape when type prop is missing', () => {
-    const config = {
+    const config: any = {
       shapeFn,
       data: [1],
       settings: {
@@ -517,8 +517,8 @@ describe('point component', () => {
       },
     };
 
-    componentFixture.simulateCreate(pointComponent, config);
-    renderedPoints = componentFixture.simulateRender(opts);
+    (componentFixture as any).simulateCreate(pointComponent, config);
+    renderedPoints = (componentFixture as any).simulateRender(opts);
 
     expect(renderedPoints).to.deep.equal([
       {
@@ -539,7 +539,7 @@ describe('point component', () => {
   });
 
   it('should render points with default type when shape is an object', () => {
-    const config = {
+    const config: any = {
       shapeFn,
       data: [1],
       settings: {
@@ -550,8 +550,8 @@ describe('point component', () => {
       },
     };
 
-    componentFixture.simulateCreate(pointComponent, config);
-    renderedPoints = componentFixture.simulateRender(opts);
+    (componentFixture as any).simulateCreate(pointComponent, config);
+    renderedPoints = (componentFixture as any).simulateRender(opts);
 
     expect(renderedPoints).to.deep.equal([
       {
@@ -572,7 +572,7 @@ describe('point component', () => {
   });
 
   it('should not be able to override base point properties with custom shape', () => {
-    const config = {
+    const config: any = {
       shapeFn,
       data: [1],
       settings: {
@@ -583,8 +583,8 @@ describe('point component', () => {
       },
     };
 
-    componentFixture.simulateCreate(pointComponent, config);
-    renderedPoints = componentFixture.simulateRender(opts);
+    (componentFixture as any).simulateCreate(pointComponent, config);
+    renderedPoints = (componentFixture as any).simulateRender(opts);
 
     expect(renderedPoints).to.deep.equal([
       {
@@ -604,7 +604,7 @@ describe('point component', () => {
     ]);
   });
   it('should apply default imageSettings when shape is image', () => {
-    const config = {
+    const config: any = {
       shapeFn,
       data: ['img'],
       settings: {
@@ -617,8 +617,8 @@ describe('point component', () => {
       },
     };
 
-    componentFixture.simulateCreate(pointComponent, config);
-    renderedPoints = componentFixture.simulateRender(opts);
+    (componentFixture as any).simulateCreate(pointComponent, config);
+    renderedPoints = (componentFixture as any).simulateRender(opts);
 
     expect(renderedPoints).to.deep.equal([
       {
@@ -642,7 +642,7 @@ describe('point component', () => {
     ]);
   });
   it('Should not apply imageSettings for non-image shapes', () => {
-    const config = {
+    const config: any = {
       shapeFn,
       data: [1],
       settings: {
@@ -658,8 +658,8 @@ describe('point component', () => {
       },
     };
 
-    componentFixture.simulateCreate(pointComponent, config);
-    renderedPoints = componentFixture.simulateRender(opts);
+    (componentFixture as any).simulateCreate(pointComponent, config);
+    renderedPoints = (componentFixture as any).simulateRender(opts);
 
     expect(renderedPoints).to.deep.equal([
       {
@@ -679,7 +679,7 @@ describe('point component', () => {
     ]);
   });
   it('should merge partial imageSettings with default imageSettings', () => {
-    const config = {
+    const config: any = {
       shapeFn,
       data: ['img'],
       settings: {
@@ -690,8 +690,8 @@ describe('point component', () => {
       },
     };
 
-    componentFixture.simulateCreate(pointComponent, config);
-    renderedPoints = componentFixture.simulateRender(opts);
+    (componentFixture as any).simulateCreate(pointComponent, config);
+    renderedPoints = (componentFixture as any).simulateRender(opts);
 
     expect(renderedPoints[0].imageSettings).to.deep.equal({
       imageSrc: 'http://some.url/image.png',
@@ -700,7 +700,7 @@ describe('point component', () => {
     });
   });
   it('should apply default imageSettings when imageSettings is not defined but shape is image', () => {
-    const config = {
+    const config: any = {
       shapeFn,
       data: ['img'],
       settings: {
@@ -709,8 +709,8 @@ describe('point component', () => {
       },
     };
 
-    componentFixture.simulateCreate(pointComponent, config);
-    renderedPoints = componentFixture.simulateRender(opts);
+    (componentFixture as any).simulateCreate(pointComponent, config);
+    renderedPoints = (componentFixture as any).simulateRender(opts);
 
     expect(renderedPoints[0].imageSettings).to.deep.equal({
       position: 'center-center',

@@ -5,7 +5,7 @@ import filterOverlapping from './bars-overlapping-filter';
 const PADDING = 4;
 // const DOUBLE_PADDING = PADDING * 2;
 
-function cbContext(node, chart) {
+function cbContext(node: any, chart: any): Record<string, any> {
   return {
     node,
     data: node.data,
@@ -15,12 +15,12 @@ function cbContext(node, chart) {
   };
 }
 
-function isValidText(text) {
+function isValidText(text: any): boolean {
   const type = typeof text;
   return (type === 'string' || type === 'number') && text !== '';
 }
 
-function toBackground(label) {
+function toBackground(label: Record<string, any>): Record<string, any> {
   return {
     type: 'rect',
     rx: 2,
@@ -32,15 +32,15 @@ function toBackground(label) {
   };
 }
 
-function isTextWidthInRectWidth(rect, label, rotate) {
+function isTextWidthInRectWidth(rect: any, label: any, rotate: boolean): boolean {
   return rotate ? rect.width >= label.height : rect.width >= label.width;
 }
 
-function isTextHeightInRectHeight(rect, label, rotate) {
+function isTextHeightInRectHeight(rect: any, label: any, rotate: boolean): boolean {
   return rotate ? rect.height >= label.width : rect.height >= label.height;
 }
 
-function isGoodPlacement(orientation, rect, label, fitsHorizontally, overflow) {
+function isGoodPlacement(orientation: string, rect: any, label: any, fitsHorizontally: boolean, overflow: boolean): boolean {
   let fitWidth;
   let fitHeight;
   if (orientation === 'v') {
@@ -53,11 +53,11 @@ function isGoodPlacement(orientation, rect, label, fitsHorizontally, overflow) {
   return fitWidth && fitHeight;
 }
 
-export function isTextInRect(rect, label, opts) {
+export function isTextInRect(rect: any, label: any, opts: any): boolean {
   return isTextWidthInRectWidth(rect, label, opts.rotate) && isTextHeightInRectHeight(rect, label, opts.rotate);
 }
 
-export function placeSegmentInSegment(majorSegmentPosition, majorSegmentSize, minorSegmentSize, align) {
+export function placeSegmentInSegment(majorSegmentPosition: number, majorSegmentSize: number, minorSegmentSize: number, align: number): number {
   const majorSegmentCenter = majorSegmentPosition + majorSegmentSize * 0.5;
   const offset = (align - 0.5) * (majorSegmentSize - minorSegmentSize);
   const minorSegmentCenter = majorSegmentCenter + offset;
@@ -65,7 +65,7 @@ export function placeSegmentInSegment(majorSegmentPosition, majorSegmentSize, mi
   return minorSegmentPosition;
 }
 
-export function placeTextInRect(rect, text, opts) {
+export function placeTextInRect(rect: any, text: string, opts: any): Record<string, any> | boolean {
   const label: Record<string, unknown> = {
     type: 'text',
     text,
@@ -102,7 +102,7 @@ export function placeTextInRect(rect, text, opts) {
   return label;
 }
 
-function limitBounds(bounds, view) {
+function limitBounds(bounds: Record<string, number>, view: Record<string, number>): void {
   const minY = Math.max(0, Math.min(bounds.y, view.height));
   const maxY = Math.max(0, Math.min(bounds.y + bounds.height, view.height));
   const minX = Math.max(0, Math.min(bounds.x, view.width));
@@ -117,7 +117,7 @@ function pad(
   bounds: Record<string, number>,
   measured: Record<string, number>,
   padding: number | Record<string, number | ((m: Record<string, number>) => number)> = {}
-) {
+): void {
   const paddingObj: Record<string, number | ((m: Record<string, number>) => number)> =
     typeof padding === 'number' ? { top: padding, bottom: padding, left: padding, right: padding } : padding;
   const { top = PADDING, bottom = PADDING, left = PADDING, right = PADDING } = paddingObj;
@@ -131,7 +131,7 @@ function pad(
   bounds.height -= topPadding + bottomPadding;
 }
 
-export function getBarRect({ bar, view, direction, position, padding = PADDING, measured }) {
+export function getBarRect({ bar, view, direction, position, padding = PADDING, measured }: { bar: any; view: any; direction: string; position: string; padding?: number; measured: any }): Record<string, number> {
   const bounds: Record<string, number> = {};
   extend(bounds, bar);
 
@@ -167,6 +167,18 @@ export function getBarRect({ bar, view, direction, position, padding = PADDING, 
   return bounds;
 }
 
+interface FindBestPlacementInput {
+  direction: any;
+  fitsHorizontally: any;
+  lblStngs?: any;
+  measured: Record<string, unknown>;
+  node: Record<string, unknown>;
+  orientation: any;
+  placements?: any;
+  placementSettings: any[];
+  rect: Record<string, unknown>;
+}
+
 export function findBestPlacement(
   {
     direction,
@@ -178,40 +190,30 @@ export function findBestPlacement(
     placements: _placements,
     placementSettings,
     rect,
-  }: {
-    direction: unknown;
-    fitsHorizontally: unknown;
-    lblStngs?: unknown;
-    measured: Record<string, unknown>;
-    node: Record<string, unknown>;
-    orientation: unknown;
-    placements?: unknown;
-    placementSettings: unknown[];
-    rect: Record<string, unknown>;
-  },
+  }: FindBestPlacementInput,
   barRect = getBarRect
-) {
-  let largest;
-  let bounds;
-  let placement;
-  let testBounds;
-  let p;
-  const boundaries = [];
+): Record<string, any> {
+  let largest: any;
+  let bounds: any;
+  let placement: any;
+  let testBounds: any;
+  let p: number;
+  const boundaries: any[] = [];
   const dimension = orientation === 'h' ? 'width' : 'height';
   for (p = 0; p < placementSettings.length; p++) {
     placement = placementSettings[p];
     testBounds = barRect({
-      bar: node.localBounds,
+      bar: (node as any).localBounds,
       view: rect,
       direction,
-      position: placement.position,
-      padding: placement.padding,
+      position: (placement as any).position,
+      padding: (placement as any).padding,
       measured,
     });
     boundaries.push(testBounds);
-    largest = !p || testBounds[dimension] > largest[dimension] ? testBounds : largest;
+    largest = !p || testBounds[dimension] > (largest?.[dimension] ?? -Infinity) ? testBounds : largest;
 
-    if (isGoodPlacement(orientation, testBounds, measured, fitsHorizontally, placement.overflow)) {
+    if (isGoodPlacement(orientation, testBounds, measured, fitsHorizontally, (placement as any).overflow)) {
       bounds = testBounds;
       break;
     }
@@ -233,7 +235,7 @@ function approxTextBounds(
   rotated: boolean,
   rect: Record<string, unknown>,
   padding: number | Record<string, number | ((m: Record<string, number>) => number)> = {}
-) {
+): Record<string, any> {
   const paddingObj: Record<string, number | ((m: Record<string, number>) => number)> =
     typeof padding === 'number' ? { top: padding, bottom: padding, left: padding, right: padding } : padding;
   const { top = PADDING, bottom = PADDING, left = PADDING, right = PADDING } = paddingObj;
@@ -262,6 +264,15 @@ function approxTextBounds(
   return bounds;
 }
 
+interface PlaceInBarsInput {
+  chart: Record<string, unknown>;
+  targetNodes: any[];
+  rect: Record<string, unknown>;
+  fitsHorizontally: any;
+  collectiveOrientation: any;
+  stngs?: any;
+}
+
 export function placeInBars(
   {
     chart,
@@ -270,39 +281,32 @@ export function placeInBars(
     fitsHorizontally,
     collectiveOrientation,
     stngs: _stngs,
-  }: {
-    chart: Record<string, unknown>;
-    targetNodes: unknown[];
-    rect: Record<string, unknown>;
-    fitsHorizontally: unknown;
-    collectiveOrientation: unknown;
-    stngs?: unknown;
-  },
+  }: PlaceInBarsInput,
   findPlacement = findBestPlacement,
   placer = placeTextInRect,
   postFilter = filterOverlapping
-) {
-  const labels = [];
-  const postFilterContext = {
+): any[] {
+  const labels: any[] = [];
+  const postFilterContext: any = {
     container: rect,
     targetNodes,
-    labels: [],
+    labels: [] as any[],
     orientation: collectiveOrientation,
   };
-  let label;
-  let target;
-  let node;
-  let text;
-  let justify;
-  let bounds;
-  let fill;
-  let measured;
-  let direction;
-  let lblStngs;
-  let placement;
-  let placements;
-  let arg;
-  let orientation;
+  let label: any;
+  let target: any;
+  let node: any;
+  let text: any;
+  let justify: any;
+  let bounds: any;
+  let fill: any;
+  let measured: any;
+  let direction: any;
+  let lblStngs: any;
+  let placement: any;
+  let placements: any;
+  let arg: any;
+  let orientation: any;
 
   for (let i = 0, len = targetNodes.length; i < len; i++) {
     bounds = null;
@@ -389,7 +393,7 @@ export function placeInBars(
           postFilterContext.labels.push({
             node,
             textBounds,
-          });
+          } as any);
         }
       }
     }
@@ -401,23 +405,39 @@ export function placeInBars(
   return [...backgrounds, ...filteredLabels];
 }
 
-export function precalculate({ nodes, rect, chart, labelSettings, placementSettings, settings, renderer }) {
+interface PrecalculateInput {
+  nodes: any[];
+  rect: Record<string, unknown>;
+  chart: Record<string, unknown>;
+  labelSettings: any[];
+  placementSettings: any[];
+  settings: Record<string, unknown>;
+  renderer: any;
+}
+
+interface PrecalculateResult {
+  targetNodes: any[];
+  fitsHorizontally: boolean;
+  hasHorizontalDirection: boolean;
+}
+
+export function precalculate({ nodes, rect, chart, labelSettings, placementSettings, settings, renderer }: PrecalculateInput): PrecalculateResult {
   const labelStruct: Record<string, unknown> = {};
-  const targetNodes = [];
-  let target;
+  const targetNodes: any[] = [];
+  let target: any;
   let fitsHorizontally = true;
   let hasHorizontalDirection = false;
-  let node;
-  let text;
-  let bounds;
-  let measured;
-  let lblStng;
-  let direction;
+  let node: any;
+  let text: any;
+  let bounds: any;
+  let measured: any;
+  let lblStng: any;
+  let direction: any;
 
   for (let i = 0; i < nodes.length; i++) {
     node = nodes[i];
     bounds = node.localBounds;
-    if (!testRectRect(bounds, rect)) {
+    if (!testRectRect(bounds, rect as any)) {
       continue;
     }
     let arg = cbContext(node, chart);
@@ -437,7 +457,7 @@ export function precalculate({ nodes, rect, chart, labelSettings, placementSetti
       if (!isValidText(text)) {
         continue; // eslint-ignore-line
       }
-      direction = typeof settings.direction === 'function' ? settings.direction(arg, i) : settings.direction || 'up';
+      direction = typeof (settings as any).direction === 'function' ? (settings as any).direction(arg, i) : (settings as any).direction || 'up';
       hasHorizontalDirection = hasHorizontalDirection || direction === 'left' || direction === 'right';
 
       labelStruct.fontFamily = lblStng.fontFamily;
@@ -463,8 +483,8 @@ export function precalculate({ nodes, rect, chart, labelSettings, placementSetti
   };
 }
 
-export function getOrientation({ orientation = 'auto', defaultOrientation = 'h' }) {
-  switch (orientation.toLocaleLowerCase()) {
+export function getOrientation({ orientation = 'auto', defaultOrientation = 'h' }: { orientation?: string; defaultOrientation?: string }): string {
+  switch ((orientation as string).toLocaleLowerCase()) {
     case 'vertical':
       return 'v';
     case 'horizontal':
@@ -510,7 +530,7 @@ export function getOrientation({ orientation = 'auto', defaultOrientation = 'h' 
  * @property {number} [labels[].placements[].background.padding.right=4] - Padding-right between the label and the background
  */
 
-export function bars({ settings, chart, nodes, rect, renderer, style }, placer = placeInBars) {
+export function bars({ settings, chart, nodes, rect, renderer, style }: any, placer = placeInBars): any[] {
   const defaults: Record<string, unknown> = extend(
     {
       fontSize: 12,
@@ -524,10 +544,10 @@ export function bars({ settings, chart, nodes, rect, renderer, style }, placer =
 
   defaults.fontSize = parseInt(defaults.fontSize as string, 10);
 
-  const labelSettings = settings.labels.map((labelSetting) => extend({}, defaults, settings, labelSetting));
+  const labelSettings = settings.labels.map((labelSetting: any) => extend({}, defaults, settings, labelSetting));
 
-  const placementSettings = settings.labels.map((labelSetting) =>
-    labelSetting.placements.map((placement) => extend({}, defaults, settings, labelSetting, placement))
+  const placementSettings = settings.labels.map((labelSetting: any) =>
+    labelSetting.placements.map((placement: any) => extend({}, defaults, settings, labelSetting, placement))
   );
 
   const { fitsHorizontally, hasHorizontalDirection, targetNodes } = precalculate({

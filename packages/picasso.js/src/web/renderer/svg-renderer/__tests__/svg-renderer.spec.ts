@@ -1,8 +1,31 @@
 import element from 'test-utils/mocks/element-mock';
 import renderer from '../svg-renderer';
 
+interface TreeRenderer {
+  render: SinonSpy;
+}
+
+interface SvgRendererInstance {
+  [key: string]: unknown;
+  settings?: (s?: Record<string, unknown>) => Record<string, unknown> | undefined;
+  appendTo?: (el: unknown) => unknown;
+  element?: () => unknown;
+  render?: (items?: unknown[]) => boolean;
+  root?: () => unknown;
+  size?: (s?: Record<string, unknown>) => unknown;
+  clear?: () => unknown;
+}
+
 describe('svg renderer', () => {
-  let sandbox, tree, ns, treeRenderer, svg, scene;
+  // @ts-expect-error - Sinon types provided globally in test environment
+  let sandbox: SinonSandbox;
+  // @ts-expect-error - Sinon types provided globally in test environment
+  let tree: SinonStub;
+  let ns: string;
+  let treeRenderer: TreeRenderer;
+  let svg: unknown;
+  // @ts-expect-error - Sinon types provided globally in test environment
+  let scene: SinonStub;
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
@@ -24,52 +47,53 @@ describe('svg renderer', () => {
   });
 
   it('should set rendererSettings correctly', () => {
-    const rendererSettings = {
-      transform: () => {},
+    const rendererSettings: Record<string, unknown> = {
+      transform: (): Record<string, unknown> => ({}),
       irrelevantSetting: 'irrelevant!',
     };
-    svg.settings(rendererSettings);
-    expect(svg.settings()).to.eql({ disableScreenReader: false, transform: rendererSettings.transform });
+    svg?.settings(rendererSettings);
+    expect(svg?.settings()).to.eql({ disableScreenReader: false, transform: rendererSettings.transform });
   });
   it('should set rendererSettings correctly', () => {
-    const rendererSettings = {
+    const rendererSettings: Record<string, unknown> = {
       disableScreenReader: true,
-      transform: () => {},
+      transform: (): Record<string, unknown> => ({}),
       irrelevantSetting: 'irrelevant!',
     };
-    svg.settings(rendererSettings);
-    expect(svg.settings()).to.eql({ disableScreenReader: true, transform: rendererSettings.transform });
+    svg?.settings(rendererSettings);
+    expect(svg?.settings()).to.eql({ disableScreenReader: true, transform: rendererSettings.transform });
   });
   describe('appendTo', () => {
     it('should append root node to element', () => {
       const el = element('div');
-      svg.appendTo(el);
+      svg?.appendTo(el);
 
-      expect(svg.element().name).to.equal('namespace:svg');
-      expect(svg.element().parentElement).to.equal(el);
+      expect((svg?.element() as Record<string, unknown>).name).to.equal('namespace:svg');
+      expect((svg?.element() as Record<string, unknown>).parentElement).to.equal(el);
     });
 
     it('should not create new root if it already exists', () => {
       let el = element('div'),
         el2 = element('div');
-      svg.appendTo(el);
-      const svgEl = svg.element();
-      svg.appendTo(el2);
+      svg?.appendTo(el);
+      const svgEl = svg?.element();
+      svg?.appendTo(el2);
 
-      expect(svg.element()).to.equal(svgEl);
+      expect(svg?.element()).to.equal(svgEl);
     });
 
     it('should apply font smoothing', () => {
       const el = element('div');
-      svg.appendTo(el);
+      svg?.appendTo(el);
 
-      expect(svg.element().style['-webkit-font-smoothing']).to.equal('antialiased');
-      expect(svg.element().style['-moz-osx-font-smoothing']).to.equal('antialiased');
+      expect((svg?.element() as Record<string, unknown>).style['-webkit-font-smoothing']).to.equal('antialiased');
+      expect((svg?.element() as Record<string, unknown>).style['-moz-osx-font-smoothing']).to.equal('antialiased');
     });
   });
 
   describe('render', () => {
-    let items, s;
+    let items: unknown[];
+    let s: Record<string, unknown>;
 
     beforeEach(() => {
       items = ['a'];
@@ -77,12 +101,12 @@ describe('svg renderer', () => {
     });
 
     it('should not render before appending', () => {
-      expect(svg.render()).to.equal(false);
+      expect(svg?.render()).to.equal(false);
     });
 
     it('should apply transform if provided', () => {
-      const rendererSettings = {
-        transform: () => ({
+      const rendererSettings: Record<string, unknown> = {
+        transform: (): Record<string, unknown> => ({
           horizontalScaling: 1,
           horizontalSkewing: 0,
           verticalSkewing: 1,
@@ -92,46 +116,46 @@ describe('svg renderer', () => {
         }),
         irrelevantSetting: 'irrelevant!',
       };
-      svg.settings(rendererSettings);
-      svg.appendTo(element('div'));
-      svg.render();
-      const group = svg.root();
-      expect(group.style.transform).to.equal('matrix(1, 0, 1, 0, 100, 100)');
+      svg?.settings(rendererSettings);
+      svg?.appendTo(element('div'));
+      svg?.render();
+      const group = svg?.root() as Record<string, unknown>;
+      expect((group.style as Record<string, unknown>).transform).to.equal('matrix(1, 0, 1, 0, 100, 100)');
     });
 
     it('should call tree creator with proper params', () => {
       scene.returns(s);
-      svg.appendTo(element('div'));
-      svg.render(items);
+      svg?.appendTo(element('div'));
+      svg?.render(items);
       const sceneContainer = {
         type: 'container',
         children: [...items, { type: 'defs', children: [] }],
         transform: '',
       };
-      const actual = scene.args[0][0].items;
-      delete actual[0].children[1].disabled;
+      const actual = (scene.args[0][0] as Record<string, unknown>).items;
+      delete (((actual as unknown[]))[0] as Record<string, unknown>).children[1].disabled;
       expect(actual).to.deep.equal([sceneContainer]);
-      expect(treeRenderer.render).to.have.been.calledWith(s.children, svg.root());
+      expect((treeRenderer.render as SinonSpy)).to.have.been.calledWith(s.children, svg?.root());
     });
 
     it('should attach to given position in the container', () => {
       scene.returns(s);
-      svg.appendTo(element('div'));
-      svg.size({
+      svg?.appendTo(element('div'));
+      svg?.size({
         x: 50,
         y: 100,
         width: 200,
         height: 400,
         scaleRatio: { x: 1, y: 1 },
       });
-      svg.render(items);
+      svg?.render(items);
 
-      const el = svg.element();
-      expect(el.style.position).to.equal('absolute');
-      expect(el.style.left).to.equal('50px');
-      expect(el.style.top).to.equal('100px');
-      expect(el.attributes.width).to.equal(200);
-      expect(el.attributes.height).to.equal(400);
+      const el = svg?.element() as Record<string, unknown>;
+      expect((el.style as Record<string, unknown>).position).to.equal('absolute');
+      expect((el.style as Record<string, unknown>).left).to.equal('50px');
+      expect((el.style as Record<string, unknown>).top).to.equal('100px');
+      expect((el.attributes as Record<string, unknown>).width).to.equal(200);
+      expect((el.attributes as Record<string, unknown>).height).to.equal(400);
     });
 
     it('should scale from logical size to physical size', () => {
@@ -151,69 +175,69 @@ describe('svg renderer', () => {
         },
       ];
       scene.returns(s);
-      svg.appendTo(element('div'));
-      svg.size(size);
-      svg.render([s]);
+      svg?.appendTo(element('div'));
+      svg?.size(size);
+      svg?.render([s]);
 
-      const wrappedContainer = scene.args[0][0].items;
-      const el = svg.element();
-      expect(el.style.left).to.equal(`${size.x * scaleRatio.x}px`);
-      expect(el.style.top).to.equal(`${size.y * scaleRatio.y}px`);
-      expect(el.attributes.width).to.equal(size.width * scaleRatio.x);
-      expect(el.attributes.height).to.equal(size.height * scaleRatio.y);
-      expect(wrappedContainer[0].type).to.equal(expectedInputShapes[0].type);
-      expect(wrappedContainer[0].transform).to.deep.equal(expectedInputShapes[0].transform);
+      const wrappedContainer = (scene.args[0][0] as Record<string, unknown>).items;
+      const el = svg?.element() as Record<string, unknown>;
+      expect((el.style as Record<string, unknown>).left).to.equal(`${size.x * scaleRatio.x}px`);
+      expect((el.style as Record<string, unknown>).top).to.equal(`${size.y * scaleRatio.y}px`);
+      expect((el.attributes as Record<string, unknown>).width).to.equal(size.width * scaleRatio.x);
+      expect((el.attributes as Record<string, unknown>).height).to.equal(size.height * scaleRatio.y);
+      expect(((wrappedContainer as unknown[])[0] as Record<string, unknown>).type).to.equal(expectedInputShapes[0].type);
+      expect(((wrappedContainer as unknown[])[0] as Record<string, unknown>).transform).to.deep.equal(expectedInputShapes[0].transform);
     });
 
     it('should handle call without arguments', () => {
       scene.returns(s);
-      svg.appendTo(element('div'));
-      expect(svg.render).to.not.throw();
+      svg?.appendTo(element('div'));
+      expect(() => svg?.render()).to.not.throw();
     });
 
     it('should not render if scene and size has not changed', () => {
-      svg.appendTo(element('div'));
+      svg?.appendTo(element('div'));
       scene.returns({
         children: [],
-        equals: () => true,
+        equals: (): boolean => true,
       });
-      expect(svg.render()).to.equal(true);
-      expect(svg.render()).to.equal(false);
+      expect(svg?.render()).to.equal(true);
+      expect(svg?.render()).to.equal(false);
     });
   });
 
   describe('clear', () => {
     it('should remove all elements', () => {
-      svg.appendTo(element('div'));
-      svg.root().appendChild(element('circle'));
-      svg.root().appendChild(element('rect'));
-      expect(svg.root().children.length).to.equal(2);
+      svg?.appendTo(element('div'));
+      (svg?.root() as unknown as { appendChild: (el: unknown) => void }).appendChild(element('circle'));
+      (svg?.root() as unknown as { appendChild: (el: unknown) => void }).appendChild(element('rect'));
+      expect(((svg?.root() as Record<string, unknown>).children as unknown[]).length).to.equal(2);
 
-      svg.clear();
+      svg?.clear();
 
-      expect(svg.root().children.length).to.equal(0);
+      expect(((svg?.root() as Record<string, unknown>).children as unknown[]).length).to.equal(0);
     });
 
     it('should render if scene has been cleared', () => {
-      svg.appendTo(element('div'));
+      svg?.appendTo(element('div'));
       scene.returns({
         children: [],
         equals: () => true,
       });
-      expect(svg.render()).to.equal(true);
-      svg.clear();
-      expect(svg.render()).to.equal(true);
+      expect(svg?.render()).to.equal(true);
+      svg?.clear();
+      expect(svg?.render()).to.equal(true);
     });
   });
 
   describe('destroy', () => {
     it('should detach root from its parent', () => {
       const parent = element('div');
-      svg.appendTo(parent);
-      expect(svg.element().parentElement).to.equal(parent);
+      svg?.appendTo(parent);
+      expect(svg?.element().parentElement).to.equal(parent);
       svg.destroy();
 
-      expect(svg.element()).to.equal(null);
+      expect(svg?.element()).to.equal(null);
       expect(parent.children.length).to.equal(0);
     });
 
@@ -226,7 +250,7 @@ describe('svg renderer', () => {
   });
 
   describe('itemsAt', () => {
-    let items;
+    let items: unknown[];
 
     beforeEach(() => {
       items = [
@@ -256,14 +280,14 @@ describe('svg renderer', () => {
     });
 
     it('should return shapes at a point', () => {
-      svg.appendTo(element('div'));
-      svg.size({
+      svg?.appendTo(element('div'));
+      svg?.size({
         x: 100,
         y: 100,
         width: 400,
         height: 400,
       });
-      svg.render(items);
+      svg?.render(items);
 
       const shapes = svg.itemsAt({ x: 120, y: 135 });
       expect(shapes.length).to.equal(1);
@@ -271,9 +295,9 @@ describe('svg renderer', () => {
 
     /*
     it('should return shapes at a circle', () => {
-      svg.appendTo(element('div'));
-      svg.size({ x: 100, y: 100, width: 400, height: 400 });
-      svg.render(items);
+      svg?.appendTo(element('div'));
+      svg?.size({ x: 100, y: 100, width: 400, height: 400 });
+      svg?.render(items);
 
       const shapes = svg.itemsAt({ cx: 120, cy: 135, r: 3 });
       expect(shapes.length).to.equal(1);
@@ -281,14 +305,14 @@ describe('svg renderer', () => {
     */
 
     it('should return shapes at a line', () => {
-      svg.appendTo(element('div'));
-      svg.size({
+      svg?.appendTo(element('div'));
+      svg?.size({
         x: 100,
         y: 100,
         width: 400,
         height: 400,
       });
-      svg.render(items);
+      svg?.render(items);
 
       const shapes = svg.itemsAt({
         x1: 130,
@@ -300,14 +324,14 @@ describe('svg renderer', () => {
     });
 
     it('should return shapes at a rect', () => {
-      svg.appendTo(element('div'));
-      svg.size({
+      svg?.appendTo(element('div'));
+      svg?.size({
         x: 100,
         y: 100,
         width: 400,
         height: 400,
       });
-      svg.render(items);
+      svg?.render(items);
 
       const shapes = svg.itemsAt({
         x: 100,
@@ -321,8 +345,8 @@ describe('svg renderer', () => {
 
   describe('size', () => {
     it('should return current size if no parameters are given', () => {
-      svg.appendTo(element('div'));
-      svg.size({
+      svg?.appendTo(element('div'));
+      svg?.size({
         x: 50,
         y: 100,
         width: 200,
@@ -336,7 +360,7 @@ describe('svg renderer', () => {
           bottom: 10,
         },
       });
-      expect(svg.size()).to.deep.equal({
+      expect(svg?.size()).to.deep.equal({
         x: 50,
         y: 100,
         width: 200,
@@ -360,7 +384,7 @@ describe('svg renderer', () => {
     });
 
     it('should ignore NaN values and fallback to default size value', () => {
-      svg.size({
+      svg?.size({
         x: undefined,
         y: undefined,
         width: undefined,
@@ -374,7 +398,7 @@ describe('svg renderer', () => {
           bottom: undefined,
         },
       });
-      expect(svg.size()).to.deep.equal({
+      expect(svg?.size()).to.deep.equal({
         x: 0,
         y: 0,
         width: 0,
@@ -402,7 +426,7 @@ describe('svg renderer', () => {
     it('should set key attribute', () => {
       const el = element('div');
       const spy = sinon.spy(el, 'setAttribute');
-      svg.element = () => el;
+      svg?.element = () => el;
       svg.setKey(123);
 
       expect(spy).to.have.been.calledWith('data-key', 123);

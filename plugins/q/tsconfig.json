@@ -5,6 +5,7 @@
     "noEmit": false,
     "rootDir": "./src",
     "outDir": "./dist/.tsc",
+    "types": ["jest", "node"],
     "paths": {
       "picasso.js": ["../../packages/picasso.js/src/index.ts"]
     }

@@ -2,9 +2,18 @@ import Line, { create as createLine } from '../line';
 import GeoRect from '../../../geometry/rect';
 import GeoLine from '../../../geometry/line';
 
+interface LineShape {
+  x1?: number;
+  y1?: number;
+  x2?: number;
+  y2?: number;
+  transform?: string;
+  collider?: { type: string | null };
+}
+
 describe('Line', () => {
-  let line;
-  let shape;
+  let line: Line;
+  let shape: LineShape;
 
   beforeEach(() => {
     shape = {

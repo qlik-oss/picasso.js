@@ -1,60 +1,80 @@
 import { sqrDistance } from '../../math/vector';
 
-function getPoint(rendererBounds, event) {
+interface Point {
+  x: number;
+  y: number;
+}
+
+interface BrushConfig {
+  key: string;
+  contexts: string[];
+  data: string[];
+  action: string;
+}
+
+interface BrushLassoState {
+  points: Point[];
+  active: boolean;
+  path: Record<string, any> | null;
+  snapIndicator: Record<string, any> | null;
+  startPoint: Record<string, any> | null;
+  rendererBounds: DOMRect | null;
+  componentDelta: Point | null;
+  brushConfig: BrushConfig[] | null;
+  lineBrushShape: { x1: number; y1: number; x2: number; y2: number };
+}
+
+function getPoint(rendererBounds: DOMRect, event: any): Point {
   const eventOffsetX = event.center.x;
   const eventOffsetY = event.center.y;
   return {
     x: eventOffsetX - rendererBounds.left,
     y: eventOffsetY - rendererBounds.top,
   };
-  // return {
-  //   x: Math.min(Math.max(eventOffsetX - rendererBounds.left, 0), rendererBounds.width),
-  //   y: Math.min(Math.max(eventOffsetY - rendererBounds.top, 0), rendererBounds.height)
-  // };
 }
 
-function withinThreshold(p, state, settings) {
+function withinThreshold(p: Point, state: BrushLassoState, settings: any): boolean {
   const startPoint = state.points[0];
   const sqrDist = sqrDistance(p, startPoint);
   return sqrDist < settings.settings.snapIndicator.threshold ** 2;
 }
 
-function appendToPath(state, p) {
-  if (state.path.d == null) {
-    state.path.d = `M${p.x} ${p.y} `;
+function appendToPath(state: BrushLassoState, p: Point): void {
+  if (state.path!.d == null) {
+    state.path!.d = `M${p.x} ${p.y} `;
   } else {
-    state.path.d += `L${p.x} ${p.y} `;
+    state.path!.d += `L${p.x} ${p.y} `;
   }
   state.points.push(p);
 }
 
-function render(state, renderer) {
-  const nodes = [state.startPoint, state.path, state.snapIndicator].filter((node) => node.visible);
+function render(state: BrushLassoState, renderer: any): void {
+  const nodes = [state.startPoint, state.path, state.snapIndicator].filter((node) => node && node.visible);
 
   renderer.render(nodes);
 }
 
-function setSnapIndictor({ state, start = null, end = null }) {
+function setSnapIndictor({ state, start = null, end = null }: { state: BrushLassoState; start?: Point | null; end?: Point | null }): void {
   if (start !== null) {
-    state.snapIndicator.x1 = start.x;
-    state.snapIndicator.y1 = start.y;
+    state.snapIndicator!.x1 = start.x;
+    state.snapIndicator!.y1 = start.y;
   }
   if (end !== null) {
-    state.snapIndicator.x2 = end.x;
-    state.snapIndicator.y2 = end.y;
+    state.snapIndicator!.x2 = end.x;
+    state.snapIndicator!.y2 = end.y;
   }
 }
 
-function showSnapIndicator(state, show) {
-  state.snapIndicator.visible = show;
+function showSnapIndicator(state: BrushLassoState, show: boolean): void {
+  state.snapIndicator!.visible = show;
 }
 
-function setStartPoint(state, p) {
-  state.startPoint.cx = p.x;
-  state.startPoint.cy = p.y;
+function setStartPoint(state: BrushLassoState, p: Point): void {
+  state.startPoint!.cx = p.x;
+  state.startPoint!.cy = p.y;
 }
 
-function getComponentDelta(chart, rendererBounds) {
+function getComponentDelta(chart: any, rendererBounds: DOMRect): Point {
   const chartBounds = chart.element.getBoundingClientRect();
   return {
     x: rendererBounds.left - chartBounds.left,
@@ -62,24 +82,24 @@ function getComponentDelta(chart, rendererBounds) {
   };
 }
 
-function doLineBrush(state, chart) {
+function doLineBrush(state: BrushLassoState, chart: any): void {
   if (state.active) {
     const p1 = state.points[state.points.length - 2];
     const p2 = state.points[state.points.length - 1];
-    state.lineBrushShape.x1 = p1.x + state.componentDelta.x;
-    state.lineBrushShape.y1 = p1.y + state.componentDelta.y;
-    state.lineBrushShape.x2 = p2.x + state.componentDelta.x;
-    state.lineBrushShape.y2 = p2.y + state.componentDelta.y;
+    state.lineBrushShape.x1 = p1.x + state.componentDelta!.x;
+    state.lineBrushShape.y1 = p1.y + state.componentDelta!.y;
+    state.lineBrushShape.x2 = p2.x + state.componentDelta!.x;
+    state.lineBrushShape.y2 = p2.y + state.componentDelta!.y;
 
     const shapes = chart.shapesAt(state.lineBrushShape, { components: state.brushConfig });
     chart.brushFromShapes(shapes, { components: state.brushConfig });
   }
 }
 
-function doPolygonBrush(state, chart) {
+function doPolygonBrush(state: BrushLassoState, chart: any): void {
   if (state.active) {
-    const dx = state.componentDelta.x;
-    const dy = state.componentDelta.y;
+    const dx = state.componentDelta!.x;
+    const dy = state.componentDelta!.y;
     const vertices = state.points.map((p) => ({
       x: p.x + dx,
       y: p.y + dy,
@@ -90,7 +110,7 @@ function doPolygonBrush(state, chart) {
   }
 }
 
-function initPath(stgns) {
+function initPath(stgns: any): Record<string, any> {
   return {
     visible: true,
     type: 'path',
@@ -106,7 +126,7 @@ function initPath(stgns) {
   };
 }
 
-function initSnapIndicator(stgns) {
+function initSnapIndicator(stgns: any): Record<string, any> {
   return {
     visible: false,
     type: 'line',
@@ -124,7 +144,7 @@ function initSnapIndicator(stgns) {
   };
 }
 
-function initStartPoint(stgns) {
+function initStartPoint(stgns: any): Record<string, any> {
   return {
     visible: true,
     type: 'circle',
@@ -141,8 +161,8 @@ function initStartPoint(stgns) {
   };
 }
 
-function getBrushConfig(settings) {
-  return settings.settings.brush.components.map((b) => ({
+function getBrushConfig(settings: any): BrushConfig[] {
+  return settings.settings.brush.components.map((b: any) => ({
     key: b.key,
     contexts: b.contexts || ['lassoBrush'],
     data: b.data || [''],
@@ -150,15 +170,15 @@ function getBrushConfig(settings) {
   }));
 }
 
-function endBrush(state, chart) {
-  state.brushConfig.forEach((config) => {
+function endBrush(state: BrushLassoState, chart: any): void {
+  state.brushConfig!.forEach((config) => {
     config.contexts.forEach((context) => {
       chart.brush(context).end();
     });
   });
 }
 
-function resetState() {
+function resetState(): BrushLassoState {
   return {
     points: [],
     active: false,
@@ -220,7 +240,7 @@ function resetState() {
  * @property {string} [brush.components[].component.action='add'] - Type of action to respond with
  */
 
-const brushLassoComponent = {
+const brushLassoComponent: any = {
   require: ['chart', 'renderer', 'settings'],
   defaultSettings: {
     layout: {
@@ -254,81 +274,81 @@ const brushLassoComponent = {
     },
   },
   on: {
-    lassoStart(e) {
-      this.start(e);
+    lassoStart(e: any): void {
+      (this as any).start(e);
     },
-    lassoEnd(e) {
-      this.end(e);
+    lassoEnd(e: any): void {
+      (this as any).end(e);
     },
-    lassoMove(e) {
-      this.move(e);
+    lassoMove(e: any): void {
+      (this as any).move(e);
     },
-    lassoCancel() {
-      this.cancel();
+    lassoCancel(): void {
+      (this as any).cancel();
     },
   },
-  created() {
+  created(): void {
     this.state = resetState();
   },
-  start(e) {
-    this.state.active = true;
-    this.state.path = initPath(this.settings.settings.lasso);
-    this.state.snapIndicator = initSnapIndicator(this.settings.settings.snapIndicator);
-    this.state.startPoint = initStartPoint(this.settings.settings.startPoint);
-    this.state.rendererBounds = this.renderer.element().getBoundingClientRect();
-    this.state.componentDelta = getComponentDelta(this.chart, this.state.rendererBounds);
-    this.state.brushConfig = getBrushConfig(this.settings);
+  start(e: any): void {
+    (this.state as BrushLassoState).active = true;
+    (this.state as BrushLassoState).path = initPath(this.settings.settings.lasso);
+    (this.state as BrushLassoState).snapIndicator = initSnapIndicator(this.settings.settings.snapIndicator);
+    (this.state as BrushLassoState).startPoint = initStartPoint(this.settings.settings.startPoint);
+    (this.state as BrushLassoState).rendererBounds = this.renderer.element().getBoundingClientRect();
+    (this.state as BrushLassoState).componentDelta = getComponentDelta(this.chart, (this.state as BrushLassoState).rendererBounds!);
+    (this.state as BrushLassoState).brushConfig = getBrushConfig(this.settings);
 
-    const p = getPoint(this.state.rendererBounds, e);
+    const p = getPoint((this.state as BrushLassoState).rendererBounds!, e);
 
-    appendToPath(this.state, p);
-    setSnapIndictor({ state: this.state, start: p });
-    setStartPoint(this.state, p);
+    appendToPath(this.state as BrushLassoState, p);
+    setSnapIndictor({ state: this.state as BrushLassoState, start: p });
+    setStartPoint(this.state as BrushLassoState, p);
   },
-  move(e) {
-    if (!this.state.active) {
+  move(e: any): void {
+    if (!(this.state as BrushLassoState).active) {
       return;
     }
 
-    const p = getPoint(this.state.rendererBounds, e);
+    const p = getPoint((this.state as BrushLassoState).rendererBounds!, e);
 
-    if (withinThreshold(p, this.state, this.settings)) {
-      showSnapIndicator(this.state, true);
+    if (withinThreshold(p, this.state as BrushLassoState, this.settings)) {
+      showSnapIndicator(this.state as BrushLassoState, true);
     } else {
-      showSnapIndicator(this.state, false);
+      showSnapIndicator(this.state as BrushLassoState, false);
     }
 
-    appendToPath(this.state, p);
-    setSnapIndictor({ state: this.state, end: p });
-    render(this.state, this.renderer);
+    appendToPath(this.state as BrushLassoState, p);
+    setSnapIndictor({ state: this.state as BrushLassoState, end: p });
+    render(this.state as BrushLassoState, this.renderer);
 
-    doLineBrush(this.state, this.chart);
+    doLineBrush(this.state as BrushLassoState, this.chart);
   },
-  end(e) {
-    if (!this.state.active) {
+  end(e: any): void {
+    if (!(this.state as BrushLassoState).active) {
       return;
     }
 
-    showSnapIndicator(this.state, false);
-    const p = getPoint(this.state.rendererBounds, e);
-    const shouldSnap = withinThreshold(p, this.state, this.settings);
+    showSnapIndicator(this.state as BrushLassoState, false);
+    const p = getPoint((this.state as BrushLassoState).rendererBounds!, e);
+    const shouldSnap = withinThreshold(p, this.state as BrushLassoState, this.settings);
 
     if (shouldSnap) {
-      doPolygonBrush(this.state, this.chart);
+      doPolygonBrush(this.state as BrushLassoState, this.chart);
     }
 
     this.state = resetState();
     this.renderer.render([]);
   },
-  cancel() {
-    if (!this.state.active) {
+  cancel(): void {
+    if (!(this.state as BrushLassoState).active) {
       return;
     }
-    endBrush(this.state, this.chart);
+    endBrush(this.state as BrushLassoState, this.chart);
     this.state = resetState();
     this.renderer.render([]);
   },
-  render() {
+  render(): void {
     // Do nothing
   },
 };

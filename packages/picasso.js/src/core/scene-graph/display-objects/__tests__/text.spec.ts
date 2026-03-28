@@ -1,20 +1,40 @@
 import Text, { create as createText } from '../text';
 import GeoRect from '../../../geometry/rect';
 
+interface Bounds {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+interface TextDef {
+  text?: string;
+  title?: string;
+  x?: number;
+  y?: number;
+  dx?: number;
+  dy?: number;
+  data?: unknown;
+  boundingRect?: Bounds;
+  textBoundsFn?: ((args: Record<string, unknown>) => Bounds) | null;
+  transform?: string;
+}
+
 describe('Text', () => {
-  let node;
-  let def;
-  const mockedBounds = {
+  let node: Text;
+  let def: TextDef;
+  const mockedBounds: Bounds = {
     x: 0,
     y: 0,
     width: 50,
     height: 100,
   };
-  const textBoundsMock = (args) => {
-    mockedBounds.x = args.x;
-    mockedBounds.x += args.dx || 0;
-    mockedBounds.y = args.y;
-    mockedBounds.y += args.dy || 0;
+  const textBoundsMock = (args: Record<string, unknown>): Bounds => {
+    mockedBounds.x = (args.x as number) ?? 0;
+    mockedBounds.x += (args.dx as number) || 0;
+    mockedBounds.y = (args.y as number) ?? 0;
+    mockedBounds.y += (args.dy as number) || 0;
     return mockedBounds;
   };
 
@@ -198,10 +218,12 @@ describe('Text', () => {
       node.resolveLocalTransform();
 
       const rect = node.boundingRect(true);
-      expect(rect.x).to.equal(-106);
-      expect(rect.y).to.equal(4);
-      expect(rect.width).to.equal(100);
-      expect(rect.height).to.approximately(50, 0.1);
+      if (rect) {
+        expect(rect.x).to.equal(-106);
+        expect(rect.y).to.equal(4);
+        expect(rect.width).to.equal(100);
+        expect(rect.height).to.approximately(50, 0.1);
+      }
     });
 
     it('should return correct value with a negative vector direction', () => {

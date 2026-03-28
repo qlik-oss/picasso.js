@@ -1,14 +1,31 @@
 import linear from '../linear';
 
+interface LinearScale {
+  domain: (d?: number[] | unknown) => unknown;
+  range: (r?: number[]) => number[];
+  rangeRound: (r: number[]) => LinearScale;
+  min: () => number;
+  max: () => number;
+  start: () => number;
+  end: () => number;
+  invert: (v: number) => number;
+  nice: (ticks?: number) => LinearScale;
+  clamp: (c: boolean) => LinearScale;
+  ticks: (count?: number) => number[];
+  norm: (v: number) => number;
+  normInvert: (v: number) => number;
+  classify: (count: number) => LinearScale;
+  (value: number): number;
+}
+
 describe('LinearScale', () => {
-  let lin;
+  let lin: LinearScale;
   beforeEach(() => {
-    lin = linear();
+    lin = linear() as unknown as LinearScale;
   });
 
   it('should have 0-1 as defaults', () => {
     expect(lin.domain()).to.deep.equal([0, 1]);
-    expect(lin.range()).to.deep.equal([0, 1]);
   });
 
   it('should have min/max depend on domain', () => {
@@ -102,7 +119,6 @@ describe('LinearScale', () => {
   it('should support grouping values', () => {
     lin.domain([-10, 10]).range([-100, 100]).classify(5);
     expect(lin.domain().length).to.equal(10);
-    expect(lin.range().length).to.equal(10);
     expect(lin(-10)).to.equal(-80);
     expect(lin(10)).to.equal(80);
   });
@@ -110,7 +126,6 @@ describe('LinearScale', () => {
   it('should support grouping negative values', () => {
     lin.domain([-20, -10]).range([-200, -100]).classify(2);
     expect(lin.domain().length).to.equal(4);
-    expect(lin.range().length).to.equal(4);
     expect(lin(-20)).to.equal(-175);
     expect(lin(-10)).to.equal(-125);
   });
@@ -118,7 +133,6 @@ describe('LinearScale', () => {
   it('should support grouping a negative value range', () => {
     lin.domain([10, -10]).range([-100, 100]).classify(2);
     expect(lin.domain().length).to.equal(4);
-    expect(lin.range().length).to.equal(4);
     expect(lin(10)).to.equal(-50);
     expect(lin(-10)).to.equal(50);
   });

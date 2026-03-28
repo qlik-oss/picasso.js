@@ -6,19 +6,19 @@ import brushFactory from '../../../core/brush';
 import { TARGET_SIZE, VERTICAL, HORIZONTAL } from './brush-range-const';
 import { pointsToRect, rectToPoints } from '../../../core/geometry/util';
 
-function render(state) {
+function render(state: Record<string, any>): void {
   state.renderer.render(nodes(state));
 }
 
-function ranges(state, brush) {
+function ranges(state: Record<string, any>, brush: any): { min: number; max: number }[] {
   if (!brush || !brush.isActive()) {
     return [];
   }
 
   const sourceData = state.scale.data();
   const sourceFields = sourceData ? sourceData.fields || [] : [];
-  const sources = sourceFields.map((field) => field.id());
-  const rangeBrush = brush.brushes().filter((f) => f.type === 'range' && sources.indexOf(f.id) !== -1)[0];
+  const sources = sourceFields.map((field: any) => field.id());
+  const rangeBrush = brush.brushes().filter((f: any) => f.type === 'range' && sources.indexOf(f.id) !== -1)[0];
 
   if (!rangeBrush) {
     return [];
@@ -27,8 +27,8 @@ function ranges(state, brush) {
   return rangeBrush.brush.ranges();
 }
 
-function setRanges(state) {
-  let rs = state.ranges.map((r) => ({ min: r.min, max: r.max }));
+function setRanges(state: Record<string, any>): void {
+  let rs = state.ranges.map((r: any) => ({ min: r.min, max: r.max }));
   if (state.active.idx !== -1) {
     if (state.active.mode === 'modify') {
       rs[state.active.idx].min = Math.min(state.start, state.current);
@@ -47,17 +47,17 @@ function setRanges(state) {
 
   const scaleData = state.scale.data();
   if (scaleData && scaleData.fields) {
-    scaleData.fields.forEach((field) => {
+    scaleData.fields.forEach((field: any) => {
       if (state.fauxBrushInstance) {
         let ordRS = ranges(state, state.fauxBrushInstance);
         let oldValues = state.findValues(ordRS);
         let values = state.findValues(rs);
 
-        let addedValues = values.filter((v) => oldValues.indexOf(v) === -1);
-        let removedValues = oldValues.filter((v) => values.indexOf(v) === -1);
+        let addedValues = values.filter((v: any) => oldValues.indexOf(v) === -1);
+        let removedValues = oldValues.filter((v: any) => values.indexOf(v) === -1);
 
-        let addItems = addedValues.map((v) => ({ key: field.id(), value: v }));
-        let removeItems = removedValues.map((v) => ({ key: field.id(), value: v }));
+        let addItems = addedValues.map((v: any) => ({ key: field.id(), value: v }));
+        let removeItems = removedValues.map((v: any) => ({ key: field.id(), value: v }));
 
         state.brushInstance.addAndRemoveValues(addItems, removeItems);
 
@@ -69,8 +69,8 @@ function setRanges(state) {
   }
 }
 
-function setEditedRanges(state, idx, startValue, endValue) {
-  let rs = state.ranges.map((r) => ({ min: r.min, max: r.max }));
+function setEditedRanges(state: Record<string, any>, idx: number, startValue: number, endValue: number): void {
+  let rs = state.ranges.map((r: any) => ({ min: r.min, max: r.max }));
   const limitMin = state.scale.min();
   const limitMax = state.scale.max();
   rs[idx] = {
@@ -81,7 +81,7 @@ function setEditedRanges(state, idx, startValue, endValue) {
 
   const scaleData = state.scale.data();
   if (scaleData && scaleData.fields) {
-    scaleData.fields.forEach((field) => {
+    scaleData.fields.forEach((field: any) => {
       if (!state.fauxBrushInstance) {
         state.brushInstance.setRange(field.id(), rs);
       }
@@ -89,7 +89,7 @@ function setEditedRanges(state, idx, startValue, endValue) {
   }
 }
 
-function findClosest(value, scale) {
+function findClosest(value: number, scale: any): any {
   let name;
   let minDist = Infinity;
   const domain = scale.domain();
@@ -104,21 +104,21 @@ function findClosest(value, scale) {
   return name;
 }
 
-function findClosestLabel(value, scale) {
+function findClosestLabel(value: number, scale: any): string {
   const ticks = scale.ticks();
   const idx = scale.domain().indexOf(findClosest(value, scale));
   return idx !== -1 ? ticks[idx].label : '-';
 }
 
-function rangesOverlap(r1, r2) {
+function rangesOverlap(r1: number[], r2: number[]): boolean {
   return Math.min(...r1) <= Math.max(...r2) && Math.max(...r1) >= Math.min(...r2);
 }
 
-function findValues(rangesValues, scale) {
+function findValues(rangesValues: any[], scale: any): any[] {
   const domain = scale.domain();
   const scaleRange = scale.range();
-  const values = [];
-  rangesValues.forEach((range) => {
+  const values: any[] = [];
+  rangesValues.forEach((range: any) => {
     if (!rangesOverlap(scaleRange, [range.min, range.max])) {
       return;
     }
@@ -133,7 +133,7 @@ function findValues(rangesValues, scale) {
   return values;
 }
 
-function resolveNodeBounds(targetNodes) {
+function resolveNodeBounds(targetNodes: any[]): any {
   const points = targetNodes.reduce((ary, node) => {
     ary.push(...rectToPoints(node.bounds));
     return ary;
@@ -141,8 +141,8 @@ function resolveNodeBounds(targetNodes) {
   return pointsToRect(points);
 }
 
-function resolveTarget(ctx) {
-  const resolved = {
+function resolveTarget(ctx: any): any {
+  const resolved: any = {
     targetRect: null,
     targetFillRect: null,
     scale: null,
@@ -152,8 +152,8 @@ function resolveTarget(ctx) {
   const targets =
     stngs.target &&
     (stngs.target.components || (stngs.target.component ? [stngs.target.component] : []))
-      .map((c) => ctx.chart.component(c))
-      .filter((c) => !!c && !!c.rect);
+      .map((c: any) => ctx.chart.component(c))
+      .filter((c: any) => !!c && !!c.rect);
   const targetNodes = stngs.target && stngs.target.selector ? ctx.chart.findShapes(stngs.target.selector) : [];
   const targetFillNodes =
     stngs.target && stngs.target.fillSelector ? ctx.chart.findShapes(stngs.target.fillSelector) : [];
@@ -168,7 +168,7 @@ function resolveTarget(ctx) {
     }
   } else if (targets && targets.length > 0) {
     const targetRect = targets.slice(1).reduce(
-      (prev, curr) => ({
+      (prev: any, curr: any) => ({
         x0: Math.min(prev.x0, curr.rect.computedInner.x),
         y0: Math.min(prev.y0, curr.rect.computedInner.y),
         x1: Math.max(prev.x1, curr.rect.computedInner.x + curr.rect.computedInner.width),
@@ -228,7 +228,7 @@ function resolveTarget(ctx) {
  * @property {number} [target.opacity]
  */
 
-const brushRangeComponent = {
+const brushRangeComponent: any = {
   require: ['chart', 'settings', 'renderer'],
   defaultSettings: {
     settings: {
@@ -245,38 +245,38 @@ const brushRangeComponent = {
   },
   renderer: 'dom',
   on: {
-    rangeStart(e) {
-      this.start(e);
+    rangeStart(e: any): void {
+      (this as any).start(e);
     },
-    rangeMove(e) {
-      this.move(e);
+    rangeMove(e: any): void {
+      (this as any).move(e);
     },
-    rangeEnd(e) {
-      this.end(e);
+    rangeEnd(e: any): void {
+      (this as any).end(e);
     },
-    rangeClear(e) {
-      this.clear(e);
+    rangeClear(e: any): void {
+      (this as any).clear(e);
     },
-    bubbleStart(e) {
-      this.bubbleStart(e);
+    bubbleStart(e: any): void {
+      (this as any).bubbleStart(e);
     },
   },
-  created() {
+  created(): void {
     this.state = {
       key: this.settings.key || 'brush-range',
     };
   },
-  beforeRender(opts) {
+  beforeRender(opts: any): void {
     this.state.rect = opts.size.computedInner;
   },
-  renderRanges() {
+  renderRanges(): void {
     if (!this.state.started) {
       this.state.ranges = ranges(this.state, this.state.brushInstance);
       this.state.active = null;
       render(this.state);
     }
   },
-  render(h) {
+  render(h: any): any[] {
     const stngs = this.settings.settings;
     this.state.direction = stngs.direction === 'vertical' ? VERTICAL : HORIZONTAL;
     const offset = this.renderer.element().getBoundingClientRect();
@@ -297,13 +297,13 @@ const brushRangeComponent = {
     this.state.renderer = this.renderer;
     this.state.multi = !!stngs.multiple;
     this.state.h = h;
-    this.state.onEditConfirmed = (rangeIdx, value, otherValue) => {
+    this.state.onEditConfirmed = (rangeIdx: number, value: number, otherValue: number): void => {
       this.state.edit = null;
       setEditedRanges(this.state, rangeIdx, value, otherValue);
       this.emit('bubbleEnd');
       render(this.state);
     };
-    this.state.onEditCanceled = () => {
+    this.state.onEditCanceled = (): void => {
       this.state.edit = null;
       render(this.state);
     };
@@ -314,7 +314,7 @@ const brushRangeComponent = {
     };
     this.state.format =
       typeof stngs.bubbles.label === 'function'
-        ? (v, r) =>
+        ? (v: any, r: any): string =>
             stngs.bubbles.label.call(undefined, {
               datum: v,
               data: r,
@@ -332,7 +332,7 @@ const brushRangeComponent = {
       this.state.scale = linear();
       this.state.scale.data = scale.data;
       if (!this.state.format) {
-        this.state.format = (v, r) => {
+        this.state.format = (v: any, r: any): string => {
           if (!rangesOverlap(scale.range(), r)) {
             return '-';
           }
@@ -340,7 +340,7 @@ const brushRangeComponent = {
         };
       }
       this.state.fauxBrushInstance = brushFactory();
-      this.state.findValues = (valueRanges) => findValues(valueRanges, scale);
+      this.state.findValues = (valueRanges: any[]): any[] => findValues(valueRanges, scale);
     } else {
       this.state.editable = true;
       this.state.observeBrush = typeof stngs.brush === 'object' ? stngs.brush.observe : false;
@@ -357,17 +357,17 @@ const brushRangeComponent = {
 
     return this.state.observeBrush || this.state.sourcedFromThisComponent ? [nodes(this.state)] : [];
   },
-  mounted() {
+  mounted(): void {
     if (this.state.observeBrush && this.state.brushInstance) {
       this.state.brushInstance.on('update', this.renderRanges);
     }
   },
-  beforeDestroy() {
+  beforeDestroy(): void {
     if (this.state.observeBrush && this.state.brushInstance) {
       this.state.brushInstance.removeListener('update', this.renderRanges);
     }
   },
-  start(e) {
+  start(e: any): void {
     start({
       e,
       state: this.state,
@@ -376,7 +376,7 @@ const brushRangeComponent = {
       targetSize: TARGET_SIZE,
     });
   },
-  end() {
+  end(): void {
     if (!this.state.started) {
       return;
     }
@@ -385,7 +385,7 @@ const brushRangeComponent = {
     this.state.sourcedFromThisComponent = true;
     this.state.active = null;
   },
-  move(e) {
+  move(e: any): void {
     if (!this.state.started) {
       return;
     }
@@ -393,7 +393,7 @@ const brushRangeComponent = {
     setRanges(this.state);
     render(this.state);
   },
-  clear() {
+  clear(): void {
     if (this.state.fauxBrushInstance) {
       this.state.fauxBrushInstance.clear();
     }
@@ -402,7 +402,7 @@ const brushRangeComponent = {
     this.state.active = null;
     this.state.sourcedFromThisComponent = false;
   },
-  bubbleStart(e) {
+  bubbleStart(e: any): void {
     if (!this.state.editable) {
       return;
     }

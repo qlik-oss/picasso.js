@@ -1,28 +1,72 @@
+import type { SinonStub, SinonSandbox } from 'sinon';
 import componentFactory from '../../../component/component-factory';
 import refLineComponent from '../refline';
 
+interface Renderer {
+  appendTo: () => void;
+  render: (p: unknown) => unknown;
+  size: (rect: unknown) => unknown;
+  measureText: (opts: { text: string; fontSize: string }) => { width: number; height: number };
+  element?: unknown;
+}
+
+interface Table {
+  findField: SinonStub;
+}
+
+interface Dataset {
+  map: SinonStub;
+}
+
+interface ChartMock {
+  brush: () => { on: () => void };
+  logger: () => { warn: () => void };
+  container: () => unknown;
+  table: () => Table;
+  dataset: () => Dataset;
+  scale: SinonStub;
+}
+
+interface ShapeConfig {
+  shapeFn?: (type: string, p: Record<string, unknown>) => Record<string, unknown>;
+  lines?: Record<string, unknown>;
+  [key: string]: unknown;
+}
+
+interface ComponentOpts {
+  config: ShapeConfig;
+  inner: { x: number; y: number; width: number; height: number };
+}
+
+interface Scale {
+  (v: number): number;
+  min?: () => number;
+  max?: () => number;
+  range?: (r: number[]) => void;
+}
+
 describe('reference lines', () => {
-  let rendererOutput;
-  let chart;
-  let renderer = {
+  let rendererOutput: unknown;
+  let chart: ChartMock;
+  let renderer: Renderer = {
     appendTo: () => {},
-    render: (p) => (rendererOutput = p),
-    size: (rect) => rect,
-    measureText: ({ text, fontSize }) => ({
+    render: (p: unknown) => (rendererOutput = p),
+    size: (rect: unknown) => rect,
+    measureText: ({ text, fontSize }: { text: string; fontSize: string }) => ({
       width: text.length * parseInt(fontSize.replace('px', ''), 10) * 0.6,
       height: parseInt(fontSize.replace('px', ''), 10) * 1.2,
     }),
   };
-  let shapeFn;
+  let shapeFn: (type: string, p: Record<string, unknown>) => Record<string, unknown>;
 
   beforeEach(() => {
-    const table = {
+    const table: Table = {
       findField: sinon.stub(),
     };
-    const dataset = {
+    const dataset: Dataset = {
       map: sinon.stub(),
     };
-    shapeFn = (type, p) => {
+    shapeFn = (type: string, p: Record<string, unknown>) => {
       p.type = type;
       return p;
     };
@@ -40,17 +84,17 @@ describe('reference lines', () => {
     };
   });
 
-  function createAndRenderComponent(opts) {
+  function createAndRenderComponent(opts: ComponentOpts): any {
     const { config, inner } = opts;
     const instance = componentFactory(refLineComponent, {
       settings: config,
-      chart,
+      chart: chart as any,
       renderer,
       theme: {
         style: sinon.stub(),
         palette: sinon.stub(),
-      },
-    });
+      } as any,
+    }) as any;
     instance.beforeMount();
     instance.resize(inner);
     instance.beforeRender();
@@ -166,12 +210,12 @@ describe('reference lines', () => {
       },
     };
 
-    const xScale = (v) => v;
+    const xScale: Scale = (v: number) => v;
     xScale.min = () => 0;
     xScale.max = () => 1;
     chart.scale.withArgs({ scale: 'x' }).returns(xScale);
 
-    const yScale = (v) => v;
+    const yScale: Scale = (v: number) => v;
     yScale.min = () => 0;
     yScale.max = () => 1;
     chart.scale.withArgs({ scale: 'y' }).returns(yScale);
@@ -252,12 +296,12 @@ describe('reference lines', () => {
       },
     };
 
-    const xScale = (v) => v;
+    const xScale: Scale = (v: number) => v;
     xScale.min = () => 0;
     xScale.max = () => 1;
     chart.scale.withArgs({ scale: 'x' }).returns(xScale);
 
-    const yScale = (v) => v;
+    const yScale: Scale = (v: number) => v;
     yScale.min = () => 0;
     yScale.max = () => 1;
     chart.scale.withArgs({ scale: 'y' }).returns(yScale);
@@ -311,12 +355,12 @@ describe('reference lines', () => {
       },
     };
 
-    const xScale = (v) => v;
+    const xScale: Scale = (v: number) => v;
     xScale.min = () => 0;
     xScale.max = () => 1;
     chart.scale.withArgs({ scale: 'x' }).returns(xScale);
 
-    const yScale = (v) => v;
+    const yScale: Scale = (v: number) => v;
     yScale.min = () => 0;
     yScale.max = () => 1;
     chart.scale.withArgs({ scale: 'y' }).returns(yScale);
@@ -394,12 +438,12 @@ describe('reference lines', () => {
       },
     };
 
-    const xScale = (v) => v;
+    const xScale: Scale = (v: number) => v;
     xScale.min = () => 0;
     xScale.max = () => 1;
     chart.scale.withArgs({ scale: 'x' }).returns(xScale);
 
-    const yScale = (v) => v;
+    const yScale: Scale = (v: number) => v;
     yScale.min = () => 0;
     yScale.max = () => 1;
     chart.scale.withArgs({ scale: 'y' }).returns(yScale);
@@ -458,12 +502,12 @@ describe('reference lines', () => {
       },
     };
 
-    const xScale = (v) => v;
+    const xScale: Scale = (v: number) => v;
     xScale.min = () => 0;
     xScale.max = () => 1;
     chart.scale.withArgs({ scale: 'x' }).returns(xScale);
 
-    const yScale = (v) => v;
+    const yScale: Scale = (v: number) => v;
     yScale.min = () => 0;
     yScale.max = () => 1;
     chart.scale.withArgs({ scale: 'y' }).returns(yScale);
@@ -522,12 +566,12 @@ describe('reference lines', () => {
       },
     };
 
-    const xScale = (v) => v;
+    const xScale: Scale = (v: number) => v;
     xScale.min = () => 0;
     xScale.max = () => 1;
     chart.scale.withArgs({ scale: 'x' }).returns(xScale);
 
-    const yScale = (v) => v;
+    const yScale: Scale = (v: number) => v;
     yScale.min = () => 0;
     yScale.max = () => 1;
     chart.scale.withArgs({ scale: 'y' }).returns(yScale);
@@ -600,12 +644,12 @@ describe('reference lines', () => {
       },
     };
 
-    const xScale = (v) => v;
+    const xScale: Scale = (v: number) => v;
     xScale.min = () => 0;
     xScale.max = () => 1;
     chart.scale.withArgs({ scale: 'x' }).returns(xScale);
 
-    const yScale = (v) => v;
+    const yScale: Scale = (v: number) => v;
     yScale.min = () => 0;
     yScale.max = () => 1;
     chart.scale.withArgs({ scale: 'y' }).returns(yScale);
@@ -679,12 +723,12 @@ describe('reference lines', () => {
       },
     };
 
-    const xScale = (v) => v;
+    const xScale: Scale = (v: number) => v;
     xScale.min = () => 0;
     xScale.max = () => 1;
     chart.scale.withArgs({ scale: 'x' }).returns(xScale);
 
-    const yScale = (v) => v;
+    const yScale: Scale = (v: number) => v;
     yScale.min = () => 0;
     yScale.max = () => 1;
     chart.scale.withArgs({ scale: 'y' }).returns(yScale);
@@ -768,12 +812,12 @@ describe('reference lines', () => {
       },
     };
 
-    const xScale = (v) => v;
+    const xScale: Scale = (v: number) => v;
     xScale.min = () => 0;
     xScale.max = () => 1;
     chart.scale.withArgs({ scale: 'x' }).returns(xScale);
 
-    const yScale = (v) => v;
+    const yScale: Scale = (v: number) => v;
     yScale.min = () => 0;
     yScale.max = () => 1;
     chart.scale.withArgs({ scale: 'y' }).returns(yScale);
@@ -848,10 +892,10 @@ describe('reference lines', () => {
       },
     };
 
-    const xScale = (v) => v;
+    const xScale: Scale = (v: number) => v;
     chart.scale.withArgs({ scale: 'x' }).returns(xScale);
 
-    const yScale = (v) => v;
+    const yScale: Scale = (v: number) => v;
     chart.scale.withArgs({ scale: 'y' }).returns(yScale);
 
     createAndRenderComponent({
@@ -924,7 +968,7 @@ describe('reference lines', () => {
       },
     };
 
-    const yScale = (v) => v;
+    const yScale: Scale = (v: number) => v;
     chart.scale.withArgs({ scale: 'y' }).returns(yScale);
 
     createAndRenderComponent({
@@ -996,7 +1040,7 @@ describe('reference lines', () => {
       },
     };
 
-    const yScale = (v) => v;
+    const yScale: Scale = (v: number) => v;
     chart.scale.withArgs({ scale: 'y' }).returns(yScale);
 
     createAndRenderComponent({
@@ -1076,13 +1120,13 @@ describe('reference lines', () => {
       },
     };
 
-    const xScale = (v) => v;
+    const xScale: Scale = (v: number) => v;
     xScale.min = () => 0;
     xScale.max = () => 0;
     xScale.range = () => [0, 1];
     chart.scale.withArgs({ scale: 'x' }).returns(xScale);
 
-    const yScale = (v) => v;
+    const yScale: Scale = (v: number) => v;
     yScale.min = () => 0;
     yScale.max = () => 1;
     yScale.range = () => [0, 1];
@@ -1166,13 +1210,13 @@ describe('reference lines', () => {
       },
     };
 
-    const xScale = (v) => v;
+    const xScale: Scale = (v: number) => v;
     xScale.min = () => 0;
     xScale.max = () => 0;
     xScale.range = () => [1, 0];
     chart.scale.withArgs({ scale: 'x' }).returns(xScale);
 
-    const yScale = (v) => v;
+    const yScale: Scale = (v: number) => v;
     yScale.min = () => 0;
     yScale.max = () => 1;
     yScale.range = () => [1, 0];

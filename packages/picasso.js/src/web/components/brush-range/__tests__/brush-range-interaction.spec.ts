@@ -1,12 +1,70 @@
+import type { SinonStub, SinonSandbox } from 'sinon';
 import { start, move, end } from '../brush-range-interaction';
 
+interface CssCoord {
+  offset: string;
+  coord: string;
+  pos: string;
+}
+
+interface Offset {
+  left: number;
+  top: number;
+}
+
+interface Scale {
+  (x: number): number;
+  min?: SinonStub;
+  max?: SinonStub;
+  invert?: (x: number) => number;
+  norm?: (x: number) => number;
+  normInvert?: (x: number) => number;
+}
+
+interface State {
+  cssCoord: CssCoord;
+  offset: Offset;
+  multi: boolean;
+  size: number;
+  scale: Scale;
+  started?: boolean;
+  active?: unknown;
+  start?: number;
+  current?: number;
+  targetRect?: { left?: number; top?: number; right?: number; bottom?: number; x?: number; y?: number; width?: number; height?: number };
+}
+
+interface HammerEvent {
+  center: { x: number; y: number };
+  deltaX: number;
+  deltaY: number;
+}
+
+interface BoundingRect {
+  left: number;
+  top: number;
+  height: number;
+  width: number;
+  right: number;
+  bottom: number;
+}
+
+interface Element {
+  contains: SinonStub;
+  getBoundingClientRect: SinonStub;
+}
+
+interface Renderer {
+  element: SinonStub;
+}
+
 describe('BrushRange Interaction', () => {
-  let sandbox;
-  let state;
-  let event;
+  let sandbox: SinonSandbox;
+  let state: State;
+  let event: HammerEvent;
 
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
+    sandbox = (sinon as any).createSandbox();
     state = {
       cssCoord: {
         offset: 'top',
@@ -19,13 +77,13 @@ describe('BrushRange Interaction', () => {
       },
       multi: true,
       size: 1,
-      scale: (x) => x,
+      scale: (x: number) => x,
     };
-    state.scale.min = sinon.stub().returns(0);
-    state.scale.max = sinon.stub().returns(1);
-    state.scale.invert = (x) => x;
-    state.scale.norm = (x) => x;
-    state.scale.normInvert = (x) => x;
+    state.scale.min = sandbox.stub().returns(0);
+    state.scale.max = sandbox.stub().returns(1);
+    state.scale.invert = (x: number) => x;
+    state.scale.norm = (x: number) => x;
+    state.scale.normInvert = (x: number) => x;
 
     event = {
       center: { x: 0.5, y: 0.5 },
@@ -33,21 +91,21 @@ describe('BrushRange Interaction', () => {
       deltaY: 0.1,
     };
 
-    global.document.elementFromPoint = sandbox.stub();
+    global.document.elementFromPoint = sandbox.stub() as any;
   });
 
   afterEach(() => {
     sandbox.restore();
-    delete global.document.elementFromPoint;
+    delete (global.document as any).elementFromPoint;
   });
 
   describe('Start', () => {
-    let renderer;
-    let targetSize;
-    let element;
+    let renderer: Renderer;
+    let targetSize: number;
+    let element: Element;
 
     beforeEach(() => {
-      const boundingRect = {
+      const boundingRect: BoundingRect = {
         left: 0,
         top: 0,
         height: 1,
@@ -56,11 +114,11 @@ describe('BrushRange Interaction', () => {
         bottom: 1,
       };
       element = {
-        contains: sinon.stub().returns(false),
-        getBoundingClientRect: sinon.stub().returns(boundingRect),
+        contains: sandbox.stub().returns(false),
+        getBoundingClientRect: sandbox.stub().returns(boundingRect),
       };
       renderer = {
-        element: sinon.stub().returns(element),
+        element: sandbox.stub().returns(element),
       };
       targetSize = 0.01;
     });

@@ -1,10 +1,11 @@
+import * as sinon from 'sinon';
 import linear from '../linear';
 import field from '../../data/field';
 
 describe('Linear data scale', () => {
-  let dataScale;
-  let fields;
-  let settings;
+  let dataScale: any;
+  let fields: Record<string, unknown>;
+  let settings: Record<string, unknown>;
   const truty = [true, {}, [], 42, 'foo', new Date(), -42, 3.14, -3.14, Infinity, -Infinity];
   const falsy = [false, null, undefined, 0, NaN, ''];
   const notNumbers = [{}, 'this is my sock', undefined, NaN, () => {}, '123ABC'];
@@ -32,7 +33,7 @@ describe('Linear data scale', () => {
   });
 
   it('should generate a domain based on the min and max of all fields', () => {
-    fields.fields.push(field({ min: -20, max: 10 }));
+    (fields as any).fields.push(field({ min: -20, max: 10 }));
     dataScale = linear(settings, fields);
     expect(dataScale.domain()).to.deep.equal([-20, 100]);
   });
@@ -232,7 +233,7 @@ describe('Linear data scale', () => {
       });
 
       it('should handle when input array contains non-numeric values', () => {
-        settings.include = () => [-250].concat(notNumbers);
+        (settings as any).include = () => [-250].concat(notNumbers as any);
         dataScale = linear(settings, fields);
         expect(dataScale.domain()).to.deep.equal([-250, 100]);
       });

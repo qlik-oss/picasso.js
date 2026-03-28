@@ -1,10 +1,35 @@
 import { scaleLinear } from 'd3-scale';
 import tickGenerator from '../tick-generator';
 
+interface TickSettings {
+  maxWidth?: number;
+  anchor?: 'start' | 'end' | 'middle';
+  measureText?: (options: { text: string }) => { width: number };
+}
+
+interface TickFunctionObject {
+  transformTicks(qTicks: Array<{ qStart: number; qEnd: number; qText: string }>): Array<{
+    value: number;
+    position: number;
+    start: number;
+    end: number;
+    label: string;
+    isMinor: boolean;
+  }>;
+  createTicks(distance?: number): Array<{
+    position: number;
+    start: number;
+    end: number;
+    value: number;
+    label: string;
+    isMinor: boolean;
+  }>;
+}
+
 describe('qTime - Tick generator', () => {
-  let scale: any;
-  let tickFn: any;
-  let settings: any;
+  let scale: ReturnType<typeof scaleLinear>;
+  let tickFn: TickFunctionObject;
+  let settings: TickSettings;
 
   beforeEach(() => {
     scale = scaleLinear();
@@ -12,7 +37,7 @@ describe('qTime - Tick generator', () => {
   });
 
   describe('transformTicks', () => {
-    let qTicks: any;
+    let qTicks: Array<{ qStart: number; qEnd: number; qText: string }>;
 
     beforeEach(() => {
       qTicks = [

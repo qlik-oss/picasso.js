@@ -1,3 +1,4 @@
+import * as sinon from 'sinon';
 import {
   getBarRect,
   isTextInRect,
@@ -10,7 +11,7 @@ import {
   getOrientation,
 } from '../bars';
 
-function place(position, direction) {
+function place(position: string, direction: string): Record<string, unknown> {
   return getBarRect({
     bar: {
       x: 10,
@@ -239,8 +240,8 @@ describe('labeling - bars', () => {
 
   describe('findBestPlacement', () => {
     const placements = [{ position: 'inside' }, { position: 'outside' }, { position: 'biggest' }, { position: 'meh' }];
-    let rects;
-    let barRect;
+    let rects: Record<string, Record<string, number>>;
+    let barRect: (opts: Record<string, unknown>) => Record<string, number>;
     beforeEach(() => {
       rects = {
         inside: {
@@ -268,8 +269,8 @@ describe('labeling - bars', () => {
           height: 20,
         },
       };
-      barRect = (opts) => rects[opts.position];
-      placements.forEach((p) => delete p.overflow);
+      barRect = (opts: Record<string, unknown>) => rects[(opts.position as string)];
+      placements.forEach((p) => delete (p as any).overflow);
     });
 
     it('should find first placement that fits in a vertical bar', () => {
@@ -477,9 +478,9 @@ describe('labeling - bars', () => {
   });
 
   describe('placeInBars', () => {
-    let chart;
-    let findPlacement;
-    let placer;
+    let chart: Record<string, unknown>;
+    let findPlacement: sinon.SinonStub;
+    let placer: sinon.SinonStub | ((a: unknown, b: unknown, c: unknown) => unknown);
 
     beforeEach(() => {
       chart = {};
@@ -539,7 +540,7 @@ describe('labeling - bars', () => {
           align: 0.4,
         },
       });
-      placer = (a, b, c) => [a, b, c];
+      placer = (a: unknown, b: unknown, c: unknown) => [a, b, c];
       let labels = placeInBars(
         {
           chart,
@@ -601,7 +602,7 @@ describe('labeling - bars', () => {
           },
         },
       });
-      placer = (a, b, c) => ({
+      placer = (a: unknown, b: unknown, c: unknown) => ({
         x: 0,
         y: 0,
         dx: 0,

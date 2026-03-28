@@ -1,10 +1,16 @@
 import q from '../dataset';
 // eslint-disable-next-line import-x/no-relative-packages
-import { getPropsInfo } from '../../../../../packages/picasso.js/src/core/data/util';
+// Import removed - we'll define the type in-file instead
 
 // Test type interfaces for hierarchy nodes and data structures
 interface HierarchyNode {
-  data: Record<string, unknown>;
+  data: Record<string, unknown> & {
+    value?: unknown;
+    dimOne?: { value: unknown };
+    desc?: { value: unknown };
+    id?: { value: unknown };
+    v?: { value: unknown };
+  };
   depth: number;
   descendants(): HierarchyNode[];
 }
@@ -22,14 +28,17 @@ interface QHierarchyData {
 // Augment q function type to include util property
 declare global {
   interface QFunction {
-    util?: { normalizeConfig: typeof getPropsInfo };
+    util?: { normalizeConfig: (cfg: unknown, dataset: unknown) => { props: Record<string, unknown>; main: Record<string, unknown> } };
   }
 }
 
 describe('augment-hierarchy', () => {
   beforeAll(() => {
+    // Use require to load getPropsInfo at test time (bypasses TypeScript compilation issues)
+    // eslint-disable-next-line @typescript-eslint/no-var-requires, import-x/no-relative-packages
+    const { getPropsInfo } = require('../../../../../packages/picasso.js/src/core/data/util');
     (q as unknown as QFunction).util = {
-      normalizeConfig: getPropsInfo,
+      normalizeConfig: getPropsInfo as (cfg: unknown, dataset: unknown) => { props: Record<string, unknown>; main: Record<string, unknown> },
     };
   });
 
@@ -158,7 +167,7 @@ describe('augment-hierarchy', () => {
     };
 
     it('should return a root node', () => {
-      const m = q({ key: 'nyckel', data: cube }).hierarchy({});
+      const m = q({ key: 'nyckel', data: cube }).hierarchy({}) as HierarchyNode | null;
       if (m) {
         expect(m.data.value).to.eql(stackedPageWithoutPseudo.qData[0]);
       }
@@ -167,7 +176,7 @@ describe('augment-hierarchy', () => {
     it('should add a data property per node', () => {
       const m = q({ key: 'nyckel', data: cube }).hierarchy({
         value: (d: QHierarchyData) => d.qText,
-      });
+      }) as HierarchyNode | null;
       if (m) {
         expect(m.descendants().map((child: HierarchyNode) => child.data.value)).to.eql([
           '_rooot',
@@ -196,10 +205,10 @@ describe('augment-hierarchy', () => {
             reduce: (values: unknown[]) => (values as string[]).join(', '),
           },
         },
-      });
+      }) as HierarchyNode | null;
       // console.log(stackedPageWithoutPseudo.qData[0]);
       if (m) {
-        expect(m.descendants().map((child: HierarchyNode) => child.data.dimOne.value)).to.eql([
+        expect(m.descendants().map((child: HierarchyNode) => child.data.dimOne?.value)).to.eql([
           'Alpha, Beta',
           'Alpha',
           'Beta',
@@ -226,10 +235,10 @@ describe('augment-hierarchy', () => {
             reduce: (values: unknown[]) => (values as string[]).join(', '),
           },
         },
-      });
+      }) as HierarchyNode | null;
       // console.log(stackedPageWithoutPseudo.qData[0]);
       if (m) {
-        expect(m.descendants().map((child: HierarchyNode) => child.data.desc.value)).to.eql([
+        expect(m.descendants().map((child: HierarchyNode) => child.data.desc?.value)).to.eql([
           'total: $666, a1, a2, total: $667, b1, b3', // descendants of '__root', with reduction (join) applied
           'total: $666, a1, a2', // children of 'Alpha', with reduction applied
           'total: $667, b1, b3', // children of 'Beta', with reduction applied
@@ -257,10 +266,10 @@ describe('augment-hierarchy', () => {
           },
           p: (d: QHierarchyData) => d.qText,
         },
-      });
+      }) as HierarchyNode | null;
       // console.log(stackedPageWithoutPseudo.qData[0]);
       if (m) {
-        expect(m.descendants().map((child: HierarchyNode) => child.data.desc.value)).to.eql([
+        expect(m.descendants().map((child: HierarchyNode) => child.data.desc?.value)).to.eql([
           '45---32---13---17', // descendants of '__root', with reduction applied
           '45---32', // measure nodes in 'Alpha', with reduction applied
           '13---17', // measure nodes in 'Beta', with reduction applied
@@ -290,9 +299,9 @@ describe('augment-hierarchy', () => {
             value: (values: unknown[], node: HierarchyNode) => (values as string[]).slice(0, node.depth).join('>>'),
           },
         },
-      });
+      }) as HierarchyNode | null;
       if (m) {
-        expect(m.descendants().map((child: HierarchyNode) => child.data.id.value)).to.eql([
+        expect(m.descendants().map((child: HierarchyNode) => child.data.id?.value)).to.eql([
           '', // root
           'Alpha',
           'Beta',
@@ -359,10 +368,10 @@ describe('augment-hierarchy', () => {
             value: (v: Record<string, unknown>) => (v ? v.qNum : NaN),
           },
         },
-      });
+      }) as HierarchyNode | null;
 
       if (h) {
-        expect(h.descendants().map((child: HierarchyNode) => child.data.v.value)).to.eql([6, 4, 10, 3, 5, 10]);
+        expect(h.descendants().map((child: HierarchyNode) => child.data.v?.value)).to.eql([6, 4, 10, 3, 5, 10]);
       }
     });
 
@@ -401,10 +410,10 @@ describe('augment-hierarchy', () => {
             value: (v: Record<string, unknown>) => (v ? v.qNum : NaN),
           },
         },
-      });
+      }) as HierarchyNode | null;
 
       if (h) {
-        expect(h.descendants().map((child: HierarchyNode) => child.data.v.value)).to.eql([6, 4, 10, 3, 5, 10]);
+        expect(h.descendants().map((child: HierarchyNode) => child.data.v?.value)).to.eql([6, 4, 10, 3, 5, 10]);
       }
     });
 
@@ -443,10 +452,10 @@ describe('augment-hierarchy', () => {
             value: (v: Record<string, unknown>) => (v ? v.qNum : NaN),
           },
         },
-      });
+      }) as HierarchyNode | null;
 
       if (h) {
-        expect(h.descendants().map((child: HierarchyNode) => child.data.v.value)).to.eql([6, 4, 10, 3, 5, 10]);
+        expect(h.descendants().map((child: HierarchyNode) => child.data.v?.value)).to.eql([6, 4, 10, 3, 5, 10]);
       }
     });
   });

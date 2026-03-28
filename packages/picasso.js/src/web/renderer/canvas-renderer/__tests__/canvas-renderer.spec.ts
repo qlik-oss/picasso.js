@@ -1,9 +1,13 @@
+import * as sinon from 'sinon';
 import element from 'test-utils/mocks/element-mock';
 import * as canvasBuffer from '../canvas-buffer';
 import { renderer } from '../canvas-renderer';
 
 describe('canvas renderer', () => {
-  let sandbox, r, sceneFn, mockedCanvasBuffer;
+  let sandbox: sinon.SinonSandbox;
+  let r: any;
+  let sceneFn: sinon.SinonStub;
+  let mockedCanvasBuffer: Record<string, sinon.SinonSpy>;
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
@@ -412,7 +416,7 @@ describe('canvas renderer', () => {
   });
 
   describe('itemsAt', () => {
-    let items;
+    let items: Record<string, unknown>[];
 
     beforeEach(() => {
       items = [
@@ -528,7 +532,7 @@ describe('canvas renderer', () => {
     });
 
     const ctxStub = sandbox.stub(div.children[0], 'getContext');
-    ctxStub.returns({ webkitBackingStorePixelRatio: 2 });
+    ctxStub.returns({ webkitBackingStorePixelRatio: 2 } as any);
 
     r.render(inputShapes);
 
@@ -603,7 +607,7 @@ describe('canvas renderer', () => {
     r.size(size);
 
     const ctxStub = sandbox.stub(div.children[0], 'getContext');
-    ctxStub.returns({ webkitBackingStorePixelRatio: 0.5 });
+    ctxStub.returns({ webkitBackingStorePixelRatio: 0.5 } as any);
 
     r.render(inputShapes);
 

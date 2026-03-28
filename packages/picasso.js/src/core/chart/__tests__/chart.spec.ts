@@ -1,3 +1,4 @@
+import * as sinon from 'sinon';
 import elementMock from 'test-utils/mocks/element-mock';
 import componentFactoryFixture from '../../../../test/helpers/component-factory-fixture';
 import * as createStorage from '../../storage';
@@ -5,18 +6,18 @@ import chart, { orderComponents } from '..';
 
 describe('Chart', () => {
   describe('lifecycle methods', () => {
-    let created;
-    let beforeMount;
-    let mounted;
-    let beforeRender;
-    let beforeUpdate;
-    let updated;
-    let beforeDestroy;
-    let destroyed;
-    let element;
-    let definition;
-    let context;
-    let sandbox;
+    let created: sinon.SinonSpy;
+    let beforeMount: sinon.SinonSpy;
+    let mounted: sinon.SinonSpy;
+    let beforeRender: sinon.SinonSpy;
+    let beforeUpdate: sinon.SinonSpy;
+    let updated: sinon.SinonSpy;
+    let beforeDestroy: sinon.SinonSpy;
+    let destroyed: sinon.SinonSpy;
+    let element: any;
+    let definition: Record<string, unknown>;
+    let context: Record<string, unknown>;
+    let sandbox: sinon.SinonSandbox;
 
     beforeEach(() => {
       sandbox = sinon.createSandbox();
@@ -145,7 +146,7 @@ describe('Chart', () => {
           render: sinon.stub(),
         },
       };
-      const comp = (key) => components[key];
+      const comp = (key: string) => components[key as keyof typeof components];
       comp.has = () => true;
       const componentFixture = componentFactoryFixture();
 
@@ -197,7 +198,7 @@ describe('Chart', () => {
           render: sinon.stub(),
         },
       };
-      const comp = (key) => components[key];
+      const comp = (key: string) => components[key as keyof typeof components];
       comp.has = () => true;
       const componentFixture = componentFactoryFixture();
 
@@ -244,7 +245,7 @@ describe('Chart', () => {
           render: () => ['pointNode1'],
         },
       };
-      const comp = (key) => components[key];
+      const comp = (key: string) => components[key as keyof typeof components];
       comp.has = () => true;
       const componentFixture = componentFactoryFixture();
       const mockedRenderer = componentFixture.mocks().renderer;
@@ -292,7 +293,7 @@ describe('Chart', () => {
           render: sinon.stub(),
         },
       };
-      const comp = (key) => components[key];
+      const comp = (key: string) => components[key as keyof typeof components];
       comp.has = () => true;
       const first = componentFactoryFixture().mocks().renderer;
       const second = componentFactoryFixture().mocks().renderer;
@@ -342,7 +343,7 @@ describe('Chart', () => {
           render: sinon.stub(),
         },
       };
-      const comp = (key) => components[key];
+      const comp = (key: string) => components[key as keyof typeof components];
       comp.has = () => true;
       const first = componentFactoryFixture().mocks().renderer;
       const second = componentFactoryFixture().mocks().renderer;
@@ -404,10 +405,10 @@ describe('Chart', () => {
     });
 
     describe('brushFromShapes', () => {
-      let shapes;
-      let config;
-      let comp;
-      let rendererFactory;
+      let shapes: Record<string, unknown>[];
+      let config: Record<string, unknown>;
+      let comp: (key: string) => Record<string, unknown>;
+      let rendererFactory: sinon.SinonStub;
       beforeEach(() => {
         shapes = [
           {
@@ -436,13 +437,13 @@ describe('Chart', () => {
           ],
         };
 
-        const components = {
+        const components: Record<string, Record<string, unknown>> = {
           point: {
             has: () => true,
             render: sinon.stub(),
           },
         };
-        comp = (key) => components[key];
+        comp = (key: string) => components[key];
         comp.has = () => true;
 
         const first = componentFactoryFixture().mocks().renderer;
@@ -564,17 +565,17 @@ describe('Chart', () => {
   });
 
   describe('orderComponents', () => {
-    let visible;
-    let el;
+    let visible: Record<string, unknown>[];
+    let el: Record<string, unknown>;
     beforeEach(() => {
       const sub = ['b-1', 'b-2'].map(elementMock);
-      visible = ['a', 'b', 'c'].map(elementMock).map((e) => ({
+      visible = ['a', 'b', 'c'].map(elementMock).map((e: Record<string, unknown>) => ({
         instance: {
           renderer: () => ({
             element: () => e,
           }),
           def: {
-            additionalElements: e.name === 'b' ? () => sub : undefined,
+            additionalElements: (e as Record<string, string>).name === 'b' ? () => sub : undefined,
           },
         },
       }));

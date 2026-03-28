@@ -2,8 +2,8 @@ import { breakAll, breakWord } from '../word-break';
 
 describe('Word Break', () => {
   describe('breakAll', () => {
-    const measureTextMock = (text) => ({ width: text.length, height: 1 });
-    let node;
+    const measureTextMock = (text: string): Record<string, number> => ({ width: text.length, height: 1 });
+    let node: Record<string, unknown>;
     beforeEach(() => {
       node = {
         type: 'text',

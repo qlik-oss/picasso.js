@@ -3,28 +3,28 @@ import Node from '../node-container';
 describe('TreeNode', () => {
   describe('upon instantiation', () => {
     it('should have no parent', () => {
-      const n = new Node();
+      const n = new Node("");
       expect(n.parent).to.be.null;
     });
 
     it('should have no children', () => {
-      const n = new Node();
+      const n = new Node("");
       expect(n.children.length).to.equal(0);
     });
   });
 
   describe('#addChild', () => {
-    let n;
+    let n: Node;
     describe('general', () => {
       beforeEach(() => {
-        n = new Node();
+        n = new Node("");
       });
       afterEach(() => {
-        n = null;
+        n = null as unknown as Node;
       });
 
       it('should have the right parent', () => {
-        const c = new Node();
+        const c = new Node("");
         n.addChild(c);
 
         expect(n.children.length).to.equal(1);
@@ -33,14 +33,14 @@ describe('TreeNode', () => {
       });
 
       it('should not be possible to add anything else but a Node as child', () => {
-        let f = () => {
+        let f = (): void => {
             n.addChild();
           },
-          ff = () => {
-            n.addChild(null);
+          ff = (): void => {
+            n.addChild(null as unknown as Node);
           },
-          fff = () => {
-            n.addChild({});
+          fff = (): void => {
+            n.addChild({} as unknown as Node);
           };
 
         expect(f).to.throw('Expecting a Node as argument, but got undefined');
@@ -50,17 +50,17 @@ describe('TreeNode', () => {
     });
 
     describe('relatives -', () => {
-      let a, a1, a2, a3, b, b1, b2;
+      let a: Node, a1: Node, a2: Node, a3: Node, b: Node, b1: Node, b2: Node;
 
       beforeEach(() => {
-        n = new Node();
-        a = new Node();
-        a1 = new Node();
-        a2 = new Node();
-        a3 = new Node();
-        b = new Node();
-        b1 = new Node();
-        b2 = new Node();
+        n = new Node("");
+        a = new Node("");
+        a1 = new Node("");
+        a2 = new Node("");
+        a3 = new Node("");
+        b = new Node("");
+        b1 = new Node("");
+        b2 = new Node("");
 
         n.addChild(a).addChild(b);
 
@@ -68,14 +68,14 @@ describe('TreeNode', () => {
         b.addChild(b1).addChild(b2);
       });
       afterEach(() => {
-        n = null;
-        a = null;
-        a1 = null;
-        a2 = null;
-        a3 = null;
-        b = null;
-        b1 = null;
-        b2 = null;
+        n = null as unknown as Node;
+        a = null as unknown as Node;
+        a1 = null as unknown as Node;
+        a2 = null as unknown as Node;
+        a3 = null as unknown as Node;
+        b = null as unknown as Node;
+        b1 = null as unknown as Node;
+        b2 = null as unknown as Node;
       });
 
       describe('parents', () => {
@@ -127,28 +127,29 @@ describe('TreeNode', () => {
     });
 
     describe('for related nodes', () => {
+      let n: Node;
       beforeEach(() => {
-        n = new Node();
+        n = new Node("");
       });
       afterEach(() => {
-        n = null;
+        n = null as unknown as Node;
       });
 
       it('should not be possible to add itself as a child', () => {
-        const f = () => {
+        const f = (): void => {
           n.addChild(n);
         };
         expect(f).to.throw('Can not add itself as child!');
       });
 
       it('should not be possible to add a parent/ancestor as a child', () => {
-        let a = new Node(),
-          b = new Node(),
-          c = new Node(),
-          f = () => {
+        let a = new Node(""),
+          b = new Node(""),
+          c = new Node(""),
+          f = (): void => {
             b.addChild(a); // try adding parent as child
           },
-          fn = () => {
+          fn = (): void => {
             c.addChild(a); // try adding grandparent as child
           };
         a.addChild(b.addChild(c)); // a->b->c
@@ -160,17 +161,17 @@ describe('TreeNode', () => {
   });
 
   describe('#removeChild', () => {
-    let n, a, a1, a2, a21, b, b1, b2;
+    let n: Node, a: Node, a1: Node, a2: Node, a21: Node, b: Node, b1: Node, b2: Node;
 
     beforeEach(() => {
-      n = new Node();
-      a = new Node();
-      a1 = new Node();
-      a2 = new Node();
-      a21 = new Node();
-      b = new Node();
-      b1 = new Node();
-      b2 = new Node();
+      n = new Node("");
+      a = new Node("");
+      a1 = new Node("");
+      a2 = new Node("");
+      a21 = new Node("");
+      b = new Node("");
+      b1 = new Node("");
+      b2 = new Node("");
 
       n.addChild(a).addChild(b);
 
@@ -179,14 +180,14 @@ describe('TreeNode', () => {
     });
 
     afterEach(() => {
-      n = null;
-      a = null;
-      a1 = null;
-      a2 = null;
-      a21 = null;
-      b = null;
-      b1 = null;
-      b2 = null;
+      n = null as unknown as Node;
+      a = null as unknown as Node;
+      a1 = null as unknown as Node;
+      a2 = null as unknown as Node;
+      a21 = null as unknown as Node;
+      b = null as unknown as Node;
+      b1 = null as unknown as Node;
+      b2 = null as unknown as Node;
     });
 
     describe('after removing child from parent:', () => {
@@ -220,14 +221,14 @@ describe('TreeNode', () => {
     let n, a, a1, a2, a21, b, b1, b2;
 
     beforeEach(() => {
-      n = new Node();
-      a = new Node();
-      a1 = new Node();
-      a2 = new Node();
-      a21 = new Node();
-      b = new Node();
-      b1 = new Node();
-      b2 = new Node();
+      n = new Node("");
+      a = new Node("");
+      a1 = new Node("");
+      a2 = new Node("");
+      a21 = new Node("");
+      b = new Node("");
+      b1 = new Node("");
+      b2 = new Node("");
       n.addChild(a).addChild(b);
 
       a.addChild(a1).addChild(a2.addChild(a21));

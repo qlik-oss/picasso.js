@@ -1,14 +1,42 @@
+// @ts-ignore - extend module has no types
 import extend from 'extend';
 import { looseDistanceBasedGenerator } from '../tick-generators';
 import linear, { DEFAULT_TICKS_SETTINGS, DEFAULT_MINORTICKS_SETTINGS } from '../../linear';
 import band from '../../band';
 import formatter from '../../../formatter';
 
+interface TickSettings {
+  tight?: boolean;
+  forceBounds?: boolean;
+  values?: unknown;
+  count?: number;
+  distance?: number;
+}
+
+interface MinorTickSettings {
+  count?: number;
+}
+
+interface Settings {
+  ticks: TickSettings;
+  minorTicks: MinorTickSettings;
+  paddingStart?: number;
+  paddingEnd?: number;
+  [key: string]: unknown;
+}
+
+interface TickInput {
+  settings: Settings;
+  distance: number;
+  scale: any;
+  formatter: any;
+}
+
 describe('Tick generators', () => {
-  let settings;
-  let scale;
-  const d3formatter = formatter('d3-number')('');
-  let input;
+  let settings: Settings;
+  let scale: any;
+  const d3formatter: any = formatter('d3-number')('') as any;
+  let input: TickInput;
 
   describe('continuous tick generator', () => {
     beforeEach(() => {
@@ -30,9 +58,9 @@ describe('Tick generators', () => {
     describe('formatting', () => {
       it('should output ticks in the correct format', () => {
         settings.ticks.count = 2;
-        input.formatter = formatter('d3-number')('-1.0%');
-        const ticks = scale.ticks(input);
-        [{ label: '0%' }, { label: '50%' }, { label: '100%' }].forEach((e, i) => {
+        input.formatter = formatter('d3-number')('-1.0%') as any;
+        const ticks = scale.ticks(input as any);
+        [{ label: '0%' }, { label: '50%' }, { label: '100%' }].forEach((e: any, i: any) => {
           expect(ticks[i].label).to.equal(e.label);
         });
       });
@@ -41,7 +69,7 @@ describe('Tick generators', () => {
     describe('by values', () => {
       it('should generate ticks by values', () => {
         settings.ticks.values = [0.1, 0.3];
-        const ticks = scale.ticks(input);
+        const ticks = scale.ticks(input as any);
         [
           { position: 0.1, start: 0.1, end: 0.1 },
           { position: 0.3, start: 0.3, end: 0.3 },
@@ -54,7 +82,7 @@ describe('Tick generators', () => {
 
       it('should generate ticks from objects', () => {
         settings.ticks.values = [{ value: 0.1, start: 0, end: 0.2 }, 0.3];
-        const ticks = scale.ticks(input);
+        const ticks = scale.ticks(input as any);
         [
           { position: 0.1, start: 0, end: 0.2 },
           { position: 0.3, start: 0.3, end: 0.3 },
@@ -75,7 +103,7 @@ describe('Tick generators', () => {
           },
           0.3,
         ];
-        const ticks = scale.ticks(input);
+        const ticks = scale.ticks(input as any);
         [
           {
             position: 0.1,
@@ -97,7 +125,7 @@ describe('Tick generators', () => {
           { value: 0.1, start: 0, end: 0.2 },
           { start: 0.3, end: 0.5 },
         ];
-        const ticks = scale.ticks(input);
+        const ticks = scale.ticks(input as any);
         [{ position: 0.1, start: 0, end: 0.2 }].forEach((e, i) => {
           expect(ticks[i].position).to.equal(e.position);
           expect(ticks[i].start).to.equal(e.start);
@@ -107,7 +135,7 @@ describe('Tick generators', () => {
 
       it('should filter out NaN values', () => {
         settings.ticks.values = [0.1, NaN, '12', 'asd', false, 0.3];
-        const ticks = scale.ticks(input);
+        const ticks = scale.ticks(input as any);
         [0.1, 0.3].forEach((e, i) => {
           expect(ticks[i].value).to.equal(e);
         });
@@ -115,7 +143,7 @@ describe('Tick generators', () => {
 
       it('should only generate ticks by values that are within the domain', () => {
         settings.ticks.values = [-100, -0.1, 0.1, 0.3, 1.1, 123, 2130];
-        const ticks = scale.ticks(input);
+        const ticks = scale.ticks(input as any);
         [0.1, 0.3].forEach((e, i) => {
           expect(ticks[i].value).to.equal(e);
         });
@@ -123,21 +151,21 @@ describe('Tick generators', () => {
 
       it('should only generate unique ticks by values', () => {
         settings.ticks.values = [0.1, 0.1, 0.3, 0.4, 0.3, 0.5];
-        const ticks = scale.ticks(input);
-        expect(ticks.map((t) => t.value)).to.deep.equal([0.1, 0.3, 0.4, 0.5]);
+        const ticks = scale.ticks(input as any);
+        expect(ticks.map((t: any) => t.value)).to.deep.equal([0.1, 0.3, 0.4, 0.5]);
       });
 
       it('should sort ticks by values', () => {
         settings.ticks.values = [0.3, 0.1, 0.5, 0.4];
-        const ticks = scale.ticks(input);
-        expect(ticks.map((t) => t.value)).to.deep.equal([0.1, 0.3, 0.4, 0.5]);
+        const ticks = scale.ticks(input as any);
+        expect(ticks.map((t: any) => t.value)).to.deep.equal([0.1, 0.3, 0.4, 0.5]);
       });
     });
 
     describe('by count', () => {
       it('should generate ticks by count', () => {
         settings.ticks.count = 3;
-        const ticks = scale.ticks(input);
+        const ticks = scale.ticks(input as any);
         expect(ticks.length).to.deep.equal(3);
         [0, 0.5, 1].forEach((e, i) => {
           expect(ticks[i].position).to.equal(e);
@@ -149,7 +177,7 @@ describe('Tick generators', () => {
       it('should generate ticks by count with minor ticks', () => {
         settings.ticks.count = 5;
         settings.minorTicks.count = 1;
-        const ticks = scale.ticks(input);
+        const ticks = scale.ticks(input as any);
         expect(ticks.length).to.equal(11);
         expect(ticks.filter((t) => t.isMinor).length).to.equal(5);
       });
@@ -157,7 +185,7 @@ describe('Tick generators', () => {
 
     describe('by distance', () => {
       it('should generate ticks by distance', () => {
-        const ticks = scale.ticks(input);
+        const ticks = scale.ticks(input as any);
         [0, 0.5, 1].forEach((e, i) => {
           expect(ticks[i].position).to.equal(e);
           expect(ticks[i].start).to.equal(e);
@@ -167,7 +195,7 @@ describe('Tick generators', () => {
 
       it('should generate tight ticks by distance', () => {
         settings.ticks.tight = true;
-        const ticks = scale.ticks(input);
+        const ticks = scale.ticks(input as any);
         expect(ticks[0].position).to.equal(scale.range()[0]);
         expect(ticks[ticks.length - 1].position).to.equal(scale.range()[1]);
         [0, 0.5, 1].forEach((e, i) => {
@@ -180,19 +208,19 @@ describe('Tick generators', () => {
       it('should generate tight ticks by a custom distance', () => {
         settings.ticks.tight = true;
         settings.ticks.distance = 20;
-        const ticks = scale.ticks(input);
+        const ticks = scale.ticks(input as any);
         expect(ticks).to.be.of.length(6);
       });
 
       it('should generate loose ticks by a custom distance', () => {
         settings.ticks.distance = 20;
-        const ticks = scale.ticks(input);
+        const ticks = scale.ticks(input as any);
         expect(ticks).to.be.of.length(6);
       });
 
       it('should generate ticks by distance with minor ticks', () => {
         settings.minorTicks.count = 1;
-        const ticks = scale.ticks(input);
+        const ticks = scale.ticks(input as any);
         expect(ticks.length).to.equal(5);
         expect(ticks.filter((t) => t.isMinor).length).to.equal(2);
       });
@@ -203,7 +231,7 @@ describe('Tick generators', () => {
         settings.ticks.tight = false;
         settings.ticks.forceBounds = true;
         scale.domain([-99, 99]);
-        const ticks = scale.ticks(input);
+        const ticks = scale.ticks(input as any);
         const majorTicks = ticks.filter((t) => !t.isMinor);
 
         expect(majorTicks[0]).to.deep.equal({
@@ -231,7 +259,7 @@ describe('Tick generators', () => {
           count: 3, // Should trigger minorTicks on -50 and 450, those should be replace by major ticks
         };
         scale.domain([-50, 450]);
-        const ticks = scale.ticks(input);
+        const ticks = scale.ticks(input as any);
         const majorTicks = ticks.filter((t) => !t.isMinor);
 
         expect(majorTicks[0]).to.deep.equal({
@@ -262,7 +290,7 @@ describe('Tick generators', () => {
 
     describe('unitDivider', () => {
       it('should use fallback divider if unitDivider is not a number', () => {
-        ['3', 'asd', null, false, true, NaN, () => {}, undefined, ' ', {}].forEach((type) => {
+        ['3', 'asd', null, false, true, NaN, () => {}, undefined, ' ', {}].forEach((type: any) => {
           looseDistanceBasedGenerator({ distance: 100, unitDivider: type, scale });
           expect(scale.ticks).to.have.been.calledWith(2);
         });
@@ -291,7 +319,7 @@ describe('Tick generators', () => {
 
     describe('distance', () => {
       it('should handle if distance is not a number', () => {
-        ['3', 'asd', null, false, true, NaN, () => {}, undefined, ' ', {}].forEach((type) => {
+        ['3', 'asd', null, false, true, NaN, () => {}, undefined, ' ', {}].forEach((type: any) => {
           looseDistanceBasedGenerator({ distance: type, scale });
           expect(scale.ticks).to.have.been.calledWith(2);
         });
@@ -320,7 +348,7 @@ describe('Tick generators', () => {
   });
 
   describe('discrete tick generator', () => {
-    let data;
+    let data: any;
 
     beforeEach(() => {
       data = ['d1', 'd2', 'd3'];

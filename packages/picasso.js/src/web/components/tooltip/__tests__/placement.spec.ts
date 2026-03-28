@@ -1,17 +1,32 @@
 import placement, { calcOffset } from '../placement';
 
-class RectMock {
-  [key: string]: any;
-  constructor() {
-    this.x = 0;
-    this.y = 0;
-    this.width = 100;
-    this.height = 100;
-    this.margin = { left: 0, top: 0 };
-    this.scaleRatio = { x: 1, y: 1 };
-  }
+interface RectSize {
+  left: number;
+  top: number;
+}
 
-  get computedInner() {
+interface ScaleRatio {
+  x: number;
+  y: number;
+}
+
+interface ComputedInner {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+class RectMock {
+  [key: string]: unknown;
+  x: number = 0;
+  y: number = 0;
+  width: number = 100;
+  height: number = 100;
+  margin: RectSize = { left: 0, top: 0 };
+  scaleRatio: ScaleRatio = { x: 1, y: 1 };
+
+  get computedInner(): ComputedInner {
     return {
       x: this.margin.left + this.x * this.scaleRatio.x,
       y: this.margin.top + this.y * this.scaleRatio.y,
@@ -21,10 +36,55 @@ class RectMock {
   }
 }
 
+interface PointerState {
+  x: number;
+  y: number;
+  dx: number;
+  dy: number;
+  clientX?: number;
+  clientY?: number;
+  targetBounds: { left?: number; top?: number; x?: number; y?: number; width?: number; height?: number };
+}
+
+interface TooltipContextState {
+  activeNodes: Array<Record<string, unknown>>;
+  pointer: PointerState;
+  targetElement: {
+    getBoundingClientRect: () => Record<string, number>;
+  };
+}
+
+interface TooltipContext {
+  chart: Record<string, unknown>;
+  props: Record<string, unknown>;
+  state: TooltipContextState;
+}
+
+interface SizeValue {
+  width: number;
+  height: number;
+}
+
+interface ComponentMock {
+  key: string;
+  rect: RectMock;
+}
+
+declare global {
+  namespace NodeJS {
+    interface Global {
+      window?: {
+        innerWidth?: number;
+        innerHeight?: number;
+      };
+    }
+  }
+}
+
 describe('placement', () => {
-  let context;
-  let size;
-  let componentMock;
+  let context: TooltipContext;
+  let size: SizeValue;
+  let componentMock: ComponentMock;
 
   beforeEach(() => {
     componentMock = {
@@ -68,10 +128,11 @@ describe('placement', () => {
     global.window ??= {
       innerWidth: 500,
       innerHeight: 500,
-    } as any;
+    } as unknown as Window & typeof globalThis;
   });
 
   afterEach(() => {
+    // @ts-expect-error - deleting global property
     delete global.window;
   });
 

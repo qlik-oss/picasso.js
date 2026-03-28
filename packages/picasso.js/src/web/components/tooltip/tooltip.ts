@@ -32,7 +32,7 @@ const DEFAULT_SETTINGS = {
    * @example
    * filter: (nodes) => nodes.filter((node) => node.data && typeof node.data.value !== 'undefined')
    */
-  filter: (nodes) => nodes.filter((node) => node.data && typeof node.data.value !== 'undefined'),
+  filter: (nodes: SceneNode[]): SceneNode[] => nodes.filter((node: SceneNode) => node.data && typeof (node.data as any).value !== 'undefined'),
   /**
    * Callback function called for each node to extract data. Can return any type.
    * @type {function=}
@@ -43,7 +43,7 @@ const DEFAULT_SETTINGS = {
    * @example
    * (ctx) => ctx.node.data.value
    */
-  extract: (ctx) => ctx.node.data.value,
+  extract: (ctx: any): any => (ctx.node.data as any).value,
   /**
    * Callback function to generate content. Should return an array of Virtual DOM Elements.
    * @type {function=}
@@ -55,7 +55,7 @@ const DEFAULT_SETTINGS = {
    * @example
    * ({ h, data }) => data.map((datum) => h('div', {}, datum))
    */
-  content: ({ h, data }) => data.map((datum) => h('div', {}, datum)),
+  content: ({ h, data }: any): any[] => (data as any[]).map((datum: any) => h('div', {}, datum)),
   /**
    * Comparison function. If evaluted to true, the incoming nodes in the `show` event are ignored. If evaluated to false, any active tooltip is cleared and a new tooltip is queued.
    *
@@ -66,10 +66,10 @@ const DEFAULT_SETTINGS = {
    * @param {SceneNode[]} curr Current array of SceneNodes
    * @returns {boolean}
    */
-  isEqual: (prev, curr) =>
+  isEqual: (prev: SceneNode[], curr: SceneNode[]): boolean =>
     prev.length &&
     prev.length === curr.length &&
-    prev.every((p, i) => curr[i] && JSON.stringify(p.data) === JSON.stringify(curr[i].data)),
+    prev.every((p: SceneNode, i: number) => curr[i] && JSON.stringify(p.data) === JSON.stringify(curr[i].data)),
   /**
    * @typedef {object=}
    */
@@ -200,15 +200,15 @@ const DEFAULT_STYLE = {
   },
 };
 
-function toPoint(event, { chart, state }) {
+function toPoint(event: Event, { chart, state }: { chart: any; state: any }): Record<string, any> {
   let x = 0;
   let y = 0;
-  if (event.center) {
-    x += event.center.x;
-    y += event.center.y;
+  if ((event as any).center) {
+    x += (event as any).center.x;
+    y += (event as any).center.y;
   } else {
-    x += event.clientX;
-    y += event.clientY;
+    x += (event as any).clientX;
+    y += (event as any).clientY;
   }
   // TODO Don't do getBoundingClientRect lookup here. It's performance heavy.
   const chartBounds = chart.element.getBoundingClientRect();
@@ -235,7 +235,7 @@ function toPoint(event, { chart, state }) {
   };
 }
 
-const component = {
+const component: any = {
   require: ['chart', 'renderer'],
   defaultSettings: {
     settings: DEFAULT_SETTINGS,
@@ -243,22 +243,22 @@ const component = {
   },
   renderer: 'dom',
   on: {
-    hide() {
+    hide(): void {
       this.hide();
     },
-    show(event: Event, opts: Record<string, unknown> = {}) {
+    show(event: Event, opts: Record<string, unknown> = {}): void {
       this.show(event, opts as { nodes?: SceneNode[]; duration?: number; delay?: number });
     },
-    prevent(p) {
+    prevent(p: any): void {
       this.prevent(p);
     },
   },
-  hide() {
+  hide(): void {
     this.dispatcher.clear();
     this.state.activeNodes = [];
     this.state.pointer = {};
   },
-  show(event, { nodes, duration, delay }: { nodes?: SceneNode[]; duration?: number; delay?: number } = {}) {
+  show(event: Event, { nodes, duration, delay }: { nodes?: SceneNode[]; duration?: number; delay?: number } = {}): void {
     if (this.state.prevent || !this.state.targetElement) {
       return;
     }
@@ -289,10 +289,10 @@ const component = {
       this.dispatcher.invoke(() => this.invokeRenderer(this.state.activeNodes), duration, delay);
     }
   },
-  prevent(p) {
+  prevent(p: any): void {
     this.state.prevent = !!p;
   },
-  init(settings) {
+  init(settings: any): void {
     this.state = {
       activeNodes: [],
       pointer: {},
@@ -312,7 +312,7 @@ const component = {
       setActive(instanceId);
 
       if (typeof this.props.beforeShow === 'function') {
-        this.props.beforeShow.call(undefined, {
+        (this.props.beforeShow as Function).call(undefined, {
           resources: {
             formatter: this.chart.formatter,
             scale: this.chart.scale,
@@ -330,17 +330,17 @@ const component = {
       };
 
       if (typeof this.props.beforeHide === 'function') {
-        this.props.beforeHide.call(undefined, extend({ element: this.state.tooltipElm }, listenerCtx));
+        (this.props.beforeHide as Function).call(undefined, extend({ element: this.state.tooltipElm }, listenerCtx));
       }
 
       if (typeof this.props.onHide === 'function') {
-        this.props.onHide.call(undefined, extend({ element: this.state.tooltipElm }, listenerCtx));
+        (this.props.onHide as Function).call(undefined, extend({ element: this.state.tooltipElm }, listenerCtx));
       } else {
         this.renderer.clear([]); // Hide tooltip
       }
 
       if (typeof this.props.afterHide === 'function') {
-        this.props.afterHide.call(undefined, listenerCtx);
+        (this.props.afterHide as Function).call(undefined, listenerCtx);
       }
 
       removeActive(instanceId);
@@ -349,7 +349,7 @@ const component = {
 
     this.dispatcher.on('active', () => {
       if (typeof this.props.afterShow === 'function') {
-        this.props.afterShow.call(undefined, {
+        (this.props.afterShow as Function).call(undefined, {
           element: this.state.tooltipElm,
           resources: {
             formatter: this.chart.formatter,
@@ -359,29 +359,29 @@ const component = {
       }
     });
   },
-  created() {
+  created(): void {
     this.init(this.settings);
   },
-  beforeUpdate({ settings }) {
+  beforeUpdate({ settings }: { settings: any }): void {
     if (this.dispatcher) {
       this.dispatcher.destroy();
       remove();
     }
     this.init(settings);
   },
-  render(h) {
+  render(h: any): any[] {
     this.h = h;
     return []; // Nothing to render initially.
   },
-  beforeDestroy() {
+  beforeDestroy(): void {
     this.dispatcher.destroy();
     remove();
   },
-  appendTo() {
+  appendTo(): void {
     if (this.props.appendTo) {
       this.state.targetElement =
         typeof this.props.appendTo === 'function'
-          ? this.props.appendTo({
+          ? (this.props.appendTo as Function)({
               resources: {
                 formatter: this.chart.formatter,
                 scale: this.chart.scale,
@@ -396,14 +396,14 @@ const component = {
       this.state.targetElement = this.renderer.element();
     }
   },
-  mounted() {
+  mounted(): void {
     this.appendTo();
   },
-  updated() {
+  updated(): void {
     // Append here to, otherwise the picasso displayOrder logic screw things up
     this.appendTo();
   },
-  invokeRenderer(nodes) {
+  invokeRenderer(nodes: SceneNode[]): void {
     const items = extractor(nodes, this);
     const pseudoElement = render(items, { style: { left: '0px', top: '0px', visibility: 'hidden' } }, this);
     const pos = placement(pseudoElement.getBoundingClientRect(), this);

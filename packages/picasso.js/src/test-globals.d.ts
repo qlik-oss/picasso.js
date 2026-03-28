@@ -1,9 +1,13 @@
 /* eslint-disable */
 declare global {
   // eslint-disable-next-line no-var
-  var sinon: any;
+  var sinon: typeof import('sinon');
   // eslint-disable-next-line no-var
   var global: typeof globalThis;
+  // eslint-disable-next-line no-var
+  var expect: typeof import('chai').expect;
+  // eslint-disable-next-line no-var
+  var chai: typeof import('chai');
 
   namespace jest {
     interface Matchers<R, T = {}> {

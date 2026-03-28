@@ -2,9 +2,18 @@ import Rect, { create as createRect } from '../rect';
 import GeoRect from '../../../geometry/rect';
 import GeoCircle from '../../../geometry/circle';
 
+interface Shape {
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+  transform?: string;
+  collider?: { type: string | null };
+}
+
 describe('Rect', () => {
-  let rect;
-  let shape;
+  let rect: Rect;
+  let shape: Shape;
 
   beforeEach(() => {
     shape = {

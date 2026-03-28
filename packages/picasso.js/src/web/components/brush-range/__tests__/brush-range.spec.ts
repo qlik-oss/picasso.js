@@ -6,19 +6,56 @@ import linearScale from '../../../../core/scales/linear';
 import bandScale from '../../../../core/scales/band';
 import brushFactory from '../../../../core/brush';
 
+interface Size {
+  inner: { x: number; y: number; width: number; height: number };
+  outer: { x: number; y: number; width: number; height: number };
+}
+
+interface StyleObject extends Record<string, unknown> {
+  position?: string;
+  borderRadius?: string;
+  border?: string;
+  backgroundColor?: string;
+  padding?: string;
+  textAlign?: string;
+  overflow?: string;
+  textOverflow?: string;
+  whiteSpace?: string;
+  maxWidth?: string;
+  minWidth?: string;
+  minHeight?: string;
+  pointerEvents?: string;
+  transform?: string;
+  fontSize?: string;
+  fontFamily?: string;
+  color?: string;
+  cursor?: string;
+  height?: string;
+  width?: string;
+  left?: string;
+  top?: string;
+  right?: string;
+  bottom?: string;
+}
+
+interface BrushConfig {
+  settings: Record<string, unknown>;
+}
+
 describe('Brush Range', () => {
-  let componentFixture;
-  let instance;
-  let config;
-  let rendererOutput;
-  let chartMock;
-  let theme;
-  let sandbox;
-  let size;
-  let bubbleStyle;
-  let rootBubbleStyle;
-  let edgeStyle;
-  let rootEdgeStyle;
+  let componentFixture: unknown;
+  let instance: unknown;
+  let config: BrushConfig;
+  let rendererOutput: unknown;
+  let chartMock: unknown;
+  let theme: unknown;
+  // @ts-expect-error - Sinon types provided globally in test environment
+  let sandbox: SinonSandbox;
+  let size: Size;
+  let bubbleStyle: StyleObject;
+  let rootBubbleStyle: StyleObject;
+  let edgeStyle: StyleObject;
+  let rootEdgeStyle: StyleObject;
 
   beforeEach(() => {
     size = {
@@ -48,15 +85,15 @@ describe('Brush Range', () => {
       },
     };
 
-    sandbox = componentFixture.sandbox();
-    chartMock = componentFixture.mocks().chart;
-    chartMock.shapesAt = sandbox.stub().returns([]);
-    chartMock.brushFromShapes = sandbox.stub();
+    sandbox = (componentFixture as any).sandbox();
+    chartMock = (componentFixture as any).mocks().chart;
+    (chartMock as any).shapesAt = sandbox.stub().returns([]);
+    (chartMock as any).brushFromShapes = sandbox.stub();
     chartMock.brush = sandbox.stub().returns(brushFactory());
-    componentFixture.mocks().renderer.renderArgs = [vDomMock];
+    (componentFixture as any).mocks().renderer.renderArgs = [vDomMock];
 
-    theme = componentFixture.mocks().theme;
-    theme.style.returns({
+    theme = (componentFixture as any).mocks().theme;
+    (theme as Record<string, unknown>).style = (): unknown => ({
       line: {
         stroke: 'rgba(50, 50, 50, 0.8)',
       },
@@ -122,7 +159,9 @@ describe('Brush Range', () => {
   });
 
   afterEach(() => {
+    // @ts-expect-error - deleting global property
     delete global.document.elementFromPoint;
+    // @ts-expect-error - deleting global property
     delete global.document.createElement;
   });
 
@@ -130,20 +169,20 @@ describe('Brush Range', () => {
     beforeEach(() => {
       const scale = bandScale();
       scale.type = 'band';
-      chartMock.scale = sandbox.stub().returns(scale);
+      (chartMock as any).scale = sandbox.stub().returns(scale);
     });
 
     describe('horizontal', () => {
       beforeEach(() => {
-        instance = componentFixture.simulateCreate(brushRange, config);
-        componentFixture.simulateRender(size);
-        instance.def.start({ center: { x: 0, y: 0 }, deltaX: 0, deltaY: 0 });
-        instance.def.move({ center: { x: 100, y: 0 }, deltaX: 0, deltaY: 0 });
-        rendererOutput = componentFixture.getRenderOutput();
+        instance = (componentFixture as any).simulateCreate(brushRange, config);
+        (componentFixture as any).simulateRender(size);
+        (instance as any).def.start({ center: { x: 0, y: 0 }, deltaX: 0, deltaY: 0 });
+        (instance as any).def.move({ center: { x: 100, y: 0 }, deltaX: 0, deltaY: 0 });
+        rendererOutput = (componentFixture as any).getRenderOutput();
       });
 
       it('left edge node correctly', () => {
-        const edgeLeft = rendererOutput[0];
+        const edgeLeft = (rendererOutput as any)[0];
 
         // Work-around to deal with deep equal on objects with functions
         expect(edgeLeft.data.onmouseover).to.be.a('function');
@@ -177,7 +216,7 @@ describe('Brush Range', () => {
         delete edgeStyle.top;
         delete edgeStyle.left;
         rootEdgeStyle.left = '95px';
-        const edgeRight = rendererOutput[1];
+        const edgeRight = (rendererOutput as any)[1];
 
         // Work-around to deal with deep equal on objects with functions
         expect(edgeRight.data.onmouseover).to.be.a('function');
@@ -206,7 +245,7 @@ describe('Brush Range', () => {
       });
 
       it('left bubble node correctly', () => {
-        const bubbleLeft = rendererOutput[2];
+        const bubbleLeft = (rendererOutput as any)[2];
         const expectedBubbleLeft = {
           sel: 'div',
           data: {
@@ -232,7 +271,7 @@ describe('Brush Range', () => {
 
       it('right bubble node correctly', () => {
         rootBubbleStyle.left = '100px';
-        const bubbleRight = rendererOutput[3];
+        const bubbleRight = (rendererOutput as any)[3];
         const expectedBubbleRight = {
           sel: 'div',
           data: {
@@ -270,20 +309,20 @@ describe('Brush Range', () => {
           } as any,
         ],
       });
-      chartMock.scale = sandbox.stub().returns(scale);
+      (chartMock as any).scale = sandbox.stub().returns(scale);
     });
 
     describe('on render', () => {
       it('should return empty when not observed nor brushed from this component', () => {
-        instance = componentFixture.simulateCreate(brushRange, config);
-        chartMock.brush().setRange('foo', { min: 0, max: 10 });
-        componentFixture.simulateRender(size);
-        rendererOutput = componentFixture.getRenderOutput();
+        instance = (componentFixture as any).simulateCreate(brushRange, config);
+        (chartMock as any).brush().setRange("foo", { min: 0, max: 10 });
+        (componentFixture as any).simulateRender(size);
+        rendererOutput = (componentFixture as any).getRenderOutput();
         expect(rendererOutput.length).to.equal(0);
       });
 
       it('should return nodes from existing brush when observed', () => {
-        instance = componentFixture.simulateCreate(brushRange, {
+        instance = (componentFixture as any).simulateCreate(brushRange, {
           settings: {
             scale: 'a',
             direction: 'horizontal',
@@ -293,24 +332,24 @@ describe('Brush Range', () => {
             },
           },
         });
-        chartMock.brush().setRange('foo', { min: 0, max: 10 });
-        componentFixture.simulateRender(size);
-        rendererOutput = componentFixture.getRenderOutput();
+        (chartMock as any).brush().setRange("foo", { min: 0, max: 10 });
+        (componentFixture as any).simulateRender(size);
+        rendererOutput = (componentFixture as any).getRenderOutput();
         expect(rendererOutput.length).to.equal(1);
       });
     });
 
     describe('horizontal', () => {
       beforeEach(() => {
-        instance = componentFixture.simulateCreate(brushRange, config);
-        componentFixture.simulateRender(size);
-        instance.def.start({ center: { x: 0, y: 0 }, deltaX: 0, deltaY: 0 });
-        instance.def.move({ center: { x: 100, y: 0 }, deltaX: 0, deltaY: 0 });
-        rendererOutput = componentFixture.getRenderOutput();
+        instance = (componentFixture as any).simulateCreate(brushRange, config);
+        (componentFixture as any).simulateRender(size);
+        (instance as any).def.start({ center: { x: 0, y: 0 }, deltaX: 0, deltaY: 0 });
+        (instance as any).def.move({ center: { x: 100, y: 0 }, deltaX: 0, deltaY: 0 });
+        rendererOutput = (componentFixture as any).getRenderOutput();
       });
 
       it('left edge node correctly', () => {
-        const edgeLeft = rendererOutput[0];
+        const edgeLeft = (rendererOutput as any)[0];
 
         // Work-around to deal with deep equal on objects with functions
         expect(edgeLeft.data.onmouseover).to.be.a('function');
@@ -344,7 +383,7 @@ describe('Brush Range', () => {
         delete edgeStyle.top;
         delete edgeStyle.left;
         rootEdgeStyle.left = '95px';
-        const edgeRight = rendererOutput[1];
+        const edgeRight = (rendererOutput as any)[1];
 
         // Work-around to deal with deep equal on objects with functions
         expect(edgeRight.data.onmouseover).to.be.a('function');
@@ -373,7 +412,7 @@ describe('Brush Range', () => {
       });
 
       it('left bubble node correctly', () => {
-        const bubbleLeft = rendererOutput[2];
+        const bubbleLeft = (rendererOutput as any)[2];
         const expectedBubbleLeft = {
           sel: 'div',
           data: {
@@ -399,7 +438,7 @@ describe('Brush Range', () => {
 
       it('right bubble node correctly', () => {
         rootBubbleStyle.left = '100px';
-        const bubbleRight = rendererOutput[3];
+        const bubbleRight = (rendererOutput as any)[3];
         const expectedBubbleRight = {
           sel: 'div',
           data: {
@@ -427,11 +466,11 @@ describe('Brush Range', () => {
     describe('vertical', () => {
       beforeEach(() => {
         config.settings.direction = 'vertical';
-        instance = componentFixture.simulateCreate(brushRange, config);
-        componentFixture.simulateRender(size);
-        instance.def.start({ center: { x: 0, y: 0 }, deltaX: 0, deltaY: 0 });
-        instance.def.move({ center: { x: 0, y: 150 }, deltaX: 0, deltaY: 0 });
-        rendererOutput = componentFixture.getRenderOutput();
+        instance = (componentFixture as any).simulateCreate(brushRange, config);
+        (componentFixture as any).simulateRender(size);
+        (instance as any).def.start({ center: { x: 0, y: 0 }, deltaX: 0, deltaY: 0 });
+        (instance as any).def.move({ center: { x: 0, y: 150 }, deltaX: 0, deltaY: 0 });
+        rendererOutput = (componentFixture as any).getRenderOutput();
 
         edgeStyle.width = '100%';
         edgeStyle.height = '1px';
@@ -441,7 +480,7 @@ describe('Brush Range', () => {
         rootEdgeStyle.cursor = 'ns-resize';
         rootEdgeStyle.height = '5px';
         rootEdgeStyle.width = '100%';
-        const edgeTop = rendererOutput[0];
+        const edgeTop = (rendererOutput as any)[0];
 
         // Work-around to deal with deep equal on objects with functions
         expect(edgeTop.data.onmouseover).to.be.a('function');
@@ -478,7 +517,7 @@ describe('Brush Range', () => {
         rootEdgeStyle.height = '5px';
         rootEdgeStyle.width = '100%';
         rootEdgeStyle.top = '145px';
-        const edgeBottom = rendererOutput[1];
+        const edgeBottom = (rendererOutput as any)[1];
 
         // Work-around to deal with deep equal on objects with functions
         expect(edgeBottom.data.onmouseover).to.be.a('function');
@@ -511,7 +550,7 @@ describe('Brush Range', () => {
         bubbleStyle.cursor = 'ns-resize';
         rootBubbleStyle.top = '0px';
         rootBubbleStyle.left = '0';
-        const bubbleTop = rendererOutput[2];
+        const bubbleTop = (rendererOutput as any)[2];
         const expectedBubbleTop = {
           sel: 'div',
           data: {
@@ -540,7 +579,7 @@ describe('Brush Range', () => {
         bubbleStyle.cursor = 'ns-resize';
         rootBubbleStyle.top = '150px';
         rootBubbleStyle.left = '0';
-        const bubbleBottom = rendererOutput[3];
+        const bubbleBottom = (rendererOutput as any)[3];
         const expectedBubbleBottom = {
           sel: 'div',
           data: {

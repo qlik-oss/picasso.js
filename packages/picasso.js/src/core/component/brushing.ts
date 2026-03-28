@@ -6,8 +6,8 @@ import { isTouchEvent } from '../utils/event-type';
  * @param {array} nodes
  * @ignore
  */
-export function reduceToLeafNodes(nodes = []) {
-  return nodes.reduce((ary, node) => {
+export function reduceToLeafNodes(nodes: any[] = []): any[] {
+  return nodes.reduce((ary: any[], node: any) => {
     if (Array.isArray(node.children)) {
       ary.push(...reduceToLeafNodes(node.children));
       return ary;
@@ -17,12 +17,12 @@ export function reduceToLeafNodes(nodes = []) {
   }, []);
 }
 
-export function styler(obj, { context, data, style, filter, mode }) {
+export function styler(obj: any, { context, data, style, filter, mode }: { context: any; data: any; style: any; filter: any; mode: any }): any {
   const brusher = obj.chart.brush(context);
   const dataProps = data;
   const active = style.active || {};
   const inactive = style.inactive || {};
-  const styleProps = [];
+  const styleProps: any[] = [];
   Object.keys(active).forEach((key) => {
     styleProps.push(key);
   });
@@ -33,7 +33,7 @@ export function styler(obj, { context, data, style, filter, mode }) {
     }
   });
 
-  const activeNodes = [];
+  const activeNodes: any[] = [];
   let globalActivation = false; // track when we need to loop through all nodes, not just the active ones
 
   const getNodes = () => {
@@ -113,7 +113,7 @@ export function styler(obj, { context, data, style, filter, mode }) {
     return globalChanged;
   };
 
-  const onStart = (opts = { suppressRender: false }) => {
+  const onStart = (opts: { suppressRender?: boolean } = { suppressRender: false }): void => {
     const { suppressRender } = opts;
     const nodes = getNodes();
     const len = nodes.length;
@@ -137,7 +137,7 @@ export function styler(obj, { context, data, style, filter, mode }) {
     }
   };
 
-  const onEnd = (opts = { suppressRender: false }) => {
+  const onEnd = (opts: { suppressRender?: boolean } = { suppressRender: false }): void => {
     const { suppressRender } = opts;
     const nodes = getNodes();
     const len = nodes.length;
@@ -192,19 +192,19 @@ export function styler(obj, { context, data, style, filter, mode }) {
   };
 }
 
-export function brushDataPoints({ dataPoints, action, chart, trigger }) {
+export function brushDataPoints({ dataPoints, action, chart, trigger }: { dataPoints: any; action: any; chart: any; trigger: any }): void {
   if (!trigger) {
     return;
   }
 
   const dataProps = trigger.data || [''];
 
-  let rangeBrush = {
-    items: [],
+  let rangeBrush: any = {
+    items: [] as any[],
     actionFn: 'toggleRanges',
   };
-  let valueBrush = {
-    items: [],
+  let valueBrush: any = {
+    items: [] as any[],
     actionFn: 'toggleValues',
   };
 
@@ -218,7 +218,7 @@ export function brushDataPoints({ dataPoints, action, chart, trigger }) {
     if (!dataPoint) {
       continue;
     }
-    dataProps.forEach((p) => {
+    dataProps.forEach((p: any) => {
       let d = dataPoint && !p ? dataPoint : dataPoint[p];
       if (d) {
         let it: { key: string; [key: string]: unknown } = { key: d.source.field };
@@ -227,16 +227,16 @@ export function brushDataPoints({ dataPoints, action, chart, trigger }) {
         }
         if (Array.isArray(d.value)) {
           it.range = { min: d.value[0], max: d.value[1] };
-          rangeBrush.items.push(it);
+          rangeBrush.items.push(it as any);
         } else {
           it.value = d.value;
-          valueBrush.items.push(it);
+          valueBrush.items.push(it as any);
         }
       }
     });
   }
 
-  trigger.contexts.forEach((c) => {
+  trigger.contexts.forEach((c: any) => {
     if (rangeBrush.items.length) {
       chart.brush(c)[rangeBrush.actionFn](rangeBrush.items);
     } else {
@@ -245,7 +245,7 @@ export function brushDataPoints({ dataPoints, action, chart, trigger }) {
   });
 }
 
-export function brushFromSceneNodes({ nodes, action, chart, trigger }) {
+export function brushFromSceneNodes({ nodes, action, chart, trigger }: { nodes: any; action: any; chart: any; trigger: any }): void {
   const dataPoints = [];
   for (let i = 0; i < nodes.length; i++) {
     const node = nodes[i];
@@ -263,7 +263,7 @@ export function brushFromSceneNodes({ nodes, action, chart, trigger }) {
   });
 }
 
-export function resolveEvent({ collisions, t, config, action }) {
+export function resolveEvent({ collisions, t, config, action }: { collisions: any; t: any; config: any; action: any }): boolean {
   let brushCollisions = [];
   let resolved = false;
 
@@ -276,7 +276,7 @@ export function resolveEvent({ collisions, t, config, action }) {
     }
   }
 
-  const nodes = brushCollisions.map((c) => c.node);
+  const nodes = brushCollisions.map((c: any) => c.node);
   brushFromSceneNodes({
     nodes,
     action,
@@ -287,7 +287,7 @@ export function resolveEvent({ collisions, t, config, action }) {
   return resolved;
 }
 
-function touchSingleContactPoint(e, rect) {
+function touchSingleContactPoint(e: any, rect: any): { x: number; y: number } | null {
   if (e.changedTouches.length !== 1) {
     return null;
   }
@@ -298,14 +298,14 @@ function touchSingleContactPoint(e, rect) {
   };
 }
 
-function singleContactPoint(e, rect) {
+function singleContactPoint(e: any, rect: any): { x: number; y: number } {
   return {
     x: e.clientX - rect.left,
     y: e.clientY - rect.top,
   };
 }
 
-function resolveCollisions(e, t, renderer) {
+function resolveCollisions(e: any, t: any, renderer: any): any[] {
   const rect = renderer.element().getBoundingClientRect();
   let p: { x: number; y: number } | { cx: number; cy: number; r: number } | null = isTouchEvent(e)
     ? touchSingleContactPoint(e, rect)
@@ -318,14 +318,14 @@ function resolveCollisions(e, t, renderer) {
 
   if (t.touchRadius > 0 && isTouchEvent(e)) {
     p = {
-      cx: p.x,
-      cy: p.y,
+      cx: p!.x,
+      cy: p!.y,
       r: t.touchRadius, // TODO Use touch event radius/width value (Need to handle dpi scaling as well)
     };
   } else if (t.mouseRadius > 0 && !isTouchEvent(e)) {
     p = {
-      cx: p.x,
-      cy: p.y,
+      cx: p!.x,
+      cy: p!.y,
       r: t.mouseRadius,
     };
   }
@@ -333,7 +333,7 @@ function resolveCollisions(e, t, renderer) {
   return renderer.itemsAt(p);
 }
 
-function resolveAction(action, e, def) {
+function resolveAction(action: any, e: any, def: any): any {
   if (action) {
     if (typeof action === 'function') {
       return action(e);
@@ -343,7 +343,7 @@ function resolveAction(action, e, def) {
   return def;
 }
 
-export function resolveTapEvent({ e, t, config }) {
+export function resolveTapEvent({ e, t, config }: { e: any; t: any; config: any }): boolean {
   const collisions = resolveCollisions(e, t, config.renderer);
 
   return resolveEvent({
@@ -354,7 +354,7 @@ export function resolveTapEvent({ e, t, config }) {
   });
 }
 
-export function resolveOverEvent({ e, t, config }) {
+export function resolveOverEvent({ e, t, config }: { e: any; t: any; config: any }): boolean {
   const collisions = resolveCollisions(e, t, config.renderer);
 
   return resolveEvent({

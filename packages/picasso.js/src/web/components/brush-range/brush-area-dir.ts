@@ -3,15 +3,19 @@ import { startArea, moveArea, endArea } from './brush-range-interaction';
 import rangeCollection from '../../../core/brush/range-collection';
 import { TARGET_SIZE, VERTICAL, HORIZONTAL } from './brush-range-const';
 
-function render(state) {
+interface State {
+  [key: string]: any;
+}
+
+function render(state: State): void {
   state.renderer.render(nodes(state));
 }
 
-function ranges(state) {
+function ranges(state: State): { min: number; max: number }[] {
   return state.rc.ranges();
 }
 
-function shapesFromRange(state, brushRange) {
+function shapesFromRange(state: State, brushRange: { min: number; max: number }): any[] {
   const shapeAt = {
     x: state.direction ? brushRange.min + state.rect.x : state.rect.x,
     y: state.direction ? state.rect.y : brushRange.min + state.rect.y,
@@ -21,12 +25,12 @@ function shapesFromRange(state, brushRange) {
   return state.chart.shapesAt(shapeAt, state.settings.brush);
 }
 
-function brushFromShape(state, newShapes) {
+function brushFromShape(state: State, newShapes: any[]): void {
   state.chart.brushFromShapes(newShapes, state.settings.brush);
 }
 
-function setRanges(state) {
-  const rs = state.ranges.map((r) => ({ min: r.min, max: r.max }));
+function setRanges(state: State): void {
+  const rs = state.ranges.map((r: any) => ({ min: r.min, max: r.max }));
 
   if (state.active.idx !== -1) {
     if (state.active.mode === 'modify') {
@@ -46,15 +50,15 @@ function setRanges(state) {
 
   state.rc.set(rs);
 
-  let shapes = [];
-  rs.forEach((range) => {
+  let shapes: any[] = [];
+  rs.forEach((range: any) => {
     shapes = [...shapes, ...shapesFromRange(state, range)];
   });
 
   brushFromShape(state, shapes);
 }
 
-function getBubbleLabel(state, value, range) {
+function getBubbleLabel(state: State, value: number, range: number[]): string {
   const min = Math.min(...range);
   const max = Math.max(...range);
   const shapeAt = {
@@ -70,7 +74,7 @@ function getBubbleLabel(state, value, range) {
     return '-';
   }
 
-  const labelShape = shapes.reduce((s0, s1) => {
+  const labelShape = shapes.reduce((s0: any, s1: any) => {
     // Min value
     const bounds0 = s0.bounds;
     const bounds1 = s1.bounds;
@@ -92,7 +96,7 @@ function getBubbleLabel(state, value, range) {
     return s1;
   });
 
-  const compConfig = state.settings.brush.components.reduce((c0, c1) => (c0.key === labelShape.key ? c0 : c1));
+  const compConfig = state.settings.brush.components.reduce((c0: any, c1: any) => (c0.key === labelShape.key ? c0 : c1));
 
   if (typeof state.settings.bubbles.label === 'function') {
     return state.settings.bubbles.label(labelShape.data);
@@ -137,7 +141,7 @@ function getBubbleLabel(state, value, range) {
  * @property {number} [target.opacity]
  */
 
-const brushAreaDirectionalComponent = {
+const brushAreaDirectionalComponent: any = {
   require: ['chart', 'settings', 'renderer'],
   defaultSettings: {
     settings: {
@@ -154,25 +158,25 @@ const brushAreaDirectionalComponent = {
   },
   renderer: 'dom',
   on: {
-    areaStart(e) {
-      this.start(e);
+    areaStart(e: any): void {
+      (this as any).start(e);
     },
-    areaMove(e) {
-      this.move(e);
+    areaMove(e: any): void {
+      (this as any).move(e);
     },
-    areaEnd(e) {
-      this.end(e);
+    areaEnd(e: any): void {
+      (this as any).end(e);
     },
-    areaClear(e) {
-      this.clear(e);
+    areaClear(e: any): void {
+      (this as any).clear(e);
     },
   },
-  created() {
+  created(): void {
     this.state = {
       key: this.settings.key || 'brush-area-dir',
     };
   },
-  render(h) {
+  render(h: any): any[] {
     this.state.rect = this.rect;
 
     const stngs = this.settings.settings;
@@ -181,12 +185,12 @@ const brushAreaDirectionalComponent = {
     const offset = this.renderer.element().getBoundingClientRect();
 
     const targets = (stngs.target ? stngs.target.components || [stngs.target.component] : [])
-      .map((c) => this.chart.component(c))
-      .filter((c) => !!c && !!c.rect);
+      .map((c: any) => this.chart.component(c))
+      .filter((c: any) => !!c && !!c.rect);
 
     const targetRect = targets[0]
       ? targets.slice(1).reduce(
-          (prev, curr) => ({
+          (prev: any, curr: any) => ({
             x0: Math.min(prev.x0, curr.rect.x),
             y0: Math.min(prev.y0, curr.rect.y),
             x1: Math.max(prev.x1, curr.rect.x + curr.rect.width),
@@ -227,13 +231,13 @@ const brushAreaDirectionalComponent = {
       area: this.state.direction === VERTICAL ? 'height' : 'width',
     };
 
-    this.state.format = function getFormat(v, r) {
+    this.state.format = function getFormat(v: number, r: number[]): string {
       return getBubbleLabel(this, v, r);
     };
 
     return [];
   },
-  start(e) {
+  start(e: any): void {
     startArea({
       e,
       state: this.state,
@@ -242,14 +246,14 @@ const brushAreaDirectionalComponent = {
       targetSize: TARGET_SIZE,
     });
   },
-  end() {
+  end(): void {
     if (!this.state.started) {
       return;
     }
     endArea(this.state, ranges);
     render(this.state);
   },
-  move(e) {
+  move(e: any): void {
     if (!this.state.started) {
       return;
     }
@@ -257,7 +261,7 @@ const brushAreaDirectionalComponent = {
     setRanges(this.state);
     render(this.state);
   },
-  clear() {
+  clear(): void {
     if (this.state.rc) {
       this.state.rc.clear();
     }

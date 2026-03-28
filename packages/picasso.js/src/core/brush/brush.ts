@@ -27,6 +27,14 @@ export interface BrushRangeItem {
   ranges?: Array<{ min: number; max: number }>;
 }
 
+interface ValueCollection {
+  add(value: string | number): boolean;
+  remove(value: string | number): boolean;
+  contains(value: string | number): boolean;
+  values(): Array<string | number>;
+  toString(): string;
+}
+
 /**
  * @typedef {object} BrushConfig
  * @property {Array<BrushConfig~Ranges>} [ranges] - Range configurations
@@ -52,18 +60,35 @@ const DEFAULT_RANGE_CONFIG = {
   includeMax: true,
 };
 
-function add({ items, collection, vc }) {
-  const changedMap = {};
-  const changed = [];
-  let key;
-  let values;
+interface AddCollectionParams {
+  items: BrushItem[];
+  collection: Record<string, ValueCollection>;
+  vc: () => ValueCollection;
+}
+
+interface ChangedItem {
+  id: string;
+  values: Array<string | number>;
+}
+
+function add({ items, collection, vc }: AddCollectionParams): ChangedItem[] {
+  const changedMap: Record<string, Array<string | number>> = {};
+  const changed: ChangedItem[] = [];
+  let key: string;
+  let values: Array<string | number> = [];
 
   for (let i = 0, num = items.length; i < num; i++) {
     key = items[i].key;
     if (!collection[key]) {
       collection[key] = vc();
     }
-    values = items[i].values || [items[i].value];
+    if (items[i].values !== undefined) {
+      values = items[i].values || [];
+    } else if (items[i].value !== undefined) {
+      values = [items[i].value!];
+    } else {
+      values = [];
+    }
     for (let vi = 0; vi < values.length; vi++) {
       if (collection[key].add(values[vi])) {
         changedMap[key] = changedMap[key] || [];
@@ -81,18 +106,29 @@ function add({ items, collection, vc }) {
   return changed;
 }
 
-function remove({ items, collection }) {
-  const changedMap = {};
-  const changed = [];
-  let key;
-  let values;
+interface RemoveCollectionParams {
+  items: BrushItem[];
+  collection: Record<string, ValueCollection>;
+}
+
+function remove({ items, collection }: RemoveCollectionParams): ChangedItem[] {
+  const changedMap: Record<string, Array<string | number>> = {};
+  const changed: ChangedItem[] = [];
+  let key: string;
+  let values: Array<string | number> = [];
 
   for (let i = 0, num = items.length; i < num; i++) {
     key = items[i].key;
     if (!collection[key]) {
       continue;
     }
-    values = items[i].values || [items[i].value];
+    if (items[i].values !== undefined) {
+      values = items[i].values || [];
+    } else if (items[i].value !== undefined) {
+      values = [items[i].value!];
+    } else {
+      values = [];
+    }
     for (let vi = 0; vi < values.length; vi++) {
       if (collection[key].remove(values[vi])) {
         changedMap[key] = changedMap[key] || [];
@@ -110,14 +146,24 @@ function remove({ items, collection }) {
   return changed;
 }
 
-function collectUnique(items) {
-  const filteredSet = {};
-  let key;
-  let values;
+interface FilteredSet {
+  [key: string]: Array<string | number>;
+}
+
+function collectUnique(items: BrushItem[]): FilteredSet {
+  const filteredSet: FilteredSet = {};
+  let key: string;
+  let values: Array<string | number> = [];
 
   for (let i = 0, num = items.length; i < num; i++) {
     key = items[i].key;
-    values = items[i].values || [items[i].value];
+    if (items[i].values !== undefined) {
+      values = items[i].values || [];
+    } else if (items[i].value !== undefined) {
+      values = [items[i].value!];
+    } else {
+      values = [];
+    }
     if (!filteredSet[key]) {
       filteredSet[key] = [];
     }
@@ -132,7 +178,15 @@ function collectUnique(items) {
   return filteredSet;
 }
 
-function createValueCollection({ key, collection, obj, fn, value }) {
+interface CreateValueCollectionParams {
+  key: string;
+  collection: Record<string, ValueCollection>;
+  obj: Record<string, Array<string | number>>;
+  fn: () => ValueCollection;
+  value: string | number;
+}
+
+function createValueCollection({ key, collection, obj, fn, value }: CreateValueCollectionParams): void {
   if (!collection[key]) {
     collection[key] = fn();
   }
@@ -141,15 +195,21 @@ function createValueCollection({ key, collection, obj, fn, value }) {
   collection[key].add(value);
 }
 
-export function toggle({ items, values, vc }) {
-  const addedMap = {};
-  const removedMap = {};
-  const added = [];
-  const removed = [];
+interface ToggleParams {
+  items: BrushItem[];
+  values: Record<string, ValueCollection>;
+  vc: () => ValueCollection;
+}
+
+export function toggle({ items, values, vc }: ToggleParams): [ChangedItem[], ChangedItem[]] {
+  const addedMap: Record<string, Array<string | number>> = {};
+  const removedMap: Record<string, Array<string | number>> = {};
+  const added: ChangedItem[] = [];
+  const removed: ChangedItem[] = [];
   const filteredSet = collectUnique(items);
-  let key;
-  let value;
-  let fs;
+  let key: string;
+  let value: string | number;
+  let fs: Array<string | number>;
 
   const setKeys = Object.keys(filteredSet);
   for (let i = 0, num = setKeys.length; i < num; i++) {
@@ -189,12 +249,12 @@ export function toggle({ items, values, vc }) {
   return [added, removed];
 }
 
-function diff(old, current) {
-  const changed = [];
+function diff(old: Record<string, Array<string | number>>, current: Record<string, Array<string | number>>): ChangedItem[] {
+  const changed: ChangedItem[] = [];
   const keys = Object.keys(old);
-  let key;
-  let changedValues;
-  const filterFn = (v) => current[key].indexOf(v) === -1;
+  let key: string;
+  let changedValues: Array<string | number>;
+  const filterFn = (v: string | number) => current[key].indexOf(v) === -1;
 
   for (let i = 0, num = keys.length; i < num; i++) {
     key = keys[i];
@@ -211,14 +271,20 @@ function diff(old, current) {
   return changed;
 }
 
-export function set({ items, vCollection, vc }) {
-  const addedMap = {};
-  const filteredSet = collectUnique(items);
-  let added = [];
-  let removed = [];
-  let key;
+interface SetParams {
+  items: BrushItem[];
+  vCollection: Record<string, ValueCollection>;
+  vc: () => ValueCollection;
+}
 
-  const oldMap = {};
+export function set({ items, vCollection, vc }: SetParams): [ChangedItem[], ChangedItem[]] {
+  const addedMap: Record<string, Array<string | number>> = {};
+  const filteredSet = collectUnique(items);
+  let added: ChangedItem[] = [];
+  let removed: ChangedItem[] = [];
+  let key: string;
+
+  const oldMap: Record<string, Array<string | number>> = {};
   const vcKeys = Object.keys(vCollection);
   for (let i = 0, num = vcKeys.length; i < num; i++) {
     key = vcKeys[i];
@@ -226,7 +292,7 @@ export function set({ items, vCollection, vc }) {
     delete vCollection[key];
   }
 
-  const createValueCollectionFn = (value) => {
+  const createValueCollectionFn = (value: string | number) => {
     if (!vCollection[key] || !vCollection[key].contains(value)) {
       createValueCollection({
         key,
@@ -250,7 +316,7 @@ export function set({ items, vCollection, vc }) {
   return [added, removed];
 }
 
-function applyAliases(items, aliases) {
+function applyAliases(items: BrushItem[], aliases: Record<string, string>): BrushItem[] {
   if (!Object.keys(aliases).length) {
     return items;
   }
@@ -262,24 +328,98 @@ function applyAliases(items, aliases) {
   return its;
 }
 
-function intercept(handlers, items, aliases) {
+type InterceptorFn = (items: BrushItem[]) => BrushItem[];
+
+function intercept(handlers: InterceptorFn[] | undefined, items: BrushItem[], aliases: Record<string, string>): BrushItem[] {
   const its = applyAliases(items, aliases);
-  return handlers && handlers.length ? handlers.reduce((value, interceptor) => interceptor(value), its) : its;
+  return handlers && handlers.length ? handlers.reduce((value: BrushItem[], interceptor: InterceptorFn) => interceptor(value), its) : its;
 }
 
-function toCamelCase(s) {
-  return s.replace(/(-[a-z])/g, ($1) => $1.toUpperCase().replace('-', ''));
+function toCamelCase(s: string): string {
+  return s.replace(/(-[a-z])/g, ($1: string) => $1.toUpperCase().replace('-', ''));
 }
 
-function toSnakeCase(s) {
-  return s.replace(/([A-Z])/g, ($1) => `-${$1.toLowerCase()}`);
+function toSnakeCase(s: string): string {
+  return s.replace(/([A-Z])/g, ($1: string) => `-${$1.toLowerCase()}`);
 }
 
-function updateRange(items, action, { ranges, interceptors, rc, aliases, rangeConfig }) {
-  const inter = `${action}Ranges`;
-  const its = intercept(interceptors[inter], items, aliases);
+interface RangeCollection {
+  add(range: { min: number; max: number }): boolean;
+  remove(range: { min: number; max: number }): boolean;
+  set(ranges: Array<{ min: number; max: number }>): boolean;
+  toggle(range: { min: number; max: number }): boolean;
+  configure(config: BrushRangeConfig): void;
+  ranges(): Array<{ min: number; max: number }>;
+  containsValue(value: number): boolean;
+  containsRange(range: { min: number; max: number }): boolean;
+}
+
+interface BrushInfo {
+  type: 'range' | 'value';
+  id: string;
+  brush: {
+    values(): Array<string | number>;
+    ranges(): Array<{ min: number; max: number }>;
+  };
+}
+
+interface BrushState {
+  values?: Record<string, Array<string | number>>;
+  ranges?: Record<string, Array<{ min: number; max: number }>>;
+}
+
+interface BrushInstance {
+  (): void;
+  configure(config: BrushConfig): void;
+  link(target: BrushInstance): void;
+  _state(s?: BrushState): BrushState;
+  start(...args: unknown[]): void;
+  end(...args: unknown[]): void;
+  isActive(): boolean;
+  clear(): void;
+  brushes(): BrushInfo[];
+  addValue(key: string, value?: string | number): void;
+  addValues(items: BrushItem[]): void;
+  setValues(items: BrushItem[]): void;
+  removeValue(key: string, value?: string | number): void;
+  removeValues(items: BrushItem[]): void;
+  toggleValue(key: string, value?: string | number): void;
+  toggleValues(items: BrushItem[]): void;
+  containsValue(key: string, value?: string | number): boolean;
+  addRange(key: string, range?: { min: number; max: number }): void;
+  addRanges(items: BrushRangeItem[]): void;
+  removeRange(key: string, range?: { min: number; max: number }): void;
+  removeRanges(items: BrushRangeItem[]): void;
+  setRange(key: string, range?: { min: number; max: number }): void;
+  setRanges(items: BrushRangeItem[]): void;
+  toggleRange(key: string, range?: { min: number; max: number }): void;
+  toggleRanges(items: BrushRangeItem[]): void;
+  containsRange(key: string, range?: { min: number; max: number }): boolean;
+  containsRangeValue(key: string, value?: number): boolean;
+  addAndRemoveValues(addItems: BrushItem[], removeItems?: BrushItem[]): void;
+  intercept(name: string, ic?: InterceptorFn): void;
+  removeInterceptor(name: string, ic?: InterceptorFn): void;
+  removeAllInterceptors(name?: string): void;
+  addKeyAlias(key: string, alias: string): void;
+  removeKeyAlias(key: string): void;
+  on(event: string, listener: (...args: unknown[]) => void): void;
+  emit(event: string, ...args: unknown[]): void;
+  containsMappedData(item: unknown, props?: unknown[], mode?: string): boolean;
+}
+
+interface UpdateRangeParams {
+  ranges: Record<string, RangeCollection>;
+  interceptors: Record<string, InterceptorFn[]>;
+  rc: (config: BrushRangeConfig) => RangeCollection;
+  aliases: Record<string, string>;
+  rangeConfig: { sources: Record<string, BrushRangeConfig>; default: BrushRangeConfig };
+}
+
+function updateRange(items: BrushRangeItem[], action: 'add' | 'remove' | 'set' | 'toggle', { ranges, interceptors, rc, aliases, rangeConfig }: UpdateRangeParams): boolean {
+  const inter = `${action}Ranges` as keyof typeof interceptors;
+  const its = intercept(interceptors[inter] as InterceptorFn[], items as unknown as BrushItem[], aliases);
   let changed = false;
-  its.forEach((item) => {
+  its.forEach((item: any) => {
     const key = item.key;
     if (!ranges[key]) {
       ranges[key] = rc(rangeConfig.sources[key] || rangeConfig.default);
@@ -297,16 +437,17 @@ function updateRange(items, action, { ranges, interceptors, rc, aliases, rangeCo
   return changed;
 }
 
-export default function brush({ vc = valueCollection, rc = rangeCollection } = {}) {
+// @ts-ignore - rangeCollection returns RangeCollectionFn but we treat it as RangeCollection
+export default function brush({ vc = valueCollection, rc = rangeCollection }: { vc?: () => ValueCollection; rc?: (config?: BrushRangeConfig) => RangeCollection } = {}): BrushInstance {
   let activated = false;
-  let ranges = {};
-  let values = {};
-  let aliases = {};
-  let rangeConfig = {
+  let ranges: Record<string, RangeCollection> = {};
+  let values: Record<string, ValueCollection> = {};
+  let aliases: Record<string, string> = {};
+  let rangeConfig: { sources: Record<string, BrushRangeConfig>; default: BrushRangeConfig } = {
     sources: {},
     default: extend({}, DEFAULT_RANGE_CONFIG),
   };
-  const interceptors = {
+  const interceptors: Record<string, InterceptorFn[]> = {
     addValues: [],
     removeValues: [],
     toggleValues: [],
@@ -317,36 +458,46 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
     toggleRanges: [],
   };
 
-  const getState = () => {
-    const state = {
+  const getState = (): BrushState => {
+    const state: BrushState = {
       values: {},
       ranges: {},
     };
     Object.keys(values).forEach((key) => {
-      state.values[key] = values[key].values();
+      state.values![key] = values[key].values();
     });
     Object.keys(ranges).forEach((key) => {
-      state.ranges[key] = ranges[key].ranges();
+      state.ranges![key] = ranges[key].ranges();
     });
     return state;
   };
 
-  const links = {
+  interface Links {
+    ls: BrushInstance[];
+    clear(): void;
+    start(): void;
+    end(): void;
+    update(): void;
+    updateValues(): void;
+    updateRanges(): void;
+  }
+
+  const links: Links = {
     ls: [],
-    clear() {
+    clear(this: Links) {
       this.ls.forEach((b) => b.clear());
     },
-    start() {
+    start(this: Links) {
       this.ls.forEach((b) => b.start());
     },
-    end() {
+    end(this: Links) {
       this.ls.forEach((b) => b.end());
     },
-    update() {
+    update(this: Links) {
       const s = getState();
       this.ls.forEach((b) => b._state(s));
     },
-    updateValues() {
+    updateValues(this: Links) {
       const s = getState();
       this.ls.forEach((b) =>
         b._state({
@@ -354,7 +505,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
         })
       );
     },
-    updateRanges() {
+    updateRanges(this: Links) {
       const s = getState();
       this.ls.forEach((b) =>
         b._state({
@@ -364,67 +515,6 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
     },
   };
 
-  /** Info object returned by brushes() */
-  interface BrushInfo {
-    type: 'range' | 'value';
-    id: string;
-    brush: {
-      values(): Array<string | number>;
-      ranges(): Array<{ min: number; max: number }>;
-    };
-  }
-
-  /** Internal state shape for _state() */
-  interface BrushState {
-    values?: Record<string, Array<string | number>>;
-    ranges?: Record<string, Array<{ min: number; max: number }>>;
-  }
-
-  /** Brush instance interface */
-  interface BrushInstance {
-    (): void;
-    configure(config: BrushConfig): void;
-    link(target: BrushInstance): void;
-    _state(s?: BrushState): BrushState;
-    start(...args: unknown[]): void;
-    end(...args: unknown[]): void;
-    isActive(): boolean;
-    clear(): void;
-    brushes(): BrushInfo[];
-    addValue(key: string, value?: string | number): void;
-    addValues(items: BrushItem[]): void;
-    setValues(items: BrushItem[]): void;
-    removeValue(key: string, value?: string | number): void;
-    removeValues(items: BrushItem[]): void;
-    toggleValue(key: string, value?: string | number): void;
-    toggleValues(items: BrushItem[]): void;
-    containsValue(key: string, value?: string | number): boolean;
-    addRange(key: string, range?: { min: number; max: number }): void;
-    addRanges(items: BrushRangeItem[]): void;
-    removeRange(key: string, range?: { min: number; max: number }): void;
-    removeRanges(items: BrushRangeItem[]): void;
-    setRange(key: string, range?: { min: number; max: number }): void;
-    setRanges(items: BrushRangeItem[]): void;
-    toggleRange(key: string, range?: { min: number; max: number }): void;
-    toggleRanges(items: BrushRangeItem[]): void;
-    containsRange(key: string, range?: { min: number; max: number }): boolean;
-    containsRangeValue(key: string, value?: number): boolean;
-    addAndRemoveValues(addItems: BrushItem[], removeItems?: BrushItem[]): void;
-    intercept(name: string, ic?: () => void): void;
-    removeInterceptor(name: string, ic?: () => void): void;
-    removeAllInterceptors(name?: string): void;
-    addKeyAlias(key: string, alias: string): void;
-    removeKeyAlias(key: string): void;
-    on(event: string, listener: (...args: unknown[]) => void): void;
-    emit(event: string, ...args: unknown[]): void;
-    containsMappedData(item: unknown, props?: unknown[], mode?: string): boolean;
-  }
-
-  /**
-   * A brush context
-   * @alias Brush
-   * @interface
-   */
   const fn: BrushInstance = {} as BrushInstance;
 
   /**
@@ -459,25 +549,25 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    *   ]
    * })
    */
-  fn.configure = (config: BrushConfig = {}) => {
+  fn.configure = (config: BrushConfig = {}): void => {
     if (Array.isArray(config.ranges) && config.ranges.length) {
       rangeConfig = {
         sources: {},
         default: extend({}, DEFAULT_RANGE_CONFIG),
       };
 
-      config.ranges.forEach((cfg) => {
-        const c = {};
+      config.ranges.forEach((cfg: BrushRangeConfig) => {
+        const c: Record<string, boolean | undefined> = {};
         Object.keys(DEFAULT_RANGE_CONFIG)
           .filter((attr) => attr !== 'key')
           .forEach((attr) => {
-            c[attr] = typeof cfg[attr] !== 'undefined' ? cfg[attr] : DEFAULT_RANGE_CONFIG[attr];
+            c[attr] = typeof cfg[attr as keyof BrushRangeConfig] !== 'undefined' ? cfg[attr as keyof BrushRangeConfig] : (DEFAULT_RANGE_CONFIG[attr as keyof typeof DEFAULT_RANGE_CONFIG] as any);
           });
 
         if (typeof cfg.key !== 'undefined') {
-          rangeConfig.sources[cfg.key] = c;
+          rangeConfig.sources[cfg.key] = c as unknown as BrushRangeConfig;
         } else {
-          rangeConfig.default = c;
+          rangeConfig.default = c as unknown as BrushRangeConfig;
         }
       });
 
@@ -494,7 +584,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    * When linked, the `target` will receive updates whenever this brush changes.
    * @param {Brush} target - The brush instance to link to
    */
-  fn.link = (target) => {
+  fn.link = (target: BrushInstance): void => {
     if (fn === target) {
       throw new Error("Can't link to self");
     }
@@ -502,22 +592,22 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
     target._state(getState());
   };
 
-  fn._state = (s) => {
+  fn._state = (s?: BrushState): BrushState => {
     if (!s) {
       return getState();
     }
     if (s.values) {
-      const arr = [];
+      const arr: BrushItem[] = [];
       Object.keys(s.values).forEach((key) => {
-        if (!values[key] || s.values[key].join(';') !== values[key].toString()) {
+        if (!values[key] || s.values![key].join(';') !== values[key].toString()) {
           arr.push({
             key,
-            values: s.values[key],
+            values: s.values![key],
           });
         }
       });
       Object.keys(values).forEach((key) => {
-        if (!s.values[key]) {
+        if (!s.values![key]) {
           arr.push({
             key,
             values: [],
@@ -529,17 +619,17 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
       }
     }
     if (s.ranges) {
-      const arr = [];
+      const arr: BrushRangeItem[] = [];
       Object.keys(s.ranges).forEach((key) => {
-        if (!ranges[key] || s.ranges[key].join(';') !== ranges[key].toString()) {
+        if (!ranges[key] || s.ranges![key].join(';') !== ranges[key].toString()) {
           arr.push({
             key,
-            ranges: s.ranges[key],
+            ranges: s.ranges![key],
           });
         }
       });
       Object.keys(ranges).forEach((key) => {
-        if (!s.ranges[key]) {
+        if (!s.ranges![key]) {
           arr.push({
             key,
             ranges: [],
@@ -550,7 +640,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
         fn.setRanges(arr);
       }
     }
-    return undefined;
+    return undefined as unknown as BrushState;
   };
 
   /**
@@ -560,7 +650,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    * @param {...any} args - arguments to be passed to 'start' listeners
    * @emits Brush#start
    */
-  fn.start = (...args) => {
+  fn.start = (...args: unknown[]): void => {
     if (!activated) {
       activated = true;
       fn.emit('start', ...args);
@@ -575,7 +665,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    * @param {...any} args - arguments to be passed to 'end' listeners
    * @emits Brush#end
    */
-  fn.end = (...args) => {
+  fn.end = (...args: unknown[]): void => {
     if (!activated) {
       return;
     }
@@ -592,12 +682,12 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    * Returns true if started, false otherwise
    * @return {boolean}
    */
-  fn.isActive = () => activated;
+  fn.isActive = (): boolean => activated;
 
   /**
    * Clears this brush context
    */
-  fn.clear = () => {
+  fn.clear = (): void => {
     const removed = fn
       .brushes()
       .filter((b) => b.type === 'value' && b.brush.values().length)
@@ -615,21 +705,21 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    * Returns all brushes within this context
    * @return {object}
    */
-  fn.brushes = () => {
-    let result = [];
+  fn.brushes = (): BrushInfo[] => {
+    let result: BrushInfo[] = [];
     result = result.concat(
       Object.keys(ranges).map((key) => ({
-        type: 'range',
+        type: 'range' as const,
         id: key,
-        brush: ranges[key],
+        brush: ranges[key] as any,
       }))
     );
 
     result = result.concat(
       Object.keys(values).map((key) => ({
-        type: 'value',
+        type: 'value' as const,
         id: key,
-        brush: values[key],
+        brush: values[key] as any,
       }))
     );
 
@@ -650,14 +740,14 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    * brush.addValue('countries', 'Sweden');
    * brush.addValue('/qHyperCube/qDimensionInfo/0', 3);
    */
-  fn.addValue = (key, value) => {
+  fn.addValue = (key: string, value?: string | number): void => {
     fn.addValues([{ key, value }]);
   };
 
   /**
    * @param {object[]} items Items to add
    */
-  fn.addValues = (items) => {
+  fn.addValues = (items: BrushItem[]): void => {
     const its = intercept(interceptors.addValues, items, aliases);
     const added = add({
       vc,
@@ -680,7 +770,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
   /**
    * @param {object[]} items Items to set
    */
-  fn.setValues = (items) => {
+  fn.setValues = (items: BrushItem[]): void => {
     const its = intercept(interceptors.setValues, items, aliases);
     const changed = set({
       items: its,
@@ -710,14 +800,14 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    * @example
    * brush.removeValue('countries', 'Sweden');
    */
-  fn.removeValue = (key, value) => {
+  fn.removeValue = (key: string, value?: string | number): void => {
     fn.removeValues([{ key, value }]);
   };
 
   /**
    * @param {object[]} items Items to remove
    */
-  fn.removeValues = (items) => {
+  fn.removeValues = (items: BrushItem[]): void => {
     const its = intercept(interceptors.removeValues, items, aliases);
     const removed = remove({
       collection: values,
@@ -742,9 +832,9 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    * @param {object[]} addItems Items to add
    * @param {object[]} removeItems Items to remove
    */
-  fn.addAndRemoveValues = (addItems, removeItems) => {
+  fn.addAndRemoveValues = (addItems: BrushItem[], removeItems?: BrushItem[]): void => {
     const addIts = intercept(interceptors.addValues, addItems, aliases);
-    const removeIts = intercept(interceptors.removeValues, removeItems, aliases);
+    const removeIts = intercept(interceptors.removeValues, removeItems || [], aliases);
     const added = add({
       vc,
       collection: values,
@@ -778,14 +868,14 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    * @example
    * brush.toggleValue('countries', 'Sweden');
    */
-  fn.toggleValue = (key, value) => {
+  fn.toggleValue = (key: string, value?: string | number): void => {
     fn.toggleValues([{ key, value }]);
   };
 
   /**
    * @param {object[]} items Items to toggle
    */
-  fn.toggleValues = (items) => {
+  fn.toggleValues = (items: BrushItem[]): void => {
     const its = intercept(interceptors.toggleValues, items, aliases);
     const toggled = toggle({
       items: its,
@@ -819,12 +909,12 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    * brush.toggleValue('countries', 'Sweden'); // remove 'Sweden'
    * brush.containsValue('countries', 'Sweden'); // false
    */
-  fn.containsValue = (key, value) => {
+  fn.containsValue = (key: string, value?: string | number): boolean => {
     let k = aliases[key] || key;
     if (!values[k]) {
       return false;
     }
-    return values[k].contains(value);
+    return values[k].contains(value!);
   };
 
   /**
@@ -837,7 +927,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    * @example
    * brush.addRange('Sales', { min: 20, max: 50 });
    */
-  fn.addRange = (key, range) => {
+  fn.addRange = (key: string, range?: { min: number; max: number }): void => {
     fn.addRanges([{ key, range }]);
   };
 
@@ -847,7 +937,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    * @param {string} items[].key
    * @param {object} items[].range
    */
-  fn.addRanges = (items) => {
+  fn.addRanges = (items: BrushRangeItem[]): void => {
     const changed = updateRange(items, 'add', {
       ranges,
       rc,
@@ -876,7 +966,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    * @param {number} range.min - Min value of the range
    * @param {number} range.max - Max value of the range
    */
-  fn.removeRange = (key, range) => {
+  fn.removeRange = (key: string, range?: { min: number; max: number }): void => {
     fn.removeRanges([{ key, range }]);
   };
 
@@ -884,7 +974,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    * @see {brush.removeRange}
    * @param {object[]} items - Items containing the ranges to remove
    */
-  fn.removeRanges = (items) => {
+  fn.removeRanges = (items: BrushRangeItem[]): void => {
     const changed = updateRange(items, 'remove', {
       ranges,
       rc,
@@ -915,7 +1005,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    * @param {number} range.min - Min value of the range
    * @param {number} range.max - Max value of the range
    */
-  fn.setRange = (key, range) => {
+  fn.setRange = (key: string, range?: { min: number; max: number }): void => {
     fn.setRanges([{ key, range }]);
   };
 
@@ -923,7 +1013,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    * @see {brush.setRange}
    * @param {object[]} items - Items containing the ranges to set
    */
-  fn.setRanges = (items) => {
+  fn.setRanges = (items: BrushRangeItem[]): void => {
     const changed = updateRange(items, 'set', {
       ranges,
       rc,
@@ -955,7 +1045,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    * @param {number} range.min - Min value of the range
    * @param {number} range.max - Max value of the range
    */
-  fn.toggleRange = (key, range) => {
+  fn.toggleRange = (key: string, range?: { min: number; max: number }): void => {
     fn.toggleRanges([{ key, range }]);
   };
 
@@ -963,7 +1053,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    * @see {brush.toggleRange}
    * @param {object[]} items - Items containing the ranges to toggle
    */
-  fn.toggleRanges = (items) => {
+  fn.toggleRanges = (items: BrushRangeItem[]): void => {
     const changed = updateRange(items, 'toggle', {
       ranges,
       rc,
@@ -997,12 +1087,12 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    * brush.containsRangeValue('Sales', 30); // true
    * brush.containsRangeValue('Sales', 5); // false
    */
-  fn.containsRangeValue = (key, value) => {
+  fn.containsRangeValue = (key: string, value?: number): boolean => {
     let k = aliases[key] || key;
     if (!ranges[k]) {
       return false;
     }
-    return ranges[k].containsValue(value);
+    return ranges[k].containsValue(value!);
   };
 
   /**
@@ -1021,21 +1111,21 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    * brush.containsRange('Sales', { min: 5, max: 20 }); // false - part of the range segment is outside [10, 50]
    * brush.containsRange('Sales', { min: 30, max: 80 }); // false - part of the range segment is outside [10, 50]
    */
-  fn.containsRange = (key, range) => {
+  fn.containsRange = (key: string, range?: { min: number; max: number }): boolean => {
     let k = aliases[key] || key;
     if (!ranges[k]) {
       return false;
     }
-    return ranges[k].containsRange(range);
+    return ranges[k].containsRange(range!);
   };
 
-  fn.containsMappedData = (d, props, mode) => {
-    let status = [];
+  fn.containsMappedData = (d: Record<string, any>, props?: string[], mode?: string): boolean => {
+    let status: Array<{ key: string; i: number; bool: boolean }> = [];
     const keys = Object.keys(d);
-    let key;
-    let item;
-    let source;
-    let value;
+    let key: string;
+    let item: any;
+    let source: any;
+    let value: any;
 
     for (let i = 0, num = keys.length; i < num; i++) {
       key = keys[i];
@@ -1095,12 +1185,12 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    *  return items;
    * });
    */
-  fn.intercept = (name, ic) => {
+  fn.intercept = (name: string, ic?: InterceptorFn): void => {
     const s = toCamelCase(name);
     if (!interceptors[s]) {
       return;
     }
-    interceptors[s].push(ic);
+    interceptors[s].push(ic!);
   };
 
   /**
@@ -1109,12 +1199,12 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    * @param {string} name Name of the event to intercept
    * @param {function} ic Handler to remove
    */
-  fn.removeInterceptor = (name, ic) => {
+  fn.removeInterceptor = (name: string, ic?: InterceptorFn): void => {
     const s = toCamelCase(name);
     if (!interceptors[s]) {
       return;
     }
-    const idx = interceptors[s].indexOf(ic);
+    const idx = interceptors[s].indexOf(ic!);
     if (idx !== -1) {
       interceptors[s].splice(idx, 1);
     }
@@ -1125,8 +1215,8 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    *
    * @param {string} [name] Name of the event to remove interceptors for. If not provided, removes all interceptors.
    */
-  fn.removeAllInterceptors = (name) => {
-    const toRemove = [];
+  fn.removeAllInterceptors = (name?: string): void => {
+    const toRemove: Array<{ name: string; handlers: InterceptorFn[] }> = [];
     if (name) {
       const s = toCamelCase(name);
       if (interceptors[s] && interceptors[s].length) {
@@ -1157,7 +1247,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    * brush.containsValue('Region', 'Sweden'); // true
    * brush.containsValue('BadFieldName', 'Sweden'); // true
    */
-  fn.addKeyAlias = (key, alias) => {
+  fn.addKeyAlias = (key: string, alias: string): void => {
     aliases[key] = alias;
   };
 
@@ -1171,7 +1261,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    * @example
    * brush.removeKeyAlias('BadFieldName');
    */
-  fn.removeKeyAlias = (key) => {
+  fn.removeKeyAlias = (key: string): void => {
     delete aliases[key];
   };
 

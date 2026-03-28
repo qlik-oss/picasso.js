@@ -188,11 +188,11 @@ describe('Node Selector', () => {
   });
 
   describe('filter', () => {
-    let c1;
-    let c2;
-    let c3;
-    let t1;
-    let r1;
+    let c1: InstanceType<typeof Circle>;
+    let c2: InstanceType<typeof Circle>;
+    let c3: InstanceType<typeof Circle>;
+    let t1: InstanceType<typeof Text>;
+    let r1: InstanceType<typeof Rect>;
     beforeEach(() => {
       c1 = new Circle();
       c2 = new Circle();

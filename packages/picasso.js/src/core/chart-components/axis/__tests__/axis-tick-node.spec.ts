@@ -1,13 +1,34 @@
 import buildTick from '../axis-tick-node';
 
+interface Rect {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+interface Tick {
+  position: number;
+  value: number;
+}
+
+interface BuildTickOptions {
+  style: Record<string, unknown>;
+  tickSize: number;
+  align: string;
+  padding: number;
+  innerRect: Rect;
+  outerRect: Rect;
+}
+
 describe('Axis Tick Node', () => {
-  const innerRect = {
+  const innerRect: Rect = {
     x: 0,
     y: 0,
     width: 0,
     height: 0,
   };
-  const outerRect = {
+  const outerRect: Rect = {
     x: 0,
     y: 0,
     width: 0,
@@ -26,7 +47,9 @@ describe('Axis Tick Node', () => {
   });
 
   describe('Tick', () => {
-    let buildOpts, tick, expected;
+    let buildOpts: BuildTickOptions;
+    let tick: Tick;
+    let expected: Record<string, unknown>;
 
     beforeEach(() => {
       buildOpts = {
