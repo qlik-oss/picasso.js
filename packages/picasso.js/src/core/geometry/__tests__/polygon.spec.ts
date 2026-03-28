@@ -2,7 +2,7 @@ import { create } from '../polygon';
 import { rectToPoints, lineToPoints } from '../util';
 
 describe('Polygon', () => {
-  let polygon;
+  let polygon: any;
   const convexPolygon = [
     { x: 0, y: 25 },
     { x: 25, y: 0 },

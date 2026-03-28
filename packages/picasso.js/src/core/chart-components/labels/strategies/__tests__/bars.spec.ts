@@ -274,7 +274,7 @@ describe('labeling - bars', () => {
     });
 
     it('should find first placement that fits in a vertical bar', () => {
-      let p = findBestPlacement(
+      let p: any = findBestPlacement(
         {
           direction: '',
           fitsHorizontally: false,
@@ -292,7 +292,7 @@ describe('labeling - bars', () => {
     });
 
     it('should find first placement that fits in a vertical bar, horizontally', () => {
-      let p = findBestPlacement(
+      let p: any = findBestPlacement(
         {
           direction: '',
           fitsHorizontally: true,
@@ -310,7 +310,7 @@ describe('labeling - bars', () => {
     });
 
     it('should find first placement that fits in a horizontal bar', () => {
-      let p = findBestPlacement(
+      let p: any = findBestPlacement(
         {
           direction: '',
           lblStngs: { fontSize: 2 },
@@ -327,7 +327,7 @@ describe('labeling - bars', () => {
     });
 
     it('should find largest rect as fallback, horizontal', () => {
-      let p = findBestPlacement(
+      let p: any = findBestPlacement(
         {
           direction: '',
           lblStngs: { fontSize: 2 },
@@ -349,7 +349,7 @@ describe('labeling - bars', () => {
       rects.biggest.height = 100;
       rects.meh.height = 100;
       rects.meh.width = 500;
-      let p = findBestPlacement(
+      let p: any = findBestPlacement(
         {
           direction: '',
           lblStngs: { fontSize: 2 },
@@ -366,7 +366,7 @@ describe('labeling - bars', () => {
     });
 
     it('should find largest rect as fallback, vertical', () => {
-      let p = findBestPlacement(
+      let p: any = findBestPlacement(
         {
           direction: '',
           lblStngs: { fontSize: 2 },
@@ -388,7 +388,7 @@ describe('labeling - bars', () => {
       rects.biggest.width = 100;
       rects.meh.width = 100;
       rects.outside.height = 500;
-      let p = findBestPlacement(
+      let p: any = findBestPlacement(
         {
           direction: '',
           lblStngs: { fontSize: 2 },
@@ -406,7 +406,7 @@ describe('labeling - bars', () => {
 
     it('should find placement with overflow and other size is fit, horizontal', () => {
       placements[3].overflow = true;
-      let p = findBestPlacement(
+      let p: any = findBestPlacement(
         {
           direction: '',
           lblStngs: { fontSize: 2 },
@@ -424,7 +424,7 @@ describe('labeling - bars', () => {
 
     it('should find largest rect as fallback when overflow is true but both width and height are not fit , horizontal', () => {
       placements[3].overflow = true;
-      let p = findBestPlacement(
+      let p: any = findBestPlacement(
         {
           direction: '',
           lblStngs: { fontSize: 2 },
@@ -442,7 +442,7 @@ describe('labeling - bars', () => {
 
     it('should find largest rect as fallback when overflow is true but both width and height are not fit, vertical', () => {
       placements[3].overflow = true;
-      let p = findBestPlacement(
+      let p: any = findBestPlacement(
         {
           direction: '',
           lblStngs: { fontSize: 2 },
@@ -460,7 +460,7 @@ describe('labeling - bars', () => {
 
     it('should find placement with overflow and other size is fit, vertical', () => {
       placements[3].overflow = true;
-      let p = findBestPlacement(
+      let p: any = findBestPlacement(
         {
           direction: '',
           lblStngs: { fontSize: 2 },
@@ -489,7 +489,7 @@ describe('labeling - bars', () => {
     });
 
     it('should skip label when text is falsy', () => {
-      let labels = placeInBars(
+      let labels: any = placeInBars(
         {
           chart,
           targetNodes: [
@@ -509,7 +509,7 @@ describe('labeling - bars', () => {
 
     it('should skip label when placement is not possible', () => {
       findPlacement.returns({});
-      let labels = placeInBars(
+      let labels: any = placeInBars(
         {
           chart,
           targetNodes: [
@@ -541,7 +541,7 @@ describe('labeling - bars', () => {
         },
       });
       placer = (a: unknown, b: unknown, c: unknown) => [a, b, c];
-      let labels = placeInBars(
+      let labels: any = placeInBars(
         {
           chart,
           targetNodes: [
@@ -609,7 +609,7 @@ describe('labeling - bars', () => {
         dy: 0,
         ...c,
       });
-      let labels = placeInBars(
+      let labels: any = placeInBars(
         {
           chart,
           targetNodes: [
@@ -693,8 +693,8 @@ describe('labeling - bars', () => {
   });
 
   describe('bar strategy', () => {
-    let chart;
-    let renderer;
+    let chart: any;
+    let renderer: any;
     beforeEach(() => {
       chart = {};
       renderer = {
@@ -703,7 +703,7 @@ describe('labeling - bars', () => {
     });
 
     it('should return some labels', () => {
-      const settings = {
+      const settings: any = {
         direction: () => 'right',
         align: 0.4,
         justify: 0.8,
@@ -732,7 +732,7 @@ describe('labeling - bars', () => {
         },
       ];
       renderer.measureText.returns({ width: 20, height: 10 });
-      let labels = bars({
+      let labels: any = bars({
         settings,
         chart,
         nodes,
@@ -769,7 +769,7 @@ describe('labeling - bars', () => {
     });
 
     it('should link data', () => {
-      const settings = {
+      const settings: any = {
         direction: () => 'right',
         align: 0.4,
         justify: 0.8,
@@ -800,7 +800,7 @@ describe('labeling - bars', () => {
         },
       ];
       renderer.measureText.returns({ width: 20, height: 10 });
-      let labels = bars({
+      let labels: any = bars({
         settings,
         chart,
         nodes,
@@ -820,7 +820,7 @@ describe('labeling - bars', () => {
     });
 
     it('should skip node if outside container', () => {
-      const settings = {
+      const settings: any = {
         direction: () => 'right',
         align: 0.4,
         justify: 0.8,
@@ -849,7 +849,7 @@ describe('labeling - bars', () => {
         },
       ];
       renderer.measureText.returns({ width: 20, height: 10 });
-      let labels = bars({
+      let labels: any = bars({
         settings,
         chart,
         nodes,
@@ -873,7 +873,7 @@ describe('labeling - bars', () => {
     });
 
     it('should skip node if label is falsy', () => {
-      const settings = {
+      const settings: any = {
         direction: () => 'right',
         align: 0.4,
         justify: 0.8,
@@ -902,7 +902,7 @@ describe('labeling - bars', () => {
         },
       ];
       renderer.measureText.returns({ width: 20, height: 10 });
-      let labels = bars({
+      let labels: any = bars({
         settings,
         chart,
         nodes,
@@ -926,7 +926,7 @@ describe('labeling - bars', () => {
     });
 
     it('should accept padding top/bottom/left/right as functions', () => {
-      const settings = {
+      const settings: any = {
         direction: () => 'right',
         align: 0.4,
         justify: 0.8,
@@ -961,7 +961,7 @@ describe('labeling - bars', () => {
         },
       ];
       renderer.measureText.returns({ width: 20, height: 10 });
-      let labels = bars({
+      let labels: any = bars({
         settings,
         chart,
         nodes,
@@ -998,7 +998,7 @@ describe('labeling - bars', () => {
     });
 
     it('should accept padding top/bottom/left/right as functions, and filter out label that is not inside container', () => {
-      const settings = {
+      const settings: any = {
         direction: () => 'right',
         align: 0.4,
         justify: 0.8,
@@ -1033,7 +1033,7 @@ describe('labeling - bars', () => {
         },
       ];
       renderer.measureText.returns({ width: 20, height: 10 });
-      let labels = bars({
+      let labels: any = bars({
         settings,
         chart,
         nodes,

@@ -29,7 +29,7 @@ describe('value-collection', () => {
   });
 
   describe('remove', () => {
-    let vc;
+    let vc: any;
 
     beforeEach(() => {
       vc = valueCollection();
@@ -54,7 +54,7 @@ describe('value-collection', () => {
   });
 
   describe('contains', () => {
-    let vc;
+    let vc: any;
 
     beforeEach(() => {
       vc = valueCollection();

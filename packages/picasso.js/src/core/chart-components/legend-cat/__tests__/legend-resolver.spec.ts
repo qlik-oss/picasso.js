@@ -124,8 +124,8 @@ describe('legend-resolver', () => {
   });
 
   describe('resolveSettings', () => {
-    let resolved;
-    let settings;
+    let resolved: any;
+    let settings: any;
     beforeEach(() => {
       settings = {
         scale: {

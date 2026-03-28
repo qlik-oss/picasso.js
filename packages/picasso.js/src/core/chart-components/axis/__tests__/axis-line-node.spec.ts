@@ -1,13 +1,13 @@
 import buildLine from '../axis-line-node';
 
 describe('Axis Line Node', () => {
-  const innerRect = {
+  const innerRect: any = {
     x: 0,
     y: 0,
     width: 0,
     height: 0,
   };
-  const outerRect = {
+  const outerRect: any = {
     x: 0,
     y: 0,
     width: 0,

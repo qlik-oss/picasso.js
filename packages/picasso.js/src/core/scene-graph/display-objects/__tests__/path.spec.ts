@@ -57,7 +57,7 @@ describe('Path', () => {
       });
 
       it('should render path for horizontal (default) line', () => {
-        const config = {
+        const config: any = {
           data: [1, 1, 1, 1],
         };
 
@@ -69,7 +69,7 @@ describe('Path', () => {
       });
 
       it('should render path for vertical line', () => {
-        const config = {
+        const config: any = {
           data: [2, 3, 1],
           settings: {
             coordinates: {
@@ -93,7 +93,7 @@ describe('Path', () => {
       });
 
       it('should render disconnected path for line with minor null value', () => {
-        const config = {
+        const config: any = {
           data: [2, 3, 'oops', 1, 2],
           settings: {
             coordinates: {
@@ -116,7 +116,7 @@ describe('Path', () => {
       });
 
       it('should render disconnected path for line with custom defined null values', () => {
-        const config = {
+        const config: any = {
           data: [2, 3, 4, 1, 2],
           settings: {
             coordinates: {
@@ -142,7 +142,7 @@ describe('Path', () => {
       });
 
       it('should render connected path for line with custom defined null values, when connect is true', () => {
-        const config = {
+        const config: any = {
           data: [2, 3, 4, 1, 2],
           settings: {
             coordinates: {
@@ -174,7 +174,7 @@ describe('Path', () => {
         domainScale.domain = () => domain;
         domainScale.range = () => [0, 1];
         componentFixture.mocks().chart.scale.returns(domainScale);
-        const config = {
+        const config: any = {
           data: ['A', 'B', /* skip C */ 'D', 'E'],
           settings: {
             coordinates: {
@@ -201,7 +201,7 @@ describe('Path', () => {
         domainScale.domain = () => domain;
         domainScale.range = () => [0, 1];
         componentFixture.mocks().chart.scale.returns(domainScale);
-        const config = {
+        const config: any = {
           data: {
             items: ['A', 'B', /* skip C */ 'D', 'E'],
             map: (d) => ({ value: `-${d.value}-`, major: { value: d.value } }),
@@ -234,7 +234,7 @@ describe('Path', () => {
           },
         });
 
-        const config = {
+        const config: any = {
           data: [1, 2, 3],
           settings: {
             coordinates: {
@@ -270,7 +270,7 @@ describe('Path', () => {
           },
         });
 
-        const config = {
+        const config: any = {
           data: [1, 2, 3],
           settings: {
             coordinates: {
@@ -317,7 +317,7 @@ describe('Path', () => {
           },
         });
 
-        const config = {
+        const config: any = {
           data: [1, 2, 3],
           settings: {
             coordinates: {

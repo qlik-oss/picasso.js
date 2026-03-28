@@ -10,7 +10,7 @@ describe('box resolver', () => {
         },
       });
 
-      let defaultSettings = {
+      let defaultSettings: any = {
         box: {
           fill: 'white',
           stroke: 'black',
@@ -21,13 +21,13 @@ describe('box resolver', () => {
         },
       };
 
-      let style = {
+      let style: any = {
         box: {
           stroke: 'orange',
         },
       };
 
-      let settings = {
+      let settings: any = {
         box: {
           fill: () => 'green',
           dataBoundColor: function dataBoundColor(b) {

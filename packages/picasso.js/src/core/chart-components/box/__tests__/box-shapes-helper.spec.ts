@@ -3,7 +3,7 @@ import { oob, box, verticalLine, horizontalLine, getBoxWidth } from '../box-shap
 describe('box shapes', () => {
   describe('out of bounds arrows', () => {
     it('should create a correct out of bounds shape at the bottom of the graph', () => {
-      const item = {
+      const item: any = {
         major: 0.3,
         oob: {
           size: 10,
@@ -11,7 +11,7 @@ describe('box shapes', () => {
       };
 
       // We mock the symbol() function here
-      let result = oob({
+      let result: any = oob({
         value: 1,
         item,
         boxCenter: item.major,
@@ -32,7 +32,7 @@ describe('box shapes', () => {
     });
 
     it('should create a correct out of bounds shape at the top of the graph', () => {
-      const item = {
+      const item: any = {
         major: 0.75,
         oob: {
           size: 10,
@@ -40,7 +40,7 @@ describe('box shapes', () => {
       };
 
       // We mock the symbol() function here
-      let result = oob({
+      let result: any = oob({
         value: 0,
         item,
         boxCenter: item.major,
@@ -60,7 +60,7 @@ describe('box shapes', () => {
   });
 
   it('should create a correct out of bounds shape at the bottom of the graph with flipXY', () => {
-    const item = {
+    const item: any = {
       major: 0.3,
       oob: {
         size: 10,
@@ -68,7 +68,7 @@ describe('box shapes', () => {
     };
 
     // We mock the symbol() function here
-    let result = oob({
+    let result: any = oob({
       value: 1,
       item,
       boxCenter: item.major,
@@ -89,7 +89,7 @@ describe('box shapes', () => {
   });
 
   it('should create a correct out of bounds shape at the top of the graph with flipXY', () => {
-    const item = {
+    const item: any = {
       major: 0.75,
       oob: {
         size: 10,
@@ -97,7 +97,7 @@ describe('box shapes', () => {
     };
 
     // We mock the symbol() function here
-    let result = oob({
+    let result: any = oob({
       value: 0,
       item,
       boxCenter: item.major,
@@ -117,7 +117,7 @@ describe('box shapes', () => {
 
   describe('box', () => {
     it('should create a correct box shape', () => {
-      const item = {
+      const item: any = {
         start: 0.1,
         end: 0.9,
         major: 0.25,
@@ -129,7 +129,7 @@ describe('box shapes', () => {
       const boxWidth = 0.5;
       const boxPadding = 0;
 
-      let result = box({
+      let result: any = box({
         item,
         boxWidth,
         boxPadding,
@@ -224,13 +224,13 @@ describe('box shapes', () => {
 
   describe('verticalLine', () => {
     it('should create a correct vertical line', () => {
-      const item = {
+      const item: any = {
         line: {
           strokeWidth: 1,
         },
       };
 
-      let result = verticalLine({
+      let result: any = verticalLine({
         item,
         from: 0.25,
         to: 0.75,
@@ -306,7 +306,7 @@ describe('box shapes', () => {
 
   describe('horizontalLine', () => {
     it('should create a correct horizontal line', () => {
-      const item = {
+      const item: any = {
         med: {
           stroke: 'black',
         },
@@ -315,7 +315,7 @@ describe('box shapes', () => {
         },
       };
 
-      let result = horizontalLine({
+      let result: any = horizontalLine({
         item,
         key: 'med',
         position: 0.5,
@@ -405,9 +405,9 @@ describe('box shapes', () => {
   });
 
   describe('getBoxWidth', () => {
-    let item;
-    let avaialbleWidth;
-    let bandwidth;
+    let item: any;
+    let avaialbleWidth: any;
+    let bandwidth: any;
 
     beforeEach(() => {
       avaialbleWidth = 100;

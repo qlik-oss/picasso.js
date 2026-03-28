@@ -108,7 +108,7 @@ describe('Chart', () => {
     it('should not freak out when using unregistered components', () => {
       const comp = () => undefined;
       comp.has = () => false;
-      const logger = {
+      const logger: any = {
         warn: sinon.spy(),
       };
       const create = () => {
@@ -136,7 +136,7 @@ describe('Chart', () => {
     });
 
     it('should not update components specified in excludeFromUpdate array', () => {
-      const components = {
+      const components: any = {
         box: {
           has: () => true,
           render: sinon.stub(),
@@ -188,7 +188,7 @@ describe('Chart', () => {
     });
 
     it('should run proper functions on layouting components', () => {
-      const components = {
+      const components: any = {
         box: {
           has: () => true,
           render: sinon.stub(),
@@ -237,7 +237,7 @@ describe('Chart', () => {
     });
 
     it('should update components where transform should be applied', () => {
-      const components = {
+      const components: any = {
         box: {
           render: () => ['boxNode1'],
         },
@@ -287,7 +287,7 @@ describe('Chart', () => {
     });
 
     it('should maintain displayOrder of components after initial render', () => {
-      const components = {
+      const components: any = {
         point: {
           has: () => true,
           render: sinon.stub(),
@@ -337,7 +337,7 @@ describe('Chart', () => {
     });
 
     it('should maintain displayOrder of components after update', () => {
-      const components = {
+      const components: any = {
         point: {
           has: () => true,
           render: sinon.stub(),

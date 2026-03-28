@@ -1,14 +1,32 @@
 /* eslint-disable no-useless-escape */
 
-const SELECTOR_MAPS = {
+interface SelectorMapPattern {
+  [key: string]: RegExp;
+}
+
+interface Token {
+  type: string;
+  value: string;
+  attribute?: string;
+  operator?: string;
+  attributeValue?: string;
+}
+
+interface NodeObject {
+  node: any;
+  parent?: NodeObject;
+  children?: any[];
+}
+
+const SELECTOR_MAPS: SelectorMapPattern = {
   type: /^\w[\w-]+/,
   attr: /^\[\w(?:[\w\._-]+)?(?:[!]?=['\"][\w\s*#_-]*['\"])?\]/,
   universal: /^(\*)/,
   tag: /^\.(\w+)/,
 };
 
-const FILTERS = {
-  type: (c, objects) =>
+const FILTERS: { [key: string]: (...args: any[]) => any[] } = {
+  type: (c: string, objects: any[]): any[] =>
     objects.filter((o) => {
       const type = o.node.type;
 
@@ -17,7 +35,7 @@ const FILTERS = {
       }
       return false;
     }),
-  attr: (attr, operator, value, objects) =>
+  attr: (attr: string, operator: string | undefined, value: string | undefined, objects: any[]): any[] =>
     objects.filter((o) => {
       const v = o.node[attr];
 
@@ -37,9 +55,9 @@ const FILTERS = {
           return false;
       }
     }),
-  universal: (objects) => objects,
+  universal: (objects: any[]): any[] => objects,
 
-  tag: (c, objects) =>
+  tag: (c: string, objects: any[]): any[] =>
     objects.filter((o) => {
       const tag = o.node.tag;
       if (tag) {
@@ -62,7 +80,7 @@ const FILTERS = {
  * @param {Array} objects
  * @returns {Object[]} Objects that fulfill the type and value
  */
-export function filter(token, objects) {
+export function filter(token: Token, objects: any[]): any[] {
   if (!objects || !objects.length || !token || typeof FILTERS[token.type] !== 'function') {
     return [];
   }
@@ -90,17 +108,17 @@ export function filter(token, objects) {
  *
  * @param {String} s
  */
-export function tokenize(s) {
-  const groups = [];
-  let sub;
-  let info;
-  let match;
-  let validSelector;
+export function tokenize(s: string): Token[][] {
+  const groups: Token[][] = [];
+  let sub: Token[];
+  let info: Token | undefined;
+  let match: RegExpMatchArray | null;
+  let validSelector: boolean;
 
   s.split(/\s*,\s*/).forEach((group) => {
     group = group.trim();
     sub = [];
-    const selectorMapsIterator = (key) => {
+    const selectorMapsIterator = (key: string): void => {
       match = group.match(SELECTOR_MAPS[key]);
       if (match) {
         validSelector = true;
@@ -113,9 +131,11 @@ export function tokenize(s) {
         if (key === 'attr') {
           // extract parts of attribute from e.g. [color='red'] => (color, =, red)
           match = match[0].match(/\[(\w[\w\._-]+)?(?:([!]?=)['\"]([\w\s#_-]*)['\"])?\]/);
-          info.attribute = match[1];
-          info.operator = match[2];
-          info.attributeValue = match[3];
+          if (match) {
+            info.attribute = match[1];
+            info.operator = match[2];
+            info.attributeValue = match[3];
+          }
         }
         sub.push(info);
       }
@@ -147,9 +167,9 @@ export function tokenize(s) {
   return groups;
 }
 
-function getDescendants(obj) {
-  let r = [];
-  let c;
+function getDescendants(obj: any): NodeObject[] {
+  let r: NodeObject[] = [];
+  let c: any;
 
   if (!obj.children) {
     return [];
@@ -166,21 +186,21 @@ function getDescendants(obj) {
   return r;
 }
 
-export default function find(s, object) {
-  const result = [];
-  const groupResults = [];
-  let groups;
+export default function find(s: string, object: any): any[] {
+  const result: any[] = [];
+  const groupResults: any[][] = [];
+  let groups: Token[][];
   let descendants = getDescendants(object);
 
   if (descendants.length) {
     groups = tokenize(s);
 
-    let tokens;
+    let tokens: Token[];
 
     for (let gi = 0, glen = groups.length; gi < glen; gi++) {
       tokens = groups[gi];
 
-      const levels = [];
+      const levels: NodeObject[][] = [];
       let filtered = descendants.slice();
       let hasRemainder = false;
       tokens.reverse().forEach((token) => {
@@ -201,14 +221,14 @@ export default function find(s, object) {
 
       const selected = levels[0].filter((node) => {
         let ancestor = node.parent;
-        let idx;
+        let idx: number;
 
         for (let i = 1; i < levels.length; i++) {
           const levelsNode = levels[i].map((lvl) => lvl.node);
-          idx = levelsNode.indexOf(ancestor);
+          idx = levelsNode.indexOf(ancestor?.node);
           while (ancestor && idx < 0) {
             ancestor = ancestor.parent;
-            idx = levelsNode.indexOf(ancestor);
+            idx = levelsNode.indexOf(ancestor?.node);
           }
           if (idx < 0) {
             return false;
