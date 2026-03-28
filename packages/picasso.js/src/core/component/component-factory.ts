@@ -72,7 +72,57 @@ interface ExtractedData {
   [key: string]: unknown;
 }
 
-const isReservedProperty = (prop) =>
+interface PrepareContextOptions {
+  settings: () => unknown;
+  formatter: () => unknown;
+  scale: () => unknown;
+  data: () => unknown;
+  renderer: () => unknown;
+  chart: () => unknown;
+  dockConfig: () => unknown;
+  mediator: () => unknown;
+  instance?: () => unknown;
+  rect?: () => unknown;
+  style: () => unknown;
+  registries: () => unknown;
+  resolver: () => unknown;
+  update?: () => unknown;
+  _DO_NOT_USE_getInfo?: (ctx?: unknown) => unknown;
+  symbol?: () => unknown;
+  isVisible?: () => boolean;
+}
+
+interface BrushConsume {
+  context?: string;
+  style?: unknown;
+  data?: unknown;
+}
+
+interface BrushTrigger {
+  on?: string;
+  context?: string;
+  globalPropagation?: string;
+  [key: string]: unknown;
+}
+
+interface BrushSettings {
+  consume?: BrushConsume[];
+  trigger?: BrushTrigger[];
+  [key: string]: unknown;
+}
+
+interface EventListener {
+  event: string;
+  listener: (...args: unknown[]) => void;
+}
+
+interface CreateCallbackOptions {
+  method: string;
+  defaultMethod?: () => unknown;
+  canBeValue?: boolean;
+}
+
+const isReservedProperty = (prop: string): boolean =>
   [
     'on',
     'preferredSize',
@@ -103,7 +153,7 @@ const isReservedProperty = (prop) =>
     'isVisible',
   ].some((name) => name === prop);
 
-function prepareContext(ctx, definition, opts) {
+function prepareContext(ctx: Record<string, unknown>, definition: Record<string, unknown>, opts: PrepareContextOptions): void {
   const { require = [] } = definition;
   const mediatorSettings = definition.mediator || {};
   const {
@@ -216,8 +266,8 @@ function prepareContext(ctx, definition, opts) {
   });
 }
 
-function createDockDefinition(settings, preferredSize, logger) {
-  const getLayoutProperty = (propName) => {
+function createDockDefinition(settings: Record<string, unknown>, preferredSize: unknown, logger: { warn: (...args: unknown[]) => void }): Record<string, unknown> {
+  const getLayoutProperty = (propName: string): unknown => {
     if (settings[propName]) {
       logger.warn(`Deprecation Warning the ${propName} property should be moved into layout: {} property`);
       return settings[propName];
@@ -252,23 +302,23 @@ function createDockDefinition(settings, preferredSize, logger) {
   return def;
 }
 
-function setUpEmitter(ctx, emitter, settings) {
+function setUpEmitter(ctx: Record<string, unknown>, emitter: Record<string, unknown>, settings: Record<string, unknown>): void {
   // Object.defineProperty(ctx, 'emitter', )
-  Object.keys(settings.on || {}).forEach((event) => {
+  Object.keys(settings.on || {}).forEach((event: string) => {
     ctx.eventListeners = ctx.eventListeners || [];
-    const listener = settings.on[event].bind(ctx);
-    ctx.eventListeners.push({ event, listener });
-    emitter.on(event, listener);
+    const listener = (settings.on as Record<string, (...args: unknown[]) => void>)[event].bind(ctx);
+    (ctx.eventListeners as EventListener[]).push({ event, listener });
+    (emitter as Record<string, unknown>).on(event, listener);
   });
-  ctx.emit = (name, ...event) => emitter.emit(name, ...event);
+  ctx.emit = (name: string, ...event: unknown[]) => (emitter as Record<string, (...args: unknown[]) => void>).emit(name, ...event);
 }
 
-function tearDownEmitter(ctx, emitter) {
+function tearDownEmitter(ctx: Record<string, unknown>, emitter: Record<string, unknown>): void {
   if (ctx.eventListeners) {
-    ctx.eventListeners.forEach(({ event, listener }) => {
-      emitter.removeListener(event, listener);
+    (ctx.eventListeners as EventListener[]).forEach(({ event, listener }: EventListener) => {
+      (emitter as Record<string, (event: string, listener: (...args: unknown[]) => void) => void>).removeListener(event, listener);
     });
-    ctx.eventListeners.length = 0;
+    ((ctx.eventListeners as unknown[]) as EventListener[]).length = 0;
   }
   ctx.emit = () => {};
 }
@@ -283,7 +333,7 @@ function tearDownEmitter(ctx, emitter) {
 // beforeUpdate -> beforeRender -> render -> updated
 
 // TODO support es6 classes
-function componentFactory(definition, context: ComponentFactoryContext = {}) {
+function componentFactory(definition: Record<string, unknown>, context: ComponentFactoryContext = {}): Record<string, unknown> {
   const { defaultSettings = {}, _DO_NOT_USE_getInfo = () => ({}) } = definition;
   const {
     chart,
@@ -297,33 +347,33 @@ function componentFactory(definition, context: ComponentFactoryContext = {}) {
   let config = context.settings || {};
   let settings = extend(true, {}, defaultSettings, config);
   let data: ExtractedData | unknown[] = [];
-  let scale;
-  let formatter;
-  let element;
-  let size;
-  let style;
+  let scale: unknown = undefined;
+  let formatter: unknown = undefined;
+  let element: unknown = undefined;
+  let size: unknown = undefined;
+  let style: unknown = undefined;
   let resolver = settingsResolver({
     chart,
   });
   let isVisible = false;
 
-  const brushArgs = {
+  const brushArgs: Record<string, unknown> = {
     nodes: [],
     chart,
     config: settings.brush || {},
     renderer: null,
   };
-  const brushTriggers = {
+  const brushTriggers: { tap: BrushTrigger[]; over: BrushTrigger[] } = {
     tap: [],
     over: [],
   };
-  const brushStylers = [];
-  const definitionContext = {};
+  const brushStylers: Array<Record<string, unknown>> = [];
+  const definitionContext: Record<string, unknown> = {};
   const instanceContext = extend({}, config);
 
   // Create a callback that calls lifecycle functions in the definition and config (if they exist).
-  function createCallback(method, defaultMethod = () => {}, canBeValue = false) {
-    return function cb(...args) {
+  function createCallback(method: string, defaultMethod: (...args: unknown[]) => unknown = () => {}, canBeValue: boolean = false): (...args: unknown[]) => unknown {
+    return function cb(...args: unknown[]): unknown {
       const inDefinition = typeof definition[method] !== 'undefined';
       const inConfig = typeof config[method] !== 'undefined';
 
@@ -365,9 +415,9 @@ function componentFactory(definition, context: ComponentFactoryContext = {}) {
   const destroyed = createCallback('destroyed');
   const render = definition.render; // Do not allow overriding of this function
 
-  const addBrushStylers = () => {
+  const addBrushStylers = (): void => {
     if (settings.brush) {
-      (settings.brush.consume || []).forEach((b) => {
+      ((settings.brush as Record<string, unknown>).consume as BrushConsume[] || []).forEach((b: BrushConsume) => {
         if (b.context && b.style) {
           brushStylers.push(brushStyler(brushArgs, b));
         }
@@ -375,9 +425,9 @@ function componentFactory(definition, context: ComponentFactoryContext = {}) {
     }
   };
 
-  const addBrushTriggers = () => {
+  const addBrushTriggers = (): void => {
     if (settings.brush) {
-      (settings.brush.trigger || []).forEach((t) => {
+      ((settings.brush as Record<string, unknown>).trigger as BrushTrigger[] || []).forEach((t: BrushTrigger) => {
         if (t.on === 'over') {
           brushTriggers.over.push(t);
         } else {

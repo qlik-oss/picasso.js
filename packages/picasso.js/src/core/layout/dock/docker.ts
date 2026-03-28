@@ -4,6 +4,13 @@ import { rectToPoints, pointsToRect } from '../../geometry/util';
 import type { Rect } from '../../geometry/util';
 import createRect from './create-rect';
 
+interface EdgeBleed {
+  left: number;
+  right: number;
+  top: number;
+  bottom: number;
+}
+
 interface PreferredSizeReturn {
   width: number;
   height: number;
@@ -82,20 +89,21 @@ function validateReduceRect(rect: Rect, reducedRect: Rect, settings: Settings): 
 }
 
 function reduceDocRect(reducedRect: Rect, c: Component): void {
+  const size = c.cachedSize ?? 0;
   switch (c.config.dock()) {
     case 'top':
-      reducedRect.y += c.cachedSize;
-      reducedRect.height -= c.cachedSize;
+      reducedRect.y += size;
+      reducedRect.height -= size;
       break;
     case 'bottom':
-      reducedRect.height -= c.cachedSize;
+      reducedRect.height -= size;
       break;
     case 'left':
-      reducedRect.x += c.cachedSize;
-      reducedRect.width -= c.cachedSize;
+      reducedRect.x += size;
+      reducedRect.width -= size;
       break;
     case 'right':
-      reducedRect.width -= c.cachedSize;
+      reducedRect.width -= size;
       break;
     default:
   }
@@ -338,10 +346,10 @@ function positionComponents({ visible, layoutRect, reducedRect, containerRect, t
           break;
         default:
           if (c.referencedDocks.length > 0) {
-            const refs = c.referencedDocks.map((ref) => referencedComponents[ref]).filter((ref) => !!ref);
+            const refs = c.referencedDocks.map((ref: string) => referencedComponents[ref]).filter((ref: Component | undefined) => !!ref);
             if (refs.length > 0) {
-              outerRect = boundingBox(refs.map((ref) => ref.outerRect));
-              rect = boundingBox(refs.map((ref) => ref.r));
+              outerRect = boundingBox(refs.map((ref: Component) => ref.outerRect));
+              rect = boundingBox(refs.map((ref: Component) => ref.r));
             }
           }
           break;
@@ -369,7 +377,7 @@ function positionComponents({ visible, layoutRect, reducedRect, containerRect, t
   return elementOrder;
 }
 
-function checkShowSettings(strategySettings, dockSettings, logicalContainerRect) {
+function checkShowSettings(strategySettings: unknown, dockSettings: unknown, logicalContainerRect: Rect): boolean {
   const layoutModes = strategySettings.layoutModes || {};
   const minimumLayoutMode = dockSettings.minimumLayoutMode();
   let show = dockSettings.show();
@@ -388,7 +396,7 @@ function checkShowSettings(strategySettings, dockSettings, logicalContainerRect)
   return show;
 }
 
-function validateComponent(component) {
+function validateComponent(component: unknown): void {
   if (!component.resize || typeof component.resize !== 'function') {
     throw new Error('Component is missing resize function');
   }
@@ -397,7 +405,7 @@ function validateComponent(component) {
   }
 }
 
-function filterComponents(components, settings, rect) {
+function filterComponents(components: unknown[], settings: unknown, rect: Rect): { visible: Component[]; hidden: Component[] } {
   const visible = [];
   const hidden = [];
   // check show settings
@@ -408,7 +416,7 @@ function filterComponents(components, settings, rect) {
     let config = comp.dockConfig;
     const key = comp.key;
     const d = config.dock();
-    const referencedDocks = /@/.test(d) ? d.split(',').map((s) => s.replace(/^\s*@/, '')) : [];
+    const referencedDocks = /@/.test(d) ? d.split(',').map((s: string) => s.replace(/^\s*@/, '')) : [];
     if (checkShowSettings(settings, config, rect)) {
       visible.push({
         comp,
@@ -477,13 +485,13 @@ interface Docker {
   settings(s: unknown): void;
 }
 
-function dockLayout(initialSettings) {
+function dockLayout(initialSettings: unknown): Docker {
   let settings = resolveSettings(initialSettings);
 
   // Methods are assigned immediately below; the cast is safe since all Docker properties are defined before return.
   const docker: Docker = {} as Docker;
 
-  docker.layout = function layout(rect, components = []) {
+  docker.layout = function layout(rect: Rect, components: unknown[] = []): { visible: unknown[]; hidden: unknown[]; ordered: unknown[] } {
     if (!rect || isNaN(rect.x) || isNaN(rect.y) || isNaN(rect.width) || isNaN(rect.height)) {
       throw new Error('Invalid rect');
     }
@@ -511,20 +519,20 @@ function dockLayout(initialSettings) {
       containerRect,
       translation,
     });
-    hidden.forEach((c) => {
+    hidden.forEach((c: Component) => {
       c.comp.visible = false;
       // set empty rects on hidden components
       const r = createRect();
       c.comp.resize(r, r);
     });
     return {
-      visible: visible.map((v) => v.comp),
-      hidden: hidden.map((h) => h.comp),
-      ordered: ordered.map((h) => h.comp),
+      visible: visible.map((v: Component) => v.comp),
+      hidden: hidden.map((h: Component) => h.comp),
+      ordered: ordered!.map((h: Component) => h.comp),
     };
   };
 
-  docker.settings = function settingsFn(s) {
+  docker.settings = function settingsFn(s: unknown): void {
     settings = resolveSettings(s);
   };
 

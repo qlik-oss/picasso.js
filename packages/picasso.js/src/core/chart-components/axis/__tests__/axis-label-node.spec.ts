@@ -9,6 +9,22 @@ interface TestTick {
   value: number;
 }
 
+interface BuildOptions {
+  style: Record<string, unknown>;
+  align: string;
+  padding: number;
+  innerRect: Record<string, number>;
+  outerRect: Record<string, number>;
+  maxWidth: number;
+  maxHeight: number;
+  textRect: Record<string, number>;
+  textBounds: (node: unknown) => Record<string, unknown>;
+  stepSize: number;
+  tilted?: boolean;
+  angle?: number;
+  layered?: boolean;
+}
+
 function createTick(start: number, end: number): TestTick {
   const position = start + (end - start) / 2;
   return {
@@ -48,7 +64,7 @@ describe('Axis Label Node', () => {
   });
 
   describe('Label', () => {
-    let buildOpts: Record<string, unknown>;
+    let buildOpts: BuildOptions;
     let tick: TestTick;
     let expected: Record<string, unknown>;
 

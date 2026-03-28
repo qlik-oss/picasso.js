@@ -22,7 +22,7 @@ const NxTreeValue = {
 };
 const NxTreeNode = { qElemNo: 9, qText: 'nine', qValues: [{}, {}, NxTreeValue] };
 
-const ds = (qMode, config = {}) => {
+const ds = (qMode: any, config: any = {}) => {
   const qDataPages = [
     {
       qArea: {
@@ -192,7 +192,7 @@ describe('q-data', () => {
   });
 
   describe('virtualFields', () => {
-    let d;
+    let d: any;
     beforeEach(() => {
       d = ds('S', {
         virtualFields: [
@@ -208,7 +208,7 @@ describe('q-data', () => {
     });
 
     it('should be found', () => {
-      const f = d.field('temporal');
+      const f: any = d.field('temporal');
       expect(f.value).to.equal('3');
       expect(f.key()).to.equal('temporal');
     });
@@ -219,68 +219,68 @@ describe('q-data', () => {
   });
 
   describe('qMode="S"', () => {
-    let d;
+    let d: any;
     beforeAll(() => {
       d = ds('S');
     });
 
     it('should pass localeInfo to field', () => {
-      let f = d.field('qMeasureInfo/2');
+      let f: any = d.field('qMeasureInfo/2');
       const form = f.formatter();
       expect(form(300)).to.eql('$300_00');
     });
 
     it('should pass localeInfo to attribute field', () => {
-      let f = d.field('qMeasureInfo/2/qAttrExprInfo/1');
+      let f: any = d.field('qMeasureInfo/2/qAttrExprInfo/1');
       const form = f.formatter();
       expect(form(300)).to.eql('€300_00');
     });
 
     describe('dimension', () => {
-      let f;
+      let f: any;
       beforeAll(() => {
         f = d.field('qDimensionInfo/0');
       });
 
       it('items', () => {
-        expect(f.items().map((v) => v.value)).to.eql([3]);
-        expect(f.items().map((v) => v.label)).to.eql(['three']);
+        expect(f.items().map((v: any) => v.value)).to.eql([3]);
+        expect(f.items().map((v: any) => v.label)).to.eql(['three']);
       });
     });
 
     describe('measure', () => {
-      let f;
+      let f: any;
       beforeAll(() => {
         f = d.field('qMeasureInfo/2');
       });
 
       it('items', () => {
-        expect(f.items().map((v) => v.value)).to.eql([3.6]);
-        expect(f.items().map((v) => v.label)).to.eql(['$$3.6']);
+        expect(f.items().map((v: any) => v.value)).to.eql([3.6]);
+        expect(f.items().map((v: any) => v.label)).to.eql(['$$3.6']);
       });
     });
 
     describe('attribute expression', () => {
-      let f;
+      let f: any;
       beforeAll(() => {
         f = d.field('qMeasureInfo/2/qAttrExprInfo/1');
       });
 
       it('items', () => {
-        expect(f.items().map((v) => v.value)).to.eql([37.6]);
-        expect(f.items().map((v) => v.label)).to.eql(['$37.6']);
+        expect(f.items().map((v: any) => v.value)).to.eql([37.6]);
+        expect(f.items().map((v: any) => v.label)).to.eql(['$37.6']);
       });
     });
 
     describe('attribute dimension', () => {
-      let f;
+      let f: any;
       beforeAll(() => {
         f = d.field('qMeasureInfo/2/qAttrDimInfo/1');
       });
 
       it('items', () => {
-        expect(f.items().map((v) => v.value)).to.eql([7]);
-        expect(f.items().map((v) => v.label)).to.eql(['seven']);
+        expect(f.items().map((v: any) => v.value)).to.eql([7]);
+        expect(f.items().map((v: any) => v.label)).to.eql(['seven']);
       });
     });
 
@@ -321,56 +321,56 @@ describe('q-data', () => {
   });
 
   describe('qMode="K"', () => {
-    let d;
+    let d: any;
     beforeAll(() => {
       d = ds('K');
     });
 
     describe('dimension', () => {
-      let f;
+      let f: any;
       beforeAll(() => {
         f = d.field('qDimensionInfo/0');
       });
 
       it('items', () => {
-        expect(f.items().map((v) => v.value)).to.eql([7]);
-        expect(f.items().map((v) => v.label)).to.eql(['$34']);
+        expect(f.items().map((v: any) => v.value)).to.eql([7]);
+        expect(f.items().map((v: any) => v.label)).to.eql(['$34']);
       });
     });
 
     describe('measure', () => {
-      let f;
+      let f: any;
       beforeAll(() => {
         f = d.field('qMeasureInfo/2');
       });
 
       it('items', () => {
-        expect(f.items().map((v) => v.value)).to.eql([32.3]);
-        expect(f.items().map((v) => v.label)).to.eql(['$32.3']);
+        expect(f.items().map((v: any) => v.value)).to.eql([32.3]);
+        expect(f.items().map((v: any) => v.label)).to.eql(['$32.3']);
       });
     });
 
     describe('attribute expression', () => {
-      let f;
+      let f: any;
       beforeAll(() => {
         f = d.field('qMeasureInfo/2/qAttrExprInfo/1');
       });
 
       it('items', () => {
-        expect(f.items().map((v) => v.value)).to.eql([37.6]);
-        expect(f.items().map((v) => v.label)).to.eql(['$37.6']);
+        expect(f.items().map((v: any) => v.value)).to.eql([37.6]);
+        expect(f.items().map((v: any) => v.label)).to.eql(['$37.6']);
       });
     });
 
     describe('attribute dimension', () => {
-      let f;
+      let f: any;
       beforeAll(() => {
         f = d.field('qMeasureInfo/2/qAttrDimInfo/1');
       });
 
       it('items', () => {
-        expect(f.items().map((v) => v.value)).to.eql([7]);
-        expect(f.items().map((v) => v.label)).to.eql(['seven']);
+        expect(f.items().map((v: any) => v.value)).to.eql([7]);
+        expect(f.items().map((v: any) => v.label)).to.eql(['seven']);
       });
     });
 
@@ -384,56 +384,56 @@ describe('q-data', () => {
   });
 
   describe('qMode="T"', () => {
-    let d;
+    let d: any;
     beforeAll(() => {
       d = ds('T');
     });
 
     describe('dimension', () => {
-      let f;
+      let f: any;
       beforeAll(() => {
         f = d.field('qDimensionInfo/0');
       });
 
       it('items', () => {
-        expect(f.items().map((v) => v.value)).to.eql([9]);
-        expect(f.items().map((v) => v.label)).to.eql(['nine']);
+        expect(f.items().map((v: any) => v.value)).to.eql([9]);
+        expect(f.items().map((v: any) => v.label)).to.eql(['nine']);
       });
     });
 
     describe('measure', () => {
-      let f;
+      let f: any;
       beforeAll(() => {
         f = d.field('qMeasureInfo/2');
       });
 
       it('items', () => {
-        expect(f.items().map((v) => v.value)).to.eql([31.3]);
-        expect(f.items().map((v) => v.label)).to.eql(['$31.3']);
+        expect(f.items().map((v: any) => v.value)).to.eql([31.3]);
+        expect(f.items().map((v: any) => v.label)).to.eql(['$31.3']);
       });
     });
 
     describe('attribute expression', () => {
-      let f;
+      let f: any;
       beforeAll(() => {
         f = d.field('qMeasureInfo/2/qAttrExprInfo/1');
       });
 
       it('items', () => {
-        expect(f.items().map((v) => v.value)).to.eql([37.6]);
-        expect(f.items().map((v) => v.label)).to.eql(['$37.6']);
+        expect(f.items().map((v: any) => v.value)).to.eql([37.6]);
+        expect(f.items().map((v: any) => v.label)).to.eql(['$37.6']);
       });
     });
 
     describe('attribute dimension', () => {
-      let f;
+      let f: any;
       beforeAll(() => {
         f = d.field('qMeasureInfo/2/qAttrDimInfo/1');
       });
 
       it('items', () => {
-        expect(f.items().map((v) => v.value)).to.eql([7]);
-        expect(f.items().map((v) => v.label)).to.eql(['seven']);
+        expect(f.items().map((v: any) => v.value)).to.eql([7]);
+        expect(f.items().map((v: any) => v.label)).to.eql(['seven']);
       });
     });
 
@@ -446,56 +446,56 @@ describe('q-data', () => {
   });
 
   describe('TreeData', () => {
-    let d;
+    let d: any;
     beforeAll(() => {
       d = tree();
     });
 
     describe('dimension', () => {
-      let f;
+      let f: any;
       beforeAll(() => {
         f = d.field('qDimensionInfo/0');
       });
 
       it('items', () => {
-        expect(f.items().map((v) => v.value)).to.eql([9]);
-        expect(f.items().map((v) => v.label)).to.eql(['nine']);
+        expect(f.items().map((v: any) => v.value)).to.eql([9]);
+        expect(f.items().map((v: any) => v.label)).to.eql(['nine']);
       });
     });
 
     describe('measure', () => {
-      let f;
+      let f: any;
       beforeAll(() => {
         f = d.field('qDimensionInfo/0/qMeasureInfo/2');
       });
 
       it('items', () => {
-        expect(f.items().map((v) => v.value)).to.eql([31.3]);
-        expect(f.items().map((v) => v.label)).to.eql(['$31.3']);
+        expect(f.items().map((v: any) => v.value)).to.eql([31.3]);
+        expect(f.items().map((v: any) => v.label)).to.eql(['$31.3']);
       });
     });
 
     describe('attribute expression', () => {
-      let f;
+      let f: any;
       beforeAll(() => {
         f = d.field('qDimensionInfo/0/qMeasureInfo/2/qAttrExprInfo/1');
       });
 
       it('items', () => {
-        expect(f.items().map((v) => v.value)).to.eql([37.6]);
-        expect(f.items().map((v) => v.label)).to.eql(['$37.6']);
+        expect(f.items().map((v: any) => v.value)).to.eql([37.6]);
+        expect(f.items().map((v: any) => v.label)).to.eql(['$37.6']);
       });
     });
 
     describe('attribute dimension', () => {
-      let f;
+      let f: any;
       beforeAll(() => {
         f = d.field('qDimensionInfo/0/qMeasureInfo/2/qAttrDimInfo/1');
       });
 
       it('items', () => {
-        expect(f.items().map((v) => v.value)).to.eql([7]);
-        expect(f.items().map((v) => v.label)).to.eql(['seven']);
+        expect(f.items().map((v: any) => v.value)).to.eql([7]);
+        expect(f.items().map((v: any) => v.label)).to.eql(['seven']);
       });
     });
 
@@ -588,12 +588,12 @@ describe('q-data', () => {
     });
 
     it('should return false when search by function misses', () => {
-      const f = d.field((ff) => ff.title() === 'nope');
+      const f = d.field((ff: any) => ff.title() === 'nope');
       expect(f).to.equal(false);
     });
 
     it('should find field by function', () => {
-      const f = d.field((ff) => ff.title() === 'm attr expr title');
+      const f = d.field((ff: any) => ff.title() === 'm attr expr title');
       expect(f).to.not.equal(false);
       expect(f.title()).to.eql('m attr expr title');
     });

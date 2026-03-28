@@ -75,7 +75,7 @@ describe('qlik timeFormat', () => {
     });
 
     it('should handle non-specified locale formats correctly', () => {
-      let formatter = timeFormat('', 'TS');
+      let formatter: any = timeFormat('', 'TS');
 
       expect(formatter('41596')).to.equal('2013-11-18 00:00:00');
 
@@ -122,7 +122,7 @@ describe('qlik timeFormat', () => {
   });
 
   describe('Months', () => {
-    let _0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11;
+    let _0: any, _1: any, _2: any, _3: any, _4: any, _5: any, _6: any, _7: any, _8: any, _9: any, _10: any, _11: any;
     beforeEach(() => {
       n = timeFormat();
       _0 = DateToQlikTime(new Date(Date.UTC(2014, 0, 1)));
@@ -205,7 +205,7 @@ describe('qlik timeFormat', () => {
   });
 
   describe('Weekdays', () => {
-    let mon, tue, wed, thu, fri, sat, sun;
+    let mon: any, tue: any, wed: any, thu: any, fri: any, sat: any, sun: any;
     beforeEach(() => {
       n = timeFormat(null);
       mon = DateToQlikTime(new Date(Date.UTC(2014, 0, 6)));
@@ -307,7 +307,7 @@ describe('qlik timeFormat', () => {
   });
 
   describe('Day', () => {
-    let _1, _15, _31;
+    let _1: any, _15: any, _31: any;
     beforeEach(() => {
       n = timeFormat(null);
       _1 = DateToQlikTime(new Date(Date.UTC(2014, 0, 1)));
@@ -345,7 +345,7 @@ describe('qlik timeFormat', () => {
   describe('Combinations', () => {
     it('should support combinations of year, month, weekday and day', () => {
       n = timeFormat(null);
-      const d = DateToQlikTime(new Date(Date.UTC(2014, 3, 24, 13, 55, 40, 100))); // thursday 24th april 2014 @ 13:55:40:100
+      const d: any = DateToQlikTime(new Date(Date.UTC(2014, 3, 24, 13, 55, 40, 100))); // thursday 24th april 2014 @ 13:55:40:100
 
       expect(n.format('YYYY-MM-DD', d)).to.equal('2014-04-24');
       expect(n.format('DD/MM -YY', d)).to.equal('24/04 -14');
@@ -354,7 +354,7 @@ describe('qlik timeFormat', () => {
   });
 
   describe('Time', () => {
-    let midnight, midnight59, midnight60, preNoon, noon, noon59, noon60, roundingError1, roundingError2;
+    let midnight: any, midnight59: any, midnight60: any, preNoon: any, noon: any, noon59: any, noon60: any, roundingError1: any, roundingError2: any;
     beforeEach(() => {
       n = timeFormat(null);
       midnight = 41753; // 00:00:00 -> 12:00:00 am
@@ -437,7 +437,7 @@ describe('qlik timeFormat', () => {
 
     describe('Fractions', () => {
       it(' ', () => {
-        const d = DateToQlikTime(new Date(Date.UTC(2014, 0, 1, 0, 0, 0, 452)));
+        const d: any = DateToQlikTime(new Date(Date.UTC(2014, 0, 1, 0, 0, 0, 452)));
         expect(n.format('f F', d)).to.equal('4 4'); // tenths of a second
         expect(n.format('ff', d)).to.equal('45'); // hundreths of a second
         expect(n.format('fff FFF', d)).to.equal('452 452'); // tousandths of a second
@@ -448,7 +448,7 @@ describe('qlik timeFormat', () => {
     });
 
     it('should support combinations of hours, minutes, seconds and fractions', () => {
-      const d = 41753.58033550347;
+      const d: any = 41753.58033550347;
       // let d = DateToQlikTime(new Date(Date.UTC(2014, 3, 24, 13, 55, 40, 987));
 
       expect(n.format('h:m:s', midnight)).to.equal('0:0:0');
