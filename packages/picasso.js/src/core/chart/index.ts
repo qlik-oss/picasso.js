@@ -1114,7 +1114,7 @@ function chartFn(definition, context) {
    */
   instance.component = (key) => {
     const component = (componentsC as Record<string, (...args: unknown[]) => unknown>).findComponentByKey(key);
-    return (component as Record<string, unknown> | undefined)?.instance?.ctx;
+    return (component as Record<string, Record<string, unknown>> | undefined)?.instance?.ctx;
   };
 
   instance.logger = () => logger;
