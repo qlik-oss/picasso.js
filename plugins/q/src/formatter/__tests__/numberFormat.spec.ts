@@ -2,7 +2,7 @@ import formatter from '../numberFormat';
 
 describe('numberFormat', () => {
   describe('formatter', () => {
-    let f;
+    let f: any;
 
     it('should return the correct formatter api', () => {
       f = formatter();

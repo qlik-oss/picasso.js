@@ -578,10 +578,10 @@ function componentFactory(definition: Record<string, unknown>, context: Componen
     });
   };
 
-  let currentNodes;
-  let preComputedRect;
+  let currentNodes: unknown = undefined;
+  let preComputedRect: unknown = undefined;
 
-  function updateBrushNodes(nodes) {
+  function updateBrushNodes(nodes: unknown[]): void {
     const { rendererSettings } = settings;
     const progressive = typeof rendererSettings?.progressive === 'function' && rendererSettings.progressive();
     if (!progressive) {
@@ -589,7 +589,7 @@ function componentFactory(definition: Record<string, unknown>, context: Componen
     } else if (progressive.isFirst) {
       brushArgs.nodes = [...(nodes || [])];
     } else if (brushArgs.nodes) {
-      brushArgs.nodes = [...brushArgs.nodes, ...(nodes || [])];
+      brushArgs.nodes = [...(brushArgs.nodes as unknown[]), ...(nodes || [])];
     }
   }
 
@@ -619,8 +619,8 @@ function componentFactory(definition: Record<string, unknown>, context: Componen
     });
   };
 
-  let currentTween;
-  fn.update = () => {
+  let currentTween: Record<string, unknown> | null = null;
+  fn.update = (): void => {
     if (currentTween) {
       (currentTween as { stop: () => void }).stop();
     }
@@ -706,7 +706,7 @@ function componentFactory(definition: Record<string, unknown>, context: Componen
    * @deprecated
    * @ignore
    */
-  const updateNodes = (nodes) => {
+  const updateNodes = (nodes: unknown[]): void => {
     brushArgs.nodes = nodes;
     brushStylers.forEach((bs) => {
       if (bs.isActive()) {
@@ -736,11 +736,11 @@ function componentFactory(definition: Record<string, unknown>, context: Componen
   });
 
   /**
-   * Component instance
-   * @typedef {object} Component
-   * @property {string} type Type of component
-   * @property {string} key Key of the component
-   */
+    * Component instance
+    * @typedef {object} Component
+    * @property {string} type Type of component
+    * @property {string} key Key of the component
+    */
   prepareContext(instanceContext, config, {
     settings: () => settings,
     data: () => data,
@@ -755,14 +755,14 @@ function componentFactory(definition: Record<string, unknown>, context: Componen
     isVisible: () => isVisible,
   });
 
-  fn.getBrushedShapes = function getBrushedShapes(brushCtx, mode, props) {
-    const shapes = [];
+  fn.getBrushedShapes = function getBrushedShapes(brushCtx: string, mode: string, props?: unknown): unknown[] {
+    const shapes: unknown[] = [];
     if (settings.brush && settings.brush.consume) {
       const brusher = chart?.brush(brushCtx) as Record<string, (d: unknown, p: unknown, m: unknown) => boolean>;
       const sceneNodes = (rend as Record<string, (s: string) => unknown[]>).findShapes('*');
-      settings.brush.consume
-        .filter((t) => t.context === brushCtx)
-        .forEach((consume) => {
+      (settings.brush as Record<string, unknown>).consume
+        .filter((t: BrushConsume) => t.context === brushCtx)
+        .forEach((consume: BrushConsume) => {
           for (let i = 0; i < sceneNodes.length; i++) {
             const node = sceneNodes[i] as Record<string, unknown>;
             if (node.data && brusher.containsMappedData(node.data, props || consume.data, mode)) {
@@ -777,7 +777,7 @@ function componentFactory(definition: Record<string, unknown>, context: Componen
     return shapes;
   };
 
-  fn.findShapes = (selector) => {
+  fn.findShapes = (selector: string): unknown[] => {
     const shapes = (currentTween?.inProgress() ? currentTween.targetScene : rend).findShapes(selector);
     for (let i = 0, num = shapes.length; i < num; i++) {
       appendComponentMeta(shapes[i]);

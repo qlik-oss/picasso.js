@@ -67,7 +67,7 @@ describe('extractor-s', () => {
 
   const cache = dataset._cache();
 
-  let deps;
+  let deps: any;
   beforeEach(() => {
     deps = {
       normalizeConfig: sinon.stub(),
