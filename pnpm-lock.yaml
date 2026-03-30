@@ -35,6 +35,9 @@ importers:
       '@qlik/eslint-config':
         specifier: 1.4.27
         version: 1.4.27(@typescript-eslint/eslint-plugin@8.57.2(@typescript-eslint/parser@8.57.2(eslint@10.1.0(jiti@2.6.1))(typescript@6.0.2))(eslint@10.1.0(jiti@2.6.1))(typescript@6.0.2))(eslint@10.1.0(jiti@2.6.1))(jest@30.3.0(@types/node@25.5.0))(svelte@5.54.0)(typescript@6.0.2)
+      '@rollup/plugin-babel':
+        specifier: 5.0.0
+        version: 5.0.0(@babel/core@7.29.0)(rollup@2.80.0)
       '@rollup/plugin-terser':
         specifier: 1.0.0
         version: 1.0.0(rollup@2.80.0)
@@ -101,9 +104,6 @@ importers:
       rollup:
         specifier: 2.80.0
         version: 2.80.0
-      rollup-plugin-babel:
-        specifier: 4.4.0
-        version: 4.4.0(@babel/core@7.29.0)(rollup@2.80.0)
       rollup-plugin-commonjs:
         specifier: 10.1.0
         version: 10.1.0(rollup@2.80.0)
@@ -1637,6 +1637,13 @@ packages:
       eslint: '>=9.0.0'
       svelte: ^3.37.0 || ^4.0.0 || ^5.0.0
 
+  '@rollup/plugin-babel@5.0.0':
+    resolution: {integrity: sha512-YpVnwdUeVj/fDFN75Y3CAzJTMYNcqbH05SJs551wqj+BSwLT9pS3dqJrVDPYl3eH4OrI8ueiEseX5VgUn+0HLA==}
+    engines: {node: '>= 10.0.0'}
+    peerDependencies:
+      '@babel/core': ^7.0.0
+      rollup: ^1.20.0||^2.0.0
+
   '@rollup/plugin-terser@1.0.0':
     resolution: {integrity: sha512-FnCxhTBx6bMOYQrar6C8h3scPt8/JwIzw3+AJ2K++6guogH5fYaIFia+zZuhqv0eo1RN7W1Pz630SyvLbDjhtQ==}
     engines: {node: '>=20.0.0'}
@@ -1645,6 +1652,12 @@ packages:
     peerDependenciesMeta:
       rollup:
         optional: true
+
+  '@rollup/pluginutils@3.1.0':
+    resolution: {integrity: sha512-GksZ6pr6TpIjHm8h9lSQ8pi8BE9VeubNT0OMJ3B5uZJ8pz73NPiqOtCog/x2/QzM1ENChPKxMDhiQuRHsqc+lg==}
+    engines: {node: '>= 8.0.0'}
+    peerDependencies:
+      rollup: ^1.20.0||^2.0.0
 
   '@scriptappy/cli@0.10.4':
     resolution: {integrity: sha512-uAw+4QUO7iJXk8DKeIXZlhBdnWV7JGR8Ef96ZNtqSPyakGf1xEuXt94TgyjELmlMpa6DWgP5u725ndof8q/jHQ==}
@@ -1755,6 +1768,9 @@ packages:
 
   '@types/esrecurse@4.3.1':
     resolution: {integrity: sha512-xJBAbDifo5hpffDBuHl0Y8ywswbiAp/Wi7Y/GtAgSlZyIABppyurxVueOPE8LUQOxdlgi6Zqce7uoEpqNTeiUw==}
+
+  '@types/estree@0.0.39':
+    resolution: {integrity: sha512-EYNwp3bU+98cpU4lAWYYL7Zz+2gryWH1qbdDTidVd6hkiR6weksdbMadyXKXNPEkQFhXM+hVO9ZygomHXp+AIw==}
 
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
@@ -3283,6 +3299,9 @@ packages:
 
   estree-walker@0.6.1:
     resolution: {integrity: sha512-SqmZANLWS0mnatqbSfRP5g8OXZC12Fgg1IwNtLsyHDzJizORW4khDfjPqJZsemPWBB2uqykUah5YpQ6epsqC/w==}
+
+  estree-walker@1.0.1:
+    resolution: {integrity: sha512-1fMXF3YP4pZZVozF8j/ZLfvnR8NSIljt56UhbZ5PeeDmmGHpgpdwQt7ITlGvYaQukCvuBRMLEiKiYC+oeIg4cg==}
 
   esutils@2.0.3:
     resolution: {integrity: sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==}
@@ -5633,13 +5652,6 @@ packages:
   reusify@1.1.0:
     resolution: {integrity: sha512-g6QUff04oZpHs0eG5p83rFLhHeV00ug/Yf9nZM6fLeUrPguBTkTQOdpAWWspMh55TZfVQDPaN3NQJfbVRAxdIw==}
     engines: {iojs: '>=1.0.0', node: '>=0.10.0'}
-
-  rollup-plugin-babel@4.4.0:
-    resolution: {integrity: sha512-Lek/TYp1+7g7I+uMfJnnSJ7YWoD58ajo6Oarhlex7lvUce+RCKRuGRSgztDO3/MF/PuGKmUL5iTHKf208UNszw==}
-    deprecated: This package has been deprecated and is no longer maintained. Please use @rollup/plugin-babel.
-    peerDependencies:
-      '@babel/core': 7 || ^7.0.0-rc.2
-      rollup: '>=0.60.0 <3'
 
   rollup-plugin-commonjs@10.1.0:
     resolution: {integrity: sha512-jlXbjZSQg8EIeAAvepNwhJj++qJWNJw1Cl0YnOqKtP5Djx+fFGkp3WRh+W0ASCaFG5w1jhmzDxgu3SJuVxPF4Q==}
@@ -8461,12 +8473,28 @@ snapshots:
       - typescript
       - vitest
 
+  '@rollup/plugin-babel@5.0.0(@babel/core@7.29.0)(rollup@2.80.0)':
+    dependencies:
+      '@babel/core': 7.29.0
+      '@babel/helper-module-imports': 7.28.6
+      '@rollup/pluginutils': 3.1.0(rollup@2.80.0)
+      rollup: 2.80.0
+    transitivePeerDependencies:
+      - supports-color
+
   '@rollup/plugin-terser@1.0.0(rollup@2.80.0)':
     dependencies:
       serialize-javascript: 7.0.4
       smob: 1.6.1
       terser: 5.46.1
     optionalDependencies:
+      rollup: 2.80.0
+
+  '@rollup/pluginutils@3.1.0(rollup@2.80.0)':
+    dependencies:
+      '@types/estree': 0.0.39
+      estree-walker: 1.0.1
+      picomatch: 2.3.1
       rollup: 2.80.0
 
   '@scriptappy/cli@0.10.4':
@@ -8607,6 +8635,8 @@ snapshots:
       '@babel/types': 7.29.0
 
   '@types/esrecurse@4.3.1': {}
+
+  '@types/estree@0.0.39': {}
 
   '@types/estree@1.0.8': {}
 
@@ -10247,6 +10277,8 @@ snapshots:
   estraverse@5.3.0: {}
 
   estree-walker@0.6.1: {}
+
+  estree-walker@1.0.1: {}
 
   esutils@2.0.3: {}
 
@@ -13148,15 +13180,6 @@ snapshots:
   retry@0.12.0: {}
 
   reusify@1.1.0: {}
-
-  rollup-plugin-babel@4.4.0(@babel/core@7.29.0)(rollup@2.80.0):
-    dependencies:
-      '@babel/core': 7.29.0
-      '@babel/helper-module-imports': 7.28.6
-      rollup: 2.80.0
-      rollup-pluginutils: 2.8.2
-    transitivePeerDependencies:
-      - supports-color
 
   rollup-plugin-commonjs@10.1.0(rollup@2.80.0):
     dependencies:
