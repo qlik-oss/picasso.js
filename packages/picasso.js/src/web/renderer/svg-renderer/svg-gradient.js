@@ -6,7 +6,7 @@ export default function gradienter(bucket, hasher = hashObject) {
   let uid = Date.now();
 
   const p = {
-    getOrCreateGradient(item = {}, attr = 'fill') {
+    getOrCreateGradient(item = {}, attr = 'fill', url = '') {
       let gradientHash = hasher(item[attr]);
       let gradientId = `picasso-gradient-${uid}-${gradientHash}`;
 
@@ -42,16 +42,21 @@ export default function gradienter(bucket, hasher = hashObject) {
         cache[gradientHash] = gradientId;
       }
 
-      return `url('#${gradientId}')`;
+      return `url('${url}#${gradientId}')`;
     },
     onCreate(state) {
+      let url = '';
+      if (typeof window !== 'undefined') {
+        url = window.location.href.split('#')[0];
+      }
+
       const item = state.node;
       if (item.fill && typeof item.fill === 'object' && item.fill.type === 'gradient') {
-        item.fillReference = p.getOrCreateGradient(item, 'fill');
+        item.fillReference = p.getOrCreateGradient(item, 'fill', url);
       }
 
       if (item.stroke && typeof item.stroke === 'object' && item.stroke.type === 'gradient') {
-        item.strokeReference = p.getOrCreateGradient(item, 'stroke');
+        item.strokeReference = p.getOrCreateGradient(item, 'stroke', url);
       }
     },
     clear() {
