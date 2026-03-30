@@ -64,14 +64,13 @@ describe('placement', () => {
       },
     };
 
-    global.window ??= {
-      innerWidth: 500,
-      innerHeight: 500,
-    };
+    window.innerWidth = 500;
+    window.innerHeight = 500;
   });
 
   afterEach(() => {
-    delete global.window;
+    delete window.innerWidth;
+    delete window.innerHeight;
   });
 
   it('should return best possible placement strategy on unsupported placement property', () => {
@@ -208,8 +207,8 @@ describe('placement', () => {
         // Unable to fit in this viewport, should choose best possible option and clamp left/top position
         context.state.pointer.x = 1;
         context.state.pointer.y = 2;
-        global.window.innerWidth = 10;
-        global.window.innerHeight = 10;
+        window.innerWidth = 10;
+        window.innerHeight = 10;
         context.props.placement = {
           type: 'pointer',
           dock: 'auto',
@@ -312,8 +311,8 @@ describe('placement', () => {
 
       it('dock - fallback dock', () => {
         // Unable to fit in this viewport, should fallback to top dock
-        global.window.innerWidth = 10;
-        global.window.innerHeight = 10;
+        window.innerWidth = 10;
+        window.innerHeight = 10;
         context.state.activeNodes = [
           {
             bounds: {
@@ -430,8 +429,8 @@ describe('placement', () => {
     it('dock - inside dock', () => {
       // Unable to fit in the existing dock positions, as the current target is too big
       // should choose inside to dock
-      global.window.innerWidth = 1451;
-      global.window.innerHeight = 1160;
+      window.innerWidth = 1451;
+      window.innerHeight = 1160;
       componentMock.rect.width = 1410;
       componentMock.rect.height = 978;
       context.state = {

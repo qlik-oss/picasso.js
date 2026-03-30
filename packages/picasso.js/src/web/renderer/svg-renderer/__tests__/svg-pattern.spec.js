@@ -30,7 +30,7 @@ describe('svg-pattern', () => {
       };
       p.onCreate(state);
 
-      expect(state.node.fillReference).to.equal("url('#picasso-pattern-13-2')");
+      expect(state.node.fillReference).to.equal("url('http://localhost/#picasso-pattern-13-2')");
     });
 
     it('should set strokeReference when stroke is a pattern', () => {
@@ -44,7 +44,7 @@ describe('svg-pattern', () => {
       };
       p.onCreate(state);
 
-      expect(state.node.strokeReference).to.equal("url('#picasso-pattern-13-2')");
+      expect(state.node.strokeReference).to.equal("url('http://localhost/#picasso-pattern-13-2')");
     });
 
     it('should create a pattern node', () => {
