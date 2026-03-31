@@ -84,6 +84,14 @@ const DEFAULT_DISCRETE_SETTINGS = {
      * @type {boolean=}
      */
     filterOverlapping: false,
+    /** Word break mode for wrapping long labels. `false` (default) truncates with ellipsis.
+     * Accepts `'break-word'` (break at word boundaries) or `'break-all'` (break at any character).
+     * Only effective for horizontal (top/bottom) axes in horizontal or auto mode.
+     * @type {boolean|string=} */
+    wordBreak: false,
+    /** Maximum number of lines when wordBreak is active. Excess text gets ellipsis on the last line.
+     * @type {number=} */
+    maxLines: 2,
   },
   /**
    * @typedef {object}
@@ -170,6 +178,14 @@ const DEFAULT_CONTINUOUS_SETTINGS = {
      * @type {boolean=}
      */
     filterOverlapping: true,
+    /** Word break mode for wrapping long labels. `false` (default) truncates with ellipsis.
+     * Accepts `'break-word'` (break at word boundaries) or `'break-all'` (break at any character).
+     * Only effective for horizontal (top/bottom) axes.
+     * @type {boolean|string=} */
+    wordBreak: false,
+    /** Maximum number of lines when wordBreak is active. Excess text gets ellipsis on the last line.
+     * @type {number=} */
+    maxLines: 2,
   },
   /**
    * @typedef {object}
