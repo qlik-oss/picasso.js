@@ -192,6 +192,71 @@ Checks:
 2. Verify dimension and measure fallback titles or paths in layout.
 3. Test extraction on one known field before composing props.
 
+## Symptom: Clicks Fire But QIX Selections Are Missing Or Inconsistent
+
+Use this branch when the chart appears interactive, hover or click handlers fire, and external selections still flow into the chart, but local engine selections are missing, delayed, or unreliable.
+
+Symptom pattern:
+
+- Marks are rendered and pointer or tap events fire.
+- The selection toolbar may appear, but selected values are not reflected.
+- There are no runtime errors, or only helper or interceptor shape errors.
+- External selections still affect the chart correctly.
+
+Core diagnostics:
+
+1. Verify click path to mark identity.
+   Confirm the clicked mark maps to a stable domain value or `qElemNumber`.
+2. Verify selection call shape.
+   Ensure method and params match the expected QIX API signatures.
+3. Verify helper output.
+   If using `picasso-plugin-q` helper conversion, ensure generated calls are real selection calls rather than reset or empty-selection payloads.
+4. Verify listener lifecycle.
+   Ensure listeners are not duplicated, detached, or rebound incorrectly after chart updates.
+
+Picasso event wiring guidance:
+
+- Prefer delegated listeners on a stable container when marks are frequently recreated.
+- Avoid relying on custom DOM attributes that renderers may strip.
+- Derive mark identity from stable mapping logic, or from rendered order only when that order is deterministic.
+
+Anti-pattern to avoid:
+
+- Avoid mapping clicked marks to data exclusively by raw DOM order unless you also have a stable identity fallback.
+- Prefer a stable mark identity channel such as a deterministic key mapping or encoded class token.
+
+Plugin-q and QIX guidance:
+
+- For plugin-q value brushing, use q field paths such as `qHyperCube/qDimensionInfo/0` as brush keys.
+- If helper conversion becomes brittle in a specific flow, issue explicit QIX calls through `selections.select` rather than forcing everything through helper conversion.
+- Keep selection mode lifecycle explicit.
+- Begin selection mode before issuing selection commands when the host flow requires it.
+- Clear transient interaction state on deactivated, cleared, canceled, or release transitions.
+
+Interaction with stale layout:
+
+- Do not wait for layout changes to provide click feedback.
+- Maintain local transient interaction state.
+- Trigger lightweight settings-only updates for visuals.
+- Keep layout or data updates separate from transient visual updates to avoid selection races.
+
+Regression triggers:
+
+- Full chart updates on every transient interaction.
+- Updating transient UI state before applying selection calls.
+- Coupling helper conversion and transient rerender in one hot path without ordering guarantees.
+
+Recommended ordering:
+
+1. Resolve the clicked mark and target value.
+2. Apply the selection call, either helper-generated or explicit QIX.
+3. Update transient visuals.
+4. Let confirmed or stale layout reconcile long-term state afterward.
+
+Practical outcome:
+
+Following this pattern improves engine selection reliability while preserving responsive local interactions in picasso-based charts.
+
 ## Runtime Inspection Checklist
 
 Use this checklist while debugging:
@@ -201,6 +266,13 @@ Use this checklist while debugging:
 3. Remove optional interactions and brush config.
 4. Reintroduce extraction transforms step by step.
 5. Reintroduce styling and interactivity only after geometry is stable.
+
+Debug harness tips:
+
+1. Use extraction logs first to verify `value`, `label`, and prop shape.
+2. Use brush logs to verify interaction context updates.
+3. Use QIX conversion logs to inspect helper output before sending anything to the engine.
+4. Always clean up temporary debug charts to avoid stale listeners and repeated-session noise.
 
 ## Source Landmarks For Deep Debugging
 

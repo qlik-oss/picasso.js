@@ -114,6 +114,9 @@ When the dataset is a hypercube or the task includes QIX selections:
 - Use `type: 'q'` dataset
 - Use dimension paths or fallback titles for field references
 - Map brushed values to QIX selections via `picassoQ.selections(...)`
+- Use q field paths such as `qHyperCube/qDimensionInfo/0` as selection keys for value brushing
+- If helper conversion becomes brittle in a specific flow, prefer explicit QIX calls through `selections.select`
+- Keep ordering explicit: resolve clicked mark, apply selection call, then update transient visuals
 
 Starter asset:
 
