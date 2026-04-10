@@ -80,10 +80,70 @@ When authoring a chart, work in that order. Avoid starting from component stylin
 - [Linked Brushing Template](./assets/linked-brushing.js)
 - [Custom Component Template](./assets/custom-component.js)
 - [Q Hypercube Template](./assets/q-hypercube.js)
+- [Debug Harness](./assets/debug-harness.js)
 
 ## Companion Agent
 
 - [Picasso Chart Author Agent](../../agents/picasso-chart-author.agent.md)
+
+## Custom Component API
+
+When writing a custom component, component-level config is exposed as `this.settings.settings`, not `this.settings`. `this.settings` is the normalized internal object picasso wraps around the component definition; the raw user-supplied `settings` key lives one level deeper.
+
+```js
+// WRONG — this.settings is picasso's internal wrapper object
+const { myOption } = this.settings;
+
+// CORRECT — user settings from the chart config are here
+const { myOption } = this.settings.settings;
+```
+
+All other context accessors on `this` are top-level: `this.rect`, `this.data`, `this.chart`, `this.scale`, `this.formatter`.
+
+## Valid SVG Render Node Types
+
+`render()` must return an array of plain objects with a `type` property. Valid types are:
+
+- `rect` — `x`, `y`, `width`, `height`, `fill`, `stroke`, `strokeWidth`, `rx`, `ry`, `opacity`
+- `circle` — `cx`, `cy`, `r`, `fill`, `stroke`, `strokeWidth`, `opacity`
+- `text` — `x`, `y`, `text`, `fill`, `fontSize`, `fontFamily`, `textAnchor`, `dominantBaseline`
+- `line` — `x1`, `y1`, `x2`, `y2`, `stroke`, `strokeWidth`
+- `path` — `d`, `fill`, `stroke`, `strokeWidth`, `opacity`
+
+> **Warning**: `polygon` is not a valid node type and causes a runtime crash. Use `path` instead, building the `d` attribute from the vertex list.
+
+```js
+// Converts an array of {x, y} points to an SVG path d string
+const pointsToPath = (points, close = true) => {
+  if (!points || !points.length) return '';
+  const d = points.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x} ${p.y}`).join(' ');
+  return close ? `${d} Z` : d;
+};
+
+// Used in render:
+{ type: 'path', d: pointsToPath([{x:0,y:0},{x:100,y:0},{x:50,y:80}]), fill: '#4477aa' }
+```
+
+## Color Values and Text Alignment
+
+Picasso passes color values through brushing, scales, and themes as either a plain CSS string or an object `{ color: '#hex' }`. Always normalize before placing in a render node:
+
+```js
+const resolveColor = (value, fallback) => {
+  if (typeof value === 'string' && value.trim()) return value;
+  if (value && typeof value.color === 'string') return value.color;
+  return fallback;
+};
+
+// Usage in render:
+fill: resolveColor(datum.fill, '#4477aa')
+```
+
+For text nodes, use `textAnchor` (SVG attribute, values `start` | `middle` | `end`), not `textAlign` (a CSS property that picasso's renderer ignores for SVG text nodes).
+
+```js
+{ type: 'text', text: 'Label', x: 50, y: 20, textAnchor: 'middle', dominantBaseline: 'middle' }
+```
 
 ## Authoring Rules
 
