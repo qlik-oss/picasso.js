@@ -126,11 +126,11 @@ importers:
   docs:
     devDependencies:
       '@scriptappy/cli':
-        specifier: 0.10.5
-        version: 0.10.5
+        specifier: 0.10.4
+        version: 0.10.4
       '@scriptappy/to-dts':
-        specifier: 1.0.3
-        version: 1.0.3
+        specifier: 1.0.0
+        version: 1.0.0
       jsdoc:
         specifier: 4.0.5
         version: 4.0.5
@@ -1656,6 +1656,7 @@ packages:
       rollup:
         optional: true
 
+<<<<<<< HEAD
   '@rollup/pluginutils@3.1.0':
     resolution: {integrity: sha512-GksZ6pr6TpIjHm8h9lSQ8pi8BE9VeubNT0OMJ3B5uZJ8pz73NPiqOtCog/x2/QzM1ENChPKxMDhiQuRHsqc+lg==}
     engines: {node: '>= 8.0.0'}
@@ -1664,6 +1665,10 @@ packages:
 
   '@scriptappy/cli@0.10.5':
     resolution: {integrity: sha512-xH5JleW16bzzVwK1EJPatnIaZkUXFy77vkGRE9i7qLdmcrFc9P8Wn1m5Msej657mL+Yoxcj/aG2jj3FYpCHneQ==}
+=======
+  '@scriptappy/cli@0.10.4':
+    resolution: {integrity: sha512-uAw+4QUO7iJXk8DKeIXZlhBdnWV7JGR8Ef96ZNtqSPyakGf1xEuXt94TgyjELmlMpa6DWgP5u725ndof8q/jHQ==}
+>>>>>>> 19ba6dd (fix: revert scriptappy packages to working versions)
     hasBin: true
 
   '@scriptappy/from-jsdoc@0.19.5':
@@ -1672,8 +1677,8 @@ packages:
   '@scriptappy/schema@1.1.3':
     resolution: {integrity: sha512-tf08adS4A3F7izfH/IR6x9r0q8QHtAnu6PXjxETbH67fqu2ZfG7GdHXzLFgKW7xlcAbxTCdTgx5cxhCNlXj1qg==}
 
-  '@scriptappy/to-dts@1.0.3':
-    resolution: {integrity: sha512-LbgXqacu7V5ZyJBJFrTyt+D/tdu1Gk5QHXFD+X2bk9AEro2c8oovXISmkfQQvHz2U6ZfXLs9DClJZNt+mXBJyA==}
+  '@scriptappy/to-dts@1.0.0':
+    resolution: {integrity: sha512-pITWA452YW9lqn4u0g8sn5yUzp/FWrJ7DKrv3zSheS/TU0ZR4Gjpc3JoFsX/1H3LNEYgXAjpTb+pqRpyrGRsJw==}
 
   '@scriptappy/tools@0.7.2':
     resolution: {integrity: sha512-/gVm/ncKiz6bBHjxDnNN08JNDbaLYUmNmutKgIbGdg7WUPTXKiUCB5Y6wjYufkCrfH96d9/UPKu9YDEX2i2pFA==}
@@ -2355,7 +2360,6 @@ packages:
   basic-ftp@5.2.0:
     resolution: {integrity: sha512-VoMINM2rqJwJgfdHq6RiUudKt2BV+FY5ZFezP/ypmwayk68+NzzAQy4XXLlqsGD4MCzq3DrmNFD/uUmBJuGoXw==}
     engines: {node: '>=10.0.0'}
-    deprecated: Security vulnerability fixed in 5.2.1, please upgrade
 
   before-after-hook@2.2.3:
     resolution: {integrity: sha512-NzUnlZexiaH/46WDhANlyR2bXRopNg4F/zuSA3OpZnllCUgRaOF2znDioDWrmbNVsuZk6l9pMquQB38cfBZwkQ==}
@@ -2995,6 +2999,9 @@ packages:
   dotenv@16.4.7:
     resolution: {integrity: sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==}
     engines: {node: '>=12'}
+
+  dts-dom@3.7.0:
+    resolution: {integrity: sha512-WnmiiHfhtcYS+DyGd2Rq3J6QA3ATVBdKtlrhutc/VzQVFoBgNDm+gnYc5gZizsXAI0xQ2frZntT5IJFeB2qQIg==}
 
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
@@ -8257,11 +8264,11 @@ snapshots:
 
   '@npmcli/fs@4.0.0':
     dependencies:
-      semver: 7.7.4
+      semver: 7.7.2
 
   '@npmcli/fs@5.0.0':
     dependencies:
-      semver: 7.7.4
+      semver: 7.7.2
 
   '@npmcli/git@6.0.3':
     dependencies:
@@ -8271,7 +8278,7 @@ snapshots:
       npm-pick-manifest: 10.0.0
       proc-log: 5.0.0
       promise-retry: 2.0.1
-      semver: 7.7.4
+      semver: 7.7.2
       which: 5.0.0
 
   '@npmcli/git@7.0.2':
@@ -8282,7 +8289,7 @@ snapshots:
       lru-cache: 11.3.0
       npm-pick-manifest: 11.0.3
       proc-log: 6.1.0
-      semver: 7.7.4
+      semver: 7.7.2
       which: 6.0.1
 
   '@npmcli/installed-package-contents@3.0.0':
@@ -8308,7 +8315,7 @@ snapshots:
       json-parse-even-better-errors: 5.0.0
       pacote: 21.5.0
       proc-log: 6.1.0
-      semver: 7.7.4
+      semver: 7.7.2
     transitivePeerDependencies:
       - supports-color
 
@@ -8534,6 +8541,7 @@ snapshots:
     optionalDependencies:
       rollup: 2.80.0
 
+<<<<<<< HEAD
   '@rollup/pluginutils@3.1.0(rollup@2.80.0)':
     dependencies:
       '@types/estree': 0.0.39
@@ -8542,6 +8550,9 @@ snapshots:
       rollup: 2.80.0
 
   '@scriptappy/cli@0.10.5':
+=======
+  '@scriptappy/cli@0.10.4':
+>>>>>>> 19ba6dd (fix: revert scriptappy packages to working versions)
     dependencies:
       '@scriptappy/from-jsdoc': 0.19.5
       import-cwd: 3.0.0
@@ -8560,9 +8571,9 @@ snapshots:
 
   '@scriptappy/schema@1.1.3': {}
 
-  '@scriptappy/to-dts@1.0.3':
+  '@scriptappy/to-dts@1.0.0':
     dependencies:
-      dts-dom: link:patch:dts-dom@npm%3A3.7.0#~/.yarn/patches/dts-dom-npm-3.7.0-3f6e1b92cd.patch
+      dts-dom: 3.7.0
       extend: 3.0.2
 
   '@scriptappy/tools@0.7.2':
@@ -9616,7 +9627,7 @@ snapshots:
       handlebars: 4.7.9
       json-stringify-safe: 5.0.1
       meow: 8.1.2
-      semver: 7.7.4
+      semver: 7.7.2
       split: 1.0.1
 
   conventional-commits-filter@3.0.0:
@@ -9904,6 +9915,8 @@ snapshots:
       dotenv: 16.4.7
 
   dotenv@16.4.7: {}
+
+  dts-dom@3.7.0: {}
 
   dunder-proto@1.0.1:
     dependencies:
@@ -10713,7 +10726,7 @@ snapshots:
   git-semver-tags@5.0.1:
     dependencies:
       meow: 8.1.2
-      semver: 7.7.4
+      semver: 7.7.2
 
   git-up@7.0.0:
     dependencies:
@@ -12086,7 +12099,7 @@ snapshots:
 
   log-symbols@4.1.0:
     dependencies:
-      chalk: 4.1.2
+      chalk: 4.1.0
       is-unicode-supported: 0.1.0
 
   loglevel@1.9.2: {}
@@ -12422,9 +12435,9 @@ snapshots:
       make-fetch-happen: 15.0.2
       nopt: 9.0.0
       proc-log: 6.1.0
-      semver: 7.7.4
+      semver: 7.7.2
       tar: 7.5.11
-      tinyglobby: 0.2.15
+      tinyglobby: 0.2.12
       which: 6.0.1
     transitivePeerDependencies:
       - supports-color
@@ -12452,7 +12465,7 @@ snapshots:
     dependencies:
       hosted-git-info: 4.1.0
       is-core-module: 2.16.1
-      semver: 7.7.4
+      semver: 7.7.2
       validate-npm-package-license: 3.0.4
 
   normalize-path@3.0.0: {}
@@ -12467,11 +12480,11 @@ snapshots:
 
   npm-install-checks@7.1.2:
     dependencies:
-      semver: 7.7.4
+      semver: 7.7.2
 
   npm-install-checks@8.0.0:
     dependencies:
-      semver: 7.7.4
+      semver: 7.7.2
 
   npm-normalize-package-bin@4.0.0: {}
 
@@ -12481,7 +12494,7 @@ snapshots:
     dependencies:
       hosted-git-info: 8.1.0
       proc-log: 5.0.0
-      semver: 7.7.4
+      semver: 7.7.2
       validate-npm-package-name: 6.0.2
 
   npm-package-arg@13.0.1:
@@ -12501,14 +12514,14 @@ snapshots:
       npm-install-checks: 7.1.2
       npm-normalize-package-bin: 4.0.0
       npm-package-arg: 12.0.2
-      semver: 7.7.4
+      semver: 7.7.2
 
   npm-pick-manifest@11.0.3:
     dependencies:
       npm-install-checks: 8.0.0
       npm-normalize-package-bin: 5.0.0
       npm-package-arg: 13.0.1
-      semver: 7.7.4
+      semver: 7.7.2
 
   npm-registry-fetch@19.1.0:
     dependencies:
@@ -12679,7 +12692,7 @@ snapshots:
   ora@5.3.0:
     dependencies:
       bl: 4.1.0
-      chalk: 4.1.2
+      chalk: 4.1.0
       cli-cursor: 3.1.0
       cli-spinners: 2.6.1
       is-interactive: 1.0.0
