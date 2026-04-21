@@ -219,10 +219,19 @@ export default function getSize({ isDiscrete, rect, formatter, measureText, scal
       size *= 2;
     }
 
+    let h;
+    if ((settings.labels.centerEndLabels && !isDiscrete && !horizontal) || state.labels.activeMode === 'tilted') {
+      h = measure('M').height;
+    }
+
+    if (settings.labels.centerEndLabels && !isDiscrete && !horizontal) {
+      edgeBleed.top = h / 2;
+      edgeBleed.bottom = h / 2;
+    }
+
     if (state.labels.activeMode === 'tilted') {
       const extendLeft = (settings.align === 'bottom') === settings.labels.tiltAngle >= 0;
       const radians = Math.abs(settings.labels.tiltAngle) * (Math.PI / 180); // angle in radians
-      const h = measure('M').height;
       const maxWidth = (textSize - h * Math.cos(radians)) / Math.sin(radians);
       const labelWidth = (r) => Math.min(maxWidth, r.width) * Math.cos(radians) + r.height;
       const adjustByPosition = (s, i) => {
