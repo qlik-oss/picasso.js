@@ -157,6 +157,10 @@ function reduceLayoutRect({ layoutRect, visible, hidden, settings }) {
     const c = sortedComponents[i];
     cacheSize(c, reducedRect, layoutRect);
 
+    if (c.overlap) {
+      continue;
+    }
+
     if (!reduceSingleLayoutRect(layoutRect, reducedRect, edgeBleed, c, settings)) {
       hidden.push(sortedComponents.splice(i, 1)[0]);
       --i;
@@ -169,6 +173,47 @@ function reduceLayoutRect({ layoutRect, visible, hidden, settings }) {
   visible.length = 0;
   visible.push(...filteredUnsortedComps);
   reduceEdgeBleed(layoutRect, reducedRect, edgeBleed);
+
+  // Ensure center accommodates max overlap size per direction:
+  // center_boundary = max(sum_of_normals, max_overlap_size)
+  const overlapMaxSizes = {};
+  for (const c of sortedComponents) {
+    if (c.overlap) {
+      const d = c.config.dock();
+      if (d === 'top' || d === 'bottom' || d === 'left' || d === 'right') {
+        overlapMaxSizes[d] = Math.max(overlapMaxSizes[d] || 0, c.cachedSize);
+      }
+    }
+  }
+  if (overlapMaxSizes.top) {
+    const minY = layoutRect.y + overlapMaxSizes.top;
+    if (reducedRect.y < minY) {
+      reducedRect.height -= minY - reducedRect.y;
+      reducedRect.y = minY;
+    }
+  }
+  if (overlapMaxSizes.bottom) {
+    const maxBottom = layoutRect.y + layoutRect.height - overlapMaxSizes.bottom;
+    const currentBottom = reducedRect.y + reducedRect.height;
+    if (currentBottom > maxBottom) {
+      reducedRect.height -= currentBottom - maxBottom;
+    }
+  }
+  if (overlapMaxSizes.left) {
+    const minX = layoutRect.x + overlapMaxSizes.left;
+    if (reducedRect.x < minX) {
+      reducedRect.width -= minX - reducedRect.x;
+      reducedRect.x = minX;
+    }
+  }
+  if (overlapMaxSizes.right) {
+    const maxRight = layoutRect.x + layoutRect.width - overlapMaxSizes.right;
+    const currentRight = reducedRect.x + reducedRect.width;
+    if (currentRight > maxRight) {
+      reducedRect.width -= currentRight - maxRight;
+    }
+  }
+
   return reducedRect;
 }
 
@@ -217,8 +262,17 @@ function boundingBox(rects) {
 }
 
 function positionComponents({ visible, layoutRect, reducedRect, containerRect, translation }) {
+  // vRect/hRect start from the center boundary (reducedRect) so all components align outward from there
   const vRect = createRect(reducedRect.x, reducedRect.y, reducedRect.width, reducedRect.height);
   const hRect = createRect(reducedRect.x, reducedRect.y, reducedRect.width, reducedRect.height);
+
+  // Anchors for overlap components: same center boundary
+  const overlapAnchors = {
+    top: reducedRect.y,
+    bottom: reducedRect.y + reducedRect.height,
+    left: reducedRect.x,
+    right: reducedRect.x + reducedRect.width,
+  };
 
   const referencedComponents = {};
   const referenceArray = visible.slice();
@@ -251,41 +305,53 @@ function positionComponents({ visible, layoutRect, reducedRect, containerRect, t
           rect.width = vRect.width;
           outerRect.x = layoutRect.x;
           rect.x = vRect.x;
-          outerRect.y = rect.y = vRect.y - c.cachedSize;
-
-          vRect.y -= c.cachedSize;
-          vRect.height += c.cachedSize;
+          if (c.overlap) {
+            outerRect.y = rect.y = overlapAnchors.top - c.cachedSize;
+          } else {
+            outerRect.y = rect.y = vRect.y - c.cachedSize;
+            vRect.y -= c.cachedSize;
+            vRect.height += c.cachedSize;
+          }
           break;
         case 'bottom':
           outerRect.x = layoutRect.x;
           rect.x = vRect.x;
-          outerRect.y = rect.y = vRect.y + vRect.height;
           outerRect.width = layoutRect.width;
           rect.width = vRect.width;
           outerRect.height = rect.height = c.cachedSize;
-
-          vRect.height += c.cachedSize;
+          if (c.overlap) {
+            outerRect.y = rect.y = overlapAnchors.bottom;
+          } else {
+            outerRect.y = rect.y = vRect.y + vRect.height;
+            vRect.height += c.cachedSize;
+          }
           break;
         case 'left':
-          outerRect.x = rect.x = hRect.x - c.cachedSize;
           outerRect.y = layoutRect.y;
           rect.y = hRect.y;
           outerRect.width = rect.width = c.cachedSize;
           outerRect.height = layoutRect.height;
           rect.height = hRect.height;
-
-          hRect.x -= c.cachedSize;
-          hRect.width += c.cachedSize;
+          if (c.overlap) {
+            outerRect.x = rect.x = overlapAnchors.left - c.cachedSize;
+          } else {
+            outerRect.x = rect.x = hRect.x - c.cachedSize;
+            hRect.x -= c.cachedSize;
+            hRect.width += c.cachedSize;
+          }
           break;
         case 'right':
-          outerRect.x = rect.x = hRect.x + hRect.width;
           outerRect.y = layoutRect.y;
           rect.y = hRect.y;
           outerRect.width = rect.width = c.cachedSize;
           outerRect.height = layoutRect.height;
           rect.height = hRect.height;
-
-          hRect.width += c.cachedSize;
+          if (c.overlap) {
+            outerRect.x = rect.x = overlapAnchors.right;
+          } else {
+            outerRect.x = rect.x = hRect.x + hRect.width;
+            hRect.width += c.cachedSize;
+          }
           break;
         case 'center':
           outerRect.x = rect.x = reducedRect.x;
@@ -366,12 +432,14 @@ function filterComponents(components, settings, rect) {
     const key = comp.key;
     const d = config.dock();
     const referencedDocks = /@/.test(d) ? d.split(',').map((s) => s.replace(/^\s*@/, '')) : [];
+    const overlap = config.overlap ? config.overlap() : false;
     if (checkShowSettings(settings, config, rect)) {
       visible.push({
         comp,
         key,
         config,
         referencedDocks,
+        overlap,
       });
     } else {
       hidden.push({
@@ -379,6 +447,7 @@ function filterComponents(components, settings, rect) {
         key,
         config,
         referencedDocks,
+        overlap,
       });
     }
   }

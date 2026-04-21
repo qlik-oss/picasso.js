@@ -11,6 +11,7 @@ describe('Dock Layout', () => {
     minimumLayoutMode,
     size = 0,
     key,
+    overlap = false,
   } = {}) {
     const dummy = {};
     dummy.key = key;
@@ -19,6 +20,7 @@ describe('Dock Layout', () => {
       displayOrder,
       prioOrder,
       minimumLayoutMode,
+      overlap,
     });
 
     dummy.preferredSize = () => ({ width: size, height: size, edgeBleed });
@@ -395,6 +397,171 @@ describe('Dock Layout', () => {
         width: 850,
         height: 200,
       });
+    });
+  });
+
+  describe('Overlap', () => {
+    let rect;
+    let dl;
+
+    beforeEach(() => {
+      rect = createRect(0, 0, 1000, 1000);
+      dl = dockLayout();
+    });
+
+    it('should position two overlap top components at the same anchor and reduce center by max height', () => {
+      // compA: normal top, 30px — reduces center to y=30
+      // compB: overlap top, 20px — max(30, 20)=30, center stays at y=30
+      // compC: overlap top, 15px — max stays 20, center stays at y=30
+      // all overlap bottoms align with compA's bottom (y=30)
+      const compA = componentMock({ dock: 'top', size: 30 });
+      const compB = componentMock({ dock: 'top', size: 20, overlap: true });
+      const compC = componentMock({ dock: 'top', size: 15, overlap: true });
+      const center = componentMock();
+
+      dl.layout(rect, [compA, compB, compC, center]);
+
+      // center: max(30, 20) = 30
+      expect(center.rect, 'center rect incorrect').to.deep.include({ x: 0, y: 30, width: 1000, height: 970 });
+
+      // compA: normal top, y=0, h=30, bottom=30
+      expect(compA.rect, 'compA rect incorrect').to.deep.include({ x: 0, y: 0, width: 1000, height: 30 });
+
+      // compB: overlap top, anchor=30, y=30-20=10, bottom=30 (same as compA)
+      expect(compB.rect, 'compB rect incorrect').to.deep.include({ x: 0, y: 10, width: 1000, height: 20 });
+
+      // compC: overlap top, anchor=30, y=30-15=15, bottom=30 (same as compA)
+      expect(compC.rect, 'compC rect incorrect').to.deep.include({ x: 0, y: 15, width: 1000, height: 15 });
+    });
+
+    it('should position overlap bottom components at the same anchor and reduce center by max height', () => {
+      const compA = componentMock({ dock: 'bottom', size: 40 });
+      const compB = componentMock({ dock: 'bottom', size: 25, overlap: true });
+      const compC = componentMock({ dock: 'bottom', size: 10, overlap: true });
+      const center = componentMock();
+
+      dl.layout(rect, [compA, compB, compC, center]);
+
+      // center: max(1000-40=960, 1000-25=975) → bottom stays at 960, height=960
+      expect(center.rect, 'center rect incorrect').to.deep.include({ x: 0, y: 0, width: 1000, height: 960 });
+
+      // compA: normal bottom, y=960, h=40 (inner edge at y=960)
+      expect(compA.rect, 'compA rect incorrect').to.deep.include({ x: 0, y: 960, width: 1000, height: 40 });
+
+      // compB: overlap bottom, anchor=960, y=960, h=25 — inner edge aligns with compA
+      expect(compB.rect, 'compB rect incorrect').to.deep.include({ x: 0, y: 960, width: 1000, height: 25 });
+
+      // compC: overlap bottom, anchor=960, y=960, h=10 — overlaps compB
+      expect(compC.rect, 'compC rect incorrect').to.deep.include({ x: 0, y: 960, width: 1000, height: 10 });
+    });
+
+    it('should expand center when overlap exceeds sum of normal components', () => {
+      // A=30 normal, B=20 normal, C=70 overlap → center = max(50, 70) = 70
+      // vRect starts at reducedRect.y=70: A (innermost) placed at y=40, B at y=20
+      // A's inner edge (bottom=70) aligns with center boundary and C's inner edge
+      const compA = componentMock({ dock: 'top', size: 30 });
+      const compB = componentMock({ dock: 'top', size: 20 });
+      const compC = componentMock({ dock: 'top', size: 70, overlap: true });
+      const center = componentMock();
+
+      dl.layout(rect, [compA, compB, compC, center]);
+
+      expect(center.rect, 'center rect incorrect').to.deep.include({ x: 0, y: 70, width: 1000, height: 930 });
+
+      // compA: innermost normal, bottom=70 (aligns with center and C's inner edge)
+      expect(compA.rect, 'compA rect incorrect').to.deep.include({ x: 0, y: 40, width: 1000, height: 30 });
+      // compB: outermost normal
+      expect(compB.rect, 'compB rect incorrect').to.deep.include({ x: 0, y: 20, width: 1000, height: 20 });
+      // compC: overlap, anchor=70, bottom=70 (same as compA's bottom)
+      expect(compC.rect, 'compC rect incorrect').to.deep.include({ x: 0, y: 0, width: 1000, height: 70 });
+    });
+
+    it('should not affect center when there are no non-overlap components on the same edge', () => {
+      // Only overlap top components — center should still be reduced by max overlap size
+      const compA = componentMock({ dock: 'top', size: 30, overlap: true });
+      const compB = componentMock({ dock: 'top', size: 20, overlap: true });
+      const center = componentMock();
+
+      dl.layout(rect, [compA, compB, center]);
+
+      // No normal top: only overlap max=30 reduces center
+      expect(center.rect, 'center rect incorrect').to.deep.include({ x: 0, y: 30, width: 1000, height: 970 });
+
+      // Both anchored at y=30
+      expect(compA.rect, 'compA rect incorrect').to.deep.include({ x: 0, y: 0, width: 1000, height: 30 });
+      expect(compB.rect, 'compB rect incorrect').to.deep.include({ x: 0, y: 10, width: 1000, height: 20 });
+    });
+
+    it('should correctly position components docked at overlap components via @ syntax', () => {
+      // A: normal top 30px  → center at y=30
+      // B: overlap top 20px → max(30,20)=30, center stays at y=30
+      // C: overlap top 15px → max stays 20, center stays at y=30
+      // D: @A, E: @B, F: @C — inherit refs' rects
+      const compA = componentMock({ dock: 'top', size: 30, key: 'A' });
+      const compB = componentMock({ dock: 'top', size: 20, overlap: true, key: 'B' });
+      const compC = componentMock({ dock: 'top', size: 15, overlap: true, key: 'C' });
+      const compD = componentMock({ dock: '@A' });
+      const compE = componentMock({ dock: '@B' });
+      const compF = componentMock({ dock: '@C' });
+      const center = componentMock();
+
+      dl.layout(rect, [compA, compB, compC, compD, compE, compF, center]);
+
+      expect(center.rect, 'center rect incorrect').to.deep.include({ x: 0, y: 30, width: 1000, height: 970 });
+
+      expect(compA.rect, 'compA rect incorrect').to.deep.include({ x: 0, y: 0, width: 1000, height: 30 });
+      expect(compB.rect, 'compB rect incorrect').to.deep.include({ x: 0, y: 10, width: 1000, height: 20 });
+      expect(compC.rect, 'compC rect incorrect').to.deep.include({ x: 0, y: 15, width: 1000, height: 15 });
+
+      // @-docked components inherit the rect of their referenced component
+      expect(compD.rect, 'compD (@A) rect incorrect').to.deep.include({ x: 0, y: 0, width: 1000, height: 30 });
+      expect(compE.rect, 'compE (@B) rect incorrect').to.deep.include({ x: 0, y: 10, width: 1000, height: 20 });
+      expect(compF.rect, 'compF (@C) rect incorrect').to.deep.include({ x: 0, y: 15, width: 1000, height: 15 });
+    });
+
+    it('should support chained @ references through overlap components', () => {
+      // A: normal top 30px → placed at y=20 (inner), center top at y=50
+      // B: normal top 20px → stacks above A, placed at y=0
+      // C: @A → same rect as A (overlaps A)
+      // D: @B → same rect as B (overlaps B)
+      // E: @A → same rect as A
+      // F: @B → same rect as B
+      // G: @C → same rect as C (= A)
+      // H: @D → same rect as D (= B)
+      const compA = componentMock({ dock: 'top', size: 30, key: 'A' });
+      const compB = componentMock({ dock: 'top', size: 20, key: 'B' });
+      const compC = componentMock({ dock: '@A', key: 'C' });
+      const compD = componentMock({ dock: '@B', key: 'D' });
+      const compE = componentMock({ dock: '@A' });
+      const compF = componentMock({ dock: '@B' });
+      const compG = componentMock({ dock: '@C' });
+      const compH = componentMock({ dock: '@D' });
+      const center = componentMock();
+
+      dl.layout(rect, [compA, compB, compC, compD, compE, compF, compG, compH, center]);
+
+      // center reduced by 30+20=50
+      expect(center.rect, 'center rect incorrect').to.deep.include({ x: 0, y: 50, width: 1000, height: 950 });
+
+      // A: innermost top, y = 50-30 = 20
+      expect(compA.rect, 'compA rect incorrect').to.deep.include({ x: 0, y: 20, width: 1000, height: 30 });
+      // B: stacks above A, y = 20-20 = 0
+      expect(compB.rect, 'compB rect incorrect').to.deep.include({ x: 0, y: 0, width: 1000, height: 20 });
+
+      // C overlaps A (same rect)
+      expect(compC.rect, 'compC (@A) rect incorrect').to.deep.include({ x: 0, y: 20, width: 1000, height: 30 });
+      // D overlaps B (same rect)
+      expect(compD.rect, 'compD (@B) rect incorrect').to.deep.include({ x: 0, y: 0, width: 1000, height: 20 });
+
+      // E also overlaps A
+      expect(compE.rect, 'compE (@A) rect incorrect').to.deep.include({ x: 0, y: 20, width: 1000, height: 30 });
+      // F also overlaps B
+      expect(compF.rect, 'compF (@B) rect incorrect').to.deep.include({ x: 0, y: 0, width: 1000, height: 20 });
+
+      // G chains through C → same rect as A
+      expect(compG.rect, 'compG (@C) rect incorrect').to.deep.include({ x: 0, y: 20, width: 1000, height: 30 });
+      // H chains through D → same rect as B
+      expect(compH.rect, 'compH (@D) rect incorrect').to.deep.include({ x: 0, y: 0, width: 1000, height: 20 });
     });
   });
 
