@@ -455,6 +455,47 @@ describe('Dock Layout', () => {
       expect(compC.rect, 'compC rect incorrect').to.deep.include({ x: 0, y: 960, width: 1000, height: 10 });
     });
 
+    it('should position overlap left components at the same anchor and reduce center by max width', () => {
+      const compA = componentMock({ dock: 'left', size: 40 });
+      const compB = componentMock({ dock: 'left', size: 25, overlap: true });
+      const compC = componentMock({ dock: 'left', size: 10, overlap: true });
+      const center = componentMock();
+
+      dl.layout(rect, [compA, compB, compC, center]);
+
+      // center: max(40, 25) → left boundary stays at x=40, width=960
+      expect(center.rect, 'center rect incorrect').to.deep.include({ x: 40, y: 0, width: 960, height: 1000 });
+
+      // compA: normal left, x=0, w=40 (inner edge at x=40)
+      expect(compA.rect, 'compA rect incorrect').to.deep.include({ x: 0, y: 0, width: 40, height: 1000 });
+
+      // compB: overlap left, anchor=40, x=15, w=25 — inner edge aligns with compA
+      expect(compB.rect, 'compB rect incorrect').to.deep.include({ x: 15, y: 0, width: 25, height: 1000 });
+
+      // compC: overlap left, anchor=40, x=30, w=10 — overlaps compB
+      expect(compC.rect, 'compC rect incorrect').to.deep.include({ x: 30, y: 0, width: 10, height: 1000 });
+    });
+
+    it('should position overlap right components at the same anchor and reduce center by max width', () => {
+      const compA = componentMock({ dock: 'right', size: 40 });
+      const compB = componentMock({ dock: 'right', size: 25, overlap: true });
+      const compC = componentMock({ dock: 'right', size: 10, overlap: true });
+      const center = componentMock();
+
+      dl.layout(rect, [compA, compB, compC, center]);
+
+      // center: min(1000-40=960, 1000-25=975) → right boundary stays at x=960, width=960
+      expect(center.rect, 'center rect incorrect').to.deep.include({ x: 0, y: 0, width: 960, height: 1000 });
+
+      // compA: normal right, x=960, w=40 (inner edge at x=960)
+      expect(compA.rect, 'compA rect incorrect').to.deep.include({ x: 960, y: 0, width: 40, height: 1000 });
+
+      // compB: overlap right, anchor=960, x=960, w=25 — inner edge aligns with compA
+      expect(compB.rect, 'compB rect incorrect').to.deep.include({ x: 960, y: 0, width: 25, height: 1000 });
+
+      // compC: overlap right, anchor=960, x=960, w=10 — overlaps compB
+      expect(compC.rect, 'compC rect incorrect').to.deep.include({ x: 960, y: 0, width: 10, height: 1000 });
+    });
     it('should expand center when overlap exceeds sum of normal components', () => {
       // A=30 normal, B=20 normal, C=70 overlap → center = max(50, 70) = 70
       // vRect starts at reducedRect.y=70: A (innermost) placed at y=40, B at y=20
