@@ -292,6 +292,42 @@ describe('Axis size calculator', () => {
     });
   });
 
+  describe('centerEndLabels', () => {
+    beforeEach(() => {
+      settings.labels.show = true;
+      settings.align = 'left';
+      settings.labels.centerEndLabels = true;
+      isDiscrete = false;
+    });
+
+    it('should set edgeBleed top and bottom to half text height on a vertical continuous axis', () => {
+      const size = sizeFn(rect);
+      expect(size.edgeBleed.top).to.equal(2.5); // 5 (text height) / 2
+      expect(size.edgeBleed.bottom).to.equal(2.5);
+    });
+
+    it('should not set edgeBleed when centerEndLabels is false', () => {
+      settings.labels.centerEndLabels = false;
+      const size = sizeFn(rect);
+      expect(size.edgeBleed.top).to.equal(0);
+      expect(size.edgeBleed.bottom).to.equal(0);
+    });
+
+    it('should not set edgeBleed on a horizontal axis', () => {
+      settings.align = 'bottom';
+      const size = sizeFn(rect);
+      expect(size.edgeBleed.top).to.equal(0);
+      expect(size.edgeBleed.bottom).to.equal(0);
+    });
+
+    it('should not set edgeBleed when axis is discrete', () => {
+      isDiscrete = true;
+      const size = sizeFn(rect);
+      expect(size.edgeBleed.top).to.equal(0);
+      expect(size.edgeBleed.bottom).to.equal(0);
+    });
+  });
+
   describe('ticks and line', () => {
     it('measure ticks', () => {
       settings.ticks.show = true;

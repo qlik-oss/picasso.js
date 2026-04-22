@@ -170,6 +170,9 @@ const DEFAULT_CONTINUOUS_SETTINGS = {
      * @type {boolean=}
      */
     filterOverlapping: true,
+    /** Center the labels at the end of the axis. Only applicable for vertical continuous axes.
+     * @type {boolean=} */
+    centerEndLabels: false,
   },
   /**
    * @typedef {object}
