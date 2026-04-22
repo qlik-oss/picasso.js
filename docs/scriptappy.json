@@ -1712,6 +1712,12 @@
                   "defaultValue": 0.5,
                   "type": "number"
                 },
+                "centerEndLabels": {
+                  "description": "Center the labels at the end of the axis. Only applicable for vertical continuous axes.",
+                  "optional": true,
+                  "defaultValue": false,
+                  "type": "boolean"
+                },
                 "filterOverlapping": {
                   "description": "Toggle whether labels should be filtered if they are overlapping. Filtering may be applied in a non-sequential order.\nIf labels are overlapping and this setting is toggled off, the axis will automatically hide.",
                   "optional": true,
