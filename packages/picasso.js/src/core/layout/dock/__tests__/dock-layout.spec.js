@@ -560,6 +560,77 @@ describe('Dock Layout', () => {
       expect(compF.rect, 'compF (@C) rect incorrect').to.deep.include({ x: 0, y: 15, width: 1000, height: 15 });
     });
 
+    it('should accumulate edgeBleed from overlap components', () => {
+      // overlap top component has edgeBleed.left=50, which should reduce the center x
+      const compA = componentMock({ dock: 'top', size: 30, overlap: true, edgeBleed: { left: 50 } });
+      const center = componentMock();
+
+      dl.layout(rect, [compA, center]);
+
+      // center.y pushed to 30 by overlap max-size, center.x pushed to 50 by edgeBleed
+      expect(center.rect, 'center rect should account for overlap edgeBleed').to.deep.include({
+        x: 50,
+        y: 30,
+        width: 950,
+        height: 970,
+      });
+    });
+
+    it('should hide lowest-priority overlap component when its size would violate center minHeightRatio', () => {
+      // layout: 1000x1000, minHeightRatio=0.6 → minCenterHeight=600
+      // overlap top A (prioOrder=0, higher prio) size=500 → center height=500 < 600 → invalid
+      // overlap top B (prioOrder=1, lower prio) size=500 → shed first
+      // After shedding B: only A remains, center height=500 < 600 → invalid → shed A too
+      // After shedding both: center height=1000 ≥ 600 → valid
+      const settings = { center: { minHeightRatio: 0.6 } };
+      dl.settings(settings);
+
+      const compA = componentMock({ dock: 'top', size: 500, overlap: true, prioOrder: 0 });
+      const compB = componentMock({ dock: 'top', size: 500, overlap: true, prioOrder: 1 });
+      const center = componentMock();
+
+      const { visible, hidden } = dl.layout(rect, [compA, compB, center]);
+
+      expect(hidden).to.include(compB);
+      expect(hidden).to.include(compA);
+      expect(visible).to.include(center);
+      expect(center.rect, 'center rect should be full height').to.deep.include({ y: 0, height: 1000 });
+    });
+
+    it('should keep higher-priority overlap component when shedding lower-priority one is sufficient', () => {
+      // layout: 1000x1000, minHeightRatio=0.6 → minCenterHeight=600
+      // compA (prioOrder=0, higher prio) size=300 → alone: center height=700 ≥ 600 → valid
+      // compB (prioOrder=1, lower prio) size=500 → together: center height=500 < 600 → shed B first
+      // After shedding B: only A, center height=700 ≥ 600 → valid
+      const settings = { center: { minHeightRatio: 0.6 } };
+      dl.settings(settings);
+
+      const compA = componentMock({ dock: 'top', size: 300, overlap: true, prioOrder: 0 });
+      const compB = componentMock({ dock: 'top', size: 500, overlap: true, prioOrder: 1 });
+      const center = componentMock();
+
+      const { visible, hidden } = dl.layout(rect, [compA, compB, center]);
+
+      expect(hidden).to.include(compB);
+      expect(visible).to.include(compA);
+      expect(visible).to.include(center);
+      expect(center.rect, 'center rect should be reduced by compA only').to.deep.include({ y: 300, height: 700 });
+    });
+
+    it('should clamp center rect dimensions to non-negative when overlap exceeds layout size', () => {
+      // overlap top size=1200 on a 1000px tall layout — would yield negative height without guard
+      const compA = componentMock({ dock: 'top', size: 1200, overlap: true, prioOrder: 0 });
+      const center = componentMock();
+
+      const { hidden } = dl.layout(rect, [compA, center]);
+
+      // compA is hidden because its constraint is too large to satisfy minHeightRatio
+      expect(hidden).to.include(compA);
+      // center dimensions must never be negative
+      expect(center.rect.width, 'center width must be non-negative').to.be.at.least(0);
+      expect(center.rect.height, 'center height must be non-negative').to.be.at.least(0);
+    });
+
     it('should support chained @ references through overlap components', () => {
       // A: normal top 30px → placed at y=20 (inner), center top at y=50
       // B: normal top 20px → stacks above A, placed at y=0

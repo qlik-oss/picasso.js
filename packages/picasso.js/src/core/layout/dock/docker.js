@@ -158,6 +158,7 @@ function reduceLayoutRect({ layoutRect, visible, hidden, settings }) {
     cacheSize(c, reducedRect, layoutRect);
 
     if (c.overlap) {
+      addEdgeBleed(edgeBleed, c);
       continue;
     }
 
@@ -174,45 +175,73 @@ function reduceLayoutRect({ layoutRect, visible, hidden, settings }) {
   visible.push(...filteredUnsortedComps);
   reduceEdgeBleed(layoutRect, reducedRect, edgeBleed);
 
-  // Ensure center accommodates max overlap size per direction:
-  // center_boundary = max(sum_of_normals, max_overlap_size)
-  const overlapMaxSizes = {};
-  for (const c of sortedComponents) {
-    if (c.overlap) {
+  // Ensure center accommodates the size of overlap components.
+  // Process from lowest to highest priority: hide overlap components whose size
+  // constraints would make the center rect invalid, then apply the valid set.
+  const directionalOverlapComps = sortedComponents
+    .filter((c) => c.overlap && ['top', 'bottom', 'left', 'right'].includes(c.config.dock()))
+    .sort((a, b) => b.config.prioOrder() - a.config.prioOrder()); // lowest priority first
+
+  const applyOverlapConstraints = (rect, comps) => {
+    const maxSizes = {};
+    for (const c of comps) {
       const d = c.config.dock();
-      if (d === 'top' || d === 'bottom' || d === 'left' || d === 'right') {
-        overlapMaxSizes[d] = Math.max(overlapMaxSizes[d] || 0, c.cachedSize);
+      maxSizes[d] = Math.max(maxSizes[d] || 0, c.cachedSize);
+    }
+    const r = extend({}, rect);
+    if (maxSizes.top) {
+      const minY = layoutRect.y + maxSizes.top;
+      if (r.y < minY) {
+        r.height -= minY - r.y;
+        r.y = minY;
       }
     }
-  }
-  if (overlapMaxSizes.top) {
-    const minY = layoutRect.y + overlapMaxSizes.top;
-    if (reducedRect.y < minY) {
-      reducedRect.height -= minY - reducedRect.y;
-      reducedRect.y = minY;
+    if (maxSizes.bottom) {
+      const maxBottom = layoutRect.y + layoutRect.height - maxSizes.bottom;
+      const currentBottom = r.y + r.height;
+      if (currentBottom > maxBottom) {
+        r.height -= currentBottom - maxBottom;
+      }
     }
-  }
-  if (overlapMaxSizes.bottom) {
-    const maxBottom = layoutRect.y + layoutRect.height - overlapMaxSizes.bottom;
-    const currentBottom = reducedRect.y + reducedRect.height;
-    if (currentBottom > maxBottom) {
-      reducedRect.height -= currentBottom - maxBottom;
+    if (maxSizes.left) {
+      const minX = layoutRect.x + maxSizes.left;
+      if (r.x < minX) {
+        r.width -= minX - r.x;
+        r.x = minX;
+      }
     }
-  }
-  if (overlapMaxSizes.left) {
-    const minX = layoutRect.x + overlapMaxSizes.left;
-    if (reducedRect.x < minX) {
-      reducedRect.width -= minX - reducedRect.x;
-      reducedRect.x = minX;
+    if (maxSizes.right) {
+      const maxRight = layoutRect.x + layoutRect.width - maxSizes.right;
+      const currentRight = r.x + r.width;
+      if (currentRight > maxRight) {
+        r.width -= currentRight - maxRight;
+      }
     }
-  }
-  if (overlapMaxSizes.right) {
-    const maxRight = layoutRect.x + layoutRect.width - overlapMaxSizes.right;
-    const currentRight = reducedRect.x + reducedRect.width;
-    if (currentRight > maxRight) {
-      reducedRect.width -= currentRight - maxRight;
+    return r;
+  };
+
+  let remainingOverlaps = directionalOverlapComps.slice();
+  while (remainingOverlaps.length > 0) {
+    const candidate = applyOverlapConstraints(reducedRect, remainingOverlaps);
+    if (validateReduceRect(layoutRect, candidate, settings)) {
+      reducedRect.x = candidate.x;
+      reducedRect.y = candidate.y;
+      reducedRect.width = candidate.width;
+      reducedRect.height = candidate.height;
+      break;
     }
+    // Hide the lowest-priority overlap component and retry with the remaining set
+    const toHide = remainingOverlaps.shift();
+    const idx = visible.indexOf(toHide);
+    if (idx !== -1) {
+      visible.splice(idx, 1);
+    }
+    hidden.push(toHide);
   }
+
+  // Guard against negative dimensions in case overlap sizes exceed the layout rect
+  reducedRect.width = Math.max(0, reducedRect.width);
+  reducedRect.height = Math.max(0, reducedRect.height);
 
   return reducedRect;
 }
