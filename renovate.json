@@ -1,5 +1,5 @@
 {
-  "extends": ["local>qlik-oss/renovate-config"],
+  "extends": ["local>qlik-oss/renovate-config", ":automergeMinor", ":automergeDigest"],
   "packageRules": [
     {
       "matchPackageNames": ["d3-shape", "preact"],
