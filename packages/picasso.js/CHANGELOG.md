@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.11.0](https://github.com/qlik-oss/picasso.js/compare/v2.10.0...v2.11.0) (2026-05-04)
+
+### Features
+
+- add option to support centering end labels for vertical axis ([#984](https://github.com/qlik-oss/picasso.js/issues/984)) ([bae3e19](https://github.com/qlik-oss/picasso.js/commit/bae3e193b481df4bd74b1b970c46b76c784b187e))
+
 # [2.10.0](https://github.com/qlik-oss/picasso.js/compare/v2.9.1...v2.10.0) (2025-10-22)
 
 ### Features
