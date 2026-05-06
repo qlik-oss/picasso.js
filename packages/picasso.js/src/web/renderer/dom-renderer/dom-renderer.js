@@ -35,6 +35,8 @@ export default function renderer(opts = {}) {
     if (!el) {
       el = createElement('div');
       el.style.position = 'absolute';
+      el.style.left = '0px';
+      el.style.top = '0px';
       el.style['-webkit-font-smoothing'] = 'antialiased';
       el.style['-moz-osx-font-smoothing'] = 'antialiased';
       el.style.pointerEvents = 'none';
