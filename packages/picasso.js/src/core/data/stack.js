@@ -4,7 +4,6 @@ import {
   stackOrderInsideOut,
   stackOrderNone,
   stackOrderReverse,
-  stackOffsetDiverging,
   stackOffsetNone,
   stackOffsetSilhouette,
   stackOffsetExpand,
@@ -12,6 +11,36 @@ import {
 } from 'd3-shape';
 import fieldFn from './field';
 import { getMax, getMin } from './util';
+
+export function stackOffsetDiverging(series, order) {
+  const seriesCount = series.length;
+  if (seriesCount <= 0) {
+    return;
+  }
+
+  const pointCount = series[order[0]].length;
+  for (let pointIndex = 0; pointIndex < pointCount; ++pointIndex) {
+    let positiveOffset = 0;
+    let negativeOffset = 0;
+
+    for (let seriesIndex = 0; seriesIndex < seriesCount; ++seriesIndex) {
+      const point = series[order[seriesIndex]][pointIndex];
+      const delta = point[1] - point[0];
+
+      if (delta >= 0) {
+        point[0] = positiveOffset;
+        positiveOffset += delta;
+        point[1] = positiveOffset;
+      } else if (delta < 0) {
+        point[1] = negativeOffset;
+        negativeOffset += delta;
+        point[0] = negativeOffset;
+      } else {
+        point[0] = positiveOffset;
+      }
+    }
+  }
+}
 
 const OFFSETS = {
   diverging: stackOffsetDiverging,
