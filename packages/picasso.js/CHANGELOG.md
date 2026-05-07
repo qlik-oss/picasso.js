@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.11.3](https://github.com/qlik-oss/picasso.js/compare/v2.11.2...v2.11.3) (2026-05-07)
+
+### Bug Fixes
+
+- **renderer:** use CSS transform instead of top/left for sub-pixel alignment ([#990](https://github.com/qlik-oss/picasso.js/issues/990)) ([359cb03](https://github.com/qlik-oss/picasso.js/commit/359cb0327dfa22b5c86a6d21f2c86e46a0bf1291))
+
 ## [2.11.2](https://github.com/qlik-oss/picasso.js/compare/v2.11.1...v2.11.2) (2026-05-06)
 
 **Note:** Version bump only for package picasso.js
