@@ -12,6 +12,7 @@ import {
 import fieldFn from './field';
 import { getMax, getMin } from './util';
 
+// Intentionally mirrors d3-shape@1.3.6 diverging offset behavior for zero values.
 export function stackOffsetDiverging(series, order) {
   const seriesCount = series.length;
   if (seriesCount <= 0) {
