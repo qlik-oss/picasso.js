@@ -613,4 +613,27 @@ describe('canvas renderer', () => {
     expect(el.height).to.equal(size.height * scaleRatio.y * dpiScale);
     expect(sceneFn.args[0][0].items).to.deep.equal(expectedInputShapes.items);
   });
+
+  it('should round edgeBleed translate to integer device pixels', () => {
+    const div = element('div');
+    // edgeBleed.top = 2.5 (fractional), scaleRatio.y = 1.5 → 2.5*1.5 = 3.75 → Math.round = 4
+    // edgeBleed.left = 2.5 (fractional), scaleRatio.x = 1.5 → 2.5*1.5 = 3.75 → Math.round = 4
+    const size = {
+      x: 0,
+      y: 0,
+      width: 200,
+      height: 400,
+      scaleRatio: { x: 1.5, y: 1.5 },
+      edgeBleed: { left: 2.5, right: 0, top: 2.5, bottom: 0 },
+    };
+    const inputShapes = [{ type: 'container' }];
+    sceneFn.returns({ children: [] });
+    r.appendTo(div);
+    r.size(size);
+    r.render(inputShapes);
+
+    const sceneContainerTransform = sceneFn.args[0][0].items[0].transform;
+    // Math.ceil(2.5) = 3 stored in edgeBleed; 3 * 1 (dpiRatio) * 1.5 = 4.5 → Math.round = 5
+    expect(sceneContainerTransform).to.include('translate(5, 5)');
+  });
 });

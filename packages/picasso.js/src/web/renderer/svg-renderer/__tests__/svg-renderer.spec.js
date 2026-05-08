@@ -163,6 +163,25 @@ describe('svg renderer', () => {
       expect(wrappedContainer[0].transform).to.deep.equal(expectedInputShapes[0].transform);
     });
 
+    it('should round edgeBleed translate to integer pixels', () => {
+      // edgeBleed.top = 2.5 (fractional), Math.ceil → 3 stored; 3 * scaleY 1.5 = 4.5 → Math.round = 5
+      const size = {
+        x: 0,
+        y: 0,
+        width: 200,
+        height: 400,
+        scaleRatio: { x: 1.5, y: 1.5 },
+        edgeBleed: { left: 2.5, right: 0, top: 2.5, bottom: 0 },
+      };
+      scene.returns(s);
+      svg.appendTo(element('div'));
+      svg.size(size);
+      svg.render([s]);
+
+      const sceneContainerTransform = scene.args[0][0].items[0].transform;
+      expect(sceneContainerTransform).to.include('translate(5, 5)');
+    });
+
     it('should handle call without arguments', () => {
       scene.returns(s);
       svg.appendTo(element('div'));

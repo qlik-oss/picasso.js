@@ -168,6 +168,13 @@ describe('renderer-box', () => {
           },
         });
       });
+
+      it(`should ceil fractional ${prop} edgeBleed to nearest integer`, () => {
+        const edgeBleed = {};
+        edgeBleed[prop] = 2.5;
+        const b = box({ edgeBleed });
+        expect(b.edgeBleed[prop]).to.equal(3);
+      });
     });
   });
 
