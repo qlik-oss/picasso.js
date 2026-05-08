@@ -58,7 +58,7 @@ export default function createRendererBox({ x, y, width, height, scaleRatio, mar
   if (typeof edgeBleed === 'object') {
     ['left', 'right', 'top', 'bottom'].forEach((prop) => {
       if (!isNaN(edgeBleed[prop]) && edgeBleed[prop] > 0) {
-        box.edgeBleed[prop] = edgeBleed[prop];
+        box.edgeBleed[prop] = Math.ceil(edgeBleed[prop]);
         box.edgeBleed.bool = true;
       }
     });
