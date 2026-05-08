@@ -225,8 +225,8 @@ export default function getSize({ isDiscrete, rect, formatter, measureText, scal
     }
 
     if (settings.labels.centerEndLabels && !isDiscrete && !horizontal) {
-      edgeBleed.top = h / 2;
-      edgeBleed.bottom = h / 2;
+      edgeBleed.top = Math.ceil(h / 2);
+      edgeBleed.bottom = Math.ceil(h / 2);
     }
 
     if (state.labels.activeMode === 'tilted') {
