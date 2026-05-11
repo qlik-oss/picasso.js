@@ -264,6 +264,7 @@ describe('canvas renderer', () => {
         y: 0,
         width: 0,
         height: 0,
+        edgeBleedTranslate: { x: 0, y: 0 },
       },
     });
   });
@@ -302,6 +303,7 @@ describe('canvas renderer', () => {
         y: 370,
         width: 645,
         height: 1676,
+        edgeBleedTranslate: { x: 21, y: 36 },
       },
     });
   });
@@ -340,6 +342,7 @@ describe('canvas renderer', () => {
         y: 0,
         width: 0,
         height: 0,
+        edgeBleedTranslate: { x: 0, y: 0 },
       },
     });
   });
@@ -612,5 +615,29 @@ describe('canvas renderer', () => {
     expect(el.width).to.equal(size.width * scaleRatio.x * dpiScale);
     expect(el.height).to.equal(size.height * scaleRatio.y * dpiScale);
     expect(sceneFn.args[0][0].items).to.deep.equal(expectedInputShapes.items);
+  });
+
+  it('should use edgeBleedTranslate for scene container to avoid split-rounding misalignment', () => {
+    const div = element('div');
+    // edgeBleed.top=2.5 → ceiled to 3; y=0, scaleY=1.5
+    // computedPhysical.y = Math.round((0-3)*1.5) = Math.round(-4.5) = -4
+    // T = Math.round((0+3)*1.5) - 3*1.5 - (-4) = 5 - 4.5 + 4 = 4.5
+    // canvas translate = 4.5 * dpiRatio(1) = 4.5
+    const size = {
+      x: 0,
+      y: 0,
+      width: 200,
+      height: 400,
+      scaleRatio: { x: 1.5, y: 1.5 },
+      edgeBleed: { left: 2.5, right: 0, top: 2.5, bottom: 0 },
+    };
+    const inputShapes = [{ type: 'container' }];
+    sceneFn.returns({ children: [] });
+    r.appendTo(div);
+    r.size(size);
+    r.render(inputShapes);
+
+    const sceneContainerTransform = sceneFn.args[0][0].items[0].transform;
+    expect(sceneContainerTransform).to.include('translate(4.5, 4.5)');
   });
 });

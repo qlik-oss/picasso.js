@@ -88,7 +88,7 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
       type: 'container',
       children: Array.isArray(nodes) ? [...nodes, defs] : nodes,
       transform: rect.edgeBleed.bool
-        ? `translate(${rect.edgeBleed.left * scaleX}, ${rect.edgeBleed.top * scaleY})`
+        ? `translate(${rect.computedPhysical.edgeBleedTranslate.x}, ${rect.computedPhysical.edgeBleedTranslate.y})`
         : '',
     };
 

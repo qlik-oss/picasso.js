@@ -184,6 +184,7 @@ describe('dom renderer', () => {
           y: 370,
           width: 645,
           height: 1676,
+          edgeBleedTranslate: { x: 21, y: 36 },
         },
       });
     });
@@ -222,6 +223,7 @@ describe('dom renderer', () => {
           y: 0,
           width: 0,
           height: 0,
+          edgeBleedTranslate: { x: 0, y: 0 },
         },
       });
     });
