@@ -315,6 +315,12 @@ function positionComponents({ visible, layoutRect, reducedRect, containerRect, t
       rect.computed = computeRect(rect);
       outerRect.edgeBleed = c.edgeBleed;
       outerRect.computed = computeRect(outerRect);
+      // Non-center docked components have (innerRect - outerRect) offsets in
+      // their scene node coordinates (e.g. axis ticks). Apply edgeBleedTranslate
+      // so those nodes land on the same CSS pixel as center-area components (grid).
+      const isEdgeDock = d === 'top' || d === 'bottom' || d === 'left' || d === 'right';
+      rect.useEdgeBleedTranslate = isEdgeDock;
+      outerRect.useEdgeBleedTranslate = isEdgeDock;
       rect.x += translation.x;
       rect.y += translation.y;
       outerRect.x += translation.x;

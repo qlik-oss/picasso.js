@@ -266,6 +266,7 @@ describe('canvas renderer', () => {
         height: 0,
         edgeBleedTranslate: { x: 0, y: 0 },
       },
+      useEdgeBleedTranslate: false,
     });
   });
 
@@ -305,6 +306,7 @@ describe('canvas renderer', () => {
         height: 1676,
         edgeBleedTranslate: { x: 21, y: 36 },
       },
+      useEdgeBleedTranslate: false,
     });
   });
 
@@ -344,6 +346,7 @@ describe('canvas renderer', () => {
         height: 0,
         edgeBleedTranslate: { x: 0, y: 0 },
       },
+      useEdgeBleedTranslate: false,
     });
   });
 
@@ -630,6 +633,7 @@ describe('canvas renderer', () => {
       height: 400,
       scaleRatio: { x: 1.5, y: 1.5 },
       edgeBleed: { left: 2.5, right: 0, top: 2.5, bottom: 0 },
+      useEdgeBleedTranslate: true,
     };
     const inputShapes = [{ type: 'container' }];
     sceneFn.returns({ children: [] });

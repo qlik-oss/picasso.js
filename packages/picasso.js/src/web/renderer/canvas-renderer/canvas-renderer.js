@@ -205,12 +205,17 @@ export function renderer(sceneFn = sceneFactory) {
     const scaleX = rect.scaleRatio.x;
     const scaleY = rect.scaleRatio.y;
 
+    let edgeBleedTransform = '';
+    if (rect.edgeBleed.bool) {
+      edgeBleedTransform = rect.useEdgeBleedTranslate
+        ? `translate(${rect.computedPhysical.edgeBleedTranslate.x * dpiRatio}, ${rect.computedPhysical.edgeBleedTranslate.y * dpiRatio})`
+        : `translate(${rect.edgeBleed.left * scaleX * dpiRatio}, ${rect.edgeBleed.top * scaleY * dpiRatio})`;
+    }
+
     const sceneContainer = {
       type: 'container',
       children: shapes,
-      transform: rect.edgeBleed.bool
-        ? `translate(${rect.computedPhysical.edgeBleedTranslate.x * dpiRatio}, ${rect.computedPhysical.edgeBleedTranslate.y * dpiRatio})`
-        : '',
+      transform: edgeBleedTransform,
     };
 
     if (dpiRatio !== 1 || scaleX !== 1 || scaleY !== 1) {

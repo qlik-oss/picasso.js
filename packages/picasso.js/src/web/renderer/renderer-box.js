@@ -18,7 +18,16 @@
  * @param {Renderer~SizeDefinition} [opts]
  * @returns {Renderer~SizeDefinition} A svg renderer instance
  */
-export default function createRendererBox({ x, y, width, height, scaleRatio, margin, edgeBleed } = {}) {
+export default function createRendererBox({
+  x,
+  y,
+  width,
+  height,
+  scaleRatio,
+  margin,
+  edgeBleed,
+  useEdgeBleedTranslate,
+} = {}) {
   const box = {
     x: 0,
     y: 0,
@@ -70,6 +79,12 @@ export default function createRendererBox({ x, y, width, height, scaleRatio, mar
     width: Math.round((box.width + box.edgeBleed.left + box.edgeBleed.right) * box.scaleRatio.x),
     height: Math.round((box.height + box.edgeBleed.top + box.edgeBleed.bottom) * box.scaleRatio.y),
   };
+
+  // Only the axis opts in to the corrected formula (via useEdgeBleedTranslate:true
+  // returned from its resize callback). All other components (e.g. grid with
+  // edgeBleed:{top:1}) keep the old translate(e*scaleX, e*scaleY) behaviour so
+  // their node positions are unchanged from master.
+  box.useEdgeBleedTranslate = !!useEdgeBleedTranslate;
 
   // The translate to apply inside the renderer scene so that axis nodes using the
   // (innerRect - outerRect) offset land on the same CSS pixel as grid lines.

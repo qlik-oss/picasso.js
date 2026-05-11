@@ -84,12 +84,17 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
     const scaleX = rect.scaleRatio.x;
     const scaleY = rect.scaleRatio.y;
 
+    let edgeBleedTransform = '';
+    if (rect.edgeBleed.bool) {
+      edgeBleedTransform = rect.useEdgeBleedTranslate
+        ? `translate(${rect.computedPhysical.edgeBleedTranslate.x}, ${rect.computedPhysical.edgeBleedTranslate.y})`
+        : `translate(${rect.edgeBleed.left * scaleX}, ${rect.edgeBleed.top * scaleY})`;
+    }
+
     const sceneContainer = {
       type: 'container',
       children: Array.isArray(nodes) ? [...nodes, defs] : nodes,
-      transform: rect.edgeBleed.bool
-        ? `translate(${rect.computedPhysical.edgeBleedTranslate.x}, ${rect.computedPhysical.edgeBleedTranslate.y})`
-        : '',
+      transform: edgeBleedTransform,
     };
 
     if (scaleX !== 1 || scaleY !== 1) {
