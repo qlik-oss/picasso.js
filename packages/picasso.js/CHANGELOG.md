@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.11.4](https://github.com/qlik-oss/picasso.js/compare/v2.11.3...v2.11.4) (2026-05-11)
+
+### Bug Fixes
+
+- **renderer:** integer pixel alignment for edgeBleed translate ([#997](https://github.com/qlik-oss/picasso.js/issues/997)) ([37bc7b6](https://github.com/qlik-oss/picasso.js/commit/37bc7b6cd45d713179e010deb7aa01114f6def2c))
+- use style instead translate for dom renderer ([#996](https://github.com/qlik-oss/picasso.js/issues/996)) ([e3f3000](https://github.com/qlik-oss/picasso.js/commit/e3f3000798a7f4ce0aadbe46d727ed06d7744694))
+
 ## [2.11.3](https://github.com/qlik-oss/picasso.js/compare/v2.11.2...v2.11.3) (2026-05-07)
 
 ### Bug Fixes
