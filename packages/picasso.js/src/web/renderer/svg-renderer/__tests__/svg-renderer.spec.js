@@ -163,8 +163,10 @@ describe('svg renderer', () => {
       expect(wrappedContainer[0].transform).to.deep.equal(expectedInputShapes[0].transform);
     });
 
-    it('should round edgeBleed translate to integer pixels', () => {
-      // edgeBleed.top = 2.5 (fractional), Math.ceil → 3 stored; 3 * scaleY 1.5 = 4.5 → Math.round = 5
+    it('should use edgeBleedTranslate for scene container to avoid split-rounding misalignment', () => {
+      // edgeBleed.top=2.5 → ceiled to 3; y=0, scaleY=1.5
+      // computedPhysical.y = Math.round((0-3)*1.5) = Math.round(-4.5) = -4
+      // T = Math.round((0+3)*1.5) - 3*1.5 - (-4) = 5 - 4.5 + 4 = 4.5
       const size = {
         x: 0,
         y: 0,
@@ -179,7 +181,7 @@ describe('svg renderer', () => {
       svg.render([s]);
 
       const sceneContainerTransform = scene.args[0][0].items[0].transform;
-      expect(sceneContainerTransform).to.include('translate(5, 5)');
+      expect(sceneContainerTransform).to.include('translate(4.5, 4.5)');
     });
 
     it('should handle call without arguments', () => {
@@ -372,6 +374,7 @@ describe('svg renderer', () => {
           y: 370,
           width: 645,
           height: 1676,
+          edgeBleedTranslate: { x: 21, y: 36 },
         },
       });
     });
@@ -410,6 +413,7 @@ describe('svg renderer', () => {
           y: 0,
           width: 0,
           height: 0,
+          edgeBleedTranslate: { x: 0, y: 0 },
         },
       });
     });

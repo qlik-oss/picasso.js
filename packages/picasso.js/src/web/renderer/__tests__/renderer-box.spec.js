@@ -176,6 +176,23 @@ describe('renderer-box', () => {
         expect(b.edgeBleed[prop]).to.equal(3);
       });
     });
+
+    it('should compute edgeBleedTranslate to align axis nodes with grid lines despite split-rounding', () => {
+      // y=50, edgeBleed.top=3 (ceiled from 2.5), scaleY=1.5
+      // computedPhysical.y = Math.round((50-3)*1.5) = Math.round(70.5) = 71
+      // T = Math.round((50+3)*1.5) - 3*1.5 - 71
+      //   = Math.round(79.5) - 4.5 - 71 = 80 - 4.5 - 71 = 4.5
+      const b = box({
+        x: 50,
+        y: 50,
+        width: 200,
+        height: 400,
+        scaleRatio: { x: 1.5, y: 1.5 },
+        edgeBleed: { left: 2.5, right: 0, top: 2.5, bottom: 0 },
+      });
+      expect(b.computedPhysical.edgeBleedTranslate.x).to.equal(4.5);
+      expect(b.computedPhysical.edgeBleedTranslate.y).to.equal(4.5);
+    });
   });
 
   describe('computed', () => {});

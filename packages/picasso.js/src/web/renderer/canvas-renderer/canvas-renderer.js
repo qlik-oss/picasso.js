@@ -209,7 +209,7 @@ export function renderer(sceneFn = sceneFactory) {
       type: 'container',
       children: shapes,
       transform: rect.edgeBleed.bool
-        ? `translate(${Math.round(rect.edgeBleed.left * dpiRatio * scaleX)}, ${Math.round(rect.edgeBleed.top * dpiRatio * scaleY)})`
+        ? `translate(${rect.computedPhysical.edgeBleedTranslate.x * dpiRatio}, ${rect.computedPhysical.edgeBleedTranslate.y * dpiRatio})`
         : '',
     };
 

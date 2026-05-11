@@ -71,5 +71,27 @@ export default function createRendererBox({ x, y, width, height, scaleRatio, mar
     height: Math.round((box.height + box.edgeBleed.top + box.edgeBleed.bottom) * box.scaleRatio.y),
   };
 
+  // The translate to apply inside the renderer scene so that axis nodes using the
+  // (innerRect - outerRect) offset land on the same CSS pixel as grid lines.
+  //
+  // Axis ticks/lines at position=0 are at scene y = edgeBleed.top (the innerRect
+  // offset). After the scene scale(s), that becomes edgeBleed.top*s which is
+  // unrounded. The grid SVG is positioned at Math.round(innerRect.y*s). To align:
+  //
+  //   computedPhysical.y + T + edgeBleed.top*s = Math.round((y + edgeBleed.top)*s)
+  //   T = Math.round((y + edgeBleed.top)*s) - edgeBleed.top*s - computedPhysical.y
+  //
+  // T may be fractional (SVG/canvas translate supports sub-pixel values).
+  box.computedPhysical.edgeBleedTranslate = {
+    x:
+      Math.round(box.margin.left + (box.x + box.edgeBleed.left) * box.scaleRatio.x) -
+      box.edgeBleed.left * box.scaleRatio.x -
+      box.computedPhysical.x,
+    y:
+      Math.round(box.margin.top + (box.y + box.edgeBleed.top) * box.scaleRatio.y) -
+      box.edgeBleed.top * box.scaleRatio.y -
+      box.computedPhysical.y,
+  };
+
   return box;
 }
