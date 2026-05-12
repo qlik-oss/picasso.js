@@ -64,8 +64,6 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
     if (!el) {
       el = element.ownerDocument.createElementNS(ns, 'svg');
       el.style.position = 'absolute';
-      el.style.left = '0px';
-      el.style.top = '0px';
       el.style['-webkit-font-smoothing'] = 'antialiased';
       el.style['-moz-osx-font-smoothing'] = 'antialiased';
       el.style.pointerEvents = 'none';
@@ -139,7 +137,8 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
     }
 
     if (hasChangedRect) {
-      el.style.transform = `translate(${rect.computedPhysical.x}px, ${rect.computedPhysical.y}px)`;
+      el.style.left = `${rect.computedPhysical.x}px`;
+      el.style.top = `${rect.computedPhysical.y}px`;
       el.setAttribute('width', rect.computedPhysical.width);
       el.setAttribute('height', rect.computedPhysical.height);
     }

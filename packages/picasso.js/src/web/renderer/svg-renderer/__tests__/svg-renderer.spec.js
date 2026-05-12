@@ -128,7 +128,8 @@ describe('svg renderer', () => {
 
       const el = svg.element();
       expect(el.style.position).to.equal('absolute');
-      expect(el.style.transform).to.equal('translate(50px, 100px)');
+      expect(el.style.left).to.equal('50px');
+      expect(el.style.top).to.equal('100px');
       expect(el.attributes.width).to.equal(200);
       expect(el.attributes.height).to.equal(400);
     });
@@ -156,7 +157,8 @@ describe('svg renderer', () => {
 
       const wrappedContainer = scene.args[0][0].items;
       const el = svg.element();
-      expect(el.style.transform).to.equal(`translate(${size.x * scaleRatio.x}px, ${size.y * scaleRatio.y}px)`);
+      expect(el.style.left).to.equal(`${size.x * scaleRatio.x}px`);
+      expect(el.style.top).to.equal(`${size.y * scaleRatio.y}px`);
       expect(el.attributes.width).to.equal(size.width * scaleRatio.x);
       expect(el.attributes.height).to.equal(size.height * scaleRatio.y);
       expect(wrappedContainer[0].type).to.equal(expectedInputShapes[0].type);

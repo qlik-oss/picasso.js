@@ -385,7 +385,8 @@ describe('canvas renderer', () => {
 
     const el = r.element();
     expect(el.style.position).to.equal('absolute');
-    expect(el.style.transform).to.equal('translate(50px, 100px)');
+    expect(el.style.left).to.equal('50px');
+    expect(el.style.top).to.equal('100px');
     expect(el.style.width).to.equal('200px');
     expect(el.style.height).to.equal('400px');
     expect(el.width).to.equal(200);
@@ -568,7 +569,8 @@ describe('canvas renderer', () => {
     const el = r.element();
     expect(el.style.width).to.equal(`${size.width * scaleRatio.x}px`);
     expect(el.style.height).to.equal(`${size.height * scaleRatio.y}px`);
-    expect(el.style.transform).to.equal(`translate(${size.x * scaleRatio.x}px, ${size.y * scaleRatio.y}px)`);
+    expect(el.style.left).to.equal(`${size.x * scaleRatio.x}px`);
+    expect(el.style.top).to.equal(`${size.y * scaleRatio.y}px`);
     expect(el.width).to.equal(size.width * scaleRatio.x);
     expect(el.height).to.equal(size.height * scaleRatio.y);
     expect(sceneFn.args[0][0].items).to.deep.equal(expectedInputShapes.items);
@@ -608,7 +610,8 @@ describe('canvas renderer', () => {
     const el = r.element();
     expect(el.style.width).to.equal(`${size.width * scaleRatio.x}px`);
     expect(el.style.height).to.equal(`${size.height * scaleRatio.y}px`);
-    expect(el.style.transform).to.equal(`translate(${size.x * scaleRatio.x}px, ${size.y * scaleRatio.y}px)`);
+    expect(el.style.left).to.equal(`${size.x * scaleRatio.x}px`);
+    expect(el.style.top).to.equal(`${size.y * scaleRatio.y}px`);
     expect(el.width).to.equal(size.width * scaleRatio.x * dpiScale);
     expect(el.height).to.equal(size.height * scaleRatio.y * dpiScale);
     expect(sceneFn.args[0][0].items).to.deep.equal(expectedInputShapes.items);
