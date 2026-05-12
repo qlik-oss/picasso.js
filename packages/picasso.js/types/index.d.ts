@@ -562,7 +562,6 @@ declare namespace picassojs {
             align?: string;
             labels: {
                 align?: number;
-                centerEndLabels?: boolean;
                 filterOverlapping?: boolean;
                 margin?: number;
                 maxLengthPx?: number;
