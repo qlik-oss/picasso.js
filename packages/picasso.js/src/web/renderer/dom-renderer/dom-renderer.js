@@ -35,6 +35,8 @@ export default function renderer(opts = {}) {
     if (!el) {
       el = createElement('div');
       el.style.position = 'absolute';
+      el.style.left = '0px';
+      el.style.top = '0px';
       el.style['-webkit-font-smoothing'] = 'antialiased';
       el.style['-moz-osx-font-smoothing'] = 'antialiased';
       el.style.pointerEvents = 'none';
@@ -70,8 +72,7 @@ export default function renderer(opts = {}) {
       el.setAttribute('aria-hidden', true);
     }
 
-    el.style.left = `${rect.computedPhysical.x}px`;
-    el.style.top = `${rect.computedPhysical.y}px`;
+    el.style.transform = `translate(${rect.computedPhysical.x}px, ${rect.computedPhysical.y}px)`;
     el.style.width = `${rect.computedPhysical.width}px`;
     el.style.height = `${rect.computedPhysical.height}px`;
 
