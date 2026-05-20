@@ -114,11 +114,11 @@ importers:
         specifier: 1.1.1
         version: 1.1.1
       sinon:
-        specifier: 21.1.2
-        version: 21.1.2
+        specifier: 22.0.0
+        version: 22.0.0
       sinon-chai:
         specifier: 4.0.1
-        version: 4.0.1(chai@6.2.2)(sinon@21.1.2)
+        version: 4.0.1(chai@6.2.2)(sinon@22.0.0)
       typescript:
         specifier: 6.0.2
         version: 6.0.2
@@ -3016,8 +3016,8 @@ packages:
   devtools-protocol@0.0.1608973:
     resolution: {integrity: sha512-Tpm17fxYzt+J7VrGdc1k8YdRqS3YV7se/M6KeemEqvUbq/n7At1rWVuXMxQgpWkdwSdIEKYbU//Bve+Shm4YNQ==}
 
-  diff@8.0.4:
-    resolution: {integrity: sha512-DPi0FmjiSU5EvQV0++GFDOJ9ASQUVFh5kD+OzOnYdi7n3Wpm9hWWGfB/O2blfHcMVTL5WkQXSnRiK9makhrcnw==}
+  diff@9.0.0:
+    resolution: {integrity: sha512-svtcdpS8CgJyqAjEQIXdb3OjhFVVYjzGAPO8WGCmRbrml64SPw/jJD4GoE98aR7r25A0XcgrK3F02yw9R/vhQw==}
     engines: {node: '>=0.3.1'}
 
   dir-glob@2.2.2:
@@ -5868,8 +5868,8 @@ packages:
       chai: ^5.0.0 || ^6.0.0
       sinon: '>=4.0.0'
 
-  sinon@21.1.2:
-    resolution: {integrity: sha512-FS6mN+/bx7e2ajpXkEmOcWB6xBzWiuNoAQT18/+a20SS4U7FSYl8Ms7N6VTUxN/1JAjkx7aXp+THMC8xdpp0gA==}
+  sinon@22.0.0:
+    resolution: {integrity: sha512-sq/6DpdXOrLyfbKlXLg/Usc7xu8YXPeLkOFZRvA3bNUSA2lhbrZ06yuXbH1fkzBPCbz9O10+7hznzUsjaYNm0Q==}
 
   sisteransi@1.0.5:
     resolution: {integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==}
@@ -9950,7 +9950,7 @@ snapshots:
 
   devtools-protocol@0.0.1608973: {}
 
-  diff@8.0.4: {}
+  diff@9.0.0: {}
 
   dir-glob@2.2.2:
     dependencies:
@@ -13562,17 +13562,17 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  sinon-chai@4.0.1(chai@6.2.2)(sinon@21.1.2):
+  sinon-chai@4.0.1(chai@6.2.2)(sinon@22.0.0):
     dependencies:
       chai: 6.2.2
-      sinon: 21.1.2
+      sinon: 22.0.0
 
-  sinon@21.1.2:
+  sinon@22.0.0:
     dependencies:
       '@sinonjs/commons': 3.0.1
       '@sinonjs/fake-timers': 15.4.0
       '@sinonjs/samsam': 10.0.2
-      diff: 8.0.4
+      diff: 9.0.0
 
   sisteransi@1.0.5: {}
 
