@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.11.5](https://github.com/qlik-oss/picasso.js/compare/v2.11.4...v2.11.5) (2026-05-12)
+
+### Bug Fixes
+
+- Revert PRs [#990](https://github.com/qlik-oss/picasso.js/issues/990), [#996](https://github.com/qlik-oss/picasso.js/issues/996), [#997](https://github.com/qlik-oss/picasso.js/issues/997), [#984](https://github.com/qlik-oss/picasso.js/issues/984) ([#1002](https://github.com/qlik-oss/picasso.js/issues/1002)) ([4409889](https://github.com/qlik-oss/picasso.js/commit/4409889adc88c8c3ca6357914676bb26321916fa))
+
 ## [2.11.4](https://github.com/qlik-oss/picasso.js/compare/v2.11.3...v2.11.4) (2026-05-11)
 
 ### Bug Fixes
