@@ -36,7 +36,7 @@
     "@babel/preset-react": "7.29.7",
     "@commitlint/cli": "21.0.1",
     "@commitlint/config-conventional": "21.0.1",
-    "@qlik/eslint-config": "1.4.30",
+    "@qlik/eslint-config": "2.0.10",
     "@rollup/plugin-terser": "1.0.0",
     "babel-plugin-istanbul": "8.0.0",
     "chai": "6.2.2",
