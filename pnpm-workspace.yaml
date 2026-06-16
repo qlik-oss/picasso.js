@@ -2,3 +2,11 @@ packages:
   - 'docs'
   - 'packages/*'
   - 'plugins/*'
+
+allowBuilds:
+  nx: false
+  puppeteer: false
+  unrs-resolver: false
+
+minimumReleaseAgeExclude:
+  - "@qlik/*"
