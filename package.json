@@ -59,7 +59,7 @@
     "pretty-quick": "4.2.2",
     "puppeteer": "25.1.0",
     "rollup": "2.80.0",
-    "@rollup/plugin-babel": "7.0.0",
+    "@rollup/plugin-babel": "7.1.0",
     "rollup-plugin-commonjs": "10.1.0",
     "@rollup/plugin-node-resolve": "16.0.3",
     "rollup-plugin-serve": "1.1.1",
