@@ -174,8 +174,8 @@ importers:
         specifier: 0.0.1
         version: 0.0.1
       path2d:
-        specifier: 0.3.1
-        version: 0.3.1
+        specifier: 0.3.3
+        version: 0.3.3
       preact:
         specifier: 10.13.2
         version: 10.13.2
@@ -5281,8 +5281,8 @@ packages:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
     engines: {node: '>=8'}
 
-  path2d@0.3.1:
-    resolution: {integrity: sha512-GSruf/RONdlJgrz3fppp6Fro1r9xHdT2Uxw+rrTvmfwHSPl3AZwvnXVUJmyzsrOUEKl5tZDWCKLgdaMsMMUC+A==}
+  path2d@0.3.3:
+    resolution: {integrity: sha512-wVz8vOQFX2m5Onr6u3XOtvhl8ag3/FXhN2n+yvdN+z/GIAkiMIe0fMa1yO6usvhgd9Oh7RxnDZTqk7Tl+JKWoQ==}
     engines: {node: '>=6'}
 
   picocolors@1.1.1:
@@ -12838,7 +12838,7 @@ snapshots:
 
   path-type@4.0.0: {}
 
-  path2d@0.3.1: {}
+  path2d@0.3.3: {}
 
   picocolors@1.1.1: {}
 
