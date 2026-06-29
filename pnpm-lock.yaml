@@ -69,8 +69,8 @@ importers:
         specifier: 3.0.2
         version: 3.0.2
       globals:
-        specifier: 17.6.0
-        version: 17.6.0
+        specifier: 17.7.0
+        version: 17.7.0
       globby:
         specifier: 16.2.0
         version: 16.2.0
@@ -3691,8 +3691,8 @@ packages:
     resolution: {integrity: sha512-c/c15i26VrJ4IRt5Z89DnIzCGDn9EcebibhAOjw5ibqEHsE1wLUgkPn9RDmNcUKyU87GeaL633nyJ+pplFR2ZQ==}
     engines: {node: '>=18'}
 
-  globals@17.6.0:
-    resolution: {integrity: sha512-sepffkT8stwnIYbsMBpoCHJuJM5l98FUF2AnE07hfvE0m/qp3R586hw4jF4uadbhvg1ooIdzuu7CsfD2jzCaNA==}
+  globals@17.7.0:
+    resolution: {integrity: sha512-Czmyns5dUsq4seFBR/Kdydhmo8y9kC79hiSkPn0YcGtNnYWnrgt0vjrSjx9tspoDGWm2CMarffRuLjM4xUz8xg==}
     engines: {node: '>=18'}
 
   globalthis@1.0.4:
@@ -8446,7 +8446,7 @@ snapshots:
       eslint-plugin-react-hooks: 7.1.1(eslint@10.5.0(jiti@2.6.1))
       eslint-plugin-svelte: 3.20.0(eslint@10.5.0(jiti@2.6.1))(svelte@5.56.4(@typescript-eslint/types@8.62.0))
       eslint-plugin-testing-library: 7.16.2(eslint@10.5.0(jiti@2.6.1))(typescript@6.0.3)
-      globals: 17.6.0
+      globals: 17.7.0
       svelte: 5.56.4(@typescript-eslint/types@8.62.0)
       svelte-eslint-parser: 1.8.0(svelte@5.56.4(@typescript-eslint/types@8.62.0))
       typescript-eslint: 8.62.0(eslint@10.5.0(jiti@2.6.1))(typescript@6.0.3)
@@ -10086,7 +10086,7 @@ snapshots:
   eslint-plugin-playwright@2.10.4(eslint@10.5.0(jiti@2.6.1)):
     dependencies:
       eslint: 10.5.0(jiti@2.6.1)
-      globals: 17.6.0
+      globals: 17.7.0
 
   eslint-plugin-prettier@5.5.6(eslint-config-prettier@10.1.8(eslint@10.5.0(jiti@2.6.1)))(eslint@10.5.0(jiti@2.6.1))(prettier@3.8.4):
     dependencies:
@@ -10680,7 +10680,7 @@ snapshots:
 
   globals@16.5.0: {}
 
-  globals@17.6.0: {}
+  globals@17.7.0: {}
 
   globalthis@1.0.4:
     dependencies:
