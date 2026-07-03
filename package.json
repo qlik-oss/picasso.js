@@ -55,7 +55,7 @@
     "jest-puppeteer": "11.0.0",
     "jsdom": "29.1.1",
     "lerna": "9.0.7",
-    "prettier": "3.8.4",
+    "prettier": "3.8.5",
     "pretty-quick": "4.2.2",
     "puppeteer": "25.2.1",
     "rollup": "2.80.0",
