@@ -166,6 +166,7 @@ function createDockDefinition(settings, preferredSize, logger) {
   def.dock = getLayoutProperty('dock');
   def.prioOrder = getLayoutProperty('prioOrder');
   def.minimumLayoutMode = getLayoutProperty('minimumLayoutMode');
+  def.overlap = getLayoutProperty('overlap');
 
   // move layout properties to layout object
   settings.layout = settings.layout || {};
@@ -174,6 +175,7 @@ function createDockDefinition(settings, preferredSize, logger) {
   settings.layout.prioOrder = typeof def.prioOrder !== 'undefined' ? def.prioOrder : settings.layout.prioOrder;
   settings.layout.dock = def.dock || settings.layout.dock;
   settings.layout.minimumLayoutMode = def.minimumLayoutMode || settings.layout.minimumLayoutMode;
+  settings.layout.overlap = typeof def.overlap !== 'undefined' ? def.overlap : settings.layout.overlap;
 
   // not directly a dock layout property
   def.show = settings.show;
