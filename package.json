@@ -42,12 +42,12 @@
     "chai": "6.2.2",
     "chai-subset": "1.6.0",
     "cross-env": "7.0.3",
-    "eslint": "10.7.0",
+    "eslint": "10.8.0",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-prettier": "5.5.6",
     "extend": "3.0.2",
-    "globals": "17.7.0",
-    "globby": "16.2.1",
+    "globals": "17.8.0",
+    "globby": "16.2.2",
     "husky": "9.1.7",
     "jest": "30.3.0",
     "jest-environment-jsdom": "30.3.0",
@@ -63,9 +63,9 @@
     "rollup-plugin-commonjs": "10.1.0",
     "@rollup/plugin-node-resolve": "16.0.3",
     "rollup-plugin-serve": "1.1.1",
-    "sinon": "22.0.0",
+    "sinon": "22.1.0",
     "sinon-chai": "4.0.1",
     "typescript": "6.0.3"
   },
-  "packageManager": "pnpm@11.11.0+sha512.4463f65fd80ed80d69bc1d4bf163ee94f605c7380fc318bb5b2ebe15f8cd12d49c51a4d59e951b401e764d3b6ca751cbf51bc50ed7001a6bcb4935e684c34882"
+  "packageManager": "pnpm@11.17.0+sha512.cca3cea332ad254bb84145f966d19f4879615210346fc92c79a047f23a0d7b3cca3c3792f0076ba1f1831d277efbcf0a9119b31a9a60eca7fb3d6231f331ef72"
 }
