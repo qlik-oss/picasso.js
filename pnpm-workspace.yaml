@@ -8,5 +8,7 @@ allowBuilds:
   puppeteer: false
   unrs-resolver: false
 
+minimumReleaseAge: 10080
+
 minimumReleaseAgeExclude:
   - "@qlik/*"
