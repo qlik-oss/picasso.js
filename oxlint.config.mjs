@@ -1,17 +1,13 @@
-import type { OxlintConfig } from 'oxlint';
+import qlik from '@qlik/oxlint-config';
+import { defineConfig } from 'oxlint';
 
-export default {
-  extends: ['@qlik/oxlint-config/recommended'],
-  env: {
-    browser: true,
-    node: true,
-    jest: true,
-  },
+export default defineConfig({
+  extends: [qlik.recommended, qlik.jest],
   ignorePatterns: [
-    '**/dist/*',
-    '**/test/unit/coverage/*',
-    '**/test/component/coverage/*',
-    'docs/node_modules/*',
+    '**/dist/**',
+    '**/test/unit/coverage/**',
+    '**/test/component/coverage/**',
+    'docs/node_modules/**',
     'test/config/*.js',
   ],
   rules: {
@@ -37,4 +33,4 @@ export default {
       },
     },
   ],
-} satisfies OxlintConfig;
+});
