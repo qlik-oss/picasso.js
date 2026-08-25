@@ -1,4 +1,4 @@
-import pointsToPath from "../utils/points-to-path";
+import pointsToPath from '../utils/points-to-path';
 
 /**
  * @private
@@ -18,8 +18,8 @@ export default function diamond(options) {
   ];
 
   return {
-    type: "path",
-    fill: "black",
+    type: 'path',
+    fill: 'black',
     d: pointsToPath(points),
   };
 }

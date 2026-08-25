@@ -1,7 +1,7 @@
-import resolveLevels from "../resolve-levels";
-import tickGen from "./tickGen";
+import resolveLevels from '../resolve-levels';
+import tickGen from './tickGen';
 
-describe("qTime - Resolve levels", () => {
+describe('qTime - Resolve levels', () => {
   let data;
   let settings;
 
@@ -13,25 +13,25 @@ describe("qTime - Resolve levels", () => {
 
     data = [
       {
-        qTags: ["$year"],
-        qTicks: tickGen(1, 1, "Y"),
+        qTags: ['$year'],
+        qTicks: tickGen(1, 1, 'Y'),
       },
       {
-        qTags: ["$quarter"],
-        qTicks: tickGen(4, 4, "Q"),
+        qTags: ['$quarter'],
+        qTicks: tickGen(4, 4, 'Q'),
       },
       {
-        qTags: ["$week"],
-        qTicks: tickGen(52, 1, "W"),
+        qTags: ['$week'],
+        qTicks: tickGen(52, 1, 'W'),
       },
       {
-        qTags: ["$day"],
-        qTicks: tickGen(30, 1, ""),
+        qTags: ['$day'],
+        qTicks: tickGen(30, 1, ''),
       },
     ];
   });
 
-  it("given enough space is available, should start on the last level", () => {
+  it('given enough space is available, should start on the last level', () => {
     settings.maxWidth = 1000;
 
     const out = resolveLevels({ data, settings });
@@ -42,7 +42,7 @@ describe("qTime - Resolve levels", () => {
     });
   });
 
-  it("given no space is available, should return the first level", () => {
+  it('given no space is available, should return the first level', () => {
     settings.maxWidth = 10;
 
     const out = resolveLevels({ data, settings });
@@ -53,58 +53,58 @@ describe("qTime - Resolve levels", () => {
     });
   });
 
-  describe("auto-calender", () => {
+  describe('auto-calender', () => {
     beforeEach(() => {
       data = [
         {
           // Index 0
-          qTags: ["$year"],
-          qTicks: tickGen(1, 1, "Y"),
+          qTags: ['$year'],
+          qTicks: tickGen(1, 1, 'Y'),
         },
         {
           // Index 1
-          qTags: ["$quarter"],
-          qTicks: tickGen(4, 1, "Q"),
+          qTags: ['$quarter'],
+          qTicks: tickGen(4, 1, 'Q'),
         },
         {
           // Index 2
-          qTags: ["$yearquarter", "$qualified"],
-          qTicks: tickGen(4, 1, "YQ"),
+          qTags: ['$yearquarter', '$qualified'],
+          qTicks: tickGen(4, 1, 'YQ'),
         },
         {
           // Index 3
-          qTags: ["$month"],
-          qTicks: tickGen(12, 1, "M"),
+          qTags: ['$month'],
+          qTicks: tickGen(12, 1, 'M'),
         },
         {
           // Index 4
-          qTags: ["$month", "$qualified"],
-          qTicks: tickGen(12, 1, "YM"),
+          qTags: ['$month', '$qualified'],
+          qTicks: tickGen(12, 1, 'YM'),
         },
         {
           // Index 5
-          qTags: ["$week", "$hidden"],
-          qTicks: tickGen(52, 1, "W"),
+          qTags: ['$week', '$hidden'],
+          qTicks: tickGen(52, 1, 'W'),
         },
         {
           // Index 6
-          qTags: ["$week", "$qualified"],
-          qTicks: tickGen(52, 1, "YW"),
+          qTags: ['$week', '$qualified'],
+          qTicks: tickGen(52, 1, 'YW'),
         },
         {
           // Index 7
-          qTags: ["$date", "$hidden"],
-          qTicks: tickGen(364, 1, ""),
+          qTags: ['$date', '$hidden'],
+          qTicks: tickGen(364, 1, ''),
         },
         {
           // Index 8
-          qTags: ["$date", "$qualified"],
-          qTicks: tickGen(364, 1, ""),
+          qTags: ['$date', '$qualified'],
+          qTicks: tickGen(364, 1, ''),
         },
       ];
     });
 
-    it("scenario 1: outer and inner resolved at highest granularity", () => {
+    it('scenario 1: outer and inner resolved at highest granularity', () => {
       settings.maxWidth = 10000;
       const out = resolveLevels({ data, settings });
 
@@ -114,7 +114,7 @@ describe("qTime - Resolve levels", () => {
       });
     });
 
-    it("scenario 2: outer and inner resolved at mid granularity", () => {
+    it('scenario 2: outer and inner resolved at mid granularity', () => {
       settings.maxWidth = 500;
       const out = resolveLevels({ data, settings });
 
@@ -125,8 +125,8 @@ describe("qTime - Resolve levels", () => {
     });
   });
 
-  describe("data handling", () => {
-    it("should handle empty dataset", () => {
+  describe('data handling', () => {
+    it('should handle empty dataset', () => {
       data = [];
 
       const out = resolveLevels({ data, settings });
@@ -137,7 +137,7 @@ describe("qTime - Resolve levels", () => {
       });
     });
 
-    it("should handle non-array data param", () => {
+    it('should handle non-array data param', () => {
       data = {};
 
       const out = resolveLevels({ data, settings });
@@ -148,11 +148,11 @@ describe("qTime - Resolve levels", () => {
       });
     });
 
-    it("should handle single value dataset", () => {
+    it('should handle single value dataset', () => {
       data = [
         {
-          qTags: ["date"],
-          qTicks: tickGen(30, 1, ""),
+          qTags: ['date'],
+          qTicks: tickGen(30, 1, ''),
         },
       ];
 
@@ -164,10 +164,10 @@ describe("qTime - Resolve levels", () => {
       });
     });
 
-    it("should handle empty qTicks", () => {
+    it('should handle empty qTicks', () => {
       data = [
         {
-          qTags: ["$date"],
+          qTags: ['$date'],
           qTicks: [],
         },
       ];
@@ -181,16 +181,16 @@ describe("qTime - Resolve levels", () => {
     });
   });
 
-  describe("qTags", () => {
-    it("should use hidden data only if all data values are hidden", () => {
+  describe('qTags', () => {
+    it('should use hidden data only if all data values are hidden', () => {
       data = [
         {
-          qTags: ["$hidden"],
-          qTicks: tickGen(4, 1, "H"),
+          qTags: ['$hidden'],
+          qTicks: tickGen(4, 1, 'H'),
         },
         {
-          qTags: ["$hidden"],
-          qTicks: tickGen(10, 1, "HH"),
+          qTags: ['$hidden'],
+          qTicks: tickGen(10, 1, 'HH'),
         },
       ];
 
@@ -202,23 +202,23 @@ describe("qTime - Resolve levels", () => {
       });
     });
 
-    it("should not use qualified values as inner level", () => {
+    it('should not use qualified values as inner level', () => {
       data = [
         {
-          qTags: ["$year", "$qualified"],
-          qTicks: tickGen(1, 1, "Y"),
+          qTags: ['$year', '$qualified'],
+          qTicks: tickGen(1, 1, 'Y'),
         },
         {
-          qTags: ["$quarter", "$qualified"],
-          qTicks: tickGen(4, 4, "Q"),
+          qTags: ['$quarter', '$qualified'],
+          qTicks: tickGen(4, 4, 'Q'),
         },
         {
-          qTags: ["$week", "$qualified"],
-          qTicks: tickGen(52, 1, "W"),
+          qTags: ['$week', '$qualified'],
+          qTicks: tickGen(52, 1, 'W'),
         },
         {
-          qTags: ["$day", "$qualified"],
-          qTicks: tickGen(30, 1, ""),
+          qTags: ['$day', '$qualified'],
+          qTicks: tickGen(30, 1, ''),
         },
       ];
 

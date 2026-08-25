@@ -1,8 +1,8 @@
-import { angleToPoints, toRadians, degreesToPoints } from "../angles";
+import { angleToPoints, toRadians, degreesToPoints } from '../angles';
 
-describe("minmax", () => {
-  describe("angleToPoints", () => {
-    it("should respond with correct values", () => {
+describe('minmax', () => {
+  describe('angleToPoints', () => {
+    it('should respond with correct values', () => {
       let result1 = angleToPoints(toRadians(90));
 
       expect(result1.x1).to.be.closeTo(1, 0.0000001);
@@ -19,8 +19,8 @@ describe("minmax", () => {
     });
   });
 
-  describe("degreesToPoints", () => {
-    it("should respond with correct values", () => {
+  describe('degreesToPoints', () => {
+    it('should respond with correct values', () => {
       let result1 = degreesToPoints(45);
 
       expect(result1.x1).to.be.closeTo(1, 0.0000001);

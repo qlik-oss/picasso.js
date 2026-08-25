@@ -25,28 +25,28 @@
       };
 
       const chart = picasso.chart({
-        element: document.querySelector(".container"),
+        element: document.querySelector('.container'),
         data: [],
         on: {
-          mousedown: ev("mousedown"),
-          touchstart: ev("touchstart"),
+          mousedown: ev('mousedown'),
+          touchstart: ev('touchstart'),
         },
         settings: {
           components: [
             {
-              type: "text",
-              text: "a",
+              type: 'text',
+              text: 'a',
               layout: {
-                dock: "center",
+                dock: 'center',
               },
             },
           ],
           interactions: [
             {
-              type: "native",
+              type: 'native',
               events: {
-                mousedown: ev("mousedown"),
-                touchstart: ev("touchstart"),
+                mousedown: ev('mousedown'),
+                touchstart: ev('touchstart'),
               },
             },
           ],
@@ -54,7 +54,7 @@
       });
       window.picassochart = chart;
       window.triggeredEvents = triggeredEvents;
-      document.querySelector(".container").addEventListener("touchend", (e) => {
+      document.querySelector('.container').addEventListener('touchend', (e) => {
         triggeredEvents.defaultPrevented = e.defaultPrevented;
       });
     </script>

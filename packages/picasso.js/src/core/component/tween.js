@@ -1,6 +1,6 @@
-import extend from "extend";
-import { easeCubic, easeCubicIn, easeCubicOut } from "d3-ease";
-import interpolateObject from "./interpolate-object";
+import extend from 'extend';
+import { easeCubic, easeCubicIn, easeCubicOut } from 'd3-ease';
+import interpolateObject from './interpolate-object';
 
 /* globals window */
 
@@ -8,7 +8,7 @@ function nodeId(node, i) {
   if (node.data) {
     return node.data.value;
   }
-  if (node.type === "text") {
+  if (node.type === 'text') {
     return node.text;
   }
   return i;
@@ -46,13 +46,13 @@ export default function tween({ old, current }, { renderer }, config, chartStora
       current.forEach((node, i) => {
         let id = trackBy(node, i);
         if (ids[id]) {
-          if (node.type === "path" && node.points && node.points.length > 0 && node.data.source.key !== "trend") {
+          if (node.type === 'path' && node.points && node.points.length > 0 && node.data.source.key !== 'trend') {
             const common = findCommonPointsFromTwoLines(ids[id], node);
             updated.ips.push(
               interpolateObject(
                 extend({}, ids[id], { points: common.old }),
-                extend({}, node, { points: common.current }),
-              ),
+                extend({}, node, { points: common.current })
+              )
             );
             toBeUpdated.push(extend({}, ids[id], { commonPoints: common.old }));
           } else {
@@ -74,7 +74,7 @@ export default function tween({ old, current }, { renderer }, config, chartStora
       });
       // Obsolete nodes exiting
       stages.push({
-        name: "exiting",
+        name: 'exiting',
         easing: easeCubicIn,
         duration: 200,
         tweens: exited.ips,
@@ -82,7 +82,7 @@ export default function tween({ old, current }, { renderer }, config, chartStora
       });
       // Existing nodes updating
       stages.push({
-        name: "updating",
+        name: 'updating',
         easing: easeCubic,
         duration: 400,
         tweens: updated.ips,
@@ -90,7 +90,7 @@ export default function tween({ old, current }, { renderer }, config, chartStora
       });
       // New nodes entering
       stages.push({
-        name: "entering",
+        name: 'entering',
         easing: easeCubicOut,
         duration: 200,
         tweens: entered.ips,
@@ -99,14 +99,14 @@ export default function tween({ old, current }, { renderer }, config, chartStora
       if (config.isMainComponent) {
         const filterFn = config.isMainComponent?.filterFn;
         const nUpdatingNodes = filterFn ? toBeUpdated.filter(filterFn).length : toBeUpdated.length;
-        const { isInit, shouldBeRemoved } = chartStorage.getValue("animations.updatingStageMeta");
+        const { isInit, shouldBeRemoved } = chartStorage.getValue('animations.updatingStageMeta');
         if (isInit === false) {
-          chartStorage.setValue("animations.updatingStageMeta.shouldBeRemoved", nUpdatingNodes === 0);
-          chartStorage.setValue("animations.updatingStageMeta.isInit", true);
+          chartStorage.setValue('animations.updatingStageMeta.shouldBeRemoved', nUpdatingNodes === 0);
+          chartStorage.setValue('animations.updatingStageMeta.isInit', true);
         } else {
           chartStorage.setValue(
-            "animations.updatingStageMeta.shouldBeRemoved",
-            shouldBeRemoved && nUpdatingNodes === 0,
+            'animations.updatingStageMeta.shouldBeRemoved',
+            shouldBeRemoved && nUpdatingNodes === 0
           );
         }
       }
@@ -114,7 +114,7 @@ export default function tween({ old, current }, { renderer }, config, chartStora
       if (stages.length) {
         targetScene = renderer.getScene(current);
         stages[0].started = Date.now();
-        if (typeof window !== "undefined") {
+        if (typeof window !== 'undefined') {
           ticker = window.requestAnimationFrame(tweener.tick);
         }
       }
@@ -139,13 +139,13 @@ export default function tween({ old, current }, { renderer }, config, chartStora
       renderer.render(currentNodes);
       if (t >= 1) {
         stages.shift();
-        const { isInit, shouldBeRemoved } = chartStorage.getValue("animations.updatingStageMeta");
+        const { isInit, shouldBeRemoved } = chartStorage.getValue('animations.updatingStageMeta');
         if (!stages.length) {
           if (isInit === true) {
-            chartStorage.setValue("animations.updatingStageMeta.isInit", false);
+            chartStorage.setValue('animations.updatingStageMeta.isInit', false);
           }
           tweener.stop();
-        } else if (stages[0].name === "updating" && shouldBeRemoved) {
+        } else if (stages[0].name === 'updating' && shouldBeRemoved) {
           stages.shift();
         }
       }

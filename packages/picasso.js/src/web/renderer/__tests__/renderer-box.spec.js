@@ -1,7 +1,7 @@
-import box from "../renderer-box";
+import box from '../renderer-box';
 
-describe("renderer-box", () => {
-  it("should return a rect given valid values", () => {
+describe('renderer-box', () => {
+  it('should return a rect given valid values', () => {
     const b = box({
       x: 1,
       y: 2,
@@ -16,7 +16,7 @@ describe("renderer-box", () => {
     });
   });
 
-  it("should return default x value given input is invalid", () => {
+  it('should return default x value given input is invalid', () => {
     const b = box({
       x: NaN,
       y: 2,
@@ -31,7 +31,7 @@ describe("renderer-box", () => {
     });
   });
 
-  it("should return default y value given input is invalid", () => {
+  it('should return default y value given input is invalid', () => {
     const b = box({
       x: 1,
       y: NaN,
@@ -46,7 +46,7 @@ describe("renderer-box", () => {
     });
   });
 
-  it("should return default width value given input is invalid", () => {
+  it('should return default width value given input is invalid', () => {
     const b = box({
       x: 1,
       y: 2,
@@ -61,7 +61,7 @@ describe("renderer-box", () => {
     });
   });
 
-  it("should return default height value given input is invalid", () => {
+  it('should return default height value given input is invalid', () => {
     const b = box({
       x: NaN,
       y: 2,
@@ -76,8 +76,8 @@ describe("renderer-box", () => {
     });
   });
 
-  describe("scaleRatio", () => {
-    it("should return a scaleRatio given valid values", () => {
+  describe('scaleRatio', () => {
+    it('should return a scaleRatio given valid values', () => {
       const b = box({
         scaleRatio: { x: 3, y: 4 },
       });
@@ -86,7 +86,7 @@ describe("renderer-box", () => {
       });
     });
 
-    it("should return default x value given input is invalid", () => {
+    it('should return default x value given input is invalid', () => {
       const b = box({
         scaleRatio: { y: 2 },
       });
@@ -95,7 +95,7 @@ describe("renderer-box", () => {
       });
     });
 
-    it("should return default y value given input is invalid", () => {
+    it('should return default y value given input is invalid', () => {
       const b = box({
         scaleRatio: { x: 2 },
       });
@@ -104,7 +104,7 @@ describe("renderer-box", () => {
       });
     });
 
-    it("should return default value given scaleRatio is missing", () => {
+    it('should return default value given scaleRatio is missing', () => {
       const b = box({});
       expect(b).to.containSubset({
         scaleRatio: { x: 1, y: 1 },
@@ -112,8 +112,8 @@ describe("renderer-box", () => {
     });
   });
 
-  describe("margin", () => {
-    it("should return a margin given valid values", () => {
+  describe('margin', () => {
+    it('should return a margin given valid values', () => {
       const b = box({
         margin: { left: 3, top: 4 },
       });
@@ -122,7 +122,7 @@ describe("renderer-box", () => {
       });
     });
 
-    it("should return default left value given input is invalid", () => {
+    it('should return default left value given input is invalid', () => {
       const b = box({
         margin: { top: 2 },
       });
@@ -131,7 +131,7 @@ describe("renderer-box", () => {
       });
     });
 
-    it("should return default top value given input is invalid", () => {
+    it('should return default top value given input is invalid', () => {
       const b = box({
         margin: { left: 2 },
       });
@@ -140,7 +140,7 @@ describe("renderer-box", () => {
       });
     });
 
-    it("should return default value given margin is missing", () => {
+    it('should return default value given margin is missing', () => {
       const b = box({});
       expect(b).to.containSubset({
         margin: { left: 0, top: 0 },
@@ -148,8 +148,8 @@ describe("renderer-box", () => {
     });
   });
 
-  describe("edgeBleed", () => {
-    const props = ["left", "right", "top", "bottom"];
+  describe('edgeBleed', () => {
+    const props = ['left', 'right', 'top', 'bottom'];
     props.forEach((prop) => {
       it(`should return ${prop} value given input is valid`, () => {
         const edgeBleed = {};
@@ -171,5 +171,5 @@ describe("renderer-box", () => {
     });
   });
 
-  describe("computed", () => {});
+  describe('computed', () => {});
 });

@@ -7,5 +7,5 @@
 export default function classString(classMap) {
   return Object.keys(classMap)
     .filter((className) => classMap[className])
-    .join(" ");
+    .join(' ');
 }

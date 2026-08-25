@@ -9,10 +9,10 @@
         state.points.length === 2
           ? [
               {
-                type: "line",
+                type: 'line',
                 stroke: that.settings.settings.color,
                 strokeWidth: 3,
-                strokeDasharray: "4 2",
+                strokeDasharray: '4 2',
                 x1: sx(start.x) * that.rect.width,
                 y1: sy(start.y) * that.rect.height,
                 x2: sx(end.x) * that.rect.width,
@@ -39,15 +39,15 @@
     }
 
     // register custom component
-    picasso.component("draw", {
+    picasso.component('draw', {
       defaultSettings: {
         settings: {
-          color: "#333",
-          scaleX: "x",
-          scaleY: "y",
+          color: '#333',
+          scaleX: 'x',
+          scaleY: 'y',
         },
       },
-      require: ["chart", "renderer"],
+      require: ['chart', 'renderer'],
       created: function () {
         this.state = {
           points: [],
@@ -59,8 +59,8 @@
       render: function () {
         this.drawing = {
           el: this.renderer.element().getBoundingClientRect(),
-          sx: this.chart.scale("x"),
-          sy: this.chart.scale("y"),
+          sx: this.chart.scale('x'),
+          sy: this.chart.scale('y'),
         };
         return render(this, this.state);
       },
@@ -88,86 +88,86 @@
 
   var settings = {
     scales: {
-      x: { data: { field: "Sales" }, expand: 0.1 },
-      y: { data: { field: "Margin" }, expand: 0.1 },
+      x: { data: { field: 'Sales' }, expand: 0.1 },
+      y: { data: { field: 'Margin' }, expand: 0.1 },
     },
     components: [
       {
-        type: "axis",
-        scale: "y",
+        type: 'axis',
+        scale: 'y',
         layout: {
-          dock: "left",
+          dock: 'left',
         },
       },
       {
-        type: "axis",
-        scale: "x",
+        type: 'axis',
+        scale: 'x',
         layout: {
-          dock: "bottom",
+          dock: 'bottom',
         },
       },
       {
-        type: "point",
+        type: 'point',
         data: {
           extract: {
-            field: "Product sub group",
+            field: 'Product sub group',
             props: {
-              x: { field: "Sales" },
-              y: { field: "Margin" },
-              size: { field: "# Customers" },
+              x: { field: 'Sales' },
+              y: { field: 'Margin' },
+              size: { field: '# Customers' },
             },
           },
         },
         settings: {
-          x: { scale: "x" },
-          y: { scale: "y" },
+          x: { scale: 'x' },
+          y: { scale: 'y' },
           size: {
             scale: {
-              data: { field: "# Customers" },
+              data: { field: '# Customers' },
             },
           },
           fill: {
-            ref: "size",
+            ref: 'size',
             scale: {
-              data: { field: "# Customers" },
-              type: "color",
+              data: { field: '# Customers' },
+              type: 'color',
             },
           },
         },
       },
       {
-        type: "draw",
-        key: "drawOnMe",
+        type: 'draw',
+        key: 'drawOnMe',
         settings: {
-          color: "green",
+          color: 'green',
         },
       },
     ],
     interactions: [
       {
-        type: "hammer",
-        key: "hammered",
+        type: 'hammer',
+        key: 'hammered',
         gestures: [
           {
-            type: "Pan",
+            type: 'Pan',
             options: {
-              event: "draw",
+              event: 'draw',
             },
             events: {
               drawstart: function (e) {
                 var hitComp = this.chart.componentsFromPoint({ x: e.center.x, y: e.center.y }).filter(function (c) {
-                  return c.settings.key === "drawOnMe";
+                  return c.settings.key === 'drawOnMe';
                 })[0];
                 if (!hitComp) {
                   return;
                 }
-                this.chart.component("drawOnMe").emit("start", e);
+                this.chart.component('drawOnMe').emit('start', e);
               },
               drawmove: function (e) {
-                this.chart.component("drawOnMe").emit("move", e);
+                this.chart.component('drawOnMe').emit('move', e);
               },
               drawend: function (e) {
-                this.chart.component("drawOnMe").emit("end", e);
+                this.chart.component('drawOnMe').emit('end', e);
               },
             },
           },
@@ -178,10 +178,10 @@
 
   var pic = picasso({
     renderer: {
-      prio: ["canvas"],
+      prio: ['canvas'],
     },
   }).chart({
-    element: document.querySelector("#container"),
+    element: document.querySelector('#container'),
     data: picData.products,
     settings: settings,
   });

@@ -11,8 +11,8 @@ npm install picasso-plugin-q
 ### Register plugin
 
 ```js
-import picasso from "picasso.js";
-import picassoQ from "picasso-plugin-q";
+import picasso from 'picasso.js';
+import picassoQ from 'picasso-plugin-q';
 
 picasso.use(picassoQ); // register
 ```
@@ -22,8 +22,8 @@ picasso.use(picassoQ); // register
 This dataset type understands the QIX hypercube format and its internals, making it a bit easier to traverse and extract values from an otherwise complex structure.
 
 ```js
-const ds = picasso.data("q")({
-  key: "qHyperCube", // path to the hypercube from the layout
+const ds = picasso.data('q')({
+  key: 'qHyperCube', // path to the hypercube from the layout
   data: layout.qHyperCube,
 });
 ```
@@ -31,8 +31,8 @@ const ds = picasso.data("q")({
 Dimensions, measures, attribute expressions and attribute dimensions are all recognized as fields and can be found using either the path or the title of the field:
 
 ```js
-const f = ds.field("Sales");
-const ff = ds.field("qDimensionInfo/1/qAttrDimInfo/2");
+const f = ds.field('Sales');
+const ff = ds.field('qDimensionInfo/1/qAttrDimInfo/2');
 ```
 
 ### Extracting data values
@@ -82,14 +82,14 @@ We can extract the unique _Month_ values using:
 
 ```js
 ds.extract({
-  field: "Month",
+  field: 'Month',
   trackBy: (v) => v.qElemNumber,
 });
 
 // output
 [
-  { value: 0, label: "Jan", source: { key: "qHyperCube", field: "qDimensionInfo/1" } },
-  { value: 1, label: "Feb", source: { key: "qHyperCube", field: "qDimensionInfo/1" } },
+  { value: 0, label: 'Jan', source: { key: 'qHyperCube', field: 'qDimensionInfo/1' } },
+  { value: 1, label: 'Feb', source: { key: 'qHyperCube', field: 'qDimensionInfo/1' } },
 ];
 ```
 
@@ -139,9 +139,9 @@ The QIX selections helper provides a mapping from brushed data points to suitabl
 Brushing dimension values is done by adding the value of `qElemNumber` to the brush, and providing the path to the relevant dimension:
 
 ```js
-const b = chart.brush("selection");
-b.addValue("qHyperCube/qDimensionInfo/2", 4);
-b.addValue("qHyperCube/qDimensionInfo/2", 7);
+const b = chart.brush('selection');
+b.addValue('qHyperCube/qDimensionInfo/2', 4);
+b.addValue('qHyperCube/qDimensionInfo/2', 7);
 ```
 
 Calling `picassoQ.selections` with the above instance generates relevant QIX methods and parameters to apply a selection to:
@@ -170,8 +170,8 @@ model[selection.method](...selection.params);
 Brushing measure ranges:
 
 ```js
-const b = chart.brush("selection");
-b.addRange("qHyperCube/qMeasureInfo/2", { min: 13, max: 35 });
+const b = chart.brush('selection');
+b.addRange('qHyperCube/qMeasureInfo/2', { min: 13, max: 35 });
 
 const selection = picassoQ.selections(b)[0];
 // {
@@ -190,8 +190,8 @@ const selection = picassoQ.selections(b)[0];
 Brushing dimension ranges:
 
 ```js
-const b = chart.brush("selection");
-b.addRange("qHyperCube/qDimensionInfo/1", { min: 13, max: 35 });
+const b = chart.brush('selection');
+b.addRange('qHyperCube/qDimensionInfo/1', { min: 13, max: 35 });
 
 const selection = picassoQ.selections(b)[0];
 // {
@@ -210,11 +210,11 @@ const selection = picassoQ.selections(b)[0];
 Brushing by table row index and column:
 
 ```js
-const b = chart.brush("selection");
-b.addValue("qHyperCube/qDimensionInfo/1", 10);
-b.addValue("qHyperCube/qDimensionInfo/1", 13);
-b.addValue("qHyperCube/qDimensionInfo/0", 11);
-b.addValue("qHyperCube/qDimensionInfo/0", 17);
+const b = chart.brush('selection');
+b.addValue('qHyperCube/qDimensionInfo/1', 10);
+b.addValue('qHyperCube/qDimensionInfo/1', 13);
+b.addValue('qHyperCube/qDimensionInfo/0', 11);
+b.addValue('qHyperCube/qDimensionInfo/0', 17);
 ```
 
 In the above case, rows `10` and `13` have been brushed on dimension `1`, and rows `11` and `17` on dimension `0`.
@@ -238,7 +238,7 @@ To use values from another dimension, `primarySource` should be set:
 ```js
 const selection = picassoQ.selections(b, {
   byCells: true,
-  primarySource: "qHyperCube/qDimensionInfo/0",
+  primarySource: 'qHyperCube/qDimensionInfo/0',
 })[0];
 // {
 //   method: 'selectHyperCubeCells',
@@ -255,9 +255,9 @@ const selection = picassoQ.selections(b, {
 Brush on attribute dimension values:
 
 ```js
-const b = chart.brush("selection");
-b.addValue("qHyperCube/qDimensionInfo/2/qAttrDimInfo/3", 6);
-b.addValue("qHyperCube/qDimensionInfo/2/qAttrDimInfo/3", 9);
+const b = chart.brush('selection');
+b.addValue('qHyperCube/qDimensionInfo/2/qAttrDimInfo/3', 6);
+b.addValue('qHyperCube/qDimensionInfo/2/qAttrDimInfo/3', 9);
 
 const selection = picassoQ.selections(b)[0];
 // {
@@ -276,8 +276,8 @@ const selection = picassoQ.selections(b)[0];
 Brush on attribute expression range:
 
 ```js
-const b = chart.brush("selection");
-b.addRange("qHyperCube/qMeasureInfo/1/qAttrExprInfo/2", { min: 11, max: 21 });
+const b = chart.brush('selection');
+b.addRange('qHyperCube/qMeasureInfo/1/qAttrExprInfo/2', { min: 11, max: 21 });
 ```
 
 QIX selections on attribute expressions are similar to selections on measure ranges. In this case however, the index of the measure

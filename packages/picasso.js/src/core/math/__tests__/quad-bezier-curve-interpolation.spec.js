@@ -1,4 +1,4 @@
-import quadToPoints from "../quad-bezier-curve-interpolation";
+import quadToPoints from '../quad-bezier-curve-interpolation';
 
 function approxEqual(ary, expected) {
   ary.forEach((item, i) => {
@@ -8,7 +8,7 @@ function approxEqual(ary, expected) {
   });
 }
 
-describe("Quad Bezier curve", () => {
+describe('Quad Bezier curve', () => {
   let p0;
   let p1;
   let p2;
@@ -19,7 +19,7 @@ describe("Quad Bezier curve", () => {
     p2 = { x: 50, y: 50 };
   });
 
-  it("generate points on curve", () => {
+  it('generate points on curve', () => {
     const pts = quadToPoints(p0, p1, p2);
 
     const exp = [

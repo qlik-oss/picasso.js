@@ -1,24 +1,24 @@
-import extend from "extend";
+import extend from 'extend';
 
-import nodeBuilder from "./axis-node-builder";
-import { DEFAULT_CONTINUOUS_SETTINGS, DEFAULT_DISCRETE_SETTINGS } from "./axis-default-settings";
-import calcRequiredSize from "./axis-size-calculator";
-import crispify from "../../transposer/crispifier";
-import { scaleWithSize } from "../../scales";
+import nodeBuilder from './axis-node-builder';
+import { DEFAULT_CONTINUOUS_SETTINGS, DEFAULT_DISCRETE_SETTINGS } from './axis-default-settings';
+import calcRequiredSize from './axis-size-calculator';
+import crispify from '../../transposer/crispifier';
+import { scaleWithSize } from '../../scales';
 
 function alignTransform({ align, inner }) {
-  if (align === "left") {
+  if (align === 'left') {
     return { x: inner.width + inner.x };
   }
-  if (align === "right" || align === "bottom") {
+  if (align === 'right' || align === 'bottom') {
     return inner;
   }
   return { y: inner.y + inner.height };
 }
 
 function resolveAlign(align, dock) {
-  const horizontal = ["top", "bottom"];
-  const vertical = ["left", "right"];
+  const horizontal = ['top', 'bottom'];
+  const vertical = ['left', 'right'];
   if (horizontal.indexOf(align) !== -1 && vertical.indexOf(dock) === -1) {
     return align;
   }
@@ -37,7 +37,7 @@ function resolveLocalSettings({ state, style, settings }) {
     true,
     {},
     state.isDiscrete ? DEFAULT_DISCRETE_SETTINGS : DEFAULT_CONTINUOUS_SETTINGS,
-    style,
+    style
   );
   const localStgns = extend(true, {}, defaultStgns, settings.settings);
 
@@ -47,8 +47,8 @@ function resolveLocalSettings({ state, style, settings }) {
   localStgns.labels.tiltAngle = Math.max(-90, Math.min(localStgns.labels.tiltAngle, 90));
 
   const { paddingStart, paddingEnd } = localStgns;
-  localStgns.paddingStart = typeof paddingStart === "function" ? paddingStart.call(null) : paddingStart;
-  localStgns.paddingEnd = typeof paddingEnd === "function" ? paddingEnd.call(null) : paddingEnd;
+  localStgns.paddingStart = typeof paddingStart === 'function' ? paddingStart.call(null) : paddingStart;
+  localStgns.paddingEnd = typeof paddingEnd === 'function' ? paddingEnd.call(null) : paddingEnd;
 
   return localStgns;
 }
@@ -57,20 +57,20 @@ function updateActiveMode(state, settings, isDiscrete) {
   const mode = settings.labels.mode;
 
   if (!isDiscrete || !state.isHorizontal) {
-    return "horizontal";
+    return 'horizontal';
   }
 
-  if (mode === "auto") {
+  if (mode === 'auto') {
     return state.labels.activeMode;
   }
-  if (["layered", "tilted"].indexOf(settings.labels.mode) !== -1 && ["top", "bottom"].indexOf(settings.dock) !== -1) {
+  if (['layered', 'tilted'].indexOf(settings.labels.mode) !== -1 && ['top', 'bottom'].indexOf(settings.dock) !== -1) {
     return mode;
   }
-  return "horizontal";
+  return 'horizontal';
 }
 
 const axisComponent = {
-  require: ["chart", "renderer", "dockConfig"],
+  require: ['chart', 'renderer', 'dockConfig'],
   defaultSettings: {
     layout: {
       displayOrder: 0,
@@ -78,10 +78,10 @@ const axisComponent = {
     },
     settings: {},
     style: {
-      labels: "$label",
-      ticks: "$guide-line",
-      minorTicks: "$guide-line--minor",
-      line: "$guide-line",
+      labels: '$label',
+      ticks: '$guide-line',
+      minorTicks: '$guide-line--minor',
+      line: '$guide-line',
     },
   },
   created() {
@@ -90,7 +90,7 @@ const axisComponent = {
       isDiscrete: !!this.scale.bandwidth,
       isHorizontal: false,
       labels: {
-        activeMode: "horizontal",
+        activeMode: 'horizontal',
       },
       ticks: [],
       innerRect: {
@@ -111,9 +111,9 @@ const axisComponent = {
     };
 
     if (this.state.isDiscrete) {
-      this.state.defaultDock = "bottom";
+      this.state.defaultDock = 'bottom';
     } else {
-      this.state.defaultDock = "left";
+      this.state.defaultDock = 'left';
     }
 
     this.setState(this.settings);
@@ -126,7 +126,7 @@ const axisComponent = {
 
     this.dockConfig.dock(this.state.settings.dock); // Override the dock setting (TODO should be removed)
 
-    this.state.isHorizontal = this.state.settings.align === "top" || this.state.settings.align === "bottom";
+    this.state.isHorizontal = this.state.settings.align === 'top' || this.state.settings.align === 'bottom';
     this.state.labels.activeMode = updateActiveMode(this.state, this.state.settings, this.state.isDiscrete);
   },
   preferredSize(opts) {
@@ -164,7 +164,7 @@ const axisComponent = {
       alignTransform({
         align: this.state.settings.align,
         inner,
-      }),
+      })
     );
 
     const finalOuter = outer || extendedInner;
@@ -200,7 +200,7 @@ const axisComponent = {
         textBounds: this.renderer.textBounds,
         ticks: this.state.ticks,
         state,
-      }),
+      })
     );
 
     crispify.multiple(nodes);

@@ -1,7 +1,7 @@
-import componentFactoryFixture from "../../../../../test/helpers/component-factory-fixture";
-import lineComponent from "../line";
+import componentFactoryFixture from '../../../../../test/helpers/component-factory-fixture';
+import lineComponent from '../line';
 
-describe("line component", () => {
+describe('line component', () => {
   let rendererOutput;
   let chart;
   let shapeFn;
@@ -43,21 +43,21 @@ describe("line component", () => {
     chart = componentFixture.mocks().chart;
     componentFixture.mocks().theme.style.returns({
       ticks: {
-        stroke: "red",
+        stroke: 'red',
       },
       minorTicks: {
-        stroke: "blue",
+        stroke: 'blue',
       },
     });
     // chart.dataset = () => ({
     //   extract: componentFixture.sandbox().stub()
     // });
     // chart.dataset().extract.returns([{}]);
-    chart.scale.withArgs({ scale: "x" }).returns(xScale);
-    chart.scale.withArgs({ scale: "y" }).returns(yScale);
+    chart.scale.withArgs({ scale: 'x' }).returns(xScale);
+    chart.scale.withArgs({ scale: 'y' }).returns(yScale);
   });
 
-  it("should not render lines with default settings and no scales", () => {
+  it('should not render lines with default settings and no scales', () => {
     const config = {
       shapeFn,
     };
@@ -68,11 +68,11 @@ describe("line component", () => {
     expect(rendererOutput).to.deep.equal([]);
   });
 
-  it("should render lines with default settings and scales", () => {
+  it('should render lines with default settings and scales', () => {
     const config = {
       shapeFn,
-      x: { scale: "x" },
-      y: { scale: "y" },
+      x: { scale: 'x' },
+      y: { scale: 'y' },
     };
 
     componentFixture.simulateCreate(lineComponent, config);
@@ -80,38 +80,38 @@ describe("line component", () => {
 
     expect(rendererOutput).to.deep.equal([
       {
-        stroke: "red",
+        stroke: 'red',
         strokeWidth: 1,
         strokeDasharray: undefined,
-        type: "line",
+        type: 'line',
         flipXY: false,
         x1: 49.5,
         x2: 49.5,
         y1: -0.5,
         y2: 199.5,
         value: 1.23,
-        dir: "x",
+        dir: 'x',
       },
       {
-        stroke: "red",
+        stroke: 'red',
         strokeWidth: 1,
         strokeDasharray: undefined,
-        type: "line",
+        type: 'line',
         flipXY: true,
         x1: -0.5,
         x2: 99.5,
         y1: 99.5,
         y2: 99.5,
         value: 4.56,
-        dir: "y",
+        dir: 'y',
       },
     ]);
   });
 
-  it("should render X scale lines only", () => {
+  it('should render X scale lines only', () => {
     const config = {
       shapeFn,
-      x: { scale: "x" },
+      x: { scale: 'x' },
     };
 
     componentFixture.simulateCreate(lineComponent, config);
@@ -119,25 +119,25 @@ describe("line component", () => {
 
     expect(rendererOutput).to.deep.equal([
       {
-        stroke: "red",
+        stroke: 'red',
         strokeWidth: 1,
         strokeDasharray: undefined,
-        type: "line",
+        type: 'line',
         flipXY: false,
         x1: 49.5,
         x2: 49.5,
         y1: -0.5,
         y2: 199.5,
         value: 1.23,
-        dir: "x",
+        dir: 'x',
       },
     ]);
   });
 
-  it("should render Y scale lines only", () => {
+  it('should render Y scale lines only', () => {
     const config = {
       shapeFn,
-      y: { scale: "y" },
+      y: { scale: 'y' },
     };
 
     componentFixture.simulateCreate(lineComponent, config);
@@ -145,26 +145,26 @@ describe("line component", () => {
 
     expect(rendererOutput).to.deep.equal([
       {
-        stroke: "red",
+        stroke: 'red',
         strokeWidth: 1,
         strokeDasharray: undefined,
-        type: "line",
+        type: 'line',
         flipXY: true,
         x1: -0.5,
         x2: 99.5,
         y1: 99.5,
         y2: 99.5,
         value: 4.56,
-        dir: "y",
+        dir: 'y',
       },
     ]);
   });
 
-  it("should render minorTicks", () => {
+  it('should render minorTicks', () => {
     const config = {
       shapeFn,
-      x: { scale: "x" },
-      y: { scale: "y" },
+      x: { scale: 'x' },
+      y: { scale: 'y' },
       minorTicks: {
         show: true,
       },
@@ -178,39 +178,39 @@ describe("line component", () => {
 
     expect(rendererOutput).to.deep.equal([
       {
-        stroke: "blue",
+        stroke: 'blue',
         strokeWidth: 1,
         strokeDasharray: undefined,
-        type: "line",
+        type: 'line',
         flipXY: false,
         x1: 49.5,
         x2: 49.5,
         y1: -0.5,
         y2: 199.5,
         value: 1.23,
-        dir: "x",
+        dir: 'x',
       },
       {
-        stroke: "blue",
+        stroke: 'blue',
         strokeWidth: 1,
         strokeDasharray: undefined,
-        type: "line",
+        type: 'line',
         flipXY: true,
         x1: -0.5,
         x2: 99.5,
         y1: 99.5,
         y2: 99.5,
         value: 4.56,
-        dir: "y",
+        dir: 'y',
       },
     ]);
   });
 
-  it("should not render disabled ticks", () => {
+  it('should not render disabled ticks', () => {
     const config = {
       shapeFn,
-      x: { scale: "x" },
-      y: { scale: "y" },
+      x: { scale: 'x' },
+      y: { scale: 'y' },
       minorTicks: {
         show: false,
       },
@@ -227,13 +227,13 @@ describe("line component", () => {
     expect(rendererOutput).to.deep.equal([]);
   });
 
-  it("should render minorTicks with correct color", () => {
+  it('should render minorTicks with correct color', () => {
     const config = {
       shapeFn,
-      x: { scale: "x" },
-      y: { scale: "y" },
+      x: { scale: 'x' },
+      y: { scale: 'y' },
       ticks: {
-        stroke: (t) => (t.data.dir === "x" ? "red" : "blue"),
+        stroke: (t) => (t.data.dir === 'x' ? 'red' : 'blue'),
       },
     };
 
@@ -242,30 +242,30 @@ describe("line component", () => {
 
     expect(rendererOutput).to.deep.equal([
       {
-        stroke: "red",
+        stroke: 'red',
         strokeWidth: 1,
         strokeDasharray: undefined,
-        type: "line",
+        type: 'line',
         flipXY: false,
         x1: 49.5,
         x2: 49.5,
         y1: -0.5,
         y2: 199.5,
         value: 1.23,
-        dir: "x",
+        dir: 'x',
       },
       {
-        stroke: "blue",
+        stroke: 'blue',
         strokeWidth: 1,
         strokeDasharray: undefined,
-        type: "line",
+        type: 'line',
         flipXY: true,
         x1: -0.5,
         x2: 99.5,
         y1: 99.5,
         y2: 99.5,
         value: 4.56,
-        dir: "y",
+        dir: 'y',
       },
     ]);
   });

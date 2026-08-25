@@ -1,6 +1,6 @@
-import registry from "../utils/registry";
+import registry from '../utils/registry';
 
-import { numberFormat as d3NumberFormatter, timeFormat as d3TimeFormatter } from "./d3";
+import { numberFormat as d3NumberFormatter, timeFormat as d3TimeFormatter } from './d3';
 
 /**
  * @typedef {function} formatter
@@ -17,7 +17,7 @@ import { numberFormat as d3NumberFormatter, timeFormat as d3TimeFormatter } from
 
 const formatterRegistry = registry();
 
-formatterRegistry("d3-number", d3NumberFormatter);
-formatterRegistry("d3-time", d3TimeFormatter);
+formatterRegistry('d3-number', d3NumberFormatter);
+formatterRegistry('d3-time', d3TimeFormatter);
 
 export default formatterRegistry;

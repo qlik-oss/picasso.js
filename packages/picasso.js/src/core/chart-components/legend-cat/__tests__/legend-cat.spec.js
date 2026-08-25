@@ -1,7 +1,7 @@
-import componentFactoryFixture from "../../../../../test/helpers/component-factory-fixture";
-import component from "../legend-cat";
+import componentFactoryFixture from '../../../../../test/helpers/component-factory-fixture';
+import component from '../legend-cat';
 
-describe("legend-cat", () => {
+describe('legend-cat', () => {
   let renderedItems;
   let chart;
   let componentFixture;
@@ -39,33 +39,33 @@ describe("legend-cat", () => {
     };
     componentFixture
       .mocks()
-      .registries.renderer.withArgs("dom")
+      .registries.renderer.withArgs('dom')
       .returns(() => domRenderer);
     chart = componentFixture.mocks().chart;
     const scale = (d) => `-${d}-`;
     scale.domain = () => [1];
     scale.data = () => [1];
-    scale.labels = () => ["first"];
-    chart.scale.withArgs("s").returns(scale);
+    scale.labels = () => ['first'];
+    chart.scale.withArgs('s').returns(scale);
   });
 
-  it("should render items with default settings", () => {
+  it('should render items with default settings', () => {
     const config = {
-      scale: "s",
+      scale: 's',
     };
 
     componentFixture.simulateCreate(component, config);
     renderedItems = componentFixture.simulateRender(opts);
 
-    const d = { value: 1, label: "first" };
+    const d = { value: 1, label: 'first' };
 
     expect(renderedItems[0]).to.containSubset({
-      type: "container",
+      type: 'container',
       data: d,
       children: [
         {
-          type: "rect",
-          fill: "-1-",
+          type: 'rect',
+          fill: '-1-',
           x: 0,
           y: 0,
           width: 12,
@@ -78,20 +78,20 @@ describe("legend-cat", () => {
         y: 0,
         width: 25,
         height: 12,
-        type: "rect",
+        type: 'rect',
       },
     });
 
     expect(renderedItems[0].children[1]).to.containSubset({
       // label
-      text: "first",
+      text: 'first',
       data: d,
     });
   });
 
-  it("should calculate preferredSize", () => {
+  it('should calculate preferredSize', () => {
     const config = {
-      scale: "s",
+      scale: 's',
     };
 
     componentFixture.simulateCreate(component, config);
@@ -113,15 +113,15 @@ describe("legend-cat", () => {
     expect(size).to.equal(25 + 16);
   });
 
-  it("should render with nagivation", () => {
+  it('should render with nagivation', () => {
     const config = {
-      scale: "long",
+      scale: 'long',
       layout: {
-        dock: "top",
+        dock: 'top',
       },
       settings: {
         layout: {
-          direction: "rtl",
+          direction: 'rtl',
         },
       },
     };
@@ -130,8 +130,8 @@ describe("legend-cat", () => {
     const scale = (d) => `-${d}-`;
     scale.domain = () => [1];
     scale.data = () => [1];
-    scale.labels = () => ["fidfd fg dt"];
-    chart.scale.withArgs("long").returns(scale);
+    scale.labels = () => ['fidfd fg dt'];
+    chart.scale.withArgs('long').returns(scale);
 
     componentFixture.simulateCreate(component, config);
     componentFixture.simulateRender({

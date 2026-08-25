@@ -1,4 +1,4 @@
-import legendSeq from "./legend-seq";
+import legendSeq from './legend-seq';
 
 /**
  * @typedef {object} ComponentLegendSeq
@@ -15,5 +15,5 @@ import legendSeq from "./legend-seq";
  */
 
 export default function sequentialLegend(picasso) {
-  picasso.component("legend-seq", legendSeq);
+  picasso.component('legend-seq', legendSeq);
 }

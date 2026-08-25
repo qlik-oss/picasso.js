@@ -1,36 +1,36 @@
-import { mappedAttributes } from "../scene-graph/attributes";
-import circle from "./circle";
-import diamond from "./diamond";
-import saltire from "./saltire";
-import square from "./square";
-import triangle from "./triangle";
-import line from "./line";
-import star from "./star";
-import nPolygon from "./n-polygon";
-import cross from "./cross";
-import bar from "./bar";
-import rect from "./rect";
-import registry from "../utils/registry";
-import image from "./image";
+import { mappedAttributes } from '../scene-graph/attributes';
+import circle from './circle';
+import diamond from './diamond';
+import saltire from './saltire';
+import square from './square';
+import triangle from './triangle';
+import line from './line';
+import star from './star';
+import nPolygon from './n-polygon';
+import cross from './cross';
+import bar from './bar';
+import rect from './rect';
+import registry from '../utils/registry';
+import image from './image';
 
 const parentReg = registry();
 
-parentReg.add("circle", circle);
-parentReg.add("diamond", diamond);
-parentReg.add("saltire", saltire);
-parentReg.add("square", square);
-parentReg.add("triangle", triangle);
-parentReg.add("line", line);
-parentReg.add("star", star);
-parentReg.add("n-polygon", nPolygon);
-parentReg.add("cross", cross);
-parentReg.add("bar", bar);
-parentReg.add("rect", rect);
-parentReg.add("image", image);
+parentReg.add('circle', circle);
+parentReg.add('diamond', diamond);
+parentReg.add('saltire', saltire);
+parentReg.add('square', square);
+parentReg.add('triangle', triangle);
+parentReg.add('line', line);
+parentReg.add('star', star);
+parentReg.add('n-polygon', nPolygon);
+parentReg.add('cross', cross);
+parentReg.add('bar', bar);
+parentReg.add('rect', rect);
+parentReg.add('image', image);
 
 function applyOpts(obj, opts = {}) {
   Object.keys(opts).forEach((key) => {
-    if (typeof mappedAttributes[key] !== "undefined" && key !== "transform") {
+    if (typeof mappedAttributes[key] !== 'undefined' && key !== 'transform') {
       obj[key] = opts[key];
     }
   });
@@ -52,7 +52,7 @@ const create =
       const s = fn(options);
       applyOpts(s, options);
 
-      if (typeof options.data !== "undefined") {
+      if (typeof options.data !== 'undefined') {
         s.data = options.data;
       }
 

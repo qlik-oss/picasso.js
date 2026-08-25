@@ -1,4 +1,4 @@
-import extend from "extend";
+import extend from 'extend';
 
 /**
  * Resolve a complex object using the built-in resolver from this.resolver in component
@@ -7,8 +7,8 @@ import extend from "extend";
 export default function complexResolver({ keys, data, defaultSettings, style, settings, width, height, resolver }) {
   const defaults = extend(true, {}, defaultSettings || {}, style || {});
   const scaled = {
-    major: settings.orientation === "horizontal" ? height : width,
-    minor: settings.orientation === "horizontal" ? width : height,
+    major: settings.orientation === 'horizontal' ? height : width,
+    minor: settings.orientation === 'horizontal' ? width : height,
   };
 
   const majorSettings = settings.major;
@@ -16,10 +16,10 @@ export default function complexResolver({ keys, data, defaultSettings, style, se
   let majorResolved;
 
   if (
-    typeof majorSettings === "object" &&
-    typeof majorSettings.ref === "object" &&
-    typeof majorSettings.ref.start !== "undefined" &&
-    typeof majorSettings.ref.end !== "undefined"
+    typeof majorSettings === 'object' &&
+    typeof majorSettings.ref === 'object' &&
+    typeof majorSettings.ref.start !== 'undefined' &&
+    typeof majorSettings.ref.end !== 'undefined'
   ) {
     // temporary backwards compatibility
     majorResolved = resolver.resolve({
@@ -35,13 +35,13 @@ export default function complexResolver({ keys, data, defaultSettings, style, se
         {
           binStart: { scale: settings.major.scale, ref: settings.major.ref.start },
           binEnd: { scale: settings.major.scale, ref: settings.major.ref.end },
-        },
+        }
       ),
     });
   } else if (
-    typeof majorSettings === "object" &&
-    typeof majorSettings.binStart !== "undefined" &&
-    typeof majorSettings.binEnd !== "undefined"
+    typeof majorSettings === 'object' &&
+    typeof majorSettings.binStart !== 'undefined' &&
+    typeof majorSettings.binEnd !== 'undefined'
   ) {
     majorResolved = resolver.resolve({
       data,
@@ -54,10 +54,10 @@ export default function complexResolver({ keys, data, defaultSettings, style, se
         true,
         {},
         {
-          binStart: { scale: settings.major.scale, ref: "binStart" },
-          binEnd: { scale: settings.major.scale, ref: "binEnd" },
+          binStart: { scale: settings.major.scale, ref: 'binStart' },
+          binEnd: { scale: settings.major.scale, ref: 'binEnd' },
         },
-        settings.major,
+        settings.major
       ),
     });
   } else {
@@ -75,7 +75,7 @@ export default function complexResolver({ keys, data, defaultSettings, style, se
 
   const minorSettings = settings.minor || {};
   const defaultMinorSettings = {};
-  ["start", "end", "min", "max", "med"].forEach((prop) => {
+  ['start', 'end', 'min', 'max', 'med'].forEach((prop) => {
     if (minorSettings[prop] || (data.items && data.items.length && data.items[0][prop])) {
       defaultMinorSettings[prop] = { scale: minorSettings.scale, ref: prop };
     }

@@ -6,7 +6,7 @@ export const MANDATORY = 1;
 export const BREAK_ALLOWED = 2;
 
 export function includesLineBreak(c) {
-  if (typeof c === "string") {
+  if (typeof c === 'string') {
     return c.search(LINEBREAK_REGEX) !== -1;
   }
   return String(c).search(LINEBREAK_REGEX) !== -1;
@@ -33,10 +33,10 @@ function resolveBreakOpportunity(chunk, i, chunks, mandatory, noBreakAllowed) {
 }
 
 function cleanEmptyChunks(chunks) {
-  if (chunks[0] === "") {
+  if (chunks[0] === '') {
     chunks.shift();
   }
-  if (chunks[chunks.length - 1] === "") {
+  if (chunks[chunks.length - 1] === '') {
     chunks.pop();
   }
 }
@@ -47,12 +47,12 @@ function clamp(val, min, max) {
 
 export default function stringTokenizer({
   string,
-  separator = "",
+  separator = '',
   reverse = false,
   measureText = (text) => ({ width: text.length, height: 1 }),
   mandatoryBreakIdentifiers = [includesLineBreak],
   noBreakAllowedIdentifiers = [],
-  suppressIdentifier = [includesWhiteSpace, includesLineBreak, (chunk) => chunk === ""],
+  suppressIdentifier = [includesWhiteSpace, includesLineBreak, (chunk) => chunk === ''],
   hyphenationIdentifiers = [hyphenationAllowed],
 } = {}) {
   const chunks = String(string).split(separator);

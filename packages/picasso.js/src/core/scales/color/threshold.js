@@ -1,8 +1,8 @@
-import { scaleThreshold, scaleLinear } from "d3-scale";
-import { notNumber } from "../../utils/is-number";
-import minmax from "../../utils/min-max";
-import sequential from "./sequential";
-import resolveSettings from "../settings-resolver";
+import { scaleThreshold, scaleLinear } from 'd3-scale';
+import { notNumber } from '../../utils/is-number';
+import minmax from '../../utils/min-max';
+import sequential from './sequential';
+import resolveSettings from '../settings-resolver';
 
 // const DEFAULT_COLORS = ['rgb(180,221,212)', 'rgb(34, 83, 90)'];
 
@@ -126,7 +126,7 @@ export default function scaleThresholdColor(settings = {}, data = {}, resources 
 
   const [min, max] = minmax(stgns, fields);
   const num = isDomain ? stgns.domain.length : -1;
-  const DEFAULT_COLORS = resources.theme ? resources.theme.palette("sequential", num > 0 ? num : 2) : [];
+  const DEFAULT_COLORS = resources.theme ? resources.theme.palette('sequential', num > 0 ? num : 2) : [];
 
   let range = isRange ? stgns.range : DEFAULT_COLORS;
   let domain = [];

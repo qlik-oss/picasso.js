@@ -1,5 +1,5 @@
-import extend from "extend";
-import extract from "./extractor";
+import extend from 'extend';
+import extract from './extractor';
 
 /**
  * @interface CollectionSettings
@@ -32,8 +32,8 @@ export default function create(config, d, opts, extractor = extract) {
     if (!cfg.key) {
       throw new Error('Data collection is missing "key" property');
     }
-    if (typeof cfg.data === "object" && "collection" in cfg.data) {
-      throw new Error("Data config for collections may not reference other collections");
+    if (typeof cfg.data === 'object' && 'collection' in cfg.data) {
+      throw new Error('Data config for collections may not reference other collections');
     }
     collections[cfg.key] = () => extractor(cfg.data, d, opts);
   });
@@ -41,16 +41,16 @@ export default function create(config, d, opts, extractor = extract) {
   const fn = (key) => {
     let k;
     let cfg;
-    if (typeof key === "string") {
+    if (typeof key === 'string') {
       k = key;
-    } else if (typeof key === "object") {
+    } else if (typeof key === 'object') {
       k = key.key;
       cfg = key;
     }
     if (!(k in collections)) {
       throw new Error(`Unknown data collection: ${k}`);
     }
-    if (typeof collections[k] === "function") {
+    if (typeof collections[k] === 'function') {
       collections[k] = collections[k]();
     }
     let coll = collections[k];

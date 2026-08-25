@@ -5,24 +5,24 @@
  * @private
  */
 const mappedAttributes = {
-  fill: "fill",
-  stroke: "stroke",
-  opacity: "opacity",
-  strokeWidth: "stroke-width",
-  strokeLinejoin: "stroke-linejoin",
-  fontFamily: "font-family",
-  fontSize: "font-size",
-  fontStyle: "font-style",
-  textDecoration: "text-decoration",
-  fontWeight: "font-weight",
-  baseline: "dominant-baseline", // Special case where we have defined our own attribute name
-  dominantBaseline: "dominant-baseline",
-  anchor: "text-anchor", // Special case where we have defined our own attribute name
-  textAnchor: "text-anchor",
-  maxWidth: "maxWidth",
-  transform: "transform",
-  strokeDasharray: "stroke-dasharray",
-  id: "id",
+  fill: 'fill',
+  stroke: 'stroke',
+  opacity: 'opacity',
+  strokeWidth: 'stroke-width',
+  strokeLinejoin: 'stroke-linejoin',
+  fontFamily: 'font-family',
+  fontSize: 'font-size',
+  fontStyle: 'font-style',
+  textDecoration: 'text-decoration',
+  fontWeight: 'font-weight',
+  baseline: 'dominant-baseline', // Special case where we have defined our own attribute name
+  dominantBaseline: 'dominant-baseline',
+  anchor: 'text-anchor', // Special case where we have defined our own attribute name
+  textAnchor: 'text-anchor',
+  maxWidth: 'maxWidth',
+  transform: 'transform',
+  strokeDasharray: 'stroke-dasharray',
+  id: 'id',
 };
 
 /**
@@ -36,7 +36,7 @@ const mappedAttributes = {
 function assignMappedAttribute(target, source) {
   Object.keys(mappedAttributes).forEach((key) => {
     const sourceValue = source[key];
-    if (typeof sourceValue !== "undefined") {
+    if (typeof sourceValue !== 'undefined') {
       const mappedKey = mappedAttributes[key];
       target[mappedKey] = sourceValue;
     }

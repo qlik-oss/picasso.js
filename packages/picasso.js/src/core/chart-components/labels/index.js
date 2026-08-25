@@ -1,5 +1,5 @@
-import labelsComponent from "./labels";
+import labelsComponent from './labels';
 
 export default function labels(picasso) {
-  picasso.component("labels", labelsComponent);
+  picasso.component('labels', labelsComponent);
 }

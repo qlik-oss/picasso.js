@@ -1,15 +1,15 @@
-import getLabelSize from "./axis-label-size";
+import getLabelSize from './axis-label-size';
 
 function oppositeAlign(align) {
   switch (align) {
-    case "top":
-      return "bottom";
-    case "bottom":
-      return "top";
-    case "left":
-      return "right";
-    case "right":
-      return "left";
+    case 'top':
+      return 'bottom';
+    case 'bottom':
+      return 'top';
+    case 'left':
+      return 'right';
+    case 'right':
+      return 'left';
     default:
       return align;
   }

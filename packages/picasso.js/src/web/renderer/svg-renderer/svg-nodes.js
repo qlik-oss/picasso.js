@@ -1,16 +1,16 @@
-import { ellipsText, measureText } from "../../text-manipulation";
-import baselineHeuristic from "../../text-manipulation/baseline-heuristic";
-import { detectTextDirection, flipTextAnchor } from "../../../core/utils/rtl-util";
+import { ellipsText, measureText } from '../../text-manipulation';
+import baselineHeuristic from '../../text-manipulation/baseline-heuristic';
+import { detectTextDirection, flipTextAnchor } from '../../../core/utils/rtl-util';
 
-const svgNs = "http://www.w3.org/2000/svg";
+const svgNs = 'http://www.w3.org/2000/svg';
 // const badValues = ['', NaN, 'NaN', undefined, null, false, true];
 
 const creator = (type, parent) => {
-  if (!type || typeof type !== "string") {
+  if (!type || typeof type !== 'string') {
     throw new Error(`Invalid type: ${type}`);
   }
 
-  const el = parent.ownerDocument.createElementNS(svgNs, type === "container" ? "g" : type);
+  const el = parent.ownerDocument.createElementNS(svgNs, type === 'container' ? 'g' : type);
 
   parent.appendChild(el);
   return el;
@@ -26,15 +26,15 @@ const destroyer = (el) => {
 // Where SVG would treat NaN values as 0, canvas would simple not render anything.
 const isValid = (item) => {
   switch (item.type) {
-    case "circle":
+    case 'circle':
       return !isNaN(item.attrs.cx) && !isNaN(item.attrs.cy) && !isNaN(item.attrs.r);
-    case "line":
+    case 'line':
       return !isNaN(item.attrs.x1) && !isNaN(item.attrs.y1) && !isNaN(item.attrs.x2) && !isNaN(item.attrs.y2);
-    case "rect":
+    case 'rect':
       return !isNaN(item.attrs.x) && !isNaN(item.attrs.y) && !isNaN(item.attrs.width) && !isNaN(item.attrs.height);
-    case "text":
+    case 'text':
       return !isNaN(item.attrs.x) && !isNaN(item.attrs.y);
-    case "image":
+    case 'image':
       return !isNaN(item.attrs.x) && !isNaN(item.attrs.y);
     default:
       return true;
@@ -55,45 +55,45 @@ function handleImageLoad({ element, attrs }) {
     }
 
     switch (imagePosition) {
-      case "top-center":
+      case 'top-center':
         y -= imgHeight / 2;
         break;
-      case "center-left":
+      case 'center-left':
         x -= imgWidth / 2;
         break;
-      case "center-right":
+      case 'center-right':
         x += imgWidth / 2;
         break;
-      case "top-left":
+      case 'top-left':
         x -= imgWidth / 2;
         y -= imgHeight / 2;
         break;
-      case "top-right":
+      case 'top-right':
         x += imgWidth / 2;
         y -= imgHeight / 2;
         break;
-      case "bottom-left":
+      case 'bottom-left':
         x -= imgWidth / 2;
         y += imgHeight / 2;
         break;
-      case "bottom-right":
+      case 'bottom-right':
         x += imgWidth / 2;
         y += imgHeight / 2;
         break;
-      case "bottom-center":
+      case 'bottom-center':
         y += imgHeight / 2;
         break;
       default:
         break;
     }
 
-    element.setAttribute("width", imgWidth);
-    element.setAttribute("height", imgHeight);
-    element.setAttribute("x", x - imgWidth / 2);
-    element.setAttribute("y", y - imgHeight / 2);
-    element.setAttribute("preserveAspectRatio", "none");
+    element.setAttribute('width', imgWidth);
+    element.setAttribute('height', imgHeight);
+    element.setAttribute('x', x - imgWidth / 2);
+    element.setAttribute('y', y - imgHeight / 2);
+    element.setAttribute('preserveAspectRatio', 'none');
 
-    if (symbol === "circle") {
+    if (symbol === 'circle') {
       const svg = element.ownerSVGElement;
       if (!svg) {
         return;
@@ -102,20 +102,20 @@ function handleImageLoad({ element, attrs }) {
       const id = `clip-${Math.random().toString(36).substr(2, 9)}`;
       if (!svg.querySelector(`#${id}`)) {
         const defs =
-          svg.querySelector("defs") || svg.insertBefore(document.createElementNS(svgNs, "defs"), svg.firstChild);
+          svg.querySelector('defs') || svg.insertBefore(document.createElementNS(svgNs, 'defs'), svg.firstChild);
 
-        const clipPath = document.createElementNS(svgNs, "clipPath");
-        clipPath.setAttribute("id", id);
+        const clipPath = document.createElementNS(svgNs, 'clipPath');
+        clipPath.setAttribute('id', id);
 
-        const circle = document.createElementNS(svgNs, "circle");
-        circle.setAttribute("cx", x);
-        circle.setAttribute("cy", y);
-        circle.setAttribute("r", Math.min(imgWidth, imgHeight) / 2);
+        const circle = document.createElementNS(svgNs, 'circle');
+        circle.setAttribute('cx', x);
+        circle.setAttribute('cy', y);
+        circle.setAttribute('r', Math.min(imgWidth, imgHeight) / 2);
         clipPath.appendChild(circle);
         defs.appendChild(clipPath);
       }
 
-      element.setAttribute("clip-path", `url(#${id})`);
+      element.setAttribute('clip-path', `url(#${id})`);
     }
   };
 }
@@ -123,34 +123,34 @@ function handleImageLoad({ element, attrs }) {
 const maintainer = (element, item) => {
   if (isValid(item)) {
     for (const attr in item.attrs) {
-      if (attr === "stroke" && item.strokeReference) {
-        element.setAttribute("stroke", item.strokeReference);
-      } else if (attr === "fill" && item.fillReference) {
-        element.setAttribute("fill", item.fillReference);
-      } else if (attr === "text") {
-        element.setAttribute("style", "white-space: pre");
+      if (attr === 'stroke' && item.strokeReference) {
+        element.setAttribute('stroke', item.strokeReference);
+      } else if (attr === 'fill' && item.fillReference) {
+        element.setAttribute('fill', item.fillReference);
+      } else if (attr === 'text') {
+        element.setAttribute('style', 'white-space: pre');
         element.textContent = item.ellipsed || ellipsText(item.attrs, measureText);
         const dir = detectTextDirection(item.attrs.text);
-        if (dir === "rtl") {
-          element.setAttribute("direction", "rtl");
-          element.setAttribute("dir", "rtl");
-          element.setAttribute("text-anchor", flipTextAnchor(element.getAttribute("text-anchor"), dir));
+        if (dir === 'rtl') {
+          element.setAttribute('direction', 'rtl');
+          element.setAttribute('dir', 'rtl');
+          element.setAttribute('text-anchor', flipTextAnchor(element.getAttribute('text-anchor'), dir));
         }
-      } else if (item.type === "text" && (attr === "dy" || attr === "dominant-baseline")) {
+      } else if (item.type === 'text' && (attr === 'dy' || attr === 'dominant-baseline')) {
         const dy = +element.getAttribute(attr) || 0;
         let val = 0;
-        if (attr === "dominant-baseline") {
+        if (attr === 'dominant-baseline') {
           val = baselineHeuristic(item.attrs);
         } else {
           val = item.attrs[attr];
         }
-        element.setAttribute("dy", val + dy);
-      } else if (item.type === "text" && attr === "title" && item.attrs.title) {
-        const t = element.ownerDocument.createElementNS(svgNs, "title");
+        element.setAttribute('dy', val + dy);
+      } else if (item.type === 'text' && attr === 'title' && item.attrs.title) {
+        const t = element.ownerDocument.createElementNS(svgNs, 'title');
         t.textContent = item.attrs.title;
         element.appendChild(t);
-      } else if (item.type === "image" && attr === "src") {
-        element.setAttributeNS("http://www.w3.org/1999/xlink", "href", item.attrs.src);
+      } else if (item.type === 'image' && attr === 'src') {
+        element.setAttributeNS('http://www.w3.org/1999/xlink', 'href', item.attrs.src);
         let img = new Image();
         img.src = item.attrs.src;
         img.onload = handleImageLoad({ element, attrs: item.attrs });
@@ -159,11 +159,11 @@ const maintainer = (element, item) => {
       }
     }
 
-    if (typeof item.data === "string" || typeof item.data === "number" || typeof item.data === "boolean") {
-      element.setAttribute("data", item.data);
-    } else if (typeof item.data === "object" && item.data !== null) {
+    if (typeof item.data === 'string' || typeof item.data === 'number' || typeof item.data === 'boolean') {
+      element.setAttribute('data', item.data);
+    } else if (typeof item.data === 'object' && item.data !== null) {
       for (const d in item.data) {
-        if (typeof item.data[d] === "string" || typeof item.data[d] === "number" || typeof item.data[d] === "boolean") {
+        if (typeof item.data[d] === 'string' || typeof item.data[d] === 'number' || typeof item.data[d] === 'boolean') {
           element.setAttribute(`data-${d}`, item.data[d]);
         }
       }

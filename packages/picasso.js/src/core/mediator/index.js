@@ -1,4 +1,4 @@
-import EventEmitter from "../utils/event-emitter";
+import EventEmitter from '../utils/event-emitter';
 
 export default function mediator() {
   const instance = {};

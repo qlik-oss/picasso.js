@@ -1,5 +1,5 @@
-import { textBounds } from "../../../../web/text-manipulation";
-import buildArcLabels from "../axis-arc-label-node";
+import { textBounds } from '../../../../web/text-manipulation';
+import buildArcLabels from '../axis-arc-label-node';
 
 function createTick(position, label) {
   return {
@@ -9,7 +9,7 @@ function createTick(position, label) {
   };
 }
 
-describe("Axis Arc Label Node", () => {
+describe('Axis Arc Label Node', () => {
   const innerRect = {
     x: 0,
     y: 0,
@@ -36,12 +36,12 @@ describe("Axis Arc Label Node", () => {
     outerRect.y = 0;
   });
 
-  describe("Label", () => {
+  describe('Label', () => {
     let buildOpts, tick;
 
     beforeEach(() => {
       buildOpts = {
-        align: "top",
+        align: 'top',
         radius: 0.85,
         startAngle: (-2 * Math.PI) / 3,
         endAngle: (2 * Math.PI) / 3,
@@ -52,8 +52,8 @@ describe("Axis Arc Label Node", () => {
         stepSize: 0,
         style: {
           align: 0.5,
-          fontFamily: "Arial",
-          fontSize: "12px",
+          fontFamily: 'Arial',
+          fontSize: '12px',
           margin: -5,
         },
         textBounds: (node) => textBounds(node, measureTextMock),
@@ -63,50 +63,50 @@ describe("Axis Arc Label Node", () => {
       tick = createTick(0);
     });
 
-    describe("Style align", () => {
-      it("the label should be placed on the left side of the tick", () => {
-        buildOpts.align = "top";
-        tick = createTick(1, "0");
+    describe('Style align', () => {
+      it('the label should be placed on the left side of the tick', () => {
+        buildOpts.align = 'top';
+        tick = createTick(1, '0');
         const result = buildArcLabels(tick, buildOpts);
         expect(result.x).to.be.closeTo(40, 2);
         expect(result.y).to.be.closeTo(305, 2);
-        expect(result.anchor).to.equal("end");
+        expect(result.anchor).to.equal('end');
       });
 
-      it("label with different position, but should still be placed in the left side of the tick", () => {
-        buildOpts.align = "top";
-        tick = createTick(0.7, "100");
+      it('label with different position, but should still be placed in the left side of the tick', () => {
+        buildOpts.align = 'top';
+        tick = createTick(0.7, '100');
         const result = buildArcLabels(tick, buildOpts);
         expect(result.x).to.be.closeTo(62, 2);
         expect(result.y).to.be.closeTo(88, 2);
-        expect(result.anchor).to.equal("end");
+        expect(result.anchor).to.equal('end');
       });
 
-      it("the label should be placed on the right side of the tick", () => {
-        buildOpts.align = "top";
-        tick = createTick(0.4, "250");
+      it('the label should be placed on the right side of the tick', () => {
+        buildOpts.align = 'top';
+        tick = createTick(0.4, '250');
         const result = buildArcLabels(tick, buildOpts);
         expect(result.x).to.be.closeTo(275, 2);
         expect(result.y).to.be.closeTo(43, 2);
-        expect(result.anchor).to.equal("start");
+        expect(result.anchor).to.equal('start');
       });
-      it("the label should be centered on the tick", () => {
-        buildOpts.align = "top";
+      it('the label should be centered on the tick', () => {
+        buildOpts.align = 'top';
         buildOpts.innerRect = { width: 213, height: 595 };
-        tick = createTick(0.5, "300");
+        tick = createTick(0.5, '300');
         const result = buildArcLabels(tick, buildOpts);
         expect(result.x).to.be.closeTo(106.5, 2);
         expect(result.y).to.be.closeTo(191, 2);
-        expect(result.anchor).to.equal("middle");
+        expect(result.anchor).to.equal('middle');
       });
     });
 
-    describe("Not text in tick label-property", () => {
-      it("tick.label is undefined", () => {
-        buildOpts.align = "top";
+    describe('Not text in tick label-property', () => {
+      it('tick.label is undefined', () => {
+        buildOpts.align = 'top';
         tick = createTick(0, undefined);
         const result = buildArcLabels(tick, buildOpts);
-        expect(result.text).to.equal("-");
+        expect(result.text).to.equal('-');
       });
     });
   });

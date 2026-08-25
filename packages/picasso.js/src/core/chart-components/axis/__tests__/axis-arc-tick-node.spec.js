@@ -1,4 +1,4 @@
-import buildArcTicks from "../axis-arc-tick-node";
+import buildArcTicks from '../axis-arc-tick-node';
 
 function createTick(position, value) {
   return {
@@ -7,7 +7,7 @@ function createTick(position, value) {
   };
 }
 
-describe("Axis Arc Tick Node", () => {
+describe('Axis Arc Tick Node', () => {
   const innerRect = {
     x: 0,
     y: 0,
@@ -20,7 +20,7 @@ describe("Axis Arc Tick Node", () => {
     width: 0,
     height: 0,
   };
-  describe("Tick", () => {
+  describe('Tick', () => {
     let buildOpts, tick, tickValue;
     beforeEach(() => {
       innerRect.width = 400;
@@ -32,7 +32,7 @@ describe("Axis Arc Tick Node", () => {
       outerRect.x = 0;
       outerRect.y = 0;
       buildOpts = {
-        align: "top",
+        align: 'top',
         radius: 0.85,
         startAngle: (-2 * Math.PI) / 3,
         endAngle: (2 * Math.PI) / 3,
@@ -43,16 +43,16 @@ describe("Axis Arc Tick Node", () => {
         stepSize: 0,
         style: {
           fontFamily: "'Source Sans Pro', Arial, sans-serif",
-          fontSize: "12px",
+          fontSize: '12px',
           margin: 2,
           strokeWidth: 1,
-          stroke: "#cdcdcd",
+          stroke: '#cdcdcd',
           tickSize: 6,
         },
         tickSize: 6,
       };
     });
-    it("Start Tick", () => {
+    it('Start Tick', () => {
       tickValue = 0;
       tick = createTick(1, tickValue);
       const result = buildArcTicks(tick, buildOpts);
@@ -62,7 +62,7 @@ describe("Axis Arc Tick Node", () => {
       expect(result.y2).to.be.closeTo(295, 1);
       expect(result.value).to.equal(tickValue);
     });
-    it("End Tick", () => {
+    it('End Tick', () => {
       tickValue = 500;
       tick = createTick(0, tickValue);
       const result = buildArcTicks(tick, buildOpts);
@@ -72,7 +72,7 @@ describe("Axis Arc Tick Node", () => {
       expect(result.y2).to.be.closeTo(295, 1);
       expect(result.value).to.equal(tickValue);
     });
-    it("Middle Tick", () => {
+    it('Middle Tick', () => {
       tickValue = 250;
       tick = createTick(0.5, tickValue);
       buildOpts.innerRect = { width: 232, height: 390 };

@@ -1,12 +1,12 @@
-import elementMock from "test-utils/mocks/element-mock";
-import vDomMock from "test-utils/mocks/vDom-mock";
-import componentFactoryFixture from "../../../../../test/helpers/component-factory-fixture";
-import brushRange from "../brush-range";
-import linearScale from "../../../../core/scales/linear";
-import bandScale from "../../../../core/scales/band";
-import brushFactory from "../../../../core/brush";
+import elementMock from 'test-utils/mocks/element-mock';
+import vDomMock from 'test-utils/mocks/vDom-mock';
+import componentFactoryFixture from '../../../../../test/helpers/component-factory-fixture';
+import brushRange from '../brush-range';
+import linearScale from '../../../../core/scales/linear';
+import bandScale from '../../../../core/scales/band';
+import brushFactory from '../../../../core/brush';
 
-describe("Brush Range", () => {
+describe('Brush Range', () => {
   let componentFixture;
   let instance;
   let config;
@@ -42,8 +42,8 @@ describe("Brush Range", () => {
     componentFixture = componentFactoryFixture();
     config = {
       settings: {
-        scale: "a",
-        direction: "horizontal",
+        scale: 'a',
+        direction: 'horizontal',
         target: null, // Remove target to reduce complexity and dependencies on other components
       },
     };
@@ -58,66 +58,66 @@ describe("Brush Range", () => {
     theme = componentFixture.mocks().theme;
     theme.style.returns({
       line: {
-        stroke: "rgba(50, 50, 50, 0.8)",
+        stroke: 'rgba(50, 50, 50, 0.8)',
       },
       target: {},
       bubble: {
-        fontFamily: "Georgia",
-        fontSize: "14px",
-        fill: "#fff",
-        color: "#595959",
+        fontFamily: 'Georgia',
+        fontSize: '14px',
+        fill: '#fff',
+        color: '#595959',
         borderRadius: 3,
-        stroke: "#666",
+        stroke: '#666',
         strokeWidth: 1,
       },
     });
 
     bubbleStyle = {
-      position: "relative",
-      borderRadius: "3px",
-      border: "1px solid #666",
-      backgroundColor: "#fff",
-      padding: "4px 8px",
-      textAlign: "center",
-      overflow: "hidden",
-      textOverflow: "ellipsis",
-      whiteSpace: "nowrap",
-      maxWidth: "150px",
-      minWidth: "50px",
-      minHeight: "1em",
-      pointerEvents: "auto",
-      transform: "translate(-50%,0)",
-      fontSize: "14px",
-      fontFamily: "Georgia",
-      color: "#595959",
-      cursor: "ew-resize",
+      position: 'relative',
+      borderRadius: '3px',
+      border: '1px solid #666',
+      backgroundColor: '#fff',
+      padding: '4px 8px',
+      textAlign: 'center',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+      maxWidth: '150px',
+      minWidth: '50px',
+      minHeight: '1em',
+      pointerEvents: 'auto',
+      transform: 'translate(-50%,0)',
+      fontSize: '14px',
+      fontFamily: 'Georgia',
+      color: '#595959',
+      cursor: 'ew-resize',
     };
 
     rootBubbleStyle = {
-      position: "absolute",
-      top: "0",
-      left: "0px",
-      transform: "none",
+      position: 'absolute',
+      top: '0',
+      left: '0px',
+      transform: 'none',
     };
 
     edgeStyle = {
-      backgroundColor: "rgba(50, 50, 50, 0.8)",
-      position: "absolute",
-      height: "100%",
-      width: "1px",
-      left: "0",
-      top: "0",
-      pointerEvents: "none",
+      backgroundColor: 'rgba(50, 50, 50, 0.8)',
+      position: 'absolute',
+      height: '100%',
+      width: '1px',
+      left: '0',
+      top: '0',
+      pointerEvents: 'none',
     };
 
     rootEdgeStyle = {
-      cursor: "ew-resize",
-      position: "absolute",
-      left: "0px",
-      top: "0px",
-      height: "100%",
-      width: "5px",
-      pointerEvents: "auto",
+      cursor: 'ew-resize',
+      position: 'absolute',
+      left: '0px',
+      top: '0px',
+      height: '100%',
+      width: '5px',
+      pointerEvents: 'auto',
     };
   });
 
@@ -126,14 +126,14 @@ describe("Brush Range", () => {
     delete global.document.createElement;
   });
 
-  describe("should renderer discrete range", () => {
+  describe('should renderer discrete range', () => {
     beforeEach(() => {
       const scale = bandScale();
-      scale.type = "band";
+      scale.type = 'band';
       chartMock.scale = sandbox.stub().returns(scale);
     });
 
-    describe("horizontal", () => {
+    describe('horizontal', () => {
       beforeEach(() => {
         instance = componentFixture.simulateCreate(brushRange, config);
         componentFixture.simulateRender(size);
@@ -142,25 +142,25 @@ describe("Brush Range", () => {
         rendererOutput = componentFixture.getRenderOutput();
       });
 
-      it("left edge node correctly", () => {
+      it('left edge node correctly', () => {
         const edgeLeft = rendererOutput[0];
 
         // Work-around to deal with deep equal on objects with functions
-        expect(edgeLeft.data.onmouseover).to.be.a("function");
-        expect(edgeLeft.data.onmouseout).to.be.a("function");
+        expect(edgeLeft.data.onmouseover).to.be.a('function');
+        expect(edgeLeft.data.onmouseout).to.be.a('function');
         delete edgeLeft.data.onmouseover;
         delete edgeLeft.data.onmouseout;
 
         const expectedEdgeLeft = {
-          sel: "div",
+          sel: 'div',
           data: {
-            "data-value": 0,
-            "data-key": "brush-range-edge--1",
+            'data-value': 0,
+            'data-key': 'brush-range-edge--1',
             style: rootEdgeStyle,
           },
           children: [
             {
-              sel: "div",
+              sel: 'div',
               data: {
                 style: edgeStyle,
               },
@@ -171,30 +171,30 @@ describe("Brush Range", () => {
         expect(edgeLeft).to.deep.equal(expectedEdgeLeft);
       });
 
-      it("right edge node correctly", () => {
-        edgeStyle.bottom = "0";
-        edgeStyle.right = "0";
+      it('right edge node correctly', () => {
+        edgeStyle.bottom = '0';
+        edgeStyle.right = '0';
         delete edgeStyle.top;
         delete edgeStyle.left;
-        rootEdgeStyle.left = "95px";
+        rootEdgeStyle.left = '95px';
         const edgeRight = rendererOutput[1];
 
         // Work-around to deal with deep equal on objects with functions
-        expect(edgeRight.data.onmouseover).to.be.a("function");
-        expect(edgeRight.data.onmouseout).to.be.a("function");
+        expect(edgeRight.data.onmouseover).to.be.a('function');
+        expect(edgeRight.data.onmouseout).to.be.a('function');
         delete edgeRight.data.onmouseover;
         delete edgeRight.data.onmouseout;
 
         const expectedEdgeRight = {
-          sel: "div",
+          sel: 'div',
           data: {
-            "data-value": 1,
-            "data-key": "brush-range-edge--1",
+            'data-value': 1,
+            'data-key': 'brush-range-edge--1',
             style: rootEdgeStyle,
           },
           children: [
             {
-              sel: "div",
+              sel: 'div',
               data: {
                 style: edgeStyle,
               },
@@ -205,24 +205,24 @@ describe("Brush Range", () => {
         expect(edgeRight).to.deep.equal(expectedEdgeRight);
       });
 
-      it("left bubble node correctly", () => {
+      it('left bubble node correctly', () => {
         const bubbleLeft = rendererOutput[2];
         const expectedBubbleLeft = {
-          sel: "div",
+          sel: 'div',
           data: {
             style: rootBubbleStyle,
           },
           children: [
             {
-              sel: "div",
+              sel: 'div',
               data: {
-                "data-other-value": 1,
-                "data-idx": -1,
-                "data-bidx": 0,
-                "data-key": "brush-range-bubble--1-0",
+                'data-other-value': 1,
+                'data-idx': -1,
+                'data-bidx': 0,
+                'data-key': 'brush-range-bubble--1-0',
                 style: bubbleStyle,
               },
-              children: ["-"],
+              children: ['-'],
             },
           ],
         };
@@ -230,25 +230,25 @@ describe("Brush Range", () => {
         expect(bubbleLeft).to.deep.equal(expectedBubbleLeft);
       });
 
-      it("right bubble node correctly", () => {
-        rootBubbleStyle.left = "100px";
+      it('right bubble node correctly', () => {
+        rootBubbleStyle.left = '100px';
         const bubbleRight = rendererOutput[3];
         const expectedBubbleRight = {
-          sel: "div",
+          sel: 'div',
           data: {
             style: rootBubbleStyle,
           },
           children: [
             {
-              sel: "div",
+              sel: 'div',
               data: {
-                "data-other-value": 0,
-                "data-idx": -1,
-                "data-bidx": 1,
-                "data-key": "brush-range-bubble--1-1",
+                'data-other-value': 0,
+                'data-idx': -1,
+                'data-bidx': 1,
+                'data-key': 'brush-range-bubble--1-1',
                 style: bubbleStyle,
               },
-              children: ["-"],
+              children: ['-'],
             },
           ],
         };
@@ -258,14 +258,14 @@ describe("Brush Range", () => {
     });
   });
 
-  describe("linear", () => {
+  describe('linear', () => {
     beforeEach(() => {
       const scale = linearScale();
-      scale.type = "linear";
+      scale.type = 'linear';
       scale.data = () => ({
         fields: [
           {
-            id: () => "foo",
+            id: () => 'foo',
             formatter: () => (v) => v,
           },
         ],
@@ -273,34 +273,34 @@ describe("Brush Range", () => {
       chartMock.scale = sandbox.stub().returns(scale);
     });
 
-    describe("on render", () => {
-      it("should return empty when not observed nor brushed from this component", () => {
+    describe('on render', () => {
+      it('should return empty when not observed nor brushed from this component', () => {
         instance = componentFixture.simulateCreate(brushRange, config);
-        chartMock.brush().setRange("foo", { min: 0, max: 10 });
+        chartMock.brush().setRange('foo', { min: 0, max: 10 });
         componentFixture.simulateRender(size);
         rendererOutput = componentFixture.getRenderOutput();
         expect(rendererOutput.length).to.equal(0);
       });
 
-      it("should return nodes from existing brush when observed", () => {
+      it('should return nodes from existing brush when observed', () => {
         instance = componentFixture.simulateCreate(brushRange, {
           settings: {
-            scale: "a",
-            direction: "horizontal",
+            scale: 'a',
+            direction: 'horizontal',
             target: null,
             brush: {
               observe: true,
             },
           },
         });
-        chartMock.brush().setRange("foo", { min: 0, max: 10 });
+        chartMock.brush().setRange('foo', { min: 0, max: 10 });
         componentFixture.simulateRender(size);
         rendererOutput = componentFixture.getRenderOutput();
         expect(rendererOutput.length).to.equal(1);
       });
     });
 
-    describe("horizontal", () => {
+    describe('horizontal', () => {
       beforeEach(() => {
         instance = componentFixture.simulateCreate(brushRange, config);
         componentFixture.simulateRender(size);
@@ -309,25 +309,25 @@ describe("Brush Range", () => {
         rendererOutput = componentFixture.getRenderOutput();
       });
 
-      it("left edge node correctly", () => {
+      it('left edge node correctly', () => {
         const edgeLeft = rendererOutput[0];
 
         // Work-around to deal with deep equal on objects with functions
-        expect(edgeLeft.data.onmouseover).to.be.a("function");
-        expect(edgeLeft.data.onmouseout).to.be.a("function");
+        expect(edgeLeft.data.onmouseover).to.be.a('function');
+        expect(edgeLeft.data.onmouseout).to.be.a('function');
         delete edgeLeft.data.onmouseover;
         delete edgeLeft.data.onmouseout;
 
         const expectedEdgeLeft = {
-          sel: "div",
+          sel: 'div',
           data: {
-            "data-value": 0,
-            "data-key": "brush-range-edge--1",
+            'data-value': 0,
+            'data-key': 'brush-range-edge--1',
             style: rootEdgeStyle,
           },
           children: [
             {
-              sel: "div",
+              sel: 'div',
               data: {
                 style: edgeStyle,
               },
@@ -338,30 +338,30 @@ describe("Brush Range", () => {
         expect(edgeLeft).to.deep.equal(expectedEdgeLeft);
       });
 
-      it("right edge node correctly", () => {
-        edgeStyle.bottom = "0";
-        edgeStyle.right = "0";
+      it('right edge node correctly', () => {
+        edgeStyle.bottom = '0';
+        edgeStyle.right = '0';
         delete edgeStyle.top;
         delete edgeStyle.left;
-        rootEdgeStyle.left = "95px";
+        rootEdgeStyle.left = '95px';
         const edgeRight = rendererOutput[1];
 
         // Work-around to deal with deep equal on objects with functions
-        expect(edgeRight.data.onmouseover).to.be.a("function");
-        expect(edgeRight.data.onmouseout).to.be.a("function");
+        expect(edgeRight.data.onmouseover).to.be.a('function');
+        expect(edgeRight.data.onmouseout).to.be.a('function');
         delete edgeRight.data.onmouseover;
         delete edgeRight.data.onmouseout;
 
         const expectedEdgeRight = {
-          sel: "div",
+          sel: 'div',
           data: {
-            "data-value": 1,
-            "data-key": "brush-range-edge--1",
+            'data-value': 1,
+            'data-key': 'brush-range-edge--1',
             style: rootEdgeStyle,
           },
           children: [
             {
-              sel: "div",
+              sel: 'div',
               data: {
                 style: edgeStyle,
               },
@@ -372,24 +372,24 @@ describe("Brush Range", () => {
         expect(edgeRight).to.deep.equal(expectedEdgeRight);
       });
 
-      it("left bubble node correctly", () => {
+      it('left bubble node correctly', () => {
         const bubbleLeft = rendererOutput[2];
         const expectedBubbleLeft = {
-          sel: "div",
+          sel: 'div',
           data: {
             style: rootBubbleStyle,
           },
           children: [
             {
-              sel: "div",
+              sel: 'div',
               data: {
-                "data-other-value": 1,
-                "data-idx": -1,
-                "data-bidx": 0,
-                "data-key": "brush-range-bubble--1-0",
+                'data-other-value': 1,
+                'data-idx': -1,
+                'data-bidx': 0,
+                'data-key': 'brush-range-bubble--1-0',
                 style: bubbleStyle,
               },
-              children: ["0"],
+              children: ['0'],
             },
           ],
         };
@@ -397,25 +397,25 @@ describe("Brush Range", () => {
         expect(bubbleLeft).to.deep.equal(expectedBubbleLeft);
       });
 
-      it("right bubble node correctly", () => {
-        rootBubbleStyle.left = "100px";
+      it('right bubble node correctly', () => {
+        rootBubbleStyle.left = '100px';
         const bubbleRight = rendererOutput[3];
         const expectedBubbleRight = {
-          sel: "div",
+          sel: 'div',
           data: {
             style: rootBubbleStyle,
           },
           children: [
             {
-              sel: "div",
+              sel: 'div',
               data: {
-                "data-other-value": 0,
-                "data-idx": -1,
-                "data-bidx": 1,
-                "data-key": "brush-range-bubble--1-1",
+                'data-other-value': 0,
+                'data-idx': -1,
+                'data-bidx': 1,
+                'data-key': 'brush-range-bubble--1-1',
                 style: bubbleStyle,
               },
-              children: ["1"],
+              children: ['1'],
             },
           ],
         };
@@ -424,41 +424,41 @@ describe("Brush Range", () => {
       });
     });
 
-    describe("vertical", () => {
+    describe('vertical', () => {
       beforeEach(() => {
-        config.settings.direction = "vertical";
+        config.settings.direction = 'vertical';
         instance = componentFixture.simulateCreate(brushRange, config);
         componentFixture.simulateRender(size);
         instance.def.start({ center: { x: 0, y: 0 }, deltaX: 0, deltaY: 0 });
         instance.def.move({ center: { x: 0, y: 150 }, deltaX: 0, deltaY: 0 });
         rendererOutput = componentFixture.getRenderOutput();
 
-        edgeStyle.width = "100%";
-        edgeStyle.height = "1px";
+        edgeStyle.width = '100%';
+        edgeStyle.height = '1px';
       });
 
-      it("top edge node correctly", () => {
-        rootEdgeStyle.cursor = "ns-resize";
-        rootEdgeStyle.height = "5px";
-        rootEdgeStyle.width = "100%";
+      it('top edge node correctly', () => {
+        rootEdgeStyle.cursor = 'ns-resize';
+        rootEdgeStyle.height = '5px';
+        rootEdgeStyle.width = '100%';
         const edgeTop = rendererOutput[0];
 
         // Work-around to deal with deep equal on objects with functions
-        expect(edgeTop.data.onmouseover).to.be.a("function");
-        expect(edgeTop.data.onmouseout).to.be.a("function");
+        expect(edgeTop.data.onmouseover).to.be.a('function');
+        expect(edgeTop.data.onmouseout).to.be.a('function');
         delete edgeTop.data.onmouseover;
         delete edgeTop.data.onmouseout;
 
         const expectedEdgeTop = {
-          sel: "div",
+          sel: 'div',
           data: {
-            "data-value": 0,
-            "data-key": "brush-range-edge--1",
+            'data-value': 0,
+            'data-key': 'brush-range-edge--1',
             style: rootEdgeStyle,
           },
           children: [
             {
-              sel: "div",
+              sel: 'div',
               data: {
                 style: edgeStyle,
               },
@@ -469,33 +469,33 @@ describe("Brush Range", () => {
         expect(edgeTop).to.deep.equal(expectedEdgeTop);
       });
 
-      it("bottom edge node correctly", () => {
-        edgeStyle.bottom = "0";
-        edgeStyle.right = "0";
+      it('bottom edge node correctly', () => {
+        edgeStyle.bottom = '0';
+        edgeStyle.right = '0';
         delete edgeStyle.top;
         delete edgeStyle.left;
-        rootEdgeStyle.cursor = "ns-resize";
-        rootEdgeStyle.height = "5px";
-        rootEdgeStyle.width = "100%";
-        rootEdgeStyle.top = "145px";
+        rootEdgeStyle.cursor = 'ns-resize';
+        rootEdgeStyle.height = '5px';
+        rootEdgeStyle.width = '100%';
+        rootEdgeStyle.top = '145px';
         const edgeBottom = rendererOutput[1];
 
         // Work-around to deal with deep equal on objects with functions
-        expect(edgeBottom.data.onmouseover).to.be.a("function");
-        expect(edgeBottom.data.onmouseout).to.be.a("function");
+        expect(edgeBottom.data.onmouseover).to.be.a('function');
+        expect(edgeBottom.data.onmouseout).to.be.a('function');
         delete edgeBottom.data.onmouseover;
         delete edgeBottom.data.onmouseout;
 
         const expectedEdgeBottom = {
-          sel: "div",
+          sel: 'div',
           data: {
-            "data-value": 1,
-            "data-key": "brush-range-edge--1",
+            'data-value': 1,
+            'data-key': 'brush-range-edge--1',
             style: rootEdgeStyle,
           },
           children: [
             {
-              sel: "div",
+              sel: 'div',
               data: {
                 style: edgeStyle,
               },
@@ -506,28 +506,28 @@ describe("Brush Range", () => {
         expect(edgeBottom).to.deep.equal(expectedEdgeBottom);
       });
 
-      it("top bubble node correctly", () => {
-        bubbleStyle.transform = "translate(0,-50%)";
-        bubbleStyle.cursor = "ns-resize";
-        rootBubbleStyle.top = "0px";
-        rootBubbleStyle.left = "0";
+      it('top bubble node correctly', () => {
+        bubbleStyle.transform = 'translate(0,-50%)';
+        bubbleStyle.cursor = 'ns-resize';
+        rootBubbleStyle.top = '0px';
+        rootBubbleStyle.left = '0';
         const bubbleTop = rendererOutput[2];
         const expectedBubbleTop = {
-          sel: "div",
+          sel: 'div',
           data: {
             style: rootBubbleStyle,
           },
           children: [
             {
-              sel: "div",
+              sel: 'div',
               data: {
-                "data-other-value": 1,
-                "data-idx": -1,
-                "data-bidx": 0,
-                "data-key": "brush-range-bubble--1-0",
+                'data-other-value': 1,
+                'data-idx': -1,
+                'data-bidx': 0,
+                'data-key': 'brush-range-bubble--1-0',
                 style: bubbleStyle,
               },
-              children: ["0"],
+              children: ['0'],
             },
           ],
         };
@@ -535,28 +535,28 @@ describe("Brush Range", () => {
         expect(bubbleTop).to.deep.equal(expectedBubbleTop);
       });
 
-      it("bottom bubble node correctly", () => {
-        bubbleStyle.transform = "translate(0,-50%)";
-        bubbleStyle.cursor = "ns-resize";
-        rootBubbleStyle.top = "150px";
-        rootBubbleStyle.left = "0";
+      it('bottom bubble node correctly', () => {
+        bubbleStyle.transform = 'translate(0,-50%)';
+        bubbleStyle.cursor = 'ns-resize';
+        rootBubbleStyle.top = '150px';
+        rootBubbleStyle.left = '0';
         const bubbleBottom = rendererOutput[3];
         const expectedBubbleBottom = {
-          sel: "div",
+          sel: 'div',
           data: {
             style: rootBubbleStyle,
           },
           children: [
             {
-              sel: "div",
+              sel: 'div',
               data: {
-                "data-other-value": 0,
-                "data-idx": -1,
-                "data-bidx": 1,
-                "data-key": "brush-range-bubble--1-1",
+                'data-other-value': 0,
+                'data-idx': -1,
+                'data-bidx': 1,
+                'data-key': 'brush-range-bubble--1-1',
                 style: bubbleStyle,
               },
-              children: ["1"],
+              children: ['1'],
             },
           ],
         };

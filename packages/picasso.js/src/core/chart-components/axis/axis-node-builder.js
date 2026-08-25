@@ -1,13 +1,13 @@
-import buildLine from "./axis-line-node";
-import buildLabel from "./axis-label-node";
-import buildTick from "./axis-tick-node";
-import { testRectRect } from "../../math/narrow-phase-collision";
-import { getClampedValue } from "./axis-label-size";
-import getHorizontalContinuousWidth from "./get-continuous-label-rect";
-import { expandRect } from "../../geometry/util";
-import buildArcLine from "./axis-arc-node";
-import buildArcTicks from "./axis-arc-tick-node";
-import buildArcLabels from "./axis-arc-label-node";
+import buildLine from './axis-line-node';
+import buildLabel from './axis-label-node';
+import buildTick from './axis-tick-node';
+import { testRectRect } from '../../math/narrow-phase-collision';
+import { getClampedValue } from './axis-label-size';
+import getHorizontalContinuousWidth from './get-continuous-label-rect';
+import { expandRect } from '../../geometry/util';
+import buildArcLine from './axis-arc-node';
+import buildArcTicks from './axis-arc-tick-node';
+import buildArcLabels from './axis-arc-label-node';
 
 function tickSpacing(settings) {
   let spacing = 0;
@@ -149,7 +149,7 @@ function discreteCalcMaxTextRect({ textMetrics, settings, innerRect, scale, tilt
   const bandwidth = tickBandwidth(scale, tick);
 
   const textRect = { width: 0, height: h };
-  if (settings.align === "left" || settings.align === "right") {
+  if (settings.align === 'left' || settings.align === 'right') {
     textRect.width = innerRect.width - labelsSpacing(settings) - settings.paddingEnd;
   } else if (layered) {
     textRect.width = bandwidth * innerRect.width * 2;
@@ -184,7 +184,7 @@ function continuousCalcMaxTextRect({
   const h = textMetrics.height;
 
   const textRect = { width: 0, height: h };
-  if (settings.align === "left" || settings.align === "right") {
+  if (settings.align === 'left' || settings.align === 'right') {
     textRect.width = innerRect.width - labelsSpacing(settings) - settings.paddingEnd;
   } else if (tilted) {
     const radians = Math.abs(settings.labels.tiltAngle) * (Math.PI / 180);
@@ -211,7 +211,7 @@ function continuousCalcMaxTextRect({
 }
 
 function getStepSizeFn({ innerRect, scale, settings, tick }) {
-  const size = settings.align === "top" || settings.align === "bottom" ? innerRect.width : innerRect.height;
+  const size = settings.align === 'top' || settings.align === 'bottom' ? innerRect.width : innerRect.height;
   const bandwidth = tickBandwidth(scale, tick);
   return size * bandwidth;
 }
@@ -238,8 +238,8 @@ export default function nodeBuilder(isDiscrete) {
       align: settings.align,
       outerRect,
     };
-    const tilted = state.labels.activeMode === "tilted";
-    const layered = state.labels.activeMode === "layered";
+    const tilted = state.labels.activeMode === 'tilted';
+    const layered = state.labels.activeMode === 'layered';
     let majorTickNodes;
     if (settings.arc) {
       buildOpts.startAngle = settings.arc.startAngle;
@@ -303,7 +303,7 @@ export default function nodeBuilder(isDiscrete) {
       if (settings.arc) {
         buildOpts.padding = arcLabelSpacing(settings);
         labelNodes = arcLabelBuilder(major, buildOpts, resolveTickOpts);
-      } else if (layered && (settings.align === "top" || settings.align === "bottom")) {
+      } else if (layered && (settings.align === 'top' || settings.align === 'bottom')) {
         labelNodes = layeredLabelBuilder(major, buildOpts, settings, resolveTickOpts);
       } else {
         labelNodes = labelBuilder(major, buildOpts, resolveTickOpts);

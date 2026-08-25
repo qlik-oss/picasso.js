@@ -1,9 +1,9 @@
-import extend from "extend";
-import { resolveLineBreakAlgorithm } from "./line-break-resolver";
-import baselineHeuristic from "./baseline-heuristic";
-import { ELLIPSIS_CHAR } from "./text-const";
-import { fontSizeToHeight, fontSizeToLineHeight } from "./font-size-to-height";
-import { includesLineBreak } from "./string-tokenizer";
+import extend from 'extend';
+import { resolveLineBreakAlgorithm } from './line-break-resolver';
+import baselineHeuristic from './baseline-heuristic';
+import { ELLIPSIS_CHAR } from './text-const';
+import { fontSizeToHeight, fontSizeToLineHeight } from './font-size-to-height';
+import { includesLineBreak } from './string-tokenizer';
 
 const heightCache = {};
 const widthCache = {};
@@ -14,7 +14,7 @@ const contextCache = {
 let context;
 
 function setContext() {
-  context = context || document.createElement("canvas").getContext("2d");
+  context = context || document.createElement('canvas').getContext('2d');
 }
 
 function isEqual(s1, s2) {
@@ -29,7 +29,7 @@ function setFont({ fontWeight, fontSize, fontFamily }) {
   ) {
     return;
   }
-  context.font = [fontWeight, fontSize, fontFamily].filter((value) => !!value).join(" ");
+  context.font = [fontWeight, fontSize, fontFamily].filter((value) => !!value).join(' ');
   contextCache.fontWeight = fontWeight;
   contextCache.fontSize = fontSize;
   contextCache.fontFamily = fontFamily;
@@ -37,7 +37,7 @@ function setFont({ fontWeight, fontSize, fontFamily }) {
 
 function measureTextWidth({ text, fontWeight, fontSize, fontFamily }) {
   const key = `${text} ${fontWeight} ${fontSize} ${fontFamily}`;
-  if (typeof widthCache[key] !== "number") {
+  if (typeof widthCache[key] !== 'number') {
     setContext();
     setFont({ fontWeight, fontSize, fontFamily });
     widthCache[key] = context.measureText(text).width;
@@ -47,7 +47,7 @@ function measureTextWidth({ text, fontWeight, fontSize, fontFamily }) {
 }
 
 function measureTextHeight(fontSize) {
-  if (typeof heightCache[fontSize] !== "number") {
+  if (typeof heightCache[fontSize] !== 'number') {
     heightCache[fontSize] = fontSizeToHeight(fontSize);
   }
 
@@ -89,8 +89,8 @@ export function measureText({ text, fontWeight, fontSize, fontFamily }) {
  * @return {object} The bounding rectangle
  */
 function calcTextBounds(attrs, measureFn = measureText) {
-  const fontSize = attrs["font-size"] || attrs.fontSize;
-  const fontFamily = attrs["font-family"] || attrs.fontFamily;
+  const fontSize = attrs['font-size'] || attrs.fontSize;
+  const fontFamily = attrs['font-family'] || attrs.fontFamily;
   const textMeasure = measureFn({ text: attrs.text, fontFamily, fontSize });
   const calWidth = Math.min(attrs.maxWidth || textMeasure.width, textMeasure.width); // Use actual value if max is not set
   const x = attrs.x || 0;
@@ -105,11 +105,11 @@ function calcTextBounds(attrs, measureFn = measureText) {
     height: textMeasure.height,
   };
 
-  const anchor = attrs["text-anchor"] || attrs.anchor;
+  const anchor = attrs['text-anchor'] || attrs.anchor;
 
-  if (anchor === "middle") {
+  if (anchor === 'middle') {
     boundingRect.x = x + dx - calWidth / 2;
-  } else if (anchor === "end") {
+  } else if (anchor === 'end') {
     boundingRect.x = x + dx - calWidth;
   } else {
     boundingRect.x = x + dx;
@@ -142,18 +142,18 @@ function calcTextBounds(attrs, measureFn = measureText) {
  */
 export function textBounds(node, measureFn = measureText) {
   const lineBreakFn = resolveLineBreakAlgorithm(node);
-  const fontSize = node["font-size"] || node.fontSize;
-  const fontFamily = node["font-family"] || node.fontFamily;
+  const fontSize = node['font-size'] || node.fontSize;
+  const fontFamily = node['font-family'] || node.fontFamily;
   const tm = measureFn({ text: node.text, fontFamily, fontSize });
 
   if (lineBreakFn && (tm.width > node.maxWidth || includesLineBreak(node.text))) {
     const resolvedLineBreaks = lineBreakFn(node, (text) => measureFn({ text, fontFamily, fontSize }));
     const nodeCopy = extend({}, node);
     let maxWidth = 0;
-    let widestLine = "";
+    let widestLine = '';
     for (let i = 0, len = resolvedLineBreaks.lines.length; i < len; i++) {
       let line = resolvedLineBreaks.lines[i];
-      line += i === len - 1 && resolvedLineBreaks.reduced ? ELLIPSIS_CHAR : "";
+      line += i === len - 1 && resolvedLineBreaks.reduced ? ELLIPSIS_CHAR : '';
       const width = measureFn({ text: line, fontSize, fontFamily }).width;
       if (width >= maxWidth) {
         maxWidth = width;

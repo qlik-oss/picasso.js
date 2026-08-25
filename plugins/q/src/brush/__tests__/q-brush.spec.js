@@ -1,6 +1,6 @@
-import qBrush, { extractFieldFromId } from "../q-brush";
+import qBrush, { extractFieldFromId } from '../q-brush';
 
-describe("q-brush", () => {
+describe('q-brush', () => {
   let brush;
   let layout;
 
@@ -11,33 +11,33 @@ describe("q-brush", () => {
     };
   });
 
-  it("should return empty when no brushes exist", () => {
+  it('should return empty when no brushes exist', () => {
     brush.brushes.returns([]);
     expect(qBrush(brush).length).to.equal(0);
   });
 
-  it("should reset made selections when brush is active but contain no values", () => {
+  it('should reset made selections when brush is active but contain no values', () => {
     brush.isActive.returns(true);
     brush.brushes.returns([
       {
-        id: "qHyperCube/qDimensionInfo/2",
-        type: "value",
+        id: 'qHyperCube/qDimensionInfo/2',
+        type: 'value',
         brush: {
           values: () => [],
         },
       },
     ]);
     const selections = qBrush(brush);
-    expect(selections[0].method).to.equal("resetMadeSelections");
+    expect(selections[0].method).to.equal('resetMadeSelections');
     expect(selections[0].params).to.eql([]);
   });
 
-  describe("selectHyperCubeValues", () => {
+  describe('selectHyperCubeValues', () => {
     beforeEach(() => {
       brush.brushes.returns([
         {
-          id: "qHyperCube/qDimensionInfo/2",
-          type: "value",
+          id: 'qHyperCube/qDimensionInfo/2',
+          type: 'value',
           brush: {
             values: () => [3, 2, 7],
           },
@@ -47,21 +47,21 @@ describe("q-brush", () => {
 
     it('should have method="selectHyperCubeValues"', () => {
       const selections = qBrush(brush);
-      expect(selections[0].method).to.equal("selectHyperCubeValues");
+      expect(selections[0].method).to.equal('selectHyperCubeValues');
     });
 
-    it("should have valid params", () => {
+    it('should have valid params', () => {
       const selections = qBrush(brush);
-      expect(selections[0].params).to.eql(["/qHyperCubeDef", 2, [3, 2, 7], false]);
+      expect(selections[0].params).to.eql(['/qHyperCubeDef', 2, [3, 2, 7], false]);
     });
   });
 
-  describe("rangeSelectHyperCubeValues", () => {
+  describe('rangeSelectHyperCubeValues', () => {
     beforeEach(() => {
       brush.brushes.returns([
         {
-          id: "/qHyperCube/qMeasureInfo/3",
-          type: "range",
+          id: '/qHyperCube/qMeasureInfo/3',
+          type: 'range',
           brush: {
             ranges: () => [
               { min: 13, max: 17 },
@@ -70,8 +70,8 @@ describe("q-brush", () => {
           },
         },
         {
-          id: "/qHyperCube/qMeasureInfo/1",
-          type: "range",
+          id: '/qHyperCube/qMeasureInfo/1',
+          type: 'range',
           brush: {
             ranges: () => [{ min: -13, max: 6 }],
           },
@@ -81,13 +81,13 @@ describe("q-brush", () => {
 
     it('should have method="rangeSelectHyperCubeValues"', () => {
       const selections = qBrush(brush);
-      expect(selections[0].method).to.equal("rangeSelectHyperCubeValues");
+      expect(selections[0].method).to.equal('rangeSelectHyperCubeValues');
     });
 
-    it("should have valid params if opts = {} ", () => {
+    it('should have valid params if opts = {} ', () => {
       const selections = qBrush(brush);
       expect(selections[0].params).to.eql([
-        "/qHyperCubeDef",
+        '/qHyperCubeDef',
         [
           {
             qMeasureIx: 3,
@@ -122,10 +122,10 @@ describe("q-brush", () => {
       ]);
     });
 
-    it("should have valid params if opts = { orMode: true }", () => {
+    it('should have valid params if opts = { orMode: true }', () => {
       const selections = qBrush(brush, { orMode: true });
       expect(selections[0].params).to.eql([
-        "/qHyperCubeDef",
+        '/qHyperCubeDef',
         [
           {
             qMeasureIx: 3,
@@ -160,10 +160,10 @@ describe("q-brush", () => {
       ]);
     });
 
-    it("should have valid params if opts = { orMode: false }", () => {
+    it('should have valid params if opts = { orMode: false }', () => {
       const selections = qBrush(brush, { orMode: false });
       expect(selections[0].params).to.eql([
-        "/qHyperCubeDef",
+        '/qHyperCubeDef',
         [
           {
             qMeasureIx: 3,
@@ -199,12 +199,12 @@ describe("q-brush", () => {
     });
   });
 
-  describe("selectHyperCubeContinuousRange", () => {
+  describe('selectHyperCubeContinuousRange', () => {
     beforeEach(() => {
       brush.brushes.returns([
         {
-          id: "/qHyperCube/qDimensionInfo/1",
-          type: "range",
+          id: '/qHyperCube/qDimensionInfo/1',
+          type: 'range',
           brush: {
             ranges: () => [
               { min: 11, max: 23 },
@@ -213,8 +213,8 @@ describe("q-brush", () => {
           },
         },
         {
-          id: "/qHyperCube/qDimensionInfo/2",
-          type: "range",
+          id: '/qHyperCube/qDimensionInfo/2',
+          type: 'range',
           brush: {
             ranges: () => [{ min: -3, max: 1 }],
           },
@@ -224,13 +224,13 @@ describe("q-brush", () => {
 
     it('should have method="selectHyperCubeContinuousRange"', () => {
       const selections = qBrush(brush);
-      expect(selections[0].method).to.equal("selectHyperCubeContinuousRange");
+      expect(selections[0].method).to.equal('selectHyperCubeContinuousRange');
     });
 
-    it("should have valid params", () => {
+    it('should have valid params', () => {
       const selections = qBrush(brush);
       expect(selections[0].params).to.eql([
-        "/qHyperCubeDef",
+        '/qHyperCubeDef',
         [
           {
             qDimIx: 1,
@@ -264,19 +264,19 @@ describe("q-brush", () => {
     });
   });
 
-  describe("selectHyperCubeCells", () => {
+  describe('selectHyperCubeCells', () => {
     beforeEach(() => {
       brush.brushes.returns([
         {
-          id: "layers/0/qHyperCube/qDimensionInfo/2",
-          type: "value",
+          id: 'layers/0/qHyperCube/qDimensionInfo/2',
+          type: 'value',
           brush: {
             values: () => [3, 2, 7],
           },
         },
         {
-          id: "/layers/0/qHyperCube/qDimensionInfo/1",
-          type: "value",
+          id: '/layers/0/qHyperCube/qDimensionInfo/1',
+          type: 'value',
           brush: {
             values: () => [1, 6, 4],
           },
@@ -286,33 +286,33 @@ describe("q-brush", () => {
 
     it('should have method="selectHyperCubeCells"', () => {
       const selections = qBrush(brush, { byCells: true });
-      expect(selections[0].method).to.equal("selectHyperCubeCells");
+      expect(selections[0].method).to.equal('selectHyperCubeCells');
     });
 
-    it("should have valid params when primary is not specified", () => {
+    it('should have valid params when primary is not specified', () => {
       const selections = qBrush(brush, { byCells: true });
-      expect(selections[0].params).to.eql(["/layers/0/qHyperCubeDef", [3, 2, 7], [2, 1]]);
+      expect(selections[0].params).to.eql(['/layers/0/qHyperCubeDef', [3, 2, 7], [2, 1]]);
     });
 
-    it("should have valid params when primary is specified", () => {
-      const selections = qBrush(brush, { byCells: true, primarySource: "/layers/0/qHyperCube/qDimensionInfo/1" });
-      expect(selections[0].params).to.eql(["/layers/0/qHyperCubeDef", [1, 6, 4], [2, 1]]);
+    it('should have valid params when primary is specified', () => {
+      const selections = qBrush(brush, { byCells: true, primarySource: '/layers/0/qHyperCube/qDimensionInfo/1' });
+      expect(selections[0].params).to.eql(['/layers/0/qHyperCubeDef', [1, 6, 4], [2, 1]]);
     });
   });
 
-  describe("selectPivotCells", () => {
+  describe('selectPivotCells', () => {
     beforeEach(() => {
       brush.brushes.returns([
         {
-          id: "layers/0/qHyperCube/qDimensionInfo/2",
-          type: "value",
+          id: 'layers/0/qHyperCube/qDimensionInfo/2',
+          type: 'value',
           brush: {
             values: () => [3, 2, 7],
           },
         },
         {
-          id: "/layers/0/qHyperCube/qDimensionInfo/1",
-          type: "value",
+          id: '/layers/0/qHyperCube/qDimensionInfo/1',
+          type: 'value',
           brush: {
             values: () => [1, 6, 4],
           },
@@ -322,325 +322,331 @@ describe("q-brush", () => {
       layout = {
         qHyperCube: {
           qEffectiveInterColumnSortOrder: [],
-          qMode: "T",
+          qMode: 'T',
         },
       };
     });
 
     it('should have method="selectPivotCells"', () => {
       const selections = qBrush(brush, { byCells: true }, layout);
-      expect(selections[0].method).to.equal("selectPivotCells");
+      expect(selections[0].method).to.equal('selectPivotCells');
     });
 
     it('should have method="selectPivotCells" when qMode="K"', () => {
-      layout.qHyperCube.qMode = "K";
+      layout.qHyperCube.qMode = 'K';
 
       const selections = qBrush(brush, { byCells: true }, layout);
-      expect(selections[0].method).to.equal("selectPivotCells");
+      expect(selections[0].method).to.equal('selectPivotCells');
     });
 
     it('should have method="selectPivotCells" when qMode="P"', () => {
-      layout.qHyperCube.qMode = "P";
+      layout.qHyperCube.qMode = 'P';
 
       const selections = qBrush(brush, { byCells: true }, layout);
-      expect(selections[0].method).to.equal("selectPivotCells");
+      expect(selections[0].method).to.equal('selectPivotCells');
     });
 
-    it("should have valid params when primary is not specified", () => {
+    it('should have valid params when primary is not specified', () => {
       layout.qHyperCube.qNoOfLeftDims = 1;
       layout.qHyperCube.qEffectiveInterColumnSortOrder.push(2);
 
       const selections = qBrush(brush, { byCells: true }, layout);
       expect(selections[0].params).to.eql([
-        "/layers/0/qHyperCubeDef",
+        '/layers/0/qHyperCubeDef',
         [
           {
             qCol: 2,
             qRow: 3,
-            qType: "L",
+            qType: 'L',
           },
           {
             qCol: 2,
             qRow: 2,
-            qType: "L",
+            qType: 'L',
           },
           {
             qCol: 2,
             qRow: 7,
-            qType: "L",
+            qType: 'L',
           },
           {
             qCol: 1,
             qRow: 1,
-            qType: "L",
+            qType: 'L',
           },
           {
             qCol: 1,
             qRow: 6,
-            qType: "L",
+            qType: 'L',
           },
           {
             qCol: 1,
             qRow: 4,
-            qType: "L",
+            qType: 'L',
           },
         ],
       ]);
     });
 
-    it("should have valid params when primary is specified", () => {
+    it('should have valid params when primary is specified', () => {
       layout.qHyperCube.qNoOfLeftDims = 1;
       layout.qHyperCube.qEffectiveInterColumnSortOrder.push(1);
 
       const selections = qBrush(
         brush,
-        { byCells: true, primarySource: "/layers/0/qHyperCube/qDimensionInfo/1" },
-        layout,
+        { byCells: true, primarySource: '/layers/0/qHyperCube/qDimensionInfo/1' },
+        layout
       );
       expect(selections[0].params).to.eql([
-        "/layers/0/qHyperCubeDef",
+        '/layers/0/qHyperCubeDef',
         [
           {
             qCol: 1,
             qRow: 1,
-            qType: "L",
+            qType: 'L',
           },
           {
             qCol: 1,
             qRow: 6,
-            qType: "L",
+            qType: 'L',
           },
           {
             qCol: 1,
             qRow: 4,
-            qType: "L",
+            qType: 'L',
           },
         ],
       ]);
     });
 
-    it("should get top dimension", () => {
+    it('should get top dimension', () => {
       layout.qHyperCube.qNoOfLeftDims = 0;
       layout.qHyperCube.qEffectiveInterColumnSortOrder.push(1);
 
       const selections = qBrush(
         brush,
-        { byCells: true, primarySource: "/layers/0/qHyperCube/qDimensionInfo/1" },
-        layout,
+        { byCells: true, primarySource: '/layers/0/qHyperCube/qDimensionInfo/1' },
+        layout
       );
       expect(selections[0].params).to.eql([
-        "/layers/0/qHyperCubeDef",
+        '/layers/0/qHyperCubeDef',
         [
           {
             qCol: 1,
             qRow: 0,
-            qType: "T",
+            qType: 'T',
           },
           {
             qCol: 6,
             qRow: 0,
-            qType: "T",
+            qType: 'T',
           },
           {
             qCol: 4,
             qRow: 0,
-            qType: "T",
+            qType: 'T',
           },
         ],
       ]);
     });
 
-    it("should get left dimensions, when qNoOfLeftDims = -1", () => {
+    it('should get left dimensions, when qNoOfLeftDims = -1', () => {
       layout.qHyperCube.qNoOfLeftDims = -1;
 
       const selections = qBrush(brush, { byCells: true }, layout);
       expect(selections[0].params).to.eql([
-        "/layers/0/qHyperCubeDef",
+        '/layers/0/qHyperCubeDef',
         [
           {
             qCol: 2,
             qRow: 3,
-            qType: "L",
+            qType: 'L',
           },
           {
             qCol: 2,
             qRow: 2,
-            qType: "L",
+            qType: 'L',
           },
           {
             qCol: 2,
             qRow: 7,
-            qType: "L",
+            qType: 'L',
           },
           {
             qCol: 1,
             qRow: 1,
-            qType: "L",
+            qType: 'L',
           },
           {
             qCol: 1,
             qRow: 6,
-            qType: "L",
+            qType: 'L',
           },
           {
             qCol: 1,
             qRow: 4,
-            qType: "L",
+            qType: 'L',
           },
         ],
       ]);
     });
 
-    it("should do selectHyperCubeCells if qMode: S and byCells: true", () => {
-      layout.qHyperCube.qMode = "S";
+    it('should do selectHyperCubeCells if qMode: S and byCells: true', () => {
+      layout.qHyperCube.qMode = 'S';
 
       const selections = qBrush(brush, { byCells: true }, layout);
-      expect(selections[0].params).to.eql(["/layers/0/qHyperCubeDef", [3, 2, 7], [2, 1]]);
+      expect(selections[0].params).to.eql(['/layers/0/qHyperCubeDef', [3, 2, 7], [2, 1]]);
     });
   });
 
-  describe("path extraction", () => {
-    it("should map hypercube layout value to property path", () => {
-      let v = extractFieldFromId("/qHyperCube");
-      expect(v.path).to.equal("/qHyperCubeDef");
+  describe('path extraction', () => {
+    it('should map hypercube layout value to property path', () => {
+      let v = extractFieldFromId('/qHyperCube');
+      expect(v.path).to.equal('/qHyperCubeDef');
     });
 
-    it("should map dimension layout value to params", () => {
-      let v = extractFieldFromId("/qHyperCube/qDimensionInfo/3");
+    it('should map dimension layout value to params', () => {
+      let v = extractFieldFromId('/qHyperCube/qDimensionInfo/3');
       expect(v).to.eql({
-        path: "/qHyperCubeDef",
+        path: '/qHyperCubeDef',
         dimensionIdx: 3,
         measureIdx: -1,
       });
     });
 
-    it("should map measure layout value to params", () => {
-      let v = extractFieldFromId("/qHyperCube/qMeasureInfo/2");
+    it('should map measure layout value to params', () => {
+      let v = extractFieldFromId('/qHyperCube/qMeasureInfo/2');
       expect(v).to.eql({
-        path: "/qHyperCubeDef",
+        path: '/qHyperCubeDef',
         dimensionIdx: -1,
         measureIdx: 2,
       });
     });
 
-    it("should map attribute dimension layout value to params (on dimension)", () => {
-      let v = extractFieldFromId("/qHyperCube/qDimensionInfo/2/qAttrDimInfo/5");
+    it('should map attribute dimension layout value to params (on dimension)', () => {
+      let v = extractFieldFromId('/qHyperCube/qDimensionInfo/2/qAttrDimInfo/5');
       expect(v).to.eql({
-        path: "/qHyperCubeDef/qDimensions/2/qAttributeDimensions/5",
+        path: '/qHyperCubeDef/qDimensions/2/qAttributeDimensions/5',
         dimensionIdx: 0,
         measureIdx: -1,
       });
     });
 
-    it("should map attribute dimension column layout value to params (on dimension)", () => {
-      let v = extractFieldFromId("/qHyperCube/qDimensionInfo/2/qAttrDimInfo/5/3");
+    it('should map attribute dimension column layout value to params (on dimension)', () => {
+      let v = extractFieldFromId('/qHyperCube/qDimensionInfo/2/qAttrDimInfo/5/3');
       expect(v).to.eql({
-        path: "/qHyperCubeDef/qDimensions/2/qAttributeDimensions/5",
+        path: '/qHyperCubeDef/qDimensions/2/qAttributeDimensions/5',
         dimensionIdx: 3,
         measureIdx: -1,
       });
     });
 
-    it("should map attribute dimension layout value to params (on measure)", () => {
-      let v = extractFieldFromId("/qHyperCube/qMeasureInfo/2/qAttrDimInfo/4");
+    it('should map attribute dimension layout value to params (on measure)', () => {
+      let v = extractFieldFromId('/qHyperCube/qMeasureInfo/2/qAttrDimInfo/4');
       expect(v).to.eql({
-        path: "/qHyperCubeDef/qMeasures/2/qAttributeDimensions/4",
+        path: '/qHyperCubeDef/qMeasures/2/qAttributeDimensions/4',
         dimensionIdx: 0,
         measureIdx: -1,
       });
     });
 
-    it("should map attribute dimension column layout value to params (on measure)", () => {
-      let v = extractFieldFromId("qHyperCube/qMeasureInfo/2/qAttrDimInfo/4/3");
+    it('should map attribute dimension column layout value to params (on measure)', () => {
+      let v = extractFieldFromId('qHyperCube/qMeasureInfo/2/qAttrDimInfo/4/3');
       expect(v).to.eql({
-        path: "/qHyperCubeDef/qMeasures/2/qAttributeDimensions/4",
+        path: '/qHyperCubeDef/qMeasures/2/qAttributeDimensions/4',
         dimensionIdx: 3,
         measureIdx: -1,
       });
     });
 
-    it("should map attribute expression layout value to params (on measure)", () => {
-      let v = extractFieldFromId("/qHyperCube/qMeasureInfo/1/qAttrExprInfo/1", {
+    it('should map attribute expression layout value to params (on measure)', () => {
+      let v = extractFieldFromId('/qHyperCube/qMeasureInfo/1/qAttrExprInfo/1', {
         qHyperCube: {
           qDimensionInfo: [{ qAttrExprInfo: [{}, {}] }],
           qMeasureInfo: [{ qAttrExprInfo: [{}, {}] }, { qAttrExprInfo: [{}, {}, {}] }],
         },
       });
       expect(v).to.eql({
-        path: "/qHyperCubeDef",
+        path: '/qHyperCubeDef',
         dimensionIdx: -1,
         measureIdx: 7,
       });
     });
 
-    it("should map attribute expression layout value to params (on measure) - without layout", () => {
-      let v = extractFieldFromId("/qHyperCube/qMeasureInfo/1/qAttrExprInfo/1");
+    it('should map attribute expression layout value to params (on measure) - without layout', () => {
+      let v = extractFieldFromId('/qHyperCube/qMeasureInfo/1/qAttrExprInfo/1');
       expect(v).to.eql({
-        path: "/qHyperCubeDef",
+        path: '/qHyperCubeDef',
         measureIdx: 3,
         dimensionIdx: -1,
       });
     });
 
-    it("should map attribute expression layout value to params (on dimension)", () => {
-      let v = extractFieldFromId("/qHyperCube/qDimensionInfo/1/qAttrExprInfo/1", {
+    it('should map attribute expression layout value to params (on dimension)', () => {
+      let v = extractFieldFromId('/qHyperCube/qDimensionInfo/1/qAttrExprInfo/1', {
         qHyperCube: {
           qDimensionInfo: [{ qAttrExprInfo: [{}, {}] }, { qAttrExprInfo: [{}, {}, {}] }],
           qMeasureInfo: [{}, {}, {}],
         },
       });
       expect(v).to.eql({
-        path: "/qHyperCubeDef",
+        path: '/qHyperCubeDef',
         measureIdx: 6,
         dimensionIdx: -1,
       });
     });
 
-    it("should map attribute expression layout value to params (on dimension) - without layout", () => {
-      let v = extractFieldFromId("/qHyperCube/qDimensionInfo/1/qAttrExprInfo/1");
+    it('should map attribute expression layout value to params (on dimension) - without layout', () => {
+      let v = extractFieldFromId('/qHyperCube/qDimensionInfo/1/qAttrExprInfo/1');
       expect(v).to.eql({
-        path: "/qHyperCubeDef",
+        path: '/qHyperCubeDef',
         measureIdx: 1,
         dimensionIdx: -1,
       });
     });
 
-    it("should map measure layout value on dimension to params", () => {
-      let v = extractFieldFromId("/qTreeData/qDimensionInfo/3/qMeasureInfo/2");
+    it('should map measure layout value on dimension to params', () => {
+      let v = extractFieldFromId('/qTreeData/qDimensionInfo/3/qMeasureInfo/2');
       expect(v).to.eql({
-        path: "/qTreeDataDef",
+        path: '/qTreeDataDef',
         dimensionIdx: 3,
         measureIdx: 2,
       });
     });
 
     // TODO - figure out how this hould work
-    it.skip("should map attribute expression layout value to params (on dimension)", () => {
-      let v = extractFieldFromId("/qTreeData/qDimensionInfo/1/qAttrExprInfo/1", {
+    it.skip('should map attribute expression layout value to params (on dimension)', () => {
+      let v = extractFieldFromId('/qTreeData/qDimensionInfo/1/qAttrExprInfo/1', {
         qTreeData: {
           qDimensionInfo: [
             { qMeasureInfo: [{}, { qAttrExprInfo: [{}, {}] }], qAttrExprInfo: [{}, {}] },
             {
               qMeasureInfo: [],
-              qAttrExprInfo: [{}, {/* target */}, {}],
+              qAttrExprInfo: [
+                {},
+                {
+                  /* target */
+                },
+                {},
+              ],
             },
           ],
         },
       });
       expect(v).to.eql({
-        path: "/qTreeDataDef",
+        path: '/qTreeDataDef',
         measureIdx: 6,
         dimensionIdx: -1,
       });
     });
   });
 
-  describe("multiRangeSelectTreeDataValues", () => {
+  describe('multiRangeSelectTreeDataValues', () => {
     beforeEach(() => {
       brush.brushes.returns([
         {
-          id: "/qTreeData/qDimensionInfo/1/qMeasureInfo/2",
-          type: "range",
+          id: '/qTreeData/qDimensionInfo/1/qMeasureInfo/2',
+          type: 'range',
           brush: {
             ranges: () => [
               { min: 13, max: 17 },
@@ -649,8 +655,8 @@ describe("q-brush", () => {
           },
         },
         {
-          id: "/qTreeData/qDimensionInfo/2/qMeasureInfo/1",
-          type: "range",
+          id: '/qTreeData/qDimensionInfo/2/qMeasureInfo/1',
+          type: 'range',
           brush: {
             ranges: () => [{ min: -13, max: 6 }],
           },
@@ -660,13 +666,13 @@ describe("q-brush", () => {
 
     it('should have method="multiRangeSelectTreeDataValues"', () => {
       const selections = qBrush(brush);
-      expect(selections[0].method).to.equal("multiRangeSelectTreeDataValues");
+      expect(selections[0].method).to.equal('multiRangeSelectTreeDataValues');
     });
 
-    it("should have valid params", () => {
+    it('should have valid params', () => {
       const selections = qBrush(brush);
       expect(selections[0].params).to.eql([
-        "/qTreeDataDef",
+        '/qTreeDataDef',
         [
           {
             qMeasureIx: 2,

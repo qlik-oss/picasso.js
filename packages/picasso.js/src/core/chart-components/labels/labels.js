@@ -1,4 +1,4 @@
-import strategies from "./strategies";
+import strategies from './strategies';
 
 /**
  * @typedef {object} ComponentLabels
@@ -71,11 +71,11 @@ export function strategy({ chart, source, rect, renderer, style }, fn) {
 }
 
 const labelsComponent = {
-  require: ["chart", "renderer", "settings"],
+  require: ['chart', 'renderer', 'settings'],
   defaultSettings: {
     settings: {},
     style: {
-      label: "$label",
+      label: '$label',
     },
   },
   render() {
@@ -93,8 +93,8 @@ const labelsComponent = {
               source,
               style: this.style,
             },
-            strategies[source.strategy.type],
-          ),
+            strategies[source.strategy.type]
+          )
         );
       }
     });

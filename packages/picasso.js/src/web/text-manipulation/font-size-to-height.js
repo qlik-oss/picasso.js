@@ -7,7 +7,7 @@ const TEXT_REGEX = /^\s*\d+(\.\d+)?px\s*$/i;
 
 function isValidFontSize(val) {
   const type = typeof val;
-  if (type === "string") {
+  if (type === 'string') {
     return TEXT_REGEX.test(val);
   }
 
@@ -26,7 +26,7 @@ export function fontSizeToHeight(fontSize) {
 }
 
 export function fontSizeToLineHeight(node) {
-  const fontSize = node["font-size"] || node.fontSize;
+  const fontSize = node['font-size'] || node.fontSize;
   if (isValidFontSize(fontSize)) {
     return parseFloat(fontSize) * Math.max(isNaN(node.lineHeight) ? DEFAULT_LINE_HEIGHT : node.lineHeight, 0);
   }

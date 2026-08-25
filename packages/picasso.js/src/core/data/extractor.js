@@ -1,4 +1,4 @@
-import stack from "./stack";
+import stack from './stack';
 
 export default function extract(dataConfig, data = {}, opts = {}) {
   let extracted = {
@@ -18,7 +18,7 @@ export default function extract(dataConfig, data = {}, opts = {}) {
     // if data is an array, assume it's manual data input -> normalize
     extracted.items = dataConfig.map((v) => ({ value: v, label: String(v) }));
   } else if (dataConfig) {
-    if ("collection" in dataConfig) {
+    if ('collection' in dataConfig) {
       extracted = { ...data.collection(dataConfig.collection) };
     } else {
       const source = data.dataset ? data.dataset(dataConfig.source) : null;
@@ -45,7 +45,7 @@ export default function extract(dataConfig, data = {}, opts = {}) {
             return;
           }
           extracted.items = [...extracted.items, ...s.extract(cfg)];
-          if (typeof cfg.field !== "undefined") {
+          if (typeof cfg.field !== 'undefined') {
             sourceFields.push(s.field(cfg.field));
           }
         });
@@ -55,14 +55,14 @@ export default function extract(dataConfig, data = {}, opts = {}) {
         if (dataConfig.amend && Array.isArray(dataConfig.amend)) {
           extracted.items = [...extracted.items, ...dataConfig.amend];
         }
-      } else if (typeof dataConfig.field !== "undefined" && source) {
+      } else if (typeof dataConfig.field !== 'undefined' && source) {
         const f = source.field(dataConfig.field);
         if (f) {
           if (!extracted.fields) {
             extracted.fields = [];
           }
           extracted.fields.push(f);
-          if (!("value" in dataConfig)) {
+          if (!('value' in dataConfig)) {
             valueFn = f.value || ((v) => v);
             labelFn = f.label || ((v) => v);
             extracted.value = valueFn;
@@ -74,12 +74,12 @@ export default function extract(dataConfig, data = {}, opts = {}) {
         }
       } else if (dataConfig.fields) {
         dataConfig.fields.forEach((obj) => {
-          const s = typeof obj === "object" && obj.source ? data.dataset(obj.source) : source;
+          const s = typeof obj === 'object' && obj.source ? data.dataset(obj.source) : source;
           if (!s) {
             return;
           }
           let f;
-          if (typeof obj === "object" && typeof obj.field !== "undefined") {
+          if (typeof obj === 'object' && typeof obj.field !== 'undefined') {
             f = s.field(obj.field);
           } else {
             f = s.field(obj);
@@ -109,10 +109,10 @@ export default function extract(dataConfig, data = {}, opts = {}) {
       }
     }
   }
-  if (dataConfig && !Array.isArray(dataConfig) && typeof dataConfig.filter === "function" && extracted.items) {
+  if (dataConfig && !Array.isArray(dataConfig) && typeof dataConfig.filter === 'function' && extracted.items) {
     extracted.items = extracted.items.filter(dataConfig.filter);
   }
-  if (dataConfig && !Array.isArray(dataConfig) && typeof dataConfig.sort === "function" && extracted.items) {
+  if (dataConfig && !Array.isArray(dataConfig) && typeof dataConfig.sort === 'function' && extracted.items) {
     extracted.items = extracted.items.sort(dataConfig.sort);
   }
   return extracted;

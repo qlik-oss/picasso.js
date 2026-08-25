@@ -19,13 +19,13 @@ export default function polylineToPolygonCollider(points, radius, opts = {}) {
 
   // TODO handle case if points.length === 2
 
-  if (opts.forceOrientation === "h") {
+  if (opts.forceOrientation === 'h') {
     const start = points[0].x < points[1].x ? -1 : 1;
     const end = points[points.length - 1].x > points[points.length - 2].x ? 1 : -1;
 
     points.unshift({ x: points[0].x + start, y: points[0].y });
     points.push({ x: points[points.length - 1].x + end, y: points[points.length - 1].y });
-  } else if (opts.forceOrientation === "v") {
+  } else if (opts.forceOrientation === 'v') {
     const start = points[0].y < points[1].y ? -1 : 1;
     const end = points[points.length - 1].y > points[points.length - 2].y ? 1 : -1;
 
@@ -66,7 +66,7 @@ export default function polylineToPolygonCollider(points, radius, opts = {}) {
   }
 
   return {
-    type: "polygon",
+    type: 'polygon',
     vertices: [...open, ...close],
   };
 }

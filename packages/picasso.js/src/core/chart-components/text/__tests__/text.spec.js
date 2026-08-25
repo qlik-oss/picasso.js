@@ -1,6 +1,6 @@
-import componentFactoryFixture from "../../../../../test/helpers/component-factory-fixture";
-import textComponent from "../text";
-import band from "../../../scales/band";
+import componentFactoryFixture from '../../../../../test/helpers/component-factory-fixture';
+import textComponent from '../text';
+import band from '../../../scales/band';
 
 function assertNodeProperties(node, expected) {
   Object.keys(expected).forEach((key) => {
@@ -8,7 +8,7 @@ function assertNodeProperties(node, expected) {
   });
 }
 
-describe("Text component", () => {
+describe('Text component', () => {
   let config;
   let scale = band();
   let componentFixture;
@@ -41,20 +41,20 @@ describe("Text component", () => {
     theme = componentFixture.mocks().theme;
     theme.style.returns({
       text: {
-        fontFamily: "Arial",
-        fontSize: "15px",
-        stroke: "transparent",
+        fontFamily: 'Arial',
+        fontSize: '15px',
+        stroke: 'transparent',
         strokeWidth: 0,
-        fontWeight: "normal",
+        fontWeight: 'normal',
       },
     });
 
     scale.data = () => ({
-      fields: [{ title: () => "fakeTitle", formatter: () => undefined }],
+      fields: [{ title: () => 'fakeTitle', formatter: () => undefined }],
     });
 
     config = {
-      text: "Testing",
+      text: 'Testing',
       layout: {},
       settings: {},
     };
@@ -75,14 +75,14 @@ describe("Text component", () => {
     };
   });
 
-  describe("Dock", () => {
-    describe("Left", () => {
+  describe('Dock', () => {
+    describe('Left', () => {
       beforeEach(() => {
-        config.layout.dock = "left";
+        config.layout.dock = 'left';
       });
 
-      describe("Anchor", () => {
-        it("default", () => {
+      describe('Anchor', () => {
+        it('default', () => {
           const node = simulateRender();
 
           const expected = {
@@ -90,15 +90,15 @@ describe("Text component", () => {
             y: 50,
             dx: -1.6666666666666667,
             dy: 0,
-            anchor: "middle",
-            transform: "rotate(270, 93.33333333333333, 50)",
+            anchor: 'middle',
+            transform: 'rotate(270, 93.33333333333333, 50)',
           };
 
           assertNodeProperties(node, expected);
         });
 
-        it("center", () => {
-          config.settings.anchor = "center";
+        it('center', () => {
+          config.settings.anchor = 'center';
           const node = simulateRender();
 
           const expected = {
@@ -106,15 +106,15 @@ describe("Text component", () => {
             y: 50,
             dx: -1.6666666666666667,
             dy: 0,
-            anchor: "middle",
-            transform: "rotate(270, 93.33333333333333, 50)",
+            anchor: 'middle',
+            transform: 'rotate(270, 93.33333333333333, 50)',
           };
 
           assertNodeProperties(node, expected);
         });
 
-        it("top", () => {
-          config.settings.anchor = "top";
+        it('top', () => {
+          config.settings.anchor = 'top';
           const node = simulateRender();
 
           const expected = {
@@ -122,15 +122,15 @@ describe("Text component", () => {
             y: 5,
             dx: -1.6666666666666667,
             dy: 0,
-            anchor: "end",
-            transform: "rotate(270, 93.33333333333333, 5)",
+            anchor: 'end',
+            transform: 'rotate(270, 93.33333333333333, 5)',
           };
 
           assertNodeProperties(node, expected);
         });
 
-        it("bottom", () => {
-          config.settings.anchor = "bottom";
+        it('bottom', () => {
+          config.settings.anchor = 'bottom';
           const node = simulateRender();
 
           const expected = {
@@ -138,16 +138,16 @@ describe("Text component", () => {
             y: 95,
             dx: -1.6666666666666667,
             dy: 0,
-            anchor: "start",
-            transform: "rotate(270, 93.33333333333333, 95)",
+            anchor: 'start',
+            transform: 'rotate(270, 93.33333333333333, 95)',
           };
 
           assertNodeProperties(node, expected);
         });
       });
 
-      describe("Padding", () => {
-        it("start", () => {
+      describe('Padding', () => {
+        it('start', () => {
           config.settings.paddingStart = 10;
           const node = simulateRender();
 
@@ -156,14 +156,14 @@ describe("Text component", () => {
             y: 50,
             dx: -1.6666666666666667,
             dy: 0,
-            anchor: "middle",
-            transform: "rotate(270, 88.33333333333333, 50)",
+            anchor: 'middle',
+            transform: 'rotate(270, 88.33333333333333, 50)',
           };
 
           assertNodeProperties(node, expected);
         });
 
-        it("end", () => {
+        it('end', () => {
           config.settings.paddingEnd = 10;
           const node = simulateRender();
 
@@ -172,8 +172,8 @@ describe("Text component", () => {
             y: 50,
             dx: -1.6666666666666667,
             dy: 0,
-            anchor: "middle",
-            transform: "rotate(270, 93.33333333333333, 50)",
+            anchor: 'middle',
+            transform: 'rotate(270, 93.33333333333333, 50)',
           };
 
           assertNodeProperties(node, expected);
@@ -181,13 +181,13 @@ describe("Text component", () => {
       });
     });
 
-    describe("Right", () => {
+    describe('Right', () => {
       beforeEach(() => {
-        config.layout.dock = "right";
+        config.layout.dock = 'right';
       });
 
-      describe("Anchor", () => {
-        it("default", () => {
+      describe('Anchor', () => {
+        it('default', () => {
           const node = simulateRender();
 
           const expected = {
@@ -195,15 +195,15 @@ describe("Text component", () => {
             y: 50,
             dx: 1.6666666666666667,
             dy: 0,
-            anchor: "middle",
-            transform: "rotate(90, 6.666666666666667, 50)",
+            anchor: 'middle',
+            transform: 'rotate(90, 6.666666666666667, 50)',
           };
 
           assertNodeProperties(node, expected);
         });
 
-        it("center", () => {
-          config.settings.anchor = "center";
+        it('center', () => {
+          config.settings.anchor = 'center';
           const node = simulateRender();
 
           const expected = {
@@ -211,15 +211,15 @@ describe("Text component", () => {
             y: 50,
             dx: 1.6666666666666667,
             dy: 0,
-            anchor: "middle",
-            transform: "rotate(90, 6.666666666666667, 50)",
+            anchor: 'middle',
+            transform: 'rotate(90, 6.666666666666667, 50)',
           };
 
           assertNodeProperties(node, expected);
         });
 
-        it("top", () => {
-          config.settings.anchor = "top";
+        it('top', () => {
+          config.settings.anchor = 'top';
           const node = simulateRender();
 
           const expected = {
@@ -227,15 +227,15 @@ describe("Text component", () => {
             y: 5,
             dx: 1.6666666666666667,
             dy: 0,
-            anchor: "start",
-            transform: "rotate(90, 6.666666666666667, 5)",
+            anchor: 'start',
+            transform: 'rotate(90, 6.666666666666667, 5)',
           };
 
           assertNodeProperties(node, expected);
         });
 
-        it("bottom", () => {
-          config.settings.anchor = "bottom";
+        it('bottom', () => {
+          config.settings.anchor = 'bottom';
           const node = simulateRender();
 
           const expected = {
@@ -243,16 +243,16 @@ describe("Text component", () => {
             y: 95,
             dx: 1.6666666666666667,
             dy: 0,
-            anchor: "end",
-            transform: "rotate(90, 6.666666666666667, 95)",
+            anchor: 'end',
+            transform: 'rotate(90, 6.666666666666667, 95)',
           };
 
           assertNodeProperties(node, expected);
         });
       });
 
-      describe("Padding", () => {
-        it("start", () => {
+      describe('Padding', () => {
+        it('start', () => {
           config.settings.paddingStart = 10;
           const node = simulateRender();
 
@@ -261,14 +261,14 @@ describe("Text component", () => {
             y: 50,
             dx: 1.6666666666666667,
             dy: 0,
-            anchor: "middle",
-            transform: "rotate(90, 11.666666666666666, 50)",
+            anchor: 'middle',
+            transform: 'rotate(90, 11.666666666666666, 50)',
           };
 
           assertNodeProperties(node, expected);
         });
 
-        it("end", () => {
+        it('end', () => {
           config.settings.paddingEnd = 10;
           const node = simulateRender();
 
@@ -277,8 +277,8 @@ describe("Text component", () => {
             y: 50,
             dx: 1.6666666666666667,
             dy: 0,
-            anchor: "middle",
-            transform: "rotate(90, 6.666666666666667, 50)",
+            anchor: 'middle',
+            transform: 'rotate(90, 6.666666666666667, 50)',
           };
 
           assertNodeProperties(node, expected);
@@ -286,13 +286,13 @@ describe("Text component", () => {
       });
     });
 
-    describe("Top", () => {
+    describe('Top', () => {
       beforeEach(() => {
-        config.layout.dock = "top";
+        config.layout.dock = 'top';
       });
 
-      describe("Anchor", () => {
-        it("default", () => {
+      describe('Anchor', () => {
+        it('default', () => {
           const node = simulateRender();
 
           const expected = {
@@ -300,14 +300,14 @@ describe("Text component", () => {
             y: 95,
             dx: 0,
             dy: -0.8333333333333334,
-            anchor: "middle",
+            anchor: 'middle',
           };
 
           assertNodeProperties(node, expected);
         });
 
-        it("center", () => {
-          config.settings.anchor = "center";
+        it('center', () => {
+          config.settings.anchor = 'center';
           const node = simulateRender();
 
           const expected = {
@@ -315,14 +315,14 @@ describe("Text component", () => {
             y: 95,
             dx: 0,
             dy: -0.8333333333333334,
-            anchor: "middle",
+            anchor: 'middle',
           };
 
           assertNodeProperties(node, expected);
         });
 
-        it("left", () => {
-          config.settings.anchor = "left";
+        it('left', () => {
+          config.settings.anchor = 'left';
           const node = simulateRender();
 
           const expected = {
@@ -330,14 +330,14 @@ describe("Text component", () => {
             y: 95,
             dx: 0,
             dy: -0.8333333333333334,
-            anchor: "start",
+            anchor: 'start',
           };
 
           assertNodeProperties(node, expected);
         });
 
-        it("right", () => {
-          config.settings.anchor = "right";
+        it('right', () => {
+          config.settings.anchor = 'right';
           const node = simulateRender();
 
           const expected = {
@@ -345,15 +345,15 @@ describe("Text component", () => {
             y: 95,
             dx: 0,
             dy: -0.8333333333333334,
-            anchor: "end",
+            anchor: 'end',
           };
 
           assertNodeProperties(node, expected);
         });
       });
 
-      describe("Padding", () => {
-        it("start", () => {
+      describe('Padding', () => {
+        it('start', () => {
           config.settings.paddingStart = 10;
           const node = simulateRender();
 
@@ -362,13 +362,13 @@ describe("Text component", () => {
             y: 90,
             dx: 0,
             dy: -0.8333333333333334,
-            anchor: "middle",
+            anchor: 'middle',
           };
 
           assertNodeProperties(node, expected);
         });
 
-        it("end", () => {
+        it('end', () => {
           config.settings.paddingEnd = 10;
           const node = simulateRender();
 
@@ -377,15 +377,15 @@ describe("Text component", () => {
             y: 95,
             dx: 0,
             dy: -0.8333333333333334,
-            anchor: "middle",
+            anchor: 'middle',
           };
 
           assertNodeProperties(node, expected);
         });
 
-        it("left", () => {
+        it('left', () => {
           config.settings.paddingLeft = 10;
-          config.settings.anchor = "left";
+          config.settings.anchor = 'left';
           const node = simulateRender();
 
           const expected = {
@@ -393,15 +393,15 @@ describe("Text component", () => {
             y: 95,
             dx: 0,
             dy: -0.8333333333333334,
-            anchor: "start",
+            anchor: 'start',
           };
 
           assertNodeProperties(node, expected);
         });
 
-        it("right", () => {
+        it('right', () => {
           config.settings.paddingRight = 10;
-          config.settings.anchor = "right";
+          config.settings.anchor = 'right';
           const node = simulateRender();
 
           const expected = {
@@ -409,7 +409,7 @@ describe("Text component", () => {
             y: 95,
             dx: 0,
             dy: -0.8333333333333334,
-            anchor: "end",
+            anchor: 'end',
           };
 
           assertNodeProperties(node, expected);
@@ -417,13 +417,13 @@ describe("Text component", () => {
       });
     });
 
-    describe("Bottom", () => {
+    describe('Bottom', () => {
       beforeEach(() => {
-        config.layout.dock = "bottom";
+        config.layout.dock = 'bottom';
       });
 
-      describe("Anchor", () => {
-        it("default", () => {
+      describe('Anchor', () => {
+        it('default', () => {
           const node = simulateRender();
 
           const expected = {
@@ -431,14 +431,14 @@ describe("Text component", () => {
             y: 10,
             dx: 0,
             dy: -1.6666666666666667,
-            anchor: "middle",
+            anchor: 'middle',
           };
 
           assertNodeProperties(node, expected);
         });
 
-        it("center", () => {
-          config.settings.anchor = "center";
+        it('center', () => {
+          config.settings.anchor = 'center';
           const node = simulateRender();
 
           const expected = {
@@ -446,14 +446,14 @@ describe("Text component", () => {
             y: 10,
             dx: 0,
             dy: -1.6666666666666667,
-            anchor: "middle",
+            anchor: 'middle',
           };
 
           assertNodeProperties(node, expected);
         });
 
-        it("left", () => {
-          config.settings.anchor = "left";
+        it('left', () => {
+          config.settings.anchor = 'left';
           const node = simulateRender();
 
           const expected = {
@@ -461,14 +461,14 @@ describe("Text component", () => {
             y: 10,
             dx: 0,
             dy: -1.6666666666666667,
-            anchor: "start",
+            anchor: 'start',
           };
 
           assertNodeProperties(node, expected);
         });
 
-        it("right", () => {
-          config.settings.anchor = "right";
+        it('right', () => {
+          config.settings.anchor = 'right';
           const node = simulateRender();
 
           const expected = {
@@ -476,15 +476,15 @@ describe("Text component", () => {
             y: 10,
             dx: 0,
             dy: -1.6666666666666667,
-            anchor: "end",
+            anchor: 'end',
           };
 
           assertNodeProperties(node, expected);
         });
       });
 
-      describe("Padding", () => {
-        it("start", () => {
+      describe('Padding', () => {
+        it('start', () => {
           config.settings.paddingStart = 10;
           const node = simulateRender();
 
@@ -493,13 +493,13 @@ describe("Text component", () => {
             y: 15,
             dx: 0,
             dy: -1.6666666666666667,
-            anchor: "middle",
+            anchor: 'middle',
           };
 
           assertNodeProperties(node, expected);
         });
 
-        it("end", () => {
+        it('end', () => {
           config.settings.paddingEnd = 10;
           const node = simulateRender();
 
@@ -508,15 +508,15 @@ describe("Text component", () => {
             y: 10,
             dx: 0,
             dy: -1.6666666666666667,
-            anchor: "middle",
+            anchor: 'middle',
           };
 
           assertNodeProperties(node, expected);
         });
 
-        it("left", () => {
+        it('left', () => {
           config.settings.paddingLeft = 10;
-          config.settings.anchor = "left";
+          config.settings.anchor = 'left';
           const node = simulateRender();
 
           const expected = {
@@ -524,15 +524,15 @@ describe("Text component", () => {
             y: 10,
             dx: 0,
             dy: -1.6666666666666667,
-            anchor: "start",
+            anchor: 'start',
           };
 
           assertNodeProperties(node, expected);
         });
 
-        it("right", () => {
+        it('right', () => {
           config.settings.paddingRight = 10;
-          config.settings.anchor = "right";
+          config.settings.anchor = 'right';
           const node = simulateRender();
 
           const expected = {
@@ -540,7 +540,7 @@ describe("Text component", () => {
             y: 10,
             dx: 0,
             dy: -1.6666666666666667,
-            anchor: "end",
+            anchor: 'end',
           };
 
           assertNodeProperties(node, expected);
@@ -549,9 +549,9 @@ describe("Text component", () => {
     });
   });
 
-  describe("Settings", () => {
-    it("maxLengthPx", () => {
-      config.layout.dock = "left";
+  describe('Settings', () => {
+    it('maxLengthPx', () => {
+      config.layout.dock = 'left';
       config.settings.maxLengthPx = 33;
       const node = simulateRender();
 
@@ -562,8 +562,8 @@ describe("Text component", () => {
       assertNodeProperties(node, expected);
     });
 
-    it("maxLengthPx should default to 80% of height", () => {
-      config.layout.dock = "left";
+    it('maxLengthPx should default to 80% of height', () => {
+      config.layout.dock = 'left';
       const node = simulateRender();
 
       const expected = {
@@ -573,8 +573,8 @@ describe("Text component", () => {
       assertNodeProperties(node, expected);
     });
 
-    it("maxLengthPx should default to 80% of width", () => {
-      config.layout.dock = "bottom";
+    it('maxLengthPx should default to 80% of width', () => {
+      config.layout.dock = 'bottom';
       const node = simulateRender();
 
       const expected = {
@@ -584,46 +584,46 @@ describe("Text component", () => {
       assertNodeProperties(node, expected);
     });
 
-    it("join character", () => {
+    it('join character', () => {
       scale.data = () => ({
         fields: [
-          { title: () => "fakeTitle1", formatter: () => undefined },
-          { title: () => "fakeTitle2", formatter: () => undefined },
+          { title: () => 'fakeTitle1', formatter: () => undefined },
+          { title: () => 'fakeTitle2', formatter: () => undefined },
         ],
       });
-      config.layout.dock = "left";
-      config.scale = "x";
+      config.layout.dock = 'left';
+      config.scale = 'x';
       config.text = undefined;
-      config.settings.join = "#";
+      config.settings.join = '#';
       const node = simulateRender();
-      expect(node.text).to.equal("fakeTitle1#fakeTitle2");
+      expect(node.text).to.equal('fakeTitle1#fakeTitle2');
     });
 
-    it("join as empty string", () => {
+    it('join as empty string', () => {
       scale.data = () => ({
         fields: [
-          { title: () => "fakeTitle1", formatter: () => undefined },
-          { title: () => "fakeTitle2", formatter: () => undefined },
+          { title: () => 'fakeTitle1', formatter: () => undefined },
+          { title: () => 'fakeTitle2', formatter: () => undefined },
         ],
       });
-      config.layout.dock = "left";
-      config.scale = "x";
+      config.layout.dock = 'left';
+      config.scale = 'x';
       config.text = undefined;
-      config.settings.join = "";
+      config.settings.join = '';
       const node = simulateRender();
-      expect(node.text).to.equal("fakeTitle1fakeTitle2");
+      expect(node.text).to.equal('fakeTitle1fakeTitle2');
     });
   });
 
-  describe("Lifecycle", () => {
-    describe("Update", () => {
+  describe('Lifecycle', () => {
+    describe('Update', () => {
       beforeEach(() => {
-        config.layout.dock = "left";
+        config.layout.dock = 'left';
         simulateRender();
       });
 
-      it("should update dock", () => {
-        config.layout.dock = "bottom";
+      it('should update dock', () => {
+        config.layout.dock = 'bottom';
         const node = simulateUpdate();
 
         const expected = {
@@ -631,14 +631,14 @@ describe("Text component", () => {
           y: 10,
           dx: 0,
           dy: -1.6666666666666667,
-          anchor: "middle",
+          anchor: 'middle',
         };
 
         assertNodeProperties(node, expected);
       });
 
-      it("should update source", () => {
-        config.text = "UpdatedText";
+      it('should update source', () => {
+        config.text = 'UpdatedText';
         const node = simulateUpdate();
 
         const expected = {
@@ -648,8 +648,8 @@ describe("Text component", () => {
         assertNodeProperties(node, expected);
       });
 
-      describe("should update settings", () => {
-        it("maxLengthPx", () => {
+      describe('should update settings', () => {
+        it('maxLengthPx', () => {
           config.settings.maxLengthPx = 33;
           const node = simulateUpdate();
 
@@ -660,14 +660,14 @@ describe("Text component", () => {
           assertNodeProperties(node, expected);
         });
 
-        it("style", () => {
+        it('style', () => {
           theme.style.returns({
             text: {
-              fontSize: "thick and slim",
-              fontFamily: "nice family",
-              fill: "good color",
-              fontWeight: "normal",
-              stroke: "transparent",
+              fontSize: 'thick and slim',
+              fontFamily: 'nice family',
+              fill: 'good color',
+              fontWeight: 'normal',
+              stroke: 'transparent',
               strokeWidth: 0,
             },
           });
@@ -682,16 +682,16 @@ describe("Text component", () => {
           const node = simulateUpdate();
 
           const expected = {
-            fontSize: "thick and slim",
-            fontFamily: "nice family",
-            fill: "good color",
+            fontSize: 'thick and slim',
+            fontFamily: 'nice family',
+            fill: 'good color',
           };
 
           assertNodeProperties(node, expected);
         });
 
-        it("anchor", () => {
-          config.settings.anchor = "top";
+        it('anchor', () => {
+          config.settings.anchor = 'top';
           const node = simulateUpdate();
 
           const expected = {
@@ -699,8 +699,8 @@ describe("Text component", () => {
             y: 5,
             dx: -1.6666666666666667,
             dy: 0,
-            anchor: "end",
-            transform: "rotate(270, 93.33333333333333, 5)",
+            anchor: 'end',
+            transform: 'rotate(270, 93.33333333333333, 5)',
           };
 
           assertNodeProperties(node, expected);
@@ -709,65 +709,65 @@ describe("Text component", () => {
     });
   });
 
-  describe("preferredSize", () => {
-    it("should return same size for all dock areas", () => {
-      ["left", "right", "top", "bottom"].forEach((dock) => {
+  describe('preferredSize', () => {
+    it('should return same size for all dock areas', () => {
+      ['left', 'right', 'top', 'bottom'].forEach((dock) => {
         config.layout.dock = dock;
         const size = simulateLayout();
         expect(size).to.equal(15);
       });
     });
 
-    it("should be affected by padding start", () => {
-      config.layout.dock = "left";
+    it('should be affected by padding start', () => {
+      config.layout.dock = 'left';
       config.settings.paddingStart = 33;
       const size = simulateLayout();
       expect(size).to.equal(43);
     });
 
-    it("should be affected by padding end", () => {
-      config.layout.dock = "left";
+    it('should be affected by padding end', () => {
+      config.layout.dock = 'left';
       config.settings.paddingStart = 33;
       const size = simulateLayout();
       expect(size).to.equal(43);
     });
   });
 
-  describe("Source", () => {
-    it("string", () => {
-      config.layout.dock = "left";
-      config.text = "myString";
+  describe('Source', () => {
+    it('string', () => {
+      config.layout.dock = 'left';
+      config.text = 'myString';
       const node = simulateRender();
       expect(node.text).to.equal(config.text);
     });
 
-    it("function", () => {
-      config.layout.dock = "left";
-      config.text = () => "myFunc";
+    it('function', () => {
+      config.layout.dock = 'left';
+      config.text = () => 'myFunc';
       const node = simulateRender();
-      expect(node.text).to.equal("myFunc");
+      expect(node.text).to.equal('myFunc');
     });
 
-    it("scale by reference", () => {
-      config.layout.dock = "left";
-      config.scale = "x";
+    it('scale by reference', () => {
+      config.layout.dock = 'left';
+      config.scale = 'x';
       config.text = undefined;
       const node = simulateRender();
-      expect(node.text).to.equal("fakeTitle");
+      expect(node.text).to.equal('fakeTitle');
     });
 
-    it("scale by reference with multiple sources", () => {
+    it('scale by reference with multiple sources', () => {
       scale.data = () => ({
         fields: [
-          { title: () => "fakeTitle1", formatter: () => undefined },
-          { title: () => "fakeTitle2", formatter: () => undefined },
+          { title: () => 'fakeTitle1', formatter: () => undefined },
+          { title: () => 'fakeTitle2', formatter: () => undefined },
         ],
       });
-      config.layout.dock = "left";
-      config.scale = "x";
+      config.layout.dock = 'left';
+      config.scale = 'x';
       config.text = undefined;
       const node = simulateRender();
-      expect(node.text).to.equal("fakeTitle1, fakeTitle2");
+      expect(node.text).to.equal('fakeTitle1, fakeTitle2');
     });
   });
 });

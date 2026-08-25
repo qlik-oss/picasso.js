@@ -1,5 +1,5 @@
-import extend from "extend";
-import { isTouchEvent } from "../utils/event-type";
+import extend from 'extend';
+import { isTouchEvent } from '../utils/event-type';
 
 /**
  * Flatten the array of nodes by removing any containers as they do not support styling, thus unable to brush them.
@@ -38,7 +38,7 @@ export function styler(obj, { context, data, style, filter, mode }) {
 
   const getNodes = () => {
     let nodes = reduceToLeafNodes(obj.nodes);
-    if (typeof filter === "function") {
+    if (typeof filter === 'function') {
       nodes = nodes.filter(filter);
     }
     return nodes;
@@ -50,7 +50,7 @@ export function styler(obj, { context, data, style, filter, mode }) {
     const len = nodes.length;
     let nodeData;
     let globalChanged = false;
-    const evaluatedDataProps = typeof dataProps === "function" ? dataProps({ brush: brusher }) : dataProps;
+    const evaluatedDataProps = typeof dataProps === 'function' ? dataProps({ brush: brusher }) : dataProps;
 
     // To calculate active nodes
     for (let i = 0; i < len; i++) {
@@ -96,10 +96,10 @@ export function styler(obj, { context, data, style, filter, mode }) {
         const isActive = nodes[i].isActive;
         styleProps.forEach((s) => {
           if (isActive && s in active) {
-            nodes[i][s] = typeof active[s] === "function" ? active[s].call(null, original, activeNodes) : active[s];
+            nodes[i][s] = typeof active[s] === 'function' ? active[s].call(null, original, activeNodes) : active[s];
           } else if (!isActive && s in inactive) {
             nodes[i][s] =
-              typeof inactive[s] === "function" ? inactive[s].call(null, original, activeNodes) : inactive[s];
+              typeof inactive[s] === 'function' ? inactive[s].call(null, original, activeNodes) : inactive[s];
           } else {
             nodes[i][s] = nodes[i].__style[s];
           }
@@ -126,7 +126,7 @@ export function styler(obj, { context, data, style, filter, mode }) {
       styleProps.forEach((s) => {
         nodes[i].__style[s] = nodes[i][s]; // store original value
         if (s in inactive) {
-          nodes[i][s] = typeof inactive[s] === "function" ? inactive[s].call(null, nodes[i]) : inactive[s];
+          nodes[i][s] = typeof inactive[s] === 'function' ? inactive[s].call(null, nodes[i]) : inactive[s];
         }
       });
     }
@@ -158,8 +158,8 @@ export function styler(obj, { context, data, style, filter, mode }) {
   const onUpdate = () => {
     const changed = update();
     if (changed) {
-      const renderedNodes = typeof obj.config.sortNodes === "function" ? obj.config.sortNodes(obj) : obj.nodes;
-      if (typeof obj.config.customRender === "function") {
+      const renderedNodes = typeof obj.config.sortNodes === 'function' ? obj.config.sortNodes(obj) : obj.nodes;
+      if (typeof obj.config.customRender === 'function') {
         obj.config.customRender({ render: obj.renderer.render, nodes: renderedNodes });
       } else {
         obj.renderer.render(renderedNodes);
@@ -173,14 +173,14 @@ export function styler(obj, { context, data, style, filter, mode }) {
     update();
   };
 
-  brusher.on("start", onStart);
-  brusher.on("end", onEnd);
-  brusher.on("update", onUpdate);
+  brusher.on('start', onStart);
+  brusher.on('end', onEnd);
+  brusher.on('update', onUpdate);
 
   function cleanUp() {
-    brusher.removeListener("start", onStart);
-    brusher.removeListener("end", onEnd);
-    brusher.removeListener("update", onUpdate);
+    brusher.removeListener('start', onStart);
+    brusher.removeListener('end', onEnd);
+    brusher.removeListener('update', onUpdate);
   }
 
   return {
@@ -197,18 +197,18 @@ export function brushDataPoints({ dataPoints, action, chart, trigger }) {
     return;
   }
 
-  const dataProps = trigger.data || [""];
+  const dataProps = trigger.data || [''];
 
   let rangeBrush = {
     items: [],
-    actionFn: "toggleRanges",
+    actionFn: 'toggleRanges',
   };
   let valueBrush = {
     items: [],
-    actionFn: "toggleValues",
+    actionFn: 'toggleValues',
   };
 
-  if (["add", "remove", "set", "toggle"].indexOf(action) !== -1) {
+  if (['add', 'remove', 'set', 'toggle'].indexOf(action) !== -1) {
     rangeBrush.actionFn = `${action}Ranges`;
     valueBrush.actionFn = `${action}Values`;
   }
@@ -222,7 +222,7 @@ export function brushDataPoints({ dataPoints, action, chart, trigger }) {
       let d = dataPoint && !p ? dataPoint : dataPoint[p];
       if (d) {
         let it = { key: d.source.field };
-        if (typeof d.source.key !== "undefined") {
+        if (typeof d.source.key !== 'undefined') {
           it.key = `${d.source.key}/${d.source.field}`;
         }
         if (Array.isArray(d.value)) {
@@ -271,7 +271,7 @@ export function resolveEvent({ collisions, t, config, action }) {
     brushCollisions = collisions;
     resolved = true;
 
-    if (t.propagation === "stop") {
+    if (t.propagation === 'stop') {
       brushCollisions = [collisions[collisions.length - 1]];
     }
   }
@@ -334,7 +334,7 @@ function resolveCollisions(e, t, renderer) {
 
 function resolveAction(action, e, def) {
   if (action) {
-    if (typeof action === "function") {
+    if (typeof action === 'function') {
       return action(e);
     }
     return action;
@@ -349,7 +349,7 @@ export function resolveTapEvent({ e, t, config }) {
     collisions,
     t,
     config,
-    action: resolveAction(t.action, e, "toggle"),
+    action: resolveAction(t.action, e, 'toggle'),
   });
 }
 
@@ -360,6 +360,6 @@ export function resolveOverEvent({ e, t, config }) {
     collisions,
     t,
     config,
-    action: resolveAction(t.action, e, "set"),
+    action: resolveAction(t.action, e, 'set'),
   });
 }

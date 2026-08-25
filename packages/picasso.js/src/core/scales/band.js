@@ -1,7 +1,7 @@
-import extend from "extend";
-import { scaleBand as d3ScaleBand } from "d3-scale";
-import { generateDiscreteTicks } from "./ticks/tick-generators";
-import resolveSettings from "./settings-resolver";
+import extend from 'extend';
+import { scaleBand as d3ScaleBand } from 'd3-scale';
+import { generateDiscreteTicks } from './ticks/tick-generators';
+import resolveSettings from './settings-resolver';
 
 export const DEFAULT_SETTINGS = {
   padding: 0,
@@ -75,7 +75,7 @@ export default function scaleBand(settings = {}, data = {}, resources = {}) {
      */
     band.ticks = function ticks(input = {}) {
       input.scale = band;
-      return generateDiscreteTicks(input, fsettings.trackBy || "label");
+      return generateDiscreteTicks(input, fsettings.trackBy || 'label');
     };
   }
   /**
@@ -118,8 +118,8 @@ export default function scaleBand(settings = {}, data = {}, resources = {}) {
     return newBand;
   };
 
-  const valueFn = typeof settings.value === "function" ? settings.value : (d) => d.datum.value;
-  const labelFn = typeof settings.label === "function" ? settings.label : (d) => d.datum.label;
+  const valueFn = typeof settings.value === 'function' ? settings.value : (d) => d.datum.value;
+  const labelFn = typeof settings.label === 'function' ? settings.label : (d) => d.datum.label;
 
   for (let i = 0; i < items.length; i++) {
     const arg = extend({ datum: items[i] }, ctx);

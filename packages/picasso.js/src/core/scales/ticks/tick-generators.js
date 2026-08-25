@@ -1,7 +1,7 @@
-import { notNumber } from "../../utils/is-number";
+import { notNumber } from '../../utils/is-number';
 
 function applyFormat(formatter) {
-  return typeof formatter === "undefined" ? (t) => t : (t) => formatter(t);
+  return typeof formatter === 'undefined' ? (t) => t : (t) => formatter(t);
 }
 
 function clamp(val) {
@@ -9,7 +9,7 @@ function clamp(val) {
 }
 
 function isObject(obj) {
-  return typeof obj === "object";
+  return typeof obj === 'object';
 }
 
 function minorTicksGenerator(count, start, end) {
@@ -162,7 +162,7 @@ function ticksByValue({ values, scale, formatter = (v) => v }) {
       return {
         position,
         value,
-        label: isObj && typeof v.label !== "undefined" ? v.label : formatter(value),
+        label: isObj && typeof v.label !== 'undefined' ? v.label : formatter(value),
         isMinor: isObj ? !!v.isMinor : false,
         start: isObj && !isNaN(v.start) ? clamp(scale(v.start)) : position, // TODOHandle end < start?
         end: isObj && !isNaN(v.end) ? clamp(scale(v.end)) : position, // TODO Handle start > end?
@@ -208,7 +208,7 @@ export function generateContinuousTicks({ settings, scale, distance, formatter =
     settings.minorTicks && !notNumber(settings.minorTicks.count) ? Math.min(100, settings.minorTicks.count) : 0;
 
   if (Array.isArray(settings.ticks.values)) {
-    const values = settings.ticks.values.filter((v) => (typeof v === "object" ? !notNumber(v.value) : !notNumber(v)));
+    const values = settings.ticks.values.filter((v) => (typeof v === 'object' ? !notNumber(v.value) : !notNumber(v)));
     ticks = ticksByValue({ values, scale: scale.copy(), formatter });
   } else if (!notNumber(settings.ticks.count)) {
     const count = Math.min(1000, settings.ticks.count);

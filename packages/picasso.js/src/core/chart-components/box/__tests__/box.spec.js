@@ -1,7 +1,7 @@
-import componentFactoryFixture from "../../../../../test/helpers/component-factory-fixture";
-import boxMarker from "../box";
+import componentFactoryFixture from '../../../../../test/helpers/component-factory-fixture';
+import boxMarker from '../box';
 
-describe("box component", () => {
+describe('box component', () => {
   let rendererOutput;
   let chart;
   let shapeFn;
@@ -36,7 +36,7 @@ describe("box component", () => {
     // chart.table.returns(table);
   });
 
-  it("should not render boxes with default settings", () => {
+  it('should not render boxes with default settings', () => {
     const config = {
       shapeFn,
       data: [],
@@ -48,28 +48,28 @@ describe("box component", () => {
     expect(rendererOutput).to.deep.equal([]);
   });
 
-  it("should render a single basic box with minor custom settings", () => {
+  it('should render a single basic box with minor custom settings', () => {
     const config = {
       shapeFn,
       data: {
         extract: {},
       },
       settings: {
-        major: { scale: "x" },
-        minor: { scale: "y" },
+        major: { scale: 'x' },
+        minor: { scale: 'y' },
         box: {
           width: 1,
-          stroke: "#f00",
-          strokeLinejoin: "round",
+          stroke: '#f00',
+          strokeLinejoin: 'round',
         },
         whisker: {
-          stroke: "#0f0",
+          stroke: '#0f0',
         },
         median: {
-          stroke: "#00f",
+          stroke: '#00f',
         },
         line: {
-          stroke: "#ff0",
+          stroke: '#ff0',
         },
       },
     };
@@ -88,15 +88,15 @@ describe("box component", () => {
     const xScale = (v) => v;
     xScale.bandwidth = () => 0.5;
     const yScale = (v) => v;
-    chart.scale.withArgs("x").returns(xScale);
-    chart.scale.withArgs("y").returns(yScale);
+    chart.scale.withArgs('x').returns(xScale);
+    chart.scale.withArgs('y').returns(yScale);
 
     componentFixture.simulateCreate(boxMarker, config);
     rendererOutput = componentFixture.simulateRender(opts);
 
     expect(rendererOutput).to.deep.equal([
       {
-        type: "container",
+        type: 'container',
         data: {
           value: 0.5,
           // self: { value: 0.5 },
@@ -107,7 +107,7 @@ describe("box component", () => {
           max: { value: 0.8 },
         },
         collider: {
-          type: "bounds",
+          type: 'bounds',
         },
         children: [
           {
@@ -120,15 +120,15 @@ describe("box component", () => {
               end: { value: 0.6 },
               max: { value: 0.8 },
             },
-            fill: "#fff",
+            fill: '#fff',
             height: 40,
             minHeightPx: 1,
             minWidthPx: 1,
             show: true,
-            stroke: "#f00",
-            strokeLinejoin: "round",
+            stroke: '#f00',
+            strokeLinejoin: 'round',
             strokeWidth: 1,
-            type: "rect",
+            type: 'rect',
             width: 50,
             x: 50,
             y: 80,
@@ -147,9 +147,9 @@ describe("box component", () => {
               max: { value: 0.8 },
             },
             show: true,
-            stroke: "#ff0",
+            stroke: '#ff0',
             strokeWidth: 1,
-            type: "line",
+            type: 'line',
             x1: 75,
             x2: 75,
             y1: 80,
@@ -169,9 +169,9 @@ describe("box component", () => {
               max: { value: 0.8 },
             },
             show: true,
-            stroke: "#ff0",
+            stroke: '#ff0',
             strokeWidth: 1,
-            type: "line",
+            type: 'line',
             x1: 75,
             x2: 75,
             y1: 120,
@@ -193,9 +193,9 @@ describe("box component", () => {
               max: { value: 0.8 },
             },
             show: true,
-            stroke: "#00f",
+            stroke: '#00f',
             strokeWidth: 1,
-            type: "line",
+            type: 'line',
             width: 50,
             x1: 50,
             x2: 100,
@@ -218,12 +218,12 @@ describe("box component", () => {
               end: { value: 0.6 },
               max: { value: 0.8 },
             },
-            fill: "",
+            fill: '',
             r: 25,
             show: true,
-            stroke: "#0f0",
+            stroke: '#0f0',
             strokeWidth: 1,
-            type: "line",
+            type: 'line',
             width: 50,
             x1: 50,
             x2: 100,
@@ -245,12 +245,12 @@ describe("box component", () => {
               end: { value: 0.6 },
               max: { value: 0.8 },
             },
-            fill: "",
+            fill: '',
             r: 25,
             show: true,
-            stroke: "#0f0",
+            stroke: '#0f0',
             strokeWidth: 1,
-            type: "line",
+            type: 'line',
             width: 50,
             x1: 50,
             x2: 100,
@@ -265,17 +265,17 @@ describe("box component", () => {
     ]);
   });
 
-  it("should render a out of bounds marker", () => {
+  it('should render a out of bounds marker', () => {
     const config = {
       shapeFn,
       data: {
         extract: {},
       },
       settings: {
-        major: { scale: "x" },
-        minor: { scale: "y" },
+        major: { scale: 'x' },
+        minor: { scale: 'y' },
         oob: {
-          fill: "red",
+          fill: 'red',
         },
       },
     };
@@ -294,29 +294,29 @@ describe("box component", () => {
     const xScale = (v) => v;
     xScale.bandwidth = () => 0.5;
     const yScale = (v) => v;
-    chart.scale.withArgs("x").returns(xScale);
-    chart.scale.withArgs("y").returns(yScale);
+    chart.scale.withArgs('x').returns(xScale);
+    chart.scale.withArgs('y').returns(yScale);
 
     componentFixture.simulateCreate(boxMarker, config);
     rendererOutput = componentFixture.simulateRender(opts)[0].children;
 
     expect(rendererOutput).to.containSubset([
       {
-        type: "path",
-        fill: "red",
+        type: 'path',
+        fill: 'red',
       },
     ]);
   });
 
-  it("should accept only end variable and draw a simple bar chart", () => {
+  it('should accept only end variable and draw a simple bar chart', () => {
     const config = {
       shapeFn,
       data: { extract: {} },
       settings: {
-        major: { scale: "x", ref: "self" },
-        minor: { scale: "y" },
+        major: { scale: 'x', ref: 'self' },
+        minor: { scale: 'y' },
         box: {
-          stroke: "#f00",
+          stroke: '#f00',
         },
       },
     };
@@ -332,22 +332,22 @@ describe("box component", () => {
     const xScale = (v) => v;
     xScale.bandwidth = () => 0.5;
     const yScale = (v) => v;
-    chart.scale.withArgs("x").returns(xScale);
-    chart.scale.withArgs("y").returns(yScale);
+    chart.scale.withArgs('x').returns(xScale);
+    chart.scale.withArgs('y').returns(yScale);
 
     componentFixture.simulateCreate(boxMarker, config);
     rendererOutput = componentFixture.simulateRender(opts);
 
     expect(rendererOutput).to.deep.equal([
       {
-        type: "container",
+        type: 'container',
         data: {
           self: { value: 0.5 },
           start: { value: 0 },
           end: { value: 0.6 },
         },
         collider: {
-          type: "bounds",
+          type: 'bounds',
         },
         children: [
           {
@@ -356,15 +356,15 @@ describe("box component", () => {
               start: { value: 0 },
               end: { value: 0.6 },
             },
-            fill: "#fff",
+            fill: '#fff',
             height: 120,
             minHeightPx: 1,
             minWidthPx: 1,
             show: true,
-            stroke: "#f00",
-            strokeLinejoin: "miter",
+            stroke: '#f00',
+            strokeLinejoin: 'miter',
             strokeWidth: 1,
-            type: "rect",
+            type: 'rect',
             width: 50,
             x: 50,
             y: 0,
@@ -377,15 +377,15 @@ describe("box component", () => {
     ]);
   });
 
-  it("should accept start and end variable to draw a gantt chart", () => {
+  it('should accept start and end variable to draw a gantt chart', () => {
     const config = {
       shapeFn,
       data: { extract: {} },
       settings: {
-        major: { scale: "x", ref: "self" },
-        minor: { scale: "y" },
+        major: { scale: 'x', ref: 'self' },
+        minor: { scale: 'y' },
         box: {
-          stroke: "#f00",
+          stroke: '#f00',
         },
       },
     };
@@ -401,22 +401,22 @@ describe("box component", () => {
     const xScale = (v) => v;
     xScale.bandwidth = () => 0.5;
     const yScale = (v) => v;
-    chart.scale.withArgs("x").returns(xScale);
-    chart.scale.withArgs("y").returns(yScale);
+    chart.scale.withArgs('x').returns(xScale);
+    chart.scale.withArgs('y').returns(yScale);
 
     componentFixture.simulateCreate(boxMarker, config);
     rendererOutput = componentFixture.simulateRender(opts);
 
     expect(rendererOutput).to.deep.equal([
       {
-        type: "container",
+        type: 'container',
         data: {
           self: { value: 0.5 },
           start: { value: 0.2 },
           end: { value: 0.6 },
         },
         collider: {
-          type: "bounds",
+          type: 'bounds',
         },
         children: [
           {
@@ -425,15 +425,15 @@ describe("box component", () => {
               start: { value: 0.2 },
               end: { value: 0.6 },
             },
-            fill: "#fff",
+            fill: '#fff',
             height: 80,
             minHeightPx: 1,
             minWidthPx: 1,
             show: true,
-            stroke: "#f00",
-            strokeLinejoin: "miter",
+            stroke: '#f00',
+            strokeLinejoin: 'miter',
             strokeWidth: 1,
-            type: "rect",
+            type: 'rect',
             width: 50,
             x: 50,
             y: 40,
@@ -446,15 +446,15 @@ describe("box component", () => {
     ]);
   });
 
-  it("should accept start, end, min and max values, without whiskers", () => {
+  it('should accept start, end, min and max values, without whiskers', () => {
     const config = {
       shapeFn,
       data: { extract: {} },
       settings: {
-        major: { scale: "x", ref: "self" },
-        minor: { scale: "y" },
+        major: { scale: 'x', ref: 'self' },
+        minor: { scale: 'y' },
         box: {
-          stroke: "#f00",
+          stroke: '#f00',
         },
         whisker: {
           show: false,
@@ -475,15 +475,15 @@ describe("box component", () => {
     const xScale = (v) => v;
     xScale.bandwidth = () => 0.5;
     const yScale = (v) => v;
-    chart.scale.withArgs("x").returns(xScale);
-    chart.scale.withArgs("y").returns(yScale);
+    chart.scale.withArgs('x').returns(xScale);
+    chart.scale.withArgs('y').returns(yScale);
 
     componentFixture.simulateCreate(boxMarker, config);
     rendererOutput = componentFixture.simulateRender(opts);
 
     expect(rendererOutput).to.deep.equal([
       {
-        type: "container",
+        type: 'container',
         data: {
           self: { value: 0.5 },
           start: { value: 0.4 },
@@ -492,7 +492,7 @@ describe("box component", () => {
           max: { value: 0.8 },
         },
         collider: {
-          type: "bounds",
+          type: 'bounds',
         },
         children: [
           {
@@ -503,15 +503,15 @@ describe("box component", () => {
               min: { value: 0.2 },
               max: { value: 0.8 },
             },
-            fill: "#fff",
+            fill: '#fff',
             height: 40,
             minHeightPx: 1,
             minWidthPx: 1,
             show: true,
-            stroke: "#f00",
-            strokeLinejoin: "miter",
+            stroke: '#f00',
+            strokeLinejoin: 'miter',
             strokeWidth: 1,
-            type: "rect",
+            type: 'rect',
             width: 50,
             x: 50,
             y: 80,
@@ -528,9 +528,9 @@ describe("box component", () => {
               max: { value: 0.8 },
             },
             show: true,
-            stroke: "#000",
+            stroke: '#000',
             strokeWidth: 1,
-            type: "line",
+            type: 'line',
             x1: 75,
             x2: 75,
             y1: 80,
@@ -548,9 +548,9 @@ describe("box component", () => {
               max: { value: 0.8 },
             },
             show: true,
-            stroke: "#000",
+            stroke: '#000',
             strokeWidth: 1,
-            type: "line",
+            type: 'line',
             x1: 75,
             x2: 75,
             y1: 120,
@@ -564,15 +564,15 @@ describe("box component", () => {
     ]);
   });
 
-  it("should not have the squeeze bug", () => {
+  it('should not have the squeeze bug', () => {
     const config = {
       shapeFn,
       data: { extract: {} },
       settings: {
-        major: { scale: "x", ref: "self" },
-        minor: { scale: "y" },
+        major: { scale: 'x', ref: 'self' },
+        minor: { scale: 'y' },
         box: {
-          stroke: "#f00",
+          stroke: '#f00',
           maxWidthPx: 100,
         },
         whisker: {
@@ -636,23 +636,23 @@ describe("box component", () => {
     xScale.bandwidth = () => 0.2;
 
     const yScale = (v) => (v - 0.2) / 0.6;
-    chart.scale.withArgs("x").returns(xScale);
-    chart.scale.withArgs("y").returns(yScale);
+    chart.scale.withArgs('x').returns(xScale);
+    chart.scale.withArgs('y').returns(yScale);
 
     componentFixture.simulateCreate(boxMarker, config);
     rendererOutput = componentFixture.simulateRender(opts);
 
     const items = [
       {
-        type: "rect",
+        type: 'rect',
         x: 0,
         y: 6.666666666666668,
         height: 6.666666666666664,
         width: 40,
         show: true,
-        fill: "#fff",
-        stroke: "#f00",
-        strokeLinejoin: "miter",
+        fill: '#fff',
+        stroke: '#f00',
+        strokeLinejoin: 'miter',
         strokeWidth: 1,
         maxWidthPx: 100,
         minHeightPx: 1,
@@ -669,15 +669,15 @@ describe("box component", () => {
         },
       },
       {
-        type: "rect",
+        type: 'rect',
         x: 40.00000000000001,
         y: 6.666666666666668,
         height: 6.666666666666664,
         width: 40,
         show: true,
-        fill: "#fff",
-        stroke: "#f00",
-        strokeLinejoin: "miter",
+        fill: '#fff',
+        stroke: '#f00',
+        strokeLinejoin: 'miter',
         strokeWidth: 1,
         maxWidthPx: 100,
         minHeightPx: 1,
@@ -694,15 +694,15 @@ describe("box component", () => {
         },
       },
       {
-        type: "rect",
+        type: 'rect',
         x: 80,
         y: 6.666666666666668,
         height: 6.666666666666664,
         width: 40,
         show: true,
-        fill: "#fff",
-        stroke: "#f00",
-        strokeLinejoin: "miter",
+        fill: '#fff',
+        stroke: '#f00',
+        strokeLinejoin: 'miter',
         strokeWidth: 1,
         maxWidthPx: 100,
         minHeightPx: 1,
@@ -719,16 +719,16 @@ describe("box component", () => {
         },
       },
       {
-        type: "rect",
+        type: 'rect',
         x: 120.00000000000001,
         y: 6.666666666666668,
         height: 6.666666666666664,
         width: 40,
         show: true,
-        fill: "#fff",
-        stroke: "#f00",
+        fill: '#fff',
+        stroke: '#f00',
         strokeWidth: 1,
-        strokeLinejoin: "miter",
+        strokeLinejoin: 'miter',
         maxWidthPx: 100,
         minHeightPx: 1,
         minWidthPx: 1,
@@ -744,15 +744,15 @@ describe("box component", () => {
         },
       },
       {
-        type: "rect",
+        type: 'rect',
         x: 160,
         y: 6.666666666666668,
         height: 6.666666666666664,
         width: 40,
         show: true,
-        fill: "#fff",
-        stroke: "#f00",
-        strokeLinejoin: "miter",
+        fill: '#fff',
+        stroke: '#f00',
+        strokeLinejoin: 'miter',
         strokeWidth: 1,
         maxWidthPx: 100,
         minHeightPx: 1,
@@ -771,7 +771,7 @@ describe("box component", () => {
     ];
 
     const children = rendererOutput.map((c) => c.children);
-    const rects = [].concat(...children).filter((o) => o.type === "rect");
+    const rects = [].concat(...children).filter((o) => o.type === 'rect');
     expect(rects).to.deep.equal(items);
   });
 });

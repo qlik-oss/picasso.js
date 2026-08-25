@@ -1,5 +1,5 @@
-import lassoBrushComponent from "./brush-lasso";
+import lassoBrushComponent from './brush-lasso';
 
 export default function lassoBrush(picasso) {
-  picasso.component("brush-lasso", lassoBrushComponent);
+  picasso.component('brush-lasso', lassoBrushComponent);
 }

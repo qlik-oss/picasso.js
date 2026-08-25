@@ -1,4 +1,4 @@
-import pointsToPath from "../utils/points-to-path";
+import pointsToPath from '../utils/points-to-path';
 
 export function generateCrossPoints(x, y, size, barWidth) {
   const r = size / 2;
@@ -39,8 +39,8 @@ export default function cross(options) {
   const points = generateCrossPoints(x, y, options.size, barWidth);
 
   return {
-    type: "path",
-    fill: "black",
+    type: 'path',
+    fill: 'black',
     d: pointsToPath(points),
   };
 }

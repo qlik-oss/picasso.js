@@ -1,4 +1,4 @@
-import refLineComponent from "./refline";
+import refLineComponent from './refline';
 
 /**
  * @typedef {object} ComponentRefLine
@@ -21,5 +21,5 @@ import refLineComponent from "./refline";
  */
 
 export default function refLine(picasso) {
-  picasso.component("ref-line", refLineComponent);
+  picasso.component('ref-line', refLineComponent);
 }

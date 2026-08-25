@@ -1,20 +1,20 @@
-import extend from "extend";
-import { testRectRect, testRectLine } from "../../math/narrow-phase-collision";
+import extend from 'extend';
+import { testRectRect, testRectLine } from '../../math/narrow-phase-collision';
 
 const DOCK_CORNER = 0.8;
 
 export function refLabelDefaultSettings() {
   return {
-    fill: "#000",
-    fontFamily: "Arial",
-    fontSize: "12px",
+    fill: '#000',
+    fontFamily: 'Arial',
+    fontSize: '12px',
     opacity: 1,
     maxWidth: 1,
     maxWidthPx: 9999,
     padding: 5,
     background: {
-      fill: "#fff",
-      stroke: "transparent",
+      fill: '#fff',
+      stroke: 'transparent',
       strokeWidth: 0,
       opacity: 0.5,
     },
@@ -23,8 +23,8 @@ export function refLabelDefaultSettings() {
 
 function isMaxY(chart, slope, value) {
   // when maxY exceeds the shown scale
-  const scaleX = chart.scale({ scale: "x" });
-  const scaleY = chart.scale({ scale: "y" });
+  const scaleX = chart.scale({ scale: 'x' });
+  const scaleY = chart.scale({ scale: 'y' });
   if (slope > 0) {
     const maxY = scaleX.max() * slope + value;
     if (maxY >= scaleY.max()) {
@@ -41,8 +41,8 @@ function isMaxY(chart, slope, value) {
 
 function getMaxXPosition(chart, slope, value) {
   // if maxY then get maxX position available on the scale
-  const scaleX = chart.scale({ scale: "x" });
-  const scaleY = chart.scale({ scale: "y" });
+  const scaleX = chart.scale({ scale: 'x' });
+  const scaleY = chart.scale({ scale: 'y' });
   // For negative slopes
   if (slope < 0) {
     return scaleX((scaleY.max() - value) / slope);
@@ -52,13 +52,13 @@ function getMaxXPosition(chart, slope, value) {
 }
 
 function getFormatter(p, chart) {
-  if (typeof p.formatter === "string") {
+  if (typeof p.formatter === 'string') {
     return chart.formatter(p.formatter);
   }
-  if (typeof p.formatter === "object") {
+  if (typeof p.formatter === 'object') {
     return chart.formatter(p.formatter);
   }
-  if (typeof p.scale !== "undefined" && p.scale.data) {
+  if (typeof p.scale !== 'undefined' && p.scale.data) {
     // TODO - Add support for array as source into formatter
     const scaleData = p.scale.data() && p.scale.data().fields;
     return scaleData && scaleData[0] ? scaleData[0].formatter() : null;
@@ -69,7 +69,7 @@ function getFormatter(p, chart) {
 function isColliding(items, slopeValue, measured, xPadding, yPadding) {
   for (let i = 0, len = items.length; i < len; i++) {
     const curItem = items[i];
-    if (curItem?.type === "text") {
+    if (curItem?.type === 'text') {
       if (
         Math.abs(curItem.x - slopeValue.x) < Math.max(curItem.width + xPadding, slopeValue.width + xPadding) &&
         Math.abs(curItem.y - slopeValue.y) < measured.height + yPadding
@@ -118,22 +118,22 @@ function calculateX(slopeLine, line, maxX, measured, blueprint, slopeStyle) {
  * @ignore
  */
 export function alignmentToNumber(align) {
-  if (typeof align === "undefined") {
+  if (typeof align === 'undefined') {
     return 0;
   }
-  if (typeof align === "number" && isFinite(align)) {
+  if (typeof align === 'number' && isFinite(align)) {
     return align;
   }
-  if (typeof align === "string") {
+  if (typeof align === 'string') {
     switch (align) {
-      case "center":
-      case "middle":
+      case 'center':
+      case 'middle':
         return 0.5;
-      case "bottom":
-      case "right":
+      case 'bottom':
+      case 'right':
         return 1;
-      case "top":
-      case "left":
+      case 'top':
+      case 'left':
       default:
         return 0;
     }
@@ -164,12 +164,12 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
   // Use the transposer to handle actual positioning
   if (slopeLine) {
     line = blueprint.processItem({
-      type: "line",
+      type: 'line',
       x1: slopeLine.x1,
       y1: slopeLine.y1,
       x2: slopeLine.x2,
       y2: slopeLine.y2,
-      stroke: style.stroke || "black",
+      stroke: style.stroke || 'black',
       strokeWidth: style.strokeWidth || 1,
       strokeDasharray: style.strokeDasharray,
       flipXY: false,
@@ -177,12 +177,12 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
     });
   } else {
     line = blueprint.processItem({
-      type: "line",
+      type: 'line',
       x1: p.position,
       y1: 0,
       x2: p.position,
       y2: 1,
-      stroke: style.stroke || "black",
+      stroke: style.stroke || 'black',
       strokeWidth: style.strokeWidth || 1,
       strokeDasharray: style.strokeDasharray,
       flipXY: p.flipXY || false, // This flips individual points (Y-lines)
@@ -197,7 +197,7 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
       width: 0,
       height: 0,
     };
-    let valueString = "";
+    let valueString = '';
 
     formatter = getFormatter(p, chart);
 
@@ -219,7 +219,7 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
 
     // Measure the label text
     let measuredLabel = renderer.measureText({
-      text: item.text || "",
+      text: item.text || '',
       fontFamily: item.fontFamily,
       fontSize: item.fontSize,
     });
@@ -248,7 +248,7 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
         x = p.flipXY ? x : Math.max(x, 0);
         const y = Math.max(Math.abs(vAlign * height - rectHeight * vAlign), 0);
         return {
-          type: "rect",
+          type: 'rect',
           x,
           y,
           width: p.flipXY ? rectWidth : Math.min(rectWidth, blueprint.width - x),
@@ -275,8 +275,8 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
       // and this rect needs to already be processed
       // so there is no blueprint.processItem required here
       label = {
-        type: "text",
-        text: item.text || "",
+        type: 'text',
+        text: item.text || '',
         fill: item.fill,
         opacity: item.opacity,
         fontFamily: item.fontFamily,
@@ -284,13 +284,13 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
         x: rect.x + labelPadding,
         y: rect.y + rect.height / 2 + measured.height / 3,
         maxWidth: rect.width - labelPadding * 2 - measuredValue.width,
-        anchor: "start",
+        anchor: 'start',
       };
 
       if (valueString) {
         value = {
-          type: "text",
-          text: valueString || "",
+          type: 'text',
+          text: valueString || '',
           fill: item.fill,
           opacity: item.opacity,
           fontFamily: item.fontFamily,
@@ -304,13 +304,13 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
       for (let i = 0, len = items.length; i < len; i++) {
         let curItem = items[i];
 
-        if (curItem.type === "rect") {
+        if (curItem.type === 'rect') {
           // We only detect rects here, since rects are always behind labels,
           // and we wouldn't want to measure text one more time
           if (testRectRect(rect, curItem)) {
             doesNotCollide = false;
           }
-        } else if (curItem.type === "line") {
+        } else if (curItem.type === 'line') {
           // This will only collide when flipXY are the same for both objects,
           // So it only collides on objects on the same "axis"
           if (p.flipXY === curItem.flipXY && testRectLine(rect, curItem)) {
@@ -335,7 +335,7 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
     let labelBackground;
     const maxLabelWidth = 120;
 
-    let slopeLabelText = slopeLine.label?.show !== false ? slopeLine.label?.text : "";
+    let slopeLabelText = slopeLine.label?.show !== false ? slopeLine.label?.text : '';
     if (slopeLine.label?.showValue !== false) {
       const formatter = getFormatter(p, chart);
       const formattedValue = formatter ? formatter(slopeLine.value) : slopeLine.value;
@@ -360,7 +360,7 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
       // if coloredBackground is true make a rect
       if (slopeLine.label?.stroke) {
         labelBackground = {
-          type: "rect",
+          type: 'rect',
           x: slopeLine.isRtl ? Math.max(x, xPadding) - 2 : Math.max(x, xPadding) + 2,
           y: Math.abs(Math.max(y, yPadding) - measured.height),
           rx: 3,
@@ -372,7 +372,7 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
         };
       }
       const slopeLabel = {
-        type: "text",
+        type: 'text',
         text: slopeLabelText,
         fill: slopeLine.label?.stroke ?? style.stroke,
         opacity: slopeStyle.opacity,
@@ -382,7 +382,7 @@ export function createLineWithLabel({ chart, blueprint, renderer, p, settings, i
         y: labelBackground
           ? labelBackground.y + measured.height - slopeStyle.padding
           : Math.abs(Math.max(y, yPadding) - slopeStyle.padding / 2),
-        anchor: "start",
+        anchor: 'start',
         title: slopeLabelText,
         maxWidth: maxLabelWidth,
         width: measured.width,

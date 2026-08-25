@@ -1,5 +1,5 @@
-import extend from "extend";
-import styleResolver from "../style/resolver";
+import extend from 'extend';
+import styleResolver from '../style/resolver';
 
 export default function themeFn(style = {}, palettes = []) {
   let pals = {};

@@ -50,21 +50,21 @@ export default function timeSpanDispatcher({ defaultDuration, defaultDelay }) {
     actionId = null;
     fulfilledId = null;
     isActive = false;
-    state.set("fulfilled");
+    state.set('fulfilled');
   };
 
   fn.invoke = (action, duration = defaultDuration, delay = defaultDelay) => {
     if (actionId) {
       clearTimeout(actionId);
-      state.set("debounced");
+      state.set('debounced');
     }
 
-    state.set("pending");
+    state.set('pending');
     actionId = setTimeout(() => {
       action();
       isActive = true;
       actionId = null;
-      state.set("active");
+      state.set('active');
     }, delay);
 
     if (duration > 0) {
@@ -77,10 +77,10 @@ export default function timeSpanDispatcher({ defaultDuration, defaultDelay }) {
 
   fn.clear = () => {
     if (isActive) {
-      state.set("cancelled");
+      state.set('cancelled');
     } else if (actionId) {
       clearTimeout(actionId);
-      state.set("rejected");
+      state.set('rejected');
     }
     if (fulfilledId) {
       clearTimeout(fulfilledId);

@@ -1,4 +1,4 @@
-import { formatLocale } from "d3-format";
+import { formatLocale } from 'd3-format';
 
 export default function formatter(pattern, thousand, decimal) {
   let locale, d3format;
@@ -33,10 +33,10 @@ export default function formatter(pattern, thousand, decimal) {
    */
   function reset() {
     format.locale({
-      decimal: decimal || ".",
-      thousands: thousand || ",",
+      decimal: decimal || '.',
+      thousands: thousand || ',',
       grouping: [3],
-      currency: ["$", ""],
+      currency: ['$', ''],
     });
   }
   reset();

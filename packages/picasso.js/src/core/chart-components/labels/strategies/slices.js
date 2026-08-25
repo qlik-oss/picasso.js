@@ -1,6 +1,6 @@
-import extend from "extend";
-import { testCircleRect, testRectLine, testRectRect } from "../../../math/narrow-phase-collision";
-import { rectContainsRect } from "../../../math/intersection";
+import extend from 'extend';
+import { testCircleRect, testRectLine, testRectRect } from '../../../math/narrow-phase-collision';
+import { rectContainsRect } from '../../../math/intersection';
 
 const LABEL_OVERLAP_THRESHOLD_X = 4;
 
@@ -96,7 +96,7 @@ function getRectFromCircleIntersection({ radius, size, angle }) {
       offset = { x: 0, y: 0 };
       break;
     default:
-      throw new Error("invalid angle");
+      throw new Error('invalid angle');
   }
   let bounds = {
     x: intersection.x + offset.x,
@@ -126,7 +126,7 @@ function getHorizontalInsideSliceRect({ slice, padding, measured, store }) {
     return null;
   }
 
-  bounds.baseline = "top";
+  bounds.baseline = 'top';
 
   pad(bounds, padding);
 
@@ -163,7 +163,7 @@ function getHorizontalIntoSliceRect({ slice, padding, measured }) {
     return null;
   }
 
-  bounds.baseline = "top";
+  bounds.baseline = 'top';
 
   let startLine = {
     x1: 0,
@@ -219,10 +219,10 @@ function getRotatedInsideSliceRect({ slice, measured, padding }) {
   };
   if (middle < Math.PI) {
     bounds.angle = middle - Math.PI / 2;
-    bounds.anchor = "end";
+    bounds.anchor = 'end';
   } else {
     bounds.angle = middle + Math.PI / 2;
-    bounds.anchor = "start";
+    bounds.anchor = 'start';
   }
   return bounds;
 }
@@ -275,10 +275,10 @@ function getRotatedOusideSliceRect({ slice, measured, padding, view }) {
   };
   if (middle < Math.PI) {
     bounds.angle = middle - Math.PI / 2;
-    bounds.anchor = "start";
+    bounds.anchor = 'start';
   } else {
     bounds.angle = middle + Math.PI / 2;
-    bounds.anchor = "end";
+    bounds.anchor = 'end';
   }
   return bounds;
 }
@@ -314,7 +314,7 @@ function adjustBounds(bounds, context, slice) {
         if (dy > LIMIT) {
           let r = outerRadius + LINE_PADDING;
           bounds.line = {
-            type: "line",
+            type: 'line',
             x1: bounds.x - LINE_PADDING,
             y1: bounds.y + LINE_PADDING,
             x2: offset.x + Math.sin(middle) * r,
@@ -332,7 +332,7 @@ function adjustBounds(bounds, context, slice) {
         if (dy > LIMIT) {
           let r = outerRadius + LINE_PADDING;
           bounds.line = {
-            type: "line",
+            type: 'line',
             x1: bounds.x - LINE_PADDING,
             y1: bounds.y - LINE_PADDING,
             x2: offset.x + Math.sin(middle) * r,
@@ -350,7 +350,7 @@ function adjustBounds(bounds, context, slice) {
         if (dy > LIMIT) {
           let r = outerRadius + LINE_PADDING;
           bounds.line = {
-            type: "line",
+            type: 'line',
             x1: bounds.x + LINE_PADDING,
             y1: bounds.y - LINE_PADDING,
             x2: offset.x + Math.sin(middle) * r,
@@ -368,7 +368,7 @@ function adjustBounds(bounds, context, slice) {
         if (dy > LIMIT) {
           let r = outerRadius + LINE_PADDING;
           bounds.line = {
-            type: "line",
+            type: 'line',
             x1: bounds.x + LINE_PADDING,
             y1: bounds.y + LINE_PADDING,
             x2: offset.x + Math.sin(middle) * r,
@@ -450,9 +450,9 @@ function getHorizontalOusideSliceRect({ slice, measured, padding, view, context 
   };
 
   if (middle < Math.PI) {
-    bounds.anchor = "start";
+    bounds.anchor = 'start';
   } else {
-    bounds.anchor = "end";
+    bounds.anchor = 'end';
   }
 
   return bounds;
@@ -470,14 +470,14 @@ function cbContext(node, chart) {
 
 function placeTextOnPoint(rect, text, opts) {
   const label = {
-    type: "text",
+    type: 'text',
     text,
     maxWidth: rect.width,
     x: rect.x,
-    y: rect.y + (rect.baseline === "top" ? rect.height / 2 : 0),
+    y: rect.y + (rect.baseline === 'top' ? rect.height / 2 : 0),
     fill: opts.fill,
-    anchor: rect.anchor || "start",
-    baseline: "middle",
+    anchor: rect.anchor || 'start',
+    baseline: 'middle',
     fontSize: `${opts.fontSize}px`,
     fontFamily: opts.fontFamily,
   };
@@ -496,21 +496,21 @@ export function getSliceRect({ slice, direction, position, padding, measured, vi
   let bounds;
   let s;
   switch (position) {
-    case "into":
-      if (direction === "rotate") {
+    case 'into':
+      if (direction === 'rotate') {
         bounds = getRotatedInsideSliceRect({ slice, measured, padding });
       } else {
         bounds = getHorizontalIntoSliceRect({ slice, measured, padding });
       }
       break;
-    case "inside":
+    case 'inside':
       s = {
         start,
         end,
         innerRadius: 0,
         outerRadius: innerRadius,
       };
-      if (direction === "rotate") {
+      if (direction === 'rotate') {
         bounds = getRotatedInsideSliceRect({ slice: s, measured, padding });
       } else {
         bounds = getHorizontalInsideSliceRect({
@@ -521,8 +521,8 @@ export function getSliceRect({ slice, direction, position, padding, measured, vi
         });
       }
       break;
-    case "outside":
-      if (direction === "rotate") {
+    case 'outside':
+      if (direction === 'rotate') {
         bounds = getRotatedOusideSliceRect({
           slice,
           measured,
@@ -540,12 +540,12 @@ export function getSliceRect({ slice, direction, position, padding, measured, vi
       }
       break;
     default:
-      throw new Error("not implemented");
+      throw new Error('not implemented');
   }
   if (bounds) {
     bounds.x += offset.x;
     bounds.y += offset.y;
-    if (position === "outside" && direction !== "rotate") {
+    if (position === 'outside' && direction !== 'rotate') {
       adjustBounds(bounds, context, slice);
     }
   }
@@ -554,7 +554,7 @@ export function getSliceRect({ slice, direction, position, padding, measured, vi
 
 function findBestPlacement(
   { context, direction, measured, node, placementSettings, rect, store },
-  sliceRect = getSliceRect,
+  sliceRect = getSliceRect
 ) {
   for (let p = 0; p < placementSettings.length; p++) {
     let placement = placementSettings[p];
@@ -636,7 +636,7 @@ function measureText(text, stgns, renderer) {
       text: `${text[0]}…`,
       fontFamily,
       fontSize,
-    }).width,
+    }).width
   );
 
   return metrics;
@@ -664,17 +664,17 @@ function measureText(text, stgns, renderer) {
 export function slices(
   { settings, chart, nodes, rect, renderer, style },
   findPlacement = findBestPlacement,
-  placer = placeTextOnPoint,
+  placer = placeTextOnPoint
 ) {
   const defaults = extend(
     {
       fontSize: 12,
-      fontFamily: "Arial",
-      fill: "#333",
+      fontFamily: 'Arial',
+      fill: '#333',
       padding: 4,
-      position: "into",
+      position: 'into',
     },
-    style.label,
+    style.label
   );
 
   defaults.fontSize = parseInt(defaults.fontSize, 10);
@@ -682,7 +682,7 @@ export function slices(
   const labelSettings = settings.labels.map((labelSetting) => extend({}, defaults, settings, labelSetting));
 
   const placementSettings = settings.labels.map((labelSetting) =>
-    labelSetting.placements.map((placement) => extend({}, defaults, settings, labelSetting, placement)),
+    labelSetting.placements.map((placement) => extend({}, defaults, settings, labelSetting, placement))
   );
 
   const labels = [];
@@ -699,13 +699,13 @@ export function slices(
 
     for (let j = 0; j < labelSettings.length; j++) {
       const lblStngs = labelSettings[j];
-      const text = typeof lblStngs.label === "function" ? lblStngs.label(arg, i) : "";
+      const text = typeof lblStngs.label === 'function' ? lblStngs.label(arg, i) : '';
       if (!text) {
         continue;
       }
       const direction =
-        typeof lblStngs.direction === "function" ? lblStngs.direction(arg, i) : lblStngs.direction || "horizontal";
-      const linkData = typeof lblStngs.linkData === "function" ? lblStngs.linkData(arg, i) : undefined;
+        typeof lblStngs.direction === 'function' ? lblStngs.direction(arg, i) : lblStngs.direction || 'horizontal';
+      const linkData = typeof lblStngs.linkData === 'function' ? lblStngs.linkData(arg, i) : undefined;
       const measured = measureText(text, lblStngs, renderer);
       const bestPlacement = findPlacement({
         context,
@@ -722,7 +722,7 @@ export function slices(
       const placement = bestPlacement.placement;
 
       if (bounds && placement) {
-        if (placement.position === "outside" && direction !== "rotate") {
+        if (placement.position === 'outside' && direction !== 'rotate') {
           updateContext({ context, node, bounds });
 
           const topLeftBounds = getTopLeftBounds(bounds);
@@ -732,7 +732,7 @@ export function slices(
           }
         }
 
-        const fill = typeof placement.fill === "function" ? placement.fill(arg, i) : placement.fill;
+        const fill = typeof placement.fill === 'function' ? placement.fill(arg, i) : placement.fill;
 
         const label = placer(bounds, text, {
           fill,
@@ -742,7 +742,7 @@ export function slices(
         });
 
         if (label) {
-          if (typeof linkData !== "undefined") {
+          if (typeof linkData !== 'undefined') {
             label.data = linkData;
           }
           labels.push(label);

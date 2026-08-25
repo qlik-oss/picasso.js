@@ -1,7 +1,7 @@
 packages:
-  - "docs"
-  - "packages/*"
-  - "plugins/*"
+  - 'docs'
+  - 'packages/*'
+  - 'plugins/*'
 
 allowBuilds:
   nx: false

@@ -1,7 +1,7 @@
-import { parsePath } from "path2d";
-import arcToCenter, { PI_X2 } from "../math/arc-to-center";
-import cubicCurveToPoints from "../math/cubic-bezier-curve-interpolation";
-import quadCurveToPoints from "../math/quad-bezier-curve-interpolation";
+import { parsePath } from 'path2d';
+import arcToCenter, { PI_X2 } from '../math/arc-to-center';
+import cubicCurveToPoints from '../math/cubic-bezier-curve-interpolation';
+import quadCurveToPoints from '../math/quad-bezier-curve-interpolation';
 
 const EPSILON = 1e-12;
 
@@ -38,7 +38,7 @@ function arcToPoints(s, startX, startY) {
   let sweepAngle;
   let startAngle;
 
-  if (s[0] === "a") {
+  if (s[0] === 'a') {
     endX += startX;
     endY += startY;
   }
@@ -63,7 +63,7 @@ function arcToPoints(s, startX, startY) {
     endX,
     endY,
     startX,
-    startY,
+    startY
   ));
 
   // Approximation of perimeter
@@ -112,87 +112,87 @@ export default function pathToPoints(path) {
     const pathType = cmd[0];
 
     // Reset control point if command is not cubic
-    if (pathType !== "S" && pathType !== "s" && pathType !== "C" && pathType !== "c") {
+    if (pathType !== 'S' && pathType !== 's' && pathType !== 'C' && pathType !== 'c') {
       cpx = null;
       cpy = null;
     }
 
-    if (pathType !== "T" && pathType !== "t" && pathType !== "Q" && pathType !== "q") {
+    if (pathType !== 'T' && pathType !== 't' && pathType !== 'Q' && pathType !== 'q') {
       qcpx = null;
       qcpy = null;
     }
 
     switch (pathType) {
-      case "m":
+      case 'm':
         if (points.length) {
           segments.push(points.splice(0));
         }
       // Fall through
-      case "l":
+      case 'l':
         x += cmd[1];
         y += cmd[2];
         points.push({ x, y });
         break;
-      case "M":
+      case 'M':
         if (points.length) {
           segments.push(points.splice(0));
         }
       // Fall through
-      case "L":
+      case 'L':
         x = cmd[1];
         y = cmd[2];
         points.push({ x, y });
         break;
-      case "H":
+      case 'H':
         x = cmd[1];
         points.push({ x, y });
         break;
-      case "h":
+      case 'h':
         x += cmd[1];
         points.push({ x, y });
         break;
-      case "V":
+      case 'V':
         y = cmd[1];
         points.push({ x, y });
         break;
-      case "v":
+      case 'v':
         y += cmd[1];
         points.push({ x, y });
         break;
-      case "a":
+      case 'a':
         points.push(...arcToPoints(cmd, x, y));
         x += cmd[6];
         y += cmd[7];
         break;
-      case "A":
+      case 'A':
         points.push(...arcToPoints(cmd, x, y));
         x = cmd[6];
         y = cmd[7];
         break;
-      case "c":
+      case 'c':
         points.push(
           ...cubicCurveToPoints(
             { x, y },
             { x: cmd[1] + x, y: cmd[2] + y },
             { x: cmd[3] + x, y: cmd[4] + y },
-            { x: cmd[5] + x, y: cmd[6] + y },
-          ),
+            { x: cmd[5] + x, y: cmd[6] + y }
+          )
         );
         cpx = cmd[3] + x; // Last control point
         cpy = cmd[4] + y;
         x += cmd[5];
         y += cmd[6];
         break;
-      case "C":
+      case 'C':
         points.push(
-          ...cubicCurveToPoints({ x, y }, { x: cmd[1], y: cmd[2] }, { x: cmd[3], y: cmd[4] }, { x: cmd[5], y: cmd[6] }),
+          ...cubicCurveToPoints({ x, y }, { x: cmd[1], y: cmd[2] }, { x: cmd[3], y: cmd[4] }, { x: cmd[5], y: cmd[6] })
         );
         cpx = cmd[3]; // Last control point
         cpy = cmd[4];
         x = cmd[5];
         y = cmd[6];
         break;
-      case "s":
+      case 's':
         if (cpx === null || cpx === null) {
           cpx = x;
           cpy = y;
@@ -203,15 +203,15 @@ export default function pathToPoints(path) {
             { x, y },
             { x: 2 * x - cpx, y: 2 * y - cpy },
             { x: cmd[1] + x, y: cmd[2] + y },
-            { x: cmd[3] + x, y: cmd[4] + y },
-          ),
+            { x: cmd[3] + x, y: cmd[4] + y }
+          )
         );
         cpx = cmd[1] + x; // last control point
         cpy = cmd[2] + y;
         x += cmd[3];
         y += cmd[4];
         break;
-      case "S":
+      case 'S':
         if (cpx === null || cpx === null) {
           cpx = x;
           cpy = y;
@@ -222,15 +222,15 @@ export default function pathToPoints(path) {
             { x, y },
             { x: 2 * x - cpx, y: 2 * y - cpy },
             { x: cmd[1], y: cmd[2] },
-            { x: cmd[3], y: cmd[4] },
-          ),
+            { x: cmd[3], y: cmd[4] }
+          )
         );
         cpx = cmd[1]; // last control point
         cpy = cmd[2];
         x = cmd[3];
         y = cmd[4];
         break;
-      case "Q":
+      case 'Q':
         points.push(...quadCurveToPoints({ x, y }, { x: cmd[1], y: cmd[2] }, { x: cmd[3], y: cmd[4] }));
 
         qcpx = cmd[1]; // last control point
@@ -238,7 +238,7 @@ export default function pathToPoints(path) {
         x = cmd[3];
         y = cmd[4];
         break;
-      case "q":
+      case 'q':
         points.push(...quadCurveToPoints({ x, y }, { x: cmd[1] + x, y: cmd[2] + y }, { x: cmd[3] + x, y: cmd[4] + y }));
 
         qcpx = cmd[1] + x; // last control point
@@ -246,7 +246,7 @@ export default function pathToPoints(path) {
         x += cmd[3];
         y += cmd[4];
         break;
-      case "T":
+      case 'T':
         if (qcpx === null || qcpx === null) {
           qcpx = x;
           qcpy = y;
@@ -259,7 +259,7 @@ export default function pathToPoints(path) {
         x = cmd[1];
         y = cmd[2];
         break;
-      case "t":
+      case 't':
         if (qcpx === null || qcpx === null) {
           qcpx = x;
           qcpy = y;
@@ -271,8 +271,8 @@ export default function pathToPoints(path) {
         x += cmd[1];
         y += cmd[2];
         break;
-      case "z":
-      case "Z":
+      case 'z':
+      case 'Z':
         if (points.length) {
           points.push({ x: points[0].x, y: points[0].y });
         }

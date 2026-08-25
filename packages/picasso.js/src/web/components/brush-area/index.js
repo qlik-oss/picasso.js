@@ -1,4 +1,4 @@
-import definition from "./brush-area";
+import definition from './brush-area';
 
 /**
  * A component that can brush a rectangular area
@@ -15,5 +15,5 @@ import definition from "./brush-area";
  */
 
 export default function areaBrush(picasso) {
-  picasso.component("brush-area", definition);
+  picasso.component('brush-area', definition);
 }

@@ -1,6 +1,6 @@
-import extend from "extend";
-import DisplayObject from "./display-object";
-import { rectToPoints, getMinMax } from "../../geometry/util";
+import extend from 'extend';
+import DisplayObject from './display-object';
+import { rectToPoints, getMinMax } from '../../geometry/util';
 
 /**
  * @private
@@ -18,7 +18,7 @@ import { rectToPoints, getMinMax } from "../../geometry/util";
 
 export default class Image extends DisplayObject {
   constructor(...s) {
-    super("image");
+    super('image');
     this.set(...s);
   }
 
@@ -41,26 +41,26 @@ export default class Image extends DisplayObject {
       symbol,
     } = v;
     let opts;
-    if (v.symbol === "circle") {
+    if (v.symbol === 'circle') {
       opts = extend(
         {
-          type: "circle",
+          type: 'circle',
           cx,
           cy,
           r,
         },
-        collider,
+        collider
       );
     } else {
       opts = extend(
         {
-          type: "bounds",
+          type: 'bounds',
           x,
           y,
           width,
           height,
         },
-        collider,
+        collider
       );
     }
     super.set(v);
@@ -96,8 +96,8 @@ export default class Image extends DisplayObject {
     this.attrs.cy = cy;
     this.attrs.opacity = opacity !== undefined ? opacity : 1;
     this.attrs.imageScalingFactor = imageScalingFactor !== undefined ? imageScalingFactor : 1;
-    this.attrs.imagePosition = imagePosition || "center-center";
-    this.attrs.symbol = symbol || "rectangle";
+    this.attrs.imagePosition = imagePosition || 'center-center';
+    this.attrs.symbol = symbol || 'rectangle';
     this.collider = opts;
     this.__boundingRect = { true: null, false: null };
     this.__bounds = { true: null, false: null };
@@ -110,16 +110,16 @@ export default class Image extends DisplayObject {
   // This function updates the collider properties based on the image attributes. This function is called in the rendering phase.
   updateCollider(img) {
     let opts;
-    if (img.symbol === "circle") {
+    if (img.symbol === 'circle') {
       opts = extend(this.collider, {
-        type: "circle",
+        type: 'circle',
         cx: img.cx,
         cy: img.cy,
         r: img.r,
       });
     } else {
       opts = extend(this.collider, {
-        type: "bounds",
+        type: 'bounds',
         x: img.x,
         y: img.y,
         width: img.width,
@@ -151,7 +151,7 @@ export default class Image extends DisplayObject {
     if (this.__bounds[includeTransform] !== null) {
       return this.__bounds[includeTransform];
     }
-    if (this._node.symbol === "circle") {
+    if (this._node.symbol === 'circle') {
       const rect = this.boundingRect(includeTransform);
       const r = Math.min(rect.width, rect.height) / 2;
       const cx = rect.x;

@@ -1,11 +1,11 @@
-import extend from "extend";
-import classString from "../../utils/class-string";
+import extend from 'extend';
+import classString from '../../utils/class-string';
 
 const DIR = {
-  up: "\u25B2",
-  right: "\u25B6",
-  down: "\u25BC",
-  left: "\u25C0",
+  up: '\u25B2',
+  right: '\u25B6',
+  down: '\u25BC',
+  left: '\u25C0',
 };
 
 function itemize({
@@ -15,7 +15,7 @@ function itemize({
 }) {
   return {
     layout: {
-      orientation: dock === "top" || dock === "bottom" ? "vertical" : "horizontal",
+      orientation: dock === 'top' || dock === 'bottom' ? 'vertical' : 'horizontal',
     },
     navigation,
   };
@@ -23,15 +23,15 @@ function itemize({
 
 function btn(h, { size, isActive, direction, nav, attrs }) {
   let c = {};
-  let content = "";
+  let content = '';
   const attrsMerged = attrs;
   if (nav && nav.button) {
-    if (typeof nav.button.class === "function") {
+    if (typeof nav.button.class === 'function') {
       c = nav.button.class({ direction });
     } else if (nav.button.class) {
       c = nav.button.class;
     }
-    if (typeof nav.button.content === "function") {
+    if (typeof nav.button.content === 'function') {
       content = nav.button.content(h, { direction });
     }
     if (nav.button.tabIndex !== undefined) {
@@ -46,35 +46,35 @@ function btn(h, { size, isActive, direction, nav, attrs }) {
 
   if (!Object.keys(c).length) {
     // if no classes are set, add some basic styling
-    style.border = "0";
-    style.background = "none";
+    style.border = '0';
+    style.background = 'none';
   }
 
   if (!isActive || (nav && nav.disabled)) {
-    attrsMerged.disabled = "disabled";
+    attrsMerged.disabled = 'disabled';
   }
 
   return h(
-    "button",
+    'button',
     extend(
       {
         class: classString(c),
         style,
       },
-      attrsMerged,
+      attrsMerged
     ),
     [
       content ||
         h(
-          "span",
+          'span',
           {
             style: {
-              pointerEvents: "none",
+              pointerEvents: 'none',
             },
           },
-          [DIR[direction]],
+          [DIR[direction]]
         ),
-    ],
+    ]
   );
 }
 
@@ -85,8 +85,8 @@ function render(renderer, { rect, itemRenderer }, itemized, legend) {
   renderer.size(rect);
   const h = renderer.renderArgs[0];
 
-  const isVertical = itemized.layout.orientation === "vertical"; // orientation of the navigation (not the legend)
-  const isRtl = itemRenderer.direction() === "rtl";
+  const isVertical = itemized.layout.orientation === 'vertical'; // orientation of the navigation (not the legend)
+  const isRtl = itemRenderer.direction() === 'rtl';
 
   const hasNext = itemRenderer.hasNext();
   const hasPrev = itemRenderer.hasPrev();
@@ -98,7 +98,7 @@ function render(renderer, { rect, itemRenderer }, itemized, legend) {
 
   const buttonSize = 32;
 
-  const order = isVertical ? ["right", "left"] : ["down", "up"];
+  const order = isVertical ? ['right', 'left'] : ['down', 'up'];
 
   if (isRtl && isVertical) {
     order.reverse();
@@ -106,17 +106,17 @@ function render(renderer, { rect, itemRenderer }, itemized, legend) {
 
   const nodes = [
     h(
-      "div",
+      'div',
       {
         style: {
-          position: "relative",
-          display: "flex",
-          "flex-direction": isVertical ? "column" : "row",
-          "justify-content": "center",
-          height: "100%",
-          pointerEvents: "auto",
+          position: 'relative',
+          display: 'flex',
+          'flex-direction': isVertical ? 'column' : 'row',
+          'justify-content': 'center',
+          height: '100%',
+          pointerEvents: 'auto',
         },
-        dir: isRtl && !isVertical ? "rtl" : "ltr",
+        dir: isRtl && !isVertical ? 'rtl' : 'ltr',
       },
       [
         btn(h, {
@@ -124,8 +124,8 @@ function render(renderer, { rect, itemRenderer }, itemized, legend) {
           isActive: hasNext,
           direction: order[0],
           attrs: {
-            "data-action": "next",
-            "data-component-key": legend.settings.key,
+            'data-action': 'next',
+            'data-component-key': legend.settings.key,
           },
           nav: itemized.navigation,
         }),
@@ -134,12 +134,12 @@ function render(renderer, { rect, itemRenderer }, itemized, legend) {
           isActive: hasPrev,
           direction: order[1],
           attrs: {
-            "data-action": "prev",
-            "data-component-key": legend.settings.key,
+            'data-action': 'prev',
+            'data-component-key': legend.settings.key,
           },
           nav: itemized.navigation,
         }),
-      ],
+      ]
     ),
   ];
   renderer.render(nodes);

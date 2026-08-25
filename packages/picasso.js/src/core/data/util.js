@@ -1,5 +1,5 @@
 export function findField(query, { cache }) {
-  if (typeof query === "number") {
+  if (typeof query === 'number') {
     return cache.fields[query];
   }
 
@@ -19,7 +19,7 @@ export function findField(query, { cache }) {
 }
 
 const filters = {
-  numeric: (values) => values.filter((v) => typeof v === "number" && !isNaN(v)),
+  numeric: (values) => values.filter((v) => typeof v === 'number' && !isNaN(v)),
 };
 
 const unfilteredReducers = {
@@ -61,23 +61,23 @@ export const reducers = {
 function normalizeProperties(cfg, dataset, dataProperties, main) {
   // console.log('======', cfg, main, dataset);
   const props = {};
-  const mainField = main.field || (typeof cfg.field !== "undefined" ? dataset.field(cfg.field) : null);
+  const mainField = main.field || (typeof cfg.field !== 'undefined' ? dataset.field(cfg.field) : null);
   Object.keys(dataProperties).forEach((key) => {
     const pConfig = dataProperties[key];
     const prop = (props[key] = {});
-    if (["number", "string", "boolean"].indexOf(typeof pConfig) !== -1) {
-      prop.type = "primitive";
+    if (['number', 'string', 'boolean'].indexOf(typeof pConfig) !== -1) {
+      prop.type = 'primitive';
       prop.value = pConfig;
-    } else if (typeof pConfig === "function") {
-      prop.type = "function";
+    } else if (typeof pConfig === 'function') {
+      prop.type = 'function';
       prop.value = pConfig;
       prop.label = pConfig;
       prop.field = mainField;
-    } else if (typeof pConfig === "object") {
+    } else if (typeof pConfig === 'object') {
       if (pConfig.fields) {
         prop.fields = pConfig.fields.map((ff) => normalizeProperties(cfg, dataset, { main: ff }, main).main);
-      } else if (typeof pConfig.field !== "undefined") {
-        prop.type = "field";
+      } else if (typeof pConfig.field !== 'undefined') {
+        prop.type = 'field';
         prop.field = dataset.field(pConfig.field);
         prop.value = prop.field.value;
         prop.label = prop.field.label;
@@ -87,30 +87,30 @@ function normalizeProperties(cfg, dataset, dataProperties, main) {
         prop.field = mainField;
       }
 
-      if (typeof pConfig.filter === "function") {
+      if (typeof pConfig.filter === 'function') {
         prop.filter = pConfig.filter;
       }
-      if (typeof pConfig.value !== "undefined") {
+      if (typeof pConfig.value !== 'undefined') {
         prop.value = pConfig.value;
       }
-      if (typeof pConfig.label !== "undefined") {
+      if (typeof pConfig.label !== 'undefined') {
         prop.label = pConfig.label;
       }
-      if (typeof pConfig.reduce === "function") {
+      if (typeof pConfig.reduce === 'function') {
         prop.reduce = pConfig.reduce;
       } else if (pConfig.reduce) {
         prop.reduce = reducers[pConfig.reduce];
       } else if (prop.field && prop.field.reduce) {
-        prop.reduce = typeof prop.field.reduce === "string" ? reducers[prop.field.reduce] : prop.field.reduce;
+        prop.reduce = typeof prop.field.reduce === 'string' ? reducers[prop.field.reduce] : prop.field.reduce;
       }
 
-      if (typeof pConfig.reduceLabel === "function") {
+      if (typeof pConfig.reduceLabel === 'function') {
         prop.reduceLabel = pConfig.reduceLabel;
       } else if (pConfig.reduceLabel) {
         prop.reduceLabel = reducers[pConfig.reduceLabel];
       } else if (prop.field && prop.field.reduceLabel) {
         prop.reduceLabel =
-          typeof prop.field.reduceLabel === "string" ? reducers[prop.field.reduceLabel] : prop.field.reduceLabel;
+          typeof prop.field.reduceLabel === 'string' ? reducers[prop.field.reduceLabel] : prop.field.reduceLabel;
       }
     }
   });
@@ -159,7 +159,7 @@ export function getPropsInfo(cfg, dataset) {
         filter: cfg.filter,
       },
     },
-    {},
+    {}
   );
   const props = normalizeProperties(cfg, dataset, cfg.props || {}, main);
   return { props, main };
@@ -214,14 +214,14 @@ export function collect(trackedItems, { main, propsArr, props }) {
         ret[prop] = collectItems(t.items, props[prop], propsFormatters[prop], prop);
       });
       return ret;
-    }),
+    })
   );
 
   return dataItems;
 }
 
 export function track({ cfg, itemData, obj, target, tracker, trackType }) {
-  const trackId = trackType === "function" ? cfg.trackBy(itemData) : itemData[cfg.trackBy];
+  const trackId = trackType === 'function' ? cfg.trackBy(itemData) : itemData[cfg.trackBy];
   let trackedItem = tracker[trackId];
   if (!trackedItem) {
     trackedItem = tracker[trackId] = {

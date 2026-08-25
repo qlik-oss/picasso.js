@@ -1,7 +1,7 @@
-import element from "test-utils/mocks/element-mock";
-import renderer from "../dom-renderer";
+import element from 'test-utils/mocks/element-mock';
+import renderer from '../dom-renderer';
 
-describe("dom renderer", () => {
+describe('dom renderer', () => {
   let sandbox;
   let rend;
 
@@ -17,41 +17,41 @@ describe("dom renderer", () => {
     sandbox.restore();
   });
 
-  it("should be a function", () => {
-    expect(renderer).to.be.a("function");
+  it('should be a function', () => {
+    expect(renderer).to.be.a('function');
   });
 
-  it("should set rendererSettings correctly", () => {
+  it('should set rendererSettings correctly', () => {
     const rendererSettings = {
       transform: () => {},
-      irrelevantSetting: "irrelevant!",
+      irrelevantSetting: 'irrelevant!',
     };
     rend.settings(rendererSettings);
     expect(rend.settings()).to.eql({ disableScreenReader: false, transform: rendererSettings.transform });
   });
 
-  it("should set rendererSettings correctly", () => {
+  it('should set rendererSettings correctly', () => {
     const rendererSettings = {
       disableScreenReader: true,
       transform: () => {},
-      irrelevantSetting: "irrelevant!",
+      irrelevantSetting: 'irrelevant!',
     };
     rend.settings(rendererSettings);
     expect(rend.settings()).to.eql({ disableScreenReader: true, transform: rendererSettings.transform });
   });
 
-  describe("appendTo", () => {
-    it("should append root node to element", () => {
-      const el = element("div");
+  describe('appendTo', () => {
+    it('should append root node to element', () => {
+      const el = element('div');
       rend.appendTo(el);
 
-      expect(rend.element().name).to.equal("div");
+      expect(rend.element().name).to.equal('div');
       expect(rend.element().parentElement).to.equal(el);
     });
 
-    it("should not create new root if it already exists", () => {
-      const el = element("div");
-      const el2 = element("div");
+    it('should not create new root if it already exists', () => {
+      const el = element('div');
+      const el2 = element('div');
       rend.appendTo(el);
       const rendEl = rend.element();
       rend.appendTo(el2);
@@ -59,16 +59,16 @@ describe("dom renderer", () => {
       expect(rend.element()).to.equal(rendEl);
     });
 
-    it("should apply font smoothing", () => {
-      const el = element("div");
+    it('should apply font smoothing', () => {
+      const el = element('div');
       rend.appendTo(el);
 
-      expect(rend.element().style["-webkit-font-smoothing"]).to.equal("antialiased");
-      expect(rend.element().style["-moz-osx-font-smoothing"]).to.equal("antialiased");
+      expect(rend.element().style['-webkit-font-smoothing']).to.equal('antialiased');
+      expect(rend.element().style['-moz-osx-font-smoothing']).to.equal('antialiased');
     });
   });
 
-  describe("render", () => {
+  describe('render', () => {
     /*
     let item;
 
@@ -77,11 +77,11 @@ describe("dom renderer", () => {
     });
     */
 
-    it("should not render before appending", () => {
+    it('should not render before appending', () => {
       expect(rend.render()).to.equal(false);
     });
 
-    it("should apply transform if provided", () => {
+    it('should apply transform if provided', () => {
       const rendererSettings = {
         transform: () => ({
           horizontalScaling: 1,
@@ -91,13 +91,13 @@ describe("dom renderer", () => {
           horizontalMoving: 100,
           verticalMoving: 100,
         }),
-        irrelevantSetting: "irrelevant!",
+        irrelevantSetting: 'irrelevant!',
       };
       rend.settings(rendererSettings);
-      rend.appendTo(element("div"));
+      rend.appendTo(element('div'));
       rend.render();
       const el = rend.element();
-      expect(el.style.transform).to.equal("matrix(1, 0, 1, 0, 100, 100)");
+      expect(el.style.transform).to.equal('matrix(1, 0, 1, 0, 100, 100)');
     });
 
     /*
@@ -116,11 +116,11 @@ describe("dom renderer", () => {
     */
   });
 
-  describe("clear", () => {
-    it("should remove all elements", () => {
-      rend.appendTo(element("div"));
-      rend.root().appendChild(element("div"));
-      rend.root().appendChild(element("span"));
+  describe('clear', () => {
+    it('should remove all elements', () => {
+      rend.appendTo(element('div'));
+      rend.root().appendChild(element('div'));
+      rend.root().appendChild(element('span'));
       expect(rend.root().children.length).to.equal(2);
 
       rend.clear();
@@ -129,9 +129,9 @@ describe("dom renderer", () => {
     });
   });
 
-  describe("destroy", () => {
-    it("should detach root from its parent", () => {
-      const parent = element("div");
+  describe('destroy', () => {
+    it('should detach root from its parent', () => {
+      const parent = element('div');
       rend.appendTo(parent);
       expect(rend.element().parentElement).to.equal(parent);
       rend.destroy();
@@ -140,7 +140,7 @@ describe("dom renderer", () => {
       expect(parent.children.length).to.equal(0);
     });
 
-    it("should not throw error if root does not exist", () => {
+    it('should not throw error if root does not exist', () => {
       const fn = () => {
         rend.destroy();
       };
@@ -148,9 +148,9 @@ describe("dom renderer", () => {
     });
   });
 
-  describe("size", () => {
-    it("should return current size if no parameters are given", () => {
-      rend.appendTo(element("div"));
+  describe('size', () => {
+    it('should return current size if no parameters are given', () => {
+      rend.appendTo(element('div'));
       rend.size({
         x: 50,
         y: 100,
@@ -188,7 +188,7 @@ describe("dom renderer", () => {
       });
     });
 
-    it("should ignore NaN values and fallback to default size value", () => {
+    it('should ignore NaN values and fallback to default size value', () => {
       rend.size({
         x: undefined,
         y: undefined,
@@ -227,14 +227,14 @@ describe("dom renderer", () => {
     });
   });
 
-  describe("setKey", () => {
-    it("should set key attribute", () => {
-      const el = element("div");
-      const spy = sinon.spy(el, "setAttribute");
+  describe('setKey', () => {
+    it('should set key attribute', () => {
+      const el = element('div');
+      const spy = sinon.spy(el, 'setAttribute');
       rend.element = () => el;
       rend.setKey(123);
 
-      expect(spy).to.have.been.calledWith("data-key", 123);
+      expect(spy).to.have.been.calledWith('data-key', 123);
     });
   });
 });

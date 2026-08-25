@@ -1,6 +1,6 @@
-import extractor from "../extractor";
+import extractor from '../extractor';
 
-describe("extractor", () => {
+describe('extractor', () => {
   let context;
   let extractStub;
 
@@ -17,7 +17,7 @@ describe("extractor", () => {
     };
   });
 
-  it("should return extracted items", () => {
+  it('should return extracted items', () => {
     const nodes = [0, 1, 2];
     const items = extractor(nodes, context);
 

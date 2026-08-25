@@ -1,6 +1,6 @@
-import Matrix from "../matrix";
+import Matrix from '../matrix';
 
-describe("Matrix", () => {
+describe('Matrix', () => {
   let m;
 
   beforeEach(() => {
@@ -11,7 +11,7 @@ describe("Matrix", () => {
     m = null;
   });
 
-  it("should default to identity matrix", () => {
+  it('should default to identity matrix', () => {
     expect(m.elements).to.deep.equal([
       [1, 0, 0],
       [0, 1, 0],
@@ -20,7 +20,7 @@ describe("Matrix", () => {
     expect(m.isIdentity()).to.equal(true);
   });
 
-  it("should handle setting element values", () => {
+  it('should handle setting element values', () => {
     m.set([
       [2, 1, 2],
       [7, 1, 3],
@@ -33,7 +33,7 @@ describe("Matrix", () => {
     ]);
   });
 
-  it("should calculate addition", () => {
+  it('should calculate addition', () => {
     m.add(2);
     expect(m.elements).to.deep.equal([
       [3, 2, 2],
@@ -49,7 +49,7 @@ describe("Matrix", () => {
     ]);
   });
 
-  it("should calculate scalar multiplication", () => {
+  it('should calculate scalar multiplication', () => {
     m.set([
       [1, 2, 3],
       [4, 5, 6],
@@ -67,7 +67,7 @@ describe("Matrix", () => {
     ]);
   });
 
-  it("should reset the matrix to identity values", () => {
+  it('should reset the matrix to identity values', () => {
     m.set([
       [1, 2, 3],
       [4, 5, 6],
@@ -81,7 +81,7 @@ describe("Matrix", () => {
     ]);
   });
 
-  it("should calculate affine translation", () => {
+  it('should calculate affine translation', () => {
     m.set([
       [1, 2, 3],
       [4, 5, 6],
@@ -102,7 +102,7 @@ describe("Matrix", () => {
     ]);
   });
 
-  it("should calculate affine rotation", () => {
+  it('should calculate affine rotation', () => {
     m.set([
       [1, 2, 3],
       [4, 5, 6],
@@ -115,7 +115,7 @@ describe("Matrix", () => {
     // m.rotate( -Math.PI/2);
   });
 
-  it("should calculate affine scaling", () => {
+  it('should calculate affine scaling', () => {
     m.set([
       [1, 2, 3],
       [4, 5, 6],
@@ -143,7 +143,7 @@ describe("Matrix", () => {
     ]);
   });
 
-  it("should transpose the matrix", () => {
+  it('should transpose the matrix', () => {
     m.set([
       [1, 2, 3],
       [4, 5, 6],
@@ -164,7 +164,7 @@ describe("Matrix", () => {
     ]);
   });
 
-  it("should return determinant value", () => {
+  it('should return determinant value', () => {
     m.set([
       [2, 1, 2],
       [7, 1, 3],
@@ -180,7 +180,7 @@ describe("Matrix", () => {
     expect(m.determinant()).to.equal(0);
   });
 
-  it("should invert the matrix", () => {
+  it('should invert the matrix', () => {
     m.set([
       [2, 1, 2],
       [7, 1, 3],
@@ -200,7 +200,7 @@ describe("Matrix", () => {
     ]);
   });
 
-  it("should handle linear transformations", () => {
+  it('should handle linear transformations', () => {
     m.translate(10, 10);
     m.scale(2, 2);
     m.translate(-5, -5);
@@ -212,7 +212,7 @@ describe("Matrix", () => {
     ]);
   });
 
-  it("should handle transform by a six value coordinate system", () => {
+  it('should handle transform by a six value coordinate system', () => {
     m.transform(1, 2, 3, 4, 5, 6);
     expect(m.elements).to.deep.equal([
       [1, 3, 5],
@@ -221,7 +221,7 @@ describe("Matrix", () => {
     ]);
   });
 
-  it("should clone element values", () => {
+  it('should clone element values', () => {
     m.set([
       [2, 1, 2],
       [7, 1, 3],
@@ -235,7 +235,7 @@ describe("Matrix", () => {
     ]);
   });
 
-  it("should maintain a stack of transforms", () => {
+  it('should maintain a stack of transforms', () => {
     m.set([
       [2, 1, 2],
       [7, 1, 3],
@@ -260,7 +260,7 @@ describe("Matrix", () => {
     ]);
   });
 
-  it("should print nicely", () => {
-    expect(`${m}`).to.equal("1\t0\t0\n0\t1\t0\n0\t0\t1");
+  it('should print nicely', () => {
+    expect(`${m}`).to.equal('1\t0\t0\n0\t1\t0\n0\t0\t1');
   });
 });

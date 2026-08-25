@@ -1,9 +1,9 @@
-import { create } from "./display-objects";
-import Matrix from "../math/matrix";
-import resolveTransform from "./transform-resolver";
-import contextFactory from "./context";
+import { create } from './display-objects';
+import Matrix from '../math/matrix';
+import resolveTransform from './transform-resolver';
+import contextFactory from './context';
 
-const styleContext = contextFactory(["stroke", "fill", "strokeWidth", "opacity", "fontFamily", "fontSize", "baseline"]);
+const styleContext = contextFactory(['stroke', 'fill', 'strokeWidth', 'opacity', 'fontFamily', 'fontSize', 'baseline']);
 
 function doEvent(state, listeners) {
   if (!Array.isArray(listeners)) {
@@ -31,7 +31,7 @@ function traverse(items, parent, matrix, on) {
     updateState(state, i, items);
     doEvent(state, on.create);
 
-    disabled = typeof state.node.disabled === "function" ? state.node.disabled() : state.node.disabled;
+    disabled = typeof state.node.disabled === 'function' ? state.node.disabled() : state.node.disabled;
     if (disabled) {
       continue;
     }
@@ -67,7 +67,7 @@ function traverse(items, parent, matrix, on) {
 
 export default function scene({ items, stage, dpi, on = {} }) {
   if (!stage) {
-    stage = create("stage", dpi);
+    stage = create('stage', dpi);
   }
 
   traverse(items, stage, new Matrix(), on);

@@ -1,13 +1,13 @@
-import extend from "extend";
-import Node from "../node";
-import { create as geometry } from "../../geometry";
-import { create as geometryCollection } from "../../geometry/geometry-collection";
-import Matrix from "../../math/matrix";
-import resolveTransform from "../transform-resolver";
-import nodeSelector from "../node-selector";
-import createSceneNode from "../scene-node";
-import { resolveCollionsOnNode, hasCollisionOnNode } from "../collision-resolver";
-import { assignMappedAttribute } from "../attributes";
+import extend from 'extend';
+import Node from '../node';
+import { create as geometry } from '../../geometry';
+import { create as geometryCollection } from '../../geometry/geometry-collection';
+import Matrix from '../../math/matrix';
+import resolveTransform from '../transform-resolver';
+import nodeSelector from '../node-selector';
+import createSceneNode from '../scene-node';
+import { resolveCollionsOnNode, hasCollisionOnNode } from '../collision-resolver';
+import { assignMappedAttribute } from '../attributes';
 
 /**
  * @private
@@ -46,23 +46,23 @@ class DisplayObject extends Node {
 
     assignMappedAttribute(this.attrs, v);
 
-    if (typeof data !== "undefined") {
+    if (typeof data !== 'undefined') {
       this.data = data;
     }
 
-    if (typeof desc === "object") {
+    if (typeof desc === 'object') {
       this.desc = extend(true, {}, desc);
     }
 
-    if (typeof tag === "string") {
+    if (typeof tag === 'string') {
       this.tag = tag;
     }
 
-    if (typeof strokeReference === "string") {
+    if (typeof strokeReference === 'string') {
       this.strokeReference = strokeReference;
     }
 
-    if (typeof fillReference === "string") {
+    if (typeof fillReference === 'string') {
       this.fillReference = fillReference;
     }
   }
@@ -100,7 +100,7 @@ class DisplayObject extends Node {
   }
 
   resolveLocalTransform(m = new Matrix()) {
-    if (typeof this.attrs.transform !== "undefined") {
+    if (typeof this.attrs.transform !== 'undefined') {
       resolveTransform(this.attrs.transform, m);
     }
     this.modelViewMatrix = m.clone();
@@ -193,8 +193,8 @@ class DisplayObject extends Node {
   }
 
   set collider(definition) {
-    const type = Array.isArray(definition) ? "collection" : definition && definition.type;
-    if (typeof type !== "string") {
+    const type = Array.isArray(definition) ? 'collection' : definition && definition.type;
+    if (typeof type !== 'string') {
       // Non string type definition resets the collider
       this._collider.type = null;
       this._collider.definition = null;
@@ -222,21 +222,21 @@ class DisplayObject extends Node {
 
     // Resolve geometry function and store it in cache
     switch (this._collider.type) {
-      case "collection":
+      case 'collection':
         this._collider.fn = geometryCollection(this._collider.definition);
         break;
-      case "frontChild": // TODO Deprecate
+      case 'frontChild': // TODO Deprecate
         // Front child is not resolved by a function on this node, but instead on one of its child nodes
         return true;
-      case "bounds":
-        this._collider.fn = geometry("rect", this.boundingRect());
+      case 'bounds':
+        this._collider.fn = geometry('rect', this.boundingRect());
         break;
-      case "line":
-      case "rect":
-      case "circle":
-      case "polygon":
-      case "geopolygon":
-      case "polyline":
+      case 'line':
+      case 'rect':
+      case 'circle':
+      case 'polygon':
+      case 'geopolygon':
+      case 'polyline':
         this._collider.fn = geometry(this._collider.type, this._collider.definition);
         break;
       default:

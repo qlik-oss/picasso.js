@@ -1,11 +1,11 @@
-import registry from "../../utils/registry";
-import linear from "../../scales/linear";
-import band from "../../scales/band";
-import hBand from "../../scales/h-band";
-import sequential from "../../scales/color/sequential";
-import threshold from "../../scales/color/threshold";
-import categorical from "../../scales/color/categorical";
-import extractData from "../../data/extractor";
+import registry from '../../utils/registry';
+import linear from '../../scales/linear';
+import band from '../../scales/band';
+import hBand from '../../scales/h-band';
+import sequential from '../../scales/color/sequential';
+import threshold from '../../scales/color/threshold';
+import categorical from '../../scales/color/categorical';
+import extractData from '../../data/extractor';
 
 /**
  * Definition for creating a scale. Additional properties, specific for a type of scale, can be added as key/value pairs
@@ -23,36 +23,36 @@ import extractData from "../../data/extractor";
 
 const scaleRegistry = registry();
 
-scaleRegistry("linear", linear);
-scaleRegistry("band", band);
-scaleRegistry("h-band", hBand);
-scaleRegistry("sequential-color", sequential);
-scaleRegistry("threshold-color", threshold);
-scaleRegistry("categorical-color", categorical);
+scaleRegistry('linear', linear);
+scaleRegistry('band', band);
+scaleRegistry('h-band', hBand);
+scaleRegistry('sequential-color', sequential);
+scaleRegistry('threshold-color', threshold);
+scaleRegistry('categorical-color', categorical);
 
 export default scaleRegistry;
 
 function getTypeFromMeta(fields) {
-  const types = fields.map((field) => (field.type() === "dimension" ? "band" : "linear"));
-  return types.indexOf("linear") !== -1 ? "linear" : "band";
+  const types = fields.map((field) => (field.type() === 'dimension' ? 'band' : 'linear'));
+  return types.indexOf('linear') !== -1 ? 'linear' : 'band';
 }
 
 function deduceScaleTypeFromData(data) {
   if (data.root) {
-    return "h-band";
+    return 'h-band';
   }
 
   if (data.fields && data.fields[0]) {
     return getTypeFromMeta(data.fields);
   }
-  return "linear";
+  return 'linear';
 }
 
 export function create(options, d, deps) {
   let dataSourceConfig = options.data;
   if (options.source) {
     // DEPRECATION
-    deps.logger.warn("Deprecated: Scale data source configuration");
+    deps.logger.warn('Deprecated: Scale data source configuration');
     dataSourceConfig = {
       extract: [],
     };
@@ -67,11 +67,11 @@ export function create(options, d, deps) {
   let type = options.type || deduceScaleTypeFromData(data);
   let s;
 
-  if (type === "color") {
-    if (data.fields && data.fields[0] && data.fields[0].type() === "dimension") {
-      type = "categorical-color";
+  if (type === 'color') {
+    if (data.fields && data.fields[0] && data.fields[0].type() === 'dimension') {
+      type = 'categorical-color';
     } else {
-      type = "sequential-color";
+      type = 'sequential-color';
     }
   }
 
@@ -89,9 +89,9 @@ export function collection(scalesConfig, data, deps, fn = create) {
   return {
     get(def) {
       let key;
-      if (typeof def === "string" && scalesConfig[def]) {
+      if (typeof def === 'string' && scalesConfig[def]) {
         key = def;
-      } else if (typeof def === "object" && "scale" in def && scalesConfig[def.scale]) {
+      } else if (typeof def === 'object' && 'scale' in def && scalesConfig[def.scale]) {
         key = def.scale;
       }
 

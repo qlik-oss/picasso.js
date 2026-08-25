@@ -1,8 +1,8 @@
-import { createTitleNode, generateStopNodes, createLegendRectNode, createTickNodes } from "./node-builder";
+import { createTitleNode, generateStopNodes, createLegendRectNode, createTickNodes } from './node-builder';
 
 function resolveAnchor(dock, anchor, map) {
   const mapped = map[dock];
-  if (typeof mapped === "object") {
+  if (typeof mapped === 'object') {
     if (mapped.valid.indexOf(anchor) !== -1) {
       return anchor;
     }
@@ -17,11 +17,11 @@ function resolveTickAnchor(settings) {
   const anchor = settings.settings.tick.anchor;
 
   const dockAnchorMap = {
-    left: { valid: ["left", "right"], default: "left" },
-    right: { valid: ["left", "right"], default: "right" },
-    top: { valid: ["top", "bottom"], default: "top" },
-    bottom: { valid: ["top", "bottom"], default: "bottom" },
-    default: "right",
+    left: { valid: ['left', 'right'], default: 'left' },
+    right: { valid: ['left', 'right'], default: 'right' },
+    top: { valid: ['top', 'bottom'], default: 'top' },
+    bottom: { valid: ['top', 'bottom'], default: 'bottom' },
+    default: 'right',
   };
 
   return resolveAnchor(dock, anchor, dockAnchorMap);
@@ -29,11 +29,11 @@ function resolveTickAnchor(settings) {
 
 function resolveTitleAnchor(settings) {
   const dockAnchorMap = {
-    left: { valid: ["top"], default: "top" },
-    right: { valid: ["top"], default: "top" },
-    top: { valid: ["left", "right"], default: "left" },
-    bottom: { valid: ["left", "right"], default: "left" },
-    default: "top",
+    left: { valid: ['top'], default: 'top' },
+    right: { valid: ['top'], default: 'top' },
+    top: { valid: ['left', 'right'], default: 'left' },
+    bottom: { valid: ['left', 'right'], default: 'left' },
+    default: 'top',
   };
 
   const dock = settings.layout.dock;
@@ -67,7 +67,7 @@ function getTicks(ctx, majorScale) {
   } else if (!labelFn && majorScale.data().fields) {
     labelFn = majorScale.data().fields[0].formatter();
   }
-  if (typeof labelFn === "function") {
+  if (typeof labelFn === 'function') {
     labels = values.map(labelFn).map(String);
   }
 
@@ -89,7 +89,7 @@ function getTicks(ctx, majorScale) {
 }
 
 function initState(ctx) {
-  const isVertical = ctx.settings.layout.dock !== "top" && ctx.settings.layout.dock !== "bottom";
+  const isVertical = ctx.settings.layout.dock !== 'top' && ctx.settings.layout.dock !== 'bottom';
   const titleStgns = ctx.stgns.title;
 
   const fillScale = ctx.chart.scale(ctx.stgns.fill);
@@ -97,9 +97,9 @@ function initState(ctx) {
   const tickValues = getTicks(ctx, majorScale);
   const tickAnchor = resolveTickAnchor(ctx.settings);
 
-  if (typeof titleStgns.text === "undefined") {
+  if (typeof titleStgns.text === 'undefined') {
     const fields = majorScale.data().fields;
-    titleStgns.text = fields && fields[0] ? fields[0].title() : "";
+    titleStgns.text = fields && fields[0] ? fields[0].title() : '';
   }
 
   const titleTextMetrics = ctx.renderer.measureText({
@@ -154,7 +154,7 @@ function initState(ctx) {
       anchor: tickAnchor,
       length: Math.min(Math.max(...tickValues.map((t) => t.textMetrics.width)), ctx.stgns.tick.maxLengthPx),
       requiredHeight: () =>
-        tickAnchor === "top"
+        tickAnchor === 'top'
           ? Math.max(...state.ticks.values.map((t) => t.textMetrics.height)) + ctx.stgns.tick.padding
           : 0,
       height: Math.max(...tickValues.map((t) => t.textMetrics.height)),
@@ -163,8 +163,8 @@ function initState(ctx) {
       fillScale,
       majorScale,
       length: () => {
-        const pos = isVertical ? "height" : "width";
-        const fnPos = isVertical ? "requiredHeight" : "requiredWidth";
+        const pos = isVertical ? 'height' : 'width';
+        const fnPos = isVertical ? 'requiredHeight' : 'requiredWidth';
         const len = Math.min(state.rect[pos], state.rect[pos] * ctx.stgns.length) - state.title[fnPos]();
         return Math.max(0, Math.min(len, ctx.stgns.maxLengthPx));
       },
@@ -213,11 +213,11 @@ function initState(ctx) {
  */
 
 const legendDef = {
-  require: ["chart", "settings", "renderer"],
+  require: ['chart', 'settings', 'renderer'],
   defaultSettings: {
     layout: {
       displayOrder: 0,
-      dock: "right",
+      dock: 'right',
     },
     settings: {
       size: 15,
@@ -233,9 +233,9 @@ const legendDef = {
       },
       tick: {
         label: null,
-        fill: "#595959",
-        fontSize: "12px",
-        fontFamily: "Arial",
+        fill: '#595959',
+        fontSize: '12px',
+        fontFamily: 'Arial',
         maxLengthPx: 100,
         anchor: null, // Use default based on dock
         padding: 5,
@@ -243,15 +243,15 @@ const legendDef = {
       title: {
         show: true,
         text: undefined,
-        fill: "#595959",
-        fontSize: "12px",
-        fontFamily: "Arial",
+        fill: '#595959',
+        fontSize: '12px',
+        fontFamily: 'Arial',
         maxLengthPx: 100,
         padding: 5,
         maxLines: 2,
-        wordBreak: "none",
+        wordBreak: 'none',
         lineHeight: 1.2,
-        hyphens: "auto",
+        hyphens: 'auto',
         anchor: null, // Use default based on dock
       },
     },
@@ -271,7 +271,7 @@ const legendDef = {
 
     // Append tick size
     const maxSize = Math.max(opts.inner.width, opts.inner.height);
-    if (state.ticks.anchor === "left" || state.ticks.anchor === "right") {
+    if (state.ticks.anchor === 'left' || state.ticks.anchor === 'right') {
       const tHeight = state.ticks.values.reduce((sum, t) => sum + t.textMetrics.height, 0);
       if (tHeight > this.state.legend.length()) {
         return maxSize;
@@ -288,7 +288,7 @@ const legendDef = {
 
     // Append or use title size
     if (this.stgns.title.show) {
-      if (state.title.anchor === "left" || state.title.anchor === "right") {
+      if (state.title.anchor === 'left' || state.title.anchor === 'right') {
         prefSize = Math.max(state.title.textBounds.height + paddings, prefSize);
       } else {
         prefSize = Math.max(prefSize, state.title.requiredWidth() + paddings);
@@ -323,8 +323,8 @@ const legendDef = {
 
     const targetNode = {
       // The target node enables range selection component to limit its range to a specific area
-      id: "legend-seq-target",
-      type: "container",
+      id: 'legend-seq-target',
+      type: 'container',
       children: [rectNode, tickNodes],
     };
 

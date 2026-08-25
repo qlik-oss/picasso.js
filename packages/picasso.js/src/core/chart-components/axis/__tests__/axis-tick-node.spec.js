@@ -1,6 +1,6 @@
-import buildTick from "../axis-tick-node";
+import buildTick from '../axis-tick-node';
 
-describe("Axis Tick Node", () => {
+describe('Axis Tick Node', () => {
   const innerRect = {
     x: 0,
     y: 0,
@@ -25,23 +25,23 @@ describe("Axis Tick Node", () => {
     outerRect.y = 0;
   });
 
-  describe("Tick", () => {
+  describe('Tick', () => {
     let buildOpts, tick, expected;
 
     beforeEach(() => {
       buildOpts = {
-        style: { strokeWidth: 1, stroke: "red" },
+        style: { strokeWidth: 1, stroke: 'red' },
         tickSize: 5,
-        align: "bottom",
+        align: 'bottom',
         padding: 10,
         innerRect,
         outerRect,
       };
       tick = { position: 0.5, value: 1.23 };
       expected = {
-        type: "line",
+        type: 'line',
         strokeWidth: 1,
-        stroke: "red",
+        stroke: 'red',
         x1: 0,
         x2: 0,
         y1: 0,
@@ -53,27 +53,27 @@ describe("Axis Tick Node", () => {
       };
     });
 
-    describe("Left align", () => {
+    describe('Left align', () => {
       beforeEach(() => {
-        buildOpts.align = "left";
+        buildOpts.align = 'left';
         expected.x1 = innerRect.width - buildOpts.padding;
         expected.x2 = innerRect.width - buildOpts.padding - buildOpts.tickSize;
       });
 
-      it("middle tick", () => {
+      it('middle tick', () => {
         expected.y1 = 50;
         expected.y2 = 50;
         expect(buildTick(tick, buildOpts)).to.deep.equal(expected);
       });
 
-      it("start tick", () => {
+      it('start tick', () => {
         tick.position = 0;
         expected.y1 = 0.5;
         expected.y2 = 0.5;
         expect(buildTick(tick, buildOpts)).to.deep.equal(expected);
       });
 
-      it("end tick", () => {
+      it('end tick', () => {
         tick.position = 1;
         expected.y1 = 99.5;
         expected.y2 = 99.5;
@@ -81,27 +81,27 @@ describe("Axis Tick Node", () => {
       });
     });
 
-    describe("Right align", () => {
+    describe('Right align', () => {
       beforeEach(() => {
-        buildOpts.align = "right";
+        buildOpts.align = 'right';
         expected.x1 = buildOpts.padding;
         expected.x2 = buildOpts.padding + buildOpts.tickSize;
       });
 
-      it("middle tick", () => {
+      it('middle tick', () => {
         expected.y1 = 50;
         expected.y2 = 50;
         expect(buildTick(tick, buildOpts)).to.deep.equal(expected);
       });
 
-      it("start tick", () => {
+      it('start tick', () => {
         tick.position = 0;
         expected.y1 = 0.5;
         expected.y2 = 0.5;
         expect(buildTick(tick, buildOpts)).to.deep.equal(expected);
       });
 
-      it("end tick", () => {
+      it('end tick', () => {
         tick.position = 1;
         expected.y1 = 99.5;
         expected.y2 = 99.5;
@@ -109,27 +109,27 @@ describe("Axis Tick Node", () => {
       });
     });
 
-    describe("Top align", () => {
+    describe('Top align', () => {
       beforeEach(() => {
-        buildOpts.align = "top";
+        buildOpts.align = 'top';
         expected.y1 = innerRect.height - buildOpts.padding;
         expected.y2 = innerRect.height - buildOpts.padding - buildOpts.tickSize;
       });
 
-      it("middle tick", () => {
+      it('middle tick', () => {
         expected.x1 = 25;
         expected.x2 = 25;
         expect(buildTick(tick, buildOpts)).to.deep.equal(expected);
       });
 
-      it("start tick", () => {
+      it('start tick', () => {
         tick.position = 0;
         expected.x1 = 0.5;
         expected.x2 = 0.5;
         expect(buildTick(tick, buildOpts)).to.deep.equal(expected);
       });
 
-      it("end tick", () => {
+      it('end tick', () => {
         tick.position = 1;
         expected.x1 = 49.5;
         expected.x2 = 49.5;
@@ -137,27 +137,27 @@ describe("Axis Tick Node", () => {
       });
     });
 
-    describe("Bottom align", () => {
+    describe('Bottom align', () => {
       beforeEach(() => {
-        buildOpts.align = "bottom";
+        buildOpts.align = 'bottom';
         expected.y1 = buildOpts.padding;
         expected.y2 = buildOpts.padding + buildOpts.tickSize;
       });
 
-      it("middle tick", () => {
+      it('middle tick', () => {
         expected.x1 = 25;
         expected.x2 = 25;
         expect(buildTick(tick, buildOpts)).to.deep.equal(expected);
       });
 
-      it("start tick", () => {
+      it('start tick', () => {
         tick.position = 0;
         expected.x1 = 0.5;
         expected.x2 = 0.5;
         expect(buildTick(tick, buildOpts)).to.deep.equal(expected);
       });
 
-      it("end tick", () => {
+      it('end tick', () => {
         tick.position = 1;
         expected.x1 = 49.5;
         expected.x2 = 49.5;

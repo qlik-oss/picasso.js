@@ -25,8 +25,8 @@ class Person {
    */
   name() {
     return {
-      first: "John",
-      last: "Doe",
+      first: 'John',
+      last: 'Doe',
     };
   }
 }
@@ -77,13 +77,13 @@ Properties of a struct can be annotated inline as part of the real object
 const DEFAULTS = {
   /** Fill color
    * @type {string=} */
-  fill: "red",
+  fill: 'red',
   /**
    * @typedef {object} */
   stroke: {
     /** Stroke color
      * @type {string=} */
-    color: "green",
+    color: 'green',
     /** Stroke width
      * @type {number=} */
     width: 1,

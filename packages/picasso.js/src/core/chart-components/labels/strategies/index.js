@@ -1,6 +1,6 @@
-import { bars } from "./bars";
-import { slices } from "./slices";
-import { rows } from "./rows";
+import { bars } from './bars';
+import { slices } from './slices';
+import { rows } from './rows';
 
 export default {
   bar: bars,

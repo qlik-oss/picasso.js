@@ -1,6 +1,6 @@
-import polylineToPolygonCollider from "../polyline-to-polygon-collider";
+import polylineToPolygonCollider from '../polyline-to-polygon-collider';
 
-describe("polygon to polygon collider", () => {
+describe('polygon to polygon collider', () => {
   let points;
   let radius;
   let opts;
@@ -10,18 +10,18 @@ describe("polygon to polygon collider", () => {
     opts = {};
   });
 
-  it("should handle empty array of points", () => {
+  it('should handle empty array of points', () => {
     points = [];
 
     const out = polylineToPolygonCollider(points, radius, opts);
 
     expect(out).to.eql({
-      type: "polygon",
+      type: 'polygon',
       vertices: [],
     });
   });
 
-  it("should ignore array if it contains less than 3 points", () => {
+  it('should ignore array if it contains less than 3 points', () => {
     points = [
       { x: 0, y: 0 },
       { x: 0, y: 0 },
@@ -30,12 +30,12 @@ describe("polygon to polygon collider", () => {
     const out = polylineToPolygonCollider(points, radius, opts);
 
     expect(out).to.eql({
-      type: "polygon",
+      type: 'polygon',
       vertices: [],
     });
   });
 
-  it("left to right line", () => {
+  it('left to right line', () => {
     /**
      * o-----o---->o
      */
@@ -63,7 +63,7 @@ describe("polygon to polygon collider", () => {
     });
   });
 
-  it("left to right line with forceOrientation", () => {
+  it('left to right line with forceOrientation', () => {
     /**
      * o-----o---->o
      */
@@ -74,7 +74,7 @@ describe("polygon to polygon collider", () => {
     ];
 
     opts = {
-      forceOrientation: "h",
+      forceOrientation: 'h',
     };
 
     const expected = [
@@ -99,7 +99,7 @@ describe("polygon to polygon collider", () => {
     });
   });
 
-  it("right to left line", () => {
+  it('right to left line', () => {
     /**
      * o<----o-----o
      */
@@ -127,7 +127,7 @@ describe("polygon to polygon collider", () => {
     });
   });
 
-  it("right to left line with forceOrientation", () => {
+  it('right to left line with forceOrientation', () => {
     /**
      * o<----o-----o
      */
@@ -138,7 +138,7 @@ describe("polygon to polygon collider", () => {
     ];
 
     opts = {
-      forceOrientation: "h",
+      forceOrientation: 'h',
     };
 
     const expected = [
@@ -163,7 +163,7 @@ describe("polygon to polygon collider", () => {
     });
   });
 
-  it("top to bottom line", () => {
+  it('top to bottom line', () => {
     points = [
       { x: 10, y: 10 },
       { x: 10, y: 20 },
@@ -188,7 +188,7 @@ describe("polygon to polygon collider", () => {
     });
   });
 
-  it("top to bottom line with forceOrientation", () => {
+  it('top to bottom line with forceOrientation', () => {
     points = [
       { x: 10, y: 10 },
       { x: 10, y: 20 },
@@ -196,7 +196,7 @@ describe("polygon to polygon collider", () => {
     ];
 
     opts = {
-      forceOrientation: "v",
+      forceOrientation: 'v',
     };
 
     const expected = [
@@ -221,7 +221,7 @@ describe("polygon to polygon collider", () => {
     });
   });
 
-  it("bottom to top line", () => {
+  it('bottom to top line', () => {
     points = [
       { x: 10, y: 10 },
       { x: 10, y: 0 },
@@ -246,7 +246,7 @@ describe("polygon to polygon collider", () => {
     });
   });
 
-  it("bottom to top line with forceOrientation", () => {
+  it('bottom to top line with forceOrientation', () => {
     points = [
       { x: 10, y: 10 },
       { x: 10, y: 0 },
@@ -254,7 +254,7 @@ describe("polygon to polygon collider", () => {
     ];
 
     opts = {
-      forceOrientation: "v",
+      forceOrientation: 'v',
     };
 
     const expected = [
@@ -279,7 +279,7 @@ describe("polygon to polygon collider", () => {
     });
   });
 
-  it("turn around vertical line", () => {
+  it('turn around vertical line', () => {
     points = [
       { x: 0, y: 0 },
       { x: 0, y: 10 },
@@ -307,7 +307,7 @@ describe("polygon to polygon collider", () => {
     });
   });
 
-  it("turn around hoprizontal line", () => {
+  it('turn around hoprizontal line', () => {
     points = [
       { x: 0, y: 0 },
       { x: 10, y: 0 },

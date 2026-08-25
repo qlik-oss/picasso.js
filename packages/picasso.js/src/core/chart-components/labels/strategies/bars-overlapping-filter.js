@@ -1,4 +1,4 @@
-import { testRectRect } from "../../../math/narrow-phase-collision";
+import { testRectRect } from '../../../math/narrow-phase-collision';
 
 /**
  * Using the basic example found here: https://en.wikipedia.org/wiki/Binary_search_algorithm
@@ -40,11 +40,11 @@ export function binaryLeftSearch(labelBounds, ary, coord, side, extractBounds) {
  */
 export default function filterOverlappingLabels(
   { orientation, targetNodes, labels, container },
-  findLeft = binaryLeftSearch,
+  findLeft = binaryLeftSearch
 ) {
   const renderLabels = [];
-  const coord = orientation === "v" ? "x" : "y";
-  const side = orientation === "v" ? "width" : "height";
+  const coord = orientation === 'v' ? 'x' : 'y';
+  const side = orientation === 'v' ? 'width' : 'height';
   const getTextBounds = (item) => item.textBounds;
   const getNodeBounds = (item) => item.node.localBounds;
 

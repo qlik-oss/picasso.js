@@ -3,7 +3,7 @@
 function getBasicEvent(event) {
   let ix;
   let ret;
-  ["start", "end"].forEach((s) => {
+  ['start', 'end'].forEach((s) => {
     ix = event.indexOf(s);
     if (ix >= 0) {
       ret = event.substring(0, ix);
@@ -89,13 +89,13 @@ class BaseGesture {
 
 class Tap extends BaseGesture {
   constructor(opts) {
-    opts.event = opts.event || "tap";
+    opts.event = opts.event || 'tap';
     super(opts);
   }
 }
 class Pan extends BaseGesture {
   constructor(opts) {
-    opts.event = opts.event || "pan";
+    opts.event = opts.event || 'pan';
     super(opts);
   }
 }

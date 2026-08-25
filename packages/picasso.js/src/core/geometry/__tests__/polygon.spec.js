@@ -1,7 +1,7 @@
-import { create } from "../polygon";
-import { rectToPoints, lineToPoints } from "../util";
+import { create } from '../polygon';
+import { rectToPoints, lineToPoints } from '../util';
 
-describe("Polygon", () => {
+describe('Polygon', () => {
   let polygon;
   const convexPolygon = [
     { x: 0, y: 25 },
@@ -33,14 +33,14 @@ describe("Polygon", () => {
     { x: 0, y: 0 },
   ];
 
-  describe("constructor", () => {
-    it("should set correct default values when no arguments passed", () => {
+  describe('constructor', () => {
+    it('should set correct default values when no arguments passed', () => {
       polygon = create();
       expect(polygon.vertices).to.deep.equal([]);
       expect(polygon.edges).to.deep.equal([]);
     });
 
-    it("should set the correct values when arguments passed", () => {
+    it('should set the correct values when arguments passed', () => {
       polygon = create({ vertices: convexPolygon });
       expect(polygon.vertices).to.deep.equal(convexPolygon);
       expect(polygon.edges).to.deep.equal([
@@ -59,7 +59,7 @@ describe("Polygon", () => {
       ]);
     });
 
-    it("should close edges if not already closed", () => {
+    it('should close edges if not already closed', () => {
       polygon = create({
         vertices: [
           { x: 0, y: 25 },
@@ -76,15 +76,15 @@ describe("Polygon", () => {
     });
   });
 
-  describe("set", () => {
-    it("should set correct default values when no arguments passed", () => {
+  describe('set', () => {
+    it('should set correct default values when no arguments passed', () => {
       polygon = create({ vertices: convexPolygon });
       polygon.set();
       expect(polygon.vertices).to.deep.equal([]);
       expect(polygon.edges).to.deep.equal([]);
     });
 
-    it("should set the correct values when arguments passed", () => {
+    it('should set the correct values when arguments passed', () => {
       polygon = create();
       polygon.set({ vertices: convexPolygon });
       expect(polygon.vertices).to.deep.equal(convexPolygon);
@@ -104,7 +104,7 @@ describe("Polygon", () => {
       ]);
     });
 
-    it("should remove any duplicate sibling vertices", () => {
+    it('should remove any duplicate sibling vertices', () => {
       polygon = create();
       polygon.set({
         vertices: [
@@ -127,8 +127,8 @@ describe("Polygon", () => {
     });
   });
 
-  describe("bounds", () => {
-    it("should return the correct bounds", () => {
+  describe('bounds', () => {
+    it('should return the correct bounds', () => {
       polygon = create({ vertices: selfIntersectingPolygon });
       expect(polygon.bounds()).to.deep.equal([
         { x: 0, y: 0 },
@@ -138,7 +138,7 @@ describe("Polygon", () => {
       ]);
     });
 
-    it("should handle negative points", () => {
+    it('should handle negative points', () => {
       polygon = create({
         vertices: [
           { x: -20, y: -10 },
@@ -155,8 +155,8 @@ describe("Polygon", () => {
     });
   });
 
-  describe("Intersection", () => {
-    describe("Point", () => {
+  describe('Intersection', () => {
+    describe('Point', () => {
       const poly1 = create({
         vertices: [
           { x: 1, y: 1 },
@@ -217,7 +217,7 @@ describe("Polygon", () => {
         ],
       });
 
-      it("convex polygon", () => {
+      it('convex polygon', () => {
         const inside = { x: 25, y: 12.5 }; // "center" of triangle
         const outside = { x: 75, y: 12.5 }; // "right" side of triangle
 
@@ -226,7 +226,7 @@ describe("Polygon", () => {
         expect(polygon.containsPoint(outside)).to.equal(false);
       });
 
-      it("concave polygon", () => {
+      it('concave polygon', () => {
         const outside = { x: 25, y: 35 };
         const inside = { x: 25, y: 25 };
 
@@ -235,7 +235,7 @@ describe("Polygon", () => {
         expect(polygon.containsPoint(outside)).to.equal(false);
       });
 
-      it("self-Intersecting polygon", () => {
+      it('self-Intersecting polygon', () => {
         const outside = { x: 25, y: 15 }; // in the concave area
         const inside = { x: 35, y: 25 }; // on a polygon edge in the concave area
         const atCross = { x: 25, y: 25 };
@@ -246,7 +246,7 @@ describe("Polygon", () => {
         expect(polygon.containsPoint(atCross)).to.equal(true);
       });
 
-      it("should not intersect if polygon contains less then 2 vertices", () => {
+      it('should not intersect if polygon contains less then 2 vertices', () => {
         const p = { x: 10, y: 10 };
 
         polygon = create({
@@ -255,7 +255,7 @@ describe("Polygon", () => {
         expect(polygon.containsPoint(p)).to.equal(false);
       });
 
-      it("should return true if the point is coincident with a vertex of the polygon", () => {
+      it('should return true if the point is coincident with a vertex of the polygon', () => {
         expect(poly1.containsPoint({ x: 1, y: 1 })).to.equal(true);
         expect(poly1.containsPoint({ x: 5, y: 1 })).to.equal(true);
         expect(poly1.containsPoint({ x: 1, y: 5 })).to.equal(true);
@@ -283,7 +283,7 @@ describe("Polygon", () => {
         expect(poly5.containsPoint({ x: 9, y: 5 })).to.equal(true);
         expect(poly5.containsPoint({ x: 9, y: 1 })).to.equal(true);
       });
-      it("should return true if the point is on an edge of the polygon", () => {
+      it('should return true if the point is on an edge of the polygon', () => {
         expect(poly1.containsPoint({ x: 2, y: 1 })).to.equal(true);
         expect(poly1.containsPoint({ x: 1, y: 2 })).to.equal(true);
         expect(poly1.containsPoint({ x: 3, y: 3 })).to.equal(true);
@@ -312,12 +312,12 @@ describe("Polygon", () => {
         expect(poly5.containsPoint({ x: 9, y: 3 })).to.equal(true);
         expect(poly5.containsPoint({ x: 5, y: 1 })).to.equal(true);
       });
-      it("should calculate that these points are outside", () => {
+      it('should calculate that these points are outside', () => {
         expect(poly1.containsPoint({ x: 10, y: 10 })).to.equal(false);
         expect(poly1.containsPoint({ x: 1, y: 10 })).to.equal(false);
         expect(poly1.containsPoint({ x: 4, y: 4 })).to.equal(false);
       });
-      it("should return true if the point is inside and the horizontal line of the point goes through a vertex of the polygon", () => {
+      it('should return true if the point is inside and the horizontal line of the point goes through a vertex of the polygon', () => {
         expect(poly2.containsPoint({ x: 2, y: 3 })).to.equal(true);
 
         expect(poly3.containsPoint({ x: 3, y: 3 })).to.equal(true);
@@ -330,14 +330,14 @@ describe("Polygon", () => {
         expect(poly6.containsPoint({ x: 5, y: 3 })).to.equal(true);
         expect(poly6.containsPoint({ x: 8, y: 3 })).to.equal(true);
       });
-      it("should return true if the point is inside and the horizontal line of the point goes through an edge of the polygon", () => {
+      it('should return true if the point is inside and the horizontal line of the point goes through an edge of the polygon', () => {
         expect(poly4.containsPoint({ x: 4, y: 3 })).to.equal(true);
       });
-      it("should return false if the point is outside and the horizontal line of the point goes through an edge of the polygon", () => {
+      it('should return false if the point is outside and the horizontal line of the point goes through an edge of the polygon', () => {
         expect(poly4.containsPoint({ x: 0, y: 3 })).to.equal(false);
         expect(poly4.containsPoint({ x: 6, y: 3 })).to.equal(false);
       });
-      it("should return false if the point is outside and the horizontal line of the point goes through a vertex of the polygon", () => {
+      it('should return false if the point is outside and the horizontal line of the point goes through a vertex of the polygon', () => {
         expect(poly2.containsPoint({ x: 0, y: 5 })).to.equal(false);
         expect(poly2.containsPoint({ x: 0, y: 3 })).to.equal(false);
         expect(poly2.containsPoint({ x: 0, y: 1 })).to.equal(false);
@@ -362,8 +362,8 @@ describe("Polygon", () => {
       });
     });
 
-    describe("intersectsCircle", () => {
-      it("convex polygon", () => {
+    describe('intersectsCircle', () => {
+      it('convex polygon', () => {
         const inside = { cx: 25, cy: 12.5, r: 2 }; // "center" of triangle
         const outside = { cx: 75, cy: 12.5, r: 2 }; // "right" side of triangle
         const circleCircumferenceIntersects = { cx: 1, cy: 1, r: 25 };
@@ -374,7 +374,7 @@ describe("Polygon", () => {
         expect(polygon.intersectsCircle(circleCircumferenceIntersects)).to.equal(true);
       });
 
-      it("concave polygon", () => {
+      it('concave polygon', () => {
         const inside = { cx: 25, cy: 12.5, r: 2 }; // "center" of triangle
         const outside = { cx: 75, cy: 12.5, r: 2 }; // "right" side of triangle
         const circleCircumferenceIntersects = { cx: 75, cy: 25, r: 35 };
@@ -385,7 +385,7 @@ describe("Polygon", () => {
         expect(polygon.intersectsCircle(circleCircumferenceIntersects)).to.equal(true);
       });
 
-      it("self-Intersecting polygon", () => {
+      it('self-Intersecting polygon', () => {
         const inside = { cx: 35, cy: 25, r: 2 }; // "center" of triangle
         const outside = { cx: 25, cy: 12.5, r: 2 }; // "right" side of triangle
         const circleCircumferenceIntersects = { cx: 25, cy: 12.5, r: 12 };
@@ -396,7 +396,7 @@ describe("Polygon", () => {
         expect(polygon.intersectsCircle(circleCircumferenceIntersects)).to.equal(true);
       });
 
-      it("should not intersect if polygon contains less then 2 vertices", () => {
+      it('should not intersect if polygon contains less then 2 vertices', () => {
         const c = { cx: 0, cy: 0, r: 2 };
 
         polygon = create({
@@ -406,8 +406,8 @@ describe("Polygon", () => {
       });
     });
 
-    describe("intersectsLine", () => {
-      it("should intersect line", () => {
+    describe('intersectsLine', () => {
+      it('should intersect line', () => {
         const line = {
           x1: 25,
           y1: 20,
@@ -419,8 +419,8 @@ describe("Polygon", () => {
       });
     });
 
-    describe("intersectsRect", () => {
-      it("should intersect rect", () => {
+    describe('intersectsRect', () => {
+      it('should intersect rect', () => {
         const rect = {
           x: 25,
           y: 10,
@@ -432,26 +432,26 @@ describe("Polygon", () => {
       });
     });
 
-    describe("intersectsPolygon", () => {
-      it("convex polygon", () => {
+    describe('intersectsPolygon', () => {
+      it('convex polygon', () => {
         polygon = create({ vertices: convexPolygon });
         const pgon2 = create({ vertices: convexPolygon.map((p) => ({ x: p.x + 3, y: p.y + 3 })) });
         expect(polygon.intersectsPolygon(pgon2)).to.be.true;
       });
 
-      it("concave polygon", () => {
+      it('concave polygon', () => {
         polygon = create({ vertices: concavePolygon });
         const pgon2 = create({ vertices: concavePolygon.map((p) => ({ x: p.x + 3, y: p.y + 3 })) });
         expect(polygon.intersectsPolygon(pgon2)).to.be.true;
       });
 
-      it("self-intersecting polygon", () => {
+      it('self-intersecting polygon', () => {
         polygon = create({ vertices: selfIntersectingPolygon });
         const pgon2 = create({ vertices: selfIntersectingPolygon.map((p) => ({ x: p.x + 3, y: p.y + 3 })) });
         expect(polygon.intersectsPolygon(pgon2)).to.be.true;
       });
 
-      it("fully contains another polygon, case 1", () => {
+      it('fully contains another polygon, case 1', () => {
         polygon = create({ vertices: selfIntersectingPolygon });
         const vertices = [
           { x: 3, y: 15 },
@@ -462,7 +462,7 @@ describe("Polygon", () => {
         expect(polygon.intersectsPolygon(pgon2)).to.be.true;
       });
 
-      it("fully contains another polygon, case 2", () => {
+      it('fully contains another polygon, case 2', () => {
         polygon = create({ vertices: squarePolygon });
         const vertices = [
           { x: 3, y: 15 },
@@ -473,7 +473,7 @@ describe("Polygon", () => {
         expect(polygon.intersectsPolygon(pgon2)).to.be.true;
       });
 
-      it("fully being contained by another polygon", () => {
+      it('fully being contained by another polygon', () => {
         polygon = create({ vertices: selfIntersectingPolygon });
         const vertices = [
           { x: -10, y: -10 },

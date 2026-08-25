@@ -1,13 +1,13 @@
-import extend from "extend";
+import extend from 'extend';
 
 // Should consist of attributes that does not allow for null values
 const GLOBAL_DEFAULTS = {
-  fontFamily: "Arial",
-  fontSize: "13px",
-  color: "#595959",
-  fill: "#333333",
-  backgroundColor: "#ffffff",
-  stroke: "#000000",
+  fontFamily: 'Arial',
+  fontSize: '13px',
+  color: '#595959',
+  fill: '#333333',
+  backgroundColor: '#ffffff',
+  stroke: '#000000',
   strokeWidth: 0,
 };
 
@@ -30,11 +30,11 @@ function validateValue(globalFallback, value) {
 
 function wrapper(globalFallback, fallbackVal, fn, fnContext, ...args) {
   const value = fn ? fn.call(fnContext, ...args) : null;
-  if (typeof value !== "undefined") {
+  if (typeof value !== 'undefined') {
     // Custom accessor returned a proper value
     return validateValue(globalFallback, value);
   }
-  if (fallbackVal && typeof fallbackVal.fn === "function") {
+  if (fallbackVal && typeof fallbackVal.fn === 'function') {
     // fallback has a custom function, run it
     return fallbackVal.fn(fnContext, ...args);
   }
@@ -50,7 +50,7 @@ function attr(targets, attribute, defaultVal, index) {
   }
   const type = typeof target[attribute];
 
-  if (type === "undefined") {
+  if (type === 'undefined') {
     // undefined value
     if (index < targets.length - 1) {
       // check inheritance
@@ -65,13 +65,13 @@ function attr(targets, attribute, defaultVal, index) {
   }
 
   // custom accessor function
-  if (type === "function") {
+  if (type === 'function') {
     // Return function with fallback attribute value
     const inner = attr(targets, attribute, defaultVal, index + 1);
     target[attribute].fn = (...args) => wrapper(globalDefault, inner, target[attribute], ...args);
     return target[attribute];
   }
-  if (type === "object") {
+  if (type === 'object') {
     return target[attribute];
   }
 
@@ -122,10 +122,10 @@ function resolveAttribute(root, steps, attribute, defaultVal) {
  *    "parts.rect" );
  */
 export function resolveStyle(defaults, styleRoot, path) {
-  const steps = path ? path.split(".") : [];
+  const steps = path ? path.split('.') : [];
   const ret = {};
   Object.keys(defaults).forEach((s) => {
-    const def = defaults[s] === null && typeof GLOBAL_DEFAULTS[s] !== "undefined" ? GLOBAL_DEFAULTS[s] : defaults[s];
+    const def = defaults[s] === null && typeof GLOBAL_DEFAULTS[s] !== 'undefined' ? GLOBAL_DEFAULTS[s] : defaults[s];
     ret[s] = resolveAttribute(styleRoot, steps.concat(), s, def);
   });
   return ret;
@@ -143,37 +143,37 @@ export function resolveForDataValues(styles, dataValues, index) {
   if (dataValues) {
     Object.keys(styles).forEach((s) => {
       ret[s] =
-        styles[s] && typeof styles[s].fn === "function"
+        styles[s] && typeof styles[s].fn === 'function'
           ? styles[s].fn(undefined, dataValues[s][index], index, dataValues[s])
           : styles[s];
     });
   } else {
     Object.keys(styles).forEach((s) => {
-      ret[s] = styles[s] && typeof styles[s].fn === "function" ? styles[s].fn() : styles[s];
+      ret[s] = styles[s] && typeof styles[s].fn === 'function' ? styles[s].fn() : styles[s];
     });
   }
   return ret;
 }
 
 function isPrimitive(v) {
-  return typeof v !== "object";
+  return typeof v !== 'object';
 }
 
 export function resolveForDataObject(props, dataObj, index, allData, contextProps) {
   const ret = {};
   Object.keys(props).forEach((s) => {
-    const exists = typeof props[s] !== "undefined";
-    const hasScale = exists && typeof props[s].scale === "function";
+    const exists = typeof props[s] !== 'undefined';
+    const hasScale = exists && typeof props[s].scale === 'function';
     const hasExplicitDataProp = exists && !!props[s].ref;
     // const hasImplicitDataProp = typeof props[s] === 'object' ? s in dataObj : false;
     const propData = exists && props[s].ref ? dataObj[props[s].ref] : dataObj;
-    if (typeof props[s] === "function") {
+    if (typeof props[s] === 'function') {
       // custom accessor function, not scale!
       const fnContext = extend({}, { data: dataObj }, contextProps);
       if (hasScale) {
         fnContext.scale = props[s].scale;
       }
-      if (typeof props[s].fn === "function") {
+      if (typeof props[s].fn === 'function') {
         ret[s] = props[s].fn(fnContext, hasExplicitDataProp ? dataObj[props[s].ref] : undefined, index, allData);
       } else {
         ret[s] = props[s].call(fnContext, hasExplicitDataProp ? dataObj[props[s].ref] : undefined, index, allData);

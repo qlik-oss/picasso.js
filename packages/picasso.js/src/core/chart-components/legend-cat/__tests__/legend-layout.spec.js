@@ -1,11 +1,11 @@
-import layout from "../legend-layout";
+import layout from '../legend-layout';
 
-describe("legend layout", () => {
+describe('legend layout', () => {
   const itemRenderer = {
     spread: () => 11,
     extent: () => 13,
     parallelize: () => {},
-    direction: () => "ltr",
+    direction: () => 'ltr',
   };
   const navigationRenderer = {
     spread: () => 41,
@@ -20,7 +20,7 @@ describe("legend layout", () => {
     spacing: 7,
   };
 
-  describe("vertical", () => {
+  describe('vertical', () => {
     const boxes = layout(
       {
         x: 0,
@@ -29,15 +29,15 @@ describe("legend layout", () => {
         height: 100,
       },
       display,
-      "vertical",
+      'vertical',
       {
         itemRenderer,
         titleRenderer,
         navigationRenderer,
-      },
+      }
     );
 
-    it("should position title at top", () => {
+    it('should position title at top', () => {
       expect(boxes.title).to.eql({
         x: 7,
         y: 7,
@@ -46,7 +46,7 @@ describe("legend layout", () => {
       });
     });
 
-    it("should not show navigation", () => {
+    it('should not show navigation', () => {
       expect(boxes.navigation).to.eql({
         x: 7,
         y: 93,
@@ -55,7 +55,7 @@ describe("legend layout", () => {
       });
     });
 
-    it("should position content below title", () => {
+    it('should position content below title', () => {
       expect(boxes.content).to.eql({
         x: 7,
         y: 7 + 19 + 7,
@@ -64,13 +64,13 @@ describe("legend layout", () => {
       });
     });
 
-    it("should have a preferredSize", () => {
+    it('should have a preferredSize', () => {
       expect(boxes.preferredSize).to.equal(21);
     });
   });
 
-  describe("horizontal", () => {
-    describe("without overflow", () => {
+  describe('horizontal', () => {
+    describe('without overflow', () => {
       const boxes = layout(
         {
           x: 0,
@@ -79,15 +79,15 @@ describe("legend layout", () => {
           height: 100,
         },
         display,
-        "horizontal",
+        'horizontal',
         {
           itemRenderer,
           titleRenderer,
           navigationRenderer,
-        },
+        }
       );
 
-      it("should position title at left", () => {
+      it('should position title at left', () => {
         expect(boxes.title).to.eql({
           x: 7,
           y: 7,
@@ -96,7 +96,7 @@ describe("legend layout", () => {
         });
       });
 
-      it("should not show navigation", () => {
+      it('should not show navigation', () => {
         expect(boxes.navigation).to.eql({
           x: 193,
           y: 7,
@@ -105,7 +105,7 @@ describe("legend layout", () => {
         });
       });
 
-      it("should position content to the right", () => {
+      it('should position content to the right', () => {
         expect(boxes.content).to.eql({
           x: 7 + 21 + 7,
           y: 7,
@@ -114,12 +114,12 @@ describe("legend layout", () => {
         });
       });
 
-      it("should not reserve more than needed for visible parts", () => {
+      it('should not reserve more than needed for visible parts', () => {
         expect(boxes.preferredSize).to.equal(19);
       });
     });
 
-    describe("with overflow, rtl and no title", () => {
+    describe('with overflow, rtl and no title', () => {
       const boxes = layout(
         {
           x: 0,
@@ -128,10 +128,10 @@ describe("legend layout", () => {
           height: 100,
         },
         display,
-        "horizontal",
+        'horizontal',
         {
           itemRenderer: {
-            direction: () => "rtl",
+            direction: () => 'rtl',
             parallelize: () => {},
             spread: () => 11,
             extent: () => 200 - 13, // 1px less than available space
@@ -141,10 +141,10 @@ describe("legend layout", () => {
             extent: () => 0,
           },
           navigationRenderer,
-        },
+        }
       );
 
-      it("should not show title", () => {
+      it('should not show title', () => {
         expect(boxes.title).to.eql({
           x: 193,
           y: 22,
@@ -153,7 +153,7 @@ describe("legend layout", () => {
         });
       });
 
-      it("should position navigation to the left", () => {
+      it('should position navigation to the left', () => {
         expect(boxes.navigation).to.eql({
           x: 7,
           y: 7,
@@ -162,7 +162,7 @@ describe("legend layout", () => {
         });
       });
 
-      it("should position content to the right", () => {
+      it('should position content to the right', () => {
         expect(boxes.content).to.eql({
           x: 7 + 17 + 7,
           y: 22,

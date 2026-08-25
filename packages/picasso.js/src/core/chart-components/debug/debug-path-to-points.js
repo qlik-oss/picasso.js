@@ -1,12 +1,12 @@
-import pathToSegments from "../../scene-graph/parse-path-d";
+import pathToSegments from '../../scene-graph/parse-path-d';
 
 const debugPathToPointsDef = {
-  require: ["renderer", "chart"],
+  require: ['renderer', 'chart'],
   defaultSettings: {
     settings: {
-      target: "",
-      fill: "transparent",
-      stroke: "lime",
+      target: '',
+      fill: 'transparent',
+      stroke: 'lime',
       opacity: 1,
       radius: 2,
       useOuterRect: false,
@@ -18,14 +18,14 @@ const debugPathToPointsDef = {
     },
   },
   draw() {
-    const shapes = this.chart.findShapes("path").filter((s) => s.key === this.props.target); // Find all shapes
+    const shapes = this.chart.findShapes('path').filter((s) => s.key === this.props.target); // Find all shapes
 
     const circles = [];
     shapes.forEach((s) => {
       pathToSegments(s.attrs.d).forEach((segment) => {
         segment.forEach((p) => {
           circles.push({
-            type: "circle",
+            type: 'circle',
             cx: p.x,
             cy: p.y,
             r: this.props.radius,

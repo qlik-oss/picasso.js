@@ -1,8 +1,8 @@
 /* eslint no-use-before-define: ["error", { "functions": false }] */
 
-import { sqrDistance, distanceX, distanceY } from "./vector";
-import { closestPointToLine, isPointOnLine } from "./intersection";
-import { lineToPoints, rectToPoints, pointsToLine } from "../geometry/util";
+import { sqrDistance, distanceX, distanceY } from './vector';
+import { closestPointToLine, isPointOnLine } from './intersection';
+import { lineToPoints, rectToPoints, pointsToLine } from '../geometry/util';
 
 function lineHasNoLength(line) {
   return line.x1 === line.x2 && line.y1 === line.y2;

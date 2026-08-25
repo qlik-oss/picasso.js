@@ -8,7 +8,7 @@ function getValue(object, path, fallback) {
     return fallback;
   }
 
-  const steps = path.split(".");
+  const steps = path.split('.');
 
   let scoped = object;
 

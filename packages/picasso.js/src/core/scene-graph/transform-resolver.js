@@ -6,7 +6,7 @@ function parseTransform(transform) {
   /* eslint-disable no-cond-assign */
   while ((m = transformRegEx.exec(transform)) !== null) {
     const argsStr = m[2].trim();
-    const args = argsStr.indexOf(",") === -1 ? argsStr.split(" ") : argsStr.split(",");
+    const args = argsStr.indexOf(',') === -1 ? argsStr.split(' ') : argsStr.split(',');
 
     commands.push({
       cmd: m[1],
@@ -57,13 +57,13 @@ export default function resolveTransform(t, matrix) {
   for (let i = 0, len = transforms.length; i < len; i++) {
     transform = transforms[i];
 
-    if (transform.cmd === "rotate") {
+    if (transform.cmd === 'rotate') {
       resolveRotateCmd(matrix, transform);
-    } else if (transform.cmd === "scale") {
+    } else if (transform.cmd === 'scale') {
       resolveScaleCmd(matrix, transform);
-    } else if (transform.cmd === "matrix") {
+    } else if (transform.cmd === 'matrix') {
       resolveMatrixCmd(matrix, transform);
-    } else if (transform.cmd === "translate") {
+    } else if (transform.cmd === 'translate') {
       resolveTranslateCmd(matrix, transform);
     }
   }

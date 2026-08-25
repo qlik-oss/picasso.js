@@ -1,19 +1,19 @@
-import { tree as treeFactory } from "./svg-tree";
-import { svgNs } from "./svg-nodes";
-import sceneFactory from "../../../core/scene-graph/scene";
-import { onLineBreak } from "../../text-manipulation";
+import { tree as treeFactory } from './svg-tree';
+import { svgNs } from './svg-nodes';
+import sceneFactory from '../../../core/scene-graph/scene';
+import { onLineBreak } from '../../text-manipulation';
 // import {
 //   resetGradients,
 //   onGradient,
 //   createDefsNode
 // } from './svg-gradient';
 
-import gradienter from "./svg-gradient";
-import patternizer from "./svg-pattern";
+import gradienter from './svg-gradient';
+import patternizer from './svg-pattern';
 
-import createRendererBox from "../renderer-box";
-import create from "../index";
-import injectTextBoundsFn from "../../text-manipulation/inject-textbounds";
+import createRendererBox from '../renderer-box';
+import create from '../index';
+import injectTextBoundsFn from '../../text-manipulation/inject-textbounds';
 
 /**
  * Create a new svg renderer
@@ -38,7 +38,7 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
   const svg = create();
 
   const defs = {
-    type: "defs",
+    type: 'defs',
     children: [],
   };
   const patterns = patternizer(defs.children);
@@ -62,14 +62,14 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
 
   svg.appendTo = (element) => {
     if (!el) {
-      el = element.ownerDocument.createElementNS(ns, "svg");
-      el.style.position = "absolute";
-      el.style["-webkit-font-smoothing"] = "antialiased";
-      el.style["-moz-osx-font-smoothing"] = "antialiased";
-      el.style.pointerEvents = "none";
-      el.setAttribute("xmlns", ns);
-      group = element.ownerDocument.createElementNS(ns, "g");
-      group.style.pointerEvents = "auto";
+      el = element.ownerDocument.createElementNS(ns, 'svg');
+      el.style.position = 'absolute';
+      el.style['-webkit-font-smoothing'] = 'antialiased';
+      el.style['-moz-osx-font-smoothing'] = 'antialiased';
+      el.style.pointerEvents = 'none';
+      el.setAttribute('xmlns', ns);
+      group = element.ownerDocument.createElementNS(ns, 'g');
+      group.style.pointerEvents = 'auto';
       el.appendChild(group);
     }
 
@@ -83,11 +83,11 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
     const scaleY = rect.scaleRatio.y;
 
     const sceneContainer = {
-      type: "container",
+      type: 'container',
       children: Array.isArray(nodes) ? [...nodes, defs] : nodes,
       transform: rect.edgeBleed.bool
         ? `translate(${rect.edgeBleed.left * scaleX}, ${rect.edgeBleed.top * scaleY})`
-        : "",
+        : '',
     };
 
     if (scaleX !== 1 || scaleY !== 1) {
@@ -116,7 +116,7 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
       return false;
     }
 
-    const transformation = typeof settings.transform === "function" && settings.transform();
+    const transformation = typeof settings.transform === 'function' && settings.transform();
     if (transformation) {
       const {
         horizontalScaling,
@@ -129,18 +129,18 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
       group.style.transform = `matrix(${horizontalScaling}, ${horizontalSkewing}, ${verticalSkewing}, ${verticalScaling}, ${horizontalMoving}, ${verticalMoving})`;
       return true;
     }
-    group.style.transform = "";
+    group.style.transform = '';
 
     const disableScreenReader = settings.disableScreenReader;
     if (disableScreenReader) {
-      el.setAttribute("aria-hidden", true);
+      el.setAttribute('aria-hidden', true);
     }
 
     if (hasChangedRect) {
       el.style.left = `${rect.computedPhysical.x}px`;
       el.style.top = `${rect.computedPhysical.y}px`;
-      el.setAttribute("width", rect.computedPhysical.width);
-      el.setAttribute("height", rect.computedPhysical.height);
+      el.setAttribute('width', rect.computedPhysical.width);
+      el.setAttribute('height', rect.computedPhysical.height);
     }
 
     gradients.clear();
@@ -203,5 +203,5 @@ export default function renderer(treeFn = treeFactory, ns = svgNs, sceneFn = sce
 }
 
 export function rendererComponent(picasso) {
-  picasso.renderer("svg", renderer);
+  picasso.renderer('svg', renderer);
 }

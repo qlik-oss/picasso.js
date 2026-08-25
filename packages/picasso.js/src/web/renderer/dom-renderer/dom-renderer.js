@@ -1,6 +1,6 @@
-import { h, render } from "preact";
-import createRendererBox from "../renderer-box";
-import create from "../index";
+import { h, render } from 'preact';
+import createRendererBox from '../renderer-box';
+import create from '../index';
 
 export default function renderer(opts = {}) {
   const { createElement = document.createElement.bind(document) } = opts;
@@ -33,11 +33,11 @@ export default function renderer(opts = {}) {
 
   dom.appendTo = (element) => {
     if (!el) {
-      el = createElement("div");
-      el.style.position = "absolute";
-      el.style["-webkit-font-smoothing"] = "antialiased";
-      el.style["-moz-osx-font-smoothing"] = "antialiased";
-      el.style.pointerEvents = "none";
+      el = createElement('div');
+      el.style.position = 'absolute';
+      el.style['-webkit-font-smoothing'] = 'antialiased';
+      el.style['-moz-osx-font-smoothing'] = 'antialiased';
+      el.style.pointerEvents = 'none';
     }
 
     element.appendChild(el);
@@ -50,7 +50,7 @@ export default function renderer(opts = {}) {
       return false;
     }
 
-    const transformation = typeof settings.transform === "function" && settings.transform();
+    const transformation = typeof settings.transform === 'function' && settings.transform();
     if (transformation) {
       const {
         horizontalScaling,
@@ -63,11 +63,11 @@ export default function renderer(opts = {}) {
       el.style.transform = `matrix(${horizontalScaling}, ${horizontalSkewing}, ${verticalSkewing}, ${verticalScaling}, ${horizontalMoving}, ${verticalMoving})`;
       return true;
     }
-    el.style.transform = "";
+    el.style.transform = '';
 
     const disableScreenReader = settings.disableScreenReader;
     if (disableScreenReader) {
-      el.setAttribute("aria-hidden", true);
+      el.setAttribute('aria-hidden', true);
     }
 
     el.style.left = `${rect.computedPhysical.x}px`;

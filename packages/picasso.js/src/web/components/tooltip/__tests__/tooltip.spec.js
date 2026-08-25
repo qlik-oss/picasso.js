@@ -1,8 +1,8 @@
-import extend from "extend";
-import elementMock from "test-utils/mocks/element-mock";
-import tooltip from "../tooltip";
-import componentFactoryFixture from "../../../../../test/helpers/component-factory-fixture";
-import * as instanceHandler from "../instance-handler";
+import extend from 'extend';
+import elementMock from 'test-utils/mocks/element-mock';
+import tooltip from '../tooltip';
+import componentFactoryFixture from '../../../../../test/helpers/component-factory-fixture';
+import * as instanceHandler from '../instance-handler';
 
 function componentMock() {
   return {
@@ -26,7 +26,7 @@ function chartMock() {
   };
 }
 
-describe("Tooltip", () => {
+describe('Tooltip', () => {
   let instance;
   let invokeSpy;
   let dispatcherSpy;
@@ -61,16 +61,16 @@ describe("Tooltip", () => {
       },
     }); // To attach h to context
 
-    invokeSpy = sandbox.stub(instance.def, "invokeRenderer");
+    invokeSpy = sandbox.stub(instance.def, 'invokeRenderer');
   });
 
   afterEach(() => {
     sandbox.restore();
   });
 
-  describe("events", () => {
-    describe("show", () => {
-      it("should do shape loookup and show tooltip", () => {
+  describe('events', () => {
+    describe('show', () => {
+      it('should do shape loookup and show tooltip', () => {
         cMock.shapesAt.returns([0, 1, 2]);
         instance.def.show({});
         clock.tick(500);
@@ -78,14 +78,14 @@ describe("Tooltip", () => {
         expect(invokeSpy).to.have.been.calledWith([0, 1, 2]);
       });
 
-      it("should show tooltip with provided nodes", () => {
+      it('should show tooltip with provided nodes', () => {
         instance.def.show({}, { nodes: [0, 1, 2] });
         clock.tick(500);
 
         expect(invokeSpy).to.have.been.calledWith([0, 1, 2]);
       });
 
-      it("should not re-render tooltip if over same nodes", () => {
+      it('should not re-render tooltip if over same nodes', () => {
         isEql.returns(true);
         cMock.shapesAt.returns([0, 1, 2]);
         instance.def.show({});
@@ -94,7 +94,7 @@ describe("Tooltip", () => {
         expect(isEql).to.have.been.called;
       });
 
-      it("should not show tooltip if there are no matching nodes", () => {
+      it('should not show tooltip if there are no matching nodes', () => {
         cMock.shapesAt.returns([]);
         instance.def.show({});
 
@@ -106,17 +106,17 @@ describe("Tooltip", () => {
       });
     });
 
-    describe("hide", () => {
-      it("should hide tooltip", () => {
-        dispatcherSpy = sandbox.spy(instance.def.dispatcher, "clear");
+    describe('hide', () => {
+      it('should hide tooltip', () => {
+        dispatcherSpy = sandbox.spy(instance.def.dispatcher, 'clear');
         instance.def.hide();
 
         expect(dispatcherSpy).to.have.been.called;
       });
     });
 
-    describe("prevent", () => {
-      it("should prevent `show` from being invoked", () => {
+    describe('prevent', () => {
+      it('should prevent `show` from being invoked', () => {
         instance.def.prevent(true);
         instance.def.show({});
 
@@ -125,7 +125,7 @@ describe("Tooltip", () => {
     });
   });
 
-  describe("lifecycle hooks", () => {
+  describe('lifecycle hooks', () => {
     let hookSpy;
 
     beforeEach(() => {
@@ -133,14 +133,14 @@ describe("Tooltip", () => {
       cMock.shapesAt.returns([0, 1, 2]);
     });
 
-    it("should call beforeShow", () => {
+    it('should call beforeShow', () => {
       instance.def.props.beforeShow = hookSpy;
       instance.def.show({});
 
       expect(hookSpy).to.have.been.called;
     });
 
-    it("should call afterShow", () => {
+    it('should call afterShow', () => {
       instance.def.props.afterShow = hookSpy;
       instance.def.show({});
       clock.tick(500);
@@ -148,7 +148,7 @@ describe("Tooltip", () => {
       expect(hookSpy).to.have.been.called;
     });
 
-    it("should call beforeHide", () => {
+    it('should call beforeHide', () => {
       instance.def.props.afterShow = hookSpy;
       instance.def.show({});
       clock.tick(8500);
@@ -156,14 +156,14 @@ describe("Tooltip", () => {
       expect(hookSpy).to.have.been.called;
     });
 
-    it("should not call beforeHide if tooltip is not displayed", () => {
+    it('should not call beforeHide if tooltip is not displayed', () => {
       instance.def.props.afterShow = hookSpy;
       instance.def.hide();
 
       expect(hookSpy).to.not.have.been.called;
     });
 
-    it("should call onHide", () => {
+    it('should call onHide', () => {
       instance.def.props.onHide = hookSpy;
       instance.def.show({});
       clock.tick(8500);
@@ -171,14 +171,14 @@ describe("Tooltip", () => {
       expect(hookSpy).to.have.been.called;
     });
 
-    it("should not call onHide if tooltip is not displayed", () => {
+    it('should not call onHide if tooltip is not displayed', () => {
       instance.def.props.onHide = hookSpy;
       instance.def.hide();
 
       expect(hookSpy).to.not.have.been.called;
     });
 
-    it("should call afterHide", () => {
+    it('should call afterHide', () => {
       instance.def.props.afterHide = hookSpy;
       instance.def.show({});
       clock.tick(8500);
@@ -186,7 +186,7 @@ describe("Tooltip", () => {
       expect(hookSpy).to.have.been.called;
     });
 
-    it("should not call afterHide if tooltip is not displayed", () => {
+    it('should not call afterHide if tooltip is not displayed', () => {
       instance.def.props.afterHide = hookSpy;
       instance.def.hide();
 
@@ -194,23 +194,23 @@ describe("Tooltip", () => {
     });
   });
 
-  describe("beforeUpdate", () => {
-    it("should destroy dispatcher", () => {
-      dispatcherSpy = sandbox.spy(instance.def.dispatcher, "destroy");
+  describe('beforeUpdate', () => {
+    it('should destroy dispatcher', () => {
+      dispatcherSpy = sandbox.spy(instance.def.dispatcher, 'destroy');
       instance.beforeUpdate({});
 
       expect(dispatcherSpy).to.have.been.called;
     });
 
-    it("should call remove on instance handler", () => {
-      sandbox.spy(instanceHandler, "remove");
+    it('should call remove on instance handler', () => {
+      sandbox.spy(instanceHandler, 'remove');
       instance.beforeUpdate({});
 
       expect(instanceHandler.remove).to.have.been.called;
     });
   });
 
-  describe("appendTo", () => {
+  describe('appendTo', () => {
     let container;
 
     beforeEach(() => {
@@ -225,7 +225,7 @@ describe("Tooltip", () => {
       componentFixture.mocks().renderer.size = sandbox.stub().returns(container);
     });
 
-    it("should apply appendTo on mounted", () => {
+    it('should apply appendTo on mounted', () => {
       const stub = sandbox.stub().returns({ getBoundingClientRect: () => container, appendChild: sandbox.stub() });
       instance.def.props.appendTo = stub;
       componentFixture.simulateRender({ inner: container, outer: container });
@@ -234,7 +234,7 @@ describe("Tooltip", () => {
       expect(componentFixture.mocks().renderer.size).to.have.been.calledWith({ width: 100, height: 50 });
     });
 
-    it("should apply appendTo on updated", () => {
+    it('should apply appendTo on updated', () => {
       const stub = sandbox.stub().returns({ getBoundingClientRect: () => container, appendChild: sandbox.stub() });
       config.settings.appendTo = stub;
       componentFixture.simulateUpdate(config);

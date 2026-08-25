@@ -11,48 +11,48 @@ function loadImage(src, onLoad) {
   };
 
   image.onerror = (e) => {
-    console.error("Image load error", e);
+    console.error('Image load error', e);
   };
 }
 
 loadImage.cache = {};
 
 export function positionImage(img) {
-  const position = img.imagePosition || "center-center";
+  const position = img.imagePosition || 'center-center';
   let width = img.width;
   let height = img.height;
-  if (img.symbol === "circle") {
+  if (img.symbol === 'circle') {
     const radius = Math.min(img.width, img.height) / 2;
     width = radius * 2;
     height = radius * 2;
   }
   switch (position) {
-    case "top-center":
+    case 'top-center':
       img.y -= height / 2;
       break;
-    case "center-left":
+    case 'center-left':
       img.x -= width / 2;
       break;
-    case "center-right":
+    case 'center-right':
       img.x += width / 2;
       break;
-    case "top-left":
+    case 'top-left':
       img.x -= width / 2;
       img.y -= height / 2;
       break;
-    case "top-right":
+    case 'top-right':
       img.x += width / 2;
       img.y -= height / 2;
       break;
-    case "bottom-left":
+    case 'bottom-left':
       img.x -= width / 2;
       img.y += height / 2;
       break;
-    case "bottom-right":
+    case 'bottom-right':
       img.x += width / 2;
       img.y += height / 2;
       break;
-    case "bottom-center":
+    case 'bottom-center':
       img.y += height / 2;
       break;
     default:
@@ -88,7 +88,7 @@ export default function render(img, { g }) {
 
     positionImage(img);
 
-    if (img.symbol === "circle") {
+    if (img.symbol === 'circle') {
       const imgCenterX = img.x;
       const imgCenterY = img.y;
       img.r = Math.min(img.width, img.height) / 2;

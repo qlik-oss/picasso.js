@@ -21,7 +21,7 @@ export default function datasets(dataSources, { types, logger }) {
     let datasetFactory = types(d.type);
     if (datasetFactory) {
       let key = d.key;
-      if (typeof d.key === "undefined") {
+      if (typeof d.key === 'undefined') {
         logger.warn(`Missing key for dataset. Using index '${i}' as key.`);
         key = i;
       }

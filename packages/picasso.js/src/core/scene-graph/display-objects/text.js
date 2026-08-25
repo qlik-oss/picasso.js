@@ -1,9 +1,9 @@
-import extend from "extend";
-import DisplayObject from "./display-object";
-import { rectToPoints, getMinMax } from "../../geometry/util";
+import extend from 'extend';
+import DisplayObject from './display-object';
+import { rectToPoints, getMinMax } from '../../geometry/util';
 
 function hasData({ data, _boundingRect, _textBoundsFn }) {
-  return typeof data !== "undefined" && data !== null && (_boundingRect || _textBoundsFn);
+  return typeof data !== 'undefined' && data !== null && (_boundingRect || _textBoundsFn);
 }
 
 /**
@@ -32,7 +32,7 @@ function hasData({ data, _boundingRect, _textBoundsFn }) {
 
 export default class Text extends DisplayObject {
   constructor(...s) {
-    super("text");
+    super('text');
     this.set(...s);
   }
 
@@ -45,20 +45,20 @@ export default class Text extends DisplayObject {
     this.attrs.dx = dx;
     this.attrs.dy = dy;
     this.attrs.text = text;
-    if (typeof title !== "undefined") {
+    if (typeof title !== 'undefined') {
       this.attrs.title = String(title);
     }
-    if (typeof boundingRect === "object") {
+    if (typeof boundingRect === 'object') {
       this._textBoundsFn = () => boundingRect;
-    } else if (typeof textBoundsFn === "function") {
+    } else if (typeof textBoundsFn === 'function') {
       this._textBoundsFn = textBoundsFn;
     }
 
-    if (typeof ellipsed === "string") {
+    if (typeof ellipsed === 'string') {
       this.ellipsed = ellipsed;
     }
 
-    this.collider = extend({ type: hasData(this) ? "bounds" : null }, collider);
+    this.collider = extend({ type: hasData(this) ? 'bounds' : null }, collider);
 
     this.__boundingRect = { true: null, false: null };
     this.__bounds = { true: null, false: null };
@@ -70,7 +70,7 @@ export default class Text extends DisplayObject {
     }
 
     let rect;
-    if (typeof this._textBoundsFn === "function") {
+    if (typeof this._textBoundsFn === 'function') {
       rect = this._textBoundsFn(this.attrs);
     } else {
       return {

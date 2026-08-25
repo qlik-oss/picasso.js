@@ -1,8 +1,8 @@
-import GeoRect from "../rect";
+import GeoRect from '../rect';
 
-describe("GeoRect", () => {
-  describe("constructor", () => {
-    it("should set correct default values when no arguments passed", () => {
+describe('GeoRect', () => {
+  describe('constructor', () => {
+    it('should set correct default values when no arguments passed', () => {
       const r = new GeoRect();
 
       expect(r.x).to.equal(0);
@@ -11,7 +11,7 @@ describe("GeoRect", () => {
       expect(r.height).to.equal(0);
     });
 
-    it("should set the correct values when arguments passed", () => {
+    it('should set the correct values when arguments passed', () => {
       const r = new GeoRect({
         x: 10,
         y: 20,
@@ -25,7 +25,7 @@ describe("GeoRect", () => {
       expect(r.height).to.equal(50);
     });
 
-    it("should handle negative width correctly", () => {
+    it('should handle negative width correctly', () => {
       const r = new GeoRect({
         x: 10,
         y: 20,
@@ -39,7 +39,7 @@ describe("GeoRect", () => {
       expect(r.height).to.equal(50);
     });
 
-    it("should handle negative height correctly", () => {
+    it('should handle negative height correctly', () => {
       const r = new GeoRect({
         x: 10,
         y: 20,
@@ -54,8 +54,8 @@ describe("GeoRect", () => {
     });
   });
 
-  describe("set", () => {
-    it("should set the correct values", () => {
+  describe('set', () => {
+    it('should set the correct values', () => {
       const r = new GeoRect();
       r.set({
         x: 10,
@@ -70,7 +70,7 @@ describe("GeoRect", () => {
       expect(r.height).to.equal(50);
     });
 
-    it("should handle negative width correctly", () => {
+    it('should handle negative width correctly', () => {
       const r = new GeoRect();
       r.set({
         x: 10,
@@ -85,7 +85,7 @@ describe("GeoRect", () => {
       expect(r.height).to.equal(50);
     });
 
-    it("should handle negative height correctly", () => {
+    it('should handle negative height correctly', () => {
       const r = new GeoRect();
       r.set({
         x: 10,
@@ -100,7 +100,7 @@ describe("GeoRect", () => {
       expect(r.height).to.equal(50);
     });
 
-    it("should handle no arguments", () => {
+    it('should handle no arguments', () => {
       const r = new GeoRect({
         x: 1,
         y: 2,
@@ -116,8 +116,8 @@ describe("GeoRect", () => {
     });
   });
 
-  describe("points", () => {
-    it("should return the correct points", () => {
+  describe('points', () => {
+    it('should return the correct points', () => {
       const r = new GeoRect({
         x: 10,
         y: 20,
@@ -134,9 +134,9 @@ describe("GeoRect", () => {
     });
   });
 
-  describe("Intersection", () => {
-    describe("Point", () => {
-      it("should intersect if point is within the circumference", () => {
+  describe('Intersection', () => {
+    describe('Point', () => {
+      it('should intersect if point is within the circumference', () => {
         const r = new GeoRect({
           x: 50,
           y: 100,
@@ -147,7 +147,7 @@ describe("GeoRect", () => {
         expect(r.containsPoint(p)).to.equal(true);
       });
 
-      it("should intersect if point is on the circumference", () => {
+      it('should intersect if point is on the circumference', () => {
         const r = new GeoRect({
           x: 50,
           y: 100,
@@ -158,7 +158,7 @@ describe("GeoRect", () => {
         expect(r.containsPoint(p)).to.equal(true);
       });
 
-      it("should not intersect if point is outside the circumference", () => {
+      it('should not intersect if point is outside the circumference', () => {
         const r = new GeoRect({
           x: 50,
           y: 100,
@@ -176,7 +176,7 @@ describe("GeoRect", () => {
         expect(r.containsPoint(p4)).to.equal(false);
       });
 
-      it("should not intersect if the width is zero", () => {
+      it('should not intersect if the width is zero', () => {
         const r = new GeoRect({
           x: 50,
           y: 100,
@@ -187,7 +187,7 @@ describe("GeoRect", () => {
         expect(r.containsPoint(p)).to.equal(false);
       });
 
-      it("should not intersect if the height is zero", () => {
+      it('should not intersect if the height is zero', () => {
         const r = new GeoRect({
           x: 50,
           y: 100,
@@ -199,8 +199,8 @@ describe("GeoRect", () => {
       });
     });
 
-    describe("Rect", () => {
-      it("should intersect if circumferences are crossing", () => {
+    describe('Rect', () => {
+      it('should intersect if circumferences are crossing', () => {
         const r = new GeoRect({
           x: 100,
           y: 200,
@@ -216,7 +216,7 @@ describe("GeoRect", () => {
         expect(r.intersectsRect(collider.points())).to.equal(true);
       });
 
-      it("should intersect if circumferences are touching", () => {
+      it('should intersect if circumferences are touching', () => {
         const r = new GeoRect({
           x: 100,
           y: 200,
@@ -232,7 +232,7 @@ describe("GeoRect", () => {
         expect(r.intersectsRect(collider.points())).to.equal(true);
       });
 
-      it("should intersect if target rect is contained within the circumference", () => {
+      it('should intersect if target rect is contained within the circumference', () => {
         const r = new GeoRect({
           x: 100,
           y: 200,
@@ -248,7 +248,7 @@ describe("GeoRect", () => {
         expect(r.intersectsRect(collider.points())).to.equal(true);
       });
 
-      it("should not intersect if circumferences are not crossing", () => {
+      it('should not intersect if circumferences are not crossing', () => {
         const r = new GeoRect({
           x: 100,
           y: 200,
@@ -264,7 +264,7 @@ describe("GeoRect", () => {
         expect(r.intersectsRect(collider.points())).to.equal(false);
       });
 
-      it("should not intersect if the width is zero", () => {
+      it('should not intersect if the width is zero', () => {
         const r = new GeoRect({
           x: 50,
           y: 100,
@@ -280,7 +280,7 @@ describe("GeoRect", () => {
         expect(r.intersectsRect(collider.points())).to.equal(false);
       });
 
-      it("should not intersect if the height is zero", () => {
+      it('should not intersect if the height is zero', () => {
         const r = new GeoRect({
           x: 50,
           y: 100,
@@ -297,8 +297,8 @@ describe("GeoRect", () => {
       });
     });
 
-    describe("Line", () => {
-      it("should intersect if a parrallel vertical line is crossing the circumference", () => {
+    describe('Line', () => {
+      it('should intersect if a parrallel vertical line is crossing the circumference', () => {
         const r = new GeoRect({
           x: 50,
           y: 100,
@@ -313,7 +313,7 @@ describe("GeoRect", () => {
         expect(r.intersectsLine(points)).to.equal(true);
       });
 
-      it("should intersect if a parrallel horizontal line is crossing the circumference", () => {
+      it('should intersect if a parrallel horizontal line is crossing the circumference', () => {
         const r = new GeoRect({
           x: 50,
           y: 100,
@@ -328,7 +328,7 @@ describe("GeoRect", () => {
         expect(r.intersectsLine(points)).to.equal(true);
       });
 
-      it("should intersect if diagonal line is crossing the circumference", () => {
+      it('should intersect if diagonal line is crossing the circumference', () => {
         const r = new GeoRect({
           x: 50,
           y: 100,
@@ -343,7 +343,7 @@ describe("GeoRect", () => {
         expect(r.intersectsLine(points)).to.equal(true);
       });
 
-      it("should intersect if line is inside the circumference", () => {
+      it('should intersect if line is inside the circumference', () => {
         const r = new GeoRect({
           x: 50,
           y: 100,
@@ -358,7 +358,7 @@ describe("GeoRect", () => {
         expect(r.intersectsLine(points)).to.equal(true);
       });
 
-      it("should intersect if a line point is inside the circumference", () => {
+      it('should intersect if a line point is inside the circumference', () => {
         const r = new GeoRect({
           x: 50,
           y: 100,
@@ -378,7 +378,7 @@ describe("GeoRect", () => {
         expect(r.intersectsLine(points2)).to.equal(true);
       });
 
-      it("should intersect if a line is on the circumference", () => {
+      it('should intersect if a line is on the circumference', () => {
         const r = new GeoRect({
           x: 50,
           y: 100,
@@ -393,7 +393,7 @@ describe("GeoRect", () => {
         expect(r.intersectsLine(points)).to.equal(true);
       });
 
-      it("should intersect if a line start point is on the circumference and points outwards", () => {
+      it('should intersect if a line start point is on the circumference and points outwards', () => {
         const r = new GeoRect({
           x: 50,
           y: 100,
@@ -408,7 +408,7 @@ describe("GeoRect", () => {
         expect(r.intersectsLine(points)).to.equal(true);
       });
 
-      it("should intersect if a line end point is on the circumference and points outwards", () => {
+      it('should intersect if a line end point is on the circumference and points outwards', () => {
         const r = new GeoRect({
           x: 50,
           y: 100,
@@ -423,7 +423,7 @@ describe("GeoRect", () => {
         expect(r.intersectsLine(points)).to.equal(true);
       });
 
-      it("should not intersect if the width is zero", () => {
+      it('should not intersect if the width is zero', () => {
         const r = new GeoRect({
           x: 50,
           y: 100,
@@ -437,7 +437,7 @@ describe("GeoRect", () => {
         expect(r.intersectsLine(points)).to.equal(false);
       });
 
-      it("should not intersect if the height is zero", () => {
+      it('should not intersect if the height is zero', () => {
         const r = new GeoRect({
           x: 50,
           y: 100,
@@ -452,8 +452,8 @@ describe("GeoRect", () => {
       });
     });
 
-    describe("Circle", () => {
-      it("should intersect if circle center is within the circumference", () => {
+    describe('Circle', () => {
+      it('should intersect if circle center is within the circumference', () => {
         const r = new GeoRect({
           x: 50,
           y: 100,
@@ -464,7 +464,7 @@ describe("GeoRect", () => {
         expect(r.intersectsCircle(c)).to.equal(true);
       });
 
-      it("should intersect if circle circumference is on the rect circumference", () => {
+      it('should intersect if circle circumference is on the rect circumference', () => {
         const r = new GeoRect({
           x: 50,
           y: 100,
@@ -475,7 +475,7 @@ describe("GeoRect", () => {
         expect(r.intersectsCircle(c)).to.equal(true);
       });
 
-      it("should intersect if circle circumference is inside the rect circumference", () => {
+      it('should intersect if circle circumference is inside the rect circumference', () => {
         const r = new GeoRect({
           x: 50,
           y: 100,
@@ -486,7 +486,7 @@ describe("GeoRect", () => {
         expect(r.intersectsCircle(c)).to.equal(true);
       });
 
-      it("should intersect if circle circumference is inside the rect circumference while circle is proportional with a rect bound", () => {
+      it('should intersect if circle circumference is inside the rect circumference while circle is proportional with a rect bound', () => {
         const rect = new GeoRect({
           x: 50,
           y: 100,
@@ -506,7 +506,7 @@ describe("GeoRect", () => {
         expect(rect.intersectsCircle(c)).to.equal(false);
       });
 
-      it("should not intersect if point is outside the circumference", () => {
+      it('should not intersect if point is outside the circumference', () => {
         const r = new GeoRect({
           x: 50,
           y: 100,
@@ -524,7 +524,7 @@ describe("GeoRect", () => {
         expect(r.intersectsCircle(c4)).to.equal(false);
       });
 
-      it("should not intersect if the width is zero", () => {
+      it('should not intersect if the width is zero', () => {
         const r = new GeoRect({
           x: 50,
           y: 100,
@@ -535,7 +535,7 @@ describe("GeoRect", () => {
         expect(r.intersectsCircle(c)).to.equal(false);
       });
 
-      it("should not intersect if the height is zero", () => {
+      it('should not intersect if the height is zero', () => {
         const r = new GeoRect({
           x: 50,
           y: 100,
@@ -546,7 +546,7 @@ describe("GeoRect", () => {
         expect(r.intersectsCircle(c)).to.equal(false);
       });
 
-      it("should not intersect if the radius is zero", () => {
+      it('should not intersect if the radius is zero', () => {
         const r = new GeoRect({
           x: 50,
           y: 100,

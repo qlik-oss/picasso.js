@@ -1,10 +1,10 @@
-import elementMock from "test-utils/mocks/element-mock";
-import componentFactoryFixture from "../../../../test/helpers/component-factory-fixture";
-import * as createStorage from "../../storage";
-import chart, { orderComponents } from "..";
+import elementMock from 'test-utils/mocks/element-mock';
+import componentFactoryFixture from '../../../../test/helpers/component-factory-fixture';
+import * as createStorage from '../../storage';
+import chart, { orderComponents } from '..';
 
-describe("Chart", () => {
-  describe("lifecycle methods", () => {
+describe('Chart', () => {
+  describe('lifecycle methods', () => {
     let created;
     let beforeMount;
     let mounted;
@@ -62,49 +62,49 @@ describe("Chart", () => {
       sandbox.restore();
     });
 
-    it("should call lifecycle methods when rendering", () => {
+    it('should call lifecycle methods when rendering', () => {
       chart(definition, context);
       // const expectedThis = {
       //   ...definition
       // };
-      expect(created, "created").to.have.been.calledOnce;
+      expect(created, 'created').to.have.been.calledOnce;
       // expect(created.thisValues[0], 'created context').to.deep.equal(expectedThis);
-      expect(beforeRender, "beforeRender").to.have.been.calledOnce;
-      expect(beforeMount, "beforeMount").to.have.been.calledOnce;
-      expect(mounted, "mounted").to.have.been.calledOnce;
-      expect(updated, "updated").to.not.have.been.called;
+      expect(beforeRender, 'beforeRender').to.have.been.calledOnce;
+      expect(beforeMount, 'beforeMount').to.have.been.calledOnce;
+      expect(mounted, 'mounted').to.have.been.calledOnce;
+      expect(updated, 'updated').to.not.have.been.called;
     });
 
-    it("should register event listeners when rendering", () => {
+    it('should register event listeners when rendering', () => {
       expect(element.listeners.length).to.equal(0);
       chart(definition, context);
       expect(element.listeners.length).to.equal(4); // Click listener + 3 brush listeners
     });
 
-    it("should call lifecycle methods when updating", () => {
+    it('should call lifecycle methods when updating', () => {
       const chartInstance = chart(definition, context);
       chartInstance.update();
-      expect(created, "created").to.have.been.calledOnce;
-      expect(beforeRender, "beforeRender").to.have.been.calledOnce;
-      expect(beforeUpdate, "beforeUpdate").to.have.been.calledOnce;
-      expect(beforeMount, "beforeMount").to.have.been.calledOnce;
-      expect(mounted, "mounted").to.have.been.calledOnce;
-      expect(updated, "updated").to.have.been.calledOnce;
+      expect(created, 'created').to.have.been.calledOnce;
+      expect(beforeRender, 'beforeRender').to.have.been.calledOnce;
+      expect(beforeUpdate, 'beforeUpdate').to.have.been.calledOnce;
+      expect(beforeMount, 'beforeMount').to.have.been.calledOnce;
+      expect(mounted, 'mounted').to.have.been.calledOnce;
+      expect(updated, 'updated').to.have.been.calledOnce;
     });
 
-    it("should call lifecycle methods when destroying", () => {
+    it('should call lifecycle methods when destroying', () => {
       const chartInstance = chart(definition, context);
       chartInstance.destroy();
-      expect(created, "created").to.have.been.calledOnce;
-      expect(beforeRender, "beforeRender").to.have.been.calledOnce;
-      expect(beforeMount, "beforeMount").to.have.been.calledOnce;
-      expect(mounted, "mounted").to.have.been.calledOnce;
-      expect(beforeDestroy, "beforeDestroy").to.have.been.calledOnce;
-      expect(destroyed, "destroyed").to.have.been.calledOnce;
+      expect(created, 'created').to.have.been.calledOnce;
+      expect(beforeRender, 'beforeRender').to.have.been.calledOnce;
+      expect(beforeMount, 'beforeMount').to.have.been.calledOnce;
+      expect(mounted, 'mounted').to.have.been.calledOnce;
+      expect(beforeDestroy, 'beforeDestroy').to.have.been.calledOnce;
+      expect(destroyed, 'destroyed').to.have.been.calledOnce;
       expect(element.listeners.length).to.equal(0);
     });
 
-    it("should not freak out when using unregistered components", () => {
+    it('should not freak out when using unregistered components', () => {
       const comp = () => undefined;
       comp.has = () => false;
       const logger = {
@@ -116,7 +116,7 @@ describe("Chart", () => {
             settings: {
               components: [
                 {
-                  type: "noop",
+                  type: 'noop',
                 },
               ],
             },
@@ -126,15 +126,15 @@ describe("Chart", () => {
             registries: {
               component: comp,
             },
-          },
+          }
         );
       };
 
       expect(create).to.not.throw();
-      expect(logger.warn).to.have.been.calledWithExactly("Unknown component: noop");
+      expect(logger.warn).to.have.been.calledWithExactly('Unknown component: noop');
     });
 
-    it("should not update components specified in excludeFromUpdate array", () => {
+    it('should not update components specified in excludeFromUpdate array', () => {
       const components = {
         box: {
           has: () => true,
@@ -156,13 +156,13 @@ describe("Chart", () => {
           settings: {
             components: [
               {
-                type: "box",
-                key: "comp1",
+                type: 'box',
+                key: 'comp1',
                 updated: comp1UpdatedCb,
               },
               {
-                type: "point",
-                key: "comp2",
+                type: 'point',
+                key: 'comp2',
                 updated: comp2UpdatedCb,
               },
             ],
@@ -173,20 +173,20 @@ describe("Chart", () => {
             component: comp,
             renderer: () => () => componentFixture.mocks().renderer,
           },
-        },
+        }
       );
       chartInstance.update();
       expect(comp1UpdatedCb).to.have.been.calledOnce;
       expect(comp2UpdatedCb).to.have.been.calledOnce;
-      chartInstance.update({ excludeFromUpdate: ["comp2"] });
+      chartInstance.update({ excludeFromUpdate: ['comp2'] });
       expect(comp1UpdatedCb).to.have.been.calledTwice;
       expect(comp2UpdatedCb).to.have.been.called;
-      chartInstance.update({ partialData: true, excludeFromUpdate: ["comp1"] });
+      chartInstance.update({ partialData: true, excludeFromUpdate: ['comp1'] });
       expect(comp1UpdatedCb).to.have.been.calledTwice;
       expect(comp2UpdatedCb).to.have.been.calledTwice;
     });
 
-    it("should run proper functions on layouting components", () => {
+    it('should run proper functions on layouting components', () => {
       const components = {
         box: {
           has: () => true,
@@ -208,13 +208,13 @@ describe("Chart", () => {
           settings: {
             components: [
               {
-                type: "box",
-                key: "comp1",
+                type: 'box',
+                key: 'comp1',
                 beforeUpdate: comp1BeforeUpdateCb,
               },
               {
-                type: "point",
-                key: "comp2",
+                type: 'point',
+                key: 'comp2',
                 beforeUpdate: comp2BeforeUpdateCb,
               },
             ],
@@ -225,7 +225,7 @@ describe("Chart", () => {
             component: comp,
             renderer: () => () => componentFixture.mocks().renderer,
           },
-        },
+        }
       );
       chartInstance.layoutComponents();
       expect(comp1BeforeUpdateCb).to.have.been.calledOnce;
@@ -235,13 +235,13 @@ describe("Chart", () => {
       expect(comp2BeforeUpdateCb).to.have.been.calledTwice;
     });
 
-    it("should update components where transform should be applied", () => {
+    it('should update components where transform should be applied', () => {
       const components = {
         box: {
-          render: () => ["boxNode1"],
+          render: () => ['boxNode1'],
         },
         point: {
-          render: () => ["pointNode1"],
+          render: () => ['pointNode1'],
         },
       };
       const comp = (key) => components[key];
@@ -255,12 +255,12 @@ describe("Chart", () => {
           settings: {
             components: [
               {
-                type: "box",
-                key: "comp1",
+                type: 'box',
+                key: 'comp1',
               },
               {
-                type: "point",
-                key: "comp2",
+                type: 'point',
+                key: 'comp2',
                 rendererSettings: {
                   transform: () => ({ a: 0, b: 1, c: 0, d: 1, e: 100, f: 100 }),
                 },
@@ -273,7 +273,7 @@ describe("Chart", () => {
             component: comp,
             renderer: () => () => mockedRenderer,
           },
-        },
+        }
       );
 
       expect(mockedRenderer.render).to.have.been.calledTwice;
@@ -282,10 +282,10 @@ describe("Chart", () => {
       expect(mockedRenderer.settings).to.have.been.calledOnce;
       const renderArgs = mockedRenderer.render.args;
       // no nodes are passed into renderers render function when applying transform!
-      expect(renderArgs).to.eql([[["boxNode1"]], [["pointNode1"]], [["boxNode1"]], []]);
+      expect(renderArgs).to.eql([[['boxNode1']], [['pointNode1']], [['boxNode1']], []]);
     });
 
-    it("should maintain displayOrder of components after initial render", () => {
+    it('should maintain displayOrder of components after initial render', () => {
       const components = {
         point: {
           has: () => true,
@@ -306,18 +306,18 @@ describe("Chart", () => {
           settings: {
             components: [
               {
-                type: "point",
-                key: "comp1",
+                type: 'point',
+                key: 'comp1',
                 layout: {
-                  dock: "left",
+                  dock: 'left',
                   displayOrder: 2,
                 },
               },
               {
-                type: "point",
-                key: "comp2",
+                type: 'point',
+                key: 'comp2',
                 layout: {
-                  dock: "@comp1",
+                  dock: '@comp1',
                   displayOrder: 1,
                 },
               },
@@ -329,13 +329,13 @@ describe("Chart", () => {
             component: comp,
             renderer: rendererFactory,
           },
-        },
+        }
       );
-      const order = element.children.map((c) => c.attributes["data-key"]);
-      expect(order).to.eql(["comp2", "comp1"]);
+      const order = element.children.map((c) => c.attributes['data-key']);
+      expect(order).to.eql(['comp2', 'comp1']);
     });
 
-    it("should maintain displayOrder of components after update", () => {
+    it('should maintain displayOrder of components after update', () => {
       const components = {
         point: {
           has: () => true,
@@ -356,18 +356,18 @@ describe("Chart", () => {
           settings: {
             components: [
               {
-                type: "point",
-                key: "comp1",
+                type: 'point',
+                key: 'comp1',
                 layout: {
-                  dock: "left",
+                  dock: 'left',
                   displayOrder: 1,
                 },
               },
               {
-                type: "point",
-                key: "comp2",
+                type: 'point',
+                key: 'comp2',
                 layout: {
-                  dock: "left",
+                  dock: 'left',
                   displayOrder: 2,
                 },
               },
@@ -379,20 +379,20 @@ describe("Chart", () => {
             component: comp,
             renderer: rendererFactory,
           },
-        },
+        }
       );
-      expect(element.children.map((c) => c.attributes["data-key"])).to.eql(["comp1", "comp2"]);
+      expect(element.children.map((c) => c.attributes['data-key'])).to.eql(['comp1', 'comp2']);
       chartInstance.update({
         settings: {
           components: [
             {
-              key: "comp1",
+              key: 'comp1',
               layout: {
                 displayOrder: 2,
               },
             },
             {
-              key: "comp2",
+              key: 'comp2',
               layout: {
                 displayOrder: 1,
               },
@@ -400,10 +400,10 @@ describe("Chart", () => {
           ],
         },
       });
-      expect(element.children.map((c) => c.attributes["data-key"])).to.eql(["comp2", "comp1"]);
+      expect(element.children.map((c) => c.attributes['data-key'])).to.eql(['comp2', 'comp1']);
     });
 
-    describe("brushFromShapes", () => {
+    describe('brushFromShapes', () => {
       let shapes;
       let config;
       let comp;
@@ -411,10 +411,10 @@ describe("Chart", () => {
       beforeEach(() => {
         shapes = [
           {
-            key: "foo",
+            key: 'foo',
             data: {
               source: {
-                field: "path/to/data",
+                field: 'path/to/data',
               },
               value: 0,
             },
@@ -424,14 +424,14 @@ describe("Chart", () => {
         config = {
           components: [
             {
-              action: "toggle",
-              key: "foo",
-              contexts: ["selection"],
+              action: 'toggle',
+              key: 'foo',
+              contexts: ['selection'],
             },
             {
-              action: "set",
-              key: "bar",
-              contexts: ["hover"],
+              action: 'set',
+              key: 'bar',
+              contexts: ['hover'],
             },
           ],
         };
@@ -450,11 +450,11 @@ describe("Chart", () => {
         rendererFactory.onFirstCall().returns(() => first);
       });
 
-      it("should brush on component, which key matches the key of the input shape", () => {
+      it('should brush on component, which key matches the key of the input shape', () => {
         const defComp = [
           {
-            type: "point",
-            key: "foo",
+            type: 'point',
+            key: 'foo',
           },
         ];
 
@@ -470,27 +470,27 @@ describe("Chart", () => {
               component: comp,
               renderer: rendererFactory,
             },
-          },
+          }
         );
 
         chartInstance.brushFromShapes(shapes, config);
 
-        const brushedComponent = chartInstance.component("foo");
-        const nonBrushedComponent = chartInstance.component("bar");
+        const brushedComponent = chartInstance.component('foo');
+        const nonBrushedComponent = chartInstance.component('bar');
 
         expect(brushedComponent).to.containSubset(defComp[0]);
         expect(nonBrushedComponent).to.be.undefined;
       });
 
-      it("should brush on all components", () => {
+      it('should brush on all components', () => {
         const defComp = [
           {
-            type: "point",
-            key: "foo",
+            type: 'point',
+            key: 'foo',
           },
           {
-            type: "point",
-            key: "bar",
+            type: 'point',
+            key: 'bar',
           },
         ];
 
@@ -509,19 +509,19 @@ describe("Chart", () => {
               component: comp,
               renderer: rendererFactory,
             },
-          },
+          }
         );
 
         chartInstance.brushFromShapes(shapes, config);
 
-        const b1 = chartInstance.component("foo");
-        const b2 = chartInstance.component("bar");
+        const b1 = chartInstance.component('foo');
+        const b2 = chartInstance.component('bar');
 
         expect(b1).to.containSubset(defComp[0]);
         expect(b2).to.containSubset(defComp[1]);
       });
 
-      it("should not brush on any components", () => {
+      it('should not brush on any components', () => {
         const defComp = [];
 
         const chartInstance = chart(
@@ -536,71 +536,71 @@ describe("Chart", () => {
               component: comp,
               renderer: rendererFactory,
             },
-          },
+          }
         );
 
         chartInstance.brushFromShapes(shapes, config);
 
-        const b1 = chartInstance.component("foo");
-        const b2 = chartInstance.component("bar");
+        const b1 = chartInstance.component('foo');
+        const b2 = chartInstance.component('bar');
 
         expect(b1).to.be.undefined;
         expect(b2).to.be.undefined;
       });
     });
 
-    describe("storage", () => {
-      it("should call createStorage with correct parameters", () => {
-        sandbox.stub(createStorage, "default").returns({ key: "cs" });
+    describe('storage', () => {
+      it('should call createStorage with correct parameters', () => {
+        sandbox.stub(createStorage, 'default').returns({ key: 'cs' });
         const chartInstance = chart(definition, context);
         expect(
           createStorage.default.withArgs({
             animations: { updatingStageMeta: { isInit: false, shouldBeRemoved: false } },
-          }),
+          })
         ).to.have.been.calledOnce;
-        expect(chartInstance.storage).to.deep.equal({ key: "cs" });
+        expect(chartInstance.storage).to.deep.equal({ key: 'cs' });
       });
     });
   });
 
-  describe("orderComponents", () => {
+  describe('orderComponents', () => {
     let visible;
     let el;
     beforeEach(() => {
-      const sub = ["b-1", "b-2"].map(elementMock);
-      visible = ["a", "b", "c"].map(elementMock).map((e) => ({
+      const sub = ['b-1', 'b-2'].map(elementMock);
+      visible = ['a', 'b', 'c'].map(elementMock).map((e) => ({
         instance: {
           renderer: () => ({
             element: () => e,
           }),
           def: {
-            additionalElements: e.name === "b" ? () => sub : undefined,
+            additionalElements: e.name === 'b' ? () => sub : undefined,
           },
         },
       }));
-      el = elementMock("div");
+      el = elementMock('div');
     });
 
-    it("should inject missing elements", () => {
+    it('should inject missing elements', () => {
       orderComponents(el, visible);
       let order = el.children.map((e) => e.name);
-      expect(order).to.eql(["a", "b-1", "b-2", "b", "c"]);
+      expect(order).to.eql(['a', 'b-1', 'b-2', 'b', 'c']);
     });
 
-    it("should re-order existing elements", () => {
+    it('should re-order existing elements', () => {
       orderComponents(el, visible); // initial will inject children into el
 
       orderComponents(el, visible); // re-order when el is already populated
       const order = el.children.map((e) => e.name);
-      expect(order).to.eql(["a", "b-1", "b-2", "b", "c"]);
+      expect(order).to.eql(['a', 'b-1', 'b-2', 'b', 'c']);
     });
 
-    it("should re-order existing elements with new order", () => {
+    it('should re-order existing elements with new order', () => {
       orderComponents(el, visible); // initial will inject children into el
       visible = [visible[1], visible[2], visible[0]]; // change order
       orderComponents(el, visible); // re-order when el is already populated
       const order = el.children.map((e) => e.name);
-      expect(order).to.eql(["b-1", "b-2", "b", "c", "a"]);
+      expect(order).to.eql(['b-1', 'b-2', 'b', 'c', 'a']);
     });
   });
 });

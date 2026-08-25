@@ -7,7 +7,7 @@ function findNonQualified(ary, start) {
   }
 
   for (let i = start; i < ary.length; i++) {
-    if (ary[i].qTags.indexOf("$qualified") === -1) {
+    if (ary[i].qTags.indexOf('$qualified') === -1) {
       return i;
     }
   }
@@ -29,13 +29,13 @@ export default function resolveLevels({ data, settings }) {
     const qOuter = data[o];
     const qOuterWidthAvailablePerTick = maxWidth / qOuter.qTicks.length;
 
-    if (qOuterWidthAvailablePerTick > MIN_REQ_OUTER_WIDTH && qOuter.qTags.indexOf("$hidden") === -1) {
+    if (qOuterWidthAvailablePerTick > MIN_REQ_OUTER_WIDTH && qOuter.qTags.indexOf('$hidden') === -1) {
       const i = findNonQualified(data, o + 1);
       const qInner = data[i];
       const qInnerTotalWidth = qInner
         ? qInner.qTicks.reduce(
-            (prev, curr) => prev + measureText({ text: curr.qText, fontSize: "16px", fontFamily: "Arial" }).width,
-            0,
+            (prev, curr) => prev + measureText({ text: curr.qText, fontSize: '16px', fontFamily: 'Arial' }).width,
+            0
           )
         : 0;
 

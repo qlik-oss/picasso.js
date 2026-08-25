@@ -1,17 +1,17 @@
-import createCollision from "./collision";
-import { scalarMultiply } from "../math/vector";
-import { create as createPolygon } from "../geometry/polygon";
-import { create as createGeoPolygon } from "../geometry/geopolygon";
-import { lineToPoints, rectToPoints, getShapeType } from "../geometry/util";
+import createCollision from './collision';
+import { scalarMultiply } from '../math/vector';
+import { create as createPolygon } from '../geometry/polygon';
+import { create as createGeoPolygon } from '../geometry/geopolygon';
+import { lineToPoints, rectToPoints, getShapeType } from '../geometry/util';
 
 function appendParentNode(node, collision) {
   const p = node.parent;
 
-  if (p && p.type !== "stage") {
+  if (p && p.type !== 'stage') {
     collision.parent = createCollision(p);
 
     const pp = p.parent;
-    if (pp && pp.type !== "stage") {
+    if (pp && pp.type !== 'stage') {
       appendParentNode(pp, collision.parent);
     }
   }
@@ -95,7 +95,7 @@ function resolveCollision(node, intersectionType, input) {
 
   const transformedInput = inverseTransform(node, input);
 
-  if (node.colliderType === "frontChild") {
+  if (node.colliderType === 'frontChild') {
     return resolveFrontChildCollision(node, intersectionType, transformedInput);
   }
 
@@ -143,26 +143,26 @@ function resolveShape(shape, ratio = 1) {
   let _shape = {};
 
   switch (type) {
-    case "circle":
+    case 'circle':
       _shape.cx = shape.cx * ratio;
       _shape.cy = shape.cy * ratio;
       _shape.r = shape.r;
-      return ["intersectsCircle", _shape];
-    case "rect":
+      return ['intersectsCircle', _shape];
+    case 'rect':
       _shape = rectToPoints(shape).map((p) => scalarMultiply(p, ratio));
-      return ["intersectsRect", _shape];
-    case "line":
+      return ['intersectsRect', _shape];
+    case 'line':
       _shape = lineToPoints(shape).map((p) => scalarMultiply(p, ratio));
-      return ["intersectsLine", _shape];
-    case "point":
+      return ['intersectsLine', _shape];
+    case 'point':
       _shape = scalarMultiply(shape, ratio);
-      return ["containsPoint", _shape];
-    case "polygon":
+      return ['containsPoint', _shape];
+    case 'polygon':
       _shape.vertices = shape.vertices.map((vertex) => scalarMultiply(vertex, ratio));
-      return ["intersectsPolygon", _shape];
-    case "geopolygon":
+      return ['intersectsPolygon', _shape];
+    case 'geopolygon':
       _shape.vertices = shape.vertices.map((vertices) => vertices.map((vertex) => scalarMultiply(vertex, ratio)));
-      return ["intersectsGeoPolygon", _shape];
+      return ['intersectsGeoPolygon', _shape];
     default:
       return [];
   }

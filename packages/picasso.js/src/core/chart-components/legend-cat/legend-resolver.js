@@ -1,4 +1,4 @@
-import extend from "extend";
+import extend from 'extend';
 
 /**
  * Component settings
@@ -19,7 +19,7 @@ const DEFAULT_SETTINGS = {
      * Layout direction. Either `'ltr'` or `'rtl'`
      * @type {string=}
      */
-    direction: "ltr",
+    direction: 'ltr',
     /** Initial scroll offset
      * @type {number=} */
     scrollOffset: 0,
@@ -43,14 +43,14 @@ const DEFAULT_SETTINGS = {
     label: {
       /** Font size in pixels
        * @type {string=} */
-      fontSize: "12px",
+      fontSize: '12px',
       /** Font family
        * @type {string=} */
-      fontFamily: "Arial",
-      fill: "#595959",
+      fontFamily: 'Arial',
+      fill: '#595959',
       /** Word break rule, how to apply line break if label text overflows its maxWidth property. Either `'break-word'` or `'break-all'`
        * @type {string=} */
-      wordBreak: "none",
+      wordBreak: 'none',
       /** Max number of lines allowed if label is broken into multiple lines (only applicable with wordBreak)
        * @type {number=} */
       maxLines: 2,
@@ -67,7 +67,7 @@ const DEFAULT_SETTINGS = {
       /**
        * Type of shape
        * @type {string=} */
-      type: "square",
+      type: 'square',
       /**
        * Size of shape in pixels
        * @type {number=} */
@@ -86,19 +86,19 @@ const DEFAULT_SETTINGS = {
     /** Horizontal alignment of the text. Allowed values are `'start'`, `'middle'` and `'end'`
      * @type {string}
      */
-    anchor: "start",
+    anchor: 'start',
     /** Font size in pixels
      * @type {string=} */
-    fontSize: "16px",
+    fontSize: '16px',
     /** Font family
      * @type {string=} */
-    fontFamily: "Arial",
+    fontFamily: 'Arial',
     /** Title color
      * @type {string=} */
-    fill: "#595959",
+    fill: '#595959',
     /** Word break rule, how to apply line break if label text overflows its maxWidth property. Either `'break-word'` or `'break-all'`
      * @type {string=} */
-    wordBreak: "none",
+    wordBreak: 'none',
     /** Max number of lines allowed if label is broken into multiple lines, is only appled when `wordBreak` is not set to `'none'`
      * @type {number=} */
     maxLines: 2,
@@ -141,7 +141,7 @@ export default function resolveSettings(comp) {
   const domain = comp.scale.domain();
   let data = { items: [] };
   const dock = comp.settings.layout.dock;
-  if (comp.scale.type === "threshold-color") {
+  if (comp.scale.type === 'threshold-color') {
     const fields = comp.scale.data().fields;
     const sourceField = fields[0];
     let formatter = (v) => String(v);
@@ -164,9 +164,9 @@ export default function resolveSettings(comp) {
       }
       data.items.push(it);
     }
-    const orientation = dock === "top" || dock === "bottom" ? "horizontal" : "vertical";
+    const orientation = dock === 'top' || dock === 'bottom' ? 'horizontal' : 'vertical';
 
-    if (orientation === "vertical") {
+    if (orientation === 'vertical') {
       data.items.reverse();
     }
   } else {
@@ -209,7 +209,7 @@ export default function resolveSettings(comp) {
 
   const shapeSettings = extend(true, {}, (comp.settings.settings.item || {}).shape);
 
-  if (typeof shapeSettings.fill === "undefined" && comp.settings.scale) {
+  if (typeof shapeSettings.fill === 'undefined' && comp.settings.scale) {
     shapeSettings.fill = {
       scale: comp.settings.scale,
     };
@@ -228,7 +228,7 @@ export default function resolveSettings(comp) {
       {},
       {
         show: DEFAULT_SETTINGS.item.show,
-      },
+      }
     ),
     settings: {
       show: (comp.settings.settings.item || {}).show,
@@ -241,10 +241,10 @@ export default function resolveSettings(comp) {
     item.data.value = [v, next];
   }
 
-  if (comp.scale.type === "threshold-color") {
-    const orientation = dock === "top" || dock === "bottom" ? "horizontal" : "vertical";
+  if (comp.scale.type === 'threshold-color') {
+    const orientation = dock === 'top' || dock === 'bottom' ? 'horizontal' : 'vertical';
 
-    if (orientation === "vertical") {
+    if (orientation === 'vertical') {
       items.items.reverse().forEach(range);
       items.items.reverse();
     } else {

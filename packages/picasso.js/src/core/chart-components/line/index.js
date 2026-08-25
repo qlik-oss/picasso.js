@@ -1,4 +1,4 @@
-import component from "./line";
+import component from './line';
 
 /**
  * @typedef {object} ComponentLine
@@ -24,7 +24,7 @@ import component from "./line";
 }
  */
 
-const type = "line";
+const type = 'line';
 
 export default function line(picasso) {
   picasso.component(type, component);

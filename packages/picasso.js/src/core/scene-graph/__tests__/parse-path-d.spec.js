@@ -1,4 +1,4 @@
-import pathToSegments from "../parse-path-d";
+import pathToSegments from '../parse-path-d';
 
 function approxEqual(ary, expected) {
   ary.forEach((item, i) => {
@@ -12,30 +12,30 @@ function pathToPoints(path) {
   return pathToSegments(path)[0];
 }
 
-describe("Parse data path", () => {
+describe('Parse data path', () => {
   let path;
   let ary;
 
   beforeEach(() => {
-    path = "";
+    path = '';
     ary = [];
   });
 
-  describe("moveTo", () => {
-    it("M", () => {
-      path = "M1 2";
+  describe('moveTo', () => {
+    it('M', () => {
+      path = 'M1 2';
       ary = pathToPoints(path);
       expect(ary).to.deep.equal([{ x: 1, y: 2 }]);
     });
 
-    it("m", () => {
-      path = "m1 2";
+    it('m', () => {
+      path = 'm1 2';
       ary = pathToPoints(path);
       expect(ary).to.deep.equal([{ x: 1, y: 2 }]);
     });
 
-    it("M - should split multiple commands into segments", () => {
-      path = "M1 2 L 3 4, M5 6 L7 8";
+    it('M - should split multiple commands into segments', () => {
+      path = 'M1 2 L 3 4, M5 6 L7 8';
       ary = pathToSegments(path);
       expect(ary).to.deep.equal([
         [
@@ -49,8 +49,8 @@ describe("Parse data path", () => {
       ]);
     });
 
-    it("m - should split multiple commands into segments", () => {
-      path = "m1 2 L 3 4, m5 6 L7 8";
+    it('m - should split multiple commands into segments', () => {
+      path = 'm1 2 L 3 4, m5 6 L7 8';
       ary = pathToSegments(path);
       expect(ary).to.deep.equal([
         [
@@ -65,9 +65,9 @@ describe("Parse data path", () => {
     });
   });
 
-  describe("lineTo", () => {
-    it("L", () => {
-      path = "M0 0 L1 2";
+  describe('lineTo', () => {
+    it('L', () => {
+      path = 'M0 0 L1 2';
       ary = pathToPoints(path);
       expect(ary).to.deep.equal([
         { x: 0, y: 0 },
@@ -75,8 +75,8 @@ describe("Parse data path", () => {
       ]);
     });
 
-    it("l", () => {
-      path = "M1 2 l3 4";
+    it('l', () => {
+      path = 'M1 2 l3 4';
       ary = pathToPoints(path);
       expect(ary).to.deep.equal([
         { x: 1, y: 2 },
@@ -84,8 +84,8 @@ describe("Parse data path", () => {
       ]);
     });
 
-    it("H", () => {
-      path = "M0 0 H1";
+    it('H', () => {
+      path = 'M0 0 H1';
       ary = pathToPoints(path);
       expect(ary).to.deep.equal([
         { x: 0, y: 0 },
@@ -93,8 +93,8 @@ describe("Parse data path", () => {
       ]);
     });
 
-    it("h", () => {
-      path = "M1 0 h1";
+    it('h', () => {
+      path = 'M1 0 h1';
       ary = pathToPoints(path);
       expect(ary).to.deep.equal([
         { x: 1, y: 0 },
@@ -102,8 +102,8 @@ describe("Parse data path", () => {
       ]);
     });
 
-    it("V", () => {
-      path = "M0 0 V1";
+    it('V', () => {
+      path = 'M0 0 V1';
       ary = pathToPoints(path);
       expect(ary).to.deep.equal([
         { x: 0, y: 0 },
@@ -111,8 +111,8 @@ describe("Parse data path", () => {
       ]);
     });
 
-    it("v", () => {
-      path = "M0 1 v1";
+    it('v', () => {
+      path = 'M0 1 v1';
       ary = pathToPoints(path);
       expect(ary).to.deep.equal([
         { x: 0, y: 1 },
@@ -121,9 +121,9 @@ describe("Parse data path", () => {
     });
   });
 
-  describe("closePath", () => {
-    it("Z", () => {
-      path = "M1 2 L3 4 Z";
+  describe('closePath', () => {
+    it('Z', () => {
+      path = 'M1 2 L3 4 Z';
       ary = pathToPoints(path);
       expect(ary).to.deep.equal([
         { x: 1, y: 2 },
@@ -132,8 +132,8 @@ describe("Parse data path", () => {
       ]);
     });
 
-    it("z", () => {
-      path = "M1 2 L3 4 z";
+    it('z', () => {
+      path = 'M1 2 L3 4 z';
       ary = pathToPoints(path);
       expect(ary).to.deep.equal([
         { x: 1, y: 2 },
@@ -143,9 +143,9 @@ describe("Parse data path", () => {
     });
   });
 
-  describe("elliptical arc curve", () => {
-    it("A", () => {
-      path = "M 0 0 A10 10 0 0 0 10 10";
+  describe('elliptical arc curve', () => {
+    it('A', () => {
+      path = 'M 0 0 A10 10 0 0 0 10 10';
       ary = pathToPoints(path);
       expect(ary[0]).to.deep.equal({ x: 0, y: 0 });
       expect(ary[1].x).to.approximately(3.42, 0.01);
@@ -153,8 +153,8 @@ describe("Parse data path", () => {
       expect(ary[2]).to.deep.equal({ x: 10, y: 10 });
     });
 
-    it("a", () => {
-      path = "M 0 0 a10 10 0 0 0 10 10";
+    it('a', () => {
+      path = 'M 0 0 a10 10 0 0 0 10 10';
       ary = pathToPoints(path);
       expect(ary[0]).to.deep.equal({ x: 0, y: 0 });
       expect(ary[1].x).to.approximately(3.42, 0.01);
@@ -162,8 +162,8 @@ describe("Parse data path", () => {
       expect(ary[2]).to.deep.equal({ x: 10, y: 10 });
     });
 
-    it("given no radius, threat as lineTo command", () => {
-      path = "M 0 0 A0 10 0 0 0 10 10";
+    it('given no radius, threat as lineTo command', () => {
+      path = 'M 0 0 A0 10 0 0 0 10 10';
       ary = pathToPoints(path);
       expect(ary).to.deep.equal([
         { x: 0, y: 0 },
@@ -171,8 +171,8 @@ describe("Parse data path", () => {
       ]);
     });
 
-    it("ignore command if arc end at start at the same position", () => {
-      path = "M10 10 A0 10 0 0 0 10 10";
+    it('ignore command if arc end at start at the same position', () => {
+      path = 'M10 10 A0 10 0 0 0 10 10';
       ary = pathToPoints(path);
       expect(ary).to.deep.equal([
         { x: 10, y: 10 }, // moveTo command
@@ -180,9 +180,9 @@ describe("Parse data path", () => {
     });
   });
 
-  describe("cubic bézier curve", () => {
-    it("C", () => {
-      path = "M0 0, C0 100, 100 100, 100 0";
+  describe('cubic bézier curve', () => {
+    it('C', () => {
+      path = 'M0 0, C0 100, 100 100, 100 0';
 
       ary = pathToPoints(path);
 
@@ -201,8 +201,8 @@ describe("Parse data path", () => {
       approxEqual(ary, exp);
     });
 
-    it("c", () => {
-      path = "M100 100, c0 100, 100 100, 100 0";
+    it('c', () => {
+      path = 'M100 100, c0 100, 100 100, 100 0';
 
       ary = pathToPoints(path);
 
@@ -221,8 +221,8 @@ describe("Parse data path", () => {
       approxEqual(ary, exp);
     });
 
-    it("S - with previous cubic command", () => {
-      path = "M0 0, C0 100, 100 100, 100 0, S200 -100, 200 0";
+    it('S - with previous cubic command', () => {
+      path = 'M0 0, C0 100, 100 100, 100 0, S200 -100, 200 0';
 
       ary = pathToPoints(path).slice(-9);
 
@@ -241,8 +241,8 @@ describe("Parse data path", () => {
       approxEqual(ary, exp); // Only validate the S points
     });
 
-    it("S - without previous cubic command", () => {
-      path = "M0 0 S100 100, 200 0";
+    it('S - without previous cubic command', () => {
+      path = 'M0 0 S100 100, 200 0';
 
       ary = pathToPoints(path);
 
@@ -261,8 +261,8 @@ describe("Parse data path", () => {
       approxEqual(ary, exp);
     });
 
-    it("s - with previous cubic command", () => {
-      path = "M0 0, c0 100, 100 100, 100 0, s100 -100, 100 0";
+    it('s - with previous cubic command', () => {
+      path = 'M0 0, c0 100, 100 100, 100 0, s100 -100, 100 0';
 
       ary = pathToPoints(path).slice(-9);
 
@@ -281,8 +281,8 @@ describe("Parse data path", () => {
       approxEqual(ary, exp); // Only validate the S points
     });
 
-    it("s - without previous cubic command", () => {
-      path = "M0 0 s100 100, 200 0";
+    it('s - without previous cubic command', () => {
+      path = 'M0 0 s100 100, 200 0';
 
       ary = pathToPoints(path);
       const exp = [
@@ -301,9 +301,9 @@ describe("Parse data path", () => {
     });
   });
 
-  describe("quad bézier curve", () => {
-    it("Q", () => {
-      path = "M0 0, Q0 100, 100 100";
+  describe('quad bézier curve', () => {
+    it('Q', () => {
+      path = 'M0 0, Q0 100, 100 100';
 
       ary = pathToPoints(path);
       const exp = [
@@ -317,8 +317,8 @@ describe("Parse data path", () => {
       approxEqual(ary, exp);
     });
 
-    it("q", () => {
-      path = "M0 0, q0 100, 100 100";
+    it('q', () => {
+      path = 'M0 0, q0 100, 100 100';
 
       ary = pathToPoints(path);
       const exp = [
@@ -332,8 +332,8 @@ describe("Parse data path", () => {
       approxEqual(ary, exp);
     });
 
-    it("T - with previous quad command", () => {
-      path = "M0 0, Q0 100, 100 100 T200 200";
+    it('T - with previous quad command', () => {
+      path = 'M0 0, Q0 100, 100 100 T200 200';
 
       ary = pathToPoints(path).slice(-5);
 
@@ -348,8 +348,8 @@ describe("Parse data path", () => {
       approxEqual(ary, exp);
     });
 
-    it("T - without previous quad command", () => {
-      path = "M0 0, T100 100";
+    it('T - without previous quad command', () => {
+      path = 'M0 0, T100 100';
 
       ary = pathToPoints(path);
       const exp = [
@@ -363,8 +363,8 @@ describe("Parse data path", () => {
       approxEqual(ary, exp);
     });
 
-    it("t - with previous quad command", () => {
-      path = "M0 0, q0 100, 100 100 t100 100";
+    it('t - with previous quad command', () => {
+      path = 'M0 0, q0 100, 100 100 t100 100';
 
       ary = pathToPoints(path).slice(-5);
       const exp = [
@@ -378,8 +378,8 @@ describe("Parse data path", () => {
       approxEqual(ary, exp);
     });
 
-    it("t - without previous quad command", () => {
-      path = "M0 0, t100 100";
+    it('t - without previous quad command', () => {
+      path = 'M0 0, t100 100';
 
       ary = pathToPoints(path);
       const exp = [

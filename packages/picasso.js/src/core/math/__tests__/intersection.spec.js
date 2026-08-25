@@ -1,8 +1,8 @@
-import { rectContainsRect } from "../intersection";
+import { rectContainsRect } from '../intersection';
 
-describe("Intersection", () => {
-  describe("rectContainsRect", () => {
-    it("should fit inside parent rect", () => {
+describe('Intersection', () => {
+  describe('rectContainsRect', () => {
+    it('should fit inside parent rect', () => {
       const childRect = {
         x: 20,
         y: 50,
@@ -20,7 +20,7 @@ describe("Intersection", () => {
       expect(rectContainsRect(childRect, parentRect)).to.equal(true);
     });
 
-    it("should be outside parent rect", () => {
+    it('should be outside parent rect', () => {
       const childRect = {
         x: 20,
         y: 5,
@@ -38,7 +38,7 @@ describe("Intersection", () => {
       expect(rectContainsRect(childRect, parentRect)).to.equal(false);
     });
 
-    it("should not because childRects width is bigger than parentRect", () => {
+    it('should not because childRects width is bigger than parentRect', () => {
       const childRect = {
         x: 20,
         y: 30,
@@ -56,7 +56,7 @@ describe("Intersection", () => {
       expect(rectContainsRect(childRect, parentRect)).to.equal(false);
     });
 
-    it("should not because childRects height is bigger than parentRect", () => {
+    it('should not because childRects height is bigger than parentRect', () => {
       const childRect = {
         x: 20,
         y: 30,
@@ -74,7 +74,7 @@ describe("Intersection", () => {
       expect(rectContainsRect(childRect, parentRect)).to.equal(false);
     });
 
-    it("should not because childRects height and width is bigger than parentRect", () => {
+    it('should not because childRects height and width is bigger than parentRect', () => {
       const childRect = {
         x: 20,
         y: 30,

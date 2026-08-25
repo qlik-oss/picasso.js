@@ -1,8 +1,8 @@
-import createElement from "test-utils/mocks/element-mock";
-import hammer from "../hammer";
-import hammerMock from "./hammer-mock";
+import createElement from 'test-utils/mocks/element-mock';
+import hammer from '../hammer';
+import hammerMock from './hammer-mock';
 
-describe("hammer interaction mixin", () => {
+describe('hammer interaction mixin', () => {
   let element;
   let mediator;
   let chart;
@@ -12,17 +12,17 @@ describe("hammer interaction mixin", () => {
 
   beforeEach(() => {
     Hammer = hammerMock();
-    element = createElement("div");
+    element = createElement('div');
     mediator = {};
     chart = {};
     settings = {
-      type: "hammer",
+      type: 'hammer',
       enable: true,
       gestures: [
         {
-          type: "Pan",
+          type: 'Pan',
           options: {
-            event: "pan",
+            event: 'pan',
           },
           events: {
             panstart() {},
@@ -35,27 +35,27 @@ describe("hammer interaction mixin", () => {
     hammerInteraction = hammer(Hammer)(chart, mediator, element);
   });
 
-  it("should add ", () => {
+  it('should add ', () => {
     hammerInteraction.set(settings);
     expect(element.listeners.length).to.equal(3);
   });
-  it("should not add events to element if enabled is false", () => {
+  it('should not add events to element if enabled is false', () => {
     settings.enable = false;
     hammerInteraction.set(settings);
     expect(element.listeners.length).to.equal(0);
   });
-  it("should not add events to element if gesture is disabled", () => {
+  it('should not add events to element if gesture is disabled', () => {
     settings.gestures[0].options.enable = false;
     hammerInteraction.set(settings);
     expect(element.listeners.length).to.equal(0);
   });
-  it("should remove event listeners when off is called", () => {
+  it('should remove event listeners when off is called', () => {
     hammerInteraction.set(settings);
     expect(element.listeners.length).to.equal(3);
     hammerInteraction.off();
     expect(element.listeners.length).to.equal(0);
   });
-  it("should add event listeners again when on is called", () => {
+  it('should add event listeners again when on is called', () => {
     hammerInteraction.set(settings);
     expect(element.listeners.length).to.equal(3);
     hammerInteraction.off();
@@ -63,7 +63,7 @@ describe("hammer interaction mixin", () => {
     hammerInteraction.on();
     expect(element.listeners.length).to.equal(3);
   });
-  it("should not add event listeners when state is off", () => {
+  it('should not add event listeners when state is off', () => {
     hammerInteraction.set(settings);
     expect(element.listeners.length).to.equal(3);
     hammerInteraction.off();
@@ -71,15 +71,15 @@ describe("hammer interaction mixin", () => {
     hammerInteraction.set(settings);
     expect(element.listeners.length).to.equal(0);
   });
-  it("should change hammer events when set is called with new props", () => {
+  it('should change hammer events when set is called with new props', () => {
     hammerInteraction.set(settings);
     expect(element.listeners.length).to.equal(3);
     const newSettings = {
-      type: "hammer",
+      type: 'hammer',
       enable: true,
       gestures: [
         {
-          type: "Click",
+          type: 'Click',
           events: {
             click() {},
           },
@@ -91,38 +91,38 @@ describe("hammer interaction mixin", () => {
     hammerInteraction.off();
     expect(element.listeners.length).to.equal(0);
   });
-  it("remove all event listeners on destroy", () => {
+  it('remove all event listeners on destroy', () => {
     hammerInteraction.set(settings);
     expect(element.listeners.length).to.equal(3);
     hammerInteraction.destroy();
     expect(element.listeners.length).to.equal(0);
   });
-  it("set recognizewith and requirefailure", () => {
+  it('set recognizewith and requirefailure', () => {
     settings = {
-      type: "hammer",
+      type: 'hammer',
       enable: true,
       gestures: [
         {
-          type: "Tap",
+          type: 'Tap',
           options: {
-            event: "tap",
+            event: 'tap',
           },
           events: {
             tap() {},
           },
-          recognizeWith: "double ",
-          requireFailure: "double ",
+          recognizeWith: 'double ',
+          requireFailure: 'double ',
         },
         {
-          type: "Tap",
+          type: 'Tap',
           options: {
-            event: "double",
+            event: 'double',
             taps: 2,
           },
           events: {
             double() {},
           },
-          recognizeWith: "tap ",
+          recognizeWith: 'tap ',
         },
       ],
     };

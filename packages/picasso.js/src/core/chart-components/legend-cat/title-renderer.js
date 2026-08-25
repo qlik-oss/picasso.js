@@ -1,24 +1,24 @@
-import extend from "extend";
+import extend from 'extend';
 
 function itemize({ resolved }, legend) {
   if (resolved.title.item.show === false) {
     return null;
   }
   const t = extend({}, resolved.title.item, {
-    type: "text",
+    type: 'text',
   });
 
-  if (resolved.layout.item.direction === "rtl") {
-    if (!t.anchor || t.anchor === "start") {
-      t.anchor = "end";
-    } else if (t.anchor === "end") {
-      t.anchor = "start";
+  if (resolved.layout.item.direction === 'rtl') {
+    if (!t.anchor || t.anchor === 'start') {
+      t.anchor = 'end';
+    } else if (t.anchor === 'end') {
+      t.anchor = 'start';
     }
   }
 
-  if (typeof resolved.title.settings.text === "undefined") {
+  if (typeof resolved.title.settings.text === 'undefined') {
     const fields = legend.scale.data().fields;
-    t.text = fields && fields[0] ? fields[0].title() : "";
+    t.text = fields && fields[0] ? fields[0].title() : '';
   }
 
   return {
@@ -43,9 +43,9 @@ function render({ rect }, renderer, itemized) {
       extend({}, itemized.displayObject, {
         x: align[itemized.displayObject.anchor] || 0,
         y: 0,
-        baseline: "text-before-edge",
+        baseline: 'text-before-edge',
         title: itemized.displayObject.text,
-      }),
+      })
     );
   }
   renderer.render(nodes);

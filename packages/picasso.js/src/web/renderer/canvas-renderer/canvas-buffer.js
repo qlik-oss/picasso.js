@@ -21,7 +21,7 @@ class CanvasBuffer {
   updateSize({ rect, dpiRatio, canvasBufferSize }) {
     let bufferSize;
     if (canvasBufferSize) {
-      bufferSize = typeof canvasBufferSize === "function" ? canvasBufferSize(rect) : canvasBufferSize;
+      bufferSize = typeof canvasBufferSize === 'function' ? canvasBufferSize(rect) : canvasBufferSize;
     } else {
       bufferSize = {
         width: rect.computedPhysical.width + DEFAULT_PADDING.horizontal * 2,
@@ -39,7 +39,7 @@ class CanvasBuffer {
    * Draws buffer canvas on the target canvas.
    */
   apply() {
-    const g = this.targetCanvas.getContext("2d");
+    const g = this.targetCanvas.getContext('2d');
     g.drawImage(this.bufferCanvas, 0, 0);
   }
 
@@ -49,7 +49,7 @@ class CanvasBuffer {
   }
 
   getContext() {
-    return this.bufferCanvas.getContext("2d");
+    return this.bufferCanvas.getContext('2d');
   }
 }
 

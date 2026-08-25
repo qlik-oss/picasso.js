@@ -1,4 +1,4 @@
-import { hashObject } from "../../../core/utils/crypto";
+import { hashObject } from '../../../core/utils/crypto';
 
 export default function patternizer(bucket, hasher = hashObject) {
   let cache = {};
@@ -9,39 +9,39 @@ export default function patternizer(bucket, hasher = hashObject) {
 
       if (
         state.node &&
-        typeof state.node.fill === "object" &&
-        state.node.fill.type === "pattern" &&
+        typeof state.node.fill === 'object' &&
+        state.node.fill.type === 'pattern' &&
         state.node.fill.shapes
       ) {
         inputs.fill = state.node.fill;
       }
       if (
         state.node &&
-        typeof state.node.stroke === "object" &&
-        state.node.stroke.type === "pattern" &&
+        typeof state.node.stroke === 'object' &&
+        state.node.stroke.type === 'pattern' &&
         state.node.stroke.shapes
       ) {
         inputs.stroke = state.node.stroke;
       }
 
       Object.keys(inputs).forEach((key) => {
-        let url = "";
+        let url = '';
         const input = inputs[key];
         const patternHash = hasher(input);
         const pnid = `picasso-pattern-${uid}-${patternHash}`;
 
-        if (typeof window !== "undefined") {
-          url = window.location.href.split("#")[0];
+        if (typeof window !== 'undefined') {
+          url = window.location.href.split('#')[0];
         }
 
         if (!cache[patternHash]) {
           const pn = {
-            patternUnits: "userSpaceOnUse",
+            patternUnits: 'userSpaceOnUse',
             x: 0,
             y: 0,
             width: input.width,
             height: input.height,
-            type: "pattern",
+            type: 'pattern',
             id: pnid,
             children: [],
             fill: input.fill,

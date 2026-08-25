@@ -20,15 +20,15 @@
     <script>
       window.picasso.use(window.picassoHammer);
       window.tapCount = 0;
-      const element = document.getElementById("container");
+      const element = document.getElementById('container');
 
       window.picasso.chart({
         element,
         data: {
           data: [
-            ["Product", "Cost"],
-            ["Cars", 150000],
-            ["Trucks", 450000],
+            ['Product', 'Cost'],
+            ['Cars', 150000],
+            ['Trucks', 450000],
           ],
         },
         settings: {
@@ -43,7 +43,7 @@
           },
           components: [
             {
-              type: "point",
+              type: 'point',
               data: {
                 extract: {
                   field: 0,
@@ -55,22 +55,22 @@
               },
               settings: {
                 x: {
-                  scale: "d0",
-                  ref: "x",
+                  scale: 'd0',
+                  ref: 'x',
                 },
                 y: {
-                  scale: "m0",
-                  ref: "y",
+                  scale: 'm0',
+                  ref: 'y',
                 },
               },
             },
           ],
           interactions: [
             {
-              type: "hammer",
+              type: 'hammer',
               gestures: [
                 {
-                  type: "Tap",
+                  type: 'Tap',
                   events: {
                     tap(e) {
                       window.tapCount++;

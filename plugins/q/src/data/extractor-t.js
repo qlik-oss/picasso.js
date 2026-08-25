@@ -1,10 +1,10 @@
 /* eslint no-nested-ternary: 0 */
 
-import { hierarchy, stratify } from "d3-hierarchy";
+import { hierarchy, stratify } from 'd3-hierarchy';
 
-import picker from "../json-path-resolver";
+import picker from '../json-path-resolver';
 
-import { treeAccessor } from "./util";
+import { treeAccessor } from './util';
 
 const DIM_RX = /^qDimensionInfo(?:\/(\d+))?/;
 const M_RX = /^\/?qMeasureInfo\/(\d+)/;
@@ -46,11 +46,11 @@ export function getFieldDepth(field, { cube }) {
   if (DIM_RX.test(remainder)) {
     isFieldDimension = true;
     fieldIdx = +DIM_RX.exec(remainder)[1];
-    remainder = key.replace(DIM_RX, "");
+    remainder = key.replace(DIM_RX, '');
   }
 
   if (M_RX.test(remainder)) {
-    if (cube.qMode === "K") {
+    if (cube.qMode === 'K') {
       pseudoMeasureIndex = +M_RX.exec(remainder)[1];
     } else if (treeOrder && treeOrder.indexOf(-1) !== -1) {
       pseudoMeasureIndex = +M_RX.exec(remainder)[1];
@@ -58,7 +58,7 @@ export function getFieldDepth(field, { cube }) {
     } else {
       measureIdx = +M_RX.exec(remainder)[1];
     }
-    remainder = remainder.replace(M_RX, "");
+    remainder = remainder.replace(M_RX, '');
   }
 
   if (remainder) {
@@ -70,7 +70,7 @@ export function getFieldDepth(field, { cube }) {
   }
 
   if (isFieldDimension) {
-    if (cube.qMode === "S") {
+    if (cube.qMode === 'S') {
       fieldDepth = columnOrder[fieldIdx];
     } else {
       fieldDepth = treeOrder ? treeOrder.indexOf(fieldIdx) : fieldIdx;
@@ -80,7 +80,7 @@ export function getFieldDepth(field, { cube }) {
     fieldDepth = treeOrder.indexOf(-1); // depth of pesudodimension
   } else {
     // assume measure is at the bottom of the tree
-    fieldDepth = cube.qDimensionInfo.length - (cube.qMode === "K" ? 0 : 1);
+    fieldDepth = cube.qDimensionInfo.length - (cube.qMode === 'K' ? 0 : 1);
   }
 
   return {
@@ -96,7 +96,7 @@ function getFieldAccessor(sourceDepthObject, targetDepthObject) {
   let nodeFn = treeAccessor(
     sourceDepthObject.fieldDepth,
     targetDepthObject.fieldDepth,
-    targetDepthObject.pseudoMeasureIndex,
+    targetDepthObject.pseudoMeasureIndex
   );
   let valueFn;
 
@@ -123,17 +123,17 @@ function getFieldAccessor(sourceDepthObject, targetDepthObject) {
 function datumExtract(propCfg, cell, { key }) {
   const datum = {
     value:
-      typeof propCfg.value === "function"
+      typeof propCfg.value === 'function'
         ? propCfg.value(cell)
-        : typeof propCfg.value !== "undefined"
+        : typeof propCfg.value !== 'undefined'
           ? propCfg.value
           : cell,
   };
 
   datum.label =
-    typeof propCfg.label === "function"
+    typeof propCfg.label === 'function'
       ? propCfg.label(cell)
-      : typeof propCfg.label !== "undefined"
+      : typeof propCfg.label !== 'undefined'
         ? String(propCfg.label)
         : String(datum.value);
 
@@ -166,14 +166,14 @@ function doIt({ propsArr, props, item, itemData, ret, sourceKey }) {
       let nodes;
       let cells;
       let label;
-      if (p.type === "primitive") {
+      if (p.type === 'primitive') {
         value = p.value;
         label = String(p.value);
       } else {
-        if (typeof p.value === "function") {
+        if (typeof p.value === 'function') {
           fn = (v) => p.value(v, item);
         }
-        if (typeof p.label === "function") {
+        if (typeof p.label === 'function') {
           str = (v) => p.label(v, item);
         }
         if (p.accessor) {
@@ -220,16 +220,16 @@ function doIt({ propsArr, props, item, itemData, ret, sourceKey }) {
     }
     if (coll) {
       ret[propsArr[i]] = {
-        value: typeof pCfg.value === "function" ? pCfg.value(coll, item) : coll,
-        label: typeof pCfg.label === "function" ? pCfg.label(collStr, item) : collStr,
+        value: typeof pCfg.value === 'function' ? pCfg.value(coll, item) : coll,
+        label: typeof pCfg.label === 'function' ? pCfg.label(collStr, item) : collStr,
       };
     }
   }
 }
 
 const getHierarchy = (cube, cache, config) => {
-  const rootPath = cube.qMode === "K" ? "/qStackedDataPages/*/qData" : "/qTreeDataPages/*";
-  const childNodes = cube.qMode === "K" ? "qSubNodes" : "qNodes";
+  const rootPath = cube.qMode === 'K' ? '/qStackedDataPages/*/qData' : '/qTreeDataPages/*';
+  const childNodes = cube.qMode === 'K' ? 'qSubNodes' : 'qNodes';
   const root = picker(rootPath, cube);
   if (!root || !root[0]) {
     return null;
@@ -244,15 +244,15 @@ function getHierarchyForSMode(dataset) {
   const fields = dataset.fields();
   const dimensions = dataset
     .fields()
-    .filter((f) => f.type() === "dimension")
+    .filter((f) => f.type() === 'dimension')
     .map((f) => order.indexOf(fields.indexOf(f)));
   const measures = dataset
     .fields()
-    .filter((f) => f.type() === "measure")
+    .filter((f) => f.type() === 'measure')
     .map((f) => order.indexOf(fields.indexOf(f)));
 
   const root = {
-    __id: "__root",
+    __id: '__root',
     qValues: [],
   };
 
@@ -262,7 +262,7 @@ function getHierarchyForSMode(dataset) {
 
   for (let r = 0; r < matrix.length; r++) {
     const row = matrix[r];
-    let id = "__root";
+    let id = '__root';
     // let parent = root;
     let isNew = false;
     for (let c = 0; c < dimensions.length; c++) {
@@ -316,7 +316,7 @@ const attachPropsAccessors = ({ propsArr, props, cube, cache, itemDepthObject, f
 export function augment(config = {}, dataset, cache, util) {
   const cube = dataset.raw();
   const sourceKey = dataset.key();
-  const h = cube.qMode === "S" ? getHierarchyForSMode(dataset) : getHierarchy(cube, cache, config);
+  const h = cube.qMode === 'S' ? getHierarchyForSMode(dataset) : getHierarchy(cube, cache, config);
   if (!h) {
     return null;
   }
@@ -326,7 +326,7 @@ export function augment(config = {}, dataset, cache, util) {
   for (let i = 0; i <= height; i++) {
     let f = null;
     if (i > 0) {
-      if (cube.qMode === "S") {
+      if (cube.qMode === 'S') {
         const order = getDimensionColumnOrder(cube);
         let idx = order[i - 1];
         f = cache.fields[idx];
@@ -391,7 +391,7 @@ export function extract(config, dataset, cache, util) {
   const cfgs = Array.isArray(config) ? config : [config];
   let dataItems = [];
   for (let g = 0; g < cfgs.length; g++) {
-    if (typeof cfgs[g].field !== "undefined") {
+    if (typeof cfgs[g].field !== 'undefined') {
       const cube = dataset.raw();
       const sourceKey = dataset.key();
       const h = getHierarchy(cube, cache, config);
@@ -399,7 +399,7 @@ export function extract(config, dataset, cache, util) {
         continue;
       }
 
-      const f = typeof cfgs[g].field === "object" ? cfgs[g].field : dataset.field(cfgs[g].field);
+      const f = typeof cfgs[g].field === 'object' ? cfgs[g].field : dataset.field(cfgs[g].field);
       const { props, main } = util.normalizeConfig(cfgs[g], dataset);
       const propsArr = Object.keys(props);
 

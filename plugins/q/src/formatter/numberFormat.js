@@ -1,5 +1,5 @@
-import numberFormatFactory from "./parts/qs-number-formatter";
-import memoize from "./memoize";
+import numberFormatFactory from './parts/qs-number-formatter';
+import memoize from './memoize';
 
 export default function formatter(pattern, thousand, decimal, qType, localeInfo) {
   const qformat = numberFormatFactory(localeInfo, pattern, thousand, decimal, qType);

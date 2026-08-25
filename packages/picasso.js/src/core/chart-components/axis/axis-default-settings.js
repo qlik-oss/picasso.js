@@ -68,7 +68,7 @@ const DEFAULT_DISCRETE_SETTINGS = {
     minLengthPx: 0,
     /** Control how labels arrange themself. Availabe modes are `auto`, `horizontal`, `layered` and `tilted`. When set to `auto` the axis determines the best possible layout in the current context.
      * @type {string=} */
-    mode: "auto",
+    mode: 'auto',
     /** When only a sub-set of data is available, ex. when paging. This property can be used to let the axis estimate how much space the labels will consume, allowing it to give a consistent space estimate over the entire dataset when paging.
      * @type {number=} */
     maxGlyphCount: NaN,
@@ -115,7 +115,7 @@ const DEFAULT_DISCRETE_SETTINGS = {
   paddingEnd: 10,
   /** Set the anchoring point of the axis. Available options are `auto/left/right/bottom/top`. In `auto` the axis determines the best option. The options are restricted based on the axis orientation, a vertical axis may only anchor on `left` or `right`
    * @type {string=} */
-  align: "auto",
+  align: 'auto',
 };
 
 /**
@@ -218,7 +218,7 @@ const DEFAULT_CONTINUOUS_SETTINGS = {
   paddingEnd: 10,
   /** Set the anchoring point of the axis. Available options are `auto/left/right/bottom/top`. In `auto` the axis determines the best option. The options are restricted based on the axis orientation, a vertical axis may only anchor on `left` or `right`
    * @type {string=} */
-  align: "auto",
+  align: 'auto',
 };
 
 export { DEFAULT_DISCRETE_SETTINGS, DEFAULT_CONTINUOUS_SETTINGS };

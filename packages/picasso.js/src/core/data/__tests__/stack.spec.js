@@ -1,7 +1,7 @@
-import stack, { stackOffsetDiverging } from "../stack";
+import stack, { stackOffsetDiverging } from '../stack';
 
-describe("stack", () => {
-  const valueField = { key: "nyckel", field: "sales" };
+describe('stack', () => {
+  const valueField = { key: 'nyckel', field: 'sales' };
   let data;
   beforeEach(() => {
     data = {
@@ -20,7 +20,7 @@ describe("stack", () => {
     };
   });
 
-  it("should attach generated field", () => {
+  it('should attach generated field', () => {
     stack(data, {
       stackKey: (v) => v.stack,
       value: (v) => v.minor.value,
@@ -29,7 +29,7 @@ describe("stack", () => {
     expect(data.fields[0].max()).to.eql(23);
   });
 
-  it("should attach start and end properties", () => {
+  it('should attach start and end properties', () => {
     stack(data, {
       stackKey: (v) => v.stack,
       value: (v) => v.minor.value,
@@ -39,8 +39,8 @@ describe("stack", () => {
   });
 });
 
-describe("stackOffsetDiverging", () => {
-  it("should stack positive values above zero and negative values below zero", () => {
+describe('stackOffsetDiverging', () => {
+  it('should stack positive values above zero and negative values below zero', () => {
     const series = [
       [
         [0, 1],
@@ -74,7 +74,7 @@ describe("stackOffsetDiverging", () => {
     ]);
   });
 
-  it("should keep zero-height segments at the current positive baseline", () => {
+  it('should keep zero-height segments at the current positive baseline', () => {
     const series = [[[0, 5]], [[0, 0]], [[0, -2]]];
 
     stackOffsetDiverging(series, [0, 1, 2]);
@@ -82,7 +82,7 @@ describe("stackOffsetDiverging", () => {
     expect(series).to.eql([[[0, 5]], [[5, 5]], [[-2, 0]]]);
   });
 
-  it("should anchor non-comparable segments at the current positive baseline", () => {
+  it('should anchor non-comparable segments at the current positive baseline', () => {
     const series = [[[0, 2]], [[NaN, NaN]], [[0, -1]]];
 
     stackOffsetDiverging(series, [0, 1, 2]);
@@ -93,7 +93,7 @@ describe("stackOffsetDiverging", () => {
     expect(series[2]).to.eql([[-1, 0]]);
   });
 
-  it("should respect the provided order when applying offsets", () => {
+  it('should respect the provided order when applying offsets', () => {
     const series = [[[0, 2]], [[0, 3]]];
 
     stackOffsetDiverging(series, [1, 0]);

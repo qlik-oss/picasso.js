@@ -1,5 +1,5 @@
-import { create as createPolygon } from "./polygon";
-import { pointsToLine, pointsToRect } from "./util";
+import { create as createPolygon } from './polygon';
+import { pointsToLine, pointsToRect } from './util';
 import {
   testCircleGeoPolygon,
   testGeoPolygonPoint,
@@ -7,7 +7,7 @@ import {
   testGeoPolygonRect,
   testGeoPolygonPolygon,
   testGeoPolygonGeoPolygon,
-} from "../math/narrow-phase-collision";
+} from '../math/narrow-phase-collision';
 
 function close(vertices) {
   const first = vertices[0];
@@ -45,7 +45,7 @@ class GeoPolygon {
    * @param {Array} [input.vertices=[]] Vertices are represented as an array of arrays of points.
    */
   set({ vertices = [] } = {}) {
-    this.type = "geopolygon";
+    this.type = 'geopolygon';
     this.vertices = vertices.slice();
     this.numPolygons = this.vertices.length;
     this.polygons = [];

@@ -8,9 +8,9 @@ import {
   stackOffsetSilhouette,
   stackOffsetExpand,
   stackOffsetWiggle,
-} from "d3-shape";
-import fieldFn from "./field";
-import { getMax, getMin } from "./util";
+} from 'd3-shape';
+import fieldFn from './field';
+import { getMax, getMin } from './util';
 
 // Intentionally mirrors d3-shape@1.3.6 diverging offset behavior for zero values.
 export function stackOffsetDiverging(series, order) {
@@ -63,11 +63,11 @@ export default function stacked(data, config, ds, dataItems) {
   const stackIds = {};
   const stackFn = config.stackKey;
   const valueFn = config.value;
-  const startProp = config.startProp || "start";
-  const endProp = config.endProp || "end";
-  const offset = config.offset || "none";
-  const order = config.order || "none";
-  const valueRef = config.valueRef || "";
+  const startProp = config.startProp || 'start';
+  const endProp = config.endProp || 'end';
+  const offset = config.offset || 'none';
+  const order = config.order || 'none';
+  const valueRef = config.valueRef || '';
 
   let maxStackCount = 0;
 
@@ -77,7 +77,7 @@ export default function stacked(data, config, ds, dataItems) {
     let p = itemsArray[i];
     let sourceField = valueRef ? p[valueRef] : null;
     if (sourceField && sourceField.source) {
-      let ff = `${sourceField.source.key || ""}/${sourceField.source.field}`;
+      let ff = `${sourceField.source.key || ''}/${sourceField.source.field}`;
       if (!valueFields[ff]) {
         valueFields[ff] = sourceField.source;
       }
@@ -123,10 +123,10 @@ export default function stacked(data, config, ds, dataItems) {
     .filter((f) => !!f);
 
   const field = fieldFn({
-    title: stackedFields.map((f) => f.title()).join(", "),
+    title: stackedFields.map((f) => f.title()).join(', '),
     min: getMin(values),
     max: getMax(values),
-    type: "measure",
+    type: 'measure',
     formatter: stackedFields[0] ? stackedFields[0].formatter : undefined,
   });
   data.fields.push(field);

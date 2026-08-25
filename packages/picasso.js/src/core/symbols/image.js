@@ -7,7 +7,7 @@ export default function image(options) {
   const { x, y } = options;
   const { width, height, imageSrc, position, symbol, imageScalingFactor } = options.imageSettings || {};
   return {
-    type: "image",
+    type: 'image',
     x,
     y,
     width,

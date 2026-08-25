@@ -1,4 +1,4 @@
-import pointMarkerComponent from "./point";
+import pointMarkerComponent from './point';
 
 /**
  * @typedef {object} ComponentPoint
@@ -23,10 +23,10 @@ import pointMarkerComponent from "./point";
 }
  */
 
-const type = "point";
+const type = 'point';
 
 export default function pointMarker(picasso) {
   picasso.component(type, pointMarkerComponent);
 
-  picasso.component("point-marker", pointMarkerComponent); // temporary backwards compatibility - DEPRECATED
+  picasso.component('point-marker', pointMarkerComponent); // temporary backwards compatibility - DEPRECATED
 }

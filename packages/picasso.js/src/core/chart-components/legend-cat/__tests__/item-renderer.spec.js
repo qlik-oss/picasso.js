@@ -5,31 +5,31 @@ import itemRendererFactory, {
   getItemsToRender,
   createRenderItem,
   parallelize,
-} from "../item-renderer";
+} from '../item-renderer';
 
-describe("legend-item-renderer", () => {
-  describe("itemize", () => {
+describe('legend-item-renderer', () => {
+  describe('itemize', () => {
     let created;
     beforeEach(() => {
       created = itemize(
         {
           resolved: {
             layout: { item: {} },
-            labels: { items: [{}, { fontSize: 11, data: { label: "wohoo" } }] },
+            labels: { items: [{}, { fontSize: 11, data: { label: 'wohoo' } }] },
             items: { items: [{ show: false }, {}] },
             symbols: { items: [{}, { size: 17 }] },
           },
         },
         {
           textBounds: (obj) => ({ width: parseInt(obj.fontSize, 10) * 2, height: 20 }),
-        },
+        }
       );
     });
-    it("should filter out hidden items", () => {
+    it('should filter out hidden items', () => {
       expect(created.items.length).to.equal(1);
     });
 
-    it("should return items", () => {
+    it('should return items', () => {
       expect(created.items).to.eql([
         {
           symbol: {
@@ -37,11 +37,11 @@ describe("legend-item-renderer", () => {
           },
           label: {
             displayObject: {
-              data: { label: "wohoo" },
-              fontSize: "11px",
-              text: "wohoo",
-              title: "wohoo",
-              type: "text",
+              data: { label: 'wohoo' },
+              fontSize: '11px',
+              text: 'wohoo',
+              title: 'wohoo',
+              type: 'text',
             },
             bounds: { width: 22, height: 20 },
           },
@@ -49,7 +49,7 @@ describe("legend-item-renderer", () => {
       ]);
     });
 
-    it("should calculate absolute metrics", () => {
+    it('should calculate absolute metrics', () => {
       expect(created.globalMetrics).to.eql({
         spacing: 8,
         maxSymbolSize: 17,
@@ -59,8 +59,8 @@ describe("legend-item-renderer", () => {
     });
   });
 
-  describe("extent", () => {
-    it("should calculate when vertical", () => {
+  describe('extent', () => {
+    it('should calculate when vertical', () => {
       let x = extent(
         {
           items: [1, 2, 3, 4, 5],
@@ -69,21 +69,21 @@ describe("legend-item-renderer", () => {
           },
           globalMetrics: { maxItemBounds: { width: 10, height: 20 } },
         },
-        2,
+        2
       );
       // 5 items running in 2 columns gives:
       // 3 rows each with a height of 20, plus spacing between the rows
       expect(x).to.equal(3 * 20 + 2 * 13);
     });
 
-    it("should calculate when horizontal", () => {
+    it('should calculate when horizontal', () => {
       let x = extent(
         {
           items: [1, 2, 3, 4, 5],
-          layout: { orientation: "horizontal", margin: { horizontal: 17 } },
+          layout: { orientation: 'horizontal', margin: { horizontal: 17 } },
           globalMetrics: { maxItemBounds: { width: 10, height: 20 } },
         },
-        2,
+        2
       );
       // 5 items running in 2 rows gives:
       // 3 columns each with a width of 10, plus spacing between the columns
@@ -91,45 +91,45 @@ describe("legend-item-renderer", () => {
     });
   });
 
-  describe("spread", () => {
-    it("should calculate when vertical", () => {
+  describe('spread', () => {
+    it('should calculate when vertical', () => {
       let x = spread(
         {
           layout: { margin: { horizontal: 13 } },
           globalMetrics: { maxItemBounds: { width: 10, height: 20 } },
         },
-        3,
+        3
       );
       // 3 columns each with a width of 10, plus spacing between the columns
       expect(x).to.equal(3 * 10 + 2 * 13);
     });
 
-    it("should calculate when horizontal", () => {
+    it('should calculate when horizontal', () => {
       let x = spread(
         {
-          layout: { orientation: "horizontal", margin: { vertical: 7 } },
+          layout: { orientation: 'horizontal', margin: { vertical: 7 } },
           globalMetrics: { spacing: 4, maxItemBounds: { width: 10, height: 20 } },
         },
-        3,
+        3
       );
       // 3 rows each with a height of 20, plus spacing between the rows
       expect(x).to.equal(3 * 20 + 2 * 7);
     });
   });
 
-  describe("parallelize", () => {
-    it("should fill up allowed space", () => {
+  describe('parallelize', () => {
+    it('should fill up allowed space', () => {
       expect(
         parallelize(48, null, {
           // 20 in row height + 4 margin should fit two rows and result in 3 columns (parallels)
           items: [1, 2, 3, 4, 5, 6],
           layout: { size: 5, margin: { vertical: 4 } },
           globalMetrics: { maxItemBounds: { width: 10, height: 20 } },
-        }),
+        })
       ).to.equal(3);
     });
 
-    it("should not overflow allowd spread", () => {
+    it('should not overflow allowd spread', () => {
       // 20 in row height + 4 spacing should fit two rows and result in 3 columns (parallels)
       // 3 columns = 10 * 3 + 2 * 4 = 38
       // limit spread to < 38 should limit the parallels to 2
@@ -138,12 +138,12 @@ describe("legend-item-renderer", () => {
           items: [1, 2, 3, 4, 5, 6],
           layout: { size: 5, margin: { vertical: 4 } },
           globalMetrics: { maxItemBounds: { width: 10, height: 20 } },
-        }),
+        })
       ).to.equal(2);
     });
 
-    describe("horizontal layout", () => {
-      it("should not overflow allowed spread of two rows", () => {
+    describe('horizontal layout', () => {
+      it('should not overflow allowed spread of two rows', () => {
         // 25 in width + 4 spacing should fit two rows and result in 3 columns
         // 3 columns = 25 * 3 + 2 * 4 = 83
         // limit spread to 38 should limit the parallels to 2
@@ -151,13 +151,13 @@ describe("legend-item-renderer", () => {
         expect(
           parallelize(83, 38, {
             items: [1, 2, 3, 4, 5, 6],
-            layout: { size: 5, margin: { vertical: 4, horizontal: 6 }, orientation: "horizontal" },
+            layout: { size: 5, margin: { vertical: 4, horizontal: 6 }, orientation: 'horizontal' },
             globalMetrics: { maxItemBounds: { width: 25, height: 17 } },
-          }),
+          })
         ).to.equal(2);
       });
 
-      it("should not overflow allowed spread of one row", () => {
+      it('should not overflow allowed spread of one row', () => {
         // 25 in width + 4 spacing should fit one row and result in 3 columns
         // 3 columns = 25 * 3 + 2 * 4 = 83
         // limit spread to 37 should limit the parallels to 1
@@ -165,20 +165,20 @@ describe("legend-item-renderer", () => {
         expect(
           parallelize(83, 37, {
             items: [1, 2, 3, 4, 5, 6],
-            layout: { size: 5, margin: { vertical: 4, horizontal: 6 }, orientation: "horizontal" },
+            layout: { size: 5, margin: { vertical: 4, horizontal: 6 }, orientation: 'horizontal' },
             globalMetrics: { maxItemBounds: { width: 25, height: 17 } },
-          }),
+          })
         ).to.equal(1);
       });
     });
   });
 
-  describe("getItemsToRender", () => {
+  describe('getItemsToRender', () => {
     let rendered;
-    describe("vertical", () => {
+    describe('vertical', () => {
       beforeEach(() => {
         const itemized = {
-          items: ["a", "b", "c", "d", "e", "f", "g"],
+          items: ['a', 'b', 'c', 'd', 'e', 'f', 'g'],
           layout: { margin: { vertical: 5, horizontal: 6 } },
           globalMetrics: {
             spacing: 4,
@@ -205,27 +205,27 @@ describe("legend-item-renderer", () => {
             itemized,
             create: ({ x, y, item }) => ({ item: { x, y, label: item } }),
             parallels: 2,
-          },
+          }
         );
       });
 
-      it("should position items in two columns", () => {
+      it('should position items in two columns', () => {
         expect(rendered).to.eql([
           // { x: 0, y: -12, label: 'a' }, { x: 28, y: -12, label: 'b' }, // not visible
-          { x: 0, y: 3, label: "c" },
-          { x: 26, y: 3, label: "d" }, // first visible row
-          { x: 0, y: 18, label: "e" },
-          { x: 26, y: 18, label: "f" }, // second
+          { x: 0, y: 3, label: 'c' },
+          { x: 26, y: 3, label: 'd' }, // first visible row
+          { x: 0, y: 18, label: 'e' },
+          { x: 26, y: 18, label: 'f' }, // second
           // { x: 0, y: 30, label: 'g' } // not visible - outside of view rect
         ]);
       });
     });
 
-    describe("horizontal", () => {
+    describe('horizontal', () => {
       beforeEach(() => {
         const itemized = {
-          items: ["a", "b", "c", "d", "e", "f", "g"],
-          layout: { orientation: "horizontal", margin: { vertical: 5, horizontal: 6 } },
+          items: ['a', 'b', 'c', 'd', 'e', 'f', 'g'],
+          layout: { orientation: 'horizontal', margin: { vertical: 5, horizontal: 6 } },
           globalMetrics: {
             spacing: 4,
             maxItemBounds: { width: 20, height: 10 },
@@ -251,23 +251,23 @@ describe("legend-item-renderer", () => {
             itemized,
             create: ({ x, y, item }) => ({ item: { x, y, label: item } }),
             parallels: 2,
-          },
+          }
         );
       });
 
-      it("should position items in two rows", () => {
+      it('should position items in two rows', () => {
         expect(rendered).to.eql([
-          { x: 4, y: 0, label: "c" },
-          { x: 4, y: 15, label: "d" }, // first visible row
-          { x: 30, y: 0, label: "e" },
-          { x: 30, y: 15, label: "f" }, // second
+          { x: 4, y: 0, label: 'c' },
+          { x: 4, y: 15, label: 'd' }, // first visible row
+          { x: 30, y: 0, label: 'e' },
+          { x: 30, y: 15, label: 'f' }, // second
         ]);
       });
     });
   });
 
-  describe("createRenderItem", () => {
-    it("create", () => {
+  describe('createRenderItem', () => {
+    it('create', () => {
       const item = createRenderItem({
         x: 1,
         y: 3,
@@ -276,7 +276,7 @@ describe("legend-item-renderer", () => {
             bounds: { width: 15, height: 9 },
             displayObject: {
               fontSize: 11,
-              data: "d",
+              data: 'd',
             },
           },
           symbol: { meta: { size: 4 } },
@@ -291,10 +291,10 @@ describe("legend-item-renderer", () => {
       });
 
       expect(item.item).to.eql({
-        type: "container",
-        data: "d",
+        type: 'container',
+        data: 'd',
         collider: {
-          type: "rect",
+          type: 'rect',
           x: 1,
           y: 3,
           width: 17,
@@ -307,10 +307,10 @@ describe("legend-item-renderer", () => {
             y: 3 + 7, // y + maxSymbolSize / 2
           },
           {
-            baseline: "text-before-edge",
+            baseline: 'text-before-edge',
             fontSize: 11,
-            anchor: "start",
-            data: "d",
+            anchor: 'start',
+            data: 'd',
             x: 1 + 14 + 8, // x + maxSymbolSize + spacing
             y: 3 + (14 - 9) / 2 + 11 * 0.175, // y + (maxSymbolSize - labelHeight) / 2 + fontSize * 0.175
           },
@@ -319,7 +319,7 @@ describe("legend-item-renderer", () => {
     });
   });
 
-  describe("offset", () => {
+  describe('offset', () => {
     let sandbox;
     let legend;
     let api;
@@ -338,7 +338,7 @@ describe("legend-item-renderer", () => {
         viewRect: { x: 1, y: 2 },
         resolved: {
           layout: { item: { scrollOffset: 100 } },
-          labels: { items: [{}, { fontSize: 11, data: { label: "wohoo" } }] },
+          labels: { items: [{}, { fontSize: 11, data: { label: 'wohoo' } }] },
           items: { items: [{ show: false }, {}] },
           symbols: { items: [{}, { size: 17 }] },
         },
@@ -347,46 +347,46 @@ describe("legend-item-renderer", () => {
         onScroll: () => {},
       });
       overflow = 0;
-      sandbox.stub(api, "getContentOverflow").callsFake(() => overflow);
+      sandbox.stub(api, 'getContentOverflow').callsFake(() => overflow);
     });
 
     afterEach(() => {
       sandbox.restore();
     });
 
-    it("should return correct offset after itemize is executed", () => {
+    it('should return correct offset after itemize is executed', () => {
       api.itemize(obj);
       expect(api.offset()).to.equal(100);
     });
 
-    it("should return correct offset after itemize and getItemsToRender are executed and overflow = 0", () => {
+    it('should return correct offset after itemize and getItemsToRender are executed and overflow = 0', () => {
       api.itemize(obj);
       api.getItemsToRender(obj);
       expect(api.offset()).to.equal(0);
     });
 
-    it("should return correct offset after itemize and getItemsToRender are executed and overflow < offset", () => {
+    it('should return correct offset after itemize and getItemsToRender are executed and overflow < offset', () => {
       overflow = 5;
       api.itemize(obj);
       api.getItemsToRender(obj);
       expect(api.offset()).to.equal(5);
     });
 
-    it("should return correct offset after itemize and getItemsToRender are executed and overflow > offset", () => {
+    it('should return correct offset after itemize and getItemsToRender are executed and overflow > offset', () => {
       overflow = 200;
       api.itemize(obj);
       api.getItemsToRender(obj);
       expect(api.offset()).to.equal(100);
     });
 
-    it("should return correct offset after itemize and getItemsToRender and then itemize are executed", () => {
+    it('should return correct offset after itemize and getItemsToRender and then itemize are executed', () => {
       api.itemize(obj);
       api.getItemsToRender(obj);
       api.itemize(obj);
       expect(api.offset()).to.equal(100);
     });
 
-    it("should return correct offset after itemize and getItemsToRender and then itemize and getItemsToRender are executed and overflow < offset", () => {
+    it('should return correct offset after itemize and getItemsToRender and then itemize and getItemsToRender are executed and overflow < offset', () => {
       overflow = 10;
       api.itemize(obj);
       api.getItemsToRender(obj);
@@ -395,7 +395,7 @@ describe("legend-item-renderer", () => {
       expect(api.offset()).to.equal(10);
     });
 
-    it("should return correct offset after itemize and getItemsToRender and then itemize and getItemsToRender are executed and overflow > offset", () => {
+    it('should return correct offset after itemize and getItemsToRender and then itemize and getItemsToRender are executed and overflow > offset', () => {
       overflow = 300;
       api.itemize(obj);
       api.getItemsToRender(obj);

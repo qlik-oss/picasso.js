@@ -4,7 +4,7 @@ function isMajorTick(tick) {
 
 function isVerticalLabelOverlapping({ majorTicks, measureText, rect }) {
   const size = rect.height;
-  const textHeight = measureText("M").height;
+  const textHeight = measureText('M').height;
   if (majorTicks.length < 2) {
     return false;
   }
@@ -23,11 +23,11 @@ function isHorizontalLabelOverlapping({ majorTicks, measureText, rect, state }) 
    * It's a lifecycle limitation as components docked either left or right can affect the width available after the calculation is done.
    * <number of components docked left/right> * <width of components> => Less accurate ===> Can result in only ellips char rendered as labels.
    */
-  const m = state.labels.activeMode === "layered" ? 2 : 1;
+  const m = state.labels.activeMode === 'layered' ? 2 : 1;
   const size = rect.width;
   const tickSize = majorTicks
     .map((tick) => tick.label)
-    .map((l) => `${l.slice(0, 1)}${l.length > 1 ? "…" : ""}`) // Measure the size of 1 chars + the ellips char.
+    .map((l) => `${l.slice(0, 1)}${l.length > 1 ? '…' : ''}`) // Measure the size of 1 chars + the ellips char.
     .map(measureText)
     .map((r) => r.width);
   for (let i = 0; i < majorTicks.length; ++i) {
@@ -43,9 +43,9 @@ function isHorizontalLabelOverlapping({ majorTicks, measureText, rect, state }) 
 
 function shouldAutoTilt({ majorTicks, measure, rect, state, settings }) {
   const glyphCount = settings.labels.maxGlyphCount;
-  const m = state.labels.activeMode === "layered" ? 2 : 1;
+  const m = state.labels.activeMode === 'layered' ? 2 : 1;
   const magicSizeRatioMultipler = settings.labels.tiltThreshold ? settings.labels.tiltThreshold : 0.7; // So that if less the 70% of labels are visible, toggle on tilt or use variable tiltThreshold
-  const ellipsCharSize = measure("…").width; // include ellipsed char in calc as it's generally large then the char it replaces
+  const ellipsCharSize = measure('…').width; // include ellipsed char in calc as it's generally large then the char it replaces
   const size = rect.width;
   let maxLabelWidth = 0;
   let d1 = 0;
@@ -53,7 +53,7 @@ function shouldAutoTilt({ majorTicks, measure, rect, state, settings }) {
   if (!isNaN(glyphCount)) {
     const minBandwidth = majorTicks.reduce((prev, curr) => Math.min(Math.abs(curr.start - curr.end), prev), Infinity);
     d1 = m * size * minBandwidth;
-    maxLabelWidth = measure("M").width * magicSizeRatioMultipler * glyphCount;
+    maxLabelWidth = measure('M').width * magicSizeRatioMultipler * glyphCount;
     if (maxLabelWidth + ellipsCharSize > d1) {
       return true;
     }
@@ -82,7 +82,7 @@ function isTiltedLabelOverlapping({ majorTicks, measureText, rect, bleedSize, an
   const absAngle = Math.abs(angle);
   const size = Math.min(rect.outer.width - bleedSize, rect.inner.width);
   const stepSize = size * Math.abs(majorTicks[0].position - majorTicks[1].position);
-  const textHeight = measureText("M").height;
+  const textHeight = measureText('M').height;
   const reciprocal = 1 / stepSize; // 1 === Math.sin(90 * (Math.PI / 180))
   const distanceBetweenLabels = Math.sin(absAngle * (Math.PI / 180)) / reciprocal;
 
@@ -135,7 +135,7 @@ export default function getSize({ isDiscrete, rect, formatter, measureText, scal
 
   if (settings.labels.show) {
     const align = settings.align;
-    const horizontal = align === "top" || align === "bottom";
+    const horizontal = align === 'top' || align === 'bottom';
     const distance = horizontal ? rect.inner.width : rect.inner.height;
     const majorTicks = scale
       .ticks({
@@ -155,7 +155,7 @@ export default function getSize({ isDiscrete, rect, formatter, measureText, scal
       return m;
     };
 
-    if (isDiscrete && horizontal && settings.labels.mode === "auto") {
+    if (isDiscrete && horizontal && settings.labels.mode === 'auto') {
       if (
         shouldAutoTilt({
           majorTicks,
@@ -165,15 +165,15 @@ export default function getSize({ isDiscrete, rect, formatter, measureText, scal
           settings,
         })
       ) {
-        state.labels.activeMode = "tilted";
+        state.labels.activeMode = 'tilted';
       } else {
-        state.labels.activeMode = "horizontal";
+        state.labels.activeMode = 'horizontal';
       }
     }
 
     if (
       !settings.labels.filterOverlapping &&
-      state.labels.activeMode !== "tilted" &&
+      state.labels.activeMode !== 'tilted' &&
       isToLarge({
         rect: rect.inner,
         state,
@@ -187,7 +187,7 @@ export default function getSize({ isDiscrete, rect, formatter, measureText, scal
     }
 
     let sizeFromTextRect;
-    if (state.labels.activeMode === "tilted") {
+    if (state.labels.activeMode === 'tilted') {
       const radians = Math.abs(settings.labels.tiltAngle) * (Math.PI / 180); // angle in radians
       sizeFromTextRect = (r) =>
         getClampedValue({ value: r.width, maxValue, minValue }) * Math.sin(radians) + r.height * Math.cos(radians);
@@ -198,12 +198,12 @@ export default function getSize({ isDiscrete, rect, formatter, measureText, scal
     }
 
     let labels;
-    if (horizontal && state.labels.activeMode !== "tilted") {
-      labels = ["M"];
+    if (horizontal && state.labels.activeMode !== 'tilted') {
+      labels = ['M'];
     } else if (!isNaN(settings.labels.maxGlyphCount)) {
-      let label = "";
+      let label = '';
       for (let i = 0; i < settings.labels.maxGlyphCount; i++) {
-        label += "M";
+        label += 'M';
       }
       labels = [label];
     } else {
@@ -215,14 +215,14 @@ export default function getSize({ isDiscrete, rect, formatter, measureText, scal
     size += textSize;
     size += settings.labels.margin;
 
-    if (state.labels.activeMode === "layered") {
+    if (state.labels.activeMode === 'layered') {
       size *= 2;
     }
 
-    if (state.labels.activeMode === "tilted") {
-      const extendLeft = (settings.align === "bottom") === settings.labels.tiltAngle >= 0;
+    if (state.labels.activeMode === 'tilted') {
+      const extendLeft = (settings.align === 'bottom') === settings.labels.tiltAngle >= 0;
       const radians = Math.abs(settings.labels.tiltAngle) * (Math.PI / 180); // angle in radians
-      const h = measure("M").height;
+      const h = measure('M').height;
       const maxWidth = (textSize - h * Math.cos(radians)) / Math.sin(radians);
       const labelWidth = (r) => Math.min(maxWidth, r.width) * Math.cos(radians) + r.height;
       const adjustByPosition = (s, i) => {
@@ -235,7 +235,7 @@ export default function getSize({ isDiscrete, rect, formatter, measureText, scal
       const bleedSize =
         Math.min(settings.labels.maxEdgeBleed, Math.max(...tickMeasures.map(labelWidth).map(adjustByPosition), 0)) +
         settings.paddingEnd;
-      const bleedDir = extendLeft ? "left" : "right";
+      const bleedDir = extendLeft ? 'left' : 'right';
       edgeBleed[bleedDir] = bleedSize;
 
       if (

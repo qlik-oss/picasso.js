@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-const cp = require("child_process");
+const cp = require('child_process');
 
 let server;
 
@@ -17,7 +17,7 @@ function exit(a) {
   }
 }
 
-function exec(cmd, stdio = "inherit") {
+function exec(cmd, stdio = 'inherit') {
   try {
     cp.execSync(cmd, {
       stdio,
@@ -28,5 +28,5 @@ function exec(cmd, stdio = "inherit") {
   }
 }
 
-server = cp.spawn("npm", ["run", "test:integration:server"]);
-exec("npm run test:integration:local");
+server = cp.spawn('npm', ['run', 'test:integration:server']);
+exec('npm run test:integration:local');

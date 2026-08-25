@@ -1,16 +1,16 @@
 /* eslint-disable no-cond-assign */
 
 /* eslint-disable no-nested-ternary */
-import { color } from "d3-color";
+import { color } from 'd3-color';
 import {
   interpolateRgb as rgb,
   interpolateDate as date,
   interpolateNumber as number,
   interpolateString as string,
   interpolateNumberArray as numberArray,
-} from "d3-interpolate";
+} from 'd3-interpolate';
 
-const colorKeys = ["stroke", "fill", "color", "backgroundColor", "thumbColor"];
+const colorKeys = ['stroke', 'fill', 'color', 'backgroundColor', 'thumbColor'];
 
 export function constant(x) {
   return () => x;
@@ -46,11 +46,11 @@ export function genericArray(a, b) {
 export function value(a, b, k) {
   const t = typeof b;
   let c;
-  return b == null || t === "boolean"
+  return b == null || t === 'boolean'
     ? constant(b)
-    : (t === "number"
+    : (t === 'number'
         ? number
-        : t === "string"
+        : t === 'string'
           ? (c = color(b)) && colorKeys.includes(k)
             ? ((b = c), rgb)
             : string
@@ -62,7 +62,7 @@ export function value(a, b, k) {
                 ? numberArray
                 : Array.isArray(b)
                   ? genericArray
-                  : (typeof b.valueOf !== "function" && typeof b.toString !== "function") || isNaN(b)
+                  : (typeof b.valueOf !== 'function' && typeof b.toString !== 'function') || isNaN(b)
                     ? object
                     : number)(a, b);
 }
@@ -72,11 +72,11 @@ export default function object(a, b) {
   const c = {};
   let k;
 
-  if (a === null || typeof a !== "object") {
+  if (a === null || typeof a !== 'object') {
     a = {};
   }
 
-  if (b === null || typeof b !== "object") {
+  if (b === null || typeof b !== 'object') {
     b = {};
   }
 

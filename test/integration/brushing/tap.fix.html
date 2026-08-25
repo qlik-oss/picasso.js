@@ -29,78 +29,78 @@
     <script type="text/javascript">
       var t = Date.now();
       function log(e, type, d) {
-        var li = document.createElement("li");
-        li.innerText = [d, type, e.clientX, e.clientY].join(", ");
-        document.querySelector("ul").appendChild(li);
+        var li = document.createElement('li');
+        li.innerText = [d, type, e.clientX, e.clientY].join(', ');
+        document.querySelector('ul').appendChild(li);
       }
-      var element = document.querySelector(".container");
-      element.addEventListener("mousedown", function (e) {
-        log(e, "down", Date.now() - t);
+      var element = document.querySelector('.container');
+      element.addEventListener('mousedown', function (e) {
+        log(e, 'down', Date.now() - t);
       });
-      element.addEventListener("mouseup", function (e) {
-        log(e, "up", Date.now() - t);
+      element.addEventListener('mouseup', function (e) {
+        log(e, 'up', Date.now() - t);
       });
       var picassochart = window.picasso.chart({
         element: element,
         data: [
           {
-            type: "matrix",
+            type: 'matrix',
             data: [
-              ["Year", "Month", "Sales", "Margin"],
-              ["2010", "Jan", 1106, 7],
-              ["2010", "Feb", 5444, 53],
-              ["2010", "Mar", 147, 64],
-              ["2010", "Apr", 7499, 47],
-              ["2010", "May", 430, 62],
-              ["2010", "June", 9735, 13],
-              ["2010", "July", 7435, 15],
+              ['Year', 'Month', 'Sales', 'Margin'],
+              ['2010', 'Jan', 1106, 7],
+              ['2010', 'Feb', 5444, 53],
+              ['2010', 'Mar', 147, 64],
+              ['2010', 'Apr', 7499, 47],
+              ['2010', 'May', 430, 62],
+              ['2010', 'June', 9735, 13],
+              ['2010', 'July', 7435, 15],
             ],
           },
         ],
         settings: {
           scales: {
             y: {
-              data: { field: "Sales" },
+              data: { field: 'Sales' },
               invert: true,
               include: [0],
             },
             c: {
-              data: { field: "Sales" },
-              type: "color",
+              data: { field: 'Sales' },
+              type: 'color',
             },
-            t: { data: { extract: { field: "Month" } }, padding: 0.3 },
+            t: { data: { extract: { field: 'Month' } }, padding: 0.3 },
           },
           components: [
             {
-              key: "y-axis",
-              type: "axis",
+              key: 'y-axis',
+              type: 'axis',
               layout: {
-                dock: "left",
+                dock: 'left',
               },
-              scale: "y",
+              scale: 'y',
             },
             {
-              key: "x-axis",
-              type: "axis",
+              key: 'x-axis',
+              type: 'axis',
               layout: {
-                dock: "bottom",
+                dock: 'bottom',
               },
-              scale: "t",
+              scale: 't',
             },
             {
-              key: "bars",
-              type: "box",
+              key: 'bars',
+              type: 'box',
               brush: {
                 _trigger: [
                   {
-                    contexts: ["highlight"],
-                    on: "tap",
-                    action: "toggle",
+                    contexts: ['highlight'],
+                    on: 'tap',
+                    action: 'toggle',
                   },
                 ],
                 consume: [
                   {
-                    context: "highlight",
+                    context: 'highlight',
                     style: {
                       inactive: {
                         opacity: 0.4,
@@ -111,32 +111,32 @@
               },
               data: {
                 extract: {
-                  field: "Month",
+                  field: 'Month',
                   props: {
                     start: 0,
-                    end: { field: "Sales" },
+                    end: { field: 'Sales' },
                   },
                 },
               },
               settings: {
-                major: { scale: "t" },
-                minor: { scale: "y" },
+                major: { scale: 't' },
+                minor: { scale: 'y' },
                 box: {
-                  fill: { scale: "c", ref: "end" },
+                  fill: { scale: 'c', ref: 'end' },
                 },
               },
             },
           ],
         },
       });
-      element.addEventListener("click", function (e) {
+      element.addEventListener('click', function (e) {
         var shapes = picassochart.shapesAt({ x: e.clientX, y: e.clientY });
-        log(e, "click", Date.now() - t);
+        log(e, 'click', Date.now() - t);
         picassochart.brushFromShapes(shapes, {
           components: [
             {
-              key: "bars",
-              contexts: ["highlight"],
+              key: 'bars',
+              contexts: ['highlight'],
             },
           ],
         });

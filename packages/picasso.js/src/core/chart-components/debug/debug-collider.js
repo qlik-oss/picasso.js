@@ -1,11 +1,11 @@
 const debugColliderDef = {
-  require: ["renderer", "chart"],
+  require: ['renderer', 'chart'],
   defaultSettings: {
     settings: {
-      target: "",
-      selector: "*",
-      fill: "rgba(0, 255, 0, 0.1)",
-      stroke: "lime",
+      target: '',
+      selector: '*',
+      fill: 'rgba(0, 255, 0, 0.1)',
+      stroke: 'lime',
       opacity: 1,
       useOuterRect: false,
     },

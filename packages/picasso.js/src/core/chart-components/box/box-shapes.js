@@ -1,7 +1,7 @@
-import extend from "extend";
-import * as boxShapesHelper from "./box-shapes-helper";
+import extend from 'extend';
+import * as boxShapesHelper from './box-shapes-helper';
 
-import { isNumber } from "../../utils/is-number";
+import { isNumber } from '../../utils/is-number';
 
 export default function buildShapes({ width, height, flipXY, resolved, keys, symbol }) {
   // if (!settings || !settings.major || !settings.major.scale || !settings.minor || !settings.minor.scale) {
@@ -19,11 +19,11 @@ export default function buildShapes({ width, height, flipXY, resolved, keys, sym
   const rendHeight = height;
   const maxMajorWidth = flipXY ? height : width;
   const majorSettings = resolved.major.settings;
-  const minorProps = ["start", "end", "min", "max", "med"].filter(
-    (prop) => typeof resolved.minor.settings[prop] !== "undefined",
+  const minorProps = ['start', 'end', 'min', 'max', 'med'].filter(
+    (prop) => typeof resolved.minor.settings[prop] !== 'undefined'
   );
   const numMinorProps = minorProps.length;
-  const nonOobKeys = keys.filter((key) => key !== "oob");
+  const nonOobKeys = keys.filter((key) => key !== 'oob');
 
   let children;
   let major;
@@ -48,7 +48,7 @@ export default function buildShapes({ width, height, flipXY, resolved, keys, sym
           rendWidth,
           rendHeight,
           flipXY,
-        }),
+        })
       );
     }
   }
@@ -65,7 +65,7 @@ export default function buildShapes({ width, height, flipXY, resolved, keys, sym
           rendWidth,
           rendHeight,
           flipXY,
-        }),
+        })
       );
     }
 
@@ -79,7 +79,7 @@ export default function buildShapes({ width, height, flipXY, resolved, keys, sym
           rendWidth,
           rendHeight,
           flipXY,
-        }),
+        })
       );
     }
   }
@@ -90,14 +90,14 @@ export default function buildShapes({ width, height, flipXY, resolved, keys, sym
       children.push(
         boxShapesHelper.horizontalLine({
           item: minorItem,
-          key: "median",
+          key: 'median',
           position: minorItem.med,
           width: boxWidth,
           boxCenter,
           rendWidth,
           rendHeight,
           flipXY,
-        }),
+        })
       );
     }
   }
@@ -111,14 +111,14 @@ export default function buildShapes({ width, height, flipXY, resolved, keys, sym
         children.push(
           boxShapesHelper.horizontalLine({
             item: minorItem,
-            key: "whisker",
+            key: 'whisker',
             position: minorItem.min,
             width: whiskerWidth,
             boxCenter,
             rendWidth,
             rendHeight,
             flipXY,
-          }),
+          })
         );
       }
 
@@ -126,14 +126,14 @@ export default function buildShapes({ width, height, flipXY, resolved, keys, sym
         children.push(
           boxShapesHelper.horizontalLine({
             item: minorItem,
-            key: "whisker",
+            key: 'whisker',
             position: minorItem.max,
             width: whiskerWidth,
             boxCenter,
             rendWidth,
             rendHeight,
             flipXY,
-          }),
+          })
         );
       }
     }
@@ -151,7 +151,7 @@ export default function buildShapes({ width, height, flipXY, resolved, keys, sym
           rendHeight,
           flipXY,
           symbol,
-        }),
+        })
       );
     } else if (isHigherOutOfBounds) {
       children.push(
@@ -163,7 +163,7 @@ export default function buildShapes({ width, height, flipXY, resolved, keys, sym
           rendHeight,
           flipXY,
           symbol,
-        }),
+        })
       );
     }
   }
@@ -204,7 +204,7 @@ export default function buildShapes({ width, height, flipXY, resolved, keys, sym
     let majorVal = null;
     let majorEndVal = null;
 
-    if (typeof majorSettings.binStart !== "undefined") {
+    if (typeof majorSettings.binStart !== 'undefined') {
       // if start and end is defined
       majorVal = majorItem.binStart;
       majorEndVal = majorItem.binEnd;
@@ -230,7 +230,7 @@ export default function buildShapes({ width, height, flipXY, resolved, keys, sym
         major: majorVal,
         majorEnd: majorEndVal,
       },
-      resolved.minor.items[i],
+      resolved.minor.items[i]
     );
 
     for (let j = 0; j < numKeys; j++) {
@@ -255,9 +255,9 @@ export default function buildShapes({ width, height, flipXY, resolved, keys, sym
     }
 
     const container = {
-      type: "container",
+      type: 'container',
       data: d,
-      collider: { type: "bounds" },
+      collider: { type: 'bounds' },
       children,
     };
 

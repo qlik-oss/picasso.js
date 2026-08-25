@@ -1,7 +1,7 @@
-import extend from "extend";
+import extend from 'extend';
 
-import { ellipsText } from "../../../../web/text-manipulation";
-import { ELLIPSIS_CHAR } from "../../../../web/text-manipulation/text-const";
+import { ellipsText } from '../../../../web/text-manipulation';
+import { ELLIPSIS_CHAR } from '../../../../web/text-manipulation/text-const';
 
 const LINE_HEIGHT = 1.2;
 const CIRCLE_FACTOR = 0.9;
@@ -18,7 +18,7 @@ function cbContext(node, chart) {
 
 export function placeTextInRect(rect, text, opts) {
   const label = {
-    type: "text",
+    type: 'text',
     text,
     maxWidth: rect.width,
     x: 0,
@@ -26,8 +26,8 @@ export function placeTextInRect(rect, text, opts) {
     dx: 0,
     dy: 0,
     fill: opts.fill,
-    anchor: "start",
-    baseline: "alphabetical",
+    anchor: 'start',
+    baseline: 'alphabetical',
     fontSize: `${opts.fontSize}px`,
     fontFamily: opts.fontFamily,
   };
@@ -47,7 +47,7 @@ export function placeTextInRect(rect, text, opts) {
 
 function getRectFromCircle({ cx, cy, r }) {
   return {
-    type: "circle",
+    type: 'circle',
     bounds: { cx, cy, r },
   };
 }
@@ -65,11 +65,11 @@ function getBounds(node) {
   if (node.desc && node.desc.slice) {
     return getSliceBounds(node.desc.slice);
   }
-  if (node.type === "circle") {
+  if (node.type === 'circle') {
     return getRectFromCircle(node.attrs);
   }
-  if (node.type === "rect") {
-    return { type: "rect", bounds: node.bounds };
+  if (node.type === 'rect') {
+    return { type: 'rect', bounds: node.bounds };
   }
   // defualt to node.bounds ?
   return { type: null, bounds: null };
@@ -98,13 +98,13 @@ export function rows({ settings, chart, nodes, renderer, style }, placer = place
   const defaults = extend(
     {
       fontSize: 12,
-      fontFamily: "Arial",
-      fill: "#333",
+      fontFamily: 'Arial',
+      fill: '#333',
       padding: 4,
       align: 0.5,
       justify: 0.5,
     },
-    style.label,
+    style.label
   );
 
   defaults.fontSize = parseInt(defaults.fontSize, 10);
@@ -129,12 +129,12 @@ export function rows({ settings, chart, nodes, renderer, style }, placer = place
     let measurements = [];
     let texts = [];
 
-    let maxHeight = type === "circle" ? 2 * bounds.r * CIRCLE_FACTOR : bounds.height;
+    let maxHeight = type === 'circle' ? 2 * bounds.r * CIRCLE_FACTOR : bounds.height;
     totalHeight += rowSettings.padding;
     let j;
     for (j = 0; j < labelSettings.length; j++) {
       let lblStngs = labelSettings[j];
-      let text = typeof lblStngs.label === "function" ? lblStngs.label(arg, i) : "";
+      let text = typeof lblStngs.label === 'function' ? lblStngs.label(arg, i) : '';
 
       labelStruct.fontFamily = lblStngs.fontFamily;
       labelStruct.fontSize = `${lblStngs.fontSize}px`;
@@ -151,7 +151,7 @@ export function rows({ settings, chart, nodes, renderer, style }, placer = place
     const labelCount = j;
     const wiggleHeight = Math.max(0, maxHeight - totalHeight);
     let currentY;
-    if (type === "circle") {
+    if (type === 'circle') {
       currentY = bounds.cy - bounds.r * CIRCLE_FACTOR;
     } else {
       currentY = bounds.y;
@@ -161,10 +161,10 @@ export function rows({ settings, chart, nodes, renderer, style }, placer = place
     for (j = 0; j < labelCount; j++) {
       let lblStngs = labelSettings[j];
       let rect;
-      if (type === "circle") {
+      if (type === 'circle') {
         let maxYDistToCenter = Math.max(
           Math.abs(currentY - bounds.cy),
-          Math.abs(currentY + measurements[j].height - bounds.cy),
+          Math.abs(currentY + measurements[j].height - bounds.cy)
         );
         let halfWidth = Math.sqrt(bounds.r * bounds.r - maxYDistToCenter * maxYDistToCenter);
         rect = {
@@ -183,8 +183,8 @@ export function rows({ settings, chart, nodes, renderer, style }, placer = place
       }
 
       currentY += measurements[j].height + rowSettings.padding;
-      let fill = typeof lblStngs.fill === "function" ? lblStngs.fill(arg, i) : lblStngs.fill;
-      const linkData = typeof lblStngs.linkData === "function" ? lblStngs.linkData(arg, i) : undefined;
+      let fill = typeof lblStngs.fill === 'function' ? lblStngs.fill(arg, i) : lblStngs.fill;
+      const linkData = typeof lblStngs.linkData === 'function' ? lblStngs.linkData(arg, i) : undefined;
       let label = placer(rect, texts[j], {
         fill,
         align: lblStngs.align,
@@ -201,7 +201,7 @@ export function rows({ settings, chart, nodes, renderer, style }, placer = place
           }
           label.ellipsed = ellipsed;
         }
-        if (typeof linkData !== "undefined") {
+        if (typeof linkData !== 'undefined') {
           label.data = linkData;
         }
         labels.push(label);

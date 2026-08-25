@@ -53,9 +53,9 @@ export default function rangeCollection(config = {}) {
       args.push(max);
     }
 
-    const before = boundaries.join(",");
+    const before = boundaries.join(',');
     boundaries.splice(...args);
-    const after = boundaries.join(",");
+    const after = boundaries.join(',');
     return before !== after;
   };
 
@@ -70,21 +70,21 @@ export default function rangeCollection(config = {}) {
     if (i1 % 2 === 1) {
       args.push(max);
     }
-    const before = boundaries.join(",");
+    const before = boundaries.join(',');
     boundaries.splice(...args);
-    const after = boundaries.join(",");
+    const after = boundaries.join(',');
     return before !== after;
   };
 
   fn.set = (range) => {
-    const before = boundaries.join(",");
+    const before = boundaries.join(',');
     boundaries = [];
     if (Array.isArray(range)) {
       range.forEach(fn.add);
     } else {
       fn.add(range);
     }
-    const after = boundaries.join(",");
+    const after = boundaries.join(',');
     return before !== after;
   };
 

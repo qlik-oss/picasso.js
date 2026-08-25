@@ -1,7 +1,7 @@
-import Text, { create as createText } from "../text";
-import GeoRect from "../../../geometry/rect";
+import Text, { create as createText } from '../text';
+import GeoRect from '../../../geometry/rect';
 
-describe("Text", () => {
+describe('Text', () => {
   let node;
   let def;
   const mockedBounds = {
@@ -20,7 +20,7 @@ describe("Text", () => {
 
   beforeEach(() => {
     def = {
-      text: "testing",
+      text: 'testing',
       x: 0,
       y: 0,
       dx: 0,
@@ -28,8 +28,8 @@ describe("Text", () => {
     };
   });
 
-  describe("Constructor", () => {
-    it("should instantiate a new Text", () => {
+  describe('Constructor', () => {
+    it('should instantiate a new Text', () => {
       node = createText();
       expect(node).to.be.an.instanceof(Text);
       expect(node.attrs.text).to.be.undefined;
@@ -40,18 +40,18 @@ describe("Text", () => {
       expect(node.collider).to.be.null;
     });
 
-    it("should accept arguments", () => {
+    it('should accept arguments', () => {
       node = createText({
-        text: "testing",
-        title: "my title",
+        text: 'testing',
+        title: 'my title',
         x: 1,
         y: 2,
         dx: 3,
         dy: 4,
       });
       expect(node).to.be.an.instanceof(Text);
-      expect(node.attrs.text).to.equal("testing");
-      expect(node.attrs.title).to.equal("my title");
+      expect(node.attrs.text).to.equal('testing');
+      expect(node.attrs.title).to.equal('my title');
       expect(node.attrs.x).to.equal(1);
       expect(node.attrs.y).to.equal(2);
       expect(node.attrs.dx).to.equal(3);
@@ -59,9 +59,9 @@ describe("Text", () => {
       expect(node.collider).to.be.null;
     });
 
-    it("should instantiate collider given data and explicit bounds", () => {
+    it('should instantiate collider given data and explicit bounds', () => {
       node = createText({
-        text: "testing",
+        text: 'testing',
         x: 1,
         y: 2,
         dx: 3,
@@ -74,14 +74,14 @@ describe("Text", () => {
           height: 0,
         },
       });
-      expect(node.collider).to.be.a("object");
+      expect(node.collider).to.be.a('object');
       expect(node.collider).to.be.an.instanceof(GeoRect);
-      expect(node.colliderType).to.equal("bounds");
+      expect(node.colliderType).to.equal('bounds');
     });
 
-    it("should instantiate collider given data and bounds function", () => {
+    it('should instantiate collider given data and bounds function', () => {
       node = createText({
-        text: "testing",
+        text: 'testing',
         x: 1,
         y: 2,
         dx: 3,
@@ -95,12 +95,12 @@ describe("Text", () => {
         }),
       });
       expect(node.collider).to.be.an.instanceof(GeoRect);
-      expect(node.colliderType).to.equal("bounds");
+      expect(node.colliderType).to.equal('bounds');
     });
   });
 
-  describe("BoundingRect", () => {
-    it("should handle default values", () => {
+  describe('BoundingRect', () => {
+    it('should handle default values', () => {
       node = createText();
       expect(node.boundingRect()).to.deep.equal({
         x: 0,
@@ -110,7 +110,7 @@ describe("Text", () => {
       });
     });
 
-    it("should use textBounds function if supplied", () => {
+    it('should use textBounds function if supplied', () => {
       def.x = 1;
       def.y = 2;
       def.dx = 3;
@@ -125,7 +125,7 @@ describe("Text", () => {
       });
     });
 
-    it("should cache result from textBounds function", () => {
+    it('should cache result from textBounds function', () => {
       def.x = 1;
       def.y = 2;
       def.dx = 3;
@@ -138,7 +138,7 @@ describe("Text", () => {
       expect(def.textBoundsFn).to.have.been.calledOnce;
     });
 
-    it("should use boundingRect attribute if supplied", () => {
+    it('should use boundingRect attribute if supplied', () => {
       def.x = 1;
       def.y = 2;
       def.dx = 3;
@@ -153,13 +153,13 @@ describe("Text", () => {
       expect(node.boundingRect()).to.deep.equal(def.boundingRect);
     });
 
-    it("should return correct value with a scale transforma", () => {
+    it('should return correct value with a scale transforma', () => {
       def.x = 1;
       def.y = 2;
       def.dx = 3;
       def.dy = 4;
       def.textBoundsFn = textBoundsMock;
-      def.transform = "scale(2, 3)";
+      def.transform = 'scale(2, 3)';
       node = createText(def);
       node.resolveLocalTransform();
       expect(node.boundingRect(true)).to.deep.equal({
@@ -170,13 +170,13 @@ describe("Text", () => {
       });
     });
 
-    it("should return correct value with a translate transform", () => {
+    it('should return correct value with a translate transform', () => {
       def.x = 1;
       def.y = 2;
       def.dx = 3;
       def.dy = 4;
       def.textBoundsFn = textBoundsMock;
-      def.transform = "translate(1, 2)";
+      def.transform = 'translate(1, 2)';
       node = createText(def);
       node.resolveLocalTransform();
       expect(node.boundingRect(true)).to.deep.equal({
@@ -187,13 +187,13 @@ describe("Text", () => {
       });
     });
 
-    it("should return correct value with a rotate transformation", () => {
+    it('should return correct value with a rotate transformation', () => {
       def.x = 1;
       def.y = 2;
       def.dx = 3;
       def.dy = 4;
       def.textBoundsFn = textBoundsMock;
-      def.transform = "rotate(90)";
+      def.transform = 'rotate(90)';
       node = createText(def);
       node.resolveLocalTransform();
 
@@ -204,7 +204,7 @@ describe("Text", () => {
       expect(rect.height).to.approximately(50, 0.1);
     });
 
-    it("should return correct value with a negative vector direction", () => {
+    it('should return correct value with a negative vector direction', () => {
       def.x = -1;
       def.y = -2;
       def.dx = -3;
@@ -220,8 +220,8 @@ describe("Text", () => {
     });
   });
 
-  describe("Bounds", () => {
-    it("should handle default values", () => {
+  describe('Bounds', () => {
+    it('should handle default values', () => {
       node = createText();
       expect(node.bounds()).to.deep.equal([
         { x: 0, y: 0 },
@@ -231,7 +231,7 @@ describe("Text", () => {
       ]);
     });
 
-    it("should use textBounds function if supplied", () => {
+    it('should use textBounds function if supplied', () => {
       def.x = 1;
       def.y = 2;
       def.dx = 3;
@@ -246,7 +246,7 @@ describe("Text", () => {
       ]);
     });
 
-    it("should use boundingRect attribute if supplied", () => {
+    it('should use boundingRect attribute if supplied', () => {
       def.x = 1;
       def.y = 2;
       def.dx = 3;
@@ -266,7 +266,7 @@ describe("Text", () => {
       ]);
     });
 
-    it("should return correct value with a scale transform", () => {
+    it('should return correct value with a scale transform', () => {
       def.x = 1;
       def.y = 2;
       def.dx = 3;
@@ -277,7 +277,7 @@ describe("Text", () => {
         width: 50,
         height: 100,
       };
-      def.transform = "scale(2, 3)";
+      def.transform = 'scale(2, 3)';
       node = createText(def);
       node.resolveLocalTransform();
       expect(node.bounds(true)).to.deep.equal([
@@ -288,7 +288,7 @@ describe("Text", () => {
       ]);
     });
 
-    it("should return correct value with a translate transform", () => {
+    it('should return correct value with a translate transform', () => {
       def.x = 1;
       def.y = 2;
       def.dx = 3;
@@ -299,7 +299,7 @@ describe("Text", () => {
         width: 50,
         height: 100,
       };
-      def.transform = "translate(1, 2)";
+      def.transform = 'translate(1, 2)';
       node = createText(def);
       node.resolveLocalTransform();
       expect(node.bounds(true)).to.deep.equal([
@@ -310,7 +310,7 @@ describe("Text", () => {
       ]);
     });
 
-    it("should return correct value with a rotate transformation", () => {
+    it('should return correct value with a rotate transformation', () => {
       def.x = 1;
       def.y = 2;
       def.dx = 3;
@@ -321,7 +321,7 @@ describe("Text", () => {
         width: 50,
         height: 100,
       };
-      def.transform = "rotate(90)";
+      def.transform = 'rotate(90)';
       node = createText(def);
       node.resolveLocalTransform();
       expect(node.bounds(true)).to.deep.equal([
@@ -333,10 +333,10 @@ describe("Text", () => {
     });
   });
 
-  describe("containsPoint", () => {
-    it("should include transformation when resolving point", () => {
+  describe('containsPoint', () => {
+    it('should include transformation when resolving point', () => {
       node = createText({
-        text: "testing",
+        text: 'testing',
         x: 10,
         y: 20,
         data: 0,
@@ -346,7 +346,7 @@ describe("Text", () => {
           width: 1,
           height: 1,
         },
-        transform: "translate(5, 10)",
+        transform: 'translate(5, 10)',
       });
 
       node.resolveLocalTransform();
@@ -355,10 +355,10 @@ describe("Text", () => {
     });
   });
 
-  describe("intersectsLine", () => {
-    it("should include transformation when resolving line", () => {
+  describe('intersectsLine', () => {
+    it('should include transformation when resolving line', () => {
       node = createText({
-        text: "testing",
+        text: 'testing',
         x: 10,
         y: 20,
         data: 0,
@@ -368,7 +368,7 @@ describe("Text", () => {
           width: 1,
           height: 1,
         },
-        transform: "translate(5, 10)",
+        transform: 'translate(5, 10)',
       });
 
       node.resolveLocalTransform();
@@ -379,15 +379,15 @@ describe("Text", () => {
           y1: 30,
           x2: 16,
           y2: 31,
-        }),
+        })
       ).to.equal(true);
     });
   });
 
-  describe("intersectsRect", () => {
-    it("should include transformation when resolving rect", () => {
+  describe('intersectsRect', () => {
+    it('should include transformation when resolving rect', () => {
       node = createText({
-        text: "testing",
+        text: 'testing',
         x: 10,
         y: 20,
         data: 0,
@@ -397,7 +397,7 @@ describe("Text", () => {
           width: 1,
           height: 1,
         },
-        transform: "translate(5, 10)",
+        transform: 'translate(5, 10)',
       });
 
       node.resolveLocalTransform();
@@ -408,15 +408,15 @@ describe("Text", () => {
           y: 30,
           width: 1,
           height: 1,
-        }),
+        })
       ).to.equal(true);
     });
   });
 
-  describe("intersectsCircle", () => {
-    it("should include transformation when resolving rect", () => {
+  describe('intersectsCircle', () => {
+    it('should include transformation when resolving rect', () => {
       node = createText({
-        text: "testing",
+        text: 'testing',
         x: 10,
         y: 20,
         data: 0,
@@ -426,7 +426,7 @@ describe("Text", () => {
           width: 1,
           height: 1,
         },
-        transform: "translate(5, 10)",
+        transform: 'translate(5, 10)',
       });
 
       node.resolveLocalTransform();
@@ -435,10 +435,10 @@ describe("Text", () => {
     });
   });
 
-  describe("intersectsPolygon", () => {
-    it("should include transformation when resolving rect", () => {
+  describe('intersectsPolygon', () => {
+    it('should include transformation when resolving rect', () => {
       node = createText({
-        text: "testing",
+        text: 'testing',
         x: 110,
         y: 120,
         data: 0,
@@ -448,7 +448,7 @@ describe("Text", () => {
           width: 10,
           height: 10,
         },
-        transform: "translate(-100, -100)",
+        transform: 'translate(-100, -100)',
       });
 
       node.resolveLocalTransform();

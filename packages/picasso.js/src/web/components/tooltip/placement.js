@@ -1,4 +1,4 @@
-import extend from "extend";
+import extend from 'extend';
 
 function getDockTransform(offset = 0) {
   return {
@@ -21,9 +21,9 @@ function getDockOffset(width, height, offset = 0) {
 }
 
 function getTooltipLeft({ options, docks, dockOffsets, targetBounds, area, width, height }) {
-  const dock = "top";
-  const vx = options.area === "target" ? docks[dock].x : targetBounds.left + docks[dock].x;
-  const vy = options.area === "target" ? docks[dock].y : targetBounds.top + docks[dock].y;
+  const dock = 'top';
+  const vx = options.area === 'target' ? docks[dock].x : targetBounds.left + docks[dock].x;
+  const vy = options.area === 'target' ? docks[dock].y : targetBounds.top + docks[dock].y;
   const offset = dockOffsets[dock];
   const rect = {
     x: vx + offset.x,
@@ -45,14 +45,14 @@ function getTooltipLeft({ options, docks, dockOffsets, targetBounds, area, width
 }
 
 function getComputedArrowStyle(offset, borderWidth) {
-  const sign = offset > 0 ? "-" : "+";
+  const sign = offset > 0 ? '-' : '+';
   offset = Math.abs(offset);
   if (borderWidth === undefined) {
     borderWidth = offset;
   }
   return {
     left: {
-      left: "100%",
+      left: '100%',
       top: `calc(50% ${sign} ${offset}px)`,
       borderWidth: `${borderWidth}px`,
     },
@@ -63,7 +63,7 @@ function getComputedArrowStyle(offset, borderWidth) {
     },
     top: {
       left: `calc(50% ${sign} ${offset}px)`,
-      top: "100%",
+      top: '100%',
       borderWidth: `${borderWidth}px`,
     },
     bottom: {
@@ -72,9 +72,9 @@ function getComputedArrowStyle(offset, borderWidth) {
       borderWidth: `${borderWidth}px`,
     },
     inside: {
-      left: "0px",
-      top: "0px",
-      borderWidth: "0px",
+      left: '0px',
+      top: '0px',
+      borderWidth: '0px',
     },
   };
 }
@@ -149,16 +149,16 @@ function alignToBounds({ resources, nodes, pointer, width: elmWidth, height: elm
   }
 
   const area = {
-    width: options.area === "target" ? targetBounds.width : window.innerWidth,
-    height: options.area === "target" ? targetBounds.height : window.innerHeight,
+    width: options.area === 'target' ? targetBounds.width : window.innerWidth,
+    height: options.area === 'target' ? targetBounds.height : window.innerHeight,
   };
   const dockOffsets = getDockOffset(elmWidth, elmHeight, options.offset);
-  const dockOrder = ["top", "left", "right", "bottom", "inside"];
+  const dockOrder = ['top', 'left', 'right', 'bottom', 'inside'];
 
   for (let i = 0; i < dockOrder.length; i += 1) {
     const dock = dockOrder[i];
-    const vx = options.area === "target" ? docks[dock].x : targetBounds.left + docks[dock].x;
-    const vy = options.area === "target" ? docks[dock].y : targetBounds.top + docks[dock].y;
+    const vx = options.area === 'target' ? docks[dock].x : targetBounds.left + docks[dock].x;
+    const vy = options.area === 'target' ? docks[dock].y : targetBounds.top + docks[dock].y;
     if (isInsideArea(area, vx, vy, elmWidth, elmHeight, dockOffsets[dock])) {
       return {
         computedTooltipStyle: {
@@ -179,7 +179,7 @@ function alignToBounds({ resources, nodes, pointer, width: elmWidth, height: elm
       transform: dockTransforms.top,
     },
     computedArrowStyle: getComputedArrowStyle(options.offset + left - docks.top.x, options.offset).top,
-    dock: "top",
+    dock: 'top',
   };
 }
 
@@ -202,15 +202,15 @@ function alignToPoint({ options, pointer, width, height, dockOrder, x, y }) {
   }
 
   const area = {
-    width: options.area === "target" ? targetBounds.width : window.innerWidth,
-    height: options.area === "target" ? targetBounds.height : window.innerHeight,
+    width: options.area === 'target' ? targetBounds.width : window.innerWidth,
+    height: options.area === 'target' ? targetBounds.height : window.innerHeight,
   };
   const dockOffsets = getDockOffset(width, height, options.offset);
 
   const results = [];
   const edgeMargin = 20;
-  const vx = options.area === "target" ? x : targetBounds.left + x;
-  const vy = options.area === "target" ? y : targetBounds.top + y;
+  const vx = options.area === 'target' ? x : targetBounds.left + x;
+  const vy = options.area === 'target' ? y : targetBounds.top + y;
 
   for (let i = 0; i < dockOrder.length; i += 1) {
     const dock = dockOrder[i];
@@ -234,10 +234,10 @@ function alignToPoint({ options, pointer, width, height, dockOrder, x, y }) {
     if (offset.x !== 0) {
       computedTooltipStyle.width = `${width - edgeMargin - Math.abs(offset.x)}px`;
 
-      if (dock === "top" || dock === "bottom") {
+      if (dock === 'top' || dock === 'bottom') {
         computedTooltipStyle.left = `${x + offset.x}px`;
 
-        computedArrowStyle.left = `calc(50% ${offset.x > 0 ? "-" : "+"} ${Math.abs(offset.x)}px)`;
+        computedArrowStyle.left = `calc(50% ${offset.x > 0 ? '-' : '+'} ${Math.abs(offset.x)}px)`;
       }
     }
 
@@ -275,7 +275,7 @@ function alignToPointer({ options, pointer, width, height }) {
     width,
     height,
     options,
-    dockOrder: ["top", "left", "right", "bottom"],
+    dockOrder: ['top', 'left', 'right', 'bottom'],
   });
 }
 
@@ -296,17 +296,17 @@ function alignToSlice({ options, pointer, width, height, nodes, resources }) {
   const middle = (start + end) / 2 - Math.PI / 2;
   const PI2 = Math.PI * 2;
   const radians = ((middle % PI2) + PI2) % PI2;
-  let dockOrder = ["top", "left", "right", "bottom"];
+  let dockOrder = ['top', 'left', 'right', 'bottom'];
 
-  if (options.dock === "auto") {
+  if (options.dock === 'auto') {
     if (radians <= Math.PI / 4 || radians >= (Math.PI * 7) / 4) {
-      dockOrder = ["right", "top", "bottom", "left"];
+      dockOrder = ['right', 'top', 'bottom', 'left'];
     } else if (radians <= (Math.PI * 3) / 4) {
-      dockOrder = ["bottom", "left", "right", "top"];
+      dockOrder = ['bottom', 'left', 'right', 'top'];
     } else if (radians <= (Math.PI * 5) / 4) {
-      dockOrder = ["left", "top", "bottom", "right"];
+      dockOrder = ['left', 'top', 'bottom', 'right'];
     } else {
-      dockOrder = ["top", "left", "right", "bottom"];
+      dockOrder = ['top', 'left', 'right', 'bottom'];
     }
   }
 
@@ -377,26 +377,26 @@ export default function placement({ width, height }, { chart, state, props }) {
   };
   const type = typeof props.placement;
 
-  if (type === "object" && typeof props.placement.fn === "function") {
+  if (type === 'object' && typeof props.placement.fn === 'function') {
     // Custom placement strategy function
     return props.placement.fn(propCtx);
   }
 
   let opts = {
-    type: "pointer",
+    type: 'pointer',
     offset: 8,
-    dock: "auto",
-    area: "viewport",
+    dock: 'auto',
+    area: 'viewport',
   };
-  if (type === "function") {
+  if (type === 'function') {
     // Custom placement function
     opts = extend(opts, props.placement(propCtx));
   }
 
-  if (type === "object" && STRATEGIES[props.placement.type]) {
+  if (type === 'object' && STRATEGIES[props.placement.type]) {
     // Predefined placement function with options
     opts = extend(opts, props.placement);
-  } else if (type === "string" && STRATEGIES[props.placement]) {
+  } else if (type === 'string' && STRATEGIES[props.placement]) {
     // Predefined placement function without options
     opts = extend(opts, { type: props.placement });
   }

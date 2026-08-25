@@ -1,7 +1,7 @@
-import { testPolygonLine, testPolygonRect } from "../narrow-phase-collision";
-import { create } from "../../geometry/polygon";
+import { testPolygonLine, testPolygonRect } from '../narrow-phase-collision';
+import { create } from '../../geometry/polygon';
 
-describe("NarrowPhaseCollision", () => {
+describe('NarrowPhaseCollision', () => {
   let polygon;
   const convexPolygon = [
     { x: 0, y: 25 },
@@ -25,8 +25,8 @@ describe("NarrowPhaseCollision", () => {
     { x: 0, y: 0 },
   ]; // butterfly quadrilateral
 
-  describe("testPolygonLine", () => {
-    it("convex polygon", () => {
+  describe('testPolygonLine', () => {
+    it('convex polygon', () => {
       const lineIsInsidePolygon = {
         x1: 25,
         y1: 20,
@@ -52,7 +52,7 @@ describe("NarrowPhaseCollision", () => {
       expect(testPolygonLine(polygon, lineIsCoincidentWithPolygonEdge)).to.equal(true);
     });
 
-    it("concave polygon", () => {
+    it('concave polygon', () => {
       const lineIsInsidePolygon = {
         x1: 10,
         y1: 10,
@@ -78,7 +78,7 @@ describe("NarrowPhaseCollision", () => {
       expect(testPolygonLine(polygon, lineIsCoincidentWithPolygonEdge)).to.equal(true);
     });
 
-    it("self-Intersecting polygon", () => {
+    it('self-Intersecting polygon', () => {
       const lineIsInsidePolygon = {
         x1: 10,
         y1: 10,
@@ -104,7 +104,7 @@ describe("NarrowPhaseCollision", () => {
       expect(testPolygonLine(polygon, lineIsCoincidentWithPolygonEdge)).to.equal(true);
     });
 
-    it("to few vertices", () => {
+    it('to few vertices', () => {
       const line = {
         x1: 0,
         y1: 0,
@@ -122,8 +122,8 @@ describe("NarrowPhaseCollision", () => {
     });
   });
 
-  describe("testPolygonRect", () => {
-    it("convex polygon", () => {
+  describe('testPolygonRect', () => {
+    it('convex polygon', () => {
       const rectIsInsidePolygon = {
         x: 25,
         y: 10,
@@ -142,7 +142,7 @@ describe("NarrowPhaseCollision", () => {
       expect(testPolygonRect(polygon, rectEdgeIsCrossingAPolygonEdge)).to.equal(true);
     });
 
-    it("concave polygon", () => {
+    it('concave polygon', () => {
       const rectIsInsidePolygon = {
         x: 25,
         y: 10,
@@ -161,7 +161,7 @@ describe("NarrowPhaseCollision", () => {
       expect(testPolygonRect(polygon, rectEdgeIsCrossingAPolygonEdge)).to.equal(true);
     });
 
-    it("self-Intersecting polygon", () => {
+    it('self-Intersecting polygon', () => {
       const rectIsInsidePolygon = {
         x: 5,
         y: 25,
@@ -180,7 +180,7 @@ describe("NarrowPhaseCollision", () => {
       expect(testPolygonRect(polygon, rectEdgeIsCrossingAPolygonEdge)).to.equal(true);
     });
 
-    it("to few vertices", () => {
+    it('to few vertices', () => {
       const rect = {
         x: 0,
         y: 0,

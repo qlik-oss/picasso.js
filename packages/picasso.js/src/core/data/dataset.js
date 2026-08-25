@@ -1,11 +1,11 @@
-import extend from "extend";
-import field from "./field";
-import extract from "./extractor-matrix";
+import extend from 'extend';
+import field from './field';
+import extract from './extractor-matrix';
 
-import { findField, getPropsInfo, collect, track } from "./util";
+import { findField, getPropsInfo, collect, track } from './util';
 
 const filters = {
-  numeric: (values) => values.filter((v) => typeof v === "number" && !isNaN(v)),
+  numeric: (values) => values.filter((v) => typeof v === 'number' && !isNaN(v)),
 };
 
 function createFields({ source, data, cache, config }) {
@@ -24,10 +24,10 @@ function createFields({ source, data, cache, config }) {
     headers = Object.keys(data[0]);
   }
 
-  const rowFn = !!parse && typeof parse.row === "function" && parse.row;
+  const rowFn = !!parse && typeof parse.row === 'function' && parse.row;
   let flds = headers;
 
-  if (parse && typeof parse.fields === "function") {
+  if (parse && typeof parse.fields === 'function') {
     flds = parse.fields(flds.slice());
   } else {
     flds = headers.map((h) => ({
@@ -66,7 +66,7 @@ function createFields({ source, data, cache, config }) {
     const values = fv(c);
     const numericValues = filters.numeric(values);
     const isMeasure = numericValues.length > 0;
-    const type = isMeasure ? "measure" : "dimension";
+    const type = isMeasure ? 'measure' : 'dimension';
     const min = isMeasure ? Math.min(...numericValues) : NaN;
     const max = isMeasure ? Math.max(...numericValues) : NaN;
 
@@ -82,22 +82,22 @@ function createFields({ source, data, cache, config }) {
             max,
             type,
           },
-          flds[c],
+          flds[c]
         ),
         {
           value: flds[c].value,
           label: flds[c].label,
-        },
-      ),
+        }
+      )
     );
   }
 }
 
 const dsv = ({ data, config }) => {
-  const rows = data.split("\n");
+  const rows = data.split('\n');
   const row0 = rows[0];
   const row1 = rows[1];
-  let delimiter = ",";
+  let delimiter = ',';
   if (config && config.parse && config.parse.delimiter) {
     delimiter = config.parse.delimiter;
   } else if (row0) {
@@ -124,7 +124,7 @@ const parseData = ({ key, data, cache, config }) => {
   }
   let dd = data;
 
-  if (typeof dd === "string") {
+  if (typeof dd === 'string') {
     // assume dsv
     dd = dsv({ data, config });
   }

@@ -1,4 +1,4 @@
-import RgbaColor from "../rgba-color";
+import RgbaColor from '../rgba-color';
 
 const rRgb = /^\s*rgb\(\s*(-?\d{1,3})\s*,\s*(-?\d{1,3})\s*,\s*(-?\d{1,3})\s*\)\s*$/i,
   rRgbPer = /^\s*rgb\(\s*(-?\d{1,3}%{1})\s*,\s*(-?\d{1,3}%{1})\s*,\s*(-?\d{1,3}%{1})\s*\)\s*$/i,
@@ -27,7 +27,7 @@ export default function rgb(colStr) {
       return val;
     }
 
-    if (val.indexOf("%") >= 0) {
+    if (val.indexOf('%') >= 0) {
       val = parseFloat(val);
       val = val > 100 ? 100 : val;
       val = val < 0 ? 0 : val;
@@ -54,5 +54,5 @@ export default function rgb(colStr) {
  * rgb.test( "rgb(120, 50, 50)" );
  */
 rgb.test = (colStr) =>
-  typeof colStr === "string" &&
+  typeof colStr === 'string' &&
   (rRgb.test(colStr) || rRgba.test(colStr) || rRgbPer.test(colStr) || rRgbaPer.test(colStr));

@@ -1,4 +1,4 @@
-import flatness from "./curve-flattness";
+import flatness from './curve-flattness';
 
 function mid(p0, p1) {
   return {

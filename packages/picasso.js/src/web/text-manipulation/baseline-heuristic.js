@@ -13,29 +13,29 @@
  * @returns {number} Delta-y required to adjust for baseline
  */
 export default function baselineHeuristic(textNode) {
-  const baseline = textNode.baseline || textNode["dominant-baseline"];
+  const baseline = textNode.baseline || textNode['dominant-baseline'];
   let dy = 0;
 
-  const fontSize = parseInt(textNode.fontSize || textNode["font-size"], 10) || 0;
+  const fontSize = parseInt(textNode.fontSize || textNode['font-size'], 10) || 0;
 
   switch (baseline) {
-    case "hanging":
+    case 'hanging':
       dy = fontSize * 0.75;
       break;
-    case "text-before-edge":
+    case 'text-before-edge':
       dy = fontSize * 0.85;
       break;
-    case "middle":
+    case 'middle':
       dy = fontSize * 0.25;
       break;
-    case "central":
+    case 'central':
       dy = fontSize * 0.35;
       break;
-    case "mathemetical":
+    case 'mathemetical':
       dy = fontSize / 2;
       break;
-    case "text-after-edge":
-    case "ideographic":
+    case 'text-after-edge':
+    case 'ideographic':
       dy = -fontSize * 0.2;
       break;
     default:

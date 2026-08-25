@@ -1,4 +1,4 @@
-import { pointsToLine, pointsToRect } from "./util";
+import { pointsToLine, pointsToRect } from './util';
 import {
   testCircleRect,
   testPolygonRect,
@@ -6,7 +6,7 @@ import {
   testRectPoint,
   testRectLine,
   testGeoPolygonRect,
-} from "../math/narrow-phase-collision";
+} from '../math/narrow-phase-collision';
 
 /**
  * Construct a new GeoRect instance
@@ -25,7 +25,7 @@ class GeoRect {
   }
 
   set({ x = 0, y = 0, width = 0, height = 0, minWidth = 0, minHeight = 0 } = {}) {
-    this.type = "rect";
+    this.type = 'rect';
 
     if (width >= 0) {
       this.x = x;

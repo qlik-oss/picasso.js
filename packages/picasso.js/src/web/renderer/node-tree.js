@@ -9,8 +9,8 @@ function diff(from, to) {
   const idMapper = (a) => a.id;
   const nodeMapper = (node, i) => {
     let id;
-    if (typeof node === "object") {
-      if ("id" in node) {
+    if (typeof node === 'object') {
+      if ('id' in node) {
         id = node.id;
       } else {
         id = i;
@@ -20,7 +20,7 @@ function diff(from, to) {
     }
     return {
       content: node,
-      id: `${id}__${node.type || ""}`,
+      id: `${id}__${node.type || ''}`,
     };
   };
 
@@ -96,7 +96,7 @@ function createNodes(nodes, parent, create) {
 
 function destroyNodes(nodes, destroy) {
   for (let i = 0, len = nodes.length; i < len; i++) {
-    if (nodes[i].object !== null && typeof nodes[i].object !== "undefined") {
+    if (nodes[i].object !== null && typeof nodes[i].object !== 'undefined') {
       destroy(nodes[i].object);
       nodes[i].object = null;
     }
@@ -107,7 +107,7 @@ function updateNodes(nodes, creator, maintainer, destroyer) {
   let item;
   for (let i = 0, len = nodes.length; i < len; i++) {
     item = nodes[i];
-    if (item.object !== null && typeof item.object !== "undefined") {
+    if (item.object !== null && typeof item.object !== 'undefined') {
       maintainer(item.object, item.content);
       if (item.diff) {
         createNodes(item.diff.added, item.object, creator);

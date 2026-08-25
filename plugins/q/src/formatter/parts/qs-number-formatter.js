@@ -1,30 +1,30 @@
-import formatter from "number-format.js";
+import formatter from 'number-format.js';
 
 // 1.95.toFixed(1) = 1.9
 // 2.95.toFixed(1) = 3.0
 const EPSILON = 1e-15; // To make sure toFixed always round up.
 
 function escapeRegExp(str) {
-  return str.replace(/[-[\]/{}()*+?.\\^$|]/g, "\\$&");
+  return str.replace(/[-[\]/{}()*+?.\\^$|]/g, '\\$&');
 }
 
 const SIprefixes = {
-    3: "k",
-    6: "M",
-    9: "G",
-    12: "T",
-    15: "P",
-    18: "E",
-    21: "Z",
-    24: "Y",
-    "-3": "m",
-    "-6": "μ",
-    "-9": "n",
-    "-12": "p",
-    "-15": "f",
-    "-18": "a",
-    "-21": "z",
-    "-24": "y",
+    3: 'k',
+    6: 'M',
+    9: 'G',
+    12: 'T',
+    15: 'P',
+    18: 'E',
+    21: 'Z',
+    24: 'Y',
+    '-3': 'm',
+    '-6': 'μ',
+    '-9': 'n',
+    '-12': 'p',
+    '-15': 'f',
+    '-18': 'a',
+    '-21': 'z',
+    '-24': 'y',
   },
   percentage = /%\)?$/,
   //    scientific = /e[\+\-][0-9]+/,
@@ -42,23 +42,23 @@ function formatRadix(value, fradix, pattern, decimal) {
   if (pattern[1] === pattern[1].toUpperCase()) {
     value = value.toUpperCase();
   }
-  if (value.length - value.indexOf(".") > 10) {
+  if (value.length - value.indexOf('.') > 10) {
     // limit to 10 decimal places
-    value = value.slice(0, value.indexOf(".") + 11);
+    value = value.slice(0, value.indexOf('.') + 11);
   }
 
-  return value.replace(".", decimal || ".");
+  return value.replace('.', decimal || '.');
 }
 
 // value must be an integer
 // value must not be in scientific notation
 function formatRoman(value, pattern) {
   let i,
-    s = "",
+    s = '',
     v = Number(String(value).slice(-3)),
     nThousands = (value - v) / 1000,
     decimal = [0, 1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900].reverse(),
-    numeral = ["0", "I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM"].reverse();
+    numeral = ['0', 'I', 'IV', 'V', 'IX', 'X', 'XL', 'L', 'XC', 'C', 'CD', 'D', 'CM'].reverse();
 
   while (v > 0) {
     for (i = 0; i < decimal.length; i++) {
@@ -93,14 +93,14 @@ function formatFunctional(value, pattern, d) {
   } else if (bin.test(pattern)) {
     value = formatRadix(value, 2, pattern, d);
   } else if (rom.test(pattern)) {
-    temp = "";
+    temp = '';
     if (value < 0) {
-      temp = "-";
+      temp = '-';
       value = -value;
     }
     value = Math.floor(value);
     if (value === 0) {
-      value = "0";
+      value = '0';
     } else if (value <= 500000) {
       // limit in engine
       value = formatRoman(value, pattern);
@@ -118,7 +118,7 @@ function escape(value, flags, justStr) {
   if (justStr) {
     return str;
   }
-  return new RegExp(str || "", flags);
+  return new RegExp(str || '', flags);
 }
 
 function createRegExp(thousand, decimal) {
@@ -140,7 +140,7 @@ function getAbbreviations(localeInfo, listSeparator) {
   let abbrs = localeInfo.qNumericalAbbreviation.split(listSeparator);
 
   abbrs.forEach((abbreviation) => {
-    let abbreviationTuple = abbreviation.split(":");
+    let abbreviationTuple = abbreviation.split(':');
     if (abbreviationTuple.length === 2) {
       abbreviations[abbreviationTuple[0]] = abbreviationTuple[1];
     }
@@ -168,12 +168,12 @@ function preparePattern(o, t, d, abbreviate) {
   // extract the numeric part from the pattern
   regex = createRegExp(t, d);
   numericPattern = pattern.match(regex);
-  numericPattern = numericPattern ? numericPattern[0] : "";
+  numericPattern = numericPattern ? numericPattern[0] : '';
   prefix = numericPattern ? pattern.substr(0, pattern.indexOf(numericPattern)) : pattern;
-  postfix = numericPattern ? pattern.substring(pattern.indexOf(numericPattern) + numericPattern.length) : "";
+  postfix = numericPattern ? pattern.substring(pattern.indexOf(numericPattern) + numericPattern.length) : '';
 
   if (!numericPattern) {
-    numericPattern = pattern ? "#" : "##########";
+    numericPattern = pattern ? '#' : '##########';
   }
 
   if (t && t === d) {
@@ -181,22 +181,22 @@ function preparePattern(o, t, d, abbreviate) {
     // extract decimal part
     parts = numericPattern.split(d);
     lastPart = parts.pop();
-    numericPattern = parts.join("") + d + lastPart;
-    t = "";
+    numericPattern = parts.join('') + d + lastPart;
+    t = '';
   }
 
   // formatting library does not support multiple characters as separator (nor +-).
   // do a temporary replacement
   groupTemp = t;
-  t = /,/.test(d) ? "¤" : ",";
+  t = /,/.test(d) ? '¤' : ',';
   if (groupTemp) {
-    numericPattern = numericPattern.replace(escape(groupTemp, "g"), t);
+    numericPattern = numericPattern.replace(escape(groupTemp, 'g'), t);
   }
 
   decTemp = d;
-  d = ".";
+  d = '.';
   if (decTemp) {
-    numericPattern = numericPattern.replace(escape(decTemp, "g"), d);
+    numericPattern = numericPattern.replace(escape(decTemp, 'g'), d);
   }
 
   temp = numericPattern.match(/#/g);
@@ -208,13 +208,13 @@ function preparePattern(o, t, d, abbreviate) {
     matchPrecisionResult = splitPattern[1].match(prec);
   }
 
-  o.prefix = prefix || "";
-  o.postfix = postfix || "";
+  o.prefix = prefix || '';
+  o.postfix = postfix || '';
   o.pattern = pattern;
   o.maxPrecision = matchPrecisionResult ? matchPrecisionResult.length : 2;
   o.percentage = percentage.test(pattern);
-  o.numericPattern = numericPattern || "";
-  o.numericRegex = new RegExp(`${escape(t, null, true)}|${escape(d, null, true)}`, "g");
+  o.numericPattern = numericPattern || '';
+  o.numericRegex = new RegExp(`${escape(t, null, true)}|${escape(d, null, true)}`, 'g');
   o.groupTemp = groupTemp;
   o.decTemp = decTemp;
   o.t = t;
@@ -235,13 +235,13 @@ class NumberFormatter {
   constructor(localeInfo, pattern, thousand, decimal, type) {
     this.localeInfo = localeInfo;
     this.pattern = pattern;
-    this.thousandDelimiter = thousand || ",";
-    this.decimalDelimiter = decimal || ".";
-    this.type = type || "numeric";
+    this.thousandDelimiter = thousand || ',';
+    this.decimalDelimiter = decimal || '.';
+    this.type = type || 'numeric';
 
     // FIXME qListSep?
     // this.patternSeparator = this.localeInfo && this.localeInfo.qListSep ? this.localeInfo.qListSep : ';';
-    this.patternSeparator = ";";
+    this.patternSeparator = ';';
 
     this.abbreviations = getAbbreviations(localeInfo, this.patternSeparator);
 
@@ -254,7 +254,7 @@ class NumberFormatter {
       this.pattern,
       this.thousandDelimiter,
       this.decimalDelimiter,
-      this.type,
+      this.type
     );
     n.subtype = this.subtype;
     return n;
@@ -295,13 +295,13 @@ class NumberFormatter {
   prepare(pattern, t, d) {
     let prep;
 
-    if (typeof pattern === "undefined") {
+    if (typeof pattern === 'undefined') {
       pattern = this.pattern;
     }
-    if (typeof t === "undefined") {
+    if (typeof t === 'undefined') {
       t = this.thousandDelimiter;
     }
-    if (typeof d === "undefined") {
+    if (typeof d === 'undefined') {
       d = this.decimalDelimiter;
     }
 
@@ -316,24 +316,24 @@ class NumberFormatter {
         t,
         abbreviate: false,
         isFunctional: false,
-        prefix: "",
-        postfix: "",
+        prefix: '',
+        postfix: '',
       },
       negative: {
         d,
         t,
         abbreviate: false,
         isFunctional: false,
-        prefix: "",
-        postfix: "",
+        prefix: '',
+        postfix: '',
       },
       zero: {
         d,
         t,
         abbreviate: false,
         isFunctional: false,
-        prefix: "",
-        postfix: "",
+        prefix: '',
+        postfix: '',
       },
     };
     prep = this._prepared;
@@ -356,7 +356,7 @@ class NumberFormatter {
       prep.zero.isFunctional = true;
     }
 
-    const abbreviate = this.type === "U";
+    const abbreviate = this.type === 'U';
     if (!prep.positive.isFunctional) {
       preparePattern(prep.positive, t, d, abbreviate);
     }
@@ -372,10 +372,10 @@ class NumberFormatter {
     let prep = this._prepared,
       temp,
       exponent,
-      abbr = "",
+      abbr = '',
       absValue,
       num,
-      sciValue = "",
+      sciValue = '',
       d,
       t,
       i,
@@ -420,7 +420,7 @@ class NumberFormatter {
         let lowerAbbreviation;
         let upperAbbreviation = abbrArray[0];
         i = 0;
-        exponent = Number(Number(value).toExponential().split("e")[1]);
+        exponent = Number(Number(value).toExponential().split('e')[1]);
 
         while (upperAbbreviation <= exponent && i < abbrArray.length) {
           i++;
@@ -458,60 +458,60 @@ class NumberFormatter {
       numericPattern = prep.numericPattern;
       decimalPartPattern = numericPattern.split(d)[1];
 
-      if (this.type === "I") {
+      if (this.type === 'I') {
         value = Math.round(value);
       }
       num = value;
 
-      if (!decimalPartPattern && numericPattern.slice(-1)[0] === "#") {
+      if (!decimalPartPattern && numericPattern.slice(-1)[0] === '#') {
         if (absValue >= 10 ** temp || absValue < 1 || absValue < 1e-4) {
           if (value === 0) {
-            value = "0";
+            value = '0';
           } else if (absValue < 1e-4 || absValue >= 1e20) {
             // engine always formats values < 1e-4 in scientific form, values >= 1e20 can only be represented in scientific form
             value = num.toExponential(Math.max(1, Math.min(14, temp)) - 1);
-            value = value.replace(/\.?0+(?=e)/, "");
-            sciValue = "";
+            value = value.replace(/\.?0+(?=e)/, '');
+            sciValue = '';
           } else {
             value = value.toPrecision(Math.max(1, Math.min(14, temp)));
-            if (value.indexOf(".") >= 0) {
-              value = value.replace(value.indexOf("e") < 0 ? /0+$/ : /\.?0+(?=e)/, "");
-              value = value.replace(".", d);
+            if (value.indexOf('.') >= 0) {
+              value = value.replace(value.indexOf('e') < 0 ? /0+$/ : /\.?0+(?=e)/, '');
+              value = value.replace('.', d);
             }
           }
         } else {
           numericPattern += d;
           temp = Math.max(0, Math.min(20, temp - Math.ceil(Math.log(absValue) / Math.log(10))));
           for (i = 0; i < temp; i++) {
-            numericPattern += "#";
+            numericPattern += '#';
           }
 
           value = formatter(numericPattern, value);
         }
       } else if (absValue >= 1e15 || (absValue > 0 && absValue <= 1e-14)) {
-        value = absValue ? absValue.toExponential(15).replace(/\.?0+(?=e)/, "") : "0";
+        value = absValue ? absValue.toExponential(15).replace(/\.?0+(?=e)/, '') : '0';
       } else {
         const sign = value < 0 ? -1 : 1;
         const wholePart = Number(
           (value + EPSILON * sign)
             .toFixed(Math.min(20, decimalPartPattern ? decimalPartPattern.length : 0))
-            .split(".")[0],
+            .split('.')[0]
         );
         let wholePartPattern = numericPattern.split(d)[0];
         wholePartPattern += d;
 
-        value = formatter(wholePartPattern, wholePart) || "0";
+        value = formatter(wholePartPattern, wholePart) || '0';
 
         if (decimalPartPattern) {
           const nDecimals = Math.max(0, Math.min(14, decimalPartPattern.length)); // the length of e.g. 0000#####
-          const nZeroes = decimalPartPattern.replace(/#+$/, "").length;
-          let decimalPart = (this.type === "I" ? 0 : (absValue % 1) + EPSILON)
+          const nZeroes = decimalPartPattern.replace(/#+$/, '').length;
+          let decimalPart = (this.type === 'I' ? 0 : (absValue % 1) + EPSILON)
             .toFixed(nDecimals)
             .slice(2)
-            .replace(/0+$/, ""); // remove trailing zeroes
+            .replace(/0+$/, ''); // remove trailing zeroes
 
           for (i = decimalPart.length; i < nZeroes; i++) {
-            decimalPart += "0";
+            decimalPart += '0';
           }
 
           if (decimalPart) {
@@ -530,7 +530,7 @@ class NumberFormatter {
         if (m === d) {
           return prep.decTemp;
         }
-        return "";
+        return '';
       });
       if (num < 0 && !/^-/.test(value)) {
         value = `-${value}`;

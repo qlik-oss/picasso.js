@@ -14,15 +14,15 @@
 function start(_scrollbar, pos) {
   const dock = _scrollbar.settings.layout.dock;
   const invert = _scrollbar.settings.settings.invert;
-  const horizontal = dock === "top" || dock === "bottom";
-  const lengthAttr = horizontal ? "width" : "height";
+  const horizontal = dock === 'top' || dock === 'bottom';
+  const lengthAttr = horizontal ? 'width' : 'height';
   const length = _scrollbar.rect[lengthAttr];
   const scroll = _scrollbar.chart.scroll(_scrollbar.settings.scroll);
   let currentMove;
 
   {
     // local scope to allow reuse of variable names later
-    let offset = pos[horizontal ? "x" : "y"];
+    let offset = pos[horizontal ? 'x' : 'y'];
     if (invert) {
       offset = length - offset;
     }
@@ -44,7 +44,7 @@ function start(_scrollbar, pos) {
   }
 
   const update = (p) => {
-    let offset = p[horizontal ? "x" : "y"];
+    let offset = p[horizontal ? 'x' : 'y'];
     if (invert) {
       offset = length - offset;
     }
@@ -61,7 +61,7 @@ function start(_scrollbar, pos) {
     scroll.moveTo(scrollStart);
   };
   const end = (p) => {
-    let offset = p[horizontal ? "x" : "y"];
+    let offset = p[horizontal ? 'x' : 'y'];
     if (invert) {
       offset = length - offset;
     }
@@ -92,7 +92,7 @@ function getLocalPos(event, renderer) {
 }
 
 const scrollbarComponent = {
-  require: ["chart", "renderer"],
+  require: ['chart', 'renderer'],
   on: {
     panStart(event) {
       const pos = getLocalPos(event, this.renderer);
@@ -129,8 +129,8 @@ const scrollbarComponent = {
   },
   defaultSettings: {
     settings: {
-      backgroundColor: "#eee",
-      thumbColor: "#ccc",
+      backgroundColor: '#eee',
+      thumbColor: '#ccc',
       width: 16, // 32 for touch
     },
   },
@@ -148,8 +148,8 @@ const scrollbarComponent = {
   render: function render(h) {
     const dock = this.settings.layout.dock;
     const invert = this.settings.settings.invert;
-    const horizontal = dock === "top" || dock === "bottom";
-    const lengthAttr = horizontal ? "width" : "height";
+    const horizontal = dock === 'top' || dock === 'bottom';
+    const lengthAttr = horizontal ? 'width' : 'height';
 
     const _rect = this.rect;
     const length = _rect[lengthAttr];
@@ -163,35 +163,35 @@ const scrollbarComponent = {
     }
 
     return h(
-      "div",
+      'div',
       {
         style: {
-          position: "relative",
-          width: "100%",
-          height: "100%",
+          position: 'relative',
+          width: '100%',
+          height: '100%',
           background: this.settings.settings.backgroundColor,
-          pointerEvents: "auto",
+          pointerEvents: 'auto',
         },
       },
       [].concat(
-        h("div", {
-          class: "scroller",
+        h('div', {
+          class: 'scroller',
           style: {
-            position: "absolute",
-            [horizontal ? "left" : "top"]: `${thumbStart}px`,
-            [horizontal ? "top" : "left"]: "25%",
-            [horizontal ? "height" : "width"]: "50%", // ${width}px
+            position: 'absolute',
+            [horizontal ? 'left' : 'top']: `${thumbStart}px`,
+            [horizontal ? 'top' : 'left']: '25%',
+            [horizontal ? 'height' : 'width']: '50%', // ${width}px
             [lengthAttr]: `${Math.max(1, thumbRange)}px`,
             background: this.settings.settings.thumbColor,
           },
-        }),
-      ),
+        })
+      )
     );
   },
 
-  renderer: "dom",
+  renderer: 'dom',
 };
 
 export default function scrollbar(picasso) {
-  picasso.component("scrollbar", scrollbarComponent);
+  picasso.component('scrollbar', scrollbarComponent);
 }

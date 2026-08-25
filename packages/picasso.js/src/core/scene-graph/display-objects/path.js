@@ -1,4 +1,4 @@
-import extend from "extend";
+import extend from 'extend';
 import {
   arc,
   area,
@@ -12,12 +12,12 @@ import {
   curveMonotoneX,
   curveMonotoneY,
   curveNatural,
-} from "d3-shape";
-import DisplayObject from "./display-object";
-import { getMinMax } from "../../geometry/util";
-import pathToSegments from "../parse-path-d";
-import polylineToPolygonCollider from "../polyline-to-polygon-collider";
-import flatten from "../../utils/flatten-array";
+} from 'd3-shape';
+import DisplayObject from './display-object';
+import { getMinMax } from '../../geometry/util';
+import pathToSegments from '../parse-path-d';
+import polylineToPolygonCollider from '../polyline-to-polygon-collider';
+import flatten from '../../utils/flatten-array';
 
 const EPSILON = 1e-12;
 
@@ -53,7 +53,7 @@ function isClosed(points) {
 
 export default class Path extends DisplayObject {
   constructor(...s) {
-    super("path");
+    super('path');
     this.set(...s);
   }
 
@@ -76,15 +76,15 @@ export default class Path extends DisplayObject {
       areaGenerator[major.p]((d) => d.major * major.size)
         [`${minor.p}1`]((d) => d.minor * minor.size)
         [`${minor.p}0`]((d) => d.minor0 * minor.size)
-        .curve(CURVES[layerObj.curve === "monotone" ? `monotone${major.p}` : layerObj.curve]);
+        .curve(CURVES[layerObj.curve === 'monotone' ? `monotone${major.p}` : layerObj.curve]);
       if (defined) {
-        areaGenerator.defined((d) => !d.dummy && typeof d.minor === "number" && !isNaN(d.minor) && d.defined);
+        areaGenerator.defined((d) => !d.dummy && typeof d.minor === 'number' && !isNaN(d.minor) && d.defined);
       } else {
-        areaGenerator.defined((d) => !d.dummy && typeof d.minor === "number" && !isNaN(d.minor));
+        areaGenerator.defined((d) => !d.dummy && typeof d.minor === 'number' && !isNaN(d.minor));
       }
 
       const filteredPoints = stngs.connect ? points.filter(areaGenerator.defined()) : points;
-      const generator = generatorType === "area" ? areaGenerator : areaGenerator[generatorType]();
+      const generator = generatorType === 'area' ? areaGenerator : areaGenerator[generatorType]();
       const d = generator(filteredPoints);
       this.attrs.d = d;
     } else if (v.d) {
@@ -94,17 +94,17 @@ export default class Path extends DisplayObject {
     this.__boundingRect = { true: null, false: null };
     this.__bounds = { true: null, false: null };
 
-    if (Array.isArray(v.collider) || (typeof v.collider === "object" && typeof v.collider.type !== "undefined")) {
+    if (Array.isArray(v.collider) || (typeof v.collider === 'object' && typeof v.collider.type !== 'undefined')) {
       this.collider = v.collider;
     } else if (this.attrs.d) {
       this.segments = pathToSegments(this.attrs.d);
       if (this.segments.length > 1 && this.segments.every((segment) => isClosed(segment))) {
         this.collider = extend(
           {
-            type: "geopolygon",
+            type: 'geopolygon',
             vertices: this.segments,
           },
-          v.collider,
+          v.collider
         );
         return;
       }
@@ -114,21 +114,21 @@ export default class Path extends DisplayObject {
         } else if (isClosed(segment)) {
           this.collider = extend(
             {
-              type: "polygon",
+              type: 'polygon',
               vertices: segment,
             },
-            v.collider,
+            v.collider
           );
-        } else if (typeof v.collider === "object" && v.collider.visual) {
-          const size = this.attrs["stroke-width"] / 2;
+        } else if (typeof v.collider === 'object' && v.collider.visual) {
+          const size = this.attrs['stroke-width'] / 2;
           this.collider = polylineToPolygonCollider(segment, size, v.collider);
         } else {
           this.collider = extend(
             {
-              type: "polyline",
+              type: 'polyline',
               points: segment,
             },
-            v.collider,
+            v.collider
           );
         }
       });

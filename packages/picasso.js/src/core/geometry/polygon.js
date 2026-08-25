@@ -1,4 +1,4 @@
-import { pointsToLine, pointsToRect } from "./util";
+import { pointsToLine, pointsToRect } from './util';
 import {
   testCirclePolygon,
   testPolygonPoint,
@@ -6,7 +6,7 @@ import {
   testPolygonRect,
   testPolygonPolygon,
   testGeoPolygonPolygon,
-} from "../math/narrow-phase-collision";
+} from '../math/narrow-phase-collision';
 
 function close(vertices) {
   const first = vertices[0];
@@ -46,7 +46,7 @@ class Polygon {
    * @param {Point[]} [input.vertices=[]] Vertices are represented as an array of points.
    */
   set({ vertices = [] } = {}) {
-    this.type = "polygon";
+    this.type = 'polygon';
     this.vertices = vertices.slice();
     this.edges = [];
 

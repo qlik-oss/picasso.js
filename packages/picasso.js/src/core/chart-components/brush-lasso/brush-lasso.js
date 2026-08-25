@@ -1,4 +1,4 @@
-import { sqrDistance } from "../../math/vector";
+import { sqrDistance } from '../../math/vector';
 
 function getPoint(rendererBounds, event) {
   const eventOffsetX = event.center.x;
@@ -93,7 +93,7 @@ function doPolygonBrush(state, chart) {
 function initPath(stgns) {
   return {
     visible: true,
-    type: "path",
+    type: 'path',
     d: null,
     fill: stgns.fill,
     stroke: stgns.stroke,
@@ -109,7 +109,7 @@ function initPath(stgns) {
 function initSnapIndicator(stgns) {
   return {
     visible: false,
-    type: "line",
+    type: 'line',
     x1: 0,
     y1: 0,
     x2: 0,
@@ -127,7 +127,7 @@ function initSnapIndicator(stgns) {
 function initStartPoint(stgns) {
   return {
     visible: true,
-    type: "circle",
+    type: 'circle',
     cx: 0,
     cy: 0,
     r: stgns.r,
@@ -144,9 +144,9 @@ function initStartPoint(stgns) {
 function getBrushConfig(settings) {
   return settings.settings.brush.components.map((b) => ({
     key: b.key,
-    contexts: b.contexts || ["lassoBrush"],
-    data: b.data || [""],
-    action: b.action || "add",
+    contexts: b.contexts || ['lassoBrush'],
+    data: b.data || [''],
+    action: b.action || 'add',
   }));
 }
 
@@ -221,7 +221,7 @@ function resetState() {
  */
 
 const brushLassoComponent = {
-  require: ["chart", "renderer", "settings"],
+  require: ['chart', 'renderer', 'settings'],
   defaultSettings: {
     layout: {
       displayOrder: 0,
@@ -232,22 +232,22 @@ const brushLassoComponent = {
       },
       snapIndicator: {
         threshold: 75,
-        strokeDasharray: "5, 5",
-        stroke: "black",
+        strokeDasharray: '5, 5',
+        stroke: 'black',
         strokeWidth: 2,
         opacity: 0.5,
       },
       lasso: {
-        fill: "transparent",
-        stroke: "black",
+        fill: 'transparent',
+        stroke: 'black',
         strokeWidth: 2,
         opacity: 0.7,
-        strokeDasharray: "20, 10",
+        strokeDasharray: '20, 10',
       },
       startPoint: {
         r: 10,
-        fill: "green",
-        stroke: "black",
+        fill: 'green',
+        stroke: 'black',
         strokeWidth: 1,
         opacity: 1,
       },

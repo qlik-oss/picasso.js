@@ -1,4 +1,4 @@
-export default function registryFactory(parentRegistry, registerName = "unspecified", logger) {
+export default function registryFactory(parentRegistry, registerName = 'unspecified', logger) {
   let defaultValue;
   const reg = {};
   const parent = parentRegistry || {
@@ -23,8 +23,8 @@ export default function registryFactory(parentRegistry, registerName = "unspecif
    *
    */
   function add(key, value) {
-    if (!key || typeof key !== "string") {
-      throw new TypeError("Invalid argument: key must be a non-empty string");
+    if (!key || typeof key !== 'string') {
+      throw new TypeError('Invalid argument: key must be a non-empty string');
     }
     if (key in reg) {
       return false;
@@ -56,7 +56,7 @@ export default function registryFactory(parentRegistry, registerName = "unspecif
   }
 
   function deflt(d) {
-    if (typeof d !== "undefined") {
+    if (typeof d !== 'undefined') {
       defaultValue = d;
     }
     return defaultValue;
@@ -70,11 +70,11 @@ export default function registryFactory(parentRegistry, registerName = "unspecif
    * @returns {any} Registered value
    */
   function registry(key, value) {
-    if (typeof value !== "undefined") {
+    if (typeof value !== 'undefined') {
       return add(key, value);
     }
     const ret = get(key);
-    if (logger && typeof ret === "undefined") {
+    if (logger && typeof ret === 'undefined') {
       logger.warn(`${key} does not exist in ${registerName} registry`);
     }
     return ret || get(defaultValue);

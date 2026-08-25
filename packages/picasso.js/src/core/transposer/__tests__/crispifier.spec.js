@@ -1,11 +1,11 @@
-import { crispifierFactory } from "../crispifier";
+import { crispifierFactory } from '../crispifier';
 
-describe("crispifier", () => {
-  it("should not modify rects with 0 stroke width", () => {
+describe('crispifier', () => {
+  it('should not modify rects with 0 stroke width', () => {
     const crispifier = crispifierFactory();
 
     const dummy = {
-      type: "rect",
+      type: 'rect',
       x: 100,
       y: 150,
       width: 200,
@@ -21,11 +21,11 @@ describe("crispifier", () => {
     expect(dummy.height).to.equal(250);
   });
 
-  it("should modify rects with uneven stroke width", () => {
+  it('should modify rects with uneven stroke width', () => {
     const crispifier = crispifierFactory();
 
     const dummy = {
-      type: "rect",
+      type: 'rect',
       x: 100,
       y: 150,
       width: 200,
@@ -41,11 +41,11 @@ describe("crispifier", () => {
     expect(dummy.height).to.equal(250);
   });
 
-  it("should modify lines with uneven stroke width", () => {
+  it('should modify lines with uneven stroke width', () => {
     const crispifier = crispifierFactory();
 
     const dummy = {
-      type: "line",
+      type: 'line',
       x1: 100,
       y1: 150,
       x2: 100,
@@ -61,11 +61,11 @@ describe("crispifier", () => {
     expect(dummy.y2).to.equal(149.5);
   });
 
-  it("should not modify lines with even stroke width", () => {
+  it('should not modify lines with even stroke width', () => {
     const crispifier = crispifierFactory();
 
     const dummy = {
-      type: "line",
+      type: 'line',
       x1: 100,
       y1: 150,
       x2: 100,
@@ -81,11 +81,11 @@ describe("crispifier", () => {
     expect(dummy.y2).to.equal(150);
   });
 
-  it("should not modify non-straight lines", () => {
+  it('should not modify non-straight lines', () => {
     const crispifier = crispifierFactory();
 
     const dummy = {
-      type: "line",
+      type: 'line',
       x1: 100,
       y1: 150,
       x2: 200,
@@ -101,11 +101,11 @@ describe("crispifier", () => {
     expect(dummy.y2).to.equal(250);
   });
 
-  it("should not modify rects with empty crispmap", () => {
+  it('should not modify rects with empty crispmap', () => {
     const crispifier = crispifierFactory({}); // empty crispmap here
 
     const dummyRect = {
-      type: "rect",
+      type: 'rect',
       x: 100,
       y: 150,
       width: 200,
@@ -114,7 +114,7 @@ describe("crispifier", () => {
     };
 
     const dummyLine = {
-      type: "line",
+      type: 'line',
       x1: 100,
       y1: 150,
       x2: 100,
