@@ -16,7 +16,7 @@
   "scripts": {
     "build": "rollup --config ../../rollup.config.js",
     "build:watch": "pnpm run build -w",
-    "lint": "eslint src",
+    "lint": "oxlint src",
     "prepublishOnly": "rm -rf dist && npm run build"
   },
   "devDependencies": {
