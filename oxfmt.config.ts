@@ -3,6 +3,7 @@ import { defineConfig } from 'oxfmt';
 
 export default defineConfig({
   ...config,
+  singleQuote: false,
   // TODO: Consider using the shared @qlik/oxfmt-config default printWidth again.
   // sortImports: true,
   // jsdoc: {
