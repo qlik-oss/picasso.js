@@ -35,6 +35,9 @@ importers:
       '@qlik/oxlint-config':
         specifier: 0.7.1
         version: 0.7.1(oxlint-tsgolint@7.0.2001)(oxlint@1.78.0(oxlint-tsgolint@7.0.2001))
+      '@qlik/oxfmt-config':
+        specifier: 0.2.0
+        version: 0.2.0(oxfmt@0.65.0)
       '@rollup/plugin-babel':
         specifier: 7.1.0
         version: 7.1.0(@babel/core@7.29.7(supports-color@8.1.1))(@types/babel__core@7.20.5)(rollup@2.80.0)(supports-color@8.1.1)
@@ -86,18 +89,16 @@ importers:
       lerna:
         specifier: 9.0.7
         version: 9.0.7(@types/node@26.1.1)(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1)
+      oxfmt:
+        specifier: 0.65.0
+        version: 0.65.0
+
       oxlint:
         specifier: 1.78.0
         version: 1.78.0(oxlint-tsgolint@7.0.2001)
       oxlint-tsgolint:
         specifier: 7.0.2001
         version: 7.0.2001
-      prettier:
-        specifier: 3.8.5
-        version: 3.8.5
-      pretty-quick:
-        specifier: 4.2.2
-        version: 4.2.2(prettier@3.8.5)
       puppeteer:
         specifier: 25.4.0
         version: 25.4.0
@@ -1829,6 +1830,12 @@ packages:
     peerDependencies:
       oxlint: '>=1.61.0'
       oxlint-tsgolint: '>=0.18.0'
+  '@qlik/oxfmt-config@0.2.0(oxfmt@0.65.0)':
+    resolution: {integrity: sha512-0nE/R/YUCQCCOdV/UpSNv6ld4faaUJiFu6wVs/Ri/1FsfEaPFc89T0RY/JhGKfTYm+4T9C2vkICWFi001G4tvw==}
+    engines: {node: '>=22.18.0'}
+    peerDependencies:
+      oxfmt: '>=0.38.0'
+
 
   '@rollup/plugin-babel@7.1.0':
     resolution: {integrity: sha512-h9Y+xYha6p4wKO+FwdiPIkE+eIYCm8MzZPpX1iARIoFBnmKP9CnpT1p9dDf/DTFm6fyN8PmuLyRI5qZgchnitw==}
@@ -4687,6 +4694,13 @@ packages:
     resolution: {integrity: sha512-3sslG3zJbEYcaC4YVAvDorjGxc7tv6KVATnLPZONiljsUncvihe9BQoVCEs0RZ1kmf4Hk9OBqlZfJZWI4GanKA==}
     engines: {node: '>=4'}
 
+  oxfmt@0.65.0:
+    resolution: {integrity: sha512-SgS5VgnP42T0zl3zWD+xoH8FCqg1SAFnSRoOT/qeoa6gxcYIqrDMOmcXIg/EWSN92Du4ogB4riuKhKd6Y4CGhw==}
+    engines: {node: '^20.19.0 || >=22.12.0'}
+    hasBin: true
+    dependencies:
+      tinypool: 2.1.0
+
   oxlint-tsgolint@7.0.2001:
     resolution: {integrity: sha512-KjK/XLcXr1DSyonKhsuFqJRiuKqcyG9j3LJ8nkOsrLzGvodBPqzHOKauy10asLMDI0sUpvb+1sxlzff3udZvfg==}
     hasBin: true
@@ -4917,11 +4931,6 @@ packages:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
 
-  prettier@3.8.5:
-    resolution: {integrity: sha512-zxcTTCedNGJM4R8sj/Cq/F0W/c4iE0afWBcBwMTRtw4WHYP9TWkYjdiH3npPRUYsXQCPR0hTU9yjovOu+E6EQA==}
-    engines: {node: '>=14'}
-    hasBin: true
-
   pretty-format@29.7.0:
     resolution: {integrity: sha512-Pdlw/oPxN+aXdmM9R00JVC9WVFoCLTKJvDVLgmJ+qAffBMxsV85l/Lu7sNx4zSzPyoL2euImuEwHhOXdEgNFZQ==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
@@ -4933,13 +4942,6 @@ packages:
   pretty-format@30.4.1:
     resolution: {integrity: sha512-K6KiKMHTL4jjX4u3Kir2EW07nRfcqVTXIImx50wbjHQTcZPgg+gjVeNTIT3l3L1Rd4UefxfogquC9J37SoFyyw==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
-
-  pretty-quick@4.2.2:
-    resolution: {integrity: sha512-uAh96tBW1SsD34VhhDmWuEmqbpfYc/B3j++5MC/6b3Cb8Ow7NJsvKFhg0eoGu2xXX+o9RkahkTK6sUdd8E7g5w==}
-    engines: {node: '>=14'}
-    hasBin: true
-    peerDependencies:
-      prettier: ^3.0.0
 
   proc-log@5.0.0:
     resolution: {integrity: sha512-Azwzvl90HaF0aCz1JrDdXQykFakSSNPaPoiZ9fm5qJIMHioDZEi7OAdRwSm6rSoPtY3Qutnm3L7ogmg3dc+wbQ==}
@@ -7906,6 +7908,9 @@ snapshots:
     dependencies:
       oxlint: 1.78.0(oxlint-tsgolint@7.0.2001)
       oxlint-tsgolint: 7.0.2001
+  '@qlik/oxfmt-config@0.2.0(oxfmt@0.65.0)':
+    dependencies: {}
+
 
   '@rollup/plugin-babel@7.1.0(@babel/core@7.29.7(supports-color@8.1.1))(@types/babel__core@7.20.5)(rollup@2.80.0)(supports-color@8.1.1)':
     dependencies:
@@ -11318,6 +11323,13 @@ snapshots:
       lcid: 1.0.0
       mem: 1.1.0
 
+  oxfmt@0.65.0:
+    dependencies:
+      tinypool: 2.1.0
+    transitivePeerDependencies:
+      - svelte
+      - vite-plus
+
   oxlint-tsgolint@7.0.2001:
     optionalDependencies:
       '@oxlint-tsgolint/darwin-arm64': 7.0.2001
@@ -11558,8 +11570,6 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
-  prettier@3.8.5: {}
-
   pretty-format@29.7.0:
     dependencies:
       '@jest/schemas': 29.6.3
@@ -11578,17 +11588,6 @@ snapshots:
       ansi-styles: 5.2.0
       react-is-18: react-is@18.3.1
       react-is-19: react-is@19.2.8
-
-  pretty-quick@4.2.2(prettier@3.8.5):
-    dependencies:
-      '@pkgr/core': 0.2.10
-      ignore: 7.0.6
-      mri: 1.2.0
-      picocolors: 1.1.1
-      picomatch: 4.0.5
-      prettier: 3.8.5
-      tinyexec: 0.3.2
-      tslib: 2.8.1
 
   proc-log@5.0.0: {}
 
