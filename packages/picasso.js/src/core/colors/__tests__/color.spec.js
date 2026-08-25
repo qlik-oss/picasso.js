@@ -667,14 +667,14 @@ describe('Colors', () => {
       const colorScale = color.palettes.scientific(0, 1);
 
       expect(color.utils.linearGradient('right', colorScale)).to.equal(
-        'linear-gradient(to right, rgb(61, 82, 161),rgb(58, 137, 201),rgb(119, 183, 229),rgb(180, 221, 247),rgb(230, 245, 254),rgb(255, 227, 170),rgb(249, 189, 126),rgb(237, 135, 94),rgb(210, 77, 62),rgb(174, 28, 62))'
+        'linear-gradient(to right, rgb(61, 82, 161),rgb(58, 137, 201),rgb(119, 183, 229),rgb(180, 221, 247),rgb(230, 245, 254),rgb(255, 227, 170),rgb(249, 189, 126),rgb(237, 135, 94),rgb(210, 77, 62),rgb(174, 28, 62))',
       );
     });
 
     it('should generate a linear gradient css string from an array of color objects', () => {
       const colorAry = ['red', 'blue'].map(color);
       expect(color.utils.linearGradient('right', colorAry)).to.equal(
-        'linear-gradient(to right, rgba(255, 0, 0, 1),rgba(0, 0, 255, 1))'
+        'linear-gradient(to right, rgba(255, 0, 0, 1),rgba(0, 0, 255, 1))',
       );
     });
 

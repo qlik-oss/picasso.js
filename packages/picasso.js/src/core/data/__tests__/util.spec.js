@@ -23,7 +23,7 @@ describe('data-util', () => {
         {
           field: 'f',
         },
-        ds
+        ds,
       );
 
       expect(p.main.value).to.equal(valueFn);
@@ -59,7 +59,7 @@ describe('data-util', () => {
             },
           },
         },
-        ds
+        ds,
       );
 
       expect(p.main.value).to.equal(valueFn);
@@ -111,7 +111,7 @@ describe('data-util', () => {
             },
           },
         },
-        ds
+        ds,
       );
 
       expect(p.props.x.fields.length).to.equal(2);
@@ -132,7 +132,7 @@ describe('data-util', () => {
           reduceLabel: country.reduceLabel,
           label: 'lbl',
         },
-        'sdfsdf'
+        'sdfsdf',
       );
     });
 
@@ -145,7 +145,7 @@ describe('data-util', () => {
         {
           field: 'f',
         },
-        ds
+        ds,
       );
 
       expect(p.main.reduce).to.be.a('function');
@@ -160,7 +160,7 @@ describe('data-util', () => {
           field: 'f',
           filter: () => {},
         },
-        ds
+        ds,
       );
 
       expect(p.main.filter).to.be.a('function');
@@ -180,7 +180,7 @@ describe('data-util', () => {
             y: fn,
           },
         },
-        ds
+        ds,
       );
 
       expect(p.props.x).to.eql({

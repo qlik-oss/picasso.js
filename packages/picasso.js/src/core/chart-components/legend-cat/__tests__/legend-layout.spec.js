@@ -34,7 +34,7 @@ describe('legend layout', () => {
         itemRenderer,
         titleRenderer,
         navigationRenderer,
-      }
+      },
     );
 
     it('should position title at top', () => {
@@ -84,7 +84,7 @@ describe('legend layout', () => {
           itemRenderer,
           titleRenderer,
           navigationRenderer,
-        }
+        },
       );
 
       it('should position title at left', () => {
@@ -141,7 +141,7 @@ describe('legend layout', () => {
             extent: () => 0,
           },
           navigationRenderer,
-        }
+        },
       );
 
       it('should not show title', () => {

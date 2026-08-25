@@ -329,7 +329,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
       this.ls.forEach((b) =>
         b._state({
           values: s.values,
-        })
+        }),
       );
     },
     updateRanges() {
@@ -337,7 +337,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
       this.ls.forEach((b) =>
         b._state({
           ranges: s.ranges,
-        })
+        }),
       );
     },
   };
@@ -544,7 +544,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
         type: 'range',
         id: key,
         brush: ranges[key],
-      }))
+      })),
     );
 
     result = result.concat(
@@ -552,7 +552,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
         type: 'value',
         id: key,
         brush: values[key],
-      }))
+      })),
     );
 
     return result;

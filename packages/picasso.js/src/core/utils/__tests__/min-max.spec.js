@@ -10,7 +10,7 @@ describe('minmax', () => {
     expect(
       minmax({
         min: 13,
-      })
+      }),
     ).to.eql([13, 1]);
   });
 
@@ -18,7 +18,7 @@ describe('minmax', () => {
     expect(
       minmax({
         max: 13,
-      })
+      }),
     ).to.eql([0, 13]);
   });
 

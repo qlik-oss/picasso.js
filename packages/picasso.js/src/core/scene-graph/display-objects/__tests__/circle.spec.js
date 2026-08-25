@@ -292,7 +292,7 @@ describe('Circle', () => {
           y1: 30,
           x2: 16,
           y2: 31,
-        })
+        }),
       ).to.equal(true);
     });
   });
@@ -312,7 +312,7 @@ describe('Circle', () => {
           y: 30,
           width: 1,
           height: 1,
-        })
+        }),
       ).to.equal(true);
     });
   });

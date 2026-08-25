@@ -92,7 +92,7 @@ describe('range component', () => {
           height: s.height,
           x: s.x,
           y: s.y,
-        }))
+        })),
       ).to.eql([
         {
           height: 20,
@@ -117,7 +117,7 @@ describe('range component', () => {
           height: s.height,
           x: s.x,
           y: s.y,
-        }))
+        })),
       ).to.eql([
         {
           height: 200,
@@ -139,7 +139,7 @@ describe('range component', () => {
       expect(
         shapes.map((s) => ({
           fill: s.fill,
-        }))
+        })),
       ).to.eql([{ fill: '#ccc' }, { fill: '#ccc' }]);
     });
 
@@ -149,7 +149,7 @@ describe('range component', () => {
       expect(
         shapes.map((s) => ({
           fill: s.fill,
-        }))
+        })),
       ).to.eql([{ fill: '#f00' }, { fill: '#f00' }]);
     });
 
@@ -158,7 +158,7 @@ describe('range component', () => {
       expect(
         shapes.map((s) => ({
           opacity: s.opacity,
-        }))
+        })),
       ).to.eql([{ opacity: 1 }, { opacity: 1 }]);
     });
 
@@ -168,7 +168,7 @@ describe('range component', () => {
       expect(
         shapes.map((s) => ({
           opacity: s.opacity,
-        }))
+        })),
       ).to.eql([{ opacity: 0.2 }, { opacity: 0.2 }]);
     });
   });

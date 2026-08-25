@@ -40,7 +40,7 @@ export function binaryLeftSearch(labelBounds, ary, coord, side, extractBounds) {
  */
 export default function filterOverlappingLabels(
   { orientation, targetNodes, labels, container },
-  findLeft = binaryLeftSearch
+  findLeft = binaryLeftSearch,
 ) {
   const renderLabels = [];
   const coord = orientation === 'v' ? 'x' : 'y';

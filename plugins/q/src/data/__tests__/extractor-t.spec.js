@@ -414,7 +414,7 @@ describe('q-data-extractor-t', () => {
           field: sinon.stub(),
         },
         {},
-        deps
+        deps,
       );
 
       expect(m).to.eql([]);
@@ -427,7 +427,7 @@ describe('q-data-extractor-t', () => {
         },
         dataset,
         {},
-        deps
+        deps,
       );
 
       expect(m).to.eql([
@@ -443,7 +443,7 @@ describe('q-data-extractor-t', () => {
         },
         dataset,
         {},
-        deps
+        deps,
       );
 
       expect(m).to.eql([
@@ -460,7 +460,7 @@ describe('q-data-extractor-t', () => {
         [{ field: 'qDimensionInfo/0' }, { field: 'qDimensionInfo/0', value: (v) => v.qText }],
         dataset,
         {},
-        deps
+        deps,
       );
 
       expect(m).to.eql([
@@ -482,7 +482,7 @@ describe('q-data-extractor-t', () => {
         },
         dataset,
         {},
-        deps
+        deps,
       );
 
       expect(m).to.eql([
@@ -505,7 +505,7 @@ describe('q-data-extractor-t', () => {
         },
         dataset,
         {},
-        deps
+        deps,
       );
 
       expect(m).to.eql([
@@ -546,7 +546,7 @@ describe('q-data-extractor-t', () => {
         },
         dataset,
         {},
-        deps
+        deps,
       );
 
       expect(m).to.eql([
@@ -594,7 +594,7 @@ describe('q-data-extractor-t', () => {
         },
         dataset,
         {},
-        deps
+        deps,
       );
 
       expect(m).to.eql([
@@ -645,7 +645,7 @@ describe('q-data-extractor-t', () => {
         },
         dataset,
         { fields },
-        deps
+        deps,
       );
 
       expect(m).to.eql([
@@ -705,7 +705,7 @@ describe('q-data-extractor-t', () => {
         },
         dataset,
         { fields },
-        deps
+        deps,
       );
       expect(m).to.eql([
         {
@@ -740,7 +740,7 @@ describe('q-data-extractor-t', () => {
         },
         dataset,
         { fields },
-        deps
+        deps,
       );
 
       const v = {
@@ -772,7 +772,7 @@ describe('q-data-extractor-t', () => {
         },
         dataset,
         { fields },
-        deps
+        deps,
       );
       expect(m).to.eql([
         {
@@ -808,7 +808,7 @@ describe('q-data-extractor-t', () => {
         },
         dataset,
         { fields },
-        deps
+        deps,
       );
 
       expect(m).to.eql([
@@ -860,7 +860,7 @@ describe('q-data-extractor-t', () => {
         },
         dataset,
         { fields },
-        deps
+        deps,
       );
 
       expect(m).to.eql([
@@ -888,7 +888,7 @@ describe('q-data-extractor-t', () => {
         },
         dataset,
         { fields },
-        deps
+        deps,
       );
 
       expect(m).to.eql([
@@ -926,7 +926,7 @@ describe('q-data-extractor-t', () => {
         },
         dataset,
         {},
-        deps
+        deps,
       );
 
       // Restore
@@ -950,7 +950,7 @@ describe('q-data-extractor-t', () => {
         },
         dataset,
         {},
-        deps
+        deps,
       );
 
       // Restore
@@ -1089,7 +1089,7 @@ describe('q-data-extractor-t', () => {
         },
         dataset,
         { fields },
-        deps
+        deps,
       );
 
       expect(m).to.eql([
@@ -1111,7 +1111,7 @@ describe('q-data-extractor-t', () => {
         },
         dataset,
         { fields },
-        deps
+        deps,
       );
 
       expect(m).to.eql([
@@ -1223,7 +1223,7 @@ describe('q-data-extractor-t', () => {
         },
         dataset,
         { fields },
-        deps
+        deps,
       );
 
       expect(m).to.eql([]);

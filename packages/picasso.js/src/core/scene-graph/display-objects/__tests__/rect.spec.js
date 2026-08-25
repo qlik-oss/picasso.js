@@ -290,7 +290,7 @@ describe('Rect', () => {
           y1: 30,
           x2: 16,
           y2: 31,
-        })
+        }),
       ).to.equal(true);
     });
   });
@@ -311,7 +311,7 @@ describe('Rect', () => {
           y: 30,
           width: 1,
           height: 1,
-        })
+        }),
       ).to.equal(true);
     });
   });

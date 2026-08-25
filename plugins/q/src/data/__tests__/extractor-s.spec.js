@@ -97,7 +97,7 @@ describe('extractor-s', () => {
       },
       dataset,
       cache,
-      deps
+      deps,
     );
     expect(m).to.eql([
       { value: 1, label: 'tre', source: { field: 'qDimensionInfo/1', key: 'hyper' } },
@@ -121,7 +121,7 @@ describe('extractor-s', () => {
       },
       dataset,
       cache,
-      deps
+      deps,
     );
     expect(m).to.eql([
       { value: 53, label: '$53', source: { field: 'qMeasureInfo/0', key: 'hyper' } },
@@ -156,7 +156,7 @@ describe('extractor-s', () => {
       ],
       dataset,
       cache,
-      deps
+      deps,
     );
     expect(m).to.eql([
       { value: 53, label: '53', source: { field: 'qMeasureInfo/0', key: 'hyper' } },
@@ -183,7 +183,7 @@ describe('extractor-s', () => {
       },
       dataset,
       cache,
-      deps
+      deps,
     );
     expect(m).to.eql([
       {
@@ -239,7 +239,7 @@ describe('extractor-s', () => {
       },
       dataset,
       cache,
-      deps
+      deps,
     );
 
     expect(m).to.eql([
@@ -296,7 +296,7 @@ describe('extractor-s', () => {
       },
       dataset,
       cache,
-      deps
+      deps,
     );
     expect(m).to.eql([
       {
@@ -340,7 +340,7 @@ describe('extractor-s', () => {
       },
       dataset,
       cache,
-      deps
+      deps,
     );
     expect(m).to.eql([
       {
@@ -446,7 +446,7 @@ describe('extractor-s', () => {
       },
       ds,
       { fields: fs },
-      deps
+      deps,
     );
     expect(m).to.eql([
       {
@@ -565,7 +565,7 @@ describe('extractor-s', () => {
       },
       ds,
       { fields: fs },
-      deps
+      deps,
     );
     expect(m).to.eql([
       {
@@ -672,7 +672,7 @@ describe('extractor-s', () => {
       },
       ds,
       { fields: fs },
-      deps
+      deps,
     );
     expect(m).to.eql([
       {
@@ -775,7 +775,7 @@ describe('extractor-s', () => {
       },
       ds,
       { fields: fs },
-      deps
+      deps,
     );
     expect(m).to.eql([
       {
@@ -814,7 +814,7 @@ describe('extractor-s', () => {
       },
       dataset,
       cache,
-      deps
+      deps,
     );
     expect(m).to.eql([
       {
@@ -866,7 +866,7 @@ describe('extractor-s', () => {
         {
           qArea: { qLeft: 2 },
         },
-        { cache: localCache }
+        { cache: localCache },
       );
       expect(acc).to.equal(-1);
     });
@@ -879,7 +879,7 @@ describe('extractor-s', () => {
         {
           qArea: { qLeft: 1 },
         },
-        { cache: localCache }
+        { cache: localCache },
       );
       expect(acc(row)).to.equal('b');
     });
@@ -899,7 +899,7 @@ describe('extractor-s', () => {
         {
           qArea: { qLeft: 0 },
         },
-        { cache: localCache }
+        { cache: localCache },
       );
       expect(acc(row)).to.equal('target');
     });
@@ -919,7 +919,7 @@ describe('extractor-s', () => {
         {
           qArea: { qLeft: 1 },
         },
-        { cache: localCache }
+        { cache: localCache },
       );
       expect(acc(row)).to.equal('exp');
     });
@@ -934,7 +934,7 @@ describe('extractor-s', () => {
         {
           qArea: { qLeft: 1 },
         },
-        { cache: localCache }
+        { cache: localCache },
       );
       expect(acc(row)).to.equal('b');
     });
@@ -953,7 +953,7 @@ describe('extractor-s', () => {
             qArea: { qLeft: 0 },
           },
           { cache: localCache },
-          columnOrder
+          columnOrder,
         );
         expect(acc(row)).to.equal(expectedReturnedValues[i]);
       }
@@ -973,7 +973,7 @@ describe('extractor-s', () => {
             qArea: { qLeft: 1 },
           },
           { cache: localCache },
-          columnOrder
+          columnOrder,
         );
         expect(acc(row)).to.equal(expectedReturnedValues[i]);
       }

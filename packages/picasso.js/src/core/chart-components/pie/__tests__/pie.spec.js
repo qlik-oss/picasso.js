@@ -105,8 +105,8 @@ describe('pie', () => {
           {},
           {
             data: { value: 4 },
-          }
-        )
+          },
+        ),
       ).to.equal(4);
     });
 
@@ -121,8 +121,8 @@ describe('pie', () => {
           {
             arc: 9,
             data: { value: 4 },
-          }
-        )
+          },
+        ),
       ).to.equal(9);
     });
   });
@@ -174,7 +174,7 @@ describe('pie', () => {
         arr
           .replace(/translate\(|\)/g, '')
           .split(', ')
-          .map(Math.round)
+          .map(Math.round),
       );
       expect(t[0]).to.eql([7, -4]);
       expect(t[1]).to.eql([50, 100]);

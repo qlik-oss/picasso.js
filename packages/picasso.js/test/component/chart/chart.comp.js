@@ -105,7 +105,7 @@ describe('Chart', () => {
         },
         {
           components: [{ key: 'key2' }],
-        }
+        },
       ); // Select all shapes in key2 component
       const expectedShapes = instance.findShapes('circle[fill="green"]'); // All shapes in key2 component are circles with fill=green
 
@@ -131,7 +131,7 @@ describe('Chart', () => {
         },
         {
           propagation: 'stop',
-        }
+        },
       ); // Should start on top (visible top) component and propagation down until a match is found
       const expectedShapes = instance.findShapes('circle[fill="blue"]');
 
@@ -157,7 +157,7 @@ describe('Chart', () => {
         },
         {
           components: [{ key: 'key1', propagation: 'stop' }, { key: 'key2', propagation: 'stop' }, { key: 'key3' }],
-        }
+        },
       );
 
       expect(shapes.map((s) => s.attrs.fill)).to.deep.equal(['blue', 'blue', 'green', 'red']); // Only return 1 circle for each component except blue which doesnt have propagation set to stop

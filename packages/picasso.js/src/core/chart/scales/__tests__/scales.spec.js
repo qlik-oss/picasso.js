@@ -72,7 +72,7 @@ describe('scales', () => {
           type: 'custom',
         },
         null,
-        deps
+        deps,
       );
       expect(s.type).to.equal('custom');
     });
@@ -111,7 +111,7 @@ describe('scales', () => {
           },
         },
         datasetFn,
-        deps
+        deps,
       );
       expect(s.type).to.equal('linear');
     });
@@ -137,7 +137,7 @@ describe('scales', () => {
           },
         },
         datasetFn,
-        deps
+        deps,
       );
       expect(s.type).to.equal('sequential-color');
     });
@@ -163,7 +163,7 @@ describe('scales', () => {
           },
         },
         { dataset: datasetFn },
-        deps
+        deps,
       );
       expect(s.type).to.equal('band');
     });
@@ -190,7 +190,7 @@ describe('scales', () => {
           },
         },
         { dataset: datasetFn },
-        deps
+        deps,
       );
       expect(s.type).to.equal('categorical-color');
     });
@@ -208,7 +208,7 @@ describe('scales', () => {
           data: { hierarchy: {} },
         },
         { dataset: datasetFn },
-        deps
+        deps,
       );
 
       expect(s.type).to.equal('h-band');

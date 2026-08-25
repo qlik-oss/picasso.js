@@ -30,7 +30,7 @@ describe('extract data', () => {
       expect(
         extract({
           items: ['A', 'B', 'C'],
-        }).items
+        }).items,
       ).to.eql([
         { value: 'A', label: 'A' },
         { value: 'B', label: 'B' },
@@ -50,7 +50,7 @@ describe('extract data', () => {
           ],
           value: (d) => d.v,
           label: (d) => d.s,
-        }).items
+        }).items,
       ).to.eql([
         { value: 3, label: 'A' },
         { value: 5, label: 'B' },
@@ -68,7 +68,7 @@ describe('extract data', () => {
         {
           field: 'dim',
         },
-        { dataset }
+        { dataset },
       );
 
       expect(d.items).to.eql([
@@ -86,7 +86,7 @@ describe('extract data', () => {
         {
           extract: [{ field: 'dim' }],
         },
-        { dataset }
+        { dataset },
       );
 
       expect(d.items).to.eql([1, 2]);
@@ -102,7 +102,7 @@ describe('extract data', () => {
         {
           fields: ['dim', 'dim'],
         },
-        { dataset }
+        { dataset },
       );
 
       expect(d.fields).to.eql([country, country]);
@@ -132,7 +132,7 @@ describe('extract data', () => {
             },
           ],
         },
-        { dataset: datasetFn }
+        { dataset: datasetFn },
       );
       expect(d.fields.length).to.equal(2);
     });
@@ -163,7 +163,7 @@ describe('extract data', () => {
             },
           ],
         },
-        { dataset: datasetFn }
+        { dataset: datasetFn },
       );
       expect(d.items).to.eql(['A', 'B', 'K', 'L']);
     });
@@ -178,7 +178,7 @@ describe('extract data', () => {
           value: (x) => x.v + 5,
           label: (v) => `<${v.s}>`,
         },
-        { dataset }
+        { dataset },
       );
 
       expect(d.items).to.eql([
@@ -197,7 +197,7 @@ describe('extract data', () => {
           extract: [{ field: 'dim' }],
           amend: [7, { value: 8, label: { value: 'etikett' } }],
         },
-        { dataset }
+        { dataset },
       );
 
       expect(d.items).to.eql([1, 2, 7, { value: 8, label: { value: 'etikett' } }]);
@@ -212,7 +212,7 @@ describe('extract data', () => {
         {
           collection: 'nyckel',
         },
-        { collection }
+        { collection },
       );
 
       expect(d).to.eql({ foo: 'my collection' });
@@ -225,7 +225,7 @@ describe('extract data', () => {
         extract({
           items: ['A', 'B', 'C'],
           sort: (a, b) => (b.value > a.value ? 1 : -1),
-        }).items
+        }).items,
       ).to.eql([
         { value: 'C', label: 'C' },
         { value: 'B', label: 'B' },
@@ -240,7 +240,7 @@ describe('extract data', () => {
         extract({
           items: ['A', 'B', 'C'],
           filter: (d) => d.label !== 'C',
-        }).items
+        }).items,
       ).to.eql([
         { value: 'A', label: 'A' },
         { value: 'B', label: 'B' },

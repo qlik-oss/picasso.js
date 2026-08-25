@@ -25,9 +25,6 @@
     "prepare": "husky",
     "types:check": "tsc --noEmit"
   },
-  "engines": {
-    "node": ">=18"
-  },
   "devDependencies": {
     "@babel/cli": "7.29.7",
     "@babel/core": "7.29.7",
@@ -39,6 +36,8 @@
     "@commitlint/config-conventional": "21.2.0",
     "@qlik/oxfmt-config": "0.2.0",
     "@qlik/oxlint-config": "0.7.1",
+    "@rollup/plugin-babel": "7.1.0",
+    "@rollup/plugin-node-resolve": "16.0.3",
     "@rollup/plugin-terser": "1.0.0",
     "babel-plugin-istanbul": "8.0.0",
     "chai": "6.2.2",
@@ -59,13 +58,14 @@
     "oxlint-tsgolint": "7.0.2001",
     "puppeteer": "25.4.0",
     "rollup": "2.80.0",
-    "@rollup/plugin-babel": "7.1.0",
     "rollup-plugin-commonjs": "10.1.0",
-    "@rollup/plugin-node-resolve": "16.0.3",
     "rollup-plugin-serve": "1.1.1",
     "sinon": "22.1.0",
     "sinon-chai": "4.0.1",
     "typescript": "6.0.3"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "packageManager": "pnpm@11.17.0+sha512.cca3cea332ad254bb84145f966d19f4879615210346fc92c79a047f23a0d7b3cca3c3792f0076ba1f1831d277efbcf0a9119b31a9a60eca7fb3d6231f331ef72"
 }

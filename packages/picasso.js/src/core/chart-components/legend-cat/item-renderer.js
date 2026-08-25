@@ -52,7 +52,7 @@ export function createRenderItem({ x = 0, y, item, globalMetrics, createSymbol, 
     {
       align: typeof symbolItem.align === 'undefined' ? 0.5 : symbolItem.align,
       justify: typeof symbolItem.justify === 'undefined' ? 0.5 : symbolItem.justify,
-    }
+    },
   );
 
   const symbol = createSymbol(extend({}, symbolItem, wiggled));
@@ -247,7 +247,7 @@ export function parallelize(availableExtent, availableSpread, itemized) {
     const spreadMargin = spreadProperty === 'width' ? 'horizontal' : 'vertical';
     const spreadMarginSize = itemized.layout.margin[spreadMargin] || 4;
     const numAllowed = Math.floor(
-      (availableSpread + spreadMarginSize) / (spreadMarginSize + itemized.globalMetrics.maxItemBounds[spreadProperty])
+      (availableSpread + spreadMarginSize) / (spreadMarginSize + itemized.globalMetrics.maxItemBounds[spreadProperty]),
     );
     numNeeded = Math.min(numNeeded, numAllowed);
   }

@@ -26,7 +26,7 @@ export default class Container extends DisplayObject {
       {
         type: null,
       },
-      collider
+      collider,
     );
 
     this.collider = opts;
@@ -71,7 +71,7 @@ export default class Container extends DisplayObject {
         width: 0,
         height: 0,
       },
-      this.__boundingRect[includeTransform]
+      this.__boundingRect[includeTransform],
     );
 
     return this.__boundingRect[includeTransform];
@@ -105,7 +105,7 @@ export default class Container extends DisplayObject {
           width: 0,
           height: 0,
         },
-        this.__boundingRect.true
+        this.__boundingRect.true,
       );
       this.collider = opts;
     }
@@ -129,7 +129,7 @@ export default class Container extends DisplayObject {
           width: 0,
           height: 0,
         },
-        this.__boundingRect.true
+        this.__boundingRect.true,
       );
       this.collider = opts;
     }

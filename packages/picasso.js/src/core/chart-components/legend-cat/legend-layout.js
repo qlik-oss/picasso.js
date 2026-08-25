@@ -5,7 +5,7 @@ export default function layout(
   rect,
   display,
   orientation,
-  { itemRenderer, navigationRenderer, titleRenderer, isPreliminary = false }
+  { itemRenderer, navigationRenderer, titleRenderer, isPreliminary = false },
 ) {
   let title;
   let content;
@@ -146,7 +146,7 @@ export default function layout(
     preferredSize = Math.max(
       titleRenderer.extent(),
       navigationSize ? navigationRenderer.spread() : 0,
-      itemRenderer.spread()
+      itemRenderer.spread(),
     );
   }
 

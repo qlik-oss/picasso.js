@@ -202,7 +202,7 @@ describe('Brushing', () => {
           {
             x: c[1].attrs.cx,
             y: c[1].attrs.cy,
-          }
+          },
         );
         const activeShapes = instance.getAffectedShapes('test');
 

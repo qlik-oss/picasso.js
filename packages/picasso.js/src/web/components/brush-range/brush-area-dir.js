@@ -197,7 +197,7 @@ const brushAreaDirectionalComponent = {
             y0: targets[0].rect.y,
             x1: targets[0].rect.x + targets[0].rect.width,
             y1: targets[0].rect.y + targets[0].rect.height,
-          }
+          },
         )
       : null;
 

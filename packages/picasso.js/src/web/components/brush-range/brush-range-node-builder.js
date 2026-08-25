@@ -59,10 +59,10 @@ function buildLine({ h, isVertical, value, pos, align, borderHit, state, idx }) 
             width: isVertical ? '100%' : `${1}px`,
             pointerEvents: 'none',
           },
-          alignStyle
+          alignStyle,
         ),
       }),
-    ]
+    ],
   );
 }
 
@@ -145,7 +145,7 @@ function buildBubble({ h, isVertical, label, otherValue, rangeIdx, idx, pos, ali
           'data-bidx': idx,
           style: bubbleStyle,
         },
-        [label]
+        [label],
       );
 
   // bubble wrapper
@@ -162,7 +162,7 @@ function buildBubble({ h, isVertical, label, otherValue, rangeIdx, idx, pos, ali
     [
       // bubble
       bubble,
-    ]
+    ],
   );
 }
 
@@ -182,9 +182,9 @@ function buildArea({ h, isVertical, top, height, color, on, opacity }) {
           pointerEvents: 'auto',
         },
       },
-      on
+      on,
     ),
-    []
+    [],
   );
 }
 
@@ -237,8 +237,8 @@ export default function buildRange({ borderHit, els, isVertical, state, vStart, 
             width: `${target.width}px`,
           },
         },
-        [buildArea(targetArea)]
-      )
+        [buildArea(targetArea)],
+      ),
     );
   }
 
@@ -269,7 +269,7 @@ export default function buildRange({ borderHit, els, isVertical, state, vStart, 
         align: 'start',
         state,
         idx,
-      })
+      }),
     );
   }
 
@@ -284,7 +284,7 @@ export default function buildRange({ borderHit, els, isVertical, state, vStart, 
         align: 'end',
         state,
         idx,
-      })
+      }),
     );
   }
 
@@ -315,7 +315,7 @@ export default function buildRange({ borderHit, els, isVertical, state, vStart, 
           label: `${state.format(valStart, range)}`,
           pos: top,
           state,
-        })
+        }),
       );
     }
 
@@ -333,7 +333,7 @@ export default function buildRange({ borderHit, els, isVertical, state, vStart, 
           label: `${state.format(valEnd, range)}`,
           pos: bottom,
           state,
-        })
+        }),
       );
     }
   }

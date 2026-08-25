@@ -395,7 +395,7 @@ describe('q-brush', () => {
       const selections = qBrush(
         brush,
         { byCells: true, primarySource: '/layers/0/qHyperCube/qDimensionInfo/1' },
-        layout
+        layout,
       );
       expect(selections[0].params).to.eql([
         '/layers/0/qHyperCubeDef',
@@ -426,7 +426,7 @@ describe('q-brush', () => {
       const selections = qBrush(
         brush,
         { byCells: true, primarySource: '/layers/0/qHyperCube/qDimensionInfo/1' },
-        layout
+        layout,
       );
       expect(selections[0].params).to.eql([
         '/layers/0/qHyperCubeDef',
@@ -622,13 +622,7 @@ describe('q-brush', () => {
             { qMeasureInfo: [{}, { qAttrExprInfo: [{}, {}] }], qAttrExprInfo: [{}, {}] },
             {
               qMeasureInfo: [],
-              qAttrExprInfo: [
-                {},
-                {
-                  /* target */
-                },
-                {},
-              ],
+              qAttrExprInfo: [{}, {/* target */}, {}],
             },
           ],
         },

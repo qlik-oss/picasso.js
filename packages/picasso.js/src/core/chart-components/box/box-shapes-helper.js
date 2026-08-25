@@ -34,7 +34,7 @@ export function oob({ item, value, boxCenter, rendWidth, rendHeight, flipXY, sym
       [x]: boxCenter * calcwidth,
       [y]: Math.max(item.oob.size / 2, Math.min(value * calcheight, calcheight - item.oob.size / 2)),
       startAngle,
-    })
+    }),
   );
 }
 

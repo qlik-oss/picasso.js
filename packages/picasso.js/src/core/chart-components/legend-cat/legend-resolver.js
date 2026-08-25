@@ -228,7 +228,7 @@ export default function resolveSettings(comp) {
       {},
       {
         show: DEFAULT_SETTINGS.item.show,
-      }
+      },
     ),
     settings: {
       show: (comp.settings.settings.item || {}).show,

@@ -220,7 +220,7 @@ describe('Node Selector', () => {
             operator: UNDEF,
             attributeValue: UNDEF,
           },
-          [c1, c2, c3, t1, r1]
+          [c1, c2, c3, t1, r1],
         );
         expect(result).to.deep.equal([c2, r1]);
       });
@@ -238,7 +238,7 @@ describe('Node Selector', () => {
             operator: '=',
             attributeValue: 'red',
           },
-          [c1, c2, c3, t1, r1]
+          [c1, c2, c3, t1, r1],
         );
         expect(result).to.deep.equal([c2, r1]);
       });
@@ -257,7 +257,7 @@ describe('Node Selector', () => {
             operator: '!=',
             attributeValue: 'red',
           },
-          [c1, c2, c3, t1, r1]
+          [c1, c2, c3, t1, r1],
         );
         expect(result).to.deep.equal([c1, c3, t1]);
       });
