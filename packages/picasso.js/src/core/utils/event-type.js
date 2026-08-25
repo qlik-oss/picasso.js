@@ -1,14 +1,14 @@
 /* global navigator */
 
 export function detectPointerSupport(e) {
-  if ('onpointerdown' in e && 'onpointerup' in e) {
+  if ("onpointerdown" in e && "onpointerup" in e) {
     return true;
   }
   return false;
 }
 
 export function detectTouchSupport(e) {
-  if (('ontouchstart' in e && 'ontouchend' in e) || navigator.maxTouchPoints > 1) {
+  if (("ontouchstart" in e && "ontouchend" in e) || navigator.maxTouchPoints > 1) {
     return true;
   }
   return false;

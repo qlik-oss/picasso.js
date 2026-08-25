@@ -1,6 +1,6 @@
-import elementMock from 'test-utils/mocks/element-mock';
-import componentFactory from '../../src/core/component/component-factory';
-import findNodes from './node-def-selector';
+import elementMock from "test-utils/mocks/element-mock";
+import componentFactory from "../../src/core/component/component-factory";
+import findNodes from "./node-def-selector";
 
 function computeRect(rect) {
   return {
@@ -91,7 +91,7 @@ export default function componentFactoryFixture() {
       element: () => rendererElement,
       clear: () => {},
       destroy: () => {},
-      setKey: (key) => rendererElement.setAttribute('data-key', key),
+      setKey: (key) => rendererElement.setAttribute("data-key", key),
       settings: () => {},
     };
 

@@ -1,5 +1,5 @@
-import extend from 'extend';
-import { pie, arc } from 'd3-shape';
+import extend from "extend";
+import { pie, arc } from "d3-shape";
 
 /**
  * Component settings
@@ -17,7 +17,7 @@ const DEFAULT_DATA_SETTINGS = {
    * @typedef {object}
    */
   slice: {
-    label: '',
+    label: "",
     /** Absolute value of the slice's arc length
      * @type {number=} */
     arc: 1,
@@ -26,16 +26,16 @@ const DEFAULT_DATA_SETTINGS = {
     show: true,
     /** Fill color of the slice
      * @type {string=} */
-    fill: '#333',
+    fill: "#333",
     /** Stroke color of the slice
      * @type {string=} */
-    stroke: '#ccc',
+    stroke: "#ccc",
     /** Stroke width of the slice
      * @type {number=} */
     strokeWidth: 1,
     /** Stroke line join
      * @type {string=} */
-    strokeLinejoin: 'round',
+    strokeLinejoin: "round",
     /** Opacity of the slice
      * @type {number=} */
     opacity: 1,
@@ -104,7 +104,7 @@ function createDisplayPies(arcData, { x, y, width, height }, slices, sum) {
   const cornerRadius = outerRadius / 100;
   return arcData.map((a, i) => {
     const slice = slices[i];
-    slice.type = 'path';
+    slice.type = "path";
     const or = outerRadius * slice.outerRadius;
     const ir = innerRadius * slice.innerRadius;
     const cr = cornerRadius * slice.cornerRadius;
@@ -132,14 +132,14 @@ function createDisplayPies(arcData, { x, y, width, height }, slices, sum) {
 }
 
 export function arcValue(stngs, item) {
-  if (stngs.slice && 'arc' in stngs.slice) {
+  if (stngs.slice && "arc" in stngs.slice) {
     return item.arc;
   }
   return item.data.value;
 }
 
 const pieComponent = {
-  require: ['chart', 'resolver'],
+  require: ["chart", "resolver"],
   defaultSettings: {
     settings: {
       startAngle: 0,
@@ -148,7 +148,7 @@ const pieComponent = {
       slice: {},
     },
     style: {
-      slice: '$shape',
+      slice: "$shape",
     },
     data: {},
   },

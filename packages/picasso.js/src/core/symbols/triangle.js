@@ -1,6 +1,6 @@
-import pointsToPath from '../utils/points-to-path';
-import { rotate } from '../math/vector';
-import { toRadians } from '../math/angles';
+import pointsToPath from "../utils/points-to-path";
+import { rotate } from "../math/vector";
+import { toRadians } from "../math/angles";
 
 const DIRECTION_TO_ANGLE = {
   up: 0,
@@ -33,8 +33,8 @@ export default function triangle(options) {
   points = points.map((pp) => rotate(pp, radians, p));
 
   return {
-    type: 'path',
-    fill: 'black',
+    type: "path",
+    fill: "black",
     d: pointsToPath(points),
   };
 }

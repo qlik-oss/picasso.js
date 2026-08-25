@@ -1,4 +1,4 @@
-import extend from 'extend';
+import extend from "extend";
 
 /**
  * Creates a context. Input an array of strings that should be inherited by the context.
@@ -31,12 +31,12 @@ export default function contextFactory(whitelist = []) {
   context.save = function save(item = {}) {
     const current = context();
     const obj = {};
-    let key = '';
+    let key = "";
 
     // Only inherit whitelisted properties
     for (let i = 0; i < whitelist.length; i++) {
       key = whitelist[i];
-      if (typeof current[key] !== 'undefined') {
+      if (typeof current[key] !== "undefined") {
         obj[key] = current[key];
       }
     }

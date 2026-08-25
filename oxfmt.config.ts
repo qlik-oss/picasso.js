@@ -1,5 +1,5 @@
-import config from '@qlik/oxfmt-config';
-import { defineConfig } from 'oxfmt';
+import config from "@qlik/oxfmt-config";
+import { defineConfig } from "oxfmt";
 
 export default defineConfig({
   ...config,
@@ -8,5 +8,5 @@ export default defineConfig({
   // jsdoc: {
   //   commentLineStrategy: 'keep',
   // },
-  ignorePatterns: ['docs/scriptappy.json', 'packages/picasso.js/types/index.d.ts', 'pnpm-lock.yaml'],
+  ignorePatterns: ["docs/scriptappy.json", "packages/picasso.js/types/index.d.ts", "pnpm-lock.yaml"],
 });

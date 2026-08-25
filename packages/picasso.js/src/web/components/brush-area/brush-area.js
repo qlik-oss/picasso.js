@@ -1,5 +1,5 @@
-import extend from 'extend';
-import { testRectPoint } from '../../../core/math/narrow-phase-collision';
+import extend from "extend";
+import { testRectPoint } from "../../../core/math/narrow-phase-collision";
 
 /**
  * @typedef {object}
@@ -29,7 +29,7 @@ function getLocalPoint(ctx, event, clamp = true) {
   let x;
   let y;
 
-  if (typeof event.center === 'object') {
+  if (typeof event.center === "object") {
     x = event.center.x;
     y = event.center.y;
   } else {
@@ -71,7 +71,7 @@ function getBrushConfig(settings) {
     key: b.key,
     contexts: b.contexts,
     data: b.data,
-    action: b.action || 'set',
+    action: b.action || "set",
   }));
 }
 
@@ -128,7 +128,7 @@ function doAreaBrush(ctx) {
 }
 
 function render(ctx) {
-  ctx.renderer.render([extend({ type: 'rect' }, toRect(ctx.state.start, ctx.state.end), ctx.style.area)]);
+  ctx.renderer.render([extend({ type: "rect" }, toRect(ctx.state.start, ctx.state.end), ctx.style.area)]);
 }
 
 function resetState() {
@@ -140,14 +140,14 @@ function resetState() {
 }
 
 const definition = {
-  require: ['chart', 'renderer'],
+  require: ["chart", "renderer"],
   defaultSettings: {
     layout: {
       displayOrder: 99,
     },
     settings: DEFAULT_SETTINGS,
     style: {
-      area: '$selection-area-target',
+      area: "$selection-area-target",
     },
   },
   on: {
@@ -184,7 +184,7 @@ const definition = {
           width: this.rect.width,
           height: this.rect.height,
         },
-        p
+        p,
       )
     ) {
       return;

@@ -1,4 +1,4 @@
-import createSceneNode from './scene-node';
+import createSceneNode from "./scene-node";
 
 export class Collision {
   constructor(node) {

@@ -1,66 +1,66 @@
-import { normalizeSettings, resolveForItem } from '..';
+import { normalizeSettings, resolveForItem } from "..";
 
-describe('property-resolver', () => {
-  describe('setting normalization', () => {
-    it('should normalize primitives', () => {
+describe("property-resolver", () => {
+  describe("setting normalization", () => {
+    it("should normalize primitives", () => {
       let norm = normalizeSettings(
         {
-          fill: 'red',
+          fill: "red",
           doit: false,
           num: 0,
         },
-        { fill: 'green', stroke: 'blue' }
+        { fill: "green", stroke: "blue" },
       );
 
       expect(norm).to.eql({
-        fill: 'red',
-        stroke: 'blue',
+        fill: "red",
+        stroke: "blue",
         doit: false,
         num: 0,
       });
     });
 
-    it('should not override defaults when type does not match', () => {
+    it("should not override defaults when type does not match", () => {
       let norm = normalizeSettings(
         {
           fill: 3,
-          show: 'yes',
+          show: "yes",
           stroke: true,
         },
-        { fill: 'green', stroke: 'blue', show: false }
+        { fill: "green", stroke: "blue", show: false },
       );
 
       expect(norm).to.eql({
-        fill: 'green',
-        stroke: 'blue',
+        fill: "green",
+        stroke: "blue",
         show: false,
       });
     });
 
-    it('should normalize functions', () => {
-      let fn = () => 'red';
+    it("should normalize functions", () => {
+      let fn = () => "red";
       let norm = normalizeSettings(
         {
           fill: fn,
         },
-        { fill: 'green', stroke: 'blue' }
+        { fill: "green", stroke: "blue" },
       );
 
       expect(norm).to.eql({
         fill: { fn },
-        stroke: 'blue',
+        stroke: "blue",
       });
     });
 
-    it('should normalize objects', () => {
-      let fn = () => 'red';
+    it("should normalize objects", () => {
+      let fn = () => "red";
       let norm = normalizeSettings(
         {
           fill: {
             fn,
           },
         },
-        { fill: 'green' }
+        { fill: "green" },
       );
 
       expect(norm).to.eql({
@@ -68,45 +68,45 @@ describe('property-resolver', () => {
       });
     });
 
-    it('should attach scale', () => {
+    it("should attach scale", () => {
       const c = {
-        scale: () => 'scaleInstance',
+        scale: () => "scaleInstance",
       };
       let norm = normalizeSettings(
         {
           fill: {
-            scale: 'foo',
+            scale: "foo",
           },
         },
-        { fill: 'green', stroke: 'blue' },
-        c
+        { fill: "green", stroke: "blue" },
+        c,
       );
 
       expect(norm).to.eql({
-        fill: { scale: 'scaleInstance' },
-        stroke: 'blue',
+        fill: { scale: "scaleInstance" },
+        stroke: "blue",
       });
     });
 
-    it('should attach reference', () => {
+    it("should attach reference", () => {
       let norm = normalizeSettings(
         {
           fill: {
-            ref: 'foo',
+            ref: "foo",
           },
         },
-        { fill: 'green', stroke: 'blue' }
+        { fill: "green", stroke: "blue" },
       );
 
       expect(norm).to.eql({
-        fill: { ref: 'foo' },
-        stroke: 'blue',
+        fill: { ref: "foo" },
+        stroke: "blue",
       });
     });
   });
 
-  describe('resolving', () => {
-    it('should resolve constant value', () => {
+  describe("resolving", () => {
+    it("should resolve constant value", () => {
       const normalized = {
         strokeWidth: 0,
       };
@@ -114,7 +114,7 @@ describe('property-resolver', () => {
       expect(resolved).to.eql({ strokeWidth: 0 });
     });
 
-    it('should resolve fn callback', () => {
+    it("should resolve fn callback", () => {
       const normalized = {
         strokeWidth: { fn: (ctx, idx) => 1 + idx },
       };
@@ -123,7 +123,7 @@ describe('property-resolver', () => {
       expect(resolved).to.eql({ strokeWidth: 2 });
     });
 
-    it('should resolve fn callback with context', () => {
+    it("should resolve fn callback with context", () => {
       const normalized = {
         strokeWidth: {
           fn: function fn(b, idx) {
@@ -137,9 +137,9 @@ describe('property-resolver', () => {
       expect(resolved).to.eql({ strokeWidth: 7 });
     });
 
-    it('should resolve fn callback with parameters', () => {
+    it("should resolve fn callback with parameters", () => {
       const normalized = {
-        strokeWidth: { ref: 'stroke', fn: (d) => d.datum.stroke.tjocklek },
+        strokeWidth: { ref: "stroke", fn: (d) => d.datum.stroke.tjocklek },
       };
       const resolved = resolveForItem({ datum: { stroke: { tjocklek: 3 } } }, normalized);
       expect(resolved).to.eql({ strokeWidth: 3 });

@@ -1,6 +1,6 @@
-import { rotate } from '../math/vector';
-import { pointsToRect } from '../geometry/util';
-import { toRadians } from '../math/angles';
+import { rotate } from "../math/vector";
+import { pointsToRect } from "../geometry/util";
+import { toRadians } from "../math/angles";
 
 /**
  * @private
@@ -10,7 +10,7 @@ import { toRadians } from '../math/angles';
  */
 export default function bar(options) {
   const p = { x: options.x, y: options.y };
-  const isVertical = options.direction === 'vertical';
+  const isVertical = options.direction === "vertical";
   const r = options.size / 2;
   const width = r / 2;
   const halfWidth = width / 2;
@@ -28,8 +28,8 @@ export default function bar(options) {
   }
 
   const rect = pointsToRect(points);
-  rect.type = 'rect';
-  rect.fill = 'black';
+  rect.type = "rect";
+  rect.fill = "black";
 
   return rect;
 }

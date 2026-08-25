@@ -1,12 +1,12 @@
-import sceneFactory from '../../../core/scene-graph/scene';
-import registry from '../../../core/utils/registry';
-import { onLineBreak } from '../../text-manipulation';
-import createCanvasGradient from './canvas-gradient';
-import patternizer from './canvas-pattern';
-import createRendererBox from '../renderer-box';
-import create from '../index';
-import injectTextBoundsFn from '../../text-manipulation/inject-textbounds';
-import CanvasBuffer from './canvas-buffer';
+import sceneFactory from "../../../core/scene-graph/scene";
+import registry from "../../../core/utils/registry";
+import { onLineBreak } from "../../text-manipulation";
+import createCanvasGradient from "./canvas-gradient";
+import patternizer from "./canvas-pattern";
+import createRendererBox from "../renderer-box";
+import create from "../index";
+import injectTextBoundsFn from "../../text-manipulation/inject-textbounds";
+import CanvasBuffer from "./canvas-buffer";
 
 const reg = registry();
 
@@ -14,17 +14,17 @@ function toLineDash(p) {
   if (Array.isArray(p)) {
     return p;
   }
-  if (typeof p === 'string') {
-    if (p.indexOf(',') !== -1) {
-      return p.split(',');
+  if (typeof p === "string") {
+    if (p.indexOf(",") !== -1) {
+      return p.split(",");
     }
-    return p.split(' ');
+    return p.split(" ");
   }
   return [];
 }
 
 function dpiScale(g) {
-  const dpr = typeof window === 'undefined' ? 1 : window.devicePixelRatio || 1;
+  const dpr = typeof window === "undefined" ? 1 : window.devicePixelRatio || 1;
   const backingStorePixelRatio =
     g.webkitBackingStorePixelRatio ||
     g.mozBackingStorePixelRatio ||
@@ -50,7 +50,7 @@ function applyContext(g, s, shapeToCanvasMap, computed = {}) {
 
     if (shapeCmd in s.attrs && !(canvasCmd in computed) && g[canvasCmd] !== s.attrs[shapeCmd]) {
       const val = convertCmd ? convertCmd(s.attrs[shapeCmd]) : s.attrs[shapeCmd];
-      if (typeof g[canvasCmd] === 'function') {
+      if (typeof g[canvasCmd] === "function") {
         g[canvasCmd](val);
       } else {
         g[canvasCmd] = val;
@@ -71,18 +71,18 @@ function renderShapes(shapes, g, shapeToCanvasMap, deps) {
     g.save();
 
     if (shape.attrs && (shape.attrs.fill || shape.attrs.stroke)) {
-      if (shape.attrs.fill && typeof shape.attrs.fill === 'object' && shape.attrs.fill.type === 'gradient') {
+      if (shape.attrs.fill && typeof shape.attrs.fill === "object" && shape.attrs.fill.type === "gradient") {
         computed.fillStyle = createCanvasGradient(g, shape, shape.attrs.fill);
-      } else if (shape.attrs.fill && typeof shape.attrs.fill === 'object' && shape.attrs.fill.type === 'pattern') {
+      } else if (shape.attrs.fill && typeof shape.attrs.fill === "object" && shape.attrs.fill.type === "pattern") {
         computed.fillStyle = deps.patterns.create(shape.attrs.fill);
       }
 
-      if (shape.attrs.stroke && typeof shape.attrs.stroke === 'object' && shape.attrs.stroke.type === 'gradient') {
+      if (shape.attrs.stroke && typeof shape.attrs.stroke === "object" && shape.attrs.stroke.type === "gradient") {
         computed.strokeStyle = createCanvasGradient(g, shape, shape.attrs.stroke);
       } else if (
         shape.attrs.stroke &&
-        typeof shape.attrs.stroke === 'object' &&
-        shape.attrs.stroke.type === 'pattern'
+        typeof shape.attrs.stroke === "object" &&
+        shape.attrs.stroke.type === "pattern"
       ) {
         computed.strokeStyle = deps.patterns.create(shape.attrs.stroke);
       }
@@ -97,8 +97,8 @@ function renderShapes(shapes, g, shapeToCanvasMap, deps) {
     if (reg.has(shape.type)) {
       reg.get(shape.type)(shape.attrs, {
         g,
-        doFill: 'fill' in shape.attrs && shape.attrs.fill !== 'none',
-        doStroke: 'stroke' in shape.attrs && shape.attrs['stroke-width'] !== 0,
+        doFill: "fill" in shape.attrs && shape.attrs.fill !== "none",
+        doStroke: "stroke" in shape.attrs && shape.attrs["stroke-width"] !== 0,
         ellipsed: shape.ellipsed,
       });
     }
@@ -117,7 +117,7 @@ function renderShapes(shapes, g, shapeToCanvasMap, deps) {
  * @private
  */
 function applyTransform({ el, dpiRatio, transform }) {
-  if (typeof transform === 'object') {
+  if (typeof transform === "object") {
     const adjustedTransform = [
       transform.horizontalScaling,
       transform.horizontalSkewing,
@@ -126,7 +126,7 @@ function applyTransform({ el, dpiRatio, transform }) {
       transform.horizontalMoving * dpiRatio,
       transform.verticalMoving * dpiRatio,
     ];
-    const g = el.getContext('2d');
+    const g = el.getContext("2d");
     g.setTransform(...adjustedTransform);
   }
 }
@@ -149,13 +149,13 @@ export function renderer(sceneFn = sceneFactory) {
   let hasChangedRect = false;
   let rect = createRendererBox();
   const shapeToCanvasMap = [
-    ['fill', 'fillStyle'],
-    ['stroke', 'strokeStyle'],
-    ['opacity', 'globalAlpha'],
-    ['globalAlpha', 'globalAlpha'],
-    ['stroke-width', 'lineWidth'],
-    ['stroke-linejoin', 'lineJoin'],
-    ['stroke-dasharray', 'setLineDash', toLineDash],
+    ["fill", "fillStyle"],
+    ["stroke", "strokeStyle"],
+    ["opacity", "globalAlpha"],
+    ["globalAlpha", "globalAlpha"],
+    ["stroke-width", "lineWidth"],
+    ["stroke-linejoin", "lineJoin"],
+    ["stroke-dasharray", "setLineDash", toLineDash],
   ];
 
   let patterns;
@@ -180,14 +180,14 @@ export function renderer(sceneFn = sceneFactory) {
 
   canvasRenderer.appendTo = (element) => {
     if (!el) {
-      el = element.ownerDocument.createElement('canvas');
-      el.style.position = 'absolute';
-      el.style['-webkit-font-smoothing'] = 'antialiased';
-      el.style['-moz-osx-font-smoothing'] = 'antialiased';
-      el.style.pointerEvents = 'none';
+      el = element.ownerDocument.createElement("canvas");
+      el.style.position = "absolute";
+      el.style["-webkit-font-smoothing"] = "antialiased";
+      el.style["-moz-osx-font-smoothing"] = "antialiased";
+      el.style.pointerEvents = "none";
     }
 
-    if (typeof settings.transform === 'function' && !buffer) {
+    if (typeof settings.transform === "function" && !buffer) {
       buffer = new CanvasBuffer(el);
     }
 
@@ -197,18 +197,18 @@ export function renderer(sceneFn = sceneFactory) {
   };
 
   canvasRenderer.getScene = (shapes) => {
-    const g = (buffer && buffer.getContext()) || el.getContext('2d');
+    const g = (buffer && buffer.getContext()) || el.getContext("2d");
     const dpiRatio = dpiScale(g);
 
     const scaleX = rect.scaleRatio.x;
     const scaleY = rect.scaleRatio.y;
 
     const sceneContainer = {
-      type: 'container',
+      type: "container",
       children: shapes,
       transform: rect.edgeBleed.bool
         ? `translate(${rect.edgeBleed.left * dpiRatio * scaleX}, ${rect.edgeBleed.top * dpiRatio * scaleY})`
-        : '',
+        : "",
     };
 
     if (dpiRatio !== 1 || scaleX !== 1 || scaleY !== 1) {
@@ -232,7 +232,7 @@ export function renderer(sceneFn = sceneFactory) {
       patterns = patternizer(el.ownerDocument);
     }
 
-    const g = (buffer && buffer.getContext()) || el.getContext('2d');
+    const g = (buffer && buffer.getContext()) || el.getContext("2d");
     const dpiRatio = dpiScale(g);
     const transform = buffer && settings.transform();
     if (transform) {
@@ -262,7 +262,7 @@ export function renderer(sceneFn = sceneFactory) {
     patterns.clear();
 
     const doRender = hasChangedRect || hasChangedScene;
-    const progressive = typeof settings.progressive === 'function' && settings.progressive();
+    const progressive = typeof settings.progressive === "function" && settings.progressive();
     if (doRender) {
       if (!progressive || progressive.isFirst) {
         canvasRenderer.clear();

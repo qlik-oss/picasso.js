@@ -1,51 +1,51 @@
-import Container, { create as createContainer } from '../container';
-import { create as createRect } from '../rect';
-import GeoRect from '../../../geometry/rect';
+import Container, { create as createContainer } from "../container";
+import { create as createRect } from "../rect";
+import GeoRect from "../../../geometry/rect";
 
-describe('Container', () => {
+describe("Container", () => {
   let container;
 
-  describe('Constructor', () => {
-    it('should instantiate a new Container', () => {
+  describe("Constructor", () => {
+    it("should instantiate a new Container", () => {
       container = createContainer();
       expect(container).to.be.an.instanceof(Container);
     });
 
-    it('should not have a collider by default', () => {
+    it("should not have a collider by default", () => {
       container = createContainer();
       expect(container.colliderType).to.equal(null);
     });
 
-    it('should accept arguments', () => {
-      container = createContainer({ collider: { type: 'rect' } });
-      expect(container.colliderType).to.equal('rect');
+    it("should accept arguments", () => {
+      container = createContainer({ collider: { type: "rect" } });
+      expect(container.colliderType).to.equal("rect");
       expect(container.collider).to.be.an.instanceof(GeoRect);
     });
   });
 
-  describe('Set', () => {
-    it('should set correct values', () => {
+  describe("Set", () => {
+    it("should set correct values", () => {
       container = createContainer();
-      container.set({ collider: { type: 'rect' } });
-      expect(container.colliderType).to.equal('rect');
+      container.set({ collider: { type: "rect" } });
+      expect(container.colliderType).to.equal("rect");
       expect(container.collider).to.be.an.instanceof(GeoRect);
     });
 
-    it('should handle no arguments', () => {
+    it("should handle no arguments", () => {
       container = createContainer();
       container.set();
       expect(container.colliderType).to.equal(null);
     });
 
-    it('should be able to disable the collider', () => {
-      container = createContainer({ collider: { type: 'rect' } });
+    it("should be able to disable the collider", () => {
+      container = createContainer({ collider: { type: "rect" } });
       container.set({ collider: { type: null } });
       expect(container.colliderType).to.equal(null);
     });
   });
 
-  describe('BoundingRect', () => {
-    it('should return a zero sized rect if no children have been added', () => {
+  describe("BoundingRect", () => {
+    it("should return a zero sized rect if no children have been added", () => {
       container = createContainer();
       expect(container.boundingRect()).to.deep.equal({
         x: 0,
@@ -55,7 +55,7 @@ describe('Container', () => {
       });
     });
 
-    it('should return correct value if container and children are without a transformation', () => {
+    it("should return correct value if container and children are without a transformation", () => {
       container = createContainer();
       container.addChildren([
         createRect({
@@ -85,7 +85,7 @@ describe('Container', () => {
       });
     });
 
-    it('should return correct value with a transformation on its children', () => {
+    it("should return correct value with a transformation on its children", () => {
       container = createContainer();
       container.addChildren([
         createRect({
@@ -93,21 +93,21 @@ describe('Container', () => {
           y: 10,
           width: 1,
           height: 20,
-          transform: 'scale(2, 3)',
+          transform: "scale(2, 3)",
         }),
         createRect({
           x: 0,
           y: 0,
           width: 10,
           height: 2,
-          transform: 'scale(2, 3)',
+          transform: "scale(2, 3)",
         }),
         createRect({
           x: -10,
           y: -20,
           width: 1,
           height: 2,
-          transform: 'scale(2, 3)',
+          transform: "scale(2, 3)",
         }),
       ]);
       container.children.forEach((c) => c.resolveGlobalTransform());
@@ -119,29 +119,29 @@ describe('Container', () => {
       });
     });
 
-    it('should return correct value with a transformation the container and its children', () => {
-      container = createContainer({ transform: 'scale(2, 3)' });
+    it("should return correct value with a transformation the container and its children", () => {
+      container = createContainer({ transform: "scale(2, 3)" });
       container.addChildren([
         createRect({
           x: 5,
           y: 10,
           width: 1,
           height: 20,
-          transform: 'translate(1, 2)',
+          transform: "translate(1, 2)",
         }),
         createRect({
           x: 0,
           y: 0,
           width: 10,
           height: 2,
-          transform: 'translate(1, 2)',
+          transform: "translate(1, 2)",
         }),
         createRect({
           x: -10,
           y: -20,
           width: 1,
           height: 2,
-          transform: 'translate(1, 2)',
+          transform: "translate(1, 2)",
         }),
       ]);
       container.children.forEach((c) => c.resolveGlobalTransform());
@@ -153,8 +153,8 @@ describe('Container', () => {
       });
     });
 
-    it('should return correct value a scale transformation', () => {
-      container = createContainer({ transform: 'scale(2, 3)' });
+    it("should return correct value a scale transformation", () => {
+      container = createContainer({ transform: "scale(2, 3)" });
       container.addChildren([
         createRect({
           x: 5,
@@ -184,8 +184,8 @@ describe('Container', () => {
       });
     });
 
-    it('should return correct value with a translate transformation', () => {
-      container = createContainer({ transform: 'translate(2, 3)' });
+    it("should return correct value with a translate transformation", () => {
+      container = createContainer({ transform: "translate(2, 3)" });
       container.addChildren([
         createRect({
           x: 5,
@@ -215,8 +215,8 @@ describe('Container', () => {
       });
     });
 
-    it('should return correct value with a rotate transformation', () => {
-      container = createContainer({ transform: 'rotate(45)' });
+    it("should return correct value with a rotate transformation", () => {
+      container = createContainer({ transform: "rotate(45)" });
       container.addChildren([
         createRect({
           x: 5,
@@ -247,8 +247,8 @@ describe('Container', () => {
     });
   });
 
-  describe('Bounds', () => {
-    it('should return a zero sized rect if no children have been added', () => {
+  describe("Bounds", () => {
+    it("should return a zero sized rect if no children have been added", () => {
       container = createContainer();
       expect(container.bounds()).to.deep.equal([
         { x: 0, y: 0 },
@@ -258,7 +258,7 @@ describe('Container', () => {
       ]);
     });
 
-    it('should return correct value if container and children are without a transformation', () => {
+    it("should return correct value if container and children are without a transformation", () => {
       container = createContainer();
       container.addChildren([
         createRect({
@@ -289,7 +289,7 @@ describe('Container', () => {
       ]);
     });
 
-    it('should return correct value with a transformation on its children', () => {
+    it("should return correct value with a transformation on its children", () => {
       container = createContainer();
       container.addChildren([
         createRect({
@@ -297,21 +297,21 @@ describe('Container', () => {
           y: 10,
           width: 1,
           height: 20,
-          transform: 'scale(2, 3)',
+          transform: "scale(2, 3)",
         }),
         createRect({
           x: 0,
           y: 0,
           width: 10,
           height: 2,
-          transform: 'scale(2, 3)',
+          transform: "scale(2, 3)",
         }),
         createRect({
           x: -10,
           y: -20,
           width: 1,
           height: 2,
-          transform: 'scale(2, 3)',
+          transform: "scale(2, 3)",
         }),
       ]);
       container.children.forEach((c) => c.resolveGlobalTransform());
@@ -324,29 +324,29 @@ describe('Container', () => {
       ]);
     });
 
-    it('should return correct value with a transformation the container and its children', () => {
-      container = createContainer({ transform: 'scale(2, 3)' });
+    it("should return correct value with a transformation the container and its children", () => {
+      container = createContainer({ transform: "scale(2, 3)" });
       container.addChildren([
         createRect({
           x: 5,
           y: 10,
           width: 1,
           height: 20,
-          transform: 'translate(1, 2)',
+          transform: "translate(1, 2)",
         }),
         createRect({
           x: 0,
           y: 0,
           width: 10,
           height: 2,
-          transform: 'translate(1, 2)',
+          transform: "translate(1, 2)",
         }),
         createRect({
           x: -10,
           y: -20,
           width: 1,
           height: 2,
-          transform: 'translate(1, 2)',
+          transform: "translate(1, 2)",
         }),
       ]);
       container.children.forEach((c) => c.resolveGlobalTransform());
@@ -358,8 +358,8 @@ describe('Container', () => {
       ]);
     });
 
-    it('should return correct value a scale transformation', () => {
-      container = createContainer({ transform: 'scale(2, 3)' });
+    it("should return correct value a scale transformation", () => {
+      container = createContainer({ transform: "scale(2, 3)" });
       container.addChildren([
         createRect({
           x: 5,
@@ -389,8 +389,8 @@ describe('Container', () => {
       ]);
     });
 
-    it('should return correct value with a translate transformation', () => {
-      container = createContainer({ transform: 'translate(2, 3)' });
+    it("should return correct value with a translate transformation", () => {
+      container = createContainer({ transform: "translate(2, 3)" });
       container.addChildren([
         createRect({
           x: 5,
@@ -420,8 +420,8 @@ describe('Container', () => {
       ]);
     });
 
-    it('should return correct value with a rotate transformation', () => {
-      container = createContainer({ transform: 'rotate(45)' });
+    it("should return correct value with a rotate transformation", () => {
+      container = createContainer({ transform: "rotate(45)" });
       container.addChildren([
         createRect({
           x: 5,
@@ -452,8 +452,8 @@ describe('Container', () => {
     });
   });
 
-  describe('containsPoint', () => {
-    it('should return true if any child contains point', () => {
+  describe("containsPoint", () => {
+    it("should return true if any child contains point", () => {
       container = createContainer();
       container.addChild(
         createRect({
@@ -461,7 +461,7 @@ describe('Container', () => {
           y: 500,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -469,14 +469,14 @@ describe('Container', () => {
           y: 500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.containsPoint({ x: 550, y: 550 });
       expect(r).to.equal(true);
     });
 
-    it('should return true if any childs child contains point', () => {
+    it("should return true if any childs child contains point", () => {
       container = createContainer();
       container.addChild(
         createRect({
@@ -484,7 +484,7 @@ describe('Container', () => {
           y: 500,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -492,7 +492,7 @@ describe('Container', () => {
           y: 500,
           width: 200,
           height: 200,
-        })
+        }),
       );
       const childContainer = createContainer();
       childContainer.addChild(
@@ -501,7 +501,7 @@ describe('Container', () => {
           y: 0,
           width: 200,
           height: 200,
-        })
+        }),
       );
       childContainer.addChild(
         createRect({
@@ -509,7 +509,7 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
       container.addChild(childContainer);
 
@@ -517,7 +517,7 @@ describe('Container', () => {
       expect(r).to.equal(true);
     });
 
-    it('should return false if no child contains point', () => {
+    it("should return false if no child contains point", () => {
       container = createContainer();
       container.addChild(
         createRect({
@@ -525,7 +525,7 @@ describe('Container', () => {
           y: 500,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -533,22 +533,22 @@ describe('Container', () => {
           y: 500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.containsPoint({ x: 0, y: 0 });
       expect(r).to.equal(false);
     });
 
-    it('should return true if bounds contains point', () => {
-      container = createContainer({ collider: { type: 'bounds' } });
+    it("should return true if bounds contains point", () => {
+      container = createContainer({ collider: { type: "bounds" } });
       container.addChild(
         createRect({
           x: 0,
           y: 0,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -556,21 +556,21 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.containsPoint({ x: 2, y: 2 });
       expect(r).to.equal(true);
     });
 
-    it('should include self transformation when resolving collision', () => {
+    it("should include self transformation when resolving collision", () => {
       const rect = createRect({
         x: 0,
         y: 0,
         width: 100,
         height: 100,
       });
-      container = createContainer({ transform: 'translate(10, 20)', collider: { type: 'bounds' } });
+      container = createContainer({ transform: "translate(10, 20)", collider: { type: "bounds" } });
       container.addChild(rect);
       rect.resolveGlobalTransform();
       // After transform, container should have a bounds of { x: 10, y: 20, width: 100, height: 100 }
@@ -578,14 +578,14 @@ describe('Container', () => {
       expect(r).to.equal(true);
     });
 
-    it('should include descendant transformation when resolving collision', () => {
-      container = createContainer({ collider: { type: 'bounds' } });
+    it("should include descendant transformation when resolving collision", () => {
+      container = createContainer({ collider: { type: "bounds" } });
       const rect = createRect({
         x: 0,
         y: 0,
         width: 100,
         height: 100,
-        transform: 'translate(10, 20)',
+        transform: "translate(10, 20)",
       });
       container.addChild(rect);
       // After transform, container should have a bounds of { x: 10, y: 20, width: 100, height: 100 }
@@ -594,14 +594,14 @@ describe('Container', () => {
       expect(r).to.equal(true);
     });
 
-    it('should include self and descendant transformation when resolving collision', () => {
-      container = createContainer({ transform: 'translate(-100, -100)', collider: { type: 'bounds' } });
+    it("should include self and descendant transformation when resolving collision", () => {
+      container = createContainer({ transform: "translate(-100, -100)", collider: { type: "bounds" } });
       const rect = createRect({
         x: 0,
         y: 0,
         width: 100,
         height: 100,
-        transform: 'translate(10, 20)',
+        transform: "translate(10, 20)",
       });
       container.addChild(rect);
 
@@ -612,15 +612,15 @@ describe('Container', () => {
       expect(container.containsPoint({ x: 20, y: 30 })).to.false;
     });
 
-    it('should include ancestors transformation when resolving collision', () => {
-      const ancestor = createContainer({ transform: 'translate(-100, -100)' });
+    it("should include ancestors transformation when resolving collision", () => {
+      const ancestor = createContainer({ transform: "translate(-100, -100)" });
       const rect = createRect({
         x: 0,
         y: 0,
         width: 100,
         height: 100,
       });
-      container = createContainer({ collider: { type: 'bounds' } });
+      container = createContainer({ collider: { type: "bounds" } });
       container.addChild(rect);
       ancestor.addChild(container);
       // After transform, container should have a bounds of { x: -100, y: -100, width: 100, height: 100 }
@@ -630,10 +630,10 @@ describe('Container', () => {
       expect(container.containsPoint({ x: 20, y: 30 })).to.false;
     });
 
-    it('should return true if custom collider contains point', () => {
+    it("should return true if custom collider contains point", () => {
       container = createContainer({
         collider: {
-          type: 'rect',
+          type: "rect",
           x: 0,
           y: 0,
           width: 100,
@@ -646,7 +646,7 @@ describe('Container', () => {
           y: 0,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -654,22 +654,22 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.containsPoint({ x: 2, y: 2 });
       expect(r).to.equal(true);
     });
 
-    it('should return true if frontChild contains point', () => {
-      container = createContainer({ collider: { type: 'frontChild' } });
+    it("should return true if frontChild contains point", () => {
+      container = createContainer({ collider: { type: "frontChild" } });
       container.addChild(
         createRect({
           x: 0,
           y: 0,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -677,7 +677,7 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.containsPoint({ x: 2, y: 2 });
@@ -685,8 +685,8 @@ describe('Container', () => {
     });
   });
 
-  describe('intersectsLine', () => {
-    it('should return true if any child intersects line', () => {
+  describe("intersectsLine", () => {
+    it("should return true if any child intersects line", () => {
       container = createContainer();
       container.addChild(
         createRect({
@@ -694,7 +694,7 @@ describe('Container', () => {
           y: 500,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -702,7 +702,7 @@ describe('Container', () => {
           y: 500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.intersectsLine({
@@ -714,7 +714,7 @@ describe('Container', () => {
       expect(r).to.equal(true);
     });
 
-    it('should return true if any childs child intersects line', () => {
+    it("should return true if any childs child intersects line", () => {
       container = createContainer();
       container.addChild(
         createRect({
@@ -722,7 +722,7 @@ describe('Container', () => {
           y: 500,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -730,7 +730,7 @@ describe('Container', () => {
           y: 500,
           width: 200,
           height: 200,
-        })
+        }),
       );
       const childContainer = createContainer();
       childContainer.addChild(
@@ -739,7 +739,7 @@ describe('Container', () => {
           y: 0,
           width: 200,
           height: 200,
-        })
+        }),
       );
       childContainer.addChild(
         createRect({
@@ -747,7 +747,7 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
       container.addChild(childContainer);
 
@@ -760,7 +760,7 @@ describe('Container', () => {
       expect(r).to.equal(true);
     });
 
-    it('should return false if no child intersects line', () => {
+    it("should return false if no child intersects line", () => {
       container = createContainer();
       container.addChild(
         createRect({
@@ -768,7 +768,7 @@ describe('Container', () => {
           y: 500,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -776,7 +776,7 @@ describe('Container', () => {
           y: 500,
           width: 200,
           height: 200,
-        })
+        }),
       );
       const childContainer = createContainer();
       childContainer.addChild(
@@ -785,7 +785,7 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.intersectsLine({
@@ -797,15 +797,15 @@ describe('Container', () => {
       expect(r).to.equal(false);
     });
 
-    it('should return true if bounds intersects line', () => {
-      container = createContainer({ collider: { type: 'bounds' } });
+    it("should return true if bounds intersects line", () => {
+      container = createContainer({ collider: { type: "bounds" } });
       container.addChild(
         createRect({
           x: 0,
           y: 0,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -813,7 +813,7 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.intersectsLine({
@@ -825,10 +825,10 @@ describe('Container', () => {
       expect(r).to.equal(true);
     });
 
-    it('should return true if custom collider intersects line', () => {
+    it("should return true if custom collider intersects line", () => {
       container = createContainer({
         collider: {
-          type: 'rect',
+          type: "rect",
           x: 0,
           y: 0,
           width: 100,
@@ -841,7 +841,7 @@ describe('Container', () => {
           y: 0,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -849,7 +849,7 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.intersectsLine({
@@ -861,15 +861,15 @@ describe('Container', () => {
       expect(r).to.equal(true);
     });
 
-    it('should return true if frontChild intersects line', () => {
-      container = createContainer({ collider: { type: 'frontChild' } });
+    it("should return true if frontChild intersects line", () => {
+      container = createContainer({ collider: { type: "frontChild" } });
       container.addChild(
         createRect({
           x: 0,
           y: 0,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -877,7 +877,7 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.intersectsLine({
@@ -890,8 +890,8 @@ describe('Container', () => {
     });
   });
 
-  describe('intersectsRect', () => {
-    it('should return true if any child intersects rect', () => {
+  describe("intersectsRect", () => {
+    it("should return true if any child intersects rect", () => {
       container = createContainer();
       container.addChild(
         createRect({
@@ -899,7 +899,7 @@ describe('Container', () => {
           y: 500,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -907,7 +907,7 @@ describe('Container', () => {
           y: 500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.intersectsRect({
@@ -919,15 +919,15 @@ describe('Container', () => {
       expect(r).to.equal(true);
     });
 
-    it('should return true if bounds intersects rect', () => {
-      container = createContainer({ collider: { type: 'bounds' } });
+    it("should return true if bounds intersects rect", () => {
+      container = createContainer({ collider: { type: "bounds" } });
       container.addChild(
         createRect({
           x: 0,
           y: 0,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -935,7 +935,7 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.intersectsRect({
@@ -947,10 +947,10 @@ describe('Container', () => {
       expect(r).to.equal(true);
     });
 
-    it('should return true if custom collider intersects rect', () => {
+    it("should return true if custom collider intersects rect", () => {
       container = createContainer({
         collider: {
-          type: 'rect',
+          type: "rect",
           x: 0,
           y: 0,
           width: 100,
@@ -963,7 +963,7 @@ describe('Container', () => {
           y: 0,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -971,7 +971,7 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.intersectsRect({
@@ -983,15 +983,15 @@ describe('Container', () => {
       expect(r).to.equal(true);
     });
 
-    it('should return true if frontChild intersects rect', () => {
-      container = createContainer({ collider: { type: 'frontChild' } });
+    it("should return true if frontChild intersects rect", () => {
+      container = createContainer({ collider: { type: "frontChild" } });
       container.addChild(
         createRect({
           x: 0,
           y: 0,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -999,7 +999,7 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.intersectsRect({
@@ -1011,7 +1011,7 @@ describe('Container', () => {
       expect(r).to.equal(true);
     });
 
-    it('should return true if any childs child intersects rect', () => {
+    it("should return true if any childs child intersects rect", () => {
       container = createContainer();
       container.addChild(
         createRect({
@@ -1019,7 +1019,7 @@ describe('Container', () => {
           y: 500,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -1027,7 +1027,7 @@ describe('Container', () => {
           y: 500,
           width: 200,
           height: 200,
-        })
+        }),
       );
       const childContainer = createContainer();
       childContainer.addChild(
@@ -1036,7 +1036,7 @@ describe('Container', () => {
           y: 0,
           width: 200,
           height: 200,
-        })
+        }),
       );
       childContainer.addChild(
         createRect({
@@ -1044,7 +1044,7 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
       container.addChild(childContainer);
 
@@ -1057,7 +1057,7 @@ describe('Container', () => {
       expect(r).to.equal(true);
     });
 
-    it('should return false if no child intersects rect', () => {
+    it("should return false if no child intersects rect", () => {
       container = createContainer();
       container.addChild(
         createRect({
@@ -1065,7 +1065,7 @@ describe('Container', () => {
           y: 500,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -1073,7 +1073,7 @@ describe('Container', () => {
           y: 500,
           width: 200,
           height: 200,
-        })
+        }),
       );
       const childContainer = createContainer();
       childContainer.addChild(
@@ -1082,7 +1082,7 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.intersectsRect({
@@ -1095,8 +1095,8 @@ describe('Container', () => {
     });
   });
 
-  describe('intersectsCircle', () => {
-    it('should return true if any child intersects circle', () => {
+  describe("intersectsCircle", () => {
+    it("should return true if any child intersects circle", () => {
       container = createContainer();
       container.addChild(
         createRect({
@@ -1104,7 +1104,7 @@ describe('Container', () => {
           y: 500,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -1112,22 +1112,22 @@ describe('Container', () => {
           y: 500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.intersectsCircle({ x: 550, y: 550, r: 10 });
       expect(r).to.equal(true);
     });
 
-    it('should return true if bounds intersects circle', () => {
-      container = createContainer({ collider: { type: 'bounds' } });
+    it("should return true if bounds intersects circle", () => {
+      container = createContainer({ collider: { type: "bounds" } });
       container.addChild(
         createRect({
           x: 0,
           y: 0,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -1135,17 +1135,17 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.intersectsCircle({ x: 550, y: 550, r: 100 });
       expect(r).to.equal(true);
     });
 
-    it('should return true if custom collider intersects circle', () => {
+    it("should return true if custom collider intersects circle", () => {
       container = createContainer({
         collider: {
-          type: 'rect',
+          type: "rect",
           x: 0,
           y: 0,
           width: 100,
@@ -1158,7 +1158,7 @@ describe('Container', () => {
           y: 0,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -1166,22 +1166,22 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.intersectsCircle({ x: 2, y: 2, r: 2 });
       expect(r).to.equal(true);
     });
 
-    it('should return true if frontChild intersects circle', () => {
-      container = createContainer({ collider: { type: 'frontChild' } });
+    it("should return true if frontChild intersects circle", () => {
+      container = createContainer({ collider: { type: "frontChild" } });
       container.addChild(
         createRect({
           x: 0,
           y: 0,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -1189,14 +1189,14 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.intersectsCircle({ x: 20, y: 20, r: 2 });
       expect(r).to.equal(true);
     });
 
-    it('should return true if any childs child intersects circle', () => {
+    it("should return true if any childs child intersects circle", () => {
       container = createContainer();
       container.addChild(
         createRect({
@@ -1204,7 +1204,7 @@ describe('Container', () => {
           y: 500,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -1212,7 +1212,7 @@ describe('Container', () => {
           y: 500,
           width: 200,
           height: 200,
-        })
+        }),
       );
       const childContainer = createContainer();
       childContainer.addChild(
@@ -1221,7 +1221,7 @@ describe('Container', () => {
           y: 0,
           width: 200,
           height: 200,
-        })
+        }),
       );
       childContainer.addChild(
         createRect({
@@ -1229,7 +1229,7 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
       container.addChild(childContainer);
 
@@ -1237,7 +1237,7 @@ describe('Container', () => {
       expect(r).to.equal(true);
     });
 
-    it('should return false if no child intersects circle', () => {
+    it("should return false if no child intersects circle", () => {
       container = createContainer();
       container.addChild(
         createRect({
@@ -1245,7 +1245,7 @@ describe('Container', () => {
           y: 500,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -1253,7 +1253,7 @@ describe('Container', () => {
           y: 500,
           width: 200,
           height: 200,
-        })
+        }),
       );
       const childContainer = createContainer();
       childContainer.addChild(
@@ -1262,7 +1262,7 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.intersectsCircle({ x: 0, y: 0, r: 100 });
@@ -1270,8 +1270,8 @@ describe('Container', () => {
     });
   });
 
-  describe('getItemsFrom', () => {
-    it('should return an empty array if call has no argument', () => {
+  describe("getItemsFrom", () => {
+    it("should return an empty array if call has no argument", () => {
       container = createContainer();
       container.addChild(
         createRect({
@@ -1279,8 +1279,8 @@ describe('Container', () => {
           y: 500,
           width: 100,
           height: 100,
-          fill: 'containerRect1',
-        })
+          fill: "containerRect1",
+        }),
       );
       container.addChild(
         createRect({
@@ -1288,8 +1288,8 @@ describe('Container', () => {
           y: 500,
           width: 200,
           height: 200,
-          fill: 'containerRect2',
-        })
+          fill: "containerRect2",
+        }),
       );
 
       const items = container.getItemsFrom();
@@ -1297,7 +1297,7 @@ describe('Container', () => {
       expect(items).to.be.empty;
     });
 
-    it('should return an empty array if call argument is an empty object', () => {
+    it("should return an empty array if call argument is an empty object", () => {
       container = createContainer();
       container.addChild(
         createRect({
@@ -1305,8 +1305,8 @@ describe('Container', () => {
           y: 500,
           width: 100,
           height: 100,
-          fill: 'containerRect1',
-        })
+          fill: "containerRect1",
+        }),
       );
       container.addChild(
         createRect({
@@ -1314,8 +1314,8 @@ describe('Container', () => {
           y: 500,
           width: 200,
           height: 200,
-          fill: 'containerRect2',
-        })
+          fill: "containerRect2",
+        }),
       );
 
       const items = container.getItemsFrom({});
@@ -1323,7 +1323,7 @@ describe('Container', () => {
       expect(items).to.be.empty;
     });
 
-    it('should return an empty array if call argument is null', () => {
+    it("should return an empty array if call argument is null", () => {
       container = createContainer();
       container.addChild(
         createRect({
@@ -1331,8 +1331,8 @@ describe('Container', () => {
           y: 500,
           width: 100,
           height: 100,
-          fill: 'containerRect1',
-        })
+          fill: "containerRect1",
+        }),
       );
       container.addChild(
         createRect({
@@ -1340,8 +1340,8 @@ describe('Container', () => {
           y: 500,
           width: 200,
           height: 200,
-          fill: 'containerRect2',
-        })
+          fill: "containerRect2",
+        }),
       );
 
       const items = container.getItemsFrom(null);
@@ -1349,7 +1349,7 @@ describe('Container', () => {
       expect(items).to.be.empty;
     });
 
-    it('should return an empty array if call argument shape is not supported', () => {
+    it("should return an empty array if call argument shape is not supported", () => {
       container = createContainer();
       container.addChild(
         createRect({
@@ -1357,8 +1357,8 @@ describe('Container', () => {
           y: 500,
           width: 100,
           height: 100,
-          fill: 'containerRect1',
-        })
+          fill: "containerRect1",
+        }),
       );
       container.addChild(
         createRect({
@@ -1366,8 +1366,8 @@ describe('Container', () => {
           y: 500,
           width: 200,
           height: 200,
-          fill: 'containerRect2',
-        })
+          fill: "containerRect2",
+        }),
       );
 
       const items = container.getItemsFrom({
@@ -1380,17 +1380,17 @@ describe('Container', () => {
       expect(items).to.be.empty;
     });
 
-    describe('Bounds', () => {
-      it('should return the bounding node', () => {
-        container = createContainer({ collider: { type: 'bounds' }, fill: 'container' });
+    describe("Bounds", () => {
+      it("should return the bounding node", () => {
+        container = createContainer({ collider: { type: "bounds" }, fill: "container" });
         container.addChild(
           createRect({
             x: 500,
             y: 500,
             width: 100,
             height: 100,
-            fill: 'containerRect1',
-          })
+            fill: "containerRect1",
+          }),
         );
         container.addChild(
           createRect({
@@ -1398,25 +1398,25 @@ describe('Container', () => {
             y: 500,
             width: 200,
             height: 200,
-            fill: 'containerRect2',
-          })
+            fill: "containerRect2",
+          }),
         );
 
         const items = container.getItemsFrom({ x: 550, y: 550 });
 
-        expect(items.map((i) => i.node.attrs.fill)).to.deep.equal(['container']);
+        expect(items.map((i) => i.node.attrs.fill)).to.deep.equal(["container"]);
       });
 
-      it('should include childrens children', () => {
-        container = createContainer({ collider: { type: 'bounds' }, fill: 'container' });
+      it("should include childrens children", () => {
+        container = createContainer({ collider: { type: "bounds" }, fill: "container" });
         container.addChild(
           createRect({
             x: 500,
             y: 500,
             width: 100,
             height: 100,
-            fill: 'containerRect1',
-          })
+            fill: "containerRect1",
+          }),
         );
         container.addChild(
           createRect({
@@ -1424,36 +1424,36 @@ describe('Container', () => {
             y: 500,
             width: 200,
             height: 200,
-            fill: 'containerRect2',
-          })
+            fill: "containerRect2",
+          }),
         );
-        const childContainer = createContainer({ fill: 'childContainer' });
+        const childContainer = createContainer({ fill: "childContainer" });
         childContainer.addChild(
           createRect({
             x: 1500,
             y: 1500,
             width: 200,
             height: 200,
-            fill: 'containerRect3',
-          })
+            fill: "containerRect3",
+          }),
         );
         container.addChild(childContainer);
 
         const items = container.getItemsFrom({ x: 1550, y: 1550 });
 
-        expect(items.map((i) => i.node.attrs.fill)).to.deep.equal(['container']);
+        expect(items.map((i) => i.node.attrs.fill)).to.deep.equal(["container"]);
       });
 
-      it('should return empty result if no collision is detected', () => {
-        container = createContainer({ collider: { type: 'bounds' }, fill: 'container' });
+      it("should return empty result if no collision is detected", () => {
+        container = createContainer({ collider: { type: "bounds" }, fill: "container" });
         container.addChild(
           createRect({
             x: 500,
             y: 500,
             width: 100,
             height: 100,
-            fill: 'containerRect1',
-          })
+            fill: "containerRect1",
+          }),
         );
         container.addChild(
           createRect({
@@ -1461,8 +1461,8 @@ describe('Container', () => {
             y: 500,
             width: 200,
             height: 200,
-            fill: 'containerRect2',
-          })
+            fill: "containerRect2",
+          }),
         );
 
         const items = container.getItemsFrom({ x: 400, y: 450 });
@@ -1470,16 +1470,16 @@ describe('Container', () => {
         expect(items).to.be.empty;
       });
 
-      it('should handle polygon as input shape', () => {
-        container = createContainer({ collider: { type: 'bounds' }, fill: 'container' });
+      it("should handle polygon as input shape", () => {
+        container = createContainer({ collider: { type: "bounds" }, fill: "container" });
         container.addChild(
           createRect({
             x: 500,
             y: 500,
             width: 100,
             height: 100,
-            fill: 'containerRect1',
-          })
+            fill: "containerRect1",
+          }),
         );
         container.addChild(
           createRect({
@@ -1487,8 +1487,8 @@ describe('Container', () => {
             y: 500,
             width: 200,
             height: 200,
-            fill: 'containerRect2',
-          })
+            fill: "containerRect2",
+          }),
         );
         const vertices = [
           { x: 0, y: 0 },
@@ -1501,17 +1501,17 @@ describe('Container', () => {
       });
     });
 
-    describe('FrontChild', () => {
-      it('should return the first colliding child node', () => {
-        container = createContainer({ collider: { type: 'frontChild' }, fill: 'container' });
+    describe("FrontChild", () => {
+      it("should return the first colliding child node", () => {
+        container = createContainer({ collider: { type: "frontChild" }, fill: "container" });
         container.addChild(
           createRect({
             x: 500,
             y: 500,
             width: 100,
             height: 100,
-            fill: 'containerRect1',
-          })
+            fill: "containerRect1",
+          }),
         );
         container.addChild(
           createRect({
@@ -1519,25 +1519,25 @@ describe('Container', () => {
             y: 500,
             width: 200,
             height: 200,
-            fill: 'containerRect2',
-          })
+            fill: "containerRect2",
+          }),
         );
 
         const items = container.getItemsFrom({ x: 550, y: 550 });
 
-        expect(items.map((i) => i.node.attrs.fill)).to.deep.equal(['containerRect2']);
+        expect(items.map((i) => i.node.attrs.fill)).to.deep.equal(["containerRect2"]);
       });
 
-      it('should include childrens children', () => {
-        container = createContainer({ collider: { type: 'frontChild' }, fill: 'container' });
+      it("should include childrens children", () => {
+        container = createContainer({ collider: { type: "frontChild" }, fill: "container" });
         container.addChild(
           createRect({
             x: 500,
             y: 500,
             width: 100,
             height: 100,
-            fill: 'containerRect1',
-          })
+            fill: "containerRect1",
+          }),
         );
         container.addChild(
           createRect({
@@ -1545,36 +1545,36 @@ describe('Container', () => {
             y: 500,
             width: 200,
             height: 200,
-            fill: 'containerRect2',
-          })
+            fill: "containerRect2",
+          }),
         );
-        const childContainer = createContainer({ fill: 'childContainer' });
+        const childContainer = createContainer({ fill: "childContainer" });
         childContainer.addChild(
           createRect({
             x: 500,
             y: 500,
             width: 200,
             height: 200,
-            fill: 'containerRect3',
-          })
+            fill: "containerRect3",
+          }),
         );
         container.addChild(childContainer);
 
         const items = container.getItemsFrom({ x: 550, y: 550 });
 
-        expect(items.map((i) => i.node.attrs.fill)).to.deep.equal(['containerRect3']);
+        expect(items.map((i) => i.node.attrs.fill)).to.deep.equal(["containerRect3"]);
       });
 
-      it('should ignore children with no collider', () => {
-        container = createContainer({ collider: { type: 'frontChild' }, fill: 'container' });
+      it("should ignore children with no collider", () => {
+        container = createContainer({ collider: { type: "frontChild" }, fill: "container" });
         container.addChild(
           createRect({
             x: 500,
             y: 500,
             width: 100,
             height: 100,
-            fill: 'containerRect1',
-          })
+            fill: "containerRect1",
+          }),
         );
         container.addChild(
           createRect({
@@ -1582,18 +1582,18 @@ describe('Container', () => {
             y: 500,
             width: 200,
             height: 200,
-            fill: 'containerRect2',
+            fill: "containerRect2",
             collider: { type: null },
-          })
+          }),
         );
 
         const items = container.getItemsFrom({ x: 550, y: 550 });
 
-        expect(items.map((i) => i.node.attrs.fill)).to.deep.equal(['containerRect1']);
+        expect(items.map((i) => i.node.attrs.fill)).to.deep.equal(["containerRect1"]);
       });
 
-      it('should return empty result if there are no children', () => {
-        container = createContainer({ collider: { type: 'frontChild' }, fill: 'container' });
+      it("should return empty result if there are no children", () => {
+        container = createContainer({ collider: { type: "frontChild" }, fill: "container" });
 
         const items = container.getItemsFrom({ x: 550, y: 550 });
 
@@ -1601,17 +1601,17 @@ describe('Container', () => {
       });
     });
 
-    describe('Default collider', () => {
-      it('should return the all colliding child nodes', () => {
-        container = createContainer({ fill: 'container' });
+    describe("Default collider", () => {
+      it("should return the all colliding child nodes", () => {
+        container = createContainer({ fill: "container" });
         container.addChild(
           createRect({
             x: 500,
             y: 500,
             width: 100,
             height: 100,
-            fill: 'containerRect1',
-          })
+            fill: "containerRect1",
+          }),
         );
         container.addChild(
           createRect({
@@ -1619,8 +1619,8 @@ describe('Container', () => {
             y: 500,
             width: 200,
             height: 200,
-            fill: 'containerRect2',
-          })
+            fill: "containerRect2",
+          }),
         );
         container.addChild(
           createRect({
@@ -1628,25 +1628,25 @@ describe('Container', () => {
             y: 1500,
             width: 200,
             height: 200,
-            fill: 'containerRect3',
-          })
+            fill: "containerRect3",
+          }),
         );
 
         const items = container.getItemsFrom({ x: 550, y: 550 });
 
-        expect(items.map((i) => i.node.attrs.fill)).to.deep.equal(['containerRect1', 'containerRect2']);
+        expect(items.map((i) => i.node.attrs.fill)).to.deep.equal(["containerRect1", "containerRect2"]);
       });
 
-      it('should include childrens children', () => {
-        container = createContainer({ fill: 'container' });
+      it("should include childrens children", () => {
+        container = createContainer({ fill: "container" });
         container.addChild(
           createRect({
             x: 500,
             y: 500,
             width: 100,
             height: 100,
-            fill: 'containerRect1',
-          })
+            fill: "containerRect1",
+          }),
         );
         container.addChild(
           createRect({
@@ -1654,36 +1654,36 @@ describe('Container', () => {
             y: 500,
             width: 200,
             height: 200,
-            fill: 'containerRect2',
-          })
+            fill: "containerRect2",
+          }),
         );
-        const childContainer = createContainer({ fill: 'childContainer' });
+        const childContainer = createContainer({ fill: "childContainer" });
         childContainer.addChild(
           createRect({
             x: 1500,
             y: 1500,
             width: 200,
             height: 200,
-            fill: 'containerRect3',
-          })
+            fill: "containerRect3",
+          }),
         );
         container.addChild(childContainer);
 
         const items = container.getItemsFrom({ x: 1550, y: 1550 });
 
-        expect(items.map((i) => i.node.attrs.fill)).to.deep.equal(['containerRect3']);
+        expect(items.map((i) => i.node.attrs.fill)).to.deep.equal(["containerRect3"]);
       });
 
-      it('should return ignore children with no collider', () => {
-        container = createContainer({ fill: 'container' });
+      it("should return ignore children with no collider", () => {
+        container = createContainer({ fill: "container" });
         container.addChild(
           createRect({
             x: 500,
             y: 500,
             width: 100,
             height: 100,
-            fill: 'containerRect1',
-          })
+            fill: "containerRect1",
+          }),
         );
         container.addChild(
           createRect({
@@ -1691,34 +1691,34 @@ describe('Container', () => {
             y: 500,
             width: 200,
             height: 200,
-            fill: 'containerRect2',
+            fill: "containerRect2",
             collider: { type: null },
-          })
+          }),
         );
 
         const items = container.getItemsFrom({ x: 550, y: 550 });
 
-        expect(items.map((i) => i.node.attrs.fill)).to.deep.equal(['containerRect1']);
+        expect(items.map((i) => i.node.attrs.fill)).to.deep.equal(["containerRect1"]);
       });
 
-      it('should return empty result if there are no children', () => {
-        container = createContainer({ fill: 'container' });
+      it("should return empty result if there are no children", () => {
+        container = createContainer({ fill: "container" });
 
         const items = container.getItemsFrom({ x: 550, y: 550 });
 
         expect(items).to.be.empty;
       });
 
-      it('should return empty result if there are no colliding children', () => {
-        container = createContainer({ fill: 'container' });
+      it("should return empty result if there are no colliding children", () => {
+        container = createContainer({ fill: "container" });
         container.addChild(
           createRect({
             x: 500,
             y: 500,
             width: 100,
             height: 100,
-            fill: 'containerRect1',
-          })
+            fill: "containerRect1",
+          }),
         );
         container.addChild(
           createRect({
@@ -1726,8 +1726,8 @@ describe('Container', () => {
             y: 500,
             width: 200,
             height: 200,
-            fill: 'containerRect2',
-          })
+            fill: "containerRect2",
+          }),
         );
 
         const items = container.getItemsFrom({ x: 450, y: 450 });
@@ -1736,17 +1736,17 @@ describe('Container', () => {
       });
     });
 
-    describe('Custom collider', () => {
-      it('should return the colliding container', () => {
+    describe("Custom collider", () => {
+      it("should return the colliding container", () => {
         container = createContainer({
           collider: {
-            type: 'rect',
+            type: "rect",
             x: 500,
             y: 500,
             width: 100,
             height: 100,
           },
-          fill: 'container',
+          fill: "container",
         });
         container.addChild(
           createRect({
@@ -1754,25 +1754,25 @@ describe('Container', () => {
             y: 0,
             width: 100,
             height: 100,
-            fill: 'containerRect1',
-          })
+            fill: "containerRect1",
+          }),
         );
 
         const items = container.getItemsFrom({ x: 550, y: 550 });
 
-        expect(items.map((i) => i.node.attrs.fill)).to.deep.equal(['container']);
+        expect(items.map((i) => i.node.attrs.fill)).to.deep.equal(["container"]);
       });
 
-      it('should return the colliding container if child collider also matches', () => {
+      it("should return the colliding container if child collider also matches", () => {
         container = createContainer({
           collider: {
-            type: 'rect',
+            type: "rect",
             x: 500,
             y: 500,
             width: 100,
             height: 100,
           },
-          fill: 'container',
+          fill: "container",
         });
         container.addChild(
           createRect({
@@ -1780,25 +1780,25 @@ describe('Container', () => {
             y: 500,
             width: 100,
             height: 100,
-            fill: 'containerRect1',
-          })
+            fill: "containerRect1",
+          }),
         );
 
         const items = container.getItemsFrom({ x: 550, y: 550 });
 
-        expect(items.map((i) => i.node.attrs.fill)).to.deep.equal(['container']);
+        expect(items.map((i) => i.node.attrs.fill)).to.deep.equal(["container"]);
       });
 
-      it('should not collide if custom collider doesnt but child collider does', () => {
+      it("should not collide if custom collider doesnt but child collider does", () => {
         container = createContainer({
           collider: {
-            type: 'rect',
+            type: "rect",
             x: 500,
             y: 500,
             width: 100,
             height: 100,
           },
-          fill: 'container',
+          fill: "container",
         });
         container.addChild(
           createRect({
@@ -1806,18 +1806,18 @@ describe('Container', () => {
             y: 0,
             width: 100,
             height: 100,
-            fill: 'containerRect1',
-          })
+            fill: "containerRect1",
+          }),
         );
-        const childContainer = createContainer({ collider: { type: 'bounds' }, fill: 'childContainer' });
+        const childContainer = createContainer({ collider: { type: "bounds" }, fill: "childContainer" });
         childContainer.addChild(
           createRect({
             x: 0,
             y: 0,
             width: 200,
             height: 200,
-            fill: 'containerRect2',
-          })
+            fill: "containerRect2",
+          }),
         );
 
         const items = container.getItemsFrom({ x: 10, y: 10 });
@@ -1825,16 +1825,16 @@ describe('Container', () => {
         expect(items).to.be.empty;
       });
 
-      it('should return empty result if no collision is detected', () => {
+      it("should return empty result if no collision is detected", () => {
         container = createContainer({
           collider: {
-            type: 'rect',
+            type: "rect",
             x: 500,
             y: 500,
             width: 100,
             height: 100,
           },
-          fill: 'containerBounds',
+          fill: "containerBounds",
         });
 
         const items = container.getItemsFrom({ x: 400, y: 450 });

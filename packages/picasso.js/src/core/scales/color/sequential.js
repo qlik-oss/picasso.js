@@ -1,8 +1,8 @@
-import { interpolateRgb } from 'd3-interpolate';
-import extend from 'extend';
-import minmax from '../../utils/min-max';
-import linear from '../linear';
-import resolveSettings from '../settings-resolver';
+import { interpolateRgb } from "d3-interpolate";
+import extend from "extend";
+import minmax from "../../utils/min-max";
+import linear from "../linear";
+import resolveSettings from "../settings-resolver";
 
 const DEFAULT_SETTINGS = {
   domain: [],
@@ -72,7 +72,7 @@ export default function scaleSequentialColor(settings = {}, data = {}, resources
   extend(true, fn, s);
   const [min, max] = minmax(stgns, data ? data.fields : []);
   const num = isDomain ? stgns.domain.length : -1;
-  const DEFAULT_COLORS = resources.theme ? resources.theme.palette('sequential', num > 0 ? num : 2) : [];
+  const DEFAULT_COLORS = resources.theme ? resources.theme.palette("sequential", num > 0 ? num : 2) : [];
 
   const range = isRange ? stgns.range : DEFAULT_COLORS;
   fn.range(stgns.invert ? range.slice().reverse() : range.slice());

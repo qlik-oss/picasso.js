@@ -1,8 +1,8 @@
-import Container from './container';
+import Container from "./container";
 
 export default class Stage extends Container {
   constructor(dpi) {
-    super('stage');
+    super("stage");
     this._stage = this;
     this._dpiRatio = dpi || 1;
   }

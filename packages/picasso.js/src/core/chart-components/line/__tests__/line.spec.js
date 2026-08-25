@@ -1,7 +1,7 @@
-import componentFactoryFixture from '../../../../../test/helpers/component-factory-fixture';
-import component from '../line';
+import componentFactoryFixture from "../../../../../test/helpers/component-factory-fixture";
+import component from "../line";
 
-describe('line component', () => {
+describe("line component", () => {
   let rendered;
   let componentFixture;
   let opts;
@@ -18,7 +18,7 @@ describe('line component', () => {
     componentFixture = componentFactoryFixture();
   });
 
-  it('should render lines with default settings', () => {
+  it("should render lines with default settings", () => {
     componentFixture.mocks().theme.style.returns({});
     const config = {
       data: [1, 1, 1, 1],
@@ -29,22 +29,22 @@ describe('line component', () => {
 
     expect(rendered).to.containSubset([
       {
-        type: 'path',
-        fill: 'none',
-        stroke: '#ccc',
-        strokeLinejoin: 'miter',
+        type: "path",
+        fill: "none",
+        stroke: "#ccc",
+        strokeLinejoin: "miter",
         strokeWidth: 1,
         opacity: 1,
         data: {
           value: 1,
-          label: '1',
+          label: "1",
           points: config.data.map((p) => ({ label: `${p}`, value: p })),
         },
       },
     ]);
   });
 
-  it('should render lines with custom settings', () => {
+  it("should render lines with custom settings", () => {
     componentFixture.mocks().theme.style.returns({});
     const config = {
       data: [1, 1, 1, 1],
@@ -52,11 +52,11 @@ describe('line component', () => {
         coordinates: {},
         layers: {
           line: {
-            fill: 'red',
-            stroke: 'green',
-            strokeLinejoin: 'round',
+            fill: "red",
+            stroke: "green",
+            strokeLinejoin: "round",
             strokeWidth: 4,
-            strokeDasharray: '8 4',
+            strokeDasharray: "8 4",
           },
         },
       },
@@ -67,19 +67,19 @@ describe('line component', () => {
 
     expect(rendered).to.containSubset([
       {
-        type: 'path',
-        fill: 'none',
-        stroke: 'green',
-        strokeLinejoin: 'round',
+        type: "path",
+        fill: "none",
+        stroke: "green",
+        strokeLinejoin: "round",
         strokeWidth: 4,
-        strokeDasharray: '8 4',
+        strokeDasharray: "8 4",
         opacity: 1,
-        data: { value: 1, label: '1', points: config.data.map((p) => ({ label: `${p}`, value: p })) },
+        data: { value: 1, label: "1", points: config.data.map((p) => ({ label: `${p}`, value: p })) },
       },
     ]);
   });
 
-  it('should update settings', () => {
+  it("should update settings", () => {
     componentFixture.mocks().theme.style.returns({});
     const config = {
       data: [1, 1, 1, 1],
@@ -92,7 +92,7 @@ describe('line component', () => {
       settings: {
         layers: {
           line: {
-            stroke: 'red',
+            stroke: "red",
           },
         },
       },
@@ -100,22 +100,22 @@ describe('line component', () => {
 
     expect(rendered).to.containSubset([
       {
-        type: 'path',
-        fill: 'none',
-        stroke: 'red',
-        strokeLinejoin: 'miter',
+        type: "path",
+        fill: "none",
+        stroke: "red",
+        strokeLinejoin: "miter",
         strokeWidth: 1,
         opacity: 1,
-        data: { value: 1, label: '1', points: config.data.map((p) => ({ label: `${p}`, value: p })) },
+        data: { value: 1, label: "1", points: config.data.map((p) => ({ label: `${p}`, value: p })) },
       },
     ]);
   });
 
-  it('should render area', () => {
+  it("should render area", () => {
     componentFixture.mocks().theme.style.returns({
       line: {},
       area: {
-        fill: 'red',
+        fill: "red",
         opacity: 0.3,
       },
     });
@@ -134,7 +134,7 @@ describe('line component', () => {
         layers: {
           line: { show: false },
           area: {
-            fill: 'blue',
+            fill: "blue",
           },
         },
       },
@@ -146,22 +146,22 @@ describe('line component', () => {
     expect(rendered.length).to.equal(1);
     expect(rendered).to.containSubset([
       {
-        type: 'path',
-        fill: 'blue',
+        type: "path",
+        fill: "blue",
         stroke: undefined,
         strokeLinejoin: undefined,
         strokeWidth: undefined,
         opacity: 0.3,
-        data: { value: 1, label: '1', points: config.data.map((p) => ({ label: `${p}`, value: p })) },
+        data: { value: 1, label: "1", points: config.data.map((p) => ({ label: `${p}`, value: p })) },
       },
     ]);
   });
 
-  it('should render area, minor, and minor0 lines (3 lines) when show is true and has minor0', () => {
+  it("should render area, minor, and minor0 lines (3 lines) when show is true and has minor0", () => {
     componentFixture.mocks().theme.style.returns({
       line: {},
       area: {
-        fill: 'red',
+        fill: "red",
         opacity: 0.3,
       },
     });
@@ -185,7 +185,7 @@ describe('line component', () => {
             show: true,
           },
           area: {
-            fill: 'blue',
+            fill: "blue",
           },
         },
       },
@@ -197,31 +197,31 @@ describe('line component', () => {
     expect(rendered.length).to.equal(3);
     expect(rendered).to.containSubset([
       {
-        type: 'path',
-        fill: 'blue',
+        type: "path",
+        fill: "blue",
         stroke: undefined,
         strokeLinejoin: undefined,
         strokeWidth: undefined,
         opacity: 0.3,
-        data: { value: 1, label: '1', points: config.data.map((p) => ({ label: `${p}`, value: p })) },
+        data: { value: 1, label: "1", points: config.data.map((p) => ({ label: `${p}`, value: p })) },
       },
       {
-        type: 'path',
-        fill: 'none',
-        stroke: '#ccc',
-        strokeLinejoin: 'miter',
+        type: "path",
+        fill: "none",
+        stroke: "#ccc",
+        strokeLinejoin: "miter",
         strokeWidth: 1,
         opacity: 1,
-        data: { value: 1, label: '1', points: config.data.map((p) => ({ label: `${p}`, value: p })) },
+        data: { value: 1, label: "1", points: config.data.map((p) => ({ label: `${p}`, value: p })) },
       },
     ]);
   });
 
-  it('should not render minor0 line when has minor0 but showMinor0 is false', () => {
+  it("should not render minor0 line when has minor0 but showMinor0 is false", () => {
     componentFixture.mocks().theme.style.returns({
       line: {},
       area: {
-        fill: 'red',
+        fill: "red",
         opacity: 0.3,
       },
     });
@@ -246,7 +246,7 @@ describe('line component', () => {
             showMinor0: false,
           },
           area: {
-            fill: 'blue',
+            fill: "blue",
           },
         },
       },
@@ -258,27 +258,27 @@ describe('line component', () => {
     expect(rendered.length).to.equal(2);
     expect(rendered).to.containSubset([
       {
-        type: 'path',
-        fill: 'blue',
+        type: "path",
+        fill: "blue",
         stroke: undefined,
         strokeLinejoin: undefined,
         strokeWidth: undefined,
         opacity: 0.3,
-        data: { value: 1, label: '1', points: config.data.map((p) => ({ label: `${p}`, value: p })) },
+        data: { value: 1, label: "1", points: config.data.map((p) => ({ label: `${p}`, value: p })) },
       },
       {
-        type: 'path',
-        fill: 'none',
-        stroke: '#ccc',
-        strokeLinejoin: 'miter',
+        type: "path",
+        fill: "none",
+        stroke: "#ccc",
+        strokeLinejoin: "miter",
         strokeWidth: 1,
         opacity: 1,
-        data: { value: 1, label: '1', points: config.data.map((p) => ({ label: `${p}`, value: p })) },
+        data: { value: 1, label: "1", points: config.data.map((p) => ({ label: `${p}`, value: p })) },
       },
     ]);
   });
 
-  describe('layer order', () => {
+  describe("layer order", () => {
     let config;
     beforeEach(() => {
       config = {
@@ -297,7 +297,7 @@ describe('line component', () => {
           },
           layers: {
             line: {
-              stroke: (d) => ['red', 'green', 'blue'][Math.round(d.datum.value) - 1],
+              stroke: (d) => ["red", "green", "blue"][Math.round(d.datum.value) - 1],
             },
           },
         },
@@ -306,20 +306,20 @@ describe('line component', () => {
       componentFixture.mocks().theme.style.returns({});
     });
 
-    it('should be sorted by median by default', () => {
+    it("should be sorted by median by default", () => {
       componentFixture.simulateCreate(component, config);
       rendered = componentFixture.simulateRender(opts);
       const order = rendered.map((layer) => layer.stroke);
-      expect(order).to.eql(['red', 'green', 'blue']);
+      expect(order).to.eql(["red", "green", "blue"]);
     });
 
-    it('should be sorted by custom sorting function', () => {
+    it("should be sorted by custom sorting function", () => {
       config.settings.layers.sort = (a, b) => b.data[0].value - a.data[0].value;
 
       componentFixture.simulateCreate(component, config);
       rendered = componentFixture.simulateRender(opts);
       const order = rendered.map((layer) => layer.stroke);
-      expect(order).to.eql(['blue', 'green', 'red']);
+      expect(order).to.eql(["blue", "green", "red"]);
     });
   });
 });

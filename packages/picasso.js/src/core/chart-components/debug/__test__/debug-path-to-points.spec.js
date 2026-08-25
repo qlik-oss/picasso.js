@@ -1,7 +1,7 @@
-import component from '../debug-path-to-points';
-import componentFactoryFixture from '../../../../../test/helpers/component-factory-fixture';
+import component from "../debug-path-to-points";
+import componentFactoryFixture from "../../../../../test/helpers/component-factory-fixture";
 
-describe('debug-path-to-points', () => {
+describe("debug-path-to-points", () => {
   let componentFixture;
   let opts;
   let shapes;
@@ -27,12 +27,12 @@ describe('debug-path-to-points', () => {
     componentFixture.simulateCreate(component, {});
   });
 
-  it('should render transformed path', () => {
+  it("should render transformed path", () => {
     shapes = [
       {
-        key: '',
+        key: "",
         attrs: {
-          d: 'M0 0, L10 10',
+          d: "M0 0, L10 10",
         },
       },
     ];
@@ -40,22 +40,22 @@ describe('debug-path-to-points', () => {
 
     expect(out).to.eql([
       {
-        type: 'circle',
+        type: "circle",
         cx: 0,
         cy: 0,
         r: 2,
-        fill: 'transparent',
-        stroke: 'lime',
+        fill: "transparent",
+        stroke: "lime",
         opacity: 1,
         collider: { type: null },
       },
       {
-        type: 'circle',
+        type: "circle",
         cx: 10,
         cy: 10,
         r: 2,
-        fill: 'transparent',
-        stroke: 'lime',
+        fill: "transparent",
+        stroke: "lime",
         opacity: 1,
         collider: { type: null },
       },

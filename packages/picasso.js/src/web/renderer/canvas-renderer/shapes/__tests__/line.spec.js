@@ -1,7 +1,7 @@
-import render from '../line';
+import render from "../line";
 
-describe('line', () => {
-  describe('render', () => {
+describe("line", () => {
+  describe("render", () => {
     let sandbox, g, falsys, truthys, line;
 
     beforeEach(() => {
@@ -14,9 +14,9 @@ describe('line', () => {
         stroke: sandbox.spy(),
       };
 
-      falsys = [false, null, undefined, 0, NaN, ''];
+      falsys = [false, null, undefined, 0, NaN, ""];
 
-      truthys = [true, {}, [], 1, -1, 3.14, -3.14, 'foo'];
+      truthys = [true, {}, [], 1, -1, 3.14, -3.14, "foo"];
 
       line = {
         x1: 1,
@@ -30,27 +30,27 @@ describe('line', () => {
       sandbox.restore();
     });
 
-    it('should fire beginPath', () => {
+    it("should fire beginPath", () => {
       render(line, { g, doStroke: false });
 
       expect(g.beginPath.calledOnce).to.equal(true);
     });
 
-    it('should fire moveTo with correct arguments', () => {
+    it("should fire moveTo with correct arguments", () => {
       render(line, { g, doStroke: false });
 
       expect(g.moveTo.calledOnce).to.equal(true);
       expect(g.moveTo.alwaysCalledWithExactly(1, 2));
     });
 
-    it('should fire lineTo with correct arguments', () => {
+    it("should fire lineTo with correct arguments", () => {
       render(line, { g, doStroke: false });
 
       expect(g.lineTo.calledOnce).to.equal(true);
       expect(g.lineTo.alwaysCalledWithExactly(10, 20));
     });
 
-    it('should not fire stroke if stroke condition is falsy', () => {
+    it("should not fire stroke if stroke condition is falsy", () => {
       falsys.forEach((value) => {
         render(line, { g, doStroke: value });
 
@@ -58,7 +58,7 @@ describe('line', () => {
       });
     });
 
-    it('should fire stroke if stroke condition is truthy', () => {
+    it("should fire stroke if stroke condition is truthy", () => {
       truthys.forEach((value) => {
         g.stroke.resetHistory();
 
@@ -68,7 +68,7 @@ describe('line', () => {
       });
     });
 
-    it('should fire beginPath as first canvas method', () => {
+    it("should fire beginPath as first canvas method", () => {
       render(line, { g, doStroke: true });
 
       expect(g.beginPath.calledBefore(g.moveTo)).to.equal(true);

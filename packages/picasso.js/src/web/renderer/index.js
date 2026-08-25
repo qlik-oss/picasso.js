@@ -1,4 +1,4 @@
-import { measureText, textBounds } from '../text-manipulation';
+import { measureText, textBounds } from "../text-manipulation";
 
 /**
  * Base renderer factory
@@ -107,7 +107,7 @@ export default function create() {
     textBounds,
 
     setKey: (key) => {
-      renderer.element().setAttribute('data-key', key);
+      renderer.element().setAttribute("data-key", key);
     },
   };
 

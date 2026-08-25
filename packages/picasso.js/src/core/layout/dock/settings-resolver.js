@@ -1,4 +1,4 @@
-import extend from 'extend';
+import extend from "extend";
 
 function roundRect(rect) {
   rect.x = Math.floor(rect.x);
@@ -24,12 +24,12 @@ export function resolveContainerRects(rect, settings) {
   // Check input object for size
   containerRect.width = rect.width || 0;
   containerRect.height = rect.height || 0;
-  if (typeof settings.size !== 'undefined') {
+  if (typeof settings.size !== "undefined") {
     containerRect.width = isNaN(settings.size.width) ? containerRect.width : settings.size.width;
     containerRect.height = isNaN(settings.size.height) ? containerRect.height : settings.size.height;
   }
 
-  if (typeof settings.logicalSize !== 'undefined') {
+  if (typeof settings.logicalSize !== "undefined") {
     logicalContainerRect.width = isNaN(settings.logicalSize.width) ? containerRect.width : settings.logicalSize.width;
     logicalContainerRect.height = isNaN(settings.logicalSize.height)
       ? containerRect.height

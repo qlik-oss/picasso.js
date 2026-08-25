@@ -1,21 +1,21 @@
-import extend from 'extend';
-import about from './about';
+import extend from "extend";
+import about from "./about";
 
-import { chart, renderer } from './core';
+import { chart, renderer } from "./core";
 
-import { components, scales, renderers } from './api';
+import { components, scales, renderers } from "./api";
 
-import componentRegistry from './core/component';
-import dataRegistry from './core/data';
-import formatterRegistry from './core/formatter';
-import interactionRegistry from './core/interaction';
-import scaleRegistry from './core/chart/scales';
-import { symbolRegistry } from './core/symbols';
+import componentRegistry from "./core/component";
+import dataRegistry from "./core/data";
+import formatterRegistry from "./core/formatter";
+import interactionRegistry from "./core/interaction";
+import scaleRegistry from "./core/chart/scales";
+import { symbolRegistry } from "./core/symbols";
 
-import loggerFn from './core/utils/logger';
-import registry from './core/utils/registry';
+import loggerFn from "./core/utils/logger";
+import registry from "./core/utils/registry";
 
-import { style, palettes } from './core/theme/light';
+import { style, palettes } from "./core/theme/light";
 
 function usePlugin(plugin, options = {}, api) {
   plugin(api, options);
@@ -33,22 +33,22 @@ function pic(config = {}, registries = {}) {
      * Component registry
      * @type {registry}
      */
-    component: registry(registries.component, 'component', logger),
+    component: registry(registries.component, "component", logger),
     /**
      * Data registry
      * @type {registry}
      */
-    data: registry(registries.data, 'data', logger),
+    data: registry(registries.data, "data", logger),
     /**
      * Formatter registry
      * @type {registry}
      */
-    formatter: registry(registries.formatter, 'formatter', logger),
+    formatter: registry(registries.formatter, "formatter", logger),
     /**
      * Interaction registry
      * @type {registry}
      */
-    interaction: registry(registries.interaction, 'interaction', logger),
+    interaction: registry(registries.interaction, "interaction", logger),
     /**
      * Renderer registry
      * @type {registry}
@@ -56,18 +56,18 @@ function pic(config = {}, registries = {}) {
      * const svgFactory = picassojs.renderer('svg');
      * const svgRenderer = svgFactory();
      */
-    renderer: renderer(registries.renderer, 'renderer', logger),
+    renderer: renderer(registries.renderer, "renderer", logger),
     /**
      * Scale registry
      * @type {registry}
      */
-    scale: registry(registries.scale, 'scale', logger),
+    scale: registry(registries.scale, "scale", logger),
     /**
      * Symbol registry
      * @type {registry}
      * @private
      */
-    symbol: registry(registries.symbol, 'symbol', logger),
+    symbol: registry(registries.symbol, "symbol", logger),
     // -- misc --
     /**
      * log some some stuff
@@ -227,7 +227,7 @@ function pic(config = {}, registries = {}) {
 const p = pic(
   {
     renderer: {
-      prio: ['svg', 'canvas'],
+      prio: ["svg", "canvas"],
     },
     logger: {
       level: 0,
@@ -243,7 +243,7 @@ const p = pic(
     renderer: renderer(),
     scale: scaleRegistry,
     symbol: symbolRegistry,
-  }
+  },
 );
 
 components.forEach(p.use);

@@ -1,7 +1,7 @@
-import component from '../debug-collider';
-import componentFactoryFixture from '../../../../../test/helpers/component-factory-fixture';
+import component from "../debug-collider";
+import componentFactoryFixture from "../../../../../test/helpers/component-factory-fixture";
 
-describe('debug-collider', () => {
+describe("debug-collider", () => {
   let componentFixture;
   let opts;
   let shapes;
@@ -27,12 +27,12 @@ describe('debug-collider', () => {
     componentFixture.simulateCreate(component, {});
   });
 
-  it('should render matching colliders', () => {
+  it("should render matching colliders", () => {
     shapes = [
       {
-        key: '',
+        key: "",
         collider: {
-          someProperty: 'black',
+          someProperty: "black",
         },
       },
     ];
@@ -40,9 +40,9 @@ describe('debug-collider', () => {
 
     expect(out).to.eql([
       {
-        someProperty: 'black',
-        fill: 'rgba(0, 255, 0, 0.1)',
-        stroke: 'lime',
+        someProperty: "black",
+        fill: "rgba(0, 255, 0, 0.1)",
+        stroke: "lime",
         opacity: 1,
         collider: { type: null },
       },

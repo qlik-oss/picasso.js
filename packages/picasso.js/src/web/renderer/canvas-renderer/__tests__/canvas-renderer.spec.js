@@ -1,8 +1,8 @@
-import element from 'test-utils/mocks/element-mock';
-import * as canvasBuffer from '../canvas-buffer';
-import { renderer } from '../canvas-renderer';
+import element from "test-utils/mocks/element-mock";
+import * as canvasBuffer from "../canvas-buffer";
+import { renderer } from "../canvas-renderer";
 
-describe('canvas renderer', () => {
+describe("canvas renderer", () => {
   let sandbox, r, sceneFn, mockedCanvasBuffer;
 
   beforeEach(() => {
@@ -14,7 +14,7 @@ describe('canvas renderer', () => {
       clear: sinon.spy(),
       getContext: sinon.spy(),
     };
-    sandbox.stub(canvasBuffer, 'default');
+    sandbox.stub(canvasBuffer, "default");
     canvasBuffer.default.returns(mockedCanvasBuffer);
     r = renderer(sceneFn);
   });
@@ -23,11 +23,11 @@ describe('canvas renderer', () => {
     sandbox.restore();
   });
 
-  it('should set rendererSettings correctly', () => {
+  it("should set rendererSettings correctly", () => {
     const rendererSettings = {
       transform: () => {},
       canvasBufferSize: { width: 1000, height: 600 },
-      irrelevantSetting: 'irrelevant!',
+      irrelevantSetting: "irrelevant!",
     };
     r.settings(rendererSettings);
     expect(r.settings()).to.eql({
@@ -37,24 +37,24 @@ describe('canvas renderer', () => {
     });
   });
 
-  it('should set rendererSettings with progressive correctly', () => {
+  it("should set rendererSettings with progressive correctly", () => {
     const rendererSettings = {
       transform: () => {},
       canvasBufferSize: { width: 1000, height: 600 },
-      irrelevantSetting: 'irrelevant!',
-      progressive: sandbox.stub().returns('abc'),
+      irrelevantSetting: "irrelevant!",
+      progressive: sandbox.stub().returns("abc"),
     };
     r.settings(rendererSettings);
-    expect(r.settings().progressive()).to.eql('abc');
+    expect(r.settings().progressive()).to.eql("abc");
   });
 
-  it('should clear canvas if there is no progressive', () => {
+  it("should clear canvas if there is no progressive", () => {
     const rendererSettings = {
       transform: () => {},
       canvasBufferSize: { width: 1000, height: 600 },
-      irrelevantSetting: 'irrelevant!',
+      irrelevantSetting: "irrelevant!",
     };
-    const div = element('div');
+    const div = element("div");
     r.clear = sandbox.stub();
     r.appendTo(div);
     sceneFn.returns({
@@ -66,13 +66,13 @@ describe('canvas renderer', () => {
     expect(r.clear.callCount).to.equal(1);
   });
 
-  it('should clear canvas if progressive = false', () => {
+  it("should clear canvas if progressive = false", () => {
     const rendererSettings = {
       transform: () => {},
       canvasBufferSize: { width: 1000, height: 600 },
       progressive: sandbox.stub().returns(false),
     };
-    const div = element('div');
+    const div = element("div");
     r.clear = sandbox.stub();
     r.appendTo(div);
     sceneFn.returns({
@@ -84,13 +84,13 @@ describe('canvas renderer', () => {
     expect(r.clear.callCount).to.equal(1);
   });
 
-  it('should clear canvas if progressive.isFirst = true', () => {
+  it("should clear canvas if progressive.isFirst = true", () => {
     const rendererSettings = {
       transform: () => {},
       canvasBufferSize: { width: 1000, height: 600 },
       progressive: sandbox.stub().returns({ isFirst: true }),
     };
-    const div = element('div');
+    const div = element("div");
     r.clear = sandbox.stub();
     r.appendTo(div);
     sceneFn.returns({
@@ -102,7 +102,7 @@ describe('canvas renderer', () => {
     expect(r.clear.callCount).to.equal(1);
   });
 
-  it('should not clear canvas if progressive.isFirst = false', () => {
+  it("should not clear canvas if progressive.isFirst = false", () => {
     const rendererSettings = {
       transform: () => {},
       canvasBufferSize: { width: 1000, height: 600 },
@@ -110,7 +110,7 @@ describe('canvas renderer', () => {
     };
     rendererSettings.progressive.onCall(0).returns({ isFirst: true });
     rendererSettings.progressive.onCall(1).returns({ isFirst: false });
-    const div = element('div');
+    const div = element("div");
     r.clear = sandbox.stub();
     r.appendTo(div);
     sceneFn.returns({
@@ -123,7 +123,7 @@ describe('canvas renderer', () => {
     expect(r.clear.callCount).to.equal(1);
   });
 
-  it('should aggregate children during progressive', () => {
+  it("should aggregate children during progressive", () => {
     const rendererSettings = {
       transform: () => {},
       canvasBufferSize: { width: 1000, height: 600 },
@@ -131,7 +131,7 @@ describe('canvas renderer', () => {
     };
     rendererSettings.progressive.onCall(0).returns({ isFirst: true });
     rendererSettings.progressive.onCall(1).returns({ isFirst: false });
-    const div = element('div');
+    const div = element("div");
     r.clear = sandbox.stub();
     r.appendTo(div);
     const scene1 = {
@@ -161,33 +161,33 @@ describe('canvas renderer', () => {
     ]);
   });
 
-  it('should append canvas element', () => {
-    const div = element('div');
-    const spy = sandbox.spy(div, 'appendChild');
+  it("should append canvas element", () => {
+    const div = element("div");
+    const spy = sandbox.spy(div, "appendChild");
     r.appendTo(div);
-    expect(spy.args[0][0].name).to.equal('canvas');
+    expect(spy.args[0][0].name).to.equal("canvas");
   });
 
-  it('should on appendTo apply font smoothing', () => {
+  it("should on appendTo apply font smoothing", () => {
     sceneFn.returns({ children: [] });
-    r.appendTo(element('div'));
+    r.appendTo(element("div"));
 
     const el = r.element();
-    expect(el.style['-webkit-font-smoothing']).to.equal('antialiased');
-    expect(el.style['-moz-osx-font-smoothing']).to.equal('antialiased');
+    expect(el.style["-webkit-font-smoothing"]).to.equal("antialiased");
+    expect(el.style["-moz-osx-font-smoothing"]).to.equal("antialiased");
   });
 
-  it('should not render when canvas does not exist', () => {
+  it("should not render when canvas does not exist", () => {
     expect(r.render()).to.equal(false);
   });
 
-  it('should render when canvas exists', () => {
-    r.appendTo(element('div'));
+  it("should render when canvas exists", () => {
+    r.appendTo(element("div"));
     sceneFn.returns({ children: [] });
     expect(r.render()).to.equal(true);
   });
 
-  it('should set transform and apply buffer if transform is provided', () => {
+  it("should set transform and apply buffer if transform is provided", () => {
     const rendererSettings = {
       transform: () => ({
         horizontalScaling: 1,
@@ -199,32 +199,32 @@ describe('canvas renderer', () => {
       }),
     };
     r.settings(rendererSettings);
-    r.appendTo(element('div'));
-    const targetCtx = r.element().getContext('2d');
+    r.appendTo(element("div"));
+    const targetCtx = r.element().getContext("2d");
     targetCtx.webkitBackingStorePixelRatio = 0.5;
     r.render();
     expect(targetCtx.setTransform).to.have.been.calledWith(1, 0, 1, 0, 200, 200);
     expect(mockedCanvasBuffer.apply).to.have.been.calledOnce;
   });
 
-  it('should apply buffer but not set transform when transform func returns falsy value', () => {
+  it("should apply buffer but not set transform when transform func returns falsy value", () => {
     const rendererSettings = {
       transform: () => false,
     };
     r.settings(rendererSettings);
-    r.appendTo(element('div'));
+    r.appendTo(element("div"));
     sceneFn.returns({
       children: [],
       equals: () => true,
     });
-    const targetCtx = r.element().getContext('2d');
+    const targetCtx = r.element().getContext("2d");
     r.render();
     expect(targetCtx.setTransform).to.not.have.been.called;
     expect(mockedCanvasBuffer.apply).to.have.been.calledOnce;
   });
 
-  it('should not render if scene and size has not changed', () => {
-    r.appendTo(element('div'));
+  it("should not render if scene and size has not changed", () => {
+    r.appendTo(element("div"));
     sceneFn.returns({
       children: [],
       equals: () => true,
@@ -233,8 +233,8 @@ describe('canvas renderer', () => {
     expect(r.render()).to.equal(false);
   });
 
-  it('should render if scene has been cleared', () => {
-    r.appendTo(element('div'));
+  it("should render if scene has been cleared", () => {
+    r.appendTo(element("div"));
     sceneFn.returns({
       children: [],
       equals: () => true,
@@ -244,7 +244,7 @@ describe('canvas renderer', () => {
     expect(r.render()).to.equal(true);
   });
 
-  it('should return zero size when canvas is not initiated', () => {
+  it("should return zero size when canvas is not initiated", () => {
     expect(r.size()).to.deep.equal({
       x: 0,
       y: 0,
@@ -268,7 +268,7 @@ describe('canvas renderer', () => {
     });
   });
 
-  it('should return size when called', () => {
+  it("should return size when called", () => {
     r.size({
       x: 50,
       y: 100,
@@ -306,7 +306,7 @@ describe('canvas renderer', () => {
     });
   });
 
-  it('should ignore NaN values and fallback to default size value', () => {
+  it("should ignore NaN values and fallback to default size value", () => {
     r.size({
       x: undefined,
       y: undefined,
@@ -344,13 +344,13 @@ describe('canvas renderer', () => {
     });
   });
 
-  it('should update buffer size correctly', () => {
+  it("should update buffer size correctly", () => {
     const rendererSettings = {
       transform: () => false,
       canvasBufferSize: () => ({ width: 1000, height: 600 }),
     };
     r.settings(rendererSettings);
-    r.appendTo(element('div'));
+    r.appendTo(element("div"));
     sceneFn.returns({
       children: [],
       equals: () => true,
@@ -362,7 +362,7 @@ describe('canvas renderer', () => {
       height: 400,
     });
     const rect = r.size();
-    const targetCtx = r.element().getContext('2d');
+    const targetCtx = r.element().getContext("2d");
     targetCtx.webkitBackingStorePixelRatio = 0.5;
     r.render();
     expect(mockedCanvasBuffer.updateSize).to.have.been.calledWith({
@@ -372,9 +372,9 @@ describe('canvas renderer', () => {
     });
   });
 
-  it('should attach to given position in the container', () => {
+  it("should attach to given position in the container", () => {
     sceneFn.returns({ children: [] });
-    r.appendTo(element('div'));
+    r.appendTo(element("div"));
     r.size({
       x: 50,
       y: 100,
@@ -384,65 +384,65 @@ describe('canvas renderer', () => {
     r.render();
 
     const el = r.element();
-    expect(el.style.position).to.equal('absolute');
-    expect(el.style.left).to.equal('50px');
-    expect(el.style.top).to.equal('100px');
-    expect(el.style.width).to.equal('200px');
-    expect(el.style.height).to.equal('400px');
+    expect(el.style.position).to.equal("absolute");
+    expect(el.style.left).to.equal("50px");
+    expect(el.style.top).to.equal("100px");
+    expect(el.style.width).to.equal("200px");
+    expect(el.style.height).to.equal("400px");
     expect(el.width).to.equal(200);
     expect(el.height).to.equal(400);
   });
 
-  it('should detach from parent element when destoyed', () => {
-    const div = element('div');
+  it("should detach from parent element when destoyed", () => {
+    const div = element("div");
     r.appendTo(div);
     expect(div.children.length).to.equal(1);
     r.destroy();
     expect(div.children.length).to.equal(0);
   });
 
-  describe('setKey', () => {
-    it('should set key attribute', () => {
-      const div = element('div');
-      const spy = sandbox.spy(div, 'setAttribute');
+  describe("setKey", () => {
+    it("should set key attribute", () => {
+      const div = element("div");
+      const spy = sandbox.spy(div, "setAttribute");
       r.element = () => div;
-      r.setKey('myKey');
-      expect(spy).have.been.calledWith('data-key', 'myKey');
+      r.setKey("myKey");
+      expect(spy).have.been.calledWith("data-key", "myKey");
     });
   });
 
-  describe('itemsAt', () => {
+  describe("itemsAt", () => {
     let items;
 
     beforeEach(() => {
       items = [
         {
-          type: 'circle',
+          type: "circle",
           cx: 138.2,
           cy: 80.1,
           r: 10.14121384712747,
           opacity: 0.0850144505610413,
-          fill: '#440154',
-          stroke: '#ccc',
+          fill: "#440154",
+          stroke: "#ccc",
           strokeWidth: 0,
         },
         {
-          type: 'rect',
+          type: "rect",
           x: 109.87669609109648,
           y: 131.87669609109648,
           width: 56.64660781780709,
           height: 56.64660781780709,
           opacity: 0.30146790367742315,
-          fill: '#482979',
-          stroke: '#ccc',
+          fill: "#482979",
+          stroke: "#ccc",
           strokeWidth: 0,
         },
       ];
       r = renderer(); // Don't mock the scene
     });
 
-    it('should return shapes at a point', () => {
-      r.appendTo(element('div'));
+    it("should return shapes at a point", () => {
+      r.appendTo(element("div"));
       r.size({
         x: 100,
         y: 100,
@@ -466,8 +466,8 @@ describe('canvas renderer', () => {
     });
     */
 
-    it('should return shapes at a line', () => {
-      r.appendTo(element('div'));
+    it("should return shapes at a line", () => {
+      r.appendTo(element("div"));
       r.size({
         x: 100,
         y: 100,
@@ -485,8 +485,8 @@ describe('canvas renderer', () => {
       expect(shapes.length).to.equal(2);
     });
 
-    it('should return shapes at a rect', () => {
-      r.appendTo(element('div'));
+    it("should return shapes at a rect", () => {
+      r.appendTo(element("div"));
       r.size({
         x: 100,
         y: 100,
@@ -505,15 +505,15 @@ describe('canvas renderer', () => {
     });
   });
 
-  it('should scale canvas to adjust for HiDPI screens', () => {
-    const div = element('div');
-    const inputShapes = [{ type: 'container' }];
+  it("should scale canvas to adjust for HiDPI screens", () => {
+    const div = element("div");
+    const inputShapes = [{ type: "container" }];
     const expectedInput = {
       items: [
         {
-          type: 'container',
+          type: "container",
           children: inputShapes,
-          transform: 'scale(0.5, 0.5)',
+          transform: "scale(0.5, 0.5)",
         },
       ],
       dpi: 0.5,
@@ -527,20 +527,20 @@ describe('canvas renderer', () => {
       height: 400,
     });
 
-    const ctxStub = sandbox.stub(div.children[0], 'getContext');
+    const ctxStub = sandbox.stub(div.children[0], "getContext");
     ctxStub.returns({ webkitBackingStorePixelRatio: 2 });
 
     r.render(inputShapes);
 
-    expect(r.element().style.width).to.equal('200px');
-    expect(r.element().style.height).to.equal('400px');
+    expect(r.element().style.width).to.equal("200px");
+    expect(r.element().style.height).to.equal("400px");
     expect(r.element().width).to.equal(200 * (1 / 2));
     expect(r.element().height).to.equal(400 * (1 / 2));
     expect(sceneFn.args[0][0].items).to.deep.equal(expectedInput.items);
   });
 
-  it('should apply a scale ratio', () => {
-    const div = element('div');
+  it("should apply a scale ratio", () => {
+    const div = element("div");
     const scaleRatio = { x: 2, y: 3 };
     const size = {
       x: 50,
@@ -549,11 +549,11 @@ describe('canvas renderer', () => {
       height: 400,
       scaleRatio,
     };
-    const inputShapes = [{ type: 'container' }];
+    const inputShapes = [{ type: "container" }];
     const expectedInputShapes = {
       items: [
         {
-          type: 'container',
+          type: "container",
           children: inputShapes,
           transform: `scale(${scaleRatio.x}, ${scaleRatio.y})`,
         },
@@ -576,8 +576,8 @@ describe('canvas renderer', () => {
     expect(sceneFn.args[0][0].items).to.deep.equal(expectedInputShapes.items);
   });
 
-  it('should account for screen dpi when applying scale ratio', () => {
-    const div = element('div');
+  it("should account for screen dpi when applying scale ratio", () => {
+    const div = element("div");
     const scaleRatio = { x: 2, y: 3 };
     const dpiScale = 2;
     const size = {
@@ -587,11 +587,11 @@ describe('canvas renderer', () => {
       height: 400,
       scaleRatio,
     };
-    const inputShapes = [{ type: 'container' }];
+    const inputShapes = [{ type: "container" }];
     const expectedInputShapes = {
       items: [
         {
-          type: 'container',
+          type: "container",
           children: inputShapes,
           transform: `scale(${scaleRatio.x * dpiScale}, ${scaleRatio.y * dpiScale})`,
         },
@@ -602,7 +602,7 @@ describe('canvas renderer', () => {
     r.appendTo(div);
     r.size(size);
 
-    const ctxStub = sandbox.stub(div.children[0], 'getContext');
+    const ctxStub = sandbox.stub(div.children[0], "getContext");
     ctxStub.returns({ webkitBackingStorePixelRatio: 0.5 });
 
     r.render(inputShapes);

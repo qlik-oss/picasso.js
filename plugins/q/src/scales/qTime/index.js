@@ -1,7 +1,7 @@
-import extend from 'extend';
-import { scaleLinear as d3ScaleLinear } from 'd3-scale';
-import resolveLevels from './resolve-levels';
-import tickGenerator from './tick-generator';
+import extend from "extend";
+import { scaleLinear as d3ScaleLinear } from "d3-scale";
+import resolveLevels from "./resolve-levels";
+import tickGenerator from "./tick-generator";
 
 const DEFAULT_SETTINGS = {
   level: 0,
@@ -76,7 +76,7 @@ export default function qTime(settings, data) {
       }
       return ticks;
     }
-    if (stgns.level === 'inner' && lvl.index === null) {
+    if (stgns.level === "inner" && lvl.index === null) {
       // Use prop as condition instead to allow on any level?
       return tickFn.createTicks(distance);
     }

@@ -1,4 +1,4 @@
-import { pointsToLine, pointsToRect } from './util';
+import { pointsToLine, pointsToRect } from "./util";
 import {
   testCircleLine,
   testPolygonLine,
@@ -6,7 +6,7 @@ import {
   testLinePoint,
   testLineLine,
   testGeoPolygonLine,
-} from '../math/narrow-phase-collision';
+} from "../math/narrow-phase-collision";
 
 /**
  * Construct a new GeoLine instance
@@ -24,7 +24,7 @@ class GeoLine {
   }
 
   set({ x1 = 0, y1 = 0, x2 = 0, y2 = 0, tolerance = 0 } = {}) {
-    this.type = 'line';
+    this.type = "line";
     this.x1 = x1;
     this.y1 = y1;
     this.x2 = x2;

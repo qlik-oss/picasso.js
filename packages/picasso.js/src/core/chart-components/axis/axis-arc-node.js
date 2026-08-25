@@ -1,4 +1,4 @@
-import extend from 'extend';
+import extend from "extend";
 
 function appendStyle(struct, buildOpts) {
   extend(struct, buildOpts.style);
@@ -15,7 +15,7 @@ export default function buildArcLine(buildOpts) {
 
   const struct = {
     visible: true,
-    type: 'path',
+    type: "path",
     arcDatum: { startAngle, endAngle },
     transform: `translate(0, 0) translate(${centerPoint.cx}, ${centerPoint.cy})`,
     desc: {

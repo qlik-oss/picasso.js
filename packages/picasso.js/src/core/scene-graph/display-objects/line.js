@@ -1,6 +1,6 @@
-import extend from 'extend';
-import DisplayObject from './display-object';
-import { lineToPoints, getMinMax } from '../../geometry/util';
+import extend from "extend";
+import DisplayObject from "./display-object";
+import { lineToPoints, getMinMax } from "../../geometry/util";
 
 /**
  * @private
@@ -14,7 +14,7 @@ import { lineToPoints, getMinMax } from '../../geometry/util';
 
 export default class Line extends DisplayObject {
   constructor(...s) {
-    super('line');
+    super("line");
     this.set(...s);
   }
 
@@ -27,7 +27,7 @@ export default class Line extends DisplayObject {
     this.attrs.y2 = y2;
 
     const defaultCollider = {
-      type: 'line',
+      type: "line",
       x1,
       y1,
       x2,

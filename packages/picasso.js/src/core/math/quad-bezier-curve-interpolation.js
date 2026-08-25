@@ -1,4 +1,4 @@
-import cubicToPoints from './cubic-bezier-curve-interpolation';
+import cubicToPoints from "./cubic-bezier-curve-interpolation";
 
 export function interpolate(t, s, cp, e) {
   const td = 1 - t;

@@ -1,8 +1,8 @@
-import Line, { create as createLine } from '../line';
-import GeoRect from '../../../geometry/rect';
-import GeoLine from '../../../geometry/line';
+import Line, { create as createLine } from "../line";
+import GeoRect from "../../../geometry/rect";
+import GeoLine from "../../../geometry/line";
 
-describe('Line', () => {
+describe("Line", () => {
   let line;
   let shape;
 
@@ -15,8 +15,8 @@ describe('Line', () => {
     };
   });
 
-  describe('Constructor', () => {
-    it('should instantiate a new Line', () => {
+  describe("Constructor", () => {
+    it("should instantiate a new Line", () => {
       line = createLine();
       expect(line).to.be.an.instanceof(Line);
       expect(line.attrs.x1).to.be.equal(0);
@@ -24,44 +24,44 @@ describe('Line', () => {
       expect(line.attrs.x2).to.be.equal(0);
       expect(line.attrs.y2).to.be.equal(0);
       expect(line.collider).to.be.an.instanceof(GeoLine);
-      expect(line.colliderType).to.equal('line');
+      expect(line.colliderType).to.equal("line");
     });
 
-    it('should accept arguments', () => {
+    it("should accept arguments", () => {
       shape.x1 = 10;
       shape.y1 = 20;
       shape.x2 = 100;
       shape.y2 = 200;
-      shape.collider = { type: 'rect' };
+      shape.collider = { type: "rect" };
       line = createLine(shape);
       expect(line.attrs.x1).to.be.equal(10);
       expect(line.attrs.y1).to.be.equal(20);
       expect(line.attrs.x2).to.be.equal(100);
       expect(line.attrs.y2).to.be.equal(200);
       expect(line.collider).to.be.an.instanceof(GeoRect);
-      expect(line.colliderType).to.equal('rect');
+      expect(line.colliderType).to.equal("rect");
     });
   });
 
-  describe('Set', () => {
-    it('should set correct values', () => {
+  describe("Set", () => {
+    it("should set correct values", () => {
       line = createLine(shape);
       line.set({
         x1: 10,
         y1: 20,
         x2: 100,
         y2: 200,
-        collider: { type: 'rect' },
+        collider: { type: "rect" },
       });
       expect(line.attrs.x1).to.be.equal(10);
       expect(line.attrs.y1).to.be.equal(20);
       expect(line.attrs.x2).to.be.equal(100);
       expect(line.attrs.y2).to.be.equal(200);
       expect(line.collider).to.be.an.instanceof(GeoRect);
-      expect(line.colliderType).to.equal('rect');
+      expect(line.colliderType).to.equal("rect");
     });
 
-    it('should handle no arguments', () => {
+    it("should handle no arguments", () => {
       line = createLine(shape);
       line.set();
       expect(line.attrs.x1).to.be.equal(0);
@@ -69,18 +69,18 @@ describe('Line', () => {
       expect(line.attrs.x2).to.be.equal(0);
       expect(line.attrs.y2).to.be.equal(0);
       expect(line.collider).to.be.an.instanceof(GeoLine);
-      expect(line.colliderType).to.equal('line');
+      expect(line.colliderType).to.equal("line");
     });
 
-    it('should be able to disable the default collider', () => {
+    it("should be able to disable the default collider", () => {
       line = createLine(shape);
       line.set({ collider: { type: null } });
       expect(line.collider).to.equal(null);
     });
   });
 
-  describe('BoundingRect', () => {
-    it('should handle default values', () => {
+  describe("BoundingRect", () => {
+    it("should handle default values", () => {
       line = createLine(shape);
       expect(line.boundingRect()).to.deep.equal({
         x: 0,
@@ -90,7 +90,7 @@ describe('Line', () => {
       });
     });
 
-    it('should return correct value without transformation', () => {
+    it("should return correct value without transformation", () => {
       shape.x1 = 10;
       shape.y1 = 20;
       shape.x2 = 100;
@@ -104,12 +104,12 @@ describe('Line', () => {
       });
     });
 
-    it('should return correct value with a scale transformation', () => {
+    it("should return correct value with a scale transformation", () => {
       shape.x1 = 1;
       shape.y1 = 2;
       shape.x2 = 3;
       shape.y2 = 4;
-      shape.transform = 'scale(2, 3)';
+      shape.transform = "scale(2, 3)";
       line = createLine(shape);
       line.resolveLocalTransform();
       expect(line.boundingRect(true)).to.deep.equal({
@@ -120,12 +120,12 @@ describe('Line', () => {
       });
     });
 
-    it('should return correct value with a translate transformation', () => {
+    it("should return correct value with a translate transformation", () => {
       shape.x1 = 1;
       shape.y1 = 2;
       shape.x2 = 3;
       shape.y2 = 4;
-      shape.transform = 'translate(1, 2)';
+      shape.transform = "translate(1, 2)";
       line = createLine(shape);
       line.resolveLocalTransform();
       expect(line.boundingRect(true)).to.deep.equal({
@@ -136,12 +136,12 @@ describe('Line', () => {
       });
     });
 
-    it('should return correct value with a rotate transformation', () => {
+    it("should return correct value with a rotate transformation", () => {
       shape.x1 = 1;
       shape.y1 = 2;
       shape.x2 = 3;
       shape.y2 = 4;
-      shape.transform = 'rotate(-45)';
+      shape.transform = "rotate(-45)";
       line = createLine(shape);
       line.resolveLocalTransform();
       // TODO Should height/width be zero on a axis aligned line? Account for EPSILON?
@@ -153,7 +153,7 @@ describe('Line', () => {
       });
     });
 
-    it('should return correct value with a negative vector direction', () => {
+    it("should return correct value with a negative vector direction", () => {
       shape.x1 = -1;
       shape.y1 = -2;
       shape.x2 = -3;
@@ -168,8 +168,8 @@ describe('Line', () => {
     });
   });
 
-  describe('Bounds', () => {
-    it('should handle default values', () => {
+  describe("Bounds", () => {
+    it("should handle default values", () => {
       line = createLine(shape);
       const e = [
         { x: 0, y: 0 },
@@ -180,7 +180,7 @@ describe('Line', () => {
       expect(line.bounds()).to.deep.equal(e);
     });
 
-    it('should return correct value without transformation', () => {
+    it("should return correct value without transformation", () => {
       shape.x1 = 1;
       shape.y1 = 2;
       shape.x2 = 3;
@@ -195,12 +195,12 @@ describe('Line', () => {
       expect(line.bounds()).to.deep.equal(e);
     });
 
-    it('should return correct value with a scale transformation', () => {
+    it("should return correct value with a scale transformation", () => {
       shape.x1 = 1;
       shape.y1 = 2;
       shape.x2 = 3;
       shape.y2 = 4;
-      shape.transform = 'scale(2, 3)';
+      shape.transform = "scale(2, 3)";
       line = createLine(shape);
       line.resolveLocalTransform();
       const e = [
@@ -212,12 +212,12 @@ describe('Line', () => {
       expect(line.bounds(true)).to.deep.equal(e);
     });
 
-    it('should return correct value with a translate transformation', () => {
+    it("should return correct value with a translate transformation", () => {
       shape.x1 = 1;
       shape.y1 = 2;
       shape.x2 = 3;
       shape.y2 = 4;
-      shape.transform = 'translate(1, 2)';
+      shape.transform = "translate(1, 2)";
       line = createLine(shape);
       line.resolveLocalTransform();
       const e = [
@@ -229,12 +229,12 @@ describe('Line', () => {
       expect(line.bounds(true)).to.deep.equal(e);
     });
 
-    it('should return correct value with a rotate transformation', () => {
+    it("should return correct value with a rotate transformation", () => {
       shape.x1 = 1;
       shape.y1 = 2;
       shape.x2 = 3;
       shape.y2 = 4;
-      shape.transform = 'rotate(-45)';
+      shape.transform = "rotate(-45)";
       line = createLine(shape);
       line.resolveLocalTransform();
       const e = [
@@ -246,7 +246,7 @@ describe('Line', () => {
       expect(line.bounds(true)).to.deep.equal(e);
     });
 
-    it('should return correct value with a negative vector direction', () => {
+    it("should return correct value with a negative vector direction", () => {
       shape.x1 = -1;
       shape.y1 = -2;
       shape.x2 = -3;
@@ -262,13 +262,13 @@ describe('Line', () => {
     });
   });
 
-  describe('containsPoint', () => {
-    it('should include transformation when resolving collision', () => {
+  describe("containsPoint", () => {
+    it("should include transformation when resolving collision", () => {
       shape.x1 = 0;
       shape.y1 = 0;
       shape.x2 = 0;
       shape.y2 = 4;
-      shape.transform = 'translate(1, 2)';
+      shape.transform = "translate(1, 2)";
       line = createLine(shape);
       line.resolveLocalTransform();
       const p = { x: 1, y: 5 };
@@ -277,13 +277,13 @@ describe('Line', () => {
     });
   });
 
-  describe('intersectsRect', () => {
-    it('should include transformation when resolving collision', () => {
+  describe("intersectsRect", () => {
+    it("should include transformation when resolving collision", () => {
       shape.x1 = 0;
       shape.y1 = 0;
       shape.x2 = 0;
       shape.y2 = 4;
-      shape.transform = 'translate(1, 2)';
+      shape.transform = "translate(1, 2)";
       line = createLine(shape);
       line.resolveLocalTransform();
       const rect = {
@@ -297,13 +297,13 @@ describe('Line', () => {
     });
   });
 
-  describe('intersectsLine', () => {
-    it('should include transformation when resolving collision', () => {
+  describe("intersectsLine", () => {
+    it("should include transformation when resolving collision", () => {
       shape.x1 = 0;
       shape.y1 = 0;
       shape.x2 = 0;
       shape.y2 = 4;
-      shape.transform = 'translate(1, 2)';
+      shape.transform = "translate(1, 2)";
       line = createLine(shape);
       line.resolveLocalTransform();
       const l = {
@@ -317,13 +317,13 @@ describe('Line', () => {
     });
   });
 
-  describe('intersectsCircle', () => {
-    it('should include transformation when resolving collision', () => {
+  describe("intersectsCircle", () => {
+    it("should include transformation when resolving collision", () => {
       shape.x1 = 0;
       shape.y1 = 0;
       shape.x2 = 0;
       shape.y2 = 4;
-      shape.transform = 'translate(1, 2)';
+      shape.transform = "translate(1, 2)";
       line = createLine(shape);
       line.resolveLocalTransform();
       const c = { cx: 1, cy: 5, r: 1 };
@@ -332,13 +332,13 @@ describe('Line', () => {
     });
   });
 
-  describe('intersectsPolygon', () => {
-    it('should include transformation when resolving collision', () => {
+  describe("intersectsPolygon", () => {
+    it("should include transformation when resolving collision", () => {
       shape.x1 = 115;
       shape.y1 = 125;
       shape.x2 = 115;
       shape.y2 = 104;
-      shape.transform = 'translate(-100, -100)';
+      shape.transform = "translate(-100, -100)";
       line = createLine(shape);
       line.resolveLocalTransform();
 

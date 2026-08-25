@@ -20,7 +20,7 @@ function gradientFactory(gradientType) {
 
 class CanvasPattern {}
 
-function canvascontext(contextType = '2d') {
+function canvascontext(contextType = "2d") {
   let item = {
     save: sinon.spy(),
     beginPath: sinon.spy(),
@@ -35,10 +35,10 @@ function canvascontext(contextType = '2d') {
     measureText: (text) => ({ width: text.length }),
   };
 
-  if (contextType === '2d') {
-    item.createRadialGradient = gradientFactory('radial');
-    item.createLinearGradient = gradientFactory('linear');
-    item.createConicGradient = gradientFactory('conic');
+  if (contextType === "2d") {
+    item.createRadialGradient = gradientFactory("radial");
+    item.createLinearGradient = gradientFactory("linear");
+    item.createConicGradient = gradientFactory("conic");
   }
 
   return item;

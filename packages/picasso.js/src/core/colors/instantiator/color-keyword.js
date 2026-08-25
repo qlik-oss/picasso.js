@@ -1,4 +1,4 @@
-import RgbaColor from '../rgba-color';
+import RgbaColor from "../rgba-color";
 
 const colorStruct = {
   aliceblue: { r: 240, g: 248, b: 255 },
@@ -176,7 +176,7 @@ export default function colorKeyWord(colStr) {
  * colorKeyWord.test( "yellowgreen" );
  */
 colorKeyWord.test = (colStr) => {
-  if (colStr === null || colStr === undefined || typeof colStr !== 'string') {
+  if (colStr === null || colStr === undefined || typeof colStr !== "string") {
     return false;
   }
   const key = colStr.toLowerCase().trim();

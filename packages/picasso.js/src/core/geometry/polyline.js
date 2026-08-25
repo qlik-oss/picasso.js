@@ -1,4 +1,4 @@
-import { pointsToLine, pointsToRect } from './util';
+import { pointsToLine, pointsToRect } from "./util";
 import {
   testCircleLine,
   testPolygonLine,
@@ -6,7 +6,7 @@ import {
   testLineLine,
   testRectLine,
   testGeoPolygonLine,
-} from '../math/narrow-phase-collision';
+} from "../math/narrow-phase-collision";
 
 function pointsAreNotEqual(p0, p1) {
   return p0.x !== p1.x || p0.y !== p1.y;
@@ -22,7 +22,7 @@ class GeoPolyline {
   }
 
   set({ points = [] } = {}) {
-    this.type = 'polyline';
+    this.type = "polyline";
     this.segments = [];
     this._points = points.slice();
 

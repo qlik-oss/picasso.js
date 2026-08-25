@@ -1,5 +1,5 @@
-import { createTree } from '../node-tree';
-import { creator, maintainer, destroyer } from './svg-nodes';
+import { createTree } from "../node-tree";
+import { creator, maintainer, destroyer } from "./svg-nodes";
 
 export default class TreeItemRenderer {
   /**

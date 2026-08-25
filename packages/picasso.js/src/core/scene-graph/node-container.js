@@ -1,4 +1,4 @@
-import Node from './node';
+import Node from "./node";
 
 class NodeContainer extends Node {
   addChild(c) {
@@ -7,11 +7,11 @@ class NodeContainer extends Node {
     }
 
     if (c === this) {
-      throw new Error('Can not add itself as child!');
+      throw new Error("Can not add itself as child!");
     }
 
     if (c._children && c._children.length && this.ancestors.indexOf(c) >= 0) {
-      throw new Error('Can not add an ancestor as child!');
+      throw new Error("Can not add an ancestor as child!");
     }
 
     if (c._parent && c._parent !== this) {

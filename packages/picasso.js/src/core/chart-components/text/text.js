@@ -1,10 +1,10 @@
-import extend from 'extend';
+import extend from "extend";
 
 function parseTitle(text, join, scale) {
-  let title = '';
-  if (typeof text === 'function') {
+  let title = "";
+  if (typeof text === "function") {
     title = text();
-  } else if (typeof text === 'string') {
+  } else if (typeof text === "string") {
     title = text;
   } else if (scale) {
     let data = scale.data();
@@ -16,72 +16,72 @@ function parseTitle(text, join, scale) {
 }
 
 function getTextAnchor(dock, anchor) {
-  let val = 'middle';
-  if (dock === 'left') {
-    if (anchor === 'top') {
-      val = 'end';
-    } else if (anchor === 'bottom') {
-      val = 'start';
+  let val = "middle";
+  if (dock === "left") {
+    if (anchor === "top") {
+      val = "end";
+    } else if (anchor === "bottom") {
+      val = "start";
     }
-  } else if (dock === 'right') {
-    if (anchor === 'top') {
-      val = 'start';
-    } else if (anchor === 'bottom') {
-      val = 'end';
+  } else if (dock === "right") {
+    if (anchor === "top") {
+      val = "start";
+    } else if (anchor === "bottom") {
+      val = "end";
     }
-  } else if (anchor === 'left') {
-    val = 'start';
-  } else if (anchor === 'right') {
-    val = 'end';
+  } else if (anchor === "left") {
+    val = "start";
+  } else if (anchor === "right") {
+    val = "end";
   }
   return val;
 }
 
 function generateTitle({ title, definitionSettings, dock, rect, measureText, style }) {
   const struct = {
-    type: 'text',
+    type: "text",
     text: title,
     x: 0,
     y: 0,
     dx: 0,
     dy: 0,
     anchor: getTextAnchor(dock, definitionSettings.anchor),
-    baseline: 'alphabetical',
-    stroke: 'transparent',
+    baseline: "alphabetical",
+    stroke: "transparent",
     strokeWidth: 0,
-    fontWeight: 'normal',
+    fontWeight: "normal",
   };
 
   extend(struct, style.text);
   const textRect = measureText(struct);
 
-  if (dock === 'top' || dock === 'bottom') {
+  if (dock === "top" || dock === "bottom") {
     let x = rect.width / 2;
-    if (definitionSettings.anchor === 'left') {
+    if (definitionSettings.anchor === "left") {
       x = definitionSettings.paddingLeft || 0;
-    } else if (definitionSettings.anchor === 'right') {
+    } else if (definitionSettings.anchor === "right") {
       x = rect.width - (definitionSettings.paddingRight || 0);
     }
 
     struct.x = x;
     struct.y =
-      dock === 'top'
+      dock === "top"
         ? rect.height - definitionSettings.paddingStart
         : definitionSettings.paddingStart + textRect.height;
-    struct.dy = dock === 'top' ? -(textRect.height / 6) : -(textRect.height / 3);
+    struct.dy = dock === "top" ? -(textRect.height / 6) : -(textRect.height / 3);
     struct.maxWidth = rect.width * 0.8;
   } else {
     let y = rect.height / 2;
-    if (definitionSettings.anchor === 'top') {
+    if (definitionSettings.anchor === "top") {
       y = definitionSettings.paddingStart;
-    } else if (definitionSettings.anchor === 'bottom') {
+    } else if (definitionSettings.anchor === "bottom") {
       y = rect.height - definitionSettings.paddingStart;
     }
 
     struct.y = y;
-    struct.x = dock === 'left' ? rect.width - definitionSettings.paddingStart : definitionSettings.paddingStart;
-    struct.dx = dock === 'left' ? -(textRect.height / 3) : textRect.height / 3;
-    const rotation = dock === 'left' ? 270 : 90;
+    struct.x = dock === "left" ? rect.width - definitionSettings.paddingStart : definitionSettings.paddingStart;
+    struct.dx = dock === "left" ? -(textRect.height / 3) : textRect.height / 3;
+    const rotation = dock === "left" ? 270 : 90;
     struct.transform = `rotate(${rotation}, ${struct.x + struct.dx}, ${struct.y + struct.dy})`;
     struct.maxWidth = rect.height * 0.8;
   }
@@ -136,10 +136,10 @@ function generateTitle({ title, definitionSettings, dock, rect, measureText, sty
  * @property {number} [opacity=1] - Opacity of text
  */
 const textComponent = {
-  require: ['renderer', 'chart'],
+  require: ["renderer", "chart"],
   defaultSettings: {
     layout: {
-      dock: 'bottom',
+      dock: "bottom",
       displayOrder: 0,
       prioOrder: 0,
     },
@@ -148,12 +148,12 @@ const textComponent = {
       paddingEnd: 5,
       paddingLeft: 0,
       paddingRight: 0,
-      anchor: 'center',
-      join: ', ',
+      anchor: "center",
+      join: ", ",
       maxLengthPx: NaN,
     },
     style: {
-      text: '$title',
+      text: "$title",
     },
   },
 
@@ -185,7 +185,7 @@ const textComponent = {
         rect,
         measureText: this.renderer.measureText,
         style: this.style,
-      })
+      }),
     );
     return nodes;
   },

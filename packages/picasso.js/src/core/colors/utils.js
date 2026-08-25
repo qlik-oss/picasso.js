@@ -1,4 +1,4 @@
-import color from './color';
+import color from "./color";
 
 /**
  * @memberof picasso.color
@@ -16,7 +16,7 @@ const utils = {
    */
   linearGradient: (direction, colors, percentage) => {
     let cssColors;
-    if (typeof colors === 'function' && colors.domain) {
+    if (typeof colors === "function" && colors.domain) {
       const inputDomain = colors.domain();
 
       cssColors = inputDomain.map((d) => colors(d)).join();
@@ -25,7 +25,7 @@ const utils = {
     }
 
     if (percentage) {
-      let result = '',
+      let result = "",
         interval = 100 / colors.length,
         percent = 0;
 

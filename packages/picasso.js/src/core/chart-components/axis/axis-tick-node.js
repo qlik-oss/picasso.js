@@ -1,20 +1,20 @@
-import extend from 'extend';
+import extend from "extend";
 
 function appendStyle(struct, buildOpts) {
   extend(struct, buildOpts.style);
 }
 
 function appendPadding(struct, buildOpts) {
-  if (buildOpts.align === 'top') {
+  if (buildOpts.align === "top") {
     struct.y1 -= buildOpts.padding;
     struct.y2 -= buildOpts.padding;
-  } else if (buildOpts.align === 'bottom') {
+  } else if (buildOpts.align === "bottom") {
     struct.y1 += buildOpts.padding;
     struct.y2 += buildOpts.padding;
-  } else if (buildOpts.align === 'left') {
+  } else if (buildOpts.align === "left") {
     struct.x1 -= buildOpts.padding;
     struct.x2 -= buildOpts.padding;
-  } else if (buildOpts.align === 'right') {
+  } else if (buildOpts.align === "right") {
     struct.x1 += buildOpts.padding;
     struct.x2 += buildOpts.padding;
   }
@@ -42,7 +42,7 @@ function adjustForEnds(struct, buildOpts) {
 
 export default function buildNode(tick, buildOpts) {
   const struct = {
-    type: 'line',
+    type: "line",
     x1: 0,
     x2: 0,
     y1: 0,
@@ -53,15 +53,15 @@ export default function buildNode(tick, buildOpts) {
     tickValue: tick.value,
   };
 
-  if (buildOpts.align === 'top' || buildOpts.align === 'bottom') {
+  if (buildOpts.align === "top" || buildOpts.align === "bottom") {
     struct.x1 = struct.x2 = tick.position * buildOpts.innerRect.width + (buildOpts.innerRect.x - buildOpts.outerRect.x);
-    struct.y1 = buildOpts.align === 'top' ? buildOpts.innerRect.height : 0;
-    struct.y2 = buildOpts.align === 'top' ? struct.y1 - buildOpts.tickSize : struct.y1 + buildOpts.tickSize;
+    struct.y1 = buildOpts.align === "top" ? buildOpts.innerRect.height : 0;
+    struct.y2 = buildOpts.align === "top" ? struct.y1 - buildOpts.tickSize : struct.y1 + buildOpts.tickSize;
   } else {
     struct.y1 = struct.y2 =
       tick.position * buildOpts.innerRect.height + (buildOpts.innerRect.y - buildOpts.outerRect.y);
-    struct.x1 = buildOpts.align === 'left' ? buildOpts.innerRect.width : 0;
-    struct.x2 = buildOpts.align === 'left' ? struct.x1 - buildOpts.tickSize : struct.x1 + buildOpts.tickSize;
+    struct.x1 = buildOpts.align === "left" ? buildOpts.innerRect.width : 0;
+    struct.x2 = buildOpts.align === "left" ? struct.x1 - buildOpts.tickSize : struct.x1 + buildOpts.tickSize;
   }
 
   appendStyle(struct, buildOpts);

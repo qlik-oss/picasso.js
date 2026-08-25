@@ -1,4 +1,4 @@
-import EventEmitter from 'node-event-emitter';
+import EventEmitter from "node-event-emitter";
 
 export default {
   /**

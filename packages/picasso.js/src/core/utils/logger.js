@@ -68,7 +68,7 @@ const loggerFn = ({ level = LOG_LEVEL.OFF, pipe = console } = {}) => {
      * @param {number} lev - The log level
      */
     level: (lev) => {
-      if (typeof lev === 'number') {
+      if (typeof lev === "number") {
         currentlevel = lev;
       }
       return currentlevel;

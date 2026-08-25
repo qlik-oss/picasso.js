@@ -1,8 +1,8 @@
-import GeoLine from '../line';
+import GeoLine from "../line";
 
-describe('GeoLine', () => {
-  describe('constructor', () => {
-    it('should set correct default values when no arguments passed', () => {
+describe("GeoLine", () => {
+  describe("constructor", () => {
+    it("should set correct default values when no arguments passed", () => {
       const l = new GeoLine();
 
       expect(l.x1).to.equal(0);
@@ -12,7 +12,7 @@ describe('GeoLine', () => {
       expect(l.tolerance).to.equal(0);
     });
 
-    it('should set the correct values when arguments passed', () => {
+    it("should set the correct values when arguments passed", () => {
       const l = new GeoLine({
         x1: 1,
         y1: 2,
@@ -29,8 +29,8 @@ describe('GeoLine', () => {
     });
   });
 
-  describe('set', () => {
-    it('should set the correct values', () => {
+  describe("set", () => {
+    it("should set the correct values", () => {
       const l = new GeoLine();
       l.set({
         x1: 6,
@@ -47,7 +47,7 @@ describe('GeoLine', () => {
       expect(l.tolerance).to.equal(10);
     });
 
-    it('should handle no arguments', () => {
+    it("should handle no arguments", () => {
       const l = new GeoLine({
         x1: 6,
         y1: 7,
@@ -65,8 +65,8 @@ describe('GeoLine', () => {
     });
   });
 
-  describe('points', () => {
-    it('should return the correct points', () => {
+  describe("points", () => {
+    it("should return the correct points", () => {
       const l = new GeoLine({
           x1: 5,
           y1: 6,
@@ -80,9 +80,9 @@ describe('GeoLine', () => {
     });
   });
 
-  describe('Intersection', () => {
-    describe('Point', () => {
-      it('should intersect point on a horizontal line segment', () => {
+  describe("Intersection", () => {
+    describe("Point", () => {
+      it("should intersect point on a horizontal line segment", () => {
         const line = new GeoLine({
           x1: 1,
           y1: 3,
@@ -98,7 +98,7 @@ describe('GeoLine', () => {
         expect(line.containsPoint(end)).to.equal(true);
       });
 
-      it('should intersect point on a vertical line segment', () => {
+      it("should intersect point on a vertical line segment", () => {
         const line = new GeoLine({
           x1: 3,
           y1: 1,
@@ -114,7 +114,7 @@ describe('GeoLine', () => {
         expect(line.containsPoint(end)).to.equal(true);
       });
 
-      it('should intersect point on a angled line segment', () => {
+      it("should intersect point on a angled line segment", () => {
         const line = new GeoLine({
           x1: -3,
           y1: 0,
@@ -130,7 +130,7 @@ describe('GeoLine', () => {
         expect(line.containsPoint(end)).to.equal(true);
       });
 
-      it('should not intersect point if outside vertical line segment', () => {
+      it("should not intersect point if outside vertical line segment", () => {
         const line = new GeoLine({
           x1: 3,
           y1: 1,
@@ -144,7 +144,7 @@ describe('GeoLine', () => {
         expect(line.containsPoint(p2)).to.equal(false);
       });
 
-      it('should not intersect point if outside angled line segment', () => {
+      it("should not intersect point if outside angled line segment", () => {
         const line = new GeoLine({
           x1: -3,
           y1: 0,
@@ -158,7 +158,7 @@ describe('GeoLine', () => {
         expect(line.containsPoint(p2)).to.equal(false);
       });
 
-      it('should intersect point with tolerance on line segment', () => {
+      it("should intersect point with tolerance on line segment", () => {
         const line = new GeoLine({
           x1: 0,
           y1: 0,
@@ -175,7 +175,7 @@ describe('GeoLine', () => {
         expect(line.containsPoint(end)).to.equal(true);
       });
 
-      it('should not intersect point if line segment has zero size', () => {
+      it("should not intersect point if line segment has zero size", () => {
         const line = new GeoLine({
           x1: 1,
           y1: 1,
@@ -190,8 +190,8 @@ describe('GeoLine', () => {
       });
     });
 
-    describe('Line', () => {
-      it('should intersect perpendicular axis-aligned line segments', () => {
+    describe("Line", () => {
+      it("should intersect perpendicular axis-aligned line segments", () => {
         const line = new GeoLine({
           x1: 4,
           y1: 0,
@@ -216,7 +216,7 @@ describe('GeoLine', () => {
         expect(line.intersectsLine(atEnd)).to.equal(true);
       });
 
-      it('should not intersect perpendicular axis-aligned line segments', () => {
+      it("should not intersect perpendicular axis-aligned line segments", () => {
         const line = new GeoLine({
           x1: 4,
           y1: 0,
@@ -236,7 +236,7 @@ describe('GeoLine', () => {
         expect(line.intersectsLine(outsideEnd)).to.equal(false);
       });
 
-      it('should intersect perpendicular non-axis-aligned line segments', () => {
+      it("should intersect perpendicular non-axis-aligned line segments", () => {
         const line = new GeoLine({
           x1: -3,
           y1: -3,
@@ -261,7 +261,7 @@ describe('GeoLine', () => {
         expect(line.intersectsLine(atEnd)).to.equal(true);
       });
 
-      it('should not intersect perpendicular non-axis-aligned line segments', () => {
+      it("should not intersect perpendicular non-axis-aligned line segments", () => {
         const line = new GeoLine({
           x1: -3,
           y1: -3,
@@ -281,7 +281,7 @@ describe('GeoLine', () => {
         expect(line.intersectsLine(atEnd)).to.equal(false);
       });
 
-      it('should intersect non-perpendicular non-axis-aligned line segments', () => {
+      it("should intersect non-perpendicular non-axis-aligned line segments", () => {
         const line = new GeoLine({
           x1: 0,
           y1: 0,
@@ -311,7 +311,7 @@ describe('GeoLine', () => {
         expect(line.intersectsLine(line5)).to.equal(true);
       });
 
-      it('should not intersect non-perpendicular non-axis-aligned line segments', () => {
+      it("should not intersect non-perpendicular non-axis-aligned line segments", () => {
         const line = new GeoLine({
           x1: 0,
           y1: 0,
@@ -331,7 +331,7 @@ describe('GeoLine', () => {
         expect(line.intersectsLine(line3)).to.equal(false);
       });
 
-      it('should intersect collinear axis-aligned line segments', () => {
+      it("should intersect collinear axis-aligned line segments", () => {
         const line = new GeoLine({
           x1: 0,
           y1: 0,
@@ -371,7 +371,7 @@ describe('GeoLine', () => {
         expect(line.intersectsLine(line7)).to.equal(true);
       });
 
-      it('should not intersect if any of the line segment has zero size', () => {
+      it("should not intersect if any of the line segment has zero size", () => {
         const line = new GeoLine({
           x1: 1,
           y1: 1,
@@ -399,8 +399,8 @@ describe('GeoLine', () => {
       });
     });
 
-    describe('Rect', () => {
-      it('should intersect if line is inside rect', () => {
+    describe("Rect", () => {
+      it("should intersect if line is inside rect", () => {
         const line = new GeoLine({
           x1: 0,
           y1: 0,
@@ -417,7 +417,7 @@ describe('GeoLine', () => {
         expect(line.intersectsRect(rectVertices)).to.equal(true);
       });
 
-      it('should intersect if start or end of line is inside rect', () => {
+      it("should intersect if start or end of line is inside rect", () => {
         const line = new GeoLine({
           x1: -10,
           y1: -10,
@@ -441,7 +441,7 @@ describe('GeoLine', () => {
         expect(line2.intersectsRect(rectVertices)).to.equal(true);
       });
 
-      it('should intersect if line is collinear with rect circumference', () => {
+      it("should intersect if line is collinear with rect circumference", () => {
         const line = new GeoLine({
           x1: -1,
           y1: 0,
@@ -465,7 +465,7 @@ describe('GeoLine', () => {
         expect(line2.intersectsRect(rectVertices)).to.equal(true);
       });
 
-      it('should intersect if line is coincident with rect circumference', () => {
+      it("should intersect if line is coincident with rect circumference", () => {
         const line = new GeoLine({
           x1: 0,
           y1: 0,
@@ -489,7 +489,7 @@ describe('GeoLine', () => {
         expect(line2.intersectsRect(rectVertices)).to.equal(true);
       });
 
-      it('should intersect if line is axis-aligned and crossing rect', () => {
+      it("should intersect if line is axis-aligned and crossing rect", () => {
         const line = new GeoLine({
           x1: 3,
           y1: -1,
@@ -513,7 +513,7 @@ describe('GeoLine', () => {
         expect(line2.intersectsRect(rectVertices)).to.equal(true);
       });
 
-      it('should intersect if line is non-axis-aligned and crossing rect', () => {
+      it("should intersect if line is non-axis-aligned and crossing rect", () => {
         const line = new GeoLine({
           x1: -1,
           y1: -1,
@@ -530,7 +530,7 @@ describe('GeoLine', () => {
         expect(line.intersectsRect(rectVertices)).to.equal(true);
       });
 
-      it('should intersect if line start or end is on rect circumference', () => {
+      it("should intersect if line start or end is on rect circumference", () => {
         const line = new GeoLine({
           x1: 6,
           y1: 6,
@@ -554,7 +554,7 @@ describe('GeoLine', () => {
         expect(line2.intersectsRect(rectVertices)).to.equal(true);
       });
 
-      it('should not intersect if line outside rect circumference', () => {
+      it("should not intersect if line outside rect circumference", () => {
         const line = new GeoLine({
           x1: 7,
           y1: 7,
@@ -592,7 +592,7 @@ describe('GeoLine', () => {
         expect(line4.intersectsRect(rectVertices)).to.equal(false);
       });
 
-      it('should not intersect if line segment has zero size', () => {
+      it("should not intersect if line segment has zero size", () => {
         const line = new GeoLine({
           x1: 1,
           y1: 1,
@@ -609,7 +609,7 @@ describe('GeoLine', () => {
         expect(line.intersectsRect(rectVertices)).to.equal(false);
       });
 
-      it('should not intersect if rect has zero size', () => {
+      it("should not intersect if rect has zero size", () => {
         const line = new GeoLine({
           x1: 0,
           y1: 0,
@@ -627,8 +627,8 @@ describe('GeoLine', () => {
       });
     });
 
-    describe('Circle', () => {
-      it('should intersect a collinear line that start or end inside circle circumference', () => {
+    describe("Circle", () => {
+      it("should intersect a collinear line that start or end inside circle circumference", () => {
         const line = new GeoLine({
           x1: 0,
           y1: 0,
@@ -647,7 +647,7 @@ describe('GeoLine', () => {
         expect(line2.intersectsCircle(c)).to.equal(true);
       });
 
-      it('should intersect a collinear line that crosses the circle circumference', () => {
+      it("should intersect a collinear line that crosses the circle circumference", () => {
         const line = new GeoLine({
           x1: 0,
           y1: 0,
@@ -659,7 +659,7 @@ describe('GeoLine', () => {
         expect(line.intersectsCircle(c)).to.equal(true);
       });
 
-      it('should intersect a axis-aligned line that start or end inside circle circumference', () => {
+      it("should intersect a axis-aligned line that start or end inside circle circumference", () => {
         const line = new GeoLine({
           x1: 0,
           y1: 9,
@@ -678,7 +678,7 @@ describe('GeoLine', () => {
         expect(line2.intersectsCircle(c)).to.equal(true);
       });
 
-      it('should intersect a axis-aligned line that crosses the circle circumference', () => {
+      it("should intersect a axis-aligned line that crosses the circle circumference", () => {
         const line = new GeoLine({
           x1: 0,
           y1: 7,
@@ -697,7 +697,7 @@ describe('GeoLine', () => {
         expect(line2.intersectsCircle(c)).to.equal(true);
       });
 
-      it('should not intersect a axis-aligned line outside the circle circumference', () => {
+      it("should not intersect a axis-aligned line outside the circle circumference", () => {
         const line = new GeoLine({
           x1: 0,
           y1: 6,
@@ -716,7 +716,7 @@ describe('GeoLine', () => {
         expect(line2.intersectsCircle(c)).to.equal(false);
       });
 
-      it('should not intersect a collinear line that doesnt not cross or start/end on circle circumference', () => {
+      it("should not intersect a collinear line that doesnt not cross or start/end on circle circumference", () => {
         const line = new GeoLine({
           x1: 0,
           y1: 0,
@@ -735,7 +735,7 @@ describe('GeoLine', () => {
         expect(line2.intersectsCircle(c)).to.equal(false);
       });
 
-      it('should not intersect if line segment has zero size', () => {
+      it("should not intersect if line segment has zero size", () => {
         const line = new GeoLine({
           x1: 1,
           y1: 1,
@@ -747,7 +747,7 @@ describe('GeoLine', () => {
         expect(line.intersectsCircle(c)).to.equal(false);
       });
 
-      it('should not intersect if circle has zero size', () => {
+      it("should not intersect if circle has zero size", () => {
         const line = new GeoLine({
           x1: 0,
           y1: 0,

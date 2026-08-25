@@ -1,6 +1,6 @@
-import extend from 'extend';
-import DisplayObject from './display-object';
-import NodeContainer from '../node-container';
+import extend from "extend";
+import DisplayObject from "./display-object";
+import NodeContainer from "../node-container";
 
 /**
  * @private
@@ -13,7 +13,7 @@ const NC = NodeContainer.prototype;
 
 export default class Container extends DisplayObject {
   constructor(s = {}) {
-    const { type = 'container' } = s;
+    const { type = "container" } = s;
     super(type);
     this.set(s);
   }
@@ -26,7 +26,7 @@ export default class Container extends DisplayObject {
       {
         type: null,
       },
-      collider
+      collider,
     );
 
     this.collider = opts;
@@ -35,7 +35,7 @@ export default class Container extends DisplayObject {
   }
 
   appendChildRect(child, includeTransform) {
-    if (typeof child.bounds !== 'undefined') {
+    if (typeof child.bounds !== "undefined") {
       const rect = this.__boundingRect[includeTransform] || {};
       const [p0, , p2] = child.bounds(includeTransform);
       const { x: xMin, y: yMin } = p0;
@@ -71,7 +71,7 @@ export default class Container extends DisplayObject {
         width: 0,
         height: 0,
       },
-      this.__boundingRect[includeTransform]
+      this.__boundingRect[includeTransform],
     );
 
     return this.__boundingRect[includeTransform];
@@ -95,17 +95,17 @@ export default class Container extends DisplayObject {
   addChild(c) {
     const r = NC.addChild.call(this, c);
 
-    if (this._collider && this._collider.type === 'bounds') {
+    if (this._collider && this._collider.type === "bounds") {
       this.appendChildRect(c, true);
       const opts = extend(
         {
-          type: 'bounds',
+          type: "bounds",
           x: 0,
           y: 0,
           width: 0,
           height: 0,
         },
-        this.__boundingRect.true
+        this.__boundingRect.true,
       );
       this.collider = opts;
     }
@@ -117,19 +117,19 @@ export default class Container extends DisplayObject {
     const r = NC.addChildren.call(this, children);
     const num = children.length;
 
-    if (this._collider && this._collider.type === 'bounds' && num > 0) {
+    if (this._collider && this._collider.type === "bounds" && num > 0) {
       for (let i = 0; i < num; i++) {
         this.appendChildRect(children[i], true);
       }
       const opts = extend(
         {
-          type: 'bounds',
+          type: "bounds",
           x: 0,
           y: 0,
           width: 0,
           height: 0,
         },
-        this.__boundingRect.true
+        this.__boundingRect.true,
       );
       this.collider = opts;
     }
@@ -149,10 +149,10 @@ export default class Container extends DisplayObject {
 
     NC.removeChild.call(this, c);
 
-    if (this._collider && this._collider.type === 'bounds') {
+    if (this._collider && this._collider.type === "bounds") {
       this.__boundingRect = { true: null, false: null };
       this.__bounds = { true: null, false: null };
-      const opts = extend(this.boundingRect(true), { type: 'bounds' });
+      const opts = extend(this.boundingRect(true), { type: "bounds" });
       this.collider = opts;
     }
 
@@ -162,10 +162,10 @@ export default class Container extends DisplayObject {
   removeChildren(children) {
     NC.removeChildren.call(this, children);
 
-    if (this._collider && this._collider.type === 'bounds') {
+    if (this._collider && this._collider.type === "bounds") {
       this.__boundingRect = { true: null, false: null };
       this.__bounds = { true: null, false: null };
-      const opts = extend(this.boundingRect(true), { type: 'bounds' });
+      const opts = extend(this.boundingRect(true), { type: "bounds" });
       this.collider = opts;
     }
 

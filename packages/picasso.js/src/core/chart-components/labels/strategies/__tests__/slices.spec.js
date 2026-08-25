@@ -1,8 +1,8 @@
-import { getSliceRect, slices } from '../slices';
+import { getSliceRect, slices } from "../slices";
 
-describe('labeling - slices', () => {
-  describe('slice rects', () => {
-    it('inside Q1 - OK', () => {
+describe("labeling - slices", () => {
+  describe("slice rects", () => {
+    it("inside Q1 - OK", () => {
       expect(
         getSliceRect({
           slice: {
@@ -12,21 +12,21 @@ describe('labeling - slices', () => {
             innerRadius: 0,
             outerRadius: 15,
           },
-          position: 'into',
+          position: "into",
           padding: 1,
           measured: { width: 5, height: 4 },
           store: { insideLabelBounds: [] },
-        })
+        }),
       ).to.eql({
         x: 5,
         y: -8,
         width: 6,
         height: 4,
-        baseline: 'top',
+        baseline: "top",
       });
     });
 
-    it('inside Q2 - OK', () => {
+    it("inside Q2 - OK", () => {
       expect(
         getSliceRect({
           slice: {
@@ -36,21 +36,21 @@ describe('labeling - slices', () => {
             innerRadius: 0,
             outerRadius: 15,
           },
-          position: 'into',
+          position: "into",
           padding: 1,
           measured: { width: 5, height: 4 },
           store: { insideLabelBounds: [] },
-        })
+        }),
       ).to.eql({
         x: 5,
         y: 4,
         width: 6,
         height: 4,
-        baseline: 'top',
+        baseline: "top",
       });
     });
 
-    it('opposite Q3 - OK', () => {
+    it("opposite Q3 - OK", () => {
       expect(
         getSliceRect({
           slice: {
@@ -60,21 +60,21 @@ describe('labeling - slices', () => {
             innerRadius: 15,
             outerRadius: 20,
           },
-          position: 'inside',
+          position: "inside",
           padding: 1,
           measured: { width: 5, height: 4 },
           store: { insideLabelBounds: [] },
-        })
+        }),
       ).to.eql({
         x: -11,
         y: 4,
         width: 6,
         height: 4,
-        baseline: 'top',
+        baseline: "top",
       });
     });
 
-    it('inside Q3 - Is overlapping another label', () => {
+    it("inside Q3 - Is overlapping another label", () => {
       expect(
         getSliceRect({
           slice: {
@@ -84,7 +84,7 @@ describe('labeling - slices', () => {
             innerRadius: 15,
             outerRadius: 20,
           },
-          position: 'inside',
+          position: "inside",
           padding: 1,
           measured: { width: 5, height: 4 },
           store: {
@@ -97,11 +97,11 @@ describe('labeling - slices', () => {
               },
             ],
           },
-        })
+        }),
       ).to.eql(null);
     });
 
-    it('inside Q4 - Do not fit', () => {
+    it("inside Q4 - Do not fit", () => {
       expect(
         getSliceRect({
           slice: {
@@ -111,15 +111,15 @@ describe('labeling - slices', () => {
             innerRadius: 0,
             outerRadius: 15,
           },
-          position: 'into',
+          position: "into",
           padding: 1,
           measured: { width: 6, height: 4 },
           store: { insideLabelBounds: [] },
-        })
+        }),
       ).to.eql(null);
     });
 
-    it('rotated outside', () => {
+    it("rotated outside", () => {
       let epsilon = 0.0001;
       let bounds = getSliceRect({
         slice: {
@@ -129,8 +129,8 @@ describe('labeling - slices', () => {
           innerRadius: 15,
           outerRadius: 20,
         },
-        direction: 'rotate',
-        position: 'outside',
+        direction: "rotate",
+        position: "outside",
         padding: 1,
         measured: { width: 5, height: 4 },
         view: {
@@ -140,15 +140,15 @@ describe('labeling - slices', () => {
           height: 100,
         },
       });
-      expect(bounds).property('anchor').to.equal('start');
-      expect(bounds).property('angle').to.equal(0);
-      expect(bounds).property('x').to.equal(21);
-      expect(bounds).property('y').to.closeTo(0, epsilon);
-      expect(bounds).property('width').to.equal(6);
-      expect(bounds).property('height').to.equal(4);
+      expect(bounds).property("anchor").to.equal("start");
+      expect(bounds).property("angle").to.equal(0);
+      expect(bounds).property("x").to.equal(21);
+      expect(bounds).property("y").to.closeTo(0, epsilon);
+      expect(bounds).property("width").to.equal(6);
+      expect(bounds).property("height").to.equal(4);
     });
 
-    it('rotated into', () => {
+    it("rotated into", () => {
       let epsilon = 0.0001;
       let bounds = getSliceRect({
         slice: {
@@ -158,8 +158,8 @@ describe('labeling - slices', () => {
           innerRadius: 15,
           outerRadius: 20,
         },
-        direction: 'rotate',
-        position: 'into',
+        direction: "rotate",
+        position: "into",
         padding: 1,
         measured: { width: 6, height: 4 },
         view: {
@@ -169,16 +169,16 @@ describe('labeling - slices', () => {
           height: 100,
         },
       });
-      expect(bounds).property('anchor').to.equal('end');
-      expect(bounds).property('angle').to.equal(0);
-      expect(bounds).property('x').to.equal(19);
-      expect(bounds).property('y').to.closeTo(0, epsilon);
-      expect(bounds).property('width').to.equal(3);
-      expect(bounds).property('height').to.equal(4);
+      expect(bounds).property("anchor").to.equal("end");
+      expect(bounds).property("angle").to.equal(0);
+      expect(bounds).property("x").to.equal(19);
+      expect(bounds).property("y").to.closeTo(0, epsilon);
+      expect(bounds).property("width").to.equal(3);
+      expect(bounds).property("height").to.equal(4);
     });
 
-    describe('should require text width to be equal to or larger than first character plus ellipsing', () => {
-      it('given position is `into` and direction `rotate`', () => {
+    describe("should require text width to be equal to or larger than first character plus ellipsing", () => {
+      it("given position is `into` and direction `rotate`", () => {
         expect(
           getSliceRect({
             slice: {
@@ -188,16 +188,16 @@ describe('labeling - slices', () => {
               innerRadius: 0,
               outerRadius: 15,
             },
-            position: 'into',
-            direction: 'rotate',
+            position: "into",
+            direction: "rotate",
             padding: 1,
             measured: { width: 6, height: 4, minReqWidth: Infinity },
             store: { insideLabelBounds: [] },
-          })
+          }),
         ).to.equal(null);
       });
 
-      it('given position is `inside` and direction `rotate`', () => {
+      it("given position is `inside` and direction `rotate`", () => {
         expect(
           getSliceRect({
             slice: {
@@ -207,16 +207,16 @@ describe('labeling - slices', () => {
               innerRadius: 0,
               outerRadius: 15,
             },
-            position: 'inside',
-            direction: 'rotate',
+            position: "inside",
+            direction: "rotate",
             padding: 1,
             measured: { width: 6, height: 4, minReqWidth: Infinity },
             store: { insideLabelBounds: [] },
-          })
+          }),
         ).to.equal(null);
       });
 
-      it('given position is `outside` and direction `rotate`', () => {
+      it("given position is `outside` and direction `rotate`", () => {
         expect(
           getSliceRect({
             slice: {
@@ -226,8 +226,8 @@ describe('labeling - slices', () => {
               innerRadius: 15,
               outerRadius: 20,
             },
-            direction: 'rotate',
-            position: 'outside',
+            direction: "rotate",
+            position: "outside",
             padding: 1,
             view: {
               x: -50,
@@ -236,11 +236,11 @@ describe('labeling - slices', () => {
               height: 100,
             },
             measured: { width: 6, height: 4, minReqWidth: Infinity },
-          })
+          }),
         ).to.equal(null);
       });
 
-      it('given position is `outside` and direction `horizontal`', () => {
+      it("given position is `outside` and direction `horizontal`", () => {
         expect(
           getSliceRect({
             slice: {
@@ -256,8 +256,8 @@ describe('labeling - slices', () => {
               q3minY: 0,
               q4maxY: 0,
             },
-            direction: 'horizontal',
-            position: 'outside',
+            direction: "horizontal",
+            position: "outside",
             padding: 1,
             view: {
               x: -50,
@@ -266,13 +266,13 @@ describe('labeling - slices', () => {
               height: 100,
             },
             measured: { width: 6, height: 4, minReqWidth: Infinity },
-          })
+          }),
         ).to.equal(null);
       });
     });
   });
 
-  describe('slice strategy', () => {
+  describe("slice strategy", () => {
     let chart;
     let renderer;
     let rect;
@@ -289,12 +289,12 @@ describe('labeling - slices', () => {
       };
     });
 
-    it('should return some labels', () => {
+    it("should return some labels", () => {
       const settings = {
         labels: [
           {
-            placements: [{ position: 'into', fill: () => 'red' }],
-            label: () => 'etikett',
+            placements: [{ position: "into", fill: () => "red" }],
+            label: () => "etikett",
           },
         ],
       };
@@ -320,34 +320,34 @@ describe('labeling - slices', () => {
         renderer,
         style: {
           label: {
-            fontSize: '16px',
-            fontFamily: 'simpsons',
-            fill: 'green',
+            fontSize: "16px",
+            fontFamily: "simpsons",
+            fill: "green",
           },
         },
       });
 
       expect(labels[0]).to.eql({
-        type: 'text',
-        text: 'etikett',
+        type: "text",
+        text: "etikett",
         maxWidth: 20,
         x: 15,
         y: 64,
-        fill: 'red',
-        anchor: 'start',
-        baseline: 'middle',
-        fontSize: '16px',
-        fontFamily: 'simpsons',
+        fill: "red",
+        anchor: "start",
+        baseline: "middle",
+        fontSize: "16px",
+        fontFamily: "simpsons",
       });
     });
 
-    it('should skip node if label is falsy', () => {
+    it("should skip node if label is falsy", () => {
       const settings = {
-        direction: () => 'right',
+        direction: () => "right",
         labels: [
           {
-            placements: [{ position: 'into', fill: () => 'red' }],
-            label: () => '',
+            placements: [{ position: "into", fill: () => "red" }],
+            label: () => "",
           },
         ],
       };
@@ -372,9 +372,9 @@ describe('labeling - slices', () => {
         renderer,
         style: {
           label: {
-            fontSize: '16px',
-            fontFamily: 'simpsons',
-            fill: 'yellow',
+            fontSize: "16px",
+            fontFamily: "simpsons",
+            fill: "yellow",
           },
         },
       });
@@ -382,12 +382,12 @@ describe('labeling - slices', () => {
       expect(labels).to.be.empty;
     });
 
-    it('should link data', () => {
+    it("should link data", () => {
       const settings = {
         labels: [
           {
-            placements: [{ position: 'into', fill: () => 'red' }],
-            label: () => 'etikett',
+            placements: [{ position: "into", fill: () => "red" }],
+            label: () => "etikett",
             linkData: ({ data }) => data,
           },
         ],
@@ -421,13 +421,13 @@ describe('labeling - slices', () => {
       });
     });
 
-    describe('label overlap', () => {
+    describe("label overlap", () => {
       function createLabel(list) {
         const settings = {
           labels: [
             {
-              placements: [{ position: 'outside', fill: () => 'red' }],
-              label: () => 'etikett',
+              placements: [{ position: "outside", fill: () => "red" }],
+              label: () => "etikett",
             },
           ],
         };
@@ -456,9 +456,9 @@ describe('labeling - slices', () => {
           },
           style: {
             label: {
-              fontSize: '16px',
-              fontFamily: 'simpsons',
-              fill: 'green',
+              fontSize: "16px",
+              fontFamily: "simpsons",
+              fill: "green",
             },
           },
         });
@@ -466,14 +466,14 @@ describe('labeling - slices', () => {
 
       beforeEach(() => {
         renderer.measureText = (opts) => {
-          if (opts.text.includes('…')) {
+          if (opts.text.includes("…")) {
             return { width: 1, height: 1 };
           }
           return { width: 36, height: 5 };
         };
       });
 
-      it('should not add any labels, because they are out of bounds', () => {
+      it("should not add any labels, because they are out of bounds", () => {
         const labels = createLabel([
           { start: 0, end: 0.1 },
           { start: 0.2, end: 0.3 },
@@ -481,22 +481,22 @@ describe('labeling - slices', () => {
         expect(labels.length).to.eql(0);
       });
 
-      it('should move overlapping labels and create a line to the moved one', () => {
+      it("should move overlapping labels and create a line to the moved one", () => {
         const labels = createLabel([
           { start: 1.38, end: 1.45 },
           { start: 1.45, end: 1.51 },
         ]);
-        expect(labels).to.containSubset([{ type: 'text' }, { type: 'text' }, { type: 'line' }]);
+        expect(labels).to.containSubset([{ type: "text" }, { type: "text" }, { type: "line" }]);
         // check indication that the correct label is moved
         expect(labels[0].y > labels[1].y).to.be.true;
       });
 
-      it('should handle roatation and wraparound', () => {
+      it("should handle roatation and wraparound", () => {
         const labels = createLabel([
           { start: 1.45, end: 1.51 },
           { start: 1.38 + Math.PI * 2, end: 1.45 + Math.PI * 2 },
         ]);
-        expect(labels).to.containSubset([{ type: 'text' }, { type: 'text' }, { type: 'line' }]);
+        expect(labels).to.containSubset([{ type: "text" }, { type: "text" }, { type: "line" }]);
         // check indication that the correct label is moved
         expect(labels[0].y > labels[1].y).to.be.true;
       });

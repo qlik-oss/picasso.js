@@ -40,12 +40,12 @@ export function treeAccessor(sourceDepth, targetDepth, arrIndexAtTargetDepth) {
 }
 
 export function findField(query, { cache }) {
-  if (typeof query === 'number') {
+  if (typeof query === "number") {
     return cache.fields[query];
   }
 
   const allFields = cache.allFields;
-  if (typeof query === 'function') {
+  if (typeof query === "function") {
     for (let i = 0; i < allFields.length; i++) {
       if (query(allFields[i])) {
         return allFields[i];
@@ -53,7 +53,7 @@ export function findField(query, { cache }) {
     }
     return false;
   }
-  if (typeof query === 'string') {
+  if (typeof query === "string") {
     for (let i = 0; i < allFields.length; i++) {
       if (allFields[i].key() === query || allFields[i].title() === query) {
         return allFields[i];

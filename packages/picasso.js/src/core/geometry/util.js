@@ -1,4 +1,4 @@
-import { isNumber } from '../utils/is-number';
+import { isNumber } from "../utils/is-number";
 
 export function getMinMax(points) {
   const num = points.length;
@@ -104,19 +104,19 @@ export function getShapeType(shape) {
   } = shape || {};
 
   if (isNumber(cx) && isNumber(cy) && isNumber(r)) {
-    return 'circle';
+    return "circle";
   }
   if (isNumber(x1) && isNumber(x2) && isNumber(y1) && isNumber(y2)) {
-    return 'line';
+    return "line";
   }
   if (isNumber(x) && isNumber(y) && isNumber(width) && isNumber(height)) {
-    return 'rect';
+    return "rect";
   }
   if (isNumber(x) && isNumber(y)) {
-    return 'point';
+    return "point";
   }
   if (Array.isArray(vertices)) {
-    return vertices.every((item) => Array.isArray(item)) ? 'geopolygon' : 'polygon';
+    return vertices.every((item) => Array.isArray(item)) ? "geopolygon" : "polygon";
   }
   return null;
 }

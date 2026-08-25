@@ -1,4 +1,4 @@
-import canvascontext from './canvas-context';
+import canvascontext from "./canvas-context";
 
 function element(name, rect = { x: 0, y: 0, width: 100, height: 100 }) {
   const e = {
@@ -67,7 +67,7 @@ function element(name, rect = { x: 0, y: 0, width: 100, height: 100 }) {
     },
     trigger(listenerKey, arg) {
       this.listeners
-        .filter((l) => typeof l[listenerKey] !== 'undefined')
+        .filter((l) => typeof l[listenerKey] !== "undefined")
         .forEach((l) => l[listenerKey].call(this, arg));
     },
     getBoundingClientRect() {
@@ -85,9 +85,9 @@ function element(name, rect = { x: 0, y: 0, width: 100, height: 100 }) {
 
   let context2d;
 
-  if (name === 'canvas') {
+  if (name === "canvas") {
     e.getContext = () => {
-      context2d = context2d || canvascontext('2d');
+      context2d = context2d || canvascontext("2d");
       return context2d;
     };
   }

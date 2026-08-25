@@ -1,13 +1,13 @@
-import extend from 'extend';
-import { breakAll, breakWord } from './word-break';
-import { ELLIPSIS_CHAR } from './text-const';
-import { includesLineBreak } from './string-tokenizer';
-import { fontSizeToLineHeight } from './font-size-to-height';
+import extend from "extend";
+import { breakAll, breakWord } from "./word-break";
+import { ELLIPSIS_CHAR } from "./text-const";
+import { includesLineBreak } from "./string-tokenizer";
+import { fontSizeToLineHeight } from "./font-size-to-height";
 
 function generateLineNodes(result, item, halfLead, height) {
-  const container = { type: 'container', children: [] };
+  const container = { type: "container", children: [] };
 
-  if (typeof item.id !== 'undefined') {
+  if (typeof item.id !== "undefined") {
     // TODO also inherit data attribute and more?
     container.id = item.id;
   }
@@ -37,7 +37,7 @@ function generateLineNodes(result, item, halfLead, height) {
 
 function shouldLineBreak(item) {
   // If type text and not already broken into lines
-  return item.type === 'text' && !item._lineBreak;
+  return item.type === "text" && !item._lineBreak;
 }
 
 function wrappedMeasureText(node, measureText) {
@@ -51,8 +51,8 @@ function wrappedMeasureText(node, measureText) {
 
 export function resolveLineBreakAlgorithm(node) {
   const WORDBREAK = {
-    'break-all': breakAll,
-    'break-word': breakWord,
+    "break-all": breakAll,
+    "break-word": breakWord,
   };
 
   return WORDBREAK[node.wordBreak];

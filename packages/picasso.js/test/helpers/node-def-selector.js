@@ -22,16 +22,16 @@ const FILTERS = {
       const v = o.node[attr];
 
       if (!operator) {
-        return typeof v !== 'undefined';
+        return typeof v !== "undefined";
       }
-      if (typeof v === 'undefined') {
+      if (typeof v === "undefined") {
         return false;
       }
 
       switch (operator) {
-        case '=':
+        case "=":
           return value === String(v);
-        case '!=':
+        case "!=":
           return value !== String(v);
         default:
           return false;
@@ -43,7 +43,7 @@ const FILTERS = {
     objects.filter((o) => {
       const tag = o.node.tag;
       if (tag) {
-        return tag.indexOf(c.replace('.', '')) !== -1;
+        return tag.indexOf(c.replace(".", "")) !== -1;
       }
       return false;
     }),
@@ -63,18 +63,18 @@ const FILTERS = {
  * @returns {Object[]} Objects that fulfill the type and value
  */
 export function filter(token, objects) {
-  if (!objects || !objects.length || !token || typeof FILTERS[token.type] !== 'function') {
+  if (!objects || !objects.length || !token || typeof FILTERS[token.type] !== "function") {
     return [];
   }
 
   switch (token.type) {
-    case 'type':
+    case "type":
       return FILTERS[token.type](token.value, objects);
-    case 'attr':
+    case "attr":
       return FILTERS[token.type](token.attribute, token.operator, token.attributeValue, objects);
-    case 'universal':
+    case "universal":
       return FILTERS[token.type](objects);
-    case 'tag':
+    case "tag":
       return FILTERS[token.type](token.value, objects);
     default:
       return [];
@@ -110,7 +110,7 @@ export function tokenize(s) {
           value: match[0],
         };
 
-        if (key === 'attr') {
+        if (key === "attr") {
           // extract parts of attribute from e.g. [color='red'] => (color, =, red)
           match = match[0].match(/\[(\w[\w\._-]+)?(?:([!]?=)['\"]([\w\s#_-]*)['\"])?\]/);
           info.attribute = match[1];
@@ -127,7 +127,7 @@ export function tokenize(s) {
       if (match) {
         validSelector = true;
         sub.push({
-          type: ' ',
+          type: " ",
           value: match[0],
         });
         group = group.slice(match[0].length);
@@ -184,7 +184,7 @@ export default function find(s, object) {
       let filtered = descendants.slice();
       let hasRemainder = false;
       tokens.reverse().forEach((token) => {
-        if (token.type === ' ') {
+        if (token.type === " ") {
           levels.push(filtered);
           filtered = descendants.slice();
           hasRemainder = false;

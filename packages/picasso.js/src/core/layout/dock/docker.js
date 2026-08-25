@@ -1,10 +1,10 @@
-import extend from 'extend';
-import { resolveContainerRects, resolveSettings } from './settings-resolver';
-import { rectToPoints, pointsToRect } from '../../geometry/util';
-import createRect from './create-rect';
+import extend from "extend";
+import { resolveContainerRects, resolveSettings } from "./settings-resolver";
+import { rectToPoints, pointsToRect } from "../../geometry/util";
+import createRect from "./create-rect";
 
 function cacheSize(c, reducedRect, layoutRect) {
-  if (typeof c.cachedSize === 'undefined') {
+  if (typeof c.cachedSize === "undefined") {
     const dock = c.config.dock();
     let size = c.comp.preferredSize({ inner: reducedRect, outer: layoutRect, dock });
     // backwards compatibility
@@ -16,9 +16,9 @@ function cacheSize(c, reducedRect, layoutRect) {
     }
 
     let relevantSize;
-    if (dock === 'top' || dock === 'bottom') {
+    if (dock === "top" || dock === "bottom") {
       relevantSize = size.height;
-    } else if (dock === 'right' || dock === 'left') {
+    } else if (dock === "right" || dock === "left") {
       relevantSize = size.width;
     } else {
       relevantSize = Math.max(size.width, size.height);
@@ -40,18 +40,18 @@ function validateReduceRect(rect, reducedRect, settings) {
 
 function reduceDocRect(reducedRect, c) {
   switch (c.config.dock()) {
-    case 'top':
+    case "top":
       reducedRect.y += c.cachedSize;
       reducedRect.height -= c.cachedSize;
       break;
-    case 'bottom':
+    case "bottom":
       reducedRect.height -= c.cachedSize;
       break;
-    case 'left':
+    case "left":
       reducedRect.x += c.cachedSize;
       reducedRect.width -= c.cachedSize;
       break;
-    case 'right':
+    case "right":
       reducedRect.width -= c.cachedSize;
       break;
     default:
@@ -197,7 +197,7 @@ function appendScaleRatio(rect, outerRect, layoutRect, containerRect) {
     const minRatio = Math.min(scaleRatio.x, scaleRatio.y);
     scaleRatio.x = minRatio;
     scaleRatio.y = minRatio;
-    const area = xLessThenY ? 'height' : 'width';
+    const area = xLessThenY ? "height" : "width";
     const spread = (containerRect[area] - layoutRect[area] * scaleRatio.x) * layoutRect.align;
     margin.left = xLessThenY ? 0 : spread;
     margin.top = xLessThenY ? spread : 0;
@@ -245,7 +245,7 @@ function positionComponents({ visible, layoutRect, reducedRect, containerRect, t
       let rect = {};
       const d = c.config.dock();
       switch (d) {
-        case 'top':
+        case "top":
           outerRect.height = rect.height = c.cachedSize;
           outerRect.width = layoutRect.width;
           rect.width = vRect.width;
@@ -256,7 +256,7 @@ function positionComponents({ visible, layoutRect, reducedRect, containerRect, t
           vRect.y -= c.cachedSize;
           vRect.height += c.cachedSize;
           break;
-        case 'bottom':
+        case "bottom":
           outerRect.x = layoutRect.x;
           rect.x = vRect.x;
           outerRect.y = rect.y = vRect.y + vRect.height;
@@ -266,7 +266,7 @@ function positionComponents({ visible, layoutRect, reducedRect, containerRect, t
 
           vRect.height += c.cachedSize;
           break;
-        case 'left':
+        case "left":
           outerRect.x = rect.x = hRect.x - c.cachedSize;
           outerRect.y = layoutRect.y;
           rect.y = hRect.y;
@@ -277,7 +277,7 @@ function positionComponents({ visible, layoutRect, reducedRect, containerRect, t
           hRect.x -= c.cachedSize;
           hRect.width += c.cachedSize;
           break;
-        case 'right':
+        case "right":
           outerRect.x = rect.x = hRect.x + hRect.width;
           outerRect.y = layoutRect.y;
           rect.y = hRect.y;
@@ -287,7 +287,7 @@ function positionComponents({ visible, layoutRect, reducedRect, containerRect, t
 
           hRect.width += c.cachedSize;
           break;
-        case 'center':
+        case "center":
           outerRect.x = rect.x = reducedRect.x;
           outerRect.y = rect.y = reducedRect.y;
           outerRect.width = rect.width = reducedRect.width;
@@ -330,7 +330,7 @@ function checkShowSettings(strategySettings, dockSettings, logicalContainerRect)
   const layoutModes = strategySettings.layoutModes || {};
   const minimumLayoutMode = dockSettings.minimumLayoutMode();
   let show = dockSettings.show();
-  if (show && typeof minimumLayoutMode === 'object') {
+  if (show && typeof minimumLayoutMode === "object") {
     show =
       layoutModes[minimumLayoutMode.width] &&
       layoutModes[minimumLayoutMode.height] &&
@@ -346,11 +346,11 @@ function checkShowSettings(strategySettings, dockSettings, logicalContainerRect)
 }
 
 function validateComponent(component) {
-  if (!component.resize || typeof component.resize !== 'function') {
-    throw new Error('Component is missing resize function');
+  if (!component.resize || typeof component.resize !== "function") {
+    throw new Error("Component is missing resize function");
   }
   if (!component.dockConfig && !component.preferredSize) {
-    throw new Error('Component is missing preferredSize function');
+    throw new Error("Component is missing preferredSize function");
   }
 }
 
@@ -365,7 +365,7 @@ function filterComponents(components, settings, rect) {
     let config = comp.dockConfig;
     const key = comp.key;
     const d = config.dock();
-    const referencedDocks = /@/.test(d) ? d.split(',').map((s) => s.replace(/^\s*@/, '')) : [];
+    const referencedDocks = /@/.test(d) ? d.split(",").map((s) => s.replace(/^\s*@/, "")) : [];
     if (checkShowSettings(settings, config, rect)) {
       visible.push({
         comp,
@@ -417,7 +417,7 @@ function dockLayout(initialSettings) {
 
   docker.layout = function layout(rect, components = []) {
     if (!rect || isNaN(rect.x) || isNaN(rect.y) || isNaN(rect.width) || isNaN(rect.height)) {
-      throw new Error('Invalid rect');
+      throw new Error("Invalid rect");
     }
     if (!components.length) {
       return { visible: [], hidden: [], ordered: [] };

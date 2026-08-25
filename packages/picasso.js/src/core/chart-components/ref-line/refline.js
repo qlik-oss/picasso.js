@@ -1,7 +1,7 @@
-import extend from 'extend';
-import { transposer } from '../../transposer/transposer';
-import { isOob, oobManager } from './oob';
-import { createLineWithLabel } from './lines-and-labels';
+import extend from "extend";
+import { transposer } from "../../transposer/transposer";
+import { isOob, oobManager } from "./oob";
+import { createLineWithLabel } from "./lines-and-labels";
 
 function createOobData(line) {
   const data = {
@@ -16,8 +16,8 @@ function createOobData(line) {
 }
 
 function filterUndefinedValue(line) {
-  const value = typeof line.value === 'function' ? line.value() : line.value;
-  return typeof value !== 'undefined';
+  const value = typeof line.value === "function" ? line.value() : line.value;
+  return typeof value !== "undefined";
 }
 
 function isInvert(scale) {
@@ -147,7 +147,7 @@ function removeDuplication(intersections) {
  */
 
 const refLineComponent = {
-  require: ['chart', 'renderer'],
+  require: ["chart", "renderer"],
   defaultSettings: {
     layout: {
       displayOrder: 0,
@@ -156,20 +156,20 @@ const refLineComponent = {
       oob: {
         show: true,
         width: 10,
-        fill: '#1A1A1A',
-        stroke: 'transparent',
+        fill: "#1A1A1A",
+        stroke: "transparent",
         strokeWidth: 0,
         opacity: 1,
         text: {
-          fontFamily: 'Arial',
-          stroke: 'transparent',
-          fill: '#fff',
+          fontFamily: "Arial",
+          stroke: "transparent",
+          fill: "#fff",
           strokeWidth: 0,
           opacity: 1,
         },
         triangle: {
-          fill: '#4D4D4D',
-          stroke: 'transparent',
+          fill: "#4D4D4D",
+          stroke: "transparent",
           strokeWidth: 0,
           opacity: 1,
         },
@@ -179,7 +179,7 @@ const refLineComponent = {
         },
       },
       line: {
-        stroke: '#000',
+        stroke: "#000",
       },
       label: {
         strokeWidth: 0,
@@ -226,7 +226,7 @@ const refLineComponent = {
 
     // Convert a value to an actual position using the scale
     this.lines.x = this.lines.x.filter(filterUndefinedValue).map((line) => {
-      if (typeof line.value === 'function') {
+      if (typeof line.value === "function") {
         line.value = line.value();
       }
 
@@ -241,7 +241,7 @@ const refLineComponent = {
     // Set all Y lines to flipXY by default
     // This makes the transposer flip them individually
     this.lines.y = this.lines.y.filter(filterUndefinedValue).map((line) => {
-      if (typeof line.value === 'function') {
+      if (typeof line.value === "function") {
         line.value = line.value();
       }
 
@@ -278,14 +278,14 @@ const refLineComponent = {
 
     // Loop through all X and Y lines
     [...this.lines.x, ...this.lines.y].forEach((p) => {
-      let show = p.show === true || typeof p.show === 'undefined';
+      let show = p.show === true || typeof p.show === "undefined";
 
       if (show) {
         // Create slope line with labels
         let slopeLine;
         if (p.slope && p.slope !== 0) {
-          const scaleX = this.chart.scale({ scale: 'x' });
-          const scaleY = this.chart.scale({ scale: 'y' });
+          const scaleX = this.chart.scale({ scale: "x" });
+          const scaleY = this.chart.scale({ scale: "y" });
           const minX = scaleX.min();
           const maxX = scaleX.max();
           const minY = scaleY.min();

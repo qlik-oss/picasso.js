@@ -1,12 +1,12 @@
-import componentCollectionFn from '../component-collection';
+import componentCollectionFn from "../component-collection";
 
 function createComponent(settings) {
   let rect;
   const rend = {
     settings() {
-      this.myRendererSettings = 'new settings';
+      this.myRendererSettings = "new settings";
     },
-    myRendererSettings: 'old settings',
+    myRendererSettings: "old settings",
   };
   return {
     instance: {
@@ -20,28 +20,28 @@ function createComponent(settings) {
     },
     settings,
     key: settings.key,
-    hasKey: typeof settings.key !== 'undefined',
+    hasKey: typeof settings.key !== "undefined",
   };
 }
 
-describe('component-collection', () => {
-  describe('layout', () => {
+describe("component-collection", () => {
+  describe("layout", () => {
     const simpleLayoutFn = (r, children) => {
       children.forEach((c) => c.resize(r));
     };
     const hideLayoutFn = (r, children) => ({ visible: [], hidden: children });
 
-    it('should layout components', () => {
+    it("should layout components", () => {
       const collection = componentCollectionFn({ createComponent });
       const components = [
         {
-          type: 'container',
-          key: 'parent',
+          type: "container",
+          key: "parent",
           strategy: simpleLayoutFn,
           components: [
             {
-              type: 'box',
-              key: 'child',
+              type: "box",
+              key: "child",
             },
           ],
         },
@@ -55,17 +55,17 @@ describe('component-collection', () => {
       expect(visible).to.have.length(2);
     });
 
-    it('should hide children of hidden components', () => {
+    it("should hide children of hidden components", () => {
       const collection = componentCollectionFn({ createComponent });
       const components = [
         {
-          type: 'container',
-          key: 'parent',
+          type: "container",
+          key: "parent",
           strategy: simpleLayoutFn,
           components: [
             {
-              type: 'box',
-              key: 'child',
+              type: "box",
+              key: "child",
             },
           ],
         },
@@ -80,17 +80,17 @@ describe('component-collection', () => {
     });
   });
 
-  describe('update', () => {
-    it('should apply transform when transform function is available', () => {
+  describe("update", () => {
+    it("should apply transform when transform function is available", () => {
       const collection = componentCollectionFn({ createComponent });
       const components = [
         {
-          type: 'box',
-          key: 'no-transform',
+          type: "box",
+          key: "no-transform",
         },
         {
-          type: 'point',
-          key: 'with-transform',
+          type: "point",
+          key: "with-transform",
           rendererSettings: {
             transform: () => ({ a: 0, b: 1, c: 0, d: 1, e: 100, f: 100 }),
           },
@@ -98,43 +98,43 @@ describe('component-collection', () => {
       ];
       collection.set({ components });
       collection.update({ components, excludeFromUpdate: [] });
-      const comp1 = collection.findComponentByKey('no-transform');
-      const comp2 = collection.findComponentByKey('with-transform');
+      const comp1 = collection.findComponentByKey("no-transform");
+      const comp2 = collection.findComponentByKey("with-transform");
 
       expect(comp1.applyTransform).to.be.undefined;
       expect(comp2.applyTransform).to.be.true;
-      expect(comp2.instance.renderer().myRendererSettings).to.equal('new settings');
+      expect(comp2.instance.renderer().myRendererSettings).to.equal("new settings");
     });
 
-    it('should not update settings if there is no component with rendererSettings', () => {
+    it("should not update settings if there is no component with rendererSettings", () => {
       const collection = componentCollectionFn({ createComponent });
       const components = [
         {
-          type: 'box',
-          key: 'no-renderSettings',
+          type: "box",
+          key: "no-renderSettings",
         },
       ];
       collection.set({ components });
       collection.update({ components, excludeFromUpdate: [] });
-      const comp1 = collection.findComponentByKey('no-renderSettings');
+      const comp1 = collection.findComponentByKey("no-renderSettings");
 
-      expect(comp1.instance.renderer().myRendererSettings).to.equal('old settings');
+      expect(comp1.instance.renderer().myRendererSettings).to.equal("old settings");
     });
 
-    it('should not update settings if there is no component with rendererSettings', () => {
+    it("should not update settings if there is no component with rendererSettings", () => {
       const collection = componentCollectionFn({ createComponent });
       const components = [
         {
-          type: 'box',
-          key: 'with-renderSettings',
+          type: "box",
+          key: "with-renderSettings",
           rendererSettings: {},
         },
       ];
       collection.set({ components });
       collection.update({ components, excludeFromUpdate: [] });
-      const comp1 = collection.findComponentByKey('with-renderSettings');
+      const comp1 = collection.findComponentByKey("with-renderSettings");
 
-      expect(comp1.instance.renderer().myRendererSettings).to.equal('new settings');
+      expect(comp1.instance.renderer().myRendererSettings).to.equal("new settings");
     });
   });
 });

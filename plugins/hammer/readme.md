@@ -14,8 +14,8 @@ npm install picasso-plugin-hammer
 ### Register plugin
 
 ```js
-import picassoHammer from 'picasso-plugin-hammer';
-import picasso from 'picasso.js';
+import picassoHammer from "picasso-plugin-hammer";
+import picasso from "picasso.js";
 
 picasso.use(picassoHammer);
 ```
@@ -80,45 +80,45 @@ interactions: [{
 ```js
 interactions: [
   {
-    type: 'hammer',
-    key: 'akey',
+    type: "hammer",
+    key: "akey",
     gestures: [
       {
-        type: 'Tap',
+        type: "Tap",
         options: {
-          event: 'tripleTap',
+          event: "tripleTap",
           taps: 3,
         },
-        recognizeWith: 'doubleTap tap',
+        recognizeWith: "doubleTap tap",
         events: {
           tripleTap: function (e) {
-            console.log('triple tapped');
+            console.log("triple tapped");
           },
         },
       },
       {
-        type: 'Tap',
+        type: "Tap",
         options: {
-          event: 'doubleTap',
+          event: "doubleTap",
           taps: 2,
         },
-        recognizeWith: 'tap',
-        requireFailure: 'tripleTap',
+        recognizeWith: "tap",
+        requireFailure: "tripleTap",
         events: {
           doubleTap: function (e) {
-            console.log('double tapped');
+            console.log("double tapped");
           },
         },
       },
       {
-        type: 'Tap',
+        type: "Tap",
         options: {
           taps: 1,
         },
-        requireFailure: 'doubleTap tripleTap',
+        requireFailure: "doubleTap tripleTap",
         events: {
           tap: function (e) {
-            console.log('tapped');
+            console.log("tapped");
           },
         },
       },

@@ -1,12 +1,12 @@
-import * as ellipsText from '../../../../../web/text-manipulation/text-ellipsis';
-import { rows } from '../rows';
+import * as ellipsText from "../../../../../web/text-manipulation/text-ellipsis";
+import { rows } from "../rows";
 
-describe('labeling - rows', () => {
+describe("labeling - rows", () => {
   let sandbox;
 
   beforeAll(() => {
     sandbox = sinon.createSandbox();
-    sandbox.stub(ellipsText, 'default');
+    sandbox.stub(ellipsText, "default");
     ellipsText.default.callsFake((n) => n.text);
   });
 
@@ -14,7 +14,7 @@ describe('labeling - rows', () => {
     sandbox.restore();
   });
 
-  describe('rows strategy', () => {
+  describe("rows strategy", () => {
     let chart;
     let renderer;
 
@@ -25,19 +25,19 @@ describe('labeling - rows', () => {
       };
     });
 
-    it('should support rects', () => {
+    it("should support rects", () => {
       const settings = {
         align: 0,
         justify: 0,
         labels: [
           {
-            label: () => 'etikett',
+            label: () => "etikett",
           },
         ],
       };
       const nodes = [
         {
-          type: 'rect',
+          type: "rect",
           bounds: {
             x: 0,
             y: 0,
@@ -55,7 +55,7 @@ describe('labeling - rows', () => {
           renderer,
           style: {},
         },
-        (bounds) => bounds
+        (bounds) => bounds,
       );
 
       expect(labels[0]).to.eql({
@@ -66,18 +66,18 @@ describe('labeling - rows', () => {
       });
     });
 
-    it('should support circles', () => {
+    it("should support circles", () => {
       const settings = {
         padding: 0,
         labels: [
           {
-            label: () => 'etikett',
+            label: () => "etikett",
           },
         ],
       };
       const nodes = [
         {
-          type: 'circle',
+          type: "circle",
           attrs: { cx: 50, cy: 50, r: 41 },
         },
       ];
@@ -90,7 +90,7 @@ describe('labeling - rows', () => {
           renderer,
           style: {},
         },
-        (bounds) => bounds
+        (bounds) => bounds,
       );
 
       expect(labels[0]).to.eql({
@@ -106,13 +106,13 @@ describe('labeling - rows', () => {
         padding: 0,
         labels: [
           {
-            label: () => 'etikett',
+            label: () => "etikett",
           },
         ],
       };
       const nodes = [
         {
-          type: 'path',
+          type: "path",
           desc: {
             slice: {
               start: 0,
@@ -133,7 +133,7 @@ describe('labeling - rows', () => {
           renderer,
           style: {},
         },
-        (bounds) => bounds
+        (bounds) => bounds,
       );
 
       expect(labels[0]).to.eql({
@@ -149,13 +149,13 @@ describe('labeling - rows', () => {
         padding: 0,
         labels: [
           {
-            label: () => 'etikett',
+            label: () => "etikett",
           },
         ],
       };
       const nodes = [
         {
-          type: 'path',
+          type: "path",
           desc: {
             slice: {
               start: 0,
@@ -176,21 +176,21 @@ describe('labeling - rows', () => {
           renderer,
           style: {},
         },
-        (bounds) => bounds
+        (bounds) => bounds,
       );
 
       expect(labels).to.have.length(0);
     });
 
-    it('should stack labels', () => {
+    it("should stack labels", () => {
       const settings = {
         align: 0,
         justify: 0,
-        labels: [{ label: () => 'label1' }, { label: () => 'label2' }, { label: () => 'label3' }],
+        labels: [{ label: () => "label1" }, { label: () => "label2" }, { label: () => "label3" }],
       };
       const nodes = [
         {
-          type: 'rect',
+          type: "rect",
           bounds: {
             x: 0,
             y: 0,
@@ -208,21 +208,21 @@ describe('labeling - rows', () => {
           renderer,
           style: {},
         },
-        (bounds, text) => text
+        (bounds, text) => text,
       );
 
-      expect(labels).to.eql(['label1', 'label2', 'label3']);
+      expect(labels).to.eql(["label1", "label2", "label3"]);
     });
 
-    it('should cut labels if there are to may to fit', () => {
+    it("should cut labels if there are to may to fit", () => {
       const settings = {
         align: 0,
         justify: 0,
-        labels: [{ label: () => 'label1' }, { label: () => 'label2' }, { label: () => 'label3' }],
+        labels: [{ label: () => "label1" }, { label: () => "label2" }, { label: () => "label3" }],
       };
       const nodes = [
         {
-          type: 'rect',
+          type: "rect",
           bounds: {
             x: 0,
             y: 0,
@@ -240,25 +240,25 @@ describe('labeling - rows', () => {
           renderer,
           style: {},
         },
-        (bounds, text) => text
+        (bounds, text) => text,
       );
 
-      expect(labels).to.eql(['label1']);
+      expect(labels).to.eql(["label1"]);
     });
 
-    it('should precalculate ellipsed value', () => {
+    it("should precalculate ellipsed value", () => {
       const settings = {
         align: 0,
         justify: 0,
         labels: [
           {
-            label: () => 'etikett',
+            label: () => "etikett",
           },
         ],
       };
       const nodes = [
         {
-          type: 'rect',
+          type: "rect",
           bounds: {
             x: 0,
             y: 0,
@@ -269,7 +269,7 @@ describe('labeling - rows', () => {
       ];
       renderer.measureText.returns({ width: 20, height: 10 });
 
-      ellipsText.default.returns('et…');
+      ellipsText.default.returns("et…");
 
       let labels = rows(
         {
@@ -279,30 +279,30 @@ describe('labeling - rows', () => {
           renderer,
           style: {},
         },
-        (bounds, text) => ({ text })
+        (bounds, text) => ({ text }),
       );
 
       expect(labels[0]).to.eql({
-        ellipsed: 'et…',
-        text: 'etikett',
+        ellipsed: "et…",
+        text: "etikett",
       });
 
       // { text: 'label1', ellipsed: 'label1' }
     });
 
-    it('should not include labels that are ellipsed to the ellipsis only', () => {
+    it("should not include labels that are ellipsed to the ellipsis only", () => {
       const settings = {
         align: 0,
         justify: 0,
         labels: [
           {
-            label: () => 'etikett',
+            label: () => "etikett",
           },
         ],
       };
       const nodes = [
         {
-          type: 'rect',
+          type: "rect",
           bounds: {
             x: 0,
             y: 0,
@@ -313,7 +313,7 @@ describe('labeling - rows', () => {
       ];
       renderer.measureText.returns({ width: 20, height: 10 });
 
-      ellipsText.default.returns('…');
+      ellipsText.default.returns("…");
 
       let labels = rows(
         {
@@ -323,7 +323,7 @@ describe('labeling - rows', () => {
           renderer,
           style: {},
         },
-        (bounds, text) => ({ text })
+        (bounds, text) => ({ text }),
       );
 
       expect(labels.length).to.eql(0);
@@ -331,20 +331,20 @@ describe('labeling - rows', () => {
       // { text: 'label1', ellipsed: 'label1' }
     });
 
-    it('should link data', () => {
+    it("should link data", () => {
       const settings = {
         align: 0,
         justify: 0,
         labels: [
           {
-            label: () => 'etikett',
+            label: () => "etikett",
             linkData: ({ data }) => data,
           },
         ],
       };
       const nodes = [
         {
-          type: 'rect',
+          type: "rect",
           bounds: {
             x: 0,
             y: 0,
@@ -363,7 +363,7 @@ describe('labeling - rows', () => {
           renderer,
           style: {},
         },
-        (bounds) => bounds
+        (bounds) => bounds,
       );
 
       expect(labels[0]).to.containSubset({
@@ -371,15 +371,15 @@ describe('labeling - rows', () => {
       });
     });
 
-    it('should keep empty labels', () => {
+    it("should keep empty labels", () => {
       const settings = {
         align: 0,
         justify: 0,
-        labels: [{ label: () => 'label1' }, { label: () => '' }, { label: () => 'label3' }],
+        labels: [{ label: () => "label1" }, { label: () => "" }, { label: () => "label3" }],
       };
       const nodes = [
         {
-          type: 'rect',
+          type: "rect",
           bounds: {
             x: 0,
             y: 0,
@@ -397,10 +397,10 @@ describe('labeling - rows', () => {
           renderer,
           style: {},
         },
-        (bounds, text) => text || '<empty>'
+        (bounds, text) => text || "<empty>",
       );
 
-      expect(labels).to.eql(['label1', '<empty>', 'label3']);
+      expect(labels).to.eql(["label1", "<empty>", "label3"]);
     });
   });
 });

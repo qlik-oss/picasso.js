@@ -1,6 +1,6 @@
-import { start, move, end } from '../brush-range-interaction';
+import { start, move, end } from "../brush-range-interaction";
 
-describe('BrushRange Interaction', () => {
+describe("BrushRange Interaction", () => {
   let sandbox;
   let state;
   let event;
@@ -9,9 +9,9 @@ describe('BrushRange Interaction', () => {
     sandbox = sinon.createSandbox();
     state = {
       cssCoord: {
-        offset: 'top',
-        coord: 'y',
-        pos: 'deltaY',
+        offset: "top",
+        coord: "y",
+        pos: "deltaY",
       },
       offset: {
         left: 0,
@@ -41,7 +41,7 @@ describe('BrushRange Interaction', () => {
     delete global.document.elementFromPoint;
   });
 
-  describe('Start', () => {
+  describe("Start", () => {
     let renderer;
     let targetSize;
     let element;
@@ -65,7 +65,7 @@ describe('BrushRange Interaction', () => {
       targetSize = 0.01;
     });
 
-    it('should set started to true', () => {
+    it("should set started to true", () => {
       state.started = false;
       start({
         state,
@@ -74,11 +74,11 @@ describe('BrushRange Interaction', () => {
         ranges: () => [],
         targetSize,
       });
-      expect(state.started, 'started should be true').to.be.true;
+      expect(state.started, "started should be true").to.be.true;
     });
 
-    describe('should set state.active', () => {
-      it('when only range', () => {
+    describe("should set state.active", () => {
+      it("when only range", () => {
         state.started = false;
         start({
           state,
@@ -93,13 +93,13 @@ describe('BrushRange Interaction', () => {
           idx: -1,
           limitLow: 0,
           limitHigh: 1,
-          mode: 'current',
+          mode: "current",
         });
         expect(state.start).to.equals(0.4);
         expect(state.current).to.equals(0.5);
       });
 
-      it('limited by others', () => {
+      it("limited by others", () => {
         state.started = false;
         const ranges = [
           { min: 0, max: 0.2 },
@@ -118,13 +118,13 @@ describe('BrushRange Interaction', () => {
           idx: -1,
           limitLow: 0.2,
           limitHigh: 0.6,
-          mode: 'current',
+          mode: "current",
         });
         expect(state.start).to.equals(0.4);
         expect(state.current).to.equals(0.5);
       });
 
-      it('drag existing', () => {
+      it("drag existing", () => {
         state.started = false;
         const ranges = [{ min: 0, max: 1 }];
         start({
@@ -140,13 +140,13 @@ describe('BrushRange Interaction', () => {
           idx: 0,
           limitLow: 0,
           limitHigh: 1,
-          mode: 'move',
+          mode: "move",
         });
         expect(state.start).to.equals(0.4);
         expect(state.current).to.equals(0.5);
       });
 
-      it('resize existing', () => {
+      it("resize existing", () => {
         state.started = false;
         const ranges = [{ min: 0, max: 0.4 }];
         start({
@@ -162,16 +162,16 @@ describe('BrushRange Interaction', () => {
           idx: 0,
           limitLow: 0,
           limitHigh: 1,
-          mode: 'modify',
+          mode: "modify",
         });
-        expect(state.start, 'start').to.equals(0);
-        expect(state.current, 'current').to.equals(0.5);
+        expect(state.start, "start").to.equals(0);
+        expect(state.current, "current").to.equals(0.5);
       });
 
-      it('should detect drag in bubbles', () => {
+      it("should detect drag in bubbles", () => {
         const bubbleElement = {
           hasAttribute: sinon.stub().returns(true),
-          getAttribute: sinon.stub().withArgs('data-idx').returns('0').withArgs('data-other-value').returns('0'),
+          getAttribute: sinon.stub().withArgs("data-idx").returns("0").withArgs("data-other-value").returns("0"),
         };
         global.document.elementFromPoint.returns(bubbleElement);
         element.contains.returns(true);
@@ -190,13 +190,13 @@ describe('BrushRange Interaction', () => {
           idx: 0,
           limitLow: 0,
           limitHigh: 1,
-          mode: 'modify',
+          mode: "modify",
         });
-        expect(state.start, 'start').to.equals(0);
-        expect(state.current, 'current').to.equals(0.5);
+        expect(state.start, "start").to.equals(0);
+        expect(state.current, "current").to.equals(0.5);
       });
 
-      it('start if within targetRect', () => {
+      it("start if within targetRect", () => {
         state.started = false;
         state.targetRect = {
           // Event is targeting x: 0.5, y: 0.4
@@ -218,13 +218,13 @@ describe('BrushRange Interaction', () => {
           idx: -1,
           limitLow: 0,
           limitHigh: 1,
-          mode: 'current',
+          mode: "current",
         });
         expect(state.start).to.equals(0.2);
         expect(state.current).to.equals(0.3);
       });
 
-      it('not start if outside targetRect', () => {
+      it("not start if outside targetRect", () => {
         state.started = false;
         state.targetRect = {
           // Event is targeting x: 0.5, y: 0.4
@@ -247,8 +247,8 @@ describe('BrushRange Interaction', () => {
     });
   });
 
-  describe('Move', () => {
-    it('should update current', () => {
+  describe("Move", () => {
+    it("should update current", () => {
       state.start = 0.3;
       state.current = 0.4;
       state.active = {
@@ -258,7 +258,7 @@ describe('BrushRange Interaction', () => {
       move(state, event);
       expect(state.current).to.equals(0.5);
     });
-    it('should limit by current limits', () => {
+    it("should limit by current limits", () => {
       state.start = 0.1;
       state.current = 0.2;
       state.active = {
@@ -270,11 +270,11 @@ describe('BrushRange Interaction', () => {
     });
   });
 
-  describe('End', () => {
-    it('should set started to false', () => {
+  describe("End", () => {
+    it("should set started to false", () => {
       state.started = true;
       end(state, () => []);
-      expect(state.started, 'started should be false').to.be.false;
+      expect(state.started, "started should be false").to.be.false;
     });
   });
 });

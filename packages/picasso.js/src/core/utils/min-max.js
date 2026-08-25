@@ -1,4 +1,4 @@
-import { isNumber as numericFilter } from './is-number';
+import { isNumber as numericFilter } from "./is-number";
 
 const minAccessor = (v) => v.min();
 const maxAccessor = (v) => v.max();

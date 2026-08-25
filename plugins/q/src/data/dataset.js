@@ -1,45 +1,45 @@
 // import augmentH from './augment-hierarchy';
-import extend from 'extend';
-import SExtractor from './extractor-s';
-import { extract as TExtractor, augment as augmentTree } from './extractor-t';
-import { findField } from './util';
-import field from './field';
+import extend from "extend";
+import SExtractor from "./extractor-s";
+import { extract as TExtractor, augment as augmentTree } from "./extractor-t";
+import { findField } from "./util";
+import field from "./field";
 
 function createFields(path, obj, prefix, parentKey, opts) {
   return (obj[path] || []).map((meta, i) => {
-    const fieldKey = `${parentKey ? `${parentKey}/` : ''}${path}/${i}`;
+    const fieldKey = `${parentKey ? `${parentKey}/` : ""}${path}/${i}`;
     const f = {
       instance: field(
         extend(
           {
-            id: `${prefix ? `${prefix}/` : ''}${fieldKey}`,
+            id: `${prefix ? `${prefix}/` : ""}${fieldKey}`,
             key: fieldKey,
             meta,
           },
-          opts
-        )
+          opts,
+        ),
       ),
     };
     f.attrDims = createFields(
-      'qAttrDimInfo',
+      "qAttrDimInfo",
       meta,
       prefix,
       fieldKey,
-      extend({}, opts, { value: (v) => v?.qElemNo, type: 'dimension' })
+      extend({}, opts, { value: (v) => v?.qElemNo, type: "dimension" }),
     );
     f.attrExps = createFields(
-      'qAttrExprInfo',
+      "qAttrExprInfo",
       meta,
       prefix,
       fieldKey,
-      extend({}, opts, { value: (v) => v?.qNum, type: 'measure' })
+      extend({}, opts, { value: (v) => v?.qNum, type: "measure" }),
     );
     f.measures = createFields(
-      'qMeasureInfo',
+      "qMeasureInfo",
       meta,
       prefix,
       fieldKey,
-      extend({}, opts, { value: (v) => v?.qValue, type: 'measure' })
+      extend({}, opts, { value: (v) => v?.qValue, type: "measure" }),
     );
     return f;
   });
@@ -84,11 +84,11 @@ export default function q({ key, data, config = {} } = {}) {
     _cache: () => cache,
   };
 
-  if (cube.qMode === 'K' || cube.qMode === 'T' || (!cube.qMode && cube.qNodesOnDim)) {
+  if (cube.qMode === "K" || cube.qMode === "T" || (!cube.qMode && cube.qNodesOnDim)) {
     opts.extractor = TExtractor;
     opts.hierarchy = augmentTree;
-    opts.pages = cube.qMode === 'K' ? cube.qStackedDataPages : cube.qTreeDataPages;
-  } else if (cube.qMode === 'S') {
+    opts.pages = cube.qMode === "K" ? cube.qStackedDataPages : cube.qTreeDataPages;
+  } else if (cube.qMode === "S") {
     opts.extractor = SExtractor;
     opts.pages = cube.qDataPages;
     opts.hierarchy = augmentTree;
@@ -98,14 +98,14 @@ export default function q({ key, data, config = {} } = {}) {
 
   opts.fieldExtractor = (f) => opts.extractor({ field: f }, dataset, cache, deps);
 
-  const dimAcc = cube.qMode === 'S' ? (d) => d.qElemNumber : undefined;
-  const measAcc = cube.qMode === 'S' ? (d) => d.qNum : undefined;
+  const dimAcc = cube.qMode === "S" ? (d) => d.qElemNumber : undefined;
+  const measAcc = cube.qMode === "S" ? (d) => d.qNum : undefined;
 
   cache.wrappedFields.push(
-    ...createFields('qDimensionInfo', cube, key, '', extend({}, opts, { value: dimAcc, type: 'dimension' }))
+    ...createFields("qDimensionInfo", cube, key, "", extend({}, opts, { value: dimAcc, type: "dimension" })),
   );
   cache.wrappedFields.push(
-    ...createFields('qMeasureInfo', cube, key, '', extend({}, opts, { value: measAcc, type: 'measure' }))
+    ...createFields("qMeasureInfo", cube, key, "", extend({}, opts, { value: measAcc, type: "measure" })),
   );
 
   cache.fields = cache.wrappedFields.map((f) => f.instance);

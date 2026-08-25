@@ -1,4 +1,4 @@
-import { pointsToLine, pointsToRect } from './util';
+import { pointsToLine, pointsToRect } from "./util";
 import {
   testCirclePoint,
   testCircleRect,
@@ -6,7 +6,7 @@ import {
   testCircleCircle,
   testCirclePolygon,
   testCircleGeoPolygon,
-} from '../math/narrow-phase-collision';
+} from "../math/narrow-phase-collision";
 
 /**
  * Construct a new GeoCircle instance
@@ -23,7 +23,7 @@ class GeoCircle {
   }
 
   set({ cx = 0, cy = 0, r = 0, minRadius = 0 } = {}) {
-    this.type = 'circle';
+    this.type = "circle";
     this.cx = cx;
     this.cy = cy;
     this.r = Math.max(r, minRadius);

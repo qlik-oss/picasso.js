@@ -18,25 +18,25 @@
     <script>
       let data = {
         data: [
-          ['Product', 'Cost'],
-          ['Cars', 150000],
-          ['Trucks', 450000],
+          ["Product", "Cost"],
+          ["Cars", 150000],
+          ["Trucks", 450000],
         ],
       };
 
       let brush = {
         trigger: [
           {
-            on: 'over',
-            contexts: ['test'],
+            on: "over",
+            contexts: ["test"],
           },
         ],
         consume: [
           {
-            context: 'test',
+            context: "test",
             style: {
               inactive: {
-                fill: 'red',
+                fill: "red",
               },
             },
           },
@@ -44,7 +44,7 @@
       };
 
       let pointMarker = {
-        type: 'point',
+        type: "point",
         data: {
           extract: {
             field: 0,
@@ -56,12 +56,12 @@
         },
         settings: {
           x: {
-            scale: 'd0',
-            ref: 'x',
+            scale: "d0",
+            ref: "x",
           },
           y: {
-            scale: 'm0',
-            ref: 'y',
+            scale: "m0",
+            ref: "y",
           },
         },
         brush,
@@ -79,7 +79,7 @@
         },
         components: [pointMarker],
       };
-      let element = document.getElementById('container');
+      let element = document.getElementById("container");
       window.fixture = picasso.chart({
         element,
         data,

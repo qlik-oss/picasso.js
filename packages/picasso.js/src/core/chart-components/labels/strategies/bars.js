@@ -1,6 +1,6 @@
-import extend from 'extend';
-import { testRectRect } from '../../../math/narrow-phase-collision';
-import filterOverlapping from './bars-overlapping-filter';
+import extend from "extend";
+import { testRectRect } from "../../../math/narrow-phase-collision";
+import filterOverlapping from "./bars-overlapping-filter";
 
 const PADDING = 4;
 // const DOUBLE_PADDING = PADDING * 2;
@@ -17,18 +17,18 @@ function cbContext(node, chart) {
 
 function isValidText(text) {
   const type = typeof text;
-  return (type === 'string' || type === 'number') && text !== '';
+  return (type === "string" || type === "number") && text !== "";
 }
 
 function toBackground(label) {
   return {
-    type: 'rect',
+    type: "rect",
     rx: 2,
     ry: 2,
     fill: label.backgroundColor,
     ...label.backgroundBounds,
     data: `${label.data} ${label.text}`,
-    rotation: label.transform && label.transform.match(/rotate/gi) ? 'rotated' : 'horizontal',
+    rotation: label.transform && label.transform.match(/rotate/gi) ? "rotated" : "horizontal",
   };
 }
 
@@ -43,7 +43,7 @@ function isTextHeightInRectHeight(rect, label, rotate) {
 function isGoodPlacement(orientation, rect, label, fitsHorizontally, overflow) {
   let fitWidth;
   let fitHeight;
-  if (orientation === 'v') {
+  if (orientation === "v") {
     fitWidth = fitsHorizontally || overflow || isTextWidthInRectWidth(rect, label, true);
     fitHeight = isTextHeightInRectHeight(rect, label, !fitsHorizontally);
   } else {
@@ -67,7 +67,7 @@ export function placeSegmentInSegment(majorSegmentPosition, majorSegmentSize, mi
 
 export function placeTextInRect(rect, text, opts) {
   const label = {
-    type: 'text',
+    type: "text",
     text,
     maxWidth: opts.rotate ? rect.height : rect.width,
     x: 0,
@@ -75,8 +75,8 @@ export function placeTextInRect(rect, text, opts) {
     dx: 0,
     dy: 0,
     fill: opts.fill,
-    anchor: opts.rotate ? 'end' : 'start',
-    baseline: 'central',
+    anchor: opts.rotate ? "end" : "start",
+    baseline: "central",
     fontSize: `${opts.fontSize}px`,
     fontFamily: opts.fontFamily,
   };
@@ -89,7 +89,7 @@ export function placeTextInRect(rect, text, opts) {
   if (opts.rotate) {
     label.x = placeSegmentInSegment(rect.x, rect.width, textMetrics.height, opts.align) + baseLineOffset;
     label.y = placeSegmentInSegment(rect.y, rect.height, textMetrics.width, opts.justify);
-    if (opts.dock === 'right') {
+    if (opts.dock === "right") {
       label.transform = `rotate(90, ${label.x + label.dx}, ${label.y + label.dy}) translate(${textMetrics.width}, 0)`;
     } else {
       label.transform = `rotate(-90, ${label.x + label.dx}, ${label.y + label.dy})`;
@@ -115,10 +115,10 @@ function limitBounds(bounds, view) {
 
 function pad(bounds, measured, padding = {}) {
   const { top = PADDING, bottom = PADDING, left = PADDING, right = PADDING } = padding;
-  const leftPadding = typeof left === 'function' ? left(measured) : left;
-  const rightPadding = typeof right === 'function' ? right(measured) : right;
-  const topPadding = typeof top === 'function' ? top(measured) : top;
-  const bottomPadding = typeof bottom === 'function' ? bottom(measured) : bottom;
+  const leftPadding = typeof left === "function" ? left(measured) : left;
+  const rightPadding = typeof right === "function" ? right(measured) : right;
+  const topPadding = typeof top === "function" ? top(measured) : top;
+  const bottomPadding = typeof bottom === "function" ? bottom(measured) : bottom;
   bounds.x += leftPadding;
   bounds.width -= leftPadding + rightPadding;
   bounds.y += topPadding;
@@ -129,16 +129,16 @@ export function getBarRect({ bar, view, direction, position, padding = PADDING, 
   const bounds = {};
   extend(bounds, bar);
 
-  if (!position || position === 'inside') {
+  if (!position || position === "inside") {
     // do nothing
-  } else if (direction === 'up' || direction === 'down') {
+  } else if (direction === "up" || direction === "down") {
     const start = Math.max(0, Math.min(bar.y, view.height));
     const end = Math.max(0, Math.min(bar.y + bar.height, view.height));
 
-    if ((position === 'outside' && direction === 'up') || (position === 'opposite' && direction === 'down')) {
+    if ((position === "outside" && direction === "up") || (position === "opposite" && direction === "down")) {
       bounds.y = 0;
       bounds.height = start;
-    } else if ((position === 'outside' && direction === 'down') || (position === 'opposite' && direction === 'up')) {
+    } else if ((position === "outside" && direction === "down") || (position === "opposite" && direction === "up")) {
       bounds.y = end;
       bounds.height = view.height - end;
     }
@@ -146,10 +146,10 @@ export function getBarRect({ bar, view, direction, position, padding = PADDING, 
     const start = Math.max(0, Math.min(bar.x, view.width));
     const end = Math.max(0, Math.min(bar.x + bar.width, view.width));
 
-    if ((position === 'outside' && direction === 'left') || (position === 'opposite' && direction === 'right')) {
+    if ((position === "outside" && direction === "left") || (position === "opposite" && direction === "right")) {
       bounds.x = 0;
       bounds.width = start;
-    } else if ((position === 'outside' && direction === 'right') || (position === 'opposite' && direction === 'left')) {
+    } else if ((position === "outside" && direction === "right") || (position === "opposite" && direction === "left")) {
       bounds.x = end;
       bounds.width = view.width - end;
     }
@@ -173,7 +173,7 @@ export function findBestPlacement(
     placementSettings,
     rect,
   },
-  barRect = getBarRect
+  barRect = getBarRect,
 ) {
   let largest;
   let bounds;
@@ -181,7 +181,7 @@ export function findBestPlacement(
   let testBounds;
   let p;
   const boundaries = [];
-  const dimension = orientation === 'h' ? 'width' : 'height';
+  const dimension = orientation === "h" ? "width" : "height";
   for (p = 0; p < placementSettings.length; p++) {
     placement = placementSettings[p];
     testBounds = barRect({
@@ -213,10 +213,10 @@ export function findBestPlacement(
 
 function approxTextBounds(label, textMetrics, rotated, rect, padding = {}) {
   const { top = PADDING, bottom = PADDING, left = PADDING, right = PADDING } = padding;
-  const leftPadding = typeof left === 'function' ? left(textMetrics) : left;
-  const rightPadding = typeof right === 'function' ? right(textMetrics) : right;
-  const topPadding = typeof top === 'function' ? top(textMetrics) : top;
-  const bottomPadding = typeof bottom === 'function' ? bottom(textMetrics) : bottom;
+  const leftPadding = typeof left === "function" ? left(textMetrics) : left;
+  const rightPadding = typeof right === "function" ? right(textMetrics) : right;
+  const topPadding = typeof top === "function" ? top(textMetrics) : top;
+  const bottomPadding = typeof bottom === "function" ? bottom(textMetrics) : bottom;
   const x0 = label.x + label.dx;
   const y0 = label.y + label.dy;
   const height = rotated ? Math.min(textMetrics.width, rect.height) : Math.min(textMetrics.height, rect.width);
@@ -238,7 +238,7 @@ export function placeInBars(
   { chart, targetNodes, rect, fitsHorizontally, collectiveOrientation },
   findPlacement = findBestPlacement,
   placer = placeTextInRect,
-  postFilter = filterOverlapping
+  postFilter = filterOverlapping,
 ) {
   const labels = [];
   const postFilterContext = {
@@ -268,7 +268,7 @@ export function placeInBars(
     node = target.node;
     arg = cbContext(node, chart);
     direction = target.direction;
-    orientation = direction === 'left' || direction === 'right' ? 'h' : 'v';
+    orientation = direction === "left" || direction === "right" ? "h" : "v";
 
     for (let j = 0; j < target.texts.length; j++) {
       text = target.texts[j];
@@ -296,50 +296,50 @@ export function placeInBars(
 
       if (bounds && placement) {
         justify = placement.justify;
-        const linkData = typeof lblStngs.linkData === 'function' ? lblStngs.linkData(arg, i) : undefined;
-        const overflow = typeof placement.overflow === 'function' ? placement.overflow(arg, i) : placement.overflow;
+        const linkData = typeof lblStngs.linkData === "function" ? lblStngs.linkData(arg, i) : undefined;
+        const overflow = typeof placement.overflow === "function" ? placement.overflow(arg, i) : placement.overflow;
 
-        if (direction === 'up') {
+        if (direction === "up") {
           justify = 1 - justify;
         }
-        if (placement.position === 'opposite') {
+        if (placement.position === "opposite") {
           justify = 1 - justify;
         }
-        if (direction === 'left') {
+        if (direction === "left") {
           justify = 1 - justify;
         }
 
-        const isRotated = !(collectiveOrientation === 'h' || fitsHorizontally);
+        const isRotated = !(collectiveOrientation === "h" || fitsHorizontally);
         label = placer(bounds, text, {
-          justify: orientation === 'h' ? placement.align : justify,
-          align: orientation === 'h' ? justify : placement.align,
+          justify: orientation === "h" ? placement.align : justify,
+          align: orientation === "h" ? justify : placement.align,
           fontSize: lblStngs.fontSize,
           fontFamily: lblStngs.fontFamily,
           textMetrics: measured,
           rotate: isRotated,
           overflow: !!overflow,
-          dock: lblStngs.dock ?? 'left',
+          dock: lblStngs.dock ?? "left",
         });
 
         if (label) {
           const textBounds = approxTextBounds(label, measured, isRotated, bounds, placement.padding);
-          fill = typeof placement.fill === 'function' ? placement.fill({ ...arg, textBounds }, i) : placement.fill;
+          fill = typeof placement.fill === "function" ? placement.fill({ ...arg, textBounds }, i) : placement.fill;
           label.fill = fill;
-          if (typeof linkData !== 'undefined') {
+          if (typeof linkData !== "undefined") {
             label.data = linkData;
           }
-          if (typeof placement.background === 'object') {
+          if (typeof placement.background === "object") {
             label.backgroundColor =
-              typeof placement.background.fill === 'function'
+              typeof placement.background.fill === "function"
                 ? placement.background.fill({ ...arg, textBounds }, i)
                 : placement.background.fill;
-            if (typeof label.backgroundColor !== 'undefined') {
+            if (typeof label.backgroundColor !== "undefined") {
               label.backgroundBounds = approxTextBounds(
                 label,
                 measured,
                 isRotated,
                 bounds,
-                placement.background.padding
+                placement.background.padding,
               );
             }
           }
@@ -354,7 +354,7 @@ export function placeInBars(
   }
 
   const filteredLabels = labels.filter(postFilter(postFilterContext));
-  const backgrounds = filteredLabels.filter((lb) => typeof lb.backgroundBounds !== 'undefined').map(toBackground);
+  const backgrounds = filteredLabels.filter((lb) => typeof lb.backgroundBounds !== "undefined").map(toBackground);
 
   return [...backgrounds, ...filteredLabels];
 }
@@ -391,12 +391,12 @@ export function precalculate({ nodes, rect, chart, labelSettings, placementSetti
 
     for (let j = 0; j < labelSettings.length; j++) {
       lblStng = labelSettings[j];
-      text = typeof lblStng.label === 'function' ? lblStng.label(arg, i) : undefined;
+      text = typeof lblStng.label === "function" ? lblStng.label(arg, i) : undefined;
       if (!isValidText(text)) {
         continue; // eslint-ignore-line
       }
-      direction = typeof settings.direction === 'function' ? settings.direction(arg, i) : settings.direction || 'up';
-      hasHorizontalDirection = hasHorizontalDirection || direction === 'left' || direction === 'right';
+      direction = typeof settings.direction === "function" ? settings.direction(arg, i) : settings.direction || "up";
+      hasHorizontalDirection = hasHorizontalDirection || direction === "left" || direction === "right";
 
       labelStruct.fontFamily = lblStng.fontFamily;
       labelStruct.fontSize = `${lblStng.fontSize}px`;
@@ -421,12 +421,12 @@ export function precalculate({ nodes, rect, chart, labelSettings, placementSetti
   };
 }
 
-export function getOrientation({ orientation = 'auto', defaultOrientation = 'h' }) {
+export function getOrientation({ orientation = "auto", defaultOrientation = "h" }) {
   switch (orientation.toLocaleLowerCase()) {
-    case 'vertical':
-      return 'v';
-    case 'horizontal':
-      return 'h';
+    case "vertical":
+      return "v";
+    case "horizontal":
+      return "h";
     default:
       return defaultOrientation;
   }
@@ -472,12 +472,12 @@ export function bars({ settings, chart, nodes, rect, renderer, style }, placer =
   const defaults = extend(
     {
       fontSize: 12,
-      fontFamily: 'Arial',
+      fontFamily: "Arial",
       align: 0.5,
       justify: 0,
-      fill: '#333',
+      fill: "#333",
     },
-    style.label
+    style.label,
   );
 
   defaults.fontSize = parseInt(defaults.fontSize, 10);
@@ -485,7 +485,7 @@ export function bars({ settings, chart, nodes, rect, renderer, style }, placer =
   const labelSettings = settings.labels.map((labelSetting) => extend({}, defaults, settings, labelSetting));
 
   const placementSettings = settings.labels.map((labelSetting) =>
-    labelSetting.placements.map((placement) => extend({}, defaults, settings, labelSetting, placement))
+    labelSetting.placements.map((placement) => extend({}, defaults, settings, labelSetting, placement)),
   );
 
   const { fitsHorizontally, hasHorizontalDirection, targetNodes } = precalculate({
@@ -500,14 +500,14 @@ export function bars({ settings, chart, nodes, rect, renderer, style }, placer =
 
   const orientation = getOrientation({
     orientation: settings.orientation,
-    defaultOrientation: hasHorizontalDirection ? 'h' : 'v',
+    defaultOrientation: hasHorizontalDirection ? "h" : "v",
   });
 
-  const coord = orientation === 'h' ? 'y' : 'x';
-  const side = orientation === 'h' ? 'height' : 'width';
+  const coord = orientation === "h" ? "y" : "x";
+  const side = orientation === "h" ? "height" : "width";
   targetNodes.sort(
     (a, b) =>
-      a.node.localBounds[coord] + a.node.localBounds[side] - (b.node.localBounds[coord] + b.node.localBounds[side])
+      a.node.localBounds[coord] + a.node.localBounds[side] - (b.node.localBounds[coord] + b.node.localBounds[side]),
   );
 
   return placer({

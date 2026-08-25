@@ -1,8 +1,8 @@
-import { create } from '../polyline';
-import { create as createPolygon } from '../polygon';
-import { rectToPoints, lineToPoints } from '../util';
+import { create } from "../polyline";
+import { create as createPolygon } from "../polygon";
+import { rectToPoints, lineToPoints } from "../util";
 
-describe('Polyline', () => {
+describe("Polyline", () => {
   let p;
   let points;
 
@@ -14,20 +14,20 @@ describe('Polyline', () => {
     ];
   });
 
-  it('should omit duplicate points', () => {
+  it("should omit duplicate points", () => {
     points.push({ x: 5, y: 6 }); // Add a 3rd segment
     p = create({ points });
     expect(p.segments).to.be.of.length(2);
   });
 
-  describe('constructor', () => {
-    it('should set correct default values', () => {
+  describe("constructor", () => {
+    it("should set correct default values", () => {
       p = create();
       expect(p.points()).to.be.empty;
       expect(p.segments).to.be.empty;
     });
 
-    it('should set correct values', () => {
+    it("should set correct values", () => {
       p = create({ points });
       expect(p.points()).to.deep.equal(points);
       expect(p.segments).to.deep.equal([
@@ -47,8 +47,8 @@ describe('Polyline', () => {
     });
   });
 
-  describe('set', () => {
-    it('should set correct values', () => {
+  describe("set", () => {
+    it("should set correct values", () => {
       p = create();
       p.set({ points });
 
@@ -70,36 +70,36 @@ describe('Polyline', () => {
     });
   });
 
-  describe('containsPoint', () => {
-    it('should return true if intersection', () => {
+  describe("containsPoint", () => {
+    it("should return true if intersection", () => {
       p = create({ points });
 
       expect(p.containsPoint({ x: 3, y: 4 })).to.be.true;
     });
 
-    it('should return false if no intersection', () => {
+    it("should return false if no intersection", () => {
       p = create({ points });
 
       expect(p.containsPoint({ x: 30, y: 14 })).to.be.false;
     });
   });
 
-  describe('intersectsCircle', () => {
-    it('should return true if intersection', () => {
+  describe("intersectsCircle", () => {
+    it("should return true if intersection", () => {
       p = create({ points });
 
       expect(p.intersectsCircle({ cx: 5, cy: 5, r: 5 })).to.be.true;
     });
 
-    it('should return false if no intersection', () => {
+    it("should return false if no intersection", () => {
       p = create({ points });
 
       expect(p.intersectsCircle({ cx: 30, cy: 14, r: 1 })).to.be.false;
     });
   });
 
-  describe('intersectsLine', () => {
-    it('should return true if intersection', () => {
+  describe("intersectsLine", () => {
+    it("should return true if intersection", () => {
       p = create({ points });
 
       expect(
@@ -109,12 +109,12 @@ describe('Polyline', () => {
             y1: 2,
             x2: 1,
             y2: 4,
-          })
-        )
+          }),
+        ),
       ).to.be.true;
     });
 
-    it('should return false if no intersection', () => {
+    it("should return false if no intersection", () => {
       p = create({ points });
 
       expect(
@@ -124,14 +124,14 @@ describe('Polyline', () => {
             y1: 20,
             x2: 10,
             y2: 40,
-          })
-        )
+          }),
+        ),
       ).to.be.false;
     });
   });
 
-  describe('intersectsRect', () => {
-    it('should return true if intersection', () => {
+  describe("intersectsRect", () => {
+    it("should return true if intersection", () => {
       p = create({ points });
 
       expect(
@@ -141,12 +141,12 @@ describe('Polyline', () => {
             y: 4,
             width: 10,
             height: 10,
-          })
-        )
+          }),
+        ),
       ).to.be.true;
     });
 
-    it('should return false if no intersection', () => {
+    it("should return false if no intersection", () => {
       p = create({ points });
 
       expect(
@@ -156,14 +156,14 @@ describe('Polyline', () => {
             y: 40,
             width: 10,
             height: 10,
-          })
-        )
+          }),
+        ),
       ).to.be.false;
     });
   });
 
-  describe('intersectsPolygon', () => {
-    it('should return true if intersection', () => {
+  describe("intersectsPolygon", () => {
+    it("should return true if intersection", () => {
       p = create({ points });
       const pgon = createPolygon({
         vertices: [
@@ -176,7 +176,7 @@ describe('Polyline', () => {
       expect(p.intersectsPolygon(pgon)).to.be.true;
     });
 
-    it('should return false if no intersection', () => {
+    it("should return false if no intersection", () => {
       p = create({ points });
       const pgon = createPolygon({
         vertices: [

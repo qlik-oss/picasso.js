@@ -1,11 +1,11 @@
-import extend from 'extend';
+import extend from "extend";
 /* eslint no-mixed-operators:0 */
 
 export default function layout(
   rect,
   display,
   orientation,
-  { itemRenderer, navigationRenderer, titleRenderer, isPreliminary = false }
+  { itemRenderer, navigationRenderer, titleRenderer, isPreliminary = false },
 ) {
   let title;
   let content;
@@ -26,7 +26,7 @@ export default function layout(
     height: titleRenderer.spread(),
   };
 
-  if (orientation === 'horizontal') {
+  if (orientation === "horizontal") {
     // const titleAtTop = false;
     // if (titleAtTop) { // this might be a nicer layout sometimes
     //   // |------------------|
@@ -101,7 +101,7 @@ export default function layout(
 
     title.y = content.y;
 
-    const isRtl = itemRenderer.direction() === 'rtl';
+    const isRtl = itemRenderer.direction() === "rtl";
     if (isRtl) {
       // switch title, content and navigation
       navigation.x = paddedRect.x;
@@ -146,7 +146,7 @@ export default function layout(
     preferredSize = Math.max(
       titleRenderer.extent(),
       navigationSize ? navigationRenderer.spread() : 0,
-      itemRenderer.spread()
+      itemRenderer.spread(),
     );
   }
 

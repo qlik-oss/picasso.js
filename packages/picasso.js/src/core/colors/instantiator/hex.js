@@ -1,4 +1,4 @@
-import RgbaColor from '../rgba-color';
+import RgbaColor from "../rgba-color";
 
 const rHex = /^\s*#([A-Fa-f0-9]{2})([A-f0-A-Fa-f0-9]{2})([A-Fa-f0-9]{2})\s*$/i,
   rHexShort = /^\s*#([A-Fa-f0-9])([A-Fa-f0-9])([A-Fa-f0-9])\s*$/i;
@@ -30,4 +30,4 @@ export default function hex(colStr) {
  * @example
  * hex.test( "#fff" );
  */
-hex.test = (colStr) => typeof colStr === 'string' && (rHex.test(colStr) || rHexShort.test(colStr));
+hex.test = (colStr) => typeof colStr === "string" && (rHex.test(colStr) || rHexShort.test(colStr));

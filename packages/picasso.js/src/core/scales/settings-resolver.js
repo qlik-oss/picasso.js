@@ -4,9 +4,9 @@ export default function resolveSettings(settings = {}, defaultSettings = {}, con
   Object.keys(defaultSettings).forEach((key) => {
     const type = typeof settings[key];
 
-    if (type === 'function') {
+    if (type === "function") {
       stngs[key] = settings[key](context);
-    } else if (type === 'undefined') {
+    } else if (type === "undefined") {
       stngs[key] = defaultSettings[key];
     } else {
       stngs[key] = settings[key];

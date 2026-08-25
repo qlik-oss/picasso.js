@@ -1,19 +1,19 @@
-import dateFormatFactory from './parts/qs-date-formatter';
-import { TYPES } from './constants';
-import memoize from './memoize';
+import dateFormatFactory from "./parts/qs-date-formatter";
+import { TYPES } from "./constants";
+import memoize from "./memoize";
 
 const MS_PER_DAY = 86400000;
 
 export function QlikTimeToDate(value) {
   return new Date(
-    Date.UTC(1899, 11, 30 + Math.floor(value), 0, 0, 0, Math.round(MS_PER_DAY * (value - Math.floor(value))))
+    Date.UTC(1899, 11, 30 + Math.floor(value), 0, 0, 0, Math.round(MS_PER_DAY * (value - Math.floor(value)))),
   );
 }
 
-export default function formatter(pattern, qtype = 'TS', localeInfo = null) {
+export default function formatter(pattern, qtype = "TS", localeInfo = null) {
   let qformat = dateFormatFactory(localeInfo, pattern, qtype);
   let memoized = memoize(qformat.format.bind(qformat), {
-    toKey: (date) => (typeof date === 'object' && typeof date.getTime === 'function' ? date.getTime() : date),
+    toKey: (date) => (typeof date === "object" && typeof date.getTime === "function" ? date.getTime() : date),
   });
 
   /**
@@ -63,7 +63,7 @@ export default function formatter(pattern, qtype = 'TS', localeInfo = null) {
   format.locale = function locale(li) {
     qformat = dateFormatFactory(li, pattern, qtype);
     memoized = memoize(qformat.format.bind(qformat), {
-      toKey: (date) => (typeof date === 'object' ? date.getTime() : date),
+      toKey: (date) => (typeof date === "object" ? date.getTime() : date),
     });
     return this;
   };

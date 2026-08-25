@@ -1,6 +1,6 @@
-import component from '../range';
+import component from "../range";
 
-describe('range component', () => {
+describe("range component", () => {
   let chart;
   let renderer;
   let context;
@@ -52,7 +52,7 @@ describe('range component', () => {
     scale.data = () => ({
       fields: [
         {
-          id: () => 'sales',
+          id: () => "sales",
         },
       ],
     });
@@ -61,18 +61,18 @@ describe('range component', () => {
     chart.scale.returns(scale);
   });
 
-  it('should render empty when brush is not active', () => {
+  it("should render empty when brush is not active", () => {
     const shapes = component.render.call(context);
     expect(shapes).to.eql([]);
   });
 
-  describe('active ranges', () => {
+  describe("active ranges", () => {
     beforeEach(() => {
       brush.isActive.returns(true);
       brush.brushes.returns([
         {
-          id: 'sales',
-          type: 'range',
+          id: "sales",
+          type: "range",
           brush: {
             ranges: () => [
               { min: 30, max: 40 },
@@ -83,8 +83,8 @@ describe('range component', () => {
       ]);
     });
 
-    it('should render along vertical direction', () => {
-      settings.direction = 'vertical';
+    it("should render along vertical direction", () => {
+      settings.direction = "vertical";
       const shapes = component.render.call(context);
       expect(
         shapes.map((s) => ({
@@ -92,7 +92,7 @@ describe('range component', () => {
           height: s.height,
           x: s.x,
           y: s.y,
-        }))
+        })),
       ).to.eql([
         {
           height: 20,
@@ -109,7 +109,7 @@ describe('range component', () => {
       ]);
     });
 
-    it('should render along horizontal direction', () => {
+    it("should render along horizontal direction", () => {
       const shapes = component.render.call(context);
       expect(
         shapes.map((s) => ({
@@ -117,7 +117,7 @@ describe('range component', () => {
           height: s.height,
           x: s.x,
           y: s.y,
-        }))
+        })),
       ).to.eql([
         {
           height: 200,
@@ -139,45 +139,45 @@ describe('range component', () => {
       expect(
         shapes.map((s) => ({
           fill: s.fill,
-        }))
-      ).to.eql([{ fill: '#ccc' }, { fill: '#ccc' }]);
+        })),
+      ).to.eql([{ fill: "#ccc" }, { fill: "#ccc" }]);
     });
 
     it('should have a fill of "#f00"', () => {
-      settings.fill = '#f00';
+      settings.fill = "#f00";
       const shapes = component.render.call(context);
       expect(
         shapes.map((s) => ({
           fill: s.fill,
-        }))
-      ).to.eql([{ fill: '#f00' }, { fill: '#f00' }]);
+        })),
+      ).to.eql([{ fill: "#f00" }, { fill: "#f00" }]);
     });
 
-    it('should have a default opacity of 1', () => {
+    it("should have a default opacity of 1", () => {
       const shapes = component.render.call(context);
       expect(
         shapes.map((s) => ({
           opacity: s.opacity,
-        }))
+        })),
       ).to.eql([{ opacity: 1 }, { opacity: 1 }]);
     });
 
-    it('should have an opacity of 0.2', () => {
+    it("should have an opacity of 0.2", () => {
       settings.opacity = 0.2;
       const shapes = component.render.call(context);
       expect(
         shapes.map((s) => ({
           opacity: s.opacity,
-        }))
+        })),
       ).to.eql([{ opacity: 0.2 }, { opacity: 0.2 }]);
     });
   });
 
-  describe('life', () => {
+  describe("life", () => {
     const shapes = [
       {
-        type: 'rect',
-        fill: '#ccc',
+        type: "rect",
+        fill: "#ccc",
         opacity: 1,
         height: 200,
         width: 5,
@@ -185,8 +185,8 @@ describe('range component', () => {
         y: 0,
       },
       {
-        type: 'rect',
-        fill: '#ccc',
+        type: "rect",
+        fill: "#ccc",
         opacity: 1,
         height: 200,
         width: 20,
@@ -198,8 +198,8 @@ describe('range component', () => {
       brush.isActive.returns(true);
       brush.brushes.returns([
         {
-          id: 'sales',
-          type: 'range',
+          id: "sales",
+          type: "range",
           brush: {
             ranges: () => [
               { min: 30, max: 40 },
@@ -209,14 +209,14 @@ describe('range component', () => {
         },
       ]);
     });
-    it('should attach event handlers on brush start, update and end', () => {
+    it("should attach event handlers on brush start, update and end", () => {
       component.render.call(context);
       expect(listeners.start.length).to.equal(1);
       expect(listeners.update.length).to.equal(1);
       expect(listeners.end.length).to.equal(1);
     });
 
-    it('should remove event handlers ondestroy', () => {
+    it("should remove event handlers ondestroy", () => {
       component.render.call(context);
       component.beforeDestroy.call(context);
       expect(listeners.start.length).to.equal(0);

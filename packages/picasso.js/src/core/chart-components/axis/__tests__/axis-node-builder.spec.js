@@ -1,16 +1,16 @@
-import { filterOverlappingLabels } from '../axis-node-builder';
+import { filterOverlappingLabels } from "../axis-node-builder";
 
-describe('Axis Node Builder', () => {
-  describe('filterOverlappingLabels', () => {
+describe("Axis Node Builder", () => {
+  describe("filterOverlappingLabels", () => {
     let nodes;
 
     beforeEach(() => {
       nodes = [];
     });
 
-    it('3 vertical nodes, upper node collide with middle node', () => {
+    it("3 vertical nodes, upper node collide with middle node", () => {
       const upperNode = {
-        name: 'upper',
+        name: "upper",
         boundingRect: {
           x: 0,
           y: 0,
@@ -19,7 +19,7 @@ describe('Axis Node Builder', () => {
         },
       };
       const middleNode = {
-        name: 'middle',
+        name: "middle",
         boundingRect: {
           x: 0,
           y: 8,
@@ -28,7 +28,7 @@ describe('Axis Node Builder', () => {
         },
       };
       const lowerNode = {
-        name: 'lower',
+        name: "lower",
         boundingRect: {
           x: 0,
           y: 20,
@@ -40,12 +40,12 @@ describe('Axis Node Builder', () => {
 
       filterOverlappingLabels(nodes);
 
-      expect(nodes.map((n) => n.name)).to.deep.equal(['lower', 'upper']);
+      expect(nodes.map((n) => n.name)).to.deep.equal(["lower", "upper"]);
     });
 
-    it('3 vertical nodes, upper node collide with middle node and lower node', () => {
+    it("3 vertical nodes, upper node collide with middle node and lower node", () => {
       const upperNode = {
-        name: 'upper',
+        name: "upper",
         boundingRect: {
           x: 0,
           y: 0,
@@ -54,7 +54,7 @@ describe('Axis Node Builder', () => {
         },
       };
       const middleNode = {
-        name: 'middle',
+        name: "middle",
         boundingRect: {
           x: 0,
           y: 8,
@@ -63,7 +63,7 @@ describe('Axis Node Builder', () => {
         },
       };
       const lowerNode = {
-        name: 'lower',
+        name: "lower",
         boundingRect: {
           x: 0,
           y: 9,
@@ -75,12 +75,12 @@ describe('Axis Node Builder', () => {
 
       filterOverlappingLabels(nodes);
 
-      expect(nodes.map((n) => n.name)).to.deep.equal(['upper']);
+      expect(nodes.map((n) => n.name)).to.deep.equal(["upper"]);
     });
 
-    it('2 vertical nodes, upper node collide with lower node', () => {
+    it("2 vertical nodes, upper node collide with lower node", () => {
       const upperNode = {
-        name: 'upper',
+        name: "upper",
         boundingRect: {
           x: 0,
           y: 0,
@@ -89,7 +89,7 @@ describe('Axis Node Builder', () => {
         },
       };
       const lowerNode = {
-        name: 'lower',
+        name: "lower",
         boundingRect: {
           x: 0,
           y: 9,
@@ -101,12 +101,12 @@ describe('Axis Node Builder', () => {
 
       filterOverlappingLabels(nodes);
 
-      expect(nodes.map((n) => n.name)).to.deep.equal(['upper']);
+      expect(nodes.map((n) => n.name)).to.deep.equal(["upper"]);
     });
 
-    it('1 vertical node', () => {
+    it("1 vertical node", () => {
       const upperNode = {
-        name: 'upper',
+        name: "upper",
         boundingRect: {
           x: 0,
           y: 0,
@@ -118,12 +118,12 @@ describe('Axis Node Builder', () => {
 
       filterOverlappingLabels(nodes);
 
-      expect(nodes.map((n) => n.name)).to.deep.equal(['upper']);
+      expect(nodes.map((n) => n.name)).to.deep.equal(["upper"]);
     });
 
-    it('multiple vertical nodes colliding', () => {
+    it("multiple vertical nodes colliding", () => {
       const upperNode = {
-        name: 'upper',
+        name: "upper",
         boundingRect: {
           x: 0,
           y: 0,
@@ -132,7 +132,7 @@ describe('Axis Node Builder', () => {
         },
       };
       const node5 = {
-        name: 'node5',
+        name: "node5",
         boundingRect: {
           x: 0,
           y: 6,
@@ -141,7 +141,7 @@ describe('Axis Node Builder', () => {
         },
       }; // filter
       const node4 = {
-        name: 'node4',
+        name: "node4",
         boundingRect: {
           x: 0,
           y: 12,
@@ -150,7 +150,7 @@ describe('Axis Node Builder', () => {
         },
       };
       const node3 = {
-        name: 'node3',
+        name: "node3",
         boundingRect: {
           x: 0,
           y: 18,
@@ -159,7 +159,7 @@ describe('Axis Node Builder', () => {
         },
       }; // filter
       const node2 = {
-        name: 'node2',
+        name: "node2",
         boundingRect: {
           x: 0,
           y: 24,
@@ -168,7 +168,7 @@ describe('Axis Node Builder', () => {
         },
       };
       const node1 = {
-        name: 'node1',
+        name: "node1",
         boundingRect: {
           x: 0,
           y: 30,
@@ -177,7 +177,7 @@ describe('Axis Node Builder', () => {
         },
       }; // filter
       const lowerNode = {
-        name: 'lower',
+        name: "lower",
         boundingRect: {
           x: 0,
           y: 36,
@@ -189,12 +189,12 @@ describe('Axis Node Builder', () => {
 
       filterOverlappingLabels(nodes);
 
-      expect(nodes.map((n) => n.name)).to.deep.equal(['lower', 'node2', 'node4', 'upper']);
+      expect(nodes.map((n) => n.name)).to.deep.equal(["lower", "node2", "node4", "upper"]);
     });
 
-    it('multiple vertical nodes, none colliding', () => {
+    it("multiple vertical nodes, none colliding", () => {
       const upperNode = {
-        name: 'upper',
+        name: "upper",
         boundingRect: {
           x: 0,
           y: 0,
@@ -203,7 +203,7 @@ describe('Axis Node Builder', () => {
         },
       };
       const node5 = {
-        name: 'node5',
+        name: "node5",
         boundingRect: {
           x: 0,
           y: 15,
@@ -212,7 +212,7 @@ describe('Axis Node Builder', () => {
         },
       };
       const node4 = {
-        name: 'node4',
+        name: "node4",
         boundingRect: {
           x: 0,
           y: 30,
@@ -221,7 +221,7 @@ describe('Axis Node Builder', () => {
         },
       };
       const node3 = {
-        name: 'node3',
+        name: "node3",
         boundingRect: {
           x: 0,
           y: 45,
@@ -230,7 +230,7 @@ describe('Axis Node Builder', () => {
         },
       };
       const node2 = {
-        name: 'node2',
+        name: "node2",
         boundingRect: {
           x: 0,
           y: 60,
@@ -239,7 +239,7 @@ describe('Axis Node Builder', () => {
         },
       };
       const node1 = {
-        name: 'node1',
+        name: "node1",
         boundingRect: {
           x: 0,
           y: 75,
@@ -248,7 +248,7 @@ describe('Axis Node Builder', () => {
         },
       };
       const lowerNode = {
-        name: 'lower',
+        name: "lower",
         boundingRect: {
           x: 0,
           y: 90,
@@ -260,7 +260,7 @@ describe('Axis Node Builder', () => {
 
       filterOverlappingLabels(nodes);
 
-      expect(nodes.map((n) => n.name)).to.deep.equal(['lower', 'node1', 'node2', 'node3', 'node4', 'node5', 'upper']);
+      expect(nodes.map((n) => n.name)).to.deep.equal(["lower", "node1", "node2", "node3", "node4", "node5", "upper"]);
     });
   });
 });

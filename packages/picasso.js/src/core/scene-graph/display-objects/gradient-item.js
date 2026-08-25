@@ -1,5 +1,5 @@
-import DisplayObject from './display-object';
-import NodeContainer from '../node-container';
+import DisplayObject from "./display-object";
+import NodeContainer from "../node-container";
 
 /**
  * @private
@@ -27,11 +27,11 @@ import NodeContainer from '../node-container';
 
 const NC = NodeContainer.prototype;
 
-const allowedAttrs = ['x1', 'x2', 'y1', 'y2', 'id', 'offset', 'style'];
+const allowedAttrs = ["x1", "x2", "y1", "y2", "id", "offset", "style"];
 
 export default class GradientItem extends DisplayObject {
   constructor(s = {}) {
-    const { type = 'container' } = s;
+    const { type = "container" } = s;
     super(type);
     this.set(s);
     this._boundingRect = {};
@@ -42,12 +42,12 @@ export default class GradientItem extends DisplayObject {
 
     const attrs = this.attrs;
 
-    let attrKey = '';
+    let attrKey = "";
 
     for (let i = 0, len = allowedAttrs.length; i !== len; i++) {
       attrKey = allowedAttrs[i];
 
-      if (typeof v[attrKey] !== 'undefined') {
+      if (typeof v[attrKey] !== "undefined") {
         attrs[attrKey] = v[attrKey];
       }
     }

@@ -1,107 +1,107 @@
-import { getPropsInfo, collect } from '../util';
+import { getPropsInfo, collect } from "../util";
 
-describe('data-util', () => {
+describe("data-util", () => {
   let ds;
 
   beforeEach(() => {
     ds = {
       field: sinon.stub(),
-      key: 'nyckel',
+      key: "nyckel",
     };
   });
 
-  describe('config-normalizer', () => {
-    it('should attach default accessors from field', () => {
+  describe("config-normalizer", () => {
+    it("should attach default accessors from field", () => {
       const reduceFn = () => ({});
       const valueFn = () => ({});
-      ds.field.withArgs('f').returns({
-        key: () => 'country',
+      ds.field.withArgs("f").returns({
+        key: () => "country",
         reduce: reduceFn,
         value: valueFn,
       });
       const p = getPropsInfo(
         {
-          field: 'f',
+          field: "f",
         },
-        ds
+        ds,
       );
 
       expect(p.main.value).to.equal(valueFn);
       expect(p.main.reduce).to.equal(reduceFn);
     });
 
-    it('should attach custom accessors', () => {
+    it("should attach custom accessors", () => {
       const reduceFn = () => ({});
       const valueFn = () => ({});
       const labelFn = () => ({});
-      ds.field.withArgs('f').returns({
-        key: () => 'country',
-        reduce: 'foo',
-        value: 'foooo',
+      ds.field.withArgs("f").returns({
+        key: () => "country",
+        reduce: "foo",
+        value: "foooo",
       });
-      ds.field.withArgs('f2').returns({
-        key: () => 'region',
-        reduce: 'reg',
-        value: 'regg',
+      ds.field.withArgs("f2").returns({
+        key: () => "region",
+        reduce: "reg",
+        value: "regg",
       });
       const p = getPropsInfo(
         {
-          field: 'f',
+          field: "f",
           value: valueFn,
           reduce: reduceFn,
           label: labelFn,
           props: {
             x: {
-              field: 'f2',
-              value: 'val',
-              reduce: 'sum',
-              label: 'etikett',
+              field: "f2",
+              value: "val",
+              reduce: "sum",
+              label: "etikett",
             },
           },
         },
-        ds
+        ds,
       );
 
       expect(p.main.value).to.equal(valueFn);
       expect(p.main.reduce).to.equal(reduceFn);
       expect(p.main.label).to.equal(labelFn);
-      expect(p.props.x.value).to.equal('val');
-      expect(p.props.x.label).to.equal('etikett');
-      expect(p.props.x.reduce).to.be.a('function');
+      expect(p.props.x.value).to.equal("val");
+      expect(p.props.x.label).to.equal("etikett");
+      expect(p.props.x.reduce).to.be.a("function");
     });
 
-    it('should support fields array', () => {
+    it("should support fields array", () => {
       const reduceFn = () => ({});
       const reduceFn2 = () => ({});
       const reduceLbl = () => ({});
       const valueFn = () => ({});
       const multiReduceFn = () => {};
       const country = {
-        key: () => 'country',
-        reduce: () => 'red',
-        reduceLabel: () => 'pink',
-        value: 'foooo',
-        label: 'lbl',
+        key: () => "country",
+        reduce: () => "red",
+        reduceLabel: () => "pink",
+        value: "foooo",
+        label: "lbl",
       };
       const region = {
-        key: () => 'region',
-        reduce: 'reg',
-        reduceLabel: 'foo',
-        value: 'regg',
+        key: () => "region",
+        reduce: "reg",
+        reduceLabel: "foo",
+        value: "regg",
       };
-      ds.field.withArgs('f').returns(country);
-      ds.field.withArgs('f2').returns(region);
+      ds.field.withArgs("f").returns(country);
+      ds.field.withArgs("f2").returns(region);
       const p = getPropsInfo(
         {
-          field: 'f',
+          field: "f",
           value: valueFn,
           reduce: reduceFn,
           props: {
             x: {
               fields: [
                 {
-                  field: 'f2',
-                  value: 'val',
+                  field: "f2",
+                  value: "val",
                   reduce: reduceFn2,
                   reduceLabel: reduceLbl,
                 },
@@ -111,15 +111,15 @@ describe('data-util', () => {
             },
           },
         },
-        ds
+        ds,
       );
 
       expect(p.props.x.fields.length).to.equal(2);
       expect(p.props.x.reduce).to.equal(multiReduceFn);
       expect(p.props.x.fields[0]).to.eql({
         field: region,
-        type: 'field',
-        value: 'val',
+        type: "field",
+        value: "val",
         reduce: reduceFn2,
         reduceLabel: reduceLbl,
         label: undefined,
@@ -127,76 +127,76 @@ describe('data-util', () => {
       expect(p.props.x.fields[1]).to.eql(
         {
           field: country,
-          value: 'foooo',
+          value: "foooo",
           reduce: country.reduce,
           reduceLabel: country.reduceLabel,
-          label: 'lbl',
+          label: "lbl",
         },
-        'sdfsdf'
+        "sdfsdf",
       );
     });
 
-    it('should convert string reducer to a function', () => {
-      ds.field.withArgs('f').returns({
-        key: () => 'country',
-        reduce: 'avg',
+    it("should convert string reducer to a function", () => {
+      ds.field.withArgs("f").returns({
+        key: () => "country",
+        reduce: "avg",
       });
       const p = getPropsInfo(
         {
-          field: 'f',
+          field: "f",
         },
-        ds
+        ds,
       );
 
-      expect(p.main.reduce).to.be.a('function');
+      expect(p.main.reduce).to.be.a("function");
     });
 
-    it('should accept a filter function', () => {
-      ds.field.withArgs('f').returns({
-        key: () => 'country',
+    it("should accept a filter function", () => {
+      ds.field.withArgs("f").returns({
+        key: () => "country",
       });
       const p = getPropsInfo(
         {
-          field: 'f',
+          field: "f",
           filter: () => {},
         },
-        ds
+        ds,
       );
 
-      expect(p.main.filter).to.be.a('function');
+      expect(p.main.filter).to.be.a("function");
     });
 
-    it('should accept primitives and functions', () => {
+    it("should accept primitives and functions", () => {
       const f = {
-        key: () => 'country',
+        key: () => "country",
       };
-      ds.field.withArgs('f').returns(f);
+      ds.field.withArgs("f").returns(f);
       const fn = () => 3;
       const p = getPropsInfo(
         {
-          field: 'f',
+          field: "f",
           props: {
             x: 0,
             y: fn,
           },
         },
-        ds
+        ds,
       );
 
       expect(p.props.x).to.eql({
-        type: 'primitive',
+        type: "primitive",
         value: 0,
       });
       expect(p.props.y).to.eql({
         field: f,
-        type: 'function',
+        type: "function",
         value: fn,
         label: fn,
       });
     });
   });
 
-  describe('collector', () => {
+  describe("collector", () => {
     let tracked;
     let mainField;
     let pField;
@@ -206,15 +206,15 @@ describe('data-util', () => {
           items: [
             {
               value: 3,
-              label: 'three',
-              source: 'kjella',
-              p: { value: 3.1, label: 'one', source: 'kp' },
+              label: "three",
+              source: "kjella",
+              p: { value: 3.1, label: "one", source: "kp" },
             },
             {
               value: 7,
-              label: 'seven',
-              source: 'kjella',
-              p: { value: 7.2, label: 'two', source: 'kp' },
+              label: "seven",
+              source: "kjella",
+              p: { value: 7.2, label: "two", source: "kp" },
             },
           ],
         },
@@ -229,7 +229,7 @@ describe('data-util', () => {
       };
     });
 
-    it('should collect values into an array when not using value reducer', () => {
+    it("should collect values into an array when not using value reducer", () => {
       const main = { field: mainField };
 
       const props = {
@@ -242,24 +242,24 @@ describe('data-util', () => {
       expect(items).to.eql([
         {
           value: [3, 7],
-          label: '$3,7',
-          source: 'kjella',
-          p: { value: [3.1, 7.2], label: '£3.1,7.2', source: 'kp' },
+          label: "$3,7",
+          source: "kjella",
+          p: { value: [3.1, 7.2], label: "£3.1,7.2", source: "kp" },
         },
       ]);
     });
 
-    it('should reduce value and labels', () => {
+    it("should reduce value and labels", () => {
       const main = {
         field: mainField,
-        reduce: (values) => values.join('::'),
-        reduceLabel: (labels) => labels.join('-'),
+        reduce: (values) => values.join("::"),
+        reduceLabel: (labels) => labels.join("-"),
       };
 
       const props = {
         p: {
           field: pField,
-          reduce: (values) => values.join('|'),
+          reduce: (values) => values.join("|"),
           reduceLabel: (labels, value) => `~${value}`,
         },
       };
@@ -269,24 +269,24 @@ describe('data-util', () => {
 
       expect(items).to.eql([
         {
-          value: '3::7',
-          label: 'three-seven',
-          source: 'kjella',
-          p: { value: '3.1|7.2', label: '~3.1|7.2', source: 'kp' },
+          value: "3::7",
+          label: "three-seven",
+          source: "kjella",
+          p: { value: "3.1|7.2", label: "~3.1|7.2", source: "kp" },
         },
       ]);
     });
 
-    it('should reduce labels using field formatter when reduceLabel is not defined', () => {
+    it("should reduce labels using field formatter when reduceLabel is not defined", () => {
       const main = {
         field: mainField,
-        reduce: (values) => values.join('::'),
+        reduce: (values) => values.join("::"),
       };
 
       const props = {
         p: {
           field: pField,
-          reduce: (values) => values.join('|'),
+          reduce: (values) => values.join("|"),
         },
       };
       const propsArr = Object.keys(props);
@@ -295,10 +295,10 @@ describe('data-util', () => {
 
       expect(items).to.eql([
         {
-          value: '3::7',
-          label: '$3::7',
-          source: 'kjella',
-          p: { value: '3.1|7.2', label: '£3.1|7.2', source: 'kp' },
+          value: "3::7",
+          label: "$3::7",
+          source: "kjella",
+          p: { value: "3.1|7.2", label: "£3.1|7.2", source: "kp" },
         },
       ]);
     });

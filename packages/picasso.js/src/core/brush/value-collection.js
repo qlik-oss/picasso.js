@@ -25,7 +25,7 @@ export default function valueCollection() {
 
   vc.clear = () => (values = []);
 
-  vc.toString = () => values.join(';');
+  vc.toString = () => values.join(";");
 
   return vc;
 }

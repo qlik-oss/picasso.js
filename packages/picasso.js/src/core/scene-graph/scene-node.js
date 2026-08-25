@@ -1,5 +1,5 @@
-import { pointsToRect, pointsToCircle, pointsToLine } from '../geometry/util';
-import pointsToPath from '../utils/points-to-path';
+import { pointsToRect, pointsToCircle, pointsToLine } from "../geometry/util";
+import pointsToPath from "../utils/points-to-path";
 
 function appendDpi(points, dpi) {
   for (let i = 0, len = points.length; i < len; i++) {
@@ -21,28 +21,28 @@ function geometryToDef(geometry, dpi, mvm) {
   appendDpi(points, dpi);
   let def = null;
 
-  if (type === 'rect' || type === 'bounds') {
+  if (type === "rect" || type === "bounds") {
     def = pointsToRect(points);
     def.type = type;
-  } else if (type === 'circle') {
+  } else if (type === "circle") {
     def = pointsToCircle(points, geometry.r);
     def.type = type;
-  } else if (type === 'line') {
+  } else if (type === "line") {
     def = pointsToLine(points);
     def.type = type;
-  } else if (type === 'polygon' || type === 'polyline') {
-    const path = pointsToPath(points, type === 'polygon');
+  } else if (type === "polygon" || type === "polyline") {
+    const path = pointsToPath(points, type === "polygon");
     def = {
-      type: 'path',
+      type: "path",
       d: path,
     };
-  } else if (type === 'geopolygon') {
-    let path = '';
+  } else if (type === "geopolygon") {
+    let path = "";
     for (let i = 0; i < points.length; i++) {
       path += pointsToPath(points[i], true);
     }
     def = {
-      type: 'path',
+      type: "path",
       d: path,
     };
   }
@@ -57,13 +57,13 @@ function geometryToDef(geometry, dpi, mvm) {
 function colliderToShape(node, dpi) {
   if (node.collider) {
     const mvm = node.modelViewMatrix;
-    const isCollection = node.colliderType === 'collection';
+    const isCollection = node.colliderType === "collection";
 
     if (isCollection) {
       const children = node.collider.geometries.map((geometry) => geometryToDef(geometry, dpi, mvm));
 
       return {
-        type: 'container',
+        type: "container",
         children,
       };
     }
@@ -236,7 +236,7 @@ class SceneNode {
     let dx = selfRect.left;
     let dy = selfRect.top;
 
-    if (type === 'object' && target !== null && typeof target.getBoundingClientRect === 'function') {
+    if (type === "object" && target !== null && typeof target.getBoundingClientRect === "function") {
       const { left = 0, top = 0 } = target.getBoundingClientRect();
       dx -= left;
       dy -= top;

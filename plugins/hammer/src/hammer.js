@@ -1,12 +1,12 @@
 const translateKnownTypes = {
-  click: 'Tap',
-  Click: 'Tap',
-  tap: 'Tap',
-  pan: 'Pan',
-  swipe: 'Swipe',
-  rotate: 'Rotate',
-  press: 'Press',
-  pinch: 'Pinch',
+  click: "Tap",
+  Click: "Tap",
+  tap: "Tap",
+  pan: "Pan",
+  swipe: "Swipe",
+  rotate: "Rotate",
+  press: "Press",
+  pinch: "Pinch",
 };
 
 /**
@@ -49,7 +49,7 @@ function hammered(Hammered) {
      * add hammer recognizers based on settings
      */
     function addRecognizers() {
-      if (typeof settings.enable === 'function') {
+      if (typeof settings.enable === "function") {
         settings.enable = settings.enable.bind(instance)();
       }
       if (!settings.enable) {
@@ -61,7 +61,7 @@ function hammered(Hammered) {
         if (gesture.options.enable === undefined) {
           gesture.options.enable = true;
         }
-        if (typeof gesture.options.enable === 'function') {
+        if (typeof gesture.options.enable === "function") {
           gesture.options.enable = gesture.options.enable.bind(instance);
         }
         // setup hammer gestures
@@ -83,10 +83,10 @@ function hammered(Hammered) {
         const type = getGestureType(gesture.type);
         if (Hammered && Hammered[type]) {
           if (gesture.recognizeWith) {
-            mc.get(gesture.options.event).recognizeWith(gesture.recognizeWith.split(' ').filter((e) => e !== ''));
+            mc.get(gesture.options.event).recognizeWith(gesture.recognizeWith.split(" ").filter((e) => e !== ""));
           }
           if (gesture.requireFailure) {
-            mc.get(gesture.options.event).requireFailure(gesture.requireFailure.split(' ').filter((e) => e !== ''));
+            mc.get(gesture.options.event).requireFailure(gesture.requireFailure.split(" ").filter((e) => e !== ""));
           }
         }
       });

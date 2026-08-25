@@ -1,7 +1,7 @@
-import * as boxShapesHelper from '../box-shapes-helper';
-import buildShapes from '../box-shapes';
+import * as boxShapesHelper from "../box-shapes-helper";
+import buildShapes from "../box-shapes";
 
-describe('buildShapes', () => {
+describe("buildShapes", () => {
   let sandbox;
   let resolved;
   let keys;
@@ -10,18 +10,18 @@ describe('buildShapes', () => {
   beforeEach(() => {
     boxWidth = 10;
     sandbox = sinon.createSandbox();
-    sandbox.stub(boxShapesHelper, 'oob').returns('oob');
-    sandbox.stub(boxShapesHelper, 'box').returns('box');
-    sandbox.stub(boxShapesHelper, 'verticalLine').returns('verticalLine');
-    sandbox.stub(boxShapesHelper, 'horizontalLine').returns('horizontalLine');
-    sandbox.stub(boxShapesHelper, 'getBoxWidth').returns(boxWidth);
+    sandbox.stub(boxShapesHelper, "oob").returns("oob");
+    sandbox.stub(boxShapesHelper, "box").returns("box");
+    sandbox.stub(boxShapesHelper, "verticalLine").returns("verticalLine");
+    sandbox.stub(boxShapesHelper, "horizontalLine").returns("horizontalLine");
+    sandbox.stub(boxShapesHelper, "getBoxWidth").returns(boxWidth);
 
-    keys = ['box'];
+    keys = ["box"];
     resolved = {
       major: {
         items: [
           {
-            major: 'major value',
+            major: "major value",
           },
         ],
         settings: {
@@ -64,41 +64,41 @@ describe('buildShapes', () => {
     sandbox.restore();
   });
 
-  it('should return box marker when keys contains only box and there is no out-of-bounds', () => {
+  it("should return box marker when keys contains only box and there is no out-of-bounds", () => {
     const shapes = buildShapes({ resolved, keys });
-    expect(shapes[0].children).to.deep.equal(['box']);
+    expect(shapes[0].children).to.deep.equal(["box"]);
   });
 
-  it('should return line markers when keys contains only line and there is no out-of-bounds', () => {
-    keys = ['line'];
+  it("should return line markers when keys contains only line and there is no out-of-bounds", () => {
+    keys = ["line"];
     const shapes = buildShapes({ resolved, keys });
-    expect(shapes[0].children).to.deep.equal(['verticalLine', 'verticalLine']);
+    expect(shapes[0].children).to.deep.equal(["verticalLine", "verticalLine"]);
   });
 
-  it('should return median marker when keys contains only median and there is no out-of-bounds', () => {
-    keys = ['median'];
+  it("should return median marker when keys contains only median and there is no out-of-bounds", () => {
+    keys = ["median"];
     const shapes = buildShapes({ resolved, keys });
-    expect(shapes[0].children).to.deep.equal(['horizontalLine']);
+    expect(shapes[0].children).to.deep.equal(["horizontalLine"]);
   });
 
-  it('should return whisker marker when keys contains only whisker and there is no out-of-bounds', () => {
-    keys = ['whisker'];
+  it("should return whisker marker when keys contains only whisker and there is no out-of-bounds", () => {
+    keys = ["whisker"];
     const shapes = buildShapes({ resolved, keys });
-    expect(shapes[0].children).to.deep.equal(['horizontalLine', 'horizontalLine']);
+    expect(shapes[0].children).to.deep.equal(["horizontalLine", "horizontalLine"]);
   });
 
-  it('should return out-of-bounds marker there is out-of-bounds', () => {
-    keys = ['box', 'line', 'median', 'whisker'];
+  it("should return out-of-bounds marker there is out-of-bounds", () => {
+    keys = ["box", "line", "median", "whisker"];
     resolved.minor.items[0].start = -1;
     resolved.minor.items[0].end = -0.5;
     const shapes = buildShapes({ resolved, keys });
-    expect(shapes[0].children).to.deep.equal(['oob']);
+    expect(shapes[0].children).to.deep.equal(["oob"]);
   });
 
-  it('should not return shapes that have show === false', () => {
+  it("should not return shapes that have show === false", () => {
     resolved = {
       major: {
-        items: [{ major: 'first' }, { major: 'second' }],
+        items: [{ major: "first" }, { major: "second" }],
         settings: { major: { scale: {} } },
       },
       minor: {
@@ -136,15 +136,15 @@ describe('buildShapes', () => {
       },
     };
 
-    keys = ['box', 'line', 'median', 'whisker'];
+    keys = ["box", "line", "median", "whisker"];
     const shapes = buildShapes({ resolved, keys });
     expect(shapes[0].children).to.eql([
-      'box',
-      'verticalLine',
-      'verticalLine',
-      'horizontalLine',
-      'horizontalLine',
-      'horizontalLine',
+      "box",
+      "verticalLine",
+      "verticalLine",
+      "horizontalLine",
+      "horizontalLine",
+      "horizontalLine",
     ]);
     expect(shapes[1].children).to.eql([]);
   });

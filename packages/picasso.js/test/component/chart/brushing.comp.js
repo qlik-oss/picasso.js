@@ -1,15 +1,15 @@
-import createElement from 'test-utils/mocks/element-mock';
-import p from '../../../src';
+import createElement from "test-utils/mocks/element-mock";
+import p from "../../../src";
 
 const { chart } = p;
 
 function simulateClick(elm, down, up = down) {
-  elm.trigger('mousedown', {
+  elm.trigger("mousedown", {
     clientX: down.x,
     clientY: down.y,
     button: 0,
   });
-  elm.trigger('mouseup', {
+  elm.trigger("mouseup", {
     clientX: up.x,
     clientY: up.y,
     button: 0,
@@ -18,8 +18,8 @@ function simulateClick(elm, down, up = down) {
 
 function simulateTap(elm, down, up = down) {
   let didPreventDefault = false;
-  elm.trigger('touchstart', {
-    type: 'touchstart',
+  elm.trigger("touchstart", {
+    type: "touchstart",
     touches: [
       {
         clientX: down.x,
@@ -33,8 +33,8 @@ function simulateTap(elm, down, up = down) {
       },
     ],
   });
-  elm.trigger('touchend', {
-    type: 'touchend',
+  elm.trigger("touchend", {
+    type: "touchend",
     touches: [],
     changedTouches: [
       {
@@ -54,7 +54,7 @@ function simulateTouchSupport(elm) {
   elm.ontouchend = true;
 }
 
-describe('Brushing', () => {
+describe("Brushing", () => {
   let data;
   let settings;
   let pointMarker;
@@ -63,29 +63,29 @@ describe('Brushing', () => {
   let brush;
   let element;
 
-  describe('tap', () => {
+  describe("tap", () => {
     beforeEach(() => {
       element = createElement();
 
       data = [
-        ['Product', 'Cost'],
-        ['Cars', 1],
-        ['Trucks', 2],
+        ["Product", "Cost"],
+        ["Cars", 1],
+        ["Trucks", 2],
       ];
 
       brush = {
         trigger: [
           {
-            on: 'tap',
-            contexts: ['test'],
+            on: "tap",
+            contexts: ["test"],
           },
         ],
         consume: [
           {
-            context: 'test',
+            context: "test",
             style: {
               inactive: {
-                fill: 'red',
+                fill: "red",
               },
             },
           },
@@ -93,7 +93,7 @@ describe('Brushing', () => {
       };
 
       pointMarker = {
-        type: 'point',
+        type: "point",
         data: {
           extract: {
             field: 0,
@@ -121,19 +121,19 @@ describe('Brushing', () => {
         },
         settings: {
           x: {
-            scale: 'd0',
-            ref: 'x',
+            scale: "d0",
+            ref: "x",
           },
           y: {
-            scale: 'm0',
-            ref: 'y',
+            scale: "m0",
+            ref: "y",
           },
         },
         brush,
       };
 
       boxMarker = {
-        type: 'box',
+        type: "box",
         data: {
           extract: {
             field: 0,
@@ -149,21 +149,21 @@ describe('Brushing', () => {
         },
         settings: {
           major: {
-            scale: 'd0',
+            scale: "d0",
           },
           minor: {
-            scale: 'mn',
+            scale: "mn",
           },
         },
         brush,
       };
 
       discreteAxis = {
-        type: 'axis',
-        scale: 'd0',
+        type: "axis",
+        scale: "d0",
         brush,
         layout: {
-          dock: 'top',
+          dock: "top",
         },
       };
 
@@ -181,8 +181,8 @@ describe('Brushing', () => {
       };
     });
 
-    describe('thresholds', () => {
-      it('should not tap if delta distance is greater the limit', () => {
+    describe("thresholds", () => {
+      it("should not tap if delta distance is greater the limit", () => {
         settings.components.push(pointMarker);
 
         const instance = chart({
@@ -191,7 +191,7 @@ describe('Brushing', () => {
           settings,
         });
 
-        const c = instance.findShapes('circle');
+        const c = instance.findShapes("circle");
         // mousedown on first point and mouseup on second
         simulateClick(
           instance.element,
@@ -202,23 +202,23 @@ describe('Brushing', () => {
           {
             x: c[1].attrs.cx,
             y: c[1].attrs.cy,
-          }
+          },
         );
-        const activeShapes = instance.getAffectedShapes('test');
+        const activeShapes = instance.getAffectedShapes("test");
 
         expect(activeShapes).to.be.of.length(0);
       });
     });
 
-    describe('propagation', () => {
-      it('stop', () => {
-        pointMarker.brush.trigger[0].propagation = 'stop';
+    describe("propagation", () => {
+      it("stop", () => {
+        pointMarker.brush.trigger[0].propagation = "stop";
         pointMarker.settings.x = undefined;
         settings.components.push(pointMarker);
         data = [
-          ['Product', 'Cost'],
-          ['Cars', 1],
-          ['Trucks', 1],
+          ["Product", "Cost"],
+          ["Cars", 1],
+          ["Trucks", 1],
         ];
 
         const instance = chart({
@@ -227,12 +227,12 @@ describe('Brushing', () => {
           settings,
         });
 
-        const c1 = instance.findShapes('circle')[0];
+        const c1 = instance.findShapes("circle")[0];
         simulateClick(instance.element, {
           x: c1.attrs.cx,
           y: c1.attrs.cy,
         });
-        const activeShapes = instance.getAffectedShapes('test');
+        const activeShapes = instance.getAffectedShapes("test");
         const inactiveShapes = instance.findShapes('[fill="red"]');
 
         expect(activeShapes).to.be.of.length(1);
@@ -241,15 +241,15 @@ describe('Brushing', () => {
       });
     });
 
-    describe('global propagation', () => {
-      it('stop', () => {
-        pointMarker.brush.trigger[0].globalPropagation = 'stop';
+    describe("global propagation", () => {
+      it("stop", () => {
+        pointMarker.brush.trigger[0].globalPropagation = "stop";
         pointMarker.settings.x = undefined;
         settings.components.push(pointMarker);
         settings.components.push(pointMarker);
         data = [
-          ['Product', 'Cost'],
-          ['Cars', 1],
+          ["Product", "Cost"],
+          ["Cars", 1],
         ];
 
         const instance = chart({
@@ -258,12 +258,12 @@ describe('Brushing', () => {
           settings,
         });
 
-        const c1 = instance.findShapes('circle')[0];
+        const c1 = instance.findShapes("circle")[0];
         simulateClick(instance.element, {
           x: c1.attrs.cx,
           y: c1.attrs.cy,
         });
-        const activeShapes = instance.getAffectedShapes('test');
+        const activeShapes = instance.getAffectedShapes("test");
         const inactiveShapes = instance.findShapes('[fill="red"]');
 
         // Each component has one shape. Only one component should trigger a brush, but both should consume it
@@ -272,7 +272,7 @@ describe('Brushing', () => {
       });
     });
 
-    describe('components', () => {
+    describe("components", () => {
       beforeAll(() => {
         // Axis require access to document to measure text
         global.document.createElement = createElement;
@@ -282,7 +282,7 @@ describe('Brushing', () => {
         delete global.document.createElement;
       });
 
-      it('point-component', () => {
+      it("point-component", () => {
         settings.components.push(pointMarker);
 
         const instance = chart({
@@ -291,12 +291,12 @@ describe('Brushing', () => {
           settings,
         });
 
-        const c = instance.findShapes('circle');
+        const c = instance.findShapes("circle");
         simulateClick(instance.element, {
           x: c[0].attrs.cx,
           y: c[0].attrs.cy,
         });
-        const activeShapes = instance.getAffectedShapes('test');
+        const activeShapes = instance.getAffectedShapes("test");
         const inactiveShapes = instance.findShapes('[fill="red"]');
 
         expect(activeShapes).to.be.of.length(1);
@@ -304,16 +304,16 @@ describe('Brushing', () => {
         expect(activeShapes[0].attrs).to.deep.equal(c[0].attrs);
       });
 
-      it('box', () => {
+      it("box", () => {
         data = [
-          ['Product', 'm0', 'm1', 'm2', 'm3', 'm4'],
-          ['Cars', 0.15, 0.3, 0.45, 0.5, 0.8],
-          ['Trucks', 0.25, 0.3, 0.5, 0.7, 0.9],
-          ['Planes', 0.1, 0.3, 0.6, 0.65, 0.69],
+          ["Product", "m0", "m1", "m2", "m3", "m4"],
+          ["Cars", 0.15, 0.3, 0.45, 0.5, 0.8],
+          ["Trucks", 0.25, 0.3, 0.5, 0.7, 0.9],
+          ["Planes", 0.1, 0.3, 0.6, 0.65, 0.69],
         ];
         settings.scales.mn = {
           data: {
-            fields: ['m0', 'm1', 'm2', 'm3', 'm4'],
+            fields: ["m0", "m1", "m2", "m3", "m4"],
           },
           expand: 0.1,
         };
@@ -325,21 +325,21 @@ describe('Brushing', () => {
           settings,
         });
 
-        const rects = instance.findShapes('rect');
+        const rects = instance.findShapes("rect");
         simulateClick(instance.element, {
           x: rects[0].attrs.x + rects[0].attrs.width / 2,
           y: rects[0].attrs.y + rects[0].attrs.height / 2,
         });
-        const activeShapes = instance.getAffectedShapes('test');
+        const activeShapes = instance.getAffectedShapes("test");
         const inactiveShapes = instance.findShapes('rect[fill="red"]');
-        const activeRects = activeShapes.filter((s) => s.type === 'rect');
+        const activeRects = activeShapes.filter((s) => s.type === "rect");
 
         expect(activeRects).to.be.of.length(1);
         expect(inactiveShapes).to.be.of.length(2);
         expect(activeRects[0].attrs).to.deep.equal(rects[0].attrs);
       });
 
-      it('axis', () => {
+      it("axis", () => {
         settings.components.push(discreteAxis);
 
         const instance = chart({
@@ -348,12 +348,12 @@ describe('Brushing', () => {
           settings,
         });
 
-        const texts = instance.findShapes('text');
+        const texts = instance.findShapes("text");
         simulateClick(instance.element, {
           x: texts[0].bounds.x + texts[0].bounds.width / 2,
           y: texts[0].bounds.y + texts[0].bounds.height / 2,
         });
-        const activeShapes = instance.getAffectedShapes('test');
+        const activeShapes = instance.getAffectedShapes("test");
         const inactiveShapes = instance.findShapes('[fill="red"]');
 
         expect(activeShapes).to.be.of.length(1);
@@ -362,16 +362,16 @@ describe('Brushing', () => {
       });
     });
 
-    describe('touch', () => {
+    describe("touch", () => {
       beforeEach(() => {
         simulateTouchSupport(element);
       });
 
-      it('tap', () => {
+      it("tap", () => {
         settings.components.push(pointMarker);
         data = [
-          ['Product', 'Cost'],
-          ['Cars', 1],
+          ["Product", "Cost"],
+          ["Cars", 1],
         ];
 
         const instance = chart({
@@ -380,23 +380,23 @@ describe('Brushing', () => {
           settings,
         });
 
-        const c1 = instance.findShapes('circle')[0];
+        const c1 = instance.findShapes("circle")[0];
         simulateTap(instance.element, {
           x: c1.attrs.cx,
           y: c1.attrs.cy,
         });
-        const activeShapes = instance.getAffectedShapes('test');
+        const activeShapes = instance.getAffectedShapes("test");
 
         expect(activeShapes).to.be.of.length(1);
       });
 
-      it('do brush & preventDefault on when disableTriggers is not set', () => {
-        p.component('custom-not-set', {
+      it("do brush & preventDefault on when disableTriggers is not set", () => {
+        p.component("custom-not-set", {
           render() {
-            const pointData = { source: { key: 'k', field: 'f' }, value: 'v' };
+            const pointData = { source: { key: "k", field: "f" }, value: "v" };
             return [
               {
-                type: 'circle',
+                type: "circle",
                 cx: 50,
                 cy: 50,
                 r: 50,
@@ -407,7 +407,7 @@ describe('Brushing', () => {
         });
 
         const customComponent = {
-          type: 'custom-not-set',
+          type: "custom-not-set",
           brush,
         };
 
@@ -419,25 +419,25 @@ describe('Brushing', () => {
           settings,
         });
 
-        const c1 = instance.findShapes('circle')[0];
+        const c1 = instance.findShapes("circle")[0];
         const didPreventDefault = simulateTap(instance.element, {
           x: c1.attrs.cx,
           y: c1.attrs.cy,
         });
-        const activeShapes = instance.getAffectedShapes('test');
+        const activeShapes = instance.getAffectedShapes("test");
 
         expect(activeShapes).to.be.of.length(1);
         expect(didPreventDefault).eql(true);
       });
 
-      it('do not brush or preventDefault when disableTriggers is set to true', () => {
-        p.component('custom-disableTriggers', {
+      it("do not brush or preventDefault when disableTriggers is set to true", () => {
+        p.component("custom-disableTriggers", {
           disableTriggers: true,
           render() {
-            const pointData = { source: { key: 'k', field: 'f' }, value: 'v' };
+            const pointData = { source: { key: "k", field: "f" }, value: "v" };
             return [
               {
-                type: 'circle',
+                type: "circle",
                 cx: 50,
                 cy: 50,
                 r: 50,
@@ -448,7 +448,7 @@ describe('Brushing', () => {
         });
 
         const customComponent = {
-          type: 'custom-disableTriggers',
+          type: "custom-disableTriggers",
           brush,
         };
 
@@ -460,12 +460,12 @@ describe('Brushing', () => {
           settings,
         });
 
-        const c1 = instance.findShapes('circle')[0];
+        const c1 = instance.findShapes("circle")[0];
         const didPreventDefault = simulateTap(instance.element, {
           x: c1.attrs.cx,
           y: c1.attrs.cy,
         });
-        const activeShapes = instance.getAffectedShapes('test');
+        const activeShapes = instance.getAffectedShapes("test");
 
         expect(activeShapes).to.be.of.length(0);
         expect(didPreventDefault).eql(false);

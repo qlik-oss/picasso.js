@@ -1,8 +1,8 @@
-import { oob, box, verticalLine, horizontalLine, getBoxWidth } from '../box-shapes-helper';
+import { oob, box, verticalLine, horizontalLine, getBoxWidth } from "../box-shapes-helper";
 
-describe('box shapes', () => {
-  describe('out of bounds arrows', () => {
-    it('should create a correct out of bounds shape at the bottom of the graph', () => {
+describe("box shapes", () => {
+  describe("out of bounds arrows", () => {
+    it("should create a correct out of bounds shape at the bottom of the graph", () => {
       const item = {
         major: 0.3,
         oob: {
@@ -31,7 +31,7 @@ describe('box shapes', () => {
       item.major = 0.5;
     });
 
-    it('should create a correct out of bounds shape at the top of the graph', () => {
+    it("should create a correct out of bounds shape at the top of the graph", () => {
       const item = {
         major: 0.75,
         oob: {
@@ -59,7 +59,7 @@ describe('box shapes', () => {
     });
   });
 
-  it('should create a correct out of bounds shape at the bottom of the graph with flipXY', () => {
+  it("should create a correct out of bounds shape at the bottom of the graph with flipXY", () => {
     const item = {
       major: 0.3,
       oob: {
@@ -88,7 +88,7 @@ describe('box shapes', () => {
     item.major = 0.5;
   });
 
-  it('should create a correct out of bounds shape at the top of the graph with flipXY', () => {
+  it("should create a correct out of bounds shape at the top of the graph with flipXY", () => {
     const item = {
       major: 0.75,
       oob: {
@@ -115,8 +115,8 @@ describe('box shapes', () => {
     });
   });
 
-  describe('box', () => {
-    it('should create a correct box shape', () => {
+  describe("box", () => {
+    it("should create a correct box shape", () => {
       const item = {
         start: 0.1,
         end: 0.9,
@@ -140,7 +140,7 @@ describe('box shapes', () => {
 
       expect(result).to.eql({
         minHeightPx: 1,
-        type: 'rect',
+        type: "rect",
         x: 25,
         y: 10,
         width: 50,
@@ -162,7 +162,7 @@ describe('box shapes', () => {
 
       expect(result).to.eql({
         minHeightPx: 1,
-        type: 'rect',
+        type: "rect",
         x: 50,
         y: 10,
         width: 100,
@@ -184,7 +184,7 @@ describe('box shapes', () => {
 
       expect(result).to.eql({
         minHeightPx: 1,
-        type: 'rect',
+        type: "rect",
         x: 10,
         y: 25,
         width: 80,
@@ -207,7 +207,7 @@ describe('box shapes', () => {
 
       expect(result).to.eql({
         minHeightPx: 1,
-        type: 'rect',
+        type: "rect",
         x: 20,
         y: 25,
         width: 160,
@@ -222,8 +222,8 @@ describe('box shapes', () => {
     });
   });
 
-  describe('verticalLine', () => {
-    it('should create a correct vertical line', () => {
+  describe("verticalLine", () => {
+    it("should create a correct vertical line", () => {
       const item = {
         line: {
           strokeWidth: 1,
@@ -242,7 +242,7 @@ describe('box shapes', () => {
 
       expect(result).to.eql({
         strokeWidth: 1,
-        type: 'line',
+        type: "line",
         x1: 50,
         x2: 50,
         y1: 75,
@@ -265,7 +265,7 @@ describe('box shapes', () => {
 
       expect(result).to.eql({
         strokeWidth: 1,
-        type: 'line',
+        type: "line",
         x1: 100,
         x2: 100,
         y1: 75,
@@ -289,7 +289,7 @@ describe('box shapes', () => {
 
       expect(result).to.eql({
         strokeWidth: 1,
-        type: 'line',
+        type: "line",
         x1: 150,
         x2: 50,
         y1: 50,
@@ -304,20 +304,20 @@ describe('box shapes', () => {
     });
   });
 
-  describe('horizontalLine', () => {
-    it('should create a correct horizontal line', () => {
+  describe("horizontalLine", () => {
+    it("should create a correct horizontal line", () => {
       const item = {
         med: {
-          stroke: 'black',
+          stroke: "black",
         },
         low: {
-          stroke: 'red',
+          stroke: "red",
         },
       };
 
       let result = horizontalLine({
         item,
-        key: 'med',
+        key: "med",
         position: 0.5,
         width: 0.5,
         boxCenter: 0.5,
@@ -327,8 +327,8 @@ describe('box shapes', () => {
       });
 
       expect(result).to.eql({
-        stroke: 'black',
-        type: 'line',
+        stroke: "black",
+        type: "line",
         x1: 25,
         x2: 75,
         y1: 50,
@@ -345,7 +345,7 @@ describe('box shapes', () => {
 
       result = horizontalLine({
         item,
-        key: 'low',
+        key: "low",
         position: 0.5,
         width: 0.5,
         boxCenter: 0.5,
@@ -355,8 +355,8 @@ describe('box shapes', () => {
       });
 
       expect(result).to.eql({
-        stroke: 'red',
-        type: 'line',
+        stroke: "red",
+        type: "line",
         x1: 50,
         x2: 150,
         y1: 50,
@@ -371,10 +371,10 @@ describe('box shapes', () => {
         },
       });
 
-      item.data = { origin: 'test' };
+      item.data = { origin: "test" };
       result = horizontalLine({
         item,
-        key: 'med',
+        key: "med",
         position: 0.5,
         width: 0.5,
         boxCenter: 0.5,
@@ -384,8 +384,8 @@ describe('box shapes', () => {
       });
 
       expect(result).to.eql({
-        stroke: 'black',
-        type: 'line',
+        stroke: "black",
+        type: "line",
         x1: 100,
         x2: 100,
         y1: 25,
@@ -395,7 +395,7 @@ describe('box shapes', () => {
         cx: 50,
         cy: 100,
         data: {
-          origin: 'test',
+          origin: "test",
         },
         collider: {
           type: null,
@@ -404,7 +404,7 @@ describe('box shapes', () => {
     });
   });
 
-  describe('getBoxWidth', () => {
+  describe("getBoxWidth", () => {
     let item;
     let avaialbleWidth;
     let bandwidth;
@@ -421,31 +421,31 @@ describe('box shapes', () => {
       };
     });
 
-    it('width is between min and max pixel width', () => {
+    it("width is between min and max pixel width", () => {
       const w = getBoxWidth(bandwidth, item, avaialbleWidth);
       expect(w).to.equal(0.05);
     });
 
-    it('width is less than min width', () => {
+    it("width is less than min width", () => {
       item.box.minWidthPx = 0.1 * avaialbleWidth;
       const w = getBoxWidth(bandwidth, item, avaialbleWidth);
       expect(w).to.equal(0.1);
     });
 
-    it('negative bandwidth - width is less than min width', () => {
+    it("negative bandwidth - width is less than min width", () => {
       bandwidth = -0.1;
       item.box.minWidthPx = 0.1 * avaialbleWidth;
       const w = getBoxWidth(bandwidth, item, avaialbleWidth);
       expect(w).to.equal(-0.1);
     });
 
-    it('width is larger than max width', () => {
+    it("width is larger than max width", () => {
       item.box.maxWidthPx = 0.01 * avaialbleWidth;
       const w = getBoxWidth(bandwidth, item, avaialbleWidth);
       expect(w).to.equal(0.01);
     });
 
-    it('negative bandwidth - width is larger than max width', () => {
+    it("negative bandwidth - width is larger than max width", () => {
       bandwidth = -0.1;
       item.box.maxWidthPx = 0.01 * avaialbleWidth;
       const w = getBoxWidth(bandwidth, item, avaialbleWidth);

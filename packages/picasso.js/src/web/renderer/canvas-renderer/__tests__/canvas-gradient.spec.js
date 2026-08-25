@@ -1,24 +1,24 @@
-import canvascontext from 'test-utils/mocks/canvas-context';
-import createCanvasGradient from '../canvas-gradient';
+import canvascontext from "test-utils/mocks/canvas-context";
+import createCanvasGradient from "../canvas-gradient";
 
-describe('canvas-gradient', () => {
+describe("canvas-gradient", () => {
   let shape;
 
-  const dummyRectObject = (type = 'radial', bounds = {}) => ({
-    type: 'rect',
+  const dummyRectObject = (type = "radial", bounds = {}) => ({
+    type: "rect",
     boundingRect: sinon.stub().returns(bounds),
     fill: {
-      type: 'gradient',
+      type: "gradient",
       degree: 90,
       orientation: type,
       stops: [
         {
           offset: 0,
-          color: 'blue',
+          color: "blue",
         },
         {
           offset: 0.5,
-          color: 'green',
+          color: "green",
         },
       ],
     },
@@ -28,24 +28,24 @@ describe('canvas-gradient', () => {
     shape = [];
   });
 
-  describe('radial', () => {
-    it('should create radial gradients properly', () => {
-      shape = dummyRectObject('radial');
+  describe("radial", () => {
+    it("should create radial gradients properly", () => {
+      shape = dummyRectObject("radial");
 
       const fill = createCanvasGradient(canvascontext(), shape, shape.fill);
 
-      expect(fill).to.be.a('function');
-      expect(fill()).to.be.equal('dummyGradient-radial');
+      expect(fill).to.be.a("function");
+      expect(fill()).to.be.equal("dummyGradient-radial");
     });
 
-    it('should have been called with proper arguments', () => {
+    it("should have been called with proper arguments", () => {
       const bounds = {
         x: 0,
         y: 30,
         width: 20,
         height: 10,
       };
-      shape = dummyRectObject('radial', bounds);
+      shape = dummyRectObject("radial", bounds);
 
       const fill = createCanvasGradient(canvascontext(), shape, shape.fill);
 
@@ -58,45 +58,45 @@ describe('canvas-gradient', () => {
     });
   });
 
-  describe('conic', () => {
-    it('should create a conic gradient node', () => {
+  describe("conic", () => {
+    it("should create a conic gradient node", () => {
       shape = {
         fill: {
-          type: 'gradient',
-          orientation: 'conic',
+          type: "gradient",
+          orientation: "conic",
           startAngle: Math.PI / 2,
           x: 0,
           y: 0,
           stops: [
-            { offset: 0, color: 'red', opacity: 0 },
-            { offset: 1, color: 'green' },
+            { offset: 0, color: "red", opacity: 0 },
+            { offset: 1, color: "green" },
           ],
         },
       };
       const fill = createCanvasGradient(canvascontext(), shape, shape.fill);
-      expect(fill).to.be.a('function');
-      expect(fill()).to.be.equal('dummyGradient-conic');
+      expect(fill).to.be.a("function");
+      expect(fill()).to.be.equal("dummyGradient-conic");
     });
   });
 
-  describe('linear', () => {
-    it('should create linear gradients properly', () => {
-      shape = dummyRectObject('linear');
+  describe("linear", () => {
+    it("should create linear gradients properly", () => {
+      shape = dummyRectObject("linear");
 
       const fill = createCanvasGradient(canvascontext(), shape, shape.fill);
 
-      expect(fill).to.be.a('function');
-      expect(fill()).to.be.equal('dummyGradient-linear');
+      expect(fill).to.be.a("function");
+      expect(fill()).to.be.equal("dummyGradient-linear");
     });
 
-    it('should create linear gradient with custom gradient bounds', () => {
+    it("should create linear gradient with custom gradient bounds", () => {
       const bounds = {
         x: 50,
         y: 30,
         width: 20,
         height: 10,
       };
-      shape = dummyRectObject('linear', bounds);
+      shape = dummyRectObject("linear", bounds);
       shape.fill = {
         ...shape.fill,
         x1: 1,
@@ -113,14 +113,14 @@ describe('canvas-gradient', () => {
       expect(fill.args[3]).to.be.equal(bounds.y + bounds.height * shape.fill.y2);
     });
 
-    it('should have been called with proper arguments', () => {
+    it("should have been called with proper arguments", () => {
       const bounds = {
         x: 0,
         y: 30,
         width: 20,
         height: 10,
       };
-      shape = dummyRectObject('linear', bounds);
+      shape = dummyRectObject("linear", bounds);
 
       const grad = createCanvasGradient(canvascontext(), shape, shape.fill);
 
@@ -130,14 +130,14 @@ describe('canvas-gradient', () => {
       expect(grad.args[3]).to.equal(40);
     });
 
-    it('should have stops and colors', () => {
-      shape = dummyRectObject('linear');
+    it("should have stops and colors", () => {
+      shape = dummyRectObject("linear");
 
       const grad = createCanvasGradient(canvascontext(), shape, shape.fill);
 
       expect(grad.stops).to.eql([
-        [0, 'blue'],
-        [0.5, 'green'],
+        [0, "blue"],
+        [0.5, "green"],
       ]);
     });
   });

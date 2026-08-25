@@ -1,14 +1,14 @@
-import extend from 'extend';
+import extend from "extend";
 
 const VARIABLE_RX = /^\$/;
-const EXTEND = '@extend';
+const EXTEND = "@extend";
 
 function throwCyclical(s) {
   throw new Error(`Cyclical reference for "${s}"`);
 }
 
 function res(style, references, path) {
-  if (typeof style === 'string') {
+  if (typeof style === "string") {
     let value = references[style];
     if (path.indexOf(style) !== -1) {
       throwCyclical(style);
@@ -46,14 +46,14 @@ function res(style, references, path) {
       }
       p.push(value);
       value = refs[value];
-      if (typeof value === 'object') {
+      if (typeof value === "object") {
         s[key] = res(value, refs, p);
       } else if (VARIABLE_RX.test(value) && value in refs) {
         s[key] = res(value, refs, p);
       } else {
         s[key] = value;
       }
-    } else if (typeof value === 'object') {
+    } else if (typeof value === "object") {
       s[key] = res(value, refs, p);
     }
   });

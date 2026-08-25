@@ -1,6 +1,6 @@
-import extend from 'extend';
-import { transposer } from '../../transposer/transposer';
-import { updateScaleSize } from '../../scales';
+import extend from "extend";
+import { transposer } from "../../transposer/transposer";
+import { updateScaleSize } from "../../scales";
 
 /**
  * Generate array of lines (ticks) from scale
@@ -21,15 +21,15 @@ function lineGen(scale, distance) {
 const gridLineComponent = {
   created() {},
 
-  require: ['chart', 'renderer', 'resolver'],
+  require: ["chart", "renderer", "resolver"],
   defaultSettings: {
     layout: {
       displayOrder: 0,
     },
     style: {
       // Theming style
-      ticks: '$guide-line',
-      minorTicks: '$guide-line--minor',
+      ticks: "$guide-line",
+      minorTicks: "$guide-line--minor",
     },
   },
 
@@ -47,8 +47,8 @@ const gridLineComponent = {
     // Setup scales
     this.x = this.settings.x ? this.chart.scale(this.settings.x) : null;
     this.y = this.settings.y ? this.chart.scale(this.settings.y) : null;
-    updateScaleSize(this, 'x', this.rect.width);
-    updateScaleSize(this, 'y', this.rect.height);
+    updateScaleSize(this, "x", this.rect.width);
+    updateScaleSize(this, "y", this.rect.height);
 
     // Return an empty array to abort rendering when no scales are available to renderer
     if (!this.x && !this.y) {
@@ -90,14 +90,14 @@ const gridLineComponent = {
         if (style.show) {
           // Use the transposer to handle actual positioning
           this.blueprint.push({
-            type: 'line',
+            type: "line",
             x1: p.position,
             y1: 0,
             x2: p.position,
             y2: 1,
-            stroke: style.stroke || 'black',
-            strokeWidth: typeof style.strokeWidth !== 'undefined' ? style.strokeWidth : 1,
-            strokeDasharray: typeof style.strokeDasharray !== 'undefined' ? style.strokeDasharray : undefined,
+            stroke: style.stroke || "black",
+            strokeWidth: typeof style.strokeWidth !== "undefined" ? style.strokeWidth : 1,
+            strokeDasharray: typeof style.strokeDasharray !== "undefined" ? style.strokeDasharray : undefined,
             flipXY: p.flipXY || false, // This flips individual points (Y-lines)
             value: p.value ?? p.data?.value,
             dir,
@@ -106,10 +106,10 @@ const gridLineComponent = {
       });
     };
 
-    addTicks({ dir: 'x', isMinor: false });
-    addTicks({ dir: 'x', isMinor: true });
-    addTicks({ dir: 'y', isMinor: false });
-    addTicks({ dir: 'y', isMinor: true });
+    addTicks({ dir: "x", isMinor: false });
+    addTicks({ dir: "x", isMinor: true });
+    addTicks({ dir: "y", isMinor: false });
+    addTicks({ dir: "y", isMinor: true });
 
     return this.blueprint.output();
   },

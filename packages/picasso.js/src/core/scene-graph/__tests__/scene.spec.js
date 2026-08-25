@@ -1,44 +1,44 @@
-import scene from '../scene';
-import { create as createStage } from '../display-objects/stage';
+import scene from "../scene";
+import { create as createStage } from "../display-objects/stage";
 
-describe('Scene', () => {
+describe("Scene", () => {
   let stage, rect, container;
 
   beforeEach(() => {
     rect = {
-      type: 'rect',
+      type: "rect",
     };
     container = {
-      type: 'container',
+      type: "container",
     };
   });
 
-  it('should accept a custom stage', () => {
+  it("should accept a custom stage", () => {
     const myStage = createStage();
     myStage.test = true;
     stage = scene({ items: [], stage: myStage });
     expect(stage.test).to.equal(true);
   });
 
-  describe('Disabled nodes', () => {
-    it('should resolve as a function', () => {
+  describe("Disabled nodes", () => {
+    it("should resolve as a function", () => {
       const spy = sinon.spy();
       rect.disabled = spy;
       stage = scene({ items: [rect] });
       expect(spy).to.have.been.calledOnce;
     });
 
-    it('should not parse node if disabled', () => {
+    it("should not parse node if disabled", () => {
       rect.disabled = true;
-      const enabled = { type: 'circle' };
+      const enabled = { type: "circle" };
       stage = scene({ items: [rect, enabled] });
       expect(stage.children).to.be.of.length(1);
-      expect(stage.children[0].type).to.equal('circle');
+      expect(stage.children[0].type).to.equal("circle");
     });
   });
 
-  describe('Events', () => {
-    it('should accept create events', () => {
+  describe("Events", () => {
+    it("should accept create events", () => {
       let spy = sinon.spy();
       stage = scene({
         items: [rect, rect],
@@ -55,13 +55,13 @@ describe('Scene', () => {
     });
   });
 
-  describe('Transform', () => {
-    it('should handle transform on a flat structure', () => {
+  describe("Transform", () => {
+    it("should handle transform on a flat structure", () => {
       const r1 = rect;
       const r2 = { ...rect };
       const r3 = { ...rect };
-      r1.transform = 'translate(50, 50)';
-      r2.transform = 'translate(20, 20)';
+      r1.transform = "translate(50, 50)";
+      r2.transform = "translate(20, 20)";
       stage = scene({ items: [r1, r2, r3] });
       const r1do = stage.children[0];
       const r2do = stage.children[1];
@@ -79,12 +79,12 @@ describe('Scene', () => {
       expect(r3do.modelViewMatrix).to.equal(undefined);
     });
 
-    it('should handle transform on a hierarchical structure', () => {
+    it("should handle transform on a hierarchical structure", () => {
       const r1 = rect;
       const c1 = { ...container };
       const c2 = { ...container };
-      c1.transform = 'translate(50, 50)';
-      c2.transform = 'translate(20, 20)';
+      c1.transform = "translate(50, 50)";
+      c2.transform = "translate(20, 20)";
       container.children = [c1];
       c1.children = [c2];
       c2.children = [r1];
@@ -109,14 +109,14 @@ describe('Scene', () => {
       ]);
     });
 
-    it('should handle transform on a complex hierarchical structure', () => {
-      container.transform = 'translate(100, 100)';
+    it("should handle transform on a complex hierarchical structure", () => {
+      container.transform = "translate(100, 100)";
       const r1 = rect;
       const r2 = { ...rect };
       const r3 = { ...rect };
       const r0 = { ...rect };
-      r0.transform = 'translate(3, 3)';
-      r2.transform = 'translate(50, 50)';
+      r0.transform = "translate(3, 3)";
+      r2.transform = "translate(50, 50)";
       container.children = [r1, r2];
       stage = scene({ items: [r0, container, r3] });
       const r0do = stage.children[0];
@@ -130,7 +130,7 @@ describe('Scene', () => {
           [0, 1, 3],
           [0, 0, 1],
         ],
-        'r0do'
+        "r0do",
       );
       expect(c1do.modelViewMatrix.elements).to.deep.equal(
         [
@@ -138,7 +138,7 @@ describe('Scene', () => {
           [0, 1, 100],
           [0, 0, 1],
         ],
-        'c1do'
+        "c1do",
       );
       expect(r1do.modelViewMatrix.elements).to.deep.equal(
         [
@@ -146,7 +146,7 @@ describe('Scene', () => {
           [0, 1, 100],
           [0, 0, 1],
         ],
-        'r1do'
+        "r1do",
       );
       expect(r2do.modelViewMatrix.elements).to.deep.equal(
         [
@@ -154,9 +154,9 @@ describe('Scene', () => {
           [0, 1, 150],
           [0, 0, 1],
         ],
-        'r2do'
+        "r2do",
       );
-      expect(r3do.modelViewMatrix).to.equal(undefined, 'r3do');
+      expect(r3do.modelViewMatrix).to.equal(undefined, "r3do");
     });
   });
 });

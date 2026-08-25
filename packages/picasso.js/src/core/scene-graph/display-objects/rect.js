@@ -1,6 +1,6 @@
-import extend from 'extend';
-import DisplayObject from './display-object';
-import { rectToPoints, getMinMax } from '../../geometry/util';
+import extend from "extend";
+import DisplayObject from "./display-object";
+import { rectToPoints, getMinMax } from "../../geometry/util";
 
 /**
  * @private
@@ -14,7 +14,7 @@ import { rectToPoints, getMinMax } from '../../geometry/util';
 
 export default class Rect extends DisplayObject {
   constructor(...s) {
-    super('rect');
+    super("rect");
     this.set(...s);
   }
 
@@ -22,13 +22,13 @@ export default class Rect extends DisplayObject {
     const { x = 0, y = 0, width = 0, height = 0, rx = 0, ry = 0, collider } = v;
     const opts = extend(
       {
-        type: 'rect',
+        type: "rect",
         x,
         y,
         width,
         height,
       },
-      collider
+      collider,
     );
 
     super.set(v);

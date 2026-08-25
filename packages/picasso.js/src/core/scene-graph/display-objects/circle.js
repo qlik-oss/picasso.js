@@ -1,6 +1,6 @@
-import extend from 'extend';
-import DisplayObject from './display-object';
-import { getMinMax } from '../../geometry/util';
+import extend from "extend";
+import DisplayObject from "./display-object";
+import { getMinMax } from "../../geometry/util";
 
 /**
  * @private
@@ -13,7 +13,7 @@ import { getMinMax } from '../../geometry/util';
 
 export default class Circle extends DisplayObject {
   constructor(...s) {
-    super('circle');
+    super("circle");
     this.set(...s);
   }
 
@@ -21,12 +21,12 @@ export default class Circle extends DisplayObject {
     const { cx = 0, cy = 0, r = 0, collider } = v;
     const opts = extend(
       {
-        type: 'circle',
+        type: "circle",
         cx,
         cy,
         r,
       },
-      collider
+      collider,
     );
 
     super.set(v);

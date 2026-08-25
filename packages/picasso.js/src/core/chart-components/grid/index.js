@@ -1,4 +1,4 @@
-import gridLineComponent from './line';
+import gridLineComponent from "./line";
 
 /**
  * @typedef {object} ComponentGridLine
@@ -38,5 +38,5 @@ import gridLineComponent from './line';
  */
 
 export default function gridLine(picasso) {
-  picasso.component('grid-line', gridLineComponent);
+  picasso.component("grid-line", gridLineComponent);
 }

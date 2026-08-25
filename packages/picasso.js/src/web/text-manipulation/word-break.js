@@ -1,6 +1,6 @@
-import stringTokenizer, { MANDATORY, BREAK_ALLOWED } from './string-tokenizer';
-import { HYPHENS_CHAR } from './text-const';
-import { fontSizeToLineHeight } from './font-size-to-height';
+import stringTokenizer, { MANDATORY, BREAK_ALLOWED } from "./string-tokenizer";
+import { HYPHENS_CHAR } from "./text-const";
+import { fontSizeToLineHeight } from "./font-size-to-height";
 
 function resolveMaxAllowedLines(node) {
   const maxHeight = node.maxHeight;
@@ -18,12 +18,12 @@ function resolveMaxAllowedLines(node) {
 function initState(node, measureText) {
   return {
     lines: [],
-    line: '',
+    line: "",
     width: 0,
     maxLines: resolveMaxAllowedLines(node),
     maxWidth: node.maxWidth,
     hyphens: {
-      enabled: node.hyphens === 'auto',
+      enabled: node.hyphens === "auto",
       char: HYPHENS_CHAR,
       metrics: measureText(HYPHENS_CHAR),
     },
@@ -32,7 +32,7 @@ function initState(node, measureText) {
 
 function newLine(state) {
   state.lines.push(state.line);
-  state.line = '';
+  state.line = "";
   state.width = 0;
 }
 
@@ -98,7 +98,7 @@ export function breakAll(node, measureText) {
   const text = node.text;
   const iterator = stringTokenizer({
     string: text,
-    separator: '',
+    separator: "",
     measureText,
     noBreakAllowedIdentifiers: [(chunk, i) => i === 0],
   });

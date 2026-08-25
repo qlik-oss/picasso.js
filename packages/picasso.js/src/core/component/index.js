@@ -1,3 +1,3 @@
-import registry from '../utils/registry';
+import registry from "../utils/registry";
 
 export default registry();

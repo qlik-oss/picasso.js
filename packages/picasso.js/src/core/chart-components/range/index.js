@@ -1,5 +1,5 @@
-import rangeBrushComponent from './range';
+import rangeBrushComponent from "./range";
 
 export default function rangeBrush(picasso) {
-  picasso.component('range', rangeBrushComponent);
+  picasso.component("range", rangeBrushComponent);
 }

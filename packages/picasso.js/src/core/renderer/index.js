@@ -1,4 +1,4 @@
-import registry from '../utils/registry';
+import registry from "../utils/registry";
 
 const rendererRegistry = (reg) => {
   let f = registry(reg);

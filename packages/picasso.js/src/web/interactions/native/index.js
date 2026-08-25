@@ -27,7 +27,7 @@ export default function native(chart, mediator, element) {
    * @private
    */
   function addEvents() {
-    if (typeof settings.enable === 'function') {
+    if (typeof settings.enable === "function") {
       settings.enable = settings.enable.bind(instance)();
     }
     if (!settings.enable) {

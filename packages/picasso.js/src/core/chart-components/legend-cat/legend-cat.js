@@ -1,23 +1,23 @@
-import extend from 'extend';
-import resolveSettings from './legend-resolver';
-import itemRendererFactory from './item-renderer';
-import navigationRendererFactory from './navigation-renderer';
-import titleRendererFactory from './title-renderer';
-import layout from './legend-layout';
+import extend from "extend";
+import resolveSettings from "./legend-resolver";
+import itemRendererFactory from "./item-renderer";
+import navigationRendererFactory from "./navigation-renderer";
+import titleRendererFactory from "./title-renderer";
+import layout from "./legend-layout";
 
 function update(comp) {
   comp.state.resolved = resolveSettings(comp);
   comp.titleRenderer.itemize({
     resolved: comp.state.resolved,
-    dock: comp.settings.layout.dock || 'center',
+    dock: comp.settings.layout.dock || "center",
   });
   comp.itemRenderer.itemize({
     resolved: comp.state.resolved,
-    dock: comp.settings.layout.dock || 'center',
+    dock: comp.settings.layout.dock || "center",
   });
   comp.navigationRenderer.itemize({
     resolved: comp.state.resolved,
-    dock: comp.settings.layout.dock || 'center',
+    dock: comp.settings.layout.dock || "center",
     navigation: comp.settings.settings.navigation,
   });
 
@@ -28,8 +28,8 @@ function update(comp) {
 
 function preferredSize(comp, size) {
   let s = 0;
-  const dock = comp.settings.layout.dock || 'center';
-  const orientation = dock === 'top' || dock === 'bottom' ? 'horizontal' : 'vertical';
+  const dock = comp.settings.layout.dock || "center";
+  const orientation = dock === "top" || dock === "bottom" ? "horizontal" : "vertical";
   const d = comp.state.display;
   const tempLayout = layout(size.inner, d, orientation, {
     itemRenderer: comp.itemRenderer,
@@ -46,7 +46,7 @@ function preferredSize(comp, size) {
 function render(legend) {
   const { rect, settings, state, itemRenderer, navigationRenderer, titleRenderer } = legend;
   const dock = settings.layout.dock;
-  const orientation = dock === 'top' || dock === 'bottom' ? 'horizontal' : 'vertical';
+  const orientation = dock === "top" || dock === "bottom" ? "horizontal" : "vertical";
   const l = layout(rect, state.display, orientation, {
     itemRenderer,
     navigationRenderer,
@@ -85,15 +85,15 @@ function render(legend) {
 }
 
 const component = {
-  require: ['chart', 'settings', 'renderer', 'update', 'resolver', 'registries', 'symbol'],
+  require: ["chart", "settings", "renderer", "update", "resolver", "registries", "symbol"],
   defaultSettings: {
     settings: {},
     style: {
       item: {
-        label: '$label',
-        shape: '$shape',
+        label: "$label",
+        shape: "$shape",
       },
-      title: '$title',
+      title: "$title",
     },
   },
   mounted(renderElement) {
@@ -134,8 +134,8 @@ const component = {
         return;
       }
       const delta =
-        this.itemRenderer.orientation() === 'horizontal'
-          ? (this.itemRenderer.direction() === 'rtl' ? -1 : 1) * e.deltaX
+        this.itemRenderer.orientation() === "horizontal"
+          ? (this.itemRenderer.direction() === "rtl" ? -1 : 1) * e.deltaX
           : e.deltaY;
       this.itemRenderer.scroll(delta - this.state.interaction.delta);
       this.state.interaction.delta = delta;
@@ -166,7 +166,7 @@ const component = {
     });
     this.navigationRenderer = navigationRendererFactory(this);
     this.titleRenderer = titleRendererFactory(this);
-    this.navigationRenderer.renderer = this.registries.renderer('dom')();
+    this.navigationRenderer.renderer = this.registries.renderer("dom")();
     this.titleRenderer.renderer = this.registries.renderer(this.settings.renderer)();
     update(this);
   },

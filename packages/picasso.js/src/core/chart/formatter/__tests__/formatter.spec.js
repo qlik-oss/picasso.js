@@ -1,54 +1,54 @@
-import { create, collection } from '..';
+import { create, collection } from "..";
 
-describe('chart formatters', () => {
-  describe('collection', () => {
+describe("chart formatters", () => {
+  describe("collection", () => {
     let fn;
     beforeEach(() => {
-      fn = sinon.spy((def) => (typeof def === 'object' && !Object.keys(def).length ? 'fallback' : def));
+      fn = sinon.spy((def) => (typeof def === "object" && !Object.keys(def).length ? "fallback" : def));
     });
 
-    it('should return fallback formatter when unknown config is used', () => {
+    it("should return fallback formatter when unknown config is used", () => {
       const s = collection({}, null, null, fn).get({});
-      expect(s).to.equal('fallback');
+      expect(s).to.equal("fallback");
     });
 
-    it('should return formatter from config', () => {
-      const s = collection({ time: 'tick tock' }, null, null, fn).get('time');
-      expect(s).to.equal('tick tock');
+    it("should return formatter from config", () => {
+      const s = collection({ time: "tick tock" }, null, null, fn).get("time");
+      expect(s).to.equal("tick tock");
     });
 
-    it('should return named formatter from config', () => {
-      const s = collection({ time: 'tick tock' }, null, null, fn).get({ formatter: 'time' });
-      expect(s).to.equal('tick tock');
+    it("should return named formatter from config", () => {
+      const s = collection({ time: "tick tock" }, null, null, fn).get({ formatter: "time" });
+      expect(s).to.equal("tick tock");
     });
 
-    it('should return named type from config', () => {
-      const s = collection({ time: 'tick tock' }, null, null, fn).get({ type: 'time' });
-      expect(s).to.equal('tick tock');
+    it("should return named type from config", () => {
+      const s = collection({ time: "tick tock" }, null, null, fn).get({ type: "time" });
+      expect(s).to.equal("tick tock");
     });
 
-    it('should maintain cache of created formatters', () => {
-      const c = collection({ time: 'tick tock' }, null, null, fn);
-      c.get('time');
-      c.get('time');
+    it("should maintain cache of created formatters", () => {
+      const c = collection({ time: "tick tock" }, null, null, fn);
+      c.get("time");
+      c.get("time");
       expect(fn.callCount).to.equal(1);
     });
 
-    it('should create formatter on the fly', () => {
-      const s = collection({}, null, null, fn).get({ data: 'd' });
-      expect(s).to.eql({ data: 'd' });
+    it("should create formatter on the fly", () => {
+      const s = collection({}, null, null, fn).get({ data: "d" });
+      expect(s).to.eql({ data: "d" });
     });
 
-    it('should return all formatters', () => {
-      const s = collection({ time: 'tick tock', p: '%' }, null, null, fn);
+    it("should return all formatters", () => {
+      const s = collection({ time: "tick tock", p: "%" }, null, null, fn);
       expect(s.all()).to.eql({
-        time: 'tick tock',
-        p: '%',
+        time: "tick tock",
+        p: "%",
       });
     });
   });
 
-  describe('create', () => {
+  describe("create", () => {
     let deps;
     let formatterFn;
     beforeEach(() => {
@@ -61,62 +61,62 @@ describe('chart formatters', () => {
       formatterFn = (pattern) => (value) => `${pattern}${value}`;
     });
 
-    it('should throw when type is not registered', () => {
+    it("should throw when type is not registered", () => {
       const fn = () =>
         create(
           {
-            type: 'dummy',
+            type: "dummy",
           },
           null,
-          deps
+          deps,
         );
       expect(fn).to.throw("Formatter of type 'dummy' was not found");
     });
 
-    it('should create a formatter of a custom type', () => {
-      deps.formatter.has.withArgs('custom').returns(true);
+    it("should create a formatter of a custom type", () => {
+      deps.formatter.has.withArgs("custom").returns(true);
       deps.formatter.get.returns(formatterFn);
       const s = create(
         {
-          type: 'custom',
-          format: '$',
+          type: "custom",
+          format: "$",
         },
         null,
-        deps
+        deps,
       );
-      expect(s(45)).to.equal('$45');
+      expect(s(45)).to.equal("$45");
     });
 
-    it('should create a formatter of a specific subtype', () => {
-      deps.formatter.has.withArgs('custom-time').returns(true);
+    it("should create a formatter of a specific subtype", () => {
+      deps.formatter.has.withArgs("custom-time").returns(true);
       deps.formatter.get.returns(formatterFn);
       const s = create(
         {
-          formatter: 'custom',
-          type: 'time',
-          format: '$',
+          formatter: "custom",
+          type: "time",
+          format: "$",
         },
         null,
-        deps
+        deps,
       );
-      expect(s(45)).to.equal('$45');
+      expect(s(45)).to.equal("$45");
     });
 
-    it('should create a number subtype by default', () => {
-      deps.formatter.has.withArgs('custom-number').returns(true);
+    it("should create a number subtype by default", () => {
+      deps.formatter.has.withArgs("custom-number").returns(true);
       deps.formatter.get.returns(formatterFn);
       const s = create(
         {
-          formatter: 'custom',
-          format: '$',
+          formatter: "custom",
+          format: "$",
         },
         null,
-        deps
+        deps,
       );
-      expect(s(45)).to.equal('$45');
+      expect(s(45)).to.equal("$45");
     });
 
-    it('should return formatter from field', () => {
+    it("should return formatter from field", () => {
       const extractor = () => ({
         fields: [
           {
@@ -130,9 +130,9 @@ describe('chart formatters', () => {
         },
         null,
         deps,
-        extractor
+        extractor,
       );
-      expect(s(45)).to.equal('45 %%% ');
+      expect(s(45)).to.equal("45 %%% ");
     });
   });
 });

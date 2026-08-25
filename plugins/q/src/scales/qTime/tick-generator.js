@@ -1,10 +1,10 @@
-import { scaleUtc as d3ScaleTime } from 'd3-scale';
-import { createFromMetaInfo } from '../../formatter';
-import { QlikTimeToDate } from '../../formatter/timeFormat';
+import { scaleUtc as d3ScaleTime } from "d3-scale";
+import { createFromMetaInfo } from "../../formatter";
+import { QlikTimeToDate } from "../../formatter/timeFormat";
 
 // const UNIX_DATE_COMP_DAYS = 25569;
-const HOUR_PATTERN = 'hh:mm';
-const MINUTE_PATTERN = 'hh:mm:ss';
+const HOUR_PATTERN = "hh:mm";
+const MINUTE_PATTERN = "hh:mm:ss";
 
 const QT = QlikTimeToDate(0).getTime();
 
@@ -18,7 +18,7 @@ function getFormatter(ticks) {
     qFmt = MINUTE_PATTERN;
   }
 
-  return createFromMetaInfo({ qNumFormat: { qType: 'D', qFmt } });
+  return createFromMetaInfo({ qNumFormat: { qType: "D", qFmt } });
 }
 
 export default function tickGenerator(scale, settings) {
@@ -29,9 +29,9 @@ export default function tickGenerator(scale, settings) {
   fn.transformTicks = function transformTicks(qTicks) {
     return qTicks.map((qt) => {
       let value = (qt.qStart + qt.qEnd) / 2;
-      if (settings.anchor === 'start') {
+      if (settings.anchor === "start") {
         value = qt.qStart;
-      } else if (settings.anchor === 'end') {
+      } else if (settings.anchor === "end") {
         value = qt.qEnd;
       }
 

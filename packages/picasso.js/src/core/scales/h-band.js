@@ -1,6 +1,6 @@
-import extend from 'extend';
-import bandScale, { DEFAULT_SETTINGS } from './band';
-import resolveSettings from './settings-resolver';
+import extend from "extend";
+import bandScale, { DEFAULT_SETTINGS } from "./band";
+import resolveSettings from "./settings-resolver";
 
 const DEFAULT_TICKS_SETTINGS = {
   depth: 0,
@@ -105,8 +105,8 @@ export default function scaleHierarchicalBand(settings = {}, data = {}, resource
   const ctx = { data, resources };
   const stgns = resolveSettings(settings, DEFAULT_SETTINGS, ctx);
   stgns.ticks = resolveSettings(settings.ticks, DEFAULT_TICKS_SETTINGS, ctx);
-  stgns.value = typeof settings.value === 'function' ? settings.value : (d) => d.datum.value;
-  stgns.label = typeof settings.label === 'function' ? settings.label : (d) => d.datum.value;
+  stgns.value = typeof settings.value === "function" ? settings.value : (d) => d.datum.value;
+  stgns.label = typeof settings.label === "function" ? settings.label : (d) => d.datum.value;
 
   let bandInstance = bandScale(stgns);
 

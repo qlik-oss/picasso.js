@@ -1,6 +1,6 @@
-import render, { positionImage } from '../image'; // adjust path as needed
+import render, { positionImage } from "../image"; // adjust path as needed
 
-describe('render()', () => {
+describe("render()", () => {
   let canvas, g, createElementStub, lastCreatedImage;
 
   beforeEach(() => {
@@ -50,18 +50,18 @@ describe('render()', () => {
     };
 
     // Mock document if not defined (for Node.js test environments)
-    if (typeof global.document === 'undefined') {
+    if (typeof global.document === "undefined") {
       global.document = {};
     }
     const doc = global.document;
     // Stub document.createElement
-    createElementStub = sinon.stub(doc, 'createElement').callsFake(() => ({
+    createElementStub = sinon.stub(doc, "createElement").callsFake(() => ({
       width: 0,
       height: 0,
     }));
 
     // Stub window.devicePixelRatio
-    Object.defineProperty(window, 'devicePixelRatio', {
+    Object.defineProperty(window, "devicePixelRatio", {
       value: 2,
       writable: true,
     });
@@ -71,10 +71,10 @@ describe('render()', () => {
     createElementStub.restore();
   });
 
-  it('should render a circle symbol image correctly', (done) => {
+  it("should render a circle symbol image correctly", (done) => {
     const img = {
-      src: 'circle.png',
-      symbol: 'circle',
+      src: "circle.png",
+      symbol: "circle",
       x: 50,
       y: 50,
       imageScalingFactor: 1,
@@ -89,10 +89,10 @@ describe('render()', () => {
     done();
   });
 
-  it('should render a square symbol image correctly', (done) => {
+  it("should render a square symbol image correctly", (done) => {
     const img = {
-      src: 'square.png',
-      symbol: 'square',
+      src: "square.png",
+      symbol: "square",
       x: 100,
       y: 100,
       imageScalingFactor: 0.5,
@@ -106,10 +106,10 @@ describe('render()', () => {
     done();
   });
 
-  it('should resize the canvas and clear it before rendering', (done) => {
+  it("should resize the canvas and clear it before rendering", (done) => {
     const img = {
-      src: 'resize.png',
-      symbol: 'circle',
+      src: "resize.png",
+      symbol: "circle",
       x: 0,
       y: 0,
       imageScalingFactor: 1,
@@ -123,16 +123,16 @@ describe('render()', () => {
     expect(g.clearRect.called).to.be.true;
     done();
   });
-  describe('positionImage()', () => {
-    it('positions top-left correctly', () => {
-      const img = { x: 100, y: 100, width: 40, height: 20, imagePosition: 'top-left' };
+  describe("positionImage()", () => {
+    it("positions top-left correctly", () => {
+      const img = { x: 100, y: 100, width: 40, height: 20, imagePosition: "top-left" };
       positionImage(img);
       expect(img.x).to.equal(80); // x - width/2
       expect(img.y).to.equal(90); // y - height/2
     });
 
-    it('do not scale image if symbol is circle', () => {
-      const img = { symbol: 'circle', width: 80, height: 60 };
+    it("do not scale image if symbol is circle", () => {
+      const img = { symbol: "circle", width: 80, height: 60 };
       positionImage(img);
       expect(img.width).to.equal(80);
       expect(img.height).to.equal(60);

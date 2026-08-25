@@ -1,6 +1,6 @@
-import { styler, resolveTapEvent } from '../brushing';
+import { styler, resolveTapEvent } from "../brushing";
 
-describe('Brushing', () => {
+describe("Brushing", () => {
   let nodes;
   let data;
 
@@ -8,33 +8,33 @@ describe('Brushing', () => {
     data = [
       {
         value: 7,
-        source: { field: 'a' },
+        source: { field: "a" },
         self: {
-          source: { field: 'foo', key: 'cube' },
+          source: { field: "foo", key: "cube" },
           value: 1337,
         },
       },
       {
         value: 13,
-        source: { field: 'b' },
+        source: { field: "b" },
         self: {
-          source: { field: 'bar', key: 'corp' },
+          source: { field: "bar", key: "corp" },
           value: 42,
         },
       },
       {
         value: 9,
-        source: { field: 'c' },
+        source: { field: "c" },
         self: {
-          source: { field: 'bez', key: 'table' },
+          source: { field: "bez", key: "table" },
           value: 33,
         },
       },
       {
         value: 9,
-        source: { field: 'c' },
+        source: { field: "c" },
         self: {
-          source: { field: 'bez', key: 'table' },
+          source: { field: "bez", key: "table" },
           value: [33, 56],
         },
       },
@@ -42,21 +42,21 @@ describe('Brushing', () => {
 
     nodes = [
       {
-        type: 'rect',
-        fill: 'yellow',
-        stroke: 'pink',
+        type: "rect",
+        fill: "yellow",
+        stroke: "pink",
         data: data[0],
       },
       {
-        type: 'rect',
-        fill: 'yellow',
-        stroke: 'pink',
+        type: "rect",
+        fill: "yellow",
+        stroke: "pink",
         data: data[1],
       },
     ];
   });
 
-  describe('Resolver', () => {
+  describe("Resolver", () => {
     let trigger;
     let config;
     let eventMock;
@@ -90,8 +90,8 @@ describe('Brushing', () => {
       };
 
       trigger = {
-        contexts: ['test'],
-        data: ['self'],
+        contexts: ["test"],
+        data: ["self"],
       };
 
       eventMock = {
@@ -100,7 +100,7 @@ describe('Brushing', () => {
       };
     });
 
-    it('should bin multiple collisions into a single brush call', () => {
+    it("should bin multiple collisions into a single brush call", () => {
       config.renderer.itemsAt.returns([{ node: { data: data[0] } }, { node: { data: data[1] } }]);
 
       resolveTapEvent({ e: eventMock, t: trigger, config });
@@ -112,7 +112,7 @@ describe('Brushing', () => {
       ]);
     });
 
-    it('should bin multiple collisions into a single brush call using node.data property', () => {
+    it("should bin multiple collisions into a single brush call using node.data property", () => {
       config.renderer.itemsAt.returns([{ node: { data: data[0] } }, { node: { data: data[1] } }]);
 
       resolveTapEvent({ e: eventMock, t: trigger, config });
@@ -124,7 +124,7 @@ describe('Brushing', () => {
       ]);
     });
 
-    it('should call range brush when data value is an array', () => {
+    it("should call range brush when data value is an array", () => {
       config.renderer.itemsAt.returns([{ node: { data: data[3] } }]);
 
       resolveTapEvent({ e: eventMock, t: trigger, config });
@@ -138,7 +138,7 @@ describe('Brushing', () => {
       ]);
     });
 
-    it('should handle when there is no collision', () => {
+    it("should handle when there is no collision", () => {
       config.renderer.itemsAt.returns([]);
 
       resolveTapEvent({ e: eventMock, t: trigger, config });
@@ -155,7 +155,7 @@ describe('Brushing', () => {
       expect(brushContext.toggleValues.args[0][0]).to.deep.equal([{ key: data[0].source.field, value: data[0].value }]);
     });
 
-    it('should not attempt to resolve any collisions if event origin is outside the component area', () => {
+    it("should not attempt to resolve any collisions if event origin is outside the component area", () => {
       eventMock.clientX = 250;
       eventMock.clientY = 250;
 
@@ -164,29 +164,29 @@ describe('Brushing', () => {
       expect(config.renderer.itemsAt.callCount).to.equal(0);
     });
 
-    describe('should use configured action', () => {
+    describe("should use configured action", () => {
       beforeEach(() => {
         config.renderer.itemsAt.returns([{ node: { data: data[0] } }]);
       });
 
-      it('add', () => {
-        trigger.action = 'add';
+      it("add", () => {
+        trigger.action = "add";
 
         resolveTapEvent({ e: eventMock, t: trigger, config });
 
         expect(brushContext.addValues.callCount).to.equal(1);
       });
 
-      it('remove', () => {
-        trigger.action = 'remove';
+      it("remove", () => {
+        trigger.action = "remove";
 
         resolveTapEvent({ e: eventMock, t: trigger, config });
 
         expect(brushContext.removeValues.callCount).to.equal(1);
       });
 
-      it('set', () => {
-        trigger.action = 'set';
+      it("set", () => {
+        trigger.action = "set";
 
         resolveTapEvent({ e: eventMock, t: trigger, config });
 
@@ -194,12 +194,12 @@ describe('Brushing', () => {
       });
     });
 
-    describe('touch events', () => {
+    describe("touch events", () => {
       beforeEach(() => {
         eventMock.changedTouches = [{ clientX: 50, clientY: 50 }];
       });
 
-      it('should resolve collisions with a touchRadius if configured', () => {
+      it("should resolve collisions with a touchRadius if configured", () => {
         const radius = 5;
         trigger.touchRadius = radius;
 
@@ -213,7 +213,7 @@ describe('Brushing', () => {
       });
     });
 
-    it('should resolve collisions with a mouseRadius if configured', () => {
+    it("should resolve collisions with a mouseRadius if configured", () => {
       const radius = 15;
       trigger.mouseRadius = radius;
 
@@ -227,7 +227,7 @@ describe('Brushing', () => {
     });
   });
 
-  describe('Styler', () => {
+  describe("Styler", () => {
     let dummyComponent;
     let consume;
     let brusherStub;
@@ -258,7 +258,7 @@ describe('Brushing', () => {
         },
         trigger: function trigger(key, ...args) {
           this.listeners
-            .filter((listener) => typeof listener[key] !== 'undefined')
+            .filter((listener) => typeof listener[key] !== "undefined")
             .forEach((listener) => listener[key](...args));
         },
       };
@@ -267,94 +267,94 @@ describe('Brushing', () => {
       dummyComponent.chart.brush.returns(brusherStub);
 
       consume = {
-        context: 'test',
+        context: "test",
         style: {
           inactive: {
-            fill: 'inactiveFill',
+            fill: "inactiveFill",
           },
           active: {
-            stroke: 'activeStroke',
+            stroke: "activeStroke",
           },
         },
       };
 
       dataFn = sinon.stub();
-      dataFn.returns(['b']);
+      dataFn.returns(["b"]);
     });
 
-    it('should call containsMappedData with provided arguments', () => {
-      const s = styler(dummyComponent, { ...consume, mode: 'moood', data: ['a'] });
+    it("should call containsMappedData with provided arguments", () => {
+      const s = styler(dummyComponent, { ...consume, mode: "moood", data: ["a"] });
       s.update();
 
-      expect(brusherStub.containsMappedData.firstCall).to.have.been.calledWithExactly(data[0], ['a'], 'moood');
+      expect(brusherStub.containsMappedData.firstCall).to.have.been.calledWithExactly(data[0], ["a"], "moood");
     });
 
-    it('should call containsMappedData with provided arguments when data is a function', () => {
-      const s = styler(dummyComponent, { ...consume, mode: 'moood', data: dataFn });
+    it("should call containsMappedData with provided arguments when data is a function", () => {
+      const s = styler(dummyComponent, { ...consume, mode: "moood", data: dataFn });
       s.update();
       expect(dataFn).to.have.been.calledWithExactly({ brush: brusherStub });
-      expect(brusherStub.containsMappedData.firstCall).to.have.been.calledWithExactly(data[0], ['b'], 'moood');
+      expect(brusherStub.containsMappedData.firstCall).to.have.been.calledWithExactly(data[0], ["b"], "moood");
     });
 
-    it('start should store all original styling values', () => {
+    it("start should store all original styling values", () => {
       styler(dummyComponent, consume);
-      brusherStub.trigger('start');
+      brusherStub.trigger("start");
 
       dummyComponent.renderer.render.args[0][0].forEach((node) => {
         expect(node.__style).to.deep.equal({
-          fill: 'yellow',
-          stroke: 'pink',
+          fill: "yellow",
+          stroke: "pink",
         });
       });
     });
 
-    it('start should inactive all nodes', () => {
+    it("start should inactive all nodes", () => {
       styler(dummyComponent, consume);
-      brusherStub.trigger('start');
+      brusherStub.trigger("start");
 
       dummyComponent.renderer.render.args[0][0].forEach((node) => {
-        expect(node.fill).to.deep.equal('inactiveFill');
+        expect(node.fill).to.deep.equal("inactiveFill");
       });
     });
 
-    it('end should restore all original styling values', () => {
+    it("end should restore all original styling values", () => {
       styler(dummyComponent, consume);
-      brusherStub.trigger('start');
-      brusherStub.trigger('end');
+      brusherStub.trigger("start");
+      brusherStub.trigger("end");
 
       dummyComponent.renderer.render.args[0][0].forEach((node) => {
         expect(node.__style).to.equal(undefined);
       });
     });
 
-    it('start and end should call renderer.render by default', () => {
+    it("start and end should call renderer.render by default", () => {
       styler(dummyComponent, consume);
-      brusherStub.trigger('start');
-      brusherStub.trigger('end');
+      brusherStub.trigger("start");
+      brusherStub.trigger("end");
 
       expect(dummyComponent.renderer.render.calledTwice).to.be.true;
     });
 
-    it('start, end and update should call renderer.render if supressRender=false is passed', () => {
+    it("start, end and update should call renderer.render if supressRender=false is passed", () => {
       styler(dummyComponent, consume);
-      brusherStub.trigger('start', { suppressRender: false });
-      brusherStub.trigger('end', { suppressRender: false });
+      brusherStub.trigger("start", { suppressRender: false });
+      brusherStub.trigger("end", { suppressRender: false });
 
       expect(dummyComponent.renderer.render.calledTwice).to.be.true;
     });
 
-    it('start and end should not call renderer.render if supressRender=true is passed', () => {
+    it("start and end should not call renderer.render if supressRender=true is passed", () => {
       styler(dummyComponent, consume);
-      brusherStub.trigger('start', { suppressRender: true });
-      brusherStub.trigger('end', { suppressRender: true });
+      brusherStub.trigger("start", { suppressRender: true });
+      brusherStub.trigger("end", { suppressRender: true });
 
       expect(dummyComponent.renderer.render.callCount).to.equal(0);
     });
 
-    it('end should restore all original styling values if supressRender=true is passed but not call render', () => {
+    it("end should restore all original styling values if supressRender=true is passed but not call render", () => {
       styler(dummyComponent, consume);
-      brusherStub.trigger('start');
-      brusherStub.trigger('end', { suppressRender: true });
+      brusherStub.trigger("start");
+      brusherStub.trigger("end", { suppressRender: true });
 
       dummyComponent.renderer.render.args[0][0].forEach((node) => {
         expect(node.__style).to.equal(undefined);
@@ -362,61 +362,61 @@ describe('Brushing', () => {
       expect(dummyComponent.renderer.render.calledOnce).to.be.true;
     });
 
-    it('update should apply styling values', () => {
+    it("update should apply styling values", () => {
       styler(dummyComponent, consume);
-      brusherStub.trigger('start');
-      brusherStub.trigger('update');
+      brusherStub.trigger("start");
+      brusherStub.trigger("update");
 
       const output = dummyComponent.renderer.render.args[0][0];
-      expect(output[0].stroke).to.equal('pink'); // Inactive
-      expect(output[0].fill).to.equal('inactiveFill');
-      expect(output[1].stroke).to.equal('activeStroke'); // Active
-      expect(output[1].fill).to.equal('yellow');
+      expect(output[0].stroke).to.equal("pink"); // Inactive
+      expect(output[0].fill).to.equal("inactiveFill");
+      expect(output[1].stroke).to.equal("activeStroke"); // Active
+      expect(output[1].fill).to.equal("yellow");
     });
 
-    it('update should apply sorting nodes', () => {
+    it("update should apply sorting nodes", () => {
       dummyComponent.config.sortNodes = sinon.stub().returns(nodes);
       styler(dummyComponent, consume);
-      brusherStub.trigger('start');
-      brusherStub.trigger('update');
+      brusherStub.trigger("start");
+      brusherStub.trigger("update");
 
       const output = dummyComponent.renderer.render.args[0][0];
       expect(dummyComponent.config.sortNodes).to.have.been.calledWith(dummyComponent);
-      expect(output[0].stroke).to.equal('pink'); // Inactive
-      expect(output[0].fill).to.equal('inactiveFill');
-      expect(output[1].stroke).to.equal('activeStroke'); // Active
-      expect(output[1].fill).to.equal('yellow');
+      expect(output[0].stroke).to.equal("pink"); // Inactive
+      expect(output[0].fill).to.equal("inactiveFill");
+      expect(output[1].stroke).to.equal("activeStroke"); // Active
+      expect(output[1].fill).to.equal("yellow");
     });
 
-    it('update should use customRender if any', () => {
+    it("update should use customRender if any", () => {
       dummyComponent.config.customRender = sinon.stub();
       styler(dummyComponent, consume);
-      brusherStub.trigger('update');
+      brusherStub.trigger("update");
       expect(dummyComponent.config.customRender).to.have.been.calledWith({
         render: dummyComponent.renderer.render,
         nodes: dummyComponent.nodes,
       });
     });
 
-    it('update should apply styling values only to shape nodes', () => {
+    it("update should apply styling values only to shape nodes", () => {
       nodes.push({
-        type: 'container',
-        stroke: 'doNotUpdate',
-        fill: 'doNotUpdate',
+        type: "container",
+        stroke: "doNotUpdate",
+        fill: "doNotUpdate",
         children: [
           {
-            type: 'circle',
-            fill: 'yellow',
-            stroke: 'updateThis',
+            type: "circle",
+            fill: "yellow",
+            stroke: "updateThis",
             data: data[0],
           },
           {
-            type: 'container',
+            type: "container",
             children: [
               {
-                type: 'line',
-                fill: 'yellow',
-                stroke: 'updateThis',
+                type: "line",
+                fill: "yellow",
+                stroke: "updateThis",
                 data: data[0],
               },
             ],
@@ -424,83 +424,83 @@ describe('Brushing', () => {
         ],
       });
       styler(dummyComponent, consume);
-      brusherStub.trigger('start');
-      brusherStub.trigger('update');
+      brusherStub.trigger("start");
+      brusherStub.trigger("update");
 
       const output = dummyComponent.renderer.render.args[0][0];
-      expect(output[0].stroke).to.equal('pink'); // Inactive
-      expect(output[0].fill).to.equal('inactiveFill');
-      expect(output[1].stroke).to.equal('activeStroke'); // Active
-      expect(output[1].fill).to.equal('yellow');
-      expect(output[2].stroke).to.equal('doNotUpdate'); // Active but not affected because type is container
-      expect(output[2].fill).to.equal('doNotUpdate');
-      expect(output[2].children[0].stroke).to.equal('activeStroke'); // Active because it's parent is affected
+      expect(output[0].stroke).to.equal("pink"); // Inactive
+      expect(output[0].fill).to.equal("inactiveFill");
+      expect(output[1].stroke).to.equal("activeStroke"); // Active
+      expect(output[1].fill).to.equal("yellow");
+      expect(output[2].stroke).to.equal("doNotUpdate"); // Active but not affected because type is container
+      expect(output[2].fill).to.equal("doNotUpdate");
+      expect(output[2].children[0].stroke).to.equal("activeStroke"); // Active because it's parent is affected
       expect(output[2].children[1].stroke).to.equal(undefined); // Active but not affected because type is container
       expect(output[2].children[1].fill).to.equal(undefined);
-      expect(output[2].children[1].children[0].stroke).to.equal('activeStroke'); // Active because it's parent is affected
-      expect(output[2].children[1].children[0].fill).to.equal('yellow');
+      expect(output[2].children[1].children[0].stroke).to.equal("activeStroke"); // Active because it's parent is affected
+      expect(output[2].children[1].children[0].fill).to.equal("yellow");
     });
 
-    it('update should apply styling values only to shape nodes with data attribute', () => {
+    it("update should apply styling values only to shape nodes with data attribute", () => {
       dummyComponent.nodes = [
         {
-          type: 'circle',
-          fill: 'doNotUpdate',
-          stroke: 'doNotUpdate',
+          type: "circle",
+          fill: "doNotUpdate",
+          stroke: "doNotUpdate",
         },
         {
-          type: 'line',
-          fill: 'updateThis',
+          type: "line",
+          fill: "updateThis",
           data: data[1],
         },
       ];
       styler(dummyComponent, consume);
-      brusherStub.trigger('start');
-      brusherStub.trigger('update');
+      brusherStub.trigger("start");
+      brusherStub.trigger("update");
 
       const output = dummyComponent.renderer.render.args[0][0];
-      expect(output[0].stroke).to.equal('doNotUpdate'); // No data attr
-      expect(output[0].fill).to.equal('doNotUpdate');
-      expect(output[1].fill).to.equal('inactiveFill'); // Inactive
+      expect(output[0].stroke).to.equal("doNotUpdate"); // No data attr
+      expect(output[0].fill).to.equal("doNotUpdate");
+      expect(output[1].fill).to.equal("inactiveFill"); // Inactive
     });
 
-    it('should only affect filtered nodes', () => {
+    it("should only affect filtered nodes", () => {
       dummyComponent.nodes = [
-        { type: 'a', fill: 'start', data: {} },
-        { type: 'b', fill: 'start', data: {} },
-        { type: 'c', fill: 'start', data: {} },
-        { type: 'd', fill: 'start', data: {} },
+        { type: "a", fill: "start", data: {} },
+        { type: "b", fill: "start", data: {} },
+        { type: "c", fill: "start", data: {} },
+        { type: "d", fill: "start", data: {} },
       ];
 
       styler(dummyComponent, {
-        context: 'test',
+        context: "test",
         filter(n) {
-          return n.type === 'a' || n.type === 'c';
+          return n.type === "a" || n.type === "c";
         },
         style: {
           active: {
-            fill: 'active',
+            fill: "active",
           },
           inactive: {
-            fill: 'inactive',
+            fill: "inactive",
           },
         },
       });
-      brusherStub.trigger('start');
-      brusherStub.trigger('update');
+      brusherStub.trigger("start");
+      brusherStub.trigger("update");
 
       const output = dummyComponent.renderer.render.args[0][0];
-      expect(output.map((n) => n.fill)).to.eql(['inactive', 'start', 'active', 'start']);
+      expect(output.map((n) => n.fill)).to.eql(["inactive", "start", "active", "start"]);
     });
 
-    it('should resolve style function property functions', () => {
+    it("should resolve style function property functions", () => {
       dummyComponent.nodes = [
-        { type: 'a', fill: 'red', data: {} },
-        { type: 'b', fill: 'green', data: {} },
+        { type: "a", fill: "red", data: {} },
+        { type: "b", fill: "green", data: {} },
       ];
 
       styler(dummyComponent, {
-        context: 'test',
+        context: "test",
         style: {
           active: {
             fill: (shape) => `${shape.fill}-active`,
@@ -510,11 +510,11 @@ describe('Brushing', () => {
           },
         },
       });
-      brusherStub.trigger('start');
-      brusherStub.trigger('update');
+      brusherStub.trigger("start");
+      brusherStub.trigger("update");
 
       const output = dummyComponent.renderer.render.args[0][0];
-      expect(output.map((n) => n.fill)).to.eql(['red-inactive', 'green-active']);
+      expect(output.map((n) => n.fill)).to.eql(["red-inactive", "green-active"]);
     });
   });
 });

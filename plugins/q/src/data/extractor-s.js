@@ -1,6 +1,6 @@
 /* eslint no-nested-ternary: 0 */
 
-import extend from 'extend';
+import extend from "extend";
 
 export function getFieldAccessor(field, page, deps, columnOrder) {
   if (!field) {
@@ -62,17 +62,17 @@ export function getFieldAccessor(field, page, deps, columnOrder) {
 function datumExtract(propCfg, cell, { key }) {
   const datum = {
     value:
-      typeof propCfg.value === 'function'
+      typeof propCfg.value === "function"
         ? propCfg.value(cell)
-        : typeof propCfg.value !== 'undefined'
+        : typeof propCfg.value !== "undefined"
           ? propCfg.value
           : cell,
   };
 
   datum.label =
-    typeof propCfg.label === 'function'
+    typeof propCfg.label === "function"
       ? propCfg.label(cell)
-      : typeof propCfg.label !== 'undefined'
+      : typeof propCfg.label !== "undefined"
         ? String(propCfg.label)
         : String(datum.value);
 
@@ -102,10 +102,10 @@ export default function extract(config, dataset, cache, util) {
   const cfgs = Array.isArray(config) ? config : [config];
   let dataItems = [];
   for (let i = 0; i < cfgs.length; i++) {
-    if (typeof cfgs[i].field !== 'undefined') {
+    if (typeof cfgs[i].field !== "undefined") {
       const cube = dataset.raw();
       const sourceKey = dataset.key();
-      const f = typeof cfgs[i].field === 'object' ? cfgs[i].field : dataset.field(cfgs[i].field);
+      const f = typeof cfgs[i].field === "object" ? cfgs[i].field : dataset.field(cfgs[i].field);
       const { props, main } = util.normalizeConfig(cfgs[i], dataset);
       const propsArr = Object.keys(props);
 
@@ -162,15 +162,15 @@ export default function extract(config, dataset, cache, util) {
               const fieldLabels = ret[propsArr[l]].map((v) => v.label);
               ret[propsArr[l]] = {
                 value:
-                  typeof p.value === 'function'
+                  typeof p.value === "function"
                     ? p.value(fieldValues)
-                    : typeof p.value !== 'undefined'
+                    : typeof p.value !== "undefined"
                       ? p.value
                       : fieldValues,
                 label:
-                  typeof p.label === 'function'
+                  typeof p.label === "function"
                     ? p.label(fieldLabels)
-                    : typeof p.label !== 'undefined'
+                    : typeof p.label !== "undefined"
                       ? String(p.label)
                       : String(ret[propsArr[l]].value),
               };

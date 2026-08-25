@@ -1,4 +1,4 @@
-import { toRadians } from './angles';
+import { toRadians } from "./angles";
 
 export const PI_X2 = Math.PI * 2;
 

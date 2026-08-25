@@ -1,7 +1,7 @@
-import render from '../circle';
+import render from "../circle";
 
-describe('circle', () => {
-  describe('render', () => {
+describe("circle", () => {
+  describe("render", () => {
     let sandbox, g, falsys, truthys, circle;
 
     beforeEach(() => {
@@ -15,9 +15,9 @@ describe('circle', () => {
         stroke: sandbox.spy(),
       };
 
-      falsys = [false, null, undefined, 0, NaN, ''];
+      falsys = [false, null, undefined, 0, NaN, ""];
 
-      truthys = [true, {}, [], 1, -1, 3.14, -3.14, 'foo'];
+      truthys = [true, {}, [], 1, -1, 3.14, -3.14, "foo"];
 
       circle = { cx: 1, cy: 2, r: 3 };
     });
@@ -26,27 +26,27 @@ describe('circle', () => {
       sandbox.restore();
     });
 
-    it('should fire beginPath', () => {
+    it("should fire beginPath", () => {
       render(circle, { g, doFill: false, doStroke: false });
 
       expect(g.beginPath.calledOnce).to.equal(true);
     });
 
-    it('should fire moveTo with correct arguments', () => {
+    it("should fire moveTo with correct arguments", () => {
       render(circle, { g, doFill: false, doStroke: false });
 
       expect(g.moveTo.calledOnce).to.equal(true);
       expect(g.moveTo.alwaysCalledWithExactly(4, 2)).to.equal(true);
     });
 
-    it('should fire arc with correct arguments', () => {
+    it("should fire arc with correct arguments", () => {
       render(circle, { g, doFill: false, doStroke: false });
 
       expect(g.arc.calledOnce).to.equal(true);
       expect(g.arc.alwaysCalledWithExactly(1, 2, 3, 0, Math.PI * 2, false)).to.equal(true);
     });
 
-    it('should not fire fill if fill condition is falsy', () => {
+    it("should not fire fill if fill condition is falsy", () => {
       falsys.forEach((value) => {
         render(circle, { g, doFill: value, doStroke: false });
 
@@ -54,7 +54,7 @@ describe('circle', () => {
       });
     });
 
-    it('should fire fill if fill condition is truthy', () => {
+    it("should fire fill if fill condition is truthy", () => {
       truthys.forEach((value) => {
         g.fill.resetHistory();
 
@@ -64,7 +64,7 @@ describe('circle', () => {
       });
     });
 
-    it('should not fire stroke if stroke condition is falsy', () => {
+    it("should not fire stroke if stroke condition is falsy", () => {
       falsys.forEach((value) => {
         render(circle, { g, doFill: false, doStroke: value });
 
@@ -72,7 +72,7 @@ describe('circle', () => {
       });
     });
 
-    it('should fire stroke if stroke condition is truthy', () => {
+    it("should fire stroke if stroke condition is truthy", () => {
       truthys.forEach((value) => {
         g.stroke.resetHistory();
 
@@ -82,7 +82,7 @@ describe('circle', () => {
       });
     });
 
-    it('should fire methods in correct order', () => {
+    it("should fire methods in correct order", () => {
       render(circle, { g, doFill: true, doStroke: true });
 
       expect(g.beginPath.calledBefore(g.moveTo)).to.equal(true);

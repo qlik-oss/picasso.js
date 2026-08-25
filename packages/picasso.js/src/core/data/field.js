@@ -1,14 +1,14 @@
 /* eslint no-return-assign: 0 */
-import formatterFn from '../formatter';
+import formatterFn from "../formatter";
 
 // TODO - decide whether usage of .call() is appropriate when invoking accessors, if yes then arrow functions are not allowed!
 
 const getFormatter = (data) => {
-  if (typeof data.formatter === 'function') {
+  if (typeof data.formatter === "function") {
     return data.formatter();
   }
   const f = data.formatter || {};
-  return formatterFn(f.type || 'd3-number')(f.format || '');
+  return formatterFn(f.type || "d3-number")(f.format || "");
 };
 
 const accessors = {
@@ -44,7 +44,7 @@ export default function field(
     value = accessors.value,
     label = accessors.label,
     formatter = accessors.formatter,
-  } = {}
+  } = {},
 ) {
   /**
    * @alias Field

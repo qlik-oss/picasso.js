@@ -1,9 +1,9 @@
-import { scaleLinear as d3ScaleLinear } from 'd3-scale';
-import extend from 'extend';
+import { scaleLinear as d3ScaleLinear } from "d3-scale";
+import extend from "extend";
 
-import { notNumber } from '../utils/is-number';
-import { generateContinuousTicks } from './ticks/tick-generators';
-import resolveSettings from './settings-resolver';
+import { notNumber } from "../utils/is-number";
+import { generateContinuousTicks } from "./ticks/tick-generators";
+import resolveSettings from "./settings-resolver";
 
 export const DEFAULT_SETTINGS = {
   min: NaN,
@@ -175,7 +175,7 @@ export default function scaleLinear(settings = {}, data = {}, resources = {}) {
    * @return { number[] | Object } Array of ticks or any type the custom tick generator returns
    */
   fn.ticks = function ticks(input) {
-    if (input !== null && typeof input === 'object') {
+    if (input !== null && typeof input === "object") {
       input.settings = input.settings || {};
       // TODO Discontinue support for custom ticks settings as argument
       input.settings = extend(true, {}, stgns, input.settings);

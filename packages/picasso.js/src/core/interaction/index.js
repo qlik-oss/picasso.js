@@ -1,5 +1,5 @@
-import registry from '../utils/registry';
-import native from '../../web/interactions/native';
+import registry from "../utils/registry";
+import native from "../../web/interactions/native";
 
 /**
  * @interface InteractionSettings
@@ -19,6 +19,6 @@ import native from '../../web/interactions/native';
 
 const reg = registry();
 
-reg('native', native);
+reg("native", native);
 
 export default reg;

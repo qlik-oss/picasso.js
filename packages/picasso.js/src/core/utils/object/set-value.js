@@ -2,14 +2,14 @@
 // setValue(object, 'person.name', 'John Doe');
 // console.log(object.person.name);
 // => 'John Doe'
-const FORBIDDEN = ['__proto__', 'constructor', 'prototype'];
+const FORBIDDEN = ["__proto__", "constructor", "prototype"];
 
 function setValue(object, path, value) {
   if (object === undefined || path === undefined) {
     return;
   }
 
-  const steps = path.split('.');
+  const steps = path.split(".");
   const propertyName = steps[steps.length - 1];
 
   let scoped = object;

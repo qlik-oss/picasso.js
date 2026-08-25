@@ -1,7 +1,7 @@
-import ticks from '../ticks';
+import ticks from "../ticks";
 
-describe('Ticks', () => {
-  it('should produce nice numbers by extending the given value into a multiple of [1, 2, 5, 10]', () => {
+describe("Ticks", () => {
+  it("should produce nice numbers by extending the given value into a multiple of [1, 2, 5, 10]", () => {
     expect(ticks.niceNum(0)).to.equal(0); // 0
 
     expect(ticks.niceNum(0.5)).to.equal(0.5); // 5
@@ -21,7 +21,7 @@ describe('Ticks', () => {
     expect(ticks.niceNum(-300)).to.equal(-500); // 5
   });
 
-  it('should produce nice numbers by rounding the given value into a multiple of [1, 2, 5, 10]', () => {
+  it("should produce nice numbers by rounding the given value into a multiple of [1, 2, 5, 10]", () => {
     expect(ticks.niceNum(0.14, true)).to.equal(0.1); // 1
     expect(ticks.niceNum(0.29, true)).to.equal(0.2); // 2
     expect(ticks.niceNum(0.3001, true)).to.equal(0.5); // 5
@@ -41,7 +41,7 @@ describe('Ticks', () => {
     expect(ticks.niceNum(-0.0149, true)).to.equal(-0.01); // 1
   });
 
-  it('should produce nice ticks', () => {
+  it("should produce nice ticks", () => {
     expect(ticks.generateTicks(0, 1)).to.deep.equal({
       start: 0,
       end: 1,
@@ -62,7 +62,7 @@ describe('Ticks', () => {
     });
   });
 
-  it('should produce nice ticks with negative range', () => {
+  it("should produce nice ticks with negative range", () => {
     expect(ticks.generateTicks(1, 0)).to.deep.equal({
       start: 1,
       end: 0,

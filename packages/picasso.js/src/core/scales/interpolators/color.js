@@ -1,4 +1,4 @@
-import interpolators from '../../colors/interpolators';
+import interpolators from "../../colors/interpolators";
 
 export default {
   /**

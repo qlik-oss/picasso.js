@@ -1,4 +1,4 @@
-import extend from 'extend';
+import extend from "extend";
 
 /**
  * Callback function for layer sort
@@ -39,13 +39,13 @@ const SETTINGS = {
   connect: false,
   /**
    * @type {string=} */
-  orientation: 'horizontal',
+  orientation: "horizontal",
   /**
    * @typedef {object} */
   layers: {
     /**
      * @type {string=} */
-    curve: 'linear',
+    curve: "linear",
     /**
      * @type {boolean=} */
     show: true,
@@ -57,13 +57,13 @@ const SETTINGS = {
     line: {
       /**
        * @type {string=} */
-      stroke: '#ccc',
+      stroke: "#ccc",
       /**
        * @type {number=} */
       strokeWidth: 1,
       /**
        * @type {string=} */
-      strokeLinejoin: 'miter',
+      strokeLinejoin: "miter",
       /**
        * @type {string=} */
       strokeDasharray: undefined,
@@ -82,7 +82,7 @@ const SETTINGS = {
     area: {
       /**
        * @type {string=} */
-      fill: '#ccc',
+      fill: "#ccc",
       /**
        * @type {number=} */
       opacity: 0.8,
@@ -93,9 +93,9 @@ const SETTINGS = {
   },
 };
 
-function createDisplayLayer(points, { generatorType, item, data, major, minor, layerObj, stngs }, fill = '') {
+function createDisplayLayer(points, { generatorType, item, data, major, minor, layerObj, stngs }, fill = "") {
   const d = {
-    type: 'path',
+    type: "path",
     points,
     generatorType,
     major,
@@ -123,9 +123,9 @@ function createDisplayLayers(layers, { width, height, missingMinor0, stngs }) {
   layers.forEach((layer) => {
     const { lineObj, layerObj, areaObj, points } = layer;
 
-    let minor = { size: height, p: 'y' };
-    let major = { size: width, p: 'x' };
-    if (stngs.orientation === 'vertical') {
+    let minor = { size: height, p: "y" };
+    let major = { size: width, p: "x" };
+    if (stngs.orientation === "vertical") {
       const temp = extend(true, {}, major);
       major = extend(true, {}, minor);
       minor = extend(true, {}, temp);
@@ -137,12 +137,12 @@ function createDisplayLayers(layers, { width, height, missingMinor0, stngs }) {
         createDisplayLayer(points, {
           data: layer.consumableData,
           item: areaObj,
-          generatorType: 'area',
+          generatorType: "area",
           major,
           minor,
           layerObj,
           stngs,
-        })
+        }),
       );
     }
 
@@ -160,8 +160,8 @@ function createDisplayLayers(layers, { width, height, missingMinor0, stngs }) {
             layerObj,
             stngs,
           },
-          'none'
-        )
+          "none",
+        ),
       );
 
       // secondary line layer, used only when rendering area
@@ -178,8 +178,8 @@ function createDisplayLayers(layers, { width, height, missingMinor0, stngs }) {
               layerObj,
               stngs,
             },
-            'none'
-          )
+            "none",
+          ),
         );
       }
     }
@@ -195,8 +195,8 @@ function resolve({ data, stngs, rect, resolver, style, domain }) {
     defaults: SETTINGS.coordinates,
     settings: stngs.coordinates || {},
     scaled: {
-      major: stngs.orientation === 'vertical' ? height : width,
-      minor: stngs.orientation === 'vertical' ? width : height,
+      major: stngs.orientation === "vertical" ? height : width,
+      minor: stngs.orientation === "vertical" ? width : height,
     },
   });
 
@@ -208,7 +208,7 @@ function resolve({ data, stngs, rect, resolver, style, domain }) {
   const injectDummy =
     !stngs.connect &&
     domain.length > 2 &&
-    (typeof stngs.coordinates.layerId === 'function' || typeof stngs.coordinates.layerId === 'object');
+    (typeof stngs.coordinates.layerId === "function" || typeof stngs.coordinates.layerId === "object");
 
   // collect points into layers
   const layerIds = {};
@@ -339,11 +339,11 @@ function calculateVisibleLayers(opts) {
 }
 
 const lineMarkerComponent = {
-  require: ['chart', 'resolver'],
+  require: ["chart", "resolver"],
   defaultSettings: {
     style: {
-      area: '$shape',
-      line: '$shape-outline',
+      area: "$shape",
+      line: "$shape-outline",
     },
   },
   created() {},
@@ -351,7 +351,7 @@ const lineMarkerComponent = {
     // console.log("DATA", data);
     const { width, height } = this.rect;
     this.stngs = this.settings.settings || {};
-    const missingMinor0 = !this.stngs.coordinates || typeof this.stngs.coordinates.minor0 === 'undefined';
+    const missingMinor0 = !this.stngs.coordinates || typeof this.stngs.coordinates.minor0 === "undefined";
 
     const visibleLayers = calculateVisibleLayers({
       data,

@@ -1,7 +1,7 @@
-import render from '../rect';
+import render from "../rect";
 
-describe('rect', () => {
-  describe('render', () => {
+describe("rect", () => {
+  describe("render", () => {
     let sandbox, g, falsys, truthys, rect;
 
     beforeEach(() => {
@@ -17,9 +17,9 @@ describe('rect', () => {
         quadraticCurveTo: sandbox.spy(),
       };
 
-      falsys = [false, null, undefined, 0, NaN, ''];
+      falsys = [false, null, undefined, 0, NaN, ""];
 
-      truthys = [true, {}, [], 1, -1, 3.14, -3.14, 'foo'];
+      truthys = [true, {}, [], 1, -1, 3.14, -3.14, "foo"];
 
       rect = {
         x: 1,
@@ -33,20 +33,20 @@ describe('rect', () => {
       sandbox.restore();
     });
 
-    it('should fire beginPath', () => {
+    it("should fire beginPath", () => {
       render(rect, { g, doFill: false, doStroke: false });
 
       expect(g.beginPath.calledOnce).to.equal(true);
     });
 
-    it('should fire rect with correct arguments', () => {
+    it("should fire rect with correct arguments", () => {
       render(rect, { g, doFill: false, doStroke: false });
 
       expect(g.rect.calledOnce).to.equal(true);
       expect(g.rect.alwaysCalledWithExactly(1, 2, 10, 20)).to.equal(true);
     });
 
-    it('should not fire fill if fill condition is falsy', () => {
+    it("should not fire fill if fill condition is falsy", () => {
       falsys.forEach((value) => {
         render(rect, { g, doFill: value, doStroke: false });
 
@@ -54,7 +54,7 @@ describe('rect', () => {
       });
     });
 
-    it('should fire fill if fill condition is truthy', () => {
+    it("should fire fill if fill condition is truthy", () => {
       falsys.forEach((value) => {
         g.fill.resetHistory();
 
@@ -64,7 +64,7 @@ describe('rect', () => {
       });
     });
 
-    it('should not fire stroke if stroke condition is falsy', () => {
+    it("should not fire stroke if stroke condition is falsy", () => {
       falsys.forEach((value) => {
         render(rect, { g, doFill: false, doStroke: value });
 
@@ -72,7 +72,7 @@ describe('rect', () => {
       });
     });
 
-    it('should fire stroke if stroke condition is truthy', () => {
+    it("should fire stroke if stroke condition is truthy", () => {
       truthys.forEach((value) => {
         g.stroke.resetHistory();
 
@@ -82,7 +82,7 @@ describe('rect', () => {
       });
     });
 
-    it('should fire methods in correct order', () => {
+    it("should fire methods in correct order", () => {
       render(rect, { g, doFill: true, doStroke: true });
 
       expect(g.beginPath.calledBefore(g.rect)).to.equal(true);
@@ -90,8 +90,8 @@ describe('rect', () => {
       expect(g.fill.calledBefore(g.stroke)).to.equal(true);
     });
 
-    describe('rounded rect', () => {
-      it('should call context methods in correct order and with correct arguments', () => {
+    describe("rounded rect", () => {
+      it("should call context methods in correct order and with correct arguments", () => {
         rect.rx = 3;
         rect.ry = 4;
 

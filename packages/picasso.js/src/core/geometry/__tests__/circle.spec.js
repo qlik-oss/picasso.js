@@ -1,9 +1,9 @@
-import GeoCircle from '../circle';
-import { rectToPoints } from '../util';
+import GeoCircle from "../circle";
+import { rectToPoints } from "../util";
 
-describe('GeoCircle', () => {
-  describe('constructor', () => {
-    it('should set correct default values when no arguments passed', () => {
+describe("GeoCircle", () => {
+  describe("constructor", () => {
+    it("should set correct default values when no arguments passed", () => {
       const c = new GeoCircle();
 
       expect(c.cx).to.equal(0);
@@ -11,7 +11,7 @@ describe('GeoCircle', () => {
       expect(c.r).to.equal(0);
     });
 
-    it('should set the correct values when arguments passed', () => {
+    it("should set the correct values when arguments passed", () => {
       const c = new GeoCircle({ cx: 1, cy: 2, r: 3 });
 
       expect(c.cx).to.equal(1);
@@ -20,8 +20,8 @@ describe('GeoCircle', () => {
     });
   });
 
-  describe('set', () => {
-    it('should set the correct values', () => {
+  describe("set", () => {
+    it("should set the correct values", () => {
       const c = new GeoCircle();
       c.set({ cx: 7, cy: 8, r: 9 });
 
@@ -31,9 +31,9 @@ describe('GeoCircle', () => {
     });
   });
 
-  describe('Intersection', () => {
-    describe('Point', () => {
-      it('should intersect with a point inside its circumference ', () => {
+  describe("Intersection", () => {
+    describe("Point", () => {
+      it("should intersect with a point inside its circumference ", () => {
         const r = 30;
         const c = new GeoCircle({ cx: 10, cy: 20, r });
         const rInside = r - 1;
@@ -48,7 +48,7 @@ describe('GeoCircle', () => {
         expect(c.containsPoint(p4)).to.equal(true);
       });
 
-      it('should not intersect with a point outside its circumference ', () => {
+      it("should not intersect with a point outside its circumference ", () => {
         const r = 30;
         const c = new GeoCircle({ cx: 10, cy: 20, r });
         const rOutside = r + 1;
@@ -63,7 +63,7 @@ describe('GeoCircle', () => {
         expect(c.containsPoint(p4)).to.equal(false);
       });
 
-      it('should intersect with a point on its circumference', () => {
+      it("should intersect with a point on its circumference", () => {
         const r = 30;
         const c = new GeoCircle({ cx: 10, cy: 20, r });
         const p1 = { x: 10, y: 20 - r };
@@ -77,7 +77,7 @@ describe('GeoCircle', () => {
         expect(c.containsPoint(p4)).to.equal(true);
       });
 
-      it('should not intersect if the size of the circle is zero', () => {
+      it("should not intersect if the size of the circle is zero", () => {
         const c = new GeoCircle({ cx: 10, cy: 20, r: 0 });
         const p1 = { x: 10, y: 20 };
 
@@ -85,8 +85,8 @@ describe('GeoCircle', () => {
       });
     });
 
-    describe('Rect', () => {
-      it('should intersect if circle coordinate is on rect circumference', () => {
+    describe("Rect", () => {
+      it("should intersect if circle coordinate is on rect circumference", () => {
         const r = 30;
         const c1 = new GeoCircle({ cx: 0, cy: 0, r });
         const c2 = new GeoCircle({ cx: 100, cy: 0, r });
@@ -105,7 +105,7 @@ describe('GeoCircle', () => {
         expect(c4.intersectsRect(rect)).to.equal(true);
       });
 
-      it('should intersect if rect is inside circle circumference', () => {
+      it("should intersect if rect is inside circle circumference", () => {
         const r = 300;
         const c1 = new GeoCircle({ cx: 100, cy: 100, r });
         const rect = rectToPoints({
@@ -118,7 +118,7 @@ describe('GeoCircle', () => {
         expect(c1.intersectsRect(rect)).to.equal(true);
       });
 
-      it('should intersect if circle coordinate is inside rect circumference', () => {
+      it("should intersect if circle coordinate is inside rect circumference", () => {
         const r = 30;
         const c1 = new GeoCircle({ cx: 50, cy: 1, r });
         const c2 = new GeoCircle({ cx: 99, cy: 100, r });
@@ -137,7 +137,7 @@ describe('GeoCircle', () => {
         expect(c4.intersectsRect(rect)).to.equal(true);
       });
 
-      it('should intersect if circle circumference is inside rect', () => {
+      it("should intersect if circle circumference is inside rect", () => {
         const r = 30;
         const c1 = new GeoCircle({ cx: 0, cy: -r, r });
         const c2 = new GeoCircle({ cx: 100 + r, cy: 0, r });
@@ -157,7 +157,7 @@ describe('GeoCircle', () => {
         expect(c4.intersectsRect(rect)).to.equal(true);
       });
 
-      it('should not intersect if circle circumference is outside rect', () => {
+      it("should not intersect if circle circumference is outside rect", () => {
         const r = 30;
         const rr = r + 1;
         const c1 = new GeoCircle({ cx: 0, cy: -rr, r });
@@ -178,7 +178,7 @@ describe('GeoCircle', () => {
         expect(c4.intersectsRect(rect)).to.equal(false);
       });
 
-      it('should not intersect if the size of the circle is zero', () => {
+      it("should not intersect if the size of the circle is zero", () => {
         const c = new GeoCircle({ cx: 10, cy: 20, r: 0 });
         const rect = rectToPoints({
           x: 0,
@@ -190,7 +190,7 @@ describe('GeoCircle', () => {
         expect(c.intersectsRect(rect)).to.equal(false);
       });
 
-      it('should not intersect if the width of the rect is zero', () => {
+      it("should not intersect if the width of the rect is zero", () => {
         const c = new GeoCircle({ cx: 10, cy: 20, r: 10 });
         const rect = rectToPoints({
           x: 10,
@@ -202,7 +202,7 @@ describe('GeoCircle', () => {
         expect(c.intersectsRect(rect)).to.equal(false);
       });
 
-      it('should not intersect if the height of the rect is zero', () => {
+      it("should not intersect if the height of the rect is zero", () => {
         const c = new GeoCircle({ cx: 10, cy: 20, r: 10 });
         const rect = rectToPoints({
           x: 10,
@@ -215,8 +215,8 @@ describe('GeoCircle', () => {
       });
     });
 
-    describe('Line', () => {
-      it('should intersect with a vertical line passing through the circle', () => {
+    describe("Line", () => {
+      it("should intersect with a vertical line passing through the circle", () => {
         const r = 30;
         const c = new GeoCircle({ cx: 100, cy: 200, r });
         const p1 = { x: 90, y: 0 };
@@ -225,7 +225,7 @@ describe('GeoCircle', () => {
         expect(c.intersectsLine([p1, p2])).to.equal(true);
       });
 
-      it('should intersect with a vertical line passing through the circle circumference', () => {
+      it("should intersect with a vertical line passing through the circle circumference", () => {
         const r = 30;
         const c = new GeoCircle({ cx: 100, cy: 200, r });
         const p1 = { x: 70, y: 0 };
@@ -234,7 +234,7 @@ describe('GeoCircle', () => {
         expect(c.intersectsLine([p1, p2])).to.equal(true);
       });
 
-      it('should not intersect with a vertical line outside the circle circumference', () => {
+      it("should not intersect with a vertical line outside the circle circumference", () => {
         const r = 30;
         const c = new GeoCircle({ cx: 100, cy: 200, r });
         const p1 = { x: 69, y: 0 };
@@ -243,7 +243,7 @@ describe('GeoCircle', () => {
         expect(c.intersectsLine([p1, p2])).to.equal(false);
       });
 
-      it('should intersect with a horizontal line passing through the circle', () => {
+      it("should intersect with a horizontal line passing through the circle", () => {
         const r = 30;
         const c = new GeoCircle({ cx: 100, cy: 200, r });
         const p1 = { x: 0, y: 190 };
@@ -252,7 +252,7 @@ describe('GeoCircle', () => {
         expect(c.intersectsLine([p1, p2])).to.equal(true);
       });
 
-      it('should intersect with a horizontal line passing through the circle circumference', () => {
+      it("should intersect with a horizontal line passing through the circle circumference", () => {
         const r = 30;
         const c = new GeoCircle({ cx: 100, cy: 200, r });
         const p1 = { x: 0, y: 170 };
@@ -261,7 +261,7 @@ describe('GeoCircle', () => {
         expect(c.intersectsLine([p1, p2])).to.equal(true);
       });
 
-      it('should not intersect with a horizontal line outside the circle circumference', () => {
+      it("should not intersect with a horizontal line outside the circle circumference", () => {
         const r = 30;
         const c = new GeoCircle({ cx: 100, cy: 200, r });
         const p1 = { x: 0, y: 169 };
@@ -270,7 +270,7 @@ describe('GeoCircle', () => {
         expect(c.intersectsLine([p1, p2])).to.equal(false);
       });
 
-      it('should intersect with a diagonal line passing through the circle', () => {
+      it("should intersect with a diagonal line passing through the circle", () => {
         const r = 30;
         const c = new GeoCircle({ cx: 100, cy: 200, r });
         const p1 = { x: 0, y: 90 };
@@ -279,7 +279,7 @@ describe('GeoCircle', () => {
         expect(c.intersectsLine([p1, p2])).to.equal(true);
       });
 
-      it('should intersect with a diagonal line passing through the circle circumference', () => {
+      it("should intersect with a diagonal line passing through the circle circumference", () => {
         const r = 36;
         const c = new GeoCircle({ cx: 100, cy: 200, r });
         const p1 = { x: 0, y: 150 };
@@ -288,7 +288,7 @@ describe('GeoCircle', () => {
         expect(c.intersectsLine([p1, p2])).to.equal(true);
       });
 
-      it('should not intersect with a diagonal line outside the circle circumference', () => {
+      it("should not intersect with a diagonal line outside the circle circumference", () => {
         const r = 30;
         const c = new GeoCircle({ cx: 100, cy: 200, r });
         const p1 = { x: 0, y: 90 };
@@ -297,7 +297,7 @@ describe('GeoCircle', () => {
         expect(c.intersectsLine([p1, p2])).to.equal(false);
       });
 
-      it('should intersect with a coincident diagonal line of longer magnitude', () => {
+      it("should intersect with a coincident diagonal line of longer magnitude", () => {
         const r = 30;
         const c = new GeoCircle({ cx: 100, cy: 200, r });
         const p1 = { x: 0, y: 0 };
@@ -306,7 +306,7 @@ describe('GeoCircle', () => {
         expect(c.intersectsLine([p1, p2])).to.equal(true);
       });
 
-      it('should not intersect with a coincident diagonal line of shorten magnitude', () => {
+      it("should not intersect with a coincident diagonal line of shorten magnitude", () => {
         const r = 30;
         const c = new GeoCircle({ cx: 100, cy: 200, r });
         const p1 = { x: 0, y: 0 };
@@ -315,7 +315,7 @@ describe('GeoCircle', () => {
         expect(c.intersectsLine([p1, p2])).to.equal(false);
       });
 
-      it('should intersect with a line that has start point inside the circle circumference', () => {
+      it("should intersect with a line that has start point inside the circle circumference", () => {
         const r = 30;
         const c = new GeoCircle({ cx: 100, cy: 200, r });
         const p1 = { x: 105, y: 205 };
@@ -324,7 +324,7 @@ describe('GeoCircle', () => {
         expect(c.intersectsLine([p1, p2])).to.equal(true);
       });
 
-      it('should intersect with a line that has end point inside the circle circumference', () => {
+      it("should intersect with a line that has end point inside the circle circumference", () => {
         const r = 30;
         const c = new GeoCircle({ cx: 100, cy: 200, r });
         const p1 = { x: 0, y: 0 };
@@ -333,7 +333,7 @@ describe('GeoCircle', () => {
         expect(c.intersectsLine([p1, p2])).to.equal(true);
       });
 
-      it('should not intersect if the size of the circle is zero', () => {
+      it("should not intersect if the size of the circle is zero", () => {
         const c = new GeoCircle({ cx: 10, cy: 20, r: 0 });
         const p1 = { x: 10, y: 20 };
         const p2 = { x: 90, y: 190 };
@@ -342,8 +342,8 @@ describe('GeoCircle', () => {
       });
     });
 
-    describe('Circle', () => {
-      it('should intersect with a circle center inside its circumference ', () => {
+    describe("Circle", () => {
+      it("should intersect with a circle center inside its circumference ", () => {
         const r = 30;
         const c = new GeoCircle({ cx: 10, cy: 20, r });
         const rInside = r - 1;
@@ -358,7 +358,7 @@ describe('GeoCircle', () => {
         expect(c.intersectsCircle(c4)).to.equal(true);
       });
 
-      it('should not intersect with a circle outside its circumference ', () => {
+      it("should not intersect with a circle outside its circumference ", () => {
         const r = 30;
         const c = new GeoCircle({ cx: 10, cy: 20, r });
         const rOutside = r + 10;
@@ -373,7 +373,7 @@ describe('GeoCircle', () => {
         expect(c.intersectsCircle(c4)).to.equal(false);
       });
 
-      it('should intersect with a circle on its circumference', () => {
+      it("should intersect with a circle on its circumference", () => {
         const r = 30;
         const c = new GeoCircle({ cx: 10, cy: 20, r });
         const rOutside = r + 9;
@@ -388,14 +388,14 @@ describe('GeoCircle', () => {
         expect(c.intersectsCircle(c4)).to.equal(true);
       });
 
-      it('should not intersect if the size of the circle is zero', () => {
+      it("should not intersect if the size of the circle is zero", () => {
         const c = new GeoCircle({ cx: 10, cy: 20, r: 0 });
         const c1 = { cx: 10, cy: 20, r: 1 };
 
         expect(c.intersectsCircle(c1)).to.equal(false);
       });
 
-      it('should not intersect if the size of the colliding circle is zero', () => {
+      it("should not intersect if the size of the colliding circle is zero", () => {
         const c = new GeoCircle({ cx: 10, cy: 20, r: 10 });
         const c1 = { cx: 10, cy: 20, r: 0 };
 

@@ -1,5 +1,5 @@
-import extend from 'extend';
-import { testRectPoint } from '../../../core/math/narrow-phase-collision';
+import extend from "extend";
+import { testRectPoint } from "../../../core/math/narrow-phase-collision";
 
 function rangelimits(state) {
   return {
@@ -44,7 +44,7 @@ function findActive(state, value, limits) {
       end: rs[activeIdx].max,
       limitLow: limits.min,
       limitHigh: limits.max,
-      mode: 'foo',
+      mode: "foo",
     };
   }
   state.active = activeRange;
@@ -81,8 +81,8 @@ export function startArea({ state, e, renderer, ranges, targetSize }) {
   const limits = areaLimits(state);
   let i;
   let activeIdx = -1;
-  if (target && target.hasAttribute('data-idx')) {
-    activeIdx = parseInt(target.getAttribute('data-idx'), 10);
+  if (target && target.hasAttribute("data-idx")) {
+    activeIdx = parseInt(target.getAttribute("data-idx"), 10);
     limits.min = activeIdx > 0 ? rs[activeIdx - 1].max : limits.min;
     limits.max = activeIdx + 1 < rs.length ? rs[activeIdx + 1].min : limits.max;
   } else {
@@ -117,21 +117,21 @@ export function startArea({ state, e, renderer, ranges, targetSize }) {
       end: rs[activeIdx].max,
       limitLow: limits.min,
       limitHigh: limits.max,
-      mode: 'move',
+      mode: "move",
     };
 
-    if (target && target.hasAttribute('data-other-value')) {
-      tempState.start = parseFloat(target.getAttribute('data-other-value'));
-      activeRange.mode = 'modify';
+    if (target && target.hasAttribute("data-other-value")) {
+      tempState.start = parseFloat(target.getAttribute("data-other-value"));
+      activeRange.mode = "modify";
     } else {
       let pxStart = activeRange.start;
       let pxEnd = activeRange.end;
       if (Math.abs(startPoint - pxStart) <= targetSize) {
         tempState.start = activeRange.end;
-        activeRange.mode = 'modify';
+        activeRange.mode = "modify";
       } else if (Math.abs(startPoint - pxEnd) <= targetSize) {
         tempState.start = activeRange.start;
-        activeRange.mode = 'modify';
+        activeRange.mode = "modify";
       }
     }
   } else {
@@ -141,13 +141,13 @@ export function startArea({ state, e, renderer, ranges, targetSize }) {
       end: v,
       limitLow: limits.min,
       limitHigh: limits.max,
-      mode: 'current',
+      mode: "current",
     };
   }
 
   tempState.active = activeRange;
 
-  if (activeRange.mode !== 'modify' && state.targetRect && !testRectPoint(state.targetRect, { x: relX, y: relY })) {
+  if (activeRange.mode !== "modify" && state.targetRect && !testRectPoint(state.targetRect, { x: relX, y: relY })) {
     // do nothing
   } else {
     Object.keys(tempState).forEach((key) => (state[key] = tempState[key]));
@@ -185,8 +185,8 @@ export function start({ state, e, renderer, ranges, targetSize }) {
   const limits = rangelimits(state);
   let i;
   let activeIdx = -1;
-  if (target && target.hasAttribute('data-idx')) {
-    activeIdx = parseInt(target.getAttribute('data-idx'), 10);
+  if (target && target.hasAttribute("data-idx")) {
+    activeIdx = parseInt(target.getAttribute("data-idx"), 10);
     limits.min = activeIdx > 0 ? rs[activeIdx - 1].max : limits.min;
     limits.max = activeIdx + 1 < rs.length ? rs[activeIdx + 1].min : limits.max;
   } else {
@@ -221,21 +221,21 @@ export function start({ state, e, renderer, ranges, targetSize }) {
       end: rs[activeIdx].max,
       limitLow: limits.min,
       limitHigh: limits.max,
-      mode: 'move',
+      mode: "move",
     };
 
-    if (target && target.hasAttribute('data-other-value')) {
-      tempState.start = parseFloat(target.getAttribute('data-other-value'));
-      activeRange.mode = 'modify';
+    if (target && target.hasAttribute("data-other-value")) {
+      tempState.start = parseFloat(target.getAttribute("data-other-value"));
+      activeRange.mode = "modify";
     } else {
       let pxStart = state.scale.norm(activeRange.start) * state.size;
       let pxEnd = state.scale.norm(activeRange.end) * state.size;
       if (Math.abs(startPoint - pxStart) <= targetSize) {
         tempState.start = activeRange.end;
-        activeRange.mode = 'modify';
+        activeRange.mode = "modify";
       } else if (Math.abs(startPoint - pxEnd) <= targetSize) {
         tempState.start = activeRange.start;
-        activeRange.mode = 'modify';
+        activeRange.mode = "modify";
       }
     }
   } else {
@@ -245,13 +245,13 @@ export function start({ state, e, renderer, ranges, targetSize }) {
       end: tempState.current,
       limitLow: limits.min,
       limitHigh: limits.max,
-      mode: 'current',
+      mode: "current",
     };
   }
 
   tempState.active = activeRange;
 
-  if (activeRange.mode !== 'modify' && state.targetRect && !testRectPoint(state.targetRect, { x: relX, y: relY })) {
+  if (activeRange.mode !== "modify" && state.targetRect && !testRectPoint(state.targetRect, { x: relX, y: relY })) {
     // do nothing
   } else {
     Object.keys(tempState).forEach((key) => (state[key] = tempState[key]));

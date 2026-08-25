@@ -6,7 +6,7 @@ function getPattern(pattern, dummyCanvas, ctx) {
 
   pattern.shapes.forEach((s) => {
     switch (s.type) {
-      case 'rect':
+      case "rect":
         ctx.rect(s.x, s.y, s.width, s.height);
         break;
       default:
@@ -15,12 +15,12 @@ function getPattern(pattern, dummyCanvas, ctx) {
   });
   ctx.fill();
   ctx.restore();
-  return ctx.createPattern(dummyCanvas, 'repeat');
+  return ctx.createPattern(dummyCanvas, "repeat");
 }
 
 export default function patternizer(document) {
-  const dummyCanvas = document.createElement('canvas');
-  const ctx = dummyCanvas.getContext('2d');
+  const dummyCanvas = document.createElement("canvas");
+  const ctx = dummyCanvas.getContext("2d");
 
   let cache = {};
 

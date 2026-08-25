@@ -13,10 +13,10 @@ npm install picasso.js
 ### Usage
 
 ```js
-import picasso from 'picasso.js';
+import picasso from "picasso.js";
 
 picasso.chart({
-  element: document.querySelector('#container'),
+  element: document.querySelector("#container"),
   settings: {
     scales: {
       budget: { max: 5000, min: 0 },
@@ -24,21 +24,21 @@ picasso.chart({
     },
     components: [
       {
-        type: 'axis',
-        scale: 'budget',
+        type: "axis",
+        scale: "budget",
         layout: {
-          dock: 'bottom',
+          dock: "bottom",
         },
       },
       {
-        type: 'axis',
-        scale: 'sales',
+        type: "axis",
+        scale: "sales",
         layout: {
-          dock: 'left',
+          dock: "left",
         },
       },
       {
-        type: 'point',
+        type: "point",
         data: [
           { sales: 7456, margin: 0.3, budget: 4557 },
           { sales: 5603, margin: 0.7, budget: 2234 },
@@ -48,13 +48,13 @@ picasso.chart({
         ],
         settings: {
           x: {
-            scale: 'budget',
+            scale: "budget",
             fn() {
               return this.scale(this.data.value.budget);
             },
           },
           y: {
-            scale: 'sales',
+            scale: "sales",
             fn() {
               return this.scale(this.data.value.sales);
             },

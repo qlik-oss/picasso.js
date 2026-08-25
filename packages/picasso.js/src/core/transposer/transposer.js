@@ -1,4 +1,4 @@
-import crispify from './crispifier';
+import crispify from "./crispifier";
 
 class Transposer {
   /**
@@ -21,23 +21,23 @@ class Transposer {
       const firstChar = key.substring(0, 1);
       const rest = key.substring(1);
 
-      if (firstChar === 'x') {
+      if (firstChar === "x") {
         return `y${rest}`;
       }
-      if (firstChar === 'y') {
+      if (firstChar === "y") {
         return `x${rest}`;
       }
-      if (key === 'cx') {
-        return 'cy';
+      if (key === "cx") {
+        return "cy";
       }
-      if (key === 'cy') {
-        return 'cx';
+      if (key === "cy") {
+        return "cx";
       }
-      if (key === 'width') {
-        return 'height';
+      if (key === "width") {
+        return "height";
       }
-      if (key === 'height') {
-        return 'width';
+      if (key === "height") {
+        return "width";
       }
     }
 
@@ -53,22 +53,22 @@ class Transposer {
    * @return {Number}            The actual location of the coordinate
    */
   transposeCoordinate(key, coordinate, flipXY) {
-    if (typeof coordinate === 'number' && isFinite(coordinate)) {
+    if (typeof coordinate === "number" && isFinite(coordinate)) {
       const firstChar = key.substring(0, 1);
 
-      if (firstChar === 'x' || key === 'cx') {
+      if (firstChar === "x" || key === "cx") {
         return coordinate * this.width;
       }
-      if (key === 'width') {
+      if (key === "width") {
         return coordinate * this.width;
       }
-      if (key === 'r') {
+      if (key === "r") {
         return coordinate * (!flipXY ? this.width : this.height);
       }
-      if (firstChar === 'y' || key === 'cy') {
+      if (firstChar === "y" || key === "cy") {
         return coordinate * this.height;
       }
-      if (key === 'height') {
+      if (key === "height") {
         return coordinate * this.height;
       }
     }
@@ -89,10 +89,10 @@ class Transposer {
 
   processItem(item) {
     let newItem = {};
-    const flipXY = typeof item.flipXY !== 'undefined' ? item.flipXY : this.flipXY;
-    const crisp = typeof item.crisp !== 'undefined' ? item.crisp : this.crisp;
+    const flipXY = typeof item.flipXY !== "undefined" ? item.flipXY : this.flipXY;
+    const crisp = typeof item.crisp !== "undefined" ? item.crisp : this.crisp;
 
-    if (item.fn && typeof item.fn === 'function') {
+    if (item.fn && typeof item.fn === "function") {
       let width = flipXY ? this.height : this.width;
       let height = flipXY ? this.width : this.height;
 

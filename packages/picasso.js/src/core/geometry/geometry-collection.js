@@ -1,4 +1,4 @@
-import { create as factory } from './index';
+import { create as factory } from "./index";
 
 /**
  * Construct a new GeometryCollection instance

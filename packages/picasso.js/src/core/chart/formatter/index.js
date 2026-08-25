@@ -1,4 +1,4 @@
-import extractData from '../../data/extractor';
+import extractData from "../../data/extractor";
 
 export function create(options, data, deps, extractor = extractData) {
   if (options.data) {
@@ -11,13 +11,13 @@ export function create(options, data, deps, extractor = extractData) {
 
   let formatterType;
   if (options.formatter) {
-    formatterType = `${options.formatter}-${options.type || 'number'}`;
+    formatterType = `${options.formatter}-${options.type || "number"}`;
   } else {
-    formatterType = options.type || 'd3-number';
+    formatterType = options.type || "d3-number";
   }
 
   if (deps.formatter.has(formatterType)) {
-    const f = deps.formatter.get(formatterType)(options.format || '');
+    const f = deps.formatter.get(formatterType)(options.format || "");
     return f;
   }
 
@@ -29,11 +29,11 @@ export function collection(formattersConfig, data, deps, fn = create) {
   return {
     get(def) {
       let key;
-      if (typeof def === 'string' && formattersConfig[def]) {
+      if (typeof def === "string" && formattersConfig[def]) {
         key = def;
-      } else if (typeof def === 'object' && 'formatter' in def && formattersConfig[def.formatter]) {
+      } else if (typeof def === "object" && "formatter" in def && formattersConfig[def.formatter]) {
         key = def.formatter;
-      } else if (typeof def === 'object' && 'type' in def && formattersConfig[def.type]) {
+      } else if (typeof def === "object" && "type" in def && formattersConfig[def.type]) {
         key = def.type;
       }
 

@@ -1,19 +1,19 @@
-import { create as rect } from './rect';
-import { create as circle } from './circle';
-import { create as line } from './line';
-import { create as polygon } from './polygon';
-import { create as geopolygon } from './geopolygon';
-import { create as polyline } from './polyline';
-import registry from '../utils/registry';
+import { create as rect } from "./rect";
+import { create as circle } from "./circle";
+import { create as line } from "./line";
+import { create as polygon } from "./polygon";
+import { create as geopolygon } from "./geopolygon";
+import { create as polyline } from "./polyline";
+import registry from "../utils/registry";
 
 const reg = registry();
 
-reg.add('rect', rect);
-reg.add('circle', circle);
-reg.add('line', line);
-reg.add('polygon', polygon);
-reg.add('geopolygon', geopolygon);
-reg.add('polyline', polyline);
+reg.add("rect", rect);
+reg.add("circle", circle);
+reg.add("line", line);
+reg.add("polygon", polygon);
+reg.add("geopolygon", geopolygon);
+reg.add("polyline", polyline);
 
 export function create(type, input) {
   return reg.get(type)(input);

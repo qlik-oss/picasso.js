@@ -1,9 +1,9 @@
-import extend from 'extend';
-import extractor from './extractor';
-import render from './render';
-import timeSpanDispatcher from './timespan-dispatcher';
-import placement from './placement';
-import { setActive, removeActive, cancelActive, remove } from './instance-handler';
+import extend from "extend";
+import extractor from "./extractor";
+import render from "./render";
+import timeSpanDispatcher from "./timespan-dispatcher";
+import placement from "./placement";
+import { setActive, removeActive, cancelActive, remove } from "./instance-handler";
 
 /**
  * @typedef {object}
@@ -31,7 +31,7 @@ const DEFAULT_SETTINGS = {
    * @example
    * filter: (nodes) => nodes.filter((node) => node.data && typeof node.data.value !== 'undefined')
    */
-  filter: (nodes) => nodes.filter((node) => node.data && typeof node.data.value !== 'undefined'),
+  filter: (nodes) => nodes.filter((node) => node.data && typeof node.data.value !== "undefined"),
   /**
    * Callback function called for each node to extract data. Can return any type.
    * @type {function=}
@@ -54,7 +54,7 @@ const DEFAULT_SETTINGS = {
    * @example
    * ({ h, data }) => data.map((datum) => h('div', {}, datum))
    */
-  content: ({ h, data }) => data.map((datum) => h('div', {}, datum)),
+  content: ({ h, data }) => data.map((datum) => h("div", {}, datum)),
   /**
    * Comparison function. If evaluted to true, the incoming nodes in the `show` event are ignored. If evaluated to false, any active tooltip is cleared and a new tooltip is queued.
    *
@@ -77,12 +77,12 @@ const DEFAULT_SETTINGS = {
      * Available types: [pointer | bounds | slice]
      * @type {string=}
      */
-    type: 'pointer',
+    type: "pointer",
     /**
      * Docking position of the tooltip. Available positions: [left | right | top | bottom | auto]
      * @type {string=}
      */
-    dock: 'auto',
+    dock: "auto",
     /**
      * Distance from the content area to the tooltip position, in px.
      * @type {number=}
@@ -94,7 +94,7 @@ const DEFAULT_SETTINGS = {
      * Available options are: [viewport | target]
      * @type {number=}
      */
-    area: 'viewport',
+    area: "viewport",
   },
   /**
    * Set tooltip class.
@@ -115,7 +115,7 @@ const DEFAULT_SETTINGS = {
    * Content direction [ltr | rtl]
    * @type {string=}
    */
-  direction: 'ltr',
+  direction: "ltr",
   /**
    * Explicitly set a target element. This allows the tooltip to attach itself outside the picasso container.
    * @type {HTMLElement=}
@@ -160,42 +160,42 @@ const DEFAULT_SETTINGS = {
 const DEFAULT_STYLE = {
   tooltip: {},
   content: {
-    backgroundColor: '$gray-25',
-    color: '$font-color--inverted',
-    fontFamily: '$font-family',
-    fontSize: '$font-size',
-    lineHeight: '$line-height',
-    borderRadius: '4px',
-    padding: '8px',
+    backgroundColor: "$gray-25",
+    color: "$font-color--inverted",
+    fontFamily: "$font-family",
+    fontSize: "$font-size",
+    lineHeight: "$line-height",
+    borderRadius: "4px",
+    padding: "8px",
     opacity: 0.9,
   },
   arrow: {
-    position: 'absolute',
-    width: '0px',
-    height: '0px',
-    borderStyle: 'solid',
-    color: '$gray-25',
+    position: "absolute",
+    width: "0px",
+    height: "0px",
+    borderStyle: "solid",
+    color: "$gray-25",
     opacity: 0.9,
   },
-  'arrow-bottom': {
-    borderTopColor: 'transparent',
-    borderLeftColor: 'transparent',
-    borderRightColor: 'transparent',
+  "arrow-bottom": {
+    borderTopColor: "transparent",
+    borderLeftColor: "transparent",
+    borderRightColor: "transparent",
   },
-  'arrow-top': {
-    borderBottomColor: 'transparent',
-    borderLeftColor: 'transparent',
-    borderRightColor: 'transparent',
+  "arrow-top": {
+    borderBottomColor: "transparent",
+    borderLeftColor: "transparent",
+    borderRightColor: "transparent",
   },
-  'arrow-right': {
-    borderTopColor: 'transparent',
-    borderLeftColor: 'transparent',
-    borderBottomColor: 'transparent',
+  "arrow-right": {
+    borderTopColor: "transparent",
+    borderLeftColor: "transparent",
+    borderBottomColor: "transparent",
   },
-  'arrow-left': {
-    borderTopColor: 'transparent',
-    borderBottomColor: 'transparent',
-    borderRightColor: 'transparent',
+  "arrow-left": {
+    borderTopColor: "transparent",
+    borderBottomColor: "transparent",
+    borderRightColor: "transparent",
   },
 };
 
@@ -235,12 +235,12 @@ function toPoint(event, { chart, state }) {
 }
 
 const component = {
-  require: ['chart', 'renderer'],
+  require: ["chart", "renderer"],
   defaultSettings: {
     settings: DEFAULT_SETTINGS,
     style: DEFAULT_STYLE,
   },
-  renderer: 'dom',
+  renderer: "dom",
   on: {
     hide() {
       this.hide();
@@ -273,7 +273,7 @@ const component = {
         this.chart.shapesAt({
           x: this.state.pointer.cx,
           y: this.state.pointer.cy,
-        })
+        }),
       );
     }
 
@@ -305,12 +305,12 @@ const component = {
     });
 
     const instanceId = this.dispatcher.clear;
-    this.dispatcher.on('pending', () => {
+    this.dispatcher.on("pending", () => {
       // Cancel only if the active is another instance
       cancelActive(instanceId);
       setActive(instanceId);
 
-      if (typeof this.props.beforeShow === 'function') {
+      if (typeof this.props.beforeShow === "function") {
         this.props.beforeShow.call(undefined, {
           resources: {
             formatter: this.chart.formatter,
@@ -320,7 +320,7 @@ const component = {
       }
     });
 
-    this.dispatcher.on(['cancelled', 'fulfilled'], () => {
+    this.dispatcher.on(["cancelled", "fulfilled"], () => {
       const listenerCtx = {
         resources: {
           formatter: this.chart.formatter,
@@ -328,17 +328,17 @@ const component = {
         },
       };
 
-      if (typeof this.props.beforeHide === 'function') {
+      if (typeof this.props.beforeHide === "function") {
         this.props.beforeHide.call(undefined, extend({ element: this.state.tooltipElm }, listenerCtx));
       }
 
-      if (typeof this.props.onHide === 'function') {
+      if (typeof this.props.onHide === "function") {
         this.props.onHide.call(undefined, extend({ element: this.state.tooltipElm }, listenerCtx));
       } else {
         this.renderer.clear([]); // Hide tooltip
       }
 
-      if (typeof this.props.afterHide === 'function') {
+      if (typeof this.props.afterHide === "function") {
         this.props.afterHide.call(undefined, listenerCtx);
       }
 
@@ -346,8 +346,8 @@ const component = {
       this.state.tooltipElm = undefined;
     });
 
-    this.dispatcher.on('active', () => {
-      if (typeof this.props.afterShow === 'function') {
+    this.dispatcher.on("active", () => {
+      if (typeof this.props.afterShow === "function") {
         this.props.afterShow.call(undefined, {
           element: this.state.tooltipElm,
           resources: {
@@ -379,7 +379,7 @@ const component = {
   appendTo() {
     if (this.props.appendTo) {
       this.state.targetElement =
-        typeof this.props.appendTo === 'function'
+        typeof this.props.appendTo === "function"
           ? this.props.appendTo({
               resources: {
                 formatter: this.chart.formatter,
@@ -404,7 +404,7 @@ const component = {
   },
   invokeRenderer(nodes) {
     const items = extractor(nodes, this);
-    const pseudoElement = render(items, { style: { left: '0px', top: '0px', visibility: 'hidden' } }, this);
+    const pseudoElement = render(items, { style: { left: "0px", top: "0px", visibility: "hidden" } }, this);
     const pos = placement(pseudoElement.getBoundingClientRect(), this);
     this.state.tooltipElm = render(items, pos, this);
   },

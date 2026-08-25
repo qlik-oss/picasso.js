@@ -1,4 +1,4 @@
-import component from './legend-cat';
+import component from "./legend-cat";
 
 /**
  * @typedef {object} ComponentLegendCat
@@ -12,7 +12,7 @@ import component from './legend-cat';
 }
  */
 
-const type = 'legend-cat';
+const type = "legend-cat";
 
 export default function categoricalLegend(picasso) {
   picasso.component(type, component);

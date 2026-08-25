@@ -1,5 +1,5 @@
-import RgbaColor from '../rgba-color';
-import HslaColor from '../hsla-color';
+import RgbaColor from "../rgba-color";
+import HslaColor from "../hsla-color";
 
 function hasPropertyCombination(obj, properties) {
   return properties.every((p) => Object.prototype.hasOwnProperty.call(obj, p));
@@ -23,9 +23,9 @@ export default function colorObject(colorObj) {
   const colorType = colorObject.getColorType(colorObj);
 
   switch (colorType) {
-    case 'rgb':
+    case "rgb":
       return new RgbaColor(colorObj.r, colorObj.g, colorObj.b, colorObj.a);
-    case 'hsl':
+    case "hsl":
       return new HslaColor(colorObj.h, colorObj.s, colorObj.l, colorObj.a);
     default:
       return undefined;
@@ -42,12 +42,12 @@ export default function colorObject(colorObj) {
  * colorObject.test( { r:255, g: 123, b: 123 } );
  */
 colorObject.test = (obj) => {
-  if (obj === null || obj === undefined || typeof obj !== 'object') {
+  if (obj === null || obj === undefined || typeof obj !== "object") {
     return false;
   }
 
   // Doesnt really work out well if any of the proparties have invalid values
-  return typeof colorObject.getColorType(obj) !== 'undefined';
+  return typeof colorObject.getColorType(obj) !== "undefined";
 };
 
 /**
@@ -60,16 +60,16 @@ colorObject.test = (obj) => {
  * colorObject.getColorType( { r:255, g: 123, b: 123 } )
  */
 colorObject.getColorType = (obj) => {
-  if (obj === null || typeof obj !== 'object') {
+  if (obj === null || typeof obj !== "object") {
     return undefined;
   }
 
-  if (hasPropertyCombination(obj, ['r', 'g', 'b'])) {
-    return 'rgb';
+  if (hasPropertyCombination(obj, ["r", "g", "b"])) {
+    return "rgb";
   }
 
-  if (hasPropertyCombination(obj, ['h', 's', 'l'])) {
-    return 'hsl';
+  if (hasPropertyCombination(obj, ["h", "s", "l"])) {
+    return "hsl";
   }
 
   return undefined;

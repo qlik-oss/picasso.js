@@ -1,12 +1,12 @@
-import buildShapes from './box-shapes';
-import complexResolver from './box-resolver';
+import buildShapes from "./box-shapes";
+import complexResolver from "./box-resolver";
 
 const DEFAULT_DATA_SETTINGS = {
   oob: {
     show: true,
-    type: 'n-polygon',
-    fill: '#999',
-    stroke: '#000',
+    type: "n-polygon",
+    fill: "#999",
+    stroke: "#000",
     strokeWidth: 0,
     size: 10,
     sides: 3,
@@ -14,10 +14,10 @@ const DEFAULT_DATA_SETTINGS = {
   },
   box: {
     show: true,
-    fill: '#fff',
-    stroke: '#000',
+    fill: "#fff",
+    stroke: "#000",
     strokeWidth: 1,
-    strokeLinejoin: 'miter',
+    strokeLinejoin: "miter",
     width: 1,
     maxWidthPx: undefined,
     minWidthPx: 1,
@@ -25,20 +25,20 @@ const DEFAULT_DATA_SETTINGS = {
   },
   line: {
     show: true,
-    stroke: '#000',
+    stroke: "#000",
     strokeWidth: 1,
   },
   median: {
     show: true,
-    stroke: '#000',
+    stroke: "#000",
     strokeWidth: 1,
   },
   whisker: {
     show: true,
-    stroke: '#000',
+    stroke: "#000",
     strokeWidth: 1,
-    fill: '',
-    type: 'line',
+    fill: "",
+    type: "line",
     width: 1,
   },
 };
@@ -46,15 +46,15 @@ const DEFAULT_DATA_SETTINGS = {
 const dataKeys = Object.keys(DEFAULT_DATA_SETTINGS);
 
 const component = {
-  require: ['chart', 'resolver', 'symbol'],
+  require: ["chart", "resolver", "symbol"],
   defaultSettings: {
     settings: {},
     data: {},
     style: {
-      box: '$shape',
-      line: '$shape-guide',
-      whisker: '$shape-guide',
-      median: '$shape-guide--inverted',
+      box: "$shape",
+      line: "$shape-guide",
+      whisker: "$shape-guide",
+      median: "$shape-guide--inverted",
     },
   },
   created() {
@@ -63,7 +63,7 @@ const component = {
   render({ data }) {
     const { width, height } = this.rect;
 
-    const flipXY = this.settings.settings.orientation === 'horizontal';
+    const flipXY = this.settings.settings.orientation === "horizontal";
 
     const { style, resolver, symbol } = this;
 

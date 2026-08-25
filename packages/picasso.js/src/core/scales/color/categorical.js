@@ -1,5 +1,5 @@
-import ordinal from '../ordinal';
-import resolveSettings from '../settings-resolver';
+import ordinal from "../ordinal";
+import resolveSettings from "../settings-resolver";
 
 const DEFAULT_SETTINGS = {
   domain: [],
@@ -40,15 +40,15 @@ export default function scaleCategorical(settings = {}, data = {}, resources = {
 
   let range;
   if (!Array.isArray(stgns.range) || stgns.range.length === 0) {
-    range = theme ? theme.palette('categorical', s.domain().length).slice() : [];
+    range = theme ? theme.palette("categorical", s.domain().length).slice() : [];
   } else {
     range = stgns.range.slice();
   }
 
   if (stgns.unknown) {
     s.unknown(stgns.unknown);
-  } else if (theme && theme.palette('unknown')) {
-    let un = theme.palette('unknown');
+  } else if (theme && theme.palette("unknown")) {
+    let un = theme.palette("unknown");
     s.unknown(un[0]);
   }
 

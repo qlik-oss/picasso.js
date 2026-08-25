@@ -1,5 +1,5 @@
-import { normalizeSettings, resolveForItem } from '../chart-components/property-resolver';
-import { updateScaleSize } from '../scales';
+import { normalizeSettings, resolveForItem } from "../chart-components/property-resolver";
+import { updateScaleSize } from "../scales";
 
 const externals = {
   normalizeSettings,

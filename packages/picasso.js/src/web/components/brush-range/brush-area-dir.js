@@ -1,7 +1,7 @@
-import { getMoveDelta, nodes } from './brush-range-node-builder';
-import { startArea, moveArea, endArea } from './brush-range-interaction';
-import rangeCollection from '../../../core/brush/range-collection';
-import { TARGET_SIZE, VERTICAL, HORIZONTAL } from './brush-range-const';
+import { getMoveDelta, nodes } from "./brush-range-node-builder";
+import { startArea, moveArea, endArea } from "./brush-range-interaction";
+import rangeCollection from "../../../core/brush/range-collection";
+import { TARGET_SIZE, VERTICAL, HORIZONTAL } from "./brush-range-const";
 
 function render(state) {
   state.renderer.render(nodes(state));
@@ -29,7 +29,7 @@ function setRanges(state) {
   const rs = state.ranges.map((r) => ({ min: r.min, max: r.max }));
 
   if (state.active.idx !== -1) {
-    if (state.active.mode === 'modify') {
+    if (state.active.mode === "modify") {
       rs[state.active.idx].min = Math.min(state.start, state.current);
       rs[state.active.idx].max = Math.max(state.start, state.current);
     } else {
@@ -67,7 +67,7 @@ function getBubbleLabel(state, value, range) {
   const shapes = state.chart.shapesAt(shapeAt, state.settings.brush);
 
   if (shapes.length === 0) {
-    return '-';
+    return "-";
   }
 
   const labelShape = shapes.reduce((s0, s1) => {
@@ -94,14 +94,14 @@ function getBubbleLabel(state, value, range) {
 
   const compConfig = state.settings.brush.components.reduce((c0, c1) => (c0.key === labelShape.key ? c0 : c1));
 
-  if (typeof state.settings.bubbles.label === 'function') {
+  if (typeof state.settings.bubbles.label === "function") {
     return state.settings.bubbles.label(labelShape.data);
   }
   if (Array.isArray(compConfig.data) && compConfig.data.length) {
     return labelShape.data[compConfig.data[0]].label;
   }
 
-  return labelShape.data && labelShape.data.label ? labelShape.data.label : '-';
+  return labelShape.data && labelShape.data.label ? labelShape.data.label : "-";
 }
 
 /**
@@ -138,21 +138,21 @@ function getBubbleLabel(state, value, range) {
  */
 
 const brushAreaDirectionalComponent = {
-  require: ['chart', 'settings', 'renderer'],
+  require: ["chart", "settings", "renderer"],
   defaultSettings: {
     settings: {
       bubbles: {
         show: true,
-        align: 'start',
+        align: "start",
       },
     },
     style: {
-      bubble: '$label-overlay',
-      line: '$shape-guide--inverted',
-      target: '$selection-area-target',
+      bubble: "$label-overlay",
+      line: "$shape-guide--inverted",
+      target: "$selection-area-target",
     },
   },
-  renderer: 'dom',
+  renderer: "dom",
   on: {
     areaStart(e) {
       this.start(e);
@@ -169,15 +169,15 @@ const brushAreaDirectionalComponent = {
   },
   created() {
     this.state = {
-      key: this.settings.key || 'brush-area-dir',
+      key: this.settings.key || "brush-area-dir",
     };
   },
   render(h) {
     this.state.rect = this.rect;
 
     const stngs = this.settings.settings;
-    const direction = stngs.direction === 'vertical' ? VERTICAL : HORIZONTAL;
-    const size = this.state.rect[direction === VERTICAL ? 'height' : 'width'];
+    const direction = stngs.direction === "vertical" ? VERTICAL : HORIZONTAL;
+    const size = this.state.rect[direction === VERTICAL ? "height" : "width"];
     const offset = this.renderer.element().getBoundingClientRect();
 
     const targets = (stngs.target ? stngs.target.components || [stngs.target.component] : [])
@@ -197,7 +197,7 @@ const brushAreaDirectionalComponent = {
             y0: targets[0].rect.y,
             x1: targets[0].rect.x + targets[0].rect.width,
             y1: targets[0].rect.y + targets[0].rect.height,
-          }
+          },
         )
       : null;
 
@@ -221,10 +221,10 @@ const brushAreaDirectionalComponent = {
     this.state.h = h;
     this.state.size = size;
     this.state.cssCoord = {
-      offset: this.state.direction === VERTICAL ? 'top' : 'left',
-      coord: this.state.direction === VERTICAL ? 'y' : 'x',
-      pos: this.state.direction === VERTICAL ? 'deltaY' : 'deltaX',
-      area: this.state.direction === VERTICAL ? 'height' : 'width',
+      offset: this.state.direction === VERTICAL ? "top" : "left",
+      coord: this.state.direction === VERTICAL ? "y" : "x",
+      pos: this.state.direction === VERTICAL ? "deltaY" : "deltaX",
+      area: this.state.direction === VERTICAL ? "height" : "width",
     };
 
     this.state.format = function getFormat(v, r) {

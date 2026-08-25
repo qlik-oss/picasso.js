@@ -1,6 +1,6 @@
-import { scaleWithSize } from '../../scales';
+import { scaleWithSize } from "../../scales";
 
-const FILL = '#ccc';
+const FILL = "#ccc";
 const OPACITY = 1;
 
 function ranges(state) {
@@ -12,7 +12,7 @@ function ranges(state) {
   const sourceData = state.scale.data();
   const sourceFields = sourceData ? sourceData.fields || [] : [];
   const sources = sourceFields.map((field) => field.id());
-  const rangeBrush = brush.brushes().filter((f) => f.type === 'range' && sources.indexOf(f.id) !== -1)[0];
+  const rangeBrush = brush.brushes().filter((f) => f.type === "range" && sources.indexOf(f.id) !== -1)[0];
 
   if (!rangeBrush) {
     return [];
@@ -22,16 +22,16 @@ function ranges(state) {
 }
 
 function shapes(state) {
-  const isVertical = state.direction === 'vertical';
-  const size = state.rect[isVertical ? 'height' : 'width'];
-  const otherSize = state.rect[isVertical ? 'width' : 'height'];
+  const isVertical = state.direction === "vertical";
+  const size = state.rect[isVertical ? "height" : "width"];
+  const otherSize = state.rect[isVertical ? "width" : "height"];
   return ranges(state).map((range) => {
     const start = state.scale(range.min) * size;
     const end = state.scale(range.max) * size;
     const low = Math.min(start, end);
     const s = Math.abs(start - end);
     return {
-      type: 'rect',
+      type: "rect",
       fill: state.fill,
       opacity: state.opacity,
       x: isVertical ? 0 : low,
@@ -73,9 +73,9 @@ function setup(state, brush, scale, renderer) {
     onEnd(state);
   }
 
-  brush.on('start', start);
-  brush.on('update', update);
-  brush.on('end', end);
+  brush.on("start", start);
+  brush.on("update", update);
+  brush.on("end", end);
 
   state.start = start;
   state.update = update;
@@ -87,9 +87,9 @@ function setup(state, brush, scale, renderer) {
 
 function teardown(state) {
   if (state.brush) {
-    state.brush.removeListener('start', state.start);
-    state.brush.removeListener('update', state.update);
-    state.brush.removeListener('end', state.end);
+    state.brush.removeListener("start", state.start);
+    state.brush.removeListener("update", state.update);
+    state.brush.removeListener("end", state.end);
   }
 
   state.start = undefined;
@@ -116,7 +116,7 @@ function teardown(state) {
  */
 
 const rangeComponent = {
-  require: ['chart', 'settings', 'renderer'],
+  require: ["chart", "settings", "renderer"],
   defaultSettings: {
     settings: {},
   },
@@ -127,8 +127,8 @@ const rangeComponent = {
   render() {
     const stngs = this.settings.settings;
     const brush = this.chart.brush(stngs.brush);
-    const direction = stngs.direction || 'horizontal';
-    const distance = direction === 'horizontal' ? this.rect.width : this.rect.height;
+    const direction = stngs.direction || "horizontal";
+    const distance = direction === "horizontal" ? this.rect.width : this.rect.height;
     const scale = scaleWithSize(this.chart.scale(stngs.scale), distance);
 
     teardown(this.state);
@@ -136,7 +136,7 @@ const rangeComponent = {
 
     this.state.rect = this.rect;
     this.state.fill = stngs.fill || FILL;
-    this.state.opacity = typeof stngs.opacity !== 'undefined' ? stngs.opacity : OPACITY;
+    this.state.opacity = typeof stngs.opacity !== "undefined" ? stngs.opacity : OPACITY;
     this.state.direction = direction;
 
     return shapes(this.state);

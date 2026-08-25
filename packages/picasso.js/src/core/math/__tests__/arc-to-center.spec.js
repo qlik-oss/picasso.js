@@ -1,6 +1,6 @@
-import arcToCenter from '../arc-to-center';
+import arcToCenter from "../arc-to-center";
 
-describe('Arc to center', () => {
+describe("Arc to center", () => {
   let rx;
   let ry;
   let rotation;
@@ -23,7 +23,7 @@ describe('Arc to center', () => {
     endY = 10;
   });
 
-  it('largeArcFlag=0, sweepFlag=0', () => {
+  it("largeArcFlag=0, sweepFlag=0", () => {
     const out = arcToCenter(rx, ry, rotation, largeArcFlag, sweepFlag, endX, endY, startX, startY);
 
     expect(out).to.deep.equal({
@@ -36,7 +36,7 @@ describe('Arc to center', () => {
     });
   });
 
-  it('largeArcFlag=1, sweepFlag=0', () => {
+  it("largeArcFlag=1, sweepFlag=0", () => {
     largeArcFlag = true;
     const out = arcToCenter(rx, ry, rotation, largeArcFlag, sweepFlag, endX, endY, startX, startY);
 
@@ -50,7 +50,7 @@ describe('Arc to center', () => {
     });
   });
 
-  it('largeArcFlag=0, sweepFlag=1', () => {
+  it("largeArcFlag=0, sweepFlag=1", () => {
     sweepFlag = true;
     const out = arcToCenter(rx, ry, rotation, largeArcFlag, sweepFlag, endX, endY, startX, startY);
 
@@ -64,7 +64,7 @@ describe('Arc to center', () => {
     });
   });
 
-  it('largeArcFlag=1, sweepFlag=1', () => {
+  it("largeArcFlag=1, sweepFlag=1", () => {
     sweepFlag = true;
     largeArcFlag = true;
     const out = arcToCenter(rx, ry, rotation, largeArcFlag, sweepFlag, endX, endY, startX, startY);
@@ -79,7 +79,7 @@ describe('Arc to center', () => {
     });
   });
 
-  it('given rx is less then the distance between startX and endX, then rx should be scaled up', () => {
+  it("given rx is less then the distance between startX and endX, then rx should be scaled up", () => {
     rx = 5;
     const out = arcToCenter(rx, ry, rotation, largeArcFlag, sweepFlag, endX, endY, startX, startY);
 
@@ -91,7 +91,7 @@ describe('Arc to center', () => {
     expect(out.ry).to.approximately(11.18, 0.01);
   });
 
-  it('given ry is less then the distance between startY and endY, then ry should be scaled up', () => {
+  it("given ry is less then the distance between startY and endY, then ry should be scaled up", () => {
     ry = 5;
     const out = arcToCenter(rx, ry, rotation, largeArcFlag, sweepFlag, endX, endY, startX, startY);
 
@@ -103,7 +103,7 @@ describe('Arc to center', () => {
     expect(out.ry).to.approximately(5.59, 0.01);
   });
 
-  it('should use absolute value of rx/ry', () => {
+  it("should use absolute value of rx/ry", () => {
     rx = -10;
     ry = -10;
     const out = arcToCenter(rx, ry, rotation, largeArcFlag, sweepFlag, endX, endY, startX, startY);
@@ -118,7 +118,7 @@ describe('Arc to center', () => {
     });
   });
 
-  it('should handle opposite start/end positions', () => {
+  it("should handle opposite start/end positions", () => {
     endX = 0;
     endY = 0;
     startX = 10;
@@ -135,7 +135,7 @@ describe('Arc to center', () => {
     });
   });
 
-  it('vertical ellipse', () => {
+  it("vertical ellipse", () => {
     ry = 20;
     const out = arcToCenter(rx, ry, rotation, largeArcFlag, sweepFlag, endX, endY, startX, startY);
 
@@ -147,7 +147,7 @@ describe('Arc to center', () => {
     expect(out.ry).to.equal(20);
   });
 
-  it('horizontal ellipse', () => {
+  it("horizontal ellipse", () => {
     rx = 20;
     const out = arcToCenter(rx, ry, rotation, largeArcFlag, sweepFlag, endX, endY, startX, startY);
 

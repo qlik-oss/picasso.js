@@ -1,5 +1,5 @@
 export default function pointsToPath(points, close = true) {
-  let d = '';
+  let d = "";
 
   for (let i = 0; i < points.length; i++) {
     const p = points[i];
@@ -9,11 +9,11 @@ export default function pointsToPath(points, close = true) {
       d += `L${p.x} ${p.y}`;
     }
 
-    d += ' ';
+    d += " ";
   }
 
   if (close) {
-    d += 'Z';
+    d += "Z";
   }
 
   return d;

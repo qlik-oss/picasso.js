@@ -1,19 +1,19 @@
-import extend from 'extend';
+import extend from "extend";
 
-import { detectTouchSupport, isValidTapEvent } from '../utils/event-type';
-import { getShapeType } from '../geometry/util';
-import datasources from '../data/data';
-import dataCollections from '../data/collections';
-import { collection as formatterCollection } from './formatter';
-import { collection as scaleCollection } from './scales';
-import buildScroll, { getOrCreateScrollApi } from './scroll-api';
-import brush from '../brush';
-import componentFactory from '../component/component-factory';
-import mediatorFactory from '../mediator';
-import createStorage from '../storage';
-import { testRectPoint } from '../math/narrow-phase-collision';
-import themeFn from '../theme';
-import componentCollectionFn from './component-collection';
+import { detectTouchSupport, isValidTapEvent } from "../utils/event-type";
+import { getShapeType } from "../geometry/util";
+import datasources from "../data/data";
+import dataCollections from "../data/collections";
+import { collection as formatterCollection } from "./formatter";
+import { collection as scaleCollection } from "./scales";
+import buildScroll, { getOrCreateScrollApi } from "./scroll-api";
+import brush from "../brush";
+import componentFactory from "../component/component-factory";
+import mediatorFactory from "../mediator";
+import createStorage from "../storage";
+import { testRectPoint } from "../math/narrow-phase-collision";
+import themeFn from "../theme";
+import componentCollectionFn from "./component-collection";
 
 /**
  * @callback customLayoutFunction
@@ -269,18 +269,18 @@ function addComponentDelta(shape, containerBounds, componentBounds) {
   const deltaShape = extend(true, {}, shape);
 
   switch (type) {
-    case 'circle':
+    case "circle":
       deltaShape.cx += dx;
       deltaShape.cy += dy;
       break;
-    case 'polygon':
+    case "polygon":
       for (let i = 0, num = deltaShape.vertices.length; i < num; i++) {
         const v = deltaShape.vertices[i];
         v.x += dx;
         v.y += dy;
       }
       break;
-    case 'geopolygon': // vertices is 2D array
+    case "geopolygon": // vertices is 2D array
       for (let n = 0; n < deltaShape.vertices.length; n++) {
         const vertices = deltaShape.vertices[n];
         for (let i = 0, num = vertices.length; i < num; i++) {
@@ -290,14 +290,14 @@ function addComponentDelta(shape, containerBounds, componentBounds) {
         }
       }
       break;
-    case 'line':
+    case "line":
       deltaShape.x1 += dx;
       deltaShape.y1 += dy;
       deltaShape.x2 += dx;
       deltaShape.y2 += dy;
       break;
-    case 'point':
-    case 'rect':
+    case "point":
+    case "rect":
       deltaShape.x += dx;
       deltaShape.y += dy;
       break;
@@ -320,7 +320,7 @@ const moveToPosition = (element, comp, index) => {
     return;
   }
   const additionalEl = comp.instance.def.additionalElements && comp.instance.def.additionalElements().filter(Boolean);
-  if (element.insertBefore && typeof node !== 'undefined') {
+  if (element.insertBefore && typeof node !== "undefined") {
     element.insertBefore(el, node);
     if (additionalEl) {
       additionalEl.forEach((ae) => {
@@ -432,7 +432,7 @@ function chartFn(definition, context) {
       instance: compInstance,
       settings: extend(true, {}, compSettings),
       key: compSettings.key,
-      hasKey: typeof compSettings.key !== 'undefined',
+      hasKey: typeof compSettings.key !== "undefined",
     };
   };
 
@@ -441,7 +441,7 @@ function chartFn(definition, context) {
   // Create a callback that calls lifecycle functions in the definition and config (if they exist).
   function createCallback(method, defaultMethod = () => {}) {
     return function cb(...args) {
-      const inDefinition = typeof definition[method] === 'function';
+      const inDefinition = typeof definition[method] === "function";
 
       let returnValue;
       if (inDefinition) {
@@ -454,7 +454,7 @@ function chartFn(definition, context) {
   }
 
   function getElementRect(el) {
-    if (typeof el.getBoundingClientRect === 'function') {
+    if (typeof el.getBoundingClientRect === "function") {
       const { width, height } = el.getBoundingClientRect();
       return {
         x: 0,
@@ -484,14 +484,14 @@ function chartFn(definition, context) {
     return componentsC.layout({ layoutSettings, rect });
   };
 
-  const created = createCallback('created');
-  const beforeMount = createCallback('beforeMount');
-  const mounted = createCallback('mounted');
-  const beforeUpdate = createCallback('beforeUpdate');
-  const updated = createCallback('updated');
-  const beforeRender = createCallback('beforeRender');
-  const beforeDestroy = createCallback('beforeDestroy');
-  const destroyed = createCallback('destroyed');
+  const created = createCallback("created");
+  const beforeMount = createCallback("beforeMount");
+  const mounted = createCallback("mounted");
+  const beforeUpdate = createCallback("beforeUpdate");
+  const updated = createCallback("updated");
+  const beforeRender = createCallback("beforeRender");
+  const beforeDestroy = createCallback("beforeDestroy");
+  const destroyed = createCallback("destroyed");
 
   const set = (_data, _settings, { partialData } = {}) => {
     const { formatters = {}, scales = {}, scroll = {} } = _settings;
@@ -515,12 +515,12 @@ function chartFn(definition, context) {
     currentScales = scaleCollection(
       scales,
       { dataset, collection: dataCollection },
-      { ...deps, scale: registries.scale }
+      { ...deps, scale: registries.scale },
     );
     currentFormatters = formatterCollection(
       formatters,
       { dataset, collection: dataCollection },
-      { ...deps, formatter: registries.formatter }
+      { ...deps, formatter: registries.formatter },
     );
     currentScrollApis = buildScroll(scroll, currentScrollApis);
   };
@@ -577,8 +577,8 @@ function chartFn(definition, context) {
 
   const componentsFromPoint = (p) => {
     const br = element.getBoundingClientRect();
-    const x = 'clientX' in p ? p.clientX : p.x;
-    const y = 'clientY' in p ? p.clientY : p.y;
+    const x = "clientX" in p ? p.clientX : p.x;
+    const y = "clientY" in p ? p.clientY : p.y;
     const tp = { x: x - br.left, y: y - br.top };
     const ret = [];
     visibleComponents.forEach((c) => {
@@ -594,7 +594,7 @@ function chartFn(definition, context) {
                 width: r.width * r.scaleRatio.x,
                 height: r.height * r.scaleRatio.y,
               },
-          tp
+          tp,
         )
       ) {
         ret.push(c);
@@ -637,7 +637,7 @@ function chartFn(definition, context) {
         return;
       }
 
-      if (e.type === 'touchend') {
+      if (e.type === "touchend") {
         e.preventDefault();
       }
       if (!isValidTapEvent(e, eventInfo)) {
@@ -668,15 +668,15 @@ function chartFn(definition, context) {
 
     const brushEventList = [];
 
-    brushEventList.push({ key: 'mousedown', listener: onTapDown });
-    brushEventList.push({ key: 'mouseup', listener: onBrushTap });
+    brushEventList.push({ key: "mousedown", listener: onTapDown });
+    brushEventList.push({ key: "mouseup", listener: onBrushTap });
 
     if (detectTouchSupport(element)) {
-      brushEventList.push({ key: 'touchstart', listener: onTapDown });
-      brushEventList.push({ key: 'touchend', listener: onBrushTap });
+      brushEventList.push({ key: "touchstart", listener: onTapDown });
+      brushEventList.push({ key: "touchend", listener: onBrushTap });
     }
 
-    brushEventList.push({ key: 'mousemove', listener: onBrushOver });
+    brushEventList.push({ key: "mousemove", listener: onBrushOver });
 
     brushEventList.forEach((event) => {
       element.addEventListener(event.key, event.listener);
@@ -691,7 +691,7 @@ function chartFn(definition, context) {
 
   // Browser only
   const mount = () => {
-    element.innerHTML = '';
+    element.innerHTML = "";
 
     render();
 
@@ -865,7 +865,7 @@ function chartFn(definition, context) {
    * @param {string} key Which component to get shapes from. Default gives shapes from all components.
    * @return {Array<object>} Array of objects containing shape and parent element
    */
-  instance.getAffectedShapes = (ctx, mode = 'and', props, key) => {
+  instance.getAffectedShapes = (ctx, mode = "and", props, key) => {
     let shapes = [];
     visibleComponents
       .filter((comp) => key === undefined || key === null || comp.key === key)
@@ -952,7 +952,7 @@ function chartFn(definition, context) {
       const componentBounds = c.instance.renderer().element().getBoundingClientRect();
       const deltaShape = addComponentDelta(shape, containerBounds, componentBounds);
       const shapes = c.instance.shapesAt(deltaShape, c.opts);
-      const stopPropagation = shapes.length > 0 && opts.propagation === 'stop';
+      const stopPropagation = shapes.length > 0 && opts.propagation === "stop";
 
       result = [...result, ...shapes];
 
@@ -1000,7 +1000,7 @@ function chartFn(definition, context) {
    * @param {string} name - Name of scroll api
    * @returns {object}
    */
-  instance.scroll = function scroll(name = 'default') {
+  instance.scroll = function scroll(name = "default") {
     return getOrCreateScrollApi(name, currentScrollApis);
   };
 
@@ -1034,7 +1034,7 @@ function chartFn(definition, context) {
    * @param {string} name - Name of the brush context. If no match is found, a new brush context is created and returned.
    * @returns {Brush}
    */
-  instance.brush = function brushFn(name = 'default') {
+  instance.brush = function brushFn(name = "default") {
     if (!brushes[name]) {
       brushes[name] = brush();
     }
@@ -1076,7 +1076,7 @@ function chartFn(definition, context) {
    * @param {boolean} [val] - Toggle brushing on or off. If value is omitted, a toggle action is applied to the current state.
    */
   instance.toggleBrushing = function toggleBrushing(val) {
-    if (typeof val !== 'undefined') {
+    if (typeof val !== "undefined") {
       stopBrushing = val;
     } else {
       stopBrushing = !stopBrushing;
@@ -1117,7 +1117,7 @@ function chartFn(definition, context) {
    * chart.interactions.on(); // Toggle on all interactions instances
    * chart.interactions.off(); // Toggle off all interactions instances
    */
-  Object.defineProperty(instance, 'interactions', {
+  Object.defineProperty(instance, "interactions", {
     get() {
       return /** @lends Chart.interactions */ {
         /** @type Array<Interaction> */

@@ -1,9 +1,9 @@
-import elementMock from 'test-utils/mocks/element-mock';
-import vDomMock from 'test-utils/mocks/vDom-mock';
-import componentFactoryFixture from '../../../../../test/helpers/component-factory-fixture';
-import brushAreaDir from '../brush-area-dir';
+import elementMock from "test-utils/mocks/element-mock";
+import vDomMock from "test-utils/mocks/vDom-mock";
+import componentFactoryFixture from "../../../../../test/helpers/component-factory-fixture";
+import brushAreaDir from "../brush-area-dir";
 
-describe('Brush Area Directional', () => {
+describe("Brush Area Directional", () => {
   let componentFixture;
   let instance;
   let config;
@@ -35,7 +35,7 @@ describe('Brush Area Directional', () => {
     componentFixture = componentFactoryFixture();
     config = {
       settings: {
-        direction: 'horizontal',
+        direction: "horizontal",
         target: null, // Remove target to reduce complexity and dependencies on other components
       },
     };
@@ -49,16 +49,16 @@ describe('Brush Area Directional', () => {
     theme = componentFixture.mocks().theme;
     theme.style.returns({
       line: {
-        stroke: 'rgba(50, 50, 50, 0.8)',
+        stroke: "rgba(50, 50, 50, 0.8)",
       },
       target: {},
       bubble: {
-        fontFamily: 'Arial',
-        fontSize: '14px',
-        fill: '#fff',
-        color: '#595959',
+        fontFamily: "Arial",
+        fontSize: "14px",
+        fill: "#fff",
+        color: "#595959",
         borderRadius: 4,
-        stroke: '#666',
+        stroke: "#666",
         strokeWidth: 1,
       },
     });
@@ -69,8 +69,8 @@ describe('Brush Area Directional', () => {
     delete global.document.createElement;
   });
 
-  describe('should renderer', () => {
-    describe('horizontal', () => {
+  describe("should renderer", () => {
+    describe("horizontal", () => {
       beforeEach(() => {
         instance = componentFixture.simulateCreate(brushAreaDir, config);
         componentFixture.simulateRender(size);
@@ -80,42 +80,42 @@ describe('Brush Area Directional', () => {
         rendererOutput = componentFixture.getRenderOutput();
       });
 
-      it('left edge node correctly', () => {
+      it("left edge node correctly", () => {
         const edgeLeft = rendererOutput[0];
 
         // Work-around to deal with deep equal on objects with functions
-        expect(edgeLeft.data.onmouseover).to.be.a('function');
-        expect(edgeLeft.data.onmouseout).to.be.a('function');
+        expect(edgeLeft.data.onmouseover).to.be.a("function");
+        expect(edgeLeft.data.onmouseout).to.be.a("function");
         delete edgeLeft.data.onmouseover;
         delete edgeLeft.data.onmouseout;
 
         const expectedEdgeLeft = {
-          sel: 'div',
+          sel: "div",
           data: {
-            'data-value': 0,
-            'data-key': 'brush-area-dir-edge-0',
+            "data-value": 0,
+            "data-key": "brush-area-dir-edge-0",
             style: {
-              cursor: 'ew-resize',
-              position: 'absolute',
-              left: '0px',
-              top: '0px',
-              height: '100%',
-              width: '5px',
-              pointerEvents: 'auto',
+              cursor: "ew-resize",
+              position: "absolute",
+              left: "0px",
+              top: "0px",
+              height: "100%",
+              width: "5px",
+              pointerEvents: "auto",
             },
           },
           children: [
             {
-              sel: 'div',
+              sel: "div",
               data: {
                 style: {
-                  backgroundColor: 'rgba(50, 50, 50, 0.8)',
-                  position: 'absolute',
-                  height: '100%',
-                  width: '1px',
-                  left: '0',
-                  top: '0',
-                  pointerEvents: 'none',
+                  backgroundColor: "rgba(50, 50, 50, 0.8)",
+                  position: "absolute",
+                  height: "100%",
+                  width: "1px",
+                  left: "0",
+                  top: "0",
+                  pointerEvents: "none",
                 },
               },
               children: [],
@@ -125,42 +125,42 @@ describe('Brush Area Directional', () => {
         expect(edgeLeft).to.deep.equal(expectedEdgeLeft);
       });
 
-      it('right edge node correctly', () => {
+      it("right edge node correctly", () => {
         const edgeRight = rendererOutput[1];
 
         // Work-around to deal with deep equal on objects with functions
-        expect(edgeRight.data.onmouseover).to.be.a('function');
-        expect(edgeRight.data.onmouseout).to.be.a('function');
+        expect(edgeRight.data.onmouseover).to.be.a("function");
+        expect(edgeRight.data.onmouseout).to.be.a("function");
         delete edgeRight.data.onmouseover;
         delete edgeRight.data.onmouseout;
 
         const expectedEdgeRight = {
-          sel: 'div',
+          sel: "div",
           data: {
-            'data-value': 100,
-            'data-key': 'brush-area-dir-edge-0',
+            "data-value": 100,
+            "data-key": "brush-area-dir-edge-0",
             style: {
-              cursor: 'ew-resize',
-              position: 'absolute',
-              left: '95px',
-              top: '0px',
-              height: '100%',
-              width: '5px',
-              pointerEvents: 'auto',
+              cursor: "ew-resize",
+              position: "absolute",
+              left: "95px",
+              top: "0px",
+              height: "100%",
+              width: "5px",
+              pointerEvents: "auto",
             },
           },
           children: [
             {
-              sel: 'div',
+              sel: "div",
               data: {
                 style: {
-                  backgroundColor: 'rgba(50, 50, 50, 0.8)',
-                  position: 'absolute',
-                  height: '100%',
-                  width: '1px',
-                  right: '0',
-                  bottom: '0',
-                  pointerEvents: 'none',
+                  backgroundColor: "rgba(50, 50, 50, 0.8)",
+                  position: "absolute",
+                  height: "100%",
+                  width: "1px",
+                  right: "0",
+                  bottom: "0",
+                  pointerEvents: "none",
                 },
               },
               children: [],
@@ -170,48 +170,48 @@ describe('Brush Area Directional', () => {
         expect(edgeRight).to.deep.equal(expectedEdgeRight);
       });
 
-      it('left bubble node correctly', () => {
+      it("left bubble node correctly", () => {
         const bubbleLeft = rendererOutput[2];
         const expectedBubbleLeft = {
-          sel: 'div',
+          sel: "div",
           data: {
             style: {
-              position: 'absolute',
-              top: '0',
-              left: '0px',
-              transform: 'none',
+              position: "absolute",
+              top: "0",
+              left: "0px",
+              transform: "none",
             },
           },
           children: [
             {
-              sel: 'div',
+              sel: "div",
               data: {
-                'data-other-value': 100,
-                'data-idx': 0,
-                'data-bidx': 0,
-                'data-key': 'brush-area-dir-bubble-0-0',
+                "data-other-value": 100,
+                "data-idx": 0,
+                "data-bidx": 0,
+                "data-key": "brush-area-dir-bubble-0-0",
                 style: {
-                  position: 'relative',
-                  borderRadius: '4px',
-                  border: '1px solid #666',
-                  backgroundColor: '#fff',
-                  padding: '4px 8px',
-                  textAlign: 'center',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                  maxWidth: '150px',
-                  minWidth: '50px',
-                  minHeight: '1em',
-                  pointerEvents: 'auto',
-                  transform: 'translate(-50%,0)',
-                  fontSize: '14px',
-                  fontFamily: 'Arial',
-                  color: '#595959',
-                  cursor: 'ew-resize',
+                  position: "relative",
+                  borderRadius: "4px",
+                  border: "1px solid #666",
+                  backgroundColor: "#fff",
+                  padding: "4px 8px",
+                  textAlign: "center",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  maxWidth: "150px",
+                  minWidth: "50px",
+                  minHeight: "1em",
+                  pointerEvents: "auto",
+                  transform: "translate(-50%,0)",
+                  fontSize: "14px",
+                  fontFamily: "Arial",
+                  color: "#595959",
+                  cursor: "ew-resize",
                 },
               },
-              children: ['-'],
+              children: ["-"],
             },
           ],
         };
@@ -219,48 +219,48 @@ describe('Brush Area Directional', () => {
         expect(bubbleLeft).to.deep.equal(expectedBubbleLeft);
       });
 
-      it('right bubble node correctly', () => {
+      it("right bubble node correctly", () => {
         const bubbleRight = rendererOutput[3];
         const expectedBubbleRight = {
-          sel: 'div',
+          sel: "div",
           data: {
             style: {
-              position: 'absolute',
-              top: '0',
-              left: '100px',
-              transform: 'none',
+              position: "absolute",
+              top: "0",
+              left: "100px",
+              transform: "none",
             },
           },
           children: [
             {
-              sel: 'div',
+              sel: "div",
               data: {
-                'data-other-value': 0,
-                'data-idx': 0,
-                'data-bidx': 1,
-                'data-key': 'brush-area-dir-bubble-0-1',
+                "data-other-value": 0,
+                "data-idx": 0,
+                "data-bidx": 1,
+                "data-key": "brush-area-dir-bubble-0-1",
                 style: {
-                  position: 'relative',
-                  borderRadius: '4px',
-                  border: '1px solid #666',
-                  backgroundColor: '#fff',
-                  padding: '4px 8px',
-                  textAlign: 'center',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                  maxWidth: '150px',
-                  minWidth: '50px',
-                  minHeight: '1em',
-                  pointerEvents: 'auto',
-                  transform: 'translate(-50%,0)',
-                  fontSize: '14px',
-                  fontFamily: 'Arial',
-                  color: '#595959',
-                  cursor: 'ew-resize',
+                  position: "relative",
+                  borderRadius: "4px",
+                  border: "1px solid #666",
+                  backgroundColor: "#fff",
+                  padding: "4px 8px",
+                  textAlign: "center",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  maxWidth: "150px",
+                  minWidth: "50px",
+                  minHeight: "1em",
+                  pointerEvents: "auto",
+                  transform: "translate(-50%,0)",
+                  fontSize: "14px",
+                  fontFamily: "Arial",
+                  color: "#595959",
+                  cursor: "ew-resize",
                 },
               },
-              children: ['-'],
+              children: ["-"],
             },
           ],
         };
@@ -269,7 +269,7 @@ describe('Brush Area Directional', () => {
       });
     });
 
-    describe('horizontal negative active drag', () => {
+    describe("horizontal negative active drag", () => {
       beforeEach(() => {
         instance = componentFixture.simulateCreate(brushAreaDir, config);
         componentFixture.simulateRender(size);
@@ -278,22 +278,22 @@ describe('Brush Area Directional', () => {
         rendererOutput = componentFixture.getRenderOutput();
       });
 
-      it('left edge node', () => {
+      it("left edge node", () => {
         const edgeLeft = rendererOutput[0];
-        expect(edgeLeft.data['data-key']).to.equal('brush-area-dir-edge--1');
-        expect(edgeLeft.data.style.left).to.equal('0px');
+        expect(edgeLeft.data["data-key"]).to.equal("brush-area-dir-edge--1");
+        expect(edgeLeft.data.style.left).to.equal("0px");
       });
 
-      it('right edge node', () => {
+      it("right edge node", () => {
         const edgeRight = rendererOutput[1];
-        expect(edgeRight.data['data-key']).to.equal('brush-area-dir-edge--1');
-        expect(edgeRight.data.style.left).to.equal('95px');
+        expect(edgeRight.data["data-key"]).to.equal("brush-area-dir-edge--1");
+        expect(edgeRight.data.style.left).to.equal("95px");
       });
     });
 
-    describe('vertical', () => {
+    describe("vertical", () => {
       beforeEach(() => {
-        config.settings.direction = 'vertical';
+        config.settings.direction = "vertical";
         instance = componentFixture.simulateCreate(brushAreaDir, config);
         componentFixture.simulateRender(size);
         instance.def.start({ center: { x: 0, y: 0 }, deltaX: 0, deltaY: 0 });
@@ -302,42 +302,42 @@ describe('Brush Area Directional', () => {
         rendererOutput = componentFixture.getRenderOutput();
       });
 
-      it('top edge node correctly', () => {
+      it("top edge node correctly", () => {
         const edgeTop = rendererOutput[0];
 
         // Work-around to deal with deep equal on objects with functions
-        expect(edgeTop.data.onmouseover).to.be.a('function');
-        expect(edgeTop.data.onmouseout).to.be.a('function');
+        expect(edgeTop.data.onmouseover).to.be.a("function");
+        expect(edgeTop.data.onmouseout).to.be.a("function");
         delete edgeTop.data.onmouseover;
         delete edgeTop.data.onmouseout;
 
         const expectedEdgeTop = {
-          sel: 'div',
+          sel: "div",
           data: {
-            'data-value': 0,
-            'data-key': 'brush-area-dir-edge-0',
+            "data-value": 0,
+            "data-key": "brush-area-dir-edge-0",
             style: {
-              cursor: 'ns-resize',
-              position: 'absolute',
-              left: '0px',
-              top: '0px',
-              height: '5px',
-              width: '100%',
-              pointerEvents: 'auto',
+              cursor: "ns-resize",
+              position: "absolute",
+              left: "0px",
+              top: "0px",
+              height: "5px",
+              width: "100%",
+              pointerEvents: "auto",
             },
           },
           children: [
             {
-              sel: 'div',
+              sel: "div",
               data: {
                 style: {
-                  backgroundColor: 'rgba(50, 50, 50, 0.8)',
-                  position: 'absolute',
-                  height: '1px',
-                  width: '100%',
-                  left: '0',
-                  top: '0',
-                  pointerEvents: 'none',
+                  backgroundColor: "rgba(50, 50, 50, 0.8)",
+                  position: "absolute",
+                  height: "1px",
+                  width: "100%",
+                  left: "0",
+                  top: "0",
+                  pointerEvents: "none",
                 },
               },
               children: [],
@@ -347,42 +347,42 @@ describe('Brush Area Directional', () => {
         expect(edgeTop).to.deep.equal(expectedEdgeTop);
       });
 
-      it('bottom edge node correctly', () => {
+      it("bottom edge node correctly", () => {
         const edgeBottom = rendererOutput[1];
 
         // Work-around to deal with deep equal on objects with functions
-        expect(edgeBottom.data.onmouseover).to.be.a('function');
-        expect(edgeBottom.data.onmouseout).to.be.a('function');
+        expect(edgeBottom.data.onmouseover).to.be.a("function");
+        expect(edgeBottom.data.onmouseout).to.be.a("function");
         delete edgeBottom.data.onmouseover;
         delete edgeBottom.data.onmouseout;
 
         const expectedEdgeBottom = {
-          sel: 'div',
+          sel: "div",
           data: {
-            'data-value': 150,
-            'data-key': 'brush-area-dir-edge-0',
+            "data-value": 150,
+            "data-key": "brush-area-dir-edge-0",
             style: {
-              cursor: 'ns-resize',
-              position: 'absolute',
-              left: '0px',
-              top: '145px',
-              height: '5px',
-              width: '100%',
-              pointerEvents: 'auto',
+              cursor: "ns-resize",
+              position: "absolute",
+              left: "0px",
+              top: "145px",
+              height: "5px",
+              width: "100%",
+              pointerEvents: "auto",
             },
           },
           children: [
             {
-              sel: 'div',
+              sel: "div",
               data: {
                 style: {
-                  backgroundColor: 'rgba(50, 50, 50, 0.8)',
-                  position: 'absolute',
-                  height: '1px',
-                  width: '100%',
-                  right: '0',
-                  bottom: '0',
-                  pointerEvents: 'none',
+                  backgroundColor: "rgba(50, 50, 50, 0.8)",
+                  position: "absolute",
+                  height: "1px",
+                  width: "100%",
+                  right: "0",
+                  bottom: "0",
+                  pointerEvents: "none",
                 },
               },
               children: [],
@@ -392,48 +392,48 @@ describe('Brush Area Directional', () => {
         expect(edgeBottom).to.deep.equal(expectedEdgeBottom);
       });
 
-      it('top bubble node correctly', () => {
+      it("top bubble node correctly", () => {
         const bubbleTop = rendererOutput[2];
         const expectedBubbleTop = {
-          sel: 'div',
+          sel: "div",
           data: {
             style: {
-              position: 'absolute',
-              top: '0px',
-              left: '0',
-              transform: 'none',
+              position: "absolute",
+              top: "0px",
+              left: "0",
+              transform: "none",
             },
           },
           children: [
             {
-              sel: 'div',
+              sel: "div",
               data: {
-                'data-other-value': 150,
-                'data-idx': 0,
-                'data-bidx': 0,
-                'data-key': 'brush-area-dir-bubble-0-0',
+                "data-other-value": 150,
+                "data-idx": 0,
+                "data-bidx": 0,
+                "data-key": "brush-area-dir-bubble-0-0",
                 style: {
-                  position: 'relative',
-                  borderRadius: '4px',
-                  border: '1px solid #666',
-                  backgroundColor: '#fff',
-                  padding: '4px 8px',
-                  textAlign: 'center',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                  maxWidth: '150px',
-                  minWidth: '50px',
-                  minHeight: '1em',
-                  pointerEvents: 'auto',
-                  transform: 'translate(0,-50%)',
-                  fontSize: '14px',
-                  fontFamily: 'Arial',
-                  color: '#595959',
-                  cursor: 'ns-resize',
+                  position: "relative",
+                  borderRadius: "4px",
+                  border: "1px solid #666",
+                  backgroundColor: "#fff",
+                  padding: "4px 8px",
+                  textAlign: "center",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  maxWidth: "150px",
+                  minWidth: "50px",
+                  minHeight: "1em",
+                  pointerEvents: "auto",
+                  transform: "translate(0,-50%)",
+                  fontSize: "14px",
+                  fontFamily: "Arial",
+                  color: "#595959",
+                  cursor: "ns-resize",
                 },
               },
-              children: ['-'],
+              children: ["-"],
             },
           ],
         };
@@ -441,48 +441,48 @@ describe('Brush Area Directional', () => {
         expect(bubbleTop).to.deep.equal(expectedBubbleTop);
       });
 
-      it('bottom bubble node correctly', () => {
+      it("bottom bubble node correctly", () => {
         const bubbleBottom = rendererOutput[3];
         const expectedBubbleBottom = {
-          sel: 'div',
+          sel: "div",
           data: {
             style: {
-              position: 'absolute',
-              top: '150px',
-              left: '0',
-              transform: 'none',
+              position: "absolute",
+              top: "150px",
+              left: "0",
+              transform: "none",
             },
           },
           children: [
             {
-              sel: 'div',
+              sel: "div",
               data: {
-                'data-other-value': 0,
-                'data-idx': 0,
-                'data-bidx': 1,
-                'data-key': 'brush-area-dir-bubble-0-1',
+                "data-other-value": 0,
+                "data-idx": 0,
+                "data-bidx": 1,
+                "data-key": "brush-area-dir-bubble-0-1",
                 style: {
-                  position: 'relative',
-                  borderRadius: '4px',
-                  border: '1px solid #666',
-                  backgroundColor: '#fff',
-                  padding: '4px 8px',
-                  textAlign: 'center',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                  maxWidth: '150px',
-                  minWidth: '50px',
-                  minHeight: '1em',
-                  pointerEvents: 'auto',
-                  transform: 'translate(0,-50%)',
-                  fontSize: '14px',
-                  fontFamily: 'Arial',
-                  color: '#595959',
-                  cursor: 'ns-resize',
+                  position: "relative",
+                  borderRadius: "4px",
+                  border: "1px solid #666",
+                  backgroundColor: "#fff",
+                  padding: "4px 8px",
+                  textAlign: "center",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  maxWidth: "150px",
+                  minWidth: "50px",
+                  minHeight: "1em",
+                  pointerEvents: "auto",
+                  transform: "translate(0,-50%)",
+                  fontSize: "14px",
+                  fontFamily: "Arial",
+                  color: "#595959",
+                  cursor: "ns-resize",
                 },
               },
-              children: ['-'],
+              children: ["-"],
             },
           ],
         };

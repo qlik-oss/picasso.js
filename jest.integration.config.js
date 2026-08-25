@@ -1,11 +1,11 @@
-const esModules = ['chai'].join('|');
+const esModules = ["chai"].join("|");
 
 module.exports = {
-  preset: 'jest-puppeteer',
-  testMatch: ['**/test/integration/**/*.int.js'],
-  setupFilesAfterEnv: ['<rootDir>/jest.integration.setup.js'],
+  preset: "jest-puppeteer",
+  testMatch: ["**/test/integration/**/*.int.js"],
+  setupFilesAfterEnv: ["<rootDir>/jest.integration.setup.js"],
   transform: {
-    '\\.[jt]sx?$': 'babel-jest',
+    "\\.[jt]sx?$": "babel-jest",
   },
   transformIgnorePatterns: [
     `<rootDir>/node_modules/.pnpm/(?!((${esModules}))@)`,

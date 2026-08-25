@@ -1,4 +1,4 @@
-import extend from 'extend';
+import extend from "extend";
 
 function appendStyle(struct, buildOpts) {
   const styleClone = { ...buildOpts.style }; // Shallow clone
@@ -30,7 +30,7 @@ export default function buildArcTicks(tick, buildOpts) {
   const outerPos = polarToCartesian(centerPoint.cx, centerPoint.cy, outerRadius, angle);
 
   const struct = {
-    type: 'line',
+    type: "line",
     x1: innerPos.x,
     y1: innerPos.y,
     x2: outerPos.x,

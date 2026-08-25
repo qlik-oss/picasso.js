@@ -1,4 +1,4 @@
-import cubicToPoints from '../cubic-bezier-curve-interpolation';
+import cubicToPoints from "../cubic-bezier-curve-interpolation";
 
 function approxEqual(ary, expected) {
   ary.forEach((item, i) => {
@@ -8,7 +8,7 @@ function approxEqual(ary, expected) {
   });
 }
 
-describe('Cubic Bezier curve', () => {
+describe("Cubic Bezier curve", () => {
   let p0;
   let p1;
   let p2;
@@ -21,7 +21,7 @@ describe('Cubic Bezier curve', () => {
     p3 = { x: 50, y: 0 };
   });
 
-  it('generate points on curve', () => {
+  it("generate points on curve", () => {
     const pts = cubicToPoints(p0, p1, p2, p3);
 
     const exp = [
@@ -37,7 +37,7 @@ describe('Cubic Bezier curve', () => {
     approxEqual(pts, exp);
   });
 
-  it('should split curve a maximum amount of times', () => {
+  it("should split curve a maximum amount of times", () => {
     const m = 1e13; // Trigger max nbr of points by using a very large curve
     p2.x *= m;
     p2.y *= m;

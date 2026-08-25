@@ -15,7 +15,7 @@
  */
 function create(settings = {}, callbackContext = {}) {
   let {
-    dock = 'center',
+    dock = "center",
     displayOrder = 0,
     prioOrder = 0,
     preferredSize = 0,
@@ -24,7 +24,7 @@ function create(settings = {}, callbackContext = {}) {
   } = settings;
 
   // avoid empty string dock
-  dock = dock || 'center';
+  dock = dock || "center";
 
   /**
    * @private
@@ -51,7 +51,7 @@ function create(settings = {}, callbackContext = {}) {
      * })); // Require a size of 150 in the dock direction and a bleed size of 50 to the left and right dock direction
      */
     computePreferredSize({ inner, outer, children }) {
-      if (typeof preferredSize === 'function') {
+      if (typeof preferredSize === "function") {
         return preferredSize({ inner, outer, children, dock: this.dock() }, callbackContext);
       }
       return preferredSize;
@@ -65,11 +65,11 @@ function create(settings = {}, callbackContext = {}) {
      * dockConfig.dock('left');
      */
     dock(val) {
-      if (typeof val !== 'undefined') {
+      if (typeof val !== "undefined") {
         dock = val;
         return this;
       }
-      return typeof dock === 'function' ? dock(callbackContext) : dock;
+      return typeof dock === "function" ? dock(callbackContext) : dock;
     },
 
     /**
@@ -89,11 +89,11 @@ function create(settings = {}, callbackContext = {}) {
      * dockConfig.displayOrder(99);
      */
     displayOrder(val) {
-      if (typeof val !== 'undefined') {
+      if (typeof val !== "undefined") {
         displayOrder = val;
         return this;
       }
-      return typeof displayOrder === 'function' ? displayOrder(callbackContext) : displayOrder;
+      return typeof displayOrder === "function" ? displayOrder(callbackContext) : displayOrder;
     },
 
     /**
@@ -107,11 +107,11 @@ function create(settings = {}, callbackContext = {}) {
      * dockConfig.prioOrder(-1);
      */
     prioOrder(val) {
-      if (typeof val !== 'undefined') {
+      if (typeof val !== "undefined") {
         prioOrder = val;
         return this;
       }
-      return typeof prioOrder === 'function' ? prioOrder(callbackContext) : prioOrder;
+      return typeof prioOrder === "function" ? prioOrder(callbackContext) : prioOrder;
     },
 
     /**
@@ -123,11 +123,11 @@ function create(settings = {}, callbackContext = {}) {
      * dockConfig.minimumLayoutMode({ width: 'S', height: 'L' });
      */
     minimumLayoutMode(val) {
-      if (typeof val !== 'undefined') {
+      if (typeof val !== "undefined") {
         minimumLayoutMode = val;
         return this;
       }
-      return typeof minimumLayoutMode === 'function' ? minimumLayoutMode(callbackContext) : minimumLayoutMode;
+      return typeof minimumLayoutMode === "function" ? minimumLayoutMode(callbackContext) : minimumLayoutMode;
     },
 
     /**
@@ -136,11 +136,11 @@ function create(settings = {}, callbackContext = {}) {
      * @returns {this|boolean} The current context or show
      */
     show(val) {
-      if (typeof val !== 'undefined') {
+      if (typeof val !== "undefined") {
         show = val;
         return this;
       }
-      return typeof show === 'function' ? show(callbackContext) : show;
+      return typeof show === "function" ? show(callbackContext) : show;
     },
   };
 

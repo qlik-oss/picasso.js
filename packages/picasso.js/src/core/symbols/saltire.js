@@ -1,7 +1,7 @@
-import { generateCrossPoints } from './cross';
-import { toRadians } from '../math/angles';
-import { rotate } from '../math/vector';
-import pointsToPath from '../utils/points-to-path';
+import { generateCrossPoints } from "./cross";
+import { toRadians } from "../math/angles";
+import { rotate } from "../math/vector";
+import pointsToPath from "../utils/points-to-path";
 
 /**
  * @private
@@ -24,12 +24,12 @@ export default function saltire(options) {
 
   const centroid = { x: options.x, y: options.y };
   const points = generateCrossPoints(options.x, options.y, adjustedSize, barWidth).map((p) =>
-    rotate(p, radians, centroid)
+    rotate(p, radians, centroid),
   );
 
   return {
-    type: 'path',
-    fill: 'black',
+    type: "path",
+    fill: "black",
     d: pointsToPath(points),
   };
 }

@@ -1,4 +1,4 @@
-import createDockLayout from '../layout/dock/docker';
+import createDockLayout from "../layout/dock/docker";
 
 const findComponentByKeyInList = (list, key) => {
   for (let i = 0; i < list.length; i++) {
@@ -46,7 +46,7 @@ const normalLayout = (layoutSettings) => {
   return customLayout((rect, vcomponents) => dockLayout.layout(rect, vcomponents));
 };
 
-const getLayoutFn = (strategy) => (typeof strategy === 'function' ? customLayout(strategy) : normalLayout(strategy));
+const getLayoutFn = (strategy) => (typeof strategy === "function" ? customLayout(strategy) : normalLayout(strategy));
 
 function collectionFn({ createComponent }) {
   const instance = {};
@@ -106,13 +106,13 @@ function collectionFn({ createComponent }) {
           // Component is added
           return createComp(comp);
         }
-        if (comp.rendererSettings && typeof component.instance.renderer().settings === 'function') {
+        if (comp.rendererSettings && typeof component.instance.renderer().settings === "function") {
           component.instance.renderer().settings(comp.rendererSettings);
         }
         // Only apply transform, no need for an update
         if (
           comp.rendererSettings &&
-          typeof comp.rendererSettings.transform === 'function' &&
+          typeof comp.rendererSettings.transform === "function" &&
           comp.rendererSettings.transform()
         ) {
           component.applyTransform = true;

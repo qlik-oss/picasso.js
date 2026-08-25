@@ -1,9 +1,9 @@
-import extend from 'extend';
+import extend from "extend";
 
-import EventEmitter from '../utils/event-emitter';
+import EventEmitter from "../utils/event-emitter";
 
-import rangeCollection from './range-collection';
-import valueCollection from './value-collection';
+import rangeCollection from "./range-collection";
+import valueCollection from "./value-collection";
 
 /**
  * @typedef {object} BrushConfig
@@ -246,7 +246,7 @@ function intercept(handlers, items, aliases) {
 }
 
 function toCamelCase(s) {
-  return s.replace(/(-[a-z])/g, ($1) => $1.toUpperCase().replace('-', ''));
+  return s.replace(/(-[a-z])/g, ($1) => $1.toUpperCase().replace("-", ""));
 }
 
 function toSnakeCase(s) {
@@ -262,7 +262,7 @@ function updateRange(items, action, { ranges, interceptors, rc, aliases, rangeCo
     if (!ranges[key]) {
       ranges[key] = rc(rangeConfig.sources[key] || rangeConfig.default);
     }
-    if (action === 'set') {
+    if (action === "set") {
       changed = ranges[key][action](item.ranges || item.range) || changed;
     } else {
       const rangeValues = item.ranges || [item.range];
@@ -329,7 +329,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
       this.ls.forEach((b) =>
         b._state({
           values: s.values,
-        })
+        }),
       );
     },
     updateRanges() {
@@ -337,7 +337,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
       this.ls.forEach((b) =>
         b._state({
           ranges: s.ranges,
-        })
+        }),
       );
     },
   };
@@ -391,12 +391,12 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
       config.ranges.forEach((cfg) => {
         const c = {};
         Object.keys(DEFAULT_RANGE_CONFIG)
-          .filter((attr) => attr !== 'key')
+          .filter((attr) => attr !== "key")
           .forEach((attr) => {
-            c[attr] = typeof cfg[attr] !== 'undefined' ? cfg[attr] : DEFAULT_RANGE_CONFIG[attr];
+            c[attr] = typeof cfg[attr] !== "undefined" ? cfg[attr] : DEFAULT_RANGE_CONFIG[attr];
           });
 
-        if (typeof cfg.key !== 'undefined') {
+        if (typeof cfg.key !== "undefined") {
           rangeConfig.sources[cfg.key] = c;
         } else {
           rangeConfig.default = c;
@@ -406,7 +406,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
       Object.keys(ranges).forEach((key) => ranges[key].configure(rangeConfig.sources[key] || rangeConfig.default));
 
       // TODO only emit update if config has changed
-      fn.emit('update', [], []);
+      fn.emit("update", [], []);
     }
   };
 
@@ -431,7 +431,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
     if (s.values) {
       const arr = [];
       Object.keys(s.values).forEach((key) => {
-        if (!values[key] || s.values[key].join(';') !== values[key].toString()) {
+        if (!values[key] || s.values[key].join(";") !== values[key].toString()) {
           arr.push({
             key,
             values: s.values[key],
@@ -453,7 +453,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
     if (s.ranges) {
       const arr = [];
       Object.keys(s.ranges).forEach((key) => {
-        if (!ranges[key] || s.ranges[key].join(';') !== ranges[key].toString()) {
+        if (!ranges[key] || s.ranges[key].join(";") !== ranges[key].toString()) {
           arr.push({
             key,
             ranges: s.ranges[key],
@@ -485,7 +485,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
   fn.start = (...args) => {
     if (!activated) {
       activated = true;
-      fn.emit('start', ...args);
+      fn.emit("start", ...args);
       links.start();
     }
   };
@@ -504,7 +504,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
     activated = false;
     ranges = {};
     values = {};
-    fn.emit('end', ...args);
+    fn.emit("end", ...args);
     links.end();
   };
 
@@ -522,13 +522,13 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
   fn.clear = () => {
     const removed = fn
       .brushes()
-      .filter((b) => b.type === 'value' && b.brush.values().length)
+      .filter((b) => b.type === "value" && b.brush.values().length)
       .map((b) => ({ id: b.id, values: b.brush.values() }));
     const hasChanged = Object.keys(ranges).length > 0 || removed.length;
     ranges = {};
     values = {};
     if (hasChanged) {
-      fn.emit('update', [], removed); // TODO - do not emit update if state hasn't changed
+      fn.emit("update", [], removed); // TODO - do not emit update if state hasn't changed
       links.clear();
     }
   };
@@ -541,18 +541,18 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
     let result = [];
     result = result.concat(
       Object.keys(ranges).map((key) => ({
-        type: 'range',
+        type: "range",
         id: key,
         brush: ranges[key],
-      }))
+      })),
     );
 
     result = result.concat(
       Object.keys(values).map((key) => ({
-        type: 'value',
+        type: "value",
         id: key,
         brush: values[key],
-      }))
+      })),
     );
 
     return result;
@@ -587,14 +587,14 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
       items: its,
     });
 
-    fn.emit('add-values', its);
+    fn.emit("add-values", its);
 
     if (added.length) {
       if (!activated) {
         activated = true;
-        fn.emit('start');
+        fn.emit("start");
       }
-      fn.emit('update', added, []);
+      fn.emit("update", added, []);
       links.updateValues();
     }
   };
@@ -610,14 +610,14 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
       vc,
     });
 
-    fn.emit('set-values', its);
+    fn.emit("set-values", its);
 
     if (changed[0].length > 0 || changed[1].length > 0) {
       if (!activated) {
         activated = true;
-        fn.emit('start');
+        fn.emit("start");
       }
-      fn.emit('update', changed[0], changed[1]);
+      fn.emit("update", changed[0], changed[1]);
       links.updateValues();
     }
   };
@@ -646,10 +646,10 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
       items: its,
     });
 
-    fn.emit('remove-values', its);
+    fn.emit("remove-values", its);
 
     if (removed.length) {
-      fn.emit('update', [], removed);
+      fn.emit("update", [], removed);
       links.updateValues();
       // TODO - emit 'end' event if there are no remaining active brushes
     }
@@ -677,15 +677,15 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
       items: removeIts,
     });
 
-    fn.emit('add-values', addIts);
-    fn.emit('remove-values', removeIts);
+    fn.emit("add-values", addIts);
+    fn.emit("remove-values", removeIts);
 
     if (added.length || removed.length) {
       if (!activated) {
         activated = true;
-        fn.emit('start');
+        fn.emit("start");
       }
-      fn.emit('update', added, removed);
+      fn.emit("update", added, removed);
       links.updateValues();
     }
   };
@@ -715,14 +715,14 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
       vc,
     });
 
-    fn.emit('toggle-values', its);
+    fn.emit("toggle-values", its);
 
     if (toggled[0].length > 0 || toggled[1].length > 0) {
       if (!activated) {
         activated = true;
-        fn.emit('start');
+        fn.emit("start");
       }
-      fn.emit('update', toggled[0], toggled[1]);
+      fn.emit("update", toggled[0], toggled[1]);
       links.updateValues();
     }
   };
@@ -770,7 +770,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    * @param {object} items[].range
    */
   fn.addRanges = (items) => {
-    const changed = updateRange(items, 'add', {
+    const changed = updateRange(items, "add", {
       ranges,
       rc,
       interceptors,
@@ -784,9 +784,9 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
 
     if (!activated) {
       activated = true;
-      fn.emit('start');
+      fn.emit("start");
     }
-    fn.emit('update', [], []);
+    fn.emit("update", [], []);
     links.updateRanges();
   };
 
@@ -807,7 +807,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    * @param {object[]} items - Items containing the ranges to remove
    */
   fn.removeRanges = (items) => {
-    const changed = updateRange(items, 'remove', {
+    const changed = updateRange(items, "remove", {
       ranges,
       rc,
       interceptors,
@@ -821,9 +821,9 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
 
     if (!activated) {
       activated = true;
-      fn.emit('start');
+      fn.emit("start");
     }
-    fn.emit('update', [], []);
+    fn.emit("update", [], []);
     links.updateRanges();
   };
 
@@ -846,7 +846,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    * @param {object[]} items - Items containing the ranges to set
    */
   fn.setRanges = (items) => {
-    const changed = updateRange(items, 'set', {
+    const changed = updateRange(items, "set", {
       ranges,
       rc,
       interceptors,
@@ -860,9 +860,9 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
 
     if (!activated) {
       activated = true;
-      fn.emit('start');
+      fn.emit("start");
     }
-    fn.emit('update', [], []);
+    fn.emit("update", [], []);
     links.updateRanges();
   };
 
@@ -886,7 +886,7 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
    * @param {object[]} items - Items containing the ranges to toggle
    */
   fn.toggleRanges = (items) => {
-    const changed = updateRange(items, 'toggle', {
+    const changed = updateRange(items, "toggle", {
       ranges,
       rc,
       interceptors,
@@ -900,9 +900,9 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
 
     if (!activated) {
       activated = true;
-      fn.emit('start');
+      fn.emit("start");
     }
-    fn.emit('update', [], []);
+    fn.emit("update", [], []);
     links.updateRanges();
   };
 
@@ -961,20 +961,20 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
 
     for (let i = 0, num = keys.length; i < num; i++) {
       key = keys[i];
-      if (key === 'value') {
+      if (key === "value") {
         item = d;
-        status[i] = { key: '', i, bool: false };
-      } else if (key === 'source') {
+        status[i] = { key: "", i, bool: false };
+      } else if (key === "source") {
         continue;
       } else {
         item = d[key];
         status[i] = { key, i, bool: false };
       }
       source = item.source && item.source.field;
-      if (typeof source === 'undefined') {
+      if (typeof source === "undefined") {
         continue;
       }
-      if (typeof item.source.key !== 'undefined') {
+      if (typeof item.source.key !== "undefined") {
         source = `${item.source.key}/${source}`;
       }
 
@@ -994,10 +994,10 @@ export default function brush({ vc = valueCollection, rc = rangeCollection } = {
 
     if (props) {
       status = status.filter((b) => props.indexOf(b.key) !== -1);
-      if (mode === 'and') {
+      if (mode === "and") {
         return !!status.length && !status.some((s) => s.bool === false);
       }
-      if (mode === 'xor') {
+      if (mode === "xor") {
         return !!status.length && status.some((s) => s.bool) && status.some((s) => s.bool === false);
       }
       // !mode || mode === 'or'

@@ -1,6 +1,6 @@
-import buildArcLine from '../axis-arc-node';
+import buildArcLine from "../axis-arc-node";
 
-describe('Axis Arc Line Node', () => {
+describe("Axis Arc Line Node", () => {
   const innerRect = {
     x: 0,
     y: 0,
@@ -14,7 +14,7 @@ describe('Axis Arc Line Node', () => {
     height: 0,
   };
 
-  describe('Arc', () => {
+  describe("Arc", () => {
     let buildOpts, expected;
 
     beforeEach(() => {
@@ -28,8 +28,8 @@ describe('Axis Arc Line Node', () => {
       outerRect.y = 0;
 
       buildOpts = {
-        style: { stroke: 'red', strokeWidth: 1 },
-        align: 'bottom',
+        style: { stroke: "red", strokeWidth: 1 },
+        align: "bottom",
         innerRect,
         outerRect,
         padding: 10,
@@ -39,7 +39,7 @@ describe('Axis Arc Line Node', () => {
       };
       expected = {
         visible: true,
-        type: 'path',
+        type: "path",
         arcDatum: { startAngle: 0, endAngle: 0 },
         transform: `translate(0, 0) translate(${0}, ${0})`,
         desc: {
@@ -50,13 +50,13 @@ describe('Axis Arc Line Node', () => {
             outerRadius: 0,
           },
         },
-        stroke: 'red',
+        stroke: "red",
         strokeWidth: 1,
         ticks: [],
       };
     });
 
-    it('Structure Properties', () => {
+    it("Structure Properties", () => {
       const rect = buildOpts.innerRect;
       const centerPoint = { cx: rect.width / 2, cy: rect.height / 2 };
       const halfPlotSize = Math.min(rect.height, rect.width) / 2;

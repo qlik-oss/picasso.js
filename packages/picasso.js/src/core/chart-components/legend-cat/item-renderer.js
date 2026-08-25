@@ -1,4 +1,4 @@
-import extend from 'extend';
+import extend from "extend";
 
 /* eslint no-mixed-operators:0 */
 
@@ -10,7 +10,7 @@ function placeTextInRect(rect, label, opts) {
   }
 
   const wiggleWidth = Math.max(0, rect.width - textMetrics.width);
-  label.baseline = 'text-before-edge';
+  label.baseline = "text-before-edge";
   const wiggleHeight = Math.max(0, rect.height - textMetrics.height);
   label.x = rect.x + opts.align * wiggleWidth;
   label.y = rect.y + opts.justify * wiggleHeight + parseInt(label.fontSize, 10) * 0.175; // 0.175 - basline offset
@@ -28,11 +28,11 @@ function wiggleSymbol(container, size, opts) {
   };
 }
 
-export function createRenderItem({ x = 0, y, item, globalMetrics, createSymbol, direction = 'ltr' }) {
+export function createRenderItem({ x = 0, y, item, globalMetrics, createSymbol, direction = "ltr" }) {
   let label = item.label.displayObject;
   let labelBounds = item.label.bounds;
   let symbolItem = item.symbol.meta;
-  const rtl = direction === 'rtl';
+  const rtl = direction === "rtl";
 
   let labelRect = {
     x: rtl ? x + globalMetrics.maxLabelBounds.width : x + globalMetrics.maxSymbolSize + globalMetrics.spacing,
@@ -50,16 +50,16 @@ export function createRenderItem({ x = 0, y, item, globalMetrics, createSymbol, 
     },
     symbolItem.size,
     {
-      align: typeof symbolItem.align === 'undefined' ? 0.5 : symbolItem.align,
-      justify: typeof symbolItem.justify === 'undefined' ? 0.5 : symbolItem.justify,
-    }
+      align: typeof symbolItem.align === "undefined" ? 0.5 : symbolItem.align,
+      justify: typeof symbolItem.justify === "undefined" ? 0.5 : symbolItem.justify,
+    },
   );
 
   const symbol = createSymbol(extend({}, symbolItem, wiggled));
 
   delete symbol.collider;
 
-  label.anchor = rtl ? 'end' : 'start';
+  label.anchor = rtl ? "end" : "start";
 
   placeTextInRect(labelRect, label, {
     textMetrics: labelBounds,
@@ -69,11 +69,11 @@ export function createRenderItem({ x = 0, y, item, globalMetrics, createSymbol, 
   });
 
   let container = {
-    type: 'container',
+    type: "container",
     data: item.label.displayObject.data,
     children: [symbol, label],
     collider: {
-      type: 'rect',
+      type: "rect",
       x,
       y,
       width: globalMetrics.maxItemBounds.width,
@@ -91,7 +91,7 @@ export function getItemsToRender({ viewRect }, rect, { itemized, create = create
   const direction = itemized.layout.direction;
   const globalMetrics = itemized.globalMetrics;
   const legendItems = itemized.items;
-  const isHorizontal = itemized.layout.orientation === 'horizontal';
+  const isHorizontal = itemized.layout.orientation === "horizontal";
   let s = 0;
 
   const renderItems = [];
@@ -107,7 +107,7 @@ export function getItemsToRender({ viewRect }, rect, { itemized, create = create
   for (let i = 0; i < legendItems.length; i++) {
     let renderItem = create({
       y,
-      x: direction === 'rtl' ? viewRect.x + shift + viewRect.width - fixedWidth - (x - rect.x) : x,
+      x: direction === "rtl" ? viewRect.x + shift + viewRect.width - fixedWidth - (x - rect.x) : x,
       item: legendItems[i],
       globalMetrics,
       direction,
@@ -160,10 +160,10 @@ export function itemize({ resolved, dock }, renderer) {
       continue;
     }
 
-    const text = typeof sourceLabels[i].text !== 'undefined' ? sourceLabels[i].text : sourceLabels[i].data.label || '';
+    const text = typeof sourceLabels[i].text !== "undefined" ? sourceLabels[i].text : sourceLabels[i].data.label || "";
     label = extend({}, sourceLabels[i], {
       // create the displayObject here in order to measure it
-      type: 'text',
+      type: "text",
       fontSize: `${parseInt(sourceLabels[i].fontSize, 10)}px`,
       text,
       title: text,
@@ -204,12 +204,12 @@ export function itemize({ resolved, dock }, renderer) {
     },
     layout: {
       margin: {
-        vertical: typeof resolved.layout.item.vertical !== 'undefined' ? resolved.layout.item.vertical : 4,
-        horizontal: typeof resolved.layout.item.horizontal !== 'undefined' ? resolved.layout.item.horizontal : 4,
+        vertical: typeof resolved.layout.item.vertical !== "undefined" ? resolved.layout.item.vertical : 4,
+        horizontal: typeof resolved.layout.item.horizontal !== "undefined" ? resolved.layout.item.horizontal : 4,
       },
       mode: resolved.layout.item.mode,
       size: resolved.layout.item.size,
-      orientation: dock === 'top' || dock === 'bottom' ? 'horizontal' : 'vertical',
+      orientation: dock === "top" || dock === "bottom" ? "horizontal" : "vertical",
       direction: resolved.layout.item.direction,
       scrollOffset: resolved.layout.item.scrollOffset,
     },
@@ -219,15 +219,15 @@ export function itemize({ resolved, dock }, renderer) {
 export function extent(itemized, parallels) {
   const count = itemized.items.length;
   const size = Math.ceil(count / parallels);
-  const property = itemized.layout.orientation === 'horizontal' ? 'width' : 'height';
-  const margin = property === 'width' ? 'horizontal' : 'vertical';
+  const property = itemized.layout.orientation === "horizontal" ? "width" : "height";
+  const margin = property === "width" ? "horizontal" : "vertical";
   return itemized.globalMetrics.maxItemBounds[property] * size + (size - 1) * itemized.layout.margin[margin];
 }
 
 export function spread(itemized, parallels) {
   const size = parallels;
-  const property = itemized.layout.orientation === 'horizontal' ? 'height' : 'width';
-  const margin = property === 'width' ? 'horizontal' : 'vertical';
+  const property = itemized.layout.orientation === "horizontal" ? "height" : "width";
+  const margin = property === "width" ? "horizontal" : "vertical";
   return (
     itemized.globalMetrics.maxItemBounds[property] * size + // expected vertical size of items
     (size - 1) * itemized.layout.margin[margin]
@@ -236,18 +236,18 @@ export function spread(itemized, parallels) {
 
 export function parallelize(availableExtent, availableSpread, itemized) {
   const count = itemized.items.length;
-  const extentProperty = itemized.layout.orientation === 'horizontal' ? 'width' : 'height';
-  const margin = extentProperty === 'width' ? 'horizontal' : 'vertical';
+  const extentProperty = itemized.layout.orientation === "horizontal" ? "width" : "height";
+  const margin = extentProperty === "width" ? "horizontal" : "vertical";
   const extentInPx =
     itemized.globalMetrics.maxItemBounds[extentProperty] * count + (count - 1) * itemized.layout.margin[margin];
   let numNeeded = Math.ceil(extentInPx / availableExtent);
 
   if (availableSpread != null) {
-    const spreadProperty = itemized.layout.orientation === 'horizontal' ? 'height' : 'width';
-    const spreadMargin = spreadProperty === 'width' ? 'horizontal' : 'vertical';
+    const spreadProperty = itemized.layout.orientation === "horizontal" ? "height" : "width";
+    const spreadMargin = spreadProperty === "width" ? "horizontal" : "vertical";
     const spreadMarginSize = itemized.layout.margin[spreadMargin] || 4;
     const numAllowed = Math.floor(
-      (availableSpread + spreadMarginSize) / (spreadMarginSize + itemized.globalMetrics.maxItemBounds[spreadProperty])
+      (availableSpread + spreadMarginSize) / (spreadMarginSize + itemized.globalMetrics.maxItemBounds[spreadProperty]),
     );
     numNeeded = Math.min(numNeeded, numAllowed);
   }
@@ -277,9 +277,9 @@ export default function itemRenderer(legend, { onScroll = () => {} }) {
 
       containerRect = extend({}, viewRect);
 
-      const offsetProperty = api.orientation() === 'horizontal' ? 'x' : 'y';
+      const offsetProperty = api.orientation() === "horizontal" ? "x" : "y";
       containerRect[offsetProperty] -= offset;
-      containerRect[offsetProperty === 'x' ? 'width' : 'height'] = ext;
+      containerRect[offsetProperty === "x" ? "width" : "height"] = ext;
 
       return getItemsToRender(obj, containerRect, { itemized, parallels, createSymbol: legend.symbol });
     },
@@ -288,33 +288,33 @@ export default function itemRenderer(legend, { onScroll = () => {} }) {
       return parallels;
     },
     hasContentOverflow: () => {
-      const property = itemized.layout.orientation === 'horizontal' ? 'width' : 'height';
+      const property = itemized.layout.orientation === "horizontal" ? "width" : "height";
       return extent(itemized, parallels) > viewRect[property];
     },
     getContentOverflow: (rect = viewRect) => {
-      const property = itemized.layout.orientation === 'horizontal' ? 'width' : 'height';
+      const property = itemized.layout.orientation === "horizontal" ? "width" : "height";
       return Math.max(0, extent(itemized, parallels) - rect[property]);
     },
     getNextSize: () => {
       // TODO - calculate the actual size to next item to ensure alignment
-      const property = itemized.layout.orientation === 'horizontal' ? 'width' : 'height';
-      const margin = property === 'width' ? 'horizontal' : 'vertical';
+      const property = itemized.layout.orientation === "horizontal" ? "width" : "height";
+      const margin = property === "width" ? "horizontal" : "vertical";
       return itemized.globalMetrics.maxItemBounds[property] + itemized.layout.margin[margin];
     },
     getPrevSize: () => {
       // TODO - calculate the actual size to next item to ensure alignment
-      const property = itemized.layout.orientation === 'horizontal' ? 'width' : 'height';
-      const margin = property === 'width' ? 'horizontal' : 'vertical';
+      const property = itemized.layout.orientation === "horizontal" ? "width" : "height";
+      const margin = property === "width" ? "horizontal" : "vertical";
       return itemized.globalMetrics.maxItemBounds[property] + itemized.layout.margin[margin];
     },
     hasNext: () => {
-      if (api.orientation() === 'horizontal') {
+      if (api.orientation() === "horizontal") {
         return viewRect.x + viewRect.width < containerRect.x + containerRect.width;
       }
       return viewRect.y + viewRect.height < containerRect.y + containerRect.height;
     },
     hasPrev: () => {
-      if (api.orientation() === 'horizontal') {
+      if (api.orientation() === "horizontal") {
         return containerRect.x < viewRect.x;
       }
       return containerRect.y < viewRect.y;

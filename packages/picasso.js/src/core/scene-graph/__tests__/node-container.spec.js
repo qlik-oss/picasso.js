@@ -1,21 +1,21 @@
-import Node from '../node-container';
+import Node from "../node-container";
 
-describe('TreeNode', () => {
-  describe('upon instantiation', () => {
-    it('should have no parent', () => {
+describe("TreeNode", () => {
+  describe("upon instantiation", () => {
+    it("should have no parent", () => {
       const n = new Node();
       expect(n.parent).to.be.null;
     });
 
-    it('should have no children', () => {
+    it("should have no children", () => {
       const n = new Node();
       expect(n.children.length).to.equal(0);
     });
   });
 
-  describe('#addChild', () => {
+  describe("#addChild", () => {
     let n;
-    describe('general', () => {
+    describe("general", () => {
       beforeEach(() => {
         n = new Node();
       });
@@ -23,7 +23,7 @@ describe('TreeNode', () => {
         n = null;
       });
 
-      it('should have the right parent', () => {
+      it("should have the right parent", () => {
         const c = new Node();
         n.addChild(c);
 
@@ -32,7 +32,7 @@ describe('TreeNode', () => {
         expect(c.parent).to.equal(n);
       });
 
-      it('should not be possible to add anything else but a Node as child', () => {
+      it("should not be possible to add anything else but a Node as child", () => {
         let f = () => {
             n.addChild();
           },
@@ -43,13 +43,13 @@ describe('TreeNode', () => {
             n.addChild({});
           };
 
-        expect(f).to.throw('Expecting a Node as argument, but got undefined');
-        expect(ff).to.throw('Expecting a Node as argument, but got null');
-        expect(fff).to.throw('Expecting a Node as argument, but got [object Object]');
+        expect(f).to.throw("Expecting a Node as argument, but got undefined");
+        expect(ff).to.throw("Expecting a Node as argument, but got null");
+        expect(fff).to.throw("Expecting a Node as argument, but got [object Object]");
       });
     });
 
-    describe('relatives -', () => {
+    describe("relatives -", () => {
       let a, a1, a2, a3, b, b1, b2;
 
       beforeEach(() => {
@@ -78,12 +78,12 @@ describe('TreeNode', () => {
         b2 = null;
       });
 
-      describe('parents', () => {
-        it('none', () => {
+      describe("parents", () => {
+        it("none", () => {
           expect(n.parent).to.be.null;
         });
 
-        it('parent', () => {
+        it("parent", () => {
           expect(a.parent).to.equal(n);
           expect(a1.parent).to.equal(a);
           expect(a2.parent).to.equal(a);
@@ -95,12 +95,12 @@ describe('TreeNode', () => {
         });
       });
 
-      describe('ancestors', () => {
-        it('none', () => {
+      describe("ancestors", () => {
+        it("none", () => {
           expect(n.ancestors.length).to.equal(0);
         });
 
-        it('parents', () => {
+        it("parents", () => {
           expect(a.ancestors.length).to.equal(1);
           expect(a.ancestors[0]).to.equal(n);
 
@@ -108,7 +108,7 @@ describe('TreeNode', () => {
           expect(b.ancestors[0]).to.equal(n);
         });
 
-        it('grandparents', () => {
+        it("grandparents", () => {
           let aanc = [a, n],
             banc = [b, n];
           expect(a1.ancestors.length).to.equal(2);
@@ -126,7 +126,7 @@ describe('TreeNode', () => {
       });
     });
 
-    describe('for related nodes', () => {
+    describe("for related nodes", () => {
       beforeEach(() => {
         n = new Node();
       });
@@ -134,14 +134,14 @@ describe('TreeNode', () => {
         n = null;
       });
 
-      it('should not be possible to add itself as a child', () => {
+      it("should not be possible to add itself as a child", () => {
         const f = () => {
           n.addChild(n);
         };
-        expect(f).to.throw('Can not add itself as child!');
+        expect(f).to.throw("Can not add itself as child!");
       });
 
-      it('should not be possible to add a parent/ancestor as a child', () => {
+      it("should not be possible to add a parent/ancestor as a child", () => {
         let a = new Node(),
           b = new Node(),
           c = new Node(),
@@ -153,13 +153,13 @@ describe('TreeNode', () => {
           };
         a.addChild(b.addChild(c)); // a->b->c
 
-        expect(f).to.throw('Can not add an ancestor as child!');
-        expect(fn).to.throw('Can not add an ancestor as child!');
+        expect(f).to.throw("Can not add an ancestor as child!");
+        expect(fn).to.throw("Can not add an ancestor as child!");
       });
     });
   });
 
-  describe('#removeChild', () => {
+  describe("#removeChild", () => {
     let n, a, a1, a2, a21, b, b1, b2;
 
     beforeEach(() => {
@@ -189,26 +189,26 @@ describe('TreeNode', () => {
       b2 = null;
     });
 
-    describe('after removing child from parent:', () => {
+    describe("after removing child from parent:", () => {
       beforeEach(() => {
         a.removeChild(a1);
       });
-      describe('child node', () => {
-        it('should not have a parent', () => {
+      describe("child node", () => {
+        it("should not have a parent", () => {
           expect(a1.parent).to.be.null;
         });
 
-        it('should not have any ancestors', () => {
+        it("should not have any ancestors", () => {
           expect(a1.ancestors.length).to.equal(0);
         });
       });
 
-      describe('parent node', () => {
-        it('should have removed node as child', () => {
+      describe("parent node", () => {
+        it("should have removed node as child", () => {
           expect(a.children.indexOf(a1)).to.equal(-1);
         });
 
-        it('should have one child left', () => {
+        it("should have one child left", () => {
           expect(a.children.length).to.equal(1);
           expect(a.children[0]).to.equal(a2);
         });
@@ -216,7 +216,7 @@ describe('TreeNode', () => {
     });
   });
 
-  describe('coupling/decoupling', () => {
+  describe("coupling/decoupling", () => {
     let n, a, a1, a2, a21, b, b1, b2;
 
     beforeEach(() => {
@@ -237,23 +237,23 @@ describe('TreeNode', () => {
       n = null;
     });
 
-    describe('adding a child that has a parent to another node:', () => {
-      describe('child node', () => {
-        it('should have new parent', () => {
+    describe("adding a child that has a parent to another node:", () => {
+      describe("child node", () => {
+        it("should have new parent", () => {
           b.addChild(a2);
           expect(a2.parent).to.equal(b);
         });
       });
 
-      describe('old parent node', () => {
-        it('should not have old child as child any longer', () => {
+      describe("old parent node", () => {
+        it("should not have old child as child any longer", () => {
           b.addChild(a2);
           expect(a.children.indexOf(a2)).to.equal(-1);
         });
       });
 
-      describe('new parent node', () => {
-        it('should have newly added child as child', () => {
+      describe("new parent node", () => {
+        it("should have newly added child as child", () => {
           b.addChild(a2);
           expect(b.children.length).to.equal(3);
           expect(b.children[2]).to.equal(a2);

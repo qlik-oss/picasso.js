@@ -1,5 +1,5 @@
-import pointsToPath from '../utils/points-to-path';
-import { toRadians } from '../math/angles';
+import pointsToPath from "../utils/points-to-path";
+import { toRadians } from "../math/angles";
 
 /**
  * @private
@@ -26,8 +26,8 @@ export default function nPolygon(options) {
   }
 
   return {
-    type: 'path',
-    fill: 'black',
+    type: "path",
+    fill: "black",
     d: pointsToPath(points),
   };
 }

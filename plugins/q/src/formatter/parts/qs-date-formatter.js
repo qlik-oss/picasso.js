@@ -1,22 +1,22 @@
-import { TYPES } from '../constants';
+import { TYPES } from "../constants";
 
-const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-const DAYS_ABBR = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+const DAYS_ABBR = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const MONTHS = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
-const MONTHS_ABBR = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const MONTHS_ABBR = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 const SECONDS_PER_DAY = 86400;
 
@@ -51,12 +51,12 @@ function parseDate(d, twelveFormat) {
     m: d.getUTCMinutes(),
     s: d.getUTCSeconds(),
     f: d.getUTCMilliseconds(),
-    t: d.getUTCHours() >= 12 ? 'pm' : 'am',
+    t: d.getUTCHours() >= 12 ? "pm" : "am",
   };
 }
 
 function getRemainder(value) {
-  let s = value.toString().split('.');
+  let s = value.toString().split(".");
   if (s[1]) {
     s = Number(`0.${s[1]}`);
   } else {
@@ -93,7 +93,7 @@ function parseInterval(days, pattern) {
 
   if (/w+|t+/gi.test(pattern)) {
     date = new Date(
-      Date.UTC(1899, 11, 30 + Math.floor(days), 0, 0, Math.round(SECONDS_PER_DAY * (days - Math.floor(days))))
+      Date.UTC(1899, 11, 30 + Math.floor(days), 0, 0, Math.round(SECONDS_PER_DAY * (days - Math.floor(days)))),
     );
     if (isNaN(date.getTime())) {
       date = null;
@@ -116,9 +116,9 @@ function parseInterval(days, pattern) {
     }
   }
 
-  let someT = '';
+  let someT = "";
   if (date) {
-    someT = date.getUTCHours() >= 12 ? 'pm' : 'am';
+    someT = date.getUTCHours() >= 12 ? "pm" : "am";
   }
 
   return {
@@ -136,7 +136,7 @@ function parseInterval(days, pattern) {
 
 function getMasks(inst, d) {
   return {
-    'Y+|y+': {
+    "Y+|y+": {
       Y: `${Number(`${d.year}`.slice(-2))}`,
       YY: pad(`${d.year}`.slice(-2), 2),
       YYY: pad(`${d.year}`.slice(-3), 3),
@@ -145,49 +145,49 @@ function getMasks(inst, d) {
         return pad(`${d.year}`, m.length);
       },
     },
-    'M+': {
+    "M+": {
       M: d.month + 1,
       MM: pad(`${d.month + 1}`, 2),
       MMM: inst.locale_months_abbr[d.month],
       def: inst.locale_months[d.month],
     },
-    'W+|w+': {
+    "W+|w+": {
       W: d.day,
       WW: pad(`${d.day}`, 2),
       WWW: inst.locale_days_abbr[d.day],
       def: inst.locale_days[d.day],
     },
-    'D+|d+': {
+    "D+|d+": {
       D: d.date,
       def(m) {
         return pad(`${d.date}`, m.length);
       },
     },
-    'h+|H+': {
+    "h+|H+": {
       h: d.h,
       def(m) {
         return pad(`${d.h}`, m.length);
       },
     },
-    'm+': {
+    "m+": {
       m: d.m,
       def(m) {
         return pad(`${d.m}`, m.length);
       },
     },
-    's+|S+': {
+    "s+|S+": {
       s: d.s,
       def(m) {
         return pad(`${d.s}`, m.length);
       },
     },
-    'f+|F+': {
+    "f+|F+": {
       def(m) {
         let f = `${d.f}`,
           n = m.length - f.length;
         if (n > 0) {
           for (let i = 0; i < n; i++) {
-            f += '0';
+            f += "0";
           }
         } else if (n < 0) {
           f = f.slice(0, m.length);
@@ -195,7 +195,7 @@ function getMasks(inst, d) {
         return f;
       },
     },
-    't{1,2}|T{1,2}': {
+    "t{1,2}|T{1,2}": {
       def(m) {
         let t = d.t;
         if (m[0].toUpperCase() === m[0]) {
@@ -235,9 +235,9 @@ class DateFormatter {
 
     if (!pattern) {
       const patternMap = {
-        [TYPES.TIME]: info.qTimeFmt || 'hh:mm:ss',
-        [TYPES.DATE]: info.qDateFmt || 'YYYY-MM-DD',
-        [TYPES.DATE_TIME]: info.qTimestampFmt || 'YYYY-MM-DD hh:mm:ss',
+        [TYPES.TIME]: info.qTimeFmt || "hh:mm:ss",
+        [TYPES.DATE]: info.qDateFmt || "YYYY-MM-DD",
+        [TYPES.DATE_TIME]: info.qTimestampFmt || "YYYY-MM-DD hh:mm:ss",
       };
 
       pattern = patternMap[qtype];
@@ -269,10 +269,10 @@ class DateFormatter {
   format(date, pattern) {
     // Fallback pattern is set in constructor
     if (!pattern) {
-      pattern = this.pattern ? this.pattern : 'YYYY-MM-DD hh:mm:ss';
+      pattern = this.pattern ? this.pattern : "YYYY-MM-DD hh:mm:ss";
     }
 
-    pattern = pattern.replace(/\[.+]|\[|]/g, '');
+    pattern = pattern.replace(/\[.+]|\[|]/g, "");
     const hasTwelveFlag = /t+/gi.test(pattern);
     let parsedDate;
 
@@ -296,7 +296,7 @@ class DateFormatter {
         masksArr.push(mask);
       }
     }
-    const dateTimeRegex = new RegExp(masksArr.join('|'), 'g');
+    const dateTimeRegex = new RegExp(masksArr.join("|"), "g");
 
     const result = pattern.replace(dateTimeRegex, (m) => {
       let r;
@@ -310,23 +310,23 @@ class DateFormatter {
         }
       }
       if (!r) {
-        return '';
+        return "";
       }
       let value;
       for (const submask in masks[mask]) {
         if (submask === m || submask.toLowerCase() === m) {
           value = masks[mask][submask];
-          if (typeof value === 'undefined') {
+          if (typeof value === "undefined") {
             value = masks[mask][submask.toLowerCase()];
           }
           break;
         }
       }
-      if (typeof value === 'undefined') {
+      if (typeof value === "undefined") {
         value = masks[mask].def;
       }
 
-      if (typeof value === 'function') {
+      if (typeof value === "function") {
         value = value(m);
       }
       return value;

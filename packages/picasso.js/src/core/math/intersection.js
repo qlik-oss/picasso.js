@@ -1,4 +1,4 @@
-import { add, sub, projectOnto, distance } from './vector';
+import { add, sub, projectOnto, distance } from "./vector";
 
 const EPSILON = 1e-12;
 

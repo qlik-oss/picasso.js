@@ -1,8 +1,8 @@
-import Rect, { create as createRect } from '../rect';
-import GeoRect from '../../../geometry/rect';
-import GeoCircle from '../../../geometry/circle';
+import Rect, { create as createRect } from "../rect";
+import GeoRect from "../../../geometry/rect";
+import GeoCircle from "../../../geometry/circle";
 
-describe('Rect', () => {
+describe("Rect", () => {
   let rect;
   let shape;
 
@@ -15,8 +15,8 @@ describe('Rect', () => {
     };
   });
 
-  describe('Constructor', () => {
-    it('should instantiate a new Rect', () => {
+  describe("Constructor", () => {
+    it("should instantiate a new Rect", () => {
       rect = createRect();
       expect(rect).to.be.an.instanceof(Rect);
       expect(rect.attrs.x).to.be.equal(0);
@@ -24,44 +24,44 @@ describe('Rect', () => {
       expect(rect.attrs.width).to.be.equal(0);
       expect(rect.attrs.height).to.be.equal(0);
       expect(rect.collider).to.be.an.instanceof(GeoRect);
-      expect(rect.colliderType).to.equal('rect');
+      expect(rect.colliderType).to.equal("rect");
     });
 
-    it('should accept arguments', () => {
+    it("should accept arguments", () => {
       shape.x = 10;
       shape.y = 20;
       shape.width = 15;
       shape.height = 25;
-      shape.collider = { type: 'circle' };
+      shape.collider = { type: "circle" };
       rect = createRect(shape);
       expect(rect.attrs.x).to.be.equal(10);
       expect(rect.attrs.y).to.be.equal(20);
       expect(rect.attrs.width).to.be.equal(15);
       expect(rect.attrs.height).to.be.equal(25);
       expect(rect.collider).to.be.an.instanceof(GeoCircle);
-      expect(rect.colliderType).to.equal('circle');
+      expect(rect.colliderType).to.equal("circle");
     });
   });
 
-  describe('Set', () => {
-    it('should set correct values', () => {
+  describe("Set", () => {
+    it("should set correct values", () => {
       rect = createRect(shape);
       rect.set({
         x: 99,
         y: 999,
         width: 1337,
         height: 101,
-        collider: { type: 'circle' },
+        collider: { type: "circle" },
       });
       expect(rect.attrs.x).to.be.equal(99);
       expect(rect.attrs.y).to.be.equal(999);
       expect(rect.attrs.width).to.be.equal(1337);
       expect(rect.attrs.height).to.be.equal(101);
       expect(rect.collider).to.be.an.instanceof(GeoCircle);
-      expect(rect.colliderType).to.equal('circle');
+      expect(rect.colliderType).to.equal("circle");
     });
 
-    it('should handle no arguments', () => {
+    it("should handle no arguments", () => {
       rect = createRect(shape);
       rect.set();
       expect(rect.attrs.x).to.be.equal(0);
@@ -71,15 +71,15 @@ describe('Rect', () => {
       expect(rect.collider).to.be.an.instanceof(GeoRect);
     });
 
-    it('should be able to disable the default collider', () => {
+    it("should be able to disable the default collider", () => {
       rect = createRect(shape);
       rect.set({ collider: { type: null } });
       expect(rect.collider).to.equal(null);
     });
   });
 
-  describe('BoundingRect', () => {
-    it('should handle default values', () => {
+  describe("BoundingRect", () => {
+    it("should handle default values", () => {
       rect = createRect(shape);
       expect(rect.boundingRect()).to.deep.equal({
         x: 0,
@@ -89,7 +89,7 @@ describe('Rect', () => {
       });
     });
 
-    it('should return correct value without transformation', () => {
+    it("should return correct value without transformation", () => {
       shape.x = 10;
       shape.y = 20;
       shape.width = 15;
@@ -103,12 +103,12 @@ describe('Rect', () => {
       });
     });
 
-    it('should return correct value with a scale transformation', () => {
+    it("should return correct value with a scale transformation", () => {
       shape.x = 10;
       shape.y = 20;
       shape.width = 15;
       shape.height = 25;
-      shape.transform = 'scale(2, 3)';
+      shape.transform = "scale(2, 3)";
       rect = createRect(shape);
       rect.resolveLocalTransform();
       expect(rect.boundingRect(true)).to.deep.equal({
@@ -119,12 +119,12 @@ describe('Rect', () => {
       });
     });
 
-    it('should return correct value with a translate transformation', () => {
+    it("should return correct value with a translate transformation", () => {
       shape.x = 10;
       shape.y = 20;
       shape.width = 15;
       shape.height = 25;
-      shape.transform = 'translate(1, 2)';
+      shape.transform = "translate(1, 2)";
       rect = createRect(shape);
       rect.resolveLocalTransform();
       expect(rect.boundingRect(true)).to.deep.equal({
@@ -135,12 +135,12 @@ describe('Rect', () => {
       });
     });
 
-    it('should return correct value with a rotate transformation', () => {
+    it("should return correct value with a rotate transformation", () => {
       shape.x = 10;
       shape.y = 20;
       shape.width = 15;
       shape.height = 25;
-      shape.transform = 'rotate(-45)';
+      shape.transform = "rotate(-45)";
       rect = createRect(shape);
       rect.resolveLocalTransform();
       expect(rect.boundingRect(true)).to.deep.equal({
@@ -151,7 +151,7 @@ describe('Rect', () => {
       });
     });
 
-    it('should return correct value with a negative vector direction', () => {
+    it("should return correct value with a negative vector direction", () => {
       shape.x = -10;
       shape.y = -20;
       shape.width = 15;
@@ -166,8 +166,8 @@ describe('Rect', () => {
     });
   });
 
-  describe('Bounds', () => {
-    it('should handle default values', () => {
+  describe("Bounds", () => {
+    it("should handle default values", () => {
       rect = createRect(shape);
       const e = [
         { x: 0, y: 0 },
@@ -178,7 +178,7 @@ describe('Rect', () => {
       expect(rect.bounds()).to.deep.equal(e);
     });
 
-    it('should return correct value without transformation', () => {
+    it("should return correct value without transformation", () => {
       shape.x = 10;
       shape.y = 20;
       shape.width = 15;
@@ -193,12 +193,12 @@ describe('Rect', () => {
       expect(rect.bounds()).to.deep.equal(e);
     });
 
-    it('should return correct value with a scale transformation', () => {
+    it("should return correct value with a scale transformation", () => {
       shape.x = 10;
       shape.y = 20;
       shape.width = 15;
       shape.height = 25;
-      shape.transform = 'scale(2, 3)';
+      shape.transform = "scale(2, 3)";
       rect = createRect(shape);
       rect.resolveLocalTransform();
       const e = [
@@ -210,12 +210,12 @@ describe('Rect', () => {
       expect(rect.bounds(true)).to.deep.equal(e);
     });
 
-    it('should return correct value with a translate transformation', () => {
+    it("should return correct value with a translate transformation", () => {
       shape.x = 10;
       shape.y = 20;
       shape.width = 15;
       shape.height = 25;
-      shape.transform = 'translate(5, 10)';
+      shape.transform = "translate(5, 10)";
       rect = createRect(shape);
       rect.resolveLocalTransform();
       const e = [
@@ -227,12 +227,12 @@ describe('Rect', () => {
       expect(rect.bounds(true)).to.deep.equal(e);
     });
 
-    it('should return correct value with a rotate transformation', () => {
+    it("should return correct value with a rotate transformation", () => {
       shape.x = 10;
       shape.y = 20;
       shape.width = 15;
       shape.height = 25;
-      shape.transform = 'rotate(-45)';
+      shape.transform = "rotate(-45)";
       rect = createRect(shape);
       rect.resolveLocalTransform();
       const e = [
@@ -244,7 +244,7 @@ describe('Rect', () => {
       expect(rect.bounds(true)).to.deep.equal(e);
     });
 
-    it('should return correct value with a negative vector direction', () => {
+    it("should return correct value with a negative vector direction", () => {
       shape.x = -10;
       shape.y = -20;
       shape.width = 15;
@@ -260,13 +260,13 @@ describe('Rect', () => {
     });
   });
 
-  describe('containsPoint', () => {
-    it('should include transformation when resolving point', () => {
+  describe("containsPoint", () => {
+    it("should include transformation when resolving point", () => {
       shape.x = 10;
       shape.y = 20;
       shape.width = 1;
       shape.height = 1;
-      shape.transform = 'translate(5, 10)';
+      shape.transform = "translate(5, 10)";
       rect = createRect(shape);
       rect.resolveLocalTransform();
 
@@ -274,13 +274,13 @@ describe('Rect', () => {
     });
   });
 
-  describe('intersectsLine', () => {
-    it('should include transformation when resolving line', () => {
+  describe("intersectsLine", () => {
+    it("should include transformation when resolving line", () => {
       shape.x = 10;
       shape.y = 20;
       shape.width = 1;
       shape.height = 1;
-      shape.transform = 'translate(5, 10)';
+      shape.transform = "translate(5, 10)";
       rect = createRect(shape);
       rect.resolveLocalTransform();
 
@@ -290,18 +290,18 @@ describe('Rect', () => {
           y1: 30,
           x2: 16,
           y2: 31,
-        })
+        }),
       ).to.equal(true);
     });
   });
 
-  describe('intersectsRect', () => {
-    it('should include transformation when resolving rect', () => {
+  describe("intersectsRect", () => {
+    it("should include transformation when resolving rect", () => {
       shape.x = 10;
       shape.y = 20;
       shape.width = 1;
       shape.height = 1;
-      shape.transform = 'translate(5, 10)';
+      shape.transform = "translate(5, 10)";
       rect = createRect(shape);
       rect.resolveLocalTransform();
 
@@ -311,18 +311,18 @@ describe('Rect', () => {
           y: 30,
           width: 1,
           height: 1,
-        })
+        }),
       ).to.equal(true);
     });
   });
 
-  describe('intersectsCircle', () => {
-    it('should include transformation when resolving rect', () => {
+  describe("intersectsCircle", () => {
+    it("should include transformation when resolving rect", () => {
       shape.x = 10;
       shape.y = 20;
       shape.width = 1;
       shape.height = 1;
-      shape.transform = 'translate(5, 10)';
+      shape.transform = "translate(5, 10)";
       rect = createRect(shape);
       rect.resolveLocalTransform();
 
@@ -330,13 +330,13 @@ describe('Rect', () => {
     });
   });
 
-  describe('intersectsPolygon', () => {
-    it('should include transformation when resolving rect', () => {
+  describe("intersectsPolygon", () => {
+    it("should include transformation when resolving rect", () => {
       shape.x = 110;
       shape.y = 120;
       shape.width = 10;
       shape.height = 10;
-      shape.transform = 'translate(-100, -100)';
+      shape.transform = "translate(-100, -100)";
       rect = createRect(shape);
       rect.resolveLocalTransform();
 

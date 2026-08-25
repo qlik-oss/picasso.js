@@ -1,7 +1,7 @@
 function createRectCollider({ x, y, size }) {
   const r = size / 2;
   return {
-    type: 'rect',
+    type: "rect",
     x: x - r,
     y: y - r,
     width: size,
@@ -16,14 +16,14 @@ function createRectCollider({ x, y, size }) {
  * @property {string} [direction='horizontal'] - Direction of line ('horizontal'|'vertical').
  */
 export default function line(options) {
-  const isVertical = options.direction === 'vertical';
+  const isVertical = options.direction === "vertical";
   const r = options.size / 2;
   const x = options.x;
   const y = options.y;
 
   return {
-    type: 'line',
-    stroke: 'black',
+    type: "line",
+    stroke: "black",
     strokeWidth: 1,
     x1: x - (isVertical ? 0 : r),
     y1: y - (isVertical ? r : 0),

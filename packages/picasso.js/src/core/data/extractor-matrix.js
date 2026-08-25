@@ -1,19 +1,19 @@
-import { getPropsInfo, collect, track as storeTracked } from './util';
+import { getPropsInfo, collect, track as storeTracked } from "./util";
 
 function datumExtract(propCfg, cell, { key }) {
   const datum = {
     value:
-      typeof propCfg.value === 'function' // eslint-disable-line no-nested-ternary
+      typeof propCfg.value === "function" // eslint-disable-line no-nested-ternary
         ? propCfg.value(cell)
-        : typeof propCfg.value !== 'undefined'
+        : typeof propCfg.value !== "undefined"
           ? propCfg.value
           : cell,
   };
 
   datum.label =
-    typeof propCfg.label === 'function' // eslint-disable-line no-nested-ternary
+    typeof propCfg.label === "function" // eslint-disable-line no-nested-ternary
       ? propCfg.label(cell)
-      : typeof propCfg.label !== 'undefined'
+      : typeof propCfg.label !== "undefined"
         ? String(propCfg.label)
         : String(datum.value);
 
@@ -31,7 +31,7 @@ export default function extract(config, dataset) {
   const cfgs = Array.isArray(config) ? config : [config];
   let dataItems = [];
   cfgs.forEach((cfg) => {
-    if (typeof cfg.field !== 'undefined') {
+    if (typeof cfg.field !== "undefined") {
       const f = dataset.field(cfg.field);
       const sourceKey = dataset.key();
       if (!f) {

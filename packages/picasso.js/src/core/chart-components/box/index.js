@@ -1,8 +1,8 @@
-import component from './box';
+import component from "./box";
 
 export default function box(picasso) {
-  picasso.component('box', component);
-  picasso.component('box-marker', component); // temporary backwards compatibility - DEPRECATED
+  picasso.component("box", component);
+  picasso.component("box-marker", component); // temporary backwards compatibility - DEPRECATED
 }
 
 /**
