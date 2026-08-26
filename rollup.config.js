@@ -64,7 +64,7 @@ const config = (isEsm) => {
             },
           ],
         ],
-        plugins: [[jsxPlugin, { pragma: 'h' }]],
+        plugins: [[jsxPlugin, { runtime: 'classic', pragma: 'h' }]],
       }),
       commonjs(),
     ],
