@@ -104,7 +104,7 @@ export default class Path extends DisplayObject {
             type: 'geopolygon',
             vertices: this.segments,
           },
-          v.collider
+          v.collider,
         );
         return;
       }
@@ -117,7 +117,7 @@ export default class Path extends DisplayObject {
               type: 'polygon',
               vertices: segment,
             },
-            v.collider
+            v.collider,
           );
         } else if (typeof v.collider === 'object' && v.collider.visual) {
           const size = this.attrs['stroke-width'] / 2;
@@ -128,7 +128,7 @@ export default class Path extends DisplayObject {
               type: 'polyline',
               points: segment,
             },
-            v.collider
+            v.collider,
           );
         }
       });

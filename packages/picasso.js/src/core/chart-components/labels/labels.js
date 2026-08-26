@@ -93,8 +93,8 @@ const labelsComponent = {
               source,
               style: this.style,
             },
-            strategies[source.strategy.type]
-          )
+            strategies[source.strategy.type],
+          ),
         );
       }
     });

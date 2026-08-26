@@ -76,7 +76,7 @@ const config = (isEsm) => {
         output: {
           preamble: banner,
         },
-      })
+      }),
     );
   }
 

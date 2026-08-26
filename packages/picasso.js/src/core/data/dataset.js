@@ -82,13 +82,13 @@ function createFields({ source, data, cache, config }) {
             max,
             type,
           },
-          flds[c]
+          flds[c],
         ),
         {
           value: flds[c].value,
           label: flds[c].label,
-        }
-      )
+        },
+      ),
     );
   }
 }

@@ -28,7 +28,7 @@ export default class Rect extends DisplayObject {
         width,
         height,
       },
-      collider
+      collider,
     );
 
     super.set(v);

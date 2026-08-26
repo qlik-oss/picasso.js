@@ -148,7 +148,7 @@ export default function qBrush(brush, opts = {}, layout) {
               qMinInclEq: true,
               qMaxInclEq: true,
             },
-          })
+          }),
         );
       }
     } else {
@@ -171,7 +171,7 @@ export default function qBrush(brush, opts = {}, layout) {
                 qMinInclEq: true,
                 qMaxInclEq: true,
               },
-            })
+            }),
           );
         }
       }
@@ -194,7 +194,7 @@ export default function qBrush(brush, opts = {}, layout) {
                 qMinInclEq: true,
                 qMaxInclEq: false,
               },
-            })
+            }),
           );
         }
       }

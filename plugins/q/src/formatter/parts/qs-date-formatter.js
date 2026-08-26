@@ -93,7 +93,7 @@ function parseInterval(days, pattern) {
 
   if (/w+|t+/gi.test(pattern)) {
     date = new Date(
-      Date.UTC(1899, 11, 30 + Math.floor(days), 0, 0, Math.round(SECONDS_PER_DAY * (days - Math.floor(days))))
+      Date.UTC(1899, 11, 30 + Math.floor(days), 0, 0, Math.round(SECONDS_PER_DAY * (days - Math.floor(days)))),
     );
     if (isNaN(date.getTime())) {
       date = null;

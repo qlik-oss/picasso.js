@@ -49,7 +49,7 @@ export default class Image extends DisplayObject {
           cy,
           r,
         },
-        collider
+        collider,
       );
     } else {
       opts = extend(
@@ -60,7 +60,7 @@ export default class Image extends DisplayObject {
           width,
           height,
         },
-        collider
+        collider,
       );
     }
     super.set(v);

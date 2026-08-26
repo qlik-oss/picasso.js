@@ -254,7 +254,7 @@ class NumberFormatter {
       this.pattern,
       this.thousandDelimiter,
       this.decimalDelimiter,
-      this.type
+      this.type,
     );
     n.subtype = this.subtype;
     return n;
@@ -495,7 +495,7 @@ class NumberFormatter {
         const wholePart = Number(
           (value + EPSILON * sign)
             .toFixed(Math.min(20, decimalPartPattern ? decimalPartPattern.length : 0))
-            .split('.')[0]
+            .split('.')[0],
         );
         let wholePartPattern = numericPattern.split(d)[0];
         wholePartPattern += d;

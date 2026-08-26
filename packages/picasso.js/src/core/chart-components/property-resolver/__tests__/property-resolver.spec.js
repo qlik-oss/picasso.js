@@ -9,7 +9,7 @@ describe('property-resolver', () => {
           doit: false,
           num: 0,
         },
-        { fill: 'green', stroke: 'blue' }
+        { fill: 'green', stroke: 'blue' },
       );
 
       expect(norm).to.eql({
@@ -27,7 +27,7 @@ describe('property-resolver', () => {
           show: 'yes',
           stroke: true,
         },
-        { fill: 'green', stroke: 'blue', show: false }
+        { fill: 'green', stroke: 'blue', show: false },
       );
 
       expect(norm).to.eql({
@@ -43,7 +43,7 @@ describe('property-resolver', () => {
         {
           fill: fn,
         },
-        { fill: 'green', stroke: 'blue' }
+        { fill: 'green', stroke: 'blue' },
       );
 
       expect(norm).to.eql({
@@ -60,7 +60,7 @@ describe('property-resolver', () => {
             fn,
           },
         },
-        { fill: 'green' }
+        { fill: 'green' },
       );
 
       expect(norm).to.eql({
@@ -79,7 +79,7 @@ describe('property-resolver', () => {
           },
         },
         { fill: 'green', stroke: 'blue' },
-        c
+        c,
       );
 
       expect(norm).to.eql({
@@ -95,7 +95,7 @@ describe('property-resolver', () => {
             ref: 'foo',
           },
         },
-        { fill: 'green', stroke: 'blue' }
+        { fill: 'green', stroke: 'blue' },
       );
 
       expect(norm).to.eql({

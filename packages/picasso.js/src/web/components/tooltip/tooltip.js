@@ -273,7 +273,7 @@ const component = {
         this.chart.shapesAt({
           x: this.state.pointer.cx,
           y: this.state.pointer.cy,
-        })
+        }),
       );
     }
 

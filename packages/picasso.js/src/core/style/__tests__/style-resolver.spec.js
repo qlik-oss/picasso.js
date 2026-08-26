@@ -26,7 +26,7 @@ describe('style-resolver', () => {
         font: 'foo',
         color: '$fill',
       },
-      {}
+      {},
     );
     expect(s).to.eql({
       font: 'foo',

@@ -122,7 +122,7 @@ describe('Threshold', () => {
           range: [],
         },
         {},
-        { theme }
+        { theme },
       );
       expect(ths.domain()).to.deep.equal([2]);
     });
@@ -136,7 +136,7 @@ describe('Threshold', () => {
           range: ['a', 'b'],
         },
         {},
-        { theme }
+        { theme },
       );
       expect(ths.domain()).to.deep.equal([4]);
     });
@@ -150,7 +150,7 @@ describe('Threshold', () => {
           range: ['a', 'b', 'c'],
         },
         {},
-        { theme }
+        { theme },
       );
       expect(ths.domain()).to.deep.equal([4, 6]);
     });
@@ -164,7 +164,7 @@ describe('Threshold', () => {
           range: ['a', 'b', 'c'],
         },
         {},
-        { theme }
+        { theme },
       );
       expect(ths.domain()).to.deep.equal([5, 10]);
     });
@@ -178,7 +178,7 @@ describe('Threshold', () => {
           range: ['a', 'b', 'c', 'd'],
         },
         {},
-        { theme }
+        { theme },
       );
       expect(ths.domain()).to.deep.equal([20, 30, 40]);
     });
@@ -192,7 +192,7 @@ describe('Threshold', () => {
           range: ['a', 'b', 'c', 'd'],
         },
         {},
-        { theme }
+        { theme },
       );
       expect(ths.domain()).to.deep.equal([-100, 0, 100]);
     });
@@ -206,7 +206,7 @@ describe('Threshold', () => {
           range: ['a', 'b', 'c', 'd', 'e'],
         },
         {},
-        { theme }
+        { theme },
       );
       expect(ths.domain()).to.deep.equal([20, 25, 30, 35]);
     });
@@ -233,7 +233,7 @@ describe('Threshold', () => {
           max: 20,
         },
         {},
-        { theme }
+        { theme },
       );
 
       expect(ths.domain()).to.deep.equal([-10, 10]);
@@ -269,7 +269,7 @@ describe('Threshold', () => {
           domain: [10],
         },
         {},
-        { theme }
+        { theme },
       );
       expect(ths(9)).to.equal('red');
       expect(ths(11)).to.equal('green');
@@ -282,7 +282,7 @@ describe('Threshold', () => {
           domain: [10, 20],
         },
         {},
-        { theme }
+        { theme },
       );
       expect(ths(9)).to.equal('red');
       expect(ths(10)).to.equal('green');

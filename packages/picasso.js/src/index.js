@@ -243,7 +243,7 @@ const p = pic(
     renderer: renderer(),
     scale: scaleRegistry,
     symbol: symbolRegistry,
-  }
+  },
 );
 
 components.forEach(p.use);

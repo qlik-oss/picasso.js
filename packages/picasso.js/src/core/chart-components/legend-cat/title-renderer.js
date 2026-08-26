@@ -45,7 +45,7 @@ function render({ rect }, renderer, itemized) {
         y: 0,
         baseline: 'text-before-edge',
         title: itemized.displayObject.text,
-      })
+      }),
     );
   }
   renderer.render(nodes);

@@ -9,7 +9,7 @@ describe('categorical', () => {
         theme: {
           palette: (name) => (name === 'unknown' ? ['#d2d2d2'] : []),
         },
-      }
+      },
     );
     expect(s()).to.equal('#d2d2d2');
   });
@@ -30,7 +30,7 @@ describe('categorical', () => {
         theme: {
           palette: (name) => (name === 'categorical' ? defaultColors : []),
         },
-      }
+      },
     );
     expect(s.range()).to.eql(defaultColors);
   });

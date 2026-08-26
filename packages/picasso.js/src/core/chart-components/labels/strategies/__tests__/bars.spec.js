@@ -176,7 +176,7 @@ describe('labeling - bars', () => {
           height: 200,
         },
         'a',
-        { align: 0.25, fontSize: 12, textMetrics: { height: 10, width: 20 } }
+        { align: 0.25, fontSize: 12, textMetrics: { height: 10, width: 20 } },
       );
       expect(label.x).to.equal(25); // rectX + align * (rectWidth - metricWidth)
     });
@@ -190,7 +190,7 @@ describe('labeling - bars', () => {
           height: 200,
         },
         'a',
-        { justify: 0.4, fontSize: 12, textMetrics: { height: 24, width: 40 } }
+        { justify: 0.4, fontSize: 12, textMetrics: { height: 24, width: 40 } },
       );
       expect(label.y).to.equal(112.4);
     });
@@ -210,7 +210,7 @@ describe('labeling - bars', () => {
           justify: 0.0,
           fontSize: 12,
           textMetrics: { height: 24, width: 40 },
-        }
+        },
       );
       expect(label.transform).to.equal('rotate(-90, 17, 30)');
     });
@@ -231,7 +231,7 @@ describe('labeling - bars', () => {
           fontSize: 12,
           textMetrics: { height: 24, width: 40 },
           dock: 'right',
-        }
+        },
       );
       expect(label.transform).to.equal('rotate(90, 17, 30) translate(40, 0)');
     });
@@ -284,7 +284,7 @@ describe('labeling - bars', () => {
           placementSettings: placements,
           rect: {},
         },
-        barRect
+        barRect,
       );
       expect(p.placement).to.equal(placements[2]);
       expect(p.bounds).to.equal(rects.biggest);
@@ -302,7 +302,7 @@ describe('labeling - bars', () => {
           placementSettings: placements,
           rect: {},
         },
-        barRect
+        barRect,
       );
       expect(p.placement).to.equal(placements[1]);
       expect(p.bounds).to.equal(rects.outside);
@@ -319,7 +319,7 @@ describe('labeling - bars', () => {
           placementSettings: placements,
           rect: {},
         },
-        barRect
+        barRect,
       );
       expect(p.placement).to.equal(placements[1]);
       expect(p.bounds).to.equal(rects.outside);
@@ -336,7 +336,7 @@ describe('labeling - bars', () => {
           placementSettings: placements,
           rect: {},
         },
-        barRect
+        barRect,
       );
       expect(p.placement).to.equal(placements[2]);
       expect(p.bounds).to.equal(rects.biggest);
@@ -358,7 +358,7 @@ describe('labeling - bars', () => {
           placementSettings: placements,
           rect: {},
         },
-        barRect
+        barRect,
       );
       expect(p.placement).to.equal(placements[3]);
       expect(p.bounds).to.equal(rects.meh);
@@ -375,7 +375,7 @@ describe('labeling - bars', () => {
           placementSettings: placements,
           rect: {},
         },
-        barRect
+        barRect,
       );
       expect(p.placement).to.equal(placements[2]);
       expect(p.bounds).to.equal(rects.biggest);
@@ -397,7 +397,7 @@ describe('labeling - bars', () => {
           placementSettings: placements,
           rect: {},
         },
-        barRect
+        barRect,
       );
       expect(p.placement).to.equal(placements[1]);
       expect(p.bounds).to.equal(rects.outside);
@@ -415,7 +415,7 @@ describe('labeling - bars', () => {
           placementSettings: placements,
           rect: {},
         },
-        barRect
+        barRect,
       );
       expect(p.placement).to.equal(placements[3]);
       expect(p.bounds).to.equal(rects.meh);
@@ -433,7 +433,7 @@ describe('labeling - bars', () => {
           placementSettings: placements,
           rect: {},
         },
-        barRect
+        barRect,
       );
       expect(p.placement).to.equal(placements[2]);
       expect(p.bounds).to.equal(rects.biggest);
@@ -451,7 +451,7 @@ describe('labeling - bars', () => {
           placementSettings: placements,
           rect: {},
         },
-        barRect
+        barRect,
       );
       expect(p.placement).to.equal(placements[3]);
       expect(p.bounds).to.equal(rects.meh);
@@ -469,7 +469,7 @@ describe('labeling - bars', () => {
           placementSettings: placements,
           rect: {},
         },
-        barRect
+        barRect,
       );
       expect(p.placement).to.equal(placements[2]);
       expect(p.bounds).to.equal(rects.biggest);
@@ -500,7 +500,7 @@ describe('labeling - bars', () => {
           ],
         },
         findPlacement,
-        placer
+        placer,
       );
       expect(findPlacement.callCount).to.equal(0);
       expect(labels.length).to.equal(0);
@@ -523,7 +523,7 @@ describe('labeling - bars', () => {
           ],
         },
         findPlacement,
-        placer
+        placer,
       );
       expect(placer.callCount).to.equal(0);
       expect(labels.length).to.equal(0);
@@ -557,7 +557,7 @@ describe('labeling - bars', () => {
         },
         findPlacement,
         placer,
-        postFilter
+        postFilter,
       );
       expect(labels).to.eql([
         [
@@ -625,7 +625,7 @@ describe('labeling - bars', () => {
         },
         findPlacement,
         placer,
-        postFilter
+        postFilter,
       );
 
       expect(labels[0]).to.containSubset({
@@ -676,7 +676,7 @@ describe('labeling - bars', () => {
         },
         findPlacement,
         placer,
-        postFilter
+        postFilter,
       );
       expect(placer.firstCall).to.have.been.calledWithExactly('bounds', 'a', {
         justify: 0.4,

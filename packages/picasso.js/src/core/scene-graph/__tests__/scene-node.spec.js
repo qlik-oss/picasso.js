@@ -439,7 +439,7 @@ describe('Scene Node', () => {
           y: 20,
           width: 30,
           height: 40,
-        })
+        }),
       );
       sceneNode = create(container);
       expect(sceneNode.collider).to.deep.equal({

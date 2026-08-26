@@ -184,8 +184,8 @@ const scrollbarComponent = {
             [lengthAttr]: `${Math.max(1, thumbRange)}px`,
             background: this.settings.settings.thumbColor,
           },
-        })
-      )
+        }),
+      ),
     );
   },
 

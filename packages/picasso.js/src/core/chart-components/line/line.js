@@ -142,7 +142,7 @@ function createDisplayLayers(layers, { width, height, missingMinor0, stngs }) {
           minor,
           layerObj,
           stngs,
-        })
+        }),
       );
     }
 
@@ -160,8 +160,8 @@ function createDisplayLayers(layers, { width, height, missingMinor0, stngs }) {
             layerObj,
             stngs,
           },
-          'none'
-        )
+          'none',
+        ),
       );
 
       // secondary line layer, used only when rendering area
@@ -178,8 +178,8 @@ function createDisplayLayers(layers, { width, height, missingMinor0, stngs }) {
               layerObj,
               stngs,
             },
-            'none'
-          )
+            'none',
+          ),
         );
       }
     }

@@ -76,7 +76,7 @@ describe('qs-formatter', () => {
       },
       {
         qDecimalSep: 'dec',
-      }
+      },
     );
     expect(f.pattern()).to.equal('#dec##');
   });
@@ -90,7 +90,7 @@ describe('qs-formatter', () => {
         },
         qIsAutoFormat: true,
       },
-      qLocaleInfo
+      qLocaleInfo,
     );
     expect(f(3)).to.equal('1900 januari tisdag');
   });
@@ -103,7 +103,7 @@ describe('qs-formatter', () => {
         },
         qIsAutoFormat: true,
       },
-      {}
+      {},
     );
     expect(f(3)).to.equal('3');
   });

@@ -51,8 +51,8 @@ export default function tween({ old, current }, { renderer }, config, chartStora
             updated.ips.push(
               interpolateObject(
                 extend({}, ids[id], { points: common.old }),
-                extend({}, node, { points: common.current })
-              )
+                extend({}, node, { points: common.current }),
+              ),
             );
             toBeUpdated.push(extend({}, ids[id], { commonPoints: common.old }));
           } else {
@@ -106,7 +106,7 @@ export default function tween({ old, current }, { renderer }, config, chartStora
         } else {
           chartStorage.setValue(
             'animations.updatingStageMeta.shouldBeRemoved',
-            shouldBeRemoved && nUpdatingNodes === 0
+            shouldBeRemoved && nUpdatingNodes === 0,
           );
         }
       }

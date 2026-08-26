@@ -104,7 +104,7 @@ export function rows({ settings, chart, nodes, renderer, style }, placer = place
       align: 0.5,
       justify: 0.5,
     },
-    style.label
+    style.label,
   );
 
   defaults.fontSize = parseInt(defaults.fontSize, 10);
@@ -164,7 +164,7 @@ export function rows({ settings, chart, nodes, renderer, style }, placer = place
       if (type === 'circle') {
         let maxYDistToCenter = Math.max(
           Math.abs(currentY - bounds.cy),
-          Math.abs(currentY + measurements[j].height - bounds.cy)
+          Math.abs(currentY + measurements[j].height - bounds.cy),
         );
         let halfWidth = Math.sqrt(bounds.r * bounds.r - maxYDistToCenter * maxYDistToCenter);
         rect = {

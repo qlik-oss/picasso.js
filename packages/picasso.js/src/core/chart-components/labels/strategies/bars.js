@@ -173,7 +173,7 @@ export function findBestPlacement(
     placementSettings,
     rect,
   },
-  barRect = getBarRect
+  barRect = getBarRect,
 ) {
   let largest;
   let bounds;
@@ -238,7 +238,7 @@ export function placeInBars(
   { chart, targetNodes, rect, fitsHorizontally, collectiveOrientation },
   findPlacement = findBestPlacement,
   placer = placeTextInRect,
-  postFilter = filterOverlapping
+  postFilter = filterOverlapping,
 ) {
   const labels = [];
   const postFilterContext = {
@@ -339,7 +339,7 @@ export function placeInBars(
                 measured,
                 isRotated,
                 bounds,
-                placement.background.padding
+                placement.background.padding,
               );
             }
           }
@@ -477,7 +477,7 @@ export function bars({ settings, chart, nodes, rect, renderer, style }, placer =
       justify: 0,
       fill: '#333',
     },
-    style.label
+    style.label,
   );
 
   defaults.fontSize = parseInt(defaults.fontSize, 10);
@@ -485,7 +485,7 @@ export function bars({ settings, chart, nodes, rect, renderer, style }, placer =
   const labelSettings = settings.labels.map((labelSetting) => extend({}, defaults, settings, labelSetting));
 
   const placementSettings = settings.labels.map((labelSetting) =>
-    labelSetting.placements.map((placement) => extend({}, defaults, settings, labelSetting, placement))
+    labelSetting.placements.map((placement) => extend({}, defaults, settings, labelSetting, placement)),
   );
 
   const { fitsHorizontally, hasHorizontalDirection, targetNodes } = precalculate({
@@ -507,7 +507,7 @@ export function bars({ settings, chart, nodes, rect, renderer, style }, placer =
   const side = orientation === 'h' ? 'height' : 'width';
   targetNodes.sort(
     (a, b) =>
-      a.node.localBounds[coord] + a.node.localBounds[side] - (b.node.localBounds[coord] + b.node.localBounds[side])
+      a.node.localBounds[coord] + a.node.localBounds[side] - (b.node.localBounds[coord] + b.node.localBounds[side]),
   );
 
   return placer({

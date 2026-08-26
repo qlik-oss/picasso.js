@@ -16,7 +16,7 @@ describe('Stage', () => {
         width: 100,
         height: 100,
         fill: 'rect1',
-      })
+      }),
     ); // Add fill value to have a point of validation
     children.push(
       createRect({
@@ -25,7 +25,7 @@ describe('Stage', () => {
         width: 100,
         height: 100,
         fill: 'rect2',
-      })
+      }),
     );
     children.push(
       createRect({
@@ -34,7 +34,7 @@ describe('Stage', () => {
         width: 100,
         height: 100,
         fill: 'rect3',
-      })
+      }),
     );
     stage.addChildren(children);
   });
@@ -69,7 +69,7 @@ describe('Stage', () => {
             width: 100,
             height: 100,
             fill: 'containerRect1',
-          })
+          }),
         );
         container.addChild(
           createRect({
@@ -78,7 +78,7 @@ describe('Stage', () => {
             width: 200,
             height: 200,
             fill: 'containerRect2',
-          })
+          }),
         );
         stage.addChild(container);
 
@@ -96,7 +96,7 @@ describe('Stage', () => {
             width: 100,
             height: 100,
             fill: 'hit',
-          })
+          }),
         );
         stage.addChild(
           createRect({
@@ -105,7 +105,7 @@ describe('Stage', () => {
             width: 20,
             height: 20,
             fill: 'miss',
-          })
+          }),
         );
         const r = stage.getItemsFrom({ x: 30, y: 30 });
 
@@ -158,7 +158,7 @@ describe('Stage', () => {
             width: 100,
             height: 100,
             fill: 'hit',
-          })
+          }),
         );
         stage.addChild(
           createRect({
@@ -167,7 +167,7 @@ describe('Stage', () => {
             width: 20,
             height: 20,
             fill: 'miss',
-          })
+          }),
         );
 
         const r = stage.getItemsFrom({
@@ -226,7 +226,7 @@ describe('Stage', () => {
             width: 100,
             height: 100,
             fill: 'hit',
-          })
+          }),
         );
         stage.addChild(
           createRect({
@@ -235,7 +235,7 @@ describe('Stage', () => {
             width: 20,
             height: 20,
             fill: 'miss',
-          })
+          }),
         );
 
         const r = stage.getItemsFrom({
