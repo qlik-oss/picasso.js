@@ -109,8 +109,8 @@ describe('Polyline', () => {
             y1: 2,
             x2: 1,
             y2: 4,
-          })
-        )
+          }),
+        ),
       ).to.be.true;
     });
 
@@ -124,8 +124,8 @@ describe('Polyline', () => {
             y1: 20,
             x2: 10,
             y2: 40,
-          })
-        )
+          }),
+        ),
       ).to.be.false;
     });
   });
@@ -141,8 +141,8 @@ describe('Polyline', () => {
             y: 4,
             width: 10,
             height: 10,
-          })
-        )
+          }),
+        ),
       ).to.be.true;
     });
 
@@ -156,8 +156,8 @@ describe('Polyline', () => {
             y: 40,
             width: 10,
             height: 10,
-          })
-        )
+          }),
+        ),
       ).to.be.false;
     });
   });

@@ -44,7 +44,7 @@ export default function field(
     value = accessors.value,
     label = accessors.label,
     formatter = accessors.formatter,
-  } = {}
+  } = {},
 ) {
   /**
    * @alias Field

@@ -21,7 +21,7 @@ export default function createCanvasGradient(g, node, gradient) {
       1e-5,
       bounds.x + bounds.width / 2,
       bounds.y + bounds.height / 2,
-      Math.max(bounds.width, bounds.height) / 2
+      Math.max(bounds.width, bounds.height) / 2,
     );
   } else if (orientation === 'conic') {
     const startAngle = gradient.startAngle || 0;
@@ -42,7 +42,7 @@ export default function createCanvasGradient(g, node, gradient) {
       bounds.x + points.x1 * bounds.width,
       bounds.y + points.y1 * bounds.height,
       bounds.x + points.x2 * bounds.width,
-      bounds.y + points.y2 * bounds.height
+      bounds.y + points.y2 * bounds.height,
     );
   }
 

@@ -330,7 +330,7 @@ function componentFactory(definition, context = {}) {
   const dockConfigCallbackContext = { resources: chart.logger ? { logger: chart.logger() } : {} };
   let dockConfig = createDockConfig(
     createDockDefinition(settings, preferredSize, chart.logger()),
-    dockConfigCallbackContext
+    dockConfigCallbackContext,
   );
 
   const appendComponentMeta = (node) => {
@@ -349,7 +349,7 @@ function componentFactory(definition, context = {}) {
       settings = extend(true, {}, defaultSettings, opts.settings);
       dockConfig = createDockConfig(
         createDockDefinition(settings, preferredSize, chart.logger()),
-        dockConfigCallbackContext
+        dockConfigCallbackContext,
       );
       brushArgs.config = settings.brush || {};
     }
@@ -365,7 +365,7 @@ function componentFactory(definition, context = {}) {
         settings.data,
         { dataset: chart.dataset, collection: chart.dataCollection },
         { logger: chart.logger() },
-        chart.dataCollection
+        chart.dataCollection,
       );
       if (!progressive) {
         data = extracted;
@@ -411,7 +411,7 @@ function componentFactory(definition, context = {}) {
         computedOuter: outer.computed || outer,
         computedInner: inner.computed || inner,
       },
-      inner
+      inner,
     );
     size = extend(
       true,
@@ -419,7 +419,7 @@ function componentFactory(definition, context = {}) {
         computedOuter: outer.computed || outer,
         computedInner: inner.computed || inner,
       },
-      size
+      size,
     );
   };
 
@@ -547,7 +547,7 @@ function componentFactory(definition, context = {}) {
         },
         { renderer: rend },
         animations,
-        chart.storage
+        chart.storage,
       );
       currentTween.start();
     } else {

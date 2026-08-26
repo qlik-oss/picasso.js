@@ -1,20 +1,21 @@
 {
   "name": "picasso.js",
-  "version": "2.11.5",
+  "version": "2.11.7",
+  "gitHead": "b6ca9d1ed11709ec18f227b7b7077ce34d61857b",
   "description": "A charting library streamlined for building visualizations for the Qlik Sense Analytics platform.",
-  "license": "MIT",
-  "author": "QlikTech International AB",
   "keywords": [
+    "analytics",
     "chart",
     "data",
-    "visualization",
     "picasso",
-    "analytics"
+    "visualization"
   ],
+  "homepage": "https://qlik.dev",
   "bugs": {
     "url": "https://github.com/qlik-oss/picasso.js/issues"
   },
-  "homepage": "https://qlik.dev",
+  "license": "MIT",
+  "author": "QlikTech International AB",
   "repository": {
     "type": "git",
     "url": "https://github.com/qlik-oss/picasso.js.git"
@@ -30,7 +31,7 @@
   "scripts": {
     "build": "rollup --config ../../rollup.config.js",
     "build:watch": "pnpm run build -w",
-    "lint": "eslint src test",
+    "lint": "oxlint src test",
     "lint:fix": "npm run lint -- --fix",
     "fixture:server": "aw serve -c aw.webserver.config.js",
     "version": "node scripts/version.js && git add src/about.js",
@@ -51,6 +52,5 @@
     "path2d": "0.3.3",
     "preact": "10.13.2",
     "test-utils": "workspace:*"
-  },
-  "gitHead": "b6ca9d1ed11709ec18f227b7b7077ce34d61857b"
+  }
 }

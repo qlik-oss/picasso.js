@@ -19,7 +19,7 @@ describe('box math', () => {
           end: 0.6,
           minPx: 0,
           maxPx: 100,
-        }).actualDiff
+        }).actualDiff,
       ).to.equal(40);
       expect(
         resolveDiff({
@@ -27,7 +27,7 @@ describe('box math', () => {
           end: 0.6,
           minPx: 0,
           maxPx: 100,
-        }).startModifier
+        }).startModifier,
       ).to.equal(0);
       expect(
         resolveDiff({
@@ -35,7 +35,7 @@ describe('box math', () => {
           end: 0.6,
           minPx: 0,
           maxPx: 100,
-        }).actualLow
+        }).actualLow,
       ).to.equal(20);
 
       expect(
@@ -44,7 +44,7 @@ describe('box math', () => {
           end: 0.5,
           minPx: 0,
           maxPx: 100,
-        }).actualDiff
+        }).actualDiff,
       ).to.equal(30);
       expect(
         resolveDiff({
@@ -52,7 +52,7 @@ describe('box math', () => {
           end: 0.5,
           minPx: 0,
           maxPx: 100,
-        }).startModifier
+        }).startModifier,
       ).to.equal(0);
       expect(
         resolveDiff({
@@ -60,7 +60,7 @@ describe('box math', () => {
           end: 0.5,
           minPx: 0,
           maxPx: 100,
-        }).actualLow
+        }).actualLow,
       ).to.equal(20);
 
       expect(
@@ -69,7 +69,7 @@ describe('box math', () => {
           end: 0.75,
           minPx: 0,
           maxPx: 100,
-        }).actualDiff
+        }).actualDiff,
       ).to.equal(85);
       expect(
         resolveDiff({
@@ -77,7 +77,7 @@ describe('box math', () => {
           end: 0.75,
           minPx: 0,
           maxPx: 100,
-        }).startModifier
+        }).startModifier,
       ).to.equal(0);
       expect(
         resolveDiff({
@@ -85,7 +85,7 @@ describe('box math', () => {
           end: 0.75,
           minPx: 0,
           maxPx: 100,
-        }).actualLow
+        }).actualLow,
       ).to.equal(-10);
 
       expect(
@@ -94,7 +94,7 @@ describe('box math', () => {
           end: 0.12,
           minPx: 50,
           maxPx: 100,
-        }).actualDiff
+        }).actualDiff,
       ).to.equal(50);
       expect(
         resolveDiff({
@@ -102,7 +102,7 @@ describe('box math', () => {
           end: 0.12,
           minPx: 50,
           maxPx: 100,
-        }).startModifier
+        }).startModifier,
       ).to.equal(24);
       expect(
         resolveDiff({
@@ -110,7 +110,7 @@ describe('box math', () => {
           end: 0.12,
           minPx: 50,
           maxPx: 100,
-        }).actualLow
+        }).actualLow,
       ).to.equal(-14);
     });
   });

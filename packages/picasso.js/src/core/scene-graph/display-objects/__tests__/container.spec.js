@@ -461,7 +461,7 @@ describe('Container', () => {
           y: 500,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -469,7 +469,7 @@ describe('Container', () => {
           y: 500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.containsPoint({ x: 550, y: 550 });
@@ -484,7 +484,7 @@ describe('Container', () => {
           y: 500,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -492,7 +492,7 @@ describe('Container', () => {
           y: 500,
           width: 200,
           height: 200,
-        })
+        }),
       );
       const childContainer = createContainer();
       childContainer.addChild(
@@ -501,7 +501,7 @@ describe('Container', () => {
           y: 0,
           width: 200,
           height: 200,
-        })
+        }),
       );
       childContainer.addChild(
         createRect({
@@ -509,7 +509,7 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
       container.addChild(childContainer);
 
@@ -525,7 +525,7 @@ describe('Container', () => {
           y: 500,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -533,7 +533,7 @@ describe('Container', () => {
           y: 500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.containsPoint({ x: 0, y: 0 });
@@ -548,7 +548,7 @@ describe('Container', () => {
           y: 0,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -556,7 +556,7 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.containsPoint({ x: 2, y: 2 });
@@ -646,7 +646,7 @@ describe('Container', () => {
           y: 0,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -654,7 +654,7 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.containsPoint({ x: 2, y: 2 });
@@ -669,7 +669,7 @@ describe('Container', () => {
           y: 0,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -677,7 +677,7 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.containsPoint({ x: 2, y: 2 });
@@ -694,7 +694,7 @@ describe('Container', () => {
           y: 500,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -702,7 +702,7 @@ describe('Container', () => {
           y: 500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.intersectsLine({
@@ -722,7 +722,7 @@ describe('Container', () => {
           y: 500,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -730,7 +730,7 @@ describe('Container', () => {
           y: 500,
           width: 200,
           height: 200,
-        })
+        }),
       );
       const childContainer = createContainer();
       childContainer.addChild(
@@ -739,7 +739,7 @@ describe('Container', () => {
           y: 0,
           width: 200,
           height: 200,
-        })
+        }),
       );
       childContainer.addChild(
         createRect({
@@ -747,7 +747,7 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
       container.addChild(childContainer);
 
@@ -768,7 +768,7 @@ describe('Container', () => {
           y: 500,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -776,7 +776,7 @@ describe('Container', () => {
           y: 500,
           width: 200,
           height: 200,
-        })
+        }),
       );
       const childContainer = createContainer();
       childContainer.addChild(
@@ -785,7 +785,7 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.intersectsLine({
@@ -805,7 +805,7 @@ describe('Container', () => {
           y: 0,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -813,7 +813,7 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.intersectsLine({
@@ -841,7 +841,7 @@ describe('Container', () => {
           y: 0,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -849,7 +849,7 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.intersectsLine({
@@ -869,7 +869,7 @@ describe('Container', () => {
           y: 0,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -877,7 +877,7 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.intersectsLine({
@@ -899,7 +899,7 @@ describe('Container', () => {
           y: 500,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -907,7 +907,7 @@ describe('Container', () => {
           y: 500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.intersectsRect({
@@ -927,7 +927,7 @@ describe('Container', () => {
           y: 0,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -935,7 +935,7 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.intersectsRect({
@@ -963,7 +963,7 @@ describe('Container', () => {
           y: 0,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -971,7 +971,7 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.intersectsRect({
@@ -991,7 +991,7 @@ describe('Container', () => {
           y: 0,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -999,7 +999,7 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.intersectsRect({
@@ -1019,7 +1019,7 @@ describe('Container', () => {
           y: 500,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -1027,7 +1027,7 @@ describe('Container', () => {
           y: 500,
           width: 200,
           height: 200,
-        })
+        }),
       );
       const childContainer = createContainer();
       childContainer.addChild(
@@ -1036,7 +1036,7 @@ describe('Container', () => {
           y: 0,
           width: 200,
           height: 200,
-        })
+        }),
       );
       childContainer.addChild(
         createRect({
@@ -1044,7 +1044,7 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
       container.addChild(childContainer);
 
@@ -1065,7 +1065,7 @@ describe('Container', () => {
           y: 500,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -1073,7 +1073,7 @@ describe('Container', () => {
           y: 500,
           width: 200,
           height: 200,
-        })
+        }),
       );
       const childContainer = createContainer();
       childContainer.addChild(
@@ -1082,7 +1082,7 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.intersectsRect({
@@ -1104,7 +1104,7 @@ describe('Container', () => {
           y: 500,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -1112,7 +1112,7 @@ describe('Container', () => {
           y: 500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.intersectsCircle({ x: 550, y: 550, r: 10 });
@@ -1127,7 +1127,7 @@ describe('Container', () => {
           y: 0,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -1135,7 +1135,7 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.intersectsCircle({ x: 550, y: 550, r: 100 });
@@ -1158,7 +1158,7 @@ describe('Container', () => {
           y: 0,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -1166,7 +1166,7 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.intersectsCircle({ x: 2, y: 2, r: 2 });
@@ -1181,7 +1181,7 @@ describe('Container', () => {
           y: 0,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -1189,7 +1189,7 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.intersectsCircle({ x: 20, y: 20, r: 2 });
@@ -1204,7 +1204,7 @@ describe('Container', () => {
           y: 500,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -1212,7 +1212,7 @@ describe('Container', () => {
           y: 500,
           width: 200,
           height: 200,
-        })
+        }),
       );
       const childContainer = createContainer();
       childContainer.addChild(
@@ -1221,7 +1221,7 @@ describe('Container', () => {
           y: 0,
           width: 200,
           height: 200,
-        })
+        }),
       );
       childContainer.addChild(
         createRect({
@@ -1229,7 +1229,7 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
       container.addChild(childContainer);
 
@@ -1245,7 +1245,7 @@ describe('Container', () => {
           y: 500,
           width: 100,
           height: 100,
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -1253,7 +1253,7 @@ describe('Container', () => {
           y: 500,
           width: 200,
           height: 200,
-        })
+        }),
       );
       const childContainer = createContainer();
       childContainer.addChild(
@@ -1262,7 +1262,7 @@ describe('Container', () => {
           y: 1500,
           width: 200,
           height: 200,
-        })
+        }),
       );
 
       const r = container.intersectsCircle({ x: 0, y: 0, r: 100 });
@@ -1280,7 +1280,7 @@ describe('Container', () => {
           width: 100,
           height: 100,
           fill: 'containerRect1',
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -1289,7 +1289,7 @@ describe('Container', () => {
           width: 200,
           height: 200,
           fill: 'containerRect2',
-        })
+        }),
       );
 
       const items = container.getItemsFrom();
@@ -1306,7 +1306,7 @@ describe('Container', () => {
           width: 100,
           height: 100,
           fill: 'containerRect1',
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -1315,7 +1315,7 @@ describe('Container', () => {
           width: 200,
           height: 200,
           fill: 'containerRect2',
-        })
+        }),
       );
 
       const items = container.getItemsFrom({});
@@ -1332,7 +1332,7 @@ describe('Container', () => {
           width: 100,
           height: 100,
           fill: 'containerRect1',
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -1341,7 +1341,7 @@ describe('Container', () => {
           width: 200,
           height: 200,
           fill: 'containerRect2',
-        })
+        }),
       );
 
       const items = container.getItemsFrom(null);
@@ -1358,7 +1358,7 @@ describe('Container', () => {
           width: 100,
           height: 100,
           fill: 'containerRect1',
-        })
+        }),
       );
       container.addChild(
         createRect({
@@ -1367,7 +1367,7 @@ describe('Container', () => {
           width: 200,
           height: 200,
           fill: 'containerRect2',
-        })
+        }),
       );
 
       const items = container.getItemsFrom({
@@ -1390,7 +1390,7 @@ describe('Container', () => {
             width: 100,
             height: 100,
             fill: 'containerRect1',
-          })
+          }),
         );
         container.addChild(
           createRect({
@@ -1399,7 +1399,7 @@ describe('Container', () => {
             width: 200,
             height: 200,
             fill: 'containerRect2',
-          })
+          }),
         );
 
         const items = container.getItemsFrom({ x: 550, y: 550 });
@@ -1416,7 +1416,7 @@ describe('Container', () => {
             width: 100,
             height: 100,
             fill: 'containerRect1',
-          })
+          }),
         );
         container.addChild(
           createRect({
@@ -1425,7 +1425,7 @@ describe('Container', () => {
             width: 200,
             height: 200,
             fill: 'containerRect2',
-          })
+          }),
         );
         const childContainer = createContainer({ fill: 'childContainer' });
         childContainer.addChild(
@@ -1435,7 +1435,7 @@ describe('Container', () => {
             width: 200,
             height: 200,
             fill: 'containerRect3',
-          })
+          }),
         );
         container.addChild(childContainer);
 
@@ -1453,7 +1453,7 @@ describe('Container', () => {
             width: 100,
             height: 100,
             fill: 'containerRect1',
-          })
+          }),
         );
         container.addChild(
           createRect({
@@ -1462,7 +1462,7 @@ describe('Container', () => {
             width: 200,
             height: 200,
             fill: 'containerRect2',
-          })
+          }),
         );
 
         const items = container.getItemsFrom({ x: 400, y: 450 });
@@ -1479,7 +1479,7 @@ describe('Container', () => {
             width: 100,
             height: 100,
             fill: 'containerRect1',
-          })
+          }),
         );
         container.addChild(
           createRect({
@@ -1488,7 +1488,7 @@ describe('Container', () => {
             width: 200,
             height: 200,
             fill: 'containerRect2',
-          })
+          }),
         );
         const vertices = [
           { x: 0, y: 0 },
@@ -1511,7 +1511,7 @@ describe('Container', () => {
             width: 100,
             height: 100,
             fill: 'containerRect1',
-          })
+          }),
         );
         container.addChild(
           createRect({
@@ -1520,7 +1520,7 @@ describe('Container', () => {
             width: 200,
             height: 200,
             fill: 'containerRect2',
-          })
+          }),
         );
 
         const items = container.getItemsFrom({ x: 550, y: 550 });
@@ -1537,7 +1537,7 @@ describe('Container', () => {
             width: 100,
             height: 100,
             fill: 'containerRect1',
-          })
+          }),
         );
         container.addChild(
           createRect({
@@ -1546,7 +1546,7 @@ describe('Container', () => {
             width: 200,
             height: 200,
             fill: 'containerRect2',
-          })
+          }),
         );
         const childContainer = createContainer({ fill: 'childContainer' });
         childContainer.addChild(
@@ -1556,7 +1556,7 @@ describe('Container', () => {
             width: 200,
             height: 200,
             fill: 'containerRect3',
-          })
+          }),
         );
         container.addChild(childContainer);
 
@@ -1574,7 +1574,7 @@ describe('Container', () => {
             width: 100,
             height: 100,
             fill: 'containerRect1',
-          })
+          }),
         );
         container.addChild(
           createRect({
@@ -1584,7 +1584,7 @@ describe('Container', () => {
             height: 200,
             fill: 'containerRect2',
             collider: { type: null },
-          })
+          }),
         );
 
         const items = container.getItemsFrom({ x: 550, y: 550 });
@@ -1611,7 +1611,7 @@ describe('Container', () => {
             width: 100,
             height: 100,
             fill: 'containerRect1',
-          })
+          }),
         );
         container.addChild(
           createRect({
@@ -1620,7 +1620,7 @@ describe('Container', () => {
             width: 200,
             height: 200,
             fill: 'containerRect2',
-          })
+          }),
         );
         container.addChild(
           createRect({
@@ -1629,7 +1629,7 @@ describe('Container', () => {
             width: 200,
             height: 200,
             fill: 'containerRect3',
-          })
+          }),
         );
 
         const items = container.getItemsFrom({ x: 550, y: 550 });
@@ -1646,7 +1646,7 @@ describe('Container', () => {
             width: 100,
             height: 100,
             fill: 'containerRect1',
-          })
+          }),
         );
         container.addChild(
           createRect({
@@ -1655,7 +1655,7 @@ describe('Container', () => {
             width: 200,
             height: 200,
             fill: 'containerRect2',
-          })
+          }),
         );
         const childContainer = createContainer({ fill: 'childContainer' });
         childContainer.addChild(
@@ -1665,7 +1665,7 @@ describe('Container', () => {
             width: 200,
             height: 200,
             fill: 'containerRect3',
-          })
+          }),
         );
         container.addChild(childContainer);
 
@@ -1683,7 +1683,7 @@ describe('Container', () => {
             width: 100,
             height: 100,
             fill: 'containerRect1',
-          })
+          }),
         );
         container.addChild(
           createRect({
@@ -1693,7 +1693,7 @@ describe('Container', () => {
             height: 200,
             fill: 'containerRect2',
             collider: { type: null },
-          })
+          }),
         );
 
         const items = container.getItemsFrom({ x: 550, y: 550 });
@@ -1718,7 +1718,7 @@ describe('Container', () => {
             width: 100,
             height: 100,
             fill: 'containerRect1',
-          })
+          }),
         );
         container.addChild(
           createRect({
@@ -1727,7 +1727,7 @@ describe('Container', () => {
             width: 200,
             height: 200,
             fill: 'containerRect2',
-          })
+          }),
         );
 
         const items = container.getItemsFrom({ x: 450, y: 450 });
@@ -1755,7 +1755,7 @@ describe('Container', () => {
             width: 100,
             height: 100,
             fill: 'containerRect1',
-          })
+          }),
         );
 
         const items = container.getItemsFrom({ x: 550, y: 550 });
@@ -1781,7 +1781,7 @@ describe('Container', () => {
             width: 100,
             height: 100,
             fill: 'containerRect1',
-          })
+          }),
         );
 
         const items = container.getItemsFrom({ x: 550, y: 550 });
@@ -1807,7 +1807,7 @@ describe('Container', () => {
             width: 100,
             height: 100,
             fill: 'containerRect1',
-          })
+          }),
         );
         const childContainer = createContainer({ collider: { type: 'bounds' }, fill: 'childContainer' });
         childContainer.addChild(
@@ -1817,7 +1817,7 @@ describe('Container', () => {
             width: 200,
             height: 200,
             fill: 'containerRect2',
-          })
+          }),
         );
 
         const items = container.getItemsFrom({ x: 10, y: 10 });

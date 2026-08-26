@@ -96,7 +96,7 @@ function getFieldAccessor(sourceDepthObject, targetDepthObject) {
   let nodeFn = treeAccessor(
     sourceDepthObject.fieldDepth,
     targetDepthObject.fieldDepth,
-    targetDepthObject.pseudoMeasureIndex
+    targetDepthObject.pseudoMeasureIndex,
   );
   let valueFn;
 

@@ -55,7 +55,7 @@ describe('labeling - rows', () => {
           renderer,
           style: {},
         },
-        (bounds) => bounds
+        (bounds) => bounds,
       );
 
       expect(labels[0]).to.eql({
@@ -90,7 +90,7 @@ describe('labeling - rows', () => {
           renderer,
           style: {},
         },
-        (bounds) => bounds
+        (bounds) => bounds,
       );
 
       expect(labels[0]).to.eql({
@@ -133,7 +133,7 @@ describe('labeling - rows', () => {
           renderer,
           style: {},
         },
-        (bounds) => bounds
+        (bounds) => bounds,
       );
 
       expect(labels[0]).to.eql({
@@ -176,7 +176,7 @@ describe('labeling - rows', () => {
           renderer,
           style: {},
         },
-        (bounds) => bounds
+        (bounds) => bounds,
       );
 
       expect(labels).to.have.length(0);
@@ -208,7 +208,7 @@ describe('labeling - rows', () => {
           renderer,
           style: {},
         },
-        (bounds, text) => text
+        (bounds, text) => text,
       );
 
       expect(labels).to.eql(['label1', 'label2', 'label3']);
@@ -240,7 +240,7 @@ describe('labeling - rows', () => {
           renderer,
           style: {},
         },
-        (bounds, text) => text
+        (bounds, text) => text,
       );
 
       expect(labels).to.eql(['label1']);
@@ -279,7 +279,7 @@ describe('labeling - rows', () => {
           renderer,
           style: {},
         },
-        (bounds, text) => ({ text })
+        (bounds, text) => ({ text }),
       );
 
       expect(labels[0]).to.eql({
@@ -323,7 +323,7 @@ describe('labeling - rows', () => {
           renderer,
           style: {},
         },
-        (bounds, text) => ({ text })
+        (bounds, text) => ({ text }),
       );
 
       expect(labels.length).to.eql(0);
@@ -363,7 +363,7 @@ describe('labeling - rows', () => {
           renderer,
           style: {},
         },
-        (bounds) => bounds
+        (bounds) => bounds,
       );
 
       expect(labels[0]).to.containSubset({
@@ -397,7 +397,7 @@ describe('labeling - rows', () => {
           renderer,
           style: {},
         },
-        (bounds, text) => text || '<empty>'
+        (bounds, text) => text || '<empty>',
       );
 
       expect(labels).to.eql(['label1', '<empty>', 'label3']);

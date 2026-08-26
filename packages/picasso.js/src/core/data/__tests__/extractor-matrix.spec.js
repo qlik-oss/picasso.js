@@ -39,7 +39,7 @@ describe('straight mapping', () => {
         value: (v) => `-${v}-`,
         label: (v) => `=${v}=`,
       },
-      dataset
+      dataset,
     );
     expect(m).to.eql([
       { value: '-SE-', label: '=SE=', source: { field: 'fkey', key: 'nyckel' } },
@@ -54,7 +54,7 @@ describe('straight mapping', () => {
         field: 0,
         props: { text: { value: (v) => `(${v})` } },
       },
-      dataset
+      dataset,
     );
     expect(m).to.eql([
       {
@@ -88,7 +88,7 @@ describe('straight mapping', () => {
           bool: false,
         },
       },
-      dataset
+      dataset,
     );
     expect(m).to.eql([
       {
@@ -123,7 +123,7 @@ describe('straight mapping', () => {
           num: { field: 1 },
         },
       },
-      dataset
+      dataset,
     );
     expect(m).to.eql([
       {
@@ -153,7 +153,7 @@ describe('straight mapping', () => {
         field: 0,
         filter: (v) => v !== 'IT',
       },
-      dataset
+      dataset,
     );
     expect(m).to.eql([
       { value: 'SE', label: 'SE', source: { field: 'fkey', key: 'nyckel' } },
@@ -170,7 +170,7 @@ describe('straight mapping', () => {
           item: { field: 1 },
         },
       },
-      dataset
+      dataset,
     );
     expect(m).to.eql([
       {
@@ -212,7 +212,7 @@ describe('straight mapping', () => {
           last: { field: 1, reduce: 'last' },
         },
       },
-      ds
+      ds,
     );
     expect(m).to.eql([
       {

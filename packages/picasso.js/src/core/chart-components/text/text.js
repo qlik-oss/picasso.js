@@ -185,7 +185,7 @@ const textComponent = {
         rect,
         measureText: this.renderer.measureText,
         style: this.style,
-      })
+      }),
     );
     return nodes;
   },

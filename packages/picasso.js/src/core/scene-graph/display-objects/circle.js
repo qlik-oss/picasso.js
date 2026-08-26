@@ -26,7 +26,7 @@ export default class Circle extends DisplayObject {
         cy,
         r,
       },
-      collider
+      collider,
     );
 
     super.set(v);

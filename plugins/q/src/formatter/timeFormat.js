@@ -6,7 +6,7 @@ const MS_PER_DAY = 86400000;
 
 export function QlikTimeToDate(value) {
   return new Date(
-    Date.UTC(1899, 11, 30 + Math.floor(value), 0, 0, 0, Math.round(MS_PER_DAY * (value - Math.floor(value))))
+    Date.UTC(1899, 11, 30 + Math.floor(value), 0, 0, 0, Math.round(MS_PER_DAY * (value - Math.floor(value)))),
   );
 }
 

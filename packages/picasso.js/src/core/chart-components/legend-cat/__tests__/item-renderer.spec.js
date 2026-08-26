@@ -22,7 +22,7 @@ describe('legend-item-renderer', () => {
         },
         {
           textBounds: (obj) => ({ width: parseInt(obj.fontSize, 10) * 2, height: 20 }),
-        }
+        },
       );
     });
     it('should filter out hidden items', () => {
@@ -69,7 +69,7 @@ describe('legend-item-renderer', () => {
           },
           globalMetrics: { maxItemBounds: { width: 10, height: 20 } },
         },
-        2
+        2,
       );
       // 5 items running in 2 columns gives:
       // 3 rows each with a height of 20, plus spacing between the rows
@@ -83,7 +83,7 @@ describe('legend-item-renderer', () => {
           layout: { orientation: 'horizontal', margin: { horizontal: 17 } },
           globalMetrics: { maxItemBounds: { width: 10, height: 20 } },
         },
-        2
+        2,
       );
       // 5 items running in 2 rows gives:
       // 3 columns each with a width of 10, plus spacing between the columns
@@ -98,7 +98,7 @@ describe('legend-item-renderer', () => {
           layout: { margin: { horizontal: 13 } },
           globalMetrics: { maxItemBounds: { width: 10, height: 20 } },
         },
-        3
+        3,
       );
       // 3 columns each with a width of 10, plus spacing between the columns
       expect(x).to.equal(3 * 10 + 2 * 13);
@@ -110,7 +110,7 @@ describe('legend-item-renderer', () => {
           layout: { orientation: 'horizontal', margin: { vertical: 7 } },
           globalMetrics: { spacing: 4, maxItemBounds: { width: 10, height: 20 } },
         },
-        3
+        3,
       );
       // 3 rows each with a height of 20, plus spacing between the rows
       expect(x).to.equal(3 * 20 + 2 * 7);
@@ -125,7 +125,7 @@ describe('legend-item-renderer', () => {
           items: [1, 2, 3, 4, 5, 6],
           layout: { size: 5, margin: { vertical: 4 } },
           globalMetrics: { maxItemBounds: { width: 10, height: 20 } },
-        })
+        }),
       ).to.equal(3);
     });
 
@@ -138,7 +138,7 @@ describe('legend-item-renderer', () => {
           items: [1, 2, 3, 4, 5, 6],
           layout: { size: 5, margin: { vertical: 4 } },
           globalMetrics: { maxItemBounds: { width: 10, height: 20 } },
-        })
+        }),
       ).to.equal(2);
     });
 
@@ -153,7 +153,7 @@ describe('legend-item-renderer', () => {
             items: [1, 2, 3, 4, 5, 6],
             layout: { size: 5, margin: { vertical: 4, horizontal: 6 }, orientation: 'horizontal' },
             globalMetrics: { maxItemBounds: { width: 25, height: 17 } },
-          })
+          }),
         ).to.equal(2);
       });
 
@@ -167,7 +167,7 @@ describe('legend-item-renderer', () => {
             items: [1, 2, 3, 4, 5, 6],
             layout: { size: 5, margin: { vertical: 4, horizontal: 6 }, orientation: 'horizontal' },
             globalMetrics: { maxItemBounds: { width: 25, height: 17 } },
-          })
+          }),
         ).to.equal(1);
       });
     });
@@ -205,7 +205,7 @@ describe('legend-item-renderer', () => {
             itemized,
             create: ({ x, y, item }) => ({ item: { x, y, label: item } }),
             parallels: 2,
-          }
+          },
         );
       });
 
@@ -251,7 +251,7 @@ describe('legend-item-renderer', () => {
             itemized,
             create: ({ x, y, item }) => ({ item: { x, y, label: item } }),
             parallels: 2,
-          }
+          },
         );
       });
 

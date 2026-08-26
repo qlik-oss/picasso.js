@@ -35,7 +35,7 @@ export default function resolveLevels({ data, settings }) {
       const qInnerTotalWidth = qInner
         ? qInner.qTicks.reduce(
             (prev, curr) => prev + measureText({ text: curr.qText, fontSize: '16px', fontFamily: 'Arial' }).width,
-            0
+            0,
           )
         : 0;
 

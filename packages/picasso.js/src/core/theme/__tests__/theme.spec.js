@@ -28,7 +28,7 @@ describe('Theme', () => {
           fontFamily: '$font',
         },
       },
-      []
+      [],
     );
     expect(t.style({ title: '$label' })).to.eql({ title: { fontFamily: 'Sans nonsense' } });
   });
@@ -41,7 +41,7 @@ describe('Theme', () => {
           fontFamily: '$font',
         },
       },
-      []
+      [],
     );
     t.setStyle({
       $font: 'Sans x',

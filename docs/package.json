@@ -1,7 +1,7 @@
 {
   "name": "docs",
+  "version": "2.11.7",
   "private": true,
-  "version": "2.11.5",
   "description": "Documentation source",
   "scripts": {
     "build": "pnpm run spec && pnpm run ts",

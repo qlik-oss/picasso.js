@@ -37,7 +37,7 @@ function resolveLocalSettings({ state, style, settings }) {
     true,
     {},
     state.isDiscrete ? DEFAULT_DISCRETE_SETTINGS : DEFAULT_CONTINUOUS_SETTINGS,
-    style
+    style,
   );
   const localStgns = extend(true, {}, defaultStgns, settings.settings);
 
@@ -164,7 +164,7 @@ const axisComponent = {
       alignTransform({
         align: this.state.settings.align,
         inner,
-      })
+      }),
     );
 
     const finalOuter = outer || extendedInner;
@@ -200,7 +200,7 @@ const axisComponent = {
         textBounds: this.renderer.textBounds,
         ticks: this.state.ticks,
         state,
-      })
+      }),
     );
 
     crispify.multiple(nodes);

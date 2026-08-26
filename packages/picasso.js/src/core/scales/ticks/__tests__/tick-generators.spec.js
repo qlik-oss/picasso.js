@@ -332,7 +332,7 @@ describe('Tick generators', () => {
           value: (d) => d.datum,
           label: (d) => d.datum,
         },
-        { items: data }
+        { items: data },
       );
       scale.range([0, 1]);
       const ticks = scale.ticks();
@@ -374,7 +374,7 @@ describe('Tick generators', () => {
             { value: 'alpha', id: { value: 'd2' } },
             { value: 'beta', id: { value: 'd3' } },
           ],
-        }
+        },
       );
       scale.range([0, 1]);
 

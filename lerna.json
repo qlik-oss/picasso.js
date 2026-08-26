@@ -8,6 +8,6 @@
       "ignore": ["test-utils", "docs"]
     }
   },
-  "version": "2.11.5",
+  "version": "2.11.7",
   "npmClient": "pnpm"
 }

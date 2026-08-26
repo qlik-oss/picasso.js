@@ -35,7 +35,7 @@ export default function complexResolver({ keys, data, defaultSettings, style, se
         {
           binStart: { scale: settings.major.scale, ref: settings.major.ref.start },
           binEnd: { scale: settings.major.scale, ref: settings.major.ref.end },
-        }
+        },
       ),
     });
   } else if (
@@ -57,7 +57,7 @@ export default function complexResolver({ keys, data, defaultSettings, style, se
           binStart: { scale: settings.major.scale, ref: 'binStart' },
           binEnd: { scale: settings.major.scale, ref: 'binEnd' },
         },
-        settings.major
+        settings.major,
       ),
     });
   } else {

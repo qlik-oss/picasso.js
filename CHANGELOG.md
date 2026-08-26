@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.11.7](https://github.com/qlik-oss/picasso.js/compare/v2.11.6...v2.11.7) (2026-08-20)
+
+**Note:** Version bump only for package picasso.js
+
+## [2.11.6](https://github.com/qlik-oss/picasso.js/compare/v2.11.5...v2.11.6) (2026-08-20)
+
+### Reverts
+
+- undo lockfile maintenance from [#1071](https://github.com/qlik-oss/picasso.js/issues/1071) ([#1072](https://github.com/qlik-oss/picasso.js/issues/1072)) ([65afb56](https://github.com/qlik-oss/picasso.js/commit/65afb56f246a82f13ef857c6ee5b7918bcabf0e5))
+
 ## [2.11.5](https://github.com/qlik-oss/picasso.js/compare/v2.11.4...v2.11.5) (2026-05-12)
 
 ### Bug Fixes

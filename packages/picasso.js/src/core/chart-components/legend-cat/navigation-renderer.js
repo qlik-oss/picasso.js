@@ -61,7 +61,7 @@ function btn(h, { size, isActive, direction, nav, attrs }) {
         class: classString(c),
         style,
       },
-      attrsMerged
+      attrsMerged,
     ),
     [
       content ||
@@ -72,9 +72,9 @@ function btn(h, { size, isActive, direction, nav, attrs }) {
               pointerEvents: 'none',
             },
           },
-          [DIR[direction]]
+          [DIR[direction]],
         ),
-    ]
+    ],
   );
 }
 
@@ -139,7 +139,7 @@ function render(renderer, { rect, itemRenderer }, itemized, legend) {
           },
           nav: itemized.navigation,
         }),
-      ]
+      ],
     ),
   ];
   renderer.render(nodes);

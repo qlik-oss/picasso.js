@@ -2,6 +2,7 @@
 // setValue(object, 'person.name', 'John Doe');
 // console.log(object.person.name);
 // => 'John Doe'
+const FORBIDDEN = ['__proto__', 'constructor', 'prototype'];
 
 function setValue(object, path, value) {
   if (object === undefined || path === undefined) {
@@ -15,6 +16,10 @@ function setValue(object, path, value) {
 
   for (let i = 0; i < steps.length - 1; ++i) {
     const step = steps[i];
+
+    if (FORBIDDEN.includes(step)) {
+      throw new Error(`Unsafe key in path: ${step}`);
+    }
 
     if (scoped[step] === undefined) {
       scoped[step] = Number.isNaN(+steps[i + 1]) ? {} : [];

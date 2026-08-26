@@ -37,7 +37,7 @@ describe('data collections', () => {
         ],
         'dd',
         'opts',
-        extractor
+        extractor,
       );
       expect(fn('a')).to.equal('a - extracted');
       expect(fn('b')).to.equal(false);

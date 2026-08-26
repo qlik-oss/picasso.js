@@ -86,7 +86,7 @@ describe('brush', () => {
           { id: 'products', values: ['cars'] },
           { id: 'region', values: ['sweden'] },
         ],
-        []
+        [],
       );
     });
   });
@@ -490,7 +490,7 @@ describe('brush', () => {
       expect(
         bb.containsMappedData({
           x: { value: 7 },
-        })
+        }),
       ).to.equal(false);
       expect(v.containsValue.callCount).to.equal(0);
     });

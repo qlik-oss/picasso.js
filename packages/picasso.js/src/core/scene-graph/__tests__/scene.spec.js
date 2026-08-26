@@ -130,7 +130,7 @@ describe('Scene', () => {
           [0, 1, 3],
           [0, 0, 1],
         ],
-        'r0do'
+        'r0do',
       );
       expect(c1do.modelViewMatrix.elements).to.deep.equal(
         [
@@ -138,7 +138,7 @@ describe('Scene', () => {
           [0, 1, 100],
           [0, 0, 1],
         ],
-        'c1do'
+        'c1do',
       );
       expect(r1do.modelViewMatrix.elements).to.deep.equal(
         [
@@ -146,7 +146,7 @@ describe('Scene', () => {
           [0, 1, 100],
           [0, 0, 1],
         ],
-        'r1do'
+        'r1do',
       );
       expect(r2do.modelViewMatrix.elements).to.deep.equal(
         [
@@ -154,7 +154,7 @@ describe('Scene', () => {
           [0, 1, 150],
           [0, 0, 1],
         ],
-        'r2do'
+        'r2do',
       );
       expect(r3do.modelViewMatrix).to.equal(undefined, 'r3do');
     });

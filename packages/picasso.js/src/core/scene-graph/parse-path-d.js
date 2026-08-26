@@ -63,7 +63,7 @@ function arcToPoints(s, startX, startY) {
     endX,
     endY,
     startX,
-    startY
+    startY,
   ));
 
   // Approximation of perimeter
@@ -175,8 +175,8 @@ export default function pathToPoints(path) {
             { x, y },
             { x: cmd[1] + x, y: cmd[2] + y },
             { x: cmd[3] + x, y: cmd[4] + y },
-            { x: cmd[5] + x, y: cmd[6] + y }
-          )
+            { x: cmd[5] + x, y: cmd[6] + y },
+          ),
         );
         cpx = cmd[3] + x; // Last control point
         cpy = cmd[4] + y;
@@ -185,7 +185,7 @@ export default function pathToPoints(path) {
         break;
       case 'C':
         points.push(
-          ...cubicCurveToPoints({ x, y }, { x: cmd[1], y: cmd[2] }, { x: cmd[3], y: cmd[4] }, { x: cmd[5], y: cmd[6] })
+          ...cubicCurveToPoints({ x, y }, { x: cmd[1], y: cmd[2] }, { x: cmd[3], y: cmd[4] }, { x: cmd[5], y: cmd[6] }),
         );
         cpx = cmd[3]; // Last control point
         cpy = cmd[4];
@@ -203,8 +203,8 @@ export default function pathToPoints(path) {
             { x, y },
             { x: 2 * x - cpx, y: 2 * y - cpy },
             { x: cmd[1] + x, y: cmd[2] + y },
-            { x: cmd[3] + x, y: cmd[4] + y }
-          )
+            { x: cmd[3] + x, y: cmd[4] + y },
+          ),
         );
         cpx = cmd[1] + x; // last control point
         cpy = cmd[2] + y;
@@ -222,8 +222,8 @@ export default function pathToPoints(path) {
             { x, y },
             { x: 2 * x - cpx, y: 2 * y - cpy },
             { x: cmd[1], y: cmd[2] },
-            { x: cmd[3], y: cmd[4] }
-          )
+            { x: cmd[3], y: cmd[4] },
+          ),
         );
         cpx = cmd[1]; // last control point
         cpy = cmd[2];

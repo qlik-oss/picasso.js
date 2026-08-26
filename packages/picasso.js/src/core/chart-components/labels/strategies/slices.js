@@ -554,7 +554,7 @@ export function getSliceRect({ slice, direction, position, padding, measured, vi
 
 function findBestPlacement(
   { context, direction, measured, node, placementSettings, rect, store },
-  sliceRect = getSliceRect
+  sliceRect = getSliceRect,
 ) {
   for (let p = 0; p < placementSettings.length; p++) {
     let placement = placementSettings[p];
@@ -636,7 +636,7 @@ function measureText(text, stgns, renderer) {
       text: `${text[0]}…`,
       fontFamily,
       fontSize,
-    }).width
+    }).width,
   );
 
   return metrics;
@@ -664,7 +664,7 @@ function measureText(text, stgns, renderer) {
 export function slices(
   { settings, chart, nodes, rect, renderer, style },
   findPlacement = findBestPlacement,
-  placer = placeTextOnPoint
+  placer = placeTextOnPoint,
 ) {
   const defaults = extend(
     {
@@ -674,7 +674,7 @@ export function slices(
       padding: 4,
       position: 'into',
     },
-    style.label
+    style.label,
   );
 
   defaults.fontSize = parseInt(defaults.fontSize, 10);
@@ -682,7 +682,7 @@ export function slices(
   const labelSettings = settings.labels.map((labelSetting) => extend({}, defaults, settings, labelSetting));
 
   const placementSettings = settings.labels.map((labelSetting) =>
-    labelSetting.placements.map((placement) => extend({}, defaults, settings, labelSetting, placement))
+    labelSetting.placements.map((placement) => extend({}, defaults, settings, labelSetting, placement)),
   );
 
   const labels = [];

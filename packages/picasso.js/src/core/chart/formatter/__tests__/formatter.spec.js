@@ -68,7 +68,7 @@ describe('chart formatters', () => {
             type: 'dummy',
           },
           null,
-          deps
+          deps,
         );
       expect(fn).to.throw("Formatter of type 'dummy' was not found");
     });
@@ -82,7 +82,7 @@ describe('chart formatters', () => {
           format: '$',
         },
         null,
-        deps
+        deps,
       );
       expect(s(45)).to.equal('$45');
     });
@@ -97,7 +97,7 @@ describe('chart formatters', () => {
           format: '$',
         },
         null,
-        deps
+        deps,
       );
       expect(s(45)).to.equal('$45');
     });
@@ -111,7 +111,7 @@ describe('chart formatters', () => {
           format: '$',
         },
         null,
-        deps
+        deps,
       );
       expect(s(45)).to.equal('$45');
     });
@@ -130,7 +130,7 @@ describe('chart formatters', () => {
         },
         null,
         deps,
-        extractor
+        extractor,
       );
       expect(s(45)).to.equal('45 %%% ');
     });

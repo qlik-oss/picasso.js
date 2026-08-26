@@ -111,4 +111,25 @@ describe('set-value', () => {
       },
     });
   });
+
+  it('should throw error when trying to set __proto__ property', () => {
+    const override = () => undefined;
+
+    expect(() => setValue(object, '__proto__.toString', override)).to.throw('Unsafe key in path: __proto__');
+    expect(object.toString).not.to.equal(override);
+  });
+
+  it('should throw error when trying to set constructor property', () => {
+    const override = () => undefined;
+
+    expect(() => setValue(object, 'constructor.toString', override)).to.throw('Unsafe key in path: constructor');
+    expect(object.toString).not.to.equal(override);
+  });
+
+  it('should throw error when trying to set prototype property', () => {
+    const override = () => undefined;
+
+    expect(() => setValue(object, 'prototype.toString', override)).to.throw('Unsafe key in path: prototype');
+    expect(object.toString).not.to.equal(override);
+  });
 });

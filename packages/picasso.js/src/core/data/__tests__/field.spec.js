@@ -62,7 +62,7 @@ describe('Field', () => {
           tags: (d) => d.meta.taggar.map((x) => x.v),
           title: (d) => d.t,
           values: (d) => d.values.map((x) => x.v),
-        }
+        },
       );
     });
 

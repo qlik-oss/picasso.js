@@ -184,7 +184,7 @@ const definition = {
           width: this.rect.width,
           height: this.rect.height,
         },
-        p
+        p,
       )
     ) {
       return;

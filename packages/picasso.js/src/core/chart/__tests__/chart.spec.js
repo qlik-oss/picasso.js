@@ -126,7 +126,7 @@ describe('Chart', () => {
             registries: {
               component: comp,
             },
-          }
+          },
         );
       };
 
@@ -173,7 +173,7 @@ describe('Chart', () => {
             component: comp,
             renderer: () => () => componentFixture.mocks().renderer,
           },
-        }
+        },
       );
       chartInstance.update();
       expect(comp1UpdatedCb).to.have.been.calledOnce;
@@ -225,7 +225,7 @@ describe('Chart', () => {
             component: comp,
             renderer: () => () => componentFixture.mocks().renderer,
           },
-        }
+        },
       );
       chartInstance.layoutComponents();
       expect(comp1BeforeUpdateCb).to.have.been.calledOnce;
@@ -273,7 +273,7 @@ describe('Chart', () => {
             component: comp,
             renderer: () => () => mockedRenderer,
           },
-        }
+        },
       );
 
       expect(mockedRenderer.render).to.have.been.calledTwice;
@@ -329,7 +329,7 @@ describe('Chart', () => {
             component: comp,
             renderer: rendererFactory,
           },
-        }
+        },
       );
       const order = element.children.map((c) => c.attributes['data-key']);
       expect(order).to.eql(['comp2', 'comp1']);
@@ -379,7 +379,7 @@ describe('Chart', () => {
             component: comp,
             renderer: rendererFactory,
           },
-        }
+        },
       );
       expect(element.children.map((c) => c.attributes['data-key'])).to.eql(['comp1', 'comp2']);
       chartInstance.update({
@@ -470,7 +470,7 @@ describe('Chart', () => {
               component: comp,
               renderer: rendererFactory,
             },
-          }
+          },
         );
 
         chartInstance.brushFromShapes(shapes, config);
@@ -509,7 +509,7 @@ describe('Chart', () => {
               component: comp,
               renderer: rendererFactory,
             },
-          }
+          },
         );
 
         chartInstance.brushFromShapes(shapes, config);
@@ -536,7 +536,7 @@ describe('Chart', () => {
               component: comp,
               renderer: rendererFactory,
             },
-          }
+          },
         );
 
         chartInstance.brushFromShapes(shapes, config);
@@ -556,7 +556,7 @@ describe('Chart', () => {
         expect(
           createStorage.default.withArgs({
             animations: { updatingStageMeta: { isInit: false, shouldBeRemoved: false } },
-          })
+          }),
         ).to.have.been.calledOnce;
         expect(chartInstance.storage).to.deep.equal({ key: 'cs' });
       });

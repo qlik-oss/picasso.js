@@ -515,12 +515,12 @@ function chartFn(definition, context) {
     currentScales = scaleCollection(
       scales,
       { dataset, collection: dataCollection },
-      { ...deps, scale: registries.scale }
+      { ...deps, scale: registries.scale },
     );
     currentFormatters = formatterCollection(
       formatters,
       { dataset, collection: dataCollection },
-      { ...deps, formatter: registries.formatter }
+      { ...deps, formatter: registries.formatter },
     );
     currentScrollApis = buildScroll(scroll, currentScrollApis);
   };
@@ -594,7 +594,7 @@ function chartFn(definition, context) {
                 width: r.width * r.scaleRatio.x,
                 height: r.height * r.scaleRatio.y,
               },
-          tp
+          tp,
         )
       ) {
         ret.push(c);

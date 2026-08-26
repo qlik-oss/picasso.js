@@ -23,7 +23,7 @@ describe('settings resolver', () => {
         normalizeSettings,
         resolveForItem,
         updateScaleSize,
-      }
+      },
     );
   });
 

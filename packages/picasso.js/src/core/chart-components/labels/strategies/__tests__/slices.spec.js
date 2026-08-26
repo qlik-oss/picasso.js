@@ -16,7 +16,7 @@ describe('labeling - slices', () => {
           padding: 1,
           measured: { width: 5, height: 4 },
           store: { insideLabelBounds: [] },
-        })
+        }),
       ).to.eql({
         x: 5,
         y: -8,
@@ -40,7 +40,7 @@ describe('labeling - slices', () => {
           padding: 1,
           measured: { width: 5, height: 4 },
           store: { insideLabelBounds: [] },
-        })
+        }),
       ).to.eql({
         x: 5,
         y: 4,
@@ -64,7 +64,7 @@ describe('labeling - slices', () => {
           padding: 1,
           measured: { width: 5, height: 4 },
           store: { insideLabelBounds: [] },
-        })
+        }),
       ).to.eql({
         x: -11,
         y: 4,
@@ -97,7 +97,7 @@ describe('labeling - slices', () => {
               },
             ],
           },
-        })
+        }),
       ).to.eql(null);
     });
 
@@ -115,7 +115,7 @@ describe('labeling - slices', () => {
           padding: 1,
           measured: { width: 6, height: 4 },
           store: { insideLabelBounds: [] },
-        })
+        }),
       ).to.eql(null);
     });
 
@@ -193,7 +193,7 @@ describe('labeling - slices', () => {
             padding: 1,
             measured: { width: 6, height: 4, minReqWidth: Infinity },
             store: { insideLabelBounds: [] },
-          })
+          }),
         ).to.equal(null);
       });
 
@@ -212,7 +212,7 @@ describe('labeling - slices', () => {
             padding: 1,
             measured: { width: 6, height: 4, minReqWidth: Infinity },
             store: { insideLabelBounds: [] },
-          })
+          }),
         ).to.equal(null);
       });
 
@@ -236,7 +236,7 @@ describe('labeling - slices', () => {
               height: 100,
             },
             measured: { width: 6, height: 4, minReqWidth: Infinity },
-          })
+          }),
         ).to.equal(null);
       });
 
@@ -266,7 +266,7 @@ describe('labeling - slices', () => {
               height: 100,
             },
             measured: { width: 6, height: 4, minReqWidth: Infinity },
-          })
+          }),
         ).to.equal(null);
       });
     });

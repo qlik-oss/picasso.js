@@ -159,7 +159,7 @@ export function getPropsInfo(cfg, dataset) {
         filter: cfg.filter,
       },
     },
-    {}
+    {},
   );
   const props = normalizeProperties(cfg, dataset, cfg.props || {}, main);
   return { props, main };
@@ -214,7 +214,7 @@ export function collect(trackedItems, { main, propsArr, props }) {
         ret[prop] = collectItems(t.items, props[prop], propsFormatters[prop], prop);
       });
       return ret;
-    })
+    }),
   );
 
   return dataItems;

@@ -126,7 +126,7 @@ function findValues(rangesValues, scale) {
     const endIdx = domain.indexOf(findClosest(range.max, scale));
     values.push.apply(
       values,
-      domain.slice(Math.min(startIdx, endIdx), Math.max(startIdx, endIdx) + 1)
+      domain.slice(Math.min(startIdx, endIdx), Math.max(startIdx, endIdx) + 1),
     ); /* eslint prefer-spread:0 */
   });
 
@@ -179,7 +179,7 @@ function resolveTarget(ctx) {
         y0: targets[0].rect.computedInner.y,
         x1: targets[0].rect.computedInner.x + targets[0].rect.computedInner.width,
         y1: targets[0].rect.computedInner.y + targets[0].rect.computedInner.height,
-      }
+      },
     );
 
     resolved.targetRect = {

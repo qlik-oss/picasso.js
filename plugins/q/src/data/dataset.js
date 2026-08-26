@@ -16,8 +16,8 @@ function createFields(path, obj, prefix, parentKey, opts) {
             key: fieldKey,
             meta,
           },
-          opts
-        )
+          opts,
+        ),
       ),
     };
     f.attrDims = createFields(
@@ -25,21 +25,21 @@ function createFields(path, obj, prefix, parentKey, opts) {
       meta,
       prefix,
       fieldKey,
-      extend({}, opts, { value: (v) => v?.qElemNo, type: 'dimension' })
+      extend({}, opts, { value: (v) => v?.qElemNo, type: 'dimension' }),
     );
     f.attrExps = createFields(
       'qAttrExprInfo',
       meta,
       prefix,
       fieldKey,
-      extend({}, opts, { value: (v) => v?.qNum, type: 'measure' })
+      extend({}, opts, { value: (v) => v?.qNum, type: 'measure' }),
     );
     f.measures = createFields(
       'qMeasureInfo',
       meta,
       prefix,
       fieldKey,
-      extend({}, opts, { value: (v) => v?.qValue, type: 'measure' })
+      extend({}, opts, { value: (v) => v?.qValue, type: 'measure' }),
     );
     return f;
   });
@@ -102,10 +102,10 @@ export default function q({ key, data, config = {} } = {}) {
   const measAcc = cube.qMode === 'S' ? (d) => d.qNum : undefined;
 
   cache.wrappedFields.push(
-    ...createFields('qDimensionInfo', cube, key, '', extend({}, opts, { value: dimAcc, type: 'dimension' }))
+    ...createFields('qDimensionInfo', cube, key, '', extend({}, opts, { value: dimAcc, type: 'dimension' })),
   );
   cache.wrappedFields.push(
-    ...createFields('qMeasureInfo', cube, key, '', extend({}, opts, { value: measAcc, type: 'measure' }))
+    ...createFields('qMeasureInfo', cube, key, '', extend({}, opts, { value: measAcc, type: 'measure' })),
   );
 
   cache.fields = cache.wrappedFields.map((f) => f.instance);
