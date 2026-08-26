@@ -29,8 +29,8 @@ describe('Brush Area Directional', () => {
       },
     };
 
-    global.document.elementFromPoint = sinon.stub();
-    global.document.createElement = sinon.stub().returns({ bind: elementMock });
+    global.document.elementFromPoint = vi.fn();
+    global.document.createElement = vi.fn().mockReturnValue({ bind: elementMock });
 
     componentFixture = componentFactoryFixture();
     config = {
@@ -42,12 +42,12 @@ describe('Brush Area Directional', () => {
 
     sandbox = componentFixture.sandbox();
     chartMock = componentFixture.mocks().chart;
-    chartMock.shapesAt = sandbox.stub().returns([]);
-    chartMock.brushFromShapes = sandbox.stub();
+    chartMock.shapesAt = vi.fn().mockReturnValue([]);
+    chartMock.brushFromShapes = vi.fn();
     componentFixture.mocks().renderer.renderArgs = [vDomMock];
 
     theme = componentFixture.mocks().theme;
-    theme.style.returns({
+    theme.style.mockReturnValue({
       line: {
         stroke: 'rgba(50, 50, 50, 0.8)',
       },

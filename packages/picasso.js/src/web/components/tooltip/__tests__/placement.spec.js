@@ -39,7 +39,7 @@ describe('placement', () => {
       chart: {
         scale: 0,
         formatter: 1,
-        component: sinon.stub().returns(componentMock),
+        component: vi.fn().mockReturnValue(componentMock),
       },
       props: {},
       state: {
@@ -493,7 +493,7 @@ describe('placement', () => {
         size.height = 10;
         context.state.pointer.dx = 0;
         context.state.pointer.dy = 0;
-        context.chart.component = sinon.stub().returns(componentMock);
+        context.chart.component = vi.fn().mockReturnValue(componentMock);
         context.state.activeNodes = [
           {
             desc: {
@@ -534,7 +534,7 @@ describe('placement', () => {
         size.height = 10;
         context.state.pointer.dx = 0;
         context.state.pointer.dy = 0;
-        context.chart.component = sinon.stub().returns(componentMock);
+        context.chart.component = vi.fn().mockReturnValue(componentMock);
         context.state.activeNodes = [
           {
             desc: {
@@ -576,7 +576,7 @@ describe('placement', () => {
         size.height = 10;
         context.state.pointer.dx = 0;
         context.state.pointer.dy = 0;
-        context.chart.component = sinon.stub().returns(componentMock);
+        context.chart.component = vi.fn().mockReturnValue(componentMock);
         context.state.activeNodes = [
           {
             desc: {
@@ -619,7 +619,7 @@ describe('placement', () => {
         size.height = 10;
         context.state.pointer.dx = 0;
         context.state.pointer.dy = 0;
-        context.chart.component = sinon.stub().returns(componentMock);
+        context.chart.component = vi.fn().mockReturnValue(componentMock);
         context.state.activeNodes = [
           {
             desc: {

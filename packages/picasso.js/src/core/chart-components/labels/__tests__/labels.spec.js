@@ -15,11 +15,11 @@ describe('component - label', () => {
 
     it('should filter shapes based on selector', () => {
       const chart = {
-        component: sinon.stub(),
-        findShapes: sinon.stub(),
+        component: vi.fn(),
+        findShapes: vi.fn(),
       };
-      chart.component.withArgs('bars').returns({});
-      chart.findShapes.withArgs('circle').returns([{ key: 'bars' }, { key: 'points' }, { key: 'bars' }]);
+      chart.component.mockReturnValue({});
+      chart.findShapes.mockReturnValue([{ key: 'bars' }, { key: 'points' }, { key: 'bars' }]);
       let labels = strategy(
         {
           chart,

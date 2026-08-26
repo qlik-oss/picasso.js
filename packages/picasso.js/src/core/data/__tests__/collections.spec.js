@@ -13,23 +13,22 @@ describe('data collections', () => {
     });
 
     it('should not call extractor on initiation', () => {
-      let extractor = sinon.stub();
+      let extractor = vi.fn();
       collections([{ key: 'a', data: 'foo' }], 'dd', 'opts', extractor);
-      expect(extractor.callCount).to.equal(0);
+      expect(extractor.mock.calls.length).to.equal(0);
     });
   });
 
   describe('get', () => {
     it('should return a function', () => {
-      let extractor = sinon.stub();
+      let extractor = vi.fn();
       let fn = collections([{ key: 'a', data: 'foo' }], 'dd', 'opts', extractor);
       expect(fn).to.be.a('function');
     });
 
     it('should fetch the correct collection', () => {
-      let extractor = sinon.stub();
-      extractor.withArgs('extracted', 'dd', 'opts').returns('a - extracted');
-      extractor.withArgs('stacked', 'dd', 'opts').returns(false);
+      let extractor = vi.fn();
+      extractor.mockImplementation((type) => (type === 'extracted' ? 'a - extracted' : false));
       let fn = collections(
         [
           { key: 'a', data: 'extracted' },
@@ -44,12 +43,12 @@ describe('data collections', () => {
     });
 
     it('should extract only once', () => {
-      const extractor = sinon.stub();
+      const extractor = vi.fn();
       const fn = collections([{ key: 'a', data: 'foo' }], 'dd', 'opts', extractor);
       fn('a');
       fn('a');
       fn('a');
-      expect(extractor.callCount).to.equal(1);
+      expect(extractor.mock.calls.length).to.equal(1);
     });
   });
 });

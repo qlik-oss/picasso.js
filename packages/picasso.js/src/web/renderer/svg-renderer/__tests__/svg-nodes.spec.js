@@ -13,22 +13,22 @@ describe('svg-nodes', () => {
     it('should create an element and append it to the parent', () => {
       const p = {
         ownerDocument: {
-          createElementNS: sinon.stub().returns('candy'),
+          createElementNS: vi.fn().mockReturnValue('candy'),
         },
-        appendChild: sinon.spy(),
+        appendChild: vi.fn(),
       };
 
       creator('magic', p);
-      expect(p.ownerDocument.createElementNS).to.have.been.calledWithExactly(svgNs, 'magic');
-      expect(p.appendChild).to.have.been.calledWithExactly('candy');
+      expect(p.ownerDocument.createElementNS).toHaveBeenCalledWith(svgNs, 'magic');
+      expect(p.appendChild).toHaveBeenCalledWith('candy');
     });
 
     it('should return the created element', () => {
       const p = {
         ownerDocument: {
-          createElementNS: sinon.stub().returns('candy'),
+          createElementNS: vi.fn().mockReturnValue('candy'),
         },
-        appendChild: sinon.spy(),
+        appendChild: vi.fn(),
       };
 
       expect(creator('magic', p)).to.equal('candy');
@@ -37,13 +37,13 @@ describe('svg-nodes', () => {
     it('should create a group element for type container', () => {
       const p = {
         ownerDocument: {
-          createElementNS: sinon.stub().returns('candy'),
+          createElementNS: vi.fn().mockReturnValue('candy'),
         },
-        appendChild: sinon.spy(),
+        appendChild: vi.fn(),
       };
 
       creator('container', p);
-      expect(p.ownerDocument.createElementNS).to.have.been.calledWithExactly(svgNs, 'g');
+      expect(p.ownerDocument.createElementNS).toHaveBeenCalledWith(svgNs, 'g');
     });
   });
 
@@ -51,11 +51,11 @@ describe('svg-nodes', () => {
     it('should remove node from parent', () => {
       const el = {
         parentNode: {
-          removeChild: sinon.spy(),
+          removeChild: vi.fn(),
         },
       };
       destroyer(el);
-      expect(el.parentNode.removeChild).to.have.been.calledWithExactly(el);
+      expect(el.parentNode.removeChild).toHaveBeenCalledWith(el);
     });
 
     it('should not throw error if parentNode is falsy', () => {
@@ -69,7 +69,7 @@ describe('svg-nodes', () => {
   describe('maintainer', () => {
     it('should apply given attributes', () => {
       const el = {
-        setAttribute: sinon.spy(),
+        setAttribute: vi.fn(),
       };
       const item = {
         attrs: {
@@ -78,13 +78,13 @@ describe('svg-nodes', () => {
         },
       };
       maintainer(el, item);
-      expect(el.setAttribute.firstCall).to.have.been.calledWithExactly('cx', 13);
-      expect(el.setAttribute.secondCall).to.have.been.calledWithExactly('fill', 'red');
+      expect(el.setAttribute.mock.calls[0]).toEqual(['cx', 13]);
+      expect(el.setAttribute.mock.calls[1]).toEqual(['fill', 'red']);
     });
 
     it('should always append whites-space attribute to text nodes', () => {
       const el = {
-        setAttribute: sinon.spy(),
+        setAttribute: vi.fn(),
       };
       const item = {
         attrs: {
@@ -92,12 +92,12 @@ describe('svg-nodes', () => {
         },
       };
       maintainer(el, item);
-      expect(el.setAttribute.firstCall).to.have.been.calledWithExactly('style', 'white-space: pre');
+      expect(el.setAttribute.mock.calls[0]).toEqual(['style', 'white-space: pre']);
     });
 
     it('should ignore attributes id, type, children, and complex data objects', () => {
       const el = {
-        setAttribute: sinon.spy(),
+        setAttribute: vi.fn(),
       };
       const item = {
         id: 'a',
@@ -106,23 +106,23 @@ describe('svg-nodes', () => {
         children: 'a',
       };
       maintainer(el, item);
-      expect(el.setAttribute.callCount).to.equal(0);
+      expect(el.setAttribute.mock.calls.length).to.equal(0);
     });
 
     it('should set data attribute if data value is a primitive', () => {
       const el = {
-        setAttribute: sinon.spy(),
+        setAttribute: vi.fn(),
       };
       const item = {
         data: 'foo',
       };
       maintainer(el, item);
-      expect(el.setAttribute).to.have.been.calledWith('data', 'foo');
+      expect(el.setAttribute).toHaveBeenCalledWith('data', 'foo');
     });
 
     it('should set data attributes if data object contains primitives', () => {
       const el = {
-        setAttribute: sinon.spy(),
+        setAttribute: vi.fn(),
       };
       const item = {
         data: {
@@ -133,15 +133,15 @@ describe('svg-nodes', () => {
         },
       };
       maintainer(el, item);
-      expect(el.setAttribute.callCount).to.equal(3);
-      expect(el.setAttribute.getCall(0)).to.have.been.calledWith('data-x', 123);
-      expect(el.setAttribute.getCall(1)).to.have.been.calledWith('data-label', 'etikett');
-      expect(el.setAttribute.getCall(2)).to.have.been.calledWith('data-really', true);
+      expect(el.setAttribute.mock.calls.length).to.equal(3);
+      expect(el.setAttribute.mock.calls[0]).toEqual(['data-x', 123]);
+      expect(el.setAttribute.mock.calls[1]).toEqual(['data-label', 'etikett']);
+      expect(el.setAttribute.mock.calls[2]).toEqual(['data-really', true]);
     });
 
     it('should always append dy attribute on text item', () => {
       const el = {
-        setAttribute: sinon.spy(),
+        setAttribute: vi.fn(),
         getAttribute: () => 5,
       };
       const item = {
@@ -154,12 +154,12 @@ describe('svg-nodes', () => {
       };
       maintainer(el, item);
 
-      expect(el.setAttribute.args[0]).to.deep.equal(['dy', 15]);
+      expect(el.setAttribute.mock.calls[0]).to.deep.equal(['dy', 15]);
     });
 
     it('should transform dominant-baseline into dy attribute on text item', () => {
       const el = {
-        setAttribute: sinon.spy(),
+        setAttribute: vi.fn(),
         getAttribute: () => 5,
       };
       const item = {
@@ -173,18 +173,18 @@ describe('svg-nodes', () => {
       };
       maintainer(el, item);
 
-      expect(el.setAttribute.args[0]).to.deep.equal(['dy', 3]);
+      expect(el.setAttribute.mock.calls[0]).to.deep.equal(['dy', 3]);
     });
 
     it('should append a title element on text item with the title attribute', () => {
       const titleElm = {};
       const el = {
-        setAttribute: sinon.spy(),
+        setAttribute: vi.fn(),
         getAttribute: () => 5,
         ownerDocument: {
           createElementNS: () => titleElm,
         },
-        appendChild: sinon.spy(),
+        appendChild: vi.fn(),
       };
       const item = {
         type: 'text',
@@ -196,7 +196,7 @@ describe('svg-nodes', () => {
       };
       maintainer(el, item);
 
-      expect(el.appendChild).to.have.been.calledWith(titleElm);
+      expect(el.appendChild).toHaveBeenCalledWith(titleElm);
       expect(titleElm.textContent).to.equal('my title');
     });
 
@@ -209,7 +209,7 @@ describe('svg-nodes', () => {
 
       beforeEach(() => {
         el = {
-          setAttribute: sinon.spy(),
+          setAttribute: vi.fn(),
         };
 
         circle = {
@@ -238,7 +238,7 @@ describe('svg-nodes', () => {
           circle.attrs[attr] = NaN;
 
           maintainer(el, circle);
-          expect(el.setAttribute).to.not.have.been.called;
+          expect(el.setAttribute).not.toHaveBeenCalled();
         });
       });
 
@@ -247,7 +247,7 @@ describe('svg-nodes', () => {
           rect.attrs[attr] = NaN;
 
           maintainer(el, rect);
-          expect(el.setAttribute).to.not.have.been.called;
+          expect(el.setAttribute).not.toHaveBeenCalled();
         });
       });
 
@@ -256,7 +256,7 @@ describe('svg-nodes', () => {
           line.attrs[attr] = NaN;
 
           maintainer(el, line);
-          expect(el.setAttribute).to.not.have.been.called;
+          expect(el.setAttribute).not.toHaveBeenCalled();
         });
       });
 
@@ -265,7 +265,7 @@ describe('svg-nodes', () => {
           text.attrs[attr] = NaN;
 
           maintainer(el, text);
-          expect(el.setAttribute).to.not.have.been.called;
+          expect(el.setAttribute).not.toHaveBeenCalled();
         });
       });
     });

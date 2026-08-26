@@ -56,12 +56,11 @@ describe('Legend Sequential', () => {
     seqScale.data = () => ({
       fields: [{ formatter: () => undefined }],
     });
-    chartMock.scale.withArgs('fillScale').returns(seqScale);
     const linScale = linearScale();
     linScale.data = () => ({
       fields: [{ formatter: () => undefined, title: () => 'scaleTitle' }],
     });
-    chartMock.scale.withArgs('majorScale').returns(linScale);
+    chartMock.scale.mockImplementation((scale) => (scale === 'fillScale' ? seqScale : linScale));
   });
 
   it('defaults', () => {
@@ -232,7 +231,7 @@ describe('Legend Sequential', () => {
     it('should support an inverted fill scale', () => {
       const scaleInstance = sequentialScale({ invert: true }, null, { theme });
       scaleInstance.sources = [];
-      chartMock.scale.withArgs('fillScale').returns(scaleInstance);
+      chartMock.scale.mockImplementationOnce(() => scaleInstance);
       userDef.settings.tick = { anchor: 'right' };
       render();
 
@@ -392,7 +391,8 @@ describe('Legend Sequential', () => {
     it('should support an inverted fill scale', () => {
       const scaleInstance = sequentialScale({ invert: true });
       scaleInstance.sources = [];
-      componentFixture.mocks().chart.scale.returns(scaleInstance);
+      scaleInstance.range(['rgb(180, 221, 212)', 'rgb(34, 83, 90)']);
+      componentFixture.mocks().chart.scale.mockImplementationOnce(() => scaleInstance);
       userDef.settings.tick = { anchor: 'top' };
       render();
 

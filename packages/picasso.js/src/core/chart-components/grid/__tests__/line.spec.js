@@ -41,7 +41,7 @@ describe('line component', () => {
     componentFixture = componentFactoryFixture();
 
     chart = componentFixture.mocks().chart;
-    componentFixture.mocks().theme.style.returns({
+    componentFixture.mocks().theme.style.mockReturnValue({
       ticks: {
         stroke: 'red',
       },
@@ -52,9 +52,8 @@ describe('line component', () => {
     // chart.dataset = () => ({
     //   extract: componentFixture.sandbox().stub()
     // });
-    // chart.dataset().extract.returns([{}]);
-    chart.scale.withArgs({ scale: 'x' }).returns(xScale);
-    chart.scale.withArgs({ scale: 'y' }).returns(yScale);
+    // chart.dataset().extract.mockReturnValue([{}]);
+    chart.scale.mockImplementation((scale) => (scale.scale === 'x' ? xScale : yScale));
   });
 
   it('should not render lines with default settings and no scales', () => {

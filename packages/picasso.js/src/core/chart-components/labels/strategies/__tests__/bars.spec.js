@@ -483,8 +483,8 @@ describe('labeling - bars', () => {
 
     beforeEach(() => {
       chart = {};
-      findPlacement = sinon.stub();
-      placer = sinon.stub();
+      findPlacement = vi.fn();
+      placer = vi.fn();
     });
 
     it('should skip label when text is falsy', () => {
@@ -502,12 +502,12 @@ describe('labeling - bars', () => {
         findPlacement,
         placer,
       );
-      expect(findPlacement.callCount).to.equal(0);
+      expect(findPlacement.mock.calls.length).to.equal(0);
       expect(labels.length).to.equal(0);
     });
 
     it('should skip label when placement is not possible', () => {
-      findPlacement.returns({});
+      findPlacement.mockReturnValue({});
       let labels = placeInBars(
         {
           chart,
@@ -525,12 +525,12 @@ describe('labeling - bars', () => {
         findPlacement,
         placer,
       );
-      expect(placer.callCount).to.equal(0);
+      expect(placer.mock.calls.length).to.equal(0);
       expect(labels.length).to.equal(0);
     });
 
     it('should return label', () => {
-      findPlacement.returns({
+      findPlacement.mockReturnValue({
         bounds: 'bounds',
         placement: {
           fill: () => 'blue',
@@ -578,7 +578,7 @@ describe('labeling - bars', () => {
     });
 
     it('should return label with background', () => {
-      findPlacement.returns({
+      findPlacement.mockReturnValue({
         bounds: {
           x: 0,
           y: 0,
@@ -628,7 +628,7 @@ describe('labeling - bars', () => {
         postFilter,
       );
 
-      expect(labels[0]).to.containSubset({
+      expect(labels[0]).toMatchObject({
         type: 'rect',
         rx: 2,
         ry: 2,
@@ -638,7 +638,7 @@ describe('labeling - bars', () => {
         height: 5.999999999,
         fill: 'gold',
       });
-      expect(labels[1]).to.containSubset({
+      expect(labels[1]).toMatchObject({
         fill: 'blue',
         fontSize: '11px',
         fontFamily: 'bb',
@@ -650,7 +650,7 @@ describe('labeling - bars', () => {
     });
 
     it('should call placer with certain arguments', () => {
-      findPlacement.returns({
+      findPlacement.mockReturnValue({
         bounds: 'bounds',
         placement: {
           fill: 'blue',
@@ -678,7 +678,7 @@ describe('labeling - bars', () => {
         placer,
         postFilter,
       );
-      expect(placer.firstCall).to.have.been.calledWithExactly('bounds', 'a', {
+      expect(placer).toHaveBeenNthCalledWith(1, 'bounds', 'a', {
         justify: 0.4,
         align: 0.7,
         fontSize: '11px',
@@ -697,7 +697,7 @@ describe('labeling - bars', () => {
     beforeEach(() => {
       chart = {};
       renderer = {
-        measureText: sinon.stub(),
+        measureText: vi.fn(),
       };
     });
 
@@ -730,7 +730,7 @@ describe('labeling - bars', () => {
           },
         },
       ];
-      renderer.measureText.returns({ width: 20, height: 10 });
+      renderer.measureText.mockReturnValue({ width: 20, height: 10 });
       let labels = bars({
         settings,
         chart,
@@ -798,7 +798,7 @@ describe('labeling - bars', () => {
           data: 1,
         },
       ];
-      renderer.measureText.returns({ width: 20, height: 10 });
+      renderer.measureText.mockReturnValue({ width: 20, height: 10 });
       let labels = bars({
         settings,
         chart,
@@ -813,7 +813,7 @@ describe('labeling - bars', () => {
         style: {},
       });
 
-      expect(labels[0]).to.containSubset({
+      expect(labels[0]).toMatchObject({
         data: 1,
       });
     });
@@ -847,7 +847,7 @@ describe('labeling - bars', () => {
           },
         },
       ];
-      renderer.measureText.returns({ width: 20, height: 10 });
+      renderer.measureText.mockReturnValue({ width: 20, height: 10 });
       let labels = bars({
         settings,
         chart,
@@ -900,7 +900,7 @@ describe('labeling - bars', () => {
           },
         },
       ];
-      renderer.measureText.returns({ width: 20, height: 10 });
+      renderer.measureText.mockReturnValue({ width: 20, height: 10 });
       let labels = bars({
         settings,
         chart,
@@ -959,7 +959,7 @@ describe('labeling - bars', () => {
           },
         },
       ];
-      renderer.measureText.returns({ width: 20, height: 10 });
+      renderer.measureText.mockReturnValue({ width: 20, height: 10 });
       let labels = bars({
         settings,
         chart,
@@ -1031,7 +1031,7 @@ describe('labeling - bars', () => {
           },
         },
       ];
-      renderer.measureText.returns({ width: 20, height: 10 });
+      renderer.measureText.mockReturnValue({ width: 20, height: 10 });
       let labels = bars({
         settings,
         chart,

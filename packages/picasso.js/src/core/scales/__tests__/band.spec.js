@@ -90,16 +90,16 @@ describe('OrdinalScale', () => {
 
     describe('with range', () => {
       it('should call range fn if provided', () => {
-        const rangeFn = sinon.stub().returns([0.2, 0.8]);
+        const rangeFn = vi.fn().mockReturnValue([0.2, 0.8]);
         scale = band({ range: rangeFn });
-        expect(rangeFn).to.have.been.calledOnce;
+        expect(rangeFn).toHaveBeenCalledTimes(1);
         expect(scale.range()).to.deep.equal([0.2, 0.8]);
       });
 
       it('should not affect maxPxStep setting', () => {
         items = ['A', 'B'].map((v) => ({ value: v, id: v }));
         settings.maxPxStep = 10;
-        settings.range = sinon.stub().returns([0.2, 0.8]);
+        settings.range = vi.fn().mockReturnValue([0.2, 0.8]);
         settings.align = 0;
         scale = band(settings, { fields: [], items });
         const pxScale = scale.pxScale(100);
@@ -112,7 +112,7 @@ describe('OrdinalScale', () => {
       it('should use range fn when maxPxStep does not take effect', () => {
         items = ['A', 'B'].map((v) => ({ value: v, id: v }));
         settings.maxPxStep = 80;
-        settings.range = sinon.stub().returns([-0.2, 1.8]);
+        settings.range = vi.fn().mockReturnValue([-0.2, 1.8]);
         scale = band(settings, { fields: [], items });
         const pxScale = scale.pxScale(100);
         expect(pxScale.range()).to.deep.equal([-0.2, 1.8]);
@@ -121,7 +121,7 @@ describe('OrdinalScale', () => {
       it('should reverse range when setting invert=true', () => {
         items = ['A', 'B'].map((v) => ({ value: v, id: v }));
         settings.invert = true;
-        settings.range = sinon.stub().returns([1, 2]);
+        settings.range = vi.fn().mockReturnValue([1, 2]);
         scale = band(settings, { fields: [], items });
         expect(scale.range()).to.deep.equal([2, 1]);
       });

@@ -8,14 +8,14 @@ describe('svg-gradient', () => {
 
   beforeEach(() => {
     bucket = [];
-    clock = sinon.useFakeTimers(13);
+    vi.useFakeTimers({ now: 13 });
     let i = 1;
     hasher = () => ++i;
     p = gradienter(bucket, hasher);
   });
 
   afterEach(() => {
-    clock.restore();
+    vi.useRealTimers();
   });
 
   describe('onCreate', () => {
@@ -86,7 +86,7 @@ describe('svg-gradient', () => {
       };
       p.onCreate(state);
 
-      expect(bucket[0]).to.containSubset({
+      expect(bucket[0]).toMatchObject({
         id: 'picasso-gradient-13-2',
         type: 'linearGradient',
         x1: 1,
@@ -119,7 +119,7 @@ describe('svg-gradient', () => {
       };
       p.onCreate(state);
 
-      expect(bucket[0]).to.containSubset({
+      expect(bucket[0]).toMatchObject({
         id: 'picasso-gradient-13-2',
         type: 'linearGradient',
         x1: 2,

@@ -38,26 +38,38 @@ describe('picasso-interactions', () => {
     });
 
     it('should prevent default on touchend', async () => {
-      const emulatedPage = await browser.newPage();
-      await emulatedPage.emulate(iPad);
+      const emulatedContext = await browser.newContext({
+        userAgent: iPad.userAgent,
+        viewport: iPad.viewport,
+        deviceScaleFactor: iPad.viewport.deviceScaleFactor,
+        isMobile: iPad.viewport.isMobile,
+        hasTouch: iPad.viewport.hasTouch,
+      });
+      const emulatedPage = await emulatedContext.newPage();
       await emulatedPage.goto(fixture);
       await emulatedPage.waitForSelector('.container');
       await emulatedPage.tap('.container');
       const ev = await emulatedPage.evaluate(() => triggeredEvents);
       expect(ev.defaultPrevented).to.equal(true);
-      await emulatedPage.close();
+      await emulatedContext.close();
     });
 
     it('should not prevent default when interactions are off', async () => {
-      const emulatedPage = await browser.newPage();
-      await emulatedPage.emulate(iPad);
+      const emulatedContext = await browser.newContext({
+        userAgent: iPad.userAgent,
+        viewport: iPad.viewport,
+        deviceScaleFactor: iPad.viewport.deviceScaleFactor,
+        isMobile: iPad.viewport.isMobile,
+        hasTouch: iPad.viewport.hasTouch,
+      });
+      const emulatedPage = await emulatedContext.newPage();
       await emulatedPage.goto(fixture);
       await emulatedPage.waitForSelector('.container');
       await emulatedPage.evaluate(() => picassochart.interactions.off());
       await emulatedPage.tap('.container');
       const ev = await emulatedPage.evaluate(() => triggeredEvents);
       expect(ev.defaultPrevented).to.equal(false);
-      await emulatedPage.close();
+      await emulatedContext.close();
     });
   });
 
@@ -95,8 +107,8 @@ describe('picasso-interactions', () => {
   it('Range select y-axis', async () => {
     await page.goto(fixtureRange);
     await page.waitForSelector('.container');
-    const e = (await page.$$('xpath/.//*[. = "4000"]'))[0];
-    const d = (await page.$$('xpath/.//*[. = "8000"]'))[0];
+    const e = (await page.$$('xpath=.//*[. = "4000"]'))[0];
+    const d = (await page.$$('xpath=.//*[. = "8000"]'))[0];
     const label = await e.boundingBox();
     const label2 = await d.boundingBox();
     await page.mouse.move(label.x + label.width / 2, label.y + label.height / 2);
@@ -112,9 +124,9 @@ describe('picasso-interactions', () => {
   it('Resize range-select on y-axis', async () => {
     await page.goto(fixtureRange);
     await page.waitForSelector('.container');
-    const e = (await page.$$('xpath/.//*[. = "4000"]'))[0];
-    const r = (await page.$$('xpath/.//*[. = "2000"]'))[0];
-    const d = (await page.$$('xpath/.//*[. = "8000"]'))[0];
+    const e = (await page.$$('xpath=.//*[. = "4000"]'))[0];
+    const r = (await page.$$('xpath=.//*[. = "2000"]'))[0];
+    const d = (await page.$$('xpath=.//*[. = "8000"]'))[0];
     const label = await e.boundingBox();
     const label2 = await d.boundingBox();
     const label3 = await r.boundingBox();
@@ -161,7 +173,7 @@ describe('picasso-interactions', () => {
   it('Edit range bubbles', async () => {
     await page.goto(fixtureRange);
     await page.waitForSelector('.container');
-    const axis = await (await page.$$('xpath/.//*[. = "8000"]/..'))[0].boundingBox();
+    const axis = await (await page.$$('xpath=.//*[. = "8000"]/..'))[0].boundingBox();
     const lower = axis.y + axis.height * 0.95;
     const upper = axis.y + axis.height * 0.05;
     // Do range select
@@ -273,9 +285,9 @@ describe('picasso-interactions', () => {
   it('Move range-select on y-axis', async () => {
     await page.goto(fixtureRange);
     await page.waitForSelector('.container');
-    const d = (await page.$$('xpath/.//*[. = "8000"]'))[0];
-    const e = (await page.$$('xpath/.//*[. = "6000"]'))[0];
-    const f = (await page.$$('xpath/.//*[. = "0"]'))[0];
+    const d = (await page.$$('xpath=.//*[. = "8000"]'))[0];
+    const e = (await page.$$('xpath=.//*[. = "6000"]'))[0];
+    const f = (await page.$$('xpath=.//*[. = "0"]'))[0];
     const label = await e.boundingBox();
     const label2 = await d.boundingBox();
     const dest = await f.boundingBox();

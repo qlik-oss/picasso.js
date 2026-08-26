@@ -6,7 +6,7 @@ describe('canvas-gradient', () => {
 
   const dummyRectObject = (type = 'radial', bounds = {}) => ({
     type: 'rect',
-    boundingRect: sinon.stub().returns(bounds),
+    boundingRect: vi.fn().mockReturnValue(bounds),
     fill: {
       type: 'gradient',
       degree: 90,

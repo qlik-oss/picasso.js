@@ -19,7 +19,7 @@ export default function componentFactoryFixture() {
   let mediatorMock;
   let themeMock;
   let registriesMock;
-  const sandbox = sinon.createSandbox();
+  const sandbox = vi;
   let rendererElement;
 
   const fn = function func() {
@@ -27,12 +27,12 @@ export default function componentFactoryFixture() {
       brush: () => ({
         on: () => {},
       }),
-      scale: sandbox.stub(),
-      dataset: sandbox.stub(),
-      container: sandbox.stub(),
-      formatter: sandbox.stub(),
+      scale: vi.fn(),
+      dataset: vi.fn(),
+      container: vi.fn(),
+      formatter: vi.fn(),
       logger: () => ({
-        warn: sandbox.stub(),
+        warn: vi.fn(),
       }),
       element: elementMock(),
     };
@@ -96,16 +96,16 @@ export default function componentFactoryFixture() {
     };
 
     mediatorMock = {
-      on: sandbox.stub(),
+      on: vi.fn(),
     };
 
     themeMock = {
-      palette: sandbox.stub(),
-      style: sandbox.stub(),
+      palette: vi.fn(),
+      style: vi.fn(),
     };
 
     registriesMock = {
-      renderer: sandbox.stub(),
+      renderer: vi.fn(),
     };
 
     return fn;

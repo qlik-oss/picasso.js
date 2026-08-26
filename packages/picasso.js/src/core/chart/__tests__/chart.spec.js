@@ -2,6 +2,12 @@ import elementMock from 'test-utils/mocks/element-mock';
 import componentFactoryFixture from '../../../../test/helpers/component-factory-fixture';
 import * as createStorage from '../../storage';
 import chart, { orderComponents } from '..';
+import { vi } from 'vitest';
+
+vi.mock('../../storage', async (importOriginal) => ({
+  ...(await importOriginal()),
+  default: vi.fn(),
+}));
 
 describe('Chart', () => {
   describe('lifecycle methods', () => {
@@ -19,15 +25,15 @@ describe('Chart', () => {
     let sandbox;
 
     beforeEach(() => {
-      sandbox = sinon.createSandbox();
-      created = sinon.spy();
-      beforeMount = sinon.spy();
-      mounted = sinon.spy();
-      beforeRender = sinon.spy();
-      beforeUpdate = sinon.spy();
-      updated = sinon.spy();
-      beforeDestroy = sinon.spy();
-      destroyed = sinon.spy();
+      sandbox = vi;
+      created = vi.fn();
+      beforeMount = vi.fn();
+      mounted = vi.fn();
+      beforeRender = vi.fn();
+      beforeUpdate = vi.fn();
+      updated = vi.fn();
+      beforeDestroy = vi.fn();
+      destroyed = vi.fn();
 
       element = elementMock();
 
@@ -39,7 +45,7 @@ describe('Chart', () => {
           data: {},
         },
         on: {
-          click: sinon.spy(),
+          click: vi.fn(),
         },
         created,
         beforeMount,
@@ -59,7 +65,7 @@ describe('Chart', () => {
     });
 
     afterEach(() => {
-      sandbox.restore();
+      vi.restoreAllMocks();
     });
 
     it('should call lifecycle methods when rendering', () => {
@@ -67,12 +73,12 @@ describe('Chart', () => {
       // const expectedThis = {
       //   ...definition
       // };
-      expect(created, 'created').to.have.been.calledOnce;
+      expect(created, 'created').toHaveBeenCalledTimes(1);
       // expect(created.thisValues[0], 'created context').to.deep.equal(expectedThis);
-      expect(beforeRender, 'beforeRender').to.have.been.calledOnce;
-      expect(beforeMount, 'beforeMount').to.have.been.calledOnce;
-      expect(mounted, 'mounted').to.have.been.calledOnce;
-      expect(updated, 'updated').to.not.have.been.called;
+      expect(beforeRender, 'beforeRender').toHaveBeenCalledTimes(1);
+      expect(beforeMount, 'beforeMount').toHaveBeenCalledTimes(1);
+      expect(mounted, 'mounted').toHaveBeenCalledTimes(1);
+      expect(updated, 'updated').not.toHaveBeenCalled();
     });
 
     it('should register event listeners when rendering', () => {
@@ -84,23 +90,23 @@ describe('Chart', () => {
     it('should call lifecycle methods when updating', () => {
       const chartInstance = chart(definition, context);
       chartInstance.update();
-      expect(created, 'created').to.have.been.calledOnce;
-      expect(beforeRender, 'beforeRender').to.have.been.calledOnce;
-      expect(beforeUpdate, 'beforeUpdate').to.have.been.calledOnce;
-      expect(beforeMount, 'beforeMount').to.have.been.calledOnce;
-      expect(mounted, 'mounted').to.have.been.calledOnce;
-      expect(updated, 'updated').to.have.been.calledOnce;
+      expect(created, 'created').toHaveBeenCalledTimes(1);
+      expect(beforeRender, 'beforeRender').toHaveBeenCalledTimes(1);
+      expect(beforeUpdate, 'beforeUpdate').toHaveBeenCalledTimes(1);
+      expect(beforeMount, 'beforeMount').toHaveBeenCalledTimes(1);
+      expect(mounted, 'mounted').toHaveBeenCalledTimes(1);
+      expect(updated, 'updated').toHaveBeenCalledTimes(1);
     });
 
     it('should call lifecycle methods when destroying', () => {
       const chartInstance = chart(definition, context);
       chartInstance.destroy();
-      expect(created, 'created').to.have.been.calledOnce;
-      expect(beforeRender, 'beforeRender').to.have.been.calledOnce;
-      expect(beforeMount, 'beforeMount').to.have.been.calledOnce;
-      expect(mounted, 'mounted').to.have.been.calledOnce;
-      expect(beforeDestroy, 'beforeDestroy').to.have.been.calledOnce;
-      expect(destroyed, 'destroyed').to.have.been.calledOnce;
+      expect(created, 'created').toHaveBeenCalledTimes(1);
+      expect(beforeRender, 'beforeRender').toHaveBeenCalledTimes(1);
+      expect(beforeMount, 'beforeMount').toHaveBeenCalledTimes(1);
+      expect(mounted, 'mounted').toHaveBeenCalledTimes(1);
+      expect(beforeDestroy, 'beforeDestroy').toHaveBeenCalledTimes(1);
+      expect(destroyed, 'destroyed').toHaveBeenCalledTimes(1);
       expect(element.listeners.length).to.equal(0);
     });
 
@@ -108,7 +114,7 @@ describe('Chart', () => {
       const comp = () => undefined;
       comp.has = () => false;
       const logger = {
-        warn: sinon.spy(),
+        warn: vi.fn(),
       };
       const create = () => {
         chart(
@@ -131,26 +137,26 @@ describe('Chart', () => {
       };
 
       expect(create).to.not.throw();
-      expect(logger.warn).to.have.been.calledWithExactly('Unknown component: noop');
+      expect(logger.warn).toHaveBeenCalledWith('Unknown component: noop');
     });
 
     it('should not update components specified in excludeFromUpdate array', () => {
       const components = {
         box: {
           has: () => true,
-          render: sinon.stub(),
+          render: vi.fn(),
         },
         point: {
           has: () => true,
-          render: sinon.stub(),
+          render: vi.fn(),
         },
       };
       const comp = (key) => components[key];
       comp.has = () => true;
       const componentFixture = componentFactoryFixture();
 
-      const comp1UpdatedCb = sinon.spy();
-      const comp2UpdatedCb = sinon.spy();
+      const comp1UpdatedCb = vi.fn();
+      const comp2UpdatedCb = vi.fn();
       const chartInstance = chart(
         Object.assign(definition, {
           settings: {
@@ -176,33 +182,33 @@ describe('Chart', () => {
         },
       );
       chartInstance.update();
-      expect(comp1UpdatedCb).to.have.been.calledOnce;
-      expect(comp2UpdatedCb).to.have.been.calledOnce;
+      expect(comp1UpdatedCb).toHaveBeenCalledTimes(1);
+      expect(comp2UpdatedCb).toHaveBeenCalledTimes(1);
       chartInstance.update({ excludeFromUpdate: ['comp2'] });
-      expect(comp1UpdatedCb).to.have.been.calledTwice;
-      expect(comp2UpdatedCb).to.have.been.called;
+      expect(comp1UpdatedCb).toHaveBeenCalledTimes(2);
+      expect(comp2UpdatedCb).toHaveBeenCalled();
       chartInstance.update({ partialData: true, excludeFromUpdate: ['comp1'] });
-      expect(comp1UpdatedCb).to.have.been.calledTwice;
-      expect(comp2UpdatedCb).to.have.been.calledTwice;
+      expect(comp1UpdatedCb).toHaveBeenCalledTimes(2);
+      expect(comp2UpdatedCb).toHaveBeenCalledTimes(2);
     });
 
     it('should run proper functions on layouting components', () => {
       const components = {
         box: {
           has: () => true,
-          render: sinon.stub(),
+          render: vi.fn(),
         },
         point: {
           has: () => true,
-          render: sinon.stub(),
+          render: vi.fn(),
         },
       };
       const comp = (key) => components[key];
       comp.has = () => true;
       const componentFixture = componentFactoryFixture();
 
-      const comp1BeforeUpdateCb = sinon.spy();
-      const comp2BeforeUpdateCb = sinon.spy();
+      const comp1BeforeUpdateCb = vi.fn();
+      const comp2BeforeUpdateCb = vi.fn();
       const chartInstance = chart(
         Object.assign(definition, {
           settings: {
@@ -228,11 +234,11 @@ describe('Chart', () => {
         },
       );
       chartInstance.layoutComponents();
-      expect(comp1BeforeUpdateCb).to.have.been.calledOnce;
-      expect(comp2BeforeUpdateCb).to.have.been.calledOnce;
+      expect(comp1BeforeUpdateCb).toHaveBeenCalledTimes(1);
+      expect(comp2BeforeUpdateCb).toHaveBeenCalledTimes(1);
       chartInstance.layoutComponents();
-      expect(comp1BeforeUpdateCb).to.have.been.calledTwice;
-      expect(comp2BeforeUpdateCb).to.have.been.calledTwice;
+      expect(comp1BeforeUpdateCb).toHaveBeenCalledTimes(2);
+      expect(comp2BeforeUpdateCb).toHaveBeenCalledTimes(2);
     });
 
     it('should update components where transform should be applied', () => {
@@ -248,7 +254,7 @@ describe('Chart', () => {
       comp.has = () => true;
       const componentFixture = componentFactoryFixture();
       const mockedRenderer = componentFixture.mocks().renderer;
-      mockedRenderer.render = sinon.spy();
+      mockedRenderer.render = vi.fn();
 
       const chartInstance = chart(
         Object.assign(definition, {
@@ -276,11 +282,11 @@ describe('Chart', () => {
         },
       );
 
-      expect(mockedRenderer.render).to.have.been.calledTwice;
-      mockedRenderer.settings = sinon.spy();
+      expect(mockedRenderer.render).toHaveBeenCalledTimes(2);
+      mockedRenderer.settings = vi.fn();
       chartInstance.update({ partialData: true });
-      expect(mockedRenderer.settings).to.have.been.calledOnce;
-      const renderArgs = mockedRenderer.render.args;
+      expect(mockedRenderer.settings).toHaveBeenCalledTimes(1);
+      const renderArgs = mockedRenderer.render.mock.calls;
       // no nodes are passed into renderers render function when applying transform!
       expect(renderArgs).to.eql([[['boxNode1']], [['pointNode1']], [['boxNode1']], []]);
     });
@@ -289,16 +295,16 @@ describe('Chart', () => {
       const components = {
         point: {
           has: () => true,
-          render: sinon.stub(),
+          render: vi.fn(),
         },
       };
       const comp = (key) => components[key];
       comp.has = () => true;
       const first = componentFactoryFixture().mocks().renderer;
       const second = componentFactoryFixture().mocks().renderer;
-      const rendererFactory = sinon.stub();
-      rendererFactory.onFirstCall().returns(() => first);
-      rendererFactory.onSecondCall().returns(() => second);
+      const rendererFactory = vi.fn();
+      rendererFactory.mockReturnValueOnce(() => first);
+      rendererFactory.mockReturnValueOnce(() => second);
 
       chart(
         {
@@ -339,16 +345,16 @@ describe('Chart', () => {
       const components = {
         point: {
           has: () => true,
-          render: sinon.stub(),
+          render: vi.fn(),
         },
       };
       const comp = (key) => components[key];
       comp.has = () => true;
       const first = componentFactoryFixture().mocks().renderer;
       const second = componentFactoryFixture().mocks().renderer;
-      const rendererFactory = sinon.stub();
-      rendererFactory.onFirstCall().returns(() => first);
-      rendererFactory.onSecondCall().returns(() => second);
+      const rendererFactory = vi.fn();
+      rendererFactory.mockReturnValueOnce(() => first);
+      rendererFactory.mockReturnValueOnce(() => second);
 
       const chartInstance = chart(
         {
@@ -439,15 +445,15 @@ describe('Chart', () => {
         const components = {
           point: {
             has: () => true,
-            render: sinon.stub(),
+            render: vi.fn(),
           },
         };
         comp = (key) => components[key];
         comp.has = () => true;
 
         const first = componentFactoryFixture().mocks().renderer;
-        rendererFactory = sinon.stub();
-        rendererFactory.onFirstCall().returns(() => first);
+        rendererFactory = vi.fn();
+        rendererFactory.mockReturnValueOnce(() => first);
       });
 
       it('should brush on component, which key matches the key of the input shape', () => {
@@ -478,7 +484,7 @@ describe('Chart', () => {
         const brushedComponent = chartInstance.component('foo');
         const nonBrushedComponent = chartInstance.component('bar');
 
-        expect(brushedComponent).to.containSubset(defComp[0]);
+        expect(brushedComponent).toMatchObject(defComp[0]);
         expect(nonBrushedComponent).to.be.undefined;
       });
 
@@ -495,7 +501,7 @@ describe('Chart', () => {
         ];
 
         const second = componentFactoryFixture().mocks().renderer;
-        rendererFactory.onSecondCall().returns(() => second);
+        rendererFactory.mockReturnValueOnce(() => second);
 
         const chartInstance = chart(
           {
@@ -517,8 +523,8 @@ describe('Chart', () => {
         const b1 = chartInstance.component('foo');
         const b2 = chartInstance.component('bar');
 
-        expect(b1).to.containSubset(defComp[0]);
-        expect(b2).to.containSubset(defComp[1]);
+        expect(b1).toMatchObject(defComp[0]);
+        expect(b2).toMatchObject(defComp[1]);
       });
 
       it('should not brush on any components', () => {
@@ -551,13 +557,13 @@ describe('Chart', () => {
 
     describe('storage', () => {
       it('should call createStorage with correct parameters', () => {
-        sandbox.stub(createStorage, 'default').returns({ key: 'cs' });
+        createStorage.default.mockClear();
+        createStorage.default.mockReturnValue({ key: 'cs' });
         const chartInstance = chart(definition, context);
-        expect(
-          createStorage.default.withArgs({
-            animations: { updatingStageMeta: { isInit: false, shouldBeRemoved: false } },
-          }),
-        ).to.have.been.calledOnce;
+        expect(createStorage.default.mock.calls).to.have.length(1);
+        expect(createStorage.default.mock.calls[0][0]).to.deep.equal({
+          animations: { updatingStageMeta: { isInit: false, shouldBeRemoved: false } },
+        });
         expect(chartInstance.storage).to.deep.equal({ key: 'cs' });
       });
     });

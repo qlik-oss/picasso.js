@@ -2,6 +2,20 @@ import componentFactory from '../component-factory';
 import * as tween from '../tween';
 import * as brushing from '../brushing';
 import * as extractData from '../../data/extractor';
+import { vi } from 'vitest';
+
+vi.mock('../tween', async (importOriginal) => ({
+  ...(await importOriginal()),
+  default: vi.fn(),
+}));
+vi.mock('../brushing', async (importOriginal) => ({
+  ...(await importOriginal()),
+  resolveTapEvent: vi.fn(),
+}));
+vi.mock('../../data/extractor', async (importOriginal) => ({
+  ...(await importOriginal()),
+  default: vi.fn(),
+}));
 
 describe('Component', () => {
   let sandbox;
@@ -18,7 +32,7 @@ describe('Component', () => {
   let renderer;
 
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
+    sandbox = vi;
     chart = {
       brush: () => ({
         on: () => {},
@@ -26,18 +40,18 @@ describe('Component', () => {
       container: () => ({}),
       table: () => ({}),
       dataset: () => ({}),
-      scale: sinon.stub(),
+      scale: vi.fn(),
       logger: () => 'logger',
       storage: { animations: 'animations-related info' },
     };
-    created = sinon.spy();
-    beforeMount = sinon.spy();
-    mounted = sinon.spy();
-    beforeRender = sinon.spy();
-    render = sandbox.stub();
-    beforeUpdate = sinon.spy();
-    updated = sinon.spy();
-    resize = sinon.spy();
+    created = vi.fn();
+    beforeMount = vi.fn();
+    mounted = vi.fn();
+    beforeRender = vi.fn();
+    render = vi.fn();
+    beforeUpdate = vi.fn();
+    updated = vi.fn();
+    resize = vi.fn();
     definition = {
       defaultSettings: {
         layout: {
@@ -67,7 +81,7 @@ describe('Component', () => {
   });
 
   afterEach(() => {
-    sandbox.restore();
+    vi.restoreAllMocks();
   });
 
   function createInstance(config) {
@@ -76,8 +90,8 @@ describe('Component', () => {
       chart,
       renderer,
       theme: {
-        palette: sinon.stub(),
-        style: sinon.stub(),
+        palette: vi.fn(),
+        style: vi.fn(),
       },
     });
   }
@@ -99,8 +113,8 @@ describe('Component', () => {
         chart,
         renderer,
         theme: {
-          palette: sinon.stub(),
-          style: sinon.stub(),
+          palette: vi.fn(),
+          style: vi.fn(),
         },
         registries: {},
       };
@@ -127,20 +141,20 @@ describe('Component', () => {
   });
 
   it('should forward rendererSettings if renderer has settings func', () => {
-    renderer.settings = sinon.spy();
+    renderer.settings = vi.fn();
     createInstance({ rendererSettings: { aa: 'AA', bb: {} } });
-    expect(renderer.settings).to.have.been.calledWith({ aa: 'AA', bb: {} });
+    expect(renderer.settings).toHaveBeenCalledWith({ aa: 'AA', bb: {} });
   });
 
   it('should call lifecycle methods with correct context when rendering', () => {
     createAndRenderComponent();
 
-    expect(created).to.have.been.calledOnce;
-    expect(resize).to.have.been.calledOnce;
-    expect(beforeRender).to.have.been.calledOnce;
-    expect(render).to.have.been.calledOnce;
-    expect(resize).to.have.been.calledOnce;
-    expect(mounted).to.have.been.calledOnce;
+    expect(created).toHaveBeenCalledTimes(1);
+    expect(resize).toHaveBeenCalledTimes(1);
+    expect(beforeRender).toHaveBeenCalledTimes(1);
+    expect(render).toHaveBeenCalledTimes(1);
+    expect(resize).toHaveBeenCalledTimes(1);
+    expect(mounted).toHaveBeenCalledTimes(1);
   });
 
   it('should call lifecycle methods with correct context when updating', () => {
@@ -152,202 +166,218 @@ describe('Component', () => {
     instance.render();
     instance.updated();
 
-    expect(mounted).to.have.been.calledOnce;
-    expect(beforeRender).to.have.been.calledTwice;
-    expect(beforeUpdate).to.have.been.calledOnce;
-    expect(updated).to.have.been.calledOnce;
-    expect(render).to.have.been.calledTwice;
+    expect(mounted).toHaveBeenCalledTimes(1);
+    expect(beforeRender).toHaveBeenCalledTimes(2);
+    expect(beforeUpdate).toHaveBeenCalledTimes(1);
+    expect(updated).toHaveBeenCalledTimes(1);
+    expect(render).toHaveBeenCalledTimes(2);
   });
 
   it('should update brushArgs.config on set', () => {
-    sandbox.stub(brushing, 'resolveTapEvent').returns(false);
+    brushing.resolveTapEvent.mockReset();
+    brushing.resolveTapEvent.mockReturnValue(false);
     const brush = { trigger: [{ on: 'tap' }] };
     const instance = createAndRenderComponent();
     instance.set({ settings: { brush } });
     instance.update();
     instance.onBrushTap({});
-    const { args } = brushing.resolveTapEvent.getCall(0);
+    const args = brushing.resolveTapEvent.mock.calls[0];
     expect(args[0].config.config).to.eql(brush);
   });
 
   it('should update data correctly if there is no progressive', () => {
     const data = { a: 'a' };
-    sandbox.stub(brushing, 'resolveTapEvent').returns(false);
-    sandbox.stub(extractData, 'default').returns(data);
+    brushing.resolveTapEvent.mockReset();
+    brushing.resolveTapEvent.mockReturnValue(false);
+    extractData.default.mockReset();
+    extractData.default.mockReturnValue(data);
     const brush = { trigger: [{ on: 'tap' }] };
     const instance = createAndRenderComponent();
     instance.set({ settings: { brush, data: {} } });
     instance.update();
     instance.onBrushTap({});
-    const { args } = brushing.resolveTapEvent.getCall(0);
+    const args = brushing.resolveTapEvent.mock.calls[0];
     expect(args[0].config.data).to.eql({ a: 'a' });
   });
 
   it('should update data correctly if progressive = false', () => {
     const data = { b: 'b' };
-    sandbox.stub(brushing, 'resolveTapEvent').returns(false);
-    sandbox.stub(extractData, 'default').returns(data);
+    brushing.resolveTapEvent.mockReset();
+    brushing.resolveTapEvent.mockReturnValue(false);
+    extractData.default.mockReset();
+    extractData.default.mockReturnValue(data);
     const brush = { trigger: [{ on: 'tap' }] };
     const rendererSettings = { progressive: () => false };
     const instance = createAndRenderComponent();
     instance.set({ settings: { brush, data: {}, rendererSettings } });
     instance.update();
     instance.onBrushTap({});
-    const { args } = brushing.resolveTapEvent.getCall(0);
+    const args = brushing.resolveTapEvent.mock.calls[0];
     expect(args[0].config.data).to.eql({ b: 'b' });
   });
 
   it('should update data correctly if progressive.isFirst = true and no data.items', () => {
     const data = { c: 'c' };
-    sandbox.stub(brushing, 'resolveTapEvent').returns(false);
-    sandbox.stub(extractData, 'default').returns(data);
+    brushing.resolveTapEvent.mockReset();
+    brushing.resolveTapEvent.mockReturnValue(false);
+    extractData.default.mockReset();
+    extractData.default.mockReturnValue(data);
     const brush = { trigger: [{ on: 'tap' }] };
     const rendererSettings = { progressive: () => ({ isFirst: true }) };
     const instance = createAndRenderComponent();
     instance.set({ settings: { brush, data: {}, rendererSettings } });
     instance.update();
     instance.onBrushTap({});
-    const { args } = brushing.resolveTapEvent.getCall(0);
+    const args = brushing.resolveTapEvent.mock.calls[0];
     expect(args[0].config.data).to.eql({ c: 'c' });
   });
 
   it('should update data correctly if progressive.isFirst = true and has data.items', () => {
     const data = { items: [1, 2] };
-    sandbox.stub(brushing, 'resolveTapEvent').returns(false);
-    sandbox.stub(extractData, 'default').returns(data);
+    brushing.resolveTapEvent.mockReset();
+    brushing.resolveTapEvent.mockReturnValue(false);
+    extractData.default.mockReset();
+    extractData.default.mockReturnValue(data);
     const brush = { trigger: [{ on: 'tap' }] };
     const rendererSettings = { progressive: () => ({ isFirst: true }) };
     const instance = createAndRenderComponent();
     instance.set({ settings: { brush, data: {}, rendererSettings } });
     instance.update();
     instance.onBrushTap({});
-    const { args } = brushing.resolveTapEvent.getCall(0);
+    const args = brushing.resolveTapEvent.mock.calls[0];
     expect(args[0].config.data).to.eql({ items: [1, 2] });
   });
 
   it('should update data correctly during progressive', () => {
     const data1 = { items: [1, 2] };
     const data2 = { items: [3, 4] };
-    sandbox.stub(brushing, 'resolveTapEvent').returns(false);
-    sandbox.stub(extractData, 'default');
-    extractData.default.onCall(0).returns(data1);
-    extractData.default.onCall(1).returns(data2);
+    brushing.resolveTapEvent.mockReset();
+    brushing.resolveTapEvent.mockReturnValue(false);
+    extractData.default.mockReset();
+    extractData.default.mockReturnValueOnce(data1);
+    extractData.default.mockReturnValueOnce(data2);
     const brush = { trigger: [{ on: 'tap' }] };
-    const rendererSettings = { progressive: sandbox.stub() };
-    rendererSettings.progressive.onCall(0).returns({ isFirst: true, start: 0, end: 2 });
-    rendererSettings.progressive.onCall(1).returns({ isFirst: true, start: 0, end: 2 });
-    rendererSettings.progressive.onCall(2).returns({ isFirst: true, start: 0, end: 2 });
-    rendererSettings.progressive.onCall(3).returns({ isFirst: false, start: 2, end: 4 });
-    rendererSettings.progressive.onCall(4).returns({ isFirst: false, start: 2, end: 4 });
-    rendererSettings.progressive.onCall(5).returns({ isFirst: false, start: 2, end: 4 });
+    const rendererSettings = { progressive: vi.fn() };
+    rendererSettings.progressive.mockReturnValueOnce({ isFirst: true, start: 0, end: 2 });
+    rendererSettings.progressive.mockReturnValueOnce({ isFirst: true, start: 0, end: 2 });
+    rendererSettings.progressive.mockReturnValueOnce({ isFirst: true, start: 0, end: 2 });
+    rendererSettings.progressive.mockReturnValueOnce({ isFirst: false, start: 2, end: 4 });
+    rendererSettings.progressive.mockReturnValueOnce({ isFirst: false, start: 2, end: 4 });
+    rendererSettings.progressive.mockReturnValueOnce({ isFirst: false, start: 2, end: 4 });
     const instance = createAndRenderComponent();
     instance.set({ settings: { brush, data: {}, rendererSettings } });
     instance.update();
     instance.set({ settings: { brush, data: {}, rendererSettings } });
     instance.update();
     instance.onBrushTap({});
-    const { args } = brushing.resolveTapEvent.getCall(0);
+    const args = brushing.resolveTapEvent.mock.calls[0];
     expect(args[0].config.data).to.eql({ items: [1, 2, 3, 4] });
   });
 
   it('should update renderArgs correctly on the first progressive', () => {
     const data = { items: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] };
-    sandbox.stub(brushing, 'resolveTapEvent').returns(false);
-    sandbox.stub(extractData, 'default').returns(data);
+    brushing.resolveTapEvent.mockReset();
+    brushing.resolveTapEvent.mockReturnValue(false);
+    extractData.default.mockReset();
+    extractData.default.mockReturnValue(data);
     const brush = { trigger: [{ on: 'tap' }] };
     const rendererSettings = { progressive: () => ({ isFirst: true, start: 0, end: 5 }) };
     const instance = createAndRenderComponent();
     instance.set({ settings: { brush, data: {}, rendererSettings } });
     instance.update();
     instance.onBrushTap({});
-    const { args } = render.getCall(1);
+    const args = render.mock.calls[1];
     expect(args[0].data.items).to.eql([1, 2, 3, 4, 5]);
   });
 
   it('should update renderArgs correctly during progressive', () => {
     const data1 = { items: [1, 2, 3, 4, 5] };
     const data2 = { items: [6, 7, 8, 9, 10] };
-    sandbox.stub(brushing, 'resolveTapEvent').returns(false);
-    sandbox.stub(extractData, 'default');
-    extractData.default.onFirstCall().returns(data1);
-    extractData.default.onSecondCall().returns(data2);
+    brushing.resolveTapEvent.mockReset();
+    brushing.resolveTapEvent.mockReturnValue(false);
+    extractData.default.mockReset();
+    extractData.default.mockReturnValueOnce(data1);
+    extractData.default.mockReturnValueOnce(data2);
     const brush = { trigger: [{ on: 'tap' }] };
-    const rendererSettings = { progressive: sandbox.stub() };
-    rendererSettings.progressive.onCall(0).returns({ isFirst: true, start: 0, end: 5 });
-    rendererSettings.progressive.onCall(1).returns({ isFirst: true, start: 0, end: 5 });
-    rendererSettings.progressive.onCall(2).returns({ isFirst: true, start: 0, end: 5 });
-    rendererSettings.progressive.onCall(3).returns({ isFirst: false, start: 5, end: 10 });
-    rendererSettings.progressive.onCall(4).returns({ isFirst: false, start: 5, end: 10 });
-    rendererSettings.progressive.onCall(5).returns({ isFirst: false, start: 5, end: 10 });
+    const rendererSettings = { progressive: vi.fn() };
+    rendererSettings.progressive.mockReturnValueOnce({ isFirst: true, start: 0, end: 5 });
+    rendererSettings.progressive.mockReturnValueOnce({ isFirst: true, start: 0, end: 5 });
+    rendererSettings.progressive.mockReturnValueOnce({ isFirst: true, start: 0, end: 5 });
+    rendererSettings.progressive.mockReturnValueOnce({ isFirst: false, start: 5, end: 10 });
+    rendererSettings.progressive.mockReturnValueOnce({ isFirst: false, start: 5, end: 10 });
+    rendererSettings.progressive.mockReturnValueOnce({ isFirst: false, start: 5, end: 10 });
     const instance = createAndRenderComponent();
     instance.set({ settings: { brush, data: {}, rendererSettings } });
     instance.update();
     instance.set({ settings: { brush, data: {}, rendererSettings } });
     instance.update();
     instance.onBrushTap({});
-    const args1 = render.getCall(1).args;
-    const args2 = render.getCall(2).args;
+    const args1 = render.mock.calls[1];
+    const args2 = render.mock.calls[2];
     expect(args1[0]).to.eql({ data: { items: [1, 2, 3, 4, 5] } });
     expect(args2[0]).to.eql({ data: { items: [6, 7, 8, 9, 10] } });
   });
 
   it('should update brushArgs.nodes correctly if progressive is falsy', () => {
     const data = { items: [1, 2, 3, 4, 5] };
-    sandbox.stub(brushing, 'resolveTapEvent').returns(false);
-    sandbox.stub(extractData, 'default');
-    extractData.default.onFirstCall().returns(data);
-    render.returns(['a', 'b']);
+    brushing.resolveTapEvent.mockReset();
+    brushing.resolveTapEvent.mockReturnValue(false);
+    extractData.default.mockReset();
+    extractData.default.mockReturnValueOnce(data);
+    render.mockReturnValue(['a', 'b']);
     const brush = { trigger: [{ on: 'tap' }] };
     const rendererSettings = { progressive: false };
     const instance = createAndRenderComponent();
     instance.set({ settings: { brush, data: {}, rendererSettings } });
     instance.update();
     instance.onBrushTap({});
-    const { args } = brushing.resolveTapEvent.getCall(0);
+    const args = brushing.resolveTapEvent.mock.calls[0];
     expect(args[0].config.nodes).to.eql(['a', 'b']);
   });
 
   it('should update brushArgs.nodes correctly if progressive.isFirst = true', () => {
     const data = { items: [1, 2, 3, 4, 5] };
-    sandbox.stub(brushing, 'resolveTapEvent').returns(false);
-    sandbox.stub(extractData, 'default');
-    extractData.default.onFirstCall().returns(data);
-    render.returns(['a', 'b']);
+    brushing.resolveTapEvent.mockReset();
+    brushing.resolveTapEvent.mockReturnValue(false);
+    extractData.default.mockReset();
+    extractData.default.mockReturnValueOnce(data);
+    render.mockReturnValue(['a', 'b']);
     const brush = { trigger: [{ on: 'tap' }] };
-    const rendererSettings = { progressive: sandbox.stub().returns({ isFirst: true }) };
+    const rendererSettings = { progressive: vi.fn().mockReturnValue({ isFirst: true }) };
     const instance = createAndRenderComponent();
     instance.set({ settings: { brush, data: {}, rendererSettings } });
     instance.update();
     instance.onBrushTap({});
-    const { args } = brushing.resolveTapEvent.getCall(0);
+    const args = brushing.resolveTapEvent.mock.calls[0];
     expect(args[0].config.nodes).to.eql(['a', 'b']);
   });
 
   it('should update brushArgs.nodes correctly if progressive.isFirst = true', () => {
     const data1 = { items: [1, 2, 3, 4, 5] };
     const data2 = { items: [6, 7, 8, 9, 10] };
-    sandbox.stub(brushing, 'resolveTapEvent').returns(false);
-    sandbox.stub(extractData, 'default');
-    extractData.default.onFirstCall().returns(data1);
-    extractData.default.onSecondCall().returns(data2);
+    brushing.resolveTapEvent.mockReset();
+    brushing.resolveTapEvent.mockReturnValue(false);
+    extractData.default.mockReset();
+    extractData.default.mockReturnValueOnce(data1);
+    extractData.default.mockReturnValueOnce(data2);
     const brush = { trigger: [{ on: 'tap' }] };
-    const rendererSettings = { progressive: sandbox.stub() };
-    rendererSettings.progressive.onCall(0).returns({ isFirst: true, start: 0, end: 5 });
-    rendererSettings.progressive.onCall(1).returns({ isFirst: true, start: 0, end: 5 });
-    rendererSettings.progressive.onCall(2).returns({ isFirst: true, start: 0, end: 5 });
-    rendererSettings.progressive.onCall(3).returns({ isFirst: false, start: 5, end: 10 });
-    rendererSettings.progressive.onCall(4).returns({ isFirst: false, start: 5, end: 10 });
-    rendererSettings.progressive.onCall(5).returns({ isFirst: false, start: 5, end: 10 });
-    render.onCall(0).returns(['a', 'b']);
-    render.onCall(1).returns(['a', 'b']);
-    render.onCall(2).returns(['c', 'd']);
+    const rendererSettings = { progressive: vi.fn() };
+    rendererSettings.progressive.mockReturnValueOnce({ isFirst: true, start: 0, end: 5 });
+    rendererSettings.progressive.mockReturnValueOnce({ isFirst: true, start: 0, end: 5 });
+    rendererSettings.progressive.mockReturnValueOnce({ isFirst: true, start: 0, end: 5 });
+    rendererSettings.progressive.mockReturnValueOnce({ isFirst: false, start: 5, end: 10 });
+    rendererSettings.progressive.mockReturnValueOnce({ isFirst: false, start: 5, end: 10 });
+    rendererSettings.progressive.mockReturnValueOnce({ isFirst: false, start: 5, end: 10 });
+    render.mockReturnValueOnce(['a', 'b']);
+    render.mockReturnValueOnce(['a', 'b']);
+    render.mockReturnValueOnce(['c', 'd']);
     const instance = createAndRenderComponent();
     instance.set({ settings: { brush, data: {}, rendererSettings } });
     instance.update();
     instance.set({ settings: { brush, data: {}, rendererSettings } });
     instance.update();
     instance.onBrushTap({});
-    const { args } = brushing.resolveTapEvent.getCall(0);
+    const args = brushing.resolveTapEvent.mock.calls[0];
     expect(args[0].config.nodes).to.eql(['a', 'b', 'c', 'd']);
   });
 
@@ -404,7 +434,7 @@ describe('Component', () => {
 
   describe('update', () => {
     it('should call renderers render func without args when applying transformation', () => {
-      renderer.render = sinon.spy();
+      renderer.render = vi.fn();
       definition.render = () => ['node1', 'node2'];
       let transformation = false;
       let transformFn = () => transformation;
@@ -415,53 +445,56 @@ describe('Component', () => {
         rect: { computed: { x: 0, y: 0, width: 1, height: 1 } },
       });
       instance.update();
-      expect(renderer.render).to.have.been.calledWith(['node1', 'node2']);
+      expect(renderer.render).toHaveBeenCalledWith(['node1', 'node2']);
       transformation = { a: 0, b: 1, c: 1 };
       instance.update();
-      expect(renderer.render).to.have.been.calledWith();
+      expect(renderer.render).toHaveBeenCalledWith();
     });
 
     it('should run tween when animations are enabled', () => {
       let instance;
-      sandbox.stub(tween, 'default').returns({ start: sinon.spy() });
+      tween.default.mockReset();
+      tween.default.mockReturnValue({ start: vi.fn() });
       definition.render = () => ['node1', 'node2'];
       instance = createInstance({
         rect: { computed: { x: 0, y: 0, width: 1, height: 1 } },
-        animations: { enabled: true, compensateForLayoutChanges: sinon.spy() },
+        animations: { enabled: true, compensateForLayoutChanges: vi.fn() },
       });
       instance.render();
       instance.update();
-      expect(tween.default).to.have.been.calledOnce;
-      expect(tween.default.getCall(0).args[3]).to.deep.equal({ animations: 'animations-related info' });
-      sandbox.restore();
+      expect(tween.default).toHaveBeenCalledTimes(1);
+      expect(tween.default.mock.calls[0][3]).to.deep.equal({ animations: 'animations-related info' });
+      vi.restoreAllMocks();
     });
 
     it('should not run tween when animations are disabled, case 1: enabled is not a function', () => {
       let instance;
-      sandbox.stub(tween, 'default').returns({ start: sinon.spy() });
+      tween.default.mockReset();
+      tween.default.mockReturnValue({ start: vi.fn() });
       definition.render = () => ['node1', 'node2'];
       instance = createInstance({
         rect: { computed: { x: 0, y: 0, width: 1, height: 1 } },
-        animations: { enabled: false, compensateForLayoutChanges: sinon.spy() },
+        animations: { enabled: false, compensateForLayoutChanges: vi.fn() },
       });
       instance.render();
       instance.update();
-      expect(tween.default).to.not.have.been.called;
-      sandbox.restore();
+      expect(tween.default).not.toHaveBeenCalled();
+      vi.restoreAllMocks();
     });
 
     it('should not run tween when animations are disabled, case 2: enabled is a function', () => {
       let instance;
-      sandbox.stub(tween, 'default').returns({ start: sinon.spy() });
+      tween.default.mockReset();
+      tween.default.mockReturnValue({ start: vi.fn() });
       definition.render = () => ['node1', 'node2'];
       instance = createInstance({
         rect: { computed: { x: 0, y: 0, width: 1, height: 1 } },
-        animations: { enabled: () => false, compensateForLayoutChanges: sinon.spy() },
+        animations: { enabled: () => false, compensateForLayoutChanges: vi.fn() },
       });
       instance.render();
       instance.update();
-      expect(tween.default).to.not.have.been.called;
-      sandbox.restore();
+      expect(tween.default).not.toHaveBeenCalled();
+      vi.restoreAllMocks();
     });
   });
 
@@ -592,21 +625,21 @@ describe('Component', () => {
       shapes.forEach((s, i) => {
         s.data = { x: i };
       });
-      const spy = sinon.spy();
+      const spy = vi.fn();
       chart.brush = () => ({
         containsMappedData: spy,
       });
 
       instance = createAndRenderComponent(config);
       instance.getBrushedShapes('test', 'xor', ['x']);
-      expect(spy).to.have.been.calledWith({ x: 0 }, ['x'], 'xor');
+      expect(spy).toHaveBeenCalledWith({ x: 0 }, ['x'], 'xor');
     });
 
     it('should fallback to brush data property if data props parameter is omitted', () => {
       shapes.forEach((s, i) => {
         s.data = { x: i };
       });
-      const spy = sinon.spy();
+      const spy = vi.fn();
       chart.brush = () => ({
         containsMappedData: spy,
       });
@@ -615,7 +648,7 @@ describe('Component', () => {
 
       instance = createAndRenderComponent(config);
       instance.getBrushedShapes('test', 'xor');
-      expect(spy).to.have.been.calledWith({ x: 0 }, ['x'], 'xor');
+      expect(spy).toHaveBeenCalledWith({ x: 0 }, ['x'], 'xor');
     });
   });
 });

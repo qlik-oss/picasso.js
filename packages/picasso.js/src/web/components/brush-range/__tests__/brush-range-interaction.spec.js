@@ -6,7 +6,7 @@ describe('BrushRange Interaction', () => {
   let event;
 
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
+    sandbox = vi;
     state = {
       cssCoord: {
         offset: 'top',
@@ -21,8 +21,8 @@ describe('BrushRange Interaction', () => {
       size: 1,
       scale: (x) => x,
     };
-    state.scale.min = sinon.stub().returns(0);
-    state.scale.max = sinon.stub().returns(1);
+    state.scale.min = vi.fn().mockReturnValue(0);
+    state.scale.max = vi.fn().mockReturnValue(1);
     state.scale.invert = (x) => x;
     state.scale.norm = (x) => x;
     state.scale.normInvert = (x) => x;
@@ -33,11 +33,11 @@ describe('BrushRange Interaction', () => {
       deltaY: 0.1,
     };
 
-    global.document.elementFromPoint = sandbox.stub();
+    global.document.elementFromPoint = vi.fn();
   });
 
   afterEach(() => {
-    sandbox.restore();
+    vi.restoreAllMocks();
     delete global.document.elementFromPoint;
   });
 
@@ -56,11 +56,11 @@ describe('BrushRange Interaction', () => {
         bottom: 1,
       };
       element = {
-        contains: sinon.stub().returns(false),
-        getBoundingClientRect: sinon.stub().returns(boundingRect),
+        contains: vi.fn().mockReturnValue(false),
+        getBoundingClientRect: vi.fn().mockReturnValue(boundingRect),
       };
       renderer = {
-        element: sinon.stub().returns(element),
+        element: vi.fn().mockReturnValue(element),
       };
       targetSize = 0.01;
     });
@@ -170,11 +170,11 @@ describe('BrushRange Interaction', () => {
 
       it('should detect drag in bubbles', () => {
         const bubbleElement = {
-          hasAttribute: sinon.stub().returns(true),
-          getAttribute: sinon.stub().withArgs('data-idx').returns('0').withArgs('data-other-value').returns('0'),
+          hasAttribute: vi.fn().mockReturnValue(true),
+          getAttribute: vi.fn((attribute) => (attribute === 'data-idx' ? '0' : '0')),
         };
-        global.document.elementFromPoint.returns(bubbleElement);
-        element.contains.returns(true);
+        global.document.elementFromPoint.mockReturnValue(bubbleElement);
+        element.contains.mockReturnValue(true);
         state.started = false;
         const ranges = [{ min: 0, max: 0.3 }];
         start({

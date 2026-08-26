@@ -257,35 +257,35 @@ describe('Tick generators', () => {
   describe('looseDistanceBasedGenerator', () => {
     beforeEach(() => {
       scale = linear();
-      sinon.spy(scale, 'ticks');
+      vi.spyOn(scale, 'ticks');
     });
 
     describe('unitDivider', () => {
       it('should use fallback divider if unitDivider is not a number', () => {
         ['3', 'asd', null, false, true, NaN, () => {}, undefined, ' ', {}].forEach((type) => {
           looseDistanceBasedGenerator({ distance: 100, unitDivider: type, scale });
-          expect(scale.ticks).to.have.been.calledWith(2);
+          expect(scale.ticks).toHaveBeenCalledWith(2);
         });
       });
 
       it('should use fallback divider if unitDivider is a negative number', () => {
         looseDistanceBasedGenerator({ distance: 100, unitDivider: -123, scale });
-        expect(scale.ticks).to.have.been.calledWith(2);
+        expect(scale.ticks).toHaveBeenCalledWith(2);
       });
 
       it('should use unitDivider if it is a positive number', () => {
         looseDistanceBasedGenerator({ distance: 100, unitDivider: 20, scale });
-        expect(scale.ticks).to.have.been.calledWith(100 / 20);
+        expect(scale.ticks).toHaveBeenCalledWith(100 / 20);
       });
 
       it('should handle unitDivider of zero', () => {
         looseDistanceBasedGenerator({ distance: 100, unitDivider: 0, scale });
-        expect(scale.ticks).to.have.been.calledWith(1000);
+        expect(scale.ticks).toHaveBeenCalledWith(1000);
       });
 
       it('should handle very small number on unitDivider', () => {
         looseDistanceBasedGenerator({ distance: 100, unitDivider: 0.0001, scale });
-        expect(scale.ticks).to.have.been.calledWith(1000);
+        expect(scale.ticks).toHaveBeenCalledWith(1000);
       });
     });
 
@@ -293,28 +293,28 @@ describe('Tick generators', () => {
       it('should handle if distance is not a number', () => {
         ['3', 'asd', null, false, true, NaN, () => {}, undefined, ' ', {}].forEach((type) => {
           looseDistanceBasedGenerator({ distance: type, scale });
-          expect(scale.ticks).to.have.been.calledWith(2);
+          expect(scale.ticks).toHaveBeenCalledWith(2);
         });
       });
 
       it('should handle if distance is a negative number', () => {
         looseDistanceBasedGenerator({ distance: -1213, scale });
-        expect(scale.ticks).to.have.been.calledWith(2);
+        expect(scale.ticks).toHaveBeenCalledWith(2);
       });
 
       it('should use distance if it is a positive number', () => {
         looseDistanceBasedGenerator({ distance: 2000, scale });
-        expect(scale.ticks).to.have.been.calledWith(2000 / 100);
+        expect(scale.ticks).toHaveBeenCalledWith(2000 / 100);
       });
 
       it('should handle distance of zero', () => {
         looseDistanceBasedGenerator({ distance: 0, scale });
-        expect(scale.ticks).to.have.been.calledWith(2);
+        expect(scale.ticks).toHaveBeenCalledWith(2);
       });
 
       it('should handle very small number on distance', () => {
         looseDistanceBasedGenerator({ distance: 0.0001, scale });
-        expect(scale.ticks).to.have.been.calledWith(2);
+        expect(scale.ticks).toHaveBeenCalledWith(2);
       });
     });
   });

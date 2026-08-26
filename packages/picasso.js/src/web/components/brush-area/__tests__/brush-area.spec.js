@@ -48,15 +48,16 @@ describe('Brush Area', () => {
     };
 
     componentFixture = componentFactoryFixture();
-    sandbox = componentFixture.sandbox();
+    sandbox = vi;
     const chartMock = componentFixture.mocks().chart;
-    chartMock.shapesAt = sandbox.stub().returns([]);
-    chartMock.brushFromShapes = sandbox.stub();
+    chartMock.dataset.mockReturnValue({ fields: [] });
+    chartMock.shapesAt = vi.fn().mockReturnValue([]);
+    chartMock.brushFromShapes = vi.fn();
 
-    rendererSpy = sandbox.spy(componentFixture.mocks().renderer, 'render');
+    rendererSpy = vi.spyOn(componentFixture.mocks().renderer, 'render');
 
     theme = componentFixture.mocks().theme;
-    theme.style.returns({
+    theme.style.mockReturnValue({
       area: {
         fill: 'green',
         strokeWidth: 0,
@@ -110,8 +111,8 @@ describe('Brush Area', () => {
         },
       ],
     };
-    const spy = sandbox.spy();
-    const stub = sandbox.stub().returns({ end: spy });
+    const spy = vi.fn();
+    const stub = vi.fn().mockReturnValue({ end: spy });
     componentFixture.mocks().chart.brush = stub;
     instance = componentFixture.simulateCreate(brushAreaDir, config);
     componentFixture.simulateRender(container);
@@ -119,9 +120,9 @@ describe('Brush Area', () => {
     instance.def.cancel();
     componentFixture.getRenderOutput();
 
-    expect(spy).to.have.been.calledTwice;
-    expect(stub.firstCall).to.have.been.calledWith('test');
-    expect(stub.secondCall).to.have.been.calledWith('test2');
+    expect(spy).toHaveBeenCalledTimes(2);
+    expect(stub).toHaveBeenNthCalledWith(1, 'test');
+    expect(stub).toHaveBeenNthCalledWith(2, 'test2');
   });
 
   it('should brush in chart coordinate system', () => {
@@ -130,45 +131,48 @@ describe('Brush Area', () => {
     instance.def.start(hammerEvent(10, 20));
     instance.def.move(hammerEvent(40, 30));
 
-    expect(componentFixture.mocks().chart.shapesAt).to.have.been.calledWith({
-      x: 11, // To include renderer position
-      y: 22,
-      width: 30,
-      height: 10,
-    });
+    expect(componentFixture.mocks().chart.shapesAt).toHaveBeenCalledWith(
+      {
+        x: 11, // To include renderer position
+        y: 22,
+        width: 30,
+        height: 10,
+      },
+      { components: [] },
+    );
   });
 
   it('should require `start` event before `move` event', () => {
     instance = componentFixture.simulateCreate(brushAreaDir, config);
-    rendererSpy.resetHistory();
+    rendererSpy.mockClear();
     instance.def.move(nativeEvent(10, 20));
 
-    expect(rendererSpy).to.not.have.been.called;
+    expect(rendererSpy).not.toHaveBeenCalled();
   });
 
   it('should require `start` event before `end` event', () => {
     instance = componentFixture.simulateCreate(brushAreaDir, config);
-    rendererSpy.resetHistory();
+    rendererSpy.mockClear();
     instance.def.end(nativeEvent(10, 20)); // If started, would render empty nodes
 
-    expect(rendererSpy).to.not.have.been.called;
+    expect(rendererSpy).not.toHaveBeenCalled();
   });
 
   it('should require `start` event before `cancel` event', () => {
     instance = componentFixture.simulateCreate(brushAreaDir, config);
-    rendererSpy.resetHistory();
+    rendererSpy.mockClear();
     instance.def.cancel(nativeEvent(10, 20)); // If started, would render empty nodes
 
-    expect(rendererSpy).to.not.have.been.called;
+    expect(rendererSpy).not.toHaveBeenCalled();
   });
 
   it('should require to be inside the component container on `start` event', () => {
     instance = componentFixture.simulateCreate(brushAreaDir, config);
     componentFixture.simulateRender(container);
-    rendererSpy.resetHistory();
+    rendererSpy.mockClear();
     instance.def.start(nativeEvent(1000, 2000));
     instance.def.move(nativeEvent(10, 20)); // If started, would render here
 
-    expect(rendererSpy).to.not.have.been.called;
+    expect(rendererSpy).not.toHaveBeenCalled();
   });
 });

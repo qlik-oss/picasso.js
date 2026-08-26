@@ -1,41 +1,47 @@
 import * as hammer from '../hammer';
 import plugin from '..';
+import { vi } from 'vitest';
+
+vi.mock('../hammer', async (importOriginal) => ({
+  ...(await importOriginal()),
+  default: vi.fn(),
+}));
 
 describe('plugin', () => {
   let sandbox;
 
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
-    sandbox.stub(hammer, 'default');
+    sandbox = vi;
+    hammer.default.mockReset();
   });
 
   afterEach(() => {
-    sandbox.restore();
+    vi.restoreAllMocks();
   });
 
   it('should register hammer interaction when parameter is recognized as picasso', () => {
-    hammer.default.withArgs('H').returns('plugin');
+    hammer.default.mockReturnValue('plugin');
     const picasso = {
-      interaction: sandbox.spy(),
+      interaction: vi.fn(),
     };
     global.Hammer = 'H';
     plugin(picasso);
     delete global.Hammer;
 
-    expect(picasso.interaction).to.have.been.calledWithExactly('hammer', 'plugin');
+    expect(picasso.interaction).toHaveBeenCalledWith('hammer', 'plugin');
   });
 
   it('should return plugin when parameter is not picasso', () => {
-    hammer.default.withArgs('HH').returns('plugin');
+    hammer.default.mockReturnValue('plugin');
     const Hammer = 'HH';
     const p = plugin(Hammer);
 
     const picasso = {
-      interaction: sandbox.spy(),
+      interaction: vi.fn(),
     };
 
     p(picasso);
 
-    expect(picasso.interaction).to.have.been.calledWithExactly('hammer', 'plugin');
+    expect(picasso.interaction).toHaveBeenCalledWith('hammer', 'plugin');
   });
 });

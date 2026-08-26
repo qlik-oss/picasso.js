@@ -19,7 +19,7 @@ describe('pie', () => {
   });
 
   it('should render slices with default settings', () => {
-    componentFixture.mocks().theme.style.returns({});
+    componentFixture.mocks().theme.style.mockReturnValue({});
     const config = {
       data: [1],
     };
@@ -31,7 +31,7 @@ describe('pie', () => {
     expect(startAngle).to.eql(0);
     expect(endAngle).to.eql(Math.PI * 2);
 
-    expect(rendered[0]).to.containSubset({
+    expect(rendered[0]).toMatchObject({
       arc: 1,
       type: 'path',
       transform: 'translate(0, 0) translate(50, 100)',
@@ -52,7 +52,7 @@ describe('pie', () => {
   });
 
   it('should set share metadata', () => {
-    componentFixture.mocks().theme.style.returns({});
+    componentFixture.mocks().theme.style.mockReturnValue({});
     const config = {
       data: [1, 2, 3, 4],
     };
@@ -67,7 +67,7 @@ describe('pie', () => {
   });
 
   it('should filter negative and NaN values', () => {
-    componentFixture.mocks().theme.style.returns({});
+    componentFixture.mocks().theme.style.mockReturnValue({});
     const config = {
       data: [1, NaN, 2, -1, 3, 4],
     };
@@ -79,7 +79,7 @@ describe('pie', () => {
   });
 
   it('should filter out outerRadius <= innerRadius', () => {
-    componentFixture.mocks().theme.style.returns({});
+    componentFixture.mocks().theme.style.mockReturnValue({});
     const config = {
       data: [1, 2, 3],
       settings: {
@@ -129,7 +129,7 @@ describe('pie', () => {
 
   describe('configured slices', () => {
     beforeAll(() => {
-      componentFixture.mocks().theme.style.returns({
+      componentFixture.mocks().theme.style.mockReturnValue({
         slice: {
           fill: 'red',
           stroke: 'blue',
@@ -149,7 +149,7 @@ describe('pie', () => {
     });
 
     it('should render with configured settings', () => {
-      expect(rendered[0]).to.containSubset({
+      expect(rendered[0]).toMatchObject({
         arc: 1,
         type: 'path',
         cornerRadius: 0,

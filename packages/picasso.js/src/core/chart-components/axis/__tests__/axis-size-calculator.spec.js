@@ -41,8 +41,8 @@ describe('Axis size calculator', () => {
       };
     });
     scale = {};
-    scale.ticks = sinon.stub().returns(ticks);
-    scale.bandwidth = sinon.stub().returns(1 / ticks.length);
+    scale.ticks = vi.fn().mockReturnValue(ticks);
+    scale.bandwidth = vi.fn().mockReturnValue(1 / ticks.length);
     isDiscrete = false;
     rect = {
       x: 0,
@@ -214,7 +214,7 @@ describe('Axis size calculator', () => {
         settings.align = 'left';
         settings.labels.show = true;
         state.labels.activeMode = 'horizontal';
-        scale.ticks = sinon.stub().returns([]);
+        scale.ticks = vi.fn().mockReturnValue([]);
         const size = sizeFn(rect);
         expect(size.size).to.equal(14); // Return the size of padding, ticks, margin but not the label size
       });
@@ -248,7 +248,7 @@ describe('Axis size calculator', () => {
       });
 
       it('should handle when there are no ticks', () => {
-        scale.ticks = sinon.stub().returns([]);
+        scale.ticks = vi.fn().mockReturnValue([]);
         const size = sizeFn(rect);
         expect(size.size).to.equal(14); // Return the size of padding, ticks, margin but not the label size
         expect(size.edgeBleed).to.deep.equal({

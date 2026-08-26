@@ -6,11 +6,11 @@ describe('interpolateObject', () => {
   let sandbox;
 
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
+    sandbox = vi;
   });
 
   afterEach(() => {
-    sandbox.restore();
+    vi.restoreAllMocks();
   });
 
   it('should interpolate object correctly when source object does not have a property in target object', () => {

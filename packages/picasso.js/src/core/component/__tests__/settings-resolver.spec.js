@@ -14,7 +14,7 @@ describe('settings resolver', () => {
       data,
       idx,
     });
-    updateScaleSize = sinon.stub();
+    updateScaleSize = vi.fn();
     res = settingsResolver(
       {
         chart: 'c',

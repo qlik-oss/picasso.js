@@ -14,36 +14,36 @@ describe('memoize', () => {
   });
 
   it('should return cached value', () => {
-    const setSpy = sinon.spy(func, 'set');
-    const getSpy = sinon.spy(func, 'get');
+    const setSpy = vi.spyOn(func, 'set');
+    const getSpy = vi.spyOn(func, 'get');
     expect(func(123)).to.equal('$123'); // Calls set
     expect(func(123)).to.equal('$123'); // Calls get
-    expect(setSpy).to.have.been.calledOnce;
-    expect(getSpy).to.have.been.calledOnce;
+    expect(setSpy).toHaveBeenCalledTimes(1);
+    expect(getSpy).toHaveBeenCalledTimes(1);
     expect(func.size()).to.equal(1);
   });
 
   it('should cache all stringifiable values', () => {
-    const setSpy = sinon.spy(func, 'set');
+    const setSpy = vi.spyOn(func, 'set');
     expect(func(undefined)).to.equal('$undefined');
     expect(func(null)).to.equal('$null');
     expect(func({})).to.equal('$[object Object]');
 
-    expect(setSpy).to.have.been.calledWith(undefined, '$undefined');
-    expect(setSpy).to.have.been.calledWith(null, '$null');
-    expect(setSpy).to.have.been.calledWith({}, '$[object Object]');
+    expect(setSpy).toHaveBeenCalledWith(undefined, '$undefined');
+    expect(setSpy).toHaveBeenCalledWith(null, '$null');
+    expect(setSpy).toHaveBeenCalledWith({}, '$[object Object]');
     expect(func.size()).to.equal(3);
   });
 
   it('should handle multiple arguments', () => {
-    const funcSpy = sinon.stub().returns('1337');
+    const funcSpy = vi.fn().mockReturnValue('1337');
     func = memoize(funcSpy, { multipleArguments: true, toKey: (...args) => args });
-    const setSpy = sinon.spy(func, 'set');
+    const setSpy = vi.spyOn(func, 'set');
 
     func(1, 2, 3, 4, 5);
 
-    expect(funcSpy).to.have.been.calledWith(1, 2, 3, 4, 5);
-    expect(setSpy).to.have.been.calledWith([1, 2, 3, 4, 5], '1337');
+    expect(funcSpy).toHaveBeenCalledWith(1, 2, 3, 4, 5);
+    expect(setSpy).toHaveBeenCalledWith([1, 2, 3, 4, 5], '1337');
     expect(func.size()).to.equal(1);
     expect(func.has([1, 2, 3, 4, 5])).to.be.true;
     expect(func.get([1, 2, 3, 4, 5])).to.be.equal('1337');

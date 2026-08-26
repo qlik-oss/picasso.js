@@ -10,11 +10,11 @@ describe('box component', () => {
 
   beforeEach(() => {
     // const table = {
-    //   findField: sinon.stub()
+    //   findField: vi.fn()
     // };
     const dataset = {
-      field: sinon.stub(),
-      extract: sinon.stub(),
+      field: vi.fn(),
+      extract: vi.fn(),
     };
     opts = {
       inner: {
@@ -32,8 +32,8 @@ describe('box component', () => {
       return p;
     };
     chart = componentFixture.mocks().chart;
-    chart.dataset.returns(dataset);
-    // chart.table.returns(table);
+    chart.dataset.mockReturnValue(dataset);
+    // chart.table.mockReturnValue(table);
   });
 
   it('should not render boxes with default settings', () => {
@@ -74,7 +74,7 @@ describe('box component', () => {
       },
     };
 
-    chart.dataset().extract.returns([
+    chart.dataset().extract.mockReturnValue([
       {
         value: 0.5,
         min: { value: 0.2 },
@@ -88,8 +88,9 @@ describe('box component', () => {
     const xScale = (v) => v;
     xScale.bandwidth = () => 0.5;
     const yScale = (v) => v;
-    chart.scale.withArgs('x').returns(xScale);
-    chart.scale.withArgs('y').returns(yScale);
+    chart.scale.mockImplementation((scale) =>
+      scale === 'x' || scale === 'x' || scale.scale === 'x' ? xScale : yScale,
+    );
 
     componentFixture.simulateCreate(boxMarker, config);
     rendererOutput = componentFixture.simulateRender(opts);
@@ -280,7 +281,7 @@ describe('box component', () => {
       },
     };
 
-    chart.dataset().extract.returns([
+    chart.dataset().extract.mockReturnValue([
       {
         value: -0.5,
         min: { value: -0.2 },
@@ -294,13 +295,12 @@ describe('box component', () => {
     const xScale = (v) => v;
     xScale.bandwidth = () => 0.5;
     const yScale = (v) => v;
-    chart.scale.withArgs('x').returns(xScale);
-    chart.scale.withArgs('y').returns(yScale);
+    chart.scale.mockImplementation((scale) => (scale === 'x' || scale.scale === 'x' ? xScale : yScale));
 
     componentFixture.simulateCreate(boxMarker, config);
     rendererOutput = componentFixture.simulateRender(opts)[0].children;
 
-    expect(rendererOutput).to.containSubset([
+    expect(rendererOutput).toMatchObject([
       {
         type: 'path',
         fill: 'red',
@@ -321,7 +321,7 @@ describe('box component', () => {
       },
     };
 
-    chart.dataset().extract.returns([
+    chart.dataset().extract.mockReturnValue([
       {
         self: { value: 0.5 },
         start: { value: 0 },
@@ -332,8 +332,7 @@ describe('box component', () => {
     const xScale = (v) => v;
     xScale.bandwidth = () => 0.5;
     const yScale = (v) => v;
-    chart.scale.withArgs('x').returns(xScale);
-    chart.scale.withArgs('y').returns(yScale);
+    chart.scale.mockImplementation((scale) => (scale === 'x' || scale.scale === 'x' ? xScale : yScale));
 
     componentFixture.simulateCreate(boxMarker, config);
     rendererOutput = componentFixture.simulateRender(opts);
@@ -390,7 +389,7 @@ describe('box component', () => {
       },
     };
 
-    chart.dataset().extract.returns([
+    chart.dataset().extract.mockReturnValue([
       {
         self: { value: 0.5 },
         start: { value: 0.2 },
@@ -401,8 +400,7 @@ describe('box component', () => {
     const xScale = (v) => v;
     xScale.bandwidth = () => 0.5;
     const yScale = (v) => v;
-    chart.scale.withArgs('x').returns(xScale);
-    chart.scale.withArgs('y').returns(yScale);
+    chart.scale.mockImplementation((scale) => (scale === 'x' || scale.scale === 'x' ? xScale : yScale));
 
     componentFixture.simulateCreate(boxMarker, config);
     rendererOutput = componentFixture.simulateRender(opts);
@@ -462,7 +460,7 @@ describe('box component', () => {
       },
     };
 
-    chart.dataset().extract.returns([
+    chart.dataset().extract.mockReturnValue([
       {
         self: { value: 0.5 },
         start: { value: 0.4 },
@@ -475,8 +473,7 @@ describe('box component', () => {
     const xScale = (v) => v;
     xScale.bandwidth = () => 0.5;
     const yScale = (v) => v;
-    chart.scale.withArgs('x').returns(xScale);
-    chart.scale.withArgs('y').returns(yScale);
+    chart.scale.mockImplementation((scale) => (scale === 'x' || scale.scale === 'x' ? xScale : yScale));
 
     componentFixture.simulateCreate(boxMarker, config);
     rendererOutput = componentFixture.simulateRender(opts);
@@ -628,7 +625,7 @@ describe('box component', () => {
       },
     };
 
-    chart.dataset().extract.returns(dataset);
+    chart.dataset().extract.mockReturnValue(dataset);
 
     const xDomain = [1, 2, 3, 4, 5];
     const xScale = (v) => xDomain.indexOf(v) * 0.2;
@@ -636,8 +633,7 @@ describe('box component', () => {
     xScale.bandwidth = () => 0.2;
 
     const yScale = (v) => (v - 0.2) / 0.6;
-    chart.scale.withArgs('x').returns(xScale);
-    chart.scale.withArgs('y').returns(yScale);
+    chart.scale.mockImplementation((scale) => (scale === 'x' || scale.scale === 'x' ? xScale : yScale));
 
     componentFixture.simulateCreate(boxMarker, config);
     rendererOutput = componentFixture.simulateRender(opts);

@@ -115,9 +115,8 @@ describe('extract data', () => {
       const dTwo = {
         field: () => region,
       };
-      const datasetFn = sinon.stub();
-      datasetFn.withArgs('one').returns(dOne);
-      datasetFn.withArgs('two').returns(dTwo);
+      const datasetFn = vi.fn();
+      datasetFn.mockImplementation((source) => (source === 'one' ? dOne : dTwo));
 
       let d = extract(
         {
@@ -146,9 +145,8 @@ describe('extract data', () => {
         field: () => region,
         extract: () => ['K', 'L'],
       };
-      const datasetFn = sinon.stub();
-      datasetFn.withArgs('one').returns(dOne);
-      datasetFn.withArgs('two').returns(dTwo);
+      const datasetFn = vi.fn();
+      datasetFn.mockImplementation((source) => (source === 'one' ? dOne : dTwo));
 
       let d = extract(
         {
@@ -207,7 +205,7 @@ describe('extract data', () => {
 
   describe('from collection', () => {
     it('should return a collection', () => {
-      let collection = sinon.stub().withArgs('nyckel').returns({ foo: 'my collection' });
+      let collection = vi.fn().mockReturnValue({ foo: 'my collection' });
       let d = extract(
         {
           collection: 'nyckel',

@@ -20,8 +20,8 @@ describe('brush-lasso', () => {
 
     instance = componentFixture.simulateCreate(brushLasso, config);
     chartMock = componentFixture.mocks().chart;
-    chartMock.shapesAt = componentFixture.sandbox().stub().returns([]);
-    chartMock.brushFromShapes = componentFixture.sandbox().stub();
+    chartMock.shapesAt = vi.fn().mockReturnValue([]);
+    chartMock.brushFromShapes = vi.fn();
   });
 
   it('should show lasso', () => {
@@ -132,7 +132,7 @@ describe('brush-lasso', () => {
     let brushFromShapesStub;
 
     beforeEach(() => {
-      spy = componentFixture.sandbox().spy();
+      spy = vi.fn();
       shapesAtStub = chartMock.shapesAt;
       brushFromShapesStub = chartMock.brushFromShapes;
       componentFixture.mocks().renderer.render = spy;
@@ -141,43 +141,43 @@ describe('brush-lasso', () => {
     it('should not call render on "start"', () => {
       instance.def.start({ center: { x: 0, y: 0 } });
 
-      expect(spy).to.not.have.been.called;
-      expect(shapesAtStub).to.not.have.been.called;
-      expect(brushFromShapesStub).to.not.have.been.called;
+      expect(spy).not.toHaveBeenCalled();
+      expect(shapesAtStub).not.toHaveBeenCalled();
+      expect(brushFromShapesStub).not.toHaveBeenCalled();
     });
 
     it('should call render on "move"', () => {
       instance.def.start({ center: { x: 0, y: 0 } }); // needed to init state
       instance.def.move({ center: { x: 10, y: 10 } });
 
-      expect(spy).to.have.been.calledOnce;
-      expect(shapesAtStub).to.have.been.calledOnce;
-      expect(brushFromShapesStub).to.have.been.calledOnce;
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(shapesAtStub).toHaveBeenCalledTimes(1);
+      expect(brushFromShapesStub).toHaveBeenCalledTimes(1);
     });
 
     it('should call render on "end"', () => {
       instance.def.start({ center: { x: 0, y: 0 } }); // needed to init state
       instance.def.end({ center: { x: 10, y: 10 } });
 
-      expect(spy).to.have.been.calledOnce;
-      expect(shapesAtStub).to.have.been.calledOnce;
-      expect(brushFromShapesStub).to.have.been.calledOnce;
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(shapesAtStub).toHaveBeenCalledTimes(1);
+      expect(brushFromShapesStub).toHaveBeenCalledTimes(1);
     });
 
     it('should not call render on "move" if lasso has not been initiated', () => {
       instance.def.move({ center: { x: 10, y: 10 } });
 
-      expect(spy).to.not.have.been.called;
-      expect(shapesAtStub).to.not.have.been.called;
-      expect(brushFromShapesStub).to.not.have.been.called;
+      expect(spy).not.toHaveBeenCalled();
+      expect(shapesAtStub).not.toHaveBeenCalled();
+      expect(brushFromShapesStub).not.toHaveBeenCalled();
     });
 
     it('should not call render on "end" if lasso has not been initiated', () => {
       instance.def.end({ center: { x: 10, y: 10 } });
 
-      expect(spy).to.not.have.been.called;
-      expect(shapesAtStub).to.not.have.been.called;
-      expect(brushFromShapesStub).to.not.have.been.called;
+      expect(spy).not.toHaveBeenCalled();
+      expect(shapesAtStub).not.toHaveBeenCalled();
+      expect(brushFromShapesStub).not.toHaveBeenCalled();
     });
   });
 

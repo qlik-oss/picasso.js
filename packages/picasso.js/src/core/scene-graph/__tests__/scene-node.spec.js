@@ -24,8 +24,8 @@ describe('Scene Node', () => {
       parent: { type: 'parent node' },
     };
 
-    nodeMock.boundingRect = sinon.stub();
-    nodeMock.boundingRect.returns({
+    nodeMock.boundingRect = vi.fn();
+    nodeMock.boundingRect.mockReturnValue({
       x: 0,
       y: 0,
       width: 0,
@@ -38,11 +38,11 @@ describe('Scene Node', () => {
   it('should return child nodes', () => {
     const c = sceneNode.children;
     expect(c).to.be.of.length(2);
-    expect(c).to.containSubset([{ type: 'child 1' }, { type: 'child 2' }]);
+    expect(c).toMatchObject([{ type: 'child 1' }, { type: 'child 2' }]);
   });
 
   it('should return parent node', () => {
-    expect(sceneNode.parent).to.containSubset({ type: 'parent node' });
+    expect(sceneNode.parent).toMatchObject({ type: 'parent node' });
   });
 
   it('should null when there is no parent node', () => {
@@ -100,7 +100,7 @@ describe('Scene Node', () => {
         width: 30,
         height: 40,
       };
-      nodeMock.boundingRect.returns(bounds);
+      nodeMock.boundingRect.mockReturnValue(bounds);
       nodeMock.stage = {
         dpi: 2,
       };
@@ -133,7 +133,7 @@ describe('Scene Node', () => {
         width: 30,
         height: 40,
       };
-      nodeMock.boundingRect.returns(bounds);
+      nodeMock.boundingRect.mockReturnValue(bounds);
       sceneNode = create(nodeMock);
       const orgBounds = sceneNode.bounds;
       const mutatedBounds = sceneNode.bounds;
@@ -235,7 +235,7 @@ describe('Scene Node', () => {
           width: 30,
           height: 40,
         };
-        nodeMock.boundingRect.returns(bounds);
+        nodeMock.boundingRect.mockReturnValue(bounds);
         sceneNode = create(nodeMock);
         sceneNode.element = undefined;
         const target = {
@@ -310,7 +310,7 @@ describe('Scene Node', () => {
           width: 30,
           height: 40,
         };
-        nodeMock.boundingRect.returns(bounds);
+        nodeMock.boundingRect.mockReturnValue(bounds);
         sceneNode = create(nodeMock);
         sceneNode.element = undefined;
         expect(sceneNode.boundsRelativeTo()).to.deep.equal({

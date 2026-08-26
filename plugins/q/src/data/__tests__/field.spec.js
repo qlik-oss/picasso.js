@@ -88,19 +88,19 @@ describe('q-field', () => {
     });
 
     it('should call field extractor with itself as parameter', () => {
-      let fe = sinon.stub();
+      let fe = vi.fn();
       let f = dimField('', fe);
       f.items();
-      expect(fe).to.have.been.calledWithExactly(f);
+      expect(fe).toHaveBeenCalledWith(f);
     });
 
     it('should not call field extractor more than once', () => {
-      let fe = sinon.stub().returns({});
+      let fe = vi.fn().mockReturnValue({});
       let f = dimField('', fe);
       f.items();
       f.items();
       f.items();
-      expect(fe.callCount).to.equal(1);
+      expect(fe.mock.calls.length).to.equal(1);
     });
 
     it('should have a formatter', () => {
