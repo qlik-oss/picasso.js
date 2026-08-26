@@ -5,18 +5,18 @@ describe('svg renderer', () => {
   let sandbox, tree, ns, treeRenderer, svg, scene;
 
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
+    sandbox = vi;
     treeRenderer = {
-      render: sandbox.spy(),
+      render: vi.fn(),
     };
-    scene = sandbox.stub();
-    tree = sandbox.stub().returns(treeRenderer);
+    scene = vi.fn();
+    tree = vi.fn().mockReturnValue(treeRenderer);
     ns = 'namespace';
     svg = renderer(tree, ns, scene);
   });
 
   afterEach(() => {
-    sandbox.restore();
+    vi.restoreAllMocks();
   });
 
   it('should be a function', () => {
@@ -100,7 +100,7 @@ describe('svg renderer', () => {
     });
 
     it('should call tree creator with proper params', () => {
-      scene.returns(s);
+      scene.mockReturnValue(s);
       svg.appendTo(element('div'));
       svg.render(items);
       const sceneContainer = {
@@ -108,14 +108,14 @@ describe('svg renderer', () => {
         children: [...items, { type: 'defs', children: [] }],
         transform: '',
       };
-      const actual = scene.args[0][0].items;
+      const actual = scene.mock.calls[0][0].items;
       delete actual[0].children[1].disabled;
       expect(actual).to.deep.equal([sceneContainer]);
-      expect(treeRenderer.render).to.have.been.calledWith(s.children, svg.root());
+      expect(treeRenderer.render).toHaveBeenCalledWith(s.children, svg.root());
     });
 
     it('should attach to given position in the container', () => {
-      scene.returns(s);
+      scene.mockReturnValue(s);
       svg.appendTo(element('div'));
       svg.size({
         x: 50,
@@ -150,12 +150,12 @@ describe('svg renderer', () => {
           transform: `scale(${scaleRatio.x}, ${scaleRatio.y})`,
         },
       ];
-      scene.returns(s);
+      scene.mockReturnValue(s);
       svg.appendTo(element('div'));
       svg.size(size);
       svg.render([s]);
 
-      const wrappedContainer = scene.args[0][0].items;
+      const wrappedContainer = scene.mock.calls[0][0].items;
       const el = svg.element();
       expect(el.style.left).to.equal(`${size.x * scaleRatio.x}px`);
       expect(el.style.top).to.equal(`${size.y * scaleRatio.y}px`);
@@ -166,14 +166,14 @@ describe('svg renderer', () => {
     });
 
     it('should handle call without arguments', () => {
-      scene.returns(s);
+      scene.mockReturnValue(s);
       svg.appendTo(element('div'));
       expect(svg.render).to.not.throw();
     });
 
     it('should not render if scene and size has not changed', () => {
       svg.appendTo(element('div'));
-      scene.returns({
+      scene.mockReturnValue({
         children: [],
         equals: () => true,
       });
@@ -196,7 +196,7 @@ describe('svg renderer', () => {
 
     it('should render if scene has been cleared', () => {
       svg.appendTo(element('div'));
-      scene.returns({
+      scene.mockReturnValue({
         children: [],
         equals: () => true,
       });
@@ -401,11 +401,11 @@ describe('svg renderer', () => {
   describe('setKey', () => {
     it('should set key attribute', () => {
       const el = element('div');
-      const spy = sinon.spy(el, 'setAttribute');
+      const spy = vi.spyOn(el, 'setAttribute');
       svg.element = () => el;
       svg.setKey(123);
 
-      expect(spy).to.have.been.calledWith('data-key', 123);
+      expect(spy).toHaveBeenCalledWith('data-key', 123);
     });
   });
 });

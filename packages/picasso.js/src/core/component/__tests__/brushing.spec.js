@@ -64,18 +64,18 @@ describe('Brushing', () => {
 
     beforeEach(() => {
       brushContext = {
-        setValues: sinon.spy(),
-        toggleValues: sinon.spy(),
-        addValues: sinon.spy(),
-        removeValues: sinon.spy(),
-        toggleRanges: sinon.spy(),
+        setValues: vi.fn(),
+        toggleValues: vi.fn(),
+        addValues: vi.fn(),
+        removeValues: vi.fn(),
+        toggleRanges: vi.fn(),
       };
 
       config = {
         renderer: {
-          itemsAt: sinon.stub().returns([]),
+          itemsAt: vi.fn().mockReturnValue([]),
           element: () => ({
-            getBoundingClientRect: sinon.stub().returns({
+            getBoundingClientRect: vi.fn().mockReturnValue({
               left: 0,
               top: 0,
               width: 100,
@@ -84,7 +84,7 @@ describe('Brushing', () => {
           }),
         },
         chart: {
-          brush: sinon.stub().returns(brushContext),
+          brush: vi.fn().mockReturnValue(brushContext),
         },
         data,
       };
@@ -101,36 +101,36 @@ describe('Brushing', () => {
     });
 
     it('should bin multiple collisions into a single brush call', () => {
-      config.renderer.itemsAt.returns([{ node: { data: data[0] } }, { node: { data: data[1] } }]);
+      config.renderer.itemsAt.mockReturnValue([{ node: { data: data[0] } }, { node: { data: data[1] } }]);
 
       resolveTapEvent({ e: eventMock, t: trigger, config });
 
-      expect(brushContext.toggleValues.callCount).to.equal(1);
-      expect(brushContext.toggleValues.args[0][0]).to.deep.equal([
+      expect(brushContext.toggleValues.mock.calls.length).to.equal(1);
+      expect(brushContext.toggleValues.mock.calls[0][0]).to.deep.equal([
         { key: `${data[0].self.source.key}/${data[0].self.source.field}`, value: data[0].self.value },
         { key: `${data[1].self.source.key}/${data[1].self.source.field}`, value: data[1].self.value },
       ]);
     });
 
     it('should bin multiple collisions into a single brush call using node.data property', () => {
-      config.renderer.itemsAt.returns([{ node: { data: data[0] } }, { node: { data: data[1] } }]);
+      config.renderer.itemsAt.mockReturnValue([{ node: { data: data[0] } }, { node: { data: data[1] } }]);
 
       resolveTapEvent({ e: eventMock, t: trigger, config });
 
-      expect(brushContext.toggleValues.callCount).to.equal(1);
-      expect(brushContext.toggleValues.args[0][0]).to.deep.equal([
+      expect(brushContext.toggleValues.mock.calls.length).to.equal(1);
+      expect(brushContext.toggleValues.mock.calls[0][0]).to.deep.equal([
         { key: `${data[0].self.source.key}/${data[0].self.source.field}`, value: data[0].self.value },
         { key: `${data[1].self.source.key}/${data[1].self.source.field}`, value: data[1].self.value },
       ]);
     });
 
     it('should call range brush when data value is an array', () => {
-      config.renderer.itemsAt.returns([{ node: { data: data[3] } }]);
+      config.renderer.itemsAt.mockReturnValue([{ node: { data: data[3] } }]);
 
       resolveTapEvent({ e: eventMock, t: trigger, config });
 
-      expect(brushContext.toggleRanges.callCount).to.equal(1);
-      expect(brushContext.toggleRanges.args[0][0]).to.deep.equal([
+      expect(brushContext.toggleRanges.mock.calls.length).to.equal(1);
+      expect(brushContext.toggleRanges.mock.calls[0][0]).to.deep.equal([
         {
           key: `${data[3].self.source.key}/${data[3].self.source.field}`,
           range: { min: data[3].self.value[0], max: data[3].self.value[1] },
@@ -139,20 +139,22 @@ describe('Brushing', () => {
     });
 
     it('should handle when there is no collision', () => {
-      config.renderer.itemsAt.returns([]);
+      config.renderer.itemsAt.mockReturnValue([]);
 
       resolveTapEvent({ e: eventMock, t: trigger, config });
 
-      expect(brushContext.toggleValues).to.have.been.calledWith([]);
+      expect(brushContext.toggleValues).toHaveBeenCalledWith([]);
     });
 
     it('should default to "" if no data context is configured', () => {
-      config.renderer.itemsAt.returns([{ node: { data: data[0] } }]);
+      config.renderer.itemsAt.mockReturnValue([{ node: { data: data[0] } }]);
       trigger.data = undefined;
 
       resolveTapEvent({ e: eventMock, t: trigger, config });
 
-      expect(brushContext.toggleValues.args[0][0]).to.deep.equal([{ key: data[0].source.field, value: data[0].value }]);
+      expect(brushContext.toggleValues.mock.calls[0][0]).to.deep.equal([
+        { key: data[0].source.field, value: data[0].value },
+      ]);
     });
 
     it('should not attempt to resolve any collisions if event origin is outside the component area', () => {
@@ -161,12 +163,12 @@ describe('Brushing', () => {
 
       resolveTapEvent({ e: eventMock, t: trigger, config });
 
-      expect(config.renderer.itemsAt.callCount).to.equal(0);
+      expect(config.renderer.itemsAt.mock.calls.length).to.equal(0);
     });
 
     describe('should use configured action', () => {
       beforeEach(() => {
-        config.renderer.itemsAt.returns([{ node: { data: data[0] } }]);
+        config.renderer.itemsAt.mockReturnValue([{ node: { data: data[0] } }]);
       });
 
       it('add', () => {
@@ -174,7 +176,7 @@ describe('Brushing', () => {
 
         resolveTapEvent({ e: eventMock, t: trigger, config });
 
-        expect(brushContext.addValues.callCount).to.equal(1);
+        expect(brushContext.addValues.mock.calls.length).to.equal(1);
       });
 
       it('remove', () => {
@@ -182,7 +184,7 @@ describe('Brushing', () => {
 
         resolveTapEvent({ e: eventMock, t: trigger, config });
 
-        expect(brushContext.removeValues.callCount).to.equal(1);
+        expect(brushContext.removeValues.mock.calls.length).to.equal(1);
       });
 
       it('set', () => {
@@ -190,7 +192,7 @@ describe('Brushing', () => {
 
         resolveTapEvent({ e: eventMock, t: trigger, config });
 
-        expect(brushContext.setValues.callCount).to.equal(1);
+        expect(brushContext.setValues.mock.calls.length).to.equal(1);
       });
     });
 
@@ -205,7 +207,7 @@ describe('Brushing', () => {
 
         resolveTapEvent({ e: eventMock, t: trigger, config });
 
-        expect(config.renderer.itemsAt.args[0][0]).to.deep.equal({
+        expect(config.renderer.itemsAt.mock.calls[0][0]).to.deep.equal({
           cx: 50,
           cy: 50,
           r: radius,
@@ -219,7 +221,7 @@ describe('Brushing', () => {
 
       resolveTapEvent({ e: eventMock, t: trigger, config });
 
-      expect(config.renderer.itemsAt.args[0][0]).to.deep.equal({
+      expect(config.renderer.itemsAt.mock.calls[0][0]).to.deep.equal({
         cx: 50,
         cy: 50,
         r: radius,
@@ -238,19 +240,19 @@ describe('Brushing', () => {
       nodes[1].data = data[1];
       dummyComponent = {
         chart: {
-          brush: sinon.stub(),
+          brush: vi.fn(),
         },
         data: [{ self: 0 }, { self: 1 }],
         nodes,
         renderer: {
-          render: sinon.spy(),
+          render: vi.fn(),
         },
         config: {},
       };
 
       brusherStub = {
         listeners: [],
-        containsMappedData: sinon.stub(),
+        containsMappedData: vi.fn(),
         on: function on(key, fn) {
           const obj = {};
           obj[key] = fn;
@@ -262,9 +264,9 @@ describe('Brushing', () => {
             .forEach((listener) => listener[key](...args));
         },
       };
-      brusherStub.containsMappedData.onCall(0).returns(false); // Do not match first node but all after
-      brusherStub.containsMappedData.returns(true);
-      dummyComponent.chart.brush.returns(brusherStub);
+      brusherStub.containsMappedData.mockReturnValueOnce(false); // Do not match first node but all after
+      brusherStub.containsMappedData.mockReturnValue(true);
+      dummyComponent.chart.brush.mockReturnValue(brusherStub);
 
       consume = {
         context: 'test',
@@ -278,29 +280,29 @@ describe('Brushing', () => {
         },
       };
 
-      dataFn = sinon.stub();
-      dataFn.returns(['b']);
+      dataFn = vi.fn();
+      dataFn.mockReturnValue(['b']);
     });
 
     it('should call containsMappedData with provided arguments', () => {
       const s = styler(dummyComponent, { ...consume, mode: 'moood', data: ['a'] });
       s.update();
 
-      expect(brusherStub.containsMappedData.firstCall).to.have.been.calledWithExactly(data[0], ['a'], 'moood');
+      expect(brusherStub.containsMappedData).toHaveBeenNthCalledWith(1, data[0], ['a'], 'moood');
     });
 
     it('should call containsMappedData with provided arguments when data is a function', () => {
       const s = styler(dummyComponent, { ...consume, mode: 'moood', data: dataFn });
       s.update();
-      expect(dataFn).to.have.been.calledWithExactly({ brush: brusherStub });
-      expect(brusherStub.containsMappedData.firstCall).to.have.been.calledWithExactly(data[0], ['b'], 'moood');
+      expect(dataFn).toHaveBeenCalledWith({ brush: brusherStub });
+      expect(brusherStub.containsMappedData).toHaveBeenNthCalledWith(1, data[0], ['b'], 'moood');
     });
 
     it('start should store all original styling values', () => {
       styler(dummyComponent, consume);
       brusherStub.trigger('start');
 
-      dummyComponent.renderer.render.args[0][0].forEach((node) => {
+      dummyComponent.renderer.render.mock.calls[0][0].forEach((node) => {
         expect(node.__style).to.deep.equal({
           fill: 'yellow',
           stroke: 'pink',
@@ -312,7 +314,7 @@ describe('Brushing', () => {
       styler(dummyComponent, consume);
       brusherStub.trigger('start');
 
-      dummyComponent.renderer.render.args[0][0].forEach((node) => {
+      dummyComponent.renderer.render.mock.calls[0][0].forEach((node) => {
         expect(node.fill).to.deep.equal('inactiveFill');
       });
     });
@@ -322,7 +324,7 @@ describe('Brushing', () => {
       brusherStub.trigger('start');
       brusherStub.trigger('end');
 
-      dummyComponent.renderer.render.args[0][0].forEach((node) => {
+      dummyComponent.renderer.render.mock.calls[0][0].forEach((node) => {
         expect(node.__style).to.equal(undefined);
       });
     });
@@ -332,7 +334,7 @@ describe('Brushing', () => {
       brusherStub.trigger('start');
       brusherStub.trigger('end');
 
-      expect(dummyComponent.renderer.render.calledTwice).to.be.true;
+      expect(dummyComponent.renderer.render).toHaveBeenCalledTimes(2);
     });
 
     it('start, end and update should call renderer.render if supressRender=false is passed', () => {
@@ -340,7 +342,7 @@ describe('Brushing', () => {
       brusherStub.trigger('start', { suppressRender: false });
       brusherStub.trigger('end', { suppressRender: false });
 
-      expect(dummyComponent.renderer.render.calledTwice).to.be.true;
+      expect(dummyComponent.renderer.render).toHaveBeenCalledTimes(2);
     });
 
     it('start and end should not call renderer.render if supressRender=true is passed', () => {
@@ -348,7 +350,7 @@ describe('Brushing', () => {
       brusherStub.trigger('start', { suppressRender: true });
       brusherStub.trigger('end', { suppressRender: true });
 
-      expect(dummyComponent.renderer.render.callCount).to.equal(0);
+      expect(dummyComponent.renderer.render.mock.calls.length).to.equal(0);
     });
 
     it('end should restore all original styling values if supressRender=true is passed but not call render', () => {
@@ -356,10 +358,10 @@ describe('Brushing', () => {
       brusherStub.trigger('start');
       brusherStub.trigger('end', { suppressRender: true });
 
-      dummyComponent.renderer.render.args[0][0].forEach((node) => {
+      dummyComponent.renderer.render.mock.calls[0][0].forEach((node) => {
         expect(node.__style).to.equal(undefined);
       });
-      expect(dummyComponent.renderer.render.calledOnce).to.be.true;
+      expect(dummyComponent.renderer.render).toHaveBeenCalledTimes(1);
     });
 
     it('update should apply styling values', () => {
@@ -367,7 +369,7 @@ describe('Brushing', () => {
       brusherStub.trigger('start');
       brusherStub.trigger('update');
 
-      const output = dummyComponent.renderer.render.args[0][0];
+      const output = dummyComponent.renderer.render.mock.calls[0][0];
       expect(output[0].stroke).to.equal('pink'); // Inactive
       expect(output[0].fill).to.equal('inactiveFill');
       expect(output[1].stroke).to.equal('activeStroke'); // Active
@@ -375,13 +377,13 @@ describe('Brushing', () => {
     });
 
     it('update should apply sorting nodes', () => {
-      dummyComponent.config.sortNodes = sinon.stub().returns(nodes);
+      dummyComponent.config.sortNodes = vi.fn().mockReturnValue(nodes);
       styler(dummyComponent, consume);
       brusherStub.trigger('start');
       brusherStub.trigger('update');
 
-      const output = dummyComponent.renderer.render.args[0][0];
-      expect(dummyComponent.config.sortNodes).to.have.been.calledWith(dummyComponent);
+      const output = dummyComponent.renderer.render.mock.calls[0][0];
+      expect(dummyComponent.config.sortNodes).toHaveBeenCalledWith(dummyComponent);
       expect(output[0].stroke).to.equal('pink'); // Inactive
       expect(output[0].fill).to.equal('inactiveFill');
       expect(output[1].stroke).to.equal('activeStroke'); // Active
@@ -389,10 +391,10 @@ describe('Brushing', () => {
     });
 
     it('update should use customRender if any', () => {
-      dummyComponent.config.customRender = sinon.stub();
+      dummyComponent.config.customRender = vi.fn();
       styler(dummyComponent, consume);
       brusherStub.trigger('update');
-      expect(dummyComponent.config.customRender).to.have.been.calledWith({
+      expect(dummyComponent.config.customRender).toHaveBeenCalledWith({
         render: dummyComponent.renderer.render,
         nodes: dummyComponent.nodes,
       });
@@ -427,7 +429,7 @@ describe('Brushing', () => {
       brusherStub.trigger('start');
       brusherStub.trigger('update');
 
-      const output = dummyComponent.renderer.render.args[0][0];
+      const output = dummyComponent.renderer.render.mock.calls[0][0];
       expect(output[0].stroke).to.equal('pink'); // Inactive
       expect(output[0].fill).to.equal('inactiveFill');
       expect(output[1].stroke).to.equal('activeStroke'); // Active
@@ -458,7 +460,7 @@ describe('Brushing', () => {
       brusherStub.trigger('start');
       brusherStub.trigger('update');
 
-      const output = dummyComponent.renderer.render.args[0][0];
+      const output = dummyComponent.renderer.render.mock.calls[0][0];
       expect(output[0].stroke).to.equal('doNotUpdate'); // No data attr
       expect(output[0].fill).to.equal('doNotUpdate');
       expect(output[1].fill).to.equal('inactiveFill'); // Inactive
@@ -489,7 +491,7 @@ describe('Brushing', () => {
       brusherStub.trigger('start');
       brusherStub.trigger('update');
 
-      const output = dummyComponent.renderer.render.args[0][0];
+      const output = dummyComponent.renderer.render.mock.calls[0][0];
       expect(output.map((n) => n.fill)).to.eql(['inactive', 'start', 'active', 'start']);
     });
 
@@ -513,7 +515,7 @@ describe('Brushing', () => {
       brusherStub.trigger('start');
       brusherStub.trigger('update');
 
-      const output = dummyComponent.renderer.render.args[0][0];
+      const output = dummyComponent.renderer.render.mock.calls[0][0];
       expect(output.map((n) => n.fill)).to.eql(['red-inactive', 'green-active']);
     });
   });

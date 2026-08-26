@@ -350,14 +350,21 @@ describe('q-data-extractor-t', () => {
     const dataset = {
       key: () => 'cube',
       raw: () => cube,
-      field: sinon.stub(),
+      field: vi.fn(),
     };
 
-    dataset.field.withArgs('qDimensionInfo/0').returns(fields[0]);
-    dataset.field.withArgs('qDimensionInfo/1').returns(fields[1]);
-    dataset.field.withArgs('qDimensionInfo/0/qMeasureInfo/1').returns(fields[2]);
-    dataset.field.withArgs('qDimensionInfo/1/qMeasureInfo/0').returns(fields[3]);
-    dataset.field.withArgs('qDimensionInfo/1/qMeasureInfo/1').returns(fields[4]);
+    dataset.field.mockImplementation(
+      (key) =>
+        ({
+          'qDimensionInfo/0': fields[0],
+          'qDimensionInfo/1': fields[1],
+          'qDimensionInfo/0/qMeasureInfo/1': fields[2],
+          'qDimensionInfo/1/qMeasureInfo/0': fields[3],
+          'qDimensionInfo/1/qMeasureInfo/1': fields[4],
+          firstDimSecondAttrDim: attrDimField,
+          'qDimensionInfo/1/qAttrExprInfo/0': attrExprField,
+        })[key],
+    );
     const attrDimField = {
       title: () => '',
       value: (v) => v.qElemNo,
@@ -366,7 +373,6 @@ describe('q-data-extractor-t', () => {
       reduce: (values) => values.join(', '),
       formatter: () => () => '',
     };
-    dataset.field.withArgs('firstDimSecondAttrDim').returns(attrDimField);
 
     const attrExprField = {
       title: () => '',
@@ -375,8 +381,6 @@ describe('q-data-extractor-t', () => {
       reduceLabel: (labels) => labels.join(':'),
       formatter: () => () => '',
     };
-
-    dataset.field.withArgs('qDimensionInfo/1/qAttrExprInfo/0').returns(attrExprField);
 
     it('should return origin field depth for virtual field', () => {
       const origin = {
@@ -411,7 +415,7 @@ describe('q-data-extractor-t', () => {
             qDimensionInfo: [{ qStateCounts: {}, qAttrDimInfo: [{}, {}] }],
             qTreeDataPages: [],
           }),
-          field: sinon.stub(),
+          field: vi.fn(),
         },
         {},
         deps,
@@ -1074,13 +1078,18 @@ describe('q-data-extractor-t', () => {
     const dataset = {
       key: () => 'cube',
       raw: () => cube,
-      field: sinon.stub(),
+      field: vi.fn(),
     };
 
-    dataset.field.withArgs('qDimensionInfo/0').returns(fields[0]);
-    dataset.field.withArgs('qDimensionInfo/1').returns(fields[1]);
-    dataset.field.withArgs('qMeasureInfo/0').returns(fields[2]);
-    dataset.field.withArgs('qMeasureInfo/1').returns(fields[3]);
+    dataset.field.mockImplementation(
+      (key) =>
+        ({
+          'qDimensionInfo/0': fields[0],
+          'qDimensionInfo/1': fields[1],
+          'qMeasureInfo/0': fields[2],
+          'qMeasureInfo/1': fields[3],
+        })[key],
+    );
 
     it('should return proper pseudo measure', () => {
       const m = extract(
@@ -1211,10 +1220,10 @@ describe('q-data-extractor-t', () => {
     const dataset = {
       key: () => 'cube',
       raw: () => cube,
-      field: sinon.stub(),
+      field: vi.fn(),
     };
 
-    dataset.field.withArgs('qDimensionInfo/0').returns(fields[0]);
+    dataset.field.mockReturnValue(fields[0]);
 
     it('should return empty', () => {
       const m = extract(

@@ -14,11 +14,11 @@ describe('text-metrics', () => {
     };
 
     beforeAll(() => {
-      sandbox = sinon.createSandbox();
+      sandbox = vi;
 
       canvasContextMock = {
         font: '',
-        measureText: sandbox.spy(() => {
+        measureText: vi.fn(() => {
           if (!canvasContextMock.font) {
             fontWasUnset = true;
           }
@@ -26,13 +26,13 @@ describe('text-metrics', () => {
         }),
       };
 
-      global.document.createElement = sandbox.spy(() => ({ getContext: () => canvasContextMock }));
+      global.document.createElement = vi.fn(() => ({ getContext: () => canvasContextMock }));
     });
 
     afterEach(() => {
       fontWasUnset = false;
       canvasContextMock.font = '';
-      sandbox.resetHistory();
+      vi.clearAllMocks();
     });
 
     afterAll(() => {
@@ -61,8 +61,8 @@ describe('text-metrics', () => {
 
       measureText(argument);
 
-      expect(canvasContextMock.measureText).to.have.been.calledOnce;
-      expect(canvasContextMock.measureText).to.have.been.calledWith('Test');
+      expect(canvasContextMock.measureText).toHaveBeenCalledTimes(1);
+      expect(canvasContextMock.measureText).toHaveBeenCalledWith('Test');
     });
 
     it('should reuse the previously created canvas element', () => {
@@ -70,13 +70,13 @@ describe('text-metrics', () => {
 
       measureText(argument);
 
-      const preCallCount = global.document.createElement.callCount;
+      const preCallCount = global.document.createElement.mock.calls.length;
 
       argument.fontSize = ++cacheId;
 
       measureText(argument);
 
-      const postCallCount = global.document.createElement.callCount;
+      const postCallCount = global.document.createElement.mock.calls.length;
 
       expect(preCallCount).to.equal(postCallCount);
     });
@@ -86,11 +86,11 @@ describe('text-metrics', () => {
 
       measureText(argument);
 
-      expect(canvasContextMock.measureText.withArgs('Test').calledOnce).to.equal(true);
+      expect(canvasContextMock.measureText.mock.calls.filter(([text]) => text === 'Test')).toHaveLength(1);
 
       measureText(argument);
 
-      expect(canvasContextMock.measureText.withArgs('Test').calledOnce).to.equal(true);
+      expect(canvasContextMock.measureText.mock.calls.filter(([text]) => text === 'Test')).toHaveLength(1);
     });
 
     it('should not reuse past width calculations if arguments does not match previous use case', () => {
@@ -98,13 +98,13 @@ describe('text-metrics', () => {
 
       measureText(argument);
 
-      expect(canvasContextMock.measureText.withArgs('Test').calledOnce).to.equal(true);
+      expect(canvasContextMock.measureText.mock.calls.filter(([text]) => text === 'Test')).toHaveLength(1);
 
       argument.fontSize = ++cacheId;
 
       measureText(argument);
 
-      expect(canvasContextMock.measureText.withArgs('Test').calledTwice).to.equal(true);
+      expect(canvasContextMock.measureText.mock.calls.filter(([text]) => text === 'Test')).toHaveLength(2);
     });
   });
 

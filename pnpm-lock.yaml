@@ -56,12 +56,6 @@ importers:
       babel-plugin-istanbul:
         specifier: 8.0.0
         version: 8.0.0(supports-color@7.2.0)
-      chai:
-        specifier: 6.2.2
-        version: 6.2.2
-      chai-subset:
-        specifier: 1.6.0
-        version: 1.6.0
       cross-env:
         specifier: 7.0.3
         version: 7.0.3
@@ -101,12 +95,6 @@ importers:
       rollup-plugin-serve:
         specifier: 1.1.1
         version: 1.1.1
-      sinon:
-        specifier: 22.1.0
-        version: 22.1.0
-      sinon-chai:
-        specifier: 4.0.1
-        version: 4.0.1(chai@6.2.2)(sinon@22.1.0)
       typescript:
         specifier: 6.0.3
         version: 6.0.3
@@ -1879,15 +1867,6 @@ packages:
     resolution: {integrity: sha512-tlqY9xq5ukxTUZBmoOp+m61cqwQD5pHJtFY3Mn8CA8ps6yghLH/Hw8UPdqg4OLmFW3IFlcXnQNmo/dh8HzXYIQ==}
     engines: {node: '>=18'}
 
-  '@sinonjs/commons@3.0.1':
-    resolution: {integrity: sha512-K3mCHKQ9sVh8o1C9cxkwxaOmXoAMlDxC1mYyHrjqOWEcBjYr76t96zL2zlj5dUGZ3HSw240X1qgH3Mjf1yJWpQ==}
-
-  '@sinonjs/fake-timers@15.4.0':
-    resolution: {integrity: sha512-DsG+8/LscQIQg68J6Ef3dv10u6nVyetYn923s3/sus5eaGfTo1of5WMZSLf0UJc9KDuKPilPH0UDJCjvNbDNCA==}
-
-  '@sinonjs/samsam@10.0.2':
-    resolution: {integrity: sha512-8lVwD1Df1BmzoaOLhMcGGcz/Jyr5QY2KSB75/YK1QgKzoabTeLdIVyhXNZK9ojfSKSdirbXqdbsXXqP9/Ve8+A==}
-
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
 
@@ -2299,11 +2278,6 @@ packages:
     resolution: {integrity: sha512-prMTQVpcns/tzFgFVkVp6ak6RykZyWb3gu8ckUpd6YkTlacOd3DXGJjIpD4Q6zJirizvaiAjSSHlOsA+6sNh2A==}
     engines: {node: '>= 10'}
 
-  chai-subset@1.6.0:
-    resolution: {integrity: sha512-K3d+KmqdS5XKW5DWPd5sgNffL3uxdDe+6GdnJh3AYPhwnBGRY5urfvfcbRtWIvvpz+KxkL9FeBB6MZewLUNwug==}
-    engines: {node: '>=4'}
-    deprecated: 'functionality of this lib is built-in to chai now. see more details here: https://github.com/debitoor/chai-subset/pull/85'
-
   chai@6.2.2:
     resolution: {integrity: sha512-NUPRluOfOiTKBKvWPtSD4PhFvWCqOi0BGStNWs57X9js7XGTprSmFoz5F0tWhR4WPjNeR9jXqdC7/UpSJTnlRg==}
     engines: {node: '>=18'}
@@ -2688,10 +2662,6 @@ packages:
   detect-libc@2.1.2:
     resolution: {integrity: sha512-Btj2BOOO83o3WyH59e8MgXsxEQVcarkUOpEYrubB0urwnN10yQ364rsiByU11nZlqWYZm05i/of7io4mzihBtQ==}
     engines: {node: '>=8'}
-
-  diff@9.0.0:
-    resolution: {integrity: sha512-svtcdpS8CgJyqAjEQIXdb3OjhFVVYjzGAPO8WGCmRbrml64SPw/jJD4GoE98aR7r25A0XcgrK3F02yw9R/vhQw==}
-    engines: {node: '>=0.3.1'}
 
   dir-glob@2.2.2:
     resolution: {integrity: sha512-f9LBi5QWzIW3I6e//uxZoLBlUt9kcp66qo0sSCxL6YZKc75R1c4MFCoe/LaZiBGmgujvQdxc5Bn3QhfyvK5Hsw==}
@@ -4804,15 +4774,6 @@ packages:
     resolution: {integrity: sha512-endqECJkfhozrXMK5ngu/UAA0xVcVEFdnHJCElGaExypjW+HK5i6zu3NteLoaX/iFbRUbC3+DjttQs0GARr+5w==}
     engines: {node: ^20.17.0 || >=22.9.0}
 
-  sinon-chai@4.0.1:
-    resolution: {integrity: sha512-xMKEEV3cYHC1G+boyr7QEqi80gHznYsxVdC9CdjP5JnCWz/jPGuXQzJz3PtBcb0CcHAxar15Y5sjLBoAs6a0yA==}
-    peerDependencies:
-      chai: ^5.0.0 || ^6.0.0
-      sinon: '>=4.0.0'
-
-  sinon@22.1.0:
-    resolution: {integrity: sha512-n1ajF2rBWMTtEwbKcw4UdFg4nCnDdq/U6RDoxtOd7oapOlRoJ5ynwFx60owROyhDpA9QhMZi0pCO/xtmwFjG7w==}
-
   slash@2.0.0:
     resolution: {integrity: sha512-ZYKh3Wh2z1PpEXWr0MpSBZ0V6mZHAQfYevttO11c51CaWjGTaadiKZ+wVt1PbMlDV5qhMFslpZCemhwOK7C89A==}
     engines: {node: '>=6'}
@@ -5138,14 +5099,6 @@ packages:
   type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
     engines: {node: '>= 0.8.0'}
-
-  type-detect@4.0.8:
-    resolution: {integrity: sha512-0fr/mIH1dlO+x7TlcMy+bIDqKPsw/70tVyeHW787goQjhmqaZe10uwLujubK9q9Lg6Fiho1KUKDYz0Z7k7g5/g==}
-    engines: {node: '>=4'}
-
-  type-detect@4.1.0:
-    resolution: {integrity: sha512-Acylog8/luQ8L7il+geoSxhEkazvkslg7PSNKOX59mbB9cOveP5aq9h74Y7YU8yDpJwetzQQrfIwtf4Wp4LKcw==}
-    engines: {node: '>=4'}
 
   type-fest@0.18.1:
     resolution: {integrity: sha512-OIAYXk8+ISY+qTOwkHtKqzAuxchoMiD9Udx+FSGQDuiRR+PJKJHc2NJAXlbhkGwTt/4/nKZxELY1w3ReWOL8mw==}
@@ -7297,19 +7250,6 @@ snapshots:
 
   '@sindresorhus/merge-streams@4.0.0': {}
 
-  '@sinonjs/commons@3.0.1':
-    dependencies:
-      type-detect: 4.0.8
-
-  '@sinonjs/fake-timers@15.4.0':
-    dependencies:
-      '@sinonjs/commons': 3.0.1
-
-  '@sinonjs/samsam@10.0.2':
-    dependencies:
-      '@sinonjs/commons': 3.0.1
-      type-detect: 4.1.0
-
   '@standard-schema/spec@1.1.0': {}
 
   '@tufjs/canonical-json@2.0.0': {}
@@ -7770,8 +7710,6 @@ snapshots:
     dependencies:
       lodash: 4.18.1
 
-  chai-subset@1.6.0: {}
-
   chai@6.2.2: {}
 
   chalk@2.4.2:
@@ -8146,8 +8084,6 @@ snapshots:
   deprecation@2.3.1: {}
 
   detect-libc@2.1.2: {}
-
-  diff@9.0.0: {}
 
   dir-glob@2.2.2:
     dependencies:
@@ -10558,18 +10494,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  sinon-chai@4.0.1(chai@6.2.2)(sinon@22.1.0):
-    dependencies:
-      chai: 6.2.2
-      sinon: 22.1.0
-
-  sinon@22.1.0:
-    dependencies:
-      '@sinonjs/commons': 3.0.1
-      '@sinonjs/fake-timers': 15.4.0
-      '@sinonjs/samsam': 10.0.2
-      diff: 9.0.0
-
   slash@2.0.0: {}
 
   slash@3.0.0: {}
@@ -10904,10 +10828,6 @@ snapshots:
   type-check@0.4.0:
     dependencies:
       prelude-ls: 1.2.1
-
-  type-detect@4.0.8: {}
-
-  type-detect@4.1.0: {}
 
   type-fest@0.18.1: {}
 

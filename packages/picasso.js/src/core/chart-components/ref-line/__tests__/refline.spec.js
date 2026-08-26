@@ -17,10 +17,10 @@ describe('reference lines', () => {
 
   beforeEach(() => {
     const table = {
-      findField: sinon.stub(),
+      findField: vi.fn(),
     };
     const dataset = {
-      map: sinon.stub(),
+      map: vi.fn(),
     };
     shapeFn = (type, p) => {
       p.type = type;
@@ -36,7 +36,7 @@ describe('reference lines', () => {
       container: () => ({}),
       table: () => table,
       dataset: () => dataset,
-      scale: sinon.stub(),
+      scale: vi.fn(),
     };
   });
 
@@ -47,8 +47,8 @@ describe('reference lines', () => {
       chart,
       renderer,
       theme: {
-        style: sinon.stub(),
-        palette: sinon.stub(),
+        style: vi.fn(),
+        palette: vi.fn(),
       },
     });
     instance.beforeMount();
@@ -169,12 +169,10 @@ describe('reference lines', () => {
     const xScale = (v) => v;
     xScale.min = () => 0;
     xScale.max = () => 1;
-    chart.scale.withArgs({ scale: 'x' }).returns(xScale);
-
     const yScale = (v) => v;
     yScale.min = () => 0;
     yScale.max = () => 1;
-    chart.scale.withArgs({ scale: 'y' }).returns(yScale);
+    chart.scale.mockImplementation((scale) => (scale === 'x' || scale.scale === 'x' ? xScale : yScale));
 
     createAndRenderComponent({
       inner: {
@@ -255,12 +253,12 @@ describe('reference lines', () => {
     const xScale = (v) => v;
     xScale.min = () => 0;
     xScale.max = () => 1;
-    chart.scale.withArgs({ scale: 'x' }).returns(xScale);
+    chart.scale.mockReturnValue(xScale);
 
     const yScale = (v) => v;
     yScale.min = () => 0;
     yScale.max = () => 1;
-    chart.scale.withArgs({ scale: 'y' }).returns(yScale);
+    chart.scale.mockReturnValue(yScale);
 
     createAndRenderComponent({
       inner: {
@@ -314,12 +312,12 @@ describe('reference lines', () => {
     const xScale = (v) => v;
     xScale.min = () => 0;
     xScale.max = () => 1;
-    chart.scale.withArgs({ scale: 'x' }).returns(xScale);
+    chart.scale.mockReturnValue(xScale);
 
     const yScale = (v) => v;
     yScale.min = () => 0;
     yScale.max = () => 1;
-    chart.scale.withArgs({ scale: 'y' }).returns(yScale);
+    chart.scale.mockReturnValue(yScale);
 
     createAndRenderComponent({
       inner: {
@@ -397,12 +395,12 @@ describe('reference lines', () => {
     const xScale = (v) => v;
     xScale.min = () => 0;
     xScale.max = () => 1;
-    chart.scale.withArgs({ scale: 'x' }).returns(xScale);
+    chart.scale.mockReturnValue(xScale);
 
     const yScale = (v) => v;
     yScale.min = () => 0;
     yScale.max = () => 1;
-    chart.scale.withArgs({ scale: 'y' }).returns(yScale);
+    chart.scale.mockReturnValue(yScale);
 
     createAndRenderComponent({
       inner: {
@@ -461,12 +459,12 @@ describe('reference lines', () => {
     const xScale = (v) => v;
     xScale.min = () => 0;
     xScale.max = () => 1;
-    chart.scale.withArgs({ scale: 'x' }).returns(xScale);
+    chart.scale.mockReturnValue(xScale);
 
     const yScale = (v) => v;
     yScale.min = () => 0;
     yScale.max = () => 1;
-    chart.scale.withArgs({ scale: 'y' }).returns(yScale);
+    chart.scale.mockReturnValue(yScale);
 
     createAndRenderComponent({
       inner: {
@@ -525,12 +523,12 @@ describe('reference lines', () => {
     const xScale = (v) => v;
     xScale.min = () => 0;
     xScale.max = () => 1;
-    chart.scale.withArgs({ scale: 'x' }).returns(xScale);
+    chart.scale.mockReturnValue(xScale);
 
     const yScale = (v) => v;
     yScale.min = () => 0;
     yScale.max = () => 1;
-    chart.scale.withArgs({ scale: 'y' }).returns(yScale);
+    chart.scale.mockReturnValue(yScale);
 
     createAndRenderComponent({
       inner: {
@@ -603,12 +601,12 @@ describe('reference lines', () => {
     const xScale = (v) => v;
     xScale.min = () => 0;
     xScale.max = () => 1;
-    chart.scale.withArgs({ scale: 'x' }).returns(xScale);
+    chart.scale.mockReturnValue(xScale);
 
     const yScale = (v) => v;
     yScale.min = () => 0;
     yScale.max = () => 1;
-    chart.scale.withArgs({ scale: 'y' }).returns(yScale);
+    chart.scale.mockReturnValue(yScale);
 
     createAndRenderComponent({
       inner: {
@@ -682,12 +680,12 @@ describe('reference lines', () => {
     const xScale = (v) => v;
     xScale.min = () => 0;
     xScale.max = () => 1;
-    chart.scale.withArgs({ scale: 'x' }).returns(xScale);
+    chart.scale.mockReturnValue(xScale);
 
     const yScale = (v) => v;
     yScale.min = () => 0;
     yScale.max = () => 1;
-    chart.scale.withArgs({ scale: 'y' }).returns(yScale);
+    chart.scale.mockReturnValue(yScale);
 
     createAndRenderComponent({
       inner: {
@@ -771,12 +769,12 @@ describe('reference lines', () => {
     const xScale = (v) => v;
     xScale.min = () => 0;
     xScale.max = () => 1;
-    chart.scale.withArgs({ scale: 'x' }).returns(xScale);
+    chart.scale.mockReturnValue(xScale);
 
     const yScale = (v) => v;
     yScale.min = () => 0;
     yScale.max = () => 1;
-    chart.scale.withArgs({ scale: 'y' }).returns(yScale);
+    chart.scale.mockReturnValue(yScale);
 
     createAndRenderComponent({
       inner: {
@@ -849,10 +847,10 @@ describe('reference lines', () => {
     };
 
     const xScale = (v) => v;
-    chart.scale.withArgs({ scale: 'x' }).returns(xScale);
+    chart.scale.mockReturnValue(xScale);
 
     const yScale = (v) => v;
-    chart.scale.withArgs({ scale: 'y' }).returns(yScale);
+    chart.scale.mockReturnValue(yScale);
 
     createAndRenderComponent({
       inner: {
@@ -925,7 +923,7 @@ describe('reference lines', () => {
     };
 
     const yScale = (v) => v;
-    chart.scale.withArgs({ scale: 'y' }).returns(yScale);
+    chart.scale.mockReturnValue(yScale);
 
     createAndRenderComponent({
       inner: {
@@ -997,7 +995,7 @@ describe('reference lines', () => {
     };
 
     const yScale = (v) => v;
-    chart.scale.withArgs({ scale: 'y' }).returns(yScale);
+    chart.scale.mockReturnValue(yScale);
 
     createAndRenderComponent({
       inner: {
@@ -1080,13 +1078,12 @@ describe('reference lines', () => {
     xScale.min = () => 0;
     xScale.max = () => 0;
     xScale.range = () => [0, 1];
-    chart.scale.withArgs({ scale: 'x' }).returns(xScale);
 
     const yScale = (v) => v;
     yScale.min = () => 0;
     yScale.max = () => 1;
     yScale.range = () => [0, 1];
-    chart.scale.withArgs({ scale: 'y' }).returns(yScale);
+    chart.scale.mockImplementation((scale) => (scale === 'x' || scale.scale === 'x' ? xScale : yScale));
 
     createAndRenderComponent({
       inner: {
@@ -1170,13 +1167,12 @@ describe('reference lines', () => {
     xScale.min = () => 0;
     xScale.max = () => 0;
     xScale.range = () => [1, 0];
-    chart.scale.withArgs({ scale: 'x' }).returns(xScale);
 
     const yScale = (v) => v;
     yScale.min = () => 0;
     yScale.max = () => 1;
     yScale.range = () => [1, 0];
-    chart.scale.withArgs({ scale: 'y' }).returns(yScale);
+    chart.scale.mockImplementation((scale) => (scale === 'x' || scale.scale === 'x' ? xScale : yScale));
 
     createAndRenderComponent({
       inner: {

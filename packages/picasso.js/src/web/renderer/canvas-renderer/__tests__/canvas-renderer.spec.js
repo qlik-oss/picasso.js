@@ -12,13 +12,13 @@ describe('canvas renderer', () => {
   let sandbox, r, sceneFn, mockedCanvasBuffer;
 
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
-    sceneFn = sandbox.stub();
+    sandbox = vi;
+    sceneFn = vi.fn();
     mockedCanvasBuffer = {
-      updateSize: sinon.spy(),
-      apply: sinon.spy(),
-      clear: sinon.spy(),
-      getContext: sinon.spy(),
+      updateSize: vi.fn(),
+      apply: vi.fn(),
+      clear: vi.fn(),
+      getContext: vi.fn(),
     };
     canvasBuffer.default.mockImplementation(function createCanvasBuffer() {
       return mockedCanvasBuffer;
@@ -27,7 +27,7 @@ describe('canvas renderer', () => {
   });
 
   afterEach(() => {
-    sandbox.restore();
+    vi.restoreAllMocks();
   });
 
   it('should set rendererSettings correctly', () => {
@@ -49,7 +49,7 @@ describe('canvas renderer', () => {
       transform: () => {},
       canvasBufferSize: { width: 1000, height: 600 },
       irrelevantSetting: 'irrelevant!',
-      progressive: sandbox.stub().returns('abc'),
+      progressive: vi.fn().mockReturnValue('abc'),
     };
     r.settings(rendererSettings);
     expect(r.settings().progressive()).to.eql('abc');
@@ -62,84 +62,84 @@ describe('canvas renderer', () => {
       irrelevantSetting: 'irrelevant!',
     };
     const div = element('div');
-    r.clear = sandbox.stub();
+    r.clear = vi.fn();
     r.appendTo(div);
-    sceneFn.returns({
+    sceneFn.mockReturnValue({
       children: [],
       equals: () => false,
     });
     r.settings(rendererSettings);
     r.render();
-    expect(r.clear.callCount).to.equal(1);
+    expect(r.clear.mock.calls.length).to.equal(1);
   });
 
   it('should clear canvas if progressive = false', () => {
     const rendererSettings = {
       transform: () => {},
       canvasBufferSize: { width: 1000, height: 600 },
-      progressive: sandbox.stub().returns(false),
+      progressive: vi.fn().mockReturnValue(false),
     };
     const div = element('div');
-    r.clear = sandbox.stub();
+    r.clear = vi.fn();
     r.appendTo(div);
-    sceneFn.returns({
+    sceneFn.mockReturnValue({
       children: [],
       equals: () => false,
     });
     r.settings(rendererSettings);
     r.render();
-    expect(r.clear.callCount).to.equal(1);
+    expect(r.clear.mock.calls.length).to.equal(1);
   });
 
   it('should clear canvas if progressive.isFirst = true', () => {
     const rendererSettings = {
       transform: () => {},
       canvasBufferSize: { width: 1000, height: 600 },
-      progressive: sandbox.stub().returns({ isFirst: true }),
+      progressive: vi.fn().mockReturnValue({ isFirst: true }),
     };
     const div = element('div');
-    r.clear = sandbox.stub();
+    r.clear = vi.fn();
     r.appendTo(div);
-    sceneFn.returns({
+    sceneFn.mockReturnValue({
       children: [],
       equals: () => false,
     });
     r.settings(rendererSettings);
     r.render();
-    expect(r.clear.callCount).to.equal(1);
+    expect(r.clear.mock.calls.length).to.equal(1);
   });
 
   it('should not clear canvas if progressive.isFirst = false', () => {
     const rendererSettings = {
       transform: () => {},
       canvasBufferSize: { width: 1000, height: 600 },
-      progressive: sandbox.stub(),
+      progressive: vi.fn(),
     };
-    rendererSettings.progressive.onCall(0).returns({ isFirst: true });
-    rendererSettings.progressive.onCall(1).returns({ isFirst: false });
+    rendererSettings.progressive.mockReturnValueOnce({ isFirst: true });
+    rendererSettings.progressive.mockReturnValueOnce({ isFirst: false });
     const div = element('div');
-    r.clear = sandbox.stub();
+    r.clear = vi.fn();
     r.appendTo(div);
-    sceneFn.returns({
+    sceneFn.mockReturnValue({
       children: [],
       equals: () => false,
     });
     r.settings(rendererSettings);
     r.render();
     r.render();
-    expect(r.clear.callCount).to.equal(1);
+    expect(r.clear.mock.calls.length).to.equal(1);
   });
 
   it('should aggregate children during progressive', () => {
     const rendererSettings = {
       transform: () => {},
       canvasBufferSize: { width: 1000, height: 600 },
-      progressive: sandbox.stub(),
+      progressive: vi.fn(),
     };
-    rendererSettings.progressive.onCall(0).returns({ isFirst: true });
-    rendererSettings.progressive.onCall(1).returns({ isFirst: false });
+    rendererSettings.progressive.mockReturnValueOnce({ isFirst: true });
+    rendererSettings.progressive.mockReturnValueOnce({ isFirst: false });
     const div = element('div');
-    r.clear = sandbox.stub();
+    r.clear = vi.fn();
     r.appendTo(div);
     const scene1 = {
       children: [
@@ -155,8 +155,8 @@ describe('canvas renderer', () => {
       ],
       equals: () => false,
     };
-    sceneFn.onCall(0).returns(scene1);
-    sceneFn.onCall(1).returns(scene2);
+    sceneFn.mockReturnValueOnce(scene1);
+    sceneFn.mockReturnValueOnce(scene2);
     r.settings(rendererSettings);
     r.render();
     r.render();
@@ -170,13 +170,13 @@ describe('canvas renderer', () => {
 
   it('should append canvas element', () => {
     const div = element('div');
-    const spy = sandbox.spy(div, 'appendChild');
+    const spy = vi.spyOn(div, 'appendChild');
     r.appendTo(div);
-    expect(spy.args[0][0].name).to.equal('canvas');
+    expect(spy.mock.calls[0][0].name).to.equal('canvas');
   });
 
   it('should on appendTo apply font smoothing', () => {
-    sceneFn.returns({ children: [] });
+    sceneFn.mockReturnValue({ children: [] });
     r.appendTo(element('div'));
 
     const el = r.element();
@@ -190,7 +190,7 @@ describe('canvas renderer', () => {
 
   it('should render when canvas exists', () => {
     r.appendTo(element('div'));
-    sceneFn.returns({ children: [] });
+    sceneFn.mockReturnValue({ children: [] });
     expect(r.render()).to.equal(true);
   });
 
@@ -210,8 +210,8 @@ describe('canvas renderer', () => {
     const targetCtx = r.element().getContext('2d');
     targetCtx.webkitBackingStorePixelRatio = 0.5;
     r.render();
-    expect(targetCtx.setTransform).to.have.been.calledWith(1, 0, 1, 0, 200, 200);
-    expect(mockedCanvasBuffer.apply).to.have.been.calledOnce;
+    expect(targetCtx.setTransform).toHaveBeenCalledWith(1, 0, 1, 0, 200, 200);
+    expect(mockedCanvasBuffer.apply).toHaveBeenCalledTimes(1);
   });
 
   it('should apply buffer but not set transform when transform func returns falsy value', () => {
@@ -220,19 +220,19 @@ describe('canvas renderer', () => {
     };
     r.settings(rendererSettings);
     r.appendTo(element('div'));
-    sceneFn.returns({
+    sceneFn.mockReturnValue({
       children: [],
       equals: () => true,
     });
     const targetCtx = r.element().getContext('2d');
     r.render();
-    expect(targetCtx.setTransform).to.not.have.been.called;
-    expect(mockedCanvasBuffer.apply).to.have.been.calledOnce;
+    expect(targetCtx.setTransform).not.toHaveBeenCalled();
+    expect(mockedCanvasBuffer.apply).toHaveBeenCalledTimes(1);
   });
 
   it('should not render if scene and size has not changed', () => {
     r.appendTo(element('div'));
-    sceneFn.returns({
+    sceneFn.mockReturnValue({
       children: [],
       equals: () => true,
     });
@@ -242,7 +242,7 @@ describe('canvas renderer', () => {
 
   it('should render if scene has been cleared', () => {
     r.appendTo(element('div'));
-    sceneFn.returns({
+    sceneFn.mockReturnValue({
       children: [],
       equals: () => true,
     });
@@ -358,7 +358,7 @@ describe('canvas renderer', () => {
     };
     r.settings(rendererSettings);
     r.appendTo(element('div'));
-    sceneFn.returns({
+    sceneFn.mockReturnValue({
       children: [],
       equals: () => true,
     });
@@ -372,7 +372,7 @@ describe('canvas renderer', () => {
     const targetCtx = r.element().getContext('2d');
     targetCtx.webkitBackingStorePixelRatio = 0.5;
     r.render();
-    expect(mockedCanvasBuffer.updateSize).to.have.been.calledWith({
+    expect(mockedCanvasBuffer.updateSize).toHaveBeenCalledWith({
       rect,
       dpiRatio: 2,
       canvasBufferSize: rendererSettings.canvasBufferSize,
@@ -380,7 +380,7 @@ describe('canvas renderer', () => {
   });
 
   it('should attach to given position in the container', () => {
-    sceneFn.returns({ children: [] });
+    sceneFn.mockReturnValue({ children: [] });
     r.appendTo(element('div'));
     r.size({
       x: 50,
@@ -411,7 +411,7 @@ describe('canvas renderer', () => {
   describe('setKey', () => {
     it('should set key attribute', () => {
       const div = element('div');
-      const spy = sandbox.spy(div, 'setAttribute');
+      const spy = vi.spyOn(div, 'setAttribute');
       r.element = () => div;
       r.setKey('myKey');
       expect(spy).have.been.calledWith('data-key', 'myKey');
@@ -525,7 +525,7 @@ describe('canvas renderer', () => {
       ],
       dpi: 0.5,
     };
-    sceneFn.returns({ children: [] });
+    sceneFn.mockReturnValue({ children: [] });
     r.appendTo(div);
     r.size({
       x: 50,
@@ -534,8 +534,8 @@ describe('canvas renderer', () => {
       height: 400,
     });
 
-    const ctxStub = sandbox.stub(div.children[0], 'getContext');
-    ctxStub.returns({ webkitBackingStorePixelRatio: 2 });
+    const ctxStub = vi.spyOn(div.children[0], 'getContext');
+    ctxStub.mockReturnValue({ webkitBackingStorePixelRatio: 2 });
 
     r.render(inputShapes);
 
@@ -543,7 +543,7 @@ describe('canvas renderer', () => {
     expect(r.element().style.height).to.equal('400px');
     expect(r.element().width).to.equal(200 * (1 / 2));
     expect(r.element().height).to.equal(400 * (1 / 2));
-    expect(sceneFn.args[0][0].items).to.deep.equal(expectedInput.items);
+    expect(sceneFn.mock.calls[0][0].items).to.deep.equal(expectedInput.items);
   });
 
   it('should apply a scale ratio', () => {
@@ -567,7 +567,7 @@ describe('canvas renderer', () => {
       ],
       dpi: 1,
     };
-    sceneFn.returns({ children: [] });
+    sceneFn.mockReturnValue({ children: [] });
     r.appendTo(div);
     r.size(size);
 
@@ -580,7 +580,7 @@ describe('canvas renderer', () => {
     expect(el.style.top).to.equal(`${size.y * scaleRatio.y}px`);
     expect(el.width).to.equal(size.width * scaleRatio.x);
     expect(el.height).to.equal(size.height * scaleRatio.y);
-    expect(sceneFn.args[0][0].items).to.deep.equal(expectedInputShapes.items);
+    expect(sceneFn.mock.calls[0][0].items).to.deep.equal(expectedInputShapes.items);
   });
 
   it('should account for screen dpi when applying scale ratio', () => {
@@ -605,12 +605,12 @@ describe('canvas renderer', () => {
       ],
       dpi: dpiScale,
     };
-    sceneFn.returns({ children: [] });
+    sceneFn.mockReturnValue({ children: [] });
     r.appendTo(div);
     r.size(size);
 
-    const ctxStub = sandbox.stub(div.children[0], 'getContext');
-    ctxStub.returns({ webkitBackingStorePixelRatio: 0.5 });
+    const ctxStub = vi.spyOn(div.children[0], 'getContext');
+    ctxStub.mockReturnValue({ webkitBackingStorePixelRatio: 0.5 });
 
     r.render(inputShapes);
 
@@ -621,6 +621,6 @@ describe('canvas renderer', () => {
     expect(el.style.top).to.equal(`${size.y * scaleRatio.y}px`);
     expect(el.width).to.equal(size.width * scaleRatio.x * dpiScale);
     expect(el.height).to.equal(size.height * scaleRatio.y * dpiScale);
-    expect(sceneFn.args[0][0].items).to.deep.equal(expectedInputShapes.items);
+    expect(sceneFn.mock.calls[0][0].items).to.deep.equal(expectedInputShapes.items);
   });
 });

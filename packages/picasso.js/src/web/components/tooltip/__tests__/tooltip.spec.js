@@ -7,24 +7,24 @@ import { vi } from 'vitest';
 
 vi.mock('../instance-handler', async (importOriginal) => ({
   ...(await importOriginal()),
-  remove: sinon.stub(),
+  remove: vi.fn(),
 }));
 
 function componentMock() {
   return {
-    emit: sinon.stub(),
+    emit: vi.fn(),
   };
 }
 
 function chartMock() {
   return {
-    componentsFromPoint: sinon.stub().returns([]),
-    shapesAt: sinon.stub().returns([]),
-    brushFromShapes: sinon.stub(),
-    component: sinon.stub().returns(componentMock()),
+    componentsFromPoint: vi.fn().mockReturnValue([]),
+    shapesAt: vi.fn().mockReturnValue([]),
+    brushFromShapes: vi.fn(),
+    component: vi.fn().mockReturnValue(componentMock()),
     element: {
       ...elementMock(),
-      getBoundingClientRect: sinon.stub().returns({
+      getBoundingClientRect: vi.fn().mockReturnValue({
         left: 0,
         top: 0,
       }),
@@ -45,10 +45,10 @@ describe('Tooltip', () => {
 
   beforeEach(() => {
     componentFixture = componentFactoryFixture();
-    sandbox = componentFixture.sandbox();
+    sandbox = vi;
     cMock = extend(componentFixture.mocks().chart, chartMock());
-    clock = sandbox.useFakeTimers();
-    isEql = sandbox.stub().returns(false);
+    vi.useFakeTimers();
+    isEql = vi.fn().mockReturnValue(false);
 
     config = {
       settings: {
@@ -67,57 +67,57 @@ describe('Tooltip', () => {
       },
     }); // To attach h to context
 
-    invokeSpy = sandbox.stub(instance.def, 'invokeRenderer');
+    invokeSpy = vi.spyOn(instance.def, 'invokeRenderer').mockImplementation(() => {});
   });
 
   afterEach(() => {
-    sandbox.restore();
+    vi.restoreAllMocks();
   });
 
   describe('events', () => {
     describe('show', () => {
       it('should do shape loookup and show tooltip', () => {
-        cMock.shapesAt.returns([0, 1, 2]);
+        cMock.shapesAt.mockReturnValue([0, 1, 2]);
         instance.def.show({});
-        clock.tick(500);
+        vi.advanceTimersByTime(500);
 
-        expect(invokeSpy).to.have.been.calledWith([0, 1, 2]);
+        expect(invokeSpy).toHaveBeenCalledWith([0, 1, 2]);
       });
 
       it('should show tooltip with provided nodes', () => {
         instance.def.show({}, { nodes: [0, 1, 2] });
-        clock.tick(500);
+        vi.advanceTimersByTime(500);
 
-        expect(invokeSpy).to.have.been.calledWith([0, 1, 2]);
+        expect(invokeSpy).toHaveBeenCalledWith([0, 1, 2]);
       });
 
       it('should not re-render tooltip if over same nodes', () => {
-        isEql.returns(true);
-        cMock.shapesAt.returns([0, 1, 2]);
+        isEql.mockReturnValue(true);
+        cMock.shapesAt.mockReturnValue([0, 1, 2]);
         instance.def.show({});
 
-        expect(invokeSpy).to.not.have.been.called;
-        expect(isEql).to.have.been.called;
+        expect(invokeSpy).not.toHaveBeenCalled();
+        expect(isEql).toHaveBeenCalled();
       });
 
       it('should not show tooltip if there are no matching nodes', () => {
-        cMock.shapesAt.returns([]);
+        cMock.shapesAt.mockReturnValue([]);
         instance.def.show({});
 
-        expect(invokeSpy).to.not.have.been.called;
+        expect(invokeSpy).not.toHaveBeenCalled();
 
         instance.def.show({}, { nodes: [] });
 
-        expect(invokeSpy).to.not.have.been.called;
+        expect(invokeSpy).not.toHaveBeenCalled();
       });
     });
 
     describe('hide', () => {
       it('should hide tooltip', () => {
-        dispatcherSpy = sandbox.spy(instance.def.dispatcher, 'clear');
+        dispatcherSpy = vi.spyOn(instance.def.dispatcher, 'clear');
         instance.def.hide();
 
-        expect(dispatcherSpy).to.have.been.called;
+        expect(dispatcherSpy).toHaveBeenCalled();
       });
     });
 
@@ -126,7 +126,7 @@ describe('Tooltip', () => {
         instance.def.prevent(true);
         instance.def.show({});
 
-        expect(isEql).to.not.have.been.called;
+        expect(isEql).not.toHaveBeenCalled();
       });
     });
   });
@@ -135,84 +135,84 @@ describe('Tooltip', () => {
     let hookSpy;
 
     beforeEach(() => {
-      hookSpy = sandbox.spy();
-      cMock.shapesAt.returns([0, 1, 2]);
+      hookSpy = vi.fn();
+      cMock.shapesAt.mockReturnValue([0, 1, 2]);
     });
 
     it('should call beforeShow', () => {
       instance.def.props.beforeShow = hookSpy;
       instance.def.show({});
 
-      expect(hookSpy).to.have.been.called;
+      expect(hookSpy).toHaveBeenCalled();
     });
 
     it('should call afterShow', () => {
       instance.def.props.afterShow = hookSpy;
       instance.def.show({});
-      clock.tick(500);
+      vi.advanceTimersByTime(500);
 
-      expect(hookSpy).to.have.been.called;
+      expect(hookSpy).toHaveBeenCalled();
     });
 
     it('should call beforeHide', () => {
       instance.def.props.afterShow = hookSpy;
       instance.def.show({});
-      clock.tick(8500);
+      vi.advanceTimersByTime(8500);
 
-      expect(hookSpy).to.have.been.called;
+      expect(hookSpy).toHaveBeenCalled();
     });
 
     it('should not call beforeHide if tooltip is not displayed', () => {
       instance.def.props.afterShow = hookSpy;
       instance.def.hide();
 
-      expect(hookSpy).to.not.have.been.called;
+      expect(hookSpy).not.toHaveBeenCalled();
     });
 
     it('should call onHide', () => {
       instance.def.props.onHide = hookSpy;
       instance.def.show({});
-      clock.tick(8500);
+      vi.advanceTimersByTime(8500);
 
-      expect(hookSpy).to.have.been.called;
+      expect(hookSpy).toHaveBeenCalled();
     });
 
     it('should not call onHide if tooltip is not displayed', () => {
       instance.def.props.onHide = hookSpy;
       instance.def.hide();
 
-      expect(hookSpy).to.not.have.been.called;
+      expect(hookSpy).not.toHaveBeenCalled();
     });
 
     it('should call afterHide', () => {
       instance.def.props.afterHide = hookSpy;
       instance.def.show({});
-      clock.tick(8500);
+      vi.advanceTimersByTime(8500);
 
-      expect(hookSpy).to.have.been.called;
+      expect(hookSpy).toHaveBeenCalled();
     });
 
     it('should not call afterHide if tooltip is not displayed', () => {
       instance.def.props.afterHide = hookSpy;
       instance.def.hide();
 
-      expect(hookSpy).to.not.have.been.called;
+      expect(hookSpy).not.toHaveBeenCalled();
     });
   });
 
   describe('beforeUpdate', () => {
     it('should destroy dispatcher', () => {
-      dispatcherSpy = sandbox.spy(instance.def.dispatcher, 'destroy');
+      dispatcherSpy = vi.spyOn(instance.def.dispatcher, 'destroy');
       instance.beforeUpdate({});
 
-      expect(dispatcherSpy).to.have.been.called;
+      expect(dispatcherSpy).toHaveBeenCalled();
     });
 
     it('should call remove on instance handler', () => {
-      instanceHandler.remove.resetHistory();
+      instanceHandler.remove.mockClear();
       instance.beforeUpdate({});
 
-      expect(instanceHandler.remove).to.have.been.called;
+      expect(instanceHandler.remove).toHaveBeenCalled();
     });
   });
 
@@ -228,25 +228,25 @@ describe('Tooltip', () => {
         scaleRatio: { x: 0, y: 0 },
       };
 
-      componentFixture.mocks().renderer.size = sandbox.stub().returns(container);
+      componentFixture.mocks().renderer.size = vi.fn().mockReturnValue(container);
     });
 
     it('should apply appendTo on mounted', () => {
-      const stub = sandbox.stub().returns({ getBoundingClientRect: () => container, appendChild: sandbox.stub() });
+      const stub = vi.fn().mockReturnValue({ getBoundingClientRect: () => container, appendChild: vi.fn() });
       instance.def.props.appendTo = stub;
       componentFixture.simulateRender({ inner: container, outer: container });
 
-      expect(stub).to.have.been.called;
-      expect(componentFixture.mocks().renderer.size).to.have.been.calledWith({ width: 100, height: 50 });
+      expect(stub).toHaveBeenCalled();
+      expect(componentFixture.mocks().renderer.size).toHaveBeenCalledWith({ width: 100, height: 50 });
     });
 
     it('should apply appendTo on updated', () => {
-      const stub = sandbox.stub().returns({ getBoundingClientRect: () => container, appendChild: sandbox.stub() });
+      const stub = vi.fn().mockReturnValue({ getBoundingClientRect: () => container, appendChild: vi.fn() });
       config.settings.appendTo = stub;
       componentFixture.simulateUpdate(config);
 
-      expect(stub).to.have.been.called;
-      expect(componentFixture.mocks().renderer.size).to.have.been.calledWith({ width: 100, height: 50 });
+      expect(stub).toHaveBeenCalled();
+      expect(componentFixture.mocks().renderer.size).toHaveBeenCalledWith({ width: 100, height: 50 });
     });
   });
 });

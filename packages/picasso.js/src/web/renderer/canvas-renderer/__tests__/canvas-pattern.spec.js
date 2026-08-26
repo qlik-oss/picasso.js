@@ -9,7 +9,7 @@ describe('canvas-gradient', () => {
   beforeEach(() => {
     el = elementMock('canvas');
     document = {
-      createElement: sinon.stub().withArgs('canvas').returns(el),
+      createElement: vi.fn().mockReturnValue(el),
     };
     z = patternizer(document);
   });
@@ -30,7 +30,7 @@ describe('canvas-gradient', () => {
       z.create({ key: 'b', shapes: [] });
       z.create({ key: 'a', shapes: [] });
 
-      expect(ctx.createPattern.callCount).to.equal(2);
+      expect(ctx.createPattern.mock.calls.length).to.equal(2);
     });
 
     it('should draw a pattern', () => {
@@ -50,13 +50,13 @@ describe('canvas-gradient', () => {
         ],
       });
 
-      expect(ctx.save.calledBefore(ctx.rect)).to.equal(true);
-      expect(ctx.rect.calledBefore(ctx.fill)).to.equal(true);
-      expect(ctx.fill.calledBefore(ctx.restore)).to.equal(true);
-      expect(ctx.createPattern.calledAfter(ctx.restore)).to.equal(true);
+      expect(ctx.save.mock.invocationCallOrder[0] < ctx.rect.mock.invocationCallOrder[0]).to.equal(true);
+      expect(ctx.rect.mock.invocationCallOrder[0] < ctx.fill.mock.invocationCallOrder[0]).to.equal(true);
+      expect(ctx.fill.mock.invocationCallOrder[0] < ctx.restore.mock.invocationCallOrder[0]).to.equal(true);
+      expect(ctx.createPattern.mock.invocationCallOrder[0] > ctx.restore.mock.invocationCallOrder[0]).to.equal(true);
 
-      expect(ctx.rect.calledWithExactly(0, 1, 2, 3)).to.equal(true);
-      expect(ctx.createPattern.calledWithExactly(el, 'repeat')).to.equal(true);
+      expect(ctx.rect).toHaveBeenCalledWith(0, 1, 2, 3);
+      expect(ctx.createPattern).toHaveBeenCalledWith(el, 'repeat');
       expect(ctx.fillStyle).to.equal('red');
       expect(el.width).to.equal(4);
       expect(el.height).to.equal(7);

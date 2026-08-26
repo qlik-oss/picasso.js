@@ -8,7 +8,7 @@ describe('renderer-box', () => {
       width: 3,
       height: 4,
     });
-    expect(b).to.containSubset({
+    expect(b).toMatchObject({
       x: 1,
       y: 2,
       width: 3,
@@ -23,7 +23,7 @@ describe('renderer-box', () => {
       width: 3,
       height: 4,
     });
-    expect(b).to.containSubset({
+    expect(b).toMatchObject({
       x: 0,
       y: 2,
       width: 3,
@@ -38,7 +38,7 @@ describe('renderer-box', () => {
       width: 3,
       height: 4,
     });
-    expect(b).to.containSubset({
+    expect(b).toMatchObject({
       x: 1,
       y: 0,
       width: 3,
@@ -53,7 +53,7 @@ describe('renderer-box', () => {
       width: NaN,
       height: 4,
     });
-    expect(b).to.containSubset({
+    expect(b).toMatchObject({
       x: 1,
       y: 2,
       width: 0,
@@ -68,7 +68,7 @@ describe('renderer-box', () => {
       width: 3,
       height: NaN,
     });
-    expect(b).to.containSubset({
+    expect(b).toMatchObject({
       x: 0,
       y: 2,
       width: 3,
@@ -81,7 +81,7 @@ describe('renderer-box', () => {
       const b = box({
         scaleRatio: { x: 3, y: 4 },
       });
-      expect(b).to.containSubset({
+      expect(b).toMatchObject({
         scaleRatio: { x: 3, y: 4 },
       });
     });
@@ -90,7 +90,7 @@ describe('renderer-box', () => {
       const b = box({
         scaleRatio: { y: 2 },
       });
-      expect(b).to.containSubset({
+      expect(b).toMatchObject({
         scaleRatio: { x: 1, y: 2 },
       });
     });
@@ -99,14 +99,14 @@ describe('renderer-box', () => {
       const b = box({
         scaleRatio: { x: 2 },
       });
-      expect(b).to.containSubset({
+      expect(b).toMatchObject({
         scaleRatio: { x: 2, y: 1 },
       });
     });
 
     it('should return default value given scaleRatio is missing', () => {
       const b = box({});
-      expect(b).to.containSubset({
+      expect(b).toMatchObject({
         scaleRatio: { x: 1, y: 1 },
       });
     });
@@ -117,7 +117,7 @@ describe('renderer-box', () => {
       const b = box({
         margin: { left: 3, top: 4 },
       });
-      expect(b).to.containSubset({
+      expect(b).toMatchObject({
         margin: { left: 3, top: 4 },
       });
     });
@@ -126,7 +126,7 @@ describe('renderer-box', () => {
       const b = box({
         margin: { top: 2 },
       });
-      expect(b).to.containSubset({
+      expect(b).toMatchObject({
         margin: { left: 0, top: 2 },
       });
     });
@@ -135,14 +135,14 @@ describe('renderer-box', () => {
       const b = box({
         margin: { left: 2 },
       });
-      expect(b).to.containSubset({
+      expect(b).toMatchObject({
         margin: { left: 2, top: 0 },
       });
     });
 
     it('should return default value given margin is missing', () => {
       const b = box({});
-      expect(b).to.containSubset({
+      expect(b).toMatchObject({
         margin: { left: 0, top: 0 },
       });
     });
@@ -157,7 +157,7 @@ describe('renderer-box', () => {
         const b = box({
           edgeBleed,
         });
-        expect(b).to.containSubset({
+        expect(b).toMatchObject({
           edgeBleed: {
             left: 0,
             right: 0,

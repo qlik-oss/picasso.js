@@ -20,10 +20,10 @@ describe('Instance handler', () => {
   });
 
   it('cancelActive', () => {
-    const spy = sinon.spy();
+    const spy = vi.fn();
     setActive(spy);
     cancelActive();
 
-    expect(spy).to.have.been.calledOnce;
+    expect(spy).toHaveBeenCalledTimes(1);
   });
 });

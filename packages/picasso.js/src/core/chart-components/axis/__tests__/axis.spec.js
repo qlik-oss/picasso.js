@@ -20,7 +20,7 @@ describe('Axis', () => {
     componentFixture = componentFactoryFixture();
 
     chart = componentFixture.mocks().chart;
-    chart.scale.returns(scale);
+    chart.scale.mockReturnValue(scale);
 
     config = {
       scale: 'y',
@@ -47,7 +47,7 @@ describe('Axis', () => {
   describe('Settings', () => {
     beforeEach(() => {
       scale = band();
-      chart.scale.returns(scale);
+      chart.scale.mockReturnValue(scale);
     });
 
     describe('maxLengthPx', () => {
@@ -55,7 +55,7 @@ describe('Axis', () => {
       beforeEach(() => {
         scale = band();
         scale.domain(['AAAAAAAAAA', 'BBBBBBBBB']);
-        chart.scale.returns(scale);
+        chart.scale.mockReturnValue(scale);
         config.settings.labels = {
           show: true,
           maxLengthPx: 10,
@@ -117,7 +117,7 @@ describe('Axis', () => {
       beforeEach(() => {
         scale = band();
         scale.domain(['A', 'B']);
-        chart.scale.returns(scale);
+        chart.scale.mockReturnValue(scale);
         config.settings.labels = {
           show: true,
           minLengthPx: 100,
@@ -179,7 +179,7 @@ describe('Axis', () => {
       beforeEach(() => {
         scale = band();
         scale.domain(['A', 'B']);
-        chart.scale.returns(scale);
+        chart.scale.mockReturnValue(scale);
         config.layout = { dock: 'center' };
         config.settings.align = 'left';
       });
@@ -252,7 +252,7 @@ describe('Axis', () => {
       it('should handle an update where scale type changes from discrete to continuous', () => {
         scale = band();
         scale.domain([0, 1, 2, 3, 4, 5]);
-        chart.scale.returns(scale);
+        chart.scale.mockReturnValue(scale);
         config.settings.labels = { show: true };
 
         componentFixture.simulateCreate(axisComponent, config);
@@ -260,14 +260,14 @@ describe('Axis', () => {
 
         verifyNumberOfNodes('text', 6);
 
-        chart.scale.returns(linear());
+        chart.scale.mockReturnValue(linear());
         componentFixture.simulateUpdate();
         verifyNumberOfNodes('text', 3);
       });
 
       it('should handle an update where scale type changes from continuous to discrete', () => {
         scale = linear();
-        chart.scale.returns(scale);
+        chart.scale.mockReturnValue(scale);
         config.settings.labels = { show: true };
 
         componentFixture.simulateCreate(axisComponent, config);
@@ -277,7 +277,7 @@ describe('Axis', () => {
 
         scale = band();
         scale.domain([0, 1, 2, 3, 4, 5]);
-        chart.scale.returns(scale);
+        chart.scale.mockReturnValue(scale);
         componentFixture.simulateUpdate();
         verifyNumberOfNodes('text', 6);
       });
@@ -286,7 +286,7 @@ describe('Axis', () => {
   describe('continuous arc axis', () => {
     beforeEach(() => {
       scale = linear();
-      chart.scale.returns(scale);
+      chart.scale.mockReturnValue(scale);
       opts = {
         inner: {
           x: 0,
@@ -348,7 +348,7 @@ describe('Axis', () => {
   describe('continuous', () => {
     beforeEach(() => {
       scale = linear();
-      chart.scale.returns(scale);
+      chart.scale.mockReturnValue(scale);
     });
 
     ['left', 'right', 'top', 'bottom'].forEach((d) => {
@@ -395,7 +395,7 @@ describe('Axis', () => {
       scale = band();
       scale.domain([0, 1, 2]);
       scale.range([0, 1]);
-      chart.scale.returns(scale);
+      chart.scale.mockReturnValue(scale);
     });
 
     ['left', 'right', 'top', 'bottom'].forEach((d) => {

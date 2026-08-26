@@ -22,10 +22,10 @@ describe('Scene', () => {
 
   describe('Disabled nodes', () => {
     it('should resolve as a function', () => {
-      const spy = sinon.spy();
+      const spy = vi.fn();
       rect.disabled = spy;
       stage = scene({ items: [rect] });
-      expect(spy).to.have.been.calledOnce;
+      expect(spy).toHaveBeenCalledTimes(1);
     });
 
     it('should not parse node if disabled', () => {
@@ -39,7 +39,7 @@ describe('Scene', () => {
 
   describe('Events', () => {
     it('should accept create events', () => {
-      let spy = sinon.spy();
+      let spy = vi.fn();
       stage = scene({
         items: [rect, rect],
         on: {
@@ -47,8 +47,8 @@ describe('Scene', () => {
         },
       });
 
-      expect(spy.callCount).to.equal(2); // should be evaluated for every item
-      const args = spy.args[0][0];
+      expect(spy.mock.calls.length).to.equal(2); // should be evaluated for every item
+      const args = spy.mock.calls[0][0];
       expect(args.siblings).to.be.of.length(2);
       expect(args.index).to.be.equal(1);
       expect(args.node).to.be.deep.equal(rect);

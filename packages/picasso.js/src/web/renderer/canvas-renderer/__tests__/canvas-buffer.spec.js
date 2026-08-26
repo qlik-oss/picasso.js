@@ -8,14 +8,14 @@ describe('canvasBuffer', () => {
   let drawImage;
 
   beforeEach(() => {
-    setTransform = sinon.spy();
-    drawImage = sinon.spy();
+    setTransform = vi.fn();
+    drawImage = vi.fn();
     bufferCanvas = {
       style: {},
     };
     targetCanvas = {
-      cloneNode: sinon.stub().returns(bufferCanvas),
-      getContext: sinon.stub().returns({
+      cloneNode: vi.fn().mockReturnValue(bufferCanvas),
+      getContext: vi.fn().mockReturnValue({
         setTransform,
         drawImage,
       }),
@@ -30,7 +30,7 @@ describe('canvasBuffer', () => {
 
   it('should clone element', () => {
     new CanvasBuffer(targetCanvas); // eslint-disable-line no-new
-    expect(targetCanvas.cloneNode).to.have.been.calledOnce;
+    expect(targetCanvas.cloneNode).toHaveBeenCalledTimes(1);
   });
 
   describe('updateSize', () => {
@@ -58,7 +58,7 @@ describe('canvasBuffer', () => {
       const buffer = new CanvasBuffer(targetCanvas);
       buffer.updateSize({ rect, dpiRatio: 2 });
       buffer.apply();
-      expect(drawImage).to.have.been.calledWith(bufferCanvas, 0, 0);
+      expect(drawImage).toHaveBeenCalledWith(bufferCanvas, 0, 0);
     });
   });
 });

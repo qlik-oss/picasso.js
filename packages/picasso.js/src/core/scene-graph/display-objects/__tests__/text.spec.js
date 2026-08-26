@@ -130,12 +130,12 @@ describe('Text', () => {
       def.y = 2;
       def.dx = 3;
       def.dy = 4;
-      def.textBoundsFn = sinon.stub().returns(mockedBounds);
+      def.textBoundsFn = vi.fn().mockReturnValue(mockedBounds);
       node = createText(def);
       node.boundingRect();
-      expect(def.textBoundsFn).to.have.been.calledOnce;
+      expect(def.textBoundsFn).toHaveBeenCalledTimes(1);
       node.boundingRect(); // Should not call fn again
-      expect(def.textBoundsFn).to.have.been.calledOnce;
+      expect(def.textBoundsFn).toHaveBeenCalledTimes(1);
     });
 
     it('should use boundingRect attribute if supplied', () => {

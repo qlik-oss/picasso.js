@@ -7,12 +7,12 @@ function getContent(arr) {
 describe('node-tree', () => {
   describe('createNodes', () => {
     it('should call factory function with type and parent params', () => {
-      let fn = sinon.spy(),
+      let fn = vi.fn(),
         p = {},
         nodes = [{ content: { type: 'a' } }, { content: { type: 'b' } }];
       createNodes(nodes, p, fn);
-      expect(fn.firstCall).to.have.been.calledWithExactly('a', p);
-      expect(fn.secondCall).to.have.been.calledWithExactly('b', p);
+      expect(fn).toHaveBeenNthCalledWith(1, 'a', p);
+      expect(fn).toHaveBeenNthCalledWith(2, 'b', p);
     });
 
     it('should store created objects', () => {
@@ -28,12 +28,12 @@ describe('node-tree', () => {
 
   describe('destroyNodes', () => {
     it('should call factory function with object instance', () => {
-      let fn = sinon.spy(),
+      let fn = vi.fn(),
         nodes = [{ object: 'a' }, { object: 'b' }, {}, { object: null }];
       destroyNodes(nodes, fn);
-      expect(fn.callCount).to.equal(2);
-      expect(fn.firstCall).to.have.been.calledWithExactly('a');
-      expect(fn.secondCall).to.have.been.calledWithExactly('b');
+      expect(fn.mock.calls.length).to.equal(2);
+      expect(fn).toHaveBeenNthCalledWith(1, 'a');
+      expect(fn).toHaveBeenNthCalledWith(2, 'b');
     });
 
     it('should nullify node object', () => {
@@ -46,12 +46,12 @@ describe('node-tree', () => {
 
   describe('updateNodes', () => {
     it('should call maintainer function with object instance and content', () => {
-      let fn = sinon.spy(),
+      let fn = vi.fn(),
         nodes = [{ object: 'a', content: 'foo' }, { object: 'b', content: false }, {}, { object: null }];
       updateNodes(nodes, null, fn);
-      expect(fn.callCount).to.equal(2);
-      expect(fn.firstCall).to.have.been.calledWithExactly('a', 'foo');
-      expect(fn.secondCall).to.have.been.calledWithExactly('b', false);
+      expect(fn.mock.calls.length).to.equal(2);
+      expect(fn).toHaveBeenNthCalledWith(1, 'a', 'foo');
+      expect(fn).toHaveBeenNthCalledWith(2, 'b', false);
     });
   });
 

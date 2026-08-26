@@ -11,7 +11,7 @@ describe('Line Break Resolver', () => {
     beforeEach(() => {
       node = { type: 'text', fontSize: '1px' };
       state = { node };
-      measureTextSpy = sinon.spy();
+      measureTextSpy = vi.fn();
       fn = onLineBreak(measureTextMock);
     });
 
@@ -20,13 +20,13 @@ describe('Line Break Resolver', () => {
       node.type = 'container';
       fn = onLineBreak(measureTextSpy);
       fn(state);
-      expect(measureTextSpy).to.not.have.been.called;
+      expect(measureTextSpy).not.toHaveBeenCalled();
     });
 
     it('should not be invoked on text nodes if wordBreak property is missing', () => {
       fn = onLineBreak(measureTextSpy);
       fn(state);
-      expect(measureTextSpy).to.not.have.been.called;
+      expect(measureTextSpy).not.toHaveBeenCalled();
     });
 
     it('should not be invoked on text node if tagged as a multi-line node', () => {
@@ -34,7 +34,7 @@ describe('Line Break Resolver', () => {
       node._lineBreak = true; // _lineBreak prop how it's internally tagged if part o multi-line text
       fn = onLineBreak(measureTextSpy);
       fn(state);
-      expect(measureTextSpy).to.not.have.been.called;
+      expect(measureTextSpy).not.toHaveBeenCalled();
     });
 
     it('should tag output nodes', () => {

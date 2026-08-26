@@ -85,10 +85,10 @@ describe('Linear data scale', () => {
       const resources = {
         a: 1,
       };
-      const spy = sinon.spy();
+      const spy = vi.fn();
       settings.min = spy;
       dataScale = linear(settings, fields, resources);
-      expect(spy).to.have.been.calledWith({ data: fields, resources });
+      expect(spy).toHaveBeenCalledWith({ data: fields, resources });
     });
 
     describe('Invert', () => {

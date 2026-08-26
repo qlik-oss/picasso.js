@@ -11,24 +11,24 @@ describe('plugin', () => {
   let sandbox;
 
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
+    sandbox = vi;
     hammer.default.mockReset();
   });
 
   afterEach(() => {
-    sandbox.restore();
+    vi.restoreAllMocks();
   });
 
   it('should register hammer interaction when parameter is recognized as picasso', () => {
     hammer.default.mockReturnValue('plugin');
     const picasso = {
-      interaction: sandbox.spy(),
+      interaction: vi.fn(),
     };
     global.Hammer = 'H';
     plugin(picasso);
     delete global.Hammer;
 
-    expect(picasso.interaction).to.have.been.calledWithExactly('hammer', 'plugin');
+    expect(picasso.interaction).toHaveBeenCalledWith('hammer', 'plugin');
   });
 
   it('should return plugin when parameter is not picasso', () => {
@@ -37,11 +37,11 @@ describe('plugin', () => {
     const p = plugin(Hammer);
 
     const picasso = {
-      interaction: sandbox.spy(),
+      interaction: vi.fn(),
     };
 
     p(picasso);
 
-    expect(picasso.interaction).to.have.been.calledWithExactly('hammer', 'plugin');
+    expect(picasso.interaction).toHaveBeenCalledWith('hammer', 'plugin');
   });
 });

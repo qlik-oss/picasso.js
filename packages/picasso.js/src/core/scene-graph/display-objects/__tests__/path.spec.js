@@ -39,7 +39,7 @@ describe('Path', () => {
       let lineNodes;
 
       beforeEach(() => {
-        sandbox = sinon.createSandbox();
+        sandbox = vi;
         opts = {
           inner: {
             x: 10,
@@ -49,11 +49,11 @@ describe('Path', () => {
           },
         };
         componentFixture = componentFactoryFixture();
-        componentFixture.mocks().theme.style.returns({});
+        componentFixture.mocks().theme.style.mockReturnValue({});
       });
 
       afterEach(() => {
-        sandbox.restore();
+        vi.restoreAllMocks();
       });
 
       it('should render path for horizontal (default) line', () => {
@@ -173,7 +173,7 @@ describe('Path', () => {
         const domainScale = (v) => domain.indexOf(v) / 4;
         domainScale.domain = () => domain;
         domainScale.range = () => [0, 1];
-        componentFixture.mocks().chart.scale.returns(domainScale);
+        componentFixture.mocks().chart.scale.mockReturnValue(domainScale);
         const config = {
           data: ['A', 'B', /* skip C */ 'D', 'E'],
           settings: {
@@ -200,7 +200,7 @@ describe('Path', () => {
         const domainScale = (v) => domain.indexOf(v) / 4;
         domainScale.domain = () => domain;
         domainScale.range = () => [0, 1];
-        componentFixture.mocks().chart.scale.returns(domainScale);
+        componentFixture.mocks().chart.scale.mockReturnValue(domainScale);
         const config = {
           data: {
             items: ['A', 'B', /* skip C */ 'D', 'E'],
@@ -226,7 +226,7 @@ describe('Path', () => {
       });
 
       it('should render close path for area with default minor 0', () => {
-        componentFixture.mocks().theme.style.returns({
+        componentFixture.mocks().theme.style.mockReturnValue({
           line: {},
           area: {
             fill: 'red',
@@ -262,7 +262,7 @@ describe('Path', () => {
       });
 
       it('should render close path for area with explicit minor0', () => {
-        componentFixture.mocks().theme.style.returns({
+        componentFixture.mocks().theme.style.mockReturnValue({
           line: {},
           area: {
             fill: 'red',
@@ -309,7 +309,7 @@ describe('Path', () => {
       });
 
       it('should not render minor0 line when having minor0 but showMinor0 is false', () => {
-        componentFixture.mocks().theme.style.returns({
+        componentFixture.mocks().theme.style.mockReturnValue({
           line: {},
           area: {
             fill: 'red',

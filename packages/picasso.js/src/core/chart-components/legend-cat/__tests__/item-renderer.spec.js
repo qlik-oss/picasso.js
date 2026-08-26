@@ -327,7 +327,7 @@ describe('legend-item-renderer', () => {
     let overflow;
 
     beforeEach(() => {
-      sandbox = sinon.createSandbox();
+      sandbox = vi;
       legend = {
         renderer: {
           textBounds: (o) => ({ width: parseInt(o.fontSize, 10) * 2, height: 20 }),
@@ -347,11 +347,11 @@ describe('legend-item-renderer', () => {
         onScroll: () => {},
       });
       overflow = 0;
-      sandbox.stub(api, 'getContentOverflow').callsFake(() => overflow);
+      vi.spyOn(api, 'getContentOverflow').mockImplementation(() => overflow);
     });
 
     afterEach(() => {
-      sandbox.restore();
+      vi.restoreAllMocks();
     });
 
     it('should return correct offset after itemize is executed', () => {

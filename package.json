@@ -42,8 +42,6 @@
     "@rollup/plugin-terser": "1.0.0",
     "@vitest/coverage-v8": "4.1.11",
     "babel-plugin-istanbul": "8.0.0",
-    "chai": "6.2.2",
-    "chai-subset": "1.6.0",
     "cross-env": "7.0.3",
     "extend": "3.0.2",
     "globals": "17.8.0",
@@ -57,8 +55,6 @@
     "rollup": "2.80.0",
     "rollup-plugin-commonjs": "10.1.0",
     "rollup-plugin-serve": "1.1.1",
-    "sinon": "22.1.0",
-    "sinon-chai": "4.0.1",
     "typescript": "6.0.3",
     "vitest": "4.1.11"
   },

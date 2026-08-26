@@ -12,15 +12,15 @@ describe('text', () => {
     let sandbox, g, falsys, truthys, text;
 
     beforeEach(() => {
-      sandbox = sinon.createSandbox();
+      sandbox = vi;
 
       g = {
-        beginPath: sandbox.spy(),
+        beginPath: vi.fn(),
         font: '',
         textAlign: '',
         textBaseline: '',
-        fillText: sandbox.spy(),
-        strokeText: sandbox.spy(),
+        fillText: vi.fn(),
+        strokeText: vi.fn(),
         canvas: {},
       };
 
@@ -46,7 +46,7 @@ describe('text', () => {
     });
 
     afterEach(() => {
-      sandbox.restore();
+      vi.restoreAllMocks();
     });
 
     it('should set font correctly', () => {
@@ -66,17 +66,17 @@ describe('text', () => {
       falsys.forEach((value) => {
         render(text, { g, doStroke: value });
 
-        expect(g.strokeText.called).to.equal(false);
+        expect(g.strokeText).not.toHaveBeenCalled();
       });
     });
 
     it('should fire stroke if stroke condition is truthy', () => {
       truthys.forEach((value) => {
-        g.strokeText.resetHistory();
+        g.strokeText.mockClear();
 
         render(text, { g, doStroke: value });
 
-        expect(g.strokeText.calledOnce).to.equal(true);
+        expect(g.strokeText).toHaveBeenCalledTimes(1);
       });
     });
 
@@ -108,7 +108,7 @@ describe('text', () => {
         text['font-size'] = '10px';
         render(text, { g });
 
-        expect(g.fillText.args[0][2]).to.equal(2 + 4 - 2); // Validate y params
+        expect(g.fillText.mock.calls[0][2]).to.equal(2 + 4 - 2); // Validate y params
       });
     });
   });

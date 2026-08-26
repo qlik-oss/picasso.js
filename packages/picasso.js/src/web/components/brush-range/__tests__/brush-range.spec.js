@@ -36,8 +36,8 @@ describe('Brush Range', () => {
       },
     };
 
-    global.document.elementFromPoint = sinon.stub();
-    global.document.createElement = sinon.stub().returns({ bind: elementMock });
+    global.document.elementFromPoint = vi.fn();
+    global.document.createElement = vi.fn().mockReturnValue({ bind: elementMock });
 
     componentFixture = componentFactoryFixture();
     config = {
@@ -50,13 +50,13 @@ describe('Brush Range', () => {
 
     sandbox = componentFixture.sandbox();
     chartMock = componentFixture.mocks().chart;
-    chartMock.shapesAt = sandbox.stub().returns([]);
-    chartMock.brushFromShapes = sandbox.stub();
-    chartMock.brush = sandbox.stub().returns(brushFactory());
+    chartMock.shapesAt = vi.fn().mockReturnValue([]);
+    chartMock.brushFromShapes = vi.fn();
+    chartMock.brush = vi.fn().mockReturnValue(brushFactory());
     componentFixture.mocks().renderer.renderArgs = [vDomMock];
 
     theme = componentFixture.mocks().theme;
-    theme.style.returns({
+    theme.style.mockReturnValue({
       line: {
         stroke: 'rgba(50, 50, 50, 0.8)',
       },
@@ -130,7 +130,7 @@ describe('Brush Range', () => {
     beforeEach(() => {
       const scale = bandScale();
       scale.type = 'band';
-      chartMock.scale = sandbox.stub().returns(scale);
+      chartMock.scale = vi.fn().mockReturnValue(scale);
     });
 
     describe('horizontal', () => {
@@ -270,7 +270,7 @@ describe('Brush Range', () => {
           },
         ],
       });
-      chartMock.scale = sandbox.stub().returns(scale);
+      chartMock.scale = vi.fn().mockReturnValue(scale);
     });
 
     describe('on render', () => {

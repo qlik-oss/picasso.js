@@ -18,7 +18,7 @@ describe('storage', () => {
   let create;
 
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
+    sandbox = vi;
     getValue.default.mockReset();
     setValue.default.mockReset();
     source = { cat: { leg: { fur: 'yellow', toe: 'cute' } }, dog: { tail: 'waggy' } };
@@ -26,7 +26,7 @@ describe('storage', () => {
   });
 
   afterEach(() => {
-    sandbox.restore();
+    vi.restoreAllMocks();
   });
 
   describe('api', () => {

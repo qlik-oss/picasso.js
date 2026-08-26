@@ -1,16 +1,6 @@
-import * as chai from 'chai';
-import chaiSubset from 'chai-subset';
 import { chromium } from '@playwright/test';
-import sinon from 'sinon';
-import sinonChai from 'sinon-chai';
 import { afterAll, beforeAll } from 'vitest';
-
-global.expect = chai.expect;
-global.chai = chai;
-global.sinon = sinon;
-
-chai.use(sinonChai);
-chai.use(chaiSubset);
+import './vitest.setup.js';
 
 beforeAll(async () => {
   global.browser = await chromium.launch();

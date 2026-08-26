@@ -6,7 +6,7 @@ describe('Registry', () => {
 
   beforeEach(() => {
     logger = {
-      warn: sinon.spy(),
+      warn: vi.fn(),
     };
     reg = registry('', 'myRegistry', logger);
   });
@@ -40,7 +40,7 @@ describe('Registry', () => {
       reg.register('spelledCorrect', () => {});
       const attempt = reg('spelledWrong');
       expect(attempt).to.equal(undefined);
-      expect(logger.warn).to.have.been.calledOnce;
+      expect(logger.warn).toHaveBeenCalledTimes(1);
     });
   });
 });

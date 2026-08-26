@@ -36,10 +36,10 @@ describe('Text component', () => {
     componentFixture = componentFactoryFixture();
 
     chart = componentFixture.mocks().chart;
-    chart.scale.returns(scale);
+    chart.scale.mockReturnValue(scale);
 
     theme = componentFixture.mocks().theme;
-    theme.style.returns({
+    theme.style.mockReturnValue({
       text: {
         fontFamily: 'Arial',
         fontSize: '15px',
@@ -661,7 +661,7 @@ describe('Text component', () => {
         });
 
         it('style', () => {
-          theme.style.returns({
+          theme.style.mockReturnValue({
             text: {
               fontSize: 'thick and slim',
               fontFamily: 'nice family',

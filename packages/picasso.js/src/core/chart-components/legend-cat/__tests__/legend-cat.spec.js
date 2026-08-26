@@ -7,7 +7,7 @@ describe('legend-cat', () => {
   let componentFixture;
   let opts;
   let domRenderer;
-  const sandbox = sinon.createSandbox();
+  const sandbox = vi;
   let h;
 
   beforeEach(() => {
@@ -20,7 +20,7 @@ describe('legend-cat', () => {
       },
     };
     componentFixture = componentFactoryFixture();
-    componentFixture.mocks().theme.style.returns({
+    componentFixture.mocks().theme.style.mockReturnValue({
       item: {
         label: {},
       },
@@ -30,23 +30,21 @@ describe('legend-cat', () => {
       size: () => {},
       render: () => {},
     };
-    componentFixture.mocks().registries.renderer.returns(() => renderer);
-    h = sandbox.stub();
-    domRenderer = {
-      size: () => {},
-      render: sandbox.stub(),
-      renderArgs: [h],
-    };
     componentFixture
       .mocks()
-      .registries.renderer.withArgs('dom')
-      .returns(() => domRenderer);
+      .registries.renderer.mockImplementation((type) => (type === 'dom' ? () => domRenderer : () => renderer));
+    h = vi.fn();
+    domRenderer = {
+      size: () => {},
+      render: vi.fn(),
+      renderArgs: [h],
+    };
     chart = componentFixture.mocks().chart;
     const scale = (d) => `-${d}-`;
     scale.domain = () => [1];
     scale.data = () => [1];
     scale.labels = () => ['first'];
-    chart.scale.withArgs('s').returns(scale);
+    chart.scale.mockReturnValue(scale);
   });
 
   it('should render items with default settings', () => {
@@ -59,10 +57,10 @@ describe('legend-cat', () => {
 
     const d = { value: 1, label: 'first' };
 
-    expect(renderedItems[0]).to.containSubset({
+    expect(renderedItems[0]).toMatchObject({
       type: 'container',
       data: d,
-      children: [
+      children: expect.arrayContaining([
         {
           type: 'rect',
           fill: '-1-',
@@ -72,7 +70,7 @@ describe('legend-cat', () => {
           height: 12,
           data: d,
         },
-      ],
+      ]),
       collider: {
         x: 0,
         y: 0,
@@ -82,7 +80,7 @@ describe('legend-cat', () => {
       },
     });
 
-    expect(renderedItems[0].children[1]).to.containSubset({
+    expect(renderedItems[0].children[1]).toMatchObject({
       // label
       text: 'first',
       data: d,
@@ -131,7 +129,7 @@ describe('legend-cat', () => {
     scale.domain = () => [1];
     scale.data = () => [1];
     scale.labels = () => ['fidfd fg dt'];
-    chart.scale.withArgs('long').returns(scale);
+    chart.scale.mockReturnValue(scale);
 
     componentFixture.simulateCreate(component, config);
     componentFixture.simulateRender({
@@ -143,6 +141,6 @@ describe('legend-cat', () => {
       },
     });
 
-    expect(h.callCount).to.equal(10);
+    expect(h.mock.calls.length).to.equal(10);
   });
 });
