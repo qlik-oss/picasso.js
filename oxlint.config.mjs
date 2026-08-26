@@ -2,7 +2,7 @@ import qlik from '@qlik/oxlint-config';
 import { defineConfig } from 'oxlint';
 
 export default defineConfig({
-  extends: [qlik.recommended, qlik.jest],
+  extends: [qlik.recommended, qlik.vitest],
   ignorePatterns: [
     '**/dist/**',
     '**/test/unit/coverage/**',
