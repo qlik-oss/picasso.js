@@ -4,7 +4,7 @@ describe('chart formatters', () => {
   describe('collection', () => {
     let fn;
     beforeEach(() => {
-      fn = sinon.spy((def) => (typeof def === 'object' && !Object.keys(def).length ? 'fallback' : def));
+      fn = vi.fn((def) => (typeof def === 'object' && !Object.keys(def).length ? 'fallback' : def));
     });
 
     it('should return fallback formatter when unknown config is used', () => {
@@ -31,7 +31,7 @@ describe('chart formatters', () => {
       const c = collection({ time: 'tick tock' }, null, null, fn);
       c.get('time');
       c.get('time');
-      expect(fn.callCount).to.equal(1);
+      expect(fn.mock.calls.length).to.equal(1);
     });
 
     it('should create formatter on the fly', () => {
@@ -54,8 +54,8 @@ describe('chart formatters', () => {
     beforeEach(() => {
       deps = {
         formatter: {
-          has: sinon.stub(),
-          get: sinon.stub(),
+          has: vi.fn(),
+          get: vi.fn(),
         },
       };
       formatterFn = (pattern) => (value) => `${pattern}${value}`;
@@ -74,8 +74,8 @@ describe('chart formatters', () => {
     });
 
     it('should create a formatter of a custom type', () => {
-      deps.formatter.has.withArgs('custom').returns(true);
-      deps.formatter.get.returns(formatterFn);
+      deps.formatter.has.mockReturnValue(true);
+      deps.formatter.get.mockReturnValue(formatterFn);
       const s = create(
         {
           type: 'custom',
@@ -88,8 +88,8 @@ describe('chart formatters', () => {
     });
 
     it('should create a formatter of a specific subtype', () => {
-      deps.formatter.has.withArgs('custom-time').returns(true);
-      deps.formatter.get.returns(formatterFn);
+      deps.formatter.has.mockReturnValue(true);
+      deps.formatter.get.mockReturnValue(formatterFn);
       const s = create(
         {
           formatter: 'custom',
@@ -103,8 +103,8 @@ describe('chart formatters', () => {
     });
 
     it('should create a number subtype by default', () => {
-      deps.formatter.has.withArgs('custom-number').returns(true);
-      deps.formatter.get.returns(formatterFn);
+      deps.formatter.has.mockReturnValue(true);
+      deps.formatter.get.mockReturnValue(formatterFn);
       const s = create(
         {
           formatter: 'custom',

@@ -6,19 +6,19 @@ describe('q-brush', () => {
 
   beforeEach(() => {
     brush = {
-      isActive: sinon.stub(),
-      brushes: sinon.stub(),
+      isActive: vi.fn(),
+      brushes: vi.fn(),
     };
   });
 
   it('should return empty when no brushes exist', () => {
-    brush.brushes.returns([]);
+    brush.brushes.mockReturnValue([]);
     expect(qBrush(brush).length).to.equal(0);
   });
 
   it('should reset made selections when brush is active but contain no values', () => {
-    brush.isActive.returns(true);
-    brush.brushes.returns([
+    brush.isActive.mockReturnValue(true);
+    brush.brushes.mockReturnValue([
       {
         id: 'qHyperCube/qDimensionInfo/2',
         type: 'value',
@@ -34,7 +34,7 @@ describe('q-brush', () => {
 
   describe('selectHyperCubeValues', () => {
     beforeEach(() => {
-      brush.brushes.returns([
+      brush.brushes.mockReturnValue([
         {
           id: 'qHyperCube/qDimensionInfo/2',
           type: 'value',
@@ -58,7 +58,7 @@ describe('q-brush', () => {
 
   describe('rangeSelectHyperCubeValues', () => {
     beforeEach(() => {
-      brush.brushes.returns([
+      brush.brushes.mockReturnValue([
         {
           id: '/qHyperCube/qMeasureInfo/3',
           type: 'range',
@@ -201,7 +201,7 @@ describe('q-brush', () => {
 
   describe('selectHyperCubeContinuousRange', () => {
     beforeEach(() => {
-      brush.brushes.returns([
+      brush.brushes.mockReturnValue([
         {
           id: '/qHyperCube/qDimensionInfo/1',
           type: 'range',
@@ -266,7 +266,7 @@ describe('q-brush', () => {
 
   describe('selectHyperCubeCells', () => {
     beforeEach(() => {
-      brush.brushes.returns([
+      brush.brushes.mockReturnValue([
         {
           id: 'layers/0/qHyperCube/qDimensionInfo/2',
           type: 'value',
@@ -302,7 +302,7 @@ describe('q-brush', () => {
 
   describe('selectPivotCells', () => {
     beforeEach(() => {
-      brush.brushes.returns([
+      brush.brushes.mockReturnValue([
         {
           id: 'layers/0/qHyperCube/qDimensionInfo/2',
           type: 'value',
@@ -637,7 +637,7 @@ describe('q-brush', () => {
 
   describe('multiRangeSelectTreeDataValues', () => {
     beforeEach(() => {
-      brush.brushes.returns([
+      brush.brushes.mockReturnValue([
         {
           id: '/qTreeData/qDimensionInfo/1/qMeasureInfo/2',
           type: 'range',

@@ -37,15 +37,15 @@ describe('render()', () => {
 
     g = {
       canvas,
-      setTransform: sinon.spy(),
-      clearRect: sinon.spy(),
-      drawImage: sinon.spy(),
-      getTransform: sinon.spy(),
-      save: sinon.spy(),
-      beginPath: sinon.spy(),
-      arc: sinon.spy(),
-      clip: sinon.spy(),
-      restore: sinon.spy(),
+      setTransform: vi.fn(),
+      clearRect: vi.fn(),
+      drawImage: vi.fn(),
+      getTransform: vi.fn(),
+      save: vi.fn(),
+      beginPath: vi.fn(),
+      arc: vi.fn(),
+      clip: vi.fn(),
+      restore: vi.fn(),
       globalAlpha: 1,
     };
 
@@ -55,7 +55,7 @@ describe('render()', () => {
     }
     const doc = global.document;
     // Stub document.createElement
-    createElementStub = sinon.stub(doc, 'createElement').callsFake(() => ({
+    createElementStub = vi.spyOn(doc, 'createElement').mockImplementation(() => ({
       width: 0,
       height: 0,
     }));
@@ -68,10 +68,10 @@ describe('render()', () => {
   });
 
   afterEach(() => {
-    createElementStub.restore();
+    createElementStub.mockRestore();
   });
 
-  it('should render a circle symbol image correctly', (done) => {
+  it('should render a circle symbol image correctly', () => {
     const img = {
       src: 'circle.png',
       symbol: 'circle',
@@ -83,13 +83,12 @@ describe('render()', () => {
     render(img, { g });
     lastCreatedImage.onload();
 
-    expect(g.arc.called).to.be.true;
-    expect(g.drawImage.called).to.be.true;
-    expect(g.drawImage.called).to.be.true;
-    done();
+    expect(g.arc).toHaveBeenCalled();
+    expect(g.drawImage).toHaveBeenCalled();
+    expect(g.drawImage).toHaveBeenCalled();
   });
 
-  it('should render a square symbol image correctly', (done) => {
+  it('should render a square symbol image correctly', () => {
     const img = {
       src: 'square.png',
       symbol: 'square',
@@ -100,13 +99,12 @@ describe('render()', () => {
 
     render(img, { g });
     lastCreatedImage.onload();
-    expect(g.drawImage.called).to.be.true;
-    expect(g.arc.called).to.be.false; // should not draw arc for square
-    expect(g.drawImage.called).to.be.true;
-    done();
+    expect(g.drawImage).toHaveBeenCalled();
+    expect(g.arc).not.toHaveBeenCalled(); // should not draw arc for square
+    expect(g.drawImage).toHaveBeenCalled();
   });
 
-  it('should resize the canvas and clear it before rendering', (done) => {
+  it('should resize the canvas and clear it before rendering', () => {
     const img = {
       src: 'resize.png',
       symbol: 'circle',
@@ -119,9 +117,8 @@ describe('render()', () => {
     lastCreatedImage.onload();
     expect(canvas.width).to.equal(400); // 200 * 2
     expect(canvas.height).to.equal(200); // 100 * 2
-    expect(g.clearRect.called).to.be.true;
-    expect(g.clearRect.called).to.be.true;
-    done();
+    expect(g.clearRect).toHaveBeenCalled();
+    expect(g.clearRect).toHaveBeenCalled();
   });
   describe('positionImage()', () => {
     it('positions top-left correctly', () => {

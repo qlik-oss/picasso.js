@@ -8,14 +8,14 @@ describe('svg-pattern', () => {
 
   beforeEach(() => {
     bucket = [];
-    clock = sinon.useFakeTimers(13);
+    vi.useFakeTimers({ now: 13 });
     let i = 1;
     hasher = () => ++i;
     p = patternizer(bucket, hasher);
   });
 
   afterEach(() => {
-    clock.restore();
+    vi.useRealTimers();
   });
 
   describe('onCreate', () => {

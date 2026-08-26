@@ -6,7 +6,7 @@ describe('dom renderer', () => {
   let rend;
 
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
+    sandbox = vi;
     rend = renderer({
       createElement: element,
       createTextNode: (text) => text,
@@ -14,7 +14,7 @@ describe('dom renderer', () => {
   });
 
   afterEach(() => {
-    sandbox.restore();
+    vi.restoreAllMocks();
   });
 
   it('should be a function', () => {
@@ -230,11 +230,11 @@ describe('dom renderer', () => {
   describe('setKey', () => {
     it('should set key attribute', () => {
       const el = element('div');
-      const spy = sinon.spy(el, 'setAttribute');
+      const spy = vi.spyOn(el, 'setAttribute');
       rend.element = () => el;
       rend.setKey(123);
 
-      expect(spy).to.have.been.calledWith('data-key', 123);
+      expect(spy).toHaveBeenCalledWith('data-key', 123);
     });
   });
 });

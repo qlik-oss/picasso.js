@@ -21,7 +21,7 @@ describe('point component', () => {
     componentFixture = componentFactoryFixture();
     chart = componentFixture.mocks().chart;
 
-    componentFixture.mocks().theme.style.returns({});
+    componentFixture.mocks().theme.style.mockReturnValue({});
   });
 
   it('should render points with default settings', () => {
@@ -327,7 +327,7 @@ describe('point component', () => {
 
     const xScale = (v) => v;
     xScale.bandwidth = () => 0.2; // max size: width * 0.2 * maxRelDiscrete -> 40, // min size: width * 0.2 * minRelDiscrete -> 10
-    chart.scale.onCall(0).returns(xScale);
+    chart.scale.mockReturnValueOnce(xScale);
 
     componentFixture.simulateCreate(pointComponent, config);
     renderedPoints = componentFixture.simulateRender(opts);

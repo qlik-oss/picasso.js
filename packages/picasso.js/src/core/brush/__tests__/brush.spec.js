@@ -9,17 +9,17 @@ describe('brush', () => {
   let rcf;
   let b;
   beforeAll(() => {
-    sandbox = sinon.createSandbox();
+    sandbox = vi;
     // mock value collection
     vc = () => {};
-    vc.add = sandbox.stub();
-    vc.values = sandbox.stub();
+    vc.add = vi.fn();
+    vc.values = vi.fn();
     vcf = () => vc;
 
     // mock range collection
     rc = () => {};
-    rc.add = sandbox.stub();
-    rc.containsValue = sandbox.stub();
+    rc.add = vi.fn();
+    rc.containsValue = vi.fn();
     rcf = () => rc;
   });
 
@@ -29,7 +29,7 @@ describe('brush', () => {
   });
 
   afterEach(() => {
-    sandbox.restore();
+    vi.restoreAllMocks();
   });
 
   describe('api', () => {
@@ -40,29 +40,29 @@ describe('brush', () => {
 
   describe('events', () => {
     it('should emit a start event with parameters when started', () => {
-      const cb = sandbox.spy();
+      const cb = vi.fn();
       b.on('start', cb);
       b.start(1, '2', false);
-      expect(cb.withArgs(1, '2', false).calledOnce).to.be.true;
+      expect(cb).toHaveBeenCalledWith(1, '2', false);
     });
 
     it('should not emit a start event when alredy started', () => {
-      const cb = sandbox.spy();
+      const cb = vi.fn();
       b.on('start', cb);
       b.start();
       b.start();
       b.start();
-      expect(cb.callCount).to.equal(1);
+      expect(cb.mock.calls.length).to.equal(1);
     });
 
     it('should emit an end event with parameters when ended', () => {
-      const cb = sandbox.spy();
+      const cb = vi.fn();
       b.on('end', cb);
       b.start();
       b.end(1, '2', false);
-      expect(cb.withArgs(1, '2', false).calledOnce).to.be.true;
+      expect(cb).toHaveBeenCalledWith(1, '2', false);
       b.end();
-      expect(cb.callCount).to.equal(1);
+      expect(cb.mock.calls.length).to.equal(1);
     });
 
     it('should be active when started', () => {
@@ -74,14 +74,14 @@ describe('brush', () => {
     });
 
     it('should emit an "update" event when state changes', () => {
-      const cb = sandbox.spy();
+      const cb = vi.fn();
       b.on('update', cb);
-      vc.add.returns(true);
+      vc.add.mockReturnValue(true);
       b.addValues([
         { key: 'products', value: 'cars' },
         { key: '_aliased', value: 'sweden' },
       ]);
-      expect(cb).to.have.been.calledWith(
+      expect(cb).toHaveBeenCalledWith(
         [
           { id: 'products', values: ['cars'] },
           { id: 'region', values: ['sweden'] },
@@ -118,48 +118,48 @@ describe('brush', () => {
     let bb;
     beforeEach(() => {
       v = {
-        add: sandbox.stub(),
-        values: sandbox.stub(),
+        add: vi.fn(),
+        values: vi.fn(),
       };
-      vcc = sandbox.stub().returns(v);
+      vcc = vi.fn().mockReturnValue(v);
       bb = brush({ vc: vcc, rc: noop });
     });
 
     it('should call value.add() with value "Car"', () => {
       bb.addValue('garage', 'Car');
-      expect(vcc.callCount).to.equal(1);
-      expect(v.add).to.have.been.calledWith('Car');
+      expect(vcc.mock.calls.length).to.equal(1);
+      expect(v.add).toHaveBeenCalledWith('Car');
     });
 
     it('should not create more than one instance per id', () => {
       bb.addValue('garage', 'Car');
       bb.addValue('garage', 'Bike');
-      expect(vcc.callCount).to.equal(1);
+      expect(vcc.mock.calls.length).to.equal(1);
     });
 
     it('should emit "start" event if not activated', () => {
-      const cb = sandbox.spy();
+      const cb = vi.fn();
       bb.on('start', cb);
-      v.add.returns(true);
+      v.add.mockReturnValue(true);
       bb.addValue('garage', 'Car');
       bb.addValue('garage', 'Bike');
-      expect(cb.callCount).to.equal(1);
+      expect(cb.mock.calls.length).to.equal(1);
     });
 
     it('should emit "update" event when state changes', () => {
-      const cb = sandbox.spy();
-      v.add.returns(true);
+      const cb = vi.fn();
+      v.add.mockReturnValue(true);
       bb.on('update', cb);
       bb.addValue('garage', 'Car');
-      expect(cb.callCount).to.equal(1);
+      expect(cb.mock.calls.length).to.equal(1);
     });
 
     it('should not emit "update" event when state does not change', () => {
-      const cb = sandbox.spy();
-      v.add.returns(false);
+      const cb = vi.fn();
+      v.add.mockReturnValue(false);
       bb.on('update', cb);
       bb.addValue('garage', 'Car');
-      expect(cb.callCount).to.equal(0);
+      expect(cb.mock.calls.length).to.equal(0);
     });
   });
 
@@ -169,37 +169,37 @@ describe('brush', () => {
     let bb;
     beforeEach(() => {
       v = {
-        remove: sandbox.stub(),
-        add: sandbox.stub(),
-        values: sandbox.stub(),
+        remove: vi.fn(),
+        add: vi.fn(),
+        values: vi.fn(),
       };
-      vcc = sandbox.stub().returns(v);
+      vcc = vi.fn().mockReturnValue(v);
       bb = brush({ vc: vcc, rc: noop });
       bb.addValue('garage');
     });
 
     it('should call value.remove() with value "Car"', () => {
       bb.removeValue('garage', 'Car');
-      expect(vcc.callCount).to.equal(1);
-      expect(v.remove).to.have.been.calledWith('Car');
+      expect(vcc.mock.calls.length).to.equal(1);
+      expect(v.remove).toHaveBeenCalledWith('Car');
     });
 
     it('should emit "update" event when state changes', () => {
-      const cb = sandbox.spy();
-      v.remove.returns(true);
+      const cb = vi.fn();
+      v.remove.mockReturnValue(true);
       bb.on('update', cb);
       bb.removeValue('garage', 'Car');
-      expect(v.remove).to.have.been.calledWith('Car');
-      expect(cb.callCount).to.equal(1);
+      expect(v.remove).toHaveBeenCalledWith('Car');
+      expect(cb.mock.calls.length).to.equal(1);
     });
 
     it('should not emit "update" event when state does not change', () => {
-      const cb = sandbox.spy();
-      v.remove.returns(false);
+      const cb = vi.fn();
+      v.remove.mockReturnValue(false);
       bb.on('update', cb);
       bb.removeValue('garage', 'Car');
-      expect(v.remove).to.have.been.calledWith('Car');
-      expect(cb.callCount).to.equal(0);
+      expect(v.remove).toHaveBeenCalledWith('Car');
+      expect(cb.mock.calls.length).to.equal(0);
     });
   });
 
@@ -210,46 +210,46 @@ describe('brush', () => {
       let rcc;
       let bb;
       beforeEach(() => {
-        v = { ranges: sandbox.stub() };
-        v[action] = sandbox.stub();
-        rcc = sandbox.stub().returns(v);
+        v = { ranges: vi.fn() };
+        v[action] = vi.fn();
+        rcc = vi.fn().mockReturnValue(v);
         bb = brush({ rc: rcc, vc: noop });
-        v[action].returns(true);
+        v[action].mockReturnValue(true);
       });
 
       it(`should call range.${action}() with { min: 3 max: 7 }`, () => {
         bb[fn]('speed', { min: 3, max: 7 });
-        expect(rcc.callCount).to.equal(1);
-        expect(v[action]).to.have.been.calledWith({ min: 3, max: 7 });
+        expect(rcc.mock.calls.length).to.equal(1);
+        expect(v[action]).toHaveBeenCalledWith({ min: 3, max: 7 });
       });
 
       it('should not create more than one instance per id', () => {
         bb[fn]('speed', {});
         bb[fn]('speed', {});
-        expect(rcc.callCount).to.equal(1);
+        expect(rcc.mock.calls.length).to.equal(1);
       });
 
       it('should emit "start" event if not activated', () => {
-        const cb = sandbox.spy();
+        const cb = vi.fn();
         bb.on('start', cb);
         bb[fn]('speed', {});
         bb[fn]('speed', {});
-        expect(cb.callCount).to.equal(1);
+        expect(cb.mock.calls.length).to.equal(1);
       });
 
       it('should emit "update" event', () => {
-        const cb = sandbox.spy();
+        const cb = vi.fn();
         bb.on('update', cb);
         bb[fn]('speed', {});
-        expect(cb.callCount).to.equal(1);
+        expect(cb.mock.calls.length).to.equal(1);
       });
 
       it('should not emit "update" event when state does not change', () => {
-        const cb = sandbox.spy();
-        v[action].returns(false);
+        const cb = vi.fn();
+        v[action].mockReturnValue(false);
         bb.on('update', cb);
         bb[fn]('speed', {});
-        expect(cb.callCount).to.equal(0);
+        expect(cb.mock.calls.length).to.equal(0);
       });
     });
   }
@@ -262,10 +262,10 @@ describe('brush', () => {
     let bb;
     beforeEach(() => {
       v = {
-        add: sandbox.stub(),
-        contains: sandbox.stub(),
+        add: vi.fn(),
+        contains: vi.fn(),
       };
-      vcc = sandbox.stub().returns(v);
+      vcc = vi.fn().mockReturnValue(v);
       bb = brush({ vc: vcc, rc: noop });
       bb.addKeyAlias('_ali', 'ALI');
     });
@@ -276,24 +276,24 @@ describe('brush', () => {
 
     it('should return true when given value exists', () => {
       bb.addValue('garage');
-      v.contains.returns(true);
+      v.contains.mockReturnValue(true);
       expect(bb.containsValue('garage', 3)).to.equal(true);
-      expect(v.contains).to.have.been.calledWith(3);
+      expect(v.contains).toHaveBeenCalledWith(3);
     });
 
     it('should return true when given value exists from an aliased key', () => {
       bb.addValue('_ali');
-      v.contains.returns(true);
+      v.contains.mockReturnValue(true);
       expect(bb.containsValue('_ali', 3)).to.equal(true);
       expect(bb.containsValue('ALI', 3)).to.equal(true);
-      expect(v.contains).to.have.been.calledWith(3);
+      expect(v.contains).toHaveBeenCalledWith(3);
     });
 
     it('should return false when given value does not exist', () => {
       bb.addValue('garage');
-      v.contains.returns(false);
+      v.contains.mockReturnValue(false);
       expect(bb.containsValue('garage', 3)).to.equal(false);
-      expect(v.contains).to.have.been.calledWith(3);
+      expect(v.contains).toHaveBeenCalledWith(3);
     });
   });
 
@@ -303,10 +303,10 @@ describe('brush', () => {
     let bb;
     beforeEach(() => {
       v = {
-        add: sandbox.stub(),
-        containsValue: sandbox.stub(),
+        add: vi.fn(),
+        containsValue: vi.fn(),
       };
-      rcc = sandbox.stub().returns(v);
+      rcc = vi.fn().mockReturnValue(v);
       bb = brush({ vc: noop, rc: rcc });
       bb.addKeyAlias('_range-ali', 'margin');
     });
@@ -317,24 +317,24 @@ describe('brush', () => {
 
     it('should return true when given value exists', () => {
       bb.addRange('speed');
-      v.containsValue.returns(true);
+      v.containsValue.mockReturnValue(true);
       expect(bb.containsRangeValue('speed', 'some range')).to.equal(true);
-      expect(v.containsValue).to.have.been.calledWith('some range');
+      expect(v.containsValue).toHaveBeenCalledWith('some range');
     });
 
     it('should return true when given value exists for an aliased key', () => {
       bb.addRange('_range-ali');
-      v.containsValue.returns(true);
+      v.containsValue.mockReturnValue(true);
       expect(bb.containsRangeValue('_range-ali', 'some range')).to.equal(true);
       expect(bb.containsRangeValue('margin', 'some range')).to.equal(true);
-      expect(v.containsValue).to.have.been.calledWith('some range');
+      expect(v.containsValue).toHaveBeenCalledWith('some range');
     });
 
     it('should return false when given value does not exist', () => {
       bb.addRange('speed');
-      v.containsValue.returns(false);
+      v.containsValue.mockReturnValue(false);
       expect(bb.containsRangeValue('speed', 'very fast')).to.equal(false);
-      expect(v.containsValue).to.have.been.calledWith('very fast');
+      expect(v.containsValue).toHaveBeenCalledWith('very fast');
     });
   });
 
@@ -344,10 +344,10 @@ describe('brush', () => {
     let bb;
     beforeEach(() => {
       v = {
-        add: sandbox.stub(),
-        containsRange: sandbox.stub(),
+        add: vi.fn(),
+        containsRange: vi.fn(),
       };
-      rcc = sandbox.stub().returns(v);
+      rcc = vi.fn().mockReturnValue(v);
       bb = brush({ vc: noop, rc: rcc });
       bb.addKeyAlias('_range-ali', 'margin');
     });
@@ -358,45 +358,45 @@ describe('brush', () => {
 
     it('should return true when given value exists', () => {
       bb.addRange('speed');
-      v.containsRange.returns(true);
+      v.containsRange.mockReturnValue(true);
       expect(bb.containsRange('speed', 'some range')).to.equal(true);
-      expect(v.containsRange).to.have.been.calledWith('some range');
+      expect(v.containsRange).toHaveBeenCalledWith('some range');
     });
 
     it('should return true when given value exists for an aliased key', () => {
       bb.addRange('_range-ali');
-      v.containsRange.returns(true);
+      v.containsRange.mockReturnValue(true);
       expect(bb.containsRange('_range-ali', 'some range')).to.equal(true);
       expect(bb.containsRange('margin', 'some range')).to.equal(true);
-      expect(v.containsRange).to.have.been.calledWith('some range');
+      expect(v.containsRange).toHaveBeenCalledWith('some range');
     });
 
     it('should return false when given value does not exist', () => {
       bb.addRange('speed');
-      v.containsRange.returns(false);
+      v.containsRange.mockReturnValue(false);
       expect(bb.containsRange('speed', 'very fast')).to.equal(false);
-      expect(v.containsRange).to.have.been.calledWith('very fast');
+      expect(v.containsRange).toHaveBeenCalledWith('very fast');
     });
   });
 
   describe('clear', () => {
     it('should not emit an "update" event when state has not changed', () => {
-      const cb = sandbox.spy();
-      vc.add.returns(true);
-      vc.values.returns([]);
+      const cb = vi.fn();
+      vc.add.mockReturnValue(true);
+      vc.values.mockReturnValue([]);
       b.addValue('products', 'cars');
       b.on('update', cb);
       b.clear();
-      expect(cb.callCount).to.equal(0);
+      expect(cb.mock.calls.length).to.equal(0);
     });
 
     it('should emit an "update" event when state has changed', () => {
-      const cb = sandbox.spy();
+      const cb = vi.fn();
       b.addValue('products', 'whatevz');
-      vc.values.returns(['whatwhat']);
+      vc.values.mockReturnValue(['whatwhat']);
       b.on('update', cb);
       b.clear();
-      expect(cb.callCount).to.equal(1);
+      expect(cb.mock.calls.length).to.equal(1);
     });
   });
 
@@ -411,16 +411,16 @@ describe('brush', () => {
 
     beforeEach(() => {
       v = {
-        add: sandbox.stub(),
-        containsValue: sandbox.stub(),
-        containsRange: sandbox.stub(),
+        add: vi.fn(),
+        containsValue: vi.fn(),
+        containsRange: vi.fn(),
       };
       val = {
-        add: sandbox.stub(),
-        contains: sandbox.stub(),
+        add: vi.fn(),
+        contains: vi.fn(),
       };
-      rcc = sandbox.stub().returns(v);
-      vcc = sandbox.stub().returns(val);
+      rcc = vi.fn().mockReturnValue(v);
+      vcc = vi.fn().mockReturnValue(val);
       bb = brush({ vc: vcc, rc: rcc });
       d = {
         x: { value: 7, source: { field: 'sales', type: 'quant' } },
@@ -431,39 +431,39 @@ describe('brush', () => {
 
     it('should return true when data contains a brushed range', () => {
       bb.addRange('sales');
-      v.containsValue.returns(true);
+      v.containsValue.mockReturnValue(true);
       expect(bb.containsMappedData(d)).to.equal(true);
-      expect(v.containsValue).to.have.been.calledWith(7);
+      expect(v.containsValue).toHaveBeenCalledWith(7);
     });
 
     it('should return true when data contains a brushed range value', () => {
       bb.addRange('margin');
-      v.containsRange.returns(true);
+      v.containsRange.mockReturnValue(true);
       expect(bb.containsMappedData(d)).to.equal(true);
-      expect(v.containsRange).to.have.been.calledWith({ min: 5, max: 10 });
+      expect(v.containsRange).toHaveBeenCalledWith({ min: 5, max: 10 });
     });
 
     it('should return false when data contains only a brushed range and mode=and', () => {
       bb.addRange('sales');
-      v.containsValue.returns(true);
-      val.contains.returns(false);
+      v.containsValue.mockReturnValue(true);
+      val.contains.mockReturnValue(false);
       expect(bb.containsMappedData(d, ['x', 'self'], 'and')).to.equal(false);
-      expect(v.containsValue).to.have.been.calledWith(7);
+      expect(v.containsValue).toHaveBeenCalledWith(7);
     });
 
     it('should return true when data contains only a brushed range and mode=xor', () => {
       bb.addRange('sales');
-      v.containsValue.returns(true);
-      val.contains.returns(false);
+      v.containsValue.mockReturnValue(true);
+      val.contains.mockReturnValue(false);
       expect(bb.containsMappedData(d, ['x', 'self'], 'xor')).to.equal(true);
-      expect(v.containsValue).to.have.been.calledWith(7);
+      expect(v.containsValue).toHaveBeenCalledWith(7);
     });
 
     it('should return true when data contains a brushed value', () => {
       bb.addValue('products');
-      val.contains.returns(true);
+      val.contains.mockReturnValue(true);
       expect(bb.containsMappedData(d)).to.equal(true);
-      expect(val.contains).to.have.been.calledWith('Cars');
+      expect(val.contains).toHaveBeenCalledWith('Cars');
     });
 
     it('should return true when data contains a brushed value from an aliased key', () => {
@@ -472,48 +472,48 @@ describe('brush', () => {
       };
       bb.addKeyAlias('_alias', 'products');
       bb.addValue('products');
-      val.contains.returns(true);
+      val.contains.mockReturnValue(true);
       expect(bb.containsMappedData(aliasedData)).to.equal(true);
-      expect(val.contains).to.have.been.calledWith('Bikes');
+      expect(val.contains).toHaveBeenCalledWith('Bikes');
     });
 
     it('should return true when data contains a brushed value from a data source with a key', () => {
       bb.addValue('corp/products');
-      val.contains.returns(true);
+      val.contains.mockReturnValue(true);
       expect(bb.containsMappedData({ value: 'Cars', source: { field: 'products', key: 'corp' } })).to.equal(true);
-      expect(val.contains).to.have.been.calledWith('Cars');
+      expect(val.contains).toHaveBeenCalledWith('Cars');
     });
 
     it('should return false when data has no source', () => {
       bb.addRange('sales');
-      v.containsValue.returns(true);
+      v.containsValue.mockReturnValue(true);
       expect(
         bb.containsMappedData({
           x: { value: 7 },
         }),
       ).to.equal(false);
-      expect(v.containsValue.callCount).to.equal(0);
+      expect(v.containsValue.mock.calls.length).to.equal(0);
     });
 
     it('should return false when brushed data is not part of property filter', () => {
       bb.addValue('products');
-      val.contains.returns(true);
+      val.contains.mockReturnValue(true);
       expect(bb.containsMappedData(d, ['nope'])).to.equal(false);
-      expect(val.contains).to.have.been.calledWith('Cars');
+      expect(val.contains).toHaveBeenCalledWith('Cars');
     });
 
     it('should return false when brushed data is not part of property filter for mode=and', () => {
       bb.addValue('products');
-      val.contains.returns(true);
+      val.contains.mockReturnValue(true);
       expect(bb.containsMappedData(d, ['nope'], 'and')).to.equal(false);
-      expect(val.contains).to.have.been.calledWith('Cars');
+      expect(val.contains).toHaveBeenCalledWith('Cars');
     });
 
     it('should return false when brushed data is not part of property filter for mode=xor ', () => {
       bb.addValue('products');
-      val.contains.returns(true);
+      val.contains.mockReturnValue(true);
       expect(bb.containsMappedData(d, ['nope'], 'xor')).to.equal(false);
-      expect(val.contains).to.have.been.calledWith('Cars');
+      expect(val.contains).toHaveBeenCalledWith('Cars');
     });
   });
 
@@ -523,11 +523,11 @@ describe('brush', () => {
 
     beforeEach(() => {
       v = {
-        add: sandbox.stub(),
-        remove: sandbox.stub(),
-        contains: sandbox.stub(),
+        add: vi.fn(),
+        remove: vi.fn(),
+        contains: vi.fn(),
       };
-      vcoll = sandbox.stub().returns(v);
+      vcoll = vi.fn().mockReturnValue(v);
     });
 
     it('should toggle duplicate values', () => {
@@ -575,7 +575,7 @@ describe('brush', () => {
         { key: 'products', value: 'Existing' },
         { key: 'products', value: 'Car' },
       ];
-      v.contains.withArgs('Existing').returns(true);
+      v.contains.mockImplementation((value) => value === 'Existing');
       const toggled = toggle({
         items,
         vc: vcoll,
@@ -593,12 +593,12 @@ describe('brush', () => {
 
     beforeEach(() => {
       v = {
-        add: sandbox.stub(),
-        remove: sandbox.stub(),
-        contains: sandbox.stub(),
-        values: sandbox.stub(),
+        add: vi.fn(),
+        remove: vi.fn(),
+        contains: vi.fn(),
+        values: vi.fn(),
       };
-      vcoll = sandbox.stub().returns(v);
+      vcoll = vi.fn().mockReturnValue(v);
     });
 
     it('should add the new values', () => {
@@ -613,11 +613,11 @@ describe('brush', () => {
     });
 
     it('should not add existing values', () => {
-      v.values.returns(['Bike']); // existing values
+      v.values.mockReturnValue(['Bike']); // existing values
       const items = [
         { key: 'products', value: 'Bike' }, // new values
       ];
-      v.contains.withArgs('Bike').returns(true);
+      v.contains.mockReturnValue(true);
       const changed = set({
         items,
         vc: vcoll,
@@ -630,11 +630,11 @@ describe('brush', () => {
     });
 
     it('should not remove existing values', () => {
-      v.values.returns(['Bike']); // existing values
+      v.values.mockReturnValue(['Bike']); // existing values
       const items = [
         { key: 'products', value: 'Bike' }, // new values
       ];
-      v.contains.withArgs('Bike').returns(true);
+      v.contains.mockReturnValue(true);
       const changed = set({
         items,
         vc: vcoll,
@@ -647,13 +647,12 @@ describe('brush', () => {
     });
 
     it('should remove old values from same collection', () => {
-      v.values.returns([0, 'Cars', 'Skateboards']); // existing values
+      v.values.mockReturnValue([0, 'Cars', 'Skateboards']); // existing values
       const items = [
         { key: 'products', value: 'Bike' }, // new value
         { key: 'products', value: 'Skateboards' }, // add existing value
       ];
-      v.contains.withArgs('Cars').returns(true);
-      v.contains.withArgs(0).returns(true);
+      v.contains.mockImplementation((value) => value === 'Cars' || value === 0);
       const changed = set({
         items,
         vc: vcoll,
@@ -666,7 +665,7 @@ describe('brush', () => {
     });
 
     it('should remove old values', () => {
-      v.values.returns(['Cars', 'Skateboards']); // existing values
+      v.values.mockReturnValue(['Cars', 'Skateboards']); // existing values
       const items = [];
       const changed = set({
         items,
@@ -708,51 +707,51 @@ describe('brush', () => {
     let cb;
     let interceptor;
     beforeEach(() => {
-      cb = sandbox.spy();
+      cb = vi.fn();
       b.on('update', cb);
 
-      interceptor = sandbox.stub().returns([{ key: 'intercepted', value: 'yes' }]);
+      interceptor = vi.fn().mockReturnValue([{ key: 'intercepted', value: 'yes' }]);
       b.intercept('add-values', interceptor);
 
-      vc.add.returns(true);
+      vc.add.mockReturnValue(true);
     });
 
     it('should intercept "add-values"', () => {
       b.addValue('products', 'cars');
-      expect(interceptor).to.have.been.calledWithExactly([{ key: 'products', value: 'cars' }]);
+      expect(interceptor).toHaveBeenCalledWith([{ key: 'products', value: 'cars' }]);
     });
 
     it('should be updated with the values returned from the interceptor', () => {
       b.addValue('products', 'cars');
-      expect(cb).to.have.been.calledWith([{ id: 'intercepted', values: ['yes'] }], []);
+      expect(cb).toHaveBeenCalledWith([{ id: 'intercepted', values: ['yes'] }], []);
     });
 
     it('should remove the interceptor', () => {
       b.removeInterceptor('add-values', interceptor);
       b.addValue('products', 'cars');
-      expect(interceptor.callCount).to.equal(0);
+      expect(interceptor.mock.calls.length).to.equal(0);
     });
 
     it('should remove all interceptors', () => {
       const toggleInterceptor = () => {};
       b.intercept('toggle-values', toggleInterceptor);
 
-      const rem = sandbox.spy(b, 'removeInterceptor');
+      const rem = vi.spyOn(b, 'removeInterceptor');
       b.removeAllInterceptors();
 
-      expect(rem.firstCall).to.have.been.calledWith('add-values', interceptor);
-      expect(rem.secondCall).to.have.been.calledWith('toggle-values', toggleInterceptor);
+      expect(rem.mock.calls[0]).toEqual(['add-values', interceptor]);
+      expect(rem.mock.calls[1]).toEqual(['toggle-values', toggleInterceptor]);
     });
 
     it('should remove all named interceptors', () => {
       const toggleInterceptor = () => {};
       b.intercept('toggle-values', toggleInterceptor);
 
-      const rem = sandbox.spy(b, 'removeInterceptor');
+      const rem = vi.spyOn(b, 'removeInterceptor');
       b.removeAllInterceptors('add-values');
 
-      expect(rem.callCount).to.equal(1);
-      expect(rem.firstCall).to.have.been.calledWith('add-values', interceptor);
+      expect(rem.mock.calls.length).to.equal(1);
+      expect(rem.mock.calls[0]).toEqual(['add-values', interceptor]);
     });
   });
 
@@ -764,11 +763,11 @@ describe('brush', () => {
     let valuesToRemove;
     beforeEach(() => {
       v = {
-        remove: sandbox.stub(),
-        add: sandbox.stub(),
-        values: sandbox.stub(),
+        remove: vi.fn(),
+        add: vi.fn(),
+        values: vi.fn(),
       };
-      vcc = sandbox.stub().returns(v);
+      vcc = vi.fn().mockReturnValue(v);
       bb = brush({ vc: vcc, rc: noop });
       bb.addValue('garage');
 
@@ -778,52 +777,52 @@ describe('brush', () => {
 
     it('should call value.remove() with value "Car"', () => {
       bb.addAndRemoveValues(valuesToAdd, valuesToRemove);
-      expect(v.add).to.have.been.calledWith('Car');
-      expect(v.remove).to.have.been.calledWith('Bike');
+      expect(v.add).toHaveBeenCalledWith('Car');
+      expect(v.remove).toHaveBeenCalledWith('Bike');
     });
 
     it('should emit "update" event when state changes (by add)', () => {
-      const cb = sandbox.spy();
-      v.add.returns(true);
-      v.remove.returns(false);
+      const cb = vi.fn();
+      v.add.mockReturnValue(true);
+      v.remove.mockReturnValue(false);
       bb.on('update', cb);
       bb.addAndRemoveValues(valuesToAdd, valuesToRemove);
-      expect(v.add).to.have.been.calledWith('Car');
-      expect(v.remove).to.have.been.calledWith('Bike');
-      expect(cb.callCount).to.equal(1);
+      expect(v.add).toHaveBeenCalledWith('Car');
+      expect(v.remove).toHaveBeenCalledWith('Bike');
+      expect(cb.mock.calls.length).to.equal(1);
     });
 
     it('should emit "update" event when state changes (by remove)', () => {
-      const cb = sandbox.spy();
-      v.add.returns(false);
-      v.remove.returns(true);
+      const cb = vi.fn();
+      v.add.mockReturnValue(false);
+      v.remove.mockReturnValue(true);
       bb.on('update', cb);
       bb.addAndRemoveValues(valuesToAdd, valuesToRemove);
-      expect(v.add).to.have.been.calledWith('Car');
-      expect(v.remove).to.have.been.calledWith('Bike');
-      expect(cb.callCount).to.equal(1);
+      expect(v.add).toHaveBeenCalledWith('Car');
+      expect(v.remove).toHaveBeenCalledWith('Bike');
+      expect(cb.mock.calls.length).to.equal(1);
     });
 
     it('should emit "update" event once when state changes by add and remove', () => {
-      const cb = sandbox.spy();
-      v.add.returns(true);
-      v.remove.returns(true);
+      const cb = vi.fn();
+      v.add.mockReturnValue(true);
+      v.remove.mockReturnValue(true);
       bb.on('update', cb);
       bb.addAndRemoveValues(valuesToAdd, valuesToRemove);
-      expect(v.add).to.have.been.calledWith('Car');
-      expect(v.remove).to.have.been.calledWith('Bike');
-      expect(cb.callCount).to.equal(1);
+      expect(v.add).toHaveBeenCalledWith('Car');
+      expect(v.remove).toHaveBeenCalledWith('Bike');
+      expect(cb.mock.calls.length).to.equal(1);
     });
 
     it('should not emit "update" event when state does not change', () => {
-      const cb = sandbox.spy();
-      v.add.returns(false);
-      v.remove.returns(false);
+      const cb = vi.fn();
+      v.add.mockReturnValue(false);
+      v.remove.mockReturnValue(false);
       bb.on('update', cb);
       bb.addAndRemoveValues(valuesToAdd, valuesToRemove);
-      expect(v.add).to.have.been.calledWith('Car');
-      expect(v.remove).to.have.been.calledWith('Bike');
-      expect(cb.callCount).to.equal(0);
+      expect(v.add).toHaveBeenCalledWith('Car');
+      expect(v.remove).toHaveBeenCalledWith('Bike');
+      expect(cb.mock.calls.length).to.equal(0);
     });
   });
 
@@ -879,9 +878,9 @@ describe('brush', () => {
     let updateSpy;
 
     beforeEach(() => {
-      configureSpy = sandbox.spy();
-      updateSpy = sandbox.spy();
-      rc = sandbox.stub().returns({
+      configureSpy = vi.fn();
+      updateSpy = vi.fn();
+      rc = vi.fn().mockReturnValue({
         add: () => {},
         configure: configureSpy,
       });
@@ -903,19 +902,19 @@ describe('brush', () => {
         b.configure(config);
 
         b.addRange('key', { min: 0, max: 1 });
-        expect(rc).to.have.been.calledWith({ includeMin: 123, includeMax: true });
-        rc.resetHistory();
+        expect(rc).toHaveBeenCalledWith({ includeMin: 123, includeMax: true });
+        rc.mockClear();
 
         b.addRange('another key', { min: 0, max: 1 });
-        expect(rc).to.have.been.calledWith({ includeMin: '123', includeMax: 321 });
-        rc.resetHistory();
+        expect(rc).toHaveBeenCalledWith({ includeMin: '123', includeMax: 321 });
+        rc.mockClear();
 
         b.addRange('default', { min: 0, max: 1 });
-        expect(rc).to.have.been.calledWith({ includeMin: 0, includeMax: 1 });
-        rc.resetHistory();
+        expect(rc).toHaveBeenCalledWith({ includeMin: 0, includeMax: 1 });
+        rc.mockClear();
 
-        expect(configureSpy).to.not.have.been.called;
-        expect(updateSpy).to.have.been.calledWith([], []);
+        expect(configureSpy).not.toHaveBeenCalled();
+        expect(updateSpy).toHaveBeenCalledWith([], []);
       });
 
       it('should be able to configure only default values', () => {
@@ -926,10 +925,10 @@ describe('brush', () => {
         b.configure(config);
 
         b.addRange('key', { min: 0, max: 1 });
-        expect(rc).to.have.been.calledWith({ includeMin: 123, includeMax: 321 });
+        expect(rc).toHaveBeenCalledWith({ includeMin: 123, includeMax: 321 });
 
-        expect(configureSpy).to.not.have.been.called;
-        expect(updateSpy).to.have.been.calledWith([], []);
+        expect(configureSpy).not.toHaveBeenCalled();
+        expect(updateSpy).toHaveBeenCalledWith([], []);
       });
 
       it('should be able to configure only sourced values', () => {
@@ -943,41 +942,41 @@ describe('brush', () => {
         b.configure(config);
 
         b.addRange('key', { min: 0, max: 1 });
-        expect(rc).to.have.been.calledWith({ includeMin: false, includeMax: true });
-        rc.resetHistory();
+        expect(rc).toHaveBeenCalledWith({ includeMin: false, includeMax: true });
+        rc.mockClear();
 
         b.addRange('another key', { min: 0, max: 1 });
-        expect(rc).to.have.been.calledWith({ includeMin: true, includeMax: false });
-        rc.resetHistory();
+        expect(rc).toHaveBeenCalledWith({ includeMin: true, includeMax: false });
+        rc.mockClear();
 
         b.addRange('default', { min: 0, max: 1 });
-        expect(rc).to.have.been.calledWith({ includeMin: true, includeMax: true });
-        rc.resetHistory();
+        expect(rc).toHaveBeenCalledWith({ includeMin: true, includeMax: true });
+        rc.mockClear();
 
-        expect(configureSpy).to.not.have.been.called;
-        expect(updateSpy).to.have.been.calledWith([], []);
+        expect(configureSpy).not.toHaveBeenCalled();
+        expect(updateSpy).toHaveBeenCalledWith([], []);
       });
 
       it('should handle configure call without any parameter', () => {
         b.configure();
 
         b.addRange('key', { min: 0, max: 1 });
-        expect(rc).to.have.been.calledWith({ includeMin: true, includeMax: true });
-        expect(configureSpy).to.not.have.been.called;
+        expect(rc).toHaveBeenCalledWith({ includeMin: true, includeMax: true });
+        expect(configureSpy).not.toHaveBeenCalled();
       });
 
       it('should update ranges with new configuration', () => {
         b.configure();
 
         b.addRange('key', { min: 0, max: 1 });
-        expect(rc).to.have.been.calledWith({ includeMin: true, includeMax: true });
-        expect(configureSpy).to.not.have.been.called;
-        expect(updateSpy).to.not.have.been.called;
+        expect(rc).toHaveBeenCalledWith({ includeMin: true, includeMax: true });
+        expect(configureSpy).not.toHaveBeenCalled();
+        expect(updateSpy).not.toHaveBeenCalled();
 
         b.configure({ ranges: [{ includeMin: false }] });
 
-        expect(configureSpy).to.have.been.calledWith({ includeMin: false, includeMax: true });
-        expect(updateSpy).to.have.been.calledWith([], []);
+        expect(configureSpy).toHaveBeenCalledWith({ includeMin: false, includeMax: true });
+        expect(updateSpy).toHaveBeenCalledWith([], []);
       });
     });
   });

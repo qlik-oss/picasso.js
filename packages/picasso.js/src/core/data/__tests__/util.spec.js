@@ -5,7 +5,7 @@ describe('data-util', () => {
 
   beforeEach(() => {
     ds = {
-      field: sinon.stub(),
+      field: vi.fn(),
       key: 'nyckel',
     };
   });
@@ -14,7 +14,7 @@ describe('data-util', () => {
     it('should attach default accessors from field', () => {
       const reduceFn = () => ({});
       const valueFn = () => ({});
-      ds.field.withArgs('f').returns({
+      ds.field.mockReturnValue({
         key: () => 'country',
         reduce: reduceFn,
         value: valueFn,
@@ -34,12 +34,12 @@ describe('data-util', () => {
       const reduceFn = () => ({});
       const valueFn = () => ({});
       const labelFn = () => ({});
-      ds.field.withArgs('f').returns({
+      ds.field.mockReturnValue({
         key: () => 'country',
         reduce: 'foo',
         value: 'foooo',
       });
-      ds.field.withArgs('f2').returns({
+      ds.field.mockReturnValue({
         key: () => 'region',
         reduce: 'reg',
         value: 'regg',
@@ -89,8 +89,7 @@ describe('data-util', () => {
         reduceLabel: 'foo',
         value: 'regg',
       };
-      ds.field.withArgs('f').returns(country);
-      ds.field.withArgs('f2').returns(region);
+      ds.field.mockImplementation((field) => (field === 'f' ? country : region));
       const p = getPropsInfo(
         {
           field: 'f',
@@ -137,7 +136,7 @@ describe('data-util', () => {
     });
 
     it('should convert string reducer to a function', () => {
-      ds.field.withArgs('f').returns({
+      ds.field.mockReturnValue({
         key: () => 'country',
         reduce: 'avg',
       });
@@ -152,7 +151,7 @@ describe('data-util', () => {
     });
 
     it('should accept a filter function', () => {
-      ds.field.withArgs('f').returns({
+      ds.field.mockReturnValue({
         key: () => 'country',
       });
       const p = getPropsInfo(
@@ -170,7 +169,7 @@ describe('data-util', () => {
       const f = {
         key: () => 'country',
       };
-      ds.field.withArgs('f').returns(f);
+      ds.field.mockReturnValue(f);
       const fn = () => 3;
       const p = getPropsInfo(
         {

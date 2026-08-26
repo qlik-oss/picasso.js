@@ -24,84 +24,84 @@ describe('logger', () => {
 
   beforeEach(() => {
     logger = loggerFn({ pipe });
-    spyLog = sinon.spy(pipe, 'log');
-    spyWarn = sinon.spy(pipe, 'warn');
-    spyInfo = sinon.spy(pipe, 'info');
-    spyError = sinon.spy(pipe, 'error');
+    spyLog = vi.spyOn(pipe, 'log');
+    spyWarn = vi.spyOn(pipe, 'warn');
+    spyInfo = vi.spyOn(pipe, 'info');
+    spyError = vi.spyOn(pipe, 'error');
   });
   afterEach(() => {
-    spyLog.restore();
-    spyWarn.restore();
-    spyInfo.restore();
-    spyError.restore();
+    spyLog.mockRestore();
+    spyWarn.mockRestore();
+    spyInfo.mockRestore();
+    spyError.mockRestore();
   });
 
   it('at level = DEBUG should log everything', () => {
     logger.level(logger.LOG_LEVEL.DEBUG);
     log();
-    expect(spyError.getCall(0).args).to.eql(['b', 'bb']);
-    expect(spyWarn.getCall(0).args).to.eql(['c', 'cc']);
-    expect(spyInfo.getCall(0).args).to.eql(['d', 'dd']);
-    expect(spyLog.getCall(0).args).to.eql(['e', 'ee']);
+    expect(spyError.mock.calls[0]).to.eql(['b', 'bb']);
+    expect(spyWarn.mock.calls[0]).to.eql(['c', 'cc']);
+    expect(spyInfo.mock.calls[0]).to.eql(['d', 'dd']);
+    expect(spyLog.mock.calls[0]).to.eql(['e', 'ee']);
   });
 
   it('at level = INFO', () => {
     logger.level(logger.LOG_LEVEL.INFO);
     log();
-    expect(spyError.getCall(0).args).to.eql(['b', 'bb']);
-    expect(spyWarn.getCall(0).args).to.eql(['c', 'cc']);
-    expect(spyInfo.getCall(0).args).to.eql(['d', 'dd']);
-    expect(spyLog.callCount).to.eql(0);
+    expect(spyError.mock.calls[0]).to.eql(['b', 'bb']);
+    expect(spyWarn.mock.calls[0]).to.eql(['c', 'cc']);
+    expect(spyInfo.mock.calls[0]).to.eql(['d', 'dd']);
+    expect(spyLog.mock.calls.length).to.eql(0);
   });
 
   it('at level = WARN', () => {
     logger.level(logger.LOG_LEVEL.WARN);
     log();
-    expect(spyError.getCall(0).args).to.eql(['b', 'bb']);
-    expect(spyWarn.getCall(0).args).to.eql(['c', 'cc']);
-    expect(spyInfo.callCount).to.eql(0);
-    expect(spyLog.callCount).to.eql(0);
+    expect(spyError.mock.calls[0]).to.eql(['b', 'bb']);
+    expect(spyWarn.mock.calls[0]).to.eql(['c', 'cc']);
+    expect(spyInfo.mock.calls.length).to.eql(0);
+    expect(spyLog.mock.calls.length).to.eql(0);
   });
 
   it('at level = ERROR', () => {
     logger.level(logger.LOG_LEVEL.ERROR);
     log();
-    expect(spyError.getCall(0).args).to.eql(['b', 'bb']);
-    expect(spyWarn.callCount).to.eql(0);
-    expect(spyInfo.callCount).to.eql(0);
-    expect(spyLog.callCount).to.eql(0);
+    expect(spyError.mock.calls[0]).to.eql(['b', 'bb']);
+    expect(spyWarn.mock.calls.length).to.eql(0);
+    expect(spyInfo.mock.calls.length).to.eql(0);
+    expect(spyLog.mock.calls.length).to.eql(0);
   });
 
   it('at level = OFF should not log anything', () => {
     logger.level(logger.LOG_LEVEL.OFF);
     log();
-    expect(spyError.callCount).to.equal(0);
-    expect(spyWarn.callCount).to.equal(0);
-    expect(spyInfo.callCount).to.equal(0);
-    expect(spyLog.callCount).to.equal(0);
+    expect(spyError.mock.calls.length).to.equal(0);
+    expect(spyWarn.mock.calls.length).to.equal(0);
+    expect(spyInfo.mock.calls.length).to.equal(0);
+    expect(spyLog.mock.calls.length).to.equal(0);
   });
 
   it('should log error', () => {
     logger.level(logger.LOG_LEVEL.ERROR);
     logger.error('err', 'errr');
-    expect(spyError.getCall(0).args).to.eql(['err', 'errr']);
+    expect(spyError.mock.calls[0]).to.eql(['err', 'errr']);
   });
 
   it('should log warn', () => {
     logger.level(logger.LOG_LEVEL.WARN);
     logger.warn('w', 'wa');
-    expect(spyWarn.getCall(0).args).to.eql(['w', 'wa']);
+    expect(spyWarn.mock.calls[0]).to.eql(['w', 'wa']);
   });
 
   it('should log info', () => {
     logger.level(logger.LOG_LEVEL.INFO);
     logger.info('i', 'info');
-    expect(spyInfo.getCall(0).args).to.eql(['i', 'info']);
+    expect(spyInfo.mock.calls[0]).to.eql(['i', 'info']);
   });
 
   it('should log debug', () => {
     logger.level(logger.LOG_LEVEL.DEBUG);
     logger.debug('d', 'deb');
-    expect(spyLog.getCall(0).args).to.eql(['d', 'deb']);
+    expect(spyLog.mock.calls[0]).to.eql(['d', 'deb']);
   });
 });

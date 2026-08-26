@@ -10,12 +10,12 @@ describe('range component', () => {
   let listeners;
   beforeEach(() => {
     chart = {
-      brush: sinon.stub(),
-      scale: sinon.stub(),
+      brush: vi.fn(),
+      scale: vi.fn(),
     };
 
     renderer = {
-      render: sinon.stub(),
+      render: vi.fn(),
     };
 
     settings = {};
@@ -44,8 +44,8 @@ describe('range component', () => {
     brush = {
       on: (type, handler) => listeners[type].push(handler),
       removeListener: (type, handler) => listeners[type].splice(listeners[type].indexOf(handler), 1),
-      isActive: sinon.stub(),
-      brushes: sinon.stub(),
+      isActive: vi.fn(),
+      brushes: vi.fn(),
     };
 
     scale = (s) => s / 100; // assume scale has domain [0, 100]
@@ -57,8 +57,8 @@ describe('range component', () => {
       ],
     });
 
-    chart.brush.returns(brush);
-    chart.scale.returns(scale);
+    chart.brush.mockReturnValue(brush);
+    chart.scale.mockReturnValue(scale);
   });
 
   it('should render empty when brush is not active', () => {
@@ -68,8 +68,8 @@ describe('range component', () => {
 
   describe('active ranges', () => {
     beforeEach(() => {
-      brush.isActive.returns(true);
-      brush.brushes.returns([
+      brush.isActive.mockReturnValue(true);
+      brush.brushes.mockReturnValue([
         {
           id: 'sales',
           type: 'range',
@@ -195,8 +195,8 @@ describe('range component', () => {
       },
     ];
     beforeEach(() => {
-      brush.isActive.returns(true);
-      brush.brushes.returns([
+      brush.isActive.mockReturnValue(true);
+      brush.brushes.mockReturnValue([
         {
           id: 'sales',
           type: 'range',
@@ -227,19 +227,19 @@ describe('range component', () => {
     it('should render when brush "start" is triggered', () => {
       component.render.call(context);
       listeners.start[0]();
-      expect(renderer.render).to.have.been.calledWith(shapes);
+      expect(renderer.render).toHaveBeenCalledWith(shapes);
     });
 
     it('should render when brush "update" is triggered', () => {
       component.render.call(context);
       listeners.update[0]();
-      expect(renderer.render).to.have.been.calledWith(shapes);
+      expect(renderer.render).toHaveBeenCalledWith(shapes);
     });
 
     it('should render when brush "end" is triggered', () => {
       component.render.call(context);
       listeners.end[0]();
-      expect(renderer.render).to.have.been.calledWith(shapes);
+      expect(renderer.render).toHaveBeenCalledWith(shapes);
     });
   });
 });

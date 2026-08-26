@@ -279,7 +279,7 @@ describe('labeling - slices', () => {
     beforeEach(() => {
       chart = {};
       renderer = {
-        measureText: sinon.stub(),
+        measureText: vi.fn(),
       };
       rect = {
         x: 0,
@@ -311,7 +311,7 @@ describe('labeling - slices', () => {
           },
         },
       ];
-      renderer.measureText.returns({ width: 19, height: 10 });
+      renderer.measureText.mockReturnValue({ width: 19, height: 10 });
       let labels = slices({
         settings,
         chart,
@@ -364,7 +364,7 @@ describe('labeling - slices', () => {
           },
         },
       ];
-      renderer.measureText.returns({ width: 20, height: 10 });
+      renderer.measureText.mockReturnValue({ width: 20, height: 10 });
       let labels = slices({
         settings,
         chart,
@@ -406,7 +406,7 @@ describe('labeling - slices', () => {
           data: 1,
         },
       ];
-      renderer.measureText.returns({ width: 20, height: 10 });
+      renderer.measureText.mockReturnValue({ width: 20, height: 10 });
       let labels = slices({
         settings,
         chart,
@@ -416,7 +416,7 @@ describe('labeling - slices', () => {
         style: {},
       });
 
-      expect(labels[0]).to.containSubset({
+      expect(labels[0]).toMatchObject({
         data: 1,
       });
     });
@@ -486,7 +486,7 @@ describe('labeling - slices', () => {
           { start: 1.38, end: 1.45 },
           { start: 1.45, end: 1.51 },
         ]);
-        expect(labels).to.containSubset([{ type: 'text' }, { type: 'text' }, { type: 'line' }]);
+        expect(labels).toMatchObject([{ type: 'text' }, { type: 'text' }, { type: 'line' }]);
         // check indication that the correct label is moved
         expect(labels[0].y > labels[1].y).to.be.true;
       });
@@ -496,7 +496,7 @@ describe('labeling - slices', () => {
           { start: 1.45, end: 1.51 },
           { start: 1.38 + Math.PI * 2, end: 1.45 + Math.PI * 2 },
         ]);
-        expect(labels).to.containSubset([{ type: 'text' }, { type: 'text' }, { type: 'line' }]);
+        expect(labels).toMatchObject([{ type: 'text' }, { type: 'text' }, { type: 'line' }]);
         // check indication that the correct label is moved
         expect(labels[0].y > labels[1].y).to.be.true;
       });

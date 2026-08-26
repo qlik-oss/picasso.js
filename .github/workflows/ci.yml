@@ -85,8 +85,8 @@ jobs:
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: build-artifacts
-      - name: Install Chrome for Puppeteer
-        run: pnpm exec puppeteer browsers install chrome
+      - name: Install Chromium for Playwright
+        run: pnpm exec playwright install chromium
       - name: Integration tests
         run: pnpm run test:integration:ci
 

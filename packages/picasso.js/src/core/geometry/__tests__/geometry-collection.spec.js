@@ -82,67 +82,67 @@ describe('GeometryCollection', () => {
     });
 
     it('containsPoint - should call geometries until match is found', () => {
-      stub0 = sinon.stub(c.geometries[0], 'containsPoint').returns(false);
-      stub1 = sinon.stub(c.geometries[1], 'containsPoint').returns(true);
-      stub2 = sinon.stub(c.geometries[2], 'containsPoint').returns(true);
+      stub0 = vi.spyOn(c.geometries[0], 'containsPoint').mockReturnValue(false);
+      stub1 = vi.spyOn(c.geometries[1], 'containsPoint').mockReturnValue(true);
+      stub2 = vi.spyOn(c.geometries[2], 'containsPoint').mockReturnValue(true);
 
       match = c.containsPoint(1);
 
-      expect(stub0).to.have.been.calledWithExactly(1);
-      expect(stub1).to.have.been.calledWithExactly(1);
-      expect(stub2).to.not.have.been.called;
+      expect(stub0).toHaveBeenCalledWith(1);
+      expect(stub1).toHaveBeenCalledWith(1);
+      expect(stub2).not.toHaveBeenCalled();
       expect(match).to.be.true;
     });
 
     it('intersectsRect - should call geometries until match is found', () => {
-      stub0 = sinon.stub(c.geometries[0], 'intersectsRect').returns(false);
-      stub1 = sinon.stub(c.geometries[1], 'intersectsRect').returns(true);
-      stub2 = sinon.stub(c.geometries[2], 'intersectsRect').returns(true);
+      stub0 = vi.spyOn(c.geometries[0], 'intersectsRect').mockReturnValue(false);
+      stub1 = vi.spyOn(c.geometries[1], 'intersectsRect').mockReturnValue(true);
+      stub2 = vi.spyOn(c.geometries[2], 'intersectsRect').mockReturnValue(true);
 
       match = c.intersectsRect(1);
 
-      expect(stub0).to.have.been.calledWithExactly(1);
-      expect(stub1).to.have.been.calledWithExactly(1);
-      expect(stub2).to.not.have.been.called;
+      expect(stub0).toHaveBeenCalledWith(1);
+      expect(stub1).toHaveBeenCalledWith(1);
+      expect(stub2).not.toHaveBeenCalled();
       expect(match).to.be.true;
     });
 
     it('intersectsLine - should call geometries until match is found', () => {
-      stub0 = sinon.stub(c.geometries[0], 'intersectsLine').returns(false);
-      stub1 = sinon.stub(c.geometries[1], 'intersectsLine').returns(true);
-      stub2 = sinon.stub(c.geometries[2], 'intersectsLine').returns(true);
+      stub0 = vi.spyOn(c.geometries[0], 'intersectsLine').mockReturnValue(false);
+      stub1 = vi.spyOn(c.geometries[1], 'intersectsLine').mockReturnValue(true);
+      stub2 = vi.spyOn(c.geometries[2], 'intersectsLine').mockReturnValue(true);
 
       match = c.intersectsLine(1);
 
-      expect(stub0).to.have.been.calledWithExactly(1);
-      expect(stub1).to.have.been.calledWithExactly(1);
-      expect(stub2).to.not.have.been.called;
+      expect(stub0).toHaveBeenCalledWith(1);
+      expect(stub1).toHaveBeenCalledWith(1);
+      expect(stub2).not.toHaveBeenCalled();
       expect(match).to.be.true;
     });
 
     it('intersectsCircle - should call geometries until match is found', () => {
-      stub0 = sinon.stub(c.geometries[0], 'intersectsCircle').returns(false);
-      stub1 = sinon.stub(c.geometries[1], 'intersectsCircle').returns(true);
-      stub2 = sinon.stub(c.geometries[2], 'intersectsCircle').returns(true);
+      stub0 = vi.spyOn(c.geometries[0], 'intersectsCircle').mockReturnValue(false);
+      stub1 = vi.spyOn(c.geometries[1], 'intersectsCircle').mockReturnValue(true);
+      stub2 = vi.spyOn(c.geometries[2], 'intersectsCircle').mockReturnValue(true);
 
       match = c.intersectsCircle(1);
 
-      expect(stub0).to.have.been.calledWithExactly(1);
-      expect(stub1).to.have.been.calledWithExactly(1);
-      expect(stub2).to.not.have.been.called;
+      expect(stub0).toHaveBeenCalledWith(1);
+      expect(stub1).toHaveBeenCalledWith(1);
+      expect(stub2).not.toHaveBeenCalled();
       expect(match).to.be.true;
     });
 
     it('intersectsPolygon - should call geometries until match is found', () => {
-      stub0 = sinon.stub(c.geometries[0], 'intersectsPolygon').returns(false);
-      stub1 = sinon.stub(c.geometries[1], 'intersectsPolygon').returns(true);
-      stub2 = sinon.stub(c.geometries[2], 'intersectsPolygon').returns(true);
+      stub0 = vi.spyOn(c.geometries[0], 'intersectsPolygon').mockReturnValue(false);
+      stub1 = vi.spyOn(c.geometries[1], 'intersectsPolygon').mockReturnValue(true);
+      stub2 = vi.spyOn(c.geometries[2], 'intersectsPolygon').mockReturnValue(true);
 
       match = c.intersectsPolygon(1);
 
-      expect(stub0).to.have.been.calledWithExactly(1);
-      expect(stub1).to.have.been.calledWithExactly(1);
-      expect(stub2).to.not.have.been.called;
+      expect(stub0).toHaveBeenCalledWith(1);
+      expect(stub1).toHaveBeenCalledWith(1);
+      expect(stub2).not.toHaveBeenCalled();
       expect(match).to.be.true;
     });
   });

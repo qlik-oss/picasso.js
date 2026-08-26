@@ -6,9 +6,9 @@ describe('Sequential', () => {
   beforeEach(() => {
     seq = sequential();
     theme = {
-      palette: sinon.stub(),
+      palette: vi.fn(),
     };
-    theme.palette.withArgs('sequential').returns(['rgb(180,221,212)', 'rgb(34, 83, 90)']);
+    theme.palette.mockReturnValue(['rgb(180,221,212)', 'rgb(34, 83, 90)']);
   });
 
   describe('Basic colors', () => {

@@ -13,10 +13,10 @@ describe('render', () => {
     };
     context = {
       renderer: {
-        render: sinon.spy(),
-        element: sinon.stub().returns({ children: [0] }),
+        render: vi.fn(),
+        element: vi.fn().mockReturnValue({ children: [0] }),
       },
-      h: sinon.stub().returns('CALLED'),
+      h: vi.fn().mockReturnValue('CALLED'),
       style: {
         content: {
           testStyle: 'testing',
@@ -26,7 +26,7 @@ describe('render', () => {
         },
       },
       props: {
-        content: sinon.spy(),
+        content: vi.fn(),
         contentClass: {
           testClass: true,
         },
@@ -42,8 +42,8 @@ describe('render', () => {
     render(data, placement, context);
 
     // Content call
-    expect(context.h.args[0][0]).to.equal('div');
-    expect(context.h.args[0][1]).to.containSubset({
+    expect(context.h.mock.calls[0][0]).to.equal('div');
+    expect(context.h.mock.calls[0][1]).toMatchObject({
       style: {
         testStyle: 'testing',
       },
@@ -51,7 +51,7 @@ describe('render', () => {
     });
 
     // Arrow call
-    expect(context.h.args[1][1]).to.containSubset({
+    expect(context.h.mock.calls[1][1]).toMatchObject({
       class: 'pic-tooltip-arrow class',
       style: {
         arrowTestStyle: 'test2',
@@ -59,7 +59,7 @@ describe('render', () => {
     });
 
     // Container call
-    expect(context.h.args[2][1]).to.containSubset({
+    expect(context.h.mock.calls[2][1]).toMatchObject({
       style: {
         display: 'inline-block',
         position: 'relative',
@@ -68,12 +68,12 @@ describe('render', () => {
       },
     });
 
-    expect(context.props.content).to.have.been.calledWith({
+    expect(context.props.content).toHaveBeenCalledWith({
       h: context.h,
       style: context.style,
       data,
     });
 
-    expect(context.renderer.render).to.have.been.calledWith('CALLED');
+    expect(context.renderer.render).toHaveBeenCalledWith('CALLED');
   });
 });

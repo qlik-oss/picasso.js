@@ -19,7 +19,7 @@ describe('line component', () => {
   });
 
   it('should render lines with default settings', () => {
-    componentFixture.mocks().theme.style.returns({});
+    componentFixture.mocks().theme.style.mockReturnValue({});
     const config = {
       data: [1, 1, 1, 1],
     };
@@ -27,7 +27,7 @@ describe('line component', () => {
     componentFixture.simulateCreate(component, config);
     rendered = componentFixture.simulateRender(opts);
 
-    expect(rendered).to.containSubset([
+    expect(rendered).toMatchObject([
       {
         type: 'path',
         fill: 'none',
@@ -45,7 +45,7 @@ describe('line component', () => {
   });
 
   it('should render lines with custom settings', () => {
-    componentFixture.mocks().theme.style.returns({});
+    componentFixture.mocks().theme.style.mockReturnValue({});
     const config = {
       data: [1, 1, 1, 1],
       settings: {
@@ -65,7 +65,7 @@ describe('line component', () => {
     componentFixture.simulateCreate(component, config);
     rendered = componentFixture.simulateRender(opts);
 
-    expect(rendered).to.containSubset([
+    expect(rendered).toMatchObject([
       {
         type: 'path',
         fill: 'none',
@@ -80,7 +80,7 @@ describe('line component', () => {
   });
 
   it('should update settings', () => {
-    componentFixture.mocks().theme.style.returns({});
+    componentFixture.mocks().theme.style.mockReturnValue({});
     const config = {
       data: [1, 1, 1, 1],
     };
@@ -98,7 +98,7 @@ describe('line component', () => {
       },
     });
 
-    expect(rendered).to.containSubset([
+    expect(rendered).toMatchObject([
       {
         type: 'path',
         fill: 'none',
@@ -112,7 +112,7 @@ describe('line component', () => {
   });
 
   it('should render area', () => {
-    componentFixture.mocks().theme.style.returns({
+    componentFixture.mocks().theme.style.mockReturnValue({
       line: {},
       area: {
         fill: 'red',
@@ -144,7 +144,7 @@ describe('line component', () => {
 
     rendered = componentFixture.simulateRender(opts);
     expect(rendered.length).to.equal(1);
-    expect(rendered).to.containSubset([
+    expect(rendered).toMatchObject([
       {
         type: 'path',
         fill: 'blue',
@@ -158,7 +158,7 @@ describe('line component', () => {
   });
 
   it('should render area, minor, and minor0 lines (3 lines) when show is true and has minor0', () => {
-    componentFixture.mocks().theme.style.returns({
+    componentFixture.mocks().theme.style.mockReturnValue({
       line: {},
       area: {
         fill: 'red',
@@ -195,30 +195,32 @@ describe('line component', () => {
 
     rendered = componentFixture.simulateRender(opts);
     expect(rendered.length).to.equal(3);
-    expect(rendered).to.containSubset([
-      {
-        type: 'path',
-        fill: 'blue',
-        stroke: undefined,
-        strokeLinejoin: undefined,
-        strokeWidth: undefined,
-        opacity: 0.3,
-        data: { value: 1, label: '1', points: config.data.map((p) => ({ label: `${p}`, value: p })) },
-      },
-      {
-        type: 'path',
-        fill: 'none',
-        stroke: '#ccc',
-        strokeLinejoin: 'miter',
-        strokeWidth: 1,
-        opacity: 1,
-        data: { value: 1, label: '1', points: config.data.map((p) => ({ label: `${p}`, value: p })) },
-      },
-    ]);
+    expect(rendered).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          type: 'path',
+          fill: 'blue',
+          stroke: undefined,
+          strokeLinejoin: undefined,
+          strokeWidth: undefined,
+          opacity: 0.3,
+          data: { value: 1, label: '1', points: config.data.map((p) => ({ label: `${p}`, value: p })) },
+        }),
+        expect.objectContaining({
+          type: 'path',
+          fill: 'none',
+          stroke: '#ccc',
+          strokeLinejoin: 'miter',
+          strokeWidth: 1,
+          opacity: 1,
+          data: { value: 1, label: '1', points: config.data.map((p) => ({ label: `${p}`, value: p })) },
+        }),
+      ]),
+    );
   });
 
   it('should not render minor0 line when has minor0 but showMinor0 is false', () => {
-    componentFixture.mocks().theme.style.returns({
+    componentFixture.mocks().theme.style.mockReturnValue({
       line: {},
       area: {
         fill: 'red',
@@ -256,7 +258,7 @@ describe('line component', () => {
 
     rendered = componentFixture.simulateRender(opts);
     expect(rendered.length).to.equal(2);
-    expect(rendered).to.containSubset([
+    expect(rendered).toMatchObject([
       {
         type: 'path',
         fill: 'blue',
@@ -303,7 +305,7 @@ describe('line component', () => {
         },
       };
 
-      componentFixture.mocks().theme.style.returns({});
+      componentFixture.mocks().theme.style.mockReturnValue({});
     });
 
     it('should be sorted by median by default', () => {

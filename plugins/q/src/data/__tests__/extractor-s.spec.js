@@ -57,7 +57,7 @@ describe('extractor-s', () => {
   // const dataset = {
   //   raw: () => cube,
   //   key: () => 'hyper',
-  //   field: sinon.stub()
+  //   field: vi.fn()
   // };
 
   const dataset = q({
@@ -70,7 +70,7 @@ describe('extractor-s', () => {
   let deps;
   beforeEach(() => {
     deps = {
-      normalizeConfig: sinon.stub(),
+      normalizeConfig: vi.fn(),
       collect,
       track,
     };
@@ -78,12 +78,12 @@ describe('extractor-s', () => {
 
   // const fieldInstances = dataset.fields();
 
-  // dataset.field.withArgs('Dim1').returns(fields[0]);
-  // dataset.field.withArgs('Dim2').returns(fields[1]);
-  // dataset.field.withArgs('qMeasureInfo/0').returns(fields[2]);
+  // dataset.field.mockReturnValue(fields[0]);
+  // dataset.field.mockReturnValue(fields[1]);
+  // dataset.field.mockReturnValue(fields[2]);
 
   it('should return dim field values based on default field accessor', () => {
-    deps.normalizeConfig.returns({
+    deps.normalizeConfig.mockReturnValue({
       main: {
         field: dataset.field('Dim2'),
         value: dataset.field('Dim2').value,
@@ -107,7 +107,7 @@ describe('extractor-s', () => {
   });
 
   it('should return measure field values based on default field accessor', () => {
-    deps.normalizeConfig.returns({
+    deps.normalizeConfig.mockReturnValue({
       main: {
         field: dataset.field('qMeasureInfo/0'),
         value: dataset.field('qMeasureInfo/0').value,
@@ -131,14 +131,14 @@ describe('extractor-s', () => {
   });
 
   it('should return joined set when array of fields is used', () => {
-    deps.normalizeConfig.withArgs({ field: 'qMeasureInfo/0' }, dataset).returns({
+    deps.normalizeConfig.mockReturnValueOnce({
       main: {
         field: dataset.field('qMeasureInfo/0'),
         value: dataset.field('qMeasureInfo/0').value,
       },
       props: {},
     });
-    deps.normalizeConfig.withArgs({ field: 'Dim2' }, dataset).returns({
+    deps.normalizeConfig.mockReturnValueOnce({
       main: {
         field: dataset.field('Dim2'),
         value: dataset.field('Dim2').value,
@@ -169,7 +169,7 @@ describe('extractor-s', () => {
   });
 
   it('should return raw field values', () => {
-    deps.normalizeConfig.returns({
+    deps.normalizeConfig.mockReturnValue({
       main: {
         field: dataset.field('Dim2'),
         value: (d) => d,
@@ -220,7 +220,7 @@ describe('extractor-s', () => {
   });
 
   it('should return mapped properties from same field', () => {
-    deps.normalizeConfig.returns({
+    deps.normalizeConfig.mockReturnValue({
       main: {
         field: dataset.field('Dim2'),
         label: dataset.field('Dim2').label,
@@ -280,7 +280,7 @@ describe('extractor-s', () => {
   });
 
   it('should return primitive values', () => {
-    deps.normalizeConfig.returns({
+    deps.normalizeConfig.mockReturnValue({
       main: {
         field: dataset.field('Dim2'),
         value: 'foo',
@@ -324,7 +324,7 @@ describe('extractor-s', () => {
   });
 
   it('should return mapped properties from other fields', () => {
-    deps.normalizeConfig.returns({
+    deps.normalizeConfig.mockReturnValue({
       main: {
         field: dataset.field('Dim2'),
         label: dataset.field('Dim2').label,
@@ -415,16 +415,18 @@ describe('extractor-s', () => {
     const ds = {
       raw: () => c,
       key: () => 'nyckel',
-      field: sinon.stub(),
+      field: vi.fn(),
     };
 
-    ds.field.withArgs('dim').returns(fs[0]);
-    ds.field.withArgs('me').returns(fs[1]);
-    ds.field.throws({ message: 'Field not found' });
+    ds.field.mockImplementation((key) => {
+      if (key === 'dim') return fs[0];
+      if (key === 'me') return fs[1];
+      throw { message: 'Field not found' };
+    });
 
     const mainField = ds.field('dim');
     const meField = ds.field('me');
-    deps.normalizeConfig.returns({
+    deps.normalizeConfig.mockReturnValue({
       main: {
         field: mainField,
         value: (v) => v,
@@ -531,16 +533,18 @@ describe('extractor-s', () => {
     const ds = {
       raw: () => c,
       key: () => 'nyckel',
-      field: sinon.stub(),
+      field: vi.fn(),
     };
 
-    ds.field.withArgs('reduuuced').returns(fs[0]);
-    ds.field.withArgs('minime').returns(fs[1]);
-    ds.field.throws({ message: 'Field not found' });
+    ds.field.mockImplementation((key) => {
+      if (key === 'reduuuced') return fs[0];
+      if (key === 'minime') return fs[1];
+      throw { message: 'Field not found' };
+    });
 
     const mainField = ds.field('reduuuced');
     const meField = ds.field('minime');
-    deps.normalizeConfig.returns({
+    deps.normalizeConfig.mockReturnValue({
       main: {
         field: mainField,
         value: (v) => v,
@@ -626,18 +630,20 @@ describe('extractor-s', () => {
     const ds = {
       raw: () => c,
       key: () => 'nyckel',
-      field: sinon.stub(),
+      field: vi.fn(),
     };
 
-    ds.field.withArgs('reduuuced').returns(fs[0]);
-    ds.field.withArgs('minime').returns(fs[1]);
-    ds.field.withArgs('negative').returns(fs[2]);
-    ds.field.throws({ message: 'Field not found' });
+    ds.field.mockImplementation((key) => {
+      if (key === 'reduuuced') return fs[0];
+      if (key === 'minime') return fs[1];
+      if (key === 'negative') return fs[2];
+      throw { message: 'Field not found' };
+    });
 
     const mainField = ds.field('reduuuced');
     const meField = ds.field('minime');
     const negField = ds.field('negative');
-    deps.normalizeConfig.returns({
+    deps.normalizeConfig.mockReturnValue({
       main: {
         field: mainField,
         value: (v) => v,
@@ -731,18 +737,20 @@ describe('extractor-s', () => {
     const ds = {
       raw: () => c,
       key: () => 'nyckel',
-      field: sinon.stub(),
+      field: vi.fn(),
     };
 
-    ds.field.withArgs('reduuuced').returns(fs[0]);
-    ds.field.withArgs('minime').returns(fs[1]);
-    ds.field.withArgs('negative').returns(fs[2]);
-    ds.field.throws({ message: 'Field not found' });
+    ds.field.mockImplementation((key) => {
+      if (key === 'reduuuced') return fs[0];
+      if (key === 'minime') return fs[1];
+      if (key === 'negative') return fs[2];
+      throw { message: 'Field not found' };
+    });
 
     const mainField = ds.field('reduuuced');
     const meField = ds.field('minime');
     const negField = ds.field('negative');
-    deps.normalizeConfig.returns({
+    deps.normalizeConfig.mockReturnValue({
       main: {
         field: mainField,
         value: (v) => v.qText,
@@ -800,7 +808,7 @@ describe('extractor-s', () => {
   });
 
   it('should return filtered main values', () => {
-    deps.normalizeConfig.returns({
+    deps.normalizeConfig.mockReturnValue({
       main: {
         field: dataset.field('Dim2'),
         label: (d) => d.qText,

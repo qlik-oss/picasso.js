@@ -5,7 +5,6 @@ packages:
 
 allowBuilds:
   nx: false
-  puppeteer: false
   unrs-resolver: false
 
 minimumReleaseAge: 10080

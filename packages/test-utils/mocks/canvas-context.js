@@ -1,4 +1,4 @@
-/* global sinon */
+/* global vi */
 
 function gradientFactory(gradientType) {
   function createGradient(...args) {
@@ -22,16 +22,16 @@ class CanvasPattern {}
 
 function canvascontext(contextType = '2d') {
   let item = {
-    save: sinon.spy(),
-    beginPath: sinon.spy(),
-    moveTo: sinon.spy(),
-    arc: sinon.spy(),
-    fill: sinon.spy(),
-    restore: sinon.spy(),
-    scale: sinon.spy(),
-    rect: sinon.spy(),
-    setTransform: sinon.spy(),
-    createPattern: sinon.spy((...args) => new CanvasPattern(...args)),
+    save: vi.fn(),
+    beginPath: vi.fn(),
+    moveTo: vi.fn(),
+    arc: vi.fn(),
+    fill: vi.fn(),
+    restore: vi.fn(),
+    scale: vi.fn(),
+    rect: vi.fn(),
+    setTransform: vi.fn(),
+    createPattern: vi.fn((...args) => new CanvasPattern(...args)),
     measureText: (text) => ({ width: text.length }),
   };
 

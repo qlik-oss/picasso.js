@@ -8,9 +8,9 @@ describe('Threshold', () => {
 
   beforeEach(() => {
     theme = {
-      palette: sinon.stub(),
+      palette: vi.fn(),
     };
-    theme.palette.returns(defaultColors);
+    theme.palette.mockReturnValue(defaultColors);
   });
 
   describe('basics', () => {

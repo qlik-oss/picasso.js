@@ -4,7 +4,7 @@ describe('scales', () => {
   describe('collection', () => {
     let fn;
     beforeEach(() => {
-      fn = sinon.spy((def) => (typeof def === 'object' && !Object.keys(def).length ? 'fallback' : def));
+      fn = vi.fn((def) => (typeof def === 'object' && !Object.keys(def).length ? 'fallback' : def));
     });
 
     it('should return fallback scale when unknown config is used', () => {
@@ -26,7 +26,7 @@ describe('scales', () => {
       const c = collection({ x: 'foo' }, null, null, fn);
       c.get('x');
       c.get('x');
-      expect(fn.callCount).to.equal(1);
+      expect(fn.mock.calls.length).to.equal(1);
     });
 
     it('should create scale on the fly', () => {
@@ -49,8 +49,8 @@ describe('scales', () => {
     beforeEach(() => {
       deps = {
         scale: {
-          has: sinon.stub(),
-          get: sinon.stub(),
+          has: vi.fn(),
+          get: vi.fn(),
         },
       };
       scaleFn = () => ({
@@ -65,8 +65,8 @@ describe('scales', () => {
     });
 
     it('should create a scale of a specific type', () => {
-      deps.scale.has.withArgs('custom').returns(true);
-      deps.scale.get.returns(scaleFn);
+      deps.scale.has.mockReturnValue(true);
+      deps.scale.get.mockReturnValue(scaleFn);
       const s = create(
         {
           type: 'custom',
@@ -78,8 +78,8 @@ describe('scales', () => {
     });
 
     it('should create linear scale when no better type fits', () => {
-      deps.scale.has.withArgs('linear').returns(true);
-      deps.scale.get.returns(scaleFn);
+      deps.scale.has.mockReturnValue(true);
+      deps.scale.get.mockReturnValue(scaleFn);
       const s = create({}, null, deps);
       expect(s.type).to.equal('linear');
       expect(s.min()).to.equal(0);
@@ -87,19 +87,19 @@ describe('scales', () => {
     });
 
     it('should create linear scale when source fields are measures', () => {
-      deps.scale.has.withArgs('linear').returns(true);
-      deps.scale.get.returns(scaleFn);
+      deps.scale.has.mockReturnValue(true);
+      deps.scale.get.mockReturnValue(scaleFn);
       const dataset = {
-        field: sinon.stub(),
+        field: vi.fn(),
       };
       const datasetFn = () => dataset;
 
-      dataset.field.withArgs('m1').returns({
+      dataset.field.mockReturnValue({
         type: () => 'measure',
         min: () => 0,
         max: () => 1,
       });
-      dataset.field.withArgs('m2').returns({
+      dataset.field.mockReturnValue({
         type: () => 'measure',
         min: () => 0,
         max: () => 1,
@@ -117,14 +117,14 @@ describe('scales', () => {
     });
 
     it('should create sequential color scale when source fields are measures and type is color', () => {
-      deps.scale.has.withArgs('sequential-color').returns(true);
-      deps.scale.get.returns(scaleFn);
+      deps.scale.has.mockReturnValue(true);
+      deps.scale.get.mockReturnValue(scaleFn);
       const dataset = {
-        field: sinon.stub(),
+        field: vi.fn(),
       };
       const datasetFn = () => dataset;
 
-      dataset.field.withArgs('m1').returns({
+      dataset.field.mockReturnValue({
         type: () => 'measure',
         min: () => 0,
         max: () => 1,
@@ -143,14 +143,14 @@ describe('scales', () => {
     });
 
     it('should create band scale when source fields are dimensions', () => {
-      deps.scale.has.withArgs('band').returns(true);
-      deps.scale.get.returns(scaleFn);
+      deps.scale.has.mockReturnValue(true);
+      deps.scale.get.mockReturnValue(scaleFn);
       const dataset = {
-        field: sinon.stub(),
+        field: vi.fn(),
       };
       const datasetFn = () => dataset;
 
-      dataset.field.withArgs('d1').returns({
+      dataset.field.mockReturnValue({
         type: () => 'dimension',
         values: () => [],
         min: () => 2015,
@@ -169,14 +169,14 @@ describe('scales', () => {
     });
 
     it('should create categorical-color scale when source fields are dimensions and type is color', () => {
-      deps.scale.has.withArgs('categorical-color').returns(true);
-      deps.scale.get.returns(scaleFn);
+      deps.scale.has.mockReturnValue(true);
+      deps.scale.get.mockReturnValue(scaleFn);
       const dataset = {
-        field: sinon.stub(),
+        field: vi.fn(),
       };
       const datasetFn = () => dataset;
 
-      dataset.field.withArgs('d1').returns({
+      dataset.field.mockReturnValue({
         type: () => 'dimension',
         values: () => [],
         min: () => 2015,
@@ -196,10 +196,10 @@ describe('scales', () => {
     });
 
     it('should create h-band scale when data is hierarchical', () => {
-      deps.scale.has.withArgs('h-band').returns(true);
-      deps.scale.get.returns(scaleFn);
+      deps.scale.has.mockReturnValue(true);
+      deps.scale.get.mockReturnValue(scaleFn);
       const dataset = {
-        hierarchy: sinon.stub().returns({}),
+        hierarchy: vi.fn().mockReturnValue({}),
         fields: () => [],
       };
       const datasetFn = () => dataset;

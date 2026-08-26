@@ -39,17 +39,17 @@ describe('Scroll api', () => {
   });
 
   it('trigger update event on viewSize change', () => {
-    const fn = sinon.stub();
+    const fn = vi.fn();
     scroll.on('update', fn);
     scroll.update({ min: 0, max: 200, viewSize: 10 });
 
-    expect(fn).to.have.been.calledOnce;
+    expect(fn).toHaveBeenCalledTimes(1);
   });
   it('should only trigger update once if viewSize and start changes', () => {
-    const fn = sinon.stub();
+    const fn = vi.fn();
     scroll.on('update', fn);
     scroll.update({ min: 100, max: 200, viewSize: 10 });
 
-    expect(fn).to.have.been.calledOnce;
+    expect(fn).toHaveBeenCalledTimes(1);
   });
 });

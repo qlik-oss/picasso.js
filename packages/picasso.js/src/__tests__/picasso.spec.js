@@ -20,9 +20,9 @@ describe('picasso.js', () => {
 
   describe('use', () => {
     it('should expose registries to plugin API', () => {
-      const plugin = sinon.stub();
+      const plugin = vi.fn();
       picasso.use(plugin);
-      const firstParam = plugin.args[0][0];
+      const firstParam = plugin.mock.calls[0][0];
 
       iface.forEach((key) => {
         expect(typeof firstParam[key]).to.equal('function');
@@ -31,9 +31,9 @@ describe('picasso.js', () => {
     });
 
     it('should expose logger', () => {
-      const plugin = sinon.stub();
+      const plugin = vi.fn();
       picasso.use(plugin);
-      const firstParam = plugin.args[0][0];
+      const firstParam = plugin.mock.calls[0][0];
 
       expect(typeof firstParam.logger.log).to.equal('function');
     });
@@ -83,7 +83,7 @@ describe('picasso.js', () => {
 
   describe('Chart lifecycle', () => {
     it('should call mounted function', () => {
-      const mountedFn = sinon.stub();
+      const mountedFn = vi.fn();
       const element = createElement();
 
       picasso.chart({
@@ -91,7 +91,7 @@ describe('picasso.js', () => {
         mounted: mountedFn,
       });
 
-      expect(mountedFn).to.have.been.calledWith(element);
+      expect(mountedFn).toHaveBeenCalledWith(element);
     });
 
     it('should expose the element', () => {
@@ -101,7 +101,7 @@ describe('picasso.js', () => {
     });
 
     it('should call updated function', () => {
-      const updatedFn = sinon.stub();
+      const updatedFn = vi.fn();
       const element = createElement();
 
       const chart = picasso.chart({
@@ -112,11 +112,11 @@ describe('picasso.js', () => {
         data: [],
       });
 
-      expect(updatedFn).to.have.been.called;
+      expect(updatedFn).toHaveBeenCalled();
     });
 
     it('should bind event listener', () => {
-      const clickFn = sinon.stub();
+      const clickFn = vi.fn();
       const element = createElement();
 
       picasso.chart({
@@ -128,21 +128,27 @@ describe('picasso.js', () => {
 
       const e = {};
       element.trigger('click', e);
-      expect(clickFn).to.have.been.calledWith(e);
+      expect(clickFn).toHaveBeenCalledWith(e);
     });
 
     it('should bind brush event listeners', () => {
       const element = createElement();
-      const spy = sinon.spy(element, 'addEventListener');
+      const spy = vi.spyOn(element, 'addEventListener');
       const matchFn = (fnName) => (fn) => fn.name === fnName;
 
       picasso.chart({
         element,
       });
 
-      expect(spy).to.have.been.calledWith('mousedown', sinon.match(matchFn('onTapDown'), 'function onTapDown'));
-      expect(spy).to.have.been.calledWith('mouseup', sinon.match(matchFn('onBrushTap'), 'function onBrushTap'));
-      expect(spy).to.have.been.calledWith('mousemove', sinon.match(matchFn('onBrushOver'), 'function onBrushOver'));
+      expect(spy.mock.calls.some(([event, handler]) => event === 'mousedown' && matchFn('onTapDown')(handler))).toBe(
+        true,
+      );
+      expect(spy.mock.calls.some(([event, handler]) => event === 'mouseup' && matchFn('onBrushTap')(handler))).toBe(
+        true,
+      );
+      expect(spy.mock.calls.some(([event, handler]) => event === 'mousemove' && matchFn('onBrushOver')(handler))).toBe(
+        true,
+      );
     });
   });
 });
