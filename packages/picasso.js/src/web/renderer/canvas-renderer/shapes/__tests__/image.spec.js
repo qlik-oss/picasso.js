@@ -71,7 +71,7 @@ describe('render()', () => {
     createElementStub.restore();
   });
 
-  it('should render a circle symbol image correctly', (done) => {
+  it('should render a circle symbol image correctly', () => {
     const img = {
       src: 'circle.png',
       symbol: 'circle',
@@ -86,10 +86,9 @@ describe('render()', () => {
     expect(g.arc.called).to.be.true;
     expect(g.drawImage.called).to.be.true;
     expect(g.drawImage.called).to.be.true;
-    done();
   });
 
-  it('should render a square symbol image correctly', (done) => {
+  it('should render a square symbol image correctly', () => {
     const img = {
       src: 'square.png',
       symbol: 'square',
@@ -103,10 +102,9 @@ describe('render()', () => {
     expect(g.drawImage.called).to.be.true;
     expect(g.arc.called).to.be.false; // should not draw arc for square
     expect(g.drawImage.called).to.be.true;
-    done();
   });
 
-  it('should resize the canvas and clear it before rendering', (done) => {
+  it('should resize the canvas and clear it before rendering', () => {
     const img = {
       src: 'resize.png',
       symbol: 'circle',
@@ -121,7 +119,6 @@ describe('render()', () => {
     expect(canvas.height).to.equal(200); // 100 * 2
     expect(g.clearRect.called).to.be.true;
     expect(g.clearRect.called).to.be.true;
-    done();
   });
   describe('positionImage()', () => {
     it('positions top-left correctly', () => {

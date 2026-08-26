@@ -170,6 +170,4 @@ describe('renderer-box', () => {
       });
     });
   });
-
-  describe('computed', () => {});
 });

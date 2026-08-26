@@ -2,6 +2,20 @@ import componentFactory from '../component-factory';
 import * as tween from '../tween';
 import * as brushing from '../brushing';
 import * as extractData from '../../data/extractor';
+import { vi } from 'vitest';
+
+vi.mock('../tween', async (importOriginal) => ({
+  ...(await importOriginal()),
+  default: sinon.stub(),
+}));
+vi.mock('../brushing', async (importOriginal) => ({
+  ...(await importOriginal()),
+  resolveTapEvent: sinon.stub(),
+}));
+vi.mock('../../data/extractor', async (importOriginal) => ({
+  ...(await importOriginal()),
+  default: sinon.stub(),
+}));
 
 describe('Component', () => {
   let sandbox;
@@ -160,7 +174,8 @@ describe('Component', () => {
   });
 
   it('should update brushArgs.config on set', () => {
-    sandbox.stub(brushing, 'resolveTapEvent').returns(false);
+    brushing.resolveTapEvent.reset();
+    brushing.resolveTapEvent.returns(false);
     const brush = { trigger: [{ on: 'tap' }] };
     const instance = createAndRenderComponent();
     instance.set({ settings: { brush } });
@@ -172,8 +187,10 @@ describe('Component', () => {
 
   it('should update data correctly if there is no progressive', () => {
     const data = { a: 'a' };
-    sandbox.stub(brushing, 'resolveTapEvent').returns(false);
-    sandbox.stub(extractData, 'default').returns(data);
+    brushing.resolveTapEvent.reset();
+    brushing.resolveTapEvent.returns(false);
+    extractData.default.reset();
+    extractData.default.returns(data);
     const brush = { trigger: [{ on: 'tap' }] };
     const instance = createAndRenderComponent();
     instance.set({ settings: { brush, data: {} } });
@@ -185,8 +202,10 @@ describe('Component', () => {
 
   it('should update data correctly if progressive = false', () => {
     const data = { b: 'b' };
-    sandbox.stub(brushing, 'resolveTapEvent').returns(false);
-    sandbox.stub(extractData, 'default').returns(data);
+    brushing.resolveTapEvent.reset();
+    brushing.resolveTapEvent.returns(false);
+    extractData.default.reset();
+    extractData.default.returns(data);
     const brush = { trigger: [{ on: 'tap' }] };
     const rendererSettings = { progressive: () => false };
     const instance = createAndRenderComponent();
@@ -199,8 +218,10 @@ describe('Component', () => {
 
   it('should update data correctly if progressive.isFirst = true and no data.items', () => {
     const data = { c: 'c' };
-    sandbox.stub(brushing, 'resolveTapEvent').returns(false);
-    sandbox.stub(extractData, 'default').returns(data);
+    brushing.resolveTapEvent.reset();
+    brushing.resolveTapEvent.returns(false);
+    extractData.default.reset();
+    extractData.default.returns(data);
     const brush = { trigger: [{ on: 'tap' }] };
     const rendererSettings = { progressive: () => ({ isFirst: true }) };
     const instance = createAndRenderComponent();
@@ -213,8 +234,10 @@ describe('Component', () => {
 
   it('should update data correctly if progressive.isFirst = true and has data.items', () => {
     const data = { items: [1, 2] };
-    sandbox.stub(brushing, 'resolveTapEvent').returns(false);
-    sandbox.stub(extractData, 'default').returns(data);
+    brushing.resolveTapEvent.reset();
+    brushing.resolveTapEvent.returns(false);
+    extractData.default.reset();
+    extractData.default.returns(data);
     const brush = { trigger: [{ on: 'tap' }] };
     const rendererSettings = { progressive: () => ({ isFirst: true }) };
     const instance = createAndRenderComponent();
@@ -228,8 +251,9 @@ describe('Component', () => {
   it('should update data correctly during progressive', () => {
     const data1 = { items: [1, 2] };
     const data2 = { items: [3, 4] };
-    sandbox.stub(brushing, 'resolveTapEvent').returns(false);
-    sandbox.stub(extractData, 'default');
+    brushing.resolveTapEvent.reset();
+    brushing.resolveTapEvent.returns(false);
+    extractData.default.reset();
     extractData.default.onCall(0).returns(data1);
     extractData.default.onCall(1).returns(data2);
     const brush = { trigger: [{ on: 'tap' }] };
@@ -252,8 +276,10 @@ describe('Component', () => {
 
   it('should update renderArgs correctly on the first progressive', () => {
     const data = { items: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] };
-    sandbox.stub(brushing, 'resolveTapEvent').returns(false);
-    sandbox.stub(extractData, 'default').returns(data);
+    brushing.resolveTapEvent.reset();
+    brushing.resolveTapEvent.returns(false);
+    extractData.default.reset();
+    extractData.default.returns(data);
     const brush = { trigger: [{ on: 'tap' }] };
     const rendererSettings = { progressive: () => ({ isFirst: true, start: 0, end: 5 }) };
     const instance = createAndRenderComponent();
@@ -267,8 +293,9 @@ describe('Component', () => {
   it('should update renderArgs correctly during progressive', () => {
     const data1 = { items: [1, 2, 3, 4, 5] };
     const data2 = { items: [6, 7, 8, 9, 10] };
-    sandbox.stub(brushing, 'resolveTapEvent').returns(false);
-    sandbox.stub(extractData, 'default');
+    brushing.resolveTapEvent.reset();
+    brushing.resolveTapEvent.returns(false);
+    extractData.default.reset();
     extractData.default.onFirstCall().returns(data1);
     extractData.default.onSecondCall().returns(data2);
     const brush = { trigger: [{ on: 'tap' }] };
@@ -293,8 +320,9 @@ describe('Component', () => {
 
   it('should update brushArgs.nodes correctly if progressive is falsy', () => {
     const data = { items: [1, 2, 3, 4, 5] };
-    sandbox.stub(brushing, 'resolveTapEvent').returns(false);
-    sandbox.stub(extractData, 'default');
+    brushing.resolveTapEvent.reset();
+    brushing.resolveTapEvent.returns(false);
+    extractData.default.reset();
     extractData.default.onFirstCall().returns(data);
     render.returns(['a', 'b']);
     const brush = { trigger: [{ on: 'tap' }] };
@@ -309,8 +337,9 @@ describe('Component', () => {
 
   it('should update brushArgs.nodes correctly if progressive.isFirst = true', () => {
     const data = { items: [1, 2, 3, 4, 5] };
-    sandbox.stub(brushing, 'resolveTapEvent').returns(false);
-    sandbox.stub(extractData, 'default');
+    brushing.resolveTapEvent.reset();
+    brushing.resolveTapEvent.returns(false);
+    extractData.default.reset();
     extractData.default.onFirstCall().returns(data);
     render.returns(['a', 'b']);
     const brush = { trigger: [{ on: 'tap' }] };
@@ -326,8 +355,9 @@ describe('Component', () => {
   it('should update brushArgs.nodes correctly if progressive.isFirst = true', () => {
     const data1 = { items: [1, 2, 3, 4, 5] };
     const data2 = { items: [6, 7, 8, 9, 10] };
-    sandbox.stub(brushing, 'resolveTapEvent').returns(false);
-    sandbox.stub(extractData, 'default');
+    brushing.resolveTapEvent.reset();
+    brushing.resolveTapEvent.returns(false);
+    extractData.default.reset();
     extractData.default.onFirstCall().returns(data1);
     extractData.default.onSecondCall().returns(data2);
     const brush = { trigger: [{ on: 'tap' }] };
@@ -423,7 +453,8 @@ describe('Component', () => {
 
     it('should run tween when animations are enabled', () => {
       let instance;
-      sandbox.stub(tween, 'default').returns({ start: sinon.spy() });
+      tween.default.reset();
+      tween.default.returns({ start: sinon.spy() });
       definition.render = () => ['node1', 'node2'];
       instance = createInstance({
         rect: { computed: { x: 0, y: 0, width: 1, height: 1 } },
@@ -438,7 +469,8 @@ describe('Component', () => {
 
     it('should not run tween when animations are disabled, case 1: enabled is not a function', () => {
       let instance;
-      sandbox.stub(tween, 'default').returns({ start: sinon.spy() });
+      tween.default.reset();
+      tween.default.returns({ start: sinon.spy() });
       definition.render = () => ['node1', 'node2'];
       instance = createInstance({
         rect: { computed: { x: 0, y: 0, width: 1, height: 1 } },
@@ -452,7 +484,8 @@ describe('Component', () => {
 
     it('should not run tween when animations are disabled, case 2: enabled is a function', () => {
       let instance;
-      sandbox.stub(tween, 'default').returns({ start: sinon.spy() });
+      tween.default.reset();
+      tween.default.returns({ start: sinon.spy() });
       definition.render = () => ['node1', 'node2'];
       instance = createInstance({
         rect: { computed: { x: 0, y: 0, width: 1, height: 1 } },

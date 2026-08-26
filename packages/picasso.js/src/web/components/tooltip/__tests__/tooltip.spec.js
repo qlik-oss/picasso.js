@@ -3,6 +3,12 @@ import elementMock from 'test-utils/mocks/element-mock';
 import tooltip from '../tooltip';
 import componentFactoryFixture from '../../../../../test/helpers/component-factory-fixture';
 import * as instanceHandler from '../instance-handler';
+import { vi } from 'vitest';
+
+vi.mock('../instance-handler', async (importOriginal) => ({
+  ...(await importOriginal()),
+  remove: sinon.stub(),
+}));
 
 function componentMock() {
   return {
@@ -203,7 +209,7 @@ describe('Tooltip', () => {
     });
 
     it('should call remove on instance handler', () => {
-      sandbox.spy(instanceHandler, 'remove');
+      instanceHandler.remove.resetHistory();
       instance.beforeUpdate({});
 
       expect(instanceHandler.remove).to.have.been.called;

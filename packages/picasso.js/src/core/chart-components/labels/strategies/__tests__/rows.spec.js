@@ -1,13 +1,18 @@
 import * as ellipsText from '../../../../../web/text-manipulation/text-ellipsis';
 import { rows } from '../rows';
+import { vi } from 'vitest';
+
+vi.mock('../../../../../web/text-manipulation/text-ellipsis', async (importOriginal) => ({
+  ...(await importOriginal()),
+  default: vi.fn(),
+}));
 
 describe('labeling - rows', () => {
   let sandbox;
 
   beforeAll(() => {
     sandbox = sinon.createSandbox();
-    sandbox.stub(ellipsText, 'default');
-    ellipsText.default.callsFake((n) => n.text);
+    ellipsText.default.mockImplementation((n) => n.text);
   });
 
   afterAll(() => {
@@ -269,7 +274,7 @@ describe('labeling - rows', () => {
       ];
       renderer.measureText.returns({ width: 20, height: 10 });
 
-      ellipsText.default.returns('et…');
+      ellipsText.default.mockReturnValue('et…');
 
       let labels = rows(
         {
@@ -313,7 +318,7 @@ describe('labeling - rows', () => {
       ];
       renderer.measureText.returns({ width: 20, height: 10 });
 
-      ellipsText.default.returns('…');
+      ellipsText.default.mockReturnValue('…');
 
       let labels = rows(
         {

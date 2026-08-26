@@ -2,6 +2,12 @@ import elementMock from 'test-utils/mocks/element-mock';
 import componentFactoryFixture from '../../../../test/helpers/component-factory-fixture';
 import * as createStorage from '../../storage';
 import chart, { orderComponents } from '..';
+import { vi } from 'vitest';
+
+vi.mock('../../storage', async (importOriginal) => ({
+  ...(await importOriginal()),
+  default: vi.fn(),
+}));
 
 describe('Chart', () => {
   describe('lifecycle methods', () => {
@@ -551,13 +557,13 @@ describe('Chart', () => {
 
     describe('storage', () => {
       it('should call createStorage with correct parameters', () => {
-        sandbox.stub(createStorage, 'default').returns({ key: 'cs' });
+        createStorage.default.mockClear();
+        createStorage.default.mockReturnValue({ key: 'cs' });
         const chartInstance = chart(definition, context);
-        expect(
-          createStorage.default.withArgs({
-            animations: { updatingStageMeta: { isInit: false, shouldBeRemoved: false } },
-          }),
-        ).to.have.been.calledOnce;
+        expect(createStorage.default.mock.calls).to.have.length(1);
+        expect(createStorage.default.mock.calls[0][0]).to.deep.equal({
+          animations: { updatingStageMeta: { isInit: false, shouldBeRemoved: false } },
+        });
         expect(chartInstance.storage).to.deep.equal({ key: 'cs' });
       });
     });

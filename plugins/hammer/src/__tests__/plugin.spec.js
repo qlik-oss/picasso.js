@@ -1,12 +1,18 @@
 import * as hammer from '../hammer';
 import plugin from '..';
+import { vi } from 'vitest';
+
+vi.mock('../hammer', async (importOriginal) => ({
+  ...(await importOriginal()),
+  default: vi.fn(),
+}));
 
 describe('plugin', () => {
   let sandbox;
 
   beforeEach(() => {
     sandbox = sinon.createSandbox();
-    sandbox.stub(hammer, 'default');
+    hammer.default.mockReset();
   });
 
   afterEach(() => {
@@ -14,7 +20,7 @@ describe('plugin', () => {
   });
 
   it('should register hammer interaction when parameter is recognized as picasso', () => {
-    hammer.default.withArgs('H').returns('plugin');
+    hammer.default.mockReturnValue('plugin');
     const picasso = {
       interaction: sandbox.spy(),
     };
@@ -26,7 +32,7 @@ describe('plugin', () => {
   });
 
   it('should return plugin when parameter is not picasso', () => {
-    hammer.default.withArgs('HH').returns('plugin');
+    hammer.default.mockReturnValue('plugin');
     const Hammer = 'HH';
     const p = plugin(Hammer);
 

@@ -1,5 +1,11 @@
 import * as ellipsText from '../../../../text-manipulation/text-ellipsis';
 import render from '../text';
+import { vi } from 'vitest';
+
+vi.mock('../../../../text-manipulation/text-ellipsis', async (importOriginal) => ({
+  ...(await importOriginal()),
+  default: vi.fn(),
+}));
 
 describe('text', () => {
   describe('render', () => {
@@ -18,7 +24,7 @@ describe('text', () => {
         canvas: {},
       };
 
-      sandbox.stub(ellipsText, 'default').callsFake(() => '...');
+      ellipsText.default.mockImplementation(() => '...');
 
       falsys = [false, null, undefined, 0, NaN, ''];
 

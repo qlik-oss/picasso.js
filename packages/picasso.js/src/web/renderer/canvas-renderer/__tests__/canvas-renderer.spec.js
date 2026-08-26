@@ -1,6 +1,12 @@
 import element from 'test-utils/mocks/element-mock';
 import * as canvasBuffer from '../canvas-buffer';
 import { renderer } from '../canvas-renderer';
+import { vi } from 'vitest';
+
+vi.mock('../canvas-buffer', async (importOriginal) => ({
+  ...(await importOriginal()),
+  default: vi.fn(),
+}));
 
 describe('canvas renderer', () => {
   let sandbox, r, sceneFn, mockedCanvasBuffer;
@@ -14,8 +20,9 @@ describe('canvas renderer', () => {
       clear: sinon.spy(),
       getContext: sinon.spy(),
     };
-    sandbox.stub(canvasBuffer, 'default');
-    canvasBuffer.default.returns(mockedCanvasBuffer);
+    canvasBuffer.default.mockImplementation(function createCanvasBuffer() {
+      return mockedCanvasBuffer;
+    });
     r = renderer(sceneFn);
   });
 

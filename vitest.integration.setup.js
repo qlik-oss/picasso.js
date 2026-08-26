@@ -19,6 +19,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
   if (global.browser) {
+    await global.page?.close();
     await global.browser.close();
   }
 });

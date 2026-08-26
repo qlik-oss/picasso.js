@@ -24,6 +24,11 @@ module.exports = {
   ],
   test: {
     environment: 'jsdom',
+    environmentOptions: {
+      jsdom: {
+        url: 'http://localhost/',
+      },
+    },
     globals: true,
     include: ['**/src/**/__tests__/*.spec.js'],
     setupFiles: ['./vitest.setup.js'],

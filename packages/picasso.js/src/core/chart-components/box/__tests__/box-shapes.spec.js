@@ -1,5 +1,18 @@
 import * as boxShapesHelper from '../box-shapes-helper';
 import buildShapes from '../box-shapes';
+import { vi } from 'vitest';
+
+vi.mock('../box-shapes-helper', async (importOriginal) => {
+  const actual = await importOriginal();
+  return {
+    ...actual,
+    oob: vi.fn(),
+    box: vi.fn(),
+    verticalLine: vi.fn(),
+    horizontalLine: vi.fn(),
+    getBoxWidth: vi.fn(),
+  };
+});
 
 describe('buildShapes', () => {
   let sandbox;
@@ -9,12 +22,11 @@ describe('buildShapes', () => {
 
   beforeEach(() => {
     boxWidth = 10;
-    sandbox = sinon.createSandbox();
-    sandbox.stub(boxShapesHelper, 'oob').returns('oob');
-    sandbox.stub(boxShapesHelper, 'box').returns('box');
-    sandbox.stub(boxShapesHelper, 'verticalLine').returns('verticalLine');
-    sandbox.stub(boxShapesHelper, 'horizontalLine').returns('horizontalLine');
-    sandbox.stub(boxShapesHelper, 'getBoxWidth').returns(boxWidth);
+    boxShapesHelper.oob.mockReturnValue('oob');
+    boxShapesHelper.box.mockReturnValue('box');
+    boxShapesHelper.verticalLine.mockReturnValue('verticalLine');
+    boxShapesHelper.horizontalLine.mockReturnValue('horizontalLine');
+    boxShapesHelper.getBoxWidth.mockReturnValue(boxWidth);
 
     keys = ['box'];
     resolved = {
@@ -61,7 +73,7 @@ describe('buildShapes', () => {
   });
 
   afterEach(() => {
-    sandbox.restore();
+    vi.clearAllMocks();
   });
 
   it('should return box marker when keys contains only box and there is no out-of-bounds', () => {
