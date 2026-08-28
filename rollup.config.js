@@ -47,6 +47,9 @@ const config = (isEsm) => {
       nodeResolve(),
       babel({
         include: ['src/**'],
+        assumptions: {
+          setSpreadProperties: true,
+        },
         presets: [
           [
             '@babel/preset-env',
@@ -64,7 +67,7 @@ const config = (isEsm) => {
             },
           ],
         ],
-        plugins: [[jsxPlugin, { pragma: 'h' }]],
+        plugins: [[jsxPlugin, { runtime: 'classic', pragma: 'h' }]],
       }),
       commonjs(),
     ],
