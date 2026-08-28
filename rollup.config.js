@@ -47,6 +47,9 @@ const config = (isEsm) => {
       nodeResolve(),
       babel({
         include: ['src/**'],
+        assumptions: {
+          setSpreadProperties: true,
+        },
         presets: [
           [
             '@babel/preset-env',
@@ -73,7 +76,6 @@ const config = (isEsm) => {
   if (process.env.NODE_ENV === 'production' && !isEsm) {
     cfg.plugins.push(
       terser({
-        ecma: 2020,
         output: {
           preamble: banner,
         },
