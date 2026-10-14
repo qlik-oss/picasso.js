@@ -36,8 +36,8 @@ importers:
         specifier: 1.55.0
         version: 1.55.0
       '@qlik/oxfmt-config':
-        specifier: 0.2.0
-        version: 0.2.0(oxfmt@0.63.0)
+        specifier: 0.2.2
+        version: 0.2.2(oxfmt@0.63.0)
       '@qlik/oxlint-config':
         specifier: 0.8.3
         version: 0.8.3(oxlint-tsgolint@7.0.2001)(oxlint@1.78.0(oxlint-tsgolint@7.0.2001))
@@ -1667,8 +1667,8 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  '@qlik/oxfmt-config@0.2.0':
-    resolution: {integrity: sha512-0nE/R/YUCQCCOdV/UpSNv6ld4faaUJiFu6wVs/Ri/1FsfEaPFc89T0RY/JhGKfTYm+4T9C2vkICWFi001G4tvw==}
+  '@qlik/oxfmt-config@0.2.2':
+    resolution: {integrity: sha512-LgsG1RCXgPo0pko2mapze1v7OokYIDCbyhGo8euIp0gZT7d87I7DZpZQBCbUNap0PvPRXU7z48JPC4f9ebDPTg==}
     engines: {node: '>=22.18.0'}
     peerDependencies:
       oxfmt: '>=0.38.0'
@@ -7208,7 +7208,7 @@ snapshots:
     dependencies:
       playwright: 1.55.0
 
-  '@qlik/oxfmt-config@0.2.0(oxfmt@0.63.0)':
+  '@qlik/oxfmt-config@0.2.2(oxfmt@0.63.0)':
     dependencies:
       oxfmt: 0.63.0
 
