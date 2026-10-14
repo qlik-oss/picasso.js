@@ -51,7 +51,7 @@
     "lerna": "9.0.7",
     "oxfmt": "0.63.0",
     "oxlint": "1.78.0",
-    "oxlint-tsgolint": "7.0.2001",
+    "oxlint-tsgolint": "7.0.2003",
     "rollup": "2.80.0",
     "rollup-plugin-commonjs": "10.1.0",
     "rollup-plugin-serve": "1.1.1",
