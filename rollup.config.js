@@ -1,6 +1,6 @@
 const path = require('path');
 const nodeResolve = require('@rollup/plugin-node-resolve');
-const commonjs = require('rollup-plugin-commonjs');
+const commonjs = require('@rollup/plugin-commonjs');
 const babel = require('@rollup/plugin-babel').default;
 const terser = require('@rollup/plugin-terser');
 const jsxPlugin = require('@babel/plugin-transform-react-jsx');
