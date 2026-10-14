@@ -15,7 +15,7 @@ module.exports = {
           configFile: false,
           filename: id,
           parserOpts: { plugins: ['jsx'] },
-          plugins: [['@babel/plugin-transform-react-jsx', { pragma: 'h' }]],
+          plugins: [['@babel/plugin-transform-react-jsx', { runtime: 'classic', pragma: 'h' }]],
         });
 
         return result?.code ? { code: result.code, map: result.map } : null;
