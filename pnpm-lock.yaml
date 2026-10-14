@@ -153,8 +153,8 @@ importers:
         specifier: 0.0.1
         version: 0.0.1
       path2d:
-        specifier: 0.3.3
-        version: 0.3.3
+        specifier: 0.3.4
+        version: 0.3.4
       preact:
         specifier: 10.13.2
         version: 10.13.2
@@ -4508,8 +4508,8 @@ packages:
     resolution: {integrity: sha512-T2ZUsdZFHgA3u4e5PfPbjd7HDDpxPnQb5jN0SrDsjNSuVXHJqtwTnWqG0B1jZrgmJ/7lj1EmVIByWt1gxGkWvg==}
     engines: {node: '>=4'}
 
-  path2d@0.3.3:
-    resolution: {integrity: sha512-wVz8vOQFX2m5Onr6u3XOtvhl8ag3/FXhN2n+yvdN+z/GIAkiMIe0fMa1yO6usvhgd9Oh7RxnDZTqk7Tl+JKWoQ==}
+  path2d@0.3.4:
+    resolution: {integrity: sha512-dsIw7IxOGfwLlf9x9VPmWdn9qtrKnSpESg+w1yBkp422q4ZG9vLIn0ZNzEYu4wCcAH2rGGtEQ1l20EXJP2areA==}
     engines: {node: '>=6'}
 
   pathe@2.0.3:
@@ -10299,7 +10299,7 @@ snapshots:
     dependencies:
       pify: 3.0.0
 
-  path2d@0.3.3: {}
+  path2d@0.3.4: {}
 
   pathe@2.0.3: {}
 
