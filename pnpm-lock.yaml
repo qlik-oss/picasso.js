@@ -340,8 +340,8 @@ importers:
         specifier: 3.0.2
         version: 3.0.2
       number-format.js:
-        specifier: 1.1.11
-        version: 1.1.11
+        specifier: 2.0.9
+        version: 2.0.9
 
 packages:
 
@@ -4283,8 +4283,9 @@ packages:
     resolution: {integrity: sha512-S48WzZW777zhNIrn7gxOlISNAqi9ZC/uQFnRdbeIHhZhCA6UqpkOT8T1G7BvfdgP4Er8gF4sUbaS0i7QvIfCWw==}
     engines: {node: '>=8'}
 
-  number-format.js@1.1.11:
-    resolution: {integrity: sha512-wdDaSgCG2cdCVpQRgRCfbUAxSYnIuP/XCnMh6k5W7ojUuqJ+TL6QYEfex5EDmEK/yaVrbZL8zZc0ts3/A/w4pA==}
+  number-format.js@2.0.9:
+    resolution: {integrity: sha512-VMDspFTTDRgWopKSYsIUGZKcjuL39zQw3cDG20fKxVroqSRI6OofHlWCRwUimNvOpDuLIL92L1K8NVHCRAbF1A==}
+    engines: {node: '>=8'}
 
   number-is-nan@1.0.1:
     resolution: {integrity: sha512-4jbtZXNAsfZbAHiiqjLPBiCl16dES1zI4Hpzzxw61Tk+loF+sBDBKx1ICKKKwIqQ7M0mFn1TmkN7euSncWgHiQ==}
@@ -9507,7 +9508,7 @@ snapshots:
     dependencies:
       path-key: 3.1.1
 
-  number-format.js@1.1.11: {}
+  number-format.js@2.0.9: {}
 
   number-is-nan@1.0.1: {}
 
