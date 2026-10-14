@@ -54,7 +54,7 @@
     "oxlint": "1.87.0",
     "oxlint-tsgolint": "7.0.2003",
     "rollup": "2.80.0",
-    "rollup-plugin-serve": "1.1.1",
+    "rollup-plugin-serve": "3.0.0",
     "typescript": "7.0.2",
     "vitest": "5.0.3"
   },
