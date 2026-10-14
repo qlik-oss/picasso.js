@@ -218,8 +218,8 @@ importers:
         specifier: 8.0.0
         version: 8.0.0(supports-color@7.2.0)
       cross-env:
-        specifier: 7.0.3
-        version: 7.0.3
+        specifier: 10.1.0
+        version: 10.1.0
       extend:
         specifier: 3.0.2
         version: 3.0.2
@@ -1095,6 +1095,9 @@ packages:
 
   '@emnapi/wasi-threads@1.0.4':
     resolution: {integrity: sha512-PJR+bOmMOPH8AtcTGAyYNiuJ3/Fcoj2XN/gBEWzDIKh254XO+mM9XoXHk5GNEhodxeMznbg7BlRojVbKN+gC6g==}
+
+  '@epic-web/invariant@1.0.0':
+    resolution: {integrity: sha512-lrTPqgvfFQtR/eY/qkIzp98OGdNJu0m5ji3q/nJI8v3SXkRKEnWiOxMmbvcSoAIzv/cGiuvRy57k4suKQSAdwA==}
 
   '@eslint-community/eslint-utils@4.10.1':
     resolution: {integrity: sha512-cuadcxVFE8sDK6iWJbs8Sn0av2Nrh2QSGQhVlBW9AaAHqHwjWsZHT8LJ4hFGPh7ASBV2deFdM7H/DPjulmh8rg==}
@@ -2769,9 +2772,9 @@ packages:
       typescript:
         optional: true
 
-  cross-env@7.0.3:
-    resolution: {integrity: sha512-+/HKd6EgcQCJGh2PSjZuUitQBQynKor4wrFbRg4DtAgS1aWO+gU52xpH7M9ScGgXSYmAVS9bIJ8EzuaGw0oNAw==}
-    engines: {node: '>=10.14', npm: '>=6', yarn: '>=1'}
+  cross-env@10.1.0:
+    resolution: {integrity: sha512-GsYosgnACZTADcmEyJctkJIoqAhHjttw7RsFrVoJNXbsWWqaq6Ym+7kZjq6mS45O0jij6vtiReppKQEtqWy6Dw==}
+    engines: {node: '>=20'}
     hasBin: true
 
   cross-spawn@5.1.0:
@@ -6388,6 +6391,8 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
+  '@epic-web/invariant@1.0.0': {}
+
   '@eslint-community/eslint-utils@4.10.1(eslint@9.39.5(jiti@2.6.1)(supports-color@7.2.0))':
     dependencies:
       eslint: 9.39.5(jiti@2.6.1)(supports-color@7.2.0)
@@ -7885,8 +7890,9 @@ snapshots:
     optionalDependencies:
       typescript: 7.0.2
 
-  cross-env@7.0.3:
+  cross-env@10.1.0:
     dependencies:
+      '@epic-web/invariant': 1.0.0
       cross-spawn: 7.0.6
 
   cross-spawn@5.1.0:
