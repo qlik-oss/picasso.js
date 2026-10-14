@@ -24,6 +24,6 @@
     "d3-hierarchy": "3.1.2",
     "d3-scale": "4.0.2",
     "extend": "3.0.2",
-    "number-format.js": "1.1.11"
+    "number-format.js": "2.0.9"
   }
 }
