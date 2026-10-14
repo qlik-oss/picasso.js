@@ -52,6 +52,8 @@ const config = (isEsm) => {
             '@babel/preset-env',
             {
               modules: false,
+              // Terser misbinds defaults that share names with function-body variables.
+              include: ['@babel/plugin-transform-parameters'],
               targets: {
                 browsers: [
                   'last 2 Chrome versions',
@@ -64,7 +66,7 @@ const config = (isEsm) => {
             },
           ],
         ],
-        plugins: [[jsxPlugin, { pragma: 'h' }]],
+        plugins: [[jsxPlugin, { runtime: 'classic', pragma: 'h' }]],
       }),
       commonjs(),
     ],

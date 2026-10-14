@@ -26,12 +26,12 @@
     "types:check": "tsc --noEmit"
   },
   "devDependencies": {
-    "@babel/cli": "7.29.7",
-    "@babel/core": "7.29.7",
-    "@babel/eslint-parser": "7.29.9",
-    "@babel/plugin-transform-react-jsx": "7.29.7",
-    "@babel/preset-env": "7.29.7",
-    "@babel/preset-react": "7.29.7",
+    "@babel/cli": "8.0.6",
+    "@babel/core": "8.0.6",
+    "@babel/eslint-parser": "8.0.6",
+    "@babel/plugin-transform-react-jsx": "8.0.1",
+    "@babel/preset-env": "8.0.6",
+    "@babel/preset-react": "8.0.1",
     "@commitlint/cli": "21.2.3",
     "@commitlint/config-conventional": "21.2.3",
     "@playwright/test": "1.63.0",
