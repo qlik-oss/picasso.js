@@ -27,10 +27,10 @@
   },
   "devDependencies": {
     "@babel/cli": "8.0.6",
-    "@babel/core": "8.0.6",
-    "@babel/eslint-parser": "8.0.6",
+    "@babel/core": "8.0.7",
+    "@babel/eslint-parser": "8.0.7",
     "@babel/plugin-transform-react-jsx": "8.0.1",
-    "@babel/preset-env": "8.0.6",
+    "@babel/preset-env": "8.0.7",
     "@babel/preset-react": "8.0.1",
     "@commitlint/cli": "21.2.3",
     "@commitlint/config-conventional": "21.2.3",
