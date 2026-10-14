@@ -1,9 +1,9 @@
 // Custom picasso component template
 // Key API facts:
 // 1. Settings from chart config are at this.settings.settings (not this.settings directly)
-// 2. Valid render node types: rect, circle, text, line, path — NOT polygon
+// 2. Built-in cross-renderer node types include rect, circle, text, line, path, image
 // 3. Color values must be resolved to CSS strings before use in nodes
-// 4. Use textAnchor (not textAlign) for text node alignment
+// 4. Use SVG attribute names such as text-anchor (not textAlign) for alignment
 
 const resolveColor = (value, fallback) => {
   if (typeof value === 'string' && value.trim()) return value;
@@ -35,7 +35,7 @@ picasso.component('my-custom-component', {
         ]),
         fill: color,
         stroke: color,
-        strokeWidth: 1,
+        'stroke-width': 1,
         opacity: 0.3,
       },
       // line
@@ -46,7 +46,7 @@ picasso.component('my-custom-component', {
         x2: rect.x + rect.width,
         y2: rect.y + rect.height,
         stroke: color,
-        strokeWidth: 2,
+        'stroke-width': 2,
       },
       // circle
       {
@@ -56,16 +56,16 @@ picasso.component('my-custom-component', {
         r: 5,
         fill: color,
       },
-      // text — use textAnchor not textAlign
+      // text — use the SVG text-anchor attribute, not textAlign
       {
         type: 'text',
         text: 'Label',
         x: rect.x + rect.width / 2,
         y: rect.y + rect.height / 2,
         fill: '#404b5a',
-        fontSize: '12px',
-        textAnchor: 'middle',
-        dominantBaseline: 'middle',
+        'font-size': '12px',
+        'text-anchor': 'middle',
+        'dominant-baseline': 'middle',
       },
     ];
   },

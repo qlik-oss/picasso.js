@@ -1,8 +1,6 @@
 ---
 name: picasso-chart-authoring
 description: 'Build, extend, debug, or refactor picasso.js visualizations. Use when creating scatter, bubble, bar, line, area, pie, box, gantt, legend, axis, brushing, interaction, custom component, or QIX hypercube charts in picasso. Useful for turning requirements into chart definitions, choosing components and scales, wiring matrix or q data, adding brushing, and tracing relevant picasso source files.'
-argument-hint: 'Describe the chart type, available fields, dataset shape, and any interaction or brushing requirements.'
-user-invocable: true
 ---
 
 # Picasso Chart Authoring
@@ -98,19 +96,20 @@ const { myOption } = this.settings;
 const { myOption } = this.settings.settings;
 ```
 
-All other context accessors on `this` are top-level: `this.rect`, `this.data`, `this.chart`, `this.scale`, `this.formatter`.
+Other context accessors are top-level, but some are conditional: `this.data`, `this.scale`, and `this.formatter` are available directly; `this.rect` is available when a rect has been supplied; and `this.chart` is available when the component definition declares `require: ['chart']`.
 
-## Valid SVG Render Node Types
+## Custom Component Render Nodes
 
-`render()` must return an array of plain objects with a `type` property. Valid types are:
+`render()` returns an array of plain objects with a `type` property. The SVG renderer accepts SVG element types, while the Canvas renderer only supports its registered shapes. These built-in node types work with both renderers:
 
-- `rect` — `x`, `y`, `width`, `height`, `fill`, `stroke`, `strokeWidth`, `rx`, `ry`, `opacity`
-- `circle` — `cx`, `cy`, `r`, `fill`, `stroke`, `strokeWidth`, `opacity`
-- `text` — `x`, `y`, `text`, `fill`, `fontSize`, `fontFamily`, `textAnchor`, `dominantBaseline`
-- `line` — `x1`, `y1`, `x2`, `y2`, `stroke`, `strokeWidth`
-- `path` — `d`, `fill`, `stroke`, `strokeWidth`, `opacity`
+- `rect` — `x`, `y`, `width`, `height`, `fill`, `stroke`, `stroke-width`, `rx`, `ry`, `opacity`
+- `circle` — `cx`, `cy`, `r`, `fill`, `stroke`, `stroke-width`, `opacity`
+- `text` — `x`, `y`, `text`, `fill`, `font-size`, `font-family`, `text-anchor`, `dominant-baseline`
+- `line` — `x1`, `y1`, `x2`, `y2`, `stroke`, `stroke-width`
+- `path` — `d`, `fill`, `stroke`, `stroke-width`, `opacity`
+- `image` — `x`, `y`, `width`, `height`, `src`
 
-> **Warning**: `polygon` is not a valid node type and causes a runtime crash. Use `path` instead, building the `d` attribute from the vertex list.
+`polygon` is a valid SVG element when using the SVG renderer (provide its SVG `points` attribute), but it is not registered by the Canvas renderer. Use `path` when the component must work with either renderer.
 
 ```js
 // Converts an array of {x, y} points to an SVG path d string
@@ -139,10 +138,10 @@ const resolveColor = (value, fallback) => {
 fill: resolveColor(datum.fill, '#4477aa')
 ```
 
-For text nodes, use `textAnchor` (SVG attribute, values `start` | `middle` | `end`), not `textAlign` (a CSS property that picasso's renderer ignores for SVG text nodes).
+For text nodes, use the SVG attribute name `text-anchor` (values `start` | `middle` | `end`), not `textAlign` (a CSS property that picasso's renderer ignores for SVG text nodes). Use `dominant-baseline` for baseline alignment and kebab-case SVG attribute names such as `stroke-width`, `font-size`, and `font-family` in custom render nodes.
 
 ```js
-{ type: 'text', text: 'Label', x: 50, y: 20, textAnchor: 'middle', dominantBaseline: 'middle' }
+{ type: 'text', text: 'Label', x: 50, y: 20, 'text-anchor': 'middle', 'dominant-baseline': 'middle' }
 ```
 
 ## Authoring Rules
