@@ -45,7 +45,7 @@
     "cross-env": "7.0.3",
     "extend": "3.0.2",
     "globals": "17.8.0",
-    "globby": "16.2.2",
+    "globby": "16.2.4",
     "husky": "9.1.7",
     "jsdom": "30.0.0",
     "lerna": "9.0.7",
