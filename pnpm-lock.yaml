@@ -236,8 +236,8 @@ importers:
         specifier: 30.1.2
         version: 30.1.2
       lerna:
-        specifier: 10.1.0
-        version: 10.1.0(@types/node@26.6.5)(supports-color@7.2.0)(typescript@7.0.2)
+        specifier: 10.1.1
+        version: 10.1.1(@types/node@26.6.5)(supports-color@7.2.0)(typescript@7.0.2)
       oxfmt:
         specifier: 0.72.0
         version: 0.72.0
@@ -3858,8 +3858,8 @@ packages:
     resolution: {integrity: sha512-YiGkH6EnGrDGqLMITnGjXtGmNtjoXw9SVUzcaos8RBi7Ps0VBylkq+vOcY9QE5poLasPCR849ucFUkl0UzUyOw==}
     engines: {node: '>=0.10.0'}
 
-  lerna@10.1.0:
-    resolution: {integrity: sha512-hGxvsNh8wFY6Gj/Ei7R/Ux2eDXJRZZ4CVVmGryjtdLXgTn2VO7fKHZySHb0K8u7SfIrdaeaP1Zn1HbIjC7f6Pg==}
+  lerna@10.1.1:
+    resolution: {integrity: sha512-WDGaMGDGj5jV0n6Yx2zuBDWH0ym6toUE6w+maaPLqeMd3ncDRN+NJMcVWImVdUKCIHRk2Xk+X7QQkFXdHKsscA==}
     engines: {node: ^22.22.2 || ^24.15.0 || ^26.0.0}
     hasBin: true
 
@@ -8805,7 +8805,7 @@ snapshots:
     dependencies:
       invert-kv: 1.0.0
 
-  lerna@10.1.0(@types/node@26.6.5)(supports-color@7.2.0)(typescript@7.0.2):
+  lerna@10.1.1(@types/node@26.6.5)(supports-color@7.2.0)(typescript@7.0.2):
     dependencies:
       '@npmcli/arborist': 10.0.3(supports-color@7.2.0)
       '@npmcli/package-json': 8.0.0
