@@ -53,7 +53,7 @@
     "oxfmt": "0.72.0",
     "oxlint": "1.87.0",
     "oxlint-tsgolint": "7.0.2004",
-    "rollup": "4.64.5",
+    "rollup": "4.64.6",
     "rollup-plugin-serve": "3.0.0",
     "typescript": "7.0.2",
     "vitest": "5.0.4"
