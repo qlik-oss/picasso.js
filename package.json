@@ -35,7 +35,7 @@
     "@commitlint/cli": "21.2.4",
     "@commitlint/config-conventional": "21.2.4",
     "@playwright/test": "1.64.1",
-    "@qlik/oxfmt-config": "0.2.2",
+    "@qlik/oxfmt-config": "0.2.3",
     "@qlik/oxlint-config": "0.8.3",
     "@rollup/plugin-babel": "7.1.0",
     "@rollup/plugin-commonjs": "29.0.3",
