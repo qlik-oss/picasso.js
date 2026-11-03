@@ -197,8 +197,8 @@ importers:
         specifier: 0.2.4
         version: 0.2.4(oxfmt@0.74.0)
       '@qlik/oxlint-config':
-        specifier: 0.8.4
-        version: 0.8.4(oxlint-tsgolint@7.0.2005)(oxlint@1.89.0(oxlint-tsgolint@7.0.2005))
+        specifier: 0.8.5
+        version: 0.8.5(oxlint-tsgolint@7.0.2005)(oxlint@1.89.0(oxlint-tsgolint@7.0.2005))
       '@rollup/plugin-babel':
         specifier: 7.1.0
         version: 7.1.0(@babel/core@8.0.9)(rollup@4.65.1)(supports-color@7.2.0)
@@ -1869,8 +1869,8 @@ packages:
     peerDependencies:
       oxfmt: '>=0.38.0'
 
-  '@qlik/oxlint-config@0.8.4':
-    resolution: {integrity: sha512-CYc93Kw8JEbLqhpmVgZ8oVHta+57e8jw1nDyb8GZVHR0lSFbLyqPAPeH23BHcg2regM5V80X9gZ7PhTsO9yvyw==}
+  '@qlik/oxlint-config@0.8.5':
+    resolution: {integrity: sha512-VxPSDqYXzdDrjsE8k9Q0O+rEYpEwqxyvi5LQH6gxT9V71GyNEhhsIFayrr+Lv65GFwZPJjo3N9c9IQR5uZXSZg==}
     peerDependencies:
       oxlint: '>=1.61.0'
       oxlint-tsgolint: '>=0.18.0'
@@ -6953,7 +6953,7 @@ snapshots:
     dependencies:
       oxfmt: 0.74.0
 
-  '@qlik/oxlint-config@0.8.4(oxlint-tsgolint@7.0.2005)(oxlint@1.89.0(oxlint-tsgolint@7.0.2005))':
+  '@qlik/oxlint-config@0.8.5(oxlint-tsgolint@7.0.2005)(oxlint@1.89.0(oxlint-tsgolint@7.0.2005))':
     dependencies:
       oxlint: 1.89.0(oxlint-tsgolint@7.0.2005)
       oxlint-tsgolint: 7.0.2005
