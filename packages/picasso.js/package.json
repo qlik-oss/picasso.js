@@ -23,6 +23,7 @@
   "files": [
     "/dist",
     "/src",
+    "/skills",
     "/types/index.d.ts"
   ],
   "main": "dist/picasso.js",
@@ -35,7 +36,9 @@
     "lint:fix": "npm run lint -- --fix",
     "fixture:server": "aw serve -c aw.webserver.config.js",
     "version": "node scripts/version.js && git add src/about.js",
-    "prepublishOnly": "rm -rf dist && npm run build"
+    "prepublishOnly": "rm -rf dist && npm run build",
+    "prepack": "node scripts/package-skills.js stage",
+    "postpack": "node scripts/package-skills.js clean"
   },
   "devDependencies": {
     "d3-color": "3.1.0",

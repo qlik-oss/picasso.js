@@ -10,6 +10,27 @@ Visit [qlik.dev](https://qlik.dev) for documentation and examples.
 npm install picasso.js
 ```
 
+### Picasso chart-authoring skill
+
+This package includes the `picasso-chart-authoring` agent skill in `skills/`. Its content is versioned with the installed Picasso package. After installing Picasso, install the skill for your coding agent with:
+
+```sh
+npx skills add ./node_modules/picasso.js/skills --skill picasso-chart-authoring --copy --yes
+```
+
+Rerun the command after upgrading Picasso to refresh the installed skill. You can also install from a tagged repository release without first adding Picasso as a dependency:
+
+```sh
+npx skills add https://github.com/qlik-oss/picasso.js/tree/v2.10.0/.github/skills/picasso-chart-authoring --skill picasso-chart-authoring --copy --yes
+```
+
+Replace `v2.10.0` with the desired release tag. For automatic skill discovery after dependency installation, use [`skills-npm`](https://www.npmjs.com/package/skills-npm) in the consuming project. It requires Node.js 22.20 or later and adds a `prepare` script during setup:
+
+```sh
+npm install --save-dev skills-npm
+npx skills-npm setup
+```
+
 ### Usage
 
 ```js
