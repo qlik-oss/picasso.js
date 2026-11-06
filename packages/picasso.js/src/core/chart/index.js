@@ -102,6 +102,7 @@ import componentCollectionFn from './component-collection';
  * @property {number} [layout.prioOrder = 0]
  * @property {string | {width: string, height: string}} [layout.minimumLayoutMode] Refer to layout sizes defined by layoutModes in `strategy`
  * @property {string} [layout.dock] left, right, top or bottom
+ * @property {boolean} [layout.overlap = false] If true, the component is anchored at the center boundary and does not consume layout space
  * @property {boolean} [show = true] If the component should be rendered
  * @property {string} [scale] Named scale. Will be provided to the component if it asks for it.
  * @property {string} [formatter] Named formatter. Fallback to create formatter from scale. Will be provided to the component if it asks for it.

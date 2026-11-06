@@ -4517,6 +4517,12 @@
               "description": "left, right, top or bottom",
               "optional": true,
               "type": "string"
+            },
+            "overlap": {
+              "description": "If true, the component is anchored at the center boundary and does not consume layout space",
+              "optional": true,
+              "defaultValue": false,
+              "type": "boolean"
             }
           }
         },
