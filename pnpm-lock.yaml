@@ -287,8 +287,8 @@ importers:
         specifier: 3.1.3
         version: 3.1.3
       d3-hierarchy:
-        specifier: 3.1.2
-        version: 3.1.2
+        specifier: 3.1.3
+        version: 3.1.3
       d3-interpolate:
         specifier: 3.0.1
         version: 3.0.1
@@ -331,8 +331,8 @@ importers:
   plugins/q:
     devDependencies:
       d3-hierarchy:
-        specifier: 3.1.2
-        version: 3.1.2
+        specifier: 3.1.3
+        version: 3.1.3
       d3-scale:
         specifier: 4.0.2
         version: 4.0.2
@@ -2905,8 +2905,8 @@ packages:
     resolution: {integrity: sha512-+F+/49swqmGuQJmSKnVMIDH/QkEFV5li9QRj0xm/KhyAUBv099O5PrvpQFxBp24PYph17Mnvt9mjKQV0ii0nMA==}
     engines: {node: '>=12'}
 
-  d3-hierarchy@3.1.2:
-    resolution: {integrity: sha512-FX/9frcub54beBdugHjDCdikxThEqjnR93Qt7PvQTOHxyiNCAlvMrHhclk3cD5VeAaq9fxmfRp+CnWw9rEMBuA==}
+  d3-hierarchy@3.1.3:
+    resolution: {integrity: sha512-GRajN5ZcnEwYFWqqdzhG1qJ3+fDg6WWzk47TJg7ePY7yvYAgRfD2r1mUx+wviBOWuCwamCUzjwMSdato43jbGA==}
     engines: {node: '>=12'}
 
   d3-interpolate@3.0.1:
@@ -7862,7 +7862,7 @@ snapshots:
 
   d3-format@3.1.3: {}
 
-  d3-hierarchy@3.1.2: {}
+  d3-hierarchy@3.1.3: {}
 
   d3-interpolate@3.0.1:
     dependencies:
