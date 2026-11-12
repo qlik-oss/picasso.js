@@ -52,7 +52,7 @@
     "lerna": "10.1.1",
     "oxfmt": "0.76.0",
     "oxlint": "1.91.0",
-    "oxlint-tsgolint": "7.0.2005",
+    "oxlint-tsgolint": "7.0.2006",
     "rollup": "4.67.5",
     "rollup-plugin-serve": "3.0.0",
     "typescript": "7.0.2",
