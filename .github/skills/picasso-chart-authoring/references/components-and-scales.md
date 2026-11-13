@@ -33,10 +33,20 @@ Use this table to choose the main building blocks quickly.
 
 ## Component Selection Rules
 
+- Check built-in settings and composition options first for both marks and interactions. Prefer built-ins for standard chart elements rather than recreating them in a custom component.
 - If the user says bar chart, start with `box` instead of inventing rectangles manually.
 - If the user says bubble or scatter, start with `point` and add size or fill afterward.
 - If the user needs a plotted trend across ordered values, use `line`.
 - If the user wants linked selection between charts, make sure the chosen components expose the right extracted values for brush contexts.
+- Use a custom component only when the required geometry or behavior cannot be expressed cleanly with built-ins, and state which capability is missing.
+
+## Renderer Selection
+
+- Built-in mark components support Canvas as well as SVG; a custom component is not required to use Canvas.
+- Prefer `renderer: 'canvas'` on components drawing large numbers of marks or datapoints. This is a component-level property alongside `type`, `data`, and `settings`, not a property inside `settings`.
+- Choose renderers per component: dense marks can use Canvas while axes, legends, or annotations retain SVG where appropriate.
+- Use representative data to check rendering time, updates, and interaction responsiveness. There is no universal datapoint threshold; mark complexity and target hardware matter too.
+- For custom components, confirm that all returned node types and attributes are supported by the selected renderer, and test brushing and hit detection. Avoid SVG-only nodes when Canvas support is required.
 
 ## Axis Notes
 

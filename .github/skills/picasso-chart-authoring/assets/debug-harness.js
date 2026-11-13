@@ -58,7 +58,7 @@ function logExtract(data, extractConfig) {
                   }
                 });
                 return row;
-              })
+              }),
             );
             console.groupEnd();
           },
@@ -110,7 +110,7 @@ function logQSelectionFromBrush(chartInstance, picassoQPlugin, contextName, opti
     generated.map((s) => ({
       method: s.method,
       params: JSON.stringify(s.params),
-    }))
+    })),
   );
   console.groupEnd();
   return generated;

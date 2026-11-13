@@ -40,8 +40,8 @@ When authoring a chart, work in that order. Avoid starting from component stylin
    Add positional scales first, then size or color scales. Let type deduction work when it is obvious; set `type` explicitly when it is not.
 5. Add layout scaffolding.
    Axes, legends, and range tools usually need `layout.dock`. Start with left and bottom axes for Cartesian charts.
-6. Add the main component.
-   Use `point`, `line`, `box`, `pie`, `labels`, and related components based on the visual form.
+6. Choose built-in components and a renderer.
+   First check whether `point`, `line`, `box`, `pie`, `labels`, and related built-ins can represent the required marks and interactions. Prefer configuring or composing built-ins over writing custom components. For large numbers of rendered marks or datapoints, prefer Canvas for the dense data layer and validate performance with representative data.
 7. Add interaction only after the static chart is correct.
    Use `brush.trigger` and `brush.consume` for selection behavior. Use `interactions` for native or Hammer events.
 8. Validate against the source and examples.
@@ -55,7 +55,9 @@ When authoring a chart, work in that order. Avoid starting from component stylin
 - Use `pie` only when angle is the primary encoding and the category count is modest.
 - Use `axis` with discrete or continuous scales; use `brush-range` or `brush-area-dir` for continuous selection.
 - Use `legend-cat` for categorical color scales and `legend-seq` for continuous color ramps.
-- Use a custom component when the desired mark cannot be expressed cleanly with built-ins.
+- Use built-in components for standard marks, axes, legends, labels, and selection tools; check their settings and composition options before introducing a custom component.
+- Prefer Canvas for dense data layers. Choose the renderer per component so other chart elements can retain SVG where appropriate; do not assume one renderer must serve the whole chart.
+- Use a custom component only for geometry or behavior that built-ins cannot express cleanly. Explain the missing capability and verify that its render nodes and interactions work with the chosen renderer.
 
 ## References
 
@@ -135,7 +137,7 @@ const resolveColor = (value, fallback) => {
 };
 
 // Usage in render:
-fill: resolveColor(datum.fill, '#4477aa')
+fill: resolveColor(datum.fill, '#4477aa');
 ```
 
 For text nodes, use the SVG attribute name `text-anchor` (values `start` | `middle` | `end`), not `textAlign` (a CSS property that picasso's renderer ignores for SVG text nodes). Use `dominant-baseline` for baseline alignment and kebab-case SVG attribute names such as `stroke-width`, `font-size`, and `font-family` in custom render nodes.
