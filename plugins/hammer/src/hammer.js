@@ -55,39 +55,40 @@ function hammered(Hammered) {
       if (!settings.enable) {
         return; // interaction is disabled
       }
+      // The gesture objects belong to the caller and may be passed in again on the next set()
+      // (e.g. when a chart reuses them between updates). Never modify them: work on copies and
+      // keep the bound handlers that were registered so that exactly those can be removed.
       settings.gestures.forEach((gesture) => {
-        gesture.options = gesture.options || {};
+        const options = { ...gesture.options };
         // handle action enable
-        if (gesture.options.enable === undefined) {
-          gesture.options.enable = true;
+        if (options.enable === undefined) {
+          options.enable = true;
         }
-        if (typeof gesture.options.enable === 'function') {
-          gesture.options.enable = gesture.options.enable.bind(instance);
+        if (typeof options.enable === 'function') {
+          options.enable = options.enable.bind(instance);
         }
         // setup hammer gestures
         const type = getGestureType(gesture.type);
         if (Hammered && Hammered[type]) {
-          gesture.options.event = gesture.options.event || gesture.type.toLowerCase();
+          options.event = options.event || gesture.type.toLowerCase();
           mc = mc || new Hammered.Manager(element);
-          mc.add(new Hammered[type](gesture.options));
+          mc.add(new Hammered[type](options));
+          const events = {};
           Object.keys(gesture.events).forEach((eventName) => {
-            gesture.events[eventName] = gesture.events[eventName].bind(instance);
-            mc.on(eventName, gesture.events[eventName]);
+            events[eventName] = gesture.events[eventName].bind(instance);
+            mc.on(eventName, events[eventName]);
           });
-          hammerGestures.push(gesture);
+          hammerGestures.push({ gesture, event: options.event, events });
         }
       });
 
       // setup mixing hammer gestures
-      settings.gestures.forEach((gesture) => {
-        const type = getGestureType(gesture.type);
-        if (Hammered && Hammered[type]) {
-          if (gesture.recognizeWith) {
-            mc.get(gesture.options.event).recognizeWith(gesture.recognizeWith.split(' ').filter((e) => e !== ''));
-          }
-          if (gesture.requireFailure) {
-            mc.get(gesture.options.event).requireFailure(gesture.requireFailure.split(' ').filter((e) => e !== ''));
-          }
+      hammerGestures.forEach(({ gesture, event }) => {
+        if (gesture.recognizeWith) {
+          mc.get(event).recognizeWith(gesture.recognizeWith.split(' ').filter((e) => e !== ''));
+        }
+        if (gesture.requireFailure) {
+          mc.get(event).requireFailure(gesture.requireFailure.split(' ').filter((e) => e !== ''));
         }
       });
     }
@@ -97,11 +98,11 @@ function hammered(Hammered) {
      */
     function removeAddedEvents() {
       // remove hammer recognizers and registered events
-      hammerGestures.forEach((gesture) => {
-        Object.keys(gesture.events).forEach((eventName) => {
-          mc.off(eventName, gesture.events[eventName]);
+      hammerGestures.forEach(({ event, events }) => {
+        Object.keys(events).forEach((eventName) => {
+          mc.off(eventName, events[eventName]);
         });
-        mc.remove(gesture.options.event);
+        mc.remove(event);
       });
       hammerGestures = [];
     }
