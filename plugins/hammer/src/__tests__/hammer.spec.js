@@ -231,6 +231,47 @@ describe('hammer interaction mixin', () => {
       expect(second).toHaveBeenCalledTimes(1);
     });
 
+    it('should not modify the settings object it is given', () => {
+      const enable = () => true;
+      const given = { type: 'hammer', enable };
+      const withoutEnable = { type: 'hammer', gestures: [] };
+
+      hammerInteraction.set(given);
+      hammerInteraction.set(withoutEnable);
+
+      expect(given).to.deep.equal({ type: 'hammer', enable });
+      expect(withoutEnable).to.deep.equal({ type: 'hammer', gestures: [] });
+    });
+
+    it('should evaluate a settings.enable function again when the same settings are set again', () => {
+      let enabled = false;
+      const enable = vi.fn(function enableFn() {
+        return enabled;
+      });
+      settings.enable = enable;
+
+      hammerInteraction.set(settings);
+      expect(element.listeners.length).to.equal(0);
+
+      enabled = true;
+      hammerInteraction.set(settings);
+      expect(element.listeners.length).to.equal(3);
+      expect(settings.enable).to.equal(enable);
+      expect(enable.mock.contexts[1].settings).to.equal(settings);
+    });
+
+    it('should evaluate a settings.enable function again on on()', () => {
+      let enabled = true;
+      settings.enable = () => enabled;
+
+      hammerInteraction.set(settings);
+      expect(element.listeners.length).to.equal(3);
+      hammerInteraction.off();
+      enabled = false;
+      hammerInteraction.on();
+      expect(element.listeners.length).to.equal(0);
+    });
+
     it('should hand the recognizer an options.enable bound to the interaction instance and keep the given one', () => {
       let thisValue;
       const enable = function enableFn() {

@@ -31,17 +31,13 @@ function hammered(Hammered) {
     let hammerGestures = [];
     let isOn = true;
     /**
-     * Set default settings
+     * Set settings. The settings object belongs to the caller and is not modified.
      * @private
      */
     function setDefaultSettings(newSettings) {
       key = newSettings.key;
       settings = newSettings;
       instance = { chart, mediator, settings };
-      settings.gestures = settings.gestures || [];
-      if (settings.enable === undefined) {
-        settings.enable = true;
-      }
     }
 
     /**
@@ -49,16 +45,17 @@ function hammered(Hammered) {
      * add hammer recognizers based on settings
      */
     function addRecognizers() {
-      if (typeof settings.enable === 'function') {
-        settings.enable = settings.enable.bind(instance)();
+      let enable = settings.enable === undefined ? true : settings.enable;
+      if (typeof enable === 'function') {
+        enable = enable.call(instance);
       }
-      if (!settings.enable) {
+      if (!enable) {
         return; // interaction is disabled
       }
       // The gesture objects belong to the caller and may be passed in again on the next set()
       // (e.g. when a chart reuses them between updates). Never modify them: work on copies and
       // keep the bound handlers that were registered so that exactly those can be removed.
-      settings.gestures.forEach((gesture) => {
+      (settings.gestures || []).forEach((gesture) => {
         const options = { ...gesture.options };
         // handle action enable
         if (options.enable === undefined) {
