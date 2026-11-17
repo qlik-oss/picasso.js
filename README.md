@@ -15,6 +15,20 @@ A charting library streamlined for building interactive visualizations for the Q
 npm install picasso.js
 ```
 
+### Picasso chart-authoring skill
+
+The `picasso-chart-authoring` skill is included in each `picasso.js` npm release under `skills/`, so its guidance matches the installed package version. After installing Picasso in your project, install the skill with:
+
+```sh
+npx skills add ./node_modules/picasso.js/skills --skill picasso-chart-authoring --copy --yes
+```
+
+The command can be rerun after updating Picasso to refresh the skill. To install directly from a tagged repository release instead:
+
+```sh
+npx skills add https://github.com/qlik-oss/picasso.js/tree/v2.10.0/.github/skills/picasso-chart-authoring --skill picasso-chart-authoring --copy --yes
+```
+
 ### Usage
 
 ```js
