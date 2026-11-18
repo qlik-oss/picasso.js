@@ -213,6 +213,33 @@ describe('hammer interaction mixin', () => {
       expect(element.listeners.length).to.equal(0);
     });
 
+    it('should keep one recognizer per gesture when the same gesture objects are set repeatedly', () => {
+      const managers = [];
+      const { Manager } = Hammer;
+      Hammer.Manager = class extends Manager {
+        constructor(el) {
+          super(el);
+          managers.push(this);
+        }
+      };
+      settings.gestures = [
+        { type: 'Tap', options: { event: 'tap' }, events: { tap() {} }, requireFailure: 'double' },
+        { type: 'Tap', options: { event: 'double', taps: 2 }, events: { double() {} }, recognizeWith: 'tap' },
+      ];
+
+      for (let i = 0; i < 5; i++) {
+        hammerInteraction.set(settings);
+      }
+      hammerInteraction.off();
+      hammerInteraction.on();
+      hammerInteraction.on();
+
+      expect(managers).to.have.length(1);
+      expect(managers[0].gestures.map((g) => g.opts.event)).to.deep.equal(['tap', 'double']);
+      expect(managers[0].get('tap')._requireFailure).to.deep.equal(['double']);
+      expect(managers[0].get('double')._recognizeWith).to.deep.equal(['tap']);
+    });
+
     it('should not call a handler of an earlier set', () => {
       const first = vi.fn();
       const second = vi.fn();
