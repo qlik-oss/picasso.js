@@ -49,7 +49,7 @@
     "globby": "16.2.4",
     "husky": "9.1.7",
     "jsdom": "30.1.3",
-    "lerna": "10.1.1",
+    "lerna": "10.1.2",
     "oxfmt": "0.78.0",
     "oxlint": "1.93.0",
     "oxlint-tsgolint": "7.0.2006",
