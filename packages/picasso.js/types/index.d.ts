@@ -1117,6 +1117,7 @@ declare namespace picassojs {
             prioOrder?: number;
             minimumLayoutMode?: string | Object;
             dock?: string;
+            overlap?: boolean;
         };
         show?: boolean;
         scale?: string;
