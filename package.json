@@ -34,7 +34,7 @@
     "@babel/preset-react": "8.0.1",
     "@commitlint/cli": "21.2.4",
     "@commitlint/config-conventional": "21.2.4",
-    "@playwright/test": "1.65.0",
+    "@playwright/test": "1.65.1",
     "@qlik/oxfmt-config": "0.2.6",
     "@qlik/oxlint-config": "0.8.7",
     "@rollup/plugin-babel": "7.1.0",
