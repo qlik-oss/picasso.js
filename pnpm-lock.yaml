@@ -320,8 +320,8 @@ importers:
         specifier: 0.0.1
         version: 0.0.1
       path2d:
-        specifier: 0.3.4
-        version: 0.3.4
+        specifier: 0.3.5
+        version: 0.3.5
       preact:
         specifier: 10.13.2
         version: 10.13.2
@@ -4509,8 +4509,8 @@ packages:
     resolution: {integrity: sha512-T2ZUsdZFHgA3u4e5PfPbjd7HDDpxPnQb5jN0SrDsjNSuVXHJqtwTnWqG0B1jZrgmJ/7lj1EmVIByWt1gxGkWvg==}
     engines: {node: '>=4'}
 
-  path2d@0.3.4:
-    resolution: {integrity: sha512-dsIw7IxOGfwLlf9x9VPmWdn9qtrKnSpESg+w1yBkp422q4ZG9vLIn0ZNzEYu4wCcAH2rGGtEQ1l20EXJP2areA==}
+  path2d@0.3.5:
+    resolution: {integrity: sha512-oDU91dXCfupmIF4Y/c+jDyF2/Z0kP0V9qxdeEJFtCVgf3iDVaTAFuXwZF7+CSmM8r03dPNJOva9FAD8OgucjEQ==}
     engines: {node: '>=6'}
 
   picocolors@1.1.1:
@@ -9747,7 +9747,7 @@ snapshots:
     dependencies:
       pify: 3.0.0
 
-  path2d@0.3.4: {}
+  path2d@0.3.5: {}
 
   picocolors@1.1.1: {}
 
