@@ -27,10 +27,8 @@ export default function native(chart, mediator, element) {
    * @private
    */
   function addEvents() {
-    if (typeof settings.enable === 'function') {
-      settings.enable = settings.enable.bind(instance)();
-    }
-    if (!settings.enable) {
+    const enable = typeof settings.enable === 'function' ? settings.enable.call(instance) : settings.enable;
+    if (!enable) {
       return; // interaction is disabled
     }
     Object.keys(settings.events).forEach((key) => {
@@ -66,8 +64,8 @@ export default function native(chart, mediator, element) {
      * @param {object} newSettings
      * @param {string} [newSettings.type] - The interaction type. Is 'native' for this component
      * @param {boolean|function} [newSettings.enable=true] - Should the interactions defined here be enabled or not.
-     * This is only run when adding event handlers. In effect at startup, update or during on/off.
-     * It does not run during every event loop.
+     * A function is evaluated when adding event handlers: at startup, on update while on,
+     * or when on() adds handlers again. It does not run during every event loop.
      * @param {array} [newSettings.gestures] - The keys in this object is the names of native events
      * that should be added to the chart element and they should all point to function which
      * will be the corresponding event handler.

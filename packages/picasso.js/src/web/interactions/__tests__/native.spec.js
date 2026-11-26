@@ -36,6 +36,42 @@ describe('native interaction mixin', () => {
     nativeInteraction.set(settings);
     expect(element.listeners.length).to.equal(0);
   });
+  it('should reevaluate enable when reusing settings on set', () => {
+    let enabled = false;
+    const contexts = [];
+    const enable = function enableFn() {
+      contexts.push(this);
+      return enabled;
+    };
+    settings.enable = enable;
+
+    nativeInteraction.set(settings);
+    expect(element.listeners.length).to.equal(0);
+    enabled = true;
+    nativeInteraction.set(settings);
+    expect(element.listeners.length).to.equal(2);
+    enabled = false;
+    nativeInteraction.set(settings);
+    expect(element.listeners.length).to.equal(0);
+    expect(settings.enable).to.equal(enable);
+    expect(contexts).to.have.length(3);
+    expect(contexts[0]).to.include({ chart, mediator, element });
+  });
+  it('should reevaluate enable when turning interactions back on', () => {
+    let enabled = true;
+    settings.enable = () => enabled;
+
+    nativeInteraction.set(settings);
+    expect(element.listeners.length).to.equal(2);
+    nativeInteraction.off();
+    enabled = false;
+    nativeInteraction.on();
+    expect(element.listeners.length).to.equal(0);
+    nativeInteraction.off();
+    enabled = true;
+    nativeInteraction.on();
+    expect(element.listeners.length).to.equal(2);
+  });
   it('should remove event listeners when off is called', () => {
     nativeInteraction.set(settings);
     expect(element.listeners.length).to.equal(2);
