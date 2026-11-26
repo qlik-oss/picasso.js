@@ -23,6 +23,7 @@
   "files": [
     "/dist",
     "/src",
+    "/skills",
     "/types/index.d.ts"
   ],
   "main": "dist/picasso.js",
@@ -35,7 +36,9 @@
     "lint:fix": "npm run lint -- --fix",
     "fixture:server": "aw serve -c aw.webserver.config.js",
     "version": "node scripts/version.js && git add src/about.js",
-    "prepublishOnly": "rm -rf dist && npm run build"
+    "prepublishOnly": "rm -rf dist && npm run build",
+    "prepack": "node scripts/package-skills.js stage",
+    "postpack": "node scripts/package-skills.js clean"
   },
   "devDependencies": {
     "d3-color": "3.1.1",
@@ -49,7 +52,7 @@
     "extend": "3.0.2",
     "hammerjs": "2.0.8",
     "node-event-emitter": "0.0.1",
-    "path2d": "0.3.4",
+    "path2d": "0.3.5",
     "preact": "10.13.2",
     "test-utils": "workspace:*"
   }
