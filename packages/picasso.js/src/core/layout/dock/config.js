@@ -21,6 +21,7 @@ function create(settings = {}, callbackContext = {}) {
     preferredSize = 0,
     minimumLayoutMode,
     show = true,
+    overlap = false,
   } = settings;
 
   // avoid empty string dock
@@ -141,6 +142,21 @@ function create(settings = {}, callbackContext = {}) {
         return this;
       }
       return typeof show === 'function' ? show(callbackContext) : show;
+    },
+
+    /**
+     * Set whether this component overlaps other components at the same dock position.
+     * When true, the component is positioned at the same edge as non-overlapping components
+     * at that dock position and does not affect the layout space of other components.
+     * @param {boolean} [val=false] - Toggle overlap
+     * @returns {this|boolean} The current context or overlap
+     */
+    overlap(val) {
+      if (typeof val !== 'undefined') {
+        overlap = val;
+        return this;
+      }
+      return typeof overlap === 'function' ? overlap(callbackContext) : overlap;
     },
   };
 
